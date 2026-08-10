@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Website Excel của tôi</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7f5;
+            color: #222;
+        }
+
+        /* ===== MENU ===== */
+
+        nav {
+            background: #185c37;
+            padding: 16px 30px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            color: #b7e4c7;
+        }
+
+
+        /* ===== HERO ===== */
+
+        .hero {
+            background: #217346;
+            color: white;
+            text-align: center;
+
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin: 0 0 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: auto;
+            line-height: 1.7;
+        }
+
+        .hero-button {
+            display: inline-block;
+
+            margin-top: 30px;
+            padding: 15px 30px;
+
+            background: white;
+            color: #217346;
+
+            text-decoration: none;
+
+            border-radius: 10px;
+
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .hero-button:hover {
+            background: #e8f5e9;
+        }
+
+
+        /* ===== GIỚI THIỆU ===== */
+
+        .intro {
+            max-width: 1000px;
+            margin: auto;
+
+            padding: 60px 20px;
+
+            text-align: center;
+        }
+
+        .intro h2 {
+            color: #217346;
+            font-size: 32px;
+        }
+
+        .intro p {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+
+        /* ===== KHÓA HỌC ===== */
+
+        .courses {
+            max-width: 1100px;
+            margin: auto;
+
+            padding: 20px 20px 70px;
+        }
+
+        .courses-title {
+            text-align: center;
+
+            color: #217346;
+            font-size: 32px;
+
+            margin-bottom: 40px;
+        }
+
+
+        .course-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 25px;
+        }
+
+
+        /* ===== CARD ===== */
+
+        .course-card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+
+            transition: 0.25s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(0, 0, 0, 0.12);
+        }
+
+        .icon {
+            font-size: 45px;
+        }
+
+        .course-card h3 {
+            color: #217346;
+            font-size: 22px;
+        }
+
+        .course-card p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .course-card a {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 11px 20px;
+
+            background: #217346;
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+        .course-card a:hover {
+            background: #185c37;
+        }
+
+
+        /* ===== FOOTER ===== */
+
+        footer {
+            background: #185c37;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+
+            margin-top: 20px;
+        }
+
+
+        /* ===== ĐIỆN THOẠI ===== */
+
+        @media (max-width: 800px) {
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- MENU -->
+
+    <nav>
+
+        <a href="index.html">
+            🏠 Trang chủ
+        </a>
+
+        <a href="gioithieu.html">
+            ℹ️ Giới thiệu
+        </a>
+
+        <a href="excel.html">
+            📊 Học Excel
+        </a>
+
+        <a href="lienhe.html">
+            📩 Liên hệ
+        </a>
+
+    </nav>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <h1>
+            📊 Học Excel cùng tôi
+        </h1>
+
+        <p>
+            Tổng hợp kiến thức Excel từ cơ bản đến
+            thực tế công việc, giúp bạn học nhanh hơn
+            và áp dụng hiệu quả hơn.
+        </p>
+
+        <a
+            href="excel.html"
+            class="hero-button">
+
+            🚀 Bắt đầu học Excel
+
+        </a>
+
+    </section>
+
+
+    <!-- GIỚI THIỆU -->
+
+    <section class="intro">
+
+        <h2>
+            Excel cho công việc thực tế
+        </h2>
+
+        <p>
+            Website được xây dựng để tổng hợp những
+            kiến thức Excel thường xuyên sử dụng trong
+            công việc như phím tắt, công thức, Pivot Table,
+            biểu đồ, Pareto, Filter, Sort và báo cáo.
+        </p>
+
+    </section>
+
+
+    <!-- CÁC BÀI HỌC -->
+
+    <section class="courses">
+
+        <h2 class="courses-title">
+            📚 Nội dung học Excel
+        </h2>
+
+
+        <div class="course-grid">
+
+
+            <!-- 1 -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    ⌨️
+                </div>
+
+                <h3>
+                    Phím tắt Excel
+                </h3>
+
+                <p>
+                    Tổng hợp các phím tắt Excel
+                    hữu ích trong công việc.
+                </p>
+
+                <a href="phimtatexcel.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+            <!-- 2 -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    🧮
+                </div>
+
+                <h3>
+                    Công thức Excel
+                </h3>
+
+                <p>
+                    Các hàm Excel cơ bản và
+                    thường xuyên được sử dụng.
+                </p>
+
+                <a href="congthucexcel.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+            <!-- 3 -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    📊
+                </div>
+
+                <h3>
+                    Pivot Table
+                </h3>
+
+                <p>
+                    Tổng hợp và phân tích
+                    dữ liệu bằng Pivot Table.
+                </p>
+
+                <a href="pivottable.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+            <!-- 4 -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    📈
+                </div>
+
+                <h3>
+                    Biểu đồ & Pareto
+                </h3>
+
+                <p>
+                    Trực quan hóa dữ liệu và
+                    phân tích lỗi bằng Pareto.
+                </p>
+
+                <a href="bieudopareto.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+            <!-- 5 -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    🔍
+                </div>
+
+                <h3>
+                    Filter & Sort
+                </h3>
+
+                <p>
+                    Lọc và sắp xếp dữ liệu
+                    nhanh chóng trong Excel.
+                </p>
+
+                <a href="filtersort.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+            <!-- 6 -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    📋
+                </div>
+
+                <h3>
+                    Báo cáo Excel
+                </h3>
+
+                <p>
+                    Học cách xây dựng báo cáo
+                    rõ ràng và chuyên nghiệp.
+                </p>
+
+                <a href="baocaoexcel.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 - Website Excel của tôi
+        </p>
+
+        <p>
+            Học Excel • Phân tích dữ liệu • Báo cáo
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

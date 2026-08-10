@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Filter & Sort - Website của tôi</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f6f3;
+            color: #222;
+        }
+
+        header {
+            background: #217346;
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        header p {
+            font-size: 18px;
+        }
+
+        nav {
+            background: #185c37;
+            text-align: center;
+            padding: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            font-size: 17px;
+        }
+
+        nav a:hover {
+            color: #d8f3dc;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 45px 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #217346;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        h3 {
+            color: #185c37;
+            font-size: 23px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .step {
+            background: #f5faf6;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #217346;
+            border-radius: 8px;
+        }
+
+        .step strong {
+            color: #217346;
+        }
+
+        .example {
+            background: #222;
+            color: white;
+            padding: 18px;
+            border-radius: 8px;
+            font-family: Consolas, monospace;
+            overflow-x: auto;
+            line-height: 1.7;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background: #217346;
+            color: white;
+            padding: 13px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background: #f5faf6;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back a {
+            display: inline-block;
+            padding: 13px 25px;
+            background: #217346;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back a:hover {
+            background: #185c37;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: #1b5e38;
+            color: white;
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+
+            header h1 {
+                font-size: 28px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 7px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <header>
+
+        <h1>🔍 Filter & Sort</h1>
+
+        <p>
+            Lọc và sắp xếp dữ liệu nhanh chóng trong Excel
+        </p>
+
+    </header>
+
+
+    <nav>
+
+        <a href="index.html">
+            Trang chủ
+        </a>
+
+        <a href="gioithieu.html">
+            Giới thiệu
+        </a>
+
+        <a href="excel.html">
+            Học Excel
+        </a>
+
+        <a href="lienhe.html">
+            Liên hệ
+        </a>
+
+    </nav>
+
+
+    <main>
+
+
+        <div class="card">
+
+            <h2>
+                🔍 Filter là gì?
+            </h2>
+
+            <p>
+                Filter giúp bạn chỉ hiển thị những dữ liệu
+                phù hợp với điều kiện đã chọn và tạm thời
+                ẩn những dữ liệu không cần xem.
+            </p>
+
+            <p>
+                Filter rất hữu ích khi làm việc với bảng dữ liệu
+                lớn, đặc biệt là dữ liệu sản xuất và chất lượng.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                📋 Cách sử dụng Filter
+            </h2>
+
+
+            <div class="step">
+
+                <strong>Bước 1:</strong>
+
+                <p>
+                    Chọn một ô bất kỳ trong bảng dữ liệu.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 2:</strong>
+
+                <p>
+                    Nhấn
+                    <b>Ctrl + Shift + L</b>
+                    để bật Filter.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 3:</strong>
+
+                <p>
+                    Nhấn mũi tên Filter tại tiêu đề cột.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 4:</strong>
+
+                <p>
+                    Chọn dữ liệu bạn muốn hiển thị.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                ↕️ Sort - Sắp xếp dữ liệu
+            </h2>
+
+            <p>
+                Sort giúp sắp xếp dữ liệu theo thứ tự
+                tăng dần hoặc giảm dần.
+            </p>
+
+
+            <div class="step">
+
+                <strong>Sort A → Z</strong>
+
+                <p>
+                    Sắp xếp từ nhỏ đến lớn hoặc
+                    từ A đến Z.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Sort Z → A</strong>
+
+                <p>
+                    Sắp xếp từ lớn đến nhỏ hoặc
+                    từ Z đến A.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                💡 Ví dụ dữ liệu sản xuất
+            </h2>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Lot No</th>
+                        <th>Model</th>
+                        <th>NG Qty</th>
+                        <th>NG Rate</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+                        <td>LOT001</td>
+                        <td>FPC-A</td>
+                        <td>25</td>
+                        <td>5.2%</td>
+                    </tr>
+
+                    <tr>
+                        <td>LOT002</td>
+                        <td>FPC-B</td>
+                        <td>8</td>
+                        <td>1.6%</td>
+                    </tr>
+
+                    <tr>
+                        <td>LOT003</td>
+                        <td>FPC-A</td>
+                        <td>15</td>
+                        <td>3.1%</td>
+                    </tr>
+
+                    <tr>
+                        <td>LOT004</td>
+                        <td>FPC-C</td>
+                        <td>30</td>
+                        <td>6.3%</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+
+            <p>
+                Bạn có thể Filter theo Model hoặc Sort
+                NG Qty từ cao xuống thấp để tìm Lot có
+                nhiều lỗi nhất.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                ⌨️ Phím tắt quan trọng
+            </h2>
+
+            <div class="example">
+
+Ctrl + Shift + L
+→ Bật / tắt Filter
+
+Alt + ↓
+→ Mở menu Filter
+
+Ctrl + A
+→ Chọn vùng dữ liệu
+
+Ctrl + T
+→ Tạo Table
+
+            </div>
+
+        </div>
+
+
+        <div class="back">
+
+            <a href="excel.html">
+                ← Quay lại Học Excel
+            </a>
+
+        </div>
+
+
+    </main>
+
+
+    <footer>
+
+        © 2026 - Website của tôi
+
+    </footer>
+
+
+</body>
+
+</html>

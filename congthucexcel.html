@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Công thức Excel - Website của tôi</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f6f3;
+            color: #222;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #217346;
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        header p {
+            font-size: 18px;
+        }
+
+        /* MENU */
+
+        nav {
+            background: #185c37;
+            text-align: center;
+            padding: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            font-size: 17px;
+        }
+
+        nav a:hover {
+            color: #d8f3dc;
+        }
+
+        /* NỘI DUNG */
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 45px 20px;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .title h2 {
+            color: #217346;
+            font-size: 32px;
+        }
+
+        .title p {
+            font-size: 18px;
+        }
+
+        /* BẢNG */
+
+        .table-box {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th {
+            background: #217346;
+            color: white;
+            padding: 14px;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background: #f5faf6;
+        }
+
+        tr:hover {
+            background: #e3f2e8;
+        }
+
+        .formula {
+            font-family: Consolas, monospace;
+            font-weight: bold;
+            color: #185c37;
+        }
+
+        /* QUAY LẠI */
+
+        .back {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back a {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #217346;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back a:hover {
+            background: #185c37;
+        }
+
+        /* FOOTER */
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: #1b5e38;
+            color: white;
+            text-align: center;
+        }
+
+        /* ĐIỆN THOẠI */
+
+        @media (max-width: 700px) {
+
+            header h1 {
+                font-size: 28px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 7px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header>
+
+        <h1>🧮 Công thức Excel</h1>
+
+        <p>
+            Những hàm Excel phổ biến và hữu ích
+        </p>
+
+    </header>
+
+
+    <!-- MENU -->
+
+    <nav>
+
+        <a href="index.html">
+            Trang chủ
+        </a>
+
+        <a href="gioithieu.html">
+            Giới thiệu
+        </a>
+
+        <a href="excel.html">
+            Học Excel
+        </a>
+
+        <a href="lienhe.html">
+            Liên hệ
+        </a>
+
+    </nav>
+
+
+    <!-- NỘI DUNG -->
+
+    <main>
+
+        <div class="title">
+
+            <h2>
+                📚 Các công thức Excel cơ bản
+            </h2>
+
+            <p>
+                Những hàm thường xuyên được sử dụng
+                trong công việc.
+            </p>
+
+        </div>
+
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>STT</th>
+
+                        <th>HÀM</th>
+
+                        <th>CÔNG DỤNG</th>
+
+                        <th>VÍ DỤ</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+                        <td>1</td>
+
+                        <td class="formula">
+                            SUM
+                        </td>
+
+                        <td>
+                            Tính tổng
+                        </td>
+
+                        <td class="formula">
+                            =SUM(A1:A10)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>2</td>
+
+                        <td class="formula">
+                            AVERAGE
+                        </td>
+
+                        <td>
+                            Tính giá trị trung bình
+                        </td>
+
+                        <td class="formula">
+                            =AVERAGE(A1:A10)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>3</td>
+
+                        <td class="formula">
+                            MAX
+                        </td>
+
+                        <td>
+                            Tìm giá trị lớn nhất
+                        </td>
+
+                        <td class="formula">
+                            =MAX(A1:A10)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>4</td>
+
+                        <td class="formula">
+                            MIN
+                        </td>
+
+                        <td>
+                            Tìm giá trị nhỏ nhất
+                        </td>
+
+                        <td class="formula">
+                            =MIN(A1:A10)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>5</td>
+
+                        <td class="formula">
+                            COUNT
+                        </td>
+
+                        <td>
+                            Đếm ô chứa số
+                        </td>
+
+                        <td class="formula">
+                            =COUNT(A1:A10)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>6</td>
+
+                        <td class="formula">
+                            COUNTA
+                        </td>
+
+                        <td>
+                            Đếm ô không trống
+                        </td>
+
+                        <td class="formula">
+                            =COUNTA(A1:A10)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>7</td>
+
+                        <td class="formula">
+                            COUNTIF
+                        </td>
+
+                        <td>
+                            Đếm theo điều kiện
+                        </td>
+
+                        <td class="formula">
+                            =COUNTIF(A1:A10,">10")
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>8</td>
+
+                        <td class="formula">
+                            SUMIF
+                        </td>
+
+                        <td>
+                            Tính tổng theo điều kiện
+                        </td>
+
+                        <td class="formula">
+                            =SUMIF(A1:A10,">10")
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>9</td>
+
+                        <td class="formula">
+                            IF
+                        </td>
+
+                        <td>
+                            Kiểm tra điều kiện
+                        </td>
+
+                        <td class="formula">
+                            =IF(A1>=5,"Đạt","Không đạt")
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>10</td>
+
+                        <td class="formula">
+                            VLOOKUP
+                        </td>
+
+                        <td>
+                            Tìm kiếm theo cột
+                        </td>
+
+                        <td class="formula">
+                            =VLOOKUP(A2,D:E,2,0)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>11</td>
+
+                        <td class="formula">
+                            XLOOKUP
+                        </td>
+
+                        <td>
+                            Tìm kiếm hiện đại
+                        </td>
+
+                        <td class="formula">
+                            =XLOOKUP(A2,D:D,E:E)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>12</td>
+
+                        <td class="formula">
+                            LEFT
+                        </td>
+
+                        <td>
+                            Lấy ký tự bên trái
+                        </td>
+
+                        <td class="formula">
+                            =LEFT(A2,3)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>13</td>
+
+                        <td class="formula">
+                            RIGHT
+                        </td>
+
+                        <td>
+                            Lấy ký tự bên phải
+                        </td>
+
+                        <td class="formula">
+                            =RIGHT(A2,3)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>14</td>
+
+                        <td class="formula">
+                            MID
+                        </td>
+
+                        <td>
+                            Lấy ký tự ở giữa
+                        </td>
+
+                        <td class="formula">
+                            =MID(A2,2,4)
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td>15</td>
+
+                        <td class="formula">
+                            LEN
+                        </td>
+
+                        <td>
+                            Đếm số ký tự
+                        </td>
+
+                        <td class="formula">
+                            =LEN(A2)
+                        </td>
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="back">
+
+            <a href="excel.html">
+                ← Quay lại Học Excel
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        © 2026 - Website của tôi
+
+    </footer>
+
+
+</body>
+
+</html>

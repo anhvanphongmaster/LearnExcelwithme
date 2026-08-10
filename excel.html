@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Học Excel - Website của tôi</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7f5;
+            color: #222;
+        }
+
+        /* ===== MENU ===== */
+
+        nav {
+            background: #185c37;
+            padding: 16px 30px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            color: #b7e4c7;
+        }
+
+
+        /* ===== HEADER ===== */
+
+        .page-header {
+            background: #217346;
+            color: white;
+
+            text-align: center;
+
+            padding: 65px 20px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 15px;
+
+            font-size: 42px;
+        }
+
+        .page-header p {
+            margin: auto;
+
+            max-width: 700px;
+
+            font-size: 19px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ===== CONTENT ===== */
+
+        main {
+            max-width: 1100px;
+
+            margin: auto;
+
+            padding: 55px 20px 70px;
+        }
+
+
+        .section-title {
+            text-align: center;
+
+            color: #217346;
+
+            font-size: 32px;
+
+            margin-bottom: 40px;
+        }
+
+
+        /* ===== COURSE GRID ===== */
+
+        .course-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 25px;
+        }
+
+
+        /* ===== CARD ===== */
+
+        .course-card {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+
+            transition: 0.25s;
+        }
+
+
+        .course-card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(0, 0, 0, 0.13);
+        }
+
+
+        .icon {
+
+            font-size: 48px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .course-card h2 {
+
+            color: #217346;
+
+            font-size: 23px;
+
+            margin: 10px 0;
+        }
+
+
+        .course-card p {
+
+            color: #555;
+
+            line-height: 1.6;
+
+            min-height: 52px;
+        }
+
+
+        .course-card a {
+
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 12px 22px;
+
+            background: #217346;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+
+        .course-card a:hover {
+
+            background: #185c37;
+        }
+
+
+        /* ===== INFO ===== */
+
+        .info {
+
+            margin-top: 55px;
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+
+            text-align: center;
+        }
+
+
+        .info h2 {
+
+            color: #217346;
+        }
+
+
+        .info p {
+
+            font-size: 18px;
+
+            line-height: 1.8;
+        }
+
+
+        /* ===== FOOTER ===== */
+
+        footer {
+
+            background: #185c37;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+
+        /* ===== MOBILE ===== */
+
+        @media (max-width: 800px) {
+
+            .course-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+
+                font-size: 34px;
+            }
+
+            nav {
+
+                flex-wrap: wrap;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- MENU -->
+
+    <nav>
+
+        <a href="index.html">
+            🏠 Trang chủ
+        </a>
+
+        <a href="gioithieu.html">
+            ℹ️ Giới thiệu
+        </a>
+
+        <a href="excel.html">
+            📊 Học Excel
+        </a>
+
+        <a href="lienhe.html">
+            📩 Liên hệ
+        </a>
+
+    </nav>
+
+
+    <!-- HEADER -->
+
+    <header class="page-header">
+
+        <h1>
+            📊 Học Excel
+        </h1>
+
+        <p>
+            Tổng hợp những kiến thức Excel hữu ích
+            từ cơ bản đến thực tế công việc.
+        </p>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <main>
+
+
+        <h2 class="section-title">
+            📚 Nội dung học Excel
+        </h2>
+
+
+        <div class="course-grid">
+
+
+            <!-- PHÍM TẮT -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    ⌨️
+                </div>
+
+                <h2>
+                    Phím tắt Excel
+                </h2>
+
+                <p>
+                    Tổng hợp những phím tắt
+                    Excel hữu ích trong công việc.
+                </p>
+
+                <a href="phimtatexcel.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+            <!-- CÔNG THỨC -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    🧮
+                </div>
+
+                <h2>
+                    Công thức Excel
+                </h2>
+
+                <p>
+                    Học các hàm Excel cơ bản
+                    và thường xuyên sử dụng.
+                </p>
+
+                <a href="congthucexcel.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+            <!-- PIVOT -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    📊
+                </div>
+
+                <h2>
+                    Pivot Table
+                </h2>
+
+                <p>
+                    Tổng hợp và phân tích
+                    dữ liệu nhanh chóng.
+                </p>
+
+                <a href="pivottable.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+            <!-- PARETO -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    📈
+                </div>
+
+                <h2>
+                    Biểu đồ & Pareto
+                </h2>
+
+                <p>
+                    Trực quan hóa dữ liệu và
+                    phân tích lỗi bằng Pareto.
+                </p>
+
+                <a href="bieudopareto.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+            <!-- FILTER -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    🔍
+                </div>
+
+                <h2>
+                    Filter & Sort
+                </h2>
+
+                <p>
+                    Lọc và sắp xếp dữ liệu
+                    nhanh chóng trong Excel.
+                </p>
+
+                <a href="filtersort.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+            <!-- BÁO CÁO -->
+
+            <div class="course-card">
+
+                <div class="icon">
+                    📋
+                </div>
+
+                <h2>
+                    Báo cáo Excel
+                </h2>
+
+                <p>
+                    Học cách xây dựng báo cáo
+                    rõ ràng và chuyên nghiệp.
+                </p>
+
+                <a href="baocaoexcel.html">
+                    Xem bài học
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- THÔNG TIN -->
+
+        <div class="info">
+
+            <h2>
+                🎯 Mục tiêu của website
+            </h2>
+
+            <p>
+                Website được xây dựng để tổng hợp kiến thức
+                Excel phục vụ học tập và công việc thực tế.
+            </p>
+
+            <p>
+                Bạn có thể bắt đầu từ phím tắt, công thức,
+                sau đó học Pivot Table, biểu đồ, Filter
+                và cuối cùng là xây dựng báo cáo.
+            </p>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 - Website Excel của tôi
+        </p>
+
+        <p>
+            Học Excel • Phân tích dữ liệu • Báo cáo
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

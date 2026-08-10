@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Biểu đồ & Pareto - Website của tôi</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f6f3;
+            color: #222;
+        }
+
+        header {
+            background: #217346;
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        header p {
+            font-size: 18px;
+        }
+
+        nav {
+            background: #185c37;
+            text-align: center;
+            padding: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            font-size: 17px;
+        }
+
+        nav a:hover {
+            color: #d8f3dc;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 45px 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #217346;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        h3 {
+            color: #185c37;
+            font-size: 23px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .step {
+            background: #f5faf6;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #217346;
+            border-radius: 8px;
+        }
+
+        .step strong {
+            color: #217346;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th {
+            background: #217346;
+            color: white;
+            padding: 13px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background: #f5faf6;
+        }
+
+        .formula {
+            font-family: Consolas, monospace;
+            font-weight: bold;
+            color: #185c37;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back a {
+            display: inline-block;
+            padding: 13px 25px;
+            background: #217346;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back a:hover {
+            background: #185c37;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: #1b5e38;
+            color: white;
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+
+            header h1 {
+                font-size: 28px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 7px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- HEADER -->
+
+    <header>
+
+        <h1>📈 Biểu đồ & Pareto</h1>
+
+        <p>
+            Học cách tạo biểu đồ và phân tích Pareto trong Excel
+        </p>
+
+    </header>
+
+
+    <!-- MENU -->
+
+    <nav>
+
+        <a href="index.html">
+            Trang chủ
+        </a>
+
+        <a href="gioithieu.html">
+            Giới thiệu
+        </a>
+
+        <a href="excel.html">
+            Học Excel
+        </a>
+
+        <a href="lienhe.html">
+            Liên hệ
+        </a>
+
+    </nav>
+
+
+    <main>
+
+
+        <!-- BIỂU ĐỒ -->
+
+        <div class="card">
+
+            <h2>
+                📊 Biểu đồ trong Excel
+            </h2>
+
+            <p>
+                Biểu đồ giúp biến dữ liệu trong Excel
+                thành hình ảnh trực quan, dễ theo dõi
+                và dễ trình bày trong báo cáo.
+            </p>
+
+        </div>
+
+
+        <!-- CÁC LOẠI BIỂU ĐỒ -->
+
+        <div class="card">
+
+            <h2>
+                📚 Các loại biểu đồ phổ biến
+            </h2>
+
+
+            <div class="step">
+
+                <strong>1. Column Chart</strong>
+
+                <p>
+                    Biểu đồ cột dùng để so sánh số lượng
+                    giữa các nhóm dữ liệu.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>2. Line Chart</strong>
+
+                <p>
+                    Biểu đồ đường thường dùng để theo dõi
+                    xu hướng dữ liệu theo thời gian.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>3. Pie Chart</strong>
+
+                <p>
+                    Biểu đồ tròn dùng để thể hiện
+                    tỷ trọng hoặc phần trăm.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>4. Combo Chart</strong>
+
+                <p>
+                    Kết hợp nhiều loại biểu đồ,
+                    ví dụ cột + đường.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- PARETO -->
+
+        <div class="card">
+
+            <h2>
+                📉 Pareto Chart
+            </h2>
+
+            <p>
+                Pareto Chart thường được sử dụng trong
+                phân tích chất lượng để xác định những
+                nguyên nhân gây ra phần lớn lỗi.
+            </p>
+
+
+            <div class="step">
+
+                <strong>Bước 1:</strong>
+
+                <p>
+                    Thu thập dữ liệu lỗi.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 2:</strong>
+
+                <p>
+                    Sắp xếp số lượng lỗi từ lớn đến nhỏ.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 3:</strong>
+
+                <p>
+                    Tính tổng số lỗi.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 4:</strong>
+
+                <p>
+                    Tính phần trăm từng loại lỗi.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 5:</strong>
+
+                <p>
+                    Tính phần trăm tích lũy.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 6:</strong>
+
+                <p>
+                    Tạo biểu đồ cột kết hợp với đường
+                    phần trăm tích lũy.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- VÍ DỤ -->
+
+        <div class="card">
+
+            <h2>
+                💡 Ví dụ Pareto trong sản xuất
+            </h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Loại lỗi</th>
+
+                        <th>NG Qty</th>
+
+                        <th>NG Rate</th>
+
+                        <th>Tích lũy</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Scratch</td>
+                        <td>40</td>
+                        <td>40%</td>
+                        <td>40%</td>
+                    </tr>
+
+                    <tr>
+                        <td>Open</td>
+                        <td>25</td>
+                        <td>25%</td>
+                        <td>65%</td>
+                    </tr>
+
+                    <tr>
+                        <td>Short</td>
+                        <td>15</td>
+                        <td>15%</td>
+                        <td>80%</td>
+                    </tr>
+
+                    <tr>
+                        <td>Crack</td>
+                        <td>10</td>
+                        <td>10%</td>
+                        <td>90%</td>
+                    </tr>
+
+                    <tr>
+                        <td>Other</td>
+                        <td>10</td>
+                        <td>10%</td>
+                        <td>100%</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- QUAY LẠI -->
+
+        <div class="back">
+
+            <a href="excel.html">
+                ← Quay lại Học Excel
+            </a>
+
+        </div>
+
+
+    </main>
+
+
+    <footer>
+
+        © 2026 - Website của tôi
+
+    </footer>
+
+
+</body>
+
+</html>

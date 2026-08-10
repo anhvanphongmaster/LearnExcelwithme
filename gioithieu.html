@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Giới thiệu - Website Excel của tôi</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7f5;
+            color: #222;
+        }
+
+        /* ===== MENU ===== */
+
+        nav {
+            background: #185c37;
+            padding: 16px 30px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            color: #b7e4c7;
+        }
+
+
+        /* ===== HEADER ===== */
+
+        .page-header {
+            background: #217346;
+            color: white;
+
+            text-align: center;
+
+            padding: 65px 20px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 15px;
+
+            font-size: 42px;
+        }
+
+        .page-header p {
+            max-width: 700px;
+
+            margin: auto;
+
+            font-size: 19px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ===== MAIN ===== */
+
+        main {
+            max-width: 1000px;
+
+            margin: auto;
+
+            padding: 55px 20px 70px;
+        }
+
+
+        /* ===== CARD ===== */
+
+        .card {
+            background: white;
+
+            padding: 35px;
+
+            margin-bottom: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+        }
+
+
+        .card h2 {
+            color: #217346;
+
+            text-align: center;
+
+            font-size: 30px;
+
+            margin-top: 0;
+        }
+
+
+        .card p {
+            font-size: 18px;
+
+            line-height: 1.8;
+
+            text-align: center;
+        }
+
+
+        /* ===== BOX ===== */
+
+        .box-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+
+            margin-top: 25px;
+        }
+
+
+        .box {
+
+            background: #f5faf6;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            border-left: 5px solid #217346;
+        }
+
+
+        .box .icon {
+
+            font-size: 40px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .box h3 {
+
+            color: #185c37;
+
+            margin: 10px 0;
+        }
+
+
+        .box p {
+
+            font-size: 16px;
+
+            text-align: center;
+        }
+
+
+        /* ===== BACK BUTTON ===== */
+
+        .back {
+
+            text-align: center;
+
+            margin-top: 35px;
+        }
+
+
+        .back a {
+
+            display: inline-block;
+
+            padding: 13px 25px;
+
+            background: #217346;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+
+        .back a:hover {
+
+            background: #185c37;
+        }
+
+
+        /* ===== FOOTER ===== */
+
+        footer {
+
+            background: #185c37;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+
+        /* ===== MOBILE ===== */
+
+        @media (max-width: 800px) {
+
+            .box-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+
+                font-size: 34px;
+            }
+
+            nav {
+
+                flex-wrap: wrap;
+
+                gap: 15px;
+            }
+
+            .card {
+
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- MENU -->
+
+    <nav>
+
+        <a href="index.html">
+            🏠 Trang chủ
+        </a>
+
+        <a href="gioithieu.html">
+            ℹ️ Giới thiệu
+        </a>
+
+        <a href="excel.html">
+            📊 Học Excel
+        </a>
+
+        <a href="lienhe.html">
+            📩 Liên hệ
+        </a>
+
+    </nav>
+
+
+    <!-- HEADER -->
+
+    <header class="page-header">
+
+        <h1>
+            ℹ️ Giới thiệu
+        </h1>
+
+        <p>
+            Tìm hiểu về website học Excel và mục tiêu
+            xây dựng nội dung hữu ích cho công việc.
+        </p>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- GIỚI THIỆU -->
+
+        <div class="card">
+
+            <h2>
+                👋 Website này là gì?
+            </h2>
+
+            <p>
+                Đây là website được xây dựng để tổng hợp
+                kiến thức Excel từ cơ bản đến thực tế.
+            </p>
+
+            <p>
+                Nội dung tập trung vào những kỹ năng thường
+                được sử dụng khi làm việc với dữ liệu,
+                báo cáo và phân tích trong Excel.
+            </p>
+
+        </div>
+
+
+        <!-- MỤC TIÊU -->
+
+        <div class="card">
+
+            <h2>
+                🎯 Mục tiêu
+            </h2>
+
+            <div class="box-grid">
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        Học tập
+                    </h3>
+
+                    <p>
+                        Tổng hợp kiến thức Excel
+                        dễ hiểu và dễ thực hành.
+                    </p>
+
+                </div>
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        💼
+                    </div>
+
+                    <h3>
+                        Công việc
+                    </h3>
+
+                    <p>
+                        Áp dụng Excel vào các
+                        công việc thực tế.
+                    </p>
+
+                </div>
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Phân tích
+                    </h3>
+
+                    <p>
+                        Hỗ trợ tổng hợp và
+                        phân tích dữ liệu.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- NỘI DUNG -->
+
+        <div class="card">
+
+            <h2>
+                📖 Website có gì?
+            </h2>
+
+            <div class="box-grid">
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        ⌨️
+                    </div>
+
+                    <h3>
+                        Phím tắt
+                    </h3>
+
+                    <p>
+                        Các phím tắt giúp
+                        thao tác nhanh hơn.
+                    </p>
+
+                </div>
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        🧮
+                    </div>
+
+                    <h3>
+                        Công thức
+                    </h3>
+
+                    <p>
+                        Các hàm Excel thường
+                        được sử dụng.
+                    </p>
+
+                </div>
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Pivot Table
+                    </h3>
+
+                    <p>
+                        Tổng hợp và phân tích
+                        dữ liệu.
+                    </p>
+
+                </div>
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        📈
+                    </div>
+
+                    <h3>
+                        Pareto
+                    </h3>
+
+                    <p>
+                        Phân tích lỗi và
+                        trực quan hóa dữ liệu.
+                    </p>
+
+                </div>
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        🔍
+                    </div>
+
+                    <h3>
+                        Filter & Sort
+                    </h3>
+
+                    <p>
+                        Lọc và sắp xếp
+                        dữ liệu.
+                    </p>
+
+                </div>
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        📋
+                    </div>
+
+                    <h3>
+                        Báo cáo
+                    </h3>
+
+                    <p>
+                        Xây dựng báo cáo
+                        Excel rõ ràng.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- CÔNG NGHỆ -->
+
+        <div class="card">
+
+            <h2>
+                💻 Công nghệ sử dụng
+            </h2>
+
+            <p>
+                Website được xây dựng bằng các công nghệ
+                web cơ bản:
+            </p>
+
+            <div class="box-grid">
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        🌐
+                    </div>
+
+                    <h3>
+                        HTML
+                    </h3>
+
+                    <p>
+                        Xây dựng cấu trúc
+                        của website.
+                    </p>
+
+                </div>
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        🎨
+                    </div>
+
+                    <h3>
+                        CSS
+                    </h3>
+
+                    <p>
+                        Thiết kế giao diện
+                        và bố cục.
+                    </p>
+
+                </div>
+
+
+                <div class="box">
+
+                    <div class="icon">
+                        ⚡
+                    </div>
+
+                    <h3>
+                        JavaScript
+                    </h3>
+
+                    <p>
+                        Tạo các chức năng
+                        tương tác.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- QUAY LẠI -->
+
+        <div class="back">
+
+            <a href="index.html">
+                ← Quay lại trang chủ
+            </a>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 - Website Excel của tôi
+        </p>
+
+        <p>
+            Học Excel • Phân tích dữ liệu • Báo cáo
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

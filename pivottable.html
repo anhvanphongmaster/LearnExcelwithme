@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Pivot Table - Website của tôi</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f6f3;
+            color: #222;
+        }
+
+        header {
+            background: #217346;
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        header p {
+            font-size: 18px;
+        }
+
+        nav {
+            background: #185c37;
+            text-align: center;
+            padding: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            font-size: 17px;
+        }
+
+        nav a:hover {
+            color: #d8f3dc;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 45px 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            color: #217346;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        h3 {
+            color: #185c37;
+            font-size: 23px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .step {
+            background: #f5faf6;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #217346;
+            border-radius: 8px;
+        }
+
+        .step strong {
+            color: #217346;
+        }
+
+        .example {
+            background: #222;
+            color: #fff;
+            padding: 18px;
+            border-radius: 8px;
+            font-family: Consolas, monospace;
+            overflow-x: auto;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back a {
+            display: inline-block;
+            padding: 13px 25px;
+            background: #217346;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back a:hover {
+            background: #185c37;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: #1b5e38;
+            color: white;
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+
+            header h1 {
+                font-size: 28px;
+            }
+
+            nav a {
+                display: inline-block;
+                margin: 7px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <header>
+
+        <h1>📊 Pivot Table</h1>
+
+        <p>
+            Học cách tổng hợp và phân tích dữ liệu trong Excel
+        </p>
+
+    </header>
+
+
+    <nav>
+
+        <a href="index.html">
+            Trang chủ
+        </a>
+
+        <a href="gioithieu.html">
+            Giới thiệu
+        </a>
+
+        <a href="excel.html">
+            Học Excel
+        </a>
+
+        <a href="lienhe.html">
+            Liên hệ
+        </a>
+
+    </nav>
+
+
+    <main>
+
+
+        <div class="card">
+
+            <h2>
+                📊 Pivot Table là gì?
+            </h2>
+
+            <p>
+                Pivot Table là công cụ trong Excel giúp
+                tổng hợp, phân tích và thống kê một lượng
+                lớn dữ liệu một cách nhanh chóng.
+            </p>
+
+            <p>
+                Pivot Table đặc biệt hữu ích khi làm báo cáo
+                sản xuất, chất lượng, doanh số và phân tích dữ liệu.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                📝 Cách tạo Pivot Table
+            </h2>
+
+
+            <div class="step">
+
+                <strong>Bước 1:</strong>
+
+                <p>
+                    Chọn toàn bộ bảng dữ liệu cần phân tích.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 2:</strong>
+
+                <p>
+                    Vào menu
+                    <b>Insert → PivotTable</b>.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 3:</strong>
+
+                <p>
+                    Chọn vùng dữ liệu và chọn nơi muốn
+                    đặt Pivot Table.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 4:</strong>
+
+                <p>
+                    Kéo các trường dữ liệu vào
+                    <b>Rows</b>, <b>Columns</b>,
+                    <b>Values</b> và <b>Filters</b>.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Bước 5:</strong>
+
+                <p>
+                    Kiểm tra kết quả và điều chỉnh cách
+                    tính toán nếu cần.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                💡 Ví dụ
+            </h2>
+
+            <p>
+                Giả sử bạn có dữ liệu sản xuất:
+            </p>
+
+            <div class="example">
+
+Lot No | Model | NG Qty | OK Qty
+
+LOT001 | FPC-A | 5 | 187
+
+LOT002 | FPC-A | 3 | 189
+
+LOT003 | FPC-B | 8 | 184
+
+LOT004 | FPC-B | 2 | 190
+
+            </div>
+
+            <p>
+                Bạn có thể sử dụng Pivot Table để tổng hợp
+                NG Qty theo từng Model hoặc từng Lot.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                🎯 Các khu vực quan trọng
+            </h2>
+
+            <div class="step">
+
+                <strong>Rows:</strong>
+
+                <p>
+                    Dùng để nhóm dữ liệu theo hàng.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Columns:</strong>
+
+                <p>
+                    Dùng để chia dữ liệu theo cột.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Values:</strong>
+
+                <p>
+                    Dùng để tính Sum, Count, Average...
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <strong>Filters:</strong>
+
+                <p>
+                    Dùng để lọc dữ liệu theo điều kiện.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="back">
+
+            <a href="excel.html">
+                ← Quay lại Học Excel
+            </a>
+
+        </div>
+
+
+    </main>
+
+
+    <footer>
+
+        © 2026 - Website của tôi
+
+    </footer>
+
+
+</body>
+
+</html>

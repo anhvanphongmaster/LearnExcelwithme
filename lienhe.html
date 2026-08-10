@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Liên hệ - Website Excel của tôi</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7f5;
+            color: #222;
+        }
+
+        /* ===== MENU ===== */
+
+        nav {
+            background: #185c37;
+            padding: 16px 30px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            color: #b7e4c7;
+        }
+
+
+        /* ===== HEADER ===== */
+
+        .page-header {
+            background: #217346;
+            color: white;
+
+            text-align: center;
+
+            padding: 65px 20px;
+        }
+
+        .page-header h1 {
+            margin: 0 0 15px;
+
+            font-size: 42px;
+        }
+
+        .page-header p {
+            max-width: 700px;
+
+            margin: auto;
+
+            font-size: 19px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ===== MAIN ===== */
+
+        main {
+            max-width: 1000px;
+
+            margin: auto;
+
+            padding: 55px 20px 70px;
+        }
+
+
+        .contact-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 25px;
+        }
+
+
+        /* ===== CARD ===== */
+
+        .card {
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+        }
+
+
+        .card h2 {
+
+            color: #217346;
+
+            margin-top: 0;
+
+            text-align: center;
+        }
+
+
+        .contact-item {
+
+            background: #f5faf6;
+
+            padding: 18px;
+
+            margin: 15px 0;
+
+            border-left: 5px solid #217346;
+
+            border-radius: 8px;
+        }
+
+
+        .contact-item strong {
+
+            color: #185c37;
+
+            display: block;
+
+            margin-bottom: 6px;
+        }
+
+
+        /* ===== FORM ===== */
+
+        label {
+
+            display: block;
+
+            margin-top: 15px;
+
+            margin-bottom: 6px;
+
+            font-weight: bold;
+
+            color: #185c37;
+        }
+
+
+        input,
+        textarea {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 16px;
+        }
+
+
+        input:focus,
+        textarea:focus {
+
+            outline: none;
+
+            border-color: #217346;
+        }
+
+
+        textarea {
+
+            height: 140px;
+
+            resize: vertical;
+        }
+
+
+        button {
+
+            width: 100%;
+
+            margin-top: 20px;
+
+            padding: 14px;
+
+            background: #217346;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        button:hover {
+
+            background: #185c37;
+        }
+
+
+        /* ===== BACK ===== */
+
+        .back {
+
+            text-align: center;
+
+            margin-top: 35px;
+        }
+
+
+        .back a {
+
+            display: inline-block;
+
+            padding: 13px 25px;
+
+            background: #217346;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+
+        .back a:hover {
+
+            background: #185c37;
+        }
+
+
+        /* ===== FOOTER ===== */
+
+        footer {
+
+            background: #185c37;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+
+        /* ===== MOBILE ===== */
+
+        @media (max-width: 800px) {
+
+            .contact-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+
+                font-size: 34px;
+            }
+
+            nav {
+
+                flex-wrap: wrap;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- MENU -->
+
+    <nav>
+
+        <a href="index.html">
+            🏠 Trang chủ
+        </a>
+
+        <a href="gioithieu.html">
+            ℹ️ Giới thiệu
+        </a>
+
+        <a href="excel.html">
+            📊 Học Excel
+        </a>
+
+        <a href="lienhe.html">
+            📩 Liên hệ
+        </a>
+
+    </nav>
+
+
+    <!-- HEADER -->
+
+    <header class="page-header">
+
+        <h1>
+            📩 Liên hệ
+        </h1>
+
+        <p>
+            Nếu bạn có câu hỏi hoặc muốn đóng góp
+            nội dung cho website, hãy gửi tin nhắn.
+        </p>
+
+    </header>
+
+
+    <main>
+
+
+        <div class="contact-grid">
+
+
+            <!-- THÔNG TIN -->
+
+            <div class="card">
+
+                <h2>
+                    📬 Thông tin
+                </h2>
+
+
+                <div class="contact-item">
+
+                    <strong>
+                        📚 Chủ đề
+                    </strong>
+
+                    Excel và phân tích dữ liệu
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <strong>
+                        💻 Website
+                    </strong>
+
+                    Website học Excel cá nhân
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <strong>
+                        🕐 Thời gian
+                    </strong>
+
+                    Luôn sẵn sàng tiếp nhận
+                    ý kiến đóng góp
+
+                </div>
+
+
+                <div class="contact-item">
+
+                    <strong>
+                        🎯 Mục đích
+                    </strong>
+
+                    Chia sẻ kiến thức Excel
+                    và kinh nghiệm thực tế
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM -->
+
+            <div class="card">
+
+                <h2>
+                    ✉️ Gửi tin nhắn
+                </h2>
+
+
+                <form
+                    onsubmit="guiTinNhan(event)">
+
+
+                    <label for="name">
+                        Họ và tên
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Nhập họ và tên"
+                        required>
+
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Nhập email"
+                        required>
+
+
+                    <label for="message">
+                        Nội dung
+                    </label>
+
+                    <textarea
+                        id="message"
+                        placeholder="Nhập nội dung..."
+                        required></textarea>
+
+
+                    <button type="submit">
+
+                        📤 Gửi tin nhắn
+
+                    </button>
+
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="back">
+
+            <a href="index.html">
+                ← Quay lại trang chủ
+            </a>
+
+        </div>
+
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            © 2026 - Website Excel của tôi
+        </p>
+
+        <p>
+            Học Excel • Phân tích dữ liệu • Báo cáo
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        function guiTinNhan(event) {
+
+            event.preventDefault();
+
+            alert(
+                "Cảm ơn bạn! Tin nhắn đã được ghi nhận."
+            );
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
