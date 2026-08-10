@@ -6,209 +6,208 @@
     <meta charset="UTF-8">
 
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+          content="width=device-width, initial-scale=1.0">
 
-    <title>60 phím tắt Excel</title>
-
+    <title>30 phím tắt Excel</title>
 
     <style>
 
-        /* ===== CÀI ĐẶT CHUNG ===== */
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f2f6f3;
+            background: #f4f7f5;
             color: #222;
         }
 
-
-        /* ===== HEADER ===== */
-
-        header {
-            background: #217346;
-            color: white;
-            text-align: center;
-            padding: 35px 20px;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 36px;
-        }
-
-        header p {
-            font-size: 18px;
-        }
-
-
-        /* ===== MENU ===== */
+        /* MENU */
 
         nav {
             background: #185c37;
-            text-align: center;
-            padding: 15px;
+            padding: 15px 25px;
+
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+
+            flex-wrap: wrap;
         }
 
         nav a {
             color: white;
             text-decoration: none;
             font-weight: bold;
-            margin: 0 15px;
-            font-size: 17px;
         }
 
         nav a:hover {
-            color: #d8f3dc;
+            color: #b7e4c7;
         }
 
+        /* HEADER */
 
-        /* ===== NỘI DUNG ===== */
-
-        main {
-            max-width: 1200px;
-            margin: auto;
-            padding: 45px 20px;
-        }
-
-
-        .title {
+        header {
+            background: #217346;
+            color: white;
             text-align: center;
-            margin-bottom: 35px;
+
+            padding: 50px 20px;
         }
 
-        .title h2 {
-            color: #217346;
-            font-size: 32px;
+        header h1 {
+            margin: 0 0 15px;
+            font-size: 40px;
         }
 
-        .title p {
+        header p {
             font-size: 18px;
         }
 
+        /* MAIN */
 
-        /* ===== BẢNG ===== */
+        main {
+            max-width: 1100px;
+            margin: auto;
+
+            padding: 40px 20px 60px;
+        }
+
+        /* SEARCH */
+
+        .search-box {
+            background: white;
+            padding: 25px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+        }
+
+        .search-box input {
+            width: 100%;
+
+            padding: 15px;
+
+            font-size: 17px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #217346;
+        }
+
+        /* TABLE */
 
         .table-container {
             background: white;
-            padding: 20px;
 
-            border-radius: 15px;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
 
             overflow-x: auto;
-        }
 
+            box-shadow:
+                0 4px 15px
+                rgba(0,0,0,0.08);
+        }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 750px;
         }
-
 
         th {
             background: #217346;
             color: white;
-            padding: 14px;
-            font-size: 17px;
-        }
 
+            padding: 16px;
+
+            text-align: left;
+        }
 
         td {
-            padding: 12px;
+            padding: 14px 16px;
+
             border-bottom: 1px solid #ddd;
-            font-size: 16px;
         }
-
-
-        tr:nth-child(even) {
-            background: #f5faf6;
-        }
-
 
         tr:hover {
-            background: #e3f2e8;
+            background: #f1f8f3;
         }
 
+        .shortcut {
+            display: inline-block;
 
-        /* CỘT STT */
+            background: #222;
+            color: white;
 
-        th:first-child,
-        td:first-child {
-            width: 60px;
-            text-align: center;
-        }
+            padding: 6px 10px;
 
+            border-radius: 5px;
 
-        /* CỘT PHÍM */
+            font-family: Consolas, monospace;
 
-        td:nth-child(2) {
             font-weight: bold;
-            color: #185c37;
-            white-space: nowrap;
         }
 
-
-        /* ===== NÚT QUAY LẠI ===== */
+        /* BACK */
 
         .back {
             text-align: center;
             margin-top: 35px;
         }
 
-
         .back a {
             display: inline-block;
 
-            padding: 12px 25px;
-
             background: #217346;
-
             color: white;
 
             text-decoration: none;
+
+            padding: 13px 25px;
 
             border-radius: 8px;
 
             font-weight: bold;
         }
 
-
         .back a:hover {
             background: #185c37;
         }
 
-
-        /* ===== FOOTER ===== */
+        /* FOOTER */
 
         footer {
-            margin-top: 40px;
-
-            padding: 20px;
-
-            background: #1b5e38;
+            background: #185c37;
 
             color: white;
 
             text-align: center;
+
+            padding: 25px;
         }
 
-
-        /* ===== ĐIỆN THOẠI ===== */
+        /* MOBILE */
 
         @media (max-width: 700px) {
 
             header h1 {
-                font-size: 28px;
+                font-size: 30px;
             }
 
-            nav a {
-                display: inline-block;
-                margin: 7px;
+            th,
+            td {
+                padding: 10px;
             }
 
         }
@@ -221,73 +220,82 @@
 <body>
 
 
-    <!-- ===== HEADER ===== -->
-
-    <header>
-
-        <h1>⌨️ Phím tắt hữu ích trong Excel</h1>
-
-        <p>
-            60 phím tắt giúp làm việc với Excel nhanh hơn
-        </p>
-
-    </header>
-
-
-    <!-- ===== MENU ===== -->
+    <!-- MENU -->
 
     <nav>
 
         <a href="index.html">
-            Trang chủ
+            🏠 Trang chủ
         </a>
 
         <a href="gioithieu.html">
-            Giới thiệu
+            ℹ️ Giới thiệu
         </a>
 
         <a href="excel.html">
-            Học Excel
+            📊 Học Excel
         </a>
 
         <a href="lienhe.html">
-            Liên hệ
+            📩 Liên hệ
         </a>
 
     </nav>
 
 
-    <!-- ===== NỘI DUNG ===== -->
+    <!-- HEADER -->
+
+    <header>
+
+        <h1>
+            ⌨️ Phím tắt Excel cần biết
+        </h1>
+
+        <p>
+            Những phím tắt thường dùng giúp bạn
+            làm việc nhanh và hiệu quả hơn.
+        </p>
+
+    </header>
+
 
     <main>
 
 
-        <div class="title">
+        <!-- SEARCH -->
 
-            <h2>
-                60 phím tắt Excel cần biết
-            </h2>
+        <div class="search-box">
 
-            <p>
-                Lưu lại trang này để sử dụng khi cần.
-            </p>
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="🔍 Tìm phím tắt hoặc chức năng..."
+                onkeyup="timPhimTat()">
 
         </div>
 
 
+        <!-- TABLE -->
+
         <div class="table-container">
 
-            <table>
+            <table id="shortcutTable">
 
                 <thead>
 
                     <tr>
 
-                        <th>STT</th>
+                        <th>
+                            STT
+                        </th>
 
-                        <th>PHÍM TẮT</th>
+                        <th>
+                            Phím tắt
+                        </th>
 
-                        <th>CHỨC NĂNG</th>
+                        <th>
+                            Chức năng
+                        </th>
 
                     </tr>
 
@@ -299,362 +307,391 @@
 
                     <tr>
                         <td>1</td>
-                        <td>Ctrl + N</td>
-                        <td>Tạo workbook mới</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + C
+                            </span>
+                        </td>
+                        <td>
+                            Sao chép
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>2</td>
-                        <td>Ctrl + O</td>
-                        <td>Mở workbook</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + V
+                            </span>
+                        </td>
+                        <td>
+                            Dán
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>3</td>
-                        <td>Ctrl + S</td>
-                        <td>Lưu workbook</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + X
+                            </span>
+                        </td>
+                        <td>
+                            Cắt
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>4</td>
-                        <td>Ctrl + P</td>
-                        <td>Mở cửa sổ in</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + Z
+                            </span>
+                        </td>
+                        <td>
+                            Hoàn tác
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>5</td>
-                        <td>Ctrl + F</td>
-                        <td>Tìm kiếm dữ liệu</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + Y
+                            </span>
+                        </td>
+                        <td>
+                            Làm lại thao tác
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>6</td>
-                        <td>Ctrl + H</td>
-                        <td>Tìm và thay thế</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + S
+                            </span>
+                        </td>
+                        <td>
+                            Lưu file
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>7</td>
-                        <td>Ctrl + Z</td>
-                        <td>Hoàn tác</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + F
+                            </span>
+                        </td>
+                        <td>
+                            Tìm kiếm
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>8</td>
-                        <td>Ctrl + Y</td>
-                        <td>Làm lại thao tác</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + H
+                            </span>
+                        </td>
+                        <td>
+                            Tìm và thay thế
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>9</td>
-                        <td>Ctrl + X</td>
-                        <td>Cắt dữ liệu</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + A
+                            </span>
+                        </td>
+                        <td>
+                            Chọn vùng dữ liệu
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>10</td>
-                        <td>Ctrl + C</td>
-                        <td>Sao chép dữ liệu</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + P
+                            </span>
+                        </td>
+                        <td>
+                            Mở hộp thoại in
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>11</td>
-                        <td>Ctrl + V</td>
-                        <td>Dán dữ liệu</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + N
+                            </span>
+                        </td>
+                        <td>
+                            Tạo workbook mới
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>12</td>
-                        <td>Ctrl + A</td>
-                        <td>Chọn vùng dữ liệu</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + O
+                            </span>
+                        </td>
+                        <td>
+                            Mở file
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>13</td>
-                        <td>Ctrl + B</td>
-                        <td>In đậm</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + W
+                            </span>
+                        </td>
+                        <td>
+                            Đóng workbook
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>14</td>
-                        <td>Ctrl + I</td>
-                        <td>In nghiêng</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + B
+                            </span>
+                        </td>
+                        <td>
+                            In đậm
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>15</td>
-                        <td>Ctrl + U</td>
-                        <td>Gạch chân</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + I
+                            </span>
+                        </td>
+                        <td>
+                            In nghiêng
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>16</td>
-                        <td>Ctrl + 1</td>
-                        <td>Mở Format Cells</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + U
+                            </span>
+                        </td>
+                        <td>
+                            Gạch chân
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>17</td>
-                        <td>Ctrl + ;</td>
-                        <td>Chèn ngày hiện tại</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + 1
+                            </span>
+                        </td>
+                        <td>
+                            Mở Format Cells
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>18</td>
-                        <td>Ctrl + Shift + ;</td>
-                        <td>Chèn thời gian hiện tại</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + ;
+                            </span>
+                        </td>
+                        <td>
+                            Nhập ngày hiện tại
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>19</td>
-                        <td>Ctrl + Space</td>
-                        <td>Chọn toàn bộ cột</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + Shift + :
+                            </span>
+                        </td>
+                        <td>
+                            Nhập thời gian hiện tại
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>20</td>
-                        <td>Shift + Space</td>
-                        <td>Chọn toàn bộ hàng</td>
+                        <td>
+                            <span class="shortcut">
+                                Alt + =
+                            </span>
+                        </td>
+                        <td>
+                            Tự động tính tổng
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>21</td>
-                        <td>Ctrl + Shift + $</td>
-                        <td>Định dạng tiền tệ</td>
+                        <td>
+                            <span class="shortcut">
+                                F2
+                            </span>
+                        </td>
+                        <td>
+                            Chỉnh sửa ô
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>22</td>
-                        <td>Ctrl + Shift + %</td>
-                        <td>Định dạng phần trăm</td>
+                        <td>
+                            <span class="shortcut">
+                                F4
+                            </span>
+                        </td>
+                        <td>
+                            Lặp lại thao tác / khóa tham chiếu
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>23</td>
-                        <td>Alt + =</td>
-                        <td>Tự động tính tổng</td>
+                        <td>
+                            <span class="shortcut">
+                                F5
+                            </span>
+                        </td>
+                        <td>
+                            Mở Go To
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>24</td>
-                        <td>F2</td>
-                        <td>Chỉnh sửa ô</td>
+                        <td>
+                            <span class="shortcut">
+                                F7
+                            </span>
+                        </td>
+                        <td>
+                            Kiểm tra chính tả
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>25</td>
-                        <td>F4</td>
-                        <td>Lặp lại thao tác / cố định tham chiếu</td>
+                        <td>
+                            <span class="shortcut">
+                                F11
+                            </span>
+                        </td>
+                        <td>
+                            Tạo biểu đồ
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>26</td>
-                        <td>Ctrl + Page Up</td>
-                        <td>Chuyển sang sheet bên trái</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + Home
+                            </span>
+                        </td>
+                        <td>
+                            Về ô A1
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>27</td>
-                        <td>Ctrl + Page Down</td>
-                        <td>Chuyển sang sheet bên phải</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + End
+                            </span>
+                        </td>
+                        <td>
+                            Đến ô cuối vùng dữ liệu
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>28</td>
-                        <td>Ctrl + Shift + L</td>
-                        <td>Bật / tắt Filter</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + ↑
+                            </span>
+                        </td>
+                        <td>
+                            Di chuyển đến đầu vùng dữ liệu
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>29</td>
-                        <td>Ctrl + T</td>
-                        <td>Tạo Table</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + ↓
+                            </span>
+                        </td>
+                        <td>
+                            Di chuyển đến cuối vùng dữ liệu
+                        </td>
                     </tr>
+
 
                     <tr>
                         <td>30</td>
-                        <td>Ctrl + W</td>
-                        <td>Đóng workbook</td>
-                    </tr>
-
-                    <tr>
-                        <td>31</td>
-                        <td>Ctrl + Tab</td>
-                        <td>Chuyển giữa các workbook</td>
-                    </tr>
-
-                    <tr>
-                        <td>32</td>
-                        <td>Ctrl + Shift + Tab</td>
-                        <td>Chuyển ngược giữa workbook</td>
-                    </tr>
-
-                    <tr>
-                        <td>33</td>
-                        <td>Ctrl + Shift + +</td>
-                        <td>Chèn ô, hàng hoặc cột</td>
-                    </tr>
-
-                    <tr>
-                        <td>34</td>
-                        <td>Ctrl + -</td>
-                        <td>Xóa ô, hàng hoặc cột</td>
-                    </tr>
-
-                    <tr>
-                        <td>35</td>
-                        <td>Ctrl + D</td>
-                        <td>Fill Down - sao chép xuống</td>
-                    </tr>
-
-                    <tr>
-                        <td>36</td>
-                        <td>Ctrl + R</td>
-                        <td>Fill Right - sao chép sang phải</td>
-                    </tr>
-
-                    <tr>
-                        <td>37</td>
-                        <td>Ctrl + Home</td>
-                        <td>Đi đến ô A1</td>
-                    </tr>
-
-                    <tr>
-                        <td>38</td>
-                        <td>Ctrl + End</td>
-                        <td>Đi đến ô cuối vùng dữ liệu</td>
-                    </tr>
-
-                    <tr>
-                        <td>39</td>
-                        <td>Home</td>
-                        <td>Về đầu hàng</td>
-                    </tr>
-
-                    <tr>
-                        <td>40</td>
-                        <td>End</td>
-                        <td>Đi đến chế độ End</td>
-                    </tr>
-
-                    <tr>
-                        <td>41</td>
-                        <td>Page Up</td>
-                        <td>Cuộn lên một màn hình</td>
-                    </tr>
-
-                    <tr>
-                        <td>42</td>
-                        <td>Page Down</td>
-                        <td>Cuộn xuống một màn hình</td>
-                    </tr>
-
-                    <tr>
-                        <td>43</td>
-                        <td>Alt + Enter</td>
-                        <td>Xuống dòng trong cùng một ô</td>
-                    </tr>
-
-                    <tr>
-                        <td>44</td>
-                        <td>Ctrl + Enter</td>
-                        <td>Nhập cùng dữ liệu vào nhiều ô</td>
-                    </tr>
-
-                    <tr>
-                        <td>45</td>
-                        <td>Esc</td>
-                        <td>Hủy thao tác đang thực hiện</td>
-                    </tr>
-
-                    <tr>
-                        <td>46</td>
-                        <td>Ctrl + Arrow</td>
-                        <td>Di chuyển nhanh đến mép vùng dữ liệu</td>
-                    </tr>
-
-                    <tr>
-                        <td>47</td>
-                        <td>Ctrl + Shift + Arrow</td>
-                        <td>Chọn nhanh đến mép vùng dữ liệu</td>
-                    </tr>
-
-                    <tr>
-                        <td>48</td>
-                        <td>Ctrl + Shift + 1</td>
-                        <td>Định dạng số</td>
-                    </tr>
-
-                    <tr>
-                        <td>49</td>
-                        <td>Ctrl + Shift + 4</td>
-                        <td>Định dạng tiền tệ</td>
-                    </tr>
-
-                    <tr>
-                        <td>50</td>
-                        <td>Ctrl + Shift + 5</td>
-                        <td>Định dạng phần trăm</td>
-                    </tr>
-
-                    <tr>
-                        <td>51</td>
-                        <td>Ctrl + Shift + 6</td>
-                        <td>Định dạng số mũ</td>
-                    </tr>
-
-                    <tr>
-                        <td>52</td>
-                        <td>Ctrl + Shift + 7</td>
-                        <td>Thêm đường viền ngoài</td>
-                    </tr>
-
-                    <tr>
-                        <td>53</td>
-                        <td>Ctrl + Shift + ~</td>
-                        <td>Định dạng General</td>
-                    </tr>
-
-                    <tr>
-                        <td>54</td>
-                        <td>Ctrl + K</td>
-                        <td>Chèn hyperlink</td>
-                    </tr>
-
-                    <tr>
-                        <td>55</td>
-                        <td>Ctrl + G</td>
-                        <td>Mở Go To</td>
-                    </tr>
-
-                    <tr>
-                        <td>56</td>
-                        <td>Ctrl + Shift + U</td>
-                        <td>Mở rộng / thu gọn thanh công thức</td>
-                    </tr>
-
-                    <tr>
-                        <td>57</td>
-                        <td>Ctrl + F1</td>
-                        <td>Ẩn / hiện Ribbon</td>
-                    </tr>
-
-                    <tr>
-                        <td>58</td>
-                        <td>Alt + F1</td>
-                        <td>Tạo biểu đồ nhanh</td>
-                    </tr>
-
-                    <tr>
-                        <td>59</td>
-                        <td>F11</td>
-                        <td>Tạo biểu đồ trên sheet riêng</td>
-                    </tr>
-
-                    <tr>
-                        <td>60</td>
-                        <td>Alt + F8</td>
-                        <td>Mở hộp thoại Macro</td>
+                        <td>
+                            <span class="shortcut">
+                                Ctrl + Shift + L
+                            </span>
+                        </td>
+                        <td>
+                            Bật / tắt Filter
+                        </td>
                     </tr>
 
 
@@ -665,7 +702,7 @@
         </div>
 
 
-        <!-- ===== QUAY LẠI ===== -->
+        <!-- BACK -->
 
         <div class="back">
 
@@ -679,13 +716,74 @@
     </main>
 
 
-    <!-- ===== FOOTER ===== -->
+    <!-- FOOTER -->
 
     <footer>
 
-        © 2026 - Website của tôi
+        <p>
+            © 2026 - Website Excel của tôi
+        </p>
+
+        <p>
+            Học Excel • Phân tích dữ liệu • Báo cáo
+        </p>
 
     </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        function timPhimTat() {
+
+            let input =
+                document.getElementById(
+                    "searchInput"
+                );
+
+            let filter =
+                input.value.toLowerCase();
+
+            let table =
+                document.getElementById(
+                    "shortcutTable"
+                );
+
+            let rows =
+                table
+                .getElementsByTagName("tr");
+
+
+            for (
+                let i = 1;
+                i < rows.length;
+                i++
+            ) {
+
+                let text =
+                    rows[i]
+                    .textContent
+                    .toLowerCase();
+
+
+                if (
+                    text.includes(filter)
+                ) {
+
+                    rows[i].style.display = "";
+
+                } else {
+
+                    rows[i].style.display = "none";
+
+                }
+
+            }
+
+        }
+
+    </script>
 
 
 </body>
