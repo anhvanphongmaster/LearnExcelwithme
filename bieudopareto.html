@@ -7,6 +7,7 @@
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
+          <link rel="stylesheet" href="style.css">
 
     <title>Biểu đồ & Pareto - Website của tôi</title>
 
@@ -169,14 +170,54 @@
             }
 
         }
+.pareto-note {
+    margin-top: 25px;
+    padding: 20px;
+    background: #f5faf6;
+    border-left: 5px solid #217346;
+    border-radius: 10px;
+}
 
+.pareto-note h3 {
+    margin-top: 0;
+    color: #217346;
+}
+
+.pareto-note ul {
+    line-height: 1.8;
+}.pareto-formula-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.pareto-formula-table th {
+    background: #217346;
+    color: white;
+    padding: 12px;
+}
+
+.pareto-formula-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.pareto-formula-table tr:nth-child(even) {
+    background: #f5faf6;
+}
+
+.pareto-formula-table code {
+    font-family: Consolas, monospace;
+    font-weight: bold;
+    color: #185c37;
+}
     </style>
 
 </head>
 
 
 <body>
-
+<div id="scrollProgress"></div>
 
     <!-- HEADER -->
 
@@ -210,7 +251,9 @@
         <a href="lienhe.html">
             Liên hệ
         </a>
-
+<button id="themeToggle">
+    🌙
+</button>
     </nav>
 
 
@@ -443,10 +486,240 @@
                 </tbody>
 
             </table>
+<div class="pareto-note">
 
+    <h3>
+        🎯 Quy tắc 80/20
+    </h3>
+
+    <p>
+        Pareto thường được dùng để xác định một số ít nguyên nhân
+        gây ra phần lớn vấn đề.
+    </p>
+
+    <p>
+        Trong ví dụ này:
+    </p>
+
+    <ul>
+        <li>Scratch: 40%</li>
+        <li>Open: 25%</li>
+        <li>Short: 15%</li>
+    </ul>
+
+    <p>
+        Ba lỗi đầu tiên đã chiếm khoảng <b>80%</b> tổng số lỗi.
+        Vì vậy nên ưu tiên điều tra và cải thiện các lỗi này trước.
+    </p>
+
+</div>
         </div>
+<div class="card">
 
+    <h2>
+        📈 Cách tạo Pareto Chart trong Excel
+    </h2>
 
+    <div class="step">
+
+        <strong>Bước 1:</strong>
+
+        <p>
+            Sắp xếp NG Qty từ lớn xuống nhỏ.
+        </p>
+
+    </div>
+
+    <div class="step">
+
+        <strong>Bước 2:</strong>
+
+        <p>
+            Tạo cột phần trăm từng loại lỗi.
+        </p>
+
+    </div>
+
+    <div class="step">
+
+        <strong>Bước 3:</strong>
+
+        <p>
+            Tạo cột phần trăm tích lũy.
+        </p>
+
+    </div>
+
+    <div class="step">
+
+        <strong>Bước 4:</strong>
+
+        <p>
+            Chọn cột Loại lỗi, NG Qty và Tích lũy.
+        </p>
+
+    </div>
+
+    <div class="step">
+
+        <strong>Bước 5:</strong>
+
+        <p>
+            Vào <b>Insert → Combo Chart</b>.
+        </p>
+
+    </div>
+
+    <div class="step">
+
+        <strong>Bước 6:</strong>
+
+        <p>
+            Chọn NG Qty là biểu đồ cột và
+            Tích lũy là biểu đồ đường.
+        </p>
+
+    </div>
+
+    <div class="step">
+
+        <strong>Bước 7:</strong>
+
+        <p>
+            Đặt đường Tích lũy trên
+            <b>Secondary Axis</b> và chỉnh trục từ 0% đến 100%.
+        </p>
+
+    </div>
+<div class="card">
+
+    <h2>
+        🧮 Công thức sử dụng trong Pareto
+    </h2>
+
+    <p>
+        Giả sử:
+    </p>
+
+    <ul>
+        <li>Cột A: Loại lỗi</li>
+        <li>Cột B: NG Qty</li>
+        <li>Cột C: NG Rate</li>
+        <li>Cột D: % Tích lũy</li>
+    </ul>
+
+    <table class="pareto-formula-table">
+
+        <tr>
+            <th>Nội dung</th>
+            <th>Công thức ví dụ</th>
+        </tr>
+
+        <tr>
+            <td>Tổng NG Qty</td>
+            <td><code>=SUM(B2:B6)</code></td>
+        </tr>
+
+        <tr>
+            <td>NG Rate</td>
+            <td><code>=B2/SUM($B$2:$B$6)</code></td>
+        </tr>
+
+        <tr>
+            <td>% Tích lũy dòng đầu</td>
+            <td><code>=C2</code></td>
+        </tr>
+
+        <tr>
+            <td>% Tích lũy dòng tiếp theo</td>
+            <td><code>=D2+C3</code></td>
+        </tr>
+
+    </table>
+
+    <p>
+        Sau đó kéo công thức xuống các dòng còn lại
+        và định dạng cột C, D thành <b>Percentage (%)</b>.
+    </p>
+
+</div>
+</div>
+<div class="card">
+
+    <h2>
+        📊 Ví dụ Pareto hoàn chỉnh
+    </h2>
+
+    <p>
+        Giả sử có dữ liệu lỗi như sau:
+    </p>
+
+    <table class="pareto-formula-table">
+
+        <tr>
+            <th>Loại lỗi</th>
+            <th>NG Qty</th>
+            <th>NG Rate</th>
+            <th>% Tích lũy</th>
+        </tr>
+
+        <tr>
+            <td>Scratch</td>
+            <td>40</td>
+            <td>40%</td>
+            <td>40%</td>
+        </tr>
+
+        <tr>
+            <td>Open</td>
+            <td>25</td>
+            <td>25%</td>
+            <td>65%</td>
+        </tr>
+
+        <tr>
+            <td>Short</td>
+            <td>15</td>
+            <td>15%</td>
+            <td>80%</td>
+        </tr>
+
+        <tr>
+            <td>Crack</td>
+            <td>10</td>
+            <td>10%</td>
+            <td>90%</td>
+        </tr>
+
+        <tr>
+            <td>Other</td>
+            <td>10</td>
+            <td>10%</td>
+            <td>100%</td>
+        </tr>
+
+    </table>
+
+    <div class="pareto-note">
+
+        <h3>
+            🔎 Cách đọc kết quả
+        </h3>
+
+        <p>
+            Ba lỗi đầu tiên:
+            <b>Scratch + Open + Short</b>
+            đã chiếm <b>80%</b> tổng số lỗi.
+        </p>
+
+        <p>
+            Vì vậy khi phân tích nguyên nhân,
+            nên ưu tiên xử lý ba nhóm lỗi này trước.
+        </p>
+
+    </div>
+
+</div>
         <!-- QUAY LẠI -->
 
         <div class="back">
@@ -468,6 +741,10 @@
     </footer>
 
 
+<button id="backToTop" onclick="lenDauTrang()">
+    ↑
+</button>
+<script src="script.js"></script>
 </body>
 
 </html>

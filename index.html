@@ -7,7 +7,7 @@
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
-
+<link rel="stylesheet" href="style.css">
     <title>Website Excel của tôi</title>
 
     <style>
@@ -25,29 +25,7 @@
 
         /* ===== MENU ===== */
 
-        nav {
-            background: #185c37;
-            padding: 16px 30px;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            gap: 30px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        nav a:hover {
-            color: #b7e4c7;
-        }
-
-
+    
         /* ===== HERO ===== */
 
         .hero {
@@ -232,41 +210,226 @@
                 font-size: 36px;
             }
 
-            nav {
-                flex-wrap: wrap;
-                gap: 15px;
-            }
+          
+            
 
         }
+.featured,
+.quick-access {
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 20px;
+}
 
+.featured h2,
+.quick-access h2 {
+    text-align: center;
+    color: #217346;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.featured-card {
+    background: white;
+    padding: 28px;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.featured-card h3 {
+    color: #217346;
+}
+
+.featured-card p {
+    line-height: 1.6;
+}
+
+.featured-card a {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 20px;
+    background: #217346;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.quick-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.quick-grid a {
+    background: white;
+    color: #185c37;
+    text-decoration: none;
+    text-align: center;
+    padding: 18px;
+    border-radius: 10px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.quick-grid a:hover {
+    background: #e8f5e9;
+}
+
+@media (max-width: 800px) {
+    .featured-grid,
+    .quick-grid {
+        grid-template-columns: 1fr;
+    }
+}.home-search {
+    margin-top: 25px;
+
+    display: flex;
+    justify-content: center;
+
+    gap: 10px;
+}
+
+.home-search input {
+    width: 420px;
+    max-width: 70%;
+
+    padding: 13px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 16px;
+}
+
+.home-search button {
+    padding: 13px 20px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #185c37;
+    color: white;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.home-search button:hover {
+    background: #144b2e;
+}
+
+@media (max-width: 600px) {
+
+    .home-search {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .home-search input {
+        width: 100%;
+        max-width: 100%;
+    }
+
+}#backToTop {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+
+    width: 48px;
+    height: 48px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #217346;
+    color: white;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+    display: none;
+}
+
+#backToTop:hover {
+    background: #185c37;
+}.home-contact {
+    max-width: 1000px;
+    margin: 40px auto 70px;
+    padding: 40px 20px;
+
+    background: white;
+    border-radius: 15px;
+
+    text-align: center;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.home-contact h2 {
+    color: #217346;
+    font-size: 30px;
+}
+
+.home-contact p {
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.home-contact a {
+    display: inline-block;
+
+    margin-top: 15px;
+    padding: 12px 24px;
+
+    background: #217346;
+    color: white;
+
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
     </style>
 
 </head>
 
 
 <body>
-
+<div id="scrollProgress"></div>
 
     <!-- MENU -->
 
     <nav>
 
         <a href="index.html">
-            🏠 Trang chủ
-        </a>
+    🏠 Trang chủ
+</a>
 
-        <a href="gioithieu.html">
-            ℹ️ Giới thiệu
-        </a>
+      <a href="gioithieu.html">
+    ℹ️ Giới thiệu
+</a>
 
         <a href="excel.html">
             📊 Học Excel
         </a>
 
-        <a href="lienhe.html">
-            📩 Liên hệ
-        </a>
-
+        <a href="#lienhe">
+    📩 Liên hệ
+</a>
+<button id="themeToggle">
+    🌙
+</button>
     </nav>
 
 
@@ -291,13 +454,26 @@
             🚀 Bắt đầu học Excel
 
         </a>
+<div class="home-search">
 
+    <input
+        type="text"
+        id="homeSearch"
+        placeholder="🔍 Tìm bài học: VLOOKUP, Pivot, Pareto..."
+        onkeydown="if(event.key === 'Enter') timBaiHoc()"
+    >
+
+    <button onclick="timBaiHoc()">
+        Tìm kiếm
+    </button>
+
+</div>
     </section>
 
 
     <!-- GIỚI THIỆU -->
 
-    <section class="intro">
+    <section class="intro" id="gioithieu">
 
         <h2>
             Excel cho công việc thực tế
@@ -315,7 +491,7 @@
 
     <!-- CÁC BÀI HỌC -->
 
-    <section class="courses">
+    <section class="courses" id="hocexcel">
 
         <h2 class="courses-title">
             📚 Nội dung học Excel
@@ -472,8 +648,123 @@
         </div>
 
     </section>
+<section class="featured">
+
+    <h2>
+        ⭐ Bài học nổi bật
+    </h2>
+
+    <div class="featured-grid">
+
+        <div class="featured-card">
+
+            <h3>
+                ⌨️ Phím tắt Excel
+            </h3>
+
+            <p>
+                Học nhanh các phím tắt thường dùng
+                để thao tác Excel hiệu quả hơn.
+            </p>
+
+            <a href="phimtatexcel.html">
+                Học ngay
+            </a>
+
+        </div>
 
 
+        <div class="featured-card">
+
+            <h3>
+                🧮 Công thức Excel
+            </h3>
+
+            <p>
+                Tra cứu các hàm Excel từ cơ bản
+                đến tra cứu và điều kiện.
+            </p>
+
+            <a href="congthucexcel.html">
+                Học ngay
+            </a>
+
+        </div>
+
+
+        <div class="featured-card">
+
+            <h3>
+                📊 Pivot Table
+            </h3>
+
+            <p>
+                Tổng hợp dữ liệu nhanh và tạo
+                báo cáo trực quan hơn.
+            </p>
+
+            <a href="pivottable.html">
+                Học ngay
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="quick-access">
+
+    <h2>
+        ⚡ Truy cập nhanh
+    </h2>
+
+    <div class="quick-grid">
+
+        <a href="phimtatexcel.html">
+            ⌨️ Phím tắt
+        </a>
+
+        <a href="congthucexcel.html">
+            🧮 Công thức
+        </a>
+
+        <a href="pivottable.html">
+            📊 Pivot
+        </a>
+
+        <a href="bieudopareto.html">
+            📈 Pareto
+        </a>
+
+        <a href="filtersort.html">
+            🔍 Filter
+        </a>
+
+        <a href="baocaoexcel.html">
+            📋 Báo cáo
+        </a>
+
+    </div>
+
+</section>
+<section class="home-contact" id="lienhe">
+
+    <h2>
+        📩 Liên hệ
+    </h2>
+
+    <p>
+        Nếu bạn có câu hỏi hoặc muốn góp ý cho website,
+        hãy gửi tin nhắn cho tôi.
+    </p>
+
+    <a href="lienhe.html">
+        Gửi liên hệ
+    </a>
+
+</section>
     <!-- FOOTER -->
 
     <footer>
@@ -488,7 +779,113 @@
 
     </footer>
 
+<script>
 
+function timBaiHoc() {
+
+    const keyword =
+        document
+        .getElementById("homeSearch")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    if (
+        keyword.includes("phím") ||
+        keyword.includes("shortcut")
+    ) {
+        window.location.href =
+            "phimtatexcel.html";
+    }
+
+    else if (
+        keyword.includes("vlookup") ||
+        keyword.includes("xlookup") ||
+        keyword.includes("sum") ||
+        keyword.includes("if") ||
+        keyword.includes("công thức") ||
+        keyword.includes("hàm")
+    ) {
+        window.location.href =
+            "congthucexcel.html";
+    }
+
+    else if (
+        keyword.includes("pivot")
+    ) {
+        window.location.href =
+            "pivottable.html";
+    }
+
+    else if (
+        keyword.includes("pareto") ||
+        keyword.includes("biểu đồ")
+    ) {
+        window.location.href =
+            "bieudopareto.html";
+    }
+
+    else if (
+        keyword.includes("filter") ||
+        keyword.includes("sort") ||
+        keyword.includes("lọc")
+    ) {
+        window.location.href =
+            "filtersort.html";
+    }
+
+    else if (
+        keyword.includes("báo cáo") ||
+        keyword.includes("report") ||
+        keyword.includes("ng rate")
+    ) {
+        window.location.href =
+            "baocaoexcel.html";
+    }
+
+    else {
+        alert(
+            "Chưa tìm thấy bài học phù hợp."
+        );
+    }
+
+}
+window.addEventListener("scroll", function() {
+
+    const button =
+        document.getElementById("backToTop");
+
+    if (window.scrollY > 300) {
+        button.style.display = "block";
+    } else {
+        button.style.display = "none";
+    }
+
+});
+
+function lenDauTrang() {
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+    const linkPage =
+        link.getAttribute("href");
+
+    if (linkPage === currentPage) {
+        link.classList.add("active");
+    }
+
+</script>
+<button id="backToTop" onclick="lenDauTrang()">
+    ↑
+</button>
+
+<script src="script.js"></script>
 </body>
 
-</html>
+</html> 

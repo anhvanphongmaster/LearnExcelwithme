@@ -6,7 +6,7 @@
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
-
+<link rel="stylesheet" href="style.css">
     <title>Pivot Table - Website của tôi</title>
 
     <style>
@@ -146,14 +146,98 @@
             }
 
         }
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0 20px;
+    background: white;
+}
 
+.data-table th {
+    background: #217346;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+.data-table td {
+    padding: 11px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.data-table tr:nth-child(even) {
+    background: #f1f8f3;
+}.pivot-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.pivot-box {
+    background: #f5faf6;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #d9e8dd;
+}
+
+.pivot-box h3 {
+    margin-top: 0;
+    color: #217346;
+    text-align: center;
+}
+
+.field {
+    background: white;
+    border: 2px solid #217346;
+    border-radius: 7px;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #185c37;
+    margin: 12px 0;
+}
+
+.field.empty {
+    color: #777;
+    border-style: dashed;
+}
+
+@media (max-width: 700px) {
+    .pivot-layout {
+        grid-template-columns: 1fr;
+    }
+}.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0 20px;
+    background: white;
+}
+
+.data-table th {
+    background: #217346;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+.data-table td {
+    padding: 11px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.data-table tr:nth-child(even) {
+    background: #f1f8f3;
+}
     </style>
 
 </head>
 
 
 <body>
-
+<div id="scrollProgress"></div>
     <header>
 
         <h1>📊 Pivot Table</h1>
@@ -182,7 +266,9 @@
         <a href="lienhe.html">
             Liên hệ
         </a>
-
+<button id="themeToggle">
+    🌙
+</button>
     </nav>
 
 
@@ -288,19 +374,42 @@
                 Giả sử bạn có dữ liệu sản xuất:
             </p>
 
-            <div class="example">
+            <table class="data-table">
+    <tr>
+        <th>Lot No</th>
+        <th>Model</th>
+        <th>NG Qty</th>
+        <th>OK Qty</th>
+    </tr>
 
-Lot No | Model | NG Qty | OK Qty
+    <tr>
+        <td>LOT001</td>
+        <td>FPC-A</td>
+        <td>5</td>
+        <td>187</td>
+    </tr>
 
-LOT001 | FPC-A | 5 | 187
+    <tr>
+        <td>LOT002</td>
+        <td>FPC-A</td>
+        <td>3</td>
+        <td>189</td>
+    </tr>
 
-LOT002 | FPC-A | 3 | 189
+    <tr>
+        <td>LOT003</td>
+        <td>FPC-B</td>
+        <td>8</td>
+        <td>184</td>
+    </tr>
 
-LOT003 | FPC-B | 8 | 184
-
-LOT004 | FPC-B | 2 | 190
-
-            </div>
+    <tr>
+        <td>LOT004</td>
+        <td>FPC-B</td>
+        <td>2</td>
+        <td>190</td>
+    </tr>
+</table>
 
             <p>
                 Bạn có thể sử dụng Pivot Table để tổng hợp
@@ -360,8 +469,207 @@ LOT004 | FPC-B | 2 | 190
             </div>
 
         </div>
+        <div class="card">
+
+    <h2>
+        🧩 Cách kéo trường trong Pivot Table
+    </h2>
+
+    <p>
+        Ví dụ với dữ liệu:
+        <b>Lot No, Model, NG Qty, OK Qty</b>
+    </p>
+
+    <div class="pivot-layout">
+
+        <div class="pivot-box">
+
+            <h3>
+                Rows
+            </h3>
+
+            <div class="field">
+                Model
+            </div>
+
+            <p>
+                Hiển thị từng Model theo hàng.
+            </p>
+
+        </div>
 
 
+        <div class="pivot-box">
+
+            <h3>
+                Columns
+            </h3>
+
+            <div class="field empty">
+                Chưa sử dụng
+            </div>
+
+            <p>
+                Có thể dùng để chia dữ liệu theo cột.
+            </p>
+
+        </div>
+
+
+        <div class="pivot-box">
+
+            <h3>
+                Values
+            </h3>
+
+            <div class="field">
+                Sum of NG Qty
+            </div>
+
+            <p>
+                Tính tổng NG Qty cho từng Model.
+            </p>
+
+        </div>
+
+
+        <div class="pivot-box">
+
+            <h3>
+                Filters
+            </h3>
+
+            <div class="field">
+                Lot No
+            </div>
+
+            <p>
+                Lọc báo cáo theo Lot khi cần.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="card">
+
+    <h2>
+        📊 Ví dụ Pivot Table thực tế
+    </h2>
+
+    <p>
+        Giả sử bạn có bảng dữ liệu sản xuất như sau:
+    </p>
+
+    <table class="data-table">
+    <tr>
+        <th>Lot No</th>
+        <th>Model</th>
+        <th>NG Qty</th>
+        <th>OK Qty</th>
+    </tr>
+
+    <tr>
+        <td>LOT001</td>
+        <td>FPC-A</td>
+        <td>5</td>
+        <td>187</td>
+    </tr>
+
+    <tr>
+        <td>LOT002</td>
+        <td>FPC-A</td>
+        <td>3</td>
+        <td>189</td>
+    </tr>
+
+    <tr>
+        <td>LOT003</td>
+        <td>FPC-B</td>
+        <td>8</td>
+        <td>184</td>
+    </tr>
+
+    <tr>
+        <td>LOT004</td>
+        <td>FPC-B</td>
+        <td>2</td>
+        <td>190</td>
+    </tr>
+</table>
+
+    <p>
+        Nếu kéo <b>Model</b> vào Rows và <b>NG Qty</b>
+        vào Values, Pivot Table sẽ tổng hợp thành:
+    </p>
+
+    <table class="data-table">
+    <tr>
+        <th>Model</th>
+        <th>Tổng NG Qty</th>
+    </tr>
+
+    <tr>
+        <td>FPC-A</td>
+        <td>8</td>
+    </tr>
+
+    <tr>
+        <td>FPC-B</td>
+        <td>10</td>
+    </tr>
+</table>
+
+    <p>
+        Như vậy bạn có thể thấy nhanh Model nào có
+        tổng số lỗi cao hơn mà không cần tính thủ công.
+    </p>
+
+</div>
+<div class="card">
+
+    <h2>📈 Ví dụ phân tích NG Rate</h2>
+
+    <p>
+        Ngoài NG Qty, trong sản xuất chúng ta còn có thể
+        theo dõi tỷ lệ lỗi của từng Model.
+    </p>
+
+    <table class="data-table">
+        <tr>
+            <th>Model</th>
+            <th>Input Qty</th>
+            <th>NG Qty</th>
+            <th>NG Rate</th>
+        </tr>
+
+        <tr>
+            <td>FPC-A</td>
+            <td>384</td>
+            <td>8</td>
+            <td>2.08%</td>
+        </tr>
+
+        <tr>
+            <td>FPC-B</td>
+            <td>384</td>
+            <td>10</td>
+            <td>2.60%</td>
+        </tr>
+    </table>
+
+    <p>
+        Công thức:
+        <b>NG Rate = NG Qty / Input Qty × 100%</b>
+    </p>
+
+    <p>
+        Trong ví dụ này, <b>FPC-B</b> có NG Rate cao hơn
+        FPC-A nên cần được ưu tiên kiểm tra nguyên nhân.
+    </p>
+
+</div>
         <div class="back">
 
             <a href="excel.html">
@@ -380,7 +688,10 @@ LOT004 | FPC-B | 2 | 190
 
     </footer>
 
-
+<button id="backToTop" onclick="lenDauTrang()">
+    ↑
+</button>
+<script src="script.js"></script>
 </body>
 
 </html>

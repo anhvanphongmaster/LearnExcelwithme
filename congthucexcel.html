@@ -7,6 +7,7 @@
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
+          <link rel="stylesheet" href="style.css">
 
     <title>Công thức Excel - Website của tôi</title>
 
@@ -169,7 +170,49 @@
             }
 
         }
+.search-box {
+    max-width: 1000px;
+    margin: 0 auto 25px;
+}
 
+.search-box input {
+    width: 100%;
+    padding: 15px 18px;
+    font-size: 16px;
+    border: 2px solid #217346;
+    border-radius: 10px;
+    outline: none;
+    background: white;
+}
+
+.search-box input:focus {
+    box-shadow: 0 0 0 3px rgba(33, 115, 70, 0.15);
+}.filter-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 auto 30px;
+}
+
+.filter-buttons button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+
+    background: #217346;
+    color: white;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.filter-buttons button:hover {
+    background: #185c37;
+    transform: translateY(-2px);
+}
     </style>
 
 </head>
@@ -177,7 +220,7 @@
 
 <body>
 
-
+<div id="scrollProgress"></div>
     <!-- HEADER -->
 
     <header>
@@ -210,14 +253,49 @@
         <a href="lienhe.html">
             Liên hệ
         </a>
-
+<button id="themeToggle">
+    🌙
+</button>
     </nav>
 
 
     <!-- NỘI DUNG -->
 
     <main>
+<div class="search-box">
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Tìm hàm Excel, ví dụ: SUM, IF, VLOOKUP..."
+        onkeyup="timCongThuc()"
+    >
+</div><div class="filter-buttons">
 
+    <button onclick="locCongThuc('all')">
+        Tất cả
+    </button>
+
+    <button onclick="locCongThuc('coban')">
+        🧮 Cơ bản
+    </button>
+
+    <button onclick="locCongThuc('dieukien')">
+        🔀 Điều kiện
+    </button>
+
+    <button onclick="locCongThuc('tracuu')">
+        🔎 Tra cứu
+    </button>
+
+    <button onclick="locCongThuc('vanban')">
+        🔤 Văn bản
+    </button>
+
+    <button onclick="locCongThuc('ngaygio')">
+        📅 Ngày giờ
+    </button>
+
+</div>
         <div class="title">
 
             <h2>
@@ -234,7 +312,7 @@
 
         <div class="table-box">
 
-            <table>
+            <table id="formulaTable">
 
                 <thead>
 
@@ -508,7 +586,110 @@
                             =LEN(A2)
                         </td>
                     </tr>
+<tr>
+    <td>16</td>
+    <td class="formula">ROUND</td>
+    <td>Làm tròn số</td>
+    <td class="formula">=ROUND(A2,2)</td>
+</tr>
 
+<tr>
+    <td>17</td>
+    <td class="formula">ROUNDUP</td>
+    <td>Làm tròn lên</td>
+    <td class="formula">=ROUNDUP(A2,0)</td>
+</tr>
+
+<tr>
+    <td>18</td>
+    <td class="formula">ROUNDDOWN</td>
+    <td>Làm tròn xuống</td>
+    <td class="formula">=ROUNDDOWN(A2,0)</td>
+</tr>
+
+<tr>
+    <td>19</td>
+    <td class="formula">IFERROR</td>
+    <td>Xử lý khi công thức bị lỗi</td>
+    <td class="formula">=IFERROR(A2/B2,0)</td>
+</tr>
+
+<tr>
+    <td>20</td>
+    <td class="formula">AND</td>
+    <td>Kiểm tra nhiều điều kiện cùng đúng</td>
+    <td class="formula">=AND(A2>=5,B2>=5)</td>
+</tr>
+
+<tr>
+    <td>21</td>
+    <td class="formula">OR</td>
+    <td>Kiểm tra ít nhất một điều kiện đúng</td>
+    <td class="formula">=OR(A2>=5,B2>=5)</td>
+</tr>
+
+<tr>
+    <td>22</td>
+    <td class="formula">SUMIFS</td>
+    <td>Tính tổng với nhiều điều kiện</td>
+    <td class="formula">=SUMIFS(C:C,A:A,"A",B:B,">10")</td>
+</tr>
+
+<tr>
+    <td>23</td>
+    <td class="formula">COUNTIFS</td>
+    <td>Đếm với nhiều điều kiện</td>
+    <td class="formula">=COUNTIFS(A:A,"A",B:B,">10")</td>
+</tr>
+
+<tr>
+    <td>24</td>
+    <td class="formula">INDEX</td>
+    <td>Lấy giá trị theo vị trí</td>
+    <td class="formula">=INDEX(B2:B10,3)</td>
+</tr>
+
+<tr>
+    <td>25</td>
+    <td class="formula">MATCH</td>
+    <td>Tìm vị trí của giá trị</td>
+    <td class="formula">=MATCH(A2,D2:D10,0)</td>
+</tr>
+
+<tr>
+    <td>26</td>
+    <td class="formula">TODAY</td>
+    <td>Lấy ngày hiện tại</td>
+    <td class="formula">=TODAY()</td>
+</tr>
+
+<tr>
+    <td>27</td>
+    <td class="formula">NOW</td>
+    <td>Lấy ngày và giờ hiện tại</td>
+    <td class="formula">=NOW()</td>
+</tr>
+
+<tr>
+    <td>28</td>
+    <td class="formula">TEXT</td>
+    <td>Định dạng giá trị thành văn bản</td>
+    <td class="formula">=TEXT(A2,"dd/mm/yyyy")</td>
+</tr>
+
+<tr>
+    <td>29</td>
+    <td class="formula">TRIM</td>
+    <td>Xóa khoảng trắng thừa</td>
+    <td class="formula">=TRIM(A2)</td>
+</tr>
+
+<tr>
+    <td>30</td>
+    <td class="formula">CONCAT</td>
+    <td>Nối nội dung nhiều ô</td>
+    <td class="formula">=CONCAT(A2," ",B2)</td>
+</tr>
 
                 </tbody>
 
@@ -536,7 +717,76 @@
 
     </footer>
 
+<script>
+function timCongThuc() {
+    const input = document.getElementById("searchInput");
+    const filter = input.value.toLowerCase();
 
+    const table = document.getElementById("formulaTable");
+    const rows = table.getElementsByTagName("tbody")[0]
+                      .getElementsByTagName("tr");
+
+    for (let i = 0; i < rows.length; i++) {
+        const text = rows[i].textContent.toLowerCase();
+
+        if (text.includes(filter)) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }
+    }
+}
+function locCongThuc(category) {
+const groups = {
+    coban: [
+        "SUM", "AVERAGE", "MAX", "MIN", "COUNT",
+        "COUNTA", "ROUND", "ROUNDUP", "ROUNDDOWN"
+    ],
+
+    dieukien: [
+        "IF", "COUNTIF", "SUMIF", "IFERROR",
+        "AND", "OR", "SUMIFS", "COUNTIFS"
+    ],
+
+    tracuu: [
+        "VLOOKUP", "XLOOKUP", "INDEX", "MATCH"
+    ],
+
+    vanban: [
+        "LEFT", "RIGHT", "MID", "LEN",
+        "TEXT", "TRIM", "CONCAT"
+    ],
+
+    ngaygio: [
+        "TODAY", "NOW"
+    ]
+};
+
+const table = document.getElementById("formulaTable");
+const rows = table.querySelectorAll("tbody tr");
+
+rows.forEach(function(row) {
+
+    const functionName =
+        row.cells[1].textContent.trim().toUpperCase();
+
+    if (
+        category === "all" ||
+        groups[category].includes(functionName)
+    ) {
+        row.style.display = "";
+    } else {
+        row.style.display = "none";
+    }
+
+});
+}
+</script>
+
+<button id="backToTop" onclick="lenDauTrang()">
+    ↑
+</button>
+<script src="script.js"></script>
 </body>
 
 </html>

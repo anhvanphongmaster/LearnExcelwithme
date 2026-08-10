@@ -1,0 +1,394 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7f5;
+    color: #222;
+}
+
+nav {
+    width: 100%;
+    background: #185c37;
+    padding: 12px 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+
+    padding: 8px 12px;
+    border-radius: 8px;
+
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+nav a.active {
+    background: white;
+    color: #185c37;
+}
+footer {
+    background: #185c37;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+#backToTop {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+
+    width: 48px;
+    height: 48px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #217346;
+    color: white;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+    display: none;
+}
+
+#backToTop:hover {
+    background: #185c37;
+}
+
+@media (max-width: 800px) {
+
+    nav {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+}
+#themeToggle {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+body.dark-mode {
+    background: #121212;
+    color: #f1f1f1;
+}
+
+body.dark-mode .hero {
+    background: #163d29;
+}
+
+body.dark-mode .intro,
+body.dark-mode .course-card,
+body.dark-mode .featured-card,
+body.dark-mode .quick-grid a,
+body.dark-mode .home-contact {
+    background: #1e1e1e;
+    color: #f1f1f1;
+}
+
+body.dark-mode .course-card p,
+body.dark-mode .featured-card p,
+body.dark-mode .intro p {
+    color: #d0d0d0;
+}
+/* ===== DARK MODE ===== */
+
+body.dark-mode {
+    background: #121212;
+    color: #f1f1f1;
+}
+
+body.dark-mode header {
+    background: #163d29;
+}
+
+body.dark-mode .hero {
+    background: #163d29;
+}
+
+body.dark-mode .intro,
+body.dark-mode .course-card,
+body.dark-mode .featured-card,
+body.dark-mode .home-contact {
+    background: #1e1e1e;
+    color: #f1f1f1;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3 {
+    color: #7ee2a8;
+}
+
+body.dark-mode p {
+    color: #e0e0e0;
+}
+
+
+/* ===== NÚT DARK MODE ===== */
+
+#themeToggle {
+    border: none;
+    background: transparent;
+    color: white;
+
+    font-size: 22px;
+    cursor: pointer;
+
+    padding: 8px;
+
+    width: auto;
+    height: auto;
+    margin: 0;
+
+    flex: 0 0 auto;
+}
+
+#themeToggle:hover {
+    transform: scale(1.15);
+}
+/* ===== FIX DARK MODE CHO TRANG CON ===== */
+
+/* Các khối nội dung */
+body.dark-mode main,
+body.dark-mode .container,
+body.dark-mode .content,
+body.dark-mode .search-box,
+body.dark-mode .table-container,
+body.dark-mode .card,
+body.dark-mode section {
+    color: #f1f1f1;
+}
+
+/* Bảng */
+body.dark-mode table {
+    background: #1e1e1e;
+    color: #f1f1f1;
+}
+
+body.dark-mode tbody tr {
+    background: #1e1e1e;
+    color: #f1f1f1;
+}
+
+body.dark-mode tbody tr:nth-child(even) {
+    background: #252525;
+}
+
+body.dark-mode td {
+    color: #f1f1f1;
+    border-color: #444;
+}
+
+/* Ô tìm kiếm */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background: #262626;
+    color: #f1f1f1;
+    border-color: #555;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #aaa;
+}
+
+/* Các hộp trắng */
+body.dark-mode .search-box,
+body.dark-mode .table-wrapper {
+    background: #1e1e1e;
+}
+
+/* Nội dung mô tả */
+body.dark-mode p,
+body.dark-mode li,
+body.dark-mode label {
+    color: #e5e5e5;
+}
+/* ===== DARK MODE - BỔ SUNG CHO CÁC KHỐI TRẮNG ===== */
+
+body.dark-mode .card,
+body.dark-mode .box,
+body.dark-mode .contact-item,
+body.dark-mode .info,
+body.dark-mode .action-box,
+body.dark-mode .kpi-box,
+body.dark-mode .filter-note,
+body.dark-mode .pivot-box,
+body.dark-mode .pareto-note,
+body.dark-mode .report-note {
+    background: #1e1e1e !important;
+    color: #f1f1f1 !important;
+    border-color: #444 !important;
+}
+
+body.dark-mode .card p,
+body.dark-mode .box p,
+body.dark-mode .contact-item,
+body.dark-mode .info p,
+body.dark-mode .action-box p,
+body.dark-mode .kpi-box,
+body.dark-mode .filter-note p,
+body.dark-mode .pivot-box p,
+body.dark-mode .pareto-note p,
+body.dark-mode .report-note p {
+    color: #e5e5e5 !important;
+}
+
+body.dark-mode .card h2,
+body.dark-mode .card h3,
+body.dark-mode .box h3,
+body.dark-mode .contact-item strong,
+body.dark-mode .action-box h3,
+body.dark-mode .pivot-box h3,
+body.dark-mode .pareto-note h3,
+body.dark-mode .report-note h3 {
+    color: #7ee2a8 !important;
+}
+body.dark-mode .contact-grid .card {
+    background: #1e1e1e !important;
+}
+
+body.dark-mode .contact-item {
+    background: #262626 !important;
+}
+
+body.dark-mode label {
+    color: #7ee2a8 !important;
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+    background: #262626 !important;
+    color: #f1f1f1 !important;
+    border-color: #555 !important;
+}
+/* ===== THANH TIẾN ĐỘ CUỘN ===== */
+
+#scrollProgress {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 4px;
+    width: 0%;
+
+    background: #7ee2a8;
+
+    z-index: 2000;
+}   
+/* ===== HIỆU ỨNG XUẤT HIỆN KHI CUỘN ===== */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+#formStatus {
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#formStatus.success {
+    background: #d8f3dc;
+    color: #146c2e;
+}
+
+#formStatus.error {
+    background: #f8d7da;
+    color: #842029;
+}
+
+#formStatus.sending {
+    background: #fff3cd;
+    color: #856404;
+}
+.social-section {
+    text-align: center;
+    margin: 40px auto;
+}
+
+.social-section h2 {
+    color: #217346;
+    margin-bottom: 20px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.social {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: white;
+    text-decoration: none;
+
+    font-weight: bold;
+    font-size: 20px;
+
+    transition: 0.25s;
+}
+
+.social:hover {
+    transform: translateY(-4px) scale(1.08);
+}
+
+.zalo {
+    background: #0068ff;
+}
+
+.tiktok {
+    background: #111;
+}
+
+body.dark-mode .social-section h2 {
+    color: #7ee2a8;
+}

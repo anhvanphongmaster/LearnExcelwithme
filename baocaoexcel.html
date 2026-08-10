@@ -7,6 +7,7 @@
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
+          <link rel="stylesheet" href="style.css">
 
     <title>Báo cáo Excel - Website của tôi</title>
 
@@ -169,14 +170,153 @@
             }
 
         }
+.report-note {
+    margin-top: 25px;
+    padding: 20px;
+    background: #f5faf6;
+    border-left: 5px solid #217346;
+    border-radius: 10px;
+}
 
+.report-note h3 {
+    margin-top: 0;
+    color: #217346;
+}
+
+.report-note ul {
+    line-height: 1.9;
+}.rate {
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+.rate.good {
+    background: #d8f3dc;
+    color: #146c2e;
+}
+
+.rate.warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.rate.danger {
+    background: #f8d7da;
+    color: #842029;
+}.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.kpi-box {
+    background: #f5faf6;
+    padding: 25px 15px;
+    border-radius: 12px;
+    text-align: center;
+    border-top: 5px solid #217346;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.kpi-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.kpi-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #217346;
+}
+
+@media (max-width: 800px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+}.mini-chart {
+    margin-top: 25px;
+}
+
+.bar-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.bar-label {
+    width: 80px;
+    font-weight: bold;
+    color: #185c37;
+}
+
+.bar-track {
+    flex: 1;
+    background: #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    background: #217346;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: right;
+    min-width: 55px;
+}.action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.action-box {
+    background: #f5faf6;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #d9e8dd;
+}
+
+.action-box h3 {
+    color: #185c37;
+    margin-top: 0;
+}
+
+.big-value {
+    font-size: 30px;
+    font-weight: bold;
+    color: #217346;
+    margin: 15px 0;
+}
+
+.action-box p {
+    line-height: 1.6;
+}
+
+@media (max-width: 800px) {
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+}
     </style>
 
 </head>
 
 
 <body>
-
+<div id="scrollProgress"></div>
 
     <header>
 
@@ -206,7 +346,9 @@
         <a href="lienhe.html">
             Liên hệ
         </a>
-
+<button id="themeToggle">
+    🌙
+</button>
     </nav>
 
 
@@ -303,7 +445,184 @@
 
 
         <div class="card">
+<div class="card">
 
+    <h2>
+        📊 KPI tổng quan
+    </h2>
+
+    <div class="kpi-grid">
+
+        <div class="kpi-box">
+
+            <div class="kpi-title">
+                Total Input
+            </div>
+
+            <div class="kpi-value">
+                2,000
+            </div>
+
+        </div>
+
+
+        <div class="kpi-box">
+
+            <div class="kpi-title">
+                Total NG
+            </div>
+
+            <div class="kpi-value">
+                65
+            </div>
+
+        </div>
+
+
+        <div class="kpi-box">
+
+            <div class="kpi-title">
+                Average NG Rate
+            </div>
+
+            <div class="kpi-value">
+                3.25%
+            </div>
+
+        </div>
+
+
+        <div class="kpi-box">
+
+            <div class="kpi-title">
+                Highest NG Rate
+            </div>
+
+            <div class="kpi-value">
+                5.0%
+            </div>
+
+        </div>
+
+    </div>
+<div class="card">
+
+    <h2>
+        📈 Biểu đồ NG Rate theo Lot
+    </h2>
+
+    <div class="mini-chart">
+
+        <div class="bar-row">
+            <span class="bar-label">LOT001</span>
+
+            <div class="bar-track">
+                <div class="bar-fill" style="width: 80%;">
+                    4.0%
+                </div>
+            </div>
+        </div>
+
+
+        <div class="bar-row">
+            <span class="bar-label">LOT002</span>
+
+            <div class="bar-track">
+                <div class="bar-fill" style="width: 48%;">
+                    2.4%
+                </div>
+            </div>
+        </div>
+
+
+        <div class="bar-row">
+            <span class="bar-label">LOT003</span>
+
+            <div class="bar-track">
+                <div class="bar-fill" style="width: 32%;">
+                    1.6%
+                </div>
+            </div>
+        </div>
+
+
+        <div class="bar-row">
+            <span class="bar-label">LOT004</span>
+
+            <div class="bar-track">
+                <div class="bar-fill" style="width: 100%;">
+                    5.0%
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <p>
+        LOT004 có NG Rate cao nhất với <b>5.0%</b>.
+    </p>
+<div class="card">
+
+    <h2>
+        🚨 Top Defect & Action Needed
+    </h2>
+
+    <div class="action-grid">
+
+        <div class="action-box">
+
+            <h3>
+                🔴 Top Defect
+            </h3>
+
+            <div class="big-value">
+                Scratch
+            </div>
+
+            <p>
+                Số lượng lỗi:
+                <b>28 pcs</b>
+            </p>
+
+        </div>
+
+
+        <div class="action-box">
+
+            <h3>
+                ⚠️ Lot cần ưu tiên
+            </h3>
+
+            <div class="big-value">
+                LOT004
+            </div>
+
+            <p>
+                NG Rate:
+                <b>5.0%</b>
+            </p>
+
+        </div>
+
+
+        <div class="action-box">
+
+            <h3>
+                🛠 Action Needed
+            </h3>
+
+            <p>
+                Kiểm tra nguyên nhân phát sinh lỗi Scratch
+                tại LOT004 và xác nhận công đoạn liên quan.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+</div>
+</div>
             <h2>
                 📊 Ví dụ báo cáo chất lượng
             </h2>
@@ -342,7 +661,7 @@
 
                         <td>20</td>
 
-                        <td>4.0%</td>
+                        <td class="rate warning">4.0%</td>
 
                     </tr>
 
@@ -357,7 +676,7 @@
 
                         <td>12</td>
 
-                        <td>2.4%</td>
+                        <td class="rate good">2.4%</td>
 
                     </tr>
 
@@ -372,7 +691,7 @@
 
                         <td>8</td>
 
-                        <td>1.6%</td>
+                        <td class="rate good">1.6%</td>
 
                     </tr>
 
@@ -387,7 +706,7 @@
 
                         <td>25</td>
 
-                        <td>5.0%</td>
+                        <td class="rate danger">5.0%</td>
 
                     </tr>
 
@@ -397,7 +716,29 @@
             </table>
 
         </div>
+<div class="report-note">
 
+    <h3>
+        🎯 Cách đọc báo cáo
+    </h3>
+
+    <p>
+        Khi xem báo cáo chất lượng, nên ưu tiên nhìn vào:
+    </p>
+
+    <ul>
+        <li><b>Input Qty</b> — số lượng kiểm tra</li>
+        <li><b>NG Qty</b> — số lượng lỗi</li>
+        <li><b>NG Rate</b> — tỷ lệ lỗi</li>
+        <li><b>Top Defect</b> — lỗi phát sinh nhiều nhất</li>
+    </ul>
+
+    <p>
+        Lot có NG Rate cao nên được ưu tiên kiểm tra nguyên nhân
+        và theo dõi hành động cải thiện.
+    </p>
+
+</div>
 
         <div class="card">
 
@@ -504,6 +845,10 @@
     </footer>
 
 
+<button id="backToTop" onclick="lenDauTrang()">
+    ↑
+</button>
+<script src="script.js"></script>
 </body>
 
 </html>

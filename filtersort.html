@@ -7,7 +7,7 @@
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
-
+<link rel="stylesheet" href="style.css">
     <title>Filter & Sort - Website của tôi</title>
 
     <style>
@@ -173,14 +173,56 @@
             }
 
         }
+.filter-note {
+    margin-top: 25px;
+    padding: 20px;
+    background: #f5faf6;
+    border-left: 5px solid #217346;
+    border-radius: 10px;
+}
 
+.filter-note h3 {
+    margin-top: 0;
+    color: #217346;
+}
+
+.filter-value {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #217346;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+    margin: 10px 0;
+}.sort-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.sort-table th {
+    background: #217346;
+    color: white;
+    padding: 12px;
+    text-align: center;
+}
+
+.sort-table td {
+    padding: 11px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.sort-table tr:nth-child(even) {
+    background: #f5faf6;
+}
     </style>
 
 </head>
 
 
 <body>
-
+<div id="scrollProgress"></div>
 
     <header>
 
@@ -210,7 +252,9 @@
         <a href="lienhe.html">
             Liên hệ
         </a>
-
+<button id="themeToggle">
+    🌙
+</button>
     </nav>
 
 
@@ -349,7 +393,32 @@
                         <th>NG Rate</th>
 
                     </tr>
+<div class="filter-note">
 
+    <h3>
+        🔍 Ví dụ sử dụng Filter
+    </h3>
+
+    <p>
+        Giả sử bạn chỉ muốn xem những Lot có
+        <b>Model = FPC-A</b>.
+    </p>
+
+    <p>
+        Bạn có thể mở Filter tại cột Model
+        và chỉ chọn:
+    </p>
+
+    <div class="filter-value">
+        FPC-A
+    </div>
+
+    <p>
+        Khi đó Excel sẽ chỉ hiển thị các dòng
+        thuộc Model FPC-A.
+    </p>
+
+</div>
                 </thead>
 
 
@@ -397,30 +466,131 @@
         </div>
 
 
-        <div class="card">
+       <div class="filter-note">
 
-            <h2>
-                ⌨️ Phím tắt quan trọng
-            </h2>
+    <h3>
+        ↕️ Ví dụ sử dụng Sort
+    </h3>
 
-            <div class="example">
+    <p>
+        Giả sử bạn muốn tìm Lot có số lượng lỗi
+        <b>NG Qty cao nhất</b>.
+    </p>
 
-Ctrl + Shift + L
-→ Bật / tắt Filter
+    <p>
+        Tại cột <b>NG Qty</b>, chọn:
+    </p>
 
-Alt + ↓
-→ Mở menu Filter
+    <div class="filter-value">
+        Sort Largest to Smallest
+    </div>
 
-Ctrl + A
-→ Chọn vùng dữ liệu
+    <p>
+        Dữ liệu sẽ được sắp xếp như sau:
+    </p>
 
-Ctrl + T
-→ Tạo Table
+    <table class="sort-table">
 
-            </div>
+        <tr>
+            <th>Lot No</th>
+            <th>Model</th>
+            <th>NG Qty</th>
+            <th>NG Rate</th>
+        </tr>
 
-        </div>
+        <tr>
+            <td>LOT004</td>
+            <td>FPC-C</td>
+            <td>30</td>
+            <td>6.3%</td>
+        </tr>
 
+        <tr>
+            <td>LOT001</td>
+            <td>FPC-A</td>
+            <td>25</td>
+            <td>5.2%</td>
+        </tr>
+
+        <tr>
+            <td>LOT003</td>
+            <td>FPC-A</td>
+            <td>15</td>
+            <td>3.1%</td>
+        </tr>
+
+        <tr>
+            <td>LOT002</td>
+            <td>FPC-B</td>
+            <td>8</td>
+            <td>1.6%</td>
+        </tr>
+
+    </table>
+
+    <p>
+        Nhìn vào bảng, bạn có thể thấy ngay
+        <b>LOT004</b> có NG Qty cao nhất và cần được ưu tiên kiểm tra.
+    </p>
+<div class="filter-note">
+
+    <h3>
+        🎯 Filter nhiều điều kiện
+    </h3>
+
+    <p>
+        Bạn có thể lọc nhiều điều kiện cùng lúc.
+    </p>
+
+    <p>
+        Ví dụ:
+    </p>
+
+    <div class="filter-value">
+        Model = FPC-A
+    </div>
+
+    <div class="filter-value">
+        NG Rate > 3%
+    </div>
+
+    <p>
+        Sau khi áp dụng hai điều kiện trên,
+        dữ liệu còn lại sẽ là:
+    </p>
+
+    <table class="sort-table">
+
+        <tr>
+            <th>Lot No</th>
+            <th>Model</th>
+            <th>NG Qty</th>
+            <th>NG Rate</th>
+        </tr>
+
+        <tr>
+            <td>LOT001</td>
+            <td>FPC-A</td>
+            <td>25</td>
+            <td>5.2%</td>
+        </tr>
+
+        <tr>
+            <td>LOT003</td>
+            <td>FPC-A</td>
+            <td>15</td>
+            <td>3.1%</td>
+        </tr>
+
+    </table>
+
+    <p>
+        Như vậy Excel chỉ giữ lại những Lot vừa thuộc
+        <b>FPC-A</b> vừa có <b>NG Rate lớn hơn 3%</b>.
+    </p>
+
+</div>
+</div>
 
         <div class="back">
 
@@ -441,6 +611,10 @@ Ctrl + T
     </footer>
 
 
+<button id="backToTop" onclick="lenDauTrang()">
+    ↑
+</button>
+<script src="script.js"></script>
 </body>
 
 </html>

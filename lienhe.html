@@ -7,7 +7,7 @@
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
-
+  <link rel="stylesheet" href="style.css">
     <title>Liên hệ - Website Excel của tôi</title>
 
     <style>
@@ -25,27 +25,7 @@
 
         /* ===== MENU ===== */
 
-        nav {
-            background: #185c37;
-            padding: 16px 30px;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            gap: 30px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        nav a:hover {
-            color: #b7e4c7;
-        }
+      
 
 
         /* ===== HEADER ===== */
@@ -290,12 +270,7 @@
                 font-size: 34px;
             }
 
-            nav {
-
-                flex-wrap: wrap;
-
-                gap: 15px;
-            }
+           
 
         }
 
@@ -305,7 +280,7 @@
 
 
 <body>
-
+<div id="scrollProgress"></div>
 
     <!-- MENU -->
 
@@ -326,7 +301,9 @@
         <a href="lienhe.html">
             📩 Liên hệ
         </a>
-
+<button id="themeToggle">
+    🌙
+</button>
     </nav>
 
 
@@ -416,53 +393,93 @@
                 <h2>
                     ✉️ Gửi tin nhắn
                 </h2>
+<div data-fs-success>
+    ✅ Tin nhắn đã được gửi thành công!
+</div>
+
+<div data-fs-error>
+    ❌ Không thể gửi tin nhắn. Vui lòng thử lại.
+</div>
+<form id="contact-form">
+
+    <label for="name">
+        Họ và tên
+    </label>
+
+  <input
+    type="text"
+    id="name"
+    name="name"
+    placeholder="Nhập họ và tên"
+    required
+    data-fs-field
+>
 
 
-                <form
-                    onsubmit="guiTinNhan(event)">
+    <label for="email">
+        Email
+    </label>
+
+ <input
+    type="email"
+    id="email"
+    name="email"
+    placeholder="Nhập email"
+    required
+    data-fs-field
+>
 
 
-                    <label for="name">
-                        Họ và tên
-                    </label>
+    <label for="message">
+        Nội dung
+    </label>
 
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder="Nhập họ và tên"
-                        required>
-
-
-                    <label for="email">
-                        Email
-                    </label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Nhập email"
-                        required>
+  <textarea
+    id="message"
+    name="message"
+    placeholder="Nhập nội dung..."
+    required
+    data-fs-field
+></textarea>
 
 
-                    <label for="message">
-                        Nội dung
-                    </label>
-
-                    <textarea
-                        id="message"
-                        placeholder="Nhập nội dung..."
-                        required></textarea>
+    <input
+        type="hidden"
+        name="_subject"
+        value="Tin nhắn mới từ Website Excel"
+    >
 
 
-                    <button type="submit">
+   <button type="submit" data-fs-submit-btn>
+    📤 Gửi tin nhắn
+</button>
 
-                        📤 Gửi tin nhắn
+<div class="social-section">
 
-                    </button>
+    <h2>🌐 Kết nối với tôi</h2>
 
+    <div class="social-icons">
 
-                </form>
+        <a
+            href="https://zalo.me/0878642002"            target="_blank"
+            class="social zalo"
+            title="Zalo"
+        >
+            Z
+        </a>
 
+        <a
+            href="https://www.tiktok.com/@anh.vn.phng7?_r=1&_t=ZS-98m9FK0EesC"
+            target="_blank"
+            class="social tiktok"
+            title="TikTok"
+        >
+            ♪
+        </a>
+
+    </div>
+
+</div>
             </div>
 
 
@@ -496,21 +513,27 @@
     </footer>
 
 
-    <script>
+<script>
+    window.formspree =
+        window.formspree ||
+        function () {
+            (formspree.q = formspree.q || []).push(arguments);
+        };
 
-        function guiTinNhan(event) {
+    formspree("initForm", {
+        formElement: "#contact-form",
+        formId: "xkjwjdvp"
+    });
+</script>
 
-            event.preventDefault();
-
-            alert(
-                "Cảm ơn bạn! Tin nhắn đã được ghi nhận."
-            );
-
-        }
-
-    </script>
-
-
+<script
+    src="https://unpkg.com/@formspree/ajax@1"
+    defer>
+</script>
+<script src="script.js"></script>
+<button id="backToTop" onclick="lenDauTrang()">
+    ↑
+</button>
 </body>
 
 </html>
