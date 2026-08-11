@@ -1809,3 +1809,991 @@ body.dark-mode main .item {
     background: #202020 !important;
     color: #f1f1f1 !important;
 }
+/* ===== FIX DARK MODE TRANG 100 PHÍM TẮT ===== */
+
+body.dark-mode .shortcut-section {
+    background: #121212 !important;
+    color: #f1f1f1 !important;
+}
+
+body.dark-mode .shortcut-heading {
+    color: #f1f1f1 !important;
+}
+
+body.dark-mode .shortcut-heading h2 {
+    color: #7ee2a8 !important;
+}
+
+body.dark-mode .shortcut-heading p {
+    color: #cfcfcf !important;
+}
+
+body.dark-mode .shortcut-search-box {
+    background: #1f1f1f !important;
+    border-color: #444 !important;
+}
+
+body.dark-mode #shortcutSearch {
+    background: transparent !important;
+    color: #f1f1f1 !important;
+}
+
+body.dark-mode #shortcutSearch::placeholder {
+    color: #aaa !important;
+}
+
+body.dark-mode #shortcutContainer {
+    background: #121212 !important;
+}
+body.dark-mode .shortcut-section,
+body.dark-mode .shortcut-section * {
+    box-sizing: border-box;
+}
+body.dark-mode main,
+body.dark-mode .page-content,
+body.dark-mode .content-wrapper {
+    background: #121212 !important;
+}
+/* ===== FIX DARK MODE BẢNG CÔNG THỨC ===== */
+
+body.dark-mode .formula-table-wrapper,
+body.dark-mode .table-wrapper,
+body.dark-mode .formula-section,
+body.dark-mode .table-container {
+    background: #1e1e1e !important;
+    color: #f1f1f1 !important;
+    border-color: #333 !important;
+}
+
+body.dark-mode table {
+    background: #1e1e1e !important;
+    color: #f1f1f1 !important;
+}
+
+body.dark-mode table td {
+    background: #252525 !important;
+    color: #f1f1f1 !important;
+    border-color: #444 !important;
+}
+
+body.dark-mode table th {
+    background: #217346 !important;
+    color: white !important;
+}
+
+body.dark-mode table code {
+    color: #f1f1f1 !important;
+}
+/* ===== FIX DARK MODE TABLE BOX ===== */
+
+body.dark-mode .table-box {
+    background: #1e1e1e !important;
+    border-color: #333 !important;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-mode .table-box table {
+    background: #1e1e1e !important;
+    color: #f1f1f1 !important;
+}
+
+body.dark-mode .table-box td {
+    background: #252525 !important;
+    color: #f1f1f1 !important;
+    border-color: #444 !important;
+}
+
+body.dark-mode .table-box th {
+    background: #217346 !important;
+    color: #ffffff !important;
+    border-color: #217346 !important;
+}
+/* ===== LỌC PHÍM TẮT ===== */
+
+.shortcut-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.shortcut-filter {
+    padding: 8px 14px;
+    border: 1px solid #217346;
+    border-radius: 20px;
+
+    background: transparent;
+    color: #217346;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.shortcut-filter:hover,
+.shortcut-filter.active {
+    background: #217346;
+    color: white;
+}
+
+body.dark-mode .shortcut-filter {
+    color: #7ee2a8;
+    border-color: #7ee2a8;
+}
+
+body.dark-mode .shortcut-filter.active {
+    background: #217346;
+    color: white;
+}
+/* ===== MENU ACTIVE ===== */
+
+nav a.active {
+    background: white;
+    color: #217346 !important;
+    border-radius: 8px;
+}
+/* ===== EXCEL FORMULA FINDER ===== */
+
+.formula-finder-page {
+    min-height: 80vh;
+    padding: 50px 20px;
+}
+
+.formula-finder-box {
+    max-width: 900px;
+    margin: auto;
+
+    padding: 35px;
+
+    background: white;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.08);
+}
+
+.formula-finder-box h1 {
+    margin-top: 0;
+    color: #217346;
+}
+
+.formula-finder-box > p {
+    color: #666;
+    line-height: 1.7;
+}
+
+.formula-input-box {
+    display: flex;
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+.formula-input-box input {
+    flex: 1;
+
+    padding: 14px 16px;
+
+    border: 1px solid #ccc;
+    border-radius: 10px;
+
+    font-size: 16px;
+}
+
+.formula-input-box button {
+    padding: 12px 20px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #217346;
+    color: white;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.formula-examples {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 15px;
+}
+
+.formula-examples button {
+    padding: 7px 12px;
+
+    border: 1px solid #217346;
+    border-radius: 20px;
+
+    background: transparent;
+    color: #217346;
+
+    cursor: pointer;
+}
+
+.formula-result {
+    margin-top: 30px;
+    padding: 22px;
+
+    background: #f3f8f5;
+
+    border-left: 5px solid #217346;
+    border-radius: 10px;
+}
+
+
+/* DARK MODE */
+
+body.dark-mode .formula-finder-box {
+    background: #1e1e1e;
+}
+
+body.dark-mode .formula-finder-box h1 {
+    color: #7ee2a8;
+}
+
+body.dark-mode .formula-finder-box > p {
+    color: #ddd;
+}
+
+body.dark-mode .formula-input-box input {
+    background: #262626;
+    color: white;
+    border-color: #555;
+}
+
+body.dark-mode .formula-result {
+    background: #262626;
+    color: #eee;
+}
+
+body.dark-mode .formula-examples button {
+    color: #7ee2a8;
+    border-color: #7ee2a8;
+}
+
+
+@media (max-width: 650px) {
+
+    .formula-input-box {
+        flex-direction: column;
+    }
+
+}
+/* ===== KẾT QUẢ FORMULA FINDER ===== */
+
+.formula-result h2 {
+    color: #217346;
+    margin-top: 0;
+}
+
+.formula-code {
+    margin: 18px 0;
+    padding: 15px;
+
+    background: #1f1f1f;
+    color: #7ee2a8;
+
+    border-radius: 8px;
+
+    font-family: Consolas, monospace;
+    font-size: 16px;
+
+    overflow-x: auto;
+}
+
+.copy-formula-btn {
+    padding: 9px 15px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: #217346;
+    color: white;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.copy-formula-btn:hover {
+    background: #185c37;
+}
+
+body.dark-mode .formula-result h2 {
+    color: #7ee2a8;
+}
+/* ===== FORMULA BUILDER ===== */
+
+.formula-builder {
+    max-width: 900px;
+    margin: 35px auto 0;
+    padding: 30px;
+
+    background: white;
+    border-radius: 16px;
+
+    box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+}
+
+.formula-builder h2 {
+    margin-top: 0;
+    color: #217346;
+}
+
+.builder-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.builder-grid label {
+    display: block;
+    margin-bottom: 7px;
+
+    font-weight: bold;
+    color: #217346;
+}
+
+.builder-grid input {
+    width: 100%;
+    padding: 12px;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.builder-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.builder-actions button {
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #217346;
+    color: white;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#builderResult {
+    margin-top: 20px;
+}
+
+body.dark-mode .formula-builder {
+    background: #1e1e1e;
+}
+
+body.dark-mode .builder-grid input {
+    background: #262626;
+    color: white;
+    border-color: #555;
+}
+
+body.dark-mode .builder-grid label,
+body.dark-mode .formula-builder h2 {
+    color: #7ee2a8;
+}
+
+@media (max-width: 700px) {
+
+    .builder-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* ===== FORMULA BUILDER NÂNG CAO ===== */
+
+.advanced-builder {
+    margin-top: 30px;
+}
+
+.builder-block {
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.builder-block:last-of-type {
+    border-bottom: none;
+}
+
+.builder-block h3 {
+    margin-top: 0;
+    color: #217346;
+}
+
+.builder-block button {
+    margin-top: 15px;
+
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #217346;
+    color: white;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.builder-block button:hover {
+    background: #185c37;
+}
+
+body.dark-mode .builder-block {
+    border-color: #444;
+}
+
+body.dark-mode .builder-block h3 {
+    color: #7ee2a8;
+}
+/* ===== FORMULA TESTER ===== */
+
+.formula-tester {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 30px;
+
+    background: white;
+    border-radius: 16px;
+
+    box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+}
+
+.formula-tester h2 {
+    margin-top: 0;
+    color: #217346;
+}
+
+.tester-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+.tester-grid label {
+    display: block;
+    margin-bottom: 7px;
+
+    font-weight: bold;
+    color: #217346;
+}
+
+.tester-grid input {
+    width: 100%;
+    padding: 12px;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.tester-btn {
+    margin-top: 20px;
+
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #217346;
+    color: white;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#testerResult {
+    margin-top: 20px;
+}
+
+.test-result-card {
+    padding: 18px;
+
+    border-radius: 12px;
+
+    background: #f3f8f5;
+    border-left: 5px solid #217346;
+}
+
+.test-result-card strong {
+    color: #217346;
+}
+
+.test-result-card.pass {
+    background: #d8f3dc;
+    border-left-color: #28a745;
+}
+
+.test-result-card.ng {
+    background: #f8d7da;
+    border-left-color: #dc3545;
+}
+
+
+/* DARK MODE */
+
+body.dark-mode .formula-tester {
+    background: #1e1e1e;
+}
+
+body.dark-mode .formula-tester h2,
+body.dark-mode .tester-grid label {
+    color: #7ee2a8;
+}
+
+body.dark-mode .tester-grid input {
+    background: #262626;
+    color: white;
+    border-color: #555;
+}
+
+body.dark-mode .test-result-card {
+    background: #262626;
+    color: #eee;
+}
+
+body.dark-mode .test-result-card.pass {
+    background: #173b24;
+}
+
+body.dark-mode .test-result-card.ng {
+    background: #442020;
+}
+
+
+@media (max-width: 700px) {
+
+    .tester-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* ===== MINI QC DASHBOARD ===== */
+
+.mini-dashboard {
+    max-width: 1100px;
+    margin: 35px auto;
+    padding: 30px;
+
+    background: white;
+    border-radius: 16px;
+
+    box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+}
+
+.mini-dashboard h2 {
+    margin-top: 0;
+    color: #217346;
+}
+
+.dashboard-input-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(150px, 1.4fr)
+        minmax(120px, 1fr)
+        minmax(120px, 1fr)
+        minmax(100px, 0.8fr)
+        minmax(100px, auto);
+
+    gap: 10px;
+
+    margin-top: 20px;
+
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.dashboard-input-grid input {
+    padding: 11px;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.dashboard-input-grid button {
+    min-width: 100px;
+
+    padding: 10px 14px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #217346;
+    color: white;
+
+    font-weight: bold;
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+
+/* KPI */
+
+.dashboard-kpi {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.dashboard-kpi div {
+    padding: 18px;
+
+    background: #f3f8f5;
+
+    border-radius: 12px;
+
+    text-align: center;
+}
+
+.dashboard-kpi span {
+    display: block;
+
+    font-size: 13px;
+    color: #666;
+
+    margin-bottom: 7px;
+}
+
+.dashboard-kpi strong {
+    font-size: 24px;
+    color: #217346;
+}
+
+
+/* TABLE */
+
+.dashboard-table-wrap {
+    overflow-x: auto;
+}
+
+.dashboard-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+    padding: 11px;
+
+    border-bottom: 1px solid #ddd;
+
+    text-align: center;
+}
+
+.dashboard-table th {
+    background: #217346;
+    color: white;
+}
+
+.dashboard-pass {
+    color: #198754;
+    font-weight: bold;
+}
+
+.dashboard-ng {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.dashboard-delete {
+    border: none;
+    border-radius: 6px;
+
+    padding: 6px 10px;
+
+    background: #dc3545;
+    color: white;
+
+    cursor: pointer;
+}
+
+
+/* DARK MODE */
+
+body.dark-mode .mini-dashboard {
+    background: #1e1e1e;
+}
+
+body.dark-mode .mini-dashboard h2,
+body.dark-mode .dashboard-kpi strong {
+    color: #7ee2a8;
+}
+
+body.dark-mode .dashboard-input-grid input {
+    background: #262626;
+    color: white;
+
+    border-color: #555;
+}
+
+body.dark-mode .dashboard-kpi div {
+    background: #262626;
+}
+
+body.dark-mode .dashboard-kpi span {
+    color: #bbb;
+}
+
+body.dark-mode .dashboard-table td {
+    color: #eee;
+    border-color: #444;
+}
+
+
+@media (max-width: 800px) {
+
+    .dashboard-input-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .dashboard-kpi {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 500px) {
+
+    .dashboard-input-grid,
+    .dashboard-kpi {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* ===== BIỂU ĐỒ MINI QC DASHBOARD ===== */
+
+.dashboard-chart-section {
+    margin-top: 30px;
+}
+
+.dashboard-chart-section h3 {
+    color: #217346;
+    margin-bottom: 18px;
+}
+
+.dashboard-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+
+    min-height: 260px;
+
+    padding: 20px;
+
+    background: #f7faf8;
+
+    border-radius: 12px;
+
+    overflow-x: auto;
+}
+
+.chart-lot {
+    min-width: 75px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.chart-bar-wrap {
+    height: 180px;
+    width: 48px;
+
+    display: flex;
+    align-items: flex-end;
+
+    background: #e5e5e5;
+
+    border-radius: 7px;
+
+    overflow: hidden;
+}
+
+.chart-bar {
+    width: 100%;
+
+    background: #217346;
+
+    transition: height 0.3s ease;
+}
+
+.chart-bar.ng {
+    background: #dc3545;
+}
+
+.chart-value {
+    margin-top: 7px;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.chart-label {
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    max-width: 75px;
+
+    text-align: center;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* DARK MODE */
+
+body.dark-mode .dashboard-chart {
+    background: #202020;
+}
+
+body.dark-mode .chart-bar-wrap {
+    background: #333;
+}
+
+body.dark-mode .dashboard-chart-section h3 {
+    color: #7ee2a8;
+}
+
+body.dark-mode .chart-value,
+body.dark-mode .chart-label {
+    color: #eee;
+}
+/* ===== XÓA TOÀN BỘ DASHBOARD ===== */
+
+.dashboard-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    margin: 10px 0 18px;
+}
+
+.clear-dashboard-btn {
+    padding: 9px 14px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #dc3545;
+    color: white;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.clear-dashboard-btn:hover {
+    background: #b02a37;
+}
+.export-dashboard-btn {
+    padding: 9px 14px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #217346;
+    color: white;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.export-dashboard-btn:hover {
+    background: #185c37;
+}
+
+.dashboard-actions {
+    gap: 10px;
+}
+/* ===== BỘ LỌC DASHBOARD ===== */
+
+.dashboard-filters {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    margin: 20px 0;
+}
+
+.dashboard-filters select {
+    padding: 10px 14px;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    background: white;
+    color: #222;
+
+    min-width: 180px;
+}
+
+body.dark-mode .dashboard-filters select {
+    background: #262626;
+    color: #f1f1f1;
+    border-color: #555;
+}
+/* ===== TARGET LINE DASHBOARD ===== */
+
+.dashboard-chart-wrapper {
+    position: relative;
+}
+
+.dashboard-target-line {
+    position: absolute;
+
+    left: 20px;
+    right: 20px;
+
+    top: 50%;
+
+    border-top: 2px dashed #dc3545;
+
+    z-index: 5;
+
+    pointer-events: none;
+}
+
+.dashboard-target-line span {
+    position: absolute;
+
+    right: 0;
+    top: -24px;
+
+    padding: 3px 7px;
+
+    background: #dc3545;
+    color: white;
+
+    border-radius: 5px;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+body.dark-mode .dashboard-target-line {
+    border-color: #ff7373;
+}
+
+body.dark-mode .dashboard-target-line span {
+    background: #b02a37;
+}

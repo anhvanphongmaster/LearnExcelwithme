@@ -1674,6 +1674,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     search.addEventListener("input", function () {
 
+    capNhatDanhSachPhimTat();
+
+});
+
         const keyword =
             this.value.toLowerCase().trim();
 
@@ -1692,4 +1696,1423 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+
+let shortcutCategory = "Tất cả";
+
+function locPhimTat(category, button) {
+
+    shortcutCategory = category;
+
+    document
+        .querySelectorAll(".shortcut-filter")
+        .forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+    if (button) {
+        button.classList.add("active");
+    }
+
+    capNhatDanhSachPhimTat();
+}
+
+
+function capNhatDanhSachPhimTat() {
+
+    const search =
+        document.getElementById("shortcutSearch");
+
+    const keyword =
+        search
+            ? search.value.toLowerCase().trim()
+            : "";
+
+    const results =
+        excelShortcuts.filter(function(item) {
+
+            const matchSearch =
+                item[0].toLowerCase().includes(keyword) ||
+                item[1].toLowerCase().includes(keyword) ||
+                item[2].toLowerCase().includes(keyword);
+
+            const matchCategory =
+                shortcutCategory === "Tất cả" ||
+                item[2] === shortcutCategory;
+
+            return matchSearch && matchCategory;
+        });
+
+    renderShortcuts(results);
+}
+/* ===== HIGHLIGHT MENU THEO TRANG HIỆN TẠI ===== */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const currentPage =
+        window.location.pathname.split("/").pop() || "index.html";
+
+    const menuLinks =
+        document.querySelectorAll("nav a");
+
+    menuLinks.forEach(function(link) {
+
+        link.classList.remove("active");
+
+        const href =
+            link.getAttribute("href");
+
+        if (href === currentPage) {
+            link.classList.add("active");
+        }
+
+    });
+
 });
+/* ===== EXCEL FORMULA FINDER ===== */
+
+const formulaDatabase = [
+
+    {
+        keywords: [
+            "tính tổng theo điều kiện",
+            "sumif",
+            "sumifs",
+            "tổng theo model",
+            "tổng ng theo model"
+        ],
+        title: "SUMIF / SUMIFS",
+        formula: '=SUMIFS(E:E,B:B,"FPC-A01")',
+        description:
+            "Dùng để tính tổng theo một hoặc nhiều điều kiện.",
+        example:
+            "Ví dụ: cộng NG Qty ở cột E cho Model FPC-A01 ở cột B."
+    },
+
+    {
+        keywords: [
+            "tra cứu dữ liệu",
+            "tra cứu mã",
+            "vlookup",
+            "xlookup",
+            "lấy tên sản phẩm"
+        ],
+        title: "XLOOKUP / VLOOKUP",
+        formula: '=XLOOKUP(A2,H:H,I:I,"Không tìm thấy")',
+        description:
+            "Dùng để tìm một giá trị và trả về dữ liệu tương ứng.",
+        example:
+            "Ví dụ: lấy tên sản phẩm dựa trên mã sản phẩm ở ô A2."
+    },
+
+    {
+        keywords: [
+            "đếm số lỗi",
+            "đếm ng",
+            "countif",
+            "countifs"
+        ],
+        title: "COUNTIF / COUNTIFS",
+        formula: '=COUNTIF(F:F,"NG")',
+        description:
+            "Dùng để đếm số ô thỏa mãn điều kiện.",
+        example:
+            "Ví dụ: đếm số dòng có trạng thái NG ở cột F."
+    },
+
+    {
+        keywords: [
+            "pass ng",
+            "kiểm tra điều kiện",
+            "if",
+            "ng rate lớn hơn",
+            "ng rate >"
+        ],
+        title: "IF",
+        formula: '=IF(F2<=3%,"PASS","NG")',
+        description:
+            "Dùng để trả về kết quả khác nhau tùy điều kiện.",
+        example:
+            "Nếu NG Rate ở F2 nhỏ hơn hoặc bằng 3% thì PASS, ngược lại NG."
+    },
+
+    {
+        keywords: [
+            "tính ng rate",
+            "ng rate",
+            "tỷ lệ lỗi"
+        ],
+        title: "Tính NG Rate",
+        formula: '=IF(D2=0,0,E2/D2)',
+        description:
+            "Tính tỷ lệ lỗi bằng NG Qty chia Input Qty.",
+        example:
+            "Nếu Input Qty ở D2 và NG Qty ở E2 thì kết quả là NG Rate."
+    },
+
+    {
+        keywords: [
+            "tìm giá trị lớn nhất",
+            "max",
+            "lớn nhất"
+        ],
+        title: "MAX",
+        formula: '=MAX(E2:E100)',
+        description:
+            "Trả về giá trị lớn nhất trong vùng.",
+        example:
+            "Ví dụ: tìm NG Qty lớn nhất từ E2 đến E100."
+    },
+
+    {
+        keywords: [
+            "tìm giá trị nhỏ nhất",
+            "min",
+            "nhỏ nhất"
+        ],
+        title: "MIN",
+        formula: '=MIN(E2:E100)',
+        description:
+            "Trả về giá trị nhỏ nhất trong vùng.",
+        example:
+            "Ví dụ: tìm NG Qty nhỏ nhất."
+    },
+
+    {
+        keywords: [
+            "tính trung bình",
+            "average",
+            "trung bình"
+        ],
+        title: "AVERAGE",
+        formula: '=AVERAGE(E2:E100)',
+        description:
+            "Tính giá trị trung bình của một vùng.",
+        example:
+            "Ví dụ: tính NG Qty trung bình."
+    },
+
+    {
+        keywords: [
+            "xếp hạng",
+            "rank",
+            "thứ hạng"
+        ],
+        title: "RANK",
+        formula: '=RANK(E2,$E$2:$E$100,0)',
+        description:
+            "Xếp hạng giá trị từ lớn xuống nhỏ.",
+        example:
+            "Ví dụ: xếp hạng NG Qty của từng Lot."
+    },
+
+    {
+        keywords: [
+            "nối chuỗi",
+            "ghép chữ",
+            "concatenate",
+            "textjoin"
+        ],
+        title: "TEXTJOIN",
+        formula: '=TEXTJOIN("-",TRUE,A2,B2,C2)',
+        description:
+            "Ghép nhiều ô thành một chuỗi.",
+        example:
+            "Ví dụ: ghép Model, Lot No và Process bằng dấu -."
+    },
+
+    {
+        keywords: [
+            "đếm ký tự",
+            "len",
+            "độ dài chuỗi"
+        ],
+        title: "LEN",
+        formula: '=LEN(A2)',
+        description:
+            "Đếm số ký tự trong một ô.",
+        example:
+            "Ví dụ: kiểm tra độ dài mã sản phẩm."
+    },
+
+    {
+        keywords: [
+            "lấy ký tự bên trái",
+            "left"
+        ],
+        title: "LEFT",
+        formula: '=LEFT(A2,3)',
+        description:
+            "Lấy số ký tự từ bên trái.",
+        example:
+            "Ví dụ: lấy 3 ký tự đầu của mã."
+    },
+
+    {
+        keywords: [
+            "lấy ký tự bên phải",
+            "right"
+        ],
+        title: "RIGHT",
+        formula: '=RIGHT(A2,4)',
+        description:
+            "Lấy số ký tự từ bên phải.",
+        example:
+            "Ví dụ: lấy 4 ký tự cuối của Lot No."
+    },
+
+    {
+        keywords: [
+            "lấy ký tự ở giữa",
+            "mid"
+        ],
+        title: "MID",
+        formula: '=MID(A2,3,5)',
+        description:
+            "Lấy một đoạn ký tự ở giữa chuỗi.",
+        example:
+            "Ví dụ: lấy 5 ký tự từ vị trí thứ 3."
+    },
+
+    {
+        keywords: [
+            "xóa khoảng trắng",
+            "trim",
+            "khoảng trắng thừa"
+        ],
+        title: "TRIM",
+        formula: '=TRIM(A2)',
+        description:
+            "Xóa khoảng trắng thừa trong chuỗi.",
+        example:
+            "Dùng khi dữ liệu copy từ hệ thống có nhiều khoảng trắng."
+    },
+
+    {
+        keywords: [
+            "ngày hôm nay",
+            "today",
+            "ngày hiện tại"
+        ],
+        title: "TODAY",
+        formula: '=TODAY()',
+        description:
+            "Trả về ngày hiện tại.",
+        example:
+            "Có thể dùng để tính số ngày tồn tại của một Issue."
+    },
+
+    {
+        keywords: [
+            "ngày giờ hiện tại",
+            "now",
+            "giờ hiện tại"
+        ],
+        title: "NOW",
+        formula: '=NOW()',
+        description:
+            "Trả về ngày và giờ hiện tại.",
+        example:
+            "Dùng để ghi thời gian cập nhật báo cáo."
+    },
+
+    {
+        keywords: [
+            "đếm ô có dữ liệu",
+            "counta"
+        ],
+        title: "COUNTA",
+        formula: '=COUNTA(A2:A100)',
+        description:
+            "Đếm số ô không trống.",
+        example:
+            "Ví dụ: đếm số Lot có dữ liệu."
+    },
+
+    {
+        keywords: [
+            "đếm số",
+            "count"
+        ],
+        title: "COUNT",
+        formula: '=COUNT(E2:E100)',
+        description:
+            "Đếm các ô chứa số.",
+        example:
+            "Ví dụ: đếm số dòng có NG Qty dạng số."
+    },
+
+    {
+        keywords: [
+            "làm tròn",
+            "round"
+        ],
+        title: "ROUND",
+        formula: '=ROUND(F2,4)',
+        description:
+            "Làm tròn số đến số chữ số mong muốn.",
+        example:
+            "Ví dụ: làm tròn NG Rate đến 4 chữ số thập phân."
+    }
+
+];
+
+
+/* ===== TÌM CÔNG THỨC ===== */
+
+function timCongThucExcel() {
+
+    const input =
+        document.getElementById("formulaQuery");
+
+    const resultBox =
+        document.getElementById("formulaResult");
+
+    if (!input || !resultBox) return;
+
+    const keyword =
+        input.value.toLowerCase().trim();
+
+    if (keyword === "") {
+
+        resultBox.innerHTML =
+            "<p>⚠️ Hãy nhập yêu cầu cần làm trong Excel.</p>";
+
+        return;
+    }
+
+    const result =
+        formulaDatabase.find(function(item) {
+
+            return item.keywords.some(function(key) {
+
+                return (
+                    keyword.includes(key) ||
+                    key.includes(keyword)
+                );
+
+            });
+
+        });
+
+
+    if (!result) {
+
+        resultBox.innerHTML = `
+            <h3>🤔 Chưa tìm thấy công thức phù hợp</h3>
+
+            <p>
+                Thử nhập ngắn hơn, ví dụ:
+                <strong>tổng theo điều kiện</strong>,
+                <strong>tra cứu</strong>,
+                <strong>đếm lỗi</strong>,
+                <strong>NG Rate</strong>.
+            </p>
+        `;
+
+        return;
+    }
+
+
+    resultBox.innerHTML = `
+        <h2>✅ ${result.title}</h2>
+
+        <p>${result.description}</p>
+
+        <div class="formula-code">
+            ${result.formula}
+        </div>
+
+        <p>
+            <strong>Ví dụ:</strong>
+            ${result.example}
+        </p>
+
+        <button
+            class="copy-formula-btn"
+            onclick="copyFormula(this)"
+            data-formula='${result.formula.replace(/'/g, "&#39;")}'
+        >
+            📋 Sao chép công thức
+        </button>
+    `;
+
+}
+
+
+/* ===== NÚT GỢI Ý ===== */
+
+function dienYeuCau(text) {
+
+    const input =
+        document.getElementById("formulaQuery");
+
+    if (!input) return;
+
+    input.value = text;
+
+    timCongThucExcel();
+
+}
+
+
+/* ===== COPY CÔNG THỨC ===== */
+
+function copyFormula(button) {
+
+    const formula =
+        button.dataset.formula;
+
+    navigator.clipboard.writeText(formula);
+
+    const oldText =
+        button.textContent;
+
+    button.textContent =
+        "✅ Đã sao chép";
+
+    setTimeout(function() {
+
+        button.textContent =
+            oldText;
+
+    }, 1500);
+
+}
+/* ===== FORMULA BUILDER ===== */
+
+function taoCongThucNgRate() {
+
+    const inputCell =
+        document.getElementById("inputCell").value.trim();
+
+    const ngCell =
+        document.getElementById("ngCell").value.trim();
+
+    const result =
+        document.getElementById("builderResult");
+
+    if (!inputCell || !ngCell) {
+
+        result.innerHTML =
+            "<p>⚠️ Hãy nhập ô Input Qty và NG Qty.</p>";
+
+        return;
+    }
+
+    const formula =
+        `=IF(${inputCell}=0,0,${ngCell}/${inputCell})`;
+
+    hienThiCongThucBuilder(
+        "NG Rate",
+        formula
+    );
+}
+
+
+function taoCongThucPassNg() {
+
+    const inputCell =
+        document.getElementById("inputCell").value.trim();
+
+    const ngCell =
+        document.getElementById("ngCell").value.trim();
+
+    const target =
+        document.getElementById("targetRate").value.trim();
+
+    const result =
+        document.getElementById("builderResult");
+
+    if (!inputCell || !ngCell || !target) {
+
+        result.innerHTML =
+            "<p>⚠️ Hãy nhập đủ Input Qty, NG Qty và Target.</p>";
+
+        return;
+    }
+
+    const formula =
+        `=IF(${inputCell}=0,"",IF(${ngCell}/${inputCell}<=${target},"PASS","NG"))`;
+
+    hienThiCongThucBuilder(
+        "PASS / NG",
+        formula
+    );
+}
+
+
+function hienThiCongThucBuilder(title, formula) {
+
+    const result =
+        document.getElementById("builderResult");
+
+    if (!result) return;
+
+    result.innerHTML = `
+        <h3>${title}</h3>
+
+        <div class="formula-code">
+            ${formula}
+        </div>
+
+        <button
+            class="copy-formula-btn"
+            onclick="copyBuilderFormula(this)"
+            data-formula='${formula.replace(/'/g, "&#39;")}'
+        >
+            📋 Sao chép công thức
+        </button>
+    `;
+}
+
+
+function copyBuilderFormula(button) {
+
+    const formula =
+        button.dataset.formula;
+
+    navigator.clipboard.writeText(formula);
+
+    button.textContent =
+        "✅ Đã sao chép";
+
+    setTimeout(function() {
+
+        button.textContent =
+            "📋 Sao chép công thức";
+
+    }, 1500);
+}
+/* ===== SUMIFS BUILDER ===== */
+
+function taoSumifs() {
+
+    const sumRange =
+        document.getElementById("sumRange").value.trim();
+
+    const criteriaRange =
+        document.getElementById("sumCriteriaRange").value.trim();
+
+    const criteria =
+        document.getElementById("sumCriteria").value.trim();
+
+    if (!sumRange || !criteriaRange || !criteria) {
+        hienThiAdvancedFormula(
+            "⚠️ Hãy nhập đủ thông tin SUMIFS."
+        );
+        return;
+    }
+
+    const formula =
+        `=SUMIFS(${sumRange},${criteriaRange},"${criteria}")`;
+
+    hienThiAdvancedFormula(formula);
+}
+
+
+/* ===== COUNTIFS BUILDER ===== */
+
+function taoCountifs() {
+
+    const range =
+        document.getElementById("countCriteriaRange").value.trim();
+
+    const criteria =
+        document.getElementById("countCriteria").value.trim();
+
+    if (!range || !criteria) {
+        hienThiAdvancedFormula(
+            "⚠️ Hãy nhập vùng và điều kiện COUNTIFS."
+        );
+        return;
+    }
+
+    const formula =
+        `=COUNTIFS(${range},"${criteria}")`;
+
+    hienThiAdvancedFormula(formula);
+}
+
+
+/* ===== XLOOKUP BUILDER ===== */
+
+function taoXlookup() {
+
+    const value =
+        document.getElementById("lookupValue").value.trim();
+
+    const lookupRange =
+        document.getElementById("lookupRange").value.trim();
+
+    const returnRange =
+        document.getElementById("returnRange").value.trim();
+
+    if (!value || !lookupRange || !returnRange) {
+        hienThiAdvancedFormula(
+            "⚠️ Hãy nhập đủ thông tin XLOOKUP."
+        );
+        return;
+    }
+
+    const formula =
+        `=XLOOKUP(${value},${lookupRange},${returnRange},"Không tìm thấy")`;
+
+    hienThiAdvancedFormula(formula);
+}
+
+
+/* ===== HIỂN THỊ KẾT QUẢ ===== */
+
+function hienThiAdvancedFormula(formula) {
+
+    const result =
+        document.getElementById("advancedBuilderResult");
+
+    if (!result) return;
+
+    if (formula.startsWith("⚠️")) {
+
+        result.innerHTML =
+            `<p>${formula}</p>`;
+
+        return;
+    }
+
+    result.innerHTML = `
+        <div class="formula-code">
+            ${formula}
+        </div>
+
+        <button
+            class="copy-formula-btn"
+            onclick="copyBuilderFormula(this)"
+            data-formula='${formula.replace(/'/g, "&#39;")}'
+        >
+            📋 Sao chép công thức
+        </button>
+    `;
+}
+/* ===== FORMULA TESTER ===== */
+
+function testNgFormula() {
+
+    const inputQty =
+        Number(
+            document.getElementById("testInputQty").value
+        );
+
+    const ngQty =
+        Number(
+            document.getElementById("testNgQty").value
+        );
+
+    const target =
+        Number(
+            document.getElementById("testTarget").value
+        );
+
+    const result =
+        document.getElementById("testerResult");
+
+    if (!result) return;
+
+    if (
+        inputQty <= 0 ||
+        ngQty < 0 ||
+        target < 0
+    ) {
+
+        result.innerHTML = `
+            <div class="test-result-card ng">
+                ⚠️ Hãy nhập dữ liệu hợp lệ.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    const ngRate =
+        (ngQty / inputQty) * 100;
+
+    const status =
+        ngRate <= target
+            ? "PASS"
+            : "NG";
+
+
+    const statusClass =
+        status === "PASS"
+            ? "pass"
+            : "ng";
+
+
+    result.innerHTML = `
+        <div class="test-result-card ${statusClass}">
+
+            <p>
+                <strong>Input Qty:</strong>
+                ${inputQty}
+            </p>
+
+            <p>
+                <strong>NG Qty:</strong>
+                ${ngQty}
+            </p>
+
+            <p>
+                <strong>NG Rate:</strong>
+                ${ngRate.toFixed(2)}%
+            </p>
+
+            <p>
+                <strong>Target:</strong>
+                ${target}%
+            </p>
+
+            <p>
+                <strong>Kết quả:</strong>
+                ${status === "PASS"
+                    ? "✅ PASS"
+                    : "❌ NG"}
+            </p>
+
+        </div>
+    `;
+
+}
+/* ===== MINI QC DASHBOARD ===== */
+
+let dashboardLots =
+    JSON.parse(
+        localStorage.getItem("dashboardLots")
+    ) || [];
+
+function themLotDashboard() {
+
+    const lot =
+        document.getElementById("dashLot").value.trim();
+
+    const model =
+        document.getElementById("dashModel").value.trim();
+
+    const process =
+        document.getElementById("dashProcess").value.trim();
+
+    const input =
+        Number(
+            document.getElementById("dashInput").value
+        );
+
+    const ng =
+        Number(
+            document.getElementById("dashNg").value
+        );
+
+    const target =
+        Number(
+            document.getElementById("dashTarget").value
+        );
+
+
+    if (
+        !lot ||
+        !model ||
+        !process ||
+        input <= 0 ||
+        ng < 0 ||
+        target < 0
+    ) {
+
+        alert("Hãy nhập đầy đủ dữ liệu Lot.");
+
+        return;
+    }
+
+
+    dashboardLots.push({
+        lot: lot,
+        model: model,
+        process: process,
+        input: input,
+        ng: ng,
+        target: target
+    });
+
+
+    /* LƯU DỮ LIỆU */
+
+    localStorage.setItem(
+        "dashboardLots",
+        JSON.stringify(dashboardLots)
+    );
+
+
+    /* XÓA NỘI DUNG SAU KHI THÊM */
+
+    document.getElementById("dashLot").value = "";
+    document.getElementById("dashModel").value = "";
+    document.getElementById("dashProcess").value = "";
+    document.getElementById("dashInput").value = "";
+    document.getElementById("dashNg").value = "";
+
+
+    /* CẬP NHẬT DASHBOARD + BIỂU ĐỒ */
+
+    capNhatDashboard();
+
+}
+/* ===== BIỂU ĐỒ NG RATE THEO LOT ===== */
+function capNhatBieuDoDashboard() {
+
+    const chart =
+        document.getElementById("dashboardChart");
+
+    if (!chart) return;
+
+
+    const modelElement =
+        document.getElementById("filterModel");
+
+    const processElement =
+        document.getElementById("filterProcess");
+
+
+    const filterModel =
+        modelElement
+            ? modelElement.value
+            : "all";
+
+    const filterProcess =
+        processElement
+            ? processElement.value
+            : "all";
+
+
+    const filteredLots =
+        dashboardLots.filter(function(item) {
+
+            const modelOk =
+                filterModel === "all" ||
+                item.model === filterModel;
+
+            const processOk =
+                filterProcess === "all" ||
+                item.process === filterProcess;
+
+            return modelOk && processOk;
+
+        });
+
+
+    chart.innerHTML = "";
+
+
+    if (filteredLots.length === 0) {
+
+        chart.innerHTML =
+            "<p>Chưa có dữ liệu để hiển thị biểu đồ.</p>";
+
+        return;
+    }
+
+
+    const rates =
+        filteredLots.map(function(item) {
+
+            if (!item.input || item.input <= 0) {
+                return 0;
+            }
+
+            return (
+                item.ng / item.input
+            ) * 100;
+
+        });
+
+
+    const maxRate =
+        Math.max(
+            ...rates,
+            5
+        );
+
+
+    filteredLots.forEach(
+        function(item, index) {
+
+            const rate =
+                rates[index];
+
+            const height =
+                Math.max(
+                    4,
+                    Math.min(
+                        (rate / maxRate) * 100,
+                        100
+                    )
+                );
+
+            const isNg =
+                rate > Number(item.target);
+
+
+            const lotElement =
+                document.createElement("div");
+
+            lotElement.className =
+                "chart-lot";
+
+
+            lotElement.innerHTML = `
+
+                <div class="chart-bar-wrap">
+
+                    <div
+                        class="chart-bar ${isNg ? "ng" : ""}"
+                        style="height: ${height}%"
+                        title="${item.lot}: ${rate.toFixed(2)}%"
+                    >
+                    </div>
+
+                </div>
+
+                <div class="chart-value">
+                    ${rate.toFixed(2)}%
+                </div>
+
+                <div class="chart-label">
+                    ${item.lot}
+                </div>
+
+            `;
+
+
+            chart.appendChild(
+                lotElement
+            );
+
+        }
+    );
+
+}
+
+function xoaLotDashboard(index) {
+
+    dashboardLots.splice(index, 1);
+
+    localStorage.setItem(
+        "dashboardLots",
+        JSON.stringify(dashboardLots)
+    );
+
+    capNhatDashboard();
+
+}
+
+
+function capNhatDashboard() {
+
+    const body =
+        document.getElementById("dashboardBody");
+
+    if (!body) return;
+capNhatBoLocDashboard();
+
+const filterModel =
+    document.getElementById("filterModel")
+        ? document.getElementById("filterModel").value
+        : "all";
+
+const filterProcess =
+    document.getElementById("filterProcess")
+        ? document.getElementById("filterProcess").value
+        : "all";
+
+const filteredLots =
+    dashboardLots.filter(function(item) {
+
+        const modelOk =
+            filterModel === "all" ||
+            item.model === filterModel;
+
+        const processOk =
+            filterProcess === "all" ||
+            item.process === filterProcess;
+
+        return modelOk && processOk;
+
+    });
+    body.innerHTML = "";
+
+    let totalInput = 0;
+    let totalNg = 0;
+
+
+   filteredLots.forEach(function(item, index) {
+
+        totalInput += item.input;
+        totalNg += item.ng;
+
+        const rate =
+            (item.ng / item.input) * 100;
+
+        const status =
+            rate <= item.target
+                ? "PASS"
+                : "NG";
+
+
+        const row =
+            document.createElement("tr");
+row.innerHTML = `
+    <td>${item.lot}</td>
+    <td>${item.model}</td>
+    <td>${item.process}</td>
+
+    <td>${item.input}</td>
+    <td>${item.ng}</td>
+
+    <td>${rate.toFixed(2)}%</td>
+    <td>${item.target}%</td>
+
+    <td class="${
+        status === "PASS"
+            ? "dashboard-pass"
+            : "dashboard-ng"
+    }">
+        ${
+            status === "PASS"
+                ? "✅ PASS"
+                : "❌ NG"
+        }
+    </td>
+
+    <td>
+        <button
+            class="dashboard-delete"
+          onclick="xoaLotDashboard(${dashboardLots.indexOf(item)})"
+        >
+            Xóa
+        </button>
+    </td>
+`;
+
+        body.appendChild(row);
+
+    });
+
+
+    const totalRate =
+        totalInput > 0
+            ? (totalNg / totalInput) * 100
+            : 0;
+
+
+    document.getElementById(
+        "dashTotalInput"
+    ).textContent = totalInput;
+
+    document.getElementById(
+        "dashTotalNg"
+    ).textContent = totalNg;
+
+    document.getElementById(
+        "dashNgRate"
+    ).textContent =
+        totalRate.toFixed(2) + "%";
+
+   document.getElementById(
+    "dashLotCount"
+).textContent =
+    filteredLots.length;
+capNhatBieuDoDashboard();
+}
+
+/* ===== FORMULA TESTER ===== */
+
+function testNgFormula() {
+
+    const inputQty = Number(
+        document.getElementById("testInputQty").value
+    );
+
+    const ngQty = Number(
+        document.getElementById("testNgQty").value
+    );
+
+    const target = Number(
+        document.getElementById("testTarget").value
+    );
+
+    const result =
+        document.getElementById("testerResult");
+
+    if (!result) return;
+
+    if (
+        inputQty <= 0 ||
+        ngQty < 0 ||
+        target < 0
+    ) {
+
+        result.innerHTML = `
+            <div class="test-result-card ng">
+                ⚠️ Hãy nhập dữ liệu hợp lệ.
+            </div>
+        `;
+
+        return;
+    }
+
+    const ngRate =
+        (ngQty / inputQty) * 100;
+
+    const status =
+        ngRate <= target ? "PASS" : "NG";
+
+    const statusClass =
+        status === "PASS" ? "pass" : "ng";
+
+    result.innerHTML = `
+        <div class="test-result-card ${statusClass}">
+
+            <p>
+                <strong>Input Qty:</strong>
+                ${inputQty}
+            </p>
+
+            <p>
+                <strong>NG Qty:</strong>
+                ${ngQty}
+            </p>
+
+            <p>
+                <strong>NG Rate:</strong>
+                ${ngRate.toFixed(2)}%
+            </p>
+
+            <p>
+                <strong>Target:</strong>
+                ${target}%
+            </p>
+
+            <p>
+                <strong>Kết quả:</strong>
+                ${status === "PASS"
+                    ? "✅ PASS"
+                    : "❌ NG"}
+            </p>
+
+        </div>
+    `;
+}
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        if (
+            document.getElementById(
+                "dashboardBody"
+            )
+        ) {
+
+            capNhatDashboard();
+
+        }
+
+    }
+);
+function xoaToanBoDashboard() {
+
+    const confirmDelete =
+        confirm(
+            "Bạn có chắc muốn xóa toàn bộ dữ liệu Dashboard không?"
+        );
+
+    if (!confirmDelete) return;
+
+    dashboardLots = [];
+
+    localStorage.removeItem(
+        "dashboardLots"
+    );
+
+    capNhatDashboard();
+
+}
+/* ===== XUẤT DASHBOARD RA CSV ===== */
+
+function xuatDashboardCSV() {
+
+    if (dashboardLots.length === 0) {
+
+        alert("Chưa có dữ liệu để xuất.");
+
+        return;
+    }
+
+
+    const rows = [
+    [
+        "Lot No",
+        "Model",
+        "Process",
+        "Input Qty",
+        "NG Qty",
+        "NG Rate",
+        "Target",
+        "Result"
+    ]
+];
+
+
+    dashboardLots.forEach(function(item) {
+
+        const rate =
+            (item.ng / item.input) * 100;
+
+        const status =
+            rate <= item.target
+                ? "PASS"
+                : "NG";
+
+
+        rows.push([
+    item.lot,
+    item.model,
+    item.process,
+    item.input,
+    item.ng,
+    rate.toFixed(2) + "%",
+    item.target + "%",
+    status
+]);
+    });
+
+
+    const csvContent =
+        rows
+            .map(function(row) {
+
+                return row
+                    .map(function(value) {
+
+                        return `"${String(value).replace(/"/g, '""')}"`;
+
+                    })
+                    .join(",");
+
+            })
+            .join("\n");
+
+
+    const bom =
+        "\uFEFF";
+
+    const blob =
+        new Blob(
+            [bom + csvContent],
+            {
+                type:
+                    "text/csv;charset=utf-8;"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const link =
+        document.createElement("a");
+
+    link.href = url;
+
+    link.download =
+        "mini-qc-dashboard.csv";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+}
+function capNhatBoLocDashboard() {
+
+    const modelSelect =
+        document.getElementById("filterModel");
+
+    const processSelect =
+        document.getElementById("filterProcess");
+
+    if (!modelSelect || !processSelect) return;
+
+
+    const currentModel =
+        modelSelect.value;
+
+    const currentProcess =
+        processSelect.value;
+
+
+    const models =
+        [...new Set(
+            dashboardLots
+                .map(item => item.model)
+                .filter(Boolean)
+        )];
+
+
+    const processes =
+        [...new Set(
+            dashboardLots
+                .map(item => item.process)
+                .filter(Boolean)
+        )];
+
+
+    modelSelect.innerHTML =
+        '<option value="all">Tất cả Model</option>';
+
+    models.forEach(function(model) {
+
+        const option =
+            document.createElement("option");
+
+        option.value = model;
+        option.textContent = model;
+
+        modelSelect.appendChild(option);
+
+    });
+
+
+    processSelect.innerHTML =
+        '<option value="all">Tất cả Process</option>';
+
+    processes.forEach(function(process) {
+
+        const option =
+            document.createElement("option");
+
+        option.value = process;
+        option.textContent = process;
+
+        processSelect.appendChild(option);
+
+    });
+
+
+    if (models.includes(currentModel)) {
+        modelSelect.value = currentModel;
+    }
+
+    if (processes.includes(currentProcess)) {
+        processSelect.value = currentProcess;
+    }
+
+}

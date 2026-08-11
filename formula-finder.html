@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Tìm công thức Excel</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+
+    <a href="index.html">
+        🏠 Trang chủ
+    </a>
+
+    <a href="gioithieu.html">
+        ℹ️ Giới thiệu
+    </a>
+
+    <a href="excel.html">
+        📊 Học Excel
+    </a>
+
+    <a href="baitapexcel.html">
+        ✍️ Bài tập
+    </a>
+
+    <a href="formula-finder.html">
+        🧠 Tìm công thức
+    </a>
+
+    <a href="lienhe.html">
+        📩 Liên hệ
+    </a>
+
+    <button id="themeToggle">
+        🌙
+    </button>
+
+</nav>
+
+
+<main class="formula-finder-page">
+
+    <section class="formula-finder-box">
+
+        <h1>
+            🧠 Excel Formula Finder
+        </h1>
+
+        <p>
+            Mô tả việc bạn muốn làm trong Excel,
+            hệ thống sẽ gợi ý công thức phù hợp.
+        </p>
+
+        <div class="formula-input-box">
+
+            <input
+                type="text"
+                id="formulaQuery"
+                placeholder="Ví dụ: tính tổng NG theo Model..."
+            >
+
+            <button onclick="timCongThucExcel()">
+                🔍 Tìm công thức
+            </button>
+
+        </div>
+
+
+        <div class="formula-examples">
+
+            <button onclick="dienYeuCau('tính tổng theo điều kiện')">
+                Tổng theo điều kiện
+            </button>
+
+            <button onclick="dienYeuCau('tra cứu dữ liệu')">
+                Tra cứu dữ liệu
+            </button>
+
+            <button onclick="dienYeuCau('đếm số lỗi NG')">
+                Đếm lỗi
+            </button>
+
+            <button onclick="dienYeuCau('kiểm tra điều kiện PASS NG')">
+                PASS / NG
+            </button>
+
+        </div>
+
+
+        <div id="formulaResult"
+             class="formula-result">
+
+            <p>
+                👆 Nhập yêu cầu để bắt đầu.
+            </p>
+
+        </div>
+<section class="formula-builder">
+
+    <h2>🛠️ Tạo công thức theo ô của bạn</h2>
+
+    <div class="builder-grid">
+
+        <div>
+            <label>Ô Input Qty</label>
+            <input
+                type="text"
+                id="inputCell"
+                placeholder="Ví dụ: D2"
+            >
+        </div>
+
+        <div>
+            <label>Ô NG Qty</label>
+            <input
+                type="text"
+                id="ngCell"
+                placeholder="Ví dụ: E2"
+            >
+        </div>
+
+        <div>
+            <label>Target NG Rate</label>
+            <input
+                type="text"
+                id="targetRate"
+                placeholder="Ví dụ: 3%"
+            >
+        </div>
+
+    </div>
+
+    <div class="builder-actions">
+
+        <button onclick="taoCongThucNgRate()">
+            📊 Tạo NG Rate
+        </button>
+
+        <button onclick="taoCongThucPassNg()">
+            ✅ Tạo PASS / NG
+        </button>
+
+    </div>
+
+    <div id="builderResult"></div>
+<section class="formula-builder advanced-builder">
+
+    <h2>⚙️ Công thức nâng cao</h2>
+
+    <!-- SUMIFS -->
+
+    <div class="builder-block">
+
+        <h3>➕ SUMIFS</h3>
+
+        <div class="builder-grid">
+
+            <div>
+                <label>Vùng cần tính tổng</label>
+                <input
+                    type="text"
+                    id="sumRange"
+                    placeholder="Ví dụ: E2:E100"
+                >
+            </div>
+
+            <div>
+                <label>Vùng điều kiện</label>
+                <input
+                    type="text"
+                    id="sumCriteriaRange"
+                    placeholder="Ví dụ: B2:B100"
+                >
+            </div>
+
+            <div>
+                <label>Điều kiện</label>
+                <input
+                    type="text"
+                    id="sumCriteria"
+                    placeholder="Ví dụ: FPC-A01"
+                >
+            </div>
+
+        </div>
+
+        <button onclick="taoSumifs()">
+            Tạo SUMIFS
+        </button>
+
+    </div>
+
+
+    <!-- COUNTIFS -->
+
+    <div class="builder-block">
+
+        <h3>🔢 COUNTIFS</h3>
+
+        <div class="builder-grid">
+
+            <div>
+                <label>Vùng điều kiện</label>
+                <input
+                    type="text"
+                    id="countCriteriaRange"
+                    placeholder="Ví dụ: F2:F100"
+                >
+            </div>
+
+            <div>
+                <label>Điều kiện</label>
+                <input
+                    type="text"
+                    id="countCriteria"
+                    placeholder="Ví dụ: NG"
+                >
+            </div>
+
+        </div>
+
+        <button onclick="taoCountifs()">
+            Tạo COUNTIFS
+        </button>
+
+    </div>
+
+
+    <!-- XLOOKUP -->
+
+    <div class="builder-block">
+
+        <h3>🔎 XLOOKUP</h3>
+
+        <div class="builder-grid">
+
+            <div>
+                <label>Ô cần tra cứu</label>
+                <input
+                    type="text"
+                    id="lookupValue"
+                    placeholder="Ví dụ: A2"
+                >
+            </div>
+
+            <div>
+                <label>Vùng chứa mã</label>
+                <input
+                    type="text"
+                    id="lookupRange"
+                    placeholder="Ví dụ: H2:H100"
+                >
+            </div>
+
+            <div>
+                <label>Vùng trả về</label>
+                <input
+                    type="text"
+                    id="returnRange"
+                    placeholder="Ví dụ: I2:I100"
+                >
+            </div>
+
+        </div>
+
+        <button onclick="taoXlookup()">
+            Tạo XLOOKUP
+        </button>
+
+    </div>
+
+
+    <div id="advancedBuilderResult"></div>
+
+</section>
+<section class="formula-tester">
+
+    <h2>🧪 Formula Tester</h2>
+
+    <p>
+        Nhập dữ liệu mẫu để kiểm tra nhanh kết quả.
+    </p>
+
+    <div class="tester-grid">
+
+        <div>
+            <label>Input Qty</label>
+            <input
+                type="number"
+                id="testInputQty"
+                placeholder="Ví dụ: 500"
+            >
+        </div>
+
+        <div>
+            <label>NG Qty</label>
+            <input
+                type="number"
+                id="testNgQty"
+                placeholder="Ví dụ: 15"
+            >
+        </div>
+
+        <div>
+            <label>Target (%)</label>
+            <input
+                type="number"
+                id="testTarget"
+                placeholder="Ví dụ: 3"
+                step="0.01"
+            >
+        </div>
+
+    </div>
+
+    <button
+        class="tester-btn"
+        onclick="testNgFormula()"
+    >
+        ▶ Kiểm tra
+    </button>
+
+    <div id="testerResult"></div>
+
+</section>
+<section class="mini-dashboard">
+
+    <h2>📊 Mini QC Dashboard</h2>
+
+    <p>
+        Nhập dữ liệu từng Lot để tổng hợp nhanh Input, NG và NG Rate.
+    </p>
+
+    <div class="dashboard-input-grid">
+
+        <input
+            type="text"
+            id="dashLot"
+            placeholder="Lot No, ví dụ LOT-001"
+        >
+<input
+    type="text"
+    id="dashModel"
+    placeholder="Model, ví dụ FPC-A01"
+>
+
+<input
+    type="text"
+    id="dashProcess"
+    placeholder="Process, ví dụ AOI"
+>
+        <input
+            type="number"
+            id="dashInput"
+            placeholder="Input Qty"
+        >
+
+        <input
+            type="number"
+            id="dashNg"
+            placeholder="NG Qty"
+        >
+
+        <input
+            type="number"
+            id="dashTarget"
+            placeholder="Target %"
+            step="0.01"
+            value="3"
+        >
+
+        <button onclick="themLotDashboard()">
+            ➕ Thêm Lot
+        </button>
+
+    </div>
+
+
+    <div class="dashboard-kpi">
+
+        <div>
+            <span>Tổng Input</span>
+            <strong id="dashTotalInput">0</strong>
+        </div>
+
+        <div>
+            <span>Tổng NG</span>
+            <strong id="dashTotalNg">0</strong>
+        </div>
+
+        <div>
+            <span>NG Rate</span>
+            <strong id="dashNgRate">0.00%</strong>
+        </div>
+
+        <div>
+            <span>Số Lot</span>
+            <strong id="dashLotCount">0</strong>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-table-wrap">
+
+        <table class="dashboard-table">
+
+           <thead>
+    <tr>
+        <th>Lot No</th>
+        <th>Model</th>
+        <th>Process</th>
+        <th>Input Qty</th>
+        <th>NG Qty</th>
+        <th>NG Rate</th>
+        <th>Target</th>
+        <th>Result</th>
+        <th>Xóa</th>
+    </tr>
+</thead>
+
+            <tbody id="dashboardBody"></tbody>
+<div class="dashboard-actions">
+<button
+    class="export-dashboard-btn"
+    onclick="xuatDashboardCSV()"
+>
+
+    📥 Xuất CSV
+</button>
+<div class="dashboard-filters">
+
+    <select id="filterModel" onchange="capNhatDashboard()">
+        <option value="all">Tất cả Model</option>
+    </select>
+
+    <select id="filterProcess" onchange="capNhatDashboard()">
+        <option value="all">Tất cả Process</option>
+    </select>
+
+</div>
+
+
+    <button
+        class="clear-dashboard-btn"
+        onclick="xoaToanBoDashboard()"
+    >
+        🗑️ Xóa toàn bộ dữ liệu
+    </button>
+
+</div>
+        </table>
+
+    </div>
+<div class="dashboard-chart-section">
+
+    <h3>📈 NG Rate theo Lot</h3>
+
+    <div
+        id="dashboardChart"
+        class="dashboard-chart">
+    </div>
+
+</div>
+
+</section>
+    </section>
+    </section>
+
+</main>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>

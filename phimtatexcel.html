@@ -270,34 +270,7 @@
 
         
 
-        <!-- TABLE -->
-
-        <div class="table-container">
-
-            <table id="shortcutTable">
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            STT
-                        </th>
-
-                        <th>
-                            Phím tắt
-                        </th>
-
-                        <th>
-                            Chức năng
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
+       
 
 <section class="shortcut-section">
 
@@ -320,7 +293,64 @@
             placeholder="Tìm phím tắt hoặc chức năng..."
         >
     </div>
+<div class="shortcut-filters">
 
+    <button class="shortcut-filter active"
+            onclick="locPhimTat('Tất cả', this)">
+        Tất cả
+    </button>
+
+    <button class="shortcut-filter"
+            onclick="locPhimTat('Cơ bản', this)">
+        Cơ bản
+    </button>
+
+    <button class="shortcut-filter"
+            onclick="locPhimTat('Chỉnh sửa', this)">
+        Chỉnh sửa
+    </button>
+
+    <button class="shortcut-filter"
+            onclick="locPhimTat('Điều hướng', this)">
+        Điều hướng
+    </button>
+
+    <button class="shortcut-filter"
+            onclick="locPhimTat('Chọn dữ liệu', this)">
+        Chọn dữ liệu
+    </button>
+
+    <button class="shortcut-filter"
+            onclick="locPhimTat('Định dạng', this)">
+        Định dạng
+    </button>
+
+    <button class="shortcut-filter"
+            onclick="locPhimTat('Công thức', this)">
+        Công thức
+    </button>
+
+    <button class="shortcut-filter"
+            onclick="locPhimTat('Sheet', this)">
+        Sheet
+    </button>
+
+    <button class="shortcut-filter"
+            onclick="locPhimTat('Hàng & Cột', this)">
+        Hàng & Cột
+    </button>
+
+    <button class="shortcut-filter"
+            onclick="locPhimTat('Table & Filter', this)">
+        Table & Filter
+    </button>
+
+    <button class="shortcut-filter"
+            onclick="locPhimTat('Pivot & Data', this)">
+        Pivot & Data
+    </button>
+
+</div>
     <div id="shortcutContainer"></div>
 
 
