@@ -288,6 +288,9 @@
         <a href="excel.html">
             📊 Học Excel
         </a>
+        <a href="baitapexcel.html">
+    ✍️ Bài tập
+</a>
 
         <a href="lienhe.html">
             📩 Liên hệ
@@ -316,12 +319,143 @@
 
     <!-- CONTENT -->
 
-    <main>
+   <main>
 
+    <!-- TIẾN ĐỘ HỌC TẬP -->
+    <section class="learning-progress">
 
-        <h2 class="section-title">
-            📚 Nội dung học Excel
-        </h2>
+        <div class="progress-header">
+            <h2>🎯 Tiến độ học tập</h2>
+
+            <span id="progressText">
+                0/6 chuyên đề
+            </span>
+        </div>
+
+        <div class="progress-bar">
+            <div id="progressFill"></div>
+        </div>
+
+        <p id="progressPercent">
+            Hoàn thành 0%
+        </p>
+
+    </section>
+   <div id="nextLesson" class="next-lesson">
+
+    <span id="nextLessonText">
+        👉 Bài tiếp theo: Phím tắt Excel
+    </span>
+
+    <a
+        id="nextLessonButton"
+        href="phimtatexcel.html"
+        class="next-lesson-btn"
+    >
+        Học bài tiếp theo →
+    </a>
+
+</div>
+<div id="completionMessage">
+    🎉 Chúc mừng! Bạn đã hoàn thành toàn bộ lộ trình Excel cơ bản.
+</div>
+<div class="reset-progress-wrap">
+    <button onclick="datLaiTienDo()" class="reset-progress-btn">
+        🔄 Đặt lại tiến độ
+    </button>
+</div>
+<div class="course-search">
+
+    <input
+        type="text"
+        id="courseSearchInput"
+        placeholder="🔍 Tìm chuyên đề: Pivot, Pareto, Công thức..."
+    >
+
+</div>
+<div class="course-filters">
+
+    <button class="filter-btn active-filter"
+            onclick="locKhoaHoc('all', this)">
+        Tất cả
+    </button>
+
+    <button class="filter-btn"
+            onclick="locKhoaHoc('not-started', this)">
+        Chưa học
+    </button>
+
+    <button class="filter-btn"
+            onclick="locKhoaHoc('learning', this)">
+        🟡 Đang học
+    </button>
+
+    <button class="filter-btn"
+            onclick="locKhoaHoc('completed', this)">
+        ✅ Đã học
+    </button>
+
+</div>
+<section class="learning-path">
+
+    <h2>🛣️ Lộ trình học đề xuất</h2>
+
+    <div class="path-list">
+
+        <div class="path-item" data-course="phim-tat">
+            <span class="path-number">1</span>
+            <div>
+                <h3>Phím tắt Excel</h3>
+                <p>Làm quen thao tác nhanh trong Excel.</p>
+            </div>
+        </div>
+
+        <div class="path-item" data-course="cong-thuc">
+            <span class="path-number">2</span>
+            <div>
+                <h3>Công thức Excel</h3>
+                <p>Học các hàm cơ bản và thường dùng.</p>
+            </div>
+        </div>
+
+        <div class="path-item" data-course="pivot">
+            <span class="path-number">3</span>
+            <div>
+                <h3>Pivot Table</h3>
+                <p>Tổng hợp và phân tích dữ liệu.</p>
+            </div>
+        </div>
+
+        <div class="path-item" data-course="pareto">
+            <span class="path-number">4</span>
+            <div>
+                <h3>Biểu đồ & Pareto</h3>
+                <p>Trực quan hóa và tìm vấn đề ưu tiên.</p>
+            </div>
+        </div>
+
+        <div class="path-item" data-course="filter-sort">
+            <span class="path-number">5</span>
+            <div>
+                <h3>Filter & Sort</h3>
+                <p>Lọc và sắp xếp dữ liệu hiệu quả.</p>
+            </div>
+        </div>
+
+        <div class="path-item" data-course="bao-cao">
+            <span class="path-number">6</span>
+            <div>
+                <h3>Báo cáo Excel</h3>
+                <p>Tổng hợp kiến thức thành báo cáo thực tế.</p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+    <h2 class="section-title">
+        📚 Nội dung học Excel
+    </h2>
 
 
         <div class="course-grid">
@@ -330,6 +464,7 @@
             <!-- PHÍM TẮT -->
 
             <div class="course-card">
+                <div class="course-number">01</div>
 
                 <div class="icon">
                     ⌨️
@@ -343,17 +478,27 @@
                     Tổng hợp những phím tắt
                     Excel hữu ích trong công việc.
                 </p>
-
-                <a href="phimtatexcel.html">
-                    Xem bài học
-                </a>
-
+<div class="course-status" data-status-for="phim-tat">
+    Chưa học
+</div>
+              <a href="phimtatexcel.html"
+   onclick="batDauHoc('phim-tat')">
+    Xem bài học
+</a>
+<button
+    class="complete-btn"
+    data-course="phim-tat"
+    onclick="danhDauDaHoc(this)"
+>
+    ✓ Đánh dấu đã học
+</button>
             </div>
 
 
             <!-- CÔNG THỨC -->
 
             <div class="course-card">
+                <div class="course-number">02</div>
 
                 <div class="icon">
                     🧮
@@ -367,17 +512,27 @@
                     Học các hàm Excel cơ bản
                     và thường xuyên sử dụng.
                 </p>
-
-                <a href="congthucexcel.html">
-                    Xem bài học
-                </a>
-
+<div class="course-status" data-status-for="cong-thuc">
+    Chưa học
+</div>
+                <a href="phimtatexcel.html"
+   onclick="batDauHoc('cong-thuc')">
+    Xem bài học
+</a>
+<button
+    class="complete-btn"
+    data-course="cong-thuc"
+    onclick="danhDauDaHoc(this)"
+>
+    ✓ Đánh dấu đã học
+</button>
             </div>
 
 
             <!-- PIVOT -->
 
             <div class="course-card">
+                <div class="course-number">03</div>
 
                 <div class="icon">
                     📊
@@ -391,17 +546,27 @@
                     Tổng hợp và phân tích
                     dữ liệu nhanh chóng.
                 </p>
-
-                <a href="pivottable.html">
-                    Xem bài học
-                </a>
-
+<div class="course-status" data-status-for="pivot">
+    Chưa học
+</div>
+                <a href="phimtatexcel.html"
+   onclick="batDauHoc('pivot')">
+    Xem bài học
+</a>
+<button
+    class="complete-btn"
+    data-course="pivot"
+    onclick="danhDauDaHoc(this)"
+>
+    ✓ Đánh dấu đã học
+</button>
             </div>
 
 
             <!-- PARETO -->
 
             <div class="course-card">
+                <div class="course-number">04</div>
 
                 <div class="icon">
                     📈
@@ -415,17 +580,27 @@
                     Trực quan hóa dữ liệu và
                     phân tích lỗi bằng Pareto.
                 </p>
-
-                <a href="bieudopareto.html">
-                    Xem bài học
-                </a>
-
+<div class="course-status" data-status-for="pareto">
+    Chưa học
+</div>
+               <a href="phimtatexcel.html"
+   onclick="batDauHoc('pareto')">
+    Xem bài học
+</a>
+<button
+    class="complete-btn"
+    data-course="pareto"
+    onclick="danhDauDaHoc(this)"
+>
+    ✓ Đánh dấu đã học
+</button>
             </div>
 
 
             <!-- FILTER -->
 
             <div class="course-card">
+                <div class="course-number">05</div>
 
                 <div class="icon">
                     🔍
@@ -439,17 +614,27 @@
                     Lọc và sắp xếp dữ liệu
                     nhanh chóng trong Excel.
                 </p>
-
-                <a href="filtersort.html">
-                    Xem bài học
-                </a>
-
+<div class="course-status" data-status-for="filter-sort">
+    Chưa học
+</div>
+               <a href="phimtatexcel.html"
+   onclick="batDauHoc('filter-sort')">
+    Xem bài học
+</a>
+<button
+    class="complete-btn"
+    data-course="filter-sort"
+    onclick="danhDauDaHoc(this)"
+>
+    ✓ Đánh dấu đã học
+</button>
             </div>
 
 
             <!-- BÁO CÁO -->
 
             <div class="course-card">
+                <div class="course-number">06</div>
 
                 <div class="icon">
                     📋
@@ -463,11 +648,20 @@
                     Học cách xây dựng báo cáo
                     rõ ràng và chuyên nghiệp.
                 </p>
-
-                <a href="baocaoexcel.html">
-                    Xem bài học
-                </a>
-
+<div class="course-status" data-status-for="bao-cao">
+    Chưa học
+</div>
+               <a href="phimtatexcel.html"
+   onclick="batDauHoc('bao-cao')">
+    Xem bài học
+</a>
+<button
+    class="complete-btn"
+    data-course="bao-cao"
+    onclick="danhDauDaHoc(this)"
+>
+    ✓ Đánh dấu đã học
+</button>  
             </div>
 
 

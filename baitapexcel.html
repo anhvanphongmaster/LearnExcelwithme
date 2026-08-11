@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bài tập Excel</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html">🏠 Trang chủ</a>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="excel.html">📊 Học Excel</a>
+    <a href="baitapexcel.html" class="active">✍️ Bài tập</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+
+    <button id="themeToggle">🌙</button>
+</nav>
+
+
+<header class="page-header">
+
+    <h1>✍️ Bài tập Excel</h1>
+
+    <p>
+        Kiểm tra kiến thức và luyện tập các kỹ năng Excel
+        đã học trên website.
+    </p>
+
+</header>
+
+
+<main>
+
+    <section class="exercise-section">
+
+        <h2>🧠 Bài tập cơ bản</h2>
+
+
+        <div class="exercise-card">
+
+            <span class="exercise-level">Cơ bản</span>
+
+            <h3>1. Tính NG Rate</h3>
+
+            <p>
+                Một Lot có Input Qty = 500 và NG Qty = 15.
+                NG Rate bằng bao nhiêu?
+            </p>
+
+            <button onclick="toggleAnswer('answer1')">
+                👁 Xem đáp án
+            </button>
+
+            <div class="exercise-answer" id="answer1">
+
+                <strong>Đáp án:</strong>
+
+                <p>
+                    NG Rate = 15 / 500 = 3%
+                </p>
+
+                <p>
+                    Công thức Excel:
+                </p>
+
+                <code>=15/500</code>
+
+            </div>
+
+        </div>
+
+
+        <div class="exercise-card">
+
+            <span class="exercise-level">Cơ bản</span>
+
+            <h3>2. Hàm IF</h3>
+
+            <p>
+                Nếu NG Rate nhỏ hơn hoặc bằng 3% thì hiển thị
+                PASS, ngược lại hiển thị NG.
+            </p>
+
+            <button onclick="toggleAnswer('answer2')">
+                👁 Xem đáp án
+            </button>
+
+            <div class="exercise-answer" id="answer2">
+
+                <strong>Đáp án:</strong>
+
+                <code>=IF(A2&lt;=3%,"PASS","NG")</code>
+
+            </div>
+
+        </div>
+
+
+        <div class="exercise-card">
+
+            <span class="exercise-level">Trung bình</span>
+
+            <h3>3. Pivot Table</h3>
+
+            <p>
+                Bạn có dữ liệu gồm Model, Lot No, Input Qty
+                và NG Qty. Hãy tổng hợp tổng NG Qty theo Model.
+            </p>
+
+            <button onclick="toggleAnswer('answer3')">
+                👁 Xem gợi ý
+            </button>
+
+            <div class="exercise-answer" id="answer3">
+
+                <strong>Gợi ý:</strong>
+
+                <p>
+                    Rows → Model
+                </p>
+
+                <p>
+                    Values → Sum of NG Qty
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+<section class="quiz-section">
+
+    <h2>📝 Trắc nghiệm Excel</h2>
+    <div class="quiz-stats">
+
+    <span id="quizAttempt">
+        Lượt: 1
+    </span>
+
+    <span id="quizCurrentScore">
+        Điểm hiện tại: 0/5
+    </span>
+
+    <span id="quizBestScore">
+        Kỷ lục: 0/5
+    </span>
+
+</div>
+<form id="excelQuiz">
+
+    <div id="quizQuestions"></div>
+
+   <button
+    type="button"
+    id="submitQuizBtn"
+    onclick="chamDiemQuiz()"
+    disabled
+>
+    ✅ Nộp bài
+</button>
+
+    <button type="button" onclick="lamLaiQuiz()" class="reset-quiz-btn">
+        🔄 Đổi bộ câu hỏi
+    </button>
+
+</form>
+
+<div id="quizResult"></div>
+
+    <div id="quizResult"></div>
+
+</section>
+</main>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
