@@ -1761,3 +1761,51 @@ body.dark-mode .shortcut-category {
     }
 
 }
+/* ===== DARK MODE - KHỐI HƯỚNG DẪN / BƯỚC ===== */
+
+body.dark-mode .step,
+body.dark-mode .step-item,
+body.dark-mode .guide-step,
+body.dark-mode .pivot-step,
+body.dark-mode .filter-step,
+body.dark-mode .report-step,
+body.dark-mode .chart-item,
+body.dark-mode .info-box,
+body.dark-mode .note-box {
+    background: #262626 !important;
+    color: #f1f1f1 !important;
+    border-color: #3f8f5f !important;
+}
+
+/* TIÊU ĐỀ BƯỚC */
+
+body.dark-mode .step strong,
+body.dark-mode .step-item strong,
+body.dark-mode .guide-step strong,
+body.dark-mode .pivot-step strong,
+body.dark-mode .filter-step strong,
+body.dark-mode .report-step strong,
+body.dark-mode .chart-item strong,
+body.dark-mode .info-box strong {
+    color: #7ee2a8 !important;
+}
+
+/* NỘI DUNG MÔ TẢ */
+
+body.dark-mode .step p,
+body.dark-mode .step-item p,
+body.dark-mode .guide-step p,
+body.dark-mode .pivot-step p,
+body.dark-mode .filter-step p,
+body.dark-mode .report-step p,
+body.dark-mode .chart-item p,
+body.dark-mode .info-box p,
+body.dark-mode .note-box p {
+    color: #e0e0e0 !important;
+}
+body.dark-mode main .card,
+body.dark-mode main .box,
+body.dark-mode main .item {
+    background: #202020 !important;
+    color: #f1f1f1 !important;
+}
