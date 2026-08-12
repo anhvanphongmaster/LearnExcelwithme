@@ -2718,7 +2718,8 @@ function capNhatDashboard() {
 
     if (!body) return;
 capNhatBoLocDashboard();
-
+capNhatTopNgLots();
+capNhatCanhBaoQC();
 const filterModel =
     document.getElementById("filterModel")
         ? document.getElementById("filterModel").value
@@ -3116,3 +3117,706 @@ function capNhatBoLocDashboard() {
     }
 
 }
+function capNhatTopNgLots() {
+
+    const container =
+        document.getElementById("topNgLots");
+
+    if (!container) return;
+
+
+    const modelElement =
+        document.getElementById("filterModel");
+
+    const processElement =
+        document.getElementById("filterProcess");
+
+
+    const filterModel =
+        modelElement ? modelElement.value : "all";
+
+    const filterProcess =
+        processElement ? processElement.value : "all";
+
+
+    const filteredLots =
+        dashboardLots.filter(function(item) {
+
+            const modelOk =
+                filterModel === "all" ||
+                item.model === filterModel;
+
+            const processOk =
+                filterProcess === "all" ||
+                item.process === filterProcess;
+
+            return modelOk && processOk;
+
+        });
+
+
+    const topLots =
+        filteredLots
+            .filter(function(item) {
+                return item.input > 0;
+            })
+            .map(function(item) {
+
+                return {
+                    lot: item.lot,
+                    model: item.model,
+                    process: item.process,
+                    rate:
+                        (item.ng / item.input) * 100
+                };
+
+            })
+            .sort(function(a, b) {
+                return b.rate - a.rate;
+            })
+            .slice(0, 3);
+
+
+    if (topLots.length === 0) {
+
+        container.innerHTML =
+            "<p>Chưa có dữ liệu.</p>";
+
+        return;
+    }
+
+
+    const medals = ["🥇", "🥈", "🥉"];
+
+    container.innerHTML =
+        topLots.map(function(item, index) {
+
+            return `
+                <div class="top-ng-item">
+
+                    <span class="top-ng-rank">
+                        ${medals[index]}
+                    </span>
+
+                    <div>
+                        <strong>${item.lot}</strong>
+
+                        <small>
+                            ${item.model || "-"}
+                            •
+                            ${item.process || "-"}
+                        </small>
+                    </div>
+
+                    <span class="top-ng-rate">
+                        ${item.rate.toFixed(2)}%
+                    </span>
+
+                </div>
+            `;
+
+        }).join("");
+
+}
+function capNhatCanhBaoQC() {
+
+    const box =
+        document.getElementById("qcAlertBox");
+
+    const title =
+        document.getElementById("qcAlertTitle");
+
+    const text =
+        document.getElementById("qcAlertText");
+
+    if (!box || !title || !text) return;
+
+
+    const modelElement =
+        document.getElementById("filterModel");
+
+    const processElement =
+        document.getElementById("filterProcess");
+
+
+    const filterModel =
+        modelElement ? modelElement.value : "all";
+
+    const filterProcess =
+        processElement ? processElement.value : "all";
+
+
+    const filteredLots =
+        dashboardLots.filter(function(item) {
+
+            const modelOk =
+                filterModel === "all" ||
+                item.model === filterModel;
+
+            const processOk =
+                filterProcess === "all" ||
+                item.process === filterProcess;
+
+            return modelOk && processOk;
+
+        });
+
+
+    if (filteredLots.length === 0) {
+
+        box.className =
+            "qc-alert-box qc-alert-empty";
+
+        title.textContent =
+            "Chưa có dữ liệu";
+
+        text.textContent =
+            "Hãy thêm Lot để Dashboard bắt đầu phân tích.";
+
+        return;
+    }
+
+
+    const analyzedLots =
+        filteredLots.map(function(item) {
+
+            const rate =
+                item.input > 0
+                    ? (item.ng / item.input) * 100
+                    : 0;
+
+            return {
+                ...item,
+                rate: rate
+            };
+
+        });
+
+
+    const ngLots =
+        analyzedLots.filter(function(item) {
+
+            return item.rate >
+                Number(item.target);
+
+        });
+
+
+    const worstLot =
+        [...analyzedLots].sort(function(a, b) {
+
+            return b.rate - a.rate;
+
+        })[0];
+
+
+    if (ngLots.length === 0) {
+
+        box.className =
+            "qc-alert-box qc-alert-pass";
+
+        title.textContent =
+            "✅ Tất cả Lot đang PASS";
+
+        text.textContent =
+            filteredLots.length +
+            " Lot đều nằm trong Target.";
+
+        return;
+    }
+
+
+    box.className =
+        "qc-alert-box qc-alert-danger";
+
+    title.textContent =
+        "⚠️ Phát hiện " +
+        ngLots.length +
+        " Lot vượt Target";
+
+    text.textContent =
+        "Ưu tiên kiểm tra Lot " +
+        worstLot.lot +
+        " — NG Rate " +
+        worstLot.rate.toFixed(2) +
+        "% / Target " +
+        worstLot.target +
+        "%.";
+
+}
+/* ===== CÔNG THỨC EXCEL HÔM NAY ===== */
+
+const dailyFormulas = [
+
+    {
+        name: "XLOOKUP",
+        description:
+            "Tra cứu dữ liệu hiện đại và linh hoạt hơn VLOOKUP.",
+        formula:
+            '=XLOOKUP(A2,H:H,I:I,"Không tìm thấy")',
+        search:
+            "xlookup"
+    },
+
+    {
+        name: "SUMIFS",
+        description:
+            "Tính tổng dữ liệu theo nhiều điều kiện.",
+        formula:
+            '=SUMIFS(E:E,B:B,"Model A",C:C,"NG")',
+        search:
+            "sumifs"
+    },
+
+    {
+        name: "COUNTIFS",
+        description:
+            "Đếm số dòng thỏa mãn nhiều điều kiện.",
+        formula:
+            '=COUNTIFS(B:B,"Model A",F:F,"NG")',
+        search:
+            "countifs"
+    },
+
+    {
+        name: "IF",
+        description:
+            "Kiểm tra điều kiện và trả về kết quả tương ứng.",
+        formula:
+            '=IF(E2>3%,"NG","PASS")',
+        search:
+            "if"
+    },
+
+    {
+        name: "IFERROR",
+        description:
+            "Thay lỗi Excel bằng nội dung dễ đọc hơn.",
+        formula:
+            '=IFERROR(A2/B2,0)',
+        search:
+            "iferror"
+    },
+
+    {
+        name: "TEXTJOIN",
+        description:
+            "Ghép nhiều ô thành một chuỗi văn bản.",
+        formula:
+            '=TEXTJOIN("-",TRUE,A2,B2,C2)',
+        search:
+            "textjoin"
+    },
+
+    {
+        name: "UNIQUE",
+        description:
+            "Lấy danh sách giá trị không trùng lặp.",
+        formula:
+            '=UNIQUE(A2:A100)',
+        search:
+            "unique"
+    },
+
+    {
+        name: "FILTER",
+        description:
+            "Lọc dữ liệu bằng công thức.",
+        formula:
+            '=FILTER(A2:E100,E2:E100="NG")',
+        search:
+            "filter"
+    }
+
+];
+
+
+let currentDailyFormula = null;
+
+
+function doiCongThucHomNay() {
+
+    if (!dailyFormulas.length) return;
+
+
+    let randomIndex;
+
+    do {
+
+        randomIndex =
+            Math.floor(
+                Math.random() *
+                dailyFormulas.length
+            );
+
+    } while (
+        dailyFormulas.length > 1 &&
+        currentDailyFormula ===
+            dailyFormulas[randomIndex]
+    );
+
+
+    currentDailyFormula =
+        dailyFormulas[randomIndex];
+
+
+    document.getElementById(
+        "dailyFormulaName"
+    ).textContent =
+        currentDailyFormula.name;
+
+
+    document.getElementById(
+        "dailyFormulaDescription"
+    ).textContent =
+        currentDailyFormula.description;
+
+
+    document.getElementById(
+        "dailyFormulaCode"
+    ).textContent =
+        currentDailyFormula.formula;
+
+}
+
+
+function copyDailyFormula() {
+
+    if (!currentDailyFormula) return;
+
+    navigator.clipboard.writeText(
+        currentDailyFormula.formula
+    );
+
+}
+
+
+function moCongThucTrongFinder() {
+
+    if (!currentDailyFormula) return;
+
+    const input =
+        document.getElementById(
+            "formulaQuery"
+        );
+
+    if (!input) return;
+
+
+    input.value =
+        currentDailyFormula.search;
+
+
+    if (
+        typeof timCongThucExcel ===
+        "function"
+    ) {
+
+        timCongThucExcel();
+
+    }
+
+
+    input.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        if (
+            document.getElementById(
+                "dailyFormulaName"
+            )
+        ) {
+
+            doiCongThucHomNay();
+
+        }
+
+    }
+);
+/* ===== EXCEL CHALLENGE ===== */
+
+const excelChallenges = [
+
+    {
+        question:
+            "Bạn muốn tính tổng NG Qty theo từng Model. Nên dùng hàm nào?",
+        options: [
+            "SUMIFS",
+            "LEFT",
+            "LEN",
+            "TODAY"
+        ],
+        answer: 0,
+        explanation:
+            "SUMIFS dùng để tính tổng theo một hoặc nhiều điều kiện."
+    },
+
+    {
+        question:
+            "Bạn muốn đếm số dòng có trạng thái NG. Nên dùng hàm nào?",
+        options: [
+            "COUNTIF",
+            "SUM",
+            "AVERAGE",
+            "RIGHT"
+        ],
+        answer: 0,
+        explanation:
+            "COUNTIF dùng để đếm số ô thỏa mãn một điều kiện."
+    },
+
+    {
+        question:
+            "Bạn muốn lấy tên sản phẩm dựa trên mã sản phẩm. Nên dùng hàm nào?",
+        options: [
+            "XLOOKUP",
+            "MAX",
+            "ROUND",
+            "TRIM"
+        ],
+        answer: 0,
+        explanation:
+            "XLOOKUP phù hợp để tra cứu một giá trị và trả về dữ liệu tương ứng."
+    },
+
+    {
+        question:
+            "Bạn muốn hiển thị PASS nếu NG Rate <= 3%, ngược lại hiển thị NG. Nên dùng hàm nào?",
+        options: [
+            "IF",
+            "SUM",
+            "COUNT",
+            "LEFT"
+        ],
+        answer: 0,
+        explanation:
+            "IF dùng để kiểm tra điều kiện và trả về kết quả tương ứng."
+    },
+
+    {
+        question:
+            "Bạn cần tổng hợp NG Qty theo Model và Process. Công cụ nào phù hợp nhất?",
+        options: [
+            "Pivot Table",
+            "Find",
+            "Format Cells",
+            "Freeze Panes"
+        ],
+        answer: 0,
+        explanation:
+            "Pivot Table rất phù hợp để tổng hợp và phân tích dữ liệu theo nhiều nhóm."
+    },
+
+    {
+        question:
+            "Bạn muốn tìm nhóm lỗi gây ảnh hưởng lớn nhất. Biểu đồ nào phù hợp?",
+        options: [
+            "Pareto",
+            "Scatter",
+            "Area",
+            "Radar"
+        ],
+        answer: 0,
+        explanation:
+            "Pareto giúp xác định các lỗi ưu tiên theo nguyên tắc 80/20."
+    },
+
+    {
+        question:
+            "Bạn muốn loại bỏ khoảng trắng thừa trong dữ liệu. Dùng hàm nào?",
+        options: [
+            "TRIM",
+            "MID",
+            "NOW",
+            "MAX"
+        ],
+        answer: 0,
+        explanation:
+            "TRIM loại bỏ khoảng trắng thừa trong chuỗi."
+    },
+
+    {
+        question:
+            "Bạn muốn lấy 4 ký tự cuối của Lot No. Dùng hàm nào?",
+        options: [
+            "RIGHT",
+            "LEFT",
+            "SUMIF",
+            "COUNT"
+        ],
+        answer: 0,
+        explanation:
+            "RIGHT lấy một số ký tự từ bên phải chuỗi."
+    }
+
+];
+
+
+let currentChallenge = null;
+
+
+function taoChallengeMoi() {
+
+    const questionElement =
+        document.getElementById(
+            "challengeQuestion"
+        );
+
+    const optionsElement =
+        document.getElementById(
+            "challengeOptions"
+        );
+
+    const resultElement =
+        document.getElementById(
+            "challengeResult"
+        );
+
+    if (
+        !questionElement ||
+        !optionsElement ||
+        !resultElement
+    ) {
+        return;
+    }
+
+
+    const randomIndex =
+        Math.floor(
+            Math.random() *
+            excelChallenges.length
+        );
+
+
+    currentChallenge =
+        excelChallenges[randomIndex];
+
+
+    questionElement.textContent =
+        currentChallenge.question;
+
+
+    optionsElement.innerHTML = "";
+
+    resultElement.textContent = "";
+
+
+    currentChallenge.options
+        .forEach(function(option, index) {
+
+            const button =
+                document.createElement("button");
+
+            button.className =
+                "challenge-option";
+
+            button.textContent =
+                option;
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    chamChallenge(
+                        index,
+                        button
+                    );
+
+                }
+            );
+
+
+            optionsElement.appendChild(
+                button
+            );
+
+        });
+
+}
+
+
+function chamChallenge(
+    selectedIndex,
+    selectedButton
+) {
+
+    if (!currentChallenge) return;
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".challenge-option"
+        );
+
+    const result =
+        document.getElementById(
+            "challengeResult"
+        );
+
+
+    buttons.forEach(function(button) {
+
+        button.disabled = true;
+
+    });
+
+
+    if (
+        selectedIndex ===
+        currentChallenge.answer
+    ) {
+
+        selectedButton.classList.add(
+            "correct"
+        );
+
+        result.textContent =
+            "✅ Chính xác! " +
+            currentChallenge.explanation;
+
+    } else {
+
+        selectedButton.classList.add(
+            "wrong"
+        );
+
+        buttons[
+            currentChallenge.answer
+        ].classList.add(
+            "correct"
+        );
+
+        result.textContent =
+            "❌ Chưa đúng. " +
+            currentChallenge.explanation;
+
+    }
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        if (
+            document.getElementById(
+                "challengeQuestion"
+            )
+        ) {
+
+            taoChallengeMoi();
+
+        }
+
+    }
+);

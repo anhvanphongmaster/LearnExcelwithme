@@ -2797,3 +2797,276 @@ body.dark-mode .dashboard-target-line {
 body.dark-mode .dashboard-target-line span {
     background: #b02a37;
 }
+/* ===== TOP 3 NG RATE ===== */
+
+.dashboard-top-ng {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.dashboard-top-ng h3 {
+    color: #146c43;
+    margin-bottom: 15px;
+}
+
+#topNgLots {
+    display: grid;
+    gap: 10px;
+}
+
+.top-ng-item {
+    display: grid;
+    grid-template-columns: 45px 1fr auto;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 15px;
+
+    background: #f7f9f8;
+    border: 1px solid #e2e8e5;
+    border-radius: 10px;
+}
+
+.top-ng-rank {
+    font-size: 24px;
+}
+
+.top-ng-item strong {
+    display: block;
+    color: #222;
+}
+
+.top-ng-item small {
+    display: block;
+    margin-top: 3px;
+    color: #777;
+}
+
+.top-ng-rate {
+    font-size: 18px;
+    font-weight: 700;
+    color: #dc3545;
+}
+
+
+/* DARK MODE */
+
+body.dark-mode .top-ng-item {
+    background: #222;
+    border-color: #3a3a3a;
+}
+
+body.dark-mode .top-ng-item strong {
+    color: #fff;
+}
+
+body.dark-mode .top-ng-item small {
+    color: #aaa;
+}
+/* ===== QC SMART ALERT ===== */
+
+.qc-alert-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin: 20px 0;
+    padding: 16px 18px;
+
+    border-radius: 12px;
+    border-left: 5px solid #777;
+
+    background: #f5f5f5;
+}
+
+.qc-alert-icon {
+    font-size: 28px;
+}
+
+.qc-alert-box strong {
+    font-size: 16px;
+}
+
+.qc-alert-box p {
+    margin: 5px 0 0;
+    font-size: 14px;
+}
+
+
+/* PASS */
+
+.qc-alert-pass {
+    background: #e8f7ee;
+    border-left-color: #198754;
+}
+
+.qc-alert-pass strong {
+    color: #146c43;
+}
+
+
+/* NG */
+
+.qc-alert-danger {
+    background: #fff0f1;
+    border-left-color: #dc3545;
+}
+
+.qc-alert-danger strong {
+    color: #b02a37;
+}
+
+
+/* EMPTY */
+
+.qc-alert-empty {
+    background: #f5f5f5;
+}
+
+
+/* DARK MODE */
+
+body.dark-mode .qc-alert-box {
+    background: #222;
+    color: #eee;
+}
+
+body.dark-mode .qc-alert-pass {
+    background: #173a29;
+}
+
+body.dark-mode .qc-alert-danger {
+    background: #421f23;
+}
+/* ===== CÔNG THỨC EXCEL HÔM NAY ===== */
+
+.daily-formula {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f1faf5,
+            #ffffff
+        );
+
+    border: 1px solid #d8eee1;
+    border-radius: 18px;
+
+    box-shadow:
+        0 6px 22px rgba(0,0,0,0.06);
+}
+
+.daily-formula-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.daily-badge {
+    display: inline-block;
+
+    padding: 5px 10px;
+
+    background: #dff3e7;
+    color: #217346;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.daily-formula h2 {
+    margin: 10px 0 0;
+
+    color: #217346;
+    font-size: 25px;
+}
+
+.daily-formula-header button {
+    border: 1px solid #217346;
+    border-radius: 8px;
+
+    padding: 9px 13px;
+
+    background: transparent;
+    color: #217346;
+
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.daily-formula-code {
+    margin: 18px 0;
+    padding: 16px;
+
+    background: #202124;
+    color: #7ee2a8;
+
+    border-radius: 10px;
+
+    font-family: Consolas, monospace;
+    font-size: 17px;
+
+    overflow-x: auto;
+}
+
+.daily-formula-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.daily-formula-actions button {
+    padding: 9px 14px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #217346;
+    color: white;
+
+    cursor: pointer;
+    font-weight: 600;
+}
+
+
+/* DARK MODE */
+
+body.dark-mode .daily-formula {
+    background: #1e1e1e;
+    border-color: #333;
+}
+
+body.dark-mode .daily-formula h2 {
+    color: #7ee2a8;
+}
+
+body.dark-mode .daily-formula p {
+    color: #ddd;
+}
+
+body.dark-mode .daily-badge {
+    background: #173a29;
+    color: #7ee2a8;
+}
+
+body.dark-mode .daily-formula-header button {
+    border-color: #7ee2a8;
+    color: #7ee2a8;
+}
+
+
+@media (max-width: 600px) {
+
+    .daily-formula-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+}
