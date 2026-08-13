@@ -1,0 +1,81 @@
+/* =========================================================
+   ANH VAN PHONG — GLOBAL UI UPGRADE
+   Loaded after page-level CSS so every page shares one brand.
+   ========================================================= */
+:root{
+  --avp-green:#217346; --avp-green-dark:#123f2a; --avp-green-deep:#071810;
+  --avp-mint:#79efb2; --avp-bg:#f4f8f5; --avp-card:#ffffff;
+  --avp-text:#18231d; --avp-muted:#65736b; --avp-border:#dfe9e3;
+  --avp-shadow:0 12px 36px rgba(17,70,43,.09);
+  --avp-radius:18px;
+}
+html{scroll-behavior:smooth}
+body{background:linear-gradient(180deg,#f7faf8 0%,#f2f7f4 100%)!important;color:var(--avp-text)!important;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 10% 10%,rgba(33,115,70,.06),transparent 25%),radial-gradient(circle at 90% 40%,rgba(121,239,178,.07),transparent 24%)}
+
+/* Navigation */
+nav{min-height:68px!important;padding:10px max(18px,calc((100vw - 1220px)/2))!important;justify-content:center!important;gap:7px!important;background:rgba(7,24,16,.94)!important;border-bottom:1px solid rgba(255,255,255,.08)!important;box-shadow:0 8px 28px rgba(0,0,0,.18)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+nav::before{content:"AVP";display:inline-grid;place-items:center;width:42px;height:42px;margin-right:13px;border-radius:12px;background:linear-gradient(135deg,#79efb2,#d1ffe5);color:#092015;font-size:13px;font-weight:950;letter-spacing:.5px;box-shadow:0 8px 24px rgba(121,239,178,.16)}
+nav a{padding:10px 12px!important;border-radius:10px!important;color:#eaf6ef!important;font-size:14px!important;font-weight:700!important;transition:.2s ease!important}
+nav a:hover{color:#fff!important;background:rgba(121,239,178,.11)!important;transform:translateY(-1px)}
+nav a.active{background:#effff6!important;color:#155a37!important;box-shadow:0 5px 16px rgba(0,0,0,.12)!important}
+#themeToggle{width:40px;height:40px;border-radius:11px!important;border:1px solid rgba(255,255,255,.12)!important;background:rgba(255,255,255,.07)!important;color:white!important;cursor:pointer;transition:.2s ease}
+#themeToggle:hover{transform:rotate(-8deg) scale(1.04);background:rgba(255,255,255,.12)!important}
+
+/* Page headers */
+.page-header{position:relative;overflow:hidden;padding:78px 20px!important;background:radial-gradient(circle at 18% 10%,rgba(121,239,178,.22),transparent 28%),linear-gradient(135deg,#071810,#123f2a 55%,#185c37)!important;color:#fff!important;border-bottom:1px solid rgba(255,255,255,.08)}
+.page-header::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,#000,transparent)}
+.page-header>*{position:relative;z-index:1}
+.page-header h1{font-size:clamp(38px,5vw,58px)!important;letter-spacing:-1.8px!important;font-weight:900!important;text-shadow:0 8px 28px rgba(0,0,0,.18)}
+.page-header p{color:#cfe2d7!important;font-size:17px!important;max-width:760px!important}
+
+/* Main layout */
+main{width:min(1120px,calc(100% - 32px))!important;max-width:1120px!important;margin-left:auto!important;margin-right:auto!important}
+section{scroll-margin-top:88px}
+h2,.section-title{letter-spacing:-.6px}
+
+/* Shared cards and panels */
+.course-card,.featured-card,.latest-card,.download-card,.exercise-card,.box,.pivot-box,.action-box,.contact-item,.formula-finder-box,.daily-formula,.daily-challenge,.learning-path,.mini-dashboard,.dashboard-kpi,.dashboard-chart,.dashboard-top-ng,.qc-alert-box,.formula-builder,.formula-tester,.card{
+  border:1px solid var(--avp-border)!important;border-radius:var(--avp-radius)!important;box-shadow:var(--avp-shadow)!important;background:rgba(255,255,255,.94)!important;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease!important
+}
+.course-card:hover,.featured-card:hover,.latest-card:hover,.download-card:hover,.exercise-card:hover,.contact-item:hover,.card:hover{transform:translateY(-5px)!important;box-shadow:0 18px 44px rgba(17,70,43,.14)!important;border-color:#bfddcc!important}
+
+/* Buttons / links */
+button,.hero-button,.download-btn,.next-lesson-btn,.complete-btn,.reset-progress-btn,.reset-quiz-btn,.export-dashboard-btn,.clear-dashboard-btn{border-radius:11px!important;transition:transform .2s ease,box-shadow .2s ease,filter .2s ease!important}
+button:hover,.hero-button:hover,.download-btn:hover,.next-lesson-btn:hover,.complete-btn:hover{transform:translateY(-2px)}
+input,select,textarea{border-radius:11px!important;border:1px solid #cfddd5!important;outline:none!important;transition:border-color .2s ease,box-shadow .2s ease!important}
+input:focus,select:focus,textarea:focus{border-color:#55a97b!important;box-shadow:0 0 0 4px rgba(33,115,70,.09)!important}
+code{border-radius:8px;background:#eaf5ee;color:#155a37;padding:3px 7px}
+pre{border-radius:14px!important;border:1px solid #dce8e0!important;box-shadow:0 8px 24px rgba(17,70,43,.06)}
+table{border-collapse:separate!important;border-spacing:0!important;overflow:hidden;border-radius:14px!important;box-shadow:0 8px 24px rgba(17,70,43,.06)}
+th{background:#185c37!important;color:#fff!important}
+
+/* Footer */
+footer{margin-top:70px!important;padding:38px 20px!important;background:linear-gradient(135deg,#071810,#123f2a)!important;color:#dcece3!important;border-top:1px solid rgba(255,255,255,.08)}
+footer p:first-child{font-weight:800;color:#fff}
+#backToTop{background:linear-gradient(135deg,#217346,#185c37)!important;border:1px solid rgba(255,255,255,.22)!important;box-shadow:0 10px 26px rgba(13,67,39,.28)!important}
+
+/* Scroll reveal added by script.js */
+.avp-reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.avp-reveal.avp-visible{opacity:1;transform:none}
+
+/* Better mobile navigation */
+@media(max-width:900px){
+ nav{justify-content:flex-start!important;overflow-x:auto!important;scrollbar-width:none!important;padding:9px 12px!important}
+ nav::-webkit-scrollbar{display:none}
+ nav::before{position:sticky;left:0;flex:0 0 42px;z-index:2;margin-right:5px}
+ nav a{font-size:13px!important;padding:9px 10px!important}
+ .page-header{padding:58px 18px!important}
+ main{width:min(100% - 24px,1120px)!important}
+}
+@media(max-width:560px){
+ .page-header h1{font-size:36px!important}
+ .page-header p{font-size:15px!important}
+ footer{margin-top:45px!important}
+}
+
+/* Dark mode compatibility */
+body.dark-mode{--avp-bg:#09120d;--avp-card:#101b14;--avp-text:#e9f3ed;--avp-muted:#a7b8ae;--avp-border:#263a2e;background:#09120d!important;color:#e9f3ed!important}
+body.dark-mode main,body.dark-mode section{color:#e9f3ed}
+body.dark-mode .course-card,body.dark-mode .featured-card,body.dark-mode .latest-card,body.dark-mode .download-card,body.dark-mode .exercise-card,body.dark-mode .box,body.dark-mode .pivot-box,body.dark-mode .action-box,body.dark-mode .contact-item,body.dark-mode .formula-finder-box,body.dark-mode .daily-formula,body.dark-mode .daily-challenge,body.dark-mode .learning-path,body.dark-mode .mini-dashboard,body.dark-mode .dashboard-kpi,body.dark-mode .dashboard-chart,body.dark-mode .dashboard-top-ng,body.dark-mode .qc-alert-box,body.dark-mode .formula-builder,body.dark-mode .formula-tester,body.dark-mode .card{background:#101b14!important;border-color:#263a2e!important;color:#e9f3ed!important}
+body.dark-mode input,body.dark-mode select,body.dark-mode textarea{background:#0c1710!important;color:#fff!important;border-color:#304538!important}

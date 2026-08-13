@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
-    <title>Giới thiệu - Website Excel của tôi</title>
+    <title>Giới thiệu | Learn Excecl with Anh Van Phong | Learn Excecl with Anh Van Phong</title>
 
     <style>
 
@@ -255,6 +255,10 @@
 
     </style>
 
+    <link rel="stylesheet" href="upgrade.css">
+    <link rel="stylesheet" href="global-search.css">
+    <link rel="stylesheet" href="simple-nav.css">
+    <link rel="stylesheet" href="auth.css">
 </head>
 
 
@@ -263,29 +267,22 @@
 <div id="scrollProgress"></div>
     <!-- MENU -->
 
-    <nav>
+    
 
-        <a href="index.html">
-            🏠 Trang chủ
-        </a>
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
 
-        <a href="gioithieu.html">
-            ℹ️ Giới thiệu
-        </a>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
 
-        <a href="excel.html">
-            📊 Học Excel
-        </a>
-<a href="baitapexcel.html">
-    ✍️ Bài tập
-</a>
-        <a href="lienhe.html">
-            📩 Liên hệ
-        </a>
-<button id="themeToggle">
-    🌙
-</button>
-    </nav>
+
 
 
     <!-- HEADER -->
@@ -399,124 +396,130 @@
         </div>
 
 
+
         <!-- NỘI DUNG -->
 
-        <div class="card">
+        <div class="card website-features-card">
 
             <h2>
                 📖 Website có gì?
             </h2>
 
-            <div class="box-grid">
+            <p class="website-features-intro">
+                Toàn bộ nội dung, công cụ và tính năng hiện có trên
+                <strong>Learn Excecl with Anh Van Phong</strong>.
+            </p>
 
+            <div class="box-grid website-features-grid">
+
+                <a class="box website-feature-link" href="phimtatexcel.html">
+                    <div class="icon">⌨️</div>
+                    <h3>100+ Phím tắt Excel</h3>
+                    <p>Tra cứu phím tắt từ cơ bản đến nâng cao, có tìm kiếm và lọc nhanh.</p>
+                </a>
+
+                <a class="box website-feature-link" href="congthucexcel.html">
+                    <div class="icon">🧮</div>
+                    <h3>100+ Công thức Excel</h3>
+                    <p>Hàm cơ bản, điều kiện, tra cứu, văn bản, ngày giờ, thống kê và Excel 365.</p>
+                </a>
+
+                <a class="box website-feature-link" href="pivottable.html">
+                    <div class="icon">📊</div>
+                    <h3>Pivot Table</h3>
+                    <p>Tổng hợp và phân tích dữ liệu nhanh, phù hợp báo cáo công việc thực tế.</p>
+                </a>
+
+                <a class="box website-feature-link" href="bieudopareto.html">
+                    <div class="icon">📈</div>
+                    <h3>Biểu đồ & Pareto</h3>
+                    <p>Trực quan hóa dữ liệu, Top Defect và phân tích theo nguyên tắc 80/20.</p>
+                </a>
+
+                <a class="box website-feature-link" href="filtersort.html">
+                    <div class="icon">🔍</div>
+                    <h3>Filter & Sort</h3>
+                    <p>Lọc, sắp xếp và xử lý danh sách dữ liệu nhanh hơn trong Excel.</p>
+                </a>
+
+                <a class="box website-feature-link" href="baocaoexcel.html">
+                    <div class="icon">📋</div>
+                    <h3>Báo cáo Excel</h3>
+                    <p>KPI, NG Rate, Top Defect và cách trình bày báo cáo rõ ràng, chuyên nghiệp.</p>
+                </a>
+
+                <a class="box website-feature-link" href="baitapexcel.html">
+                    <div class="icon">✍️</div>
+                    <h3>Bài tập Excel</h3>
+                    <p>Quiz và bài tập để kiểm tra kiến thức sau khi học.</p>
+                </a>
+
+                <a class="box website-feature-link" href="playground.html">
+                    <div class="icon">🧪</div>
+                    <h3>Excel Playground</h3>
+                    <p>Nhập công thức trực tiếp, kiểm tra đúng/sai, nhận gợi ý và tích lũy XP.</p>
+                </a>
+
+                <a class="box website-feature-link" href="learning-path.html">
+                    <div class="icon">📅</div>
+                    <h3>Lộ trình 30 ngày</h3>
+                    <p>Học theo từng ngày với mục tiêu, checklist và tiến độ rõ ràng.</p>
+                </a>
+
+                <a class="box website-feature-link" href="tools-center.html">
+                    <div class="icon">⚒️</div>
+                    <h3>Excel Tools Center</h3>
+                    <p>NG Rate Calculator, Formula Builder, Text Cleaner, Date Calculator và Pareto Generator.</p>
+                </a>
+
+                <a class="box website-feature-link" href="qc-dashboard.html">
+                    <div class="icon">🏭</div>
+                    <h3>QC Dashboard</h3>
+                    <p>Import CSV/Excel, phân tích Lot, Input, NG, Defect, Spec, Top 5 và xuất báo cáo .xlsx.</p>
+                </a>
+
+                <a class="box website-feature-link" href="formula-finder.html">
+                    <div class="icon">🧠</div>
+                    <h3>Formula Finder</h3>
+                    <p>Tìm nhanh công thức Excel phù hợp theo nhu cầu công việc.</p>
+                </a>
+
+                <a class="box website-feature-link" href="dashboard.html">
+                    <div class="icon">📊</div>
+                    <h3>Dashboard cá nhân</h3>
+                    <p>Theo dõi Level, XP, tiến độ học, Quiz, Playground và streak.</p>
+                </a>
+
+                <a class="box website-feature-link" href="profile.html">
+                    <div class="icon">👤</div>
+                    <h3>Hồ sơ người học</h3>
+                    <p>Tên hiển thị, avatar, mục tiêu học và hướng học được lưu trên trình duyệt.</p>
+                </a>
+
+                <a class="box website-feature-link" href="achievements.html">
+                    <div class="icon">🏆</div>
+                    <h3>Thành tích & Nhiệm vụ</h3>
+                    <p>Huy hiệu, nhiệm vụ hằng ngày, bonus XP và các mốc tiến độ.</p>
+                </a>
+
+                <button class="box website-feature-link website-search-feature" type="button"
+                        onclick="window.openGlobalSearch && window.openGlobalSearch()">
+                    <div class="icon">🔎</div>
+                    <h3>Tìm kiếm toàn website</h3>
+                    <p>Dùng nút Tìm kiếm hoặc Ctrl + K để mở Spotlight Search từ mọi trang.</p>
+                </button>
 
                 <div class="box">
-
-                    <div class="icon">
-                        ⌨️
-                    </div>
-
-                    <h3>
-                        Phím tắt
-                    </h3>
-
-                    <p>
-                        Các phím tắt giúp
-                        thao tác nhanh hơn.
-                    </p>
-
+                    <div class="icon">🌙</div>
+                    <h3>Chế độ Sáng / Tối</h3>
+                    <p>Chuyển giao diện sáng hoặc tối ngay trên thanh điều hướng.</p>
                 </div>
-
 
                 <div class="box">
-
-                    <div class="icon">
-                        🧮
-                    </div>
-
-                    <h3>
-                        Công thức
-                    </h3>
-
-                    <p>
-                        Các hàm Excel thường
-                        được sử dụng.
-                    </p>
-
+                    <div class="icon">📥</div>
+                    <h3>File Excel thực hành</h3>
+                    <p>Tải các file mẫu Pivot Table, Pareto và báo cáo QC để luyện trực tiếp.</p>
                 </div>
-
-
-                <div class="box">
-
-                    <div class="icon">
-                        📊
-                    </div>
-
-                    <h3>
-                        Pivot Table
-                    </h3>
-
-                    <p>
-                        Tổng hợp và phân tích
-                        dữ liệu.
-                    </p>
-
-                </div>
-
-
-                <div class="box">
-
-                    <div class="icon">
-                        📈
-                    </div>
-
-                    <h3>
-                        Pareto
-                    </h3>
-
-                    <p>
-                        Phân tích lỗi và
-                        trực quan hóa dữ liệu.
-                    </p>
-
-                </div>
-
-
-                <div class="box">
-
-                    <div class="icon">
-                        🔍
-                    </div>
-
-                    <h3>
-                        Filter & Sort
-                    </h3>
-
-                    <p>
-                        Lọc và sắp xếp
-                        dữ liệu.
-                    </p>
-
-                </div>
-
-
-                <div class="box">
-
-                    <div class="icon">
-                        📋
-                    </div>
-
-                    <h3>
-                        Báo cáo
-                    </h3>
-
-                    <p>
-                        Xây dựng báo cáo
-                        Excel rõ ràng.
-                    </p>
-
-                </div>
-
 
             </div>
 
@@ -614,23 +617,22 @@
 
     <!-- FOOTER -->
 
-    <footer>
+    
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+</footer>
 
-        <p>
-            © 2026 - Website Excel của tôi
-        </p>
-
-        <p>
-            Học Excel • Phân tích dữ liệu • Báo cáo
-        </p>
-
-    </footer>
 
 
 <button id="backToTop" onclick="lenDauTrang()">
     ↑
 </button>
 <script src="script.js"></script>
+    <script src="gamification.js"></script><script src="global-search.js"></script>
+    <script src="simple-nav.js"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
 </body>
 
 </html>

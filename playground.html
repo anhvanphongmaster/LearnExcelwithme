@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Excel Playground của Learn Excecl with Anh Van Phong: luyện công thức Excel tương tác, chấm đúng sai, nhận XP và lưu tiến độ học.">
+<title>Excel Playground | Learn Excecl with Anh Van Phong | Learn Excecl with Anh Van Phong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="upgrade.css">
+<link rel="stylesheet" href="playground.css">
+    <link rel="stylesheet" href="global-search.css">
+    <link rel="stylesheet" href="simple-nav.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
+
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+
+
+<header class="page-header playground-header">
+<div class="playground-hero-inner">
+<div>
+<span class="playground-kicker">INTERACTIVE EXCEL LAB</span>
+<h1>🧪 Excel Playground</h1>
+<p>Nhập công thức như đang làm Excel thật. Website sẽ kiểm tra, gợi ý, cộng XP và lưu tiến độ ngay trên trình duyệt.</p>
+</div>
+<div class="xp-panel">
+<div class="xp-top"><span>LEVEL <b id="levelNumber">1</b></span><strong id="xpText">0 XP</strong></div>
+<div class="xp-bar"><span id="xpBar"></span></div>
+<div class="xp-meta"><span id="completedText">0/10 bài hoàn thành</span><span id="rankText">Excel Starter</span></div>
+</div>
+</div>
+</header>
+
+<main class="playground-main">
+<section class="playground-toolbar">
+<div>
+<h2>Lộ trình thực hành</h2>
+<p>Hoàn thành mỗi bài lần đầu để nhận <strong>10 XP</strong>. Bạn có thể làm lại bao nhiêu lần tùy thích.</p>
+</div>
+<div class="toolbar-actions">
+<button id="filterAll" class="pg-filter active" data-filter="all">Tất cả</button>
+<button class="pg-filter" data-filter="basic">Cơ bản</button>
+<button class="pg-filter" data-filter="advanced">Nâng cao</button>
+<button id="resetPlayground" class="pg-reset">↺ Làm lại tiến độ</button>
+</div>
+</section>
+
+<section id="exerciseList" class="playground-list" aria-live="polite"></section>
+
+<section class="playground-summary">
+<div>
+<span class="summary-icon">🏆</span>
+<h2 id="summaryTitle">Bắt đầu hành trình Excel</h2>
+<p id="summaryText">Hoàn thành 10 thử thách để mở huy hiệu đầu tiên của Learn Excecl with Anh Van Phong.</p>
+</div>
+<a href="baitapexcel.html" class="summary-link">Làm thêm bài tập →</a>
+</section>
+</main>
+
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+</footer>
+
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="script.js"></script>
+<script src="playground.js"></script>
+    <script src="gamification.js"></script><script src="global-search.js"></script>
+    <script src="simple-nav.js"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+</body>
+</html>

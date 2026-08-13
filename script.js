@@ -502,6 +502,10 @@ function danhDauDaHoc(button) {
 
         completedCourses.push(course);
 
+        if (window.avpRecordLearningEvent) {
+            window.avpRecordLearningEvent("course_complete", { course: course });
+        }
+
         button.classList.add("completed");
 
         button.textContent =
@@ -1447,6 +1451,10 @@ if (bestScoreElement) {
     bestScoreElement.textContent =
         "Kỷ lục: " + bestScore + "/5";
 
+}
+
+if (window.avpRecordLearningEvent) {
+    window.avpRecordLearningEvent("quiz_attempt", { score: score });
 }
 }
 
@@ -3820,3 +3828,51 @@ document.addEventListener(
 
     }
 );
+
+/* ===== ANH VAN PHONG GLOBAL ENHANCEMENTS ===== */
+document.addEventListener("DOMContentLoaded", function () {
+    // Automatically mark the current page in the navigation.
+    const current = (location.pathname.split("/").pop() || "index.html").toLowerCase();
+    document.querySelectorAll("nav a[href]").forEach(function (link) {
+        const href = (link.getAttribute("href") || "").split("#")[0].toLowerCase();
+        if (href === current) link.classList.add("active");
+    });
+
+    // Gentle reveal animation; skipped for the main hero to keep it immediate.
+    const revealTargets = document.querySelectorAll(
+        "main > section, .courses, .featured, .quick-access, .download-section, .latest-section, .stats-section, .intro, .home-contact"
+    );
+
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("avp-visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        revealTargets.forEach(function (el) {
+            el.classList.add("avp-reveal");
+            observer.observe(el);
+        });
+    }
+});
+
+
+/* ===== AVP DAILY ACTIVITY TRACKER ===== */
+(function(){
+    try {
+        const key = "avp_activity_days_v1";
+        const now = new Date();
+        const today = now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
+        let days = JSON.parse(localStorage.getItem(key) || "[]");
+        if (!Array.isArray(days)) days = [];
+        if (!days.includes(today)) {
+            days.push(today);
+            days = days.slice(-120);
+            localStorage.setItem(key, JSON.stringify(days));
+        }
+    } catch(e) {}
+})();

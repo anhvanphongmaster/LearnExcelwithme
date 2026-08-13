@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lộ trình 30 ngày | Learn Excecl with Anh Van Phong | Learn Excecl with Anh Van Phong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="upgrade.css">
+<link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="learning-path.css">
+    <link rel="stylesheet" href="simple-nav.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+<div id="scrollProgress"></div>
+
+
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
+
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+
+
+<main class="lp-page">
+  <section class="lp-hero">
+    <div class="avp-eyebrow">📅 30-DAY EXCEL ROADMAP</div>
+    <h1>Lộ trình Excel 30 ngày</h1>
+    <p>Mỗi ngày một mục tiêu ngắn và rõ ràng. Học lý thuyết, thực hành, ôn tập và cuối cùng hoàn thành một mini project Excel.</p>
+    <div class="lp-overview">
+      <div class="lp-stat"><strong id="lpCompleted">0</strong><span>Ngày đã hoàn thành</span></div>
+      <div class="lp-stat"><strong id="lpPercent">0%</strong><span>Tiến độ lộ trình</span></div>
+      <div class="lp-stat"><strong id="lpXp">0</strong><span>XP từ lộ trình</span></div>
+      <div class="lp-stat"><strong id="lpToday">1</strong><span>Ngày hiện tại</span></div>
+    </div>
+    <div class="lp-progress-wrap">
+      <div class="lp-progress-meta"><span id="lpProgressText">0/30 ngày hoàn thành</span><span>+15 XP / ngày</span></div>
+      <div class="lp-progress"><span id="lpProgressBar"></span></div>
+    </div>
+  </section>
+
+  <section class="lp-next">
+    <div>
+      <h2>🎯 Bài tiếp theo: <span id="lpNextTitle"></span></h2>
+      <p id="lpNextDesc"></p>
+    </div>
+    <a id="lpNextLink" href="excel.html">Học ngay →</a>
+  </section>
+
+  <div class="lp-toolbar">
+    <button class="lp-filter active" data-filter="all">Tất cả</button>
+    <button class="lp-filter" data-filter="1">Tuần 1</button>
+    <button class="lp-filter" data-filter="2">Tuần 2</button>
+    <button class="lp-filter" data-filter="3">Tuần 3</button>
+    <button class="lp-filter" data-filter="4">Tuần 4</button>
+    <button class="lp-filter" data-filter="5">Tổng kết</button>
+    <button id="lpReset" class="lp-reset">Đặt lại tiến độ</button>
+  </div>
+
+  <section class="lp-grid" id="learningPathGrid"></section>
+</main>
+
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+</footer>
+
+
+<script src="script.js"></script>
+<script src="global-search.js"></script>
+<script src="gamification.js"></script>
+<script src="learning-path.js"></script>
+    <script src="simple-nav.js"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+</body>
+</html>

@@ -6,44 +6,33 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Tìm công thức Excel</title>
+    <title>Tìm công thức Excel | Learn Excecl with Anh Van Phong | Learn Excecl with Anh Van Phong</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="upgrade.css">
+    <link rel="stylesheet" href="global-search.css">
+    <link rel="stylesheet" href="simple-nav.css">
+    <link rel="stylesheet" href="auth.css">
 </head>
 
 <body>
 
-<nav>
 
-    <a href="index.html">
-        🏠 Trang chủ
-    </a>
 
-    <a href="gioithieu.html">
-        ℹ️ Giới thiệu
-    </a>
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
 
-    <a href="excel.html">
-        📊 Học Excel
-    </a>
-
-    <a href="baitapexcel.html">
-        ✍️ Bài tập
-    </a>
-
-    <a href="formula-finder.html">
-        🧠 Tìm công thức
-    </a>
-
-    <a href="lienhe.html">
-        📩 Liên hệ
-    </a>
-
-    <button id="themeToggle">
-        🌙
-    </button>
-
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
+
+
 
 
 <main class="formula-finder-page">
@@ -61,7 +50,18 @@
 
     <div class="challenge-header">
 
-        <div>
+       
+
+    <div
+        id="challengeOptions"
+        class="challenge-options">
+    </div>
+
+    <div
+        id="challengeResult"
+        class="challenge-result">
+    </div>
+ <div>
             <span class="challenge-badge">
                 🎯 EXCEL CHALLENGE
             </span>
@@ -76,22 +76,10 @@
         </button>
 
     </div>
-
-    <div
-        id="challengeOptions"
-        class="challenge-options">
-    </div>
-
-    <div
-        id="challengeResult"
-        class="challenge-result">
-    </div>
-
 </section>
-        <button onclick="doiCongThucHomNay()">
-            🔄 Công thức khác
-        </button>
+      
     </div>
+    
 
     <p id="dailyFormulaDescription"></p>
 
@@ -108,6 +96,9 @@
 
         <button onclick="moCongThucTrongFinder()">
             🔍 Tìm hiểu công thức
+        </button>
+          <button onclick="doiCongThucHomNay()">
+            🔄 Công thức khác
         </button>
 
     </div>
@@ -564,5 +555,14 @@
 
 <script src="script.js"></script>
 
+    <script src="gamification.js"></script><script src="global-search.js"></script>
+    <script src="simple-nav.js"></script>
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+</footer>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
 </body>
 </html>

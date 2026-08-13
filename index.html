@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
-    <title>Website Excel của tôi</title>
+    <title>Learn Excecl with Anh Van Phong | Excel & Kỹ năng văn phòng | Learn Excecl with Anh Van Phong</title>
 
     <style>
 
@@ -400,8 +400,368 @@
     border-radius: 8px;
     font-weight: bold;
 }
+
+/* ===== Learn Excecl with Anh Van Phong - PROFESSIONAL HERO ===== */
+.avp-hero {
+    position: relative;
+    min-height: 650px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 110px 20px 90px;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(33,115,70,.36), transparent 36%),
+        radial-gradient(circle at 85% 75%, rgba(32,201,151,.20), transparent 34%),
+        linear-gradient(135deg, #071810 0%, #0b2418 50%, #07120d 100%);
+    color: #fff;
+}
+
+.avp-grid-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .18;
+    background-image:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), transparent);
+}
+
+.avp-orb {
+    position: absolute;
+    width: 440px;
+    height: 440px;
+    border-radius: 50%;
+    background: rgba(64, 224, 155, .14);
+    filter: blur(90px);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: left .08s linear, top .08s linear;
+}
+
+.avp-hero-inner {
+    position: relative;
+    z-index: 2;
+    width: min(1120px, 100%);
+    display: grid;
+    grid-template-columns: 1.18fr .82fr;
+    gap: 54px;
+    align-items: center;
+}
+
+.avp-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 13px;
+    border: 1px solid rgba(133,255,191,.22);
+    border-radius: 999px;
+    background: rgba(255,255,255,.06);
+    color: #baf7d5;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+}
+
+.avp-eyebrow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #62f3a8;
+    box-shadow: 0 0 16px #62f3a8;
+}
+
+.avp-title {
+    margin: 24px 0 16px;
+    font-size: clamp(48px, 7vw, 86px);
+    line-height: .98;
+    letter-spacing: -3px;
+    font-weight: 900;
+}
+
+.avp-title span {
+    display: block;
+    background: linear-gradient(90deg, #ffffff 0%, #bdf6d8 50%, #63e8a4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.avp-tagline {
+    min-height: 34px;
+    font-size: clamp(18px, 2vw, 23px);
+    color: #a9e8c7;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.avp-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 3px;
+    vertical-align: -2px;
+    background: #7df0b3;
+    animation: avpBlink .8s infinite;
+}
+
+@keyframes avpBlink {
+    0%, 45% { opacity: 1; }
+    46%, 100% { opacity: 0; }
+}
+
+.avp-desc {
+    max-width: 650px;
+    color: #c0cec6;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.avp-actions {
+    display: flex;
+    gap: 13px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.avp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 50px;
+    padding: 0 22px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 800;
+    transition: .25s ease;
+}
+
+.avp-btn-primary {
+    color: #092015;
+    background: linear-gradient(135deg, #79efb2, #b9f9d7);
+    box-shadow: 0 12px 35px rgba(73,230,151,.22);
+}
+
+.avp-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 38px rgba(73,230,151,.34);
+}
+
+.avp-btn-secondary {
+    color: #e9fff3;
+    border: 1px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,.06);
+    backdrop-filter: blur(10px);
+}
+
+.avp-btn-secondary:hover {
+    transform: translateY(-3px);
+    background: rgba(255,255,255,.10);
+}
+
+.avp-mini-info {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    color: #9db0a5;
+    font-size: 13px;
+}
+
+.avp-mini-info span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.avp-panel {
+    position: relative;
+    padding: 24px;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,.13);
+    background: linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+    box-shadow: 0 30px 80px rgba(0,0,0,.35);
+    backdrop-filter: blur(18px);
+    transform: perspective(1000px) rotateY(-3deg) rotateX(2deg);
+    transition: transform .25s ease;
+}
+
+.avp-panel:hover {
+    transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-4px);
+}
+
+.avp-panel-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.avp-panel-brand {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #9bcbae;
+    font-weight: 800;
+}
+
+.avp-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    color: #9bf0bd;
+    font-weight: 700;
+}
+
+.avp-live::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    background: #62f3a8;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #62f3a8;
+}
+
+.avp-tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
+}
+
+.avp-tool {
+    display: block;
+    min-height: 116px;
+    padding: 18px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(4,17,10,.44);
+    transition: .22s ease;
+}
+
+.avp-tool:hover {
+    transform: translateY(-4px);
+    border-color: rgba(116,241,176,.34);
+    background: rgba(14,49,30,.66);
+}
+
+.avp-tool-icon {
+    display: block;
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+
+.avp-tool strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.avp-tool small {
+    color: #98aaa0;
+    line-height: 1.45;
+}
+
+.avp-search {
+    display: flex;
+    gap: 9px;
+    margin-top: 15px;
+    padding: 8px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.09);
+    background: rgba(0,0,0,.18);
+}
+
+.avp-search input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #fff;
+    padding: 9px 10px;
+    font-size: 14px;
+}
+
+.avp-search input::placeholder { color: #7f9588; }
+
+.avp-search button {
+    border: 0;
+    border-radius: 10px;
+    padding: 0 15px;
+    font-weight: 800;
+    cursor: pointer;
+    color: #082014;
+    background: #8ff1bb;
+}
+
+.avp-scroll-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: #88a597;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+    .avp-hero {
+        min-height: auto;
+        padding: 95px 18px 75px;
+    }
+
+    .avp-hero-inner {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+
+    .avp-panel {
+        transform: none;
+    }
+
+    .avp-title {
+        letter-spacing: -2px;
+    }
+}
+
+@media (max-width: 560px) {
+    .avp-tool-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .avp-actions .avp-btn {
+        width: 100%;
+    }
+
+    .avp-mini-info {
+        gap: 10px 16px;
+    }
+
+    .avp-search {
+        flex-direction: column;
+    }
+
+    .avp-search button {
+        min-height: 42px;
+    }
+}
+
     </style>
 
+    <link rel="stylesheet" href="upgrade.css">
+    <link rel="stylesheet" href="global-search.css">
+    <link rel="stylesheet" href="simple-nav.css">
+    <link rel="stylesheet" href="home-effects.css">
+    <link rel="stylesheet" href="auth.css">
 </head>
 
 
@@ -410,70 +770,117 @@
 
     <!-- MENU -->
 
-    <nav>
+    
 
-        <a href="index.html">
-    🏠 Trang chủ
-</a>
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
 
-      <a href="gioithieu.html">
-    ℹ️ Giới thiệu
-</a>
-
-        <a href="excel.html">
-            📊 Học Excel
-        </a>
-<a href="baitapexcel.html">
-    ✍️ Bài tập
-</a>
-<a href="formula-finder.html">
-    🧠 Tìm công thức
-</a>
-        <a href="lienhe">
-    📩 Liên hệ
-</a>
-<button id="themeToggle">
-    🌙
-</button>
-    </nav>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
 
 
-    <!-- HERO -->
+    <!-- HERO - Learn Excecl with Anh Van Phong -->
+    <section class="avp-hero" id="trangchu">
+        <div class="avp-grid-bg"></div>
+        <div class="avp-orb" id="avpOrb"></div>
 
-    <section class="hero">
+        <div class="avp-hero-inner">
+            <div class="avp-copy">
+                <div class="avp-eyebrow">
+                    <span class="avp-eyebrow-dot"></span>
+                    OFFICE LEARNING HUB
+                </div>
 
-        <h1>
-            📊 Học Excel cùng tôi
-        </h1>
+                <h1 class="avp-title">
+                    <span>Learn Excecl with Anh Van Phong</span>
+                </h1>
 
-        <p>
-            Tổng hợp kiến thức Excel từ cơ bản đến
-            thực tế công việc, giúp bạn học nhanh hơn
-            và áp dụng hiệu quả hơn.
-        </p>
+                <div class="avp-tagline">
+                    <span id="avpTyping"></span><span class="avp-cursor"></span>
+                </div>
 
-        <a
-            href="excel.html"
-            class="hero-button">
+                <p class="avp-desc">
+                    Học Excel theo cách dễ hiểu, thực tế và có thể áp dụng ngay vào công việc.
+                    Từ phím tắt, công thức, Pivot Table đến báo cáo và phân tích dữ liệu.
+                </p>
 
-            🚀 Bắt đầu học Excel
+                <div class="avp-actions">
+                    <a href="excel.html" class="avp-btn avp-btn-primary">
+                        🚀 Bắt đầu học Excel
+                    </a>
+                    <a href="baitapexcel.html" class="avp-btn avp-btn-secondary">
+                        ✍️ Bài tập thực hành
+                    </a>
+                    <a href="dashboard.html" class="avp-btn avp-btn-secondary">
+                        👤 Dashboard cá nhân
+                    </a>
+                    <a href="playground.html" class="avp-btn avp-btn-secondary">
+                        🧪 Thực hành tương tác
+                    </a>
+                </div>
 
-        </a>
-<div class="home-search">
+                <div class="avp-mini-info">
+                    <span>✓ Học miễn phí</span>
+                    <span>✓ Nội dung thực tế</span>
+                    <span>✓ Dễ áp dụng</span>
+                </div>
+            </div>
 
-    <input
-        type="text"
-        id="homeSearch"
-        placeholder="🔍 Tìm bài học: VLOOKUP, Pivot, Pareto..."
-        onkeydown="if(event.key === 'Enter') timBaiHoc()"
-    >
+            <div class="avp-panel">
+                <div class="avp-panel-top">
+                    <span class="avp-panel-brand">Learn Excecl with Anh Van Phong</span>
+                    <span class="avp-live">ONLINE</span>
+                </div>
 
-    <button onclick="timBaiHoc()">
-        Tìm kiếm
-    </button>
-<div id="searchSuggestions"></div>
-</div>
+                <div class="avp-tool-grid">
+                    <a class="avp-tool" href="congthucexcel.html">
+                        <span class="avp-tool-icon">🧮</span>
+                        <strong>Công thức Excel</strong>
+                        <small>IF, SUMIFS, COUNTIFS, VLOOKUP, XLOOKUP...</small>
+                    </a>
+
+                    <a class="avp-tool" href="pivottable.html">
+                        <span class="avp-tool-icon">📊</span>
+                        <strong>Pivot Table</strong>
+                        <small>Tổng hợp và phân tích dữ liệu nhanh.</small>
+                    </a>
+
+                    <a class="avp-tool" href="phimtatexcel.html">
+                        <span class="avp-tool-icon">⌨️</span>
+                        <strong>Phím tắt</strong>
+                        <small>Tăng tốc thao tác trong công việc.</small>
+                    </a>
+
+                    <a class="avp-tool" href="formula-finder.html">
+                        <span class="avp-tool-icon">🧠</span>
+                        <strong>Tìm công thức</strong>
+                        <small>Tìm nhanh hàm Excel phù hợp nhu cầu.</small>
+                    </a>
+                </div>
+
+                <div class="avp-search">
+                    <input
+                        type="text"
+                        id="homeSearch"
+                        placeholder="Tìm: VLOOKUP, Pivot, Pareto..."
+                        onkeydown="if(event.key === 'Enter') timBaiHoc()"
+                    >
+                    <button onclick="timBaiHoc()">Tìm kiếm</button>
+                    <div id="searchSuggestions"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="avp-scroll-hint">Cuộn xuống để khám phá ↓</div>
     </section>
+
 <section class="stats-section">
 
     <h2>📊 Nội dung hiện có</h2>
@@ -481,18 +888,21 @@
     <div class="stats-grid">
 
         <div class="stat-card">
-            <span class="stat-number" data-target="6">0</span>
+            <span class="stat-number" data-target="6" data-suffix="+">0</span>
             <span class="stat-title">Chuyên đề Excel</span>
+            <span class="stat-note">Cập nhật thường xuyên</span>
         </div>
 
         <div class="stat-card">
-            <span class="stat-number" data-target="50" data-suffix="+">0</span>
+            <span class="stat-number" data-target="100" data-suffix="+">0</span>
             <span class="stat-title">Phím tắt Excel</span>
+            <span class="stat-note">Cập nhật thường xuyên</span>
         </div>
 
         <div class="stat-card">
-            <span class="stat-number" data-target="30" data-suffix="+">0</span>
+            <span class="stat-number" data-target="100" data-suffix="+">0</span>
             <span class="stat-title">Công thức Excel</span>
+            <span class="stat-note">Cập nhật thường xuyên</span>
         </div>
 
         <div class="stat-card">
@@ -503,63 +913,9 @@
     </div>
 
 </section>
-<section class="latest-section">
-
-    <h2>🆕 Nội dung nổi bật</h2>
-
-    <div class="latest-grid">
-
-        <a href="congthucexcel.html" class="latest-card">
-            <span class="latest-badge">Mới</span>
-
-            <h3>🧮 Công thức Excel</h3>
-
-            <p>
-                Tổng hợp các hàm Excel thường dùng:
-                IF, SUMIFS, COUNTIFS, VLOOKUP, XLOOKUP...
-            </p>
-
-            <span class="latest-link">
-                Xem bài →
-            </span>
-        </a>
 
 
-        <a href="pivottable.html" class="latest-card">
-            <span class="latest-badge">Nổi bật</span>
-
-            <h3>📊 Pivot Table</h3>
-
-            <p>
-                Học cách tổng hợp dữ liệu,
-                phân tích NG Qty và NG Rate.
-            </p>
-
-            <span class="latest-link">
-                Xem bài →
-            </span>
-        </a>
-
-
-        <a href="baocaoexcel.html" class="latest-card">
-            <span class="latest-badge">Thực tế</span>
-
-            <h3>📋 Báo cáo Excel</h3>
-
-            <p>
-                KPI, NG Rate, Top Defect
-                và báo cáo chất lượng thực tế.
-            </p>
-
-            <span class="latest-link">
-                Xem bài →
-            </span>
-        </a>
-
-    </div>
-
-</section>
-<section class="download-section">
+<section class="download-section" id="tai-lieu">
 
     <h2>📥 Tài liệu thực hành</h2>
 
@@ -651,293 +1007,166 @@
 
     <!-- CÁC BÀI HỌC -->
 
-    <section class="courses" id="hocexcel">
+    
 
-        <h2 class="courses-title">
-            📚 Nội dung học Excel
-        </h2>
-
-
-        <div class="course-grid">
-
-
-            <!-- 1 -->
-
-            <div class="course-card">
-
-                <div class="icon">
-                    ⌨️
-                </div>
-
-                <h3>
-                    Phím tắt Excel
-                </h3>
-
-                <p>
-                    Tổng hợp các phím tắt Excel
-                    hữu ích trong công việc.
-                </p>
-
-                <a href="phimtatexcel.html">
-                    Xem bài học
-                </a>
-
-            </div>
-
-
-            <!-- 2 -->
-
-            <div class="course-card">
-
-                <div class="icon">
-                    🧮
-                </div>
-
-                <h3>
-                    Công thức Excel
-                </h3>
-
-                <p>
-                    Các hàm Excel cơ bản và
-                    thường xuyên được sử dụng.
-                </p>
-
-                <a href="congthucexcel.html">
-                    Xem bài học
-                </a>
-
-            </div>
-
-
-            <!-- 3 -->
-
-            <div class="course-card">
-
-                <div class="icon">
-                    📊
-                </div>
-
-                <h3>
-                    Pivot Table
-                </h3>
-
-                <p>
-                    Tổng hợp và phân tích
-                    dữ liệu bằng Pivot Table.
-                </p>
-
-                <a href="pivottable.html">
-                    Xem bài học
-                </a>
-
-            </div>
-
-
-            <!-- 4 -->
-
-            <div class="course-card">
-
-                <div class="icon">
-                    📈
-                </div>
-
-                <h3>
-                    Biểu đồ & Pareto
-                </h3>
-
-                <p>
-                    Trực quan hóa dữ liệu và
-                    phân tích lỗi bằng Pareto.
-                </p>
-
-                <a href="bieudopareto.html">
-                    Xem bài học
-                </a>
-
-            </div>
-
-
-            <!-- 5 -->
-
-            <div class="course-card">
-
-                <div class="icon">
-                    🔍
-                </div>
-
-                <h3>
-                    Filter & Sort
-                </h3>
-
-                <p>
-                    Lọc và sắp xếp dữ liệu
-                    nhanh chóng trong Excel.
-                </p>
-
-                <a href="filtersort.html">
-                    Xem bài học
-                </a>
-
-            </div>
-
-
-            <!-- 6 -->
-
-            <div class="course-card">
-
-                <div class="icon">
-                    📋
-                </div>
-
-                <h3>
-                    Báo cáo Excel
-                </h3>
-
-                <p>
-                    Học cách xây dựng báo cáo
-                    rõ ràng và chuyên nghiệp.
-                </p>
-
-                <a href="baocaoexcel.html">
-                    Xem bài học
-                </a>
-
-            </div>
-
-
-        </div>
-
-    </section>
-<section class="featured">
-
-    <h2>
-        ⭐ Bài học nổi bật
-    </h2>
-
-    <div class="featured-grid">
-
-        <div class="featured-card">
-
-            <h3>
-                ⌨️ Phím tắt Excel
-            </h3>
-
-            <p>
-                Học nhanh các phím tắt thường dùng
-                để thao tác Excel hiệu quả hơn.
-            </p>
-
-            <a href="phimtatexcel.html">
-                Học ngay
-            </a>
-
-        </div>
-
-
-        <div class="featured-card">
-
-            <h3>
-                🧮 Công thức Excel
-            </h3>
-
-            <p>
-                Tra cứu các hàm Excel từ cơ bản
-                đến tra cứu và điều kiện.
-            </p>
-
-            <a href="congthucexcel.html">
-                Học ngay
-            </a>
-
-        </div>
-
-
-        <div class="featured-card">
-
-            <h3>
-                📊 Pivot Table
-            </h3>
-
-            <p>
-                Tổng hợp dữ liệu nhanh và tạo
-                báo cáo trực quan hơn.
-            </p>
-
-            <a href="pivottable.html">
-                Học ngay
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<section class="quick-access">
-
-    <h2>
-        ⚡ Truy cập nhanh
-    </h2>
-
-    <div class="quick-grid">
-
-        <a href="phimtatexcel.html">
-            ⌨️ Phím tắt
-        </a>
-
-        <a href="congthucexcel.html">
-            🧮 Công thức
-        </a>
-
-        <a href="pivottable.html">
-            📊 Pivot
-        </a>
-
-        <a href="bieudopareto.html">
-            📈 Pareto
-        </a>
-
-        <a href="filtersort.html">
-            🔍 Filter
-        </a>
-
-        <a href="baocaoexcel.html">
-            📋 Báo cáo
-        </a>
-
-    </div>
-
-</section>
-<section class="home-contact" id="lienhe">
-
-    <h2>
-        📩 Liên hệ
-    </h2>
-
-    <p>
-        Nếu bạn có câu hỏi hoặc muốn góp ý cho website,
-        hãy gửi tin nhắn cho tôi.
-    </p>
-
-    <a href="lienhe.html">
-        Gửi liên hệ
-    </a>
-
-</section>
     <!-- FOOTER -->
 
-    <footer>
+    
 
-        <p>
-            © 2026 - Website Excel của tôi
-        </p>
+<section class="home-showcase">
+  <div class="home-showcase-head">
+    <h2>📅 Lộ trình học có hướng dẫn</h2>
+  </div>
 
-        <p>
-            Học Excel • Phân tích dữ liệu • Báo cáo
-        </p>
+  <div class="home-showcase-row">
+    <div class="home-showcase-card">
+      <h3>30 ngày nâng cấp Excel</h3>
+      <p>Mỗi ngày một mục tiêu: công thức, Pivot, Pareto, báo cáo và thực hành. Có tiến độ rõ ràng để học từng bước.</p>
+      <a href="learning-path.html">Bắt đầu lộ trình</a>
+    </div>
 
-    </footer>
+    <div class="home-showcase-visual visual-learning">
+      <div class="mock-window">
+        <div class="mock-bar"></div>
+        <div class="mock-line w80"></div>
+        <div class="mock-line w60"></div>
+        <div class="mock-progress"><span style="width:72%"></span></div>
+        <div class="mock-days">
+          <span>Day 1</span><span>Day 2</span><span>Day 3</span><span>Day 4</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-showcase">
+  <div class="home-showcase-head">
+    <h2>⚒️ Excel Tools Center</h2>
+  </div>
+
+  <div class="home-showcase-row">
+    <div class="home-showcase-card">
+      <h3>Công cụ dùng ngay</h3>
+      <p>Tính NG Rate, dựng công thức, làm sạch text, tính ngày và tạo Pareto trực tiếp trên web. Gọn và nhanh cho công việc hàng ngày.</p>
+      <a href="tools-center.html">Mở công cụ</a>
+    </div>
+
+    <div class="home-showcase-visual visual-tools">
+      <div class="tool-grid-mock">
+        <div>NG Rate</div>
+        <div>Formula</div>
+        <div>Cleaner</div>
+        <div>Date</div>
+        <div>Pareto</div>
+        <div>More</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-showcase">
+  <div class="home-showcase-head">
+    <h2>📊 QC Dashboard Generator</h2>
+  </div>
+
+  <div class="home-showcase-row">
+    <div class="home-showcase-card">
+      <h3>Lot • Input • NG • Pareto</h3>
+      <p>Import CSV/Excel, phân tích QC, cảnh báo vượt Spec và xuất báo cáo Excel .xlsx gồm Raw Data, KPI Summary, Top Defect và Pareto.</p>
+      <a href="qc-dashboard.html">Tạo Dashboard</a>
+    </div>
+
+    <div class="home-showcase-visual visual-qc">
+      <div class="qc-mock">
+        <div class="qc-kpi-row">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="qc-chart-row">
+          <i style="height:45%"></i>
+          <i style="height:80%"></i>
+          <i style="height:62%"></i>
+          <i style="height:95%"></i>
+          <i style="height:58%"></i>
+        </div>
+        <div class="qc-table-row"></div>
+        <div class="qc-table-row short"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="home-modules">
+  <div class="home-modules-head">
+    <div>
+      <h2>Tất cả chức năng</h2>
+      <p>Các mục chính được đưa xuống Trang chủ để thanh trên cùng luôn gọn.</p>
+    </div>
+  </div>
+
+  <div class="home-modules-grid">
+    <a class="home-module-card" href="excel.html">
+      <div class="module-icon">📘</div>
+      <h3>Học Excel</h3>
+      <p>Kiến thức Excel từ cơ bản đến công việc thực tế.</p>
+    </a>
+
+    <a class="home-module-card" href="baitapexcel.html">
+      <div class="module-icon">✍️</div>
+      <h3>Bài tập Excel</h3>
+      <p>Quiz và bài tập để kiểm tra kiến thức đã học.</p>
+    </a>
+
+    <a class="home-module-card" href="playground.html">
+      <div class="module-icon">🧪</div>
+      <h3>Thực hành</h3>
+      <p>Nhập công thức trực tiếp và kiểm tra đáp án.</p>
+    </a>
+
+    <a class="home-module-card" href="learning-path.html">
+      <div class="module-icon">📅</div>
+      <h3>Lộ trình 30 ngày</h3>
+      <p>Học theo ngày với mục tiêu và tiến độ rõ ràng.</p>
+    </a>
+
+    <a class="home-module-card" href="tools-center.html">
+      <div class="module-icon">⚒️</div>
+      <h3>Excel Tools Center</h3>
+      <p>NG Rate, Formula Builder, Text Cleaner và các công cụ nhanh.</p>
+    </a>
+
+    <a class="home-module-card" href="qc-dashboard.html">
+      <div class="module-icon">📊</div>
+      <h3>QC Dashboard</h3>
+      <p>Phân tích Lot, Input, NG, Defect và xuất báo cáo Excel.</p>
+    </a>
+
+    <a class="home-module-card" href="dashboard.html">
+      <div class="module-icon">👤</div>
+      <h3>Dashboard cá nhân</h3>
+      <p>Theo dõi XP, level, streak và tiến độ học.</p>
+    </a>
+
+    <a class="home-module-card" href="achievements.html">
+      <div class="module-icon">🏆</div>
+      <h3>Thành tích</h3>
+      <p>Huy hiệu, nhiệm vụ hằng ngày và phần thưởng XP.</p>
+    </a>
+
+    <a class="home-module-card" href="formula-finder.html">
+      <div class="module-icon">🧠</div>
+      <h3>Tìm công thức</h3>
+      <p>Tìm nhanh hàm Excel phù hợp với nhu cầu.</p>
+    </a>
+  </div>
+</section>
+
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+</footer>
+
 
 <script>
 
@@ -1040,12 +1269,20 @@ function lenDauTrang() {
         link.classList.add("active");
     }
 
+
+
+
 </script>
 <button id="backToTop" onclick="lenDauTrang()">
     ↑
 </button>
 
 <script src="script.js"></script>
+    <script src="gamification.js"></script><script src="global-search.js"></script>
+    <script src="simple-nav.js"></script>
+    <script src="home-effects.js"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
 </body>
 
 </html> 

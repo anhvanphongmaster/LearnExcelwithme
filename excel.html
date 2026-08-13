@@ -7,7 +7,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
-    <title>Học Excel - Website của tôi</title>
+    <title>Học Excel | Learn Excecl with Anh Van Phong | Learn Excecl with Anh Van Phong</title>
 
     <style>
 
@@ -267,6 +267,10 @@
 
     </style>
 
+    <link rel="stylesheet" href="upgrade.css">
+    <link rel="stylesheet" href="global-search.css">
+    <link rel="stylesheet" href="simple-nav.css">
+    <link rel="stylesheet" href="auth.css">
 </head>
 
 
@@ -275,30 +279,22 @@
 
     <!-- MENU -->
 
-    <nav>
+    
 
-        <a href="index.html">
-            🏠 Trang chủ
-        </a>
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
 
-        <a href="gioithieu.html">
-            ℹ️ Giới thiệu
-        </a>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
 
-        <a href="excel.html">
-            📊 Học Excel
-        </a>
-        <a href="baitapexcel.html">
-    ✍️ Bài tập
-</a>
 
-        <a href="lienhe.html">
-            📩 Liên hệ
-        </a>
-<button id="themeToggle">
-    🌙
-</button>
-    </nav>
 
 
     <!-- HEADER -->
@@ -699,22 +695,21 @@
 
     <!-- FOOTER -->
 
-    <footer>
+    
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+</footer>
 
-        <p>
-            © 2026 - Website Excel của tôi
-        </p>
-
-        <p>
-            Học Excel • Phân tích dữ liệu • Báo cáo
-        </p>
-
-    </footer>
 
 <script src="script.js"></script>
 <button id="backToTop" onclick="lenDauTrang()">
     ↑
 </button>
+    <script src="gamification.js"></script><script src="global-search.js"></script>
+    <script src="simple-nav.js"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
 </body>
 
 </html>

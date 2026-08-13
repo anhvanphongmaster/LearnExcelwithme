@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QC Dashboard Generator | Learn Excecl with Anh Van Phong | Learn Excecl with Anh Van Phong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="upgrade.css">
+<link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="qc-dashboard.css">
+    <link rel="stylesheet" href="simple-nav.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+<div id="scrollProgress"></div>
+
+
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
+
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+
+
+<main class="qc-page">
+  <section class="qc-hero">
+    <div class="avp-eyebrow">📊 QC DASHBOARD GENERATOR</div>
+    <h1>Tạo Dashboard QC ngay trên web</h1>
+    <p>Nhập Lot, Input, NG và Defect. Website tự tính tổng Input, tổng NG, NG Rate, bảng theo Lot, Top Defect và Pareto.</p>
+  </section>
+
+  
+  <section class="qc-card" style="margin-top:18px">
+    <h2>⚙️ Bộ lọc & Spec</h2>
+    <div class="qc-controls">
+      <div class="qc-control-card">
+        <label>Lọc theo Lot</label>
+        <input id="qcFilterLot" type="text" placeholder="Ví dụ: LOT00">
+      </div>
+      <div class="qc-control-card">
+        <label>Lọc theo Defect</label>
+        <input id="qcFilterDefect" type="text" placeholder="Ví dụ: Scratch">
+      </div>
+      <div class="qc-control-card">
+        <label>Spec NG Rate (%)</label>
+        <input id="qcSpec" type="number" min="0" step="0.01" value="1">
+      </div>
+      <div class="qc-control-card">
+        <label>Kiểu biểu đồ</label>
+        <select id="qcChartType">
+          <option value="bar">Column / Bar</option>
+          <option value="line">Line NG Rate</option>
+        </select>
+      </div>
+    </div>
+    <div id="qcSpecAlert" class="qc-alert ok">Chưa có dữ liệu.</div>
+  </section>
+
+
+  <section class="qc-import">
+    <h2>📥 Import CSV / Excel</h2>
+    <p>Chọn file <b>.csv</b>, <b>.xlsx</b> hoặc <b>.xls</b>. Sau khi đọc file, chọn cột tương ứng với Lot, Input, NG và Defect.</p>
+
+    <div id="qcDropZone" class="qc-import-drop">
+      <input id="qcFileInput" type="file" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+      <label for="qcFileInput">Chọn file dữ liệu</label>
+      <div class="qc-import-meta">Hoặc kéo thả file vào khu vực này</div>
+      <div id="qcFileMeta" class="qc-import-meta"></div>
+    </div>
+
+    <div id="qcMapArea" style="display:none">
+      <div class="qc-map-grid">
+        <div><label>Cột Lot</label><select id="mapLot"></select></div>
+        <div><label>Cột Input</label><select id="mapInput"></select></div>
+        <div><label>Cột NG</label><select id="mapNg"></select></div>
+        <div><label>Cột Defect</label><select id="mapDefect"></select></div>
+      </div>
+
+      <div id="qcImportPreview" class="qc-preview"></div>
+
+      <div class="qc-import-actions">
+        <button id="qcUseImport" class="qc-btn">Đưa vào Dashboard</button>
+        <button id="qcCancelImport" class="qc-btn secondary">Hủy import</button>
+      </div>
+    </div>
+  </section>
+
+<div class="qc-layout">
+    <section class="qc-card">
+      <h2>1. Nhập dữ liệu</h2>
+      <p>Mỗi dòng theo định dạng: <b>Lot, Input, NG, Defect</b>.</p>
+      <div class="qc-field">
+        <label>Dữ liệu QC</label>
+        <textarea id="qcData" placeholder="LOT001, 1200, 18, Scratch&#10;LOT002, 980, 11, Open"></textarea>
+      </div>
+      <div class="qc-actions">
+        <button id="qcGenerate" class="qc-btn">Tạo Dashboard</button>
+        <button id="qcDemo" class="qc-btn secondary">Dữ liệu mẫu</button>
+        <button id="qcExport" class="qc-btn secondary">Xuất CSV</button>
+        <button id="qcExportPro" class="qc-btn secondary">Xuất báo cáo lọc</button>
+        <button id="qcExportXlsx" class="qc-btn secondary">Xuất Excel .xlsx</button>
+        <button id="qcClear" class="qc-btn secondary">Xóa dữ liệu</button>
+      </div>
+      <div class="qc-note">Dữ liệu được lưu trên trình duyệt hiện tại bằng localStorage. Phiên bản này không gửi dữ liệu lên server.</div>
+    </section>
+
+    <section class="qc-card">
+      <h2>2. KPI tổng quan</h2>
+      <div class="qc-kpis">
+        <div class="qc-kpi"><strong id="kpiLots">0</strong><span>Số Lot</span></div>
+        <div class="qc-kpi"><strong id="kpiInput">0</strong><span>Total Input</span></div>
+        <div class="qc-kpi"><strong id="kpiNg">0</strong><span>Total NG</span></div>
+        <div class="qc-kpi"><strong id="kpiRate">0.00%</strong><span>NG Rate</span></div>
+      </div>
+      <div id="qcSummary" class="qc-empty">Chưa có dữ liệu.</div>
+      <h2 style="margin-top:20px">NG theo Lot</h2>
+      <div id="qcChart" class="qc-chart"></div>
+<div id="qcLineChart" class="qc-line-chart" style="display:none"></div>
+    </section>
+  </div>
+
+  <section class="qc-card" style="margin-top:18px">
+    <h2>3. Chi tiết theo Lot</h2>
+    <div id="qcLotTable"></div>
+  </section>
+
+  
+  <section class="qc-card" style="margin-top:18px">
+    <h2>🏆 Top 5 Defect</h2>
+    <div id="qcTop5" class="qc-top5"></div>
+  </section>
+
+<section class="qc-card" style="margin-top:18px">
+    <h2>4. Pareto Defect</h2>
+    <div class="qc-pareto-row" style="font-weight:800;color:#185c37">
+      <div>Defect</div><div>Qty</div><div>%</div><div>% tích lũy</div>
+    </div>
+    <div id="qcPareto"></div>
+  </section>
+</main>
+
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+</footer>
+
+
+<script src="script.js"></script>
+<script src="global-search.js"></script>
+<script src="gamification.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="qc-dashboard.js"></script>
+    <script src="simple-nav.js"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+</body>
+</html>

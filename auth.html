@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng nhập / Đăng ký | Learn Excecl with Anh Van Phong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="upgrade.css">
+<link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="auth.css">
+</head>
+<body>
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="auth-page">
+  <section class="auth-shell">
+    <div class="auth-side">
+      <span>🔐 LEARNING ACCOUNT</span>
+      <h1>Học Excel theo tiến độ của riêng bạn.</h1>
+      <p>Đăng nhập bằng tài khoản Supabase để hồ sơ và tiến độ có thể theo bạn giữa nhiều thiết bị.</p>
+      <div class="auth-side-list">
+        <div>✓ Hồ sơ cá nhân</div>
+        <div>✓ Dashboard & XP</div>
+        <div>✓ Playground & thành tích</div>
+        <div>✓ Lộ trình học 30 ngày</div>
+      </div>
+    </div>
+
+    <div class="auth-panel">
+
+<div class="supabase-setup-warning" hidden>
+  <strong>⚙️ Chưa kết nối Supabase.</strong>
+  Hãy mở <code>supabase-config.js</code> và dán Project URL + Publishable key.
+  Sau đó chạy <code>supabase-setup.sql</code> trong Supabase SQL Editor.
+</div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-target="loginForm">Đăng nhập</button>
+        <button class="auth-tab" data-target="registerForm">Đăng ký</button>
+      </div>
+
+      <form id="loginForm" class="auth-form active">
+        <h2>Chào mừng trở lại</h2>
+        <p>Đăng nhập vào tài khoản thử nghiệm của bạn.</p>
+        <div class="auth-field">
+          <label>Email</label>
+          <input id="loginEmail" type="email" autocomplete="email" placeholder="ban@example.com" required>
+        </div>
+        <div class="auth-field">
+          <label>Mật khẩu</label>
+          <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" required>
+        </div>
+        <button class="auth-submit" type="submit">Đăng nhập</button>
+        <div id="loginMessage"></div>
+        <div class="auth-note">Tài khoản được xác thực bởi Supabase Auth. Nếu dự án bật xác nhận email, hãy kiểm tra email sau khi đăng ký.</div>
+      </form>
+
+      <form id="registerForm" class="auth-form">
+        <h2>Tạo tài khoản</h2>
+        <p>Đăng ký để thử trải nghiệm người dùng cá nhân hóa.</p>
+        <div class="auth-field">
+          <label>Tên hiển thị</label>
+          <input id="registerName" type="text" placeholder="Ví dụ: Tuấn" required>
+        </div>
+        <div class="auth-field">
+          <label>Email</label>
+          <input id="registerEmail" type="email" autocomplete="email" placeholder="ban@example.com" required>
+        </div>
+        <div class="auth-field">
+          <label>Mật khẩu</label>
+          <input id="registerPassword" type="password" autocomplete="new-password" placeholder="Ít nhất 6 ký tự" required>
+        </div>
+        <div class="auth-field">
+          <label>Nhập lại mật khẩu</label>
+          <input id="registerPassword2" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu" required>
+        </div>
+        <button class="auth-submit" type="submit">Tạo tài khoản</button>
+        <div id="registerMessage"></div>
+        <div class="auth-note">Sau khi đăng ký, Supabase có thể yêu cầu xác nhận email tùy cấu hình Auth của dự án.</div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+</footer>
+
+<script src="script.js"></script>
+<script src="global-search.js"></script>
+<script src="simple-nav.js"></script>
+
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script type="module" src="supabase-auth-page.js"></script>
+</body>
+</html>

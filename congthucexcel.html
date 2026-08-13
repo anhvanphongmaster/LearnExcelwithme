@@ -9,7 +9,7 @@
           content="width=device-width, initial-scale=1.0">
           <link rel="stylesheet" href="style.css">
 
-    <title>Công thức Excel - Website của tôi</title>
+    <title>100 công thức Excel | Learn Excecl with Anh Van Phong | Learn Excecl with Anh Van Phong</title>
 
     <style>
 
@@ -215,6 +215,19 @@
 }
     </style>
 
+    <link rel="stylesheet" href="upgrade.css">
+    <link rel="stylesheet" href="global-search.css">
+    <link rel="stylesheet" href="simple-nav.css">
+
+<style>
+.formula-filter.active{
+    background:#145c36 !important;
+    color:#fff !important;
+    box-shadow:0 0 0 2px rgba(33,115,70,.12);
+}
+</style>
+
+    <link rel="stylesheet" href="auth.css">
 </head>
 
 
@@ -236,30 +249,22 @@
 
     <!-- MENU -->
 
-    <nav>
+    
 
-        <a href="index.html">
-            Trang chủ
-        </a>
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
 
-        <a href="gioithieu.html">
-            Giới thiệu
-        </a>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
 
-        <a href="excel.html">
-            Học Excel
-        </a>
-        <a href="baitapexcel.html">
-    ✍️ Bài tập
-</a>
 
-        <a href="lienhe.html">
-            Liên hệ
-        </a>
-<button id="themeToggle">
-    🌙
-</button>
-    </nav>
 
 
     <!-- NỘI DUNG -->
@@ -272,33 +277,20 @@
         placeholder="🔍 Tìm hàm Excel, ví dụ: SUM, IF, VLOOKUP..."
         onkeyup="timCongThuc()"
     >
-</div><div class="filter-buttons">
-
-    <button onclick="locCongThuc('all')">
-        Tất cả
-    </button>
-
-    <button onclick="locCongThuc('coban')">
-        🧮 Cơ bản
-    </button>
-
-    <button onclick="locCongThuc('dieukien')">
-        🔀 Điều kiện
-    </button>
-
-    <button onclick="locCongThuc('tracuu')">
-        🔎 Tra cứu
-    </button>
-
-    <button onclick="locCongThuc('vanban')">
-        🔤 Văn bản
-    </button>
-
-    <button onclick="locCongThuc('ngaygio')">
-        📅 Ngày giờ
-    </button>
-
 </div>
+
+<div class="filter-buttons" id="formulaFilters">
+    <button type="button" class="formula-filter active" data-category="all">Tất cả</button>
+    <button type="button" class="formula-filter" data-category="coban">Cơ bản</button>
+    <button type="button" class="formula-filter" data-category="dieukien">Điều kiện</button>
+    <button type="button" class="formula-filter" data-category="tracuu">Tra cứu</button>
+    <button type="button" class="formula-filter" data-category="vanban">Văn bản</button>
+    <button type="button" class="formula-filter" data-category="ngaygio">Ngày giờ</button>
+    <button type="button" class="formula-filter" data-category="toanthongke">Toán & Thống kê</button>
+    <button type="button" class="formula-filter" data-category="mang365">Mảng & Excel 365</button>
+</div>
+
+
         <div class="title">
 
             <h2>
@@ -336,7 +328,7 @@
 
                 <tbody>
 
-                    <tr>
+                    <tr data-category="coban">
                         <td>1</td>
 
                         <td class="formula">
@@ -353,7 +345,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="coban">
                         <td>2</td>
 
                         <td class="formula">
@@ -370,7 +362,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="coban">
                         <td>3</td>
 
                         <td class="formula">
@@ -387,7 +379,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="coban">
                         <td>4</td>
 
                         <td class="formula">
@@ -404,7 +396,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="coban">
                         <td>5</td>
 
                         <td class="formula">
@@ -421,7 +413,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="coban">
                         <td>6</td>
 
                         <td class="formula">
@@ -438,7 +430,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="coban">
                         <td>7</td>
 
                         <td class="formula">
@@ -455,7 +447,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="coban">
                         <td>8</td>
 
                         <td class="formula">
@@ -472,7 +464,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="dieukien">
                         <td>9</td>
 
                         <td class="formula">
@@ -489,7 +481,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="tracuu">
                         <td>10</td>
 
                         <td class="formula">
@@ -506,7 +498,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="tracuu">
                         <td>11</td>
 
                         <td class="formula">
@@ -523,7 +515,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="vanban">
                         <td>12</td>
 
                         <td class="formula">
@@ -540,7 +532,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="vanban">
                         <td>13</td>
 
                         <td class="formula">
@@ -557,7 +549,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="vanban">
                         <td>14</td>
 
                         <td class="formula">
@@ -574,7 +566,7 @@
                     </tr>
 
 
-                    <tr>
+                    <tr data-category="vanban">
                         <td>15</td>
 
                         <td class="formula">
@@ -589,112 +581,602 @@
                             =LEN(A2)
                         </td>
                     </tr>
-<tr>
+<tr data-category="coban">
     <td>16</td>
     <td class="formula">ROUND</td>
     <td>Làm tròn số</td>
     <td class="formula">=ROUND(A2,2)</td>
 </tr>
 
-<tr>
+<tr data-category="coban">
     <td>17</td>
     <td class="formula">ROUNDUP</td>
     <td>Làm tròn lên</td>
     <td class="formula">=ROUNDUP(A2,0)</td>
 </tr>
 
-<tr>
+<tr data-category="coban">
     <td>18</td>
     <td class="formula">ROUNDDOWN</td>
     <td>Làm tròn xuống</td>
     <td class="formula">=ROUNDDOWN(A2,0)</td>
 </tr>
 
-<tr>
+<tr data-category="dieukien">
     <td>19</td>
     <td class="formula">IFERROR</td>
     <td>Xử lý khi công thức bị lỗi</td>
     <td class="formula">=IFERROR(A2/B2,0)</td>
 </tr>
 
-<tr>
+<tr data-category="dieukien">
     <td>20</td>
     <td class="formula">AND</td>
     <td>Kiểm tra nhiều điều kiện cùng đúng</td>
     <td class="formula">=AND(A2>=5,B2>=5)</td>
 </tr>
 
-<tr>
+<tr data-category="dieukien">
     <td>21</td>
     <td class="formula">OR</td>
     <td>Kiểm tra ít nhất một điều kiện đúng</td>
     <td class="formula">=OR(A2>=5,B2>=5)</td>
 </tr>
 
-<tr>
+<tr data-category="dieukien">
     <td>22</td>
     <td class="formula">SUMIFS</td>
     <td>Tính tổng với nhiều điều kiện</td>
     <td class="formula">=SUMIFS(C:C,A:A,"A",B:B,">10")</td>
 </tr>
 
-<tr>
+<tr data-category="dieukien">
     <td>23</td>
     <td class="formula">COUNTIFS</td>
     <td>Đếm với nhiều điều kiện</td>
     <td class="formula">=COUNTIFS(A:A,"A",B:B,">10")</td>
 </tr>
 
-<tr>
+<tr data-category="tracuu">
     <td>24</td>
     <td class="formula">INDEX</td>
     <td>Lấy giá trị theo vị trí</td>
     <td class="formula">=INDEX(B2:B10,3)</td>
 </tr>
 
-<tr>
+<tr data-category="tracuu">
     <td>25</td>
     <td class="formula">MATCH</td>
     <td>Tìm vị trí của giá trị</td>
     <td class="formula">=MATCH(A2,D2:D10,0)</td>
 </tr>
 
-<tr>
+<tr data-category="ngaygio">
     <td>26</td>
     <td class="formula">TODAY</td>
     <td>Lấy ngày hiện tại</td>
     <td class="formula">=TODAY()</td>
 </tr>
 
-<tr>
+<tr data-category="ngaygio">
     <td>27</td>
     <td class="formula">NOW</td>
     <td>Lấy ngày và giờ hiện tại</td>
     <td class="formula">=NOW()</td>
 </tr>
 
-<tr>
+<tr data-category="vanban">
     <td>28</td>
     <td class="formula">TEXT</td>
     <td>Định dạng giá trị thành văn bản</td>
     <td class="formula">=TEXT(A2,"dd/mm/yyyy")</td>
 </tr>
 
-<tr>
+<tr data-category="vanban">
     <td>29</td>
     <td class="formula">TRIM</td>
     <td>Xóa khoảng trắng thừa</td>
     <td class="formula">=TRIM(A2)</td>
 </tr>
 
-<tr>
+<tr data-category="vanban">
     <td>30</td>
     <td class="formula">CONCAT</td>
     <td>Nối nội dung nhiều ô</td>
     <td class="formula">=CONCAT(A2," ",B2)</td>
 </tr>
 
-                </tbody>
+                
+<tr data-category="coban">
+    <td>31</td>
+    <td class="formula">AVERAGEIF</td>
+    <td>Tính trung bình theo một điều kiện</td>
+    <td class="formula">=AVERAGEIF(A2:A20,&quot;&gt;=5&quot;,B2:B20)</td>
+</tr>
+
+<tr data-category="coban">
+    <td>32</td>
+    <td class="formula">AVERAGEIFS</td>
+    <td>Tính trung bình theo nhiều điều kiện</td>
+    <td class="formula">=AVERAGEIFS(C:C,A:A,&quot;A&quot;,B:B,&quot;&gt;0&quot;)</td>
+</tr>
+
+<tr data-category="coban">
+    <td>33</td>
+    <td class="formula">COUNTBLANK</td>
+    <td>Đếm số ô trống</td>
+    <td class="formula">=COUNTBLANK(A2:A100)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>34</td>
+    <td class="formula">LARGE</td>
+    <td>Lấy giá trị lớn thứ n</td>
+    <td class="formula">=LARGE(A2:A20,2)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>35</td>
+    <td class="formula">SMALL</td>
+    <td>Lấy giá trị nhỏ thứ n</td>
+    <td class="formula">=SMALL(A2:A20,2)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>36</td>
+    <td class="formula">RANK.EQ</td>
+    <td>Xếp hạng một giá trị trong danh sách</td>
+    <td class="formula">=RANK.EQ(A2,$A$2:$A$20,0)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>37</td>
+    <td class="formula">MEDIAN</td>
+    <td>Tính trung vị của dãy số</td>
+    <td class="formula">=MEDIAN(A2:A20)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>38</td>
+    <td class="formula">MODE.SNGL</td>
+    <td>Tìm giá trị xuất hiện nhiều nhất</td>
+    <td class="formula">=MODE.SNGL(A2:A20)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>39</td>
+    <td class="formula">SUBTOTAL</td>
+    <td>Tính tổng hợp và bỏ qua dòng đã lọc</td>
+    <td class="formula">=SUBTOTAL(9,A2:A100)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>40</td>
+    <td class="formula">AGGREGATE</td>
+    <td>Tính tổng hợp nâng cao và có thể bỏ qua lỗi</td>
+    <td class="formula">=AGGREGATE(9,6,A2:A100)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>41</td>
+    <td class="formula">PRODUCT</td>
+    <td>Nhân nhiều số hoặc nhiều ô</td>
+    <td class="formula">=PRODUCT(A2:A5)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>42</td>
+    <td class="formula">SUMPRODUCT</td>
+    <td>Nhân các phần tử tương ứng rồi tính tổng</td>
+    <td class="formula">=SUMPRODUCT(A2:A10,B2:B10)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>43</td>
+    <td class="formula">ABS</td>
+    <td>Lấy giá trị tuyệt đối</td>
+    <td class="formula">=ABS(A2)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>44</td>
+    <td class="formula">INT</td>
+    <td>Làm tròn xuống số nguyên gần nhất</td>
+    <td class="formula">=INT(A2)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>45</td>
+    <td class="formula">MOD</td>
+    <td>Lấy phần dư của phép chia</td>
+    <td class="formula">=MOD(A2,2)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>46</td>
+    <td class="formula">CEILING.MATH</td>
+    <td>Làm tròn lên theo bội số</td>
+    <td class="formula">=CEILING.MATH(A2,5)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>47</td>
+    <td class="formula">FLOOR.MATH</td>
+    <td>Làm tròn xuống theo bội số</td>
+    <td class="formula">=FLOOR.MATH(A2,5)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>48</td>
+    <td class="formula">MROUND</td>
+    <td>Làm tròn đến bội số gần nhất</td>
+    <td class="formula">=MROUND(A2,5)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>49</td>
+    <td class="formula">SQRT</td>
+    <td>Tính căn bậc hai</td>
+    <td class="formula">=SQRT(A2)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>50</td>
+    <td class="formula">POWER</td>
+    <td>Tính lũy thừa</td>
+    <td class="formula">=POWER(A2,2)</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>51</td>
+    <td class="formula">RAND</td>
+    <td>Tạo số ngẫu nhiên từ 0 đến nhỏ hơn 1</td>
+    <td class="formula">=RAND()</td>
+</tr>
+
+<tr data-category="toanthongke">
+    <td>52</td>
+    <td class="formula">RANDBETWEEN</td>
+    <td>Tạo số nguyên ngẫu nhiên trong một khoảng</td>
+    <td class="formula">=RANDBETWEEN(1,100)</td>
+</tr>
+
+<tr data-category="dieukien">
+    <td>53</td>
+    <td class="formula">IFNA</td>
+    <td>Thay thế lỗi #N/A bằng giá trị chỉ định</td>
+    <td class="formula">=IFNA(XLOOKUP(A2,D:D,E:E),&quot;Không có&quot;)</td>
+</tr>
+
+<tr data-category="dieukien">
+    <td>54</td>
+    <td class="formula">IFS</td>
+    <td>Kiểm tra nhiều điều kiện theo thứ tự</td>
+    <td class="formula">=IFS(A2&gt;=8,&quot;Tốt&quot;,A2&gt;=5,&quot;Đạt&quot;,TRUE,&quot;NG&quot;)</td>
+</tr>
+
+<tr data-category="dieukien">
+    <td>55</td>
+    <td class="formula">SWITCH</td>
+    <td>So sánh một giá trị với nhiều trường hợp</td>
+    <td class="formula">=SWITCH(A2,&quot;A&quot;,&quot;Ca ngày&quot;,&quot;B&quot;,&quot;Ca đêm&quot;,&quot;Khác&quot;)</td>
+</tr>
+
+<tr data-category="dieukien">
+    <td>56</td>
+    <td class="formula">NOT</td>
+    <td>Đảo ngược giá trị TRUE/FALSE</td>
+    <td class="formula">=NOT(A2=&quot;NG&quot;)</td>
+</tr>
+
+<tr data-category="tracuu">
+    <td>57</td>
+    <td class="formula">CHOOSE</td>
+    <td>Chọn một giá trị theo số thứ tự</td>
+    <td class="formula">=CHOOSE(A2,&quot;Đỏ&quot;,&quot;Vàng&quot;,&quot;Xanh&quot;)</td>
+</tr>
+
+<tr data-category="tracuu">
+    <td>58</td>
+    <td class="formula">OFFSET</td>
+    <td>Trả về vùng dữ liệu lệch từ ô tham chiếu</td>
+    <td class="formula">=OFFSET(A1,2,1)</td>
+</tr>
+
+<tr data-category="tracuu">
+    <td>59</td>
+    <td class="formula">INDIRECT</td>
+    <td>Tạo tham chiếu ô từ chuỗi văn bản</td>
+    <td class="formula">=INDIRECT(&quot;B&quot;&amp;A2)</td>
+</tr>
+
+<tr data-category="tracuu">
+    <td>60</td>
+    <td class="formula">HLOOKUP</td>
+    <td>Tìm kiếm dữ liệu theo hàng</td>
+    <td class="formula">=HLOOKUP(A2,B1:H3,2,FALSE)</td>
+</tr>
+
+<tr data-category="tracuu">
+    <td>61</td>
+    <td class="formula">XMATCH</td>
+    <td>Tìm vị trí của giá trị với khả năng nâng cao</td>
+    <td class="formula">=XMATCH(A2,D2:D100)</td>
+</tr>
+
+<tr data-category="mang365">
+    <td>62</td>
+    <td class="formula">FILTER</td>
+    <td>Lọc dữ liệu động theo điều kiện (Excel 365)</td>
+    <td class="formula">=FILTER(A2:C100,C2:C100=&quot;NG&quot;)</td>
+</tr>
+
+<tr data-category="mang365">
+    <td>63</td>
+    <td class="formula">SORT</td>
+    <td>Sắp xếp mảng dữ liệu động (Excel 365)</td>
+    <td class="formula">=SORT(A2:C100,2,1)</td>
+</tr>
+
+<tr data-category="mang365">
+    <td>64</td>
+    <td class="formula">SORTBY</td>
+    <td>Sắp xếp dữ liệu theo một vùng khác (Excel 365)</td>
+    <td class="formula">=SORTBY(A2:C100,C2:C100,-1)</td>
+</tr>
+
+<tr data-category="mang365">
+    <td>65</td>
+    <td class="formula">UNIQUE</td>
+    <td>Lấy danh sách giá trị không trùng (Excel 365)</td>
+    <td class="formula">=UNIQUE(A2:A100)</td>
+</tr>
+
+<tr data-category="mang365">
+    <td>66</td>
+    <td class="formula">TAKE</td>
+    <td>Lấy một số hàng hoặc cột đầu/cuối của mảng (Excel 365)</td>
+    <td class="formula">=TAKE(A2:C100,10)</td>
+</tr>
+
+<tr data-category="mang365">
+    <td>67</td>
+    <td class="formula">DROP</td>
+    <td>Loại bỏ một số hàng hoặc cột đầu/cuối (Excel 365)</td>
+    <td class="formula">=DROP(A2:C100,1)</td>
+</tr>
+
+<tr data-category="mang365">
+    <td>68</td>
+    <td class="formula">CHOOSECOLS</td>
+    <td>Chọn các cột cần lấy từ mảng (Excel 365)</td>
+    <td class="formula">=CHOOSECOLS(A2:F100,1,3,6)</td>
+</tr>
+
+<tr data-category="mang365">
+    <td>69</td>
+    <td class="formula">CHOOSEROWS</td>
+    <td>Chọn các hàng cần lấy từ mảng (Excel 365)</td>
+    <td class="formula">=CHOOSEROWS(A2:C100,1,5,10)</td>
+</tr>
+
+<tr data-category="mang365">
+    <td>70</td>
+    <td class="formula">TRANSPOSE</td>
+    <td>Chuyển dữ liệu từ hàng sang cột hoặc ngược lại</td>
+    <td class="formula">=TRANSPOSE(A2:C5)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>71</td>
+    <td class="formula">TEXTJOIN</td>
+    <td>Nối nhiều chuỗi với ký tự phân cách</td>
+    <td class="formula">=TEXTJOIN(&quot;, &quot;,TRUE,A2:A10)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>72</td>
+    <td class="formula">TEXTSPLIT</td>
+    <td>Tách văn bản thành nhiều ô (Excel 365)</td>
+    <td class="formula">=TEXTSPLIT(A2,&quot;,&quot;)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>73</td>
+    <td class="formula">TEXTBEFORE</td>
+    <td>Lấy phần văn bản đứng trước ký tự chỉ định (Excel 365)</td>
+    <td class="formula">=TEXTBEFORE(A2,&quot;-&quot;)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>74</td>
+    <td class="formula">TEXTAFTER</td>
+    <td>Lấy phần văn bản đứng sau ký tự chỉ định (Excel 365)</td>
+    <td class="formula">=TEXTAFTER(A2,&quot;-&quot;)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>75</td>
+    <td class="formula">FIND</td>
+    <td>Tìm vị trí chuỗi và phân biệt chữ hoa/thường</td>
+    <td class="formula">=FIND(&quot;-&quot;,A2)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>76</td>
+    <td class="formula">SEARCH</td>
+    <td>Tìm vị trí chuỗi không phân biệt chữ hoa/thường</td>
+    <td class="formula">=SEARCH(&quot;lot&quot;,A2)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>77</td>
+    <td class="formula">SUBSTITUTE</td>
+    <td>Thay thế chuỗi văn bản theo nội dung</td>
+    <td class="formula">=SUBSTITUTE(A2,&quot;NG&quot;,&quot;OK&quot;)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>78</td>
+    <td class="formula">REPLACE</td>
+    <td>Thay thế ký tự theo vị trí</td>
+    <td class="formula">=REPLACE(A2,1,3,&quot;LOT&quot;)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>79</td>
+    <td class="formula">UPPER</td>
+    <td>Chuyển văn bản thành chữ hoa</td>
+    <td class="formula">=UPPER(A2)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>80</td>
+    <td class="formula">LOWER</td>
+    <td>Chuyển văn bản thành chữ thường</td>
+    <td class="formula">=LOWER(A2)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>81</td>
+    <td class="formula">PROPER</td>
+    <td>Viết hoa chữ cái đầu mỗi từ</td>
+    <td class="formula">=PROPER(A2)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>82</td>
+    <td class="formula">CLEAN</td>
+    <td>Loại bỏ các ký tự không in được</td>
+    <td class="formula">=CLEAN(A2)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>83</td>
+    <td class="formula">EXACT</td>
+    <td>So sánh hai chuỗi và phân biệt hoa/thường</td>
+    <td class="formula">=EXACT(A2,B2)</td>
+</tr>
+
+<tr data-category="vanban">
+    <td>84</td>
+    <td class="formula">VALUE</td>
+    <td>Chuyển số dạng văn bản thành số</td>
+    <td class="formula">=VALUE(A2)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>85</td>
+    <td class="formula">DATE</td>
+    <td>Tạo ngày từ năm, tháng và ngày</td>
+    <td class="formula">=DATE(2026,8,13)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>86</td>
+    <td class="formula">YEAR</td>
+    <td>Lấy năm từ một ngày</td>
+    <td class="formula">=YEAR(A2)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>87</td>
+    <td class="formula">MONTH</td>
+    <td>Lấy tháng từ một ngày</td>
+    <td class="formula">=MONTH(A2)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>88</td>
+    <td class="formula">DAY</td>
+    <td>Lấy ngày trong tháng</td>
+    <td class="formula">=DAY(A2)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>89</td>
+    <td class="formula">EDATE</td>
+    <td>Tăng hoặc giảm ngày theo số tháng</td>
+    <td class="formula">=EDATE(A2,3)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>90</td>
+    <td class="formula">EOMONTH</td>
+    <td>Lấy ngày cuối tháng sau số tháng chỉ định</td>
+    <td class="formula">=EOMONTH(A2,0)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>91</td>
+    <td class="formula">DATEDIF</td>
+    <td>Tính khoảng cách giữa hai ngày theo năm/tháng/ngày</td>
+    <td class="formula">=DATEDIF(A2,B2,&quot;d&quot;)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>92</td>
+    <td class="formula">DAYS</td>
+    <td>Tính số ngày giữa hai mốc</td>
+    <td class="formula">=DAYS(B2,A2)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>93</td>
+    <td class="formula">NETWORKDAYS</td>
+    <td>Đếm số ngày làm việc, bỏ thứ Bảy và Chủ Nhật</td>
+    <td class="formula">=NETWORKDAYS(A2,B2)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>94</td>
+    <td class="formula">NETWORKDAYS.INTL</td>
+    <td>Đếm ngày làm việc với quy tắc cuối tuần tùy chỉnh</td>
+    <td class="formula">=NETWORKDAYS.INTL(A2,B2,1)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>95</td>
+    <td class="formula">WORKDAY</td>
+    <td>Tính ngày làm việc sau một số ngày</td>
+    <td class="formula">=WORKDAY(A2,10)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>96</td>
+    <td class="formula">WEEKDAY</td>
+    <td>Trả về thứ trong tuần dưới dạng số</td>
+    <td class="formula">=WEEKDAY(A2,2)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>97</td>
+    <td class="formula">WEEKNUM</td>
+    <td>Lấy số tuần trong năm</td>
+    <td class="formula">=WEEKNUM(A2,2)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>98</td>
+    <td class="formula">HOUR</td>
+    <td>Lấy giờ từ giá trị thời gian</td>
+    <td class="formula">=HOUR(A2)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>99</td>
+    <td class="formula">MINUTE</td>
+    <td>Lấy phút từ giá trị thời gian</td>
+    <td class="formula">=MINUTE(A2)</td>
+</tr>
+
+<tr data-category="ngaygio">
+    <td>100</td>
+    <td class="formula">SECOND</td>
+    <td>Lấy giây từ giá trị thời gian</td>
+    <td class="formula">=SECOND(A2)</td>
+</tr>
+</tbody>
 
             </table>
 
@@ -714,11 +1196,12 @@
 
     <!-- FOOTER -->
 
-    <footer>
+    
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+</footer>
 
-        © 2026 - Website của tôi
-
-    </footer>
 
 <script>
 function timCongThuc() {
@@ -739,30 +1222,24 @@ function timCongThuc() {
         }
     }
 }
-function locCongThuc(category) {
-const groups = {
-    coban: [
-        "SUM", "AVERAGE", "MAX", "MIN", "COUNT",
-        "COUNTA", "ROUND", "ROUNDUP", "ROUNDDOWN"
-    ],
+;
 
-    dieukien: [
-        "IF", "COUNTIF", "SUMIF", "IFERROR",
-        "AND", "OR", "SUMIFS", "COUNTIFS"
-    ],
+const table = document.getElementById("formulaTable");
+const rows = table.querySelectorAll("tbody tr");
 
-    tracuu: [
-        "VLOOKUP", "XLOOKUP", "INDEX", "MATCH"
-    ],
+rows.forEach(function(row) {
+    const functionName =
+        row.cells[1].textContent.trim().toUpperCase();
 
-    vanban: [
-        "LEFT", "RIGHT", "MID", "LEN",
-        "TEXT", "TRIM", "CONCAT"
-    ],
-
-    ngaygio: [
-        "TODAY", "NOW"
-    ]
+    if (
+        category === "all" ||
+        (groups[category] && groups[category].includes(functionName))
+    ) {
+        row.style.display = "";
+    } else {
+        row.style.display = "none";
+    }
+});
 };
 
 const table = document.getElementById("formulaTable");
@@ -790,6 +1267,65 @@ rows.forEach(function(row) {
     ↑
 </button>
 <script src="script.js"></script>
+    <script src="gamification.js"></script><script src="global-search.js"></script>
+    <script src="simple-nav.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const table = document.getElementById("formulaTable");
+    const filterWrap = document.getElementById("formulaFilters");
+    const searchInput = document.getElementById("formulaSearch");
+
+    if (!table || !filterWrap) return;
+
+    const rows = Array.from(table.querySelectorAll("tbody tr"));
+    let activeCategory = "all";
+
+    function applyFormulaFilter() {
+        const keyword = searchInput
+            ? searchInput.value.toLowerCase().trim()
+            : "";
+
+        rows.forEach(function (row) {
+            const category = row.dataset.category || "";
+            const text = row.textContent.toLowerCase();
+
+            const matchCategory =
+                activeCategory === "all" ||
+                category === activeCategory;
+
+            const matchSearch =
+                !keyword ||
+                text.includes(keyword);
+
+            row.style.display =
+                matchCategory && matchSearch ? "" : "none";
+        });
+    }
+
+    filterWrap.querySelectorAll(".formula-filter").forEach(function (button) {
+        button.addEventListener("click", function () {
+            activeCategory = button.dataset.category || "all";
+
+            filterWrap.querySelectorAll(".formula-filter")
+                .forEach(function (btn) {
+                    btn.classList.remove("active");
+                });
+
+            button.classList.add("active");
+            applyFormulaFilter();
+        });
+    });
+
+    if (searchInput) {
+        searchInput.addEventListener("input", applyFormulaFilter);
+    }
+
+    applyFormulaFilter();
+});
+</script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
 </body>
 
 </html>

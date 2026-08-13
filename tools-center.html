@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excel Tools Center | Learn Excecl with Anh Van Phong | Learn Excecl with Anh Van Phong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="upgrade.css">
+<link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="tools-center.css">
+    <link rel="stylesheet" href="simple-nav.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+<div id="scrollProgress"></div>
+
+
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
+
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+
+
+<main class="tools-page">
+  <section class="tools-hero">
+    <div class="avp-eyebrow">⚒️ EXCEL TOOLS CENTER</div>
+    <h1>Công cụ văn phòng dùng ngay</h1>
+    <p>Những công cụ nhỏ để xử lý nhanh công việc thường gặp: NG Rate, dựng công thức, làm sạch text, tính ngày và tạo bảng Pareto.</p>
+  </section>
+
+  <div class="tools-tabs">
+    <button class="tools-tab active" data-target="tool-ng">NG Rate</button>
+    <button class="tools-tab" data-target="tool-formula">Formula Builder</button>
+    <button class="tools-tab" data-target="tool-clean">Text Cleaner</button>
+    <button class="tools-tab" data-target="tool-date">Date Calculator</button>
+    <button class="tools-tab" data-target="tool-pareto">Pareto Generator</button>
+  </div>
+
+  <section id="tool-ng" class="tool-panel active">
+    <div class="tool-grid">
+      <div class="tool-card">
+        <h2>📉 NG Rate Calculator</h2>
+        <p>Tính nhanh tỷ lệ lỗi và số lượng Good.</p>
+        <div class="tool-field"><label>Input Qty</label><input id="ngInput" type="number" placeholder="Ví dụ: 1250"></div>
+        <div class="tool-field"><label>NG Qty</label><input id="ngQty" type="number" placeholder="Ví dụ: 17"></div>
+        <button id="ngCalcBtn" class="tool-btn">Tính NG Rate</button>
+        <div id="ngResult" class="tool-result">Kết quả sẽ xuất hiện tại đây.</div>
+      </div>
+      <div class="tool-card">
+        <h2>Ví dụ Excel</h2>
+        <p>Nếu Input nằm ở B2 và NG nằm ở C2:</p>
+        <div class="tool-formula">=C2/B2</div>
+        <p style="margin-top:14px">Định dạng ô kết quả thành Percentage để hiển thị %.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="tool-formula" class="tool-panel">
+    <div class="tool-grid">
+      <div class="tool-card">
+        <h2>🧠 Formula Builder</h2>
+        <p>Chọn loại công thức và nhập vùng dữ liệu để tạo mẫu nhanh.</p>
+        <div class="tool-field"><label>Loại công thức</label>
+          <select id="formulaType">
+            <option>COUNTIF</option><option>SUMIF</option><option>COUNTIFS</option>
+            <option>SUMIFS</option><option>XLOOKUP</option><option>VLOOKUP</option>
+          </select>
+        </div>
+        <div class="tool-field"><label>Vùng điều kiện / vùng dò</label><input id="formulaRange" placeholder="A:A hoặc A2:A100"></div>
+        <div class="tool-field"><label>Điều kiện / giá trị tìm</label><input id="formulaCriteria" placeholder="OK hoặc NV02"></div>
+        <div class="tool-field"><label>Vùng tính tổng / vùng trả về</label><input id="formulaSumRange" placeholder="B:B hoặc B2:B100"></div>
+        <button id="formulaBuildBtn" class="tool-btn">Tạo công thức</button>
+        <div id="formulaResult" class="tool-result">Công thức sẽ xuất hiện tại đây.</div>
+      </div>
+      <div class="tool-card">
+        <h2>💡 Gợi ý</h2>
+        <p>Formula Builder tạo mẫu để bạn hiểu cấu trúc hàm. Hãy chỉnh lại vùng dữ liệu phù hợp file Excel thực tế của bạn.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="tool-clean" class="tool-panel">
+    <div class="tool-grid">
+      <div class="tool-card">
+        <h2>🧹 Text Cleaner</h2>
+        <p>Xóa khoảng trắng thừa, dòng trống, loại dòng trùng và chuyển chữ hoa.</p>
+        <div class="tool-field"><label>Dữ liệu</label><textarea id="cleanInput" placeholder="Dán danh sách vào đây..."></textarea></div>
+        <label><input id="cleanUnique" type="checkbox"> Xóa dòng trùng</label><br>
+        <label><input id="cleanUpper" type="checkbox"> Chuyển thành chữ hoa</label>
+        <div class="tool-actions"><button id="cleanBtn" class="tool-btn">Làm sạch</button></div>
+        <div id="cleanResult" class="tool-result">Kết quả sẽ xuất hiện tại đây.</div>
+      </div>
+      <div class="tool-card">
+        <h2>Ứng dụng</h2>
+        <p>Hữu ích khi copy mã Lot, Barcode, tên lỗi hoặc danh sách nhân viên từ nhiều nguồn khác nhau.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="tool-date" class="tool-panel">
+    <div class="tool-grid">
+      <div class="tool-card">
+        <h2>📅 Date Calculator</h2>
+        <p>Tính số ngày chênh lệch giữa hai mốc.</p>
+        <div class="tool-field"><label>Từ ngày</label><input id="dateA" type="date"></div>
+        <div class="tool-field"><label>Đến ngày</label><input id="dateB" type="date"></div>
+        <button id="dateCalcBtn" class="tool-btn">Tính khoảng cách</button>
+        <div id="dateResult" class="tool-result">Kết quả sẽ xuất hiện tại đây.</div>
+      </div>
+      <div class="tool-card">
+        <h2>Excel tương đương</h2>
+        <div class="tool-formula">=B2-A2</div>
+        <p style="margin-top:14px">Hoặc dùng DATEDIF khi cần tính riêng năm/tháng/ngày.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="tool-pareto" class="tool-panel">
+    <div class="tool-grid">
+      <div class="tool-card">
+        <h2>📊 Pareto Generator</h2>
+        <p>Nhập mỗi lỗi một dòng theo dạng <b>Tên lỗi, Số lượng</b>.</p>
+        <div class="tool-field"><label>Dữ liệu lỗi</label><textarea id="paretoInput" placeholder="Scratch, 25&#10;Open, 14&#10;Short, 8"></textarea></div>
+        <button id="paretoBtn" class="tool-btn">Tạo Pareto</button>
+      </div>
+      <div class="tool-card">
+        <h2>Kết quả</h2>
+        <div id="paretoResult" class="tool-result">Bảng Pareto sẽ xuất hiện tại đây.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tools-note">⚠️ Đây là công cụ hỗ trợ học và xử lý nhanh trên trình duyệt. Dữ liệu bạn nhập không được gửi lên máy chủ trong phiên bản hiện tại.</div>
+</main>
+
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+</footer>
+
+
+<script src="script.js"></script>
+<script src="global-search.js"></script>
+<script src="gamification.js"></script>
+<script src="tools-center.js"></script>
+    <script src="simple-nav.js"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+</body>
+</html>

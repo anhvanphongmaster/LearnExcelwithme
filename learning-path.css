@@ -1,0 +1,100 @@
+
+/* ===== 30-DAY LEARNING PATH ===== */
+.lp-page{
+    max-width:1180px;
+    margin:0 auto;
+    padding:42px 20px 80px;
+}
+.lp-hero{
+    position:relative;
+    overflow:hidden;
+    padding:38px;
+    border-radius:26px;
+    color:#fff;
+    background:
+      radial-gradient(circle at 80% 20%, rgba(102,240,172,.18), transparent 35%),
+      linear-gradient(135deg,#071810,#123c27);
+    box-shadow:0 24px 70px rgba(0,0,0,.18);
+}
+.lp-hero h1{margin:0 0 10px;font-size:clamp(32px,5vw,52px);}
+.lp-hero p{max-width:760px;color:#c9ddd1;line-height:1.7;margin:0;}
+.lp-overview{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin-top:24px;
+}
+.lp-stat{
+    padding:18px;
+    border-radius:16px;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.09);
+}
+.lp-stat strong{display:block;font-size:28px;margin-bottom:5px;}
+.lp-stat span{font-size:13px;color:#b7cbbf;}
+.lp-progress-wrap{margin-top:24px;}
+.lp-progress-meta{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:#bfd1c6;margin-bottom:8px;}
+.lp-progress{height:12px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;}
+.lp-progress > span{display:block;height:100%;width:0;background:linear-gradient(90deg,#66eda7,#c4f8db);transition:width .45s ease;}
+.lp-toolbar{
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+    margin:28px 0 18px;
+}
+.lp-filter{
+    border:1px solid #d9e5de;background:#fff;color:#20402f;
+    padding:10px 14px;border-radius:999px;cursor:pointer;font-weight:700;
+}
+.lp-filter.active{background:#217346;color:#fff;border-color:#217346;}
+.lp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.lp-day{
+    position:relative;background:#fff;border:1px solid #e2ebe6;border-radius:18px;
+    padding:21px;box-shadow:0 8px 28px rgba(15,50,31,.06);
+    transition:.22s ease;
+}
+.lp-day:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(15,50,31,.10);}
+.lp-day.done{border-color:#7bd5a4;background:linear-gradient(180deg,#f7fff9,#fff);}
+.lp-day.locked{opacity:.62;}
+.lp-day-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.lp-day-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:42px;height:42px;border-radius:13px;background:#eaf6ef;color:#217346;font-weight:900;
+}
+.lp-day.done .lp-day-num{background:#217346;color:#fff;}
+.lp-day h3{margin:0 0 6px;font-size:19px;color:#183526;}
+.lp-day .lp-topic{color:#65776d;font-size:14px;line-height:1.5;}
+.lp-tag{
+    display:inline-block;margin-top:12px;padding:6px 9px;border-radius:999px;
+    background:#f0f6f2;color:#4e6859;font-size:11px;font-weight:800;
+}
+.lp-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px;}
+.lp-go,.lp-complete{
+    text-decoration:none;border:0;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer;
+}
+.lp-go{background:#edf7f1;color:#17623a;}
+.lp-complete{background:#217346;color:#fff;}
+.lp-day.done .lp-complete{background:#dff3e8;color:#17623a;}
+.lp-week{
+    grid-column:1/-1;margin-top:14px;padding:18px 4px 3px;
+    color:#217346;font-size:22px;font-weight:900;
+}
+.lp-next{
+    margin:28px 0;padding:24px;border-radius:20px;background:#eef8f2;border:1px solid #d6eadf;
+    display:flex;justify-content:space-between;gap:18px;align-items:center;
+}
+.lp-next h2{margin:0 0 5px;color:#185c37;}
+.lp-next p{margin:0;color:#65776d;}
+.lp-next a{white-space:nowrap;text-decoration:none;padding:12px 17px;border-radius:11px;background:#217346;color:#fff;font-weight:800;}
+.lp-reset{border:0;background:transparent;color:#8a5a5a;cursor:pointer;text-decoration:underline;font-size:12px;}
+body.dark-mode .lp-day{background:#101d16;border-color:#25392e;color:#eef8f1;}
+body.dark-mode .lp-day h3{color:#f0fff6;}
+body.dark-mode .lp-day .lp-topic{color:#a8bbb0;}
+body.dark-mode .lp-filter{background:#101d16;border-color:#2b4034;color:#e8f5ec;}
+body.dark-mode .lp-filter.active{background:#2b8a57;}
+body.dark-mode .lp-next{background:#10231a;border-color:#284b38;}
+body.dark-mode .lp-next p{color:#abc0b3;}
+@media(max-width:800px){
+  .lp-overview{grid-template-columns:repeat(2,1fr);}
+  .lp-grid{grid-template-columns:1fr;}
+  .lp-hero{padding:28px 22px;}
+  .lp-next{align-items:flex-start;flex-direction:column;}
+}
