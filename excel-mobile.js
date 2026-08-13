@@ -316,6 +316,8 @@
     if(reportPreview) reportPreview.hidden = true;
     const smartReport = $("smartCleanReport");
     if(smartReport) smartReport.hidden = true;
+    const smartApply = $("smartCleanApplyBtn");
+    if(smartApply) smartApply.hidden = true;
     const errReport = $("errorScanReport");
     if(errReport) errReport.hidden = true;
     const chartPreview = $("mobileChartPreview");
@@ -1927,11 +1929,17 @@
       numberText+
       blankHeaders;
 
+    const applyBtn=$("smartCleanApplyBtn");
+
     if(total===0){
+      if(applyBtn) applyBtn.hidden=true;
       success("Không phát hiện vấn đề dữ liệu phổ biến.");
     }else{
-      success(`Đã phát hiện ${total} vấn đề. Chọn mục cần sửa rồi bấm Xử lý file.`);
+      if(applyBtn) applyBtn.hidden=false;
+      success(`Đã phát hiện ${total} vấn đề. Chọn mục cần sửa rồi bấm Áp dụng Smart Clean.`);
     }
+
+    return report;
   }
 
   function renderSmartCleanReport(report){
@@ -1983,7 +1991,10 @@
 
     if(!state.smartCleanReport){
       scanSmartClean();
-      throw new Error("Scan first");
+    }
+
+    if(!state.smartCleanReport){
+      throw new Error("Scan failed");
     }
 
     let header=[...state.data[0]];
@@ -2061,6 +2072,9 @@
 
     const reportRoot=$("smartCleanReport");
     if(reportRoot) reportRoot.hidden=true;
+
+    const applyBtn=$("smartCleanApplyBtn");
+    if(applyBtn) applyBtn.hidden=true;
 
     addHistory(
       changes.length
@@ -2280,6 +2294,66 @@
     success("Gộp file thành công. Kiểm tra preview rồi tải file kết quả.");
   }
 
+  function executeSmartClean(){
+    if(!state.data.length){
+      error("Hãy upload file trước.");
+      return false;
+    }
+
+    let snapshotAdded=false;
+
+    try{
+      /*
+        Nếu người dùng chưa quét thủ công, tự quét trước.
+        Các lỗi phát hiện được sẽ mặc định được tick để xử lý.
+      */
+      if(!state.smartCleanReport){
+        const report=scanSmartClean();
+
+        const total=report
+          ? report.duplicates+
+            report.blankRows+
+            report.extraSpaces+
+            report.numberText+
+            report.blankHeaders
+          : 0;
+
+        if(!total){
+          return true;
+        }
+      }
+
+      pushUndoSnapshot();
+      snapshotAdded=true;
+
+      applySmartClean();
+      updateWorkbookSheet();
+      renderPreview();
+      populateColumns();
+      populateLookupSheets();
+      renderBatchColumns();
+      populatePivotSecondGroup();
+      renderWorkflowColumns();
+      evaluatePerformanceMode();
+
+      downloadBtn.disabled=false;
+      shareBtn.disabled=false;
+
+      success("Smart Clean đã xử lý xong. Hãy kiểm tra dữ liệu Preview.");
+      return true;
+    }catch(e){
+      console.error("Smart Clean error:",e);
+
+      if(snapshotAdded && state.undoStack.length){
+        state.undoStack.pop();
+        if(undoBtn) undoBtn.disabled=state.undoStack.length===0;
+      }
+
+      error("Không thể Smart Clean dữ liệu. Hãy thử Quét dữ liệu lại.");
+      return false;
+    }
+  }
+
   function runTool(){
     if(activeTool === "mergefiles"){
       try{
@@ -2292,33 +2366,7 @@
     }
 
     if(activeTool === "smartclean"){
-      if(!state.data.length){
-        error("Hãy upload file trước.");
-        return;
-      }
-
-      try{
-        pushUndoSnapshot();
-        applySmartClean();
-        updateWorkbookSheet();
-        renderPreview();
-        populateColumns();
-        populateLookupSheets();
-        downloadBtn.disabled=false;
-        shareBtn.disabled=false;
-        success("Smart Clean đã xử lý xong. Hãy kiểm tra preview.");
-      }catch(e){
-        console.error(e);
-
-        if(state.undoStack.length){
-          state.undoStack.pop();
-          if(undoBtn) undoBtn.disabled = state.undoStack.length === 0;
-        }
-
-        if(String(e?.message)!=="Scan first"){
-          error("Không thể Smart Clean dữ liệu.");
-        }
-      }
+      executeSmartClean();
       return;
     }
 
@@ -3373,7 +3421,32 @@
     }
   });
 
-  $("smartCleanScanBtn")?.addEventListener("click",scanSmartClean);
+  $("smartCleanScanBtn")?.addEventListener("click",()=>{
+    scanSmartClean();
+  });
+
+  $("smartCleanApplyBtn")?.addEventListener("click",async ()=>{
+    if(state.isProcessing) return;
+
+    const loggedIn=await ensureLoggedInForProcessing();
+    if(!loggedIn) return;
+
+    window.avpAnalytics?.track("excel_tool_used",{
+      page:"excel-mobile.html",
+      tool_name:"smartclean",
+      metadata:{performance_mode:Boolean(state.performanceMode)}
+    });
+
+    withProcessing(
+      "Đang Smart Clean dữ liệu...",
+      "Đang làm sạch dòng trùng, dòng trống và dữ liệu không đồng nhất.",
+      async ()=>{
+        await nextFrame();
+        executeSmartClean();
+        await nextFrame();
+      }
+    );
+  });
 
   $("mergeFilesInput")?.addEventListener("change",()=>{
     const files=$("mergeFilesInput").files;

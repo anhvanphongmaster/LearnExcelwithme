@@ -785,6 +785,8 @@ document.addEventListener(
     capNhatTienDo
 );
 function datLaiTienDo() {
+        renderChallengeStats();
+
 
     const confirmReset =
         confirm("Bạn có chắc muốn đặt lại toàn bộ tiến độ học không?");
@@ -3607,121 +3609,302 @@ document.addEventListener(
 const excelChallenges = [
 
     {
-        question:
-            "Bạn muốn tính tổng NG Qty theo từng Model. Nên dùng hàm nào?",
-        options: [
-            "SUMIFS",
-            "LEFT",
-            "LEN",
-            "TODAY"
-        ],
+        question: "Bạn muốn tính tổng NG Qty theo từng Model. Nên dùng hàm nào?",
+        options: ["SUMIFS", "LEFT", "LEN", "TODAY"],
         answer: 0,
-        explanation:
-            "SUMIFS dùng để tính tổng theo một hoặc nhiều điều kiện."
+        explanation: "SUMIFS dùng để tính tổng theo một hoặc nhiều điều kiện."
     },
 
     {
-        question:
-            "Bạn muốn đếm số dòng có trạng thái NG. Nên dùng hàm nào?",
-        options: [
-            "COUNTIF",
-            "SUM",
-            "AVERAGE",
-            "RIGHT"
-        ],
+        question: "Bạn muốn đếm số dòng có trạng thái NG. Nên dùng hàm nào?",
+        options: ["COUNTIF", "SUM", "AVERAGE", "RIGHT"],
         answer: 0,
-        explanation:
-            "COUNTIF dùng để đếm số ô thỏa mãn một điều kiện."
+        explanation: "COUNTIF dùng để đếm số ô thỏa mãn một điều kiện."
     },
 
     {
-        question:
-            "Bạn muốn lấy tên sản phẩm dựa trên mã sản phẩm. Nên dùng hàm nào?",
-        options: [
-            "XLOOKUP",
-            "MAX",
-            "ROUND",
-            "TRIM"
-        ],
+        question: "Bạn muốn lấy tên sản phẩm dựa trên mã sản phẩm. Nên dùng hàm nào?",
+        options: ["XLOOKUP", "MAX", "ROUND", "TRIM"],
         answer: 0,
-        explanation:
-            "XLOOKUP phù hợp để tra cứu một giá trị và trả về dữ liệu tương ứng."
+        explanation: "XLOOKUP phù hợp để tra cứu một giá trị và trả về dữ liệu tương ứng."
     },
 
     {
-        question:
-            "Bạn muốn hiển thị PASS nếu NG Rate <= 3%, ngược lại hiển thị NG. Nên dùng hàm nào?",
-        options: [
-            "IF",
-            "SUM",
-            "COUNT",
-            "LEFT"
-        ],
+        question: "Bạn muốn hiển thị PASS nếu NG Rate <= 3%, ngược lại hiển thị NG. Nên dùng hàm nào?",
+        options: ["IF", "SUM", "COUNT", "LEFT"],
         answer: 0,
-        explanation:
-            "IF dùng để kiểm tra điều kiện và trả về kết quả tương ứng."
+        explanation: "IF dùng để kiểm tra điều kiện và trả về kết quả tương ứng."
     },
 
     {
-        question:
-            "Bạn cần tổng hợp NG Qty theo Model và Process. Công cụ nào phù hợp nhất?",
-        options: [
-            "Pivot Table",
-            "Find",
-            "Format Cells",
-            "Freeze Panes"
-        ],
+        question: "Bạn cần tổng hợp NG Qty theo Model và Process. Công cụ nào phù hợp nhất?",
+        options: ["Pivot Table", "Find", "Format Cells", "Freeze Panes"],
         answer: 0,
-        explanation:
-            "Pivot Table rất phù hợp để tổng hợp và phân tích dữ liệu theo nhiều nhóm."
+        explanation: "Pivot Table phù hợp để tổng hợp và phân tích dữ liệu theo nhiều nhóm."
     },
 
     {
-        question:
-            "Bạn muốn tìm nhóm lỗi gây ảnh hưởng lớn nhất. Biểu đồ nào phù hợp?",
-        options: [
-            "Pareto",
-            "Scatter",
-            "Area",
-            "Radar"
-        ],
+        question: "Bạn muốn tìm nhóm lỗi gây ảnh hưởng lớn nhất. Biểu đồ nào phù hợp?",
+        options: ["Pareto", "Scatter", "Area", "Radar"],
         answer: 0,
-        explanation:
-            "Pareto giúp xác định các lỗi ưu tiên theo nguyên tắc 80/20."
+        explanation: "Pareto giúp xác định các lỗi ưu tiên theo nguyên tắc 80/20."
     },
 
     {
-        question:
-            "Bạn muốn loại bỏ khoảng trắng thừa trong dữ liệu. Dùng hàm nào?",
-        options: [
-            "TRIM",
-            "MID",
-            "NOW",
-            "MAX"
-        ],
+        question: "Bạn muốn loại bỏ khoảng trắng thừa trong dữ liệu. Dùng hàm nào?",
+        options: ["TRIM", "MID", "NOW", "MAX"],
         answer: 0,
-        explanation:
-            "TRIM loại bỏ khoảng trắng thừa trong chuỗi."
+        explanation: "TRIM loại bỏ khoảng trắng thừa trong chuỗi."
     },
 
     {
-        question:
-            "Bạn muốn lấy 4 ký tự cuối của Lot No. Dùng hàm nào?",
-        options: [
-            "RIGHT",
-            "LEFT",
-            "SUMIF",
-            "COUNT"
-        ],
+        question: "Bạn muốn lấy 4 ký tự cuối của Lot No. Dùng hàm nào?",
+        options: ["RIGHT", "LEFT", "SUMIF", "COUNT"],
         answer: 0,
-        explanation:
-            "RIGHT lấy một số ký tự từ bên phải chuỗi."
+        explanation: "RIGHT lấy một số ký tự từ bên phải chuỗi."
+    },
+
+    {
+        question: "Bạn muốn lấy 3 ký tự đầu của mã Model. Nên dùng hàm nào?",
+        options: ["LEFT", "RIGHT", "ROUND", "COUNTIF"],
+        answer: 0,
+        explanation: "LEFT lấy một số ký tự từ bên trái chuỗi."
+    },
+
+    {
+        question: "Bạn muốn lấy phần ký tự nằm giữa một chuỗi. Nên dùng hàm nào?",
+        options: ["MID", "MAX", "IFERROR", "TODAY"],
+        answer: 0,
+        explanation: "MID dùng để lấy một đoạn ký tự bắt đầu từ vị trí xác định."
+    },
+
+    {
+        question: "Bạn muốn biết một chuỗi có bao nhiêu ký tự. Nên dùng hàm nào?",
+        options: ["LEN", "SUM", "MIN", "VLOOKUP"],
+        answer: 0,
+        explanation: "LEN trả về số lượng ký tự trong chuỗi."
+    },
+
+    {
+        question: "Bạn muốn ghép Model, Lot và Process thành một chuỗi có dấu '-'. Nên dùng hàm nào?",
+        options: ["TEXTJOIN", "COUNTIFS", "ROUND", "TODAY"],
+        answer: 0,
+        explanation: "TEXTJOIN ghép nhiều chuỗi và cho phép chỉ định ký tự phân cách."
+    },
+
+    {
+        question: "Bạn muốn lấy danh sách Model không trùng lặp. Nên dùng hàm nào?",
+        options: ["UNIQUE", "SUMIFS", "RIGHT", "MAX"],
+        answer: 0,
+        explanation: "UNIQUE trả về danh sách các giá trị duy nhất."
+    },
+
+    {
+        question: "Bạn muốn lọc riêng các dòng có trạng thái NG bằng công thức. Nên dùng hàm nào?",
+        options: ["FILTER", "LEFT", "ROUND", "AVERAGE"],
+        answer: 0,
+        explanation: "FILTER trả về các dòng thỏa điều kiện đã đặt."
+    },
+
+    {
+        question: "Bạn muốn thay lỗi #N/A bằng chữ 'Không tìm thấy'. Nên dùng hàm nào?",
+        options: ["IFERROR", "SUMIF", "LEN", "NOW"],
+        answer: 0,
+        explanation: "IFERROR cho phép thay giá trị lỗi bằng nội dung dễ hiểu hơn."
+    },
+
+    {
+        question: "Bạn muốn làm tròn NG Rate đến 2 chữ số thập phân. Nên dùng hàm nào?",
+        options: ["ROUND", "TRIM", "COUNTIF", "XLOOKUP"],
+        answer: 0,
+        explanation: "ROUND dùng để làm tròn số đến số chữ số thập phân chỉ định."
+    },
+
+    {
+        question: "Bạn muốn lấy giá trị lớn nhất trong cột NG Qty. Nên dùng hàm nào?",
+        options: ["MAX", "MIN", "LEFT", "TEXTJOIN"],
+        answer: 0,
+        explanation: "MAX trả về giá trị lớn nhất trong một vùng dữ liệu."
+    },
+
+    {
+        question: "Bạn muốn lấy giá trị nhỏ nhất trong cột Cycle Time. Nên dùng hàm nào?",
+        options: ["MIN", "MAX", "RIGHT", "COUNTIFS"],
+        answer: 0,
+        explanation: "MIN trả về giá trị nhỏ nhất trong một vùng dữ liệu."
+    },
+
+    {
+        question: "Bạn muốn tính NG Qty trung bình của các Lot. Nên dùng hàm nào?",
+        options: ["AVERAGE", "SUMIF", "XLOOKUP", "TRIM"],
+        answer: 0,
+        explanation: "AVERAGE tính giá trị trung bình của các số."
+    },
+
+    {
+        question: "Bạn muốn đếm các dòng vừa có Model A vừa có trạng thái NG. Nên dùng hàm nào?",
+        options: ["COUNTIFS", "COUNT", "LEFT", "TODAY"],
+        answer: 0,
+        explanation: "COUNTIFS dùng để đếm theo nhiều điều kiện cùng lúc."
+    },
+
+    {
+        question: "Bạn muốn tính tổng NG Qty khi Model = A và Process = FPC. Nên dùng hàm nào?",
+        options: ["SUMIFS", "SUM", "RIGHT", "LEN"],
+        answer: 0,
+        explanation: "SUMIFS có thể tính tổng theo nhiều điều kiện."
+    },
+
+    {
+        question: "Bạn muốn tra cứu dữ liệu nhưng bảng nguồn có cột trả về nằm bên trái cột mã. Hàm nào thuận tiện nhất?",
+        options: ["XLOOKUP", "SUMIF", "MAX", "TRIM"],
+        answer: 0,
+        explanation: "XLOOKUP không bị giới hạn hướng tra cứu như VLOOKUP truyền thống."
+    },
+
+    {
+        question: "Bạn muốn cố định hàng tiêu đề khi cuộn xuống bảng dữ liệu dài. Nên dùng tính năng nào?",
+        options: ["Freeze Panes", "Find", "Text to Columns", "Conditional Formatting"],
+        answer: 0,
+        explanation: "Freeze Panes giúp giữ hàng hoặc cột tiêu đề luôn hiển thị khi cuộn."
+    },
+
+    {
+        question: "Bạn muốn tô màu tự động các ô có NG Rate > 3%. Nên dùng tính năng nào?",
+        options: ["Conditional Formatting", "Freeze Panes", "Page Break", "Name Manager"],
+        answer: 0,
+        explanation: "Conditional Formatting định dạng ô tự động dựa trên điều kiện."
+    },
+
+    {
+        question: "Bạn muốn tách dữ liệu 'Model-Lot-Process' thành nhiều cột theo dấu '-'. Nên dùng công cụ nào?",
+        options: ["Text to Columns", "Freeze Panes", "Goal Seek", "Protect Sheet"],
+        answer: 0,
+        explanation: "Text to Columns có thể tách chuỗi thành nhiều cột theo dấu phân cách."
+    },
+
+    {
+        question: "Bạn muốn nhanh chóng loại bỏ các dòng dữ liệu bị lặp hoàn toàn. Nên dùng tính năng nào?",
+        options: ["Remove Duplicates", "Find", "Sort", "Freeze Panes"],
+        answer: 0,
+        explanation: "Remove Duplicates giúp loại bỏ các bản ghi trùng theo cột được chọn."
+    },
+
+    {
+        question: "Trong Pivot Table, bạn muốn hiển thị tổng NG Qty. Trường NG Qty nên đặt vào vùng nào?",
+        options: ["Values", "Rows", "Columns", "Filters"],
+        answer: 0,
+        explanation: "Các số cần tổng hợp như NG Qty thường được đặt trong vùng Values."
+    },
+
+    {
+        question: "Trong Pivot Table, bạn muốn phân nhóm kết quả theo Model. Model thường nên đặt vào vùng nào?",
+        options: ["Rows", "Values", "Data Validation", "Name Box"],
+        answer: 0,
+        explanation: "Model thường được đặt trong Rows để tạo các nhóm theo từng Model."
     }
 
 ];
 
 
 let currentChallenge = null;
+let challengeDeck = [];
+let lastChallengeQuestion = null;
+
+const CHALLENGE_STATS_KEY = "avp_excel_challenge_stats_v1";
+
+function readChallengeStats() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(CHALLENGE_STATS_KEY) || "{}");
+        return {
+            score: Number(raw.score) || 0,
+            correct: Number(raw.correct) || 0,
+            wrong: Number(raw.wrong) || 0,
+            answeredUnique: Array.isArray(raw.answeredUnique) ? [...new Set(raw.answeredUnique.map(Number))] : [],
+            correctUnique: Array.isArray(raw.correctUnique) ? [...new Set(raw.correctUnique.map(Number))] : []
+        };
+    } catch {
+        return { score: 0, correct: 0, wrong: 0, answeredUnique: [], correctUnique: [] };
+    }
+}
+
+function saveChallengeStats(stats) {
+    localStorage.setItem(CHALLENGE_STATS_KEY, JSON.stringify(stats));
+    window.dispatchEvent(new CustomEvent("avp:challenge-updated", { detail: stats }));
+}
+
+function renderChallengeStats() {
+    const stats = readChallengeStats();
+    const total = stats.correct + stats.wrong;
+    const accuracy = total ? Math.round(stats.correct / total * 100) : 0;
+
+    const set = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    };
+
+    set("challengeScore", stats.score);
+    set("challengeCorrect", stats.correct);
+    set("challengeWrong", stats.wrong);
+    set("challengeAccuracy", `${accuracy}%`);
+    set("challengeUniqueProgress", `${stats.correctUnique.length}/${excelChallenges.length} câu đúng lần đầu`);
+}
+
+function recordChallengeActivity(correct, questionIndex, xpAwarded) {
+    const key = "avpRecentActivities";
+    let arr = [];
+    try { arr = JSON.parse(localStorage.getItem(key) || "[]"); } catch {}
+
+    arr.unshift({
+        type: "excel-challenge",
+        title: correct
+            ? `Excel Challenge: trả lời đúng${xpAwarded ? " · +5 XP" : ""}`
+            : "Excel Challenge: trả lời sai",
+        time: new Date().toISOString(),
+        questionIndex
+    });
+
+    localStorage.setItem(key, JSON.stringify(arr.slice(0, 20)));
+
+    if (window.avpRecordLearningEvent) {
+        window.avpRecordLearningEvent(
+            correct ? "challenge_correct" : "challenge_wrong",
+            { questionIndex, xpAwarded: Boolean(xpAwarded) }
+        );
+    }
+}
+
+
+
+function shuffleChallengeItems(items) {
+    const copy = items.slice();
+
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+
+    return copy;
+}
+
+
+function refillChallengeDeck() {
+    challengeDeck =
+        shuffleChallengeItems(
+            excelChallenges.map(function(_, index) {
+                return index;
+            })
+        );
+
+    if (
+        challengeDeck.length > 1 &&
+        lastChallengeQuestion !== null &&
+        excelChallenges[challengeDeck[0]].question === lastChallengeQuestion
+    ) {
+        [challengeDeck[0], challengeDeck[1]] =
+            [challengeDeck[1], challengeDeck[0]];
+    }
+}
 
 
 function taoChallengeMoi() {
@@ -3750,15 +3933,57 @@ function taoChallengeMoi() {
     }
 
 
-    const randomIndex =
-        Math.floor(
-            Math.random() *
-            excelChallenges.length
+    /*
+        Mỗi vòng sẽ đi hết toàn bộ 28 câu trước khi lặp.
+    */
+    if (!challengeDeck.length) {
+        refillChallengeDeck();
+    }
+
+    const challengeIndex =
+        challengeDeck.shift();
+
+    const sourceChallenge =
+        excelChallenges[challengeIndex];
+
+    lastChallengeQuestion =
+        sourceChallenge.question;
+
+
+    /*
+        Gắn đúng/sai vào từng đáp án TRƯỚC khi shuffle.
+        Sau đó tính lại vị trí đáp án đúng.
+    */
+    const shuffledOptions =
+        shuffleChallengeItems(
+            sourceChallenge.options.map(
+                function(option, index) {
+                    return {
+                        text: option,
+                        correct:
+                            index ===
+                            sourceChallenge.answer
+                    };
+                }
+            )
         );
 
 
-    currentChallenge =
-        excelChallenges[randomIndex];
+    currentChallenge = {
+        questionIndex: challengeIndex,
+        question:
+            sourceChallenge.question,
+        explanation:
+            sourceChallenge.explanation,
+        options:
+            shuffledOptions,
+        answer:
+            shuffledOptions.findIndex(
+                function(option) {
+                    return option.correct;
+                }
+            )
+    };
 
 
     questionElement.textContent =
@@ -3768,6 +3993,8 @@ function taoChallengeMoi() {
     optionsElement.innerHTML = "";
 
     resultElement.textContent = "";
+
+    renderChallengeStats();
 
 
     currentChallenge.options
@@ -3780,7 +4007,7 @@ function taoChallengeMoi() {
                 "challenge-option";
 
             button.textContent =
-                option;
+                option.text;
 
 
             button.addEventListener(
@@ -3825,23 +4052,51 @@ function chamChallenge(
 
 
     buttons.forEach(function(button) {
-
         button.disabled = true;
-
     });
 
 
-    if (
+    const isCorrect =
         selectedIndex ===
-        currentChallenge.answer
-    ) {
+        currentChallenge.answer;
+
+    const stats = readChallengeStats();
+    const qIndex = Number(currentChallenge.questionIndex);
+    const firstAnswerForQuestion = !stats.answeredUnique.includes(qIndex);
+    const firstCorrectForQuestion = !stats.correctUnique.includes(qIndex);
+
+    if (firstAnswerForQuestion) {
+        stats.answeredUnique.push(qIndex);
+    }
+
+
+    if (isCorrect) {
 
         selectedButton.classList.add(
             "correct"
         );
 
+        stats.correct += 1;
+        stats.score += 10;
+
+        let xpAwarded = false;
+
+        /*
+            XP chỉ thưởng MỘT LẦN cho mỗi câu khi người dùng trả lời đúng lần đầu.
+            Điểm phiên tích lũy vẫn tăng để người dùng thấy kết quả luyện tập.
+        */
+        if (firstCorrectForQuestion) {
+            stats.correctUnique.push(qIndex);
+            xpAwarded = true;
+        }
+
+        saveChallengeStats(stats);
+        recordChallengeActivity(true, qIndex, xpAwarded);
+        renderChallengeStats();
+
         result.textContent =
-            "✅ Chính xác! " +
+            "✅ Chính xác! +10 điểm" +
+            (xpAwarded ? " · +5 XP Thành tích. " : ". ") +
             currentChallenge.explanation;
 
     } else {
@@ -3850,11 +4105,18 @@ function chamChallenge(
             "wrong"
         );
 
-        buttons[
-            currentChallenge.answer
-        ].classList.add(
-            "correct"
-        );
+        if (buttons[currentChallenge.answer]) {
+            buttons[
+                currentChallenge.answer
+            ].classList.add(
+                "correct"
+            );
+        }
+
+        stats.wrong += 1;
+        saveChallengeStats(stats);
+        recordChallengeActivity(false, qIndex, false);
+        renderChallengeStats();
 
         result.textContent =
             "❌ Chưa đúng. " +

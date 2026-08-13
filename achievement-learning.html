@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hành trình Thành tích | Learn Excel with Anh Van Phong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="upgrade.css">
+<link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="achievement-learning.css">
+</head>
+<body>
+
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="achievement-learning-page">
+
+  <section class="achievement-learning-hero page-header">
+    <div>
+      <span class="achievement-learning-kicker">🏆 HỌC → TÍCH XP → MỞ HUY HIỆU</span>
+      <h1>Hành trình Thành tích</h1>
+      <p>
+        Tất cả nội dung trên website có thể giúp bạn tích XP, hoàn thành mục tiêu
+        và mở khóa huy hiệu được tổng hợp tại đây.
+      </p>
+    </div>
+
+    <a href="achievements.html" class="achievement-main-link">
+      🏆 Xem Thành tích hiện tại
+    </a>
+  </section>
+
+  <section class="achievement-learning-summary">
+    <article>
+      <small>XP hiện tại</small>
+      <strong id="hubXp">0</strong>
+      <span id="hubLevel">Level 1</span>
+    </article>
+
+    <article>
+      <small>Chuyên đề</small>
+      <strong id="hubCourses">0/6</strong>
+      <span>+20 XP / chuyên đề</span>
+    </article>
+
+    <article>
+      <small>Playground</small>
+      <strong id="hubPlayground">0/10</strong>
+      <span>+10 XP / bài</span>
+    </article>
+
+    <article>
+      <small>Challenge</small>
+      <strong id="hubChallenge">0/28</strong>
+      <span>+5 XP / câu đúng mới</span>
+    </article>
+
+    <article>
+      <small>Lộ trình 30 ngày</small>
+      <strong id="hubRoadmap">0/30</strong>
+      <span>+15 XP / ngày</span>
+    </article>
+
+    <article>
+      <small>Quiz tốt nhất</small>
+      <strong id="hubQuiz">0/5</strong>
+      <span>+10 XP / điểm</span>
+    </article>
+  </section>
+
+  <section class="achievement-learning-intro">
+    <strong>🧭 Nên học theo thứ tự</strong>
+    <span>Học chuyên đề → làm bài → luyện Challenge → hoàn thành lộ trình → xem Thành tích.</span>
+  </section>
+
+  <section class="achievement-learning-grid">
+
+    <article class="achievement-learning-card">
+      <div class="achievement-learning-icon">📘</div>
+      <div class="achievement-learning-body">
+        <span class="achievement-learning-category">KIẾN THỨC NỀN</span>
+        <h2>1. Hoàn thành chuyên đề Excel</h2>
+        <p>Học các nội dung chính của website để xây nền tảng trước khi làm bài tập và Challenge.</p>
+
+        <div class="achievement-learning-progress">
+          <div><span>Tiến độ</span><strong id="courseProgressText">0/6</strong></div>
+          <div class="achievement-learning-track"><span id="courseProgressBar"></span></div>
+        </div>
+
+        <div class="achievement-learning-links">
+          <a href="excel.html">📘 Học Excel</a>
+          <a href="filtersort.html">🔎 Filter & Sort</a>
+          <a href="pivottable.html">📊 Pivot Table</a>
+          <a href="bieudopareto.html">📈 Pareto</a>
+          <a href="baocaoexcel.html">📋 Báo cáo</a>
+          <a href="phimtatexcel.html">⌨️ Phím tắt</a>
+        </div>
+
+        <div class="achievement-learning-reward">🎁 +20 XP cho mỗi chuyên đề hoàn thành</div>
+      </div>
+    </article>
+
+    <article class="achievement-learning-card">
+      <div class="achievement-learning-icon">🧪</div>
+      <div class="achievement-learning-body">
+        <span class="achievement-learning-category">THỰC HÀNH</span>
+        <h2>2. Làm bài tập & Excel Playground</h2>
+        <p>Áp dụng công thức và kỹ năng vào bài tập thay vì chỉ đọc lý thuyết.</p>
+
+        <div class="achievement-learning-progress">
+          <div><span>Playground hoàn thành</span><strong id="playgroundProgressText">0/10</strong></div>
+          <div class="achievement-learning-track"><span id="playgroundProgressBar"></span></div>
+        </div>
+
+        <div class="achievement-learning-links">
+          <a href="baitapexcel.html">📝 Bài tập Excel</a>
+          <a href="playground.html">🧪 Excel Playground</a>
+        </div>
+
+        <div class="achievement-learning-reward">🎁 +10 XP cho mỗi Playground hoàn thành</div>
+      </div>
+    </article>
+
+    <article class="achievement-learning-card featured">
+      <div class="achievement-learning-icon">🎯</div>
+      <div class="achievement-learning-body">
+        <span class="achievement-learning-category">CHALLENGE</span>
+        <h2>3. Excel Challenge</h2>
+        <p>Trả lời câu hỏi ngẫu nhiên về hàm Excel, Pivot, QC, dữ liệu và thao tác thực tế.</p>
+
+        <div class="achievement-learning-progress">
+          <div><span>Câu đúng khác nhau</span><strong id="challengeProgressText">0/28</strong></div>
+          <div class="achievement-learning-track"><span id="challengeProgressBar"></span></div>
+        </div>
+
+        <div class="achievement-learning-links">
+          <a href="formula-finder.html#excelChallenge">🎯 Làm Excel Challenge</a>
+          <a href="formula-finder.html">🔎 Formula Finder</a>
+        </div>
+
+        <div class="achievement-learning-reward">
+          🎁 +10 điểm Challenge / câu đúng • +5 XP cho câu đúng lần đầu
+        </div>
+
+        <div class="achievement-learning-badges">
+          <span>🧠 1 câu đúng</span>
+          <span>🔥 10 câu đúng</span>
+          <span>👑 25 câu đúng</span>
+          <span>💯 280 điểm</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="achievement-learning-card">
+      <div class="achievement-learning-icon">🗓️</div>
+      <div class="achievement-learning-body">
+        <span class="achievement-learning-category">LỘ TRÌNH</span>
+        <h2>4. Lộ trình Excel 30 ngày</h2>
+        <p>Đi theo từng ngày để học, thực hành, làm Challenge và hoàn thành Mini Project.</p>
+
+        <div class="achievement-learning-progress">
+          <div><span>Ngày hoàn thành</span><strong id="roadmapProgressText">0/30</strong></div>
+          <div class="achievement-learning-track"><span id="roadmapProgressBar"></span></div>
+        </div>
+
+        <div class="achievement-learning-links">
+          <a href="learning-path.html">🗓️ Mở Lộ trình 30 ngày</a>
+        </div>
+
+        <div class="achievement-learning-reward">🎁 +15 XP cho mỗi ngày hoàn thành</div>
+      </div>
+    </article>
+
+    <article class="achievement-learning-card">
+      <div class="achievement-learning-icon">🧠</div>
+      <div class="achievement-learning-body">
+        <span class="achievement-learning-category">KIỂM TRA KIẾN THỨC</span>
+        <h2>5. Quiz & nhiệm vụ học tập</h2>
+        <p>Làm Quiz để kiểm tra kiến thức và hoàn thành nhiệm vụ hằng ngày để duy trì streak.</p>
+
+        <div class="achievement-learning-progress">
+          <div><span>Điểm Quiz tốt nhất</span><strong id="quizProgressText">0/5</strong></div>
+          <div class="achievement-learning-track"><span id="quizProgressBar"></span></div>
+        </div>
+
+        <div class="achievement-learning-links">
+          <a href="baitapexcel.html">🧠 Làm Quiz</a>
+          <a href="dashboard.html">📊 Dashboard cá nhân</a>
+        </div>
+
+        <div class="achievement-learning-reward">🎁 Quiz đóng góp XP • Nhiệm vụ hằng ngày có Bonus XP</div>
+      </div>
+    </article>
+
+    <article class="achievement-learning-card">
+      <div class="achievement-learning-icon">🏆</div>
+      <div class="achievement-learning-body">
+        <span class="achievement-learning-category">MỞ KHÓA</span>
+        <h2>6. Thành tích & Level</h2>
+        <p>Tất cả XP từ chuyên đề, Playground, Challenge, Quiz và Lộ trình được cộng vào Level và huy hiệu.</p>
+
+        <div class="achievement-learning-links">
+          <a href="achievements.html">🏆 Xem tất cả Thành tích</a>
+          <a href="dashboard.html">👤 Xem tiến độ cá nhân</a>
+        </div>
+
+        <div class="achievement-learning-badges">
+          <span>🌱 Bước đầu tiên</span>
+          <span>🏆 Playground Master</span>
+          <span>📚 Excel Journey</span>
+          <span>🎯 Quiz Ace</span>
+          <span>👑 Challenge Master</span>
+          <span>💎 Office Pro</span>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="achievement-learning-road">
+    <h2>🚀 Lộ trình ngắn gọn để lấy Thành tích</h2>
+    <div class="achievement-road-steps">
+      <span><b>1</b> Học chuyên đề</span>
+      <i>→</i>
+      <span><b>2</b> Làm bài tập</span>
+      <i>→</i>
+      <span><b>3</b> Excel Challenge</span>
+      <i>→</i>
+      <span><b>4</b> Lộ trình 30 ngày</span>
+      <i>→</i>
+      <span><b>5</b> Mở huy hiệu</span>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+  <div class="site-footer-legal">
+    <a href="terms.html">Điều khoản</a>
+    <a href="privacy.html">Quyền riêng tư</a>
+    <a href="disclaimer.html">Tuyên bố pháp lý</a>
+    <a href="open-source.html">Mã nguồn mở</a>
+  </div>
+</footer>
+
+<script src="simple-nav.js"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script src="gamification.js"></script>
+<script src="achievement-learning.js"></script>
+<script src="analytics-tracker.js"></script>
+</body>
+</html>

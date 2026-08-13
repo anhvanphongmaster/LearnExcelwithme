@@ -80,7 +80,7 @@
 
 
         <!-- EXCEL CHALLENGE -->
-        <section class="daily-challenge daily-learning-card">
+        <section id="excelChallenge" class="daily-challenge daily-learning-card">
             <div class="challenge-header">
                 <div>
                     <span class="challenge-badge">
@@ -91,6 +91,31 @@
                         Đang tải câu hỏi...
                     </h2>
                 </div>
+            </div>
+
+
+            <div class="challenge-scoreboard" aria-label="Điểm Excel Challenge">
+                <div>
+                    <small>Điểm</small>
+                    <strong id="challengeScore">0</strong>
+                </div>
+                <div>
+                    <small>Đúng</small>
+                    <strong id="challengeCorrect">0</strong>
+                </div>
+                <div>
+                    <small>Sai</small>
+                    <strong id="challengeWrong">0</strong>
+                </div>
+                <div>
+                    <small>Chính xác</small>
+                    <strong id="challengeAccuracy">0%</strong>
+                </div>
+            </div>
+
+            <div class="challenge-progress-note">
+                <span id="challengeUniqueProgress">0/28 câu đúng lần đầu</span>
+                <span>• Mỗi câu đúng lần đầu: +5 XP</span>
             </div>
 
             <div

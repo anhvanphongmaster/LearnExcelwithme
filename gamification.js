@@ -42,3 +42,15 @@ window.getLearningPathXP = function(){
     return Array.isArray(days) ? days.length * 15 : 0;
   }catch(e){ return 0; }
 };
+
+
+// Excel Challenge bonus: +5 XP for each unique question answered correctly.
+window.getChallengeXP = function(){
+  try{
+    const stats = JSON.parse(localStorage.getItem("avp_excel_challenge_stats_v1") || "{}");
+    const unique = Array.isArray(stats.correctUnique) ? new Set(stats.correctUnique.map(Number)).size : 0;
+    return unique * 5;
+  }catch(e){
+    return 0;
+  }
+};

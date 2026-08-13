@@ -40,11 +40,11 @@ const PROGRESS_KEYS = [
   "avp_bonus_xp_v1",
   "avp_activity_days_v1",
   "avp_learning_events_v1",
-  "avp_daily_rewards_v1"
+  "avp_daily_rewards_v1",
+  "avp_excel_challenge_stats_v1"
 ];
 
 const ARRAY_UNION_KEYS = new Set([
-  "avpLearningPath30",
   "avp_activity_days_v1"
 ]);
 
@@ -68,7 +68,9 @@ const MAX_NUMBER_KEYS = new Set([
   Không được union với cloud vì người dùng có thể bỏ đánh dấu / reset.
 */
 const EXACT_STATE_KEYS = new Set([
-  "completedCourses"
+  "completedCourses",
+  "avpLearningPath30",
+  "avp_excel_challenge_stats_v1"
 ]);
 
 let applyingCloud = false;

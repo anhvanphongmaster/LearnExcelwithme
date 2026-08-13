@@ -554,3 +554,67 @@ body.dark-mode .lp-day.done.locked .lp-complete{
   background:#17733f !important;
   color:#ffffff !important;
 }
+
+
+/* ===== LEARNING PATH 30 DAY FIX ===== */
+.lp-day.current:not(.done){
+  border-color:#72b98f !important;
+  box-shadow:
+    0 10px 28px rgba(33,115,70,.10),
+    0 0 0 2px rgba(76,173,115,.08) inset !important;
+}
+
+.lp-current-badge{
+  display:inline-flex;
+  align-items:center;
+  margin-left:6px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#dff4e7;
+  color:#226f46;
+  font-size:9px;
+  font-weight:900;
+  vertical-align:middle;
+}
+
+.lp-day.done .lp-complete{
+  cursor:pointer;
+}
+
+body.dark-mode .lp-day.current:not(.done){
+  border-color:#4d9668 !important;
+}
+
+body.dark-mode .lp-current-badge{
+  background:#1e3b29;
+  color:#99deb2;
+}
+
+
+/* ===== PRACTICAL 30-DAY LINKS ===== */
+.lp-practical-note{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  margin:14px 0;
+  padding:11px 13px;
+  border:1px solid #cfe3d6;
+  border-radius:11px;
+  background:#f3faf5;
+}
+.lp-practical-note strong{
+  flex:0 0 auto;
+  color:#256b43;
+  font-size:10px;
+}
+.lp-practical-note span{
+  color:#6b7f73;
+  font-size:10px;
+  line-height:1.5;
+}
+body.dark-mode .lp-practical-note{
+  background:#15231b;
+  border-color:#30463a;
+}
+body.dark-mode .lp-practical-note strong{color:#9bdcb4}
+body.dark-mode .lp-practical-note span{color:#adbbb3}

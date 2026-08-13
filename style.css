@@ -3449,3 +3449,51 @@ body.dark-mode .challenge-next-btn{
   opacity:1;
   text-decoration:underline;
 }
+
+
+/* ===== EXCEL CHALLENGE SCORE ===== */
+.challenge-scoreboard{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin:12px 0 10px;
+}
+.challenge-scoreboard>div{
+  padding:9px 8px;
+  border:1px solid #dce7e1;
+  border-radius:10px;
+  background:#f8fbf9;
+  text-align:center;
+}
+.challenge-scoreboard small{
+  display:block;
+  margin-bottom:3px;
+  color:#7b8c83;
+  font-size:9px;
+  font-weight:800;
+}
+.challenge-scoreboard strong{
+  color:#246844;
+  font-size:16px;
+}
+.challenge-progress-note{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-bottom:10px;
+  color:#7a8d82;
+  font-size:9px;
+  font-weight:700;
+}
+body.dark-mode .challenge-scoreboard>div{
+  background:#142019;
+  border-color:#2d4035;
+}
+body.dark-mode .challenge-scoreboard strong{
+  color:#9adfb4;
+}
+@media(max-width:520px){
+  .challenge-scoreboard{
+    grid-template-columns:repeat(2,1fr);
+  }
+}

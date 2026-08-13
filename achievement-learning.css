@@ -1,0 +1,388 @@
+
+.achievement-learning-page{
+  min-height:100vh;
+  padding-bottom:60px;
+  background:#f5f9f7;
+}
+
+.achievement-learning-hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:24px;
+  padding:48px max(20px,calc((100vw - 1150px)/2));
+  background:
+    radial-gradient(circle at 20% 20%,rgba(68,190,112,.24),transparent 30%),
+    linear-gradient(135deg,#07341f,#125b37);
+  color:#fff;
+}
+
+.achievement-learning-kicker{
+  display:inline-block;
+  margin-bottom:10px;
+  color:#9fe6b9;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.8px;
+}
+
+.achievement-learning-hero h1{
+  margin:0 0 9px;
+  font-size:clamp(34px,5vw,52px);
+}
+
+.achievement-learning-hero p{
+  max-width:710px;
+  margin:0;
+  color:#cde2d5;
+  font-size:13px;
+  line-height:1.7;
+}
+
+.achievement-main-link{
+  min-height:46px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 16px;
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:12px;
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+.achievement-learning-summary{
+  width:min(1150px,calc(100% - 28px));
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:10px;
+  margin:18px auto;
+}
+
+.achievement-learning-summary article{
+  padding:14px;
+  border:1px solid #dce7e1;
+  border-radius:13px;
+  background:#fff;
+}
+
+.achievement-learning-summary small{
+  display:block;
+  color:#819087;
+  font-size:9px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.achievement-learning-summary strong{
+  display:block;
+  margin:5px 0 2px;
+  color:#1e6840;
+  font-size:23px;
+}
+
+.achievement-learning-summary span{
+  color:#83928a;
+  font-size:9px;
+  line-height:1.4;
+}
+
+.achievement-learning-intro{
+  width:min(1150px,calc(100% - 28px));
+  display:flex;
+  gap:9px;
+  margin:0 auto 14px;
+  padding:11px 14px;
+  box-sizing:border-box;
+  border:1px solid #c8dfd0;
+  border-radius:11px;
+  background:#edf8f1;
+}
+
+.achievement-learning-intro strong{
+  color:#276946;
+  font-size:10px;
+}
+
+.achievement-learning-intro span{
+  color:#697f72;
+  font-size:10px;
+}
+
+.achievement-learning-grid{
+  width:min(1150px,calc(100% - 28px));
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px;
+  margin:0 auto;
+}
+
+.achievement-learning-card{
+  display:flex;
+  gap:14px;
+  padding:18px;
+  border:1px solid #dce7e1;
+  border-radius:16px;
+  background:#fff;
+}
+
+.achievement-learning-card.featured{
+  border-color:#9dcfb0;
+  background:linear-gradient(145deg,#f1faf4,#fff);
+}
+
+.achievement-learning-icon{
+  width:48px;
+  height:48px;
+  flex:0 0 48px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:#e8f5ed;
+  font-size:24px;
+}
+
+.achievement-learning-body{
+  min-width:0;
+  flex:1;
+}
+
+.achievement-learning-category{
+  color:#7b8e83;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.7px;
+}
+
+.achievement-learning-card h2{
+  margin:4px 0 7px;
+  color:#245e3d;
+  font-size:17px;
+}
+
+.achievement-learning-card p{
+  margin:0 0 12px;
+  color:#667c70;
+  font-size:11px;
+  line-height:1.65;
+}
+
+.achievement-learning-progress{
+  margin-bottom:11px;
+}
+
+.achievement-learning-progress>div:first-child{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:5px;
+  color:#74877c;
+  font-size:9px;
+  font-weight:800;
+}
+
+.achievement-learning-track{
+  height:7px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#e7efe9;
+}
+
+.achievement-learning-track span{
+  display:block;
+  width:0;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#259359,#76d496);
+  transition:width .25s ease;
+}
+
+.achievement-learning-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.achievement-learning-links a{
+  display:inline-flex;
+  min-height:35px;
+  align-items:center;
+  padding:0 10px;
+  border:1px solid #d6e4dc;
+  border-radius:9px;
+  background:#fafcfb;
+  color:#3a644e;
+  font-size:9px;
+  font-weight:900;
+  text-decoration:none;
+}
+
+.achievement-learning-links a:hover{
+  border-color:#69ae82;
+  background:#eef8f2;
+}
+
+.achievement-learning-reward{
+  margin-top:10px;
+  padding:8px 9px;
+  border-radius:9px;
+  background:#fff6dd;
+  color:#80631b;
+  font-size:9px;
+  font-weight:800;
+}
+
+.achievement-learning-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin-top:9px;
+}
+
+.achievement-learning-badges span{
+  padding:5px 7px;
+  border-radius:999px;
+  background:#edf3ef;
+  color:#64796d;
+  font-size:8px;
+  font-weight:800;
+}
+
+.achievement-learning-road{
+  width:min(1150px,calc(100% - 28px));
+  margin:15px auto 0;
+  padding:20px;
+  box-sizing:border-box;
+  border-radius:15px;
+  background:#103d27;
+  color:#fff;
+}
+
+.achievement-learning-road h2{
+  margin:0 0 14px;
+  text-align:center;
+  font-size:17px;
+}
+
+.achievement-road-steps{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.achievement-road-steps span{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  padding:8px 10px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:9px;
+  background:rgba(255,255,255,.07);
+  font-size:9px;
+  font-weight:800;
+}
+
+.achievement-road-steps b{
+  width:19px;
+  height:19px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#79d49a;
+  color:#113d28;
+}
+
+.achievement-road-steps i{
+  color:#75c994;
+  font-style:normal;
+}
+
+body.dark-mode .achievement-learning-page{
+  background:#0e1611;
+}
+
+body.dark-mode .achievement-learning-summary article,
+body.dark-mode .achievement-learning-card{
+  background:#151f1a;
+  border-color:#2d3d35;
+}
+
+body.dark-mode .achievement-learning-card.featured{
+  background:linear-gradient(145deg,#172b20,#151f1a);
+  border-color:#38674a;
+}
+
+body.dark-mode .achievement-learning-summary strong,
+body.dark-mode .achievement-learning-card h2{
+  color:#99ddb2;
+}
+
+body.dark-mode .achievement-learning-intro{
+  background:#172b20;
+  border-color:#31523e;
+}
+
+body.dark-mode .achievement-learning-links a{
+  background:#121b16;
+  border-color:#2d4035;
+  color:#b7cbbf;
+}
+
+body.dark-mode .achievement-learning-track{
+  background:#27372f;
+}
+
+body.dark-mode .achievement-learning-badges span{
+  background:#25352d;
+  color:#b3c7bb;
+}
+
+@media(max-width:1000px){
+  .achievement-learning-summary{
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
+@media(max-width:750px){
+  .achievement-learning-hero{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .achievement-main-link{
+    width:100%;
+    box-sizing:border-box;
+  }
+
+  .achievement-learning-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:520px){
+  .achievement-learning-summary{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .achievement-learning-card{
+    padding:14px;
+    gap:10px;
+  }
+
+  .achievement-learning-icon{
+    width:40px;
+    height:40px;
+    flex-basis:40px;
+    font-size:20px;
+  }
+
+  .achievement-learning-intro{
+    flex-direction:column;
+    gap:3px;
+  }
+}

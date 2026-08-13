@@ -2551,3 +2551,32 @@ body.dark-mode .lookup-preview-box strong{
     grid-template-columns:1fr;
   }
 }
+
+
+/* ===== SMART CLEAN FIX ===== */
+.mobile-smart-apply-btn{
+  width:100%;
+  min-height:44px;
+  margin:10px 0 0;
+  border:1px solid #217346;
+  border-radius:11px;
+  background:#217346;
+  color:#fff;
+  font:inherit;
+  font-size:11px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.mobile-smart-apply-btn:hover{
+  background:#195f39;
+}
+
+.mobile-smart-apply-btn[hidden]{
+  display:none !important;
+}
+
+body.dark-mode .mobile-smart-apply-btn{
+  border-color:#4e9d69;
+  background:#236b43;
+}
