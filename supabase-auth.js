@@ -404,6 +404,26 @@ async function loadProfileFromCloud() {
   return profile;
 }
 
+
+async function logoutUser() {
+  if (!configured || !supabase) {
+    location.href = "index.html";
+    return;
+  }
+
+  try {
+    await syncProgressToCloud();
+  } catch {}
+
+  try {
+    await supabase.auth.signOut({ scope: "local" });
+  } finally {
+    location.href = "index.html";
+  }
+}
+
+window.avpLogout = logoutUser;
+
 async function updateAuthNav() {
   const user = await getUser();
   const profile = user ? await getProfile(user) : null;
@@ -431,9 +451,13 @@ async function updateAuthNav() {
           <a href="dashboard.html">📊 Dashboard</a>
           <a href="achievements.html">🏆 Thành tích</a>
           <button type="button" class="auth-sync-now">☁️ Đồng bộ ngay</button>
-          <button type="button" class="danger auth-logout">↪ Đăng xuất</button>
         </div>
-      </div>`;
+      </div>
+      <button type="button"
+              class="auth-nav-button auth-logout-direct"
+              title="Đăng xuất khỏi tài khoản">
+        ↪ Đăng xuất
+      </button>`;
   });
 
   document.querySelectorAll(".auth-user-toggle").forEach(btn => {
@@ -454,14 +478,18 @@ async function updateAuthNav() {
     });
   });
 
-  document.querySelectorAll(".auth-logout").forEach(btn => {
+  document.querySelectorAll(".auth-logout, .auth-logout-direct").forEach(btn => {
     btn.addEventListener("click", async e => {
       e.stopPropagation();
+      btn.disabled = true;
+      const old = btn.textContent;
+      btn.textContent = "Đang đăng xuất...";
       try {
-        await syncProgressToCloud();
-      } catch {}
-      await supabase.auth.signOut({ scope: "local" });
-      location.href = "index.html";
+        await logoutUser();
+      } catch {
+        btn.disabled = false;
+        btn.textContent = old;
+      }
     });
   });
 }

@@ -257,7 +257,35 @@
 
     const loginBtn=document.getElementById("homePanelLoginBtn");
     if(loginBtn){
-      loginBtn.hidden=Boolean(user);
+      loginBtn.hidden=false;
+
+      if(user){
+        loginBtn.textContent="Đăng xuất";
+        loginBtn.href="#";
+        loginBtn.classList.add("is-logout");
+        loginBtn.onclick=async (e)=>{
+          e.preventDefault();
+          if(loginBtn.dataset.busy==="1") return;
+          loginBtn.dataset.busy="1";
+          loginBtn.textContent="Đang đăng xuất...";
+
+          if(typeof window.avpLogout==="function"){
+            await window.avpLogout();
+            return;
+          }
+
+          try{
+            await client?.auth?.signOut({scope:"local"});
+          }catch{}
+          location.href="index.html";
+        };
+      }else{
+        loginBtn.textContent="Đăng nhập / Đăng ký";
+        loginBtn.href="auth.html?redirect=index.html";
+        loginBtn.classList.remove("is-logout");
+        loginBtn.onclick=null;
+        delete loginBtn.dataset.busy;
+      }
     }
 
     avatar.innerHTML="";

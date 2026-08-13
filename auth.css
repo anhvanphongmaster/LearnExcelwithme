@@ -294,3 +294,40 @@ body.dark-mode .cloud-sync-status{
 @keyframes cloudPulse{
   50%{opacity:.35;transform:scale(.75)}
 }
+
+
+/* ===== VISIBLE LOGOUT ===== */
+.auth-logout-direct{
+  color:#b83c3c !important;
+  border-color:rgba(184,60,60,.22) !important;
+  background:rgba(184,60,60,.05) !important;
+}
+
+.auth-logout-direct:hover{
+  color:#9d2424 !important;
+  border-color:rgba(184,60,60,.38) !important;
+  background:rgba(184,60,60,.10) !important;
+}
+
+.auth-logout-direct:disabled{
+  opacity:.6;
+  cursor:wait;
+}
+
+.home-panel-login-btn.is-logout{
+  color:#ffd1d1;
+  border-color:rgba(255,131,131,.28);
+  background:rgba(180,54,54,.12);
+}
+
+.home-panel-login-btn.is-logout:hover{
+  color:#fff0f0;
+  border-color:rgba(255,139,139,.46);
+  background:rgba(180,54,54,.20);
+}
+
+@media(max-width:640px){
+  .auth-logout-direct{
+    min-height:36px;
+  }
+}
