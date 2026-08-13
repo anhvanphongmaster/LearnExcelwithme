@@ -373,6 +373,26 @@
     if($("lookupReturnColumn") && headers.length > 1 && !$("lookupReturnColumn").value){
       $("lookupReturnColumn").value="1";
     }
+
+    updateLookupPreview();
+  }
+
+
+  function updateLookupPreview(){
+    const source=$("lookupSourceColumn");
+    const sheet=$("lookupSheet");
+    const key=$("lookupKeyColumn");
+    const ret=$("lookupReturnColumn");
+    const root=$("lookupPreviewText");
+
+    if(!root) return;
+
+    const sourceText=source?.selectedOptions?.[0]?.textContent?.split(" — ")[0] || "Mã cần tìm";
+    const sheetText=sheet?.selectedOptions?.[0]?.textContent || "Sheet nguồn";
+    const keyText=key?.selectedOptions?.[0]?.textContent || "Cột mã";
+    const retText=ret?.selectedOptions?.[0]?.textContent || "Cột cần lấy";
+
+    root.textContent=`${sourceText} → ${sheetText}.${keyText} → lấy ${retText}`;
   }
 
   function populateColumns(){
@@ -387,6 +407,8 @@
 
     autoPick("ngInputColumn", /(^|\b)input(\b| qty)/i);
     autoPick("ngQtyColumn", /\bng\b|ng qty|defect qty/i);
+
+    updateLookupPreview();
   }
 
   function autoPick(id, regex){
@@ -3423,7 +3445,14 @@
     if(state.isProcessing) return;
     shareResult();
   });
-  $("lookupSheet")?.addEventListener("change",populateLookupColumns);
+  $("lookupSheet")?.addEventListener("change",()=>{
+    populateLookupColumns();
+    updateLookupPreview();
+  });
+
+  ["lookupSourceColumn","lookupKeyColumn","lookupReturnColumn"].forEach(id=>{
+    $(id)?.addEventListener("change",updateLookupPreview);
+  });
   resetBtn.addEventListener("click",reset);
 
   applyReportPresetUI("sales");

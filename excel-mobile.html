@@ -348,26 +348,66 @@
 
       <div id="toolLookup" class="tool-settings-panel">
         <h3>🔎 Tra cứu dữ liệu</h3>
-        <p class="mobile-tool-help">Tra cứu giá trị từ Sheet khác giống VLOOKUP/XLOOKUP nhưng không cần tự gõ công thức.</p>
+
+        <p class="mobile-tool-help">
+          Tra cứu dữ liệu từ Sheet khác giống VLOOKUP/XLOOKUP nhưng không cần tự viết công thức.
+        </p>
+
+        <div class="lookup-guide">
+          <strong>📌 Cách dùng nhanh</strong>
+          <div class="lookup-guide-steps">
+            <span><b>1</b> Chọn mã cần tìm</span>
+            <span><b>2</b> Chọn Sheet nguồn</span>
+            <span><b>3</b> Chọn cột chứa mã</span>
+            <span><b>4</b> Chọn cột cần lấy</span>
+          </div>
+          <p>
+            Ví dụ: Sheet hiện tại có <strong>Mã NV</strong> → Sheet nguồn có cùng
+            <strong>Mã NV</strong> → lấy về <strong>Bộ phận</strong>.
+          </p>
+        </div>
+
         <div class="mobile-setting-grid">
-          <label>Cột mã cần tra cứu
+          <label>
+            <span class="lookup-step-label"><b>1</b> Mã cần tìm ở Sheet hiện tại</span>
             <select class="mobile-column-select" id="lookupSourceColumn"></select>
+            <small class="lookup-field-help">Ví dụ: Mã NV, Mã SP, Lot No, Item Code...</small>
           </label>
-          <label>Sheet bảng tra
+
+          <label>
+            <span class="lookup-step-label"><b>2</b> Sheet nguồn để tra cứu</span>
             <select id="lookupSheet"></select>
+            <small class="lookup-field-help">Chọn Sheet đang chứa bảng dữ liệu gốc.</small>
           </label>
-          <label>Cột mã trong bảng tra
+
+          <label>
+            <span class="lookup-step-label"><b>3</b> Cột chứa mã trong Sheet nguồn</span>
             <select id="lookupKeyColumn"></select>
+            <small class="lookup-field-help">Cột này phải chứa cùng loại mã với bước 1.</small>
           </label>
-          <label>Cột muốn lấy về
+
+          <label>
+            <span class="lookup-step-label"><b>4</b> Cột cần lấy dữ liệu về</span>
             <select id="lookupReturnColumn"></select>
+            <small class="lookup-field-help">Ví dụ: Bộ phận, Tên hàng, Đơn giá, Khu vực...</small>
           </label>
-          <label>Tên cột mới
+
+          <label>
+            Tên cột kết quả mới
             <input id="lookupOutputName" type="text" value="Lookup Result">
+            <small class="lookup-field-help">Website sẽ thêm một cột mới ở cuối Sheet hiện tại.</small>
           </label>
-          <label>Khi không tìm thấy
-            <input id="lookupNotFound" type="text" value="Không tìm thấy">
+
+          <label>
+            Nếu không tìm thấy
+            <input id="lookupFallback" type="text" value="Không tìm thấy">
+            <small class="lookup-field-help">Giá trị dùng khi mã không tồn tại trong Sheet nguồn.</small>
           </label>
+        </div>
+
+        <div class="lookup-preview-box" id="lookupPreviewBox">
+          <span>🧭 Luồng tra cứu</span>
+          <strong id="lookupPreviewText">Chọn file và cột để xem luồng tra cứu.</strong>
         </div>
       </div>
 

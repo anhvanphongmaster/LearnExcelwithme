@@ -2425,3 +2425,129 @@ body.dark-mode .mobile-tool-coming-soon em{
   background:#26372e;
   color:#a9beb2;
 }
+
+
+/* ===== LOOKUP UI IMPROVED ===== */
+.lookup-guide{
+  margin:12px 0 16px;
+  padding:13px 14px;
+  border:1px solid #cfe2d6;
+  border-radius:12px;
+  background:#f4faf6;
+}
+
+.lookup-guide > strong{
+  display:block;
+  margin-bottom:9px;
+  color:#2b6846;
+  font-size:12px;
+}
+
+.lookup-guide-steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+}
+
+.lookup-guide-steps span{
+  min-height:44px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 9px;
+  box-sizing:border-box;
+  border:1px solid #dce8e1;
+  border-radius:9px;
+  background:#fff;
+  color:#5b7065;
+  font-size:10px;
+  font-weight:800;
+}
+
+.lookup-guide-steps b,
+.lookup-step-label b{
+  width:20px;
+  height:20px;
+  flex:0 0 20px;
+  display:inline-grid;
+  place-items:center;
+  border-radius:50%;
+  background:#217346;
+  color:#fff;
+  font-size:9px;
+}
+
+.lookup-guide p{
+  margin:9px 0 0;
+  color:#6e8176;
+  font-size:10px;
+  line-height:1.6;
+}
+
+.lookup-step-label{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.lookup-field-help{
+  display:block;
+  margin-top:5px;
+  color:#829187;
+  font-size:9px;
+  line-height:1.45;
+  font-weight:600;
+}
+
+.lookup-preview-box{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-top:13px;
+  padding:11px 13px;
+  border:1px dashed #a9cbb5;
+  border-radius:11px;
+  background:#fbfefc;
+}
+
+.lookup-preview-box span{
+  color:#6c8276;
+  font-size:10px;
+  font-weight:900;
+}
+
+.lookup-preview-box strong{
+  min-width:0;
+  color:#2c6947;
+  font-size:10px;
+  overflow-wrap:anywhere;
+}
+
+body.dark-mode .lookup-guide,
+body.dark-mode .lookup-preview-box{
+  background:#15231b;
+  border-color:#30463a;
+}
+
+body.dark-mode .lookup-guide-steps span{
+  background:#111a15;
+  border-color:#2a3b32;
+  color:#bfd0c6;
+}
+
+body.dark-mode .lookup-guide > strong,
+body.dark-mode .lookup-preview-box strong{
+  color:#96dbaf;
+}
+
+@media(max-width:650px){
+  .lookup-guide-steps{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(max-width:380px){
+  .lookup-guide-steps{
+    grid-template-columns:1fr;
+  }
+}
