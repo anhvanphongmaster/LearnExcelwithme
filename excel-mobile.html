@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Excel Mobile Processor | Learn Excel with Anh Van Phong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="upgrade.css">
+<link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="excel-mobile.css">
+</head>
+<body>
+
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
+    <a href="lienhe.html">📩 Liên hệ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="mobile-excel-page">
+
+  <section class="mobile-excel-hero page-header">
+    <div>
+      <span class="mobile-excel-kicker">📱 EXCEL MOBILE PROCESSOR</span>
+      <h1>Xử lý file Excel ngay trên điện thoại</h1>
+      <p>Không cần mở Excel trên Windows. Upload file, chọn thao tác cần làm, xem trước kết quả và tải file Excel đã xử lý.</p>
+    </div>
+    <div class="mobile-excel-hero-badges">
+      <span>📤 Upload .xlsx/.xls</span>
+      <span>⚙️ Xử lý trên trình duyệt</span>
+      <span>📥 Tải file kết quả</span>
+    </div>
+  </section>
+
+  <section class="mobile-excel-workspace">
+
+    <div class="mobile-excel-step">
+      <div class="mobile-step-number">1</div>
+      <div>
+        <h2>Chọn file Excel</h2>
+        <p>File được đọc trực tiếp trong trình duyệt của bạn.</p>
+      </div>
+    </div>
+
+    <label class="mobile-upload-zone" for="mobileExcelFile">
+      <input id="mobileExcelFile" type="file"
+        accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+      <span class="mobile-upload-icon">📤</span>
+      <strong>Chạm để chọn file Excel</strong>
+      <small>.xlsx hoặc .xls</small>
+    </label>
+
+
+    <div class="mobile-privacy-note">
+      <div class="mobile-privacy-icon">🔒</div>
+      <div class="mobile-privacy-copy">
+        <strong>Dữ liệu của bạn được giữ riêng tư</strong>
+        <p>
+          File Excel được xử lý trực tiếp trên trình duyệt của thiết bị.
+          Website không tải nội dung file lên máy chủ, không lưu dữ liệu trong file
+          và không sử dụng dữ liệu của bạn cho mục đích khác.
+        </p>
+      </div>
+    </div>
+
+    <div id="mobileFileInfo" class="mobile-file-info" hidden></div>
+
+    <div id="mobilePerformanceBar" class="mobile-performance-bar" hidden>
+      <div class="mobile-performance-stats">
+        <span id="perfRows">0 dòng</span>
+        <span id="perfCols">0 cột</span>
+        <span id="perfSize">0 MB</span>
+        <span id="perfMode" class="perf-mode-badge">Normal</span>
+      </div>
+      <p id="perfMessage">File đang ở chế độ xử lý tiêu chuẩn.</p>
+    </div>
+
+    <div class="mobile-sheet-row">
+      <label>
+        <span>Sheet đang xử lý</span>
+        <select id="mobileSheetSelect" disabled></select>
+      </label>
+      <button id="mobileResetBtn" class="mobile-btn ghost" type="button" disabled>↺ Làm lại từ đầu</button>
+    </div>
+
+    <div class="mobile-excel-step tool-step">
+      <div class="mobile-step-number">2</div>
+      <div>
+        <h2>Chọn công cụ xử lý</h2>
+        <p>Phiên bản đầu tiên tập trung vào các thao tác thường khó làm trên mobile.</p>
+      </div>
+    </div>
+
+    
+    <div class="mobile-tool-search-wrap">
+      <span class="mobile-tool-search-icon">🔎</span>
+      <input
+        id="mobileToolSearch"
+        class="mobile-tool-search"
+        type="search"
+        inputmode="search"
+        autocomplete="off"
+        placeholder="Tìm tính năng: IF, NG Rate, tra cứu, tách cột...">
+      <button id="mobileToolSearchClear" class="mobile-tool-search-clear" type="button" aria-label="Xóa tìm kiếm">✕</button>
+    </div>
+
+    <div class="mobile-tool-categories" id="mobileToolCategories">
+      <button type="button" class="mobile-tool-category active" data-tool-category="all">⭐ Quan trọng</button>
+      <button type="button" class="mobile-tool-category" data-tool-category="clean">🧹 Làm sạch</button>
+      <button type="button" class="mobile-tool-category" data-tool-category="analysis">📊 Phân tích</button>
+      <button type="button" class="mobile-tool-category" data-tool-category="report">📈 Báo cáo</button>
+      <button type="button" class="mobile-tool-category" data-tool-category="advanced">⚙️ Nâng cao</button>
+    </div>
+
+<div class="mobile-tools-grid">
+      <button class="mobile-tool mobile-tool-main" data-tool="dedupe" data-category="clean">
+        <span>🧹</span><strong>Xóa dòng trùng</strong><small>Giữ lại bản ghi đầu tiên</small>
+      </button>
+      <button class="mobile-tool mobile-tool-main" data-tool="trim" data-category="clean">
+        <span>✂️</span><strong>TRIM Text</strong><small>Xóa khoảng trắng thừa</small>
+      </button>
+      <button class="mobile-tool mobile-tool-main" data-tool="case" data-category="clean">
+        <span>🔠</span><strong>Đổi kiểu chữ</strong><small>UPPER / lower / Proper</small>
+      </button>
+      <button class="mobile-tool mobile-tool-main" data-tool="pad" data-category="clean">
+        <span>0️⃣</span><strong>Thêm số 0</strong><small>Ví dụ 7 → 007</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="sort" data-category="analysis">
+        <span>↕️</span><strong>Sort dữ liệu</strong><small>Tăng hoặc giảm dần</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="ngrate" data-category="analysis">
+        <span>📊</span><strong>Tính NG Rate</strong><small>NG ÷ Input tự động</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="okng" data-category="analysis">
+        <span>✅</span><strong>Tạo OK / NG</strong><small>So sánh với Spec</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="blank" data-category="clean">
+        <span>🗑️</span><strong>Xóa dòng trống</strong><small>Dọn bảng dữ liệu</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="ifbuilder" data-category="analysis">
+        <span>🧠</span><strong>IF Builder</strong><small>Tạo điều kiện không cần gõ hàm</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="lookup" data-category="analysis">
+        <span>🔎</span><strong>Tra cứu dữ liệu</strong><small>Kiểu VLOOKUP / XLOOKUP</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="split" data-category="analysis">
+        <span>✂️</span><strong>Tách cột</strong><small>Chia chuỗi theo ký tự</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="merge" data-category="analysis">
+        <span>🔗</span><strong>Gộp cột</strong><small>Ghép 2 cột thành 1</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="replace" data-category="clean">
+        <span>🔁</span><strong>Tìm & Thay thế</strong><small>Replace nhanh trong một cột</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="fillblank" data-category="clean">
+        <span>🧽</span><strong>Điền ô trống</strong><small>Điền giá trị cho ô đang rỗng</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="tonumber" data-category="clean">
+        <span>🔢</span><strong>Text → Number</strong><small>Chuẩn hóa số đang lưu dạng text</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="deletecol" data-category="clean">
+        <span>🗂️</span><strong>Xóa cột</strong><small>Bỏ cột không cần thiết</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="mergefiles" data-category="advanced">
+        <span>📚</span><strong>Gộp nhiều file</strong><small>Nối nhiều Excel thành 1 file</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="smartclean" data-category="clean">
+        <span>✨</span><strong>Smart Clean</strong><small>Tự phát hiện và sửa lỗi dữ liệu</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="autoreport" data-category="report">
+        <span>📊</span><strong>Auto Report</strong><small>Tạo báo cáo đa lĩnh vực</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="batchcols" data-category="analysis">
+        <span>☑️</span><strong>Xử lý nhiều cột</strong><small>TRIM, Number, chữ, xóa hàng loạt</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="quickpivot" data-category="analysis">
+        <span>📌</span><strong>Pivot nhanh</strong><small>Nhóm và tổng hợp dữ liệu</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="datetools" data-category="clean">
+        <span>📅</span><strong>Date Tools</strong><small>Chuẩn hóa và tách ngày tháng</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="errorcheck" data-category="clean">
+        <span>🔤</span><strong>Xử lý lỗi dữ liệu</strong><small>Tìm lỗi Excel và ô trống</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="quickchart" data-category="report">
+        <span>📈</span><strong>Biểu đồ nhanh</strong><small>Tạo dữ liệu biểu đồ trong 1 chạm</small>
+      </button>
+      <button class="mobile-tool mobile-tool-extra" data-tool="workflows" data-category="advanced">
+        <span>💾</span><strong>Quy trình xử lý</strong><small>Lưu và chạy lại workflow thường dùng</small>
+      </button>
+    
+      <div class="mobile-tool mobile-tool-extra mobile-tool-coming-soon"
+           data-category="advanced"
+           aria-disabled="true">
+        <span>🚧</span>
+        <strong>Sắp ra mắt</strong>
+        <small>Tính năng mới đang được phát triển</small>
+        <em>COMING SOON</em>
+      </div>
+
+</div>
+
+    <div class="mobile-tools-toggle-wrap">
+      <button id="mobileToolsToggle" class="mobile-tools-toggle" type="button" aria-expanded="false">
+        📚 Xem tất cả tính năng
+      </button>
+    </div>
+
+
+    <section id="mobileToolSettings" class="mobile-tool-settings">
+      <div id="toolDedupe" class="tool-settings-panel active">
+        <h3>🧹 Xóa dòng trùng</h3>
+        <p>Xóa các dòng có toàn bộ giá trị giống nhau. Hàng tiêu đề được giữ nguyên.</p>
+      </div>
+
+      <div id="toolTrim" class="tool-settings-panel">
+        <h3>✂️ TRIM Text</h3>
+        <label>Cột cần xử lý
+          <select class="mobile-column-select" id="trimColumn"></select>
+        </label>
+      </div>
+
+      <div id="toolCase" class="tool-settings-panel">
+        <h3>🔠 Đổi kiểu chữ</h3>
+        <div class="mobile-setting-grid">
+          <label>Cột
+            <select class="mobile-column-select" id="caseColumn"></select>
+          </label>
+          <label>Kiểu chữ
+            <select id="caseMode">
+              <option value="upper">UPPER CASE</option>
+              <option value="lower">lower case</option>
+              <option value="proper">Proper Case</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="toolPad" class="tool-settings-panel">
+        <h3>0️⃣ Thêm số 0 phía trước</h3>
+        <div class="mobile-setting-grid">
+          <label>Cột
+            <select class="mobile-column-select" id="padColumn"></select>
+          </label>
+          <label>Độ dài mong muốn
+            <input id="padLength" type="number" inputmode="numeric" min="1" max="30" value="3">
+          </label>
+        </div>
+      </div>
+
+      <div id="toolSort" class="tool-settings-panel">
+        <h3>↕️ Sort dữ liệu</h3>
+        <div class="mobile-setting-grid">
+          <label>Cột Sort
+            <select class="mobile-column-select" id="sortColumn"></select>
+          </label>
+          <label>Thứ tự
+            <select id="sortDirection">
+              <option value="asc">Tăng dần A → Z / nhỏ → lớn</option>
+              <option value="desc">Giảm dần Z → A / lớn → nhỏ</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="toolNgrate" class="tool-settings-panel">
+        <h3>📊 Tính NG Rate</h3>
+        <div class="mobile-setting-grid three">
+          <label>Cột Input
+            <select class="mobile-column-select" id="ngInputColumn"></select>
+          </label>
+          <label>Cột NG
+            <select class="mobile-column-select" id="ngQtyColumn"></select>
+          </label>
+          <label>Tên cột mới
+            <input id="ngRateName" type="text" value="NG Rate">
+          </label>
+        </div>
+      </div>
+
+      <div id="toolOkng" class="tool-settings-panel">
+        <h3>✅ Tạo cột OK / NG</h3>
+        <div class="mobile-setting-grid">
+          <label>Cột giá trị
+            <select class="mobile-column-select" id="okngColumn"></select>
+          </label>
+          <label>Điều kiện
+            <select id="okngOperator">
+              <option value="<=">≤ Spec → OK</option>
+              <option value=">=">≥ Spec → OK</option>
+              <option value="<">&lt; Spec → OK</option>
+              <option value=">">&gt; Spec → OK</option>
+            </select>
+          </label>
+          <label>Spec
+            <input id="okngSpec" type="number" inputmode="decimal" step="any" value="0">
+          </label>
+          <label>Tên cột mới
+            <input id="okngName" type="text" value="Result">
+          </label>
+        </div>
+      </div>
+
+      <div id="toolBlank" class="tool-settings-panel">
+        <h3>🗑️ Xóa dòng trống</h3>
+        <p>Xóa các dòng mà tất cả ô đều đang trống.</p>
+      </div>
+
+      <div id="toolIfbuilder" class="tool-settings-panel">
+        <h3>🧠 IF Builder</h3>
+        <p class="mobile-tool-help">Ví dụ: nếu NG Rate ≤ 0.01 thì PASS, ngược lại NG.</p>
+        <div class="mobile-setting-grid">
+          <label>Cột điều kiện
+            <select class="mobile-column-select" id="ifColumn"></select>
+          </label>
+          <label>Điều kiện
+            <select id="ifOperator">
+              <option value="<=">≤</option>
+              <option value=">=">≥</option>
+              <option value="<">&lt;</option>
+              <option value=">">&gt;</option>
+              <option value="==">=</option>
+              <option value="!=">≠</option>
+            </select>
+          </label>
+          <label>Giá trị so sánh
+            <input id="ifCompareValue" type="text" inputmode="decimal" value="0">
+          </label>
+          <label>Nếu đúng
+            <input id="ifTrueValue" type="text" value="PASS">
+          </label>
+          <label>Nếu sai
+            <input id="ifFalseValue" type="text" value="NG">
+          </label>
+          <label>Tên cột mới
+            <input id="ifOutputName" type="text" value="IF Result">
+          </label>
+        </div>
+      </div>
+
+      <div id="toolLookup" class="tool-settings-panel">
+        <h3>🔎 Tra cứu dữ liệu</h3>
+        <p class="mobile-tool-help">Tra cứu giá trị từ Sheet khác giống VLOOKUP/XLOOKUP nhưng không cần tự gõ công thức.</p>
+        <div class="mobile-setting-grid">
+          <label>Cột mã cần tra cứu
+            <select class="mobile-column-select" id="lookupSourceColumn"></select>
+          </label>
+          <label>Sheet bảng tra
+            <select id="lookupSheet"></select>
+          </label>
+          <label>Cột mã trong bảng tra
+            <select id="lookupKeyColumn"></select>
+          </label>
+          <label>Cột muốn lấy về
+            <select id="lookupReturnColumn"></select>
+          </label>
+          <label>Tên cột mới
+            <input id="lookupOutputName" type="text" value="Lookup Result">
+          </label>
+          <label>Khi không tìm thấy
+            <input id="lookupNotFound" type="text" value="Không tìm thấy">
+          </label>
+        </div>
+      </div>
+
+      <div id="toolSplit" class="tool-settings-panel">
+        <h3>✂️ Tách cột</h3>
+        <div class="mobile-setting-grid">
+          <label>Cột cần tách
+            <select class="mobile-column-select" id="splitColumn"></select>
+          </label>
+          <label>Ký tự phân cách
+            <input id="splitDelimiter" type="text" value="-">
+          </label>
+          <label>Tên cột 1
+            <input id="splitName1" type="text" value="Phần 1">
+          </label>
+          <label>Tên cột 2
+            <input id="splitName2" type="text" value="Phần 2">
+          </label>
+        </div>
+      </div>
+
+      <div id="toolMerge" class="tool-settings-panel">
+        <h3>🔗 Gộp cột</h3>
+        <div class="mobile-setting-grid">
+          <label>Cột thứ nhất
+            <select class="mobile-column-select" id="mergeColumn1"></select>
+          </label>
+          <label>Cột thứ hai
+            <select class="mobile-column-select" id="mergeColumn2"></select>
+          </label>
+          <label>Ký tự nối
+            <input id="mergeSeparator" type="text" value=" - ">
+          </label>
+          <label>Tên cột mới
+            <input id="mergeOutputName" type="text" value="Merged">
+          </label>
+        </div>
+      </div>
+
+      <div id="toolReplace" class="tool-settings-panel">
+        <h3>🔁 Tìm & Thay thế</h3>
+        <div class="mobile-setting-grid">
+          <label>Cột cần xử lý
+            <select class="mobile-column-select" id="replaceColumn"></select>
+          </label>
+          <label>Tìm
+            <input id="replaceFind" type="text" placeholder="Ví dụ: NG">
+          </label>
+          <label>Thay bằng
+            <input id="replaceWith" type="text" placeholder="Ví dụ: Not Good">
+          </label>
+          <label>Kiểu tìm
+            <select id="replaceMode">
+              <option value="contains">Thay trong nội dung</option>
+              <option value="exact">Chỉ ô khớp chính xác</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="toolFillblank" class="tool-settings-panel">
+        <h3>🧽 Điền ô trống</h3>
+        <div class="mobile-setting-grid">
+          <label>Cột
+            <select class="mobile-column-select" id="fillBlankColumn"></select>
+          </label>
+          <label>Giá trị cần điền
+            <input id="fillBlankValue" type="text" value="N/A">
+          </label>
+        </div>
+      </div>
+
+      <div id="toolTonumber" class="tool-settings-panel">
+        <h3>🔢 Chuyển Text → Number</h3>
+        <p class="mobile-tool-help">Hữu ích khi số bị lưu dạng text, có khoảng trắng hoặc dùng dấu phẩy thập phân.</p>
+        <label>Cột cần chuyển
+          <select class="mobile-column-select" id="toNumberColumn"></select>
+        </label>
+      </div>
+
+      <div id="toolDeletecol" class="tool-settings-panel">
+        <h3>🗂️ Xóa cột</h3>
+        <p class="mobile-tool-help">Cột bị xóa khỏi Sheet đang xử lý. Có thể dùng nút Hoàn tác nếu chọn nhầm.</p>
+        <label>Cột muốn xóa
+          <select class="mobile-column-select" id="deleteColumn"></select>
+        </label>
+      </div>
+
+      <div id="toolMergefiles" class="tool-settings-panel">
+        <h3>📚 Gộp nhiều file Excel</h3>
+        <p class="mobile-tool-help">
+          Chọn nhiều file Excel trên điện thoại. Website sẽ đọc trực tiếp trong trình duyệt và gộp thành một bảng duy nhất.
+        </p>
+
+        <label class="mobile-multifile-upload" for="mergeFilesInput">
+          <input id="mergeFilesInput" type="file" multiple
+            accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+          <span>📤</span>
+          <strong>Chọn nhiều file Excel</strong>
+          <small>Có thể chọn nhiều file cùng lúc</small>
+        </label>
+
+        <div id="mergeFilesInfo" class="mobile-merge-files-info">
+          Chưa chọn file nào.
+        </div>
+
+        <div class="mobile-setting-grid">
+          <label>Sheet cần lấy
+            <select id="mergeFilesSheetMode">
+              <option value="first">Sheet đầu tiên của mỗi file</option>
+              <option value="same">Cùng tên Sheet</option>
+            </select>
+          </label>
+
+          <label id="mergeFilesSheetNameWrap" hidden>Tên Sheet
+            <input id="mergeFilesSheetName" type="text" placeholder="Ví dụ: Sheet1">
+          </label>
+
+          <label>Kiểu gộp
+            <select id="mergeFilesMode">
+              <option value="header">Theo tên cột</option>
+              <option value="position">Theo vị trí cột</option>
+            </select>
+          </label>
+
+          <label>Tên Sheet kết quả
+            <input id="mergeFilesOutputSheet" type="text" value="Merged Data">
+          </label>
+        </div>
+
+        <div class="mobile-merge-summary" id="mergeFilesSummary" hidden></div>
+      </div>
+
+      <div id="toolSmartclean" class="tool-settings-panel">
+        <h3>✨ Smart Clean</h3>
+        <p class="mobile-tool-help">
+          Quét Sheet hiện tại và tìm các lỗi dữ liệu thường gặp. Bạn chọn mục muốn sửa, website sẽ xử lý tự động.
+        </p>
+
+        <button id="smartCleanScanBtn" class="mobile-smart-scan-btn" type="button">
+          🔍 Quét dữ liệu
+        </button>
+
+        <div id="smartCleanReport" class="mobile-smart-report" hidden>
+          <div class="smart-report-head">
+            <strong>📋 Kết quả kiểm tra</strong>
+            <span id="smartCleanIssueCount">0 vấn đề</span>
+          </div>
+
+          <label class="smart-clean-option">
+            <input id="smartFixDuplicates" type="checkbox" checked>
+            <span>
+              <strong>🧹 Dòng trùng</strong>
+              <small id="smartDuplicateCount">0 dòng</small>
+            </span>
+          </label>
+
+          <label class="smart-clean-option">
+            <input id="smartFixBlankRows" type="checkbox" checked>
+            <span>
+              <strong>🗑️ Dòng trống</strong>
+              <small id="smartBlankRowCount">0 dòng</small>
+            </span>
+          </label>
+
+          <label class="smart-clean-option">
+            <input id="smartFixSpaces" type="checkbox" checked>
+            <span>
+              <strong>✂️ Khoảng trắng thừa</strong>
+              <small id="smartSpaceCount">0 ô</small>
+            </span>
+          </label>
+
+          <label class="smart-clean-option">
+            <input id="smartFixNumberText" type="checkbox" checked>
+            <span>
+              <strong>🔢 Số đang lưu dạng Text</strong>
+              <small id="smartNumberTextCount">0 ô</small>
+            </span>
+          </label>
+
+          <label class="smart-clean-option">
+            <input id="smartFixHeaders" type="checkbox" checked>
+            <span>
+              <strong>🏷️ Tiêu đề cột trống</strong>
+              <small id="smartHeaderCount">0 cột</small>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <div id="toolAutoreport" class="tool-settings-panel">
+        <h3>📊 Auto Report Generator</h3>
+        <p class="mobile-tool-help">
+          Chọn loại báo cáo, để website tự nhận diện cột, sau đó tạo Sheet báo cáo tổng hợp ngay trong file Excel.
+        </p>
+
+        <div class="mobile-report-presets">
+          <button type="button" class="report-preset active" data-report-preset="sales">💰 Bán hàng</button>
+          <button type="button" class="report-preset" data-report-preset="qc">🏭 QC / Sản xuất</button>
+          <button type="button" class="report-preset" data-report-preset="inventory">📦 Kho</button>
+          <button type="button" class="report-preset" data-report-preset="hr">👥 Nhân sự</button>
+          <button type="button" class="report-preset" data-report-preset="custom">🧩 Tùy chỉnh</button>
+        </div>
+
+        <button id="reportAutoDetectBtn" class="mobile-report-detect" type="button">
+          ✨ Tự nhận diện cột
+        </button>
+
+        <div id="reportDetectMessage" class="mobile-report-detect-message"></div>
+
+        <div class="mobile-setting-grid report-config-grid">
+          <label id="reportDateLabel">Cột ngày / thời gian
+            <select class="mobile-column-select report-column-select" id="reportDateColumn"></select>
+          </label>
+
+          <label id="reportGroupLabel">Nhóm chính
+            <select class="mobile-column-select report-column-select" id="reportGroupColumn"></select>
+          </label>
+
+          <label id="reportValueLabel">Giá trị chính
+            <select class="mobile-column-select report-column-select" id="reportValueColumn"></select>
+          </label>
+
+          <label id="reportSecondaryLabel">Giá trị phụ
+            <select class="mobile-column-select report-column-select" id="reportSecondaryColumn"></select>
+          </label>
+
+          <label>Tên Sheet báo cáo
+            <input id="reportSheetName" type="text" value="Auto Report">
+          </label>
+
+          <label>Top nhóm hiển thị
+            <input id="reportTopN" type="number" inputmode="numeric" min="3" max="20" value="5">
+          </label>
+        </div>
+
+        <div class="mobile-report-preview" id="mobileReportPreview" hidden>
+          <div class="mobile-report-preview-head">
+            <div>
+              <span>📊 Xem trước báo cáo</span>
+              <strong id="reportPreviewTitle">Auto Report</strong>
+            </div>
+            <span id="reportPreviewRows">0 dòng</span>
+          </div>
+
+          <div class="mobile-report-kpis" id="mobileReportKpis"></div>
+          <div class="mobile-report-ranking">
+            <h4 id="reportRankingTitle">Top nhóm</h4>
+            <div id="mobileReportBars"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="toolBatchcols" class="tool-settings-panel">
+        <h3>☑️ Xử lý nhiều cột cùng lúc</h3>
+        <p class="mobile-tool-help">
+          Chọn nhiều cột rồi áp dụng cùng một thao tác. Phù hợp khi cần làm sạch file lớn trên điện thoại.
+        </p>
+
+        <div class="mobile-setting-grid">
+          <label>Thao tác
+            <select id="batchColumnAction">
+              <option value="trim">✂️ TRIM khoảng trắng</option>
+              <option value="number">🔢 Text → Number</option>
+              <option value="upper">🔠 UPPER CASE</option>
+              <option value="lower">🔡 lower case</option>
+              <option value="proper">Aa Proper Case</option>
+              <option value="delete">🗑️ Xóa các cột đã chọn</option>
+            </select>
+          </label>
+
+          <label id="batchColumnInfoLabel">Đã chọn
+            <input id="batchSelectedCount" type="text" value="0 cột" readonly>
+          </label>
+        </div>
+
+        <div class="batch-columns-toolbar">
+          <button id="batchSelectAll" type="button">☑ Chọn tất cả</button>
+          <button id="batchClearAll" type="button">☐ Bỏ chọn</button>
+        </div>
+
+        <div id="batchColumnsList" class="batch-columns-list">
+          <p class="mobile-muted">Upload file để chọn cột.</p>
+        </div>
+
+        <div class="batch-columns-warning" id="batchDeleteWarning" hidden>
+          ⚠️ Xóa nhiều cột là thao tác lớn. Bạn vẫn có thể dùng nút Hoàn tác ngay sau khi xử lý.
+        </div>
+      </div>
+
+      <div id="toolQuickpivot" class="tool-settings-panel">
+        <h3>📌 Pivot nhanh / Summary Builder</h3>
+        <p class="mobile-tool-help">
+          Tạo bảng tổng hợp giống PivotTable nhưng tối ưu cho điện thoại. Chỉ cần chọn cột và phép tính.
+        </p>
+
+        <div class="mobile-setting-grid">
+          <label>Nhóm theo
+            <select class="mobile-column-select" id="pivotGroupColumn"></select>
+          </label>
+
+          <label>Nhóm phụ (không bắt buộc)
+            <select id="pivotSecondGroupColumn">
+              <option value="-1">— Không dùng —</option>
+            </select>
+          </label>
+
+          <label>Cột giá trị
+            <select class="mobile-column-select" id="pivotValueColumn"></select>
+          </label>
+
+          <label>Phép tính
+            <select id="pivotAggregation">
+              <option value="sum">SUM — Tổng</option>
+              <option value="count">COUNT — Đếm dòng</option>
+              <option value="avg">AVERAGE — Trung bình</option>
+              <option value="min">MIN — Nhỏ nhất</option>
+              <option value="max">MAX — Lớn nhất</option>
+            </select>
+          </label>
+
+          <label>Sắp xếp
+            <select id="pivotSort">
+              <option value="desc">Giá trị lớn → nhỏ</option>
+              <option value="asc">Giá trị nhỏ → lớn</option>
+              <option value="name">Tên A → Z</option>
+            </select>
+          </label>
+
+          <label>Top hiển thị
+            <input id="pivotTopN" type="number" inputmode="numeric" min="5" max="100" value="20">
+          </label>
+
+          <label>Tên Sheet kết quả
+            <input id="pivotSheetName" type="text" value="Quick Pivot">
+          </label>
+        </div>
+
+        <div class="mobile-pivot-preview" id="mobilePivotPreview" hidden>
+          <div class="mobile-pivot-preview-head">
+            <div>
+              <span>📌 Xem trước tổng hợp</span>
+              <strong id="pivotPreviewTitle">Quick Pivot</strong>
+            </div>
+            <span id="pivotPreviewCount">0 nhóm</span>
+          </div>
+
+          <div class="mobile-pivot-kpis" id="mobilePivotKpis"></div>
+
+          <div class="mobile-pivot-table-wrap">
+            <table class="mobile-pivot-table">
+              <thead id="pivotPreviewHead"></thead>
+              <tbody id="pivotPreviewBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="toolDatetools" class="tool-settings-panel">
+        <h3>📅 Date & Time Tools</h3>
+        <p class="mobile-tool-help">Chuẩn hóa ngày tháng, tách Day/Month/Year hoặc tính chênh lệch ngày cho báo cáo thực tế.</p>
+        <div class="mobile-setting-grid">
+          <label>Chế độ
+            <select id="dateToolMode">
+              <option value="format">Chuẩn hóa ngày</option>
+              <option value="split">Tách Day / Month / Year</option>
+              <option value="diff">Tính chênh lệch ngày</option>
+            </select>
+          </label>
+          <label>Cột ngày chính
+            <select class="mobile-column-select" id="datePrimaryColumn"></select>
+          </label>
+          <label id="dateSecondColumnWrap" hidden>Cột ngày thứ hai
+            <select class="mobile-column-select" id="dateSecondaryColumn"></select>
+          </label>
+          <label>Định dạng đầu ra
+            <select id="dateOutputFormat">
+              <option value="ddmmyyyy">dd/mm/yyyy</option>
+              <option value="yyyymmdd">yyyy-mm-dd</option>
+            </select>
+          </label>
+          <label>Tên cột kết quả
+            <input id="dateOutputName" type="text" value="Date Result">
+          </label>
+        </div>
+        <div class="mobile-date-tool-note">Ví dụ dùng thường xuyên: chuẩn hóa cột Date, tách tháng để làm Pivot, hoặc tính số ngày giữa Order Date và Due Date.</div>
+      </div>
+
+      <div id="toolErrorcheck" class="tool-settings-panel">
+        <h3>🔤 Tìm & xử lý lỗi dữ liệu</h3>
+        <p class="mobile-tool-help">Quét lỗi Excel phổ biến như <strong>#N/A</strong>, <strong>#VALUE!</strong>, <strong>#DIV/0!</strong> và các ô trống.</p>
+        <button id="errorScanBtn" class="mobile-smart-scan-btn" type="button">🔍 Quét lỗi dữ liệu</button>
+        <div id="errorScanReport" class="mobile-smart-report" hidden>
+          <div class="smart-report-head">
+            <strong>📋 Kết quả kiểm tra</strong>
+            <span id="errorIssueCount">0 vấn đề</span>
+          </div>
+          <label class="smart-clean-option">
+            <input id="errorFixFormulaErrors" type="checkbox" checked>
+            <span>
+              <strong>⚠️ Lỗi công thức / giá trị</strong>
+              <small id="errorFormulaCount">0 ô</small>
+            </span>
+          </label>
+          <label class="smart-clean-option">
+            <input id="errorFixBlanks" type="checkbox">
+            <span>
+              <strong>⬜ Ô trống</strong>
+              <small id="errorBlankCount">0 ô</small>
+            </span>
+          </label>
+          <label class="smart-clean-option">
+            <input id="errorFixTextErrors" type="checkbox" checked>
+            <span>
+              <strong>🧪 Giá trị text bất thường</strong>
+              <small id="errorTextCount">0 ô</small>
+            </span>
+          </label>
+          <label>Thay bằng giá trị
+            <input id="errorReplaceValue" type="text" value="" placeholder="Để trống nếu muốn xóa lỗi">
+          </label>
+        </div>
+      </div>
+
+      <div id="toolQuickchart" class="tool-settings-panel">
+        <h3>📈 Biểu đồ nhanh</h3>
+        <p class="mobile-tool-help">Tạo dữ liệu biểu đồ từ 2 cột thường dùng và xem preview ngay trên điện thoại.</p>
+        <div class="mobile-setting-grid">
+          <label>Loại biểu đồ
+            <select id="chartType">
+              <option value="column">Column</option>
+              <option value="line">Line</option>
+              <option value="pie">Pie</option>
+              <option value="pareto">Pareto</option>
+            </select>
+          </label>
+          <label>Cột nhãn
+            <select class="mobile-column-select" id="chartLabelColumn"></select>
+          </label>
+          <label>Cột giá trị
+            <select class="mobile-column-select" id="chartValueColumn"></select>
+          </label>
+          <label>Top hiển thị
+            <input id="chartTopN" type="number" min="3" max="50" value="10">
+          </label>
+          <label>Tên Sheet biểu đồ
+            <input id="chartSheetName" type="text" value="Quick Chart">
+          </label>
+        </div>
+        <div class="mobile-chart-preview" id="mobileChartPreview" hidden>
+          <div class="mobile-chart-preview-head">
+            <div>
+              <span>📈 Xem trước biểu đồ</span>
+              <strong id="chartPreviewTitle">Quick Chart</strong>
+            </div>
+            <span id="chartPreviewMeta">0 mục</span>
+          </div>
+          <div class="mobile-chart-bars" id="mobileChartBars"></div>
+        </div>
+      </div>
+
+      <div id="toolWorkflows" class="tool-settings-panel">
+        <h3>💾 Lưu quy trình xử lý</h3>
+        <p class="mobile-tool-help">Lưu workflow thường dùng để lần sau chỉ cần upload file và chạy lại trong 1 chạm.</p>
+        <div class="mobile-setting-grid">
+          <label>Tên workflow
+            <input id="workflowName" type="text" placeholder="Ví dụ: Làm sạch bán hàng tháng">
+          </label>
+          <label>Workflow đã lưu
+            <select id="workflowSavedList">
+              <option value="">— Chưa có workflow —</option>
+            </select>
+          </label>
+        </div>
+        <div class="workflow-toolbar">
+          <button id="workflowSaveBtn" type="button">💾 Lưu workflow</button>
+          <button id="workflowRunBtn" type="button">▶️ Chạy workflow</button>
+          <button id="workflowDeleteBtn" type="button">🗑️ Xóa workflow</button>
+        </div>
+        <div class="workflow-section">
+          <strong>1) Bước xử lý thường dùng</strong>
+          <label class="smart-clean-option"><input id="wfStepSmartClean" type="checkbox" checked><span><strong>✨ Smart Clean toàn bộ</strong><small>Xóa dòng trống, trùng, TRIM, Text → Number</small></span></label>
+          <label class="smart-clean-option"><input id="wfStepDedupe" type="checkbox"><span><strong>🧹 Xóa dòng trùng</strong><small>Áp dụng thêm nếu cần</small></span></label>
+          <label class="smart-clean-option"><input id="wfStepBlank" type="checkbox"><span><strong>⬜ Xóa dòng trống</strong><small>Lọc bỏ các dòng rỗng</small></span></label>
+        </div>
+        <div class="workflow-section">
+          <strong>2) Chọn cột để xử lý nhanh</strong>
+          <label class="smart-clean-option"><input id="wfUseTrim" type="checkbox"><span><strong>✂️ TRIM cột đã chọn</strong><small>Xóa khoảng trắng thừa</small></span></label>
+          <label class="smart-clean-option"><input id="wfUseNumber" type="checkbox"><span><strong>🔢 Text → Number</strong><small>Chuyển số dạng text</small></span></label>
+          <label class="smart-clean-option"><input id="wfUseDate" type="checkbox"><span><strong>📅 Chuẩn hóa ngày</strong><small>Đưa về dd/mm/yyyy</small></span></label>
+          <div class="workflow-columns-toolbar">
+            <button id="workflowSelectAllCols" type="button">☑ Chọn tất cả</button>
+            <button id="workflowClearCols" type="button">☐ Bỏ chọn</button>
+          </div>
+          <div id="workflowColumnsList" class="batch-columns-list"><p class="mobile-muted">Upload file để chọn cột.</p></div>
+        </div>
+        <div class="mobile-date-tool-note">Workflow được lưu ở trình duyệt hiện tại bằng localStorage, không gửi dữ liệu của bạn lên máy chủ.</div>
+      </div>
+
+
+
+
+
+
+      <div class="mobile-process-actions">
+        <button id="mobileUndoBtn" class="mobile-btn undo" type="button" disabled>
+          ↩️ Hoàn tác
+        </button>
+        <button id="mobileProcessBtn" class="mobile-btn primary process" type="button" disabled>
+          ⚙️ Xử lý file
+        </button>
+      </div>
+      <div id="mobileProcessMessage" class="mobile-process-message"></div>
+      <div class="mobile-safe-hint">
+        <span>⚡ File lớn sẽ tự chuyển sang Performance Mode</span>
+        <span>↩️ Undo được tối ưu theo dung lượng file</span>
+      </div>
+    </section>
+
+    <div class="mobile-excel-step preview-step">
+      <div class="mobile-step-number">3</div>
+      <div>
+        <h2>Xem trước & chỉnh sửa dữ liệu</h2>
+        <p>Chạm vào một ô để sửa trực tiếp. Có thể tìm nhanh trong toàn bộ Sheet.</p>
+      </div>
+    </div>
+
+    <div class="mobile-data-search-wrap">
+      <span>🔎</span>
+      <input id="mobileDataSearch" type="search" autocomplete="off"
+        placeholder="Tìm trong dữ liệu: mã, lot, tên, sản phẩm...">
+      <button id="mobileDataSearchClear" type="button" aria-label="Xóa tìm kiếm">✕</button>
+    </div>
+    <div id="mobileDataSearchInfo" class="mobile-data-search-info"></div>
+
+    <div class="mobile-preview-shell">
+      <div id="mobilePreviewEmpty" class="mobile-preview-empty">
+        📄 Chưa có file. Hãy upload một file Excel để bắt đầu.
+      </div>
+      <div id="mobilePreviewScroll" class="mobile-preview-scroll" hidden>
+        <table id="mobilePreviewTable"></table>
+      </div>
+    </div>
+
+    <div class="mobile-result-grid">
+      <section class="mobile-history-card">
+        <h3>🕘 Lịch sử xử lý</h3>
+        <div id="mobileHistory">
+          <p class="mobile-muted">Chưa có thao tác nào.</p>
+        </div>
+      </section>
+
+      <section class="mobile-download-card">
+        <h3>📥 File kết quả</h3>
+        <p>Kiểm tra preview xong, tải file đã xử lý về điện thoại.</p>
+        <button id="mobileDownloadBtn" class="mobile-btn download" type="button" disabled>
+          📥 Tải Excel kết quả
+        </button>
+        <button id="mobileShareBtn" class="mobile-btn share" type="button" disabled>
+          📤 Chia sẻ file kết quả
+        </button>
+      </section>
+    </div>
+
+    <div class="mobile-warning">
+      <div class="mobile-warning-line">
+        <strong>🔐 Quyền riêng tư:</strong>
+        File được xử lý ngay trên thiết bị của bạn; website không lưu nội dung dữ liệu Excel.
+      </div>
+      <div class="mobile-warning-line">
+      <strong>ℹ️ Lưu ý phiên bản 1:</strong>
+      Công cụ tập trung xử lý dữ liệu dạng bảng. Sheet được xử lý sẽ được tạo lại từ dữ liệu nên định dạng phức tạp, biểu đồ, macro/VBA hoặc một số công thức đặc biệt trong Sheet đó có thể không được giữ nguyên. Các Sheet khác vẫn được giữ trong workbook.
+      </div>
+    </div>
+
+  </section>
+</main>
+
+
+<div id="mobileCellEditor" class="mobile-cell-editor" hidden>
+  <div class="mobile-cell-editor-backdrop" data-editor-close></div>
+  <div class="mobile-cell-editor-sheet" role="dialog" aria-modal="true" aria-labelledby="mobileCellEditorTitle">
+    <div class="mobile-cell-editor-handle"></div>
+
+    <div class="mobile-cell-editor-head">
+      <div>
+        <small id="mobileCellEditorMeta">Dòng 1 · Cột A</small>
+        <h3 id="mobileCellEditorTitle">✏️ Chỉnh sửa ô</h3>
+      </div>
+      <button id="mobileCellEditorClose" type="button" aria-label="Đóng">✕</button>
+    </div>
+
+    <label class="mobile-cell-editor-label">
+      Giá trị
+      <textarea id="mobileCellEditorInput" rows="4" placeholder="Nhập giá trị mới..."></textarea>
+    </label>
+
+    <div class="mobile-cell-editor-actions">
+      <button id="mobileCellDeleteRow" class="mobile-editor-btn danger" type="button">
+        🗑️ Xóa dòng
+      </button>
+      <button id="mobileCellCancel" class="mobile-editor-btn ghost" type="button">
+        Hủy
+      </button>
+      <button id="mobileCellSave" class="mobile-editor-btn save" type="button">
+        ✓ Lưu
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<div id="mobileProcessingOverlay" class="mobile-processing-overlay" hidden>
+  <div class="mobile-processing-card" role="status" aria-live="polite">
+    <div class="mobile-processing-spinner"></div>
+    <strong id="mobileProcessingTitle">Đang xử lý file Excel...</strong>
+    <p id="mobileProcessingText">Vui lòng giữ trang này mở.</p>
+    <div class="mobile-processing-progress">
+      <span id="mobileProcessingProgressBar"></span>
+    </div>
+  </div>
+</div>
+
+
+<div id="mobileLoginRequired" class="mobile-login-required" hidden>
+  <div class="mobile-login-required-backdrop" data-login-close></div>
+
+  <section class="mobile-login-required-card" role="dialog" aria-modal="true"
+    aria-labelledby="mobileLoginRequiredTitle">
+
+    <button id="mobileLoginRequiredClose" class="mobile-login-required-close"
+      type="button" aria-label="Đóng">✕</button>
+
+    <div class="mobile-login-required-icon">🔐</div>
+
+    <span class="mobile-login-required-kicker">TÀI KHOẢN MIỄN PHÍ</span>
+    <h3 id="mobileLoginRequiredTitle">Đăng nhập để xử lý file Excel</h3>
+
+    <p>
+      Bạn vẫn có thể upload và xem trước file mà không cần đăng nhập.
+      Đăng nhập chỉ được yêu cầu khi bạn bắt đầu xử lý dữ liệu.
+    </p>
+
+    <div class="mobile-login-privacy">
+      <span>🔒</span>
+      <div>
+        <strong>File Excel vẫn được xử lý trên thiết bị của bạn</strong>
+        <small>
+          Việc đăng nhập không có nghĩa là file Excel được tải lên tài khoản
+          hoặc máy chủ của website.
+        </small>
+      </div>
+    </div>
+
+    <a class="mobile-login-primary"
+       href="auth.html?redirect=excel-mobile.html">
+      🔐 Đăng nhập / Đăng ký
+    </a>
+
+    <button id="mobileLoginRequiredCancel" class="mobile-login-secondary" type="button">
+      Để sau
+    </button>
+  </section>
+</div>
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+
+  <div class="site-footer-legal">
+    <a href="terms.html">Điều khoản</a>
+    <a href="privacy.html">Quyền riêng tư</a>
+    <a href="disclaimer.html">Tuyên bố pháp lý</a>
+    <a href="open-source.html">Mã nguồn mở</a>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="script.js"></script>
+<script src="global-search.js"></script>
+<script src="simple-nav.js"></script>
+<script src="excel-mobile.js"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+
+<script src="analytics-tracker.js"></script>
+</body>
+</html>

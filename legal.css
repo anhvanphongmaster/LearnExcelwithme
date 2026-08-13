@@ -1,0 +1,143 @@
+
+.legal-page{
+  min-height:100vh;
+  background:#f5f9f7;
+}
+
+.legal-hero{
+  padding:48px max(20px,calc((100vw - 980px)/2));
+  background:linear-gradient(135deg,#093d26,#17683d);
+  color:#fff;
+}
+
+.legal-kicker{
+  display:inline-block;
+  margin-bottom:12px;
+  color:#9de5ba;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.8px;
+}
+
+.legal-hero h1{
+  margin:0 0 10px;
+  font-size:clamp(34px,5vw,50px);
+}
+
+.legal-hero p{
+  max-width:720px;
+  margin:0;
+  color:#d0e5d8;
+  line-height:1.7;
+}
+
+.legal-updated{
+  margin-top:16px;
+  color:#9fc7af;
+  font-size:11px;
+  font-weight:700;
+}
+
+.legal-content{
+  width:min(980px,calc(100% - 28px));
+  margin:26px auto 60px;
+}
+
+.legal-card,
+.legal-highlight{
+  margin-bottom:13px;
+  padding:20px;
+  border:1px solid #dae6df;
+  border-radius:15px;
+  background:#fff;
+}
+
+.legal-card h2{
+  margin:0 0 9px;
+  color:#1c6b40;
+  font-size:18px;
+}
+
+.legal-card p,
+.legal-highlight p{
+  margin:7px 0 0;
+  color:#596f63;
+  font-size:13px;
+  line-height:1.75;
+}
+
+.legal-highlight{
+  border-color:#b8ddc6;
+  background:#edf8f1;
+}
+
+.legal-highlight strong{
+  color:#17683d;
+  font-size:15px;
+}
+
+.legal-note{
+  font-size:11px !important;
+  color:#7b8c83 !important;
+}
+
+.site-footer-legal{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px 15px;
+  margin-top:10px;
+}
+
+.site-footer-legal a{
+  color:inherit;
+  opacity:.76;
+  font-size:11px;
+  text-decoration:none;
+}
+
+.site-footer-legal a:hover{
+  opacity:1;
+  text-decoration:underline;
+}
+
+body.dark-mode .legal-page{
+  background:#0e1611;
+}
+
+body.dark-mode .legal-card{
+  background:#151f1a;
+  border-color:#2d3d35;
+}
+
+body.dark-mode .legal-highlight{
+  background:#172b20;
+  border-color:#31523e;
+}
+
+body.dark-mode .legal-card h2,
+body.dark-mode .legal-highlight strong{
+  color:#93dbad;
+}
+
+body.dark-mode .legal-card p,
+body.dark-mode .legal-highlight p{
+  color:#a8bbb0;
+}
+
+@media(max-width:600px){
+  .legal-hero{
+    padding:40px 20px;
+  }
+
+  .legal-content{
+    width:calc(100% - 20px);
+    margin-top:18px;
+  }
+
+  .legal-card,
+  .legal-highlight{
+    padding:16px;
+    border-radius:13px;
+  }
+}

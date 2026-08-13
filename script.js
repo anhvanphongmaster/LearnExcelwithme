@@ -483,35 +483,63 @@ if (searchInput && searchSuggestions) {
 
 function danhDauDaHoc(button) {
 
-    const course = button.dataset.course;
+    if (!button) return;
 
-    let completedCourses =
-        JSON.parse(localStorage.getItem("completedCourses")) || [];
+    const course = String(button.dataset.course || "").trim();
 
-    if (completedCourses.includes(course)) {
+    const validCourses = [
+        "phim-tat",
+        "cong-thuc",
+        "pivot",
+        "pareto",
+        "filter-sort",
+        "bao-cao"
+    ];
 
-        completedCourses =
-            completedCourses.filter(item => item !== course);
+    if (!validCourses.includes(course)) {
+        console.warn("Course ID không hợp lệ:", course);
+        return;
+    }
 
-        button.classList.remove("completed");
+    let completedCourses = [];
 
-        button.textContent =
-            "✓ Đánh dấu đã học";
+    try {
+        const saved = JSON.parse(localStorage.getItem("completedCourses") || "[]");
+        completedCourses = Array.isArray(saved) ? saved : [];
+    } catch {
+        completedCourses = [];
+    }
+
+    /* Xóa dữ liệu trùng / ID rác trước khi xử lý */
+    completedCourses = [...new Set(
+        completedCourses.filter(item => validCourses.includes(item))
+    )];
+
+    const isCompleted = completedCourses.includes(course);
+
+    if (isCompleted) {
+
+        /* Chỉ xóa ĐÚNG course đang bấm */
+        completedCourses = completedCourses.filter(item => item !== course);
 
     } else {
 
+        /* Chỉ thêm ĐÚNG course đang bấm */
         completedCourses.push(course);
 
         if (window.avpRecordLearningEvent) {
-            window.avpRecordLearningEvent("course_complete", { course: course });
+            window.avpRecordLearningEvent(
+                "course_complete",
+                { course: course }
+            );
         }
-
-        button.classList.add("completed");
-
-        button.textContent =
-            "✅ Đã học";
     }
 
+    /*
+      Lưu một lần duy nhất.
+      capNhatTienDo() sẽ render lại TOÀN BỘ 6 card từ dữ liệu này,
+      tránh việc DOM của card khác bị thay đổi ngoài ý muốn.
+    */
     localStorage.setItem(
         "completedCourses",
         JSON.stringify(completedCourses)
@@ -525,8 +553,33 @@ function capNhatTienDo() {
 
     const totalCourses = 6;
 
-    const completedCourses =
-        JSON.parse(localStorage.getItem("completedCourses")) || [];
+    const validCourseIds = [
+        "phim-tat",
+        "cong-thuc",
+        "pivot",
+        "pareto",
+        "filter-sort",
+        "bao-cao"
+    ];
+
+    let completedCourses = [];
+
+    try {
+        const savedCourses =
+            JSON.parse(localStorage.getItem("completedCourses") || "[]");
+
+        completedCourses = Array.isArray(savedCourses)
+            ? [...new Set(savedCourses.filter(id => validCourseIds.includes(id)))]
+            : [];
+    } catch {
+        completedCourses = [];
+    }
+
+    /* Tự sửa dữ liệu cũ nếu từng bị trùng / lỗi */
+    localStorage.setItem(
+        "completedCourses",
+        JSON.stringify(completedCourses)
+    );
 
     const completed =
         completedCourses.length;

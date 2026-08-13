@@ -44,7 +44,6 @@ const PROGRESS_KEYS = [
 ];
 
 const ARRAY_UNION_KEYS = new Set([
-  "completedCourses",
   "avpLearningPath30",
   "avp_activity_days_v1"
 ]);
@@ -62,6 +61,14 @@ const EVENT_ARRAY_KEYS = new Set([
 const MAX_NUMBER_KEYS = new Set([
   "quizBestScore",
   "avp_bonus_xp_v1"
+]);
+
+/*
+  Những key này phải phản ánh CHÍNH XÁC trạng thái hiện tại.
+  Không được union với cloud vì người dùng có thể bỏ đánh dấu / reset.
+*/
+const EXACT_STATE_KEYS = new Set([
+  "completedCourses"
 ]);
 
 let applyingCloud = false;
@@ -149,6 +156,15 @@ function mergeProgress(localRaw = {}, cloudRaw = {}) {
 
     const l = parseMaybe(lv);
     const c = parseMaybe(cv);
+
+    if (EXACT_STATE_KEYS.has(key)) {
+      /*
+        Local là trạng thái người dùng vừa thao tác.
+        Nếu local tồn tại thì ghi đúng local lên cloud, kể cả mảng rỗng.
+      */
+      merged[key] = typeof lv === "string" ? lv : JSON.stringify(lv);
+      continue;
+    }
 
     if (ARRAY_UNION_KEYS.has(key)) {
       const value = uniqueArray(c, l);

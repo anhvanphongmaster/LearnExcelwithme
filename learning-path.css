@@ -98,3 +98,459 @@ body.dark-mode .lp-next p{color:#abc0b3;}
   .lp-hero{padding:28px 22px;}
   .lp-next{align-items:flex-start;flex-direction:column;}
 }
+
+
+/* ===== LEARNING PATH COMPLETED CARD GLOW ===== */
+.lp-day.done{
+  border:1.5px solid #42bf7a !important;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(111,235,164,.16), transparent 28%),
+    linear-gradient(145deg,#effff5 0%,#f9fffb 58%,#e9faef 100%) !important;
+  box-shadow:
+    0 10px 28px rgba(33,115,70,.12),
+    inset 0 0 0 1px rgba(108,220,155,.16) !important;
+}
+
+.lp-day.done:hover{
+  transform:translateY(-4px) !important;
+  box-shadow:
+    0 16px 36px rgba(33,115,70,.18),
+    0 0 24px rgba(92,211,142,.10),
+    inset 0 0 0 1px rgba(108,220,155,.22) !important;
+}
+
+.lp-day.done h3{
+  color:#14663a !important;
+}
+
+.lp-day.done .lp-topic{
+  color:#507263 !important;
+}
+
+.lp-day.done .lp-tag{
+  background:#daf5e5 !important;
+  color:#17683c !important;
+}
+
+.lp-day.done .lp-go{
+  background:#daf4e4 !important;
+  color:#14683b !important;
+}
+
+.lp-day.done .lp-complete{
+  background:#217346 !important;
+  color:#fff !important;
+  box-shadow:0 6px 14px rgba(33,115,70,.16) !important;
+}
+
+body.dark-mode .lp-day.done{
+  border-color:#3fbf77 !important;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(74,205,127,.15), transparent 28%),
+    linear-gradient(145deg,#11281b,#102219) !important;
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.22),
+    inset 0 0 0 1px rgba(71,184,116,.14) !important;
+}
+
+body.dark-mode .lp-day.done h3{
+  color:#84e3aa !important;
+}
+
+body.dark-mode .lp-day.done .lp-topic{
+  color:#b1cbbd !important;
+}
+
+/* ===== 30/30 CONGRATS BANNER ===== */
+.lp-congrats{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:16px;
+  margin:18px 0 0;
+  padding:18px 20px;
+  border:1px solid #73d59d;
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 8% 50%, rgba(255,255,255,.34), transparent 22%),
+    linear-gradient(135deg,#dff9e9,#bff0d2);
+  color:#155f36;
+  box-shadow:0 12px 30px rgba(33,115,70,.12);
+  opacity:0;
+  transform:translateY(-12px) scale(.985);
+  pointer-events:none;
+  transition:opacity .35s ease, transform .35s ease;
+}
+
+.lp-congrats.show{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
+
+.lp-congrats-icon{
+  font-size:34px;
+  filter:drop-shadow(0 5px 9px rgba(33,115,70,.12));
+}
+
+.lp-congrats-copy{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.lp-congrats-copy strong{
+  font-size:20px;
+  color:#105d32;
+}
+
+.lp-congrats-copy span{
+  font-size:14px;
+  line-height:1.5;
+  color:#47725b;
+}
+
+.lp-congrats-link{
+  white-space:nowrap;
+  text-decoration:none;
+  padding:11px 15px;
+  border-radius:11px;
+  background:#217346;
+  color:#fff;
+  font-weight:800;
+}
+
+body.dark-mode .lp-congrats{
+  border-color:#2f8f58;
+  background:linear-gradient(135deg,#123622,#174c2e);
+  color:#dff7e8;
+}
+
+body.dark-mode .lp-congrats-copy strong{
+  color:#91ebb4;
+}
+
+body.dark-mode .lp-congrats-copy span{
+  color:#b4d4c1;
+}
+
+@media(max-width:700px){
+  .lp-congrats{
+    grid-template-columns:auto 1fr;
+    padding:16px;
+  }
+  .lp-congrats-link{
+    grid-column:1/-1;
+    width:100%;
+    text-align:center;
+    box-sizing:border-box;
+  }
+}
+
+
+/* ===== LEARNING PATH STATE COLORS FIX ===== */
+
+/* 1. CHƯA HOÀN THÀNH - học được */
+.lp-day:not(.done):not(.locked){
+  opacity:1 !important;
+  filter:none !important;
+  background:#ffffff !important;
+  border:1px solid #dfe8e3 !important;
+  box-shadow:0 8px 22px rgba(20,70,42,.055) !important;
+}
+
+.lp-day:not(.done):not(.locked) h3{
+  color:#31594a !important;
+}
+
+.lp-day:not(.done):not(.locked) .lp-topic{
+  color:#7a8d84 !important;
+}
+
+.lp-day:not(.done):not(.locked) .lp-complete{
+  background:#6fae8c !important;
+  color:#ffffff !important;
+  opacity:1 !important;
+}
+
+.lp-day:not(.done):not(.locked) .lp-go{
+  background:#eef7f1 !important;
+  color:#42765c !important;
+  opacity:1 !important;
+}
+
+
+/* 2. ĐÃ HOÀN THÀNH - luôn sáng, kể cả trước đó có class locked */
+.lp-day.done,
+.lp-day.done.locked{
+  opacity:1 !important;
+  filter:none !important;
+  pointer-events:auto !important;
+
+  border:2px solid #39bd72 !important;
+  background:
+    radial-gradient(circle at 92% 10%, rgba(102,232,156,.22), transparent 30%),
+    linear-gradient(145deg,#e8fff1 0%,#f8fffb 54%,#ddf8e7 100%) !important;
+
+  box-shadow:
+    0 12px 30px rgba(33,115,70,.15),
+    0 0 0 1px rgba(68,193,119,.10) inset !important;
+}
+
+.lp-day.done h3,
+.lp-day.done.locked h3{
+  color:#116b3a !important;
+  opacity:1 !important;
+}
+
+.lp-day.done .lp-topic,
+.lp-day.done.locked .lp-topic{
+  color:#507766 !important;
+  opacity:1 !important;
+}
+
+.lp-day.done .lp-tag,
+.lp-day.done.locked .lp-tag{
+  background:#cef1dc !important;
+  color:#11693a !important;
+  opacity:1 !important;
+}
+
+.lp-day.done .lp-go,
+.lp-day.done.locked .lp-go{
+  background:#ccefd9 !important;
+  color:#11693a !important;
+  opacity:1 !important;
+}
+
+.lp-day.done .lp-complete,
+.lp-day.done.locked .lp-complete{
+  background:#17733f !important;
+  color:#ffffff !important;
+  opacity:1 !important;
+  box-shadow:0 7px 17px rgba(23,115,63,.20) !important;
+}
+
+.lp-day.done .lp-num,
+.lp-day.done.locked .lp-num{
+  background:#21804a !important;
+  color:#ffffff !important;
+  opacity:1 !important;
+}
+
+
+/* 3. CHƯA TỚI LƯỢT / LOCKED - phải khác hẳn */
+.lp-day.locked:not(.done){
+  opacity:.58 !important;
+  filter:grayscale(.18) saturate(.72) !important;
+  background:#f6f8f7 !important;
+  border:1px solid #e5ebe7 !important;
+  box-shadow:none !important;
+}
+
+.lp-day.locked:not(.done) h3{
+  color:#687d73 !important;
+}
+
+.lp-day.locked:not(.done) .lp-topic{
+  color:#9aa8a1 !important;
+}
+
+.lp-day.locked:not(.done) .lp-complete{
+  background:#7ea991 !important;
+  color:#ffffff !important;
+}
+
+.lp-day.locked:not(.done) .lp-go{
+  background:#eef3f0 !important;
+  color:#6f9180 !important;
+}
+
+
+/* Hover rõ hơn cho bài đã xong */
+.lp-day.done:hover,
+.lp-day.done.locked:hover{
+  transform:translateY(-4px) !important;
+  border-color:#24a95d !important;
+  box-shadow:
+    0 17px 38px rgba(33,115,70,.20),
+    0 0 28px rgba(73,205,128,.13) !important;
+}
+
+
+/* Dark mode */
+body.dark-mode .lp-day:not(.done):not(.locked){
+  background:#152019 !important;
+  border-color:#2d3d34 !important;
+}
+
+body.dark-mode .lp-day:not(.done):not(.locked) h3{
+  color:#d8e8df !important;
+}
+
+body.dark-mode .lp-day.done,
+body.dark-mode .lp-day.done.locked{
+  border-color:#42c97d !important;
+  background:
+    radial-gradient(circle at 92% 10%, rgba(73,209,129,.18), transparent 30%),
+    linear-gradient(145deg,#113322,#14291d) !important;
+}
+
+body.dark-mode .lp-day.done h3,
+body.dark-mode .lp-day.done.locked h3{
+  color:#8aebb0 !important;
+}
+
+body.dark-mode .lp-day.done .lp-topic,
+body.dark-mode .lp-day.done.locked .lp-topic{
+  color:#b8d3c2 !important;
+}
+
+body.dark-mode .lp-day.locked:not(.done){
+  background:#131a16 !important;
+  border-color:#26332c !important;
+  opacity:.50 !important;
+}
+
+
+/* Mobile: vẫn giữ tương phản rõ */
+@media(max-width:700px){
+  .lp-day.done,
+  .lp-day.done.locked{
+    border-width:2px !important;
+    box-shadow:0 8px 22px rgba(33,115,70,.14) !important;
+  }
+}
+
+
+/* ===== LEARNING PATH UNIFORM UNFINISHED CARDS ===== */
+/* Tất cả card CHƯA hoàn thành hiển thị cùng màu, kể cả card đang locked */
+.lp-day:not(.done),
+.lp-day.locked:not(.done){
+  opacity:1 !important;
+  filter:none !important;
+
+  background:#ffffff !important;
+  border:1px solid #dfe8e3 !important;
+  box-shadow:0 8px 22px rgba(20,70,42,.055) !important;
+}
+
+.lp-day:not(.done) h3,
+.lp-day.locked:not(.done) h3{
+  color:#31594a !important;
+  opacity:1 !important;
+}
+
+.lp-day:not(.done) .lp-topic,
+.lp-day.locked:not(.done) .lp-topic{
+  color:#7a8d84 !important;
+  opacity:1 !important;
+}
+
+.lp-day:not(.done) .lp-tag,
+.lp-day.locked:not(.done) .lp-tag{
+  background:#eef6f1 !important;
+  color:#688377 !important;
+  opacity:1 !important;
+}
+
+.lp-day:not(.done) .lp-num,
+.lp-day.locked:not(.done) .lp-num{
+  background:#eef7f2 !important;
+  color:#3d7b5b !important;
+  opacity:1 !important;
+}
+
+.lp-day:not(.done) .lp-go,
+.lp-day.locked:not(.done) .lp-go{
+  background:#eef7f1 !important;
+  color:#42765c !important;
+  opacity:1 !important;
+}
+
+.lp-day:not(.done) .lp-complete,
+.lp-day.locked:not(.done) .lp-complete{
+  background:#6fae8c !important;
+  color:#ffffff !important;
+  opacity:1 !important;
+  box-shadow:none !important;
+}
+
+/* Nếu card locked thì vẫn giữ hành vi khóa, chỉ bỏ hiệu ứng xám */
+.lp-day.locked:not(.done){
+  pointer-events:auto !important;
+}
+
+/* Dark mode đồng nhất */
+body.dark-mode .lp-day:not(.done),
+body.dark-mode .lp-day.locked:not(.done){
+  opacity:1 !important;
+  filter:none !important;
+  background:#152019 !important;
+  border-color:#2d3d34 !important;
+  box-shadow:0 8px 22px rgba(0,0,0,.12) !important;
+}
+
+body.dark-mode .lp-day:not(.done) h3,
+body.dark-mode .lp-day.locked:not(.done) h3{
+  color:#d8e8df !important;
+}
+
+body.dark-mode .lp-day:not(.done) .lp-topic,
+body.dark-mode .lp-day.locked:not(.done) .lp-topic{
+  color:#9fb0a7 !important;
+}
+
+body.dark-mode .lp-day:not(.done) .lp-tag,
+body.dark-mode .lp-day.locked:not(.done) .lp-tag,
+body.dark-mode .lp-day:not(.done) .lp-go,
+body.dark-mode .lp-day.locked:not(.done) .lp-go{
+  background:#203128 !important;
+  color:#b8d0c2 !important;
+}
+
+body.dark-mode .lp-day:not(.done) .lp-complete,
+body.dark-mode .lp-day.locked:not(.done) .lp-complete{
+  background:#4d8f6b !important;
+  color:#fff !important;
+}
+
+
+/* ===== LEARNING PATH UNFINISHED BUTTON COLOR FIX ===== */
+/* Chưa hoàn thành: nút "Đánh dấu hoàn thành" cùng màu với Nền tảng / Mở bài */
+.lp-day:not(.done) .lp-complete,
+.lp-day.locked:not(.done) .lp-complete{
+  background:#eef7f1 !important;
+  color:#42765c !important;
+  border:0 !important;
+  box-shadow:none !important;
+  opacity:1 !important;
+}
+
+/* Hover nhẹ nhưng vẫn giữ cùng hệ màu */
+.lp-day:not(.done) .lp-complete:hover,
+.lp-day.locked:not(.done) .lp-complete:hover{
+  background:#dff1e6 !important;
+  color:#2f6b4d !important;
+}
+
+/* ĐÃ hoàn thành: giữ nguyên màu xanh đậm hiện tại */
+.lp-day.done .lp-complete,
+.lp-day.done.locked .lp-complete{
+  background:#17733f !important;
+  color:#ffffff !important;
+  box-shadow:0 7px 17px rgba(23,115,63,.20) !important;
+}
+
+/* Dark mode */
+body.dark-mode .lp-day:not(.done) .lp-complete,
+body.dark-mode .lp-day.locked:not(.done) .lp-complete{
+  background:#203128 !important;
+  color:#b8d0c2 !important;
+}
+
+body.dark-mode .lp-day.done .lp-complete,
+body.dark-mode .lp-day.done.locked .lp-complete{
+  background:#17733f !important;
+  color:#ffffff !important;
+}

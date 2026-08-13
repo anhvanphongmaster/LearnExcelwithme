@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Analytics | Learn Excel with Anh Van Phong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <a href="excel-mobile.html">📱 Excel Mobile</a>
+    <span class="auth-nav-slot"></span>
+    <a href="privacy.html">🔒 Quyền riêng tư</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="admin-page">
+  <section class="admin-hero page-header">
+    <div>
+      <span class="admin-kicker">🔐 ADMIN ONLY</span>
+      <h1>Website Analytics</h1>
+      <p>Theo dõi lượng người dùng và mức độ sử dụng website mà không lưu nội dung file Excel.</p>
+    </div>
+
+    <div class="admin-period">
+      <label>Khoảng thời gian
+        <select id="adminPeriod">
+          <option value="7">7 ngày</option>
+          <option value="30" selected>30 ngày</option>
+          <option value="90">90 ngày</option>
+        </select>
+      </label>
+      <button id="adminRefresh" type="button">↻ Làm mới</button>
+    </div>
+  </section>
+
+  <section id="adminGate" class="admin-gate">
+    <div class="admin-loader"></div>
+    <strong>Đang kiểm tra quyền Admin...</strong>
+    <p>Trang này chỉ hiển thị dữ liệu sau khi Supabase xác nhận tài khoản Admin.</p>
+  </section>
+
+  <section id="adminDenied" class="admin-denied" hidden>
+    <div>🔒</div>
+    <h2>Không có quyền truy cập</h2>
+    <p>Hãy đăng nhập bằng tài khoản đã được đặt <code>profiles.is_admin = true</code>.</p>
+    <a href="auth.html?redirect=admin.html">Đăng nhập tài khoản Admin</a>
+  </section>
+
+  <div id="adminDashboard" hidden>
+    <section class="admin-kpi-grid">
+      <article class="admin-kpi">
+        <span>👥</span><small>Tổng tài khoản</small>
+        <strong id="kpiRegistered">—</strong>
+        <em id="kpiNewUsers">—</em>
+      </article>
+
+      <article class="admin-kpi">
+        <span>👀</span><small>Lượt xem trang</small>
+        <strong id="kpiViews">—</strong>
+        <em id="kpiTodayViews">—</em>
+      </article>
+
+      <article class="admin-kpi">
+        <span>👤</span><small>Người truy cập</small>
+        <strong id="kpiVisitors">—</strong>
+        <em id="kpiTodayVisitors">—</em>
+      </article>
+
+      <article class="admin-kpi">
+        <span>🟢</span><small>User đăng nhập hoạt động</small>
+        <strong id="kpiActiveUsers">—</strong>
+        <em id="kpiLogins">—</em>
+      </article>
+
+      <article class="admin-kpi">
+        <span>📱</span><small>Excel Mobile users</small>
+        <strong id="kpiMobileUsers">—</strong>
+        <em>Người đã mở Excel Mobile</em>
+      </article>
+
+      <article class="admin-kpi">
+        <span>⚙️</span><small>Lượt xử lý Excel</small>
+        <strong id="kpiToolRuns">—</strong>
+        <em>Không lưu nội dung file</em>
+      </article>
+    </section>
+
+    <section class="admin-panel">
+      <div class="admin-panel-head">
+        <div>
+          <span>📈 Xu hướng</span>
+          <h2>Hoạt động theo ngày</h2>
+        </div>
+        <div class="admin-legend">
+          <span>■ Page views</span>
+          <span>■ Visitors</span>
+          <span>■ Tool runs</span>
+        </div>
+      </div>
+
+      <div id="trendChart" class="admin-trend-chart">
+        <p class="admin-empty">Chưa có dữ liệu.</p>
+      </div>
+    </section>
+
+    <section class="admin-two-column">
+      <article class="admin-panel">
+        <div class="admin-panel-head">
+          <div><span>🏆 TOP</span><h2>Công cụ được dùng nhiều</h2></div>
+        </div>
+        <div id="topTools" class="admin-ranking"></div>
+      </article>
+
+      <article class="admin-panel">
+        <div class="admin-panel-head">
+          <div><span>📄 TOP</span><h2>Trang được xem nhiều</h2></div>
+        </div>
+        <div id="topPages" class="admin-ranking"></div>
+      </article>
+    </section>
+
+    <section class="admin-privacy-note">
+      <strong>🔒 Analytics tối giản dữ liệu</strong>
+      <p>Dashboard chỉ thống kê sự kiện như page view, login và tên công cụ Excel Mobile đã chạy. Tracking được thiết kế không gửi nội dung workbook, giá trị ô, tên file hay dữ liệu bên trong Excel.</p>
+    </section>
+  </div>
+
+  <div id="adminToast" class="admin-toast"></div>
+</main>
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
+  <p class="site-footer-sub">Admin Analytics Dashboard</p>
+  <div class="site-footer-legal">
+    <a href="terms.html">Điều khoản</a>
+    <a href="privacy.html">Quyền riêng tư</a>
+    <a href="disclaimer.html">Tuyên bố pháp lý</a>
+    <a href="open-source.html">Mã nguồn mở</a>
+  </div>
+</footer>
+
+<script src="simple-nav.js"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script src="analytics-tracker.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

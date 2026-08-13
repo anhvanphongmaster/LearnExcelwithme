@@ -1,6 +1,6 @@
 
 -- =========================================================
--- Learn Excecl with Anh Van Phong - Supabase setup
+-- Learn Excel with Anh Van Phong - Supabase setup
 -- Run this whole file in Supabase SQL Editor.
 -- =========================================================
 

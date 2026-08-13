@@ -10,6 +10,31 @@ const configured =
 
 const supabase = configured ? createClient(cfg.url, cfg.publishableKey) : null;
 
+function getSafeRedirect(){
+  const params=new URLSearchParams(location.search);
+  const target=params.get("redirect");
+
+  if(!target) return "index.html";
+
+  /*
+    Chỉ cho phép file HTML nội bộ, không nhận URL bên ngoài.
+  */
+  if(
+    /^[a-zA-Z0-9._-]+\.html(?:[?#].*)?$/.test(target) &&
+    !target.includes("..")
+  ){
+    return target;
+  }
+
+  return "index.html";
+}
+
+function goAfterAuth(delay=500){
+  const target=getSafeRedirect();
+  setTimeout(()=>location.href=target,delay);
+}
+
+
 function msg(id, text, ok=false){
   const el=document.getElementById(id);
   if(!el) return;
@@ -47,7 +72,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 
     msg("loginMessage","✓ Đăng nhập thành công.",true);
-    setTimeout(()=>location.href="index.html",500);
+    goAfterAuth(500);
   });
 
   document.getElementById("registerForm")?.addEventListener("submit",async e=>{
@@ -88,7 +113,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     if(data.session){
       msg("registerMessage","✓ Đăng ký thành công.",true);
-      setTimeout(()=>location.href="index.html",600);
+      goAfterAuth(600);
     }else{
       msg("registerMessage","✓ Đã tạo tài khoản. Hãy kiểm tra email để xác nhận.",true);
     }

@@ -106,16 +106,73 @@ function render(filter="all"){
   bindButtons();
 }
 
+
+function ensureCongratsBanner(){
+  let banner=document.getElementById("lpCongratsBanner");
+  if(banner) return banner;
+
+  banner=document.createElement("section");
+  banner.id="lpCongratsBanner";
+  banner.className="lp-congrats";
+  banner.setAttribute("role","status");
+  banner.setAttribute("aria-live","polite");
+  banner.innerHTML=`
+    <div class="lp-congrats-icon">🎉</div>
+    <div class="lp-congrats-copy">
+      <strong>Chúc mừng bạn đã hoàn thành!</strong>
+      <span>Bạn đã hoàn thành toàn bộ Lộ trình Excel 30 ngày. Quá tuyệt vời!</span>
+    </div>
+    <a href="achievements.html" class="lp-congrats-link">Xem thành tích →</a>
+  `;
+
+  const page=document.querySelector(".lp-page");
+  const hero=document.querySelector(".lp-hero");
+  if(page && hero){
+    hero.insertAdjacentElement("afterend",banner);
+  }
+  return banner;
+}
+
+function celebrateCompletion(){
+  const banner=ensureCongratsBanner();
+  if(!banner) return;
+
+  banner.classList.remove("show");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+  setTimeout(()=>{
+    banner.classList.add("show");
+  },420);
+}
+
 function bindButtons(){
   document.querySelectorAll(".lp-complete").forEach(btn=>{
     btn.onclick=()=>{
       const d=Number(btn.dataset.day);
       let done=getDone();
+      const beforeCount=done.length;
       const wasDone=done.includes(d);
-      if(wasDone) done=done.filter(x=>x!==d);
-      else { done.push(d); addActivity(d); }
+
+      if(wasDone){
+        done=done.filter(x=>x!==d);
+      }else{
+        done.push(d);
+        addActivity(d);
+      }
+
       setDone(done);
-      render(document.querySelector(".lp-filter.active")?.dataset.filter||"all");
+      const activeFilter=document.querySelector(".lp-filter.active")?.dataset.filter||"all";
+      render(activeFilter);
+
+      /* Chỉ chúc mừng khi người dùng vừa chuyển từ chưa đủ sang đủ 30/30 */
+      const afterCount=getDone().length;
+      if(beforeCount<30 && afterCount===30){
+        celebrateCompletion();
+      }
     };
   });
 }
@@ -132,10 +189,27 @@ function updateStats(){
   const bar=document.getElementById("lpProgressBar"); if(bar)bar.style.width=pct+"%";
   const meta=document.getElementById("lpProgressText"); if(meta)meta.textContent=`${done}/30 ngày hoàn thành`;
 
-  const next=plan.find(i=>!getDone().includes(i.d)) || plan[29];
-  const nt=document.getElementById("lpNextTitle"); if(nt)nt.textContent=`Ngày ${next.d}: ${next.t}`;
-  const nd=document.getElementById("lpNextDesc"); if(nd)nd.textContent=next.desc;
-  const na=document.getElementById("lpNextLink"); if(na)na.href=next.href;
+  const doneDays=getDone();
+  const next=plan.find(i=>!doneDays.includes(i.d));
+  const nt=document.getElementById("lpNextTitle");
+  const nd=document.getElementById("lpNextDesc");
+  const na=document.getElementById("lpNextLink");
+
+  if(done===30){
+    if(nt) nt.textContent="Bạn đã hoàn thành toàn bộ 30 ngày 🎉";
+    if(nd) nd.textContent="Hãy xem thành tích và chọn mục tiêu Excel tiếp theo của bạn.";
+    if(na){
+      na.href="achievements.html";
+      na.textContent="Xem thành tích →";
+    }
+  }else if(next){
+    if(nt) nt.textContent=`Ngày ${next.d}: ${next.t}`;
+    if(nd) nd.textContent=next.desc;
+    if(na){
+      na.href=next.href;
+      na.textContent="Học ngay →";
+    }
+  }
 }
 
 document.addEventListener("DOMContentLoaded",()=>{

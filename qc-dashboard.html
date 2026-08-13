@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QC Dashboard Generator | Learn Excecl with Anh Van Phong | Learn Excecl with Anh Van Phong</title>
+<title>QC Dashboard Generator | Learn Excel with Anh Van Phong | Learn Excel with Anh Van Phong</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="upgrade.css">
 <link rel="stylesheet" href="global-search.css">
@@ -145,12 +145,185 @@
     </div>
     <div id="qcPareto"></div>
   </section>
+
+<!-- MINI QC DASHBOARD -->
+<div class="mini-dashboard-qc-wrap">
+<section class="mini-dashboard">
+
+    <h2>📊 Mini QC Dashboard</h2>
+
+    <p>
+        Nhập dữ liệu từng Lot để tổng hợp nhanh Input, NG và NG Rate.
+    </p>
+
+    <div class="dashboard-input-grid">
+
+        <input
+            type="text"
+            id="dashLot"
+            placeholder="Lot No, ví dụ LOT-001"
+        >
+<input
+    type="text"
+    id="dashModel"
+    placeholder="Model, ví dụ FPC-A01"
+>
+
+<input
+    type="text"
+    id="dashProcess"
+    placeholder="Process, ví dụ AOI"
+>
+        <input
+            type="number"
+            id="dashInput"
+            placeholder="Input Qty"
+        >
+
+        <input
+            type="number"
+            id="dashNg"
+            placeholder="NG Qty"
+        >
+
+        <input
+            type="number"
+            id="dashTarget"
+            placeholder="Target %"
+            step="0.01"
+            value="3"
+        >
+
+        <button onclick="themLotDashboard()">
+            ➕ Thêm Lot
+        </button>
+
+    </div>
+
+
+    <div class="dashboard-kpi">
+
+        <div>
+            <span>Tổng Input</span>
+            <strong id="dashTotalInput">0</strong>
+        </div>
+
+        <div>
+            <span>Tổng NG</span>
+            <strong id="dashTotalNg">0</strong>
+        </div>
+
+        <div>
+            <span>NG Rate</span>
+            <strong id="dashNgRate">0.00%</strong>
+        </div>
+
+        <div>
+            <span>Số Lot</span>
+            <strong id="dashLotCount">0</strong>
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-table-wrap">
+
+        <table class="dashboard-table">
+
+           <thead>
+    <tr>
+        <th>Lot No</th>
+        <th>Model</th>
+        <th>Process</th>
+        <th>Input Qty</th>
+        <th>NG Qty</th>
+        <th>NG Rate</th>
+        <th>Target</th>
+        <th>Result</th>
+        <th>Xóa</th>
+    </tr>
+</thead>
+
+            <tbody id="dashboardBody"></tbody>
+<div class="dashboard-actions">
+<button
+    class="export-dashboard-btn"
+    onclick="xuatDashboardCSV()"
+>
+
+    📥 Xuất CSV
+</button>
+<div class="dashboard-filters">
+
+    <select id="filterModel" onchange="capNhatDashboard()">
+        <option value="all">Tất cả Model</option>
+    </select>
+
+    <select id="filterProcess" onchange="capNhatDashboard()">
+        <option value="all">Tất cả Process</option>
+    </select>
+
+</div>
+
+
+    <button
+        class="clear-dashboard-btn"
+        onclick="xoaToanBoDashboard()"
+    >
+        🗑️ Xóa toàn bộ dữ liệu
+    </button>
+
+</div>
+<div id="qcAlertBox" class="qc-alert-box">
+    <div class="qc-alert-icon">🔍</div>
+
+    <div>
+        <strong id="qcAlertTitle">
+            Đang phân tích dữ liệu...
+        </strong>
+
+        <p id="qcAlertText"></p>
+    </div>
+</div>
+<div class="dashboard-top-ng">
+
+    <h3>🔥 Top 3 Lot NG Rate cao nhất</h3>
+
+    <div id="topNgLots">
+        Chưa có dữ liệu.
+    </div>
+
+</div>
+        </table>
+
+    </div>
+<div class="dashboard-chart-section">
+
+    <h3>📈 NG Rate theo Lot</h3>
+
+    <div
+        id="dashboardChart"
+        class="dashboard-chart">
+    </div>
+
+</div>
+
+</section>
+</div>
+
 </main>
 
 
 <footer class="site-footer">
-  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
   <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+
+  <div class="site-footer-legal">
+    <a href="terms.html">Điều khoản</a>
+    <a href="privacy.html">Quyền riêng tư</a>
+    <a href="disclaimer.html">Tuyên bố pháp lý</a>
+    <a href="open-source.html">Mã nguồn mở</a>
+  </div>
 </footer>
 
 
@@ -162,5 +335,7 @@
     <script src="simple-nav.js"></script>
 <script src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
+
+<script src="analytics-tracker.js"></script>
 </body>
 </html>

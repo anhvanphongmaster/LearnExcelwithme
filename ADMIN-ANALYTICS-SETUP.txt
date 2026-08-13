@@ -1,0 +1,44 @@
+ADMIN ANALYTICS - CÀI ĐẶT
+
+1. Upload toàn bộ file trong ZIP lên GitHub Pages.
+
+2. Vào Supabase Dashboard → SQL Editor.
+
+3. Mở file:
+   analytics-setup.sql
+
+   Copy toàn bộ nội dung và Run.
+
+4. Đặt tài khoản của BẠN thành Admin.
+   Trong analytics-setup.sql có câu lệnh mẫu ở cuối:
+
+   update public.profiles
+   set is_admin = true
+   where id = (
+     select id from auth.users
+     where email = 'YOUR_EMAIL@example.com'
+   );
+
+   Thay YOUR_EMAIL@example.com bằng email bạn đang dùng để đăng nhập website
+   rồi Run riêng câu lệnh đó.
+
+5. Mở:
+   https://doananhtuant02.github.io/LearnExcelwithme/admin.html
+
+6. Đăng nhập bằng tài khoản Admin.
+
+DỮ LIỆU ĐƯỢC GHI NHẬN
+- page_view
+- login
+- excel_mobile_open
+- excel_tool_used
+- visitor_id ngẫu nhiên
+- user_id nếu đã đăng nhập
+- timestamp
+
+KHÔNG GHI NHẬN
+- Nội dung file Excel
+- Giá trị trong ô Excel
+- Tên file Excel
+- Workbook upload
+- Mật khẩu

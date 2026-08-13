@@ -1,0 +1,51 @@
+
+.admin-page{min-height:100vh;background:#f4f8f6}
+.admin-hero{padding:38px max(18px,calc((100vw - 1180px)/2));display:flex;justify-content:space-between;gap:24px;align-items:end;background:linear-gradient(135deg,#082f1e,#17683d);color:#fff}
+.admin-kicker{display:inline-block;margin-bottom:8px;color:#9ce3b7;font-size:10px;font-weight:900;letter-spacing:.8px}
+.admin-hero h1{margin:0 0 7px;font-size:clamp(32px,5vw,48px)}
+.admin-hero p{max-width:680px;margin:0;color:#cae1d3;line-height:1.65}
+.admin-period{display:flex;gap:8px;align-items:end}
+.admin-period label{color:#bcd6c7;font-size:10px;font-weight:800}
+.admin-period select,.admin-period button{min-height:42px;padding:0 12px;border:1px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.08);color:#fff;font:inherit;font-size:12px;font-weight:900}
+.admin-period option{color:#222}
+.admin-period button{cursor:pointer}
+.admin-gate,.admin-denied{width:min(560px,calc(100% - 28px));margin:45px auto;padding:30px;border:1px solid #dbe7df;border-radius:17px;background:#fff;text-align:center}
+.admin-loader{width:38px;height:38px;margin:0 auto 12px;border:4px solid #dce9e1;border-top-color:#217346;border-radius:50%;animation:adminSpin .8s linear infinite}
+@keyframes adminSpin{to{transform:rotate(360deg)}}
+.admin-gate strong,.admin-denied h2{color:#215e3b}
+.admin-gate p,.admin-denied p{color:#74867c;font-size:12px;line-height:1.6}
+.admin-denied>div{font-size:40px}
+.admin-denied a{display:inline-flex;min-height:43px;padding:0 15px;align-items:center;border-radius:10px;background:#217346;color:#fff;text-decoration:none;font-weight:900;font-size:12px}
+#adminDashboard{width:min(1180px,calc(100% - 28px));margin:22px auto 60px}
+.admin-kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px}
+.admin-kpi{padding:15px;border:1px solid #dce7e1;border-radius:14px;background:#fff}
+.admin-kpi>span{font-size:20px}.admin-kpi small{display:block;margin:7px 0 4px;color:#798b81;font-size:9px;font-weight:900;text-transform:uppercase}
+.admin-kpi strong{display:block;color:#1e6840;font-size:25px}.admin-kpi em{display:block;margin-top:4px;color:#8a9991;font-size:9px;font-style:normal;line-height:1.4}
+.admin-panel{padding:18px;border:1px solid #dce7e1;border-radius:15px;background:#fff;margin-bottom:14px}
+.admin-panel-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:14px}
+.admin-panel-head span{color:#7d8f84;font-size:9px;font-weight:900}.admin-panel-head h2{margin:2px 0 0;color:#295d42;font-size:16px}
+.admin-legend{display:flex;gap:10px;flex-wrap:wrap;color:#72877b;font-size:9px}
+.admin-trend-chart{height:250px;display:flex;align-items:end;gap:4px;padding:12px 4px 26px;overflow-x:auto;border-top:1px solid #edf2ef}
+.admin-day{min-width:26px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;position:relative}
+.admin-day-bars{height:190px;width:100%;display:flex;align-items:flex-end;justify-content:center;gap:2px}
+.admin-bar{width:6px;min-height:1px;border-radius:4px 4px 0 0;background:#217346}
+.admin-bar.visitors{background:#77bd91}.admin-bar.tools{background:#c4a455}
+.admin-day-label{position:absolute;bottom:-20px;color:#87978f;font-size:8px;white-space:nowrap;transform:rotate(-35deg);transform-origin:center}
+.admin-two-column{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.admin-ranking{display:flex;flex-direction:column;gap:9px}
+.admin-rank-row{display:grid;grid-template-columns:minmax(110px,1fr) 2fr auto;gap:9px;align-items:center}
+.admin-rank-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#536b5f;font-size:11px}
+.admin-rank-track{height:9px;border-radius:999px;background:#e8f0eb;overflow:hidden}
+.admin-rank-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#3da96b,#78d399)}
+.admin-rank-value{color:#52695d;font-size:10px;font-weight:900}
+.admin-privacy-note{padding:15px 17px;border:1px solid #bfe0ca;border-radius:14px;background:#eef9f2;color:#315e45}
+.admin-privacy-note p{margin:5px 0 0;color:#647b6f;font-size:11px;line-height:1.65}
+.admin-empty{margin:auto;color:#89988f;font-size:11px}
+.admin-toast{position:fixed;right:18px;bottom:18px;padding:10px 13px;border-radius:10px;background:#233d2e;color:#fff;font-size:11px;font-weight:800;opacity:0;pointer-events:none;transition:.2s}
+.admin-toast.show{opacity:1}
+body.dark-mode .admin-page{background:#0e1611}
+body.dark-mode .admin-gate,body.dark-mode .admin-denied,body.dark-mode .admin-kpi,body.dark-mode .admin-panel{background:#151f1a;border-color:#2d3d35}
+body.dark-mode .admin-kpi strong,body.dark-mode .admin-panel-head h2{color:#96dbaf}
+body.dark-mode .admin-rank-track{background:#26362e}
+@media(max-width:1000px){.admin-kpi-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.admin-hero{align-items:stretch;flex-direction:column}.admin-period{width:100%}.admin-period label{flex:1}.admin-period select{width:100%}.admin-two-column{grid-template-columns:1fr}.admin-kpi-grid{grid-template-columns:repeat(2,1fr)}}

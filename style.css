@@ -3070,3 +3070,382 @@ body.dark-mode .daily-formula-header button {
     }
 
 }
+
+/* ===== 10 PRACTICE DOWNLOADS ===== */
+.download-grid{
+  align-items:stretch;
+}
+.download-card{
+  display:flex;
+  flex-direction:column;
+}
+.download-card p{
+  flex:1;
+}
+.download-card .download-btn{
+  align-self:center;
+}
+
+
+/* ===== PRACTICE MATERIALS COLLAPSIBLE ===== */
+#tai-lieu .practice-extra{
+  display:none !important;
+}
+#tai-lieu .practice-extra.practice-visible{
+  display:flex !important;
+}
+.practice-toggle-wrap{
+  display:flex;
+  justify-content:center;
+  margin:22px 0 0;
+}
+.practice-toggle-btn{
+  border:1px solid #217346;
+  border-radius:12px;
+  background:#ffffff;
+  color:#217346;
+  padding:12px 20px;
+  font:inherit;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s ease;
+}
+.practice-toggle-btn:hover{
+  background:#217346;
+  color:#ffffff;
+  transform:translateY(-2px);
+}
+body.dark-mode .practice-toggle-btn{
+  background:#14251b;
+  border-color:#55b47c;
+  color:#85d9a7;
+}
+body.dark-mode .practice-toggle-btn:hover{
+  background:#217346;
+  color:#fff;
+}
+@media(max-width:700px){
+  .practice-toggle-btn{
+    width:100%;
+    max-width:330px;
+  }
+}
+
+
+/* ===== DAILY FORMULA + CHALLENGE SPLIT ===== */
+.daily-learning-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:20px;
+    margin:0 0 28px;
+    align-items:stretch;
+}
+
+.daily-learning-card{
+    width:100% !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:24px !important;
+    box-sizing:border-box;
+    border-radius:18px !important;
+    border:1px solid #d9e9df !important;
+    background:#ffffff !important;
+    box-shadow:0 10px 28px rgba(26,83,50,.07) !important;
+}
+
+.daily-formula{
+    background:
+        radial-gradient(circle at 100% 0%, rgba(102,220,151,.10), transparent 34%),
+        linear-gradient(145deg,#f6fcf8,#ffffff) !important;
+}
+
+.daily-challenge{
+    background:
+        radial-gradient(circle at 100% 0%, rgba(255,199,87,.11), transparent 34%),
+        linear-gradient(145deg,#fffdf7,#ffffff) !important;
+}
+
+.daily-card-head,
+.challenge-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:14px;
+    margin-bottom:16px;
+}
+
+.daily-badge,
+.challenge-badge{
+    display:inline-flex;
+    align-items:center;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.15px;
+}
+
+.daily-badge{
+    background:#def4e7;
+    color:#17663a;
+}
+
+.challenge-badge{
+    background:#fff0ca;
+    color:#8a6516;
+}
+
+.daily-learning-card h2{
+    margin:10px 0 0 !important;
+    font-size:23px !important;
+    line-height:1.25;
+}
+
+.daily-formula h2{
+    color:#1d7547 !important;
+}
+
+.daily-challenge h2{
+    color:#264c37 !important;
+}
+
+.daily-formula-description{
+    margin:0 0 15px !important;
+    color:#5f7067 !important;
+    line-height:1.65;
+    min-height:52px;
+}
+
+.daily-formula-code{
+    margin:0 0 16px !important;
+    padding:16px !important;
+    border-radius:11px !important;
+    background:#202124 !important;
+    color:#7ee2a8 !important;
+    font-family:Consolas,monospace;
+    font-size:15px !important;
+    overflow-x:auto;
+}
+
+.daily-formula-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+}
+
+.daily-formula-actions button,
+.daily-refresh-btn,
+.challenge-next-btn{
+    min-height:39px;
+    padding:0 13px;
+    border-radius:9px;
+    border:1px solid #217346;
+    font:inherit;
+    font-size:13px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.18s ease;
+}
+
+.daily-formula-actions button{
+    background:#217346;
+    color:#fff;
+}
+
+.daily-refresh-btn{
+    flex:0 0 auto;
+    background:#fff;
+    color:#217346;
+}
+
+.daily-formula-actions button:hover,
+.daily-refresh-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 7px 16px rgba(33,115,70,.13);
+}
+
+.challenge-options{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;
+    margin:4px 0 12px;
+}
+
+.challenge-option{
+    min-height:42px;
+    padding:9px 12px;
+    border:1px solid #d7e2dc !important;
+    border-radius:10px !important;
+    background:#fff !important;
+    color:#274538 !important;
+    font:inherit;
+    font-weight:700;
+    cursor:pointer;
+    text-align:left;
+}
+
+.challenge-option:hover{
+    border-color:#88b99c !important;
+    background:#f1f8f4 !important;
+}
+
+.challenge-option.correct{
+    border-color:#2b9d5c !important;
+    background:#ddf6e7 !important;
+    color:#17663a !important;
+}
+
+.challenge-option.wrong{
+    border-color:#d96a62 !important;
+    background:#fff0ef !important;
+    color:#9d3e38 !important;
+}
+
+.challenge-result{
+    min-height:44px;
+    margin:0 0 12px;
+    color:#5f7067;
+    font-size:13px;
+    line-height:1.55;
+}
+
+.challenge-next-btn{
+    background:#fff8e5;
+    border-color:#d9ad45;
+    color:#75540d;
+}
+
+.challenge-next-btn:hover{
+    background:#ffefc5;
+    transform:translateY(-1px);
+}
+
+/* Dark mode */
+body.dark-mode .daily-learning-card{
+    border-color:#2b4034 !important;
+    box-shadow:none !important;
+}
+
+body.dark-mode .daily-formula{
+    background:
+        radial-gradient(circle at 100% 0%, rgba(65,180,112,.11), transparent 34%),
+        #111d16 !important;
+}
+
+body.dark-mode .daily-challenge{
+    background:
+        radial-gradient(circle at 100% 0%, rgba(193,142,47,.10), transparent 34%),
+        #151b17 !important;
+}
+
+body.dark-mode .daily-learning-card h2{
+    color:#dff1e6 !important;
+}
+
+body.dark-mode .daily-formula-description,
+body.dark-mode .challenge-result{
+    color:#a9bbb1 !important;
+}
+
+body.dark-mode .challenge-option{
+    background:#17251d !important;
+    border-color:#31473a !important;
+    color:#dfece5 !important;
+}
+
+body.dark-mode .daily-refresh-btn{
+    background:#17251d;
+    color:#86daa7;
+    border-color:#4f9369;
+}
+
+body.dark-mode .challenge-next-btn{
+    background:#302819;
+    border-color:#795f27;
+    color:#edd18a;
+}
+
+@media(max-width:850px){
+    .daily-learning-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:560px){
+    .daily-learning-card{
+        padding:18px !important;
+    }
+
+    .daily-card-head{
+        flex-direction:column;
+    }
+
+    .daily-refresh-btn{
+        width:100%;
+    }
+
+    .challenge-options{
+        grid-template-columns:1fr;
+    }
+}
+
+
+/* ===== MINI DASHBOARD AT FORMULA FINDER BOTTOM ===== */
+.mini-dashboard-bottom-wrap{
+  width:100%;
+  margin:42px 0 16px;
+}
+
+.mini-dashboard-bottom-wrap .mini-dashboard{
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+}
+
+@media(max-width:700px){
+  .mini-dashboard-bottom-wrap{
+    margin-top:30px;
+  }
+}
+
+
+/* ===== MINI DASHBOARD INSIDE QC DASHBOARD PAGE ===== */
+.mini-dashboard-qc-wrap{
+  width:100%;
+  max-width:1180px;
+  margin:42px auto 18px;
+  padding:0 20px;
+  box-sizing:border-box;
+}
+
+.mini-dashboard-qc-wrap .mini-dashboard{
+  margin:0 !important;
+  width:100% !important;
+  max-width:none !important;
+}
+
+@media(max-width:700px){
+  .mini-dashboard-qc-wrap{
+    margin-top:30px;
+    padding:0 14px;
+  }
+}
+
+
+/* ===== GLOBAL LEGAL FOOTER ===== */
+.site-footer-legal{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px 15px;
+  margin-top:10px;
+}
+.site-footer-legal a{
+  color:inherit;
+  opacity:.76;
+  font-size:11px;
+  text-decoration:none;
+}
+.site-footer-legal a:hover{
+  opacity:1;
+  text-decoration:underline;
+}

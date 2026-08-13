@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="Hồ sơ người học Learn Excecl with Anh Van Phong: cá nhân hóa mục tiêu học Excel, avatar, tiến độ và hoạt động học tập."><title>Hồ sơ người học | Learn Excecl with Anh Van Phong | Learn Excecl with Anh Van Phong</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="upgrade.css"><link rel="stylesheet" href="profile.css"><link rel="stylesheet" href="global-search.css">    <link rel="stylesheet" href="simple-nav.css">
+<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="Hồ sơ người học Learn Excel with Anh Van Phong: cá nhân hóa mục tiêu học Excel, avatar, tiến độ và hoạt động học tập."><title>Hồ sơ người học | Learn Excel with Anh Van Phong | Learn Excel with Anh Van Phong</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="upgrade.css"><link rel="stylesheet" href="profile.css"><link rel="stylesheet" href="global-search.css">    <link rel="stylesheet" href="simple-nav.css">
     <link rel="stylesheet" href="auth.css">
 </head><body class="profile-page">
 
@@ -17,10 +17,19 @@
 
 <header class="profile-header"><div class="profile-wrap"><span class="profile-kicker">PERSONAL PROFILE</span><h1>Hồ sơ người học</h1><p>Cá nhân hóa hành trình học Excel của bạn. Tên, avatar và mục tiêu được lưu ngay trên trình duyệt này và không cần đăng nhập.</p></div></header><main class="profile-main"><div class="profile-grid"><aside class="profile-card"><div class="profile-avatar" id="profileAvatar">A</div><div class="profile-name" id="profileNameView">Người học Excel</div><div class="profile-goal" id="profileGoalView">Nâng cao kỹ năng Excel cho công việc</div><div class="profile-mini"><div><strong id="profileLevel">1</strong><span>LEVEL</span></div><div><strong id="profileXP">0</strong><span>XP</span></div><div><strong id="profileCourseCount">0/6</strong><span>CHUYÊN ĐỀ</span></div><div><strong id="profilePGCount">0/10</strong><span>PLAYGROUND</span></div></div><div class="profile-actions"><a href="dashboard.html" class="profile-secondary">Xem Dashboard</a></div></aside><section><div class="profile-panel"><h2>✏️ Thông tin cá nhân</h2><div class="profile-note">Hồ sơ này chỉ được lưu bằng <strong>localStorage</strong> trên trình duyệt hiện tại. Đây chưa phải tài khoản online hoặc hệ thống đăng nhập thật.</div><div class="profile-form"><div class="profile-field full"><label>Avatar</label><div class="avatar-picker"><button class="avatar-choice" data-avatar="initial" onclick="chooseAvatar(this)">A</button><button class="avatar-choice" data-avatar="📊" onclick="chooseAvatar(this)">📊</button><button class="avatar-choice" data-avatar="🧠" onclick="chooseAvatar(this)">🧠</button><button class="avatar-choice" data-avatar="🚀" onclick="chooseAvatar(this)">🚀</button><button class="avatar-choice" data-avatar="💼" onclick="chooseAvatar(this)">💼</button><button class="avatar-choice" data-avatar="⚡" onclick="chooseAvatar(this)">⚡</button></div></div><div class="profile-field"><label>Tên hiển thị</label><input id="profileName" maxlength="40" placeholder="Ví dụ: Tuấn"></div><div class="profile-field"><label>Hướng học chính</label><select id="profileFocus"><option>Excel thực tế</option><option>Công thức Excel</option><option>Pivot & Dashboard</option><option>Excel cho QC</option><option>Phân tích dữ liệu</option></select></div><div class="profile-field full"><label>Mục tiêu học</label><input id="profileGoal" maxlength="120" placeholder="Ví dụ: Thành thạo Excel cho công việc QC"></div><div class="profile-field full"><label>Ghi chú cá nhân</label><textarea id="profileNote" placeholder="Ghi lại điều bạn muốn tập trung trong thời gian tới..."></textarea></div></div><div class="profile-actions"><button class="profile-save" onclick="saveProfile()">💾 Lưu hồ sơ</button><a href="playground.html" class="profile-secondary">🧪 Tiếp tục thực hành</a></div></div><div class="profile-panel"><h2>⚡ Hoạt động gần đây</h2><div class="profile-activity" id="profileActivity"></div></div></section></div></main>
 <footer class="site-footer">
-  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
   <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+
+  <div class="site-footer-legal">
+    <a href="terms.html">Điều khoản</a>
+    <a href="privacy.html">Quyền riêng tư</a>
+    <a href="disclaimer.html">Tuyên bố pháp lý</a>
+    <a href="open-source.html">Mã nguồn mở</a>
+  </div>
 </footer>
 <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button><div class="profile-toast" id="profileToast"></div><script src="script.js"></script><script src="profile.js"></script><script src="gamification.js"></script><script src="global-search.js"></script>    <script src="simple-nav.js"></script>
 <script src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
+
+<script src="analytics-tracker.js"></script>
 </body></html>

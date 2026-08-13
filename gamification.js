@@ -11,7 +11,7 @@
   function eventsToday(){return read(EVENT_KEY,[]).filter(e=>e.date===today())}
   function count(type){return eventsToday().filter(e=>e.type===type).length}
   function quests(){return [
-    {id:'visit',icon:'🌱',title:'Khởi động ngày mới',desc:'Mở Learn Excecl with Anh Van Phong hôm nay.',target:1,value:count('visit'),reward:5},
+    {id:'visit',icon:'🌱',title:'Khởi động ngày mới',desc:'Mở Learn Excel with Anh Van Phong hôm nay.',target:1,value:count('visit'),reward:5},
     {id:'playground',icon:'🧪',title:'Luyện công thức',desc:'Hoàn thành 1 bài Playground mới.',target:1,value:count('playground_complete'),reward:15},
     {id:'course',icon:'📚',title:'Tiến thêm một chuyên đề',desc:'Đánh dấu hoàn thành 1 chuyên đề Excel.',target:1,value:count('course_complete'),reward:20},
     {id:'quiz',icon:'🎯',title:'Kiểm tra kiến thức',desc:'Nộp ít nhất 1 lượt Quiz.',target:1,value:count('quiz_attempt'),reward:10}

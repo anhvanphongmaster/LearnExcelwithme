@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Tìm công thức Excel | Learn Excecl with Anh Van Phong | Learn Excecl with Anh Van Phong</title>
+    <title>Tìm công thức Excel | Learn Excel with Anh Van Phong | Learn Excel with Anh Van Phong</title>
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="upgrade.css">
@@ -38,74 +38,82 @@
 <main class="formula-finder-page">
 
     <section class="formula-finder-box">
-<section class="daily-formula">
 
-    <div class="daily-formula-header">
-        <div>
-            <span class="daily-badge">✨ MỖI NGÀY 1 CÔNG THỨC</span>
-            <h2 id="dailyFormulaName">Đang tải...</h2>
-        </div>
-        
-<section class="daily-challenge">
+    <div class="daily-learning-grid">
 
-    <div class="challenge-header">
+        <!-- MỖI NGÀY 1 CÔNG THỨC -->
+        <section class="daily-formula daily-learning-card">
+            <div class="daily-card-head">
+                <div>
+                    <span class="daily-badge">✨ MỖI NGÀY 1 CÔNG THỨC</span>
+                    <h2 id="dailyFormulaName">Đang tải...</h2>
+                </div>
 
-       
+                <button
+                    type="button"
+                    class="daily-refresh-btn"
+                    onclick="doiCongThucHomNay()">
+                    🔄 Đổi công thức
+                </button>
+            </div>
 
-    <div
-        id="challengeOptions"
-        class="challenge-options">
+            <p
+                id="dailyFormulaDescription"
+                class="daily-formula-description">
+            </p>
+
+            <div
+                id="dailyFormulaCode"
+                class="daily-formula-code">
+            </div>
+
+            <div class="daily-formula-actions">
+                <button onclick="copyDailyFormula()">
+                    📋 Sao chép
+                </button>
+
+                <button onclick="moCongThucTrongFinder()">
+                    🔍 Tìm hiểu công thức
+                </button>
+            </div>
+        </section>
+
+
+        <!-- EXCEL CHALLENGE -->
+        <section class="daily-challenge daily-learning-card">
+            <div class="challenge-header">
+                <div>
+                    <span class="challenge-badge">
+                        🎯 EXCEL CHALLENGE
+                    </span>
+
+                    <h2 id="challengeQuestion">
+                        Đang tải câu hỏi...
+                    </h2>
+                </div>
+            </div>
+
+            <div
+                id="challengeOptions"
+                class="challenge-options">
+            </div>
+
+            <div
+                id="challengeResult"
+                class="challenge-result">
+            </div>
+
+            <button
+                type="button"
+                class="challenge-next-btn"
+                onclick="taoChallengeMoi()">
+                🔄 Câu khác
+            </button>
+        </section>
+
     </div>
 
-    <div
-        id="challengeResult"
-        class="challenge-result">
-    </div>
- <div>
-            <span class="challenge-badge">
-                🎯 EXCEL CHALLENGE
-            </span>
-
-            <h2 id="challengeQuestion">
-                Đang tải câu hỏi...
-            </h2>
-        </div>
-
-        <button onclick="taoChallengeMoi()">
-            🔄 Câu khác
-        </button>
-
-    </div>
-</section>
-      
-    </div>
-    
-
-    <p id="dailyFormulaDescription"></p>
-
-    <div
-        id="dailyFormulaCode"
-        class="daily-formula-code">
-    </div>
-
-    <div class="daily-formula-actions">
-
-        <button onclick="copyDailyFormula()">
-            📋 Sao chép
-        </button>
-
-        <button onclick="moCongThucTrongFinder()">
-            🔍 Tìm hiểu công thức
-        </button>
-          <button onclick="doiCongThucHomNay()">
-            🔄 Công thức khác
-        </button>
-
-    </div>
-    
-
-</section>
-        <h1>
+<h1>
             🧠 Excel Formula Finder
         </h1>
 
@@ -386,169 +394,13 @@
     <div id="testerResult"></div>
 
 </section>
-<section class="mini-dashboard">
 
-    <h2>📊 Mini QC Dashboard</h2>
-
-    <p>
-        Nhập dữ liệu từng Lot để tổng hợp nhanh Input, NG và NG Rate.
-    </p>
-
-    <div class="dashboard-input-grid">
-
-        <input
-            type="text"
-            id="dashLot"
-            placeholder="Lot No, ví dụ LOT-001"
-        >
-<input
-    type="text"
-    id="dashModel"
-    placeholder="Model, ví dụ FPC-A01"
->
-
-<input
-    type="text"
-    id="dashProcess"
-    placeholder="Process, ví dụ AOI"
->
-        <input
-            type="number"
-            id="dashInput"
-            placeholder="Input Qty"
-        >
-
-        <input
-            type="number"
-            id="dashNg"
-            placeholder="NG Qty"
-        >
-
-        <input
-            type="number"
-            id="dashTarget"
-            placeholder="Target %"
-            step="0.01"
-            value="3"
-        >
-
-        <button onclick="themLotDashboard()">
-            ➕ Thêm Lot
-        </button>
-
-    </div>
-
-
-    <div class="dashboard-kpi">
-
-        <div>
-            <span>Tổng Input</span>
-            <strong id="dashTotalInput">0</strong>
-        </div>
-
-        <div>
-            <span>Tổng NG</span>
-            <strong id="dashTotalNg">0</strong>
-        </div>
-
-        <div>
-            <span>NG Rate</span>
-            <strong id="dashNgRate">0.00%</strong>
-        </div>
-
-        <div>
-            <span>Số Lot</span>
-            <strong id="dashLotCount">0</strong>
-        </div>
-
-    </div>
-
-
-    <div class="dashboard-table-wrap">
-
-        <table class="dashboard-table">
-
-           <thead>
-    <tr>
-        <th>Lot No</th>
-        <th>Model</th>
-        <th>Process</th>
-        <th>Input Qty</th>
-        <th>NG Qty</th>
-        <th>NG Rate</th>
-        <th>Target</th>
-        <th>Result</th>
-        <th>Xóa</th>
-    </tr>
-</thead>
-
-            <tbody id="dashboardBody"></tbody>
-<div class="dashboard-actions">
-<button
-    class="export-dashboard-btn"
-    onclick="xuatDashboardCSV()"
->
-
-    📥 Xuất CSV
-</button>
-<div class="dashboard-filters">
-
-    <select id="filterModel" onchange="capNhatDashboard()">
-        <option value="all">Tất cả Model</option>
-    </select>
-
-    <select id="filterProcess" onchange="capNhatDashboard()">
-        <option value="all">Tất cả Process</option>
-    </select>
-
-</div>
-
-
-    <button
-        class="clear-dashboard-btn"
-        onclick="xoaToanBoDashboard()"
-    >
-        🗑️ Xóa toàn bộ dữ liệu
-    </button>
-
-</div>
-<div id="qcAlertBox" class="qc-alert-box">
-    <div class="qc-alert-icon">🔍</div>
-
-    <div>
-        <strong id="qcAlertTitle">
-            Đang phân tích dữ liệu...
-        </strong>
-
-        <p id="qcAlertText"></p>
-    </div>
-</div>
-<div class="dashboard-top-ng">
-
-    <h3>🔥 Top 3 Lot NG Rate cao nhất</h3>
-
-    <div id="topNgLots">
-        Chưa có dữ liệu.
-    </div>
-
-</div>
-        </table>
-
-    </div>
-<div class="dashboard-chart-section">
-
-    <h3>📈 NG Rate theo Lot</h3>
-
-    <div
-        id="dashboardChart"
-        class="dashboard-chart">
-    </div>
-
-</div>
-
-</section>
     </section>
     </section>
+
+
+
+
 
 </main>
 
@@ -559,10 +411,19 @@
     <script src="simple-nav.js"></script>
 
 <footer class="site-footer">
-  <p class="site-footer-brand">© 2026 - Learn Excecl with Anh Van Phong</p>
+  <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
   <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+
+  <div class="site-footer-legal">
+    <a href="terms.html">Điều khoản</a>
+    <a href="privacy.html">Quyền riêng tư</a>
+    <a href="disclaimer.html">Tuyên bố pháp lý</a>
+    <a href="open-source.html">Mã nguồn mở</a>
+  </div>
 </footer>
 <script src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
+
+<script src="analytics-tracker.js"></script>
 </body>
 </html>
