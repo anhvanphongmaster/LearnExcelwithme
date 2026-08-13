@@ -733,3 +733,151 @@ button.website-feature-link{
 body.dark-mode .website-features-intro{
   color:#a6b5ad;
 }
+
+
+/* ===== MOBILE NAV REAL FIX ===== */
+@media (max-width: 900px){
+  .top-simple-nav{
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1400 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+    overflow: visible !important;
+  }
+
+  .top-simple-links{
+    display: none !important;
+    position: absolute !important;
+    top: calc(100% + 10px) !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    border-radius: 18px !important;
+    border: 1px solid #dbe6e0 !important;
+    background: rgba(255,255,255,.98) !important;
+    box-shadow: 0 18px 40px rgba(12,49,30,.14) !important;
+    backdrop-filter: blur(14px) !important;
+  }
+
+  body.dark-mode .top-simple-links{
+    border-color: #244434 !important;
+    background: rgba(10,33,23,.98) !important;
+    box-shadow: 0 18px 40px rgba(0,0,0,.34) !important;
+  }
+
+  .top-simple-nav.open .top-simple-links{
+    display: flex !important;
+  }
+
+  .top-simple-nav .top-simple-links a,
+  .top-simple-nav .top-simple-links .top-search-button,
+  .top-simple-nav .top-simple-links .top-theme-button,
+  .top-simple-nav .top-simple-links .auth-nav-button{
+    width: 100% !important;
+    min-height: 50px !important;
+    height: 50px !important;
+    padding: 0 16px !important;
+    justify-content: flex-start !important;
+    border-radius: 14px !important;
+    border: 1px solid #e3ebe6 !important;
+    background: #ffffff !important;
+    color: #173f2a !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    box-sizing: border-box !important;
+  }
+
+  body.dark-mode .top-simple-nav .top-simple-links a,
+  body.dark-mode .top-simple-nav .top-simple-links .top-search-button,
+  body.dark-mode .top-simple-nav .top-simple-links .top-theme-button,
+  body.dark-mode .top-simple-nav .top-simple-links .auth-nav-button{
+    border-color: #264535 !important;
+    background: #112419 !important;
+    color: #e9f5ee !important;
+  }
+
+  .top-simple-nav .top-simple-links a:hover,
+  .top-simple-nav .top-simple-links .top-search-button:hover,
+  .top-simple-nav .top-simple-links .top-theme-button:hover,
+  .top-simple-nav .top-simple-links .auth-nav-button:hover{
+    background: #eef6f1 !important;
+    color: #0f6036 !important;
+  }
+
+  body.dark-mode .top-simple-nav .top-simple-links a:hover,
+  body.dark-mode .top-simple-nav .top-simple-links .top-search-button:hover,
+  body.dark-mode .top-simple-nav .top-simple-links .top-theme-button:hover,
+  body.dark-mode .top-simple-nav .top-simple-links .auth-nav-button:hover{
+    background: #163126 !important;
+    color: #87ddaa !important;
+  }
+
+  .top-simple-nav .top-theme-button{
+    text-align: left !important;
+  }
+
+  .top-mobile-toggle{
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    height: 48px !important;
+    padding: 0 !important;
+    border-radius: 14px !important;
+    border: 1px solid #217346 !important;
+    background: #217346 !important;
+    color: #ffffff !important;
+    font-size: 26px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    box-shadow: 0 8px 22px rgba(33,115,70,.22) !important;
+  }
+
+  .top-mobile-toggle:hover{
+    background: #1b623c !important;
+    border-color: #1b623c !important;
+  }
+
+  body.dark-mode .top-mobile-toggle{
+    background: #2a8a54 !important;
+    border-color: #2a8a54 !important;
+    color: #ffffff !important;
+  }
+
+  .top-mobile-toggle:focus-visible{
+    outline: 3px solid rgba(33,115,70,.18) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* giảm cảm giác lệch khi menu mở */
+  .top-simple-nav.open{
+    margin-bottom: 6px !important;
+  }
+}
+
+/* Mobile hero spacing fix */
+@media (max-width: 700px){
+  .avp-hero{
+    padding-top: 28px !important;
+  }
+  .avp-title{
+    font-size: clamp(42px, 12vw, 64px) !important;
+    line-height: 1.04 !important;
+  }
+  .avp-lead{
+    font-size: 17px !important;
+    line-height: 1.75 !important;
+  }
+}
