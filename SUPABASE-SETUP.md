@@ -53,3 +53,13 @@ Bản này tự đồng bộ các dữ liệu sau theo tài khoản:
 - Hồ sơ cá nhân
 
 Dữ liệu QC Dashboard, theme và lịch sử tìm kiếm không được đồng bộ lên tài khoản.
+
+
+## URL xác nhận email cho GitHub Pages
+
+Trong Supabase Dashboard > Authentication > URL Configuration, đặt:
+
+- Site URL: `https://doananhtuant02.github.io/LearnExcelwithme/`
+- Redirect URLs: thêm `https://doananhtuant02.github.io/LearnExcelwithme/**`
+
+Trang đăng ký trong bản này cũng đã đặt `emailRedirectTo` về URL chính thức trên.

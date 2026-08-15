@@ -1724,41 +1724,7 @@ function renderShortcuts(shortcuts) {
 }
 
 
-/* ===== TÌM KIẾM PHÍM TẮT ===== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const search =
-        document.getElementById("shortcutSearch");
-
-    if (!search) return;
-
-    renderShortcuts(excelShortcuts);
-
-    search.addEventListener("input", function () {
-
-    capNhatDanhSachPhimTat();
-
-});
-
-        const keyword =
-            this.value.toLowerCase().trim();
-
-        const results =
-            excelShortcuts.filter(function(item) {
-
-                return (
-                    item[0].toLowerCase().includes(keyword) ||
-                    item[1].toLowerCase().includes(keyword) ||
-                    item[2].toLowerCase().includes(keyword)
-                );
-
-            });
-
-        renderShortcuts(results);
-
-    });
-
+/* ===== TÌM KIẾM / LỌC PHÍM TẮT ===== */
 
 let shortcutCategory = "Tất cả";
 
@@ -1782,31 +1748,46 @@ function locPhimTat(category, button) {
 
 function capNhatDanhSachPhimTat() {
 
-    const search =
-        document.getElementById("shortcutSearch");
+    const search = document.getElementById("shortcutSearch");
 
-    const keyword =
-        search
-            ? search.value.toLowerCase().trim()
-            : "";
+    const keyword = search
+        ? search.value.toLowerCase().trim()
+        : "";
 
-    const results =
-        excelShortcuts.filter(function(item) {
+    const results = excelShortcuts.filter(function(item) {
 
-            const matchSearch =
-                item[0].toLowerCase().includes(keyword) ||
-                item[1].toLowerCase().includes(keyword) ||
-                item[2].toLowerCase().includes(keyword);
+        const matchSearch =
+            item[0].toLowerCase().includes(keyword) ||
+            item[1].toLowerCase().includes(keyword) ||
+            item[2].toLowerCase().includes(keyword);
 
-            const matchCategory =
-                shortcutCategory === "Tất cả" ||
-                item[2] === shortcutCategory;
+        const matchCategory =
+            shortcutCategory === "Tất cả" ||
+            item[2] === shortcutCategory;
 
-            return matchSearch && matchCategory;
-        });
+        return matchSearch && matchCategory;
+    });
 
     renderShortcuts(results);
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const container = document.getElementById("shortcutContainer");
+    if (!container) return;
+
+    // Render ngay khi trang mở. Điều này tránh màn hình trắng trên mobile
+    // ngay cả khi ô tìm kiếm hoặc animation chưa sẵn sàng.
+    renderShortcuts(excelShortcuts);
+
+    const search = document.getElementById("shortcutSearch");
+    if (search) {
+        search.addEventListener("input", capNhatDanhSachPhimTat);
+    }
+});
+
+
 /* ===== HIGHLIGHT MENU THEO TRANG HIỆN TẠI ===== */
 
 document.addEventListener("DOMContentLoaded", function () {

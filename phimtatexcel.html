@@ -199,7 +199,28 @@
 
         /* MOBILE */
 
+        /* Mobile safety: không để hiệu ứng reveal làm toàn bộ danh sách bị trắng. */
+        .shortcut-section.avp-reveal {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
         @media (max-width: 700px) {
+
+            .shortcut-section {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                transform: none !important;
+                width: 100%;
+            }
+
+            #shortcutContainer {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
 
             header h1 {
                 font-size: 30px;
@@ -349,15 +370,6 @@
 
 </div>
     <div id="shortcutContainer"></div>
-
-
-
-
-                </tbody>
-
-            </table>
-
-        </div>
 
 
         <!-- BACK -->

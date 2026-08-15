@@ -35,6 +35,29 @@ function goAfterAuth(delay=500){
 }
 
 
+function friendlyAuthError(error){
+  const raw=(error?.message || String(error || "")).trim();
+  const text=raw.toLowerCase();
+
+  if(text.includes("email rate limit exceeded")){
+    return "Bạn đã gửi quá nhiều yêu cầu xác nhận email. Vui lòng đợi một lúc rồi thử lại hoặc kiểm tra hộp thư xem email xác nhận đã được gửi trước đó chưa.";
+  }
+  if(text.includes("invalid login credentials")){
+    return "Email hoặc mật khẩu chưa đúng. Vui lòng kiểm tra lại.";
+  }
+  if(text.includes("email not confirmed")){
+    return "Email của bạn chưa được xác nhận. Hãy kiểm tra hộp thư và bấm liên kết xác nhận trước khi đăng nhập.";
+  }
+  if(text.includes("user already registered")){
+    return "Email này đã được đăng ký. Bạn có thể chuyển sang tab Đăng nhập.";
+  }
+  if(text.includes("signup is disabled")){
+    return "Chức năng đăng ký hiện đang tạm khóa. Vui lòng thử lại sau.";
+  }
+
+  return "Có lỗi xảy ra khi xử lý tài khoản. Vui lòng thử lại sau.";
+}
+
 function msg(id, text, ok=false){
   const el=document.getElementById(id);
   if(!el) return;
@@ -67,7 +90,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     const { error }=await supabase.auth.signInWithPassword({email,password});
 
     if(error){
-      msg("loginMessage",error.message);
+      msg("loginMessage",friendlyAuthError(error));
       return;
     }
 
@@ -102,12 +125,14 @@ document.addEventListener("DOMContentLoaded",()=>{
       email,
       password,
       options:{
-        data:{display_name:name}
+        data:{display_name:name},
+        // Luôn đưa người dùng về đúng GitHub Pages chính thức sau khi xác nhận email.
+        emailRedirectTo:"https://doananhtuant02.github.io/LearnExcelwithme/"
       }
     });
 
     if(error){
-      msg("registerMessage",error.message);
+      msg("registerMessage",friendlyAuthError(error));
       return;
     }
 
