@@ -39,14 +39,14 @@ function friendlyAuthError(error){
   const raw=(error?.message || String(error || "")).trim();
   const text=raw.toLowerCase();
 
-  if(text.includes("email rate limit exceeded")){
-    return "Bạn đã gửi quá nhiều yêu cầu xác nhận email. Vui lòng đợi một lúc rồi thử lại hoặc kiểm tra hộp thư xem email xác nhận đã được gửi trước đó chưa.";
+  if(text.includes("email rate limit exceeded") || text.includes("error sending confirmation email")){
+    return "Hệ thống tài khoản đang yêu cầu gửi email xác nhận. Quản trị viên cần tắt Confirm email trong Supabase để đăng ký trực tiếp.";
   }
   if(text.includes("invalid login credentials")){
     return "Email hoặc mật khẩu chưa đúng. Vui lòng kiểm tra lại.";
   }
   if(text.includes("email not confirmed")){
-    return "Email của bạn chưa được xác nhận. Hãy kiểm tra hộp thư và bấm liên kết xác nhận trước khi đăng nhập.";
+    return "Tài khoản chưa được kích hoạt vì Supabase vẫn đang yêu cầu xác nhận email. Vui lòng liên hệ quản trị viên.";
   }
   if(text.includes("user already registered")){
     return "Email này đã được đăng ký. Bạn có thể chuyển sang tab Đăng nhập.";
@@ -125,9 +125,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       email,
       password,
       options:{
-        data:{display_name:name},
-        // Luôn đưa người dùng về đúng GitHub Pages chính thức sau khi xác nhận email.
-        emailRedirectTo:"https://doananhtuant02.github.io/LearnExcelwithme/"
+        data:{display_name:name}
       }
     });
 
@@ -137,10 +135,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 
     if(data.session){
-      msg("registerMessage","✓ Đăng ký thành công.",true);
+      msg("registerMessage","✓ Tạo tài khoản thành công! Đang đăng nhập...",true);
       goAfterAuth(600);
     }else{
-      msg("registerMessage","✓ Đã tạo tài khoản. Hãy kiểm tra email để xác nhận.",true);
+      msg("registerMessage","Tài khoản đã được tạo nhưng Supabase vẫn đang bật xác nhận email. Hãy tắt Confirm email trong Authentication → Sign In / Providers → Email rồi thử lại.");
     }
   });
 });

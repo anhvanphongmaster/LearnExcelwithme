@@ -63,3 +63,9 @@ Trong Supabase Dashboard > Authentication > URL Configuration, đặt:
 - Redirect URLs: thêm `https://doananhtuant02.github.io/LearnExcelwithme/**`
 
 Trang đăng ký trong bản này cũng đã đặt `emailRedirectTo` về URL chính thức trên.
+
+
+## Cấu hình đăng ký trực tiếp (bản hiện tại)
+- Authentication → Sign In / Providers → Email: tắt **Confirm email**.
+- Authentication → Emails → SMTP Settings: có thể tắt **Custom SMTP** nếu không dùng email xác nhận.
+- Trang đăng ký không còn truyền `emailRedirectTo`; khi đăng ký thành công và Supabase trả về session, người dùng được đăng nhập ngay.
