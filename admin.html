@@ -8,6 +8,11 @@
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="avp-core.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#217346">
+<link rel="stylesheet" href="personal-dashboard.css">
+<link rel="stylesheet" href="cloud-sync-v11.css">
 </head>
 <body>
 
@@ -27,7 +32,7 @@
     <div>
       <span class="admin-kicker">🔐 ADMIN ONLY</span>
       <h1>Website Analytics</h1>
-      <p>Theo dõi lượng người dùng và mức độ sử dụng website mà không lưu nội dung file Excel.</p>
+      <p>Theo dõi người dùng, hành vi học, XP, Level, quiz và mức độ hoàn thành lộ trình — không lưu nội dung file Excel.</p>
     </div>
 
     <div class="admin-period">
@@ -94,6 +99,37 @@
       </article>
     </section>
 
+    <section class="admin-learning-kpis">
+      <article><small>☁️ User có tiến độ Cloud</small><strong id="learnSynced">—</strong><em id="learnActive7d">—</em></article>
+      <article><small>⚡ XP trung bình</small><strong id="learnAvgXP">—</strong><em id="learnMaxXP">—</em></article>
+      <article><small>🧠 Quiz trung bình</small><strong id="learnAvgQuiz">—</strong><em>Trên mỗi user đã sync</em></article>
+      <article><small>🏅 Huy hiệu trung bình</small><strong id="learnAvgBadges">—</strong><em>Trên mỗi user đã sync</em></article>
+      <article><small>🚀 Pro trở lên</small><strong id="learnPro">—</strong><em id="learnMaster">—</em></article>
+    </section>
+
+    <section class="admin-two-column admin-learning-grid">
+      <article class="admin-panel">
+        <div class="admin-panel-head"><div><span>🎓 FUNNEL</span><h2>Beginner → Master</h2></div></div>
+        <div id="learningFunnel" class="admin-funnel"></div>
+      </article>
+      <article class="admin-panel">
+        <div class="admin-panel-head"><div><span>🆕 USERS</span><h2>Tài khoản mới theo ngày</h2></div></div>
+        <div id="newUserTrend" class="admin-user-trend"></div>
+      </article>
+    </section>
+
+    <section class="admin-two-column admin-learning-grid">
+      <article class="admin-panel">
+        <div class="admin-panel-head"><div><span>✅ LEARNING</span><h2>Bài hoàn thành nhiều nhất</h2></div></div>
+        <div id="topCompletedLessons" class="admin-ranking"></div>
+      </article>
+      <article class="admin-panel">
+        <div class="admin-panel-head"><div><span>🧩 QUIZ</span><h2>Quiz khó nhất</h2></div></div>
+        <div id="quizDifficulty" class="admin-quiz-list"></div>
+        <p class="admin-panel-footnote">Dữ liệu độ khó quiz bắt đầu tích lũy từ V15.</p>
+      </article>
+    </section>
+
     <section class="admin-panel">
       <div class="admin-panel-head">
         <div>
@@ -153,5 +189,8 @@
 <script type="module" src="supabase-auth.js"></script>
 <script src="analytics-tracker.js"></script>
 <script src="admin.js"></script>
+<script src="avp-core.js"></script>
+<script src="personal-dashboard.js"></script>
+<script src="cloud-sync-v11.js"></script>
 </body>
 </html>

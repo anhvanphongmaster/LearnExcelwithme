@@ -49,3 +49,32 @@ body.dark-mode .admin-kpi strong,body.dark-mode .admin-panel-head h2{color:#96db
 body.dark-mode .admin-rank-track{background:#26362e}
 @media(max-width:1000px){.admin-kpi-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){.admin-hero{align-items:stretch;flex-direction:column}.admin-period{width:100%}.admin-period label{flex:1}.admin-period select{width:100%}.admin-two-column{grid-template-columns:1fr}.admin-kpi-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* V15 — Learning Analytics */
+.admin-learning-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:0 0 14px}
+.admin-learning-kpis article{padding:16px;border:1px solid #dce7e1;border-radius:14px;background:linear-gradient(180deg,#fff,#f8fcfa)}
+.admin-learning-kpis small{display:block;color:#72877b;font-size:9px;font-weight:900;text-transform:uppercase}
+.admin-learning-kpis strong{display:block;color:#1e6840;font-size:27px;margin:7px 0 3px}
+.admin-learning-kpis em{display:block;color:#8a9991;font-size:9px;font-style:normal;line-height:1.45}
+.admin-funnel{display:flex;flex-direction:column;gap:14px}
+.admin-funnel-row{display:grid;grid-template-columns:90px 1fr 66px;gap:10px;align-items:center}
+.admin-funnel-name{font-size:11px;font-weight:900;color:#4a6657}
+.admin-funnel-track{height:16px;border-radius:999px;background:#eaf1ed;overflow:hidden}
+.admin-funnel-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#217346,#72d094)}
+.admin-funnel-val{text-align:right;color:#217346;font-size:10px;font-weight:900}
+.admin-user-trend{height:190px;display:flex;align-items:end;gap:5px;overflow-x:auto;padding:12px 4px 25px;border-top:1px solid #edf2ef}
+.admin-user-day{min-width:24px;height:100%;display:flex;align-items:flex-end;justify-content:center;position:relative}
+.admin-user-bar{width:12px;min-height:2px;border-radius:5px 5px 0 0;background:#57b77d}
+.admin-user-label{position:absolute;bottom:-18px;font-size:7px;color:#86958d;transform:rotate(-35deg)}
+.admin-quiz-list{display:flex;flex-direction:column;gap:10px}
+.admin-quiz-row{display:grid;grid-template-columns:minmax(130px,1fr) auto;gap:10px;padding:11px 12px;border:1px solid #e1ebe5;border-radius:12px;background:#fbfdfc}
+.admin-quiz-title{font-size:11px;font-weight:900;color:#4c6457;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.admin-quiz-meta{font-size:9px;color:#7b8d83;margin-top:3px}
+.admin-pass-rate{min-width:62px;text-align:center;padding:7px 8px;border-radius:999px;background:#e9f5ee;color:#17613a;font-size:10px;font-weight:900}
+.admin-pass-rate.hard{background:#fff0ec;color:#9c432e}
+.admin-panel-footnote{margin:12px 0 0;color:#84938b;font-size:9px}
+body.dark-mode .admin-learning-kpis article,body.dark-mode .admin-quiz-row{background:#151f1a;border-color:#2d3d35}
+body.dark-mode .admin-learning-kpis strong{color:#96dbaf}
+body.dark-mode .admin-funnel-track{background:#26362e}
+@media(max-width:1000px){.admin-learning-kpis{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.admin-learning-kpis{grid-template-columns:repeat(2,1fr)}.admin-learning-kpis article:last-child{grid-column:1/-1}.admin-funnel-row{grid-template-columns:74px 1fr 58px}}

@@ -228,6 +228,12 @@
 </style>
 
     <link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="avp-core.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#217346">
+<link rel="stylesheet" href="course-engine.css">
+<link rel="stylesheet" href="personal-dashboard.css">
+<link rel="stylesheet" href="cloud-sync-v11.css">
 </head>
 
 
@@ -1186,7 +1192,7 @@
         <div class="back">
 
             <a href="excel.html">
-                ← Quay lại Học Excel
+                ← Về 6 chuyên đề Excel
             </a>
 
         </div>
@@ -1211,63 +1217,50 @@
 
 
 <script>
-function timCongThuc() {
-    const input = document.getElementById("searchInput");
-    const filter = input.value.toLowerCase();
+(function () {
+    let activeFormulaCategory = "all";
 
-    const table = document.getElementById("formulaTable");
-    const rows = table.getElementsByTagName("tbody")[0]
-                      .getElementsByTagName("tr");
+    function applyFormulaFilter() {
+        const table = document.getElementById("formulaTable");
+        if (!table) return;
 
-    for (let i = 0; i < rows.length; i++) {
-        const text = rows[i].textContent.toLowerCase();
+        const input = document.getElementById("searchInput");
+        const keyword = input ? input.value.toLowerCase().trim() : "";
+        const rows = Array.from(table.querySelectorAll("tbody tr"));
 
-        if (text.includes(filter)) {
-            rows[i].style.display = "";
-        } else {
-            rows[i].style.display = "none";
+        rows.forEach(function (row) {
+            const category = row.dataset.category || "";
+            const text = row.textContent.toLowerCase();
+            const matchCategory = activeFormulaCategory === "all" || category === activeFormulaCategory;
+            const matchSearch = !keyword || text.includes(keyword);
+            row.style.display = matchCategory && matchSearch ? "" : "none";
+        });
+    }
+
+    // Giữ tên hàm cũ vì ô tìm kiếm đang gọi onkeyup="timCongThuc()".
+    window.timCongThuc = applyFormulaFilter;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const filterWrap = document.getElementById("formulaFilters");
+        const input = document.getElementById("searchInput");
+
+        if (filterWrap) {
+            filterWrap.querySelectorAll(".formula-filter").forEach(function (button) {
+                button.addEventListener("click", function () {
+                    activeFormulaCategory = button.dataset.category || "all";
+                    filterWrap.querySelectorAll(".formula-filter").forEach(function (btn) {
+                        btn.classList.remove("active");
+                    });
+                    button.classList.add("active");
+                    applyFormulaFilter();
+                });
+            });
         }
-    }
-}
-;
 
-const table = document.getElementById("formulaTable");
-const rows = table.querySelectorAll("tbody tr");
-
-rows.forEach(function(row) {
-    const functionName =
-        row.cells[1].textContent.trim().toUpperCase();
-
-    if (
-        category === "all" ||
-        (groups[category] && groups[category].includes(functionName))
-    ) {
-        row.style.display = "";
-    } else {
-        row.style.display = "none";
-    }
-});
-};
-
-const table = document.getElementById("formulaTable");
-const rows = table.querySelectorAll("tbody tr");
-
-rows.forEach(function(row) {
-
-    const functionName =
-        row.cells[1].textContent.trim().toUpperCase();
-
-    if (
-        category === "all" ||
-        groups[category].includes(functionName)
-    ) {
-        row.style.display = "";
-    } else {
-        row.style.display = "none";
-    }
-
-});
-}
+        if (input) input.addEventListener("input", applyFormulaFilter);
+        applyFormulaFilter();
+    });
+})();
 </script>
 
 <button id="backToTop" onclick="lenDauTrang()">
@@ -1277,64 +1270,16 @@ rows.forEach(function(row) {
     <script src="gamification.js"></script><script src="global-search.js"></script>
     <script src="simple-nav.js"></script>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const table = document.getElementById("formulaTable");
-    const filterWrap = document.getElementById("formulaFilters");
-    const searchInput = document.getElementById("formulaSearch");
 
-    if (!table || !filterWrap) return;
-
-    const rows = Array.from(table.querySelectorAll("tbody tr"));
-    let activeCategory = "all";
-
-    function applyFormulaFilter() {
-        const keyword = searchInput
-            ? searchInput.value.toLowerCase().trim()
-            : "";
-
-        rows.forEach(function (row) {
-            const category = row.dataset.category || "";
-            const text = row.textContent.toLowerCase();
-
-            const matchCategory =
-                activeCategory === "all" ||
-                category === activeCategory;
-
-            const matchSearch =
-                !keyword ||
-                text.includes(keyword);
-
-            row.style.display =
-                matchCategory && matchSearch ? "" : "none";
-        });
-    }
-
-    filterWrap.querySelectorAll(".formula-filter").forEach(function (button) {
-        button.addEventListener("click", function () {
-            activeCategory = button.dataset.category || "all";
-
-            filterWrap.querySelectorAll(".formula-filter")
-                .forEach(function (btn) {
-                    btn.classList.remove("active");
-                });
-
-            button.classList.add("active");
-            applyFormulaFilter();
-        });
-    });
-
-    if (searchInput) {
-        searchInput.addEventListener("input", applyFormulaFilter);
-    }
-
-    applyFormulaFilter();
-});
-</script>
 <script src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 
 <script src="analytics-tracker.js"></script>
+<script src="avp-core.js"></script>
+<script src="course-engine.js"></script>
+<script src="personal-dashboard.js"></script>
+<script src="cloud-sync-v11.js"></script>
+<script src="learning-progress.js"></script>
 </body>
 
 </html>
