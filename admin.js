@@ -76,34 +76,64 @@
     const root=$("quizDifficulty");if(!rows?.length){root.innerHTML='<p class="admin-empty">Chưa có lượt làm quiz sau khi cập nhật V15.</p>';return}
     root.innerHTML=rows.map(r=>{const rate=num(r.pass_rate),hard=rate<60;return `<div class="admin-quiz-row"><div><div class="admin-quiz-title">${labelLesson(r.lesson)}</div><div class="admin-quiz-meta">${n(r.attempts)} lượt làm • ${n(r.passes)} lượt đạt</div></div><span class="admin-pass-rate ${hard?'hard':''}">${rate.toFixed(1)}% đạt</span></div>`}).join("");
   }
-  async function rpc(name,args){const {data,error}=await client.rpc(name,args);if(error)throw error;return data}
+  async function rpc(name,args){
+    const {data,error}=await client.rpc(name,args||{});
+    if(error) throw error;
+    return data;
+  }
+  async function rpcSoft(name,args){
+    try { return await rpc(name,args); }
+    catch(e){ console.warn("RPC fail:", name, e); return {__error:e}; }
+  }
 
   async function loadDashboard(){
     try{
       $("adminRefresh").disabled=true;
-      const [summary,trend,tools,pages,learning,funnel,completed,difficulty,newUsers]=await Promise.all([
-        rpc("admin_analytics_summary",{p_days:currentDays}),rpc("admin_analytics_trend",{p_days:Math.min(currentDays,90)}),
-        rpc("admin_analytics_top_tools",{p_days:currentDays,p_limit:10}),rpc("admin_analytics_top_pages",{p_days:currentDays,p_limit:10}),
-        rpc("admin_learning_summary",{}),rpc("admin_learning_funnel",{}),rpc("admin_top_completed_lessons",{p_limit:10}),
-        rpc("admin_quiz_difficulty",{p_days:currentDays,p_limit:10}),rpc("admin_new_user_trend",{p_days:Math.min(currentDays,90)})
+
+      // Core metrics first — if these fail with admin/auth, block page
+      let summary, trend, tools, pages;
+      try{
+        [summary, trend, tools, pages] = await Promise.all([
+          rpc("admin_analytics_summary",{p_days:currentDays}),
+          rpc("admin_analytics_trend",{p_days:Math.min(currentDays,90)}),
+          rpc("admin_analytics_top_tools",{p_days:currentDays,p_limit:10}),
+          rpc("admin_analytics_top_pages",{p_days:currentDays,p_limit:10})
+        ]);
+      }catch(error){
+        console.error(error);
+        const msg=String(error?.message||error||"");
+        const details=String(error?.details||error?.hint||"");
+        if(/admin access required/i.test(msg))
+          return showDenied("RPC báo admin access required. Login lại bằng doananhtuant02@gmail.com (tab ẩn danh).");
+        if(/not authenticated|JWT|invalid claim/i.test(msg))
+          return showDenied("Chưa đăng nhập hoặc session hết hạn. Hãy đăng nhập lại trên live.");
+        if(/Could not find the function|schema cache|404/i.test(msg))
+          return showDenied("Thiếu hàm analytics hoặc schema cache. SQL Editor chạy: NOTIFY pgrst, 'reload schema'; rồi F5.");
+        return showDenied(`Không tải được Analytics: ${msg}${details?(" — "+details):""}`);
+      }
+
+      // Learning RPCs — optional, không chặn cả dashboard nếu 1 hàm lỗi
+      const [learning,funnel,completed,difficulty,newUsers] = await Promise.all([
+        rpcSoft("admin_learning_summary"),
+        rpcSoft("admin_learning_funnel"),
+        rpcSoft("admin_top_completed_lessons",{p_limit:10}),
+        rpcSoft("admin_quiz_difficulty",{p_days:currentDays,p_limit:10}),
+        rpcSoft("admin_new_user_trend",{p_days:Math.min(currentDays,90)})
       ]);
-      renderSummary(summary||{});renderTrend(trend||[]);renderRanking("topTools",tools||[],"tool_name","uses");renderRanking("topPages",pages||[],"page_path","views",labelLesson);
-      renderLearningSummary(learning||{});renderFunnel(funnel||[]);renderRanking("topCompletedLessons",completed||[],"lesson","completed_users",labelLesson);renderQuizDifficulty(difficulty||[]);renderNewUsers(newUsers||[]);
+
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
+      renderSummary(summary||{});
+      renderTrend(trend||[]);
+      renderRanking("topTools",tools||[],"tool_name","uses");
+      renderRanking("topPages",pages||[],"page_path","views",labelLesson);
+      if(!learning?.__error) renderLearningSummary(learning||{});
+      if(!funnel?.__error) renderFunnel(funnel||[]);
+      if(!completed?.__error) renderRanking("topCompletedLessons",completed||[],"lesson","completed_users",labelLesson);
+      if(!difficulty?.__error) renderQuizDifficulty(difficulty||[]);
+      if(!newUsers?.__error) renderNewUsers(newUsers||[]);
     }catch(error){
       console.error(error);
-      const msg=String(error?.message||error||"");
-      const details=String(error?.details||error?.hint||"");
-      if(/admin access required/i.test(msg))
-        showDenied("RPC báo admin access required. Bạn đã login nhưng server chưa nhận is_admin=true cho session này. Đăng xuất → đăng nhập lại. Email: doananhtuant02@gmail.com");
-      else if(/not authenticated|JWT|invalid claim/i.test(msg))
-        showDenied("Session hết hạn hoặc chưa login. Hãy đăng nhập lại trên live.");
-      else if(/function .* does not exist|Could not find the function|schema cache/i.test(msg))
-        showDenied("Thiếu SQL Analytics hoặc schema cache. Trong Supabase SQL Editor chạy: NOTIFY pgrst, 'reload schema'; rồi F5 lại admin.");
-      else if(/permission denied/i.test(msg))
-        showDenied("Permission denied khi gọi RPC. Kiểm tra GRANT EXECUTE cho role authenticated.");
-      else
-        showDenied(`Không tải được Analytics: ${msg}${details?(" — "+details):""}`);
+      showDenied(`Không tải được Analytics: ${error?.message||error}`);
     }finally{$("adminRefresh").disabled=false}
   }
   async function init(){

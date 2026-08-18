@@ -10,5 +10,7 @@
  * KHÔNG cần sửa HTML.
  */
 const availablePracticeFiles = [
-  "video-01-viet-nam-hidden-space.xlsx"
+  // Ví dụ khi có file:
+  // "video-01-viet-nam-hidden-space.xlsx",
+  // "video-03-number-stored-as-text.xlsx"
 ];

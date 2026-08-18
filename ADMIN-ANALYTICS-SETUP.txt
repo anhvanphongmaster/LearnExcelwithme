@@ -42,3 +42,31 @@ KHÔNG GHI NHẬN
 - Tên file Excel
 - Workbook upload
 - Mật khẩu
+
+=========================================================
+NẾU VẪN BỊ CHẶN DÙ is_admin = true VÀ ĐÃ CÓ HÀM admin_*
+=========================================================
+
+1) Reload schema cache PostgREST (SQL Editor):
+
+NOTIFY pgrst, 'reload schema';
+
+2) Đảm bảo grant còn hiệu lực:
+
+grant execute on function public.is_admin_user() to authenticated;
+grant execute on function public.admin_analytics_summary(integer) to authenticated;
+grant execute on function public.admin_analytics_trend(integer) to authenticated;
+grant execute on function public.admin_analytics_top_tools(integer,integer) to authenticated;
+grant execute on function public.admin_analytics_top_pages(integer,integer) to authenticated;
+grant execute on function public.admin_learning_summary() to authenticated;
+grant execute on function public.admin_learning_funnel() to authenticated;
+
+3) Trên website live:
+   - Đăng xuất
+   - Tab ẩn danh → auth.html?redirect=admin.html
+   - Login email doananhtuant02@gmail.com
+   - Xem dòng chữ lỗi mới trên admin (đã chi tiết hơn)
+
+4) Kiểm tra API key trên live (supabase-config.js):
+   Supabase Dashboard → Project Settings → API
+   Dùng khóa "anon" / "publishable" public (không dùng service_role).
