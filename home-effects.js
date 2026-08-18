@@ -13,7 +13,9 @@
   let orbY = mouseY;
   let rafId = null;
 
+  let hovering = false;
   function animateGlow(){
+    if (!hovering) { rafId = null; return; }
     orbX += (mouseX - orbX) * 0.13;
     orbY += (mouseY - orbY) * 0.13;
 
@@ -28,6 +30,8 @@
     rafId = requestAnimationFrame(animateGlow);
   }
 
+  hero.addEventListener("mouseenter", () => { hovering = true; if (!rafId) rafId = requestAnimationFrame(animateGlow); });
+  hero.addEventListener("mouseleave", () => { hovering = false; });
   hero.addEventListener("mousemove", (e) => {
     const r = hero.getBoundingClientRect();
     mouseX = e.clientX - r.left;
