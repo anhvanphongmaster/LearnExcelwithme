@@ -14,6 +14,20 @@
  'vba-macro.html':{level:'Master',mins:35,xp:50,obj:['Hiểu Macro và VBA','Record Macro an toàn','Tự động hóa thao tác lặp'],practice:'Record một macro định dạng báo cáo, sau đó gắn macro vào một nút.',q:'Macro phù hợp nhất với loại công việc nào?',opts:['Thao tác lặp lại có quy trình rõ','Mọi quyết định phức tạp','Thiết kế logo','Dịch ngôn ngữ'],ans:0},
  'solver-whatif.html':{level:'Master',mins:30,xp:50,obj:['Phân biệt Goal Seek và Solver','Thiết lập biến, mục tiêu và ràng buộc','Giải bài toán tối ưu đơn giản'],practice:'Dùng Goal Seek tìm Input cần thiết để đạt một mục tiêu Output, sau đó thử Solver với ràng buộc.',q:'Goal Seek phù hợp khi bạn muốn?',opts:['Tìm giá trị đầu vào để đạt một kết quả mục tiêu','Gộp file','Tạo PivotTable','Đổi font'],ans:0}
  };
+ const LESSON_FLOW=[
+  ["phimtatexcel.html","Phím tắt"],
+  ["congthucexcel.html","Công thức"],
+  ["pivottable.html","PivotTable"],
+  ["bieudopareto.html","Pareto"],
+  ["filtersort.html","Filter & Sort"],
+  ["baocaoexcel.html","Báo cáo QC"]
+ ];
+ function nextLesson(fileName){
+   const i=LESSON_FLOW.findIndex(x=>x[0]===fileName);
+   if(i<0) return null;
+   if(i<LESSON_FLOW.length-1) return LESSON_FLOW[i+1];
+   return ["excel.html","6 chuyên đề Excel"];
+ }
  function file(){return (location.pathname.split('/').pop()||'index.html').toLowerCase()}
  function getXP(){return +(localStorage.getItem(XPKEY)||0)}
  function addXP(v){localStorage.setItem(XPKEY,getXP()+v)}
@@ -22,7 +36,9 @@
  function toast(t){const el=document.createElement('div');el.className='xp-toast';el.textContent=t;document.body.appendChild(el);setTimeout(()=>el.remove(),2200)}
  function inject(){const f=file(),m=lessons[f];if(!m)return;const target=document.querySelector('main')||document.body; const shell=document.createElement('section');shell.className='course-shell';shell.innerHTML=`<div class="course-panel"><div class="course-top"><div><span class="course-kicker">${m.level} • Bài học có lộ trình</span><h2 class="course-title">Học theo mục tiêu — làm được sau khi học</h2><div class="course-meta">⏱ ${m.mins} phút • 🎯 Thực hành ngay • 🏅 +${m.xp} XP khi vượt quiz</div></div><div class="course-xp">⚡ ${getXP()} XP</div></div><div class="course-grid"><div class="course-box"><h3>🎯 Mục tiêu bài học</h3><ul>${m.obj.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="course-box"><h3>✅ Cách học đề xuất</h3><ul><li>Đọc phần chính</li><li>Làm lại ví dụ bằng Excel</li><li>Hoàn thành bài thực hành</li><li>Làm quiz cuối bài</li></ul></div></div><div class="course-practice"><strong>🧪 Bài thực hành:</strong> ${m.practice}</div><div class="course-complete-box"><h3>✓ Bạn hoàn thành bài này khi</h3><ul><li>Đã đọc và hiểu các mục tiêu bên trên</li><li>Đã làm bài thực hành trên file Excel</li><li>Đã vượt quiz cuối bài (+${m.xp} XP)</li></ul></div></div>`; target.parentNode.insertBefore(shell,target);
  const q=document.createElement('section');q.className='quiz-panel';const already=!!done()[f];q.innerHTML=`<div class="quiz-card"><span class="course-kicker">QUIZ CUỐI BÀI</span><h2>Kiểm tra nhanh</h2><p>Trả lời đúng để ghi nhận hoàn thành và nhận XP.</p><div class="quiz-q">${m.q}</div><div class="quiz-options">${m.opts.map((x,i)=>`<button class="quiz-opt" data-i="${i}">${x}</button>`).join('')}</div><div class="quiz-actions"><button class="quiz-submit">Kiểm tra đáp án</button><span class="quiz-result">${already?'✓ Đã vượt quiz — XP đã được ghi nhận':''}</span></div></div>`;document.body.insertBefore(q,document.querySelector('footer')||null);
- let selected=null; q.querySelectorAll('.quiz-opt').forEach(b=>b.onclick=()=>{selected=+b.dataset.i;q.querySelectorAll('.quiz-opt').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')});q.querySelector('.quiz-submit').onclick=()=>{if(selected===null){q.querySelector('.quiz-result').textContent='Chọn một đáp án trước.';return}q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.remove('correct','wrong');if(i===m.ans)b.classList.add('correct');else if(i===selected)b.classList.add('wrong')});const passed=selected===m.ans;try{window.avpAnalytics?.track('quiz_attempt',{page:f,metadata:{passed,score:passed?1:0,total:1}})}catch(e){}if(passed){const d=done();if(!d[f]){d[f]=true;saveDone(d);addXP(m.xp);toast(`+${m.xp} XP — Hoàn thành quiz!`);try{window.avpAnalytics?.track('lesson_complete',{page:f,metadata:{xp:m.xp}})}catch(e){}window.dispatchEvent(new CustomEvent('avp:course-xp',{detail:{xp:m.xp,file:f}}))}q.querySelector('.quiz-result').textContent='✓ Chính xác! Bài học đã được ghi nhận.'}else q.querySelector('.quiz-result').textContent='Chưa đúng. Xem lại nội dung rồi thử lại nhé.'};
+ if(already){const nxt=nextLesson(f);if(nxt){const r=q.querySelector('.quiz-result');if(r && !r.querySelector('.quiz-next-lesson')) r.insertAdjacentHTML('beforeend', `<a class="quiz-next-lesson" href="${nxt[0]}">Bài học tiếp theo: ${nxt[1]} →</a>`);}}
+
+ let selected=null; q.querySelectorAll('.quiz-opt').forEach(b=>b.onclick=()=>{selected=+b.dataset.i;q.querySelectorAll('.quiz-opt').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')});q.querySelector('.quiz-submit').onclick=()=>{if(selected===null){q.querySelector('.quiz-result').textContent='Chọn một đáp án trước.';return}q.querySelectorAll('.quiz-opt').forEach((b,i)=>{b.classList.remove('correct','wrong');if(i===m.ans)b.classList.add('correct');else if(i===selected)b.classList.add('wrong')});const passed=selected===m.ans;try{window.avpAnalytics?.track('quiz_attempt',{page:f,metadata:{passed,score:passed?1:0,total:1}})}catch(e){}if(passed){const d=done();if(!d[f]){d[f]=true;saveDone(d);addXP(m.xp);toast(`+${m.xp} XP — Hoàn thành quiz!`);try{window.avpAnalytics?.track('lesson_complete',{page:f,metadata:{xp:m.xp}})}catch(e){}window.dispatchEvent(new CustomEvent('avp:course-xp',{detail:{xp:m.xp,file:f}}))}const nxt=nextLesson(f);q.querySelector('.quiz-result').innerHTML='✓ Chính xác! Bài học đã được ghi nhận.'+(nxt?`<a class="quiz-next-lesson" href="${nxt[0]}">Bài học tiếp theo: ${nxt[1]} →</a>`:'')}else q.querySelector('.quiz-result').textContent='Chưa đúng. Xem lại nội dung rồi thử lại nhé.'};
  }
  document.addEventListener('DOMContentLoaded',inject);
 })();

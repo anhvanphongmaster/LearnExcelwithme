@@ -1,0 +1,313 @@
+/* ===== V33 FINAL THEME POLISH ===== */
+:root{
+  --v33-surface:#ffffff;
+  --v33-surface-soft:#f5faf7;
+  --v33-text:#173f2d;
+  --v33-muted:#607168;
+  --v33-border:#d8e7de;
+  --v33-shadow:0 12px 30px rgba(26,69,48,.07);
+}
+body.dark-mode{
+  --v33-surface:#142019;
+  --v33-surface-soft:#18271f;
+  --v33-text:#edf7f1;
+  --v33-muted:#b8c8bf;
+  --v33-border:#2d4337;
+  --v33-shadow:0 14px 32px rgba(0,0,0,.24);
+}
+
+/* Home CTA sections: remove inline-light look completely */
+.home-practice-cta,
+.master-learning-cta{
+  max-width:1180px!important;
+  margin:28px auto 10px!important;
+  padding:0 20px!important;
+}
+.master-learning-cta{margin-top:22px!important;}
+.home-cta-card{
+  background:var(--v33-surface)!important;
+  border:1px solid var(--v33-border)!important;
+  border-radius:22px!important;
+  padding:22px 24px!important;
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:center!important;
+  gap:20px!important;
+  box-shadow:var(--v33-shadow)!important;
+  color:var(--v33-text)!important;
+}
+.home-cta-card h2{color:var(--v33-text)!important;margin:6px 0!important;}
+.home-cta-card p{color:var(--v33-muted)!important;margin:0!important;line-height:1.55!important;}
+.home-cta-card > div > span{color:#217346!important;}
+body.dark-mode .home-cta-card > div > span{color:#8be1ac!important;}
+.home-cta-card > a{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:44px!important;
+  padding:0 17px!important;
+  border-radius:13px!important;
+  background:#217346!important;
+  color:#fff!important;
+  text-decoration:none!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+  border:1px solid #217346!important;
+}
+body.dark-mode .home-cta-card > a{
+  background:#267b4c!important;
+  border-color:#4f9a6c!important;
+  color:#fff!important;
+}
+
+/* Learning status quick links: no more bare links */
+.learn-status-quick{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+  margin-top:14px!important;
+}
+.learn-status-quick a{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:42px!important;
+  padding:0 12px!important;
+  border-radius:12px!important;
+  border:1px solid var(--v33-border)!important;
+  background:var(--v33-surface-soft)!important;
+  color:var(--v33-text)!important;
+  text-decoration:none!important;
+  font-weight:800!important;
+}
+.learn-status-quick a:hover{border-color:#78b991!important;transform:translateY(-1px);}
+
+/* Skill selector cards: stronger dark readability */
+body.dark-mode .skill-level-section{color:var(--v33-text)!important;}
+body.dark-mode .skill-level-card{
+  background:#142019!important;
+  border-color:#355043!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.18)!important;
+}
+body.dark-mode .skill-level-card h3{color:#eef8f2!important;}
+body.dark-mode .skill-level-card .skill-level-desc{color:#bacbc1!important;}
+body.dark-mode .skill-lessons a,
+body.dark-mode .skill-lessons .soon{
+  background:#18271f!important;
+  border-color:#365043!important;
+  color:#e4f0e9!important;
+}
+body.dark-mode .skill-lessons a span,
+body.dark-mode .skill-lessons .soon span{color:#e4f0e9!important;}
+body.dark-mode .skill-lessons small{background:#eaf5ee!important;color:#476255!important;}
+
+/* Roadmap + dashboard surfaces */
+body.dark-mode .master-roadmap-overall,
+body.dark-mode .roadmap-stage,
+body.dark-mode .pd-home-inner,
+body.dark-mode .learn-status-box,
+body.dark-mode .next-lesson{
+  background:#142019!important;
+  border-color:#30463a!important;
+  color:#edf7f1!important;
+}
+body.dark-mode .master-roadmap-overall span,
+body.dark-mode .roadmap-stage p,
+body.dark-mode .pd-home-inner p,
+body.dark-mode .learn-status-box p,
+body.dark-mode .next-lesson small{color:#b8c8bf!important;}
+body.dark-mode .roadmap-stage h3,
+body.dark-mode .pd-home-inner h3,
+body.dark-mode .learn-status-box h2,
+body.dark-mode .next-lesson strong{color:#edf7f1!important;}
+
+/* Ensure locked cards remain visibly locked but readable */
+body.dark-mode .roadmap-stage.g8-locked,
+body.dark-mode .roadmap-stage.is-locked{opacity:.82!important;filter:none!important;}
+body.dark-mode .roadmap-stage.g8-locked *{opacity:1!important;}
+
+@media(max-width:760px){
+  .home-cta-card{flex-direction:column!important;align-items:flex-start!important;padding:18px!important;}
+  .home-cta-card > a{width:100%!important;}
+  .learn-status-quick{grid-template-columns:1fr!important;}
+  .home-practice-cta,.master-learning-cta{padding:0 14px!important;}
+}
+
+/* ===== EXPANDED DESIGN SYSTEM (V33+) ===== */
+:root {
+  --avp-primary: #217346;
+  --avp-primary-dark: #185c37;
+  --avp-primary-soft: #e8f5e9;
+  --avp-secondary: #2e7d4f;
+  --avp-bg: #f4f7f5;
+  --avp-bg-dark: #101511;
+  --avp-surface: var(--v33-surface);
+  --avp-surface-soft: var(--v33-surface-soft);
+  --avp-text: var(--v33-text);
+  --avp-muted: var(--v33-muted);
+  --avp-border: var(--v33-border);
+  --avp-shadow: var(--v33-shadow);
+  --avp-success: #1b7a43;
+  --avp-warning: #c47a00;
+  --avp-danger: #c0392b;
+  --avp-radius: 14px;
+  --avp-radius-lg: 20px;
+}
+
+body {
+  background: var(--avp-bg);
+  color: var(--avp-text);
+}
+body.dark-mode {
+  background: var(--avp-bg-dark);
+  color: var(--avp-text);
+}
+
+/* Generic cards & panels — force theme vars */
+.card, .panel, .lesson, .topic-card, .practice-file-card,
+.home-module-card, .skill-level-card, .roadmap-stage,
+.g9-card, .pd-card, .ach-card, .quiz-box, .xp-box,
+.practice-card, .tool-card, .download-card {
+  background: var(--avp-surface) !important;
+  border-color: var(--avp-border) !important;
+  color: var(--avp-text) !important;
+  box-shadow: var(--avp-shadow);
+}
+
+body.dark-mode .card,
+body.dark-mode .panel,
+body.dark-mode .lesson,
+body.dark-mode .topic-card,
+body.dark-mode .practice-file-card,
+body.dark-mode .home-module-card,
+body.dark-mode .skill-level-card,
+body.dark-mode .roadmap-stage,
+body.dark-mode .g9-card,
+body.dark-mode .pd-card,
+body.dark-mode .ach-card,
+body.dark-mode .quiz-box,
+body.dark-mode .xp-box,
+body.dark-mode .practice-card,
+body.dark-mode .tool-card,
+body.dark-mode .download-card {
+  background: var(--avp-surface) !important;
+  border-color: var(--avp-border) !important;
+  color: var(--avp-text) !important;
+}
+
+/* Text hierarchy */
+body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+body.dark-mode h4, body.dark-mode strong {
+  color: var(--avp-text) !important;
+}
+body.dark-mode p, body.dark-mode li, body.dark-mode small,
+body.dark-mode .muted, body.dark-mode .desc {
+  color: var(--avp-muted) !important;
+}
+
+/* Tables */
+body.dark-mode table {
+  background: var(--avp-surface) !important;
+  color: var(--avp-text) !important;
+  border-color: var(--avp-border) !important;
+}
+body.dark-mode th {
+  background: var(--avp-surface-soft) !important;
+  color: var(--avp-text) !important;
+  border-color: var(--avp-border) !important;
+}
+body.dark-mode td {
+  border-color: var(--avp-border) !important;
+  color: var(--avp-text) !important;
+}
+
+/* Inputs & buttons */
+body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
+  background: var(--avp-surface-soft) !important;
+  color: var(--avp-text) !important;
+  border-color: var(--avp-border) !important;
+}
+body.dark-mode button:not(.top-theme-button):not(.top-mobile-toggle),
+body.dark-mode .btn, body.dark-mode .pq-btn {
+  /* keep primary green readable */
+}
+
+/* Locked / disabled cards stay readable */
+body.dark-mode .is-locked,
+body.dark-mode .locked,
+body.dark-mode .g8-locked,
+body.dark-mode [aria-disabled="true"],
+body.dark-mode .disabled-card {
+  opacity: 0.78 !important;
+  filter: none !important;
+  background: var(--avp-surface-soft) !important;
+  color: var(--avp-muted) !important;
+}
+body.dark-mode .is-locked *, body.dark-mode .locked *,
+body.dark-mode .g8-locked * {
+  opacity: 1 !important;
+  color: inherit !important;
+}
+
+/* Practice file cards on excel.html */
+.practice-file-card {
+  border-radius: var(--avp-radius) !important;
+  padding: 18px !important;
+  border: 1px solid var(--avp-border) !important;
+}
+.practice-file-card a[download] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: var(--avp-primary);
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 700;
+}
+body.dark-mode .practice-file-card a[download] {
+  background: #267b4c;
+}
+
+/* Footer */
+body.dark-mode .site-footer,
+body.dark-mode footer {
+  background: #0d1410 !important;
+  color: var(--avp-muted) !important;
+  border-top-color: var(--avp-border) !important;
+}
+
+/* Progress bars */
+.progress-bar, .learn-progress-track, .master-roadmap-track {
+  background: var(--avp-surface-soft) !important;
+}
+.progress-fill, .learn-progress-fill, .master-roadmap-fill {
+  background: var(--avp-primary) !important;
+}
+
+/* Badges / XP */
+body.dark-mode .xp-badge, body.dark-mode #homeXpBadge {
+  background: #1a2e24 !important;
+  color: #8be1ac !important;
+}
+
+/* Ensure no pure white remnants in dark */
+body.dark-mode [style*="background:#fff"],
+body.dark-mode [style*="background: #fff"],
+body.dark-mode [style*="background:white"],
+body.dark-mode [style*="background: white"] {
+  /* cannot override inline easily, but surface classes above cover most */
+}
+
+/* Mobile overflow guard */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+img, video, table, pre, code {
+  max-width: 100%;
+}
+
+#themeToggle,.top-theme-button{display:none!important}

@@ -114,3 +114,13 @@ body.dark-mode .quiz-card .quiz-kicker {
 body.dark-mode .quiz-reward {
   color: var(--avp-muted, #b8c8bf);
 }
+
+.quiz-next-lesson{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin:12px 0 0;min-height:44px;padding:0 16px;border-radius:12px;
+  background:#217346;color:#fff!important;text-decoration:none;font-weight:800;
+}
+.quiz-next-lesson:hover{background:#185c37}
+.quiz-result{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+#themeToggle,.top-theme-button{display:none!important}
+body.dark-mode{background:#f4f7f5!important;color:#222!important}

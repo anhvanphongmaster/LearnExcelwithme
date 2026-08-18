@@ -204,7 +204,7 @@ window.addEventListener("DOMContentLoaded", function () {
     const button =
         document.getElementById("themeToggle");
 
-    if (savedTheme === "dark") {
+    if (false && savedTheme === "dark") {
 
         document.body.classList.add("dark-mode");
 
@@ -229,6 +229,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const themeToggle =
         document.getElementById("themeToggle");
 
+    if (themeToggle) { themeToggle.style.display = "none"; themeToggle.hidden = true; }
+    return;
     if (!themeToggle) return;
 
 
@@ -237,7 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const savedTheme =
         localStorage.getItem("theme");
 
-    if (savedTheme === "dark") {
+    if (false && savedTheme === "dark") {
 
         document.body.classList.add("dark-mode");
 
