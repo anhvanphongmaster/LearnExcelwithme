@@ -1,15 +1,15 @@
 /**
  * PRACTICE FILES + TIKTOK LINKS
- * -----------------------------
- * Nhớ dấu phẩy giữa các tên file.
+ * Tên file phải TRÙNG khớp với tên trên GitHub.
  */
 const availablePracticeFiles = [
-  "video-01-viet-nam-hidden-space.xlsx",
-  "Tip2_Copy_Khong_Lay_Dong_An_AltSemicolon.xlsx"
+  "video-01-viet-nam-hidden-space.xlsx.xlsx",
+  "Tip2_Copy_Khong_Lay_Dong_An_AltSemicolon.xlsx.xlsx"
 ];
 
 const practiceFileAliases = {
-  "video-02-visible-cells-only.xlsx": "Tip2_Copy_Khong_Lay_Dong_An_AltSemicolon.xlsx"
+  "video-01-viet-nam-hidden-space.xlsx": "video-01-viet-nam-hidden-space.xlsx.xlsx",
+  "video-02-visible-cells-only.xlsx": "Tip2_Copy_Khong_Lay_Dong_An_AltSemicolon.xlsx.xlsx"
 };
 
 const videoTikTokLinks = {
