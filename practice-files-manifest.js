@@ -10,5 +10,5 @@
  * KHÔNG cần sửa HTML.
  */
 const availablePracticeFiles = [
-  "video-01-viet-nam-hidden-space.xlsx.xlsx"
+  "video-01-viet-nam-hidden-space.xlsx"
 ];
