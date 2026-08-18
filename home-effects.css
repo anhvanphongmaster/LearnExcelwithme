@@ -5,7 +5,7 @@
   --my:50%;
   isolation:isolate;
   background:
-    radial-gradient(620px circle at var(--mx) var(--my),
+    radial-gradient(620px circle at 30% 20%,
       rgba(93, 255, 170, .24) 0%,
       rgba(48, 184, 111, .14) 24%,
       rgba(22, 93, 53, .08) 44%,
@@ -22,7 +22,7 @@
   z-index:0;
   pointer-events:none;
   background:
-    radial-gradient(300px circle at var(--mx) var(--my),
+    radial-gradient(300px circle at 70% 80%,
       rgba(133,255,194,.16),
       transparent 68%);
   mix-blend-mode:screen;
@@ -52,7 +52,7 @@
   to{transform:translate3d(52px,52px,0)}
 }
 
-.avp-orb{
+.avp-orb{display:none!important;
   width:520px !important;
   height:520px !important;
   background:
