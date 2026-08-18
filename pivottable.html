@@ -243,6 +243,8 @@
 <link rel="stylesheet" href="course-engine.css">
 <link rel="stylesheet" href="personal-dashboard.css">
 <link rel="stylesheet" href="cloud-sync-v11.css">
+<link href="learning-progress.css" rel="stylesheet"/>
+<link href="theme-polish-v33.css" rel="stylesheet"/>
 </head>
 
 
@@ -678,7 +680,7 @@
         <div class="back">
 
             <a href="excel.html">
-                ← Về 6 chuyên đề Excel
+                ← Quay lại Học Excel
             </a>
 
         </div>
@@ -688,6 +690,42 @@
 
 
     
+
+<section class="lesson-tips-panel" style="max-width:1100px;margin:24px auto;padding:0 18px">
+  <div class="course-panel" style="padding:22px">
+    <span class="course-kicker">QUY TRÌNH THỰC CHIẾN</span>
+    <h2 class="course-title" style="font-size:22px;margin-top:10px">5 bước tạo PivotTable đúng cách</h2>
+    <ol style="line-height:1.9;color:#46564d;padding-left:22px;margin:12px 0 18px">
+      <li><strong>Chuẩn bị dữ liệu:</strong> 1 hàng tiêu đề, không dòng trống giữa bảng, mỗi cột 1 ý nghĩa (Lot, Model, Input, NG…).</li>
+      <li><strong>Chọn bất kỳ ô trong bảng</strong> → Insert → PivotTable → chọn New Worksheet.</li>
+      <li><strong>Kéo trường:</strong> Model → Rows · NG Qty → Values (Sum) · Lot No → Filters (nếu cần lọc theo Lot).</li>
+      <li><strong>Đổi tên & định dạng:</strong> Click field trong Values → Value Field Settings → đổi tên, số thập phân.</li>
+      <li><strong>Refresh:</strong> Khi nguồn dữ liệu thêm dòng → click Pivot → Data → Refresh (hoặc Alt+F5).</li>
+    </ol>
+    <div class="course-grid" style="margin-top:8px">
+      <div class="course-box">
+        <h3>📌 Khi nào dùng Pivot?</h3>
+        <ul>
+          <li>Tổng hợp NG theo Model / Line / Ca</li>
+          <li>So sánh Input vs NG theo tuần</li>
+          <li>Top lỗi / Top sản phẩm nhanh</li>
+        </ul>
+      </div>
+      <div class="course-box">
+        <h3>⚠️ Lỗi hay gặp</h3>
+        <ul>
+          <li>Có dòng trống → Pivot thiếu dữ liệu</li>
+          <li>Hai cột cùng tên → khó kéo field</li>
+          <li>Quên Refresh sau khi thêm data</li>
+        </ul>
+      </div>
+    </div>
+    <div class="course-practice" style="margin-top:16px">
+      <strong>🧪 Checkpoint:</strong> Từ file thực hành, tạo Pivot tổng NG theo Model, sort giảm dần, và ghi chú Model nào chiếm ≥50% tổng NG.
+    </div>
+  </div>
+</section>
+
 <footer class="site-footer">
   <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
   <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
@@ -713,9 +751,9 @@
 <script src="analytics-tracker.js"></script>
 <script src="avp-core.js"></script>
 <script src="course-engine.js"></script>
+<script src="learning-progress.js"></script>
 <script src="personal-dashboard.js"></script>
 <script src="cloud-sync-v11.js"></script>
-<script src="learning-progress.js"></script>
 </body>
 
 </html>

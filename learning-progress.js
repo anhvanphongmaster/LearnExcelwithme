@@ -26,10 +26,53 @@
   function completed(item,p,q){return !!(p[item.id]||q[item.url])}
   function state(){const p=syncFromQuiz(),q=quizzes();return {p,q,done:lessons.filter(x=>completed(x,p,q))}}
   function emit(){window.dispatchEvent(new CustomEvent('avp:progress-changed',{detail:{state:state()}}))}
-  function renderHome(){const host=document.getElementById('learningStatus');if(!host)return;const {p,q,done}=state();const pct=Math.round(done.length/lessons.length*100);const next=lessons.find(x=>!completed(x,p,q));const xp=+(localStorage.getItem('avp_xp_v2')||0);host.innerHTML=`<div class="learn-status-box"><div class="learn-status-head"><div><h2>🎯 Tiếp tục học</h2><p>${done.length}/${lessons.length} bài • ${pct}% hoàn thành • ${xp} XP</p></div><strong>${next?'Bài tiếp theo':'Đã hoàn thành 🎉'}</strong></div><div class="learn-progress-track"><div class="learn-progress-fill" style="width:${pct}%"></div></div><div class="next-lesson"><div><strong>${next?next.title:'Bạn đã hoàn thành toàn bộ lộ trình'}</strong><br><small>${next?'Tiếp tục đúng bài chưa hoàn thành tiếp theo.':'Xem chứng nhận và hành trình Master.'}</small></div><a href="${next?next.url:'master-learning.html'}">${next?'Học tiếp →':'Xem lộ trình →'}</a></div><div class="learn-status-quick"><a href="master-learning.html">🎓 Lộ trình</a><a href="my-learning.html">📊 Dashboard</a><a href="achievement-learning.html">🏅 Huy hiệu</a></div></div>`;
+  function renderHome(){const host=document.getElementById('learningStatus');if(!host)return;const {p,q,done}=state();const pct=Math.round(done.length/lessons.length*100);const next=lessons.find(x=>!completed(x,p,q));const xp=+(localStorage.getItem('avp_xp_v2')||0);host.innerHTML=`<div class="learn-status-box"><div class="learn-status-head"><div><h2>🎯 Tiếp tục học</h2><p>${done.length}/${lessons.length} bài • ${pct}% hoàn thành • ${xp} XP</p></div><strong>${next?'Bài tiếp theo':'Đã hoàn thành 🎉'}</strong></div><div class="learn-progress-track"><div class="learn-progress-fill" style="width:${pct}%"></div></div><div class="next-lesson"><div><strong>${next?next.title:'Bạn đã hoàn thành toàn bộ lộ trình'}</strong><br><small>${next?'Tiếp tục đúng bài chưa hoàn thành tiếp theo.':'Xem chứng nhận và hành trình Master.'}</small></div><a href="${next?next.url:'master-learning.html'}">${next?'Học tiếp →':'Xem lộ trình →'}</a></div><div class="learn-status-quick"><a href="master-learning.html">🎓 Lộ trình</a><a href="dashboard.html">📊 Dashboard</a><a href="achievement-learning.html">🏅 Huy hiệu</a></div></div>`;
     document.querySelectorAll('.skill-lessons a[data-lesson-id]').forEach(a=>{const id=a.dataset.lessonId;const item=lessons.find(x=>x.id===id);if(!item)return;a.classList.remove('lesson-done','lesson-next');if(completed(item,p,q)){a.classList.add('lesson-done');const s=a.querySelector('small');if(s)s.textContent='Đã học ✓'}else if(next&&id===next.id){a.classList.add('lesson-next')}})
   }
-  function renderLesson(){const id=currentId();if(!id)return;const item=lessons.find(x=>x.id===id);const {p,q}=state();const passed=!!q[item.url],isDone=completed(item,p,q);const topicStatus=document.querySelector('.core-topic-status');let wrap=topicStatus;if(topicStatus){document.querySelectorAll('.lesson-progress-strip').forEach(el=>el.remove())}else{wrap=document.querySelector('.lesson-progress-strip');if(!wrap){wrap=document.createElement('div');wrap.className='lesson-progress-strip';const nav=document.querySelector('.top-simple-nav');if(nav&&nav.parentNode)nav.parentNode.insertBefore(wrap,nav.nextSibling);else (document.querySelector('main')||document.body).prepend(wrap)}}wrap.innerHTML='';const btn=document.createElement('button');btn.className='lesson-complete-btn'+(isDone?' is-done':'');btn.textContent=passed?'✓ Hoàn thành qua quiz':(isDone?'✓ Đã học':'✓ Đánh dấu đã học');if(passed){btn.disabled=true;btn.title='Bài này đã được ghi nhận vì bạn đã vượt quiz.'}else{btn.onclick=()=>{const v=read();v[id]=!v[id];write(v);renderLesson();emit()}}wrap.appendChild(btn)}
+  function renderLesson(){
+    const id=currentId();
+    if(!id)return;
+    const item=lessons.find(x=>x.id===id);
+    const {p,q}=state();
+    const passed=!!q[item.url],isDone=completed(item,p,q);
+
+    // V31: one clean action row for every page using learning-progress.
+    // It sits below the page hero/navigation and immediately above the XP/course panel.
+    document.querySelectorAll('.lesson-progress-strip,.avp-page-back-wrap').forEach(el=>el.remove());
+    const topicStatus=document.querySelector('.core-topic-status');
+    if(topicStatus){topicStatus.innerHTML='';topicStatus.style.display='none';}
+
+    let row=document.querySelector('.lesson-action-row');
+    if(!row){
+      row=document.createElement('div');
+      row.className='lesson-action-row';
+      row.innerHTML='<a class="lesson-home-link" href="index.html"><span aria-hidden="true">←</span><span>Về Trang chủ</span></a><div class="lesson-action-status"></div>';
+    }
+    const holder=row.querySelector('.lesson-action-status');
+    holder.innerHTML='';
+    const btn=document.createElement('button');
+    btn.className='lesson-complete-btn'+(isDone?' is-done':'');
+    btn.textContent=passed?'✓ Hoàn thành qua quiz':(isDone?'✓ Đã học':'✓ Đánh dấu đã học');
+    if(passed){
+      btn.disabled=true;
+      btn.title='Bài này đã được ghi nhận vì bạn đã vượt quiz.';
+    }else{
+      btn.onclick=()=>{const v=read();v[id]=!v[id];write(v);renderLesson();emit()};
+    }
+    holder.appendChild(btn);
+
+    function place(){
+      const shell=document.querySelector('.course-shell');
+      const main=document.querySelector('main');
+      if(shell && shell.parentNode){ shell.parentNode.insertBefore(row,shell); return; }
+      if(main && main.parentNode){ main.parentNode.insertBefore(row,main); return; }
+      const nav=document.querySelector('.top-simple-nav');
+      if(nav) nav.insertAdjacentElement('afterend',row); else document.body.prepend(row);
+    }
+    // course-engine may inject after this DOMContentLoaded callback, so place twice.
+    place();
+    setTimeout(place,0);
+  }
   function refresh(){renderHome();renderLesson()}
   document.addEventListener('DOMContentLoaded',refresh);
   window.addEventListener('avp:course-xp',()=>setTimeout(()=>{syncFromQuiz();refresh();emit()},50));

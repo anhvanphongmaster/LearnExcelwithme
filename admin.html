@@ -13,6 +13,7 @@
 <meta name="theme-color" content="#217346">
 <link rel="stylesheet" href="personal-dashboard.css">
 <link rel="stylesheet" href="cloud-sync-v11.css">
+<link href="theme-polish-v33.css" rel="stylesheet"/>
 </head>
 <body>
 
@@ -56,8 +57,31 @@
   <section id="adminDenied" class="admin-denied" hidden>
     <div>🔒</div>
     <h2>Không có quyền truy cập</h2>
-    <p>Hãy đăng nhập bằng tài khoản đã được đặt <code>profiles.is_admin = true</code>.</p>
-    <a href="auth.html?redirect=admin.html">Đăng nhập tài khoản Admin</a>
+    <p id="adminDeniedMsg">Hãy đăng nhập bằng tài khoản đã được cấp quyền Admin.</p>
+    <ol class="admin-denied-steps">
+      <li>Mở <strong>Đăng nhập</strong> bằng nút bên dưới.</li>
+      <li>Đăng nhập đúng email admin của bạn.</li>
+      <li>Nếu vẫn bị chặn: vào Supabase → SQL Editor chạy lệnh đặt <code>is_admin = true</code> (xem HUONG-DAN bên dưới).</li>
+    </ol>
+    <div class="admin-denied-actions">
+      <a class="admin-denied-primary" href="auth.html?redirect=admin.html">Đăng nhập tài khoản Admin</a>
+      <a class="admin-denied-secondary" href="index.html">← Về trang chủ</a>
+    </div>
+    <details class="admin-denied-help">
+      <summary>Hướng dẫn cấp quyền Admin (Supabase)</summary>
+      <pre>update public.profiles
+set is_admin = true
+where id = (
+  select id from auth.users
+  where email = 'EMAIL_CUA_BAN@example.com'
+);
+
+-- Kiểm tra:
+select id, display_name, is_admin
+from public.profiles
+where is_admin = true;</pre>
+      <p>Thay email bằng email bạn dùng để đăng nhập website, rồi Run trong Supabase SQL Editor.</p>
+    </details>
   </section>
 
   <div id="adminDashboard" hidden>
@@ -192,5 +216,6 @@
 <script src="avp-core.js"></script>
 <script src="personal-dashboard.js"></script>
 <script src="cloud-sync-v11.js"></script>
+<script src="theme-unified-v32.js"></script>
 </body>
 </html>

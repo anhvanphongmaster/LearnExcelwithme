@@ -23,6 +23,8 @@
     {icon:'👤', title:'Dashboard cá nhân', desc:'XP, Level, streak, quiz và tiến độ học', url:'dashboard.html', type:'Cá nhân', keys:'dashboard ca nhan level xp streak tien do huy hieu'},
     {icon:'🪪', title:'Hồ sơ người học', desc:'Tên, avatar, mục tiêu học và hoạt động cá nhân', url:'profile.html', type:'Cá nhân', keys:'ho so profile avatar muc tieu ca nhan nguoi hoc'},
     {icon:'🏆', title:'Thành tích & Nhiệm vụ', desc:'Huy hiệu, nhiệm vụ hằng ngày, XP và streak', url:'achievements.html', type:'Cá nhân', keys:'thanh tich achievement huy hieu nhiem vu hang ngay daily quest xp streak'},
+    {icon:'📚', title:'Bài tập thực hành theo video', desc:'File Excel thực hành theo từng video trên kênh', url:'practice-video.html', type:'Thực hành', keys:'bai tap thuc hanh video tiktok file practice coming soon'},
+    {icon:'📱', title:'Excel Mobile', desc:'Upload và xử lý file Excel ngay trên điện thoại', url:'excel-mobile.html', type:'Công cụ', keys:'excel mobile dien thoai upload xu ly file'},
     {icon:'📥', title:'Tài liệu thực hành', desc:'Các file Excel mẫu để tải xuống và luyện tập', url:'index.html#tai-lieu', type:'Tài liệu', keys:'tai lieu download file mau excel pivot pareto qc'},
     {icon:'ℹ️', title:'Giới thiệu', desc:'Thông tin về Learn Excel with Anh Van Phong', url:'gioithieu.html', type:'Trang', keys:'gioi thieu about'},
     {icon:'📩', title:'Liên hệ', desc:'Gửi câu hỏi hoặc góp ý cho website', url:'lienhe.html', type:'Trang', keys:'lien he contact gop y'}

@@ -4,7 +4,7 @@
  const xp=()=>Number(localStorage.getItem(XPKEY)||0)||0;
  const quizMap=()=>read(QUIZKEY,{});
  const quizCount=()=>Object.values(quizMap()).filter(Boolean).length;
- const completed=()=>{const p=read('avp_lesson_progress_v1',{}),q=quizMap();const map={excel:'excel.html',shortcuts:'phimtatexcel.html',formula:'congthucexcel.html',filter:'filtersort.html',pivot:'pivottable.html',pareto:'bieudopareto.html',report:'baocaoexcel.html',path:'learning-path.html',advanced:'excel-nang-cao.html',powerquery:'power-query-course.html',dax:'power-pivot-dax.html',dash:'dashboard-dong.html',practice:'practice-lab.html',vba:'vba-macro.html',solver:'solver-whatif.html'};return Object.entries(map).filter(([id,url])=>p[id]||q[url]).length};
+ const completed=()=>{const x=read('completedCourses',[]);return Array.isArray(x)?x.length:0};
  const pgDone=()=>Object.values(read('avp_playground_progress_v1',{})).filter(Boolean).length;
  const today=()=>new Date().toISOString().slice(0,10);
  const fmt=s=>{if(!s)return '';const [y,m,d]=s.split('-');return `${d}/${m}/${y}`};

@@ -277,6 +277,36 @@
 <link rel="stylesheet" href="course-engine.css">
 <link rel="stylesheet" href="personal-dashboard.css">
 <link rel="stylesheet" href="cloud-sync-v11.css">
+
+<style id="basic-practice-hub-style">
+.practice-hub{max-width:1120px;margin:48px auto 36px;padding:0 6px}
+.practice-hub-head{text-align:center;margin-bottom:22px}
+.practice-hub-kicker{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;background:#eaf6ef;color:#217346;font-size:12px;font-weight:900;letter-spacing:.05em}
+.practice-hub-head h2{margin:12px 0 7px;color:#217346;font-size:clamp(27px,3.5vw,38px)}
+.practice-hub-head p{margin:0 auto;color:#65756d;max-width:720px;line-height:1.65;font-size:15px}
+.practice-subtitle{display:flex;align-items:center;gap:10px;margin:26px 0 12px;color:#173f2d;font-size:19px;font-weight:900}
+.practice-subtitle:after{content:"";height:1px;flex:1;background:#dce9e1}
+.practice-file-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.practice-file-card{display:flex;flex-direction:column;min-height:190px;padding:18px;border:1px solid #dce9e1;border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(24,92,55,.055);transition:.18s ease}
+.practice-file-card:hover{transform:translateY(-2px);border-color:#a9d1b8;box-shadow:0 12px 28px rgba(24,92,55,.10)}
+.practice-file-icon{font-size:25px;line-height:1;margin-bottom:11px}
+.practice-file-card h3{margin:0 0 7px;color:#185c37;font-size:17px;line-height:1.3}
+.practice-file-card p{margin:0 0 14px;color:#657069;font-size:13px;line-height:1.55;flex:1}
+.practice-file-card a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 13px;border-radius:11px;background:#217346;color:#fff;text-decoration:none;font-size:13px;font-weight:900;align-self:flex-start}
+.practice-file-card a:hover{background:#185c37}
+.practice-file-card.is-extra{min-height:168px;background:#fbfdfc}
+body.dark-mode .practice-hub-kicker{background:#183126;color:#8ee0ad}
+body.dark-mode .practice-hub-head h2,body.dark-mode .practice-subtitle{color:#e8f7ee}
+body.dark-mode .practice-hub-head p{color:#aebfb6}
+body.dark-mode .practice-subtitle:after{background:#2b3e34}
+body.dark-mode .practice-file-card{background:#15221c;border-color:#2d4136;box-shadow:none}
+body.dark-mode .practice-file-card.is-extra{background:#17261f}
+body.dark-mode .practice-file-card h3{color:#dff5e8}
+body.dark-mode .practice-file-card p{color:#abbcb3}
+@media(max-width:850px){.practice-file-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.practice-hub{margin-top:34px;padding:0}.practice-file-grid{grid-template-columns:1fr}.practice-file-card,.practice-file-card.is-extra{min-height:auto}.practice-file-card a{width:100%;box-sizing:border-box}.practice-subtitle{font-size:17px}}
+</style>
+<link href="theme-polish-v33.css" rel="stylesheet"/>
 </head>
 
 
@@ -308,12 +338,12 @@
     <header class="page-header">
 
         <h1>
-            📚 6 chuyên đề Excel nền tảng
+            📊 Học Excel
         </h1>
 
         <p>
-            Đây là trang chính của 6 chuyên đề cốt lõi.
-            Chọn một bài, hoàn thành rồi quay về đây để học bài tiếp theo.
+            Tổng hợp những kiến thức Excel hữu ích
+            từ cơ bản đến thực tế công việc.
         </p>
 
     </header>
@@ -400,11 +430,10 @@
 </div>
 
     <h2 class="section-title">
-        📚 6 chuyên đề cốt lõi
+        📚 Nội dung học Excel
     </h2>
 
 
-        <div class="core-hub-note" style="margin:0 auto 18px;max-width:1000px;padding:14px 16px;border-radius:14px;background:#eef8f2;color:#315b46;border:1px solid #d3e7da;line-height:1.55"><strong>Điều hướng đơn giản:</strong> Trang chủ → 6 chuyên đề Excel → Bài học. Trong mỗi bài luôn có nút về trang này và nút Bài trước / Bài tiếp theo.</div>
         <div class="course-grid">
 
 
@@ -618,6 +647,34 @@
 
         </div>
 
+<section class="practice-hub" id="basic-practice-files">
+  <div class="practice-hub-head">
+    <span class="practice-hub-kicker">📥 FILE THỰC HÀNH CƠ BẢN</span>
+    <h2>Học xong → mở Excel làm ngay</h2>
+    <p>Các file được đặt ngay trong khu học cơ bản để bạn học lý thuyết và thực hành tại cùng một nơi.</p>
+  </div>
+
+  <div class="practice-subtitle">Theo 6 chuyên đề</div>
+  <div class="practice-file-grid">
+    <article class="practice-file-card"><div class="practice-file-icon">⌨️</div><h3>Thực hành Phím tắt</h3><p>10 tình huống thao tác nhanh để luyện các phím tắt Excel thường dùng.</p><a href="downloads/phim-tat-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
+    <article class="practice-file-card"><div class="practice-file-icon">🧮</div><h3>Công thức Excel cơ bản</h3><p>Luyện SUM, AVERAGE, MAX, MIN và tính Thành tiền trên dữ liệu mẫu.</p><a href="downloads/cong-thuc-co-ban-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
+    <article class="practice-file-card"><div class="practice-file-icon">📊</div><h3>File mẫu Pivot Table</h3><p>Dữ liệu mẫu để luyện tổng hợp NG Qty, Model và Lot No.</p><a href="downloads/pivot-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
+    <article class="practice-file-card"><div class="practice-file-icon">📈</div><h3>File mẫu Pareto</h3><p>Dữ liệu lỗi Scratch, Open, Short... để luyện phân tích Pareto.</p><a href="downloads/pareto-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
+    <article class="practice-file-card"><div class="practice-file-icon">🔍</div><h3>Filter &amp; Sort</h3><p>Lọc Model, Line và sắp xếp NG Rate trên dữ liệu Lot thực tế.</p><a href="downloads/filter-sort-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
+    <article class="practice-file-card"><div class="practice-file-icon">📋</div><h3>File mẫu Báo cáo QC</h3><p>Bảng KPI, NG Rate, Top Defect và Action để luyện báo cáo thực tế.</p><a href="downloads/bao-cao-qc.xlsx" download>⬇ Tải file</a></article>
+  </div>
+
+  <div class="practice-subtitle">Bài luyện bổ trợ</div>
+  <div class="practice-file-grid">
+    <article class="practice-file-card is-extra"><div class="practice-file-icon">🧠</div><h3>IF • COUNTIF • SUMIF</h3><p>Phân loại, đếm điều kiện và tính tổng theo bộ phận.</p><a href="downloads/if-countif-sumif-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
+    <article class="practice-file-card is-extra"><div class="practice-file-icon">🔎</div><h3>VLOOKUP &amp; XLOOKUP</h3><p>Tra cứu thông tin nhân viên từ mã NV với bảng dữ liệu mẫu.</p><a href="downloads/vlookup-xlookup-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
+    <article class="practice-file-card is-extra"><div class="practice-file-icon">✍️</div><h3>Xử lý Text</h3><p>Luyện TRIM, UPPER, LOWER và PROPER trên dữ liệu tên/mã.</p><a href="downloads/xu-ly-text-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
+    <article class="practice-file-card is-extra"><div class="practice-file-icon">📅</div><h3>Ngày &amp; Giờ Excel</h3><p>Luyện DAYS, MONTH, YEAR và NETWORKDAYS.</p><a href="downloads/ngay-gio-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
+    <article class="practice-file-card is-extra"><div class="practice-file-icon">🧾</div><h3>SUMPRODUCT cho QC</h3><p>Luyện SUMPRODUCT, tổng NG và giá trị lỗi trên dữ liệu Lot.</p><a href="downloads/sumproduct-qc-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
+    <article class="practice-file-card is-extra"><div class="practice-file-icon">🎨</div><h3>Conditional Formatting</h3><p>Tô màu NG Rate vượt Spec, Data Bar và Lot bất thường.</p><a href="downloads/conditional-formatting-qc-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
+  </div>
+</section>
+
 <section class="learning-path">
 
     <h2>🛣️ Lộ trình học đề xuất</h2>
@@ -730,7 +787,6 @@
 <script src="course-engine.js"></script>
 <script src="personal-dashboard.js"></script>
 <script src="cloud-sync-v11.js"></script>
-<script src="learning-progress.js"></script>
 </body>
 
 </html>

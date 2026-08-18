@@ -78,3 +78,18 @@ body.dark-mode .admin-learning-kpis strong{color:#96dbaf}
 body.dark-mode .admin-funnel-track{background:#26362e}
 @media(max-width:1000px){.admin-learning-kpis{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){.admin-learning-kpis{grid-template-columns:repeat(2,1fr)}.admin-learning-kpis article:last-child{grid-column:1/-1}.admin-funnel-row{grid-template-columns:74px 1fr 58px}}
+
+.admin-denied-steps{text-align:left;max-width:420px;margin:14px auto;padding-left:20px;color:#5c6f65;font-size:13px;line-height:1.7}
+.admin-denied-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}
+.admin-denied-primary{display:inline-flex;min-height:43px;padding:0 15px;align-items:center;border-radius:10px;background:#217346;color:#fff!important;text-decoration:none;font-weight:900;font-size:13px}
+.admin-denied-secondary{display:inline-flex;min-height:43px;padding:0 15px;align-items:center;border-radius:10px;border:1px solid #d5e4db;background:#f7fbf8;color:#215e3b!important;text-decoration:none;font-weight:800;font-size:13px}
+.admin-denied-help{margin:18px auto 0;max-width:480px;text-align:left;border:1px solid #e1ece5;border-radius:12px;padding:10px 12px;background:#f9fcfa}
+.admin-denied-help summary{cursor:pointer;font-weight:800;color:#215e3b;font-size:13px}
+.admin-denied-help pre{white-space:pre-wrap;background:#132019;color:#d8f5e3;padding:12px;border-radius:10px;font-size:12px;line-height:1.5;overflow:auto}
+.admin-denied-help p{margin:8px 0 0;font-size:12px;color:#6a7c72}
+body.dark-mode .admin-gate,body.dark-mode .admin-denied{background:#142019;border-color:#2d4337;color:#edf7f1}
+body.dark-mode .admin-gate strong,body.dark-mode .admin-denied h2{color:#8be1ac}
+body.dark-mode .admin-denied-steps,body.dark-mode .admin-gate p,body.dark-mode .admin-denied p{color:#b8c8bf}
+body.dark-mode .admin-denied-secondary{background:#1a2e24;border-color:#355043;color:#edf7f1!important}
+body.dark-mode .admin-denied-help{background:#152019;border-color:#2d4337}
+body.dark-mode .admin-denied-help summary{color:#8be1ac}

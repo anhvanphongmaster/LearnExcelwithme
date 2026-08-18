@@ -21,7 +21,7 @@
     return window.avpSupabase || null;
   }
   function toast(text){const el=$("adminToast");if(!el)return;el.textContent=text;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1800)}
-  function showDenied(message="Không có quyền Admin."){ $("adminGate").hidden=true;$("adminDashboard").hidden=true;$("adminDenied").hidden=false;const p=$("adminDenied").querySelector("p");if(p&&message)p.textContent=message; }
+  function showDenied(message="Không có quyền Admin."){ $("adminGate").hidden=true;$("adminDashboard").hidden=true;$("adminDenied").hidden=false;const p=$("adminDeniedMsg")||$("adminDenied").querySelector("p");if(p&&message)p.textContent=message; }
   function n(v){return nf.format(Number(v)||0)}
   function num(v){return Number(v)||0}
   function labelLesson(v){const key=String(v||"").split("?")[0].split("/").pop();return lessonNames[key]||key||"(không xác định)"}
