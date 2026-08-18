@@ -11,7 +11,7 @@
    Object.keys(ans).forEach(q=>{const el=document.querySelector('input[name="'+q+'"]:checked');if(el&&el.value===ans[q])score++});
    const result=document.getElementById('plQuizResult');
    const passed=score>=4;try{window.avpAnalytics?.track('quiz_attempt',{page:'practice-lab.html',metadata:{passed,score,total:5}})}catch(e){}
-   if(passed){const s=state(); if(!s.quiz){s.quiz=true;save(s);let q={};try{q=JSON.parse(localStorage.getItem(QKEY)||'{}')}catch(e){}q['practice-lab.html']=true;localStorage.setItem(QKEY,JSON.stringify(q));const old=Number(localStorage.getItem(XPKEY)||0);localStorage.setItem(XPKEY,String(old+45));try{window.avpAnalytics?.track('lesson_complete',{page:'practice-lab.html',metadata:{xp:45}})}catch(e){}try{if(window.AVPGamification&&AVPGamification.addXP)AVPGamification.addXP(45,'Practice Lab')}catch(e){}} result.textContent='✓ '+score+'/5 — Hoàn thành Practice Lab +45 XP'; result.style.color='#17613a';}
+   if(passed){const s=state(); if(!s.quiz){s.quiz=true;save(s);let q={};try{q=JSON.parse(localStorage.getItem(QKEY)||'{}')}catch(e){}q['practice-lab.html']=true;localStorage.setItem(QKEY,JSON.stringify(q));const old=Number(localStorage.getItem(XPKEY)||0);localStorage.setItem(XPKEY,String(old+45));try{window.avpAnalytics?.track('lesson_complete',{page:'practice-lab.html',metadata:{xp:45}})}catch(e){}try{if(window.AVPGamification&&AVPGamification.addXP)AVPGamification.addXP(45,'Practice Lab')}catch(e){}} result.innerHTML='✓ '+score+'/5 — Hoàn thành Practice Lab +45 XP<a class="quiz-next-lesson" href="vba-macro.html">Bài học tiếp theo: VBA / Macro →</a>'; result.style.color='#17613a';}
    else{result.textContent=score+'/5 — Cần ít nhất 4/5';result.style.color='#9b3a2a';}
    update();
  });

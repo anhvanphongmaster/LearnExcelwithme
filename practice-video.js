@@ -106,16 +106,34 @@
     }
   ];
 
-  function isAvailable(item) {
-    if (!item.file) return false;
-    const list = (typeof availablePracticeFiles !== "undefined" && Array.isArray(availablePracticeFiles))
+  function fileList() {
+    return (typeof availablePracticeFiles !== "undefined" && Array.isArray(availablePracticeFiles))
       ? availablePracticeFiles
       : [];
-    return list.indexOf(item.file) !== -1;
+  }
+  function normalizeFile(name) {
+    return String(name || "").replace(/\.xlsx\.xlsx$/i, ".xlsx").toLowerCase();
+  }
+  function resolvedFile(item) {
+    if (!item.file) return "";
+    const want = normalizeFile(item.file);
+    const hit = fileList().find(function (f) { return normalizeFile(f) === want; });
+    return hit || "";
+  }
+  function isAvailable(item) {
+    return !!resolvedFile(item);
+  }
+  function tiktokUrl(item) {
+    const map = (typeof videoTikTokLinks !== "undefined" && videoTikTokLinks) ? videoTikTokLinks : {};
+    return (item.tiktok || map[item.id] || "").trim();
+  }
+  function isReleased(item) {
+    return isAvailable(item) || !!tiktokUrl(item);
   }
 
+
   function updateSummary() {
-    const available = videoPracticeData.filter(isAvailable).length;
+    const available = videoPracticeData.filter(isReleased).length;
     const coming = videoPracticeData.length - available;
     const elA = document.getElementById("pvStatAvailable");
     const elC = document.getElementById("pvStatComing");
@@ -139,14 +157,23 @@
       );
     }
 
-    const avail = isAvailable(item);
-    const status = avail ? "available" : "coming";
-    const badge = avail
-      ? '<span class="pv-badge pv-badge-available">✅ Đã có file</span>'
-      : '<span class="pv-badge pv-badge-coming">⏳ Coming soon</span>';
-    const foot = avail
-      ? '<a class="pv-download" href="downloads/video-practice/' + item.file + '" download>⬇ Tải file thực hành</a>'
+    const fileName = resolvedFile(item);
+    const avail = !!fileName;
+    const tk = tiktokUrl(item);
+    const released = avail || !!tk;
+    const status = released ? "available" : "coming";
+    let badge;
+    if (avail && tk) badge = '<span class="pv-badge pv-badge-available">✅ Đã có video + file</span>';
+    else if (avail) badge = '<span class="pv-badge pv-badge-available">✅ Đã có file</span>';
+    else if (tk) badge = '<span class="pv-badge pv-badge-available">▶ Đã có video</span>';
+    else badge = '<span class="pv-badge pv-badge-coming">⏳ Coming soon</span>';
+    const tkBtn = tk
+      ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer">▶ Xem video TikTok</a>'
+      : '<span class="pv-tiktok-soon">Video TikTok chưa gắn link</span>';
+    const fileBtn = avail
+      ? '<a class="pv-download" href="downloads/video-practice/' + fileName + '" download>⬇ Tải file thực hành</a>'
       : '<span class="pv-locked-note">File sẽ mở khi video được phát hành.</span>';
+    const foot = tkBtn + fileBtn;
     const tags = (item.filterTags || [item.category]).join(" ");
 
     return (
@@ -170,9 +197,9 @@
 
     let html = "";
     videoPracticeData.forEach(function (item) {
-      const avail = isAvailable(item);
-      if (f === "available" && !avail) return;
-      if (f === "coming" && avail) return;
+      const released = isReleased(item);
+      if (f === "available" && !released) return;
+      if (f === "coming" && released) return;
       if (f !== "all" && f !== "available" && f !== "coming") {
         const tags = (item.filterTags || []).join(" ").toLowerCase();
         if (tags.indexOf(f.toLowerCase()) === -1 && item.category.toLowerCase().indexOf(f.toLowerCase()) === -1) return;

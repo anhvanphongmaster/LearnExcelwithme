@@ -10,6 +10,9 @@
    chip.dataset.state='synced';chip.querySelector('span').textContent='✓ Tiến độ có thể đồng bộ cloud';return u;
  }
  function addCenter(){
+   const page=(location.pathname.split('/').pop()||'').toLowerCase();
+   const allow=['dashboard.html','profile.html','achievements.html','achievement-learning.html'];
+   if(allow.indexOf(page)<0) return;
    const host=document.getElementById('personalDashboard')||document.querySelector('.profile-main')||document.querySelector('main');
    if(!host||document.getElementById('v11SyncCenter'))return;
    const card=document.createElement('section');card.id='v11SyncCenter';card.className='v11-sync-card';

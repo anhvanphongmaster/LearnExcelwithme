@@ -726,6 +726,43 @@
   </div>
 </section>
 
+<section class="lesson-tips-panel" style="max-width:1100px;margin:8px auto 28px;padding:0 18px">
+  <div class="course-panel" style="padding:22px">
+    <span class="course-kicker">VÍ DỤ QC</span>
+    <h2 class="course-title" style="font-size:22px;margin-top:10px">Đọc Pivot: Model nào đang kéo NG Rate</h2>
+    <p style="color:#65736b;margin:0 0 16px">Cùng một bảng Ngày · Lot · Model · Input · NG. Mục tiêu: biết Model nào vừa nhiều NG vừa tỷ lệ cao — không chỉ nhìn số tuyệt đối.</p>
+    <ol style="margin:0 0 18px 18px;color:#24382d;line-height:1.7;padding:0">
+      <li>Rows = <strong>Model</strong>.</li>
+      <li>Values = <strong>Sum of Input</strong> và <strong>Sum of NG</strong>.</li>
+      <li>Thêm Values lần nữa: NG → Show Values As → <strong>% of Grand Total</strong> (tỷ trọng lỗi).</li>
+      <li>Sort Sum of NG giảm dần. Model trên cùng là ưu tiên xử lý.</li>
+      <li>Insert → <strong>Slicer</strong> theo Ngày hoặc Line (nếu có) để lọc ca/ngày mà không phá Pivot.</li>
+      <li>Khi thêm lot mới vào sheet nguồn: click Pivot → <strong>Refresh</strong>.</li>
+    </ol>
+    <div class="course-grid" style="margin-top:8px">
+      <div class="course-box">
+        <h3>Cách đọc kết quả</h3>
+        <ul>
+          <li>NG lớn + % cao → ưu tiên số 1</li>
+          <li>NG lớn nhưng % thấp (Input rất lớn) → theo dõi, chưa hẳn khẩn</li>
+          <li>NG nhỏ nhưng % rất cao → lot nhỏ, dễ bị bỏ sót</li>
+        </ul>
+      </div>
+      <div class="course-box">
+        <h3>Đừng làm trong Pivot</h3>
+        <ul>
+          <li>Sửa số tay trong vùng Pivot</li>
+          <li>Gộp ô trên bảng nguồn</li>
+          <li>Copy Pivot rồi quên Refresh tuần sau</li>
+        </ul>
+      </div>
+    </div>
+    <div class="course-practice" style="margin-top:16px">
+      <strong>Bài tập:</strong> Tạo Pivot 3 cột (Input, NG, % NG). Ghi 1 câu: Model nào cần xử lý trước và vì sao. Xong thì làm quiz (+35 XP) rồi sang bài Pareto.
+    </div>
+  </div>
+</section>
+
 <footer class="site-footer">
   <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
   <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
@@ -742,18 +779,18 @@
 <button id="backToTop" onclick="lenDauTrang()">
     ↑
 </button>
-<script src="script.js"></script>
-    <script src="gamification.js"></script><script src="global-search.js"></script>
-    <script src="simple-nav.js"></script>
-<script src="supabase-config.js"></script>
+<script defer src="script.js"></script>
+    <script defer src="gamification.js"></script><script defer src="global-search.js"></script>
+    <script defer src="simple-nav.js"></script>
+<script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 
-<script src="analytics-tracker.js"></script>
-<script src="avp-core.js"></script>
-<script src="course-engine.js"></script>
-<script src="learning-progress.js"></script>
-<script src="personal-dashboard.js"></script>
-<script src="cloud-sync-v11.js"></script>
+<script defer src="analytics-tracker.js"></script>
+<script defer src="avp-core.js"></script>
+<script defer src="course-engine.js"></script>
+<script defer src="learning-progress.js"></script>
+<script defer src="personal-dashboard.js"></script>
+<script defer src="cloud-sync-v11.js"></script>
 </body>
 
 </html>

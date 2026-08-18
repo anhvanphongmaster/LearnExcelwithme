@@ -254,3 +254,15 @@ body.dark-mode .pv-download {
 body.dark-mode .pv-back { color: #8be1ac; }
 
 html, body { overflow-x: hidden; max-width: 100vw; }
+
+.pv-foot{display:flex;flex-direction:column;gap:8px}
+.pv-tiktok{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:40px;padding:0 14px;border-radius:12px;
+  background:#111;color:#fff!important;text-decoration:none;font-weight:800;font-size:14px;
+  width:100%;box-sizing:border-box;
+}
+.pv-tiktok:hover{background:#000}
+.pv-tiktok-soon{
+  display:block;font-size:13px;color:var(--avp-muted,#607168);font-weight:600;
+}

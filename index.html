@@ -797,9 +797,9 @@ body.dark-mode .skill-level-head p,body.dark-mode .skill-level-desc{color:#b5c2b
 body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#202d25;border-color:#304438;color:#e5eee8}
 </style>
 <link rel="stylesheet" href="learning-progress.css">
-<link rel="stylesheet" href="master-roadmap.css">
-<link rel="stylesheet" href="gamification-v8.css">
-<link rel="stylesheet" href="personal-dashboard.css">
+
+
+
 <link rel="stylesheet" href="cloud-sync-v11.css">
 
 <style id="v16-home-modules">
@@ -813,8 +813,69 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
   .home-modules-grid-v16 .home-module-card{min-width:0}
   .home-modules-grid-v16 .home-module-card p{font-size:.82rem;line-height:1.45}
 }
+.avp-continue-cta{
+  margin-top:10px;display:flex;align-items:center;gap:12px;
+  width:100%;max-width:560px;min-height:64px;padding:10px 16px;
+  border-radius:16px;text-decoration:none;box-sizing:border-box;
+  background:#173f2d;color:#fff;border:1px solid #2e6b4a;
+}
+.avp-continue-cta-icon{font-size:18px}
+.avp-continue-cta-copy{flex:1;min-width:0}
+.avp-continue-cta-copy strong{display:block;font-size:15px}
+.avp-continue-cta-copy small{display:block;margin-top:2px;opacity:.8;font-size:12px}
+.avp-continue-cta-arrow{font-size:20px;opacity:.85}
+.avp-continue-cta:hover{background:#125c38}
 </style>
 <link href="theme-polish-v33.css" rel="stylesheet"/>
+
+<style id="home-minimal">
+.avp-hero{text-align:center;}
+.avp-hero-inner{grid-template-columns:1fr !important;max-width:720px !important;margin:0 auto !important;justify-items:center;text-align:center;}
+.avp-copy{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.avp-title,.avp-desc,.avp-tagline{text-align:center;}
+.avp-desc{max-width:28em;margin-left:auto;margin-right:auto;}
+.avp-eyebrow{margin-left:auto;margin-right:auto;}
+.avp-mobile-main-cta-wrap{width:100%;max-width:560px;margin:22px auto 0;display:flex;flex-direction:column;align-items:stretch;gap:10px;}
+.avp-mobile-main-cta,.avp-continue-cta{margin-left:auto;margin-right:auto;width:100%;text-align:left;}
+.avp-mini-info{justify-content:center;margin-left:auto;margin-right:auto;}
+.avp-scroll-hint{display:none !important;}
+.home-path{max-width:1120px;margin:28px auto 56px;padding:0 18px;position:relative;z-index:2;}
+.home-path-inner{
+  background:#fff;
+  border:1px solid #d5e6db;
+  border-radius:24px;
+  padding:28px 24px 22px;
+  box-shadow:0 18px 50px rgba(16,64,40,.10);
+}
+.home-path h2{margin:0 0 6px;color:#185c37;font-size:clamp(22px,3vw,28px);text-align:center;}
+.home-path > .home-path-inner > p{margin:0 0 20px;color:#66756d;text-align:center;}
+.home-path-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+.home-path-card{background:#f7fbf8;border:1px solid #dbe7df;border-radius:16px;padding:16px 16px 12px;}
+.home-path-card span{display:block;font-size:12px;font-weight:800;color:#217346;margin-bottom:6px;}
+.home-path-card h3{margin:0 0 10px;color:#173f2a;font-size:17px;}
+.home-path-card ul{list-style:none;margin:0;padding:0;}
+.home-path-card li{margin:0;}
+.home-path-card a{display:flex;align-items:center;gap:8px;padding:8px 10px;margin:4px 0;color:#24382d;text-decoration:none;font-weight:650;border:1px solid #e3eee7;border-radius:10px;background:#fff;font-size:14px;}
+.home-path-card a:hover{color:#217346;border-color:#9ecfb0;background:#f3faf6;}
+.home-path-card a .hp-ic{width:22px;text-align:center;flex:0 0 22px;}
+.home-path-card--1{background:#f3faf6;border-color:#cfe8d8;}
+.home-path-card--2{background:#f3f6fb;border-color:#d4deef;}
+.home-path-card--3{background:#f8f5fb;border-color:#e2d7ee;}
+.home-path-card--4{background:#fbf7f1;border-color:#ecdcc6;}
+.home-path-more{margin:22px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.home-more-card{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 16px;border-radius:16px;text-decoration:none;border:1px solid #dbe7df;background:#fff;min-height:92px;}
+.home-more-card span{font-size:22px;line-height:1;}
+.home-more-card strong{color:#173f2a;font-size:15px;}
+.home-more-card small{color:#66756d;font-size:12px;}
+.home-more-card:hover{transform:translateY(-2px);}
+.home-more-1{background:#eef7f2;border-color:#c5e0d1;}
+.home-more-2{background:#eef4fb;border-color:#c9d8ee;}
+.home-more-3{background:#f6f1fb;border-color:#dccfea;}
+@media(max-width:700px){.home-path-more{grid-template-columns:1fr;}}
+@media(max-width:900px){.home-path-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:560px){.home-path-grid{grid-template-columns:1fr;}.home-path-inner{padding:20px 14px 16px;}}
+</style>
+
 </head>
 
 
@@ -861,11 +922,7 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
                     <span id="avpTyping"></span><span class="avp-cursor"></span>
                 </div>
 
-                <p class="avp-desc">
-                    Học Excel theo cách dễ hiểu, thực tế và có thể áp dụng ngay vào công việc.
-                    Từ phím tắt, công thức, Pivot Table đến báo cáo và phân tích dữ liệu.<br>
-                    <strong>Liên tục cập nhật bài học mới từ Cơ bản đến Master.</strong>
-                </p>
+                <p class="avp-desc">Học Excel để làm việc — từ cơ bản đến báo cáo QC.</p>
 
                 
 <div class="avp-mobile-main-cta-wrap">
@@ -878,6 +935,14 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
     </span>
     <span class="avp-mobile-main-cta-arrow">→</span>
   </a>
+  <a class="avp-continue-cta" id="homeContinueLearn" href="excel.html">
+    <span class="avp-continue-cta-icon">▶</span>
+    <span class="avp-continue-cta-copy">
+      <strong id="homeContinueTitle">Bắt đầu học Excel cơ bản</strong>
+      <small id="homeContinueMeta">Bài 1/14 • lộ trình Beginner → Master</small>
+    </span>
+    <span class="avp-continue-cta-arrow">→</span>
+  </a>
 </div>
 
 
@@ -889,184 +954,68 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
             </div>
 
             
-<div class="avp-panel avp-panel-features">
-  <div class="avp-panel-head">
-    <div class="home-panel-user" id="homePanelUser">
-        <div class="home-panel-avatar" id="homePanelAvatar">A</div>
-        <div class="home-panel-user-copy">
-          <strong id="homePanelUserName">Người học Excel</strong>
-          <small id="homePanelUserMeta">Tiến độ & huy hiệu của bạn</small>
-          <a id="homePanelLoginBtn"
-             class="home-panel-login-btn"
-             href="auth.html?redirect=index.html">
-            Đăng nhập / Đăng ký
-          </a>
-        </div>
-      </div>
-    <div class="avp-status"><span></span> <div class="home-earned-badges-wrap">
-        <span class="home-earned-badges-label">Huy hiệu đã mở khóa</span>
-        <a href="achievement-learning.html"
-         class="home-earned-badges"
-         id="homeEarnedBadges"
-         title="Xem Hành trình Thành tích"
-         aria-label="Huy hiệu của bạn">
-        </a>
-      </div></div>
-  </div>
-
-  <div class="home-modules-grid home-modules-grid-v16">
-    <a class="home-module-card home-module-card-featured" href="master-learning.html">
-      <div class="module-icon">🎓</div>
-      <h3>Beginner → Master</h3>
-      <p>Lộ trình học có điều kiện mở khóa, quiz, XP và chứng nhận.</p>
-    </a>
-    <a class="home-module-card" href="#ky-nang-excel">
-      <div class="module-icon">🌱</div>
-      <h3>Kỹ năng cơ bản</h3>
-      <p>Nền tảng, phím tắt, công thức, Filter & Sort và các bài cốt lõi.</p>
-    </a>
-    <a class="home-module-card" href="excel-nang-cao.html">
-      <div class="module-icon">🚀</div>
-      <h3>Kỹ năng nâng cao</h3>
-      <p>Xử lý dữ liệu, DAX, Dashboard, VBA, Solver và tự động hóa.</p>
-    </a>
-    <a class="home-module-card" href="power-query-course.html">
-      <div class="module-icon">🔄</div>
-      <h3>Power Query thực chiến</h3>
-      <p>8 bài từ dữ liệu thô đến gộp 10 file thành Master Data.</p>
-    </a>
-    <a class="home-module-card" href="practice-lab.html">
-      <div class="module-icon">🧪</div>
-      <h3>Practice Lab</h3>
-      <p>File Excel thực hành thật: PivotTable, Dashboard và DAX.</p>
-    </a>
-    <a class="home-module-card" href="dashboard.html">
-      <div class="module-icon">📊</div>
-      <h3>Dashboard học tập</h3>
-      <p>XP, Level, streak, tiến độ từng chặng và bài nên học tiếp.</p>
-    </a>
-    <a class="home-module-card" href="achievement-learning.html">
-      <div class="module-icon">🏅</div>
-      <h3>Huy hiệu & Thành tích</h3>
-      <p>Xem huy hiệu đã mở khóa, nhiệm vụ, XP và thành tích cá nhân.</p>
-    </a>
-    <a class="home-module-card excel-mobile-card" href="excel-mobile.html">
-      <div class="module-icon">📱</div>
-      <h3>Excel Mobile</h3>
-      <p>Upload và xử lý file Excel trực tiếp trên điện thoại.</p>
-    </a>
-</div>
-</div>
-
-        </div>
-
-        <div class="avp-scroll-hint">Cuộn xuống để khám phá ↓</div>
+<div class="avp-scroll-hint">Cuộn xuống để khám phá ↓</div>
     
 
 
 </section>
 
 
-<section class="learn-status" id="learningStatus"></section>
-
-<section class="skill-level-section" id="ky-nang-excel">
-  <div class="skill-level-head">
-    <h2>🎯 Chọn cấp độ học Excel</h2>
-    <p>Học chắc nền tảng trước, sau đó chuyển sang nhóm kỹ năng xử lý dữ liệu và tự động hóa thực chiến.</p>
-  </div>
-  <div class="skill-level-grid">
-    <article class="skill-level-card basic">
-      <span class="skill-level-badge">🌱 NỀN TẢNG</span>
-      <h3>Những kỹ năng cơ bản</h3>
-      <p class="skill-level-desc">Toàn bộ các bài học cũ được gom lại thành một lộ trình rõ ràng, phù hợp cho người mới và người cần củng cố nền tảng.</p>
-      <ul class="skill-lessons">
-        <li><a href="excel.html" data-lesson-id="excel"><span>📘 Kiến thức Excel cơ bản</span><small>Học</small></a></li>
-        <li><a href="phimtatexcel.html" data-lesson-id="shortcuts"><span>⌨️ 100 phím tắt Excel</span><small>Học</small></a></li>
-        <li><a href="congthucexcel.html" data-lesson-id="formula"><span>🧮 100 công thức Excel</span><small>Học</small></a></li>
-        <li><a href="filtersort.html" data-lesson-id="filter"><span>🔎 Filter & Sort</span><small>Học</small></a></li>
-        <li><a href="pivottable.html" data-lesson-id="pivot"><span>📊 PivotTable</span><small>Học</small></a></li>
-        <li><a href="bieudopareto.html" data-lesson-id="pareto"><span>📈 Biểu đồ Pareto</span><small>Học</small></a></li>
-        <li><a href="baocaoexcel.html" data-lesson-id="report"><span>📋 Báo cáo Excel / QC</span><small>Học</small></a></li>
-        <li><a href="learning-path.html" data-lesson-id="path"><span>📅 Lộ trình 30 ngày</span><small>Lộ trình</small></a></li>
-      </ul>
-      <a class="skill-level-action" href="excel.html">Bắt đầu từ cơ bản →</a>
-    </article>
-
-    <article class="skill-level-card advanced">
-      <span class="skill-level-badge">🚀 THỰC CHIẾN</span>
-      <h3>Những kỹ năng nâng cao</h3>
-      <p class="skill-level-desc">Các kỹ năng vừa bổ sung và những chuyên đề sẽ được nâng cấp tiếp theo để xử lý dữ liệu lớn, báo cáo và tự động hóa công việc.</p>
-      <ul class="skill-lessons">
-        <li><a href="power-query-course.html"><span>⚡ Power Query — khóa thực chiến 8 bài</span><small>Mới</small></a></li>
-        <li><a href="excel-nang-cao.html#dynamic-array"><span>🧩 Dynamic Array — FILTER / UNIQUE / SORT</span><small>Mới</small></a></li>
-        <li><a href="excel-nang-cao.html#xlookup"><span>🔍 XLOOKUP — tra cứu hiện đại</span><small>Mới</small></a></li>
-        <li><a href="excel-nang-cao.html#let"><span>🧠 LET — tối ưu công thức dài</span><small>Mới</small></a></li>
-        <li><a href="excel-nang-cao.html#data-quality"><span>🛡️ Data Quality — kiểm soát dữ liệu đầu vào</span><small>Mới</small></a></li>
-        <li><a href="power-pivot-dax.html" data-lesson-id="dax"><span>📐 Power Pivot & DAX</span><small>Mới</small></a></li>
-        <li><a href="dashboard-dong.html" data-lesson-id="dash"><span>📊 Dashboard động chuyên nghiệp</span><small>Mới</small></a></li>
-        <li><a href="vba-macro.html" data-lesson-id="vba"><span>🤖 VBA / Macro tự động hóa</span><small>Mới</small></a></li>
-        <li><a href="solver-whatif.html" data-lesson-id="solver"><span>🧪 What-If Analysis & Solver</span><small>Mới</small></a></li>
-      </ul>
-      <a class="skill-level-action secondary" href="excel-nang-cao.html" data-lesson-id="advanced">Vào khu nâng cao →</a>
-    </article>
-  </div>
-</section>
+<!-- Trùng với master-roadmap — ẩn để gọn trang chủ -->
+<section class="learn-status" id="learningStatus" hidden></section>
 
 
-
-
-<section class="master-roadmap" id="master-roadmap">
-  <div class="master-roadmap-head">
-    <span class="master-roadmap-kicker">🧭 Lộ trình từ Cơ bản đến Master</span>
-    <h2>Biết mình đang ở đâu và cần học gì tiếp theo</h2>
-    <p>Website tự theo dõi các bài bạn đã hoàn thành và chia hành trình thành 4 chặng rõ ràng: nền tảng → ứng dụng → nâng cao → tự động hóa Master.</p>
-  </div>
-  <div id="homeXpBadge" style="margin:12px 0 16px;display:inline-flex;padding:9px 13px;border-radius:999px;background:#e8f6ee;color:#17633b;font-weight:700">⚡ XP học tập: <span id="homeXpValue" style="margin-left:6px">0</span></div>
-<div class="master-roadmap-overall">
-    <span>Tiến độ toàn lộ trình</span>
-    <div class="master-roadmap-track"><div class="master-roadmap-fill" id="masterRoadmapFill"></div></div>
-    <strong id="masterRoadmapPct">0%</strong>
-  </div>
-  <div class="master-roadmap-grid">
-    <article class="roadmap-stage stage-1" data-roadmap-stage="0">
-      <div class="roadmap-stage-top"><span class="roadmap-stage-number">01</span><span class="roadmap-stage-status">0/4 hoàn thành</span></div>
-      <h3>🌱 Cơ bản</h3><p>Xây nền vững để thao tác Excel nhanh và đúng.</p>
-      <ul><li>Kiến thức Excel cốt lõi</li><li>100 phím tắt</li><li>100 công thức</li><li>Filter & Sort</li></ul>
-    </article>
-    <article class="roadmap-stage stage-2" data-roadmap-stage="1">
-      <div class="roadmap-stage-top"><span class="roadmap-stage-number">02</span><span class="roadmap-stage-status">0/4 hoàn thành</span></div>
-      <h3>📊 Ứng dụng</h3><p>Biến dữ liệu thành báo cáo có thể dùng ngay trong công việc.</p>
-      <ul><li>PivotTable</li><li>Pareto</li><li>Báo cáo Excel / QC</li><li>Lộ trình 30 ngày</li></ul>
-    </article>
-    <article class="roadmap-stage stage-3" data-roadmap-stage="2">
-      <div class="roadmap-stage-top"><span class="roadmap-stage-number">03</span><span class="roadmap-stage-status">0/3 hoàn thành</span></div>
-      <h3>🚀 Nâng cao</h3><p>Xử lý dữ liệu lớn và xây hệ thống báo cáo chuyên nghiệp.</p>
-      <ul><li>Power Query / Dynamic Array</li><li>Power Pivot & DAX</li><li>Dashboard động</li></ul>
-    </article>
-    <article class="roadmap-stage stage-4" data-roadmap-stage="3">
-      <div class="roadmap-stage-top"><span class="roadmap-stage-number">04</span><span class="roadmap-stage-status">0/2 hoàn thành</span></div>
-      <h3>🏆 Master</h3><p>Tự động hóa và tối ưu những công việc Excel lặp lại.</p>
-      <ul><li>VBA / Macro tự động hóa</li><li>What-If Analysis & Solver</li><li>Power Query Pro — chuẩn bị cập nhật</li><li>DAX nâng cao — chuẩn bị cập nhật</li></ul>
-    </article>
-  </div>
-  <div class="roadmap-next">
-    <div><small>Gợi ý cá nhân hóa</small><strong id="roadmapNextTitle">Cơ bản — tiếp tục lộ trình</strong></div>
-    <a id="roadmapNextLink" href="excel.html">Học tiếp →</a>
-  </div>
-</section>
-
-<section class="fresh-updates" id="cap-nhat-moi">
-  <div class="fresh-updates-card">
-    <div class="fresh-updates-head"><h2>✨ Đang tiếp tục nâng cấp</h2><span class="fresh-updates-live"><i></i> Nội dung mới liên tục</span></div>
-    <div class="fresh-updates-grid">
-      <div class="fresh-update"><em>ĐÃ CÓ</em><b>Power Query — 8 bài + bộ 10 file</b><span>Gộp 10 file thành Master 4.150 dòng, làm sạch, Merge, Append và Refresh.</span></div>
-      <div class="fresh-update"><em>ĐÃ CÓ</em><b>Power Pivot, DAX & Dashboard</b><span>Từ Data Model đến KPI và dashboard động phục vụ báo cáo.</span></div>
-      <div class="fresh-update"><em>TIẾP THEO</em><b>Master Automation</b><span>Macro thực chiến, DAX nâng cao và chuỗi bài tự động hóa công việc.</span></div>
+<section class="home-path" id="ky-nang-excel">
+  <div class="home-path-inner">
+    <h2>Lộ trình 14 bài</h2>
+    <p>Học theo thứ tự. Mỗi bài có ví dụ và quiz.</p>
+    <div class="home-path-grid">
+      <article class="home-path-card home-path-card--1">
+        <span>01 · Beginner</span>
+        <h3>Nền tảng</h3>
+        <ul>
+          <li><a href="excel.html"><span class="hp-ic">📘</span>Excel cơ bản</a></li>
+          <li><a href="phimtatexcel.html"><span class="hp-ic">⌨️</span>Phím tắt</a></li>
+          <li><a href="congthucexcel.html"><span class="hp-ic">🧮</span>Công thức</a></li>
+          <li><a href="filtersort.html"><span class="hp-ic">🔎</span>Filter &amp; Sort</a></li>
+        </ul>
+      </article>
+      <article class="home-path-card home-path-card--2">
+        <span>02 · Analyst</span>
+        <h3>Phân tích</h3>
+        <ul>
+          <li><a href="pivottable.html"><span class="hp-ic">📊</span>PivotTable</a></li>
+          <li><a href="bieudopareto.html"><span class="hp-ic">📈</span>Pareto</a></li>
+          <li><a href="baocaoexcel.html"><span class="hp-ic">📋</span>Báo cáo QC</a></li>
+        </ul>
+      </article>
+      <article class="home-path-card home-path-card--3">
+        <span>03 · Advanced</span>
+        <h3>Thực chiến</h3>
+        <ul>
+          <li><a href="excel-nang-cao.html"><span class="hp-ic">🚀</span>Excel nâng cao</a></li>
+          <li><a href="power-query-course.html"><span class="hp-ic">🔄</span>Power Query</a></li>
+          <li><a href="power-pivot-dax.html"><span class="hp-ic">🧩</span>Power Pivot &amp; DAX</a></li>
+          <li><a href="dashboard-dong.html"><span class="hp-ic">📉</span>Dashboard động</a></li>
+          <li><a href="practice-lab.html"><span class="hp-ic">🧪</span>Practice Lab</a></li>
+        </ul>
+      </article>
+      <article class="home-path-card home-path-card--4">
+        <span>04 · Master</span>
+        <h3>Tự động hóa</h3>
+        <ul>
+          <li><a href="vba-macro.html"><span class="hp-ic">⚙️</span>VBA / Macro</a></li>
+          <li><a href="solver-whatif.html"><span class="hp-ic">🎯</span>What-If &amp; Solver</a></li>
+        </ul>
+      </article>
+    </div>
+    <div class="home-path-more">
+      <a class="home-more-card home-more-1" href="dashboard.html"><span>📊</span><strong>Tiến độ học</strong><small>XP, quiz, bài đang học</small></a>
+      <a class="home-more-card home-more-2" href="excel-mobile.html"><span>📱</span><strong>Excel Mobile</strong><small>Xử lý file trên điện thoại</small></a>
+      <a class="home-more-card home-more-3" href="master-learning.html"><span>🗺️</span><strong>Chi tiết lộ trình</strong><small>Beginner → Master</small></a>
     </div>
   </div>
 </section>
-
-<!-- Trang chủ được rút gọn: tài liệu thực hành và các khu phụ đã chuyển về Practice Lab / trang chuyên môn. -->
 
 <footer class="site-footer">
   <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
@@ -1190,21 +1139,21 @@ function lenDauTrang() {
     ↑
 </button>
 
-<script defer src="script.js"></script>
-    <script defer src="gamification.js"></script><script defer src="global-search.js"></script>
+
+    <script defer src="global-search.js"></script>
     <script defer src="simple-nav.js"></script>
     <script defer src="home-effects.js"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
-    <script defer src="practice-downloads.js"></script>
+    
 
 <script defer src="analytics-tracker.js"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="learning-progress.js"></script>
-<script defer src="master-roadmap.js"></script>
+
 <script>document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("homeXpValue");if(e)e.textContent=localStorage.getItem("avp_xp_v2")||"0"})</script>
-<script defer src="gamification-v8.js"></script>
-<script defer src="personal-dashboard.js"></script>
+
+
 <script defer src="cloud-sync-v11.js"></script>
 </body>
 

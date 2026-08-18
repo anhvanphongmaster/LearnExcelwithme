@@ -58,3 +58,10 @@ body.dark-mode .lesson-home-link:hover{background:#1d2f25;border-color:#4f775f;}
   .lesson-home-link,.lesson-action-status,.lesson-action-row .lesson-complete-btn{flex:1 1 0;}
   .lesson-action-row .lesson-complete-btn{width:100%;}
 }
+
+.lesson-show-all{
+  display:block;width:100%;max-width:1100px;margin:14px auto 22px;
+  min-height:44px;border:1px solid #cfe0d6;border-radius:12px;
+  background:#f5faf7;color:#185c37;font-weight:800;cursor:pointer;
+}
+.lesson-show-all:hover{background:#e8f6ee;border-color:#78b991}

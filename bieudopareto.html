@@ -756,6 +756,42 @@
   </div>
 </section>
 
+<section class="lesson-tips-panel" style="max-width:1100px;margin:8px auto 28px;padding:0 18px">
+  <div class="course-panel" style="padding:22px">
+    <span class="course-kicker">VÍ DỤ QC</span>
+    <h2 class="course-title" style="font-size:22px;margin-top:10px">Làm Pareto từ cột loại lỗi</h2>
+    <p style="color:#65736b;margin:0 0 16px">Có cột Loại lỗi (xước, dính keo, sai size, thiếu ốc…) và cột Số NG.</p>
+    <ol style="margin:0 0 18px 18px;color:#24382d;line-height:1.75;padding:0">
+      <li>Tạo bảng tổng: mỗi loại lỗi một dòng, cột Số NG = SUMIF.</li>
+      <li>Sort Số NG <strong>giảm dần</strong>.</li>
+      <li>Cột % = Số NG / tổng NG.</li>
+      <li>Cột % tích lũy = cộng dồn % từ trên xuống.</li>
+      <li>Vẽ cột (Số NG) + đường (% tích lũy). Đánh dấu nhóm tới ~80%.</li>
+    </ol>
+    <div class="course-grid">
+      <div class="course-box">
+        <h3>Cách đọc</h3>
+        <ul>
+          <li>2–3 loại đầu thường chiếm phần lớn NG</li>
+          <li>Đó là việc làm tuần này, không phải 12 loại cùng lúc</li>
+          <li>Làm lại Pareto sau 2 tuần để xem thứ tự có đổi không</li>
+        </ul>
+      </div>
+      <div class="course-box">
+        <h3>Sai thường gặp</h3>
+        <ul>
+          <li>Quên sort giảm dần</li>
+          <li>Tính % tích lũy trên dữ liệu chưa sort</li>
+          <li>Trục % không để 0–100%, đường Pareto bị “dẹt”</li>
+        </ul>
+      </div>
+    </div>
+    <div class="course-practice" style="margin-top:16px">
+      <strong>Bài tập:</strong> Khoanh 80% loại lỗi đầu. Viết 1 hành động cho loại số 1. Xong quiz (+30 XP) rồi sang Báo cáo QC.
+    </div>
+  </div>
+</section>
+
 <footer class="site-footer">
   <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
   <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
@@ -773,18 +809,18 @@
 <button id="backToTop" onclick="lenDauTrang()">
     ↑
 </button>
-<script src="script.js"></script>
-    <script src="gamification.js"></script><script src="global-search.js"></script>
-    <script src="simple-nav.js"></script>
-<script src="supabase-config.js"></script>
+<script defer src="script.js"></script>
+    <script defer src="gamification.js"></script><script defer src="global-search.js"></script>
+    <script defer src="simple-nav.js"></script>
+<script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 
-<script src="analytics-tracker.js"></script>
-<script src="avp-core.js"></script>
-<script src="course-engine.js"></script>
-<script src="learning-progress.js"></script>
-<script src="personal-dashboard.js"></script>
-<script src="cloud-sync-v11.js"></script>
+<script defer src="analytics-tracker.js"></script>
+<script defer src="avp-core.js"></script>
+<script defer src="course-engine.js"></script>
+<script defer src="learning-progress.js"></script>
+<script defer src="personal-dashboard.js"></script>
+<script defer src="cloud-sync-v11.js"></script>
 </body>
 
 </html>

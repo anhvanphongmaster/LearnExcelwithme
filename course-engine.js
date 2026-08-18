@@ -15,18 +15,26 @@
  'solver-whatif.html':{level:'Master',mins:30,xp:50,obj:['Phân biệt Goal Seek và Solver','Thiết lập biến, mục tiêu và ràng buộc','Giải bài toán tối ưu đơn giản'],practice:'Dùng Goal Seek tìm Input cần thiết để đạt một mục tiêu Output, sau đó thử Solver với ràng buộc.',q:'Goal Seek phù hợp khi bạn muốn?',opts:['Tìm giá trị đầu vào để đạt một kết quả mục tiêu','Gộp file','Tạo PivotTable','Đổi font'],ans:0}
  };
  const LESSON_FLOW=[
+  ["excel.html","Kiến thức Excel cơ bản"],
   ["phimtatexcel.html","Phím tắt"],
   ["congthucexcel.html","Công thức"],
+  ["filtersort.html","Filter & Sort"],
   ["pivottable.html","PivotTable"],
   ["bieudopareto.html","Pareto"],
-  ["filtersort.html","Filter & Sort"],
-  ["baocaoexcel.html","Báo cáo QC"]
+  ["baocaoexcel.html","Báo cáo QC"],
+  ["excel-nang-cao.html","Excel nâng cao"],
+  ["power-query-course.html","Power Query"],
+  ["power-pivot-dax.html","Power Pivot & DAX"],
+  ["dashboard-dong.html","Dashboard động"],
+  ["practice-lab.html","Practice Lab"],
+  ["vba-macro.html","VBA / Macro"],
+  ["solver-whatif.html","What-If & Solver"]
  ];
  function nextLesson(fileName){
    const i=LESSON_FLOW.findIndex(x=>x[0]===fileName);
    if(i<0) return null;
    if(i<LESSON_FLOW.length-1) return LESSON_FLOW[i+1];
-   return ["excel.html","6 chuyên đề Excel"];
+   return ["master-learning.html","Master Learning Path"];
  }
  function file(){return (location.pathname.split('/').pop()||'index.html').toLowerCase()}
  function getXP(){return +(localStorage.getItem(XPKEY)||0)}

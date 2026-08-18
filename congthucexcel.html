@@ -1232,6 +1232,40 @@
   </div>
 </section>
 
+<section class="lesson-tips-panel" style="max-width:1100px;margin:8px auto 28px;padding:0 18px">
+  <div class="course-panel" style="padding:22px">
+    <span class="course-kicker">VÍ DỤ QC</span>
+    <h2 class="course-title" style="font-size:22px;margin-top:10px">3 công thức trên bảng Lot / Model / Input / NG</h2>
+    <p style="color:#65736b;margin:0 0 16px">Giả sử cột: A Ngày · B Lot · C Model · D Input · E NG. Hàng 1 là tiêu đề, dữ liệu từ hàng 2.</p>
+    <ol style="margin:0 0 18px 18px;color:#24382d;line-height:1.75;padding:0">
+      <li><strong>NG Rate từng dòng:</strong> <code>=IF(D2=0,"",E2/D2)</code> rồi định dạng %.</li>
+      <li><strong>Tổng NG một Model:</strong> <code>=SUMIF(C:C,"ABC-01",E:E)</code></li>
+      <li><strong>Đếm lot NG Rate &gt; 5%:</strong> thêm cột F là NG Rate, rồi <code>=COUNTIF(F:F,"&gt;5%")</code> (hoặc COUNTIFS nếu lọc thêm Model).</li>
+    </ol>
+    <div class="course-grid">
+      <div class="course-box">
+        <h3>Nên</h3>
+        <ul>
+          <li>Kéo công thức trên Table (cột tự giãn)</li>
+          <li>Khóa ô tiêu thức bằng $ khi cần</li>
+          <li>Đối chiếu 2–3 dòng bằng máy tính tay</li>
+        </ul>
+      </div>
+      <div class="course-box">
+        <h3>Tránh</h3>
+        <ul>
+          <li>Chia cho Input = 0 mà không bọc IF</li>
+          <li>VLOOKUP khi mã không ở cột trái — dùng XLOOKUP</li>
+          <li>Copy giá trị rồi xóa công thức khi còn phải cập nhật</li>
+        </ul>
+      </div>
+    </div>
+    <div class="course-practice" style="margin-top:16px">
+      <strong>Bài tập:</strong> Tạo cột NG Rate + 1 ô tổng NG của Model bạn chọn. Xong quiz (+25 XP) rồi sang Filter &amp; Sort.
+    </div>
+  </div>
+</section>
+
 <footer class="site-footer">
   <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
   <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
@@ -1295,20 +1329,20 @@
 <button id="backToTop" onclick="lenDauTrang()">
     ↑
 </button>
-<script src="script.js"></script>
-    <script src="gamification.js"></script><script src="global-search.js"></script>
-    <script src="simple-nav.js"></script>
+<script defer src="script.js"></script>
+    <script defer src="gamification.js"></script><script defer src="global-search.js"></script>
+    <script defer src="simple-nav.js"></script>
 
 
-<script src="supabase-config.js"></script>
+<script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 
-<script src="analytics-tracker.js"></script>
-<script src="avp-core.js"></script>
-<script src="course-engine.js"></script>
-<script src="learning-progress.js"></script>
-<script src="personal-dashboard.js"></script>
-<script src="cloud-sync-v11.js"></script>
+<script defer src="analytics-tracker.js"></script>
+<script defer src="avp-core.js"></script>
+<script defer src="course-engine.js"></script>
+<script defer src="learning-progress.js"></script>
+<script defer src="personal-dashboard.js"></script>
+<script defer src="cloud-sync-v11.js"></script>
 </body>
 
 </html>

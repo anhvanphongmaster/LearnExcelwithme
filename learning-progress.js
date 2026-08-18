@@ -32,6 +32,10 @@
   function renderLesson(){
     const id=currentId();
     if(!id)return;
+    if(document.body.classList.contains('core-topic-page')){
+      document.querySelectorAll('.lesson-action-row,.avp-page-back-wrap').forEach(function(el){el.style.display='none'});
+      return;
+    }
     const item=lessons.find(x=>x.id===id);
     const {p,q}=state();
     const passed=!!q[item.url],isDone=completed(item,p,q);
@@ -73,8 +77,111 @@
     place();
     setTimeout(place,0);
   }
-  function refresh(){renderHome();renderLesson()}
-  document.addEventListener('DOMContentLoaded',refresh);
+
+  function renderContinue(){
+    const a=document.getElementById('homeContinueLearn');
+    if(!a) return;
+    const title=document.getElementById('homeContinueTitle');
+    const meta=document.getElementById('homeContinueMeta');
+    const {p,q}=state();
+    const next=lessons.find(x=>!completed(x,p,q));
+    let last=null;
+    try{last=JSON.parse(localStorage.getItem('avp_last_lesson_v1')||'null')}catch(e){}
+    if(next){
+      a.href=next.url;
+      if(title) title.textContent='Tiếp tục: '+next.title;
+      const i=lessons.findIndex(x=>x.url===next.url)+1;
+      if(meta) meta.textContent='Bài '+i+'/'+lessons.length+(last&&last.title?' • vừa xem: '+last.title:'');
+    }else{
+      a.href='master-learning.html';
+      if(title) title.textContent='Bạn đã hoàn thành lộ trình';
+      if(meta) meta.textContent='Xem Master Learning Path và chứng nhận';
+    }
+  }
+
+  function compactCatalog(root, items, limit, moreLabel){
+    if(!root || items.length<=limit) return;
+    if(root.dataset.compactReady) return;
+    root.dataset.compactReady='1';
+    function apply(open){
+      items.forEach(function(el,i){ el.style.display = (!open && i>=limit) ? 'none' : ''; });
+    }
+    apply(false);
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.className='lesson-show-all';
+    btn.textContent=moreLabel+' ('+items.length+')';
+    btn.addEventListener('click',function(){
+      var open=btn.dataset.open==='1';
+      apply(!open);
+      btn.dataset.open=open?'0':'1';
+      btn.textContent=open?(moreLabel+' ('+items.length+')'):'Thu gọn danh sách';
+    });
+    root.insertAdjacentElement('afterend',btn);
+    return btn;
+  }
+  function setupShortcutCompact(){
+    var box=document.getElementById('shortcutContainer');
+    if(!box) return;
+    function run(){
+      var cards=[].slice.call(box.querySelectorAll('.shortcut-card'));
+      if(!cards.length) return;
+      delete box.dataset.compactReady;
+      var old=box.nextElementSibling;
+      if(old && old.classList.contains('lesson-show-all')) old.remove();
+      var search=document.getElementById('shortcutSearch');
+      var filtering=search && search.value.trim();
+      var cat=document.querySelector('.shortcut-filter.active');
+      var notAll=cat && cat.textContent.trim()!=='Tất cả';
+      if(filtering || notAll){ cards.forEach(function(el){ el.style.display=''; }); return; }
+      compactCatalog(box, cards, 10, 'Xem tất cả phím tắt');
+    }
+    run();
+    var obs=new MutationObserver(run);
+    obs.observe(box,{childList:true});
+  }
+  function setupFormulaCompact(){
+    var table=document.getElementById('formulaTable');
+    if(!table) return;
+    var rows=[].slice.call(table.querySelectorAll('tbody tr'));
+    compactCatalog(table, rows, 10, 'Xem tất cả công thức');
+    var input=document.getElementById('searchInput');
+    if(input){
+      input.addEventListener('input',function(){
+        var btn=table.nextElementSibling;
+        if(input.value.trim()){
+          rows.forEach(function(el){ /* leave filter script to hide */ });
+          if(btn && btn.classList.contains('lesson-show-all')) btn.style.display='none';
+        }else if(btn){ btn.style.display=''; }
+      });
+    }
+  }
+  function setupLongLesson(){
+    var main=document.querySelector('main');
+    if(!main) return;
+    var blocks=[].slice.call(main.children).filter(function(el){
+      return el.matches('section, article, div') && !el.classList.contains('course-shell') && !el.classList.contains('lesson-tips-panel');
+    });
+    if(blocks.length<=2) return;
+    var extra=blocks.slice(2);
+    extra.forEach(function(el,i){ if(i>0) el.classList.add('lesson-extra-block'); });
+    var firstExtra=extra[0];
+    if(!firstExtra) return;
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.className='lesson-show-all';
+    btn.textContent='Xem thêm nội dung bài học';
+    firstExtra.parentNode.insertBefore(btn, extra[1]||null);
+    extra.slice(1).forEach(function(el){ el.style.display='none'; });
+    btn.addEventListener('click',function(){
+      var open=btn.dataset.open==='1';
+      extra.slice(1).forEach(function(el){ el.style.display=open?'none':''; });
+      btn.dataset.open=open?'0':'1';
+      btn.textContent=open?'Xem thêm nội dung bài học':'Thu gọn nội dung';
+    });
+  }
+  function refresh(){renderHome();renderLesson();renderContinue()}
+  document.addEventListener('DOMContentLoaded',function(){refresh();setupShortcutCompact();setupFormulaCompact();setupLongLesson();});
   window.addEventListener('avp:course-xp',()=>setTimeout(()=>{syncFromQuiz();refresh();emit()},50));
   window.addEventListener('avp:progress-changed',()=>{renderHome()});
   window.addEventListener('storage',e=>{if([KEY,QUIZKEY].includes(e.key))refresh()});

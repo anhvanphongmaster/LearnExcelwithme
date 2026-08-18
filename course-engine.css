@@ -116,11 +116,22 @@ body.dark-mode .quiz-reward {
 }
 
 .quiz-next-lesson{
-  display:inline-flex;align-items:center;justify-content:center;
-  margin:12px 0 0;min-height:44px;padding:0 16px;border-radius:12px;
-  background:#217346;color:#fff!important;text-decoration:none;font-weight:800;
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  margin:14px 0 0;
+  min-height:48px;
+  padding:12px 16px;
+  border-radius:12px;
+  background:#217346 !important;
+  color:#fff !important;
+  text-decoration:none !important;
+  font-weight:800 !important;
+  font-size:16px !important;
+  box-sizing:border-box;
 }
-.quiz-next-lesson:hover{background:#185c37}
-.quiz-result{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.quiz-next-lesson:hover{background:#185c37 !important; color:#fff !important;}
+.quiz-result{display:flex;flex-direction:column;align-items:stretch;gap:8px;font-weight:700;}
 #themeToggle,.top-theme-button{display:none!important}
 body.dark-mode{background:#f4f7f5!important;color:#222!important}
