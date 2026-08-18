@@ -11,14 +11,28 @@
     "dashboard-dong.html":"Dashboard động","vba-macro.html":"VBA / Macro","solver-whatif.html":"What-If & Solver","practice-lab.html":"Practice Lab"
   };
 
-  async function waitForClient(timeout=3500){
+  async function waitForClient(timeout=8000){
     const start=Date.now();
     while(Date.now()-start<timeout){
       if(window.avpSupabase) return window.avpSupabase;
       if(window.AVP_SUPABASE_CONFIGURED===false) return null;
-      await new Promise(r=>setTimeout(r,80));
+      await new Promise(r=>setTimeout(r,100));
     }
     return window.avpSupabase || null;
+  }
+  async function waitForSession(client, timeout=8000){
+    const start=Date.now();
+    while(Date.now()-start<timeout){
+      try{
+        const {data}=await client.auth.getSession();
+        if(data?.session?.user) return data.session;
+      }catch(e){}
+      await new Promise(r=>setTimeout(r,150));
+    }
+    try{
+      const {data}=await client.auth.getSession();
+      return data?.session || null;
+    }catch(e){ return null; }
   }
   function toast(text){const el=$("adminToast");if(!el)return;el.textContent=text;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1800)}
   function showDenied(message="Không có quyền Admin."){ $("adminGate").hidden=true;$("adminDashboard").hidden=true;$("adminDenied").hidden=false;const p=$("adminDeniedMsg")||$("adminDenied").querySelector("p");if(p&&message)p.textContent=message; }
@@ -77,15 +91,39 @@
       renderLearningSummary(learning||{});renderFunnel(funnel||[]);renderRanking("topCompletedLessons",completed||[],"lesson","completed_users",labelLesson);renderQuizDifficulty(difficulty||[]);renderNewUsers(newUsers||[]);
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
     }catch(error){
-      console.error(error);const msg=String(error?.message||"");
-      if(/admin access required|permission|not authenticated|JWT/i.test(msg))showDenied("Tài khoản hiện tại chưa được cấp quyền Admin.");
-      else if(/function .* does not exist|Could not find the function|schema cache/i.test(msg))showDenied("Thiếu SQL Analytics. Hãy chạy analytics-setup.sql rồi admin-v15-upgrade.sql trong Supabase SQL Editor.");
-      else showDenied(`Không tải được Analytics: ${msg || "Lỗi không xác định"}`);
+      console.error(error);
+      const msg=String(error?.message||error||"");
+      const details=String(error?.details||error?.hint||"");
+      if(/admin access required/i.test(msg))
+        showDenied("RPC báo admin access required. Bạn đã login nhưng server chưa nhận is_admin=true cho session này. Đăng xuất → đăng nhập lại. Email: doananhtuant02@gmail.com");
+      else if(/not authenticated|JWT|invalid claim/i.test(msg))
+        showDenied("Session hết hạn hoặc chưa login. Hãy đăng nhập lại trên live.");
+      else if(/function .* does not exist|Could not find the function|schema cache/i.test(msg))
+        showDenied("Thiếu SQL Analytics hoặc schema cache. Trong Supabase SQL Editor chạy: NOTIFY pgrst, 'reload schema'; rồi F5 lại admin.");
+      else if(/permission denied/i.test(msg))
+        showDenied("Permission denied khi gọi RPC. Kiểm tra GRANT EXECUTE cho role authenticated.");
+      else
+        showDenied(`Không tải được Analytics: ${msg}${details?(" — "+details):""}`);
     }finally{$("adminRefresh").disabled=false}
   }
   async function init(){
-    client=await waitForClient();if(!client){showDenied("Supabase chưa được cấu hình hoặc API key chưa hoạt động.");return}
-    const {data}=await client.auth.getSession();if(!data?.session?.user){showDenied("Bạn chưa đăng nhập. Hãy đăng nhập bằng tài khoản Admin.");return}
+    client=await waitForClient();
+    if(!client){showDenied("Supabase chưa được cấu hình hoặc API key chưa hoạt động. Kiểm tra supabase-config.js trên live.");return}
+    const session=await waitForSession(client);
+    if(!session?.user){
+      showDenied("Bạn chưa đăng nhập trên live. Hãy bấm Đăng nhập, dùng đúng email doananhtuant02@gmail.com, rồi quay lại trang này.");
+      return;
+    }
+    // Chẩn đoán nhanh quyền admin qua RPC helper (nếu có)
+    try{
+      const {data:isAdm, error:admErr}=await client.rpc("is_admin_user");
+      if(admErr){
+        console.warn("is_admin_user rpc:", admErr);
+      }else if(isAdm===false){
+        showDenied("Session đã login nhưng is_admin_user() = false. Hãy đăng xuất/đăng nhập lại. Nếu vẫn sai, chạy lại SQL set is_admin = true.");
+        return;
+      }
+    }catch(e){ console.warn(e); }
     loadDashboard();
   }
   $("adminPeriod")?.addEventListener("change",()=>{currentDays=Number($("adminPeriod").value)||30;loadDashboard()});
