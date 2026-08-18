@@ -307,3 +307,9 @@
     setTimeout(hideDupBack, 200);
   });
 })();
+
+document.addEventListener("DOMContentLoaded", function(){
+  document.querySelectorAll(".site-footer-brand").forEach(function(el){
+    el.textContent = "© 2026 Learn Excel with Anh Van Phong. Bảo lưu mọi quyền.";
+  });
+});
