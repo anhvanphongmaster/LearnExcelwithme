@@ -1,0 +1,302 @@
+/* ===== V23: SIX CORE TOPICS — CLEAN LESSON UI ===== */
+body.core-topic-page{
+  background:#f5f8f6;
+}
+body.dark-mode.core-topic-page{
+  background:#0f1713;
+}
+
+/* Hero/header of the six legacy lesson pages */
+body.core-topic-page > header{
+  padding:42px 20px 38px !important;
+  min-height:0 !important;
+  background:linear-gradient(135deg,#17643d 0%,#217346 60%,#2d8454 100%) !important;
+  color:#fff !important;
+  text-align:center !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+body.core-topic-page > header h1{
+  margin:0 0 10px !important;
+  color:#fff !important;
+  font-size:clamp(30px,4vw,45px) !important;
+  line-height:1.15 !important;
+  letter-spacing:-.5px !important;
+}
+body.core-topic-page > header p{
+  margin:0 auto !important;
+  max-width:720px !important;
+  color:rgba(255,255,255,.88) !important;
+  font-size:clamp(15px,2vw,19px) !important;
+  line-height:1.6 !important;
+}
+
+/* Main nav: one consistent compact bar */
+body.core-topic-page .top-simple-nav{
+  position:sticky !important;
+  top:0 !important;
+  min-height:64px !important;
+  padding:10px max(16px,calc((100vw - 1120px)/2)) !important;
+  background:rgba(255,255,255,.96) !important;
+  border-bottom:1px solid #dfe9e3 !important;
+  box-shadow:0 6px 18px rgba(17,76,45,.05) !important;
+}
+body.dark-mode.core-topic-page .top-simple-nav{
+  background:rgba(18,28,22,.97) !important;
+  border-color:#2a3c31 !important;
+}
+
+/* Completion button should never fall back to browser-native styling */
+body.core-topic-page .lesson-progress-strip{
+  width:min(1120px,calc(100% - 32px)) !important;
+  max-width:none !important;
+  margin:18px auto 8px !important;
+  padding:0 !important;
+  display:flex !important;
+  justify-content:flex-end !important;
+}
+body.core-topic-page .lesson-complete-btn{
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  min-height:42px !important;
+  padding:0 15px !important;
+  border:1px solid #b9d8c5 !important;
+  border-radius:12px !important;
+  background:#217346 !important;
+  color:#fff !important;
+  font:800 14px/1 Arial,sans-serif !important;
+  box-shadow:0 8px 18px rgba(33,115,70,.13) !important;
+}
+body.core-topic-page .lesson-complete-btn.is-done,
+body.core-topic-page .lesson-complete-btn:disabled{
+  background:#e8f5ed !important;
+  color:#17633b !important;
+  border-color:#a9d3b8 !important;
+  box-shadow:none !important;
+}
+body.dark-mode.core-topic-page .lesson-complete-btn.is-done,
+body.dark-mode.core-topic-page .lesson-complete-btn:disabled{
+  background:#183326 !important;
+  color:#a5ebbf !important;
+  border-color:#315c43 !important;
+}
+
+/* Parent link: smaller, cleaner, no duplicate visual weight */
+body.core-topic-page .avp-page-back-wrap{
+  width:min(1120px,calc(100% - 32px)) !important;
+  margin:10px auto 8px !important;
+}
+body.core-topic-page .avp-page-back{
+  min-height:40px !important;
+  padding:0 14px !important;
+  border-radius:12px !important;
+  font-size:13px !important;
+  box-shadow:none !important;
+}
+
+/* Compact lesson toolbar: breadcrumb + progress + prev/all/next */
+body.core-topic-page .core-topic-nav{
+  width:min(1080px,calc(100% - 32px)) !important;
+  margin:18px auto 24px !important;
+  padding:14px !important;
+  background:#ffffff !important;
+  border:1px solid #d9e7df !important;
+  border-radius:18px !important;
+  box-shadow:0 10px 28px rgba(19,76,45,.07) !important;
+  color:#284b39 !important;
+}
+body.dark-mode.core-topic-page .core-topic-nav{
+  background:#15231b !important;
+  border-color:#2a4034 !important;
+  color:#d7e8de !important;
+}
+body.core-topic-page .core-topic-top{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:14px !important;
+  padding:0 2px 12px !important;
+  border-bottom:1px solid #edf2ef !important;
+  margin-bottom:12px !important;
+}
+body.dark-mode.core-topic-page .core-topic-top{border-color:#26392e !important;}
+body.core-topic-page .core-topic-crumb{
+  margin:0 !important;
+  display:flex !important;
+  gap:7px !important;
+  align-items:center !important;
+  flex-wrap:wrap !important;
+  color:#73827a !important;
+  font-size:12px !important;
+  min-width:0 !important;
+}
+body.core-topic-page .core-topic-crumb a{
+  color:#217346 !important;
+  font-weight:850 !important;
+  text-decoration:none !important;
+}
+body.core-topic-page .core-topic-crumb strong{color:#173f2d !important;}
+body.dark-mode.core-topic-page .core-topic-crumb strong{color:#e6f4eb !important;}
+body.core-topic-page .core-topic-status{flex:0 0 auto !important;}
+body.core-topic-page .core-topic-status .lesson-complete-btn{
+  min-height:38px !important;
+  padding:0 13px !important;
+  border-radius:11px !important;
+  border:1px solid #b9d8c5 !important;
+  background:#eef8f2 !important;
+  color:#17633b !important;
+  box-shadow:none !important;
+  font:850 12px/1 Arial,sans-serif !important;
+  cursor:pointer !important;
+}
+body.core-topic-page .core-topic-status .lesson-complete-btn:hover{
+  background:#e3f4e9 !important;
+  border-color:#8fc9a4 !important;
+}
+body.core-topic-page .core-topic-status .lesson-complete-btn.is-done,
+body.core-topic-page .core-topic-status .lesson-complete-btn:disabled{
+  background:#217346 !important;
+  color:#fff !important;
+  border-color:#217346 !important;
+  opacity:1 !important;
+}
+body.dark-mode.core-topic-page .core-topic-status .lesson-complete-btn{
+  background:#1b3024 !important;
+  color:#a6e7bd !important;
+  border-color:#315441 !important;
+}
+body.dark-mode.core-topic-page .core-topic-status .lesson-complete-btn.is-done,
+body.dark-mode.core-topic-page .core-topic-status .lesson-complete-btn:disabled{
+  background:#287d4d !important;
+  color:#fff !important;
+  border-color:#3b9861 !important;
+}
+body.core-topic-page .core-topic-actions{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) !important;
+  gap:9px !important;
+  align-items:center !important;
+}
+body.core-topic-page .core-topic-actions a{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-height:42px !important;
+  padding:0 12px !important;
+  border-radius:12px !important;
+  font-size:13px !important;
+  font-weight:850 !important;
+  text-decoration:none !important;
+  text-align:center !important;
+  white-space:normal !important;
+  transition:.16s ease !important;
+}
+body.core-topic-page .core-topic-prev,
+body.core-topic-page .core-topic-next{
+  background:#f4f8f5 !important;
+  color:#205f3c !important;
+  border:1px solid #dbe9e1 !important;
+}
+body.core-topic-page .core-topic-prev:hover,
+body.core-topic-page .core-topic-next:hover{
+  background:#e9f5ed !important;
+  border-color:#b9d9c5 !important;
+  color:#164f31 !important;
+}
+body.core-topic-page .core-topic-all{
+  background:#217346 !important;
+  color:#ffffff !important;
+  border:1px solid #217346 !important;
+  padding-inline:18px !important;
+  box-shadow:0 5px 14px rgba(33,115,70,.14) !important;
+}
+body.core-topic-page .core-topic-all:hover{background:#185c37 !important;}
+body.dark-mode.core-topic-page .core-topic-prev,
+body.dark-mode.core-topic-page .core-topic-next{
+  background:#1a2b21 !important;
+  color:#9fe2b7 !important;
+  border-color:#30483a !important;
+}
+body.dark-mode.core-topic-page .core-topic-all{
+  background:#287d4d !important;
+  border-color:#3b9861 !important;
+  color:#fff !important;
+}
+/* Core topics use the toolbar above, not a second back/progress bar. */
+body.core-topic-page .avp-page-back-wrap,
+body.core-topic-page > .lesson-progress-strip{display:none !important;}
+
+@media(max-width:700px){
+  body.core-topic-page .core-topic-nav{
+    width:calc(100% - 24px) !important;
+    margin:12px auto 18px !important;
+    padding:12px !important;
+    border-radius:16px !important;
+  }
+  body.core-topic-page .core-topic-top{
+    align-items:flex-start !important;
+    flex-direction:column !important;
+    gap:9px !important;
+  }
+  body.core-topic-page .core-topic-status,
+  body.core-topic-page .core-topic-status .lesson-complete-btn{width:100% !important;}
+  body.core-topic-page .core-topic-status .lesson-complete-btn{justify-content:center !important;}
+  body.core-topic-page .core-topic-actions{grid-template-columns:1fr 1fr !important;}
+  body.core-topic-page .core-topic-all{grid-column:1/-1 !important;grid-row:1 !important;}
+  body.core-topic-page .core-topic-actions a{min-height:42px !important;font-size:12px !important;padding:0 8px !important;}
+}
+
+/* Page content: normalize legacy cards */
+body.core-topic-page main{
+  width:min(1120px,calc(100% - 32px)) !important;
+  max-width:1120px !important;
+  margin:0 auto 40px !important;
+  padding:0 !important;
+}
+body.core-topic-page main > .card,
+body.core-topic-page main .card{
+  border-radius:18px !important;
+  border:1px solid #dfe9e3 !important;
+  box-shadow:0 8px 24px rgba(24,92,55,.055) !important;
+}
+body.dark-mode.core-topic-page main > .card,
+body.dark-mode.core-topic-page main .card{
+  background:#16221b !important;
+  border-color:#2b4034 !important;
+  color:#dce9e1 !important;
+}
+
+/* Remove legacy duplicate bottom back link — top navigation already handles this */
+body.core-topic-page main > .back{
+  display:none !important;
+}
+
+@media(max-width:700px){
+  body.core-topic-page > header{
+    padding:30px 16px 28px !important;
+  }
+  body.core-topic-page .lesson-progress-strip,
+  body.core-topic-page .avp-page-back-wrap,
+  body.core-topic-page .core-topic-nav,
+  body.core-topic-page main{
+    width:calc(100% - 24px) !important;
+  }
+  body.core-topic-page .lesson-progress-strip{
+    margin-top:12px !important;
+  }
+  body.core-topic-page .lesson-complete-btn{
+    width:100% !important;
+    justify-content:center !important;
+  }
+  body.core-topic-page .core-topic-actions{
+    grid-template-columns:1fr 1fr !important;
+  }
+  body.core-topic-page .core-topic-all{
+    grid-column:1/-1 !important;
+    grid-row:1 !important;
+  }
+  body.core-topic-page .core-topic-actions a{
+    min-height:42px !important;
+    font-size:12px !important;
+  }
+}

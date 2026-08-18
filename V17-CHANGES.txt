@@ -1,0 +1,7 @@
+V17 HOME UX CLEANUP
+- Trang chủ chỉ còn 5 tầng: Hero / 8 mục chính / Master Roadmap / Thực hành & Công cụ / Giới thiệu + Footer.
+- Bỏ khỏi Home các khối trùng: Kỹ năng cơ bản-nâng cao dạng dài, CTA Practice Lab riêng, CTA Master riêng, Đang tiếp tục nâng cấp, Nội dung hiện có, Tài liệu thực hành dài, Lộ trình 30 ngày showcase, Tools Center showcase, QC Dashboard showcase.
+- Giữ toàn bộ file thực hành cũ bằng cách chuyển thư viện sang Practice Lab (#basic-library).
+- Gộp Practice Lab, Power Query, Tools Center và QC Dashboard vào một khối Thực hành & Công cụ.
+- Link Kỹ năng cơ bản trên 8 ô chính chuyển sang Master Learning Path thay vì anchor section đã xóa.
+- Kiểm tra: 38 HTML, không link nội bộ thiếu, không duplicate ID, toàn bộ JS qua node --check.

@@ -1,8 +1,11 @@
+body{padding-top:72px}
 
 /* ===== SIMPLE TOP NAV ===== */
 .top-simple-nav{
-  position:sticky;
+  position:fixed;
   top:0;
+  left:0;
+  right:0;
   z-index:1200;
   width:100%;
   display:flex;
@@ -1296,9 +1299,9 @@ body.dark-mode .avp-back-to-top{
 
 .avp-panel.avp-panel-features{
   width:100% !important;
-  max-width:520px !important;
+  max-width:460px !important;
   min-width:0 !important;
-  padding:18px !important;
+  padding:14px !important;
   box-sizing:border-box !important;
   border-radius:22px !important;
 }
@@ -1328,8 +1331,8 @@ body.dark-mode .avp-back-to-top{
 .avp-panel-features .home-module-card{
   display:block !important;
   min-width:0 !important;
-  min-height:114px !important;
-  padding:13px !important;
+  min-height:100px !important;
+  padding:12px !important;
   box-sizing:border-box !important;
   border:1px solid rgba(159,232,188,.14) !important;
   border-radius:14px !important;
@@ -1502,50 +1505,175 @@ body > header + .avp-page-back-wrap{
 
 
 /* ===== EXCEL MOBILE HERO CARD ===== */
+/* Excel Mobile cùng ô vuông như các card khác */
 .avp-panel-features .excel-mobile-card{
-  grid-column:1 / -1 !important;
-  min-height:82px !important;
-  display:grid !important;
-  grid-template-columns:auto 1fr !important;
-  grid-template-rows:auto auto !important;
-  column-gap:12px !important;
-  align-content:center !important;
+  grid-column: auto !important;
 }
-.avp-panel-features .excel-mobile-card .module-icon{
-  grid-row:1 / 3 !important;
-  align-self:center !important;
-  margin:0 !important;
-  font-size:25px !important;
+
+/* ===== CORE TOPIC NAV (6 chuyên đề) ===== */
+.core-topic-nav {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 12px 20px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-.avp-panel-features .excel-mobile-card h3{
-  margin:0 0 3px !important;
+.core-topic-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
-.avp-panel-features .excel-mobile-card p{
-  margin:0 !important;
+.core-topic-crumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #607168;
+  font-weight: 600;
 }
-@media(max-width:420px){
-  .avp-panel-features .excel-mobile-card{
-    grid-column:auto !important;
+.core-topic-crumb a {
+  color: #217346;
+  text-decoration: none;
+}
+.core-topic-crumb a:hover { text-decoration: underline; }
+.core-topic-crumb strong {
+  color: #173f2d;
+}
+.core-topic-status {
+  font-size: 13px;
+  font-weight: 800;
+  color: #217346;
+  background: #e8f6ee;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+.core-topic-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.core-topic-prev,
+.core-topic-all,
+.core-topic-next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 11px;
+  border: 1px solid #d8e7de;
+  background: #fff;
+  color: #173f2d;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  transition: .15s ease;
+}
+.core-topic-prev:hover,
+.core-topic-all:hover,
+.core-topic-next:hover {
+  border-color: #78b991;
+  background: #f0faf4;
+  transform: translateY(-1px);
+}
+.core-topic-next {
+  background: #217346;
+  border-color: #217346;
+  color: #fff;
+}
+.core-topic-next:hover {
+  background: #185c37;
+  border-color: #185c37;
+  color: #fff;
+}
+.core-topic-all {
+  background: #f5faf7;
+}
+
+/* Dark mode */
+body.dark-mode .core-topic-crumb { color: #b8c8bf; }
+body.dark-mode .core-topic-crumb a { color: #8be1ac; }
+body.dark-mode .core-topic-crumb strong { color: #edf7f1; }
+body.dark-mode .core-topic-status {
+  background: #1a2e24;
+  color: #8be1ac;
+}
+body.dark-mode .core-topic-prev,
+body.dark-mode .core-topic-all {
+  background: #142019;
+  border-color: #2d4337;
+  color: #edf7f1;
+}
+body.dark-mode .core-topic-prev:hover,
+body.dark-mode .core-topic-all:hover {
+  background: #1a2e24;
+  border-color: #4f9a6c;
+}
+body.dark-mode .core-topic-next {
+  background: #267b4c;
+  border-color: #4f9a6c;
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  .core-topic-nav { padding: 10px 14px 6px; }
+  .core-topic-actions { width: 100%; }
+  .core-topic-prev,
+  .core-topic-all,
+  .core-topic-next {
+    flex: 1 1 auto;
+    font-size: 13px;
+    padding: 0 10px;
   }
 }
 
 
-/* ===== V19: CORE TOPICS NAVIGATION ===== */
+/* Force readable lesson navigator (do not inherit upgrade.css dark nav) */
 .core-topic-nav{
-  width:min(1120px,calc(100% - 32px)); margin:14px auto 22px; padding:14px;
-  border:1px solid rgba(33,115,70,.16); border-radius:18px; background:#fff;
-  box-shadow:0 8px 22px rgba(20,70,45,.07); box-sizing:border-box;
+  background: #fff !important;
+  border: 1px solid #d8e7de !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  color: #173f2d !important;
+  margin: 12px auto 16px !important;
 }
-.core-topic-crumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;color:#66756d;margin-bottom:12px}
-.core-topic-crumb a{color:#217346;text-decoration:none;font-weight:700}.core-topic-crumb strong{color:#173f2d}
-.core-topic-actions{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
-.core-topic-actions a{display:flex;align-items:center;justify-content:center;min-height:44px;padding:8px 12px;border-radius:12px;text-decoration:none;font-weight:800;font-size:14px;box-sizing:border-box;text-align:center}
-.core-topic-prev,.core-topic-next{background:#f1f8f4;color:#185c37;border:1px solid #d8e9df}.core-topic-all{background:#217346;color:#fff}
-.core-topic-next{justify-self:stretch}
-@media(max-width:680px){
-  .core-topic-nav{width:calc(100% - 24px);margin:10px auto 18px;padding:12px;border-radius:16px}
-  .core-topic-actions{grid-template-columns:1fr 1fr;gap:8px}
-  .core-topic-all{grid-column:1/-1;grid-row:1}
-  .core-topic-actions a{font-size:13px;min-height:42px;padding:7px 8px}
-  .core-topic-crumb{font-size:12px;gap:6px}
+.core-topic-nav::before{ content: none !important; display: none !important; }
+.core-topic-crumb, .core-topic-crumb strong{ color: #173f2d !important; }
+.core-topic-crumb a{ color: #217346 !important; background: transparent !important; }
+.core-topic-prev,
+.core-topic-all,
+.core-topic-next{
+  background: #fff !important;
+  color: #173f2d !important;
+  border: 1px solid #cfe0d6 !important;
 }
+.core-topic-next{
+  background: #217346 !important;
+  color: #fff !important;
+  border-color: #217346 !important;
+}
+.core-topic-all{
+  background: #217346 !important;
+  color: #fff !important;
+}
+
+body.core-topic-page .avp-page-back-wrap{display:none!important}
+
+body.core-topic-page .lesson-action-row,
+body.core-topic-page .avp-page-back-wrap,
+body.core-topic-page #v11CloudChip,
+body.core-topic-page .avp-bookmark-btn,
+body.core-topic-page .avp-install-banner{display:none!important}
+
+/* Tài khoản dropdown gọn */
+.auth-nav-slot{position:relative;}
+.auth-nav-user{position:relative;}
+.auth-dropdown{display:none;position:absolute;right:0;top:calc(100% + 8px);min-width:200px;background:#fff;border:1px solid #d8e7de;border-radius:14px;box-shadow:0 12px 32px rgba(16,64,40,.12);padding:8px;z-index:80;}
+.auth-nav-user.open .auth-dropdown{display:flex;flex-direction:column;gap:4px;}
+.auth-dropdown a,.auth-dropdown button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:9px 10px;border-radius:10px;color:#173f2d;font-weight:700;text-decoration:none;cursor:pointer;}
+.auth-dropdown a:hover,.auth-dropdown button:hover{background:#f3faf6;}

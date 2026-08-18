@@ -69,3 +69,24 @@ Trang đăng ký trong bản này cũng đã đặt `emailRedirectTo` về URL c
 - Authentication → Sign In / Providers → Email: tắt **Confirm email**.
 - Authentication → Emails → SMTP Settings: có thể tắt **Custom SMTP** nếu không dùng email xác nhận.
 - Trang đăng ký không còn truyền `emailRedirectTo`; khi đăng ký thành công và Supabase trả về session, người dùng được đăng nhập ngay.
+
+## V11 — Đồng bộ XP / Level / Badge / Streak giữa các thiết bị
+
+V11 dùng bảng `public.user_progress` đã có trong `supabase-setup.sql`.
+Nếu project Supabase chưa từng chạy file SQL này, mở **SQL Editor** và chạy toàn bộ `supabase-setup.sql` một lần.
+
+Dữ liệu V11 đồng bộ khi người dùng đăng nhập gồm:
+- XP (`avp_xp_v2`)
+- quiz đã vượt
+- bài đã hoàn thành
+- huy hiệu + ngày mở khóa
+- streak / ngày học
+- bài gần đây
+- bookmark và lịch sử học tập
+
+Website vẫn giữ bản local để dùng khi mất mạng. RLS của `user_progress` chỉ cho user đọc/ghi đúng hàng có `user_id = auth.uid()`.
+
+## V15 — Admin Learning Analytics
+Sau khi đã chạy `supabase-setup.sql` và `analytics-setup.sql`, hãy chạy thêm **`admin-v15-upgrade.sql` một lần** trong Supabase SQL Editor.
+
+V15 bổ sung thống kê XP/Level, funnel Beginner → Master, bài đã hoàn thành nhiều nhất, quiz khó nhất và xu hướng tài khoản mới. Các thống kê quiz khó bắt đầu tích lũy sau khi V15 được đưa lên web vì từ V15 website mới ghi sự kiện `quiz_attempt`.

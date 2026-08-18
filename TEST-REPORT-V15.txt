@@ -1,0 +1,49 @@
+LEARNEXCELWITHME V15 - TEST REPORT
+Date: 2026-08-16
+
+Scope checked
+- 38 HTML pages
+- 36 JavaScript files
+- 30 CSS files
+- Local HTML/CSS/JS/image/download links
+- Inline event handlers
+- Inline JavaScript syntax
+- manifest.webmanifest
+- Service worker local cache references
+- Duplicate HTML IDs
+
+Fixes applied
+1. congthucexcel.html
+   - Removed malformed obsolete JavaScript that caused a SyntaxError.
+   - Unified formula search + category filter.
+   - Corrected the search input reference to #searchInput.
+   - Preserved the existing timCongThuc() inline handler API.
+
+2. baitapexcel.html
+   - Removed duplicate id="quizResult" element.
+   - Prevents ambiguous DOM targeting during quiz rendering/scoring.
+
+Checks after fixes
+- External JS files syntax: PASS (0 failures)
+- Inline JS syntax: PASS (0 failures)
+- Missing local assets/links: PASS (0 missing)
+- Duplicate IDs: PASS (0 duplicate-ID pages)
+- Unresolved inline event handlers: PASS (0 unresolved)
+- CSS parser errors: PASS (0 files with parse errors)
+- manifest.webmanifest JSON: PASS
+- Service worker local references: PASS (0 missing)
+- Mobile shortcut anti-white-screen rule present in avp-core.css: PASS
+
+Important test limitation
+- The execution environment blocks Chromium navigation with ERR_BLOCKED_BY_ADMINISTRATOR, so a true browser click/render smoke test could not be completed here.
+- Direct DNS access to the Supabase project is unavailable in this execution environment, so live Auth/RPC/database calls were not exercised.
+- Supabase-dependent features therefore still require one live-site smoke test after deployment (signup/login, cloud sync, admin RPCs).
+
+Recommended deployment smoke test
+1. Open homepage on iPhone/Android.
+2. Open 100 shortcuts and 100 formulas.
+3. Search SUM and filter category in 100 formulas.
+4. Complete one quiz and confirm XP increments once.
+5. Login/logout once.
+6. Open My Learning and Cloud Sync.
+7. Open Admin and confirm RPC analytics load after SQL setup.

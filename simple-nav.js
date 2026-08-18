@@ -3,6 +3,11 @@
   document.addEventListener("DOMContentLoaded", function(){
     const nav = document.querySelector(".top-simple-nav");
     const toggle = document.querySelector(".top-mobile-toggle");
+    if(nav && nav.parentNode !== document.body){
+      document.body.insertBefore(nav, document.body.firstChild);
+    } else if(nav && document.body.firstElementChild !== nav){
+      document.body.insertBefore(nav, document.body.firstChild);
+    }
 
     function closeMenu(){
       if(!nav || !toggle) return;
@@ -147,10 +152,10 @@
       "master-learning.html": ["index.html", "Trang chủ"],
       "learning-path.html": ["master-learning.html", "Lộ trình học"],
       "practice-lab.html": ["index.html", "Trang chủ"],
-      "my-learning.html": ["index.html", "Trang chủ"],
-      "profile.html": ["my-learning.html", "Hồ sơ & Thành tích"],
-      "achievements.html": ["my-learning.html", "Hồ sơ & Thành tích"],
-      "achievement-learning.html": ["my-learning.html", "Hồ sơ & Thành tích"],
+      "dashboard.html": ["index.html", "Trang chủ"],
+      "profile.html": ["dashboard.html", "Hồ sơ & Thành tích"],
+      "achievements.html": ["dashboard.html", "Hồ sơ & Thành tích"],
+      "achievement-learning.html": ["dashboard.html", "Hồ sơ & Thành tích"],
       "formula-finder.html": ["tools-center.html", "Công cụ"],
       "tools-center.html": ["index.html", "Trang chủ"],
       "qc-dashboard.html": ["tools-center.html", "Công cụ"],
@@ -203,72 +208,102 @@
   });
 })();
 
-/* ===== SIX CORE TOPICS NAVIGATION ===== */
+/* ===== UNIFIED LESSON PATH NAVIGATION ===== */
 (function(){
   document.addEventListener("DOMContentLoaded", function(){
     const current = (location.pathname.split("/").pop() || "").toLowerCase();
     const topics = [
-      ["phimtatexcel.html", "⌨️ Phím tắt"],
-      ["congthucexcel.html", "🧮 Công thức"],
-      ["pivottable.html", "📊 PivotTable"],
-      ["bieudopareto.html", "📈 Pareto"],
-      ["filtersort.html", "🔍 Filter & Sort"],
-      ["baocaoexcel.html", "📋 Báo cáo"]
+      ["excel.html", "Excel cơ bản", "Beginner"],
+      ["phimtatexcel.html", "Phím tắt", "Beginner"],
+      ["congthucexcel.html", "Công thức", "Beginner"],
+      ["filtersort.html", "Filter & Sort", "Beginner"],
+      ["pivottable.html", "PivotTable", "Analyst"],
+      ["bieudopareto.html", "Pareto", "Analyst"],
+      ["baocaoexcel.html", "Báo cáo QC", "Analyst"],
+      ["excel-nang-cao.html", "Excel nâng cao", "Advanced"],
+      ["power-query-course.html", "Power Query", "Advanced"],
+      ["power-pivot-dax.html", "Power Pivot & DAX", "Advanced"],
+      ["dashboard-dong.html", "Dashboard động", "Advanced"],
+      ["practice-lab.html", "Practice Lab", "Advanced"],
+      ["vba-macro.html", "VBA / Macro", "Master"],
+      ["solver-whatif.html", "What-If & Solver", "Master"]
     ];
     const idx = topics.findIndex(function(item){ return item[0] === current; });
     if(idx < 0) return;
     document.body.classList.add("core-topic-page");
+    try{
+      localStorage.setItem("avp_last_lesson_v1", JSON.stringify({
+        url: topics[idx][0],
+        title: topics[idx][1],
+        stage: topics[idx][2],
+        index: idx,
+        ts: Date.now()
+      }));
+    }catch(e){}
     if(document.querySelector(".core-topic-nav")) return;
 
-    const box = document.createElement("nav");
+    const box = document.createElement("div");
     box.className = "core-topic-nav";
-    box.setAttribute("aria-label", "Điều hướng 6 chuyên đề Excel");
+    box.setAttribute("aria-label", "Điều hướng lộ trình học");
 
     const top = document.createElement("div");
     top.className = "core-topic-top";
 
     const crumb = document.createElement("div");
     crumb.className = "core-topic-crumb";
-    crumb.innerHTML = '<a href="index.html">Trang chủ</a><span>›</span><a href="excel.html">6 chuyên đề Excel</a><span>›</span><strong>' + topics[idx][1] + '</strong>';
+    crumb.innerHTML = '<a href="index.html">Trang chủ</a><span>›</span><a href="master-learning.html">Lộ trình</a><span>›</span><strong>' + topics[idx][2] + " • " + topics[idx][1] + '</strong>';
     top.appendChild(crumb);
 
     const status = document.createElement("div");
     status.className = "core-topic-status";
-    status.setAttribute("aria-label", "Tiến độ bài học");
+    status.textContent = "Bài " + (idx + 1) + "/" + topics.length;
     top.appendChild(status);
     box.appendChild(top);
 
     const actions = document.createElement("div");
     actions.className = "core-topic-actions";
+
+    const prev = document.createElement("a");
+    prev.className = "core-topic-prev";
     if(idx > 0){
-      const prev = document.createElement("a");
-      prev.href = topics[idx-1][0]; prev.className = "core-topic-prev";
-      prev.textContent = "← " + topics[idx-1][1]; actions.appendChild(prev);
+      prev.href = topics[idx-1][0];
+      prev.textContent = "← " + topics[idx-1][1];
     } else {
-      const hub = document.createElement("a");
-      hub.href = "excel.html"; hub.className = "core-topic-prev";
-      hub.textContent = "← 6 chuyên đề"; actions.appendChild(hub);
+      prev.href = "master-learning.html";
+      prev.textContent = "← Lộ trình";
     }
+    actions.appendChild(prev);
+
     const all = document.createElement("a");
-    all.href = "excel.html"; all.className = "core-topic-all";
-    all.textContent = "☷ Xem 6 chuyên đề"; actions.appendChild(all);
+    all.href = "master-learning.html";
+    all.className = "core-topic-all";
+    all.textContent = "Lộ trình học";
+    actions.appendChild(all);
+
+    const next = document.createElement("a");
+    next.className = "core-topic-next";
     if(idx < topics.length-1){
-      const next = document.createElement("a");
-      next.href = topics[idx+1][0]; next.className = "core-topic-next";
-      next.textContent = topics[idx+1][1] + " →"; actions.appendChild(next);
+      next.href = topics[idx+1][0];
+      next.textContent = topics[idx+1][1] + " →";
     } else {
-      const home = document.createElement("a");
-      home.href = "excel.html"; home.className = "core-topic-next";
-      home.textContent = "Về trang chuyên đề →"; actions.appendChild(home);
+      next.href = "master-learning.html";
+      next.textContent = "Hoàn thành lộ trình →";
     }
+    actions.appendChild(next);
     box.appendChild(actions);
 
-    const topNav = document.querySelector(".top-simple-nav");
-    if(topNav) topNav.insertAdjacentElement("afterend", box);
+    const header = document.querySelector("body > header, .page-header, .pq-hero, .pl-hero, .hero");
+    if(header) header.insertAdjacentElement("afterend", box);
     else {
-      const header = document.querySelector(".page-header, .hero, body > header");
-      if(header) header.insertAdjacentElement("afterend", box);
+      const topNav = document.querySelector(".top-simple-nav");
+      if(topNav) topNav.insertAdjacentElement("afterend", box);
       else document.body.insertAdjacentElement("afterbegin", box);
     }
+
+    function hideDupBack(){
+      document.querySelectorAll(".avp-page-back-wrap").forEach(function(el){ el.style.display = "none"; });
+    }
+    hideDupBack();
+    setTimeout(hideDupBack, 200);
   });
 })();

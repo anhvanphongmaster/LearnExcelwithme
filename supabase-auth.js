@@ -41,26 +41,49 @@ const PROGRESS_KEYS = [
   "avp_activity_days_v1",
   "avp_learning_events_v1",
   "avp_daily_rewards_v1",
-  "avp_excel_challenge_stats_v1"
+  "avp_excel_challenge_stats_v1",
+
+  // V6–V11 learning system: these are the keys users expect to follow them
+  // across phone / computer after signing in.
+  "avp_lesson_progress_v1",
+  "avp_xp_v2",
+  "avp_quiz_done_v1",
+  "avp_badge_unlock_dates_v9",
+  "avp_bookmarks_v2",
+  "avp_learning_history_v2",
+  "avp_visit_days_v1",
+  "avp_recent_lessons_v1",
+  "avp_playground_completed_v1",
+  "avp.practiceLab.v14"
 ];
 
 const ARRAY_UNION_KEYS = new Set([
-  "avp_activity_days_v1"
+  "avp_activity_days_v1",
+  "avp_visit_days_v1",
+  "avp_bookmarks_v2",
+  "avp_playground_completed_v1"
 ]);
 
 const OBJECT_MERGE_KEYS = new Set([
   "avp_playground_progress_v1",
-  "avp_daily_rewards_v1"
+  "avp_daily_rewards_v1",
+  "avp_lesson_progress_v1",
+  "avp_quiz_done_v1",
+  "avp_badge_unlock_dates_v9",
+  "avp.practiceLab.v14"
 ]);
 
 const EVENT_ARRAY_KEYS = new Set([
   "avpRecentActivities",
-  "avp_learning_events_v1"
+  "avp_learning_events_v1",
+  "avp_learning_history_v2",
+  "avp_recent_lessons_v1"
 ]);
 
 const MAX_NUMBER_KEYS = new Set([
   "quizBestScore",
-  "avp_bonus_xp_v1"
+  "avp_bonus_xp_v1",
+  "avp_xp_v2"
 ]);
 
 /*
@@ -120,14 +143,21 @@ function mergeEventArrays(localValue, cloudValue) {
 
   [...b, ...a].forEach(item => {
     if (!item || typeof item !== "object") return;
-    const id =
-      item.time ||
-      `${item.date || ""}|${item.type || ""}|${item.title || ""}|${JSON.stringify(item)}`;
-    map.set(id, item);
+    const id = item.url
+      ? `url:${item.url}`
+      : (item.time || `${item.date || ""}|${item.type || ""}|${item.title || ""}|${JSON.stringify(item)}`);
+    const prev = map.get(id);
+    const prevStamp = Number(prev?.at || 0) || Date.parse(prev?.time || prev?.date || 0) || 0;
+    const nextStamp = Number(item.at || 0) || Date.parse(item.time || item.date || 0) || 0;
+    if (!prev || nextStamp >= prevStamp) map.set(id, item);
   });
 
   return [...map.values()]
-    .sort((x, y) => String(x.time || x.date || "").localeCompare(String(y.time || y.date || "")))
+    .sort((x, y) => {
+      const ax = Number(x.at || 0) || Date.parse(x.time || x.date || 0) || 0;
+      const ay = Number(y.at || 0) || Date.parse(y.time || y.date || 0) || 0;
+      return ax - ay;
+    })
     .slice(-300);
 }
 
@@ -247,9 +277,11 @@ async function getProfile(user) {
 }
 
 function emitSyncStatus(status, message = "") {
-  window.dispatchEvent(new CustomEvent("avp:cloud-sync-status", {
-    detail: { status, message }
-  }));
+  const detail = { status, message, at: Date.now() };
+  if (status === "synced") {
+    localStorage.setItem("avp_cloud_last_sync_v11", String(detail.at));
+  }
+  window.dispatchEvent(new CustomEvent("avp:cloud-sync-status", { detail }));
 }
 
 async function saveProgressObject(user, payload) {
@@ -442,22 +474,18 @@ async function updateAuthNav() {
 
     slot.innerHTML = `
       <div class="auth-nav-user">
-        <button type="button" class="auth-nav-button auth-user-toggle">
+        <button type="button" class="auth-nav-button auth-user-toggle" aria-expanded="false">
           <span class="auth-nav-avatar">${firstLetter(name)}</span>
-          <span>${name}</span>
+          <span>Tài khoản</span>
         </button>
         <div class="auth-dropdown">
           <a href="profile.html">👤 Hồ sơ</a>
-          <a href="dashboard.html">📊 Dashboard</a>
+          <a href="dashboard.html">📊 Tiến độ học</a>
           <a href="achievements.html">🏆 Thành tích</a>
           <button type="button" class="auth-sync-now">☁️ Đồng bộ ngay</button>
+          <button type="button" class="auth-nav-button auth-logout-direct">↪ Đăng xuất</button>
         </div>
-      </div>
-      <button type="button"
-              class="auth-nav-button auth-logout-direct"
-              title="Đăng xuất khỏi tài khoản">
-        ↪ Đăng xuất
-      </button>`;
+      </div>`;
   });
 
   document.querySelectorAll(".auth-user-toggle").forEach(btn => {
