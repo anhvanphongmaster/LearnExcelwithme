@@ -116,8 +116,11 @@
   }
   function resolvedFile(item) {
     if (!item.file) return "";
-    const want = normalizeFile(item.file);
-    const hit = fileList().find(function (f) { return normalizeFile(f) === want; });
+    const list = fileList();
+    const aliases = (typeof practiceFileAliases !== "undefined" && practiceFileAliases) ? practiceFileAliases : {};
+    const alias = aliases[item.file] || aliases[item.id] || "";
+    const candidates = [item.file, alias].filter(Boolean).map(normalizeFile);
+    const hit = list.find(function (f) { return candidates.indexOf(normalizeFile(f)) !== -1; });
     return hit || "";
   }
   function isAvailable(item) {
