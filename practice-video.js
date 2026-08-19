@@ -13,9 +13,8 @@
       category: "Làm sạch dữ liệu",
       skill: "Trim • Clean • Kiểu dữ liệu • Column Quality",
       filterTags: ["Làm sạch dữ liệu", "Power Query"],
-      file: "Input_01.xlsx",
-      folder: "downloads/power-query/",
-      extraFiles: ALL_PQ_FILES
+      file: "PowerQuery-11-Files.zip",
+      folder: "downloads/power-query/"
     },
     {
       id: "video-02",
@@ -25,9 +24,8 @@
       category: "Power Query",
       skill: "Get Data → From Folder • Combine • Input_01 … Input_10",
       filterTags: ["Power Query"],
-      file: "Input_01.xlsx",
-      folder: "downloads/power-query/",
-      extraFiles: ALL_PQ_FILES
+      file: "PowerQuery-11-Files.zip",
+      folder: "downloads/power-query/"
     },
     {
       id: "video-03",
@@ -37,9 +35,8 @@
       category: "Power Query",
       skill: "Close & Load • Pivot • Refresh",
       filterTags: ["Power Query"],
-      file: "Input_01.xlsx",
-      folder: "downloads/power-query/",
-      extraFiles: ALL_PQ_FILES
+      file: "PowerQuery-11-Files.zip",
+      folder: "downloads/power-query/"
     },
     {
       id: "video-04",
@@ -49,9 +46,8 @@
       category: "Power Query",
       skill: "KPI • Slicer • PivotChart",
       filterTags: ["Power Query"],
-      file: "Input_01.xlsx",
-      folder: "downloads/power-query/",
-      extraFiles: ALL_PQ_FILES
+      file: "PowerQuery-11-Files.zip",
+      folder: "downloads/power-query/"
     }
   ];
 
