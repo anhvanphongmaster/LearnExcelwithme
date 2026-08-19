@@ -110,6 +110,18 @@
       toast("Đã xóa");
     };
   }
+  function bindMailTabs(){
+    document.querySelectorAll(".admin-mail-tabs button").forEach(btn=>{
+      btn.type="button";
+      btn.onclick=function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        document.querySelectorAll(".admin-mail-tabs button").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        renderMail(btn.getAttribute("data-mail")||"questions");
+      };
+    });
+  }
   function renderMail(kind){
     mailKind=kind;
     const list=mailData[kind]||[];
@@ -146,14 +158,8 @@
     if(q) q.textContent="Thắc mắc ("+mailData.questions.length+")";
     if(i) i.textContent="Ý tưởng ("+mailData.ideas.length+")";
     const sv=$("mailTabS"); if(sv) sv.textContent="Đã giữ ("+(mailData.saved||[]).length+")";
-    document.querySelectorAll(".admin-mail-tabs button").forEach(btn=>{
-      btn.onclick=()=>{
-        document.querySelectorAll(".admin-mail-tabs button").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        renderMail(btn.getAttribute("data-mail"));
-      };
-    });
-    renderMail("questions");
+    bindMailTabs();
+    renderMail(mailKind||"questions");
     if(hint) hint.textContent="Chỉ hiện 50 thư mới nhất mỗi loại.";
   }
   function renderQuizDifficulty(rows){
@@ -240,6 +246,7 @@
         return;
       }
     }catch(e){ console.warn(e); }
+    bindMailTabs();
     loadDashboard();
   }
   $("adminPeriod")?.addEventListener("change",()=>{currentDays=Number($("adminPeriod").value)||30;loadDashboard()});
