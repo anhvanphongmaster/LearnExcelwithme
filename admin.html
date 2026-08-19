@@ -200,10 +200,15 @@ where is_admin = true;</pre>
           <div class="pd-stat"><small>Ý tưởng / thắc mắc</small><strong id="engFeedback">0</strong></div>
         </div>
         <div id="engByTool" class="admin-ranking"></div>
-        <h3 style="margin:16px 0 8px">Thắc mắc</h3>
-        <div id="engQuestions" class="admin-ranking"></div>
-        <h3 style="margin:16px 0 8px">Ý tưởng</h3>
-        <div id="engIdeas" class="admin-ranking"></div>
+        <div class="admin-mail-tabs">
+          <button type="button" class="active" data-mail="questions" id="mailTabQ">Thắc mắc</button>
+          <button type="button" data-mail="ideas" id="mailTabI">Ý tưởng</button>
+          <button type="button" data-mail="saved" id="mailTabS">Đã giữ</button>
+        </div>
+        <div class="admin-mail">
+          <div id="engMailList" class="admin-mail-list"></div>
+          <div id="engMailRead" class="admin-mail-read"><p>Chọn một thư bên trái để đọc.</p></div>
+        </div>
         <p id="engHint" style="color:#7a8b80;font-size:13px"></p>
       </article>
     </section>

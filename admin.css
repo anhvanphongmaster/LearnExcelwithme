@@ -93,3 +93,19 @@ body.dark-mode .admin-denied-steps,body.dark-mode .admin-gate p,body.dark-mode .
 body.dark-mode .admin-denied-secondary{background:#1a2e24;border-color:#355043;color:#edf7f1!important}
 body.dark-mode .admin-denied-help{background:#152019;border-color:#2d4337}
 body.dark-mode .admin-denied-help summary{color:#8be1ac}
+
+.admin-mail{display:grid;grid-template-columns:minmax(220px,1fr) minmax(240px,1.2fr);gap:12px;min-height:280px;}
+.admin-mail-list{border:1px solid #dce8e1;border-radius:14px;overflow:auto;max-height:360px;background:#fff;}
+.admin-mail-item{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #edf3ef;padding:10px 12px;background:#fff;cursor:pointer;}
+.admin-mail-item:hover,.admin-mail-item.active{background:#eef7f2;}
+.admin-mail-item b{display:block;color:#173f2a;}
+.admin-mail-item small{color:#6b7b73;}
+.admin-mail-item em{display:block;color:#4d5d55;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.admin-mail-read{border:1px solid #dce8e1;border-radius:14px;padding:16px;background:#f7fbf8;min-height:280px;}
+.admin-mail-read h4{margin:0 0 6px;color:#185c37;}
+.admin-mail-tabs{display:flex;gap:8px;margin:0 0 10px;}
+.admin-mail-tabs button{border:1px solid #d5e4db;background:#fff;border-radius:999px;padding:6px 12px;font-weight:700;cursor:pointer;}
+.admin-mail-tabs button.active{background:#217346;color:#fff;border-color:#217346;}
+@media(max-width:800px){.admin-mail{grid-template-columns:1fr;}}
+
+.admin-mail-keep{margin-top:14px;min-height:38px;padding:0 14px;border:0;border-radius:10px;background:#217346;color:#fff;font-weight:700;cursor:pointer;}

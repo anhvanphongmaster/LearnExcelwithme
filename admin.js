@@ -72,19 +72,65 @@
     const max=Math.max(1,...rows.map(r=>num(r.new_users)));
     root.innerHTML=rows.map(r=>{const dt=new Date(`${r.day}T00:00:00`),label=`${dt.getDate()}/${dt.getMonth()+1}`,h=Math.max(2,num(r.new_users)/max*145);return `<div class="admin-user-day" title="${r.day}: ${n(r.new_users)} tài khoản mới"><span class="admin-user-bar" style="height:${h}px"></span><span class="admin-user-label">${label}</span></div>`}).join("");
   }
-  function renderFbList(id, rows, empty){
-    const box=$(id); if(!box) return;
-    box.innerHTML = (rows&&rows.length) ? rows.map(r=>{
-      const when=r.at ? new Date(r.at).toLocaleString("vi-VN") : "";
-      const who=String(r.name||"Ẩn danh").replace(/[<>]/g,"");
-      const msg=String(r.message||"").replace(/[<>]/g,"");
-      return `<div class="admin-rank-row" style="align-items:flex-start"><span><b>${who}</b> · ${when}<br>${msg}</span></div>`;
-    }).join("") : `<p class="admin-empty">${empty}</p>`;
+  let mailData={questions:[], ideas:[], saved:[]};
+  let mailKind='questions';
+  function preview(text){
+    const s=String(text||"").replace(/\s+/g," ").trim();
+    return s.length>42 ? s.slice(0,42)+"…" : s;
   }
-  function renderEngagement(s){
+  function openMail(list, idx){
+    const r=list[idx]; if(!r) return;
+    document.querySelectorAll(".admin-mail-item").forEach((el,i)=>el.classList.toggle("active", i===idx));
+    const who=String(r.name||"Ẩn danh").replace(/[<>]/g,"");
+    const when=r.at ? new Date(r.at).toLocaleString("vi-VN") : "";
+    const msg=String(r.message||"").replace(/[<>]/g,"");
+    const extra = mailKind==="saved"
+      ? `<button type="button" class="admin-mail-keep" id="mailDelete">Xóa khỏi Đã giữ</button>`
+      : `<button type="button" class="admin-mail-keep" id="mailKeep">Giữ lại</button>`;
+    $("engMailRead").innerHTML=`<h4>${who}</h4><small>${when}</small><p style="margin-top:12px;white-space:pre-wrap">${msg}</p>${extra}`;
+    const keep=$("mailKeep");
+    if(keep) keep.onclick=async()=>{
+      keep.disabled=true; keep.textContent="Đang lưu...";
+      try{
+        await rpc("admin_save_feedback",{p_kind:mailKind==="ideas"?"idea":"question", p_name:who, p_message:r.message||"", p_at:r.at||null});
+        toast("Đã giữ lại");
+        mailData.saved = await rpcSoft("admin_list_saved_feedback") || [];
+        if(mailData.saved.__error) mailData.saved=[];
+        const s=$("mailTabS"); if(s) s.textContent="Đã giữ ("+mailData.saved.length+")";
+        keep.textContent="Đã lưu";
+      }catch(e){ keep.disabled=false; keep.textContent="Giữ lại"; toast("Chưa lưu được — chạy SQL admin-saved-feedback.sql"); }
+    };
+    const del=$("mailDelete");
+    if(del) del.onclick=async()=>{
+      if(!r.id) return;
+      await rpcSoft("admin_delete_saved_feedback",{p_id:r.id});
+      mailData.saved = (await rpcSoft("admin_list_saved_feedback")) || [];
+      if(mailData.saved.__error) mailData.saved=[];
+      renderMail("saved");
+      toast("Đã xóa");
+    };
+  }
+  function renderMail(kind){
+    mailKind=kind;
+    const list=mailData[kind]||[];
+    const box=$("engMailList");
+    const read=$("engMailRead");
+    if(!box||!read) return;
+    if(!list.length){
+      box.innerHTML='<p class="admin-empty" style="padding:12px">Hộp thư trống.</p>';
+      read.innerHTML="<p>Chưa có thư.</p>";
+      return;
+    }
+    box.innerHTML=list.map((r,i)=>`<button type="button" class="admin-mail-item" data-i="${i}"><b>${String(r.name||"Ẩn danh").replace(/[<>]/g,"")}</b><small>${r.at?new Date(r.at).toLocaleString("vi-VN"):""}</small><em>${preview(r.message)}</em></button>`).join("");
+    box.querySelectorAll(".admin-mail-item").forEach(btn=>{
+      btn.onclick=()=>openMail(list, Number(btn.dataset.i));
+    });
+    openMail(list, 0);
+  }
+  async function renderEngagement(s){
     const hint=$("engHint");
     if(!s||s.__error){
-      if(hint) hint.textContent="Chưa có hàm admin_engagement_summary. Chạy admin-feedback-upgrade.sql trong SQL Editor rồi F5.";
+      if(hint) hint.textContent="Chưa có hàm admin_engagement_summary. Chạy admin-feedback-upgrade.sql rồi F5.";
       return;
     }
     const set=(id,v)=>{const el=$(id); if(el) el.textContent=n(v)};
@@ -92,9 +138,23 @@
     set("engVideos", s.video_clicks);
     set("engBooks", s.book_clicks);
     set("engFeedback", s.feedback);
-    renderFbList("engQuestions", s.questions, "Chưa có thắc mắc.");
-    renderFbList("engIdeas", s.ideas, "Chưa có ý tưởng.");
-    if(hint) hint.textContent="";
+    mailData.questions=s.questions||[];
+    mailData.ideas=s.ideas||[];
+    const saved=await rpcSoft("admin_list_saved_feedback");
+    mailData.saved=(!saved||saved.__error)?[]:saved;
+    const q=$("mailTabQ"), i=$("mailTabI");
+    if(q) q.textContent="Thắc mắc ("+mailData.questions.length+")";
+    if(i) i.textContent="Ý tưởng ("+mailData.ideas.length+")";
+    const sv=$("mailTabS"); if(sv) sv.textContent="Đã giữ ("+(mailData.saved||[]).length+")";
+    document.querySelectorAll(".admin-mail-tabs button").forEach(btn=>{
+      btn.onclick=()=>{
+        document.querySelectorAll(".admin-mail-tabs button").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        renderMail(btn.getAttribute("data-mail"));
+      };
+    });
+    renderMail("questions");
+    if(hint) hint.textContent="Chỉ hiện 50 thư mới nhất mỗi loại.";
   }
   function renderQuizDifficulty(rows){
     const root=$("quizDifficulty");if(!rows?.length){root.innerHTML='<p class="admin-empty">Chưa có lượt làm quiz sau khi cập nhật V15.</p>';return}
@@ -155,7 +215,7 @@
       if(!funnel?.__error) renderFunnel(funnel||[]);
       if(!completed?.__error) renderRanking("topCompletedLessons",completed||[],"lesson","completed_users",labelLesson);
       if(!difficulty?.__error) renderQuizDifficulty(difficulty||[]);
-      if(!engagement?.__error) renderEngagement(engagement||{});
+      if(!engagement?.__error) await renderEngagement(engagement||{});
       if(!newUsers?.__error) renderNewUsers(newUsers||[]);
     }catch(error){
       console.error(error);
