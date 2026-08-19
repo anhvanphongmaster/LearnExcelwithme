@@ -16,7 +16,7 @@ const videoTikTokLinks = {
   "video-01": "https://www.tiktok.com/@anhvanphongmaster/video/7675230261172391186",
   "video-02": "https://www.tiktok.com/@anhvanphongmaster/video/7675341530072304903",
   "video-03": "",
-  "video-04": "",
+  "video-04": "https://www.tiktok.com/@anhvanphongmaster/video/7675630750753885448?is_from_webapp=1&sender_device=pc&web_id=7670058834664211984",
   "video-05": "",
   "video-06": "",
   "video-07": "",
