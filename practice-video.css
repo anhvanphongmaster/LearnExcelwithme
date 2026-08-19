@@ -266,3 +266,5 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 .pv-tiktok-soon{
   display:block;font-size:13px;color:var(--avp-muted,#607168);font-weight:600;
 }
+
+.pv-download-sub{margin-top:6px;background:#2d8a57;font-size:13px;}

@@ -8,101 +8,45 @@
       id: "video-01",
       number: 1,
       icon: "🧹",
-      title: "Hai ô \"Viet Nam\" nhìn giống nhau nhưng Excel bảo khác",
+      title: "Làm sạch dữ liệu trong Power Query",
       category: "Làm sạch dữ liệu",
-      skill: "LEN • TRIM • CLEAN • CHAR(160)",
-      filterTags: ["Làm sạch dữ liệu"],
-      file: "video-01-viet-nam-hidden-space.xlsx"
+      skill: "Trim • Clean • Kiểu dữ liệu • Column Quality",
+      filterTags: ["Làm sạch dữ liệu", "Power Query"],
+      file: "Input_01.xlsx",
+      folder: "downloads/power-query/"
     },
     {
       id: "video-02",
       number: 2,
-      icon: "📋",
-      title: "Copy dữ liệu nhưng không copy dòng ẩn",
-      category: "Tip & Trick",
-      skill: "Filter • Visible Cells Only • Alt+; • Copy",
-      filterTags: ["Tip & Trick"],
-      file: "video-02-visible-cells-only.xlsx"
+      icon: "📂",
+      title: "Gộp nhiều file Input bằng Power Query",
+      category: "Power Query",
+      skill: "Get Data → From Folder • Combine • Remove Errors",
+      filterTags: ["Power Query"],
+      file: "PowerQuery-Practice-10-Files.zip",
+      folder: "downloads/"
     },
     {
       id: "video-03",
       number: 3,
-      icon: "🔢",
-      title: "Number Stored as Text",
-      category: "Làm sạch dữ liệu",
-      skill: "Convert to Number • Paste Special • SUM",
-      filterTags: ["Làm sạch dữ liệu", "Công thức / Lookup"],
-      file: "video-03-number-stored-as-text.xlsx"
+      icon: "📊",
+      title: "Tạo PivotTable từ kết quả Power Query",
+      category: "Power Query",
+      skill: "Close & Load • Pivot • Refresh",
+      filterTags: ["Power Query"],
+      file: "PowerQuery-Master-Expected.xlsx",
+      folder: "downloads/power-query/"
     },
     {
       id: "video-04",
       number: 4,
-      icon: "🔎",
-      title: "So sánh 2 danh sách, tìm dòng thiếu",
-      category: "Công thức / Lookup",
-      skill: "COUNTIF • XMATCH • Power Query Left Anti",
-      filterTags: ["Công thức / Lookup", "Power Query"],
-      file: "video-04-compare-two-lists.xlsx"
-    },
-    {
-      id: "video-05",
-      number: 5,
-      icon: "✏️",
-      title: "Điền toàn bộ ô trống cùng lúc",
-      category: "Tip & Trick",
-      skill: "Go To Special → Blanks → Ctrl+Enter",
-      filterTags: ["Tip & Trick"],
-      file: "video-05-fill-blanks.xlsx"
-    },
-    {
-      id: "video-06",
-      number: 6,
-      icon: "🗑️",
-      title: "Xóa hàng nghìn dòng trống nhanh",
-      category: "Tip & Trick",
-      skill: "Filter / Go To Special → Delete Rows",
-      filterTags: ["Tip & Trick"],
-      file: "video-06-delete-blank-rows.xlsx"
-    },
-    {
-      id: "video-07",
-      number: 7,
-      icon: "⌨️",
-      title: "5 phím tắt Excel dân văn phòng nên biết",
-      category: "Tip & Trick",
-      skill: "5 phím tắt văn phòng • demo dữ liệu thật",
-      filterTags: ["Tip & Trick"],
-      file: "video-07-office-shortcuts.xlsx"
-    },
-    {
-      id: "video-08",
-      number: 8,
-      icon: "🏢",
-      title: "Chuẩn hóa tên công ty trước khi Lookup",
-      category: "Làm sạch dữ liệu",
-      skill: "TRIM + CLEAN + Standard Mapping",
-      filterTags: ["Làm sạch dữ liệu", "Công thức / Lookup"],
-      file: "video-08-company-name-cleaning.xlsx"
-    },
-    {
-      id: "video-09",
-      number: 9,
-      icon: "📇",
-      title: "Danh thiếp đối tác → Excel nhanh",
-      category: "Tip & Trick",
-      skill: "OCR → chuẩn hóa cột → Excel Table → Remove Duplicates",
-      filterTags: ["Tip & Trick", "Làm sạch dữ liệu"],
-      file: "video-09-business-cards-to-excel.xlsx"
-    },
-    {
-      id: "video-10",
-      number: 10,
-      icon: "⚙️",
-      title: "Power Query P4 – Làm sạch Master lỗi 4.150 dòng",
+      icon: "📈",
+      title: "Dashboard QC từ Pivot Power Query",
       category: "Power Query",
-      skill: "Trim → Clean → Uppercase → Data Type → Column Quality",
-      filterTags: ["Power Query", "Làm sạch dữ liệu"],
-      file: "video-10-power-query-master-4150.xlsx"
+      skill: "KPI • Slicer • PivotChart",
+      filterTags: ["Power Query"],
+      file: "PowerQuery-Master-Expected.xlsx",
+      folder: "downloads/power-query/"
     }
   ];
 
@@ -174,7 +118,7 @@
       ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer">▶ Xem video TikTok</a>'
       : '<span class="pv-tiktok-soon">Video TikTok chưa gắn link</span>';
     const fileBtn = avail
-      ? '<a class="pv-download" href="downloads/video-practice/' + fileName + '" download>⬇ Tải file thực hành</a>'
+      ? '<a class="pv-download" href="' + ((item.folder || 'downloads/video-practice/') + fileName) + '" download>⬇ Tải file thực hành</a>'
       : '<span class="pv-locked-note">File sẽ mở khi video được phát hành.</span>';
     const foot = tkBtn + fileBtn;
     const tags = (item.filterTags || [item.category]).join(" ");
