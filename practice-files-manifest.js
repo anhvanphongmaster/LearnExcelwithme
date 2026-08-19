@@ -11,7 +11,7 @@ const availablePracticeFiles = [
 const practiceFileAliases = {
   "video-01-viet-nam-hidden-space.xlsx": "video-01-viet-nam-hidden-space.xlsx.xlsx",
   "video-02-visible-cells-only.xlsx": "Tip2_Copy_Khong_Lay_Dong_An_AltSemicolon.xlsx.xlsx",
-  "Video4_Thuc_Hanh_4000_vs_3999_Nhieu_Cot.xlsx": "Video4_Thuc_Hanh_4000_vs_3999_Nhieu_Cot.xlsx.xlsx"
+  "video-04-compare-two-lists.xlsx": "Video4_Thuc_Hanh_4000_vs_3999_Nhieu_Cot.xlsx"
 };
 
 const videoTikTokLinks = {
