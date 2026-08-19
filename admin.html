@@ -188,6 +188,23 @@ where is_admin = true;</pre>
       </article>
     </section>
 
+    <section class="admin-grid">
+      <article class="admin-panel" style="grid-column:1/-1">
+        <div class="admin-panel-head">
+          <div><span>📥 TƯƠNG TÁC</span><h2>Tải file, xem video, sách, ý tưởng</h2></div>
+        </div>
+        <div class="pd-grid" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px">
+          <div class="pd-stat"><small>Lượt tải file</small><strong id="engDownloads">0</strong></div>
+          <div class="pd-stat"><small>Click xem video</small><strong id="engVideos">0</strong></div>
+          <div class="pd-stat"><small>Click 8 bộ sách</small><strong id="engBooks">0</strong></div>
+          <div class="pd-stat"><small>Ý tưởng / thắc mắc</small><strong id="engFeedback">0</strong></div>
+        </div>
+        <div id="engByTool" class="admin-ranking"></div>
+        <h3 style="margin:16px 0 8px">Nội dung gửi lên</h3>
+        <div id="engFeedbackList" class="admin-ranking"></div>
+      </article>
+    </section>
+
     <section class="admin-privacy-note">
       <strong>🔒 Analytics tối giản dữ liệu</strong>
       <p>Dashboard chỉ thống kê sự kiện như page view, login và tên công cụ Excel Mobile đã chạy. Tracking được thiết kế không gửi nội dung workbook, giá trị ô, tên file hay dữ liệu bên trong Excel.</p>

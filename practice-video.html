@@ -45,6 +45,25 @@
   </section>
 
   <div class="pv-toolbar">
+    <div class="pv-feedback-bar">
+      <button type="button" id="pvFeedbackBtn" class="pv-feedback-btn">💡 Gửi ý tưởng / thắc mắc</button>
+    </div>
+    <div id="pvFeedbackModal" class="pv-modal" hidden>
+      <div class="pv-modal-card">
+        <h3>Ý tưởng hoặc thắc mắc</h3>
+        <p>Gửi cho Anh Văn Phòng. Bạn không cần đăng nhập.</p>
+        <select id="pvFbKind">
+          <option value="idea">Ý tưởng bài / file mới</option>
+          <option value="question">Thắc mắc khi làm bài</option>
+        </select>
+        <textarea id="pvFbText" rows="5" maxlength="500" placeholder="Viết nội dung..."></textarea>
+        <div class="pv-modal-actions">
+          <button type="button" id="pvFbCancel">Đóng</button>
+          <button type="button" id="pvFbSend">Gửi</button>
+        </div>
+        <p id="pvFbStatus"></p>
+      </div>
+    </div>
     <div class="pv-search-wrap">
       <span aria-hidden="true">🔎</span>
       <input id="pvSearch" type="search" placeholder="Tìm bài thực hành..." autocomplete="off">
@@ -77,6 +96,7 @@
 <script defer src="global-search.js"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
+<script defer src="analytics-tracker.js"></script>
 <script defer src="practice-files-manifest.js"></script>
 <script defer src="practice-video.js"></script>
 </body>

@@ -206,3 +206,35 @@
 
   document.addEventListener("DOMContentLoaded", init);
 })();
+
+  document.addEventListener("click", function(e){
+    const dl = e.target.closest(".pv-download");
+    if(dl && window.avpAnalytics){
+      window.avpAnalytics.track("practice_file_download", {page:"practice-video.html", tool: (dl.getAttribute("download")||dl.textContent||"file").slice(0,80)});
+    }
+    const vd = e.target.closest(".pv-tiktok, a.pv-watch");
+    if(vd && window.avpAnalytics){
+      window.avpAnalytics.track("practice_video_click", {page:"practice-video.html", tool: (vd.textContent||"tiktok").slice(0,80)});
+    }
+  });
+  document.addEventListener("DOMContentLoaded", function(){
+    const btn = document.getElementById("pvFeedbackBtn");
+    const modal = document.getElementById("pvFeedbackModal");
+    if(!btn || !modal) return;
+    const close = () => { modal.hidden = true; };
+    btn.addEventListener("click", () => { modal.hidden = false; });
+    document.getElementById("pvFbCancel")?.addEventListener("click", close);
+    modal.addEventListener("click", e => { if(e.target===modal) close(); });
+    document.getElementById("pvFbSend")?.addEventListener("click", async function(){
+      const kind = document.getElementById("pvFbKind")?.value || "question";
+      const message = (document.getElementById("pvFbText")?.value || "").trim();
+      const st = document.getElementById("pvFbStatus");
+      if(message.length < 4){ if(st) st.textContent="Viết rõ hơn một chút."; return; }
+      if(st) st.textContent="Đang gửi...";
+      const ok = window.avpAnalytics
+        ? await window.avpAnalytics.track("site_feedback", {page:"practice-video.html", metadata:{kind, message}})
+        : false;
+      if(st) st.textContent = ok ? "Đã gửi. Cảm ơn bạn." : "Chưa gửi được. Thử lại sau.";
+      if(ok) document.getElementById("pvFbText").value = "";
+    });
+  });

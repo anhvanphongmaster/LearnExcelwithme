@@ -52,7 +52,7 @@
         typeof value==="boolean" ||
         value===null
       ){
-        allowed[key]=typeof value==="string" ? value.slice(0,120) : value;
+        allowed[key]=typeof value==="string" ? value.slice(0, key==='message'?500:120) : value;
       }
     }
     return allowed;

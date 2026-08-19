@@ -1222,6 +1222,14 @@ function lenDauTrang() {
 
 
 <script defer src="cloud-sync-v11.js"></script>
+<script>
+document.addEventListener("click", function(e){
+  const a = e.target.closest("#home-books .home-book-card");
+  if(!a || !window.avpAnalytics) return;
+  const title = (a.querySelector("strong")?.textContent || a.textContent || "sach").trim().slice(0,80);
+  window.avpAnalytics.track("book_click", {page:"index.html", tool:title});
+});
+</script>
 </body>
 
 </html> 

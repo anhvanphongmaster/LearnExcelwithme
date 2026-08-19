@@ -72,6 +72,24 @@
     const max=Math.max(1,...rows.map(r=>num(r.new_users)));
     root.innerHTML=rows.map(r=>{const dt=new Date(`${r.day}T00:00:00`),label=`${dt.getDate()}/${dt.getMonth()+1}`,h=Math.max(2,num(r.new_users)/max*145);return `<div class="admin-user-day" title="${r.day}: ${n(r.new_users)} tài khoản mới"><span class="admin-user-bar" style="height:${h}px"></span><span class="admin-user-label">${label}</span></div>`}).join("");
   }
+  function renderEngagement(s){
+    if(!s||s.__error) return;
+    const set=(id,v)=>{const el=$(id); if(el) el.textContent=n(v)};
+    set("engDownloads", s.downloads);
+    set("engVideos", s.video_clicks);
+    set("engBooks", s.book_clicks);
+    set("engFeedback", s.feedback);
+    renderRanking("engByTool", s.by_tool||[], "name", "n");
+    const box=$("engFeedbackList");
+    if(box){
+      const rows=s.feedback_list||[];
+      box.innerHTML = rows.length ? rows.map(r=>{
+        const when=r.at ? new Date(r.at).toLocaleString("vi-VN") : "";
+        const kind=r.kind==="idea"?"Ý tưởng":"Thắc mắc";
+        return `<div class="admin-rank-row"><span><b>${kind}</b> · ${when}<br>${String(r.message||"").replace(/[<>]/g,"")}</span></div>`;
+      }).join("") : "<p>Chưa có ý tưởng / thắc mắc.</p>";
+    }
+  }
   function renderQuizDifficulty(rows){
     const root=$("quizDifficulty");if(!rows?.length){root.innerHTML='<p class="admin-empty">Chưa có lượt làm quiz sau khi cập nhật V15.</p>';return}
     root.innerHTML=rows.map(r=>{const rate=num(r.pass_rate),hard=rate<60;return `<div class="admin-quiz-row"><div><div class="admin-quiz-title">${labelLesson(r.lesson)}</div><div class="admin-quiz-meta">${n(r.attempts)} lượt làm • ${n(r.passes)} lượt đạt</div></div><span class="admin-pass-rate ${hard?'hard':''}">${rate.toFixed(1)}% đạt</span></div>`}).join("");
@@ -113,12 +131,13 @@
       }
 
       // Learning RPCs — optional, không chặn cả dashboard nếu 1 hàm lỗi
-      const [learning,funnel,completed,difficulty,newUsers] = await Promise.all([
+      const [learning,funnel,completed,difficulty,newUsers,engagement] = await Promise.all([
         rpcSoft("admin_learning_summary"),
         rpcSoft("admin_learning_funnel"),
         rpcSoft("admin_top_completed_lessons",{p_limit:10}),
         rpcSoft("admin_quiz_difficulty",{p_days:currentDays,p_limit:10}),
-        rpcSoft("admin_new_user_trend",{p_days:Math.min(currentDays,90)})
+        rpcSoft("admin_new_user_trend",{p_days:Math.min(currentDays,90)}),
+        rpcSoft("admin_engagement_summary",{p_days:currentDays})
       ]);
 
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
@@ -130,6 +149,7 @@
       if(!funnel?.__error) renderFunnel(funnel||[]);
       if(!completed?.__error) renderRanking("topCompletedLessons",completed||[],"lesson","completed_users",labelLesson);
       if(!difficulty?.__error) renderQuizDifficulty(difficulty||[]);
+      if(!engagement?.__error) renderEngagement(engagement||{});
       if(!newUsers?.__error) renderNewUsers(newUsers||[]);
     }catch(error){
       console.error(error);
