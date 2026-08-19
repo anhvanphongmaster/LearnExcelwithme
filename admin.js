@@ -103,15 +103,20 @@
     };
     const del=$("mailDelete");
     if(del) del.onclick=async()=>{
-      if(!r.id){ toast("Thư này chưa có mã. Chạy SQL admin-delete-feedback.sql"); return; }
       if(!confirm("Xóa thư này của "+who+"?")) return;
+      const itemId=Number(r.id);
       if(mailKind==="saved"){
-        await rpcSoft("admin_delete_saved_feedback",{p_id:r.id});
+        if(!itemId){ toast("Thư đã giữ chưa có mã."); return; }
+        await rpcSoft("admin_delete_saved_feedback",{p_id:itemId});
         mailData.saved = (await rpcSoft("admin_list_saved_feedback")) || [];
         if(mailData.saved.__error) mailData.saved=[];
+      }else if(itemId){
+        await rpcSoft("admin_delete_inbox_item",{p_id:itemId});
+        mailData[mailKind] = (mailData[mailKind]||[]).filter(x=>Number(x.id)!==itemId);
       }else{
-        await rpcSoft("admin_delete_inbox_item",{p_id:r.id});
-        mailData[mailKind] = (mailData[mailKind]||[]).filter(x=>x.id!==r.id);
+        const res=await rpcSoft("admin_delete_inbox_match",{p_at:r.at||null, p_message:r.message||""});
+        if(res&&res.__error){ toast("Chưa xóa được. Chạy lại SQL rồi F5."); return; }
+        mailData[mailKind] = (mailData[mailKind]||[]).filter(x=>x!==r && x.message!==r.message);
       }
       renderMail(mailKind);
       toast("Đã xóa thư này");
