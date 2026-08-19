@@ -123,3 +123,6 @@ body.dark-mode .admin-denied-help summary{color:#8be1ac}
 @media(max-width:800px){.admin-mail{grid-template-columns:1fr;}}
 
 .admin-mail-keep{margin-top:14px;min-height:38px;padding:0 14px;border:0;border-radius:10px;background:#217346;color:#fff;font-weight:700;cursor:pointer;}
+
+.admin-mail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.admin-mail-del{min-height:38px;padding:0 14px;border:0;border-radius:10px;background:#c0392b;color:#fff;font-weight:700;cursor:pointer;}

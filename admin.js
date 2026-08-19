@@ -85,9 +85,10 @@
     const when=r.at ? new Date(r.at).toLocaleString("vi-VN") : "";
     const msg=String(r.message||"").replace(/[<>]/g,"");
     const extra = mailKind==="saved"
-      ? `<button type="button" class="admin-mail-keep" id="mailDelete">Xóa khỏi Đã giữ</button>`
-      : `<button type="button" class="admin-mail-keep" id="mailKeep">Giữ lại</button>`;
-    $("engMailRead").innerHTML=`<h4>${who}</h4><small>${when}</small><p style="margin-top:12px;white-space:pre-wrap">${msg}</p>${extra}`;
+      ? `<button type="button" class="admin-mail-del" id="mailDelete">Xóa thư này</button>`
+      : `<button type="button" class="admin-mail-keep" id="mailKeep">Giữ lại</button>
+         <button type="button" class="admin-mail-del" id="mailDelete">Xóa thư này</button>`;
+    $("engMailRead").innerHTML=`<h4>${who}</h4><small>${when}</small><p style="margin-top:12px;white-space:pre-wrap">${msg}</p><div class="admin-mail-actions">${extra}</div>`;
     const keep=$("mailKeep");
     if(keep) keep.onclick=async()=>{
       keep.disabled=true; keep.textContent="Đang lưu...";
@@ -98,16 +99,22 @@
         if(mailData.saved.__error) mailData.saved=[];
         const s=$("mailTabS"); if(s) s.textContent="Đã giữ ("+mailData.saved.length+")";
         keep.textContent="Đã lưu";
-      }catch(e){ keep.disabled=false; keep.textContent="Giữ lại"; toast("Chưa lưu được — chạy SQL admin-saved-feedback.sql"); }
+      }catch(e){ keep.disabled=false; keep.textContent="Giữ lại"; toast("Chưa lưu được"); }
     };
     const del=$("mailDelete");
     if(del) del.onclick=async()=>{
-      if(!r.id) return;
-      await rpcSoft("admin_delete_saved_feedback",{p_id:r.id});
-      mailData.saved = (await rpcSoft("admin_list_saved_feedback")) || [];
-      if(mailData.saved.__error) mailData.saved=[];
-      renderMail("saved");
-      toast("Đã xóa");
+      if(!r.id){ toast("Thư này chưa có mã. Chạy SQL admin-delete-feedback.sql"); return; }
+      if(!confirm("Xóa thư này của "+who+"?")) return;
+      if(mailKind==="saved"){
+        await rpcSoft("admin_delete_saved_feedback",{p_id:r.id});
+        mailData.saved = (await rpcSoft("admin_list_saved_feedback")) || [];
+        if(mailData.saved.__error) mailData.saved=[];
+      }else{
+        await rpcSoft("admin_delete_inbox_item",{p_id:r.id});
+        mailData[mailKind] = (mailData[mailKind]||[]).filter(x=>x.id!==r.id);
+      }
+      renderMail(mailKind);
+      toast("Đã xóa thư này");
     };
   }
   function bindMailTabs(){
