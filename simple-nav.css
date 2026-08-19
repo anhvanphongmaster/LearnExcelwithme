@@ -1677,3 +1677,74 @@ body.core-topic-page .avp-install-banner{display:none!important}
 .auth-nav-user.open .auth-dropdown{display:flex;flex-direction:column;gap:4px;}
 .auth-dropdown a,.auth-dropdown button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:9px 10px;border-radius:10px;color:#173f2d;font-weight:700;text-decoration:none;cursor:pointer;}
 .auth-dropdown a:hover,.auth-dropdown button:hover{background:#f3faf6;}
+
+
+/* ===== UNIFIED FIXED BAR ===== */
+.top-simple-nav{
+  position:fixed !important;
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  z-index:3000 !important;
+  min-height:64px;
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:12px !important;
+  padding:8px 18px !important;
+  background:#ffffff !important;
+  border-bottom:1px solid #e4ebe7 !important;
+  box-shadow:0 4px 16px rgba(16,64,40,.06);
+}
+.top-simple-inner{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:auto;
+  max-width:100%;
+  gap:12px;
+  min-width:0;
+}
+.top-simple-brand{
+  display:inline-flex !important;
+  align-items:center;
+  flex:0 0 auto;
+  margin-right:0 !important;
+  color:#185c37 !important;
+  font-weight:800 !important;
+  text-decoration:none !important;
+  white-space:nowrap;
+  font-size:15px !important;
+}
+.top-simple-links{
+  display:flex !important;
+  flex-wrap:wrap;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:6px !important;
+}
+.top-theme-button,#themeToggle{display:none !important;}
+.top-simple-nav .top-mobile-toggle{
+  display:none !important;
+}
+@media(max-width:900px){
+  .top-simple-nav .top-mobile-toggle{
+    display:inline-flex !important;
+    margin-left:auto;
+  }
+  .top-simple-nav .top-simple-links{
+    display:none !important;
+  }
+  .top-simple-nav.open{
+    flex-wrap:wrap !important;
+  }
+  .top-simple-nav.open .top-simple-links{
+    display:flex !important;
+    flex-direction:column;
+    width:100%;
+    align-items:stretch !important;
+  }
+}
+
+.avp-page-back-wrap,.lesson-action-row,.lesson-home-link{display:none !important;}

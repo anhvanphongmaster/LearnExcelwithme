@@ -24,8 +24,15 @@
     {icon:'🪪', title:'Hồ sơ người học', desc:'Tên, avatar, mục tiêu học và hoạt động cá nhân', url:'profile.html', type:'Cá nhân', keys:'ho so profile avatar muc tieu ca nhan nguoi hoc'},
     {icon:'🏆', title:'Thành tích & Nhiệm vụ', desc:'Huy hiệu, nhiệm vụ hằng ngày, XP và streak', url:'achievements.html', type:'Cá nhân', keys:'thanh tich achievement huy hieu nhiem vu hang ngay daily quest xp streak'},
     {icon:'📚', title:'Bài tập thực hành theo video', desc:'File Excel thực hành theo từng video trên kênh', url:'practice-video.html', type:'Thực hành', keys:'bai tap thuc hanh video tiktok file practice coming soon'},
+    {icon:'🔄', title:'Power Query thực chiến', desc:'Gộp file, làm sạch, Trim, kiểu dữ liệu và Refresh', url:'power-query-course.html', type:'Nâng cao', keys:'power query gop file lam sach trim refresh folder 4150'},
+    {icon:'🧪', title:'Practice Lab', desc:'3 project Excel thực chiến Pivot Dashboard DAX', url:'practice-lab.html', type:'Thực hành', keys:'practice lab project pivot dashboard dax thuc chien'},
+    {icon:'📅', title:'Lộ trình 30 ngày', desc:'Kế hoạch học Excel 30 ngày', url:'learning-path.html', type:'Lộ trình', keys:'lo trinh 30 ngay 30 day plan'},
+    {icon:'📖', title:'Sách và combo tham khảo', desc:'Sách Excel Word PowerPoint gợi ý trên TikTok', url:'index.html#home-books', type:'Tài liệu', keys:'sach combo tiktok excel word powerpoint thu thuat'},
+    {icon:'🧹', title:'Video 01 — Hai ô Viet Nam', desc:'Làm sạch khoảng trắng ẩn CHAR(160)', url:'practice-video.html', type:'Video', keys:'viet nam hidden space trim clean char 160'},
+    {icon:'📋', title:'Video 02 — Copy không lấy dòng ẩn', desc:'Visible cells only Alt+;', url:'practice-video.html', type:'Video', keys:'copy dong an visible cells alt semicolon'},
+    {icon:'🔎', title:'Video 04 — So sánh 2 danh sách', desc:'Tìm dòng thiếu bằng COUNTIF XMATCH', url:'practice-video.html', type:'Video', keys:'so sanh 2 danh sach thieu countif xmatch'},
     {icon:'📱', title:'Excel Mobile', desc:'Upload và xử lý file Excel ngay trên điện thoại', url:'excel-mobile.html', type:'Công cụ', keys:'excel mobile dien thoai upload xu ly file'},
-    {icon:'📥', title:'Tài liệu thực hành', desc:'Các file Excel mẫu để tải xuống và luyện tập', url:'index.html#tai-lieu', type:'Tài liệu', keys:'tai lieu download file mau excel pivot pareto qc'},
+    {icon:'📥', title:'Tài liệu thực hành', desc:'File Excel mẫu và bài tập theo video', url:'practice-video.html', type:'Tài liệu', keys:'tai lieu download file mau excel pivot pareto qc video practice'},
     {icon:'ℹ️', title:'Giới thiệu', desc:'Thông tin về Learn Excel with Anh Van Phong', url:'gioithieu.html', type:'Trang', keys:'gioi thieu about'},
     {icon:'📩', title:'Liên hệ', desc:'Gửi câu hỏi hoặc góp ý cho website', url:'lienhe.html', type:'Trang', keys:'lien he contact gop y'}
   ];

@@ -25,6 +25,20 @@
       toggle.innerHTML = "✕";
     }
 
+    if(nav && !nav.querySelector(".top-simple-brand")){
+      const brand=document.createElement("a");
+      brand.className="top-simple-brand";
+      brand.href="index.html";
+      brand.textContent="📗 Learn Excel";
+      nav.insertBefore(brand, nav.firstChild);
+    }
+    if(nav && !nav.querySelector(".auth-nav-slot")){
+      const slot=document.createElement("span");
+      slot.className="auth-nav-slot";
+      const links=nav.querySelector(".top-simple-links");
+      if(links) links.appendChild(slot);
+    }
+
     if(nav && toggle){
       toggle.setAttribute("type", "button");
       toggle.setAttribute("aria-expanded", "false");
@@ -121,7 +135,7 @@
   document.addEventListener("DOMContentLoaded", function(){
     const pageName = (location.pathname.split("/").pop() || "index.html").toLowerCase();
     if(pageName === "" || pageName === "index.html") return;
-    if(document.querySelector(".avp-page-back-wrap")) return;
+    return; /* nav already has Trang chủ — no second back button */
 
     /*
       Không dùng history.back() cho điều hướng học tập.

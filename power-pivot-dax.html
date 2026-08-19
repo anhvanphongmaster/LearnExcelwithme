@@ -9,7 +9,22 @@ body{margin:0;font-family:Arial,sans-serif;background:#f5f8f6;color:#1c2821}.her
 <header class="hero"><span>📐 CHUYÊN ĐỀ NÂNG CAO</span><h1>Power Pivot & DAX</h1><p>Mô hình dữ liệu nhiều bảng và tạo KPI bằng Measure. Đây là bước tiếp theo khi PivotTable thường bắt đầu chạm giới hạn.</p></header>
 <main class="wrap"><section class="lesson-grid"><article class="lesson"><div class="num">01</div><h2>Khi nào cần Power Pivot</h2><p>Dùng khi dữ liệu nằm ở nhiều bảng liên quan như Master Lot, Defect, Model và Calendar. Thay vì VLOOKUP mọi thứ vào một bảng khổng lồ, hãy tạo quan hệ giữa các bảng.</p><ul><li>Tạo Table cho từng nguồn dữ liệu</li><li>Thêm vào Data Model</li><li>Tạo Relationship bằng khóa chung</li><li>Dùng PivotTable từ Data Model</li></ul></article><article class="lesson"><div class="num">02</div><h2>Measure khác Calculated Column</h2><p>Calculated Column tính cho từng dòng. Measure tính theo ngữ cảnh lọc của Pivot/Dashboard và phù hợp cho KPI.</p><ul><li>Measure gọn hơn khi dữ liệu lớn</li><li>Tự thay đổi theo Slicer/Filter</li><li>Nên dùng Measure cho Total, Rate, Average, KPI</li></ul></article><article class="lesson"><div class="num">03</div><h2>DAX cơ bản nên biết</h2><p>Bắt đầu từ SUM, COUNTROWS, DISTINCTCOUNT, DIVIDE và CALCULATE.</p><div class="code">Total Input := SUM(Lots[Input])
 Total NG := SUM(Defects[NG])
-NG Rate := DIVIDE([Total NG],[Total Input],0)</div></article><article class="lesson"><div class="num">04</div><h2>Bài thực chiến QC</h2><p>Tạo mô hình 3 bảng: Lots, Defects, Calendar; sau đó tính Total Input, Total NG và NG Rate theo Line/Model/Tháng.</p><ul><li>Không ghép bảng bằng copy-paste</li><li>Không dùng công thức từng dòng cho toàn bộ KPI</li><li>Kiểm tra quan hệ one-to-many</li></ul></article></section><div class="task"><strong>🎯 Mục tiêu hoàn thành:</strong> Bạn không cần nhớ mọi nút. Hãy làm được một bài thực tế hoàn chỉnh, sau đó đánh dấu bài đã học ở phía trên trang.</div><div class="nav-next"><a href="excel-nang-cao.html">← Khu nâng cao</a><a href="index.html#ky-nang-excel">Chọn kỹ năng khác →</a></div></main>
+NG Rate := DIVIDE([Total NG],[Total Input],0)</div></article><article class="lesson"><div class="num">04</div><h2>Bài thực chiến QC</h2><p>Tạo mô hình 3 bảng: Lots, Defects, Calendar; sau đó tính Total Input, Total NG và NG Rate theo Line/Model/Tháng.</p><ul><li>Không ghép bảng bằng copy-paste</li><li>Không dùng công thức từng dòng cho toàn bộ KPI</li><li>Kiểm tra quan hệ one-to-many</li></ul></article></section><div class="task"><strong>🎯 Mục tiêu hoàn thành:</strong> Bạn không cần nhớ mọi nút. Hãy làm được một bài thực tế hoàn chỉnh, sau đó đánh dấu bài đã học ở phía trên trang.</div><div class="nav-next"><a href="excel-nang-cao.html">← Khu nâng cao</a><a href="index.html#ky-nang-excel">Chọn kỹ năng khác →</a></div>
+<section class="lesson-tips-panel" style="max-width:1100px;margin:16px auto 28px;padding:0 18px">
+  <div class="course-panel" style="padding:22px">
+    <span class="course-kicker">VÍ DỤ QC</span>
+    <h2 class="course-title" style="font-size:22px;margin-top:10px">3 measure NG Rate theo Model</h2>
+    <p style="color:#65736b;margin:0 0 16px">Quan hệ: Lots[Lot] 1 → nhiều Defects[Lot]. Không VLOOKUP vào một bảng.</p>
+    <ol style="margin:0 0 16px 18px;color:#24382d;line-height:1.7">
+      <li>Total Input := SUM(Lots[Input])</li>
+      <li>Total NG := SUM(Defects[NG])</li>
+      <li>NG Rate := DIVIDE([Total NG], [Total Input], 0)</li>
+      <li>Pivot: Rows = Model, Values = 3 measure. Slicer theo Tháng.</li>
+    </ol>
+    <div class="course-practice"><strong>Bài tập:</strong> Đổi slicer tháng mà NG Rate vẫn đúng. Xong quiz rồi sang Dashboard động.</div>
+  </div>
+</section>
+</main>
 <script defer src="script.js"></script><script defer src="global-search.js"></script><script defer src="simple-nav.js"></script><script defer src="avp-core.js"></script><script defer src="learning-progress.js"></script><script defer src="analytics-tracker.js"></script><script defer src="course-engine.js"></script>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="supabase-config.js"></script>
