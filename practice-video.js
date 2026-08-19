@@ -3,6 +3,7 @@
  * Source of truth: Lich_10_Video (Ke_Hoach_Content_Excel_TikTok)
  */
 (function () {
+  const ALL_PQ_FILES = ["Input_01.xlsx","Input_02.xlsx","Input_03.xlsx","Input_04.xlsx","Input_05.xlsx","Input_06.xlsx","Input_07.xlsx","Input_08.xlsx","Input_09.xlsx","Input_10.xlsx","PowerQuery-Master-Expected.xlsx"];
   const videoPracticeData = [
     {
       id: "video-01",
@@ -13,7 +14,8 @@
       skill: "Trim • Clean • Kiểu dữ liệu • Column Quality",
       filterTags: ["Làm sạch dữ liệu", "Power Query"],
       file: "Input_01.xlsx",
-      folder: "downloads/power-query/"
+      folder: "downloads/power-query/",
+      extraFiles: ALL_PQ_FILES
     },
     {
       id: "video-02",
@@ -21,10 +23,11 @@
       icon: "📂",
       title: "Gộp nhiều file Input bằng Power Query",
       category: "Power Query",
-      skill: "Get Data → From Folder • Combine • Remove Errors",
+      skill: "Get Data → From Folder • Combine • Input_01 … Input_10",
       filterTags: ["Power Query"],
-      file: "PowerQuery-Practice-10-Files.zip",
-      folder: "downloads/"
+      file: "Input_01.xlsx",
+      folder: "downloads/power-query/",
+      extraFiles: ALL_PQ_FILES
     },
     {
       id: "video-03",
@@ -34,8 +37,9 @@
       category: "Power Query",
       skill: "Close & Load • Pivot • Refresh",
       filterTags: ["Power Query"],
-      file: "PowerQuery-Master-Expected.xlsx",
-      folder: "downloads/power-query/"
+      file: "Input_01.xlsx",
+      folder: "downloads/power-query/",
+      extraFiles: ALL_PQ_FILES
     },
     {
       id: "video-04",
@@ -45,8 +49,9 @@
       category: "Power Query",
       skill: "KPI • Slicer • PivotChart",
       filterTags: ["Power Query"],
-      file: "PowerQuery-Master-Expected.xlsx",
-      folder: "downloads/power-query/"
+      file: "Input_01.xlsx",
+      folder: "downloads/power-query/",
+      extraFiles: ALL_PQ_FILES
     }
   ];
 
@@ -79,6 +84,17 @@
   }
 
 
+  function downloadBlock(item, fileName){
+    const folder = item.folder || "downloads/power-query/";
+    const names = [];
+    function add(f){ if(f && names.indexOf(f)===-1) names.push(f); }
+    add(fileName);
+    (item.extraFiles || []).forEach(add);
+    let html = names.map(function(f){
+      return '<a class="pv-download" href="' + folder + f + '" download>⬇ ' + f + '</a>';
+    }).join("");
+    return html;
+  }
   function updateSummary() {
     const available = videoPracticeData.filter(isReleased).length;
     const coming = videoPracticeData.length - available;
@@ -118,7 +134,7 @@
       ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer">▶ Xem video TikTok</a>'
       : '<span class="pv-tiktok-soon">Video TikTok chưa gắn link</span>';
     const fileBtn = avail
-      ? '<a class="pv-download" href="' + ((item.folder || 'downloads/video-practice/') + fileName) + '" download>⬇ Tải file thực hành</a>'
+      ? downloadBlock(item, fileName)
       : '<span class="pv-locked-note">File sẽ mở khi video được phát hành.</span>';
     const foot = tkBtn + fileBtn;
     const tags = (item.filterTags || [item.category]).join(" ");
