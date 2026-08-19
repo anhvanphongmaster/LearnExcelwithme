@@ -227,13 +227,14 @@
     modal.addEventListener("click", e => { if(e.target===modal) close(); });
     document.getElementById("pvFbSend")?.addEventListener("click", async function(){
       const kind = document.getElementById("pvFbKind")?.value || "question";
+      const name = (document.getElementById("pvFbName")?.value || "").trim();
       const message = (document.getElementById("pvFbText")?.value || "").trim();
       const st = document.getElementById("pvFbStatus");
+      if(name.length < 2){ if(st) st.textContent="Nhập tên của bạn."; return; }
       if(message.length < 4){ if(st) st.textContent="Viết rõ hơn một chút."; return; }
       if(st) st.textContent="Đang gửi...";
-      const ok = window.avpAnalytics
-        ? await window.avpAnalytics.track("site_feedback", {page:"practice-video.html", metadata:{kind, message}})
-        : false;
+      if(!window.avpAnalytics){ if(st) st.textContent="Chưa kết nối được máy chủ."; return; }
+      const ok = await window.avpAnalytics.track("site_feedback", {page:"practice-video.html", metadata:{kind, name, message}});
       if(st) st.textContent = ok ? "Đã gửi. Cảm ơn bạn." : "Chưa gửi được. Thử lại sau.";
       if(ok) document.getElementById("pvFbText").value = "";
     });

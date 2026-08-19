@@ -72,23 +72,29 @@
     const max=Math.max(1,...rows.map(r=>num(r.new_users)));
     root.innerHTML=rows.map(r=>{const dt=new Date(`${r.day}T00:00:00`),label=`${dt.getDate()}/${dt.getMonth()+1}`,h=Math.max(2,num(r.new_users)/max*145);return `<div class="admin-user-day" title="${r.day}: ${n(r.new_users)} tài khoản mới"><span class="admin-user-bar" style="height:${h}px"></span><span class="admin-user-label">${label}</span></div>`}).join("");
   }
+  function renderFbList(id, rows, empty){
+    const box=$(id); if(!box) return;
+    box.innerHTML = (rows&&rows.length) ? rows.map(r=>{
+      const when=r.at ? new Date(r.at).toLocaleString("vi-VN") : "";
+      const who=String(r.name||"Ẩn danh").replace(/[<>]/g,"");
+      const msg=String(r.message||"").replace(/[<>]/g,"");
+      return `<div class="admin-rank-row" style="align-items:flex-start"><span><b>${who}</b> · ${when}<br>${msg}</span></div>`;
+    }).join("") : `<p class="admin-empty">${empty}</p>`;
+  }
   function renderEngagement(s){
-    if(!s||s.__error) return;
+    const hint=$("engHint");
+    if(!s||s.__error){
+      if(hint) hint.textContent="Chưa có hàm admin_engagement_summary. Chạy admin-feedback-upgrade.sql trong SQL Editor rồi F5.";
+      return;
+    }
     const set=(id,v)=>{const el=$(id); if(el) el.textContent=n(v)};
     set("engDownloads", s.downloads);
     set("engVideos", s.video_clicks);
     set("engBooks", s.book_clicks);
     set("engFeedback", s.feedback);
-    renderRanking("engByTool", s.by_tool||[], "name", "n");
-    const box=$("engFeedbackList");
-    if(box){
-      const rows=s.feedback_list||[];
-      box.innerHTML = rows.length ? rows.map(r=>{
-        const when=r.at ? new Date(r.at).toLocaleString("vi-VN") : "";
-        const kind=r.kind==="idea"?"Ý tưởng":"Thắc mắc";
-        return `<div class="admin-rank-row"><span><b>${kind}</b> · ${when}<br>${String(r.message||"").replace(/[<>]/g,"")}</span></div>`;
-      }).join("") : "<p>Chưa có ý tưởng / thắc mắc.</p>";
-    }
+    renderFbList("engQuestions", s.questions, "Chưa có thắc mắc.");
+    renderFbList("engIdeas", s.ideas, "Chưa có ý tưởng.");
+    if(hint) hint.textContent="";
   }
   function renderQuizDifficulty(rows){
     const root=$("quizDifficulty");if(!rows?.length){root.innerHTML='<p class="admin-empty">Chưa có lượt làm quiz sau khi cập nhật V15.</p>';return}

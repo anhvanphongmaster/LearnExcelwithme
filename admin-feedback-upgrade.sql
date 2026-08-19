@@ -1,5 +1,5 @@
--- Chạy 1 lần trong Supabase SQL Editor (tài khoản admin).
--- Đếm tải file / xem video / click sách / ý tưởng & thắc mắc.
+-- Chạy HẾT file này 1 lần trong Supabase SQL Editor, rồi chạy:
+-- NOTIFY pgrst, 'reload schema';
 
 create or replace function public.admin_engagement_summary(p_days integer default 30)
 returns jsonb
@@ -21,31 +21,35 @@ begin
     'video_clicks', (select count(*) from public.analytics_events where event_name='practice_video_click' and occurred_at>=since),
     'book_clicks', (select count(*) from public.analytics_events where event_name='book_click' and occurred_at>=since),
     'feedback', (select count(*) from public.analytics_events where event_name='site_feedback' and occurred_at>=since),
-    'by_tool', (
-      select coalesce(jsonb_agg(jsonb_build_object('name', tool_name, 'n', n) order by n desc), '[]'::jsonb)
+    'ideas', (
+      select coalesce(jsonb_agg(row_to_json(x) order by x.at desc), '[]'::jsonb)
       from (
-        select coalesce(nullif(tool_name,''), '(không rõ)') as tool_name, count(*)::int as n
+        select occurred_at as at,
+               coalesce(metadata->>'name','Ẩn danh') as name,
+               coalesce(metadata->>'message','') as message,
+               page_path as page
         from public.analytics_events
-        where event_name in ('practice_file_download','practice_video_click','book_click')
+        where event_name='site_feedback'
           and occurred_at>=since
-        group by 1
-        limit 20
-      ) s
-    ),
-    'feedback_list', (
-      select coalesce(jsonb_agg(jsonb_build_object(
-        'at', occurred_at,
-        'kind', coalesce(metadata->>'kind','thắc mắc'),
-        'message', coalesce(metadata->>'message',''),
-        'page', page_path
-      ) order by occurred_at desc), '[]'::jsonb)
-      from (
-        select occurred_at, metadata, page_path
-        from public.analytics_events
-        where event_name='site_feedback' and occurred_at>=since
+          and coalesce(metadata->>'kind','') = 'idea'
         order by occurred_at desc
         limit 50
-      ) f
+      ) x
+    ),
+    'questions', (
+      select coalesce(jsonb_agg(row_to_json(x) order by x.at desc), '[]'::jsonb)
+      from (
+        select occurred_at as at,
+               coalesce(metadata->>'name','Ẩn danh') as name,
+               coalesce(metadata->>'message','') as message,
+               page_path as page
+        from public.analytics_events
+        where event_name='site_feedback'
+          and occurred_at>=since
+          and coalesce(metadata->>'kind','question') <> 'idea'
+        order by occurred_at desc
+        limit 50
+      ) x
     )
   );
 end;
