@@ -3,7 +3,7 @@ const availablePracticeFiles = [
   "PowerQuery-11-Files.zip"
 ]
 const videoTikTokLinks = {
-  "video-01": "",
+  "video-01": "https://vt.tiktok.com/ZSVDNoRHE/",
   "video-02": "https://vt.tiktok.com/ZSVAbxkbF/",
   "video-03": "https://vt.tiktok.com/ZSVAbk8rn/",
   "video-04": "https://vt.tiktok.com/ZSVAqt4DM/"
