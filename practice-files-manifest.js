@@ -1,6 +1,6 @@
 const availablePracticeFiles = [
   "PowerQuery_DEMO.xlsx",
-  "PowerQuery-11-Files.xlsx"
+  "PowerQuery-11-Files.zip"
 ]
 const videoTikTokLinks = {
   "video-01": "",
