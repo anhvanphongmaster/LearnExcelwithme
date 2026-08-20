@@ -9,7 +9,7 @@
       id: "video-01",
       number: 1,
       icon: "🧹",
-      title: "Làm sạch dữ liệu trong Power Query",
+      title: "Làm sạch dữ liệu • Cột trùng",
       category: "Làm sạch dữ liệu",
       skill: "Trim • Clean • Kiểu dữ liệu • Column Quality",
       filterTags: ["Làm sạch dữ liệu", "Power Query"],
