@@ -72,7 +72,7 @@
     const max=Math.max(1,...rows.map(r=>num(r.new_users)));
     root.innerHTML=rows.map(r=>{const dt=new Date(`${r.day}T00:00:00`),label=`${dt.getDate()}/${dt.getMonth()+1}`,h=Math.max(2,num(r.new_users)/max*145);return `<div class="admin-user-day" title="${r.day}: ${n(r.new_users)} tài khoản mới"><span class="admin-user-bar" style="height:${h}px"></span><span class="admin-user-label">${label}</span></div>`}).join("");
   }
-  let mailData={questions:[], ideas:[], saved:[]};
+  let mailData={questions:[], ideas:[], saved:[], files:[]};
   let mailKind='questions';
   function preview(text){
     const s=String(text||"").replace(/\s+/g," ").trim();
@@ -84,6 +84,31 @@
     const who=String(r.name||"Ẩn danh").replace(/[<>]/g,"");
     const when=r.at ? new Date(r.at).toLocaleString("vi-VN") : "";
     const msg=String(r.message||"").replace(/[<>]/g,"");
+    if(mailKind==="files"){
+      const contact=[r.email,r.zalo].filter(Boolean).join(" · ");
+      $("engMailRead").innerHTML=`<h4>${who}</h4><small>${when}</small>
+        <p><b>Liên hệ:</b> ${String(contact||"—").replace(/[<>]/g,"")}</p>
+        <p>${String(r.note||r.file||"").replace(/[<>]/g,"")}</p>
+        <div class="admin-mail-actions">
+          <button type="button" class="admin-mail-keep" id="mailDownload">Tải file</button>
+          <button type="button" class="admin-mail-del" id="mailDelete">Xóa phiếu này</button>
+        </div>`;
+      $("mailDownload")?.addEventListener("click", async()=>{
+        try{
+          const {data,error}=await client.storage.from("practice-uploads").createSignedUrl(r.path, 3600);
+          if(error||!data?.signedUrl){ toast("Không tạo được link tải."); return; }
+          location.href=data.signedUrl;
+        }catch(e){ toast("Không tải được file"); }
+      });
+      $("mailDelete")?.addEventListener("click", async()=>{
+        if(!confirm("Xóa phiếu file này?")) return;
+        await rpcSoft("admin_delete_user_file",{p_id:r.id});
+        mailData.files=(mailData.files||[]).filter(x=>x.id!==r.id);
+        renderMail("files");
+        toast("Đã xóa phiếu");
+      });
+      return;
+    }
     const extra = mailKind==="saved"
       ? `<button type="button" class="admin-mail-del" id="mailDelete">Xóa thư này</button>`
       : `<button type="button" class="admin-mail-keep" id="mailKeep">Giữ lại</button>
@@ -145,7 +170,7 @@
       read.innerHTML="<p>Chưa có thư.</p>";
       return;
     }
-    box.innerHTML=list.map((r,i)=>`<button type="button" class="admin-mail-item" data-i="${i}"><b>${String(r.name||"Ẩn danh").replace(/[<>]/g,"")}</b><small>${r.at?new Date(r.at).toLocaleString("vi-VN"):""}</small><em>${preview(r.message)}</em></button>`).join("");
+    box.innerHTML=list.map((r,i)=>`<button type="button" class="admin-mail-item" data-i="${i}"><b>${String(r.name||"Ẩn danh").replace(/[<>]/g,"")}</b><small>${r.at?new Date(r.at).toLocaleString("vi-VN"):""}</small><em>${preview(r.message||r.file||r.note)}</em></button>`).join("");
     box.querySelectorAll(".admin-mail-item").forEach(btn=>{
       btn.onclick=()=>openMail(list, Number(btn.dataset.i));
     });
@@ -166,10 +191,13 @@
     mailData.ideas=s.ideas||[];
     const saved=await rpcSoft("admin_list_saved_feedback");
     mailData.saved=(!saved||saved.__error)?[]:saved;
+    const files=await rpcSoft("admin_list_user_files");
+    mailData.files=Array.isArray(files)?files:(!files||files.__error?[]:files);
     const q=$("mailTabQ"), i=$("mailTabI");
     if(q) q.textContent="Thắc mắc ("+mailData.questions.length+")";
     if(i) i.textContent="Ý tưởng ("+mailData.ideas.length+")";
     const sv=$("mailTabS"); if(sv) sv.textContent="Đã giữ ("+(mailData.saved||[]).length+")";
+    const ff=$("mailTabF"); if(ff) ff.textContent="File gửi lên ("+(mailData.files||[]).length+")";
     bindMailTabs();
     renderMail(mailKind||"questions");
     if(hint) hint.textContent="Chỉ hiện 50 thư mới nhất mỗi loại.";
