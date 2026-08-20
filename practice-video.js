@@ -174,9 +174,7 @@
     const showFuture =
       f !== "available" &&
       (!q || "nội dung tiếp theo đang được chuẩn bị coming soon".indexOf(q) !== -1);
-    if (showFuture && (f === "all" || f === "coming")) {
-      html += cardHTML(null, true);
-    }
+    
 
     grid.innerHTML = html || '<p class="pv-empty">Không tìm thấy bài phù hợp.</p>';
   }
