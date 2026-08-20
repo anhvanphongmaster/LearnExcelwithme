@@ -438,4 +438,45 @@
       if (ok) document.getElementById("pvFbText").value = "";
     });
   });
+
+  document.addEventListener("DOMContentLoaded", function(){
+    var btn = document.getElementById("pvFileBtn");
+    var modal = document.getElementById("pvFileModal");
+    if(!btn || !modal) return;
+    var st = document.getElementById("pvFileStatus");
+    function close(){ modal.hidden = true; }
+    btn.addEventListener("click", function(){ modal.hidden = false; if(st) st.textContent=""; });
+    var cancel = document.getElementById("pvFileCancel");
+    if (cancel) cancel.addEventListener("click", close);
+    modal.addEventListener("click", function(e){ if(e.target===modal) close(); });
+    var send = document.getElementById("pvFileSend");
+    if (send) send.addEventListener("click", async function(){
+      var name = (document.getElementById("pvFileName").value || "").trim();
+      var email = (document.getElementById("pvFileEmail").value || "").trim();
+      var zalo = (document.getElementById("pvFileZalo").value || "").trim();
+      var note = (document.getElementById("pvFileNote").value || "").trim();
+      var pick = document.getElementById("pvFilePick");
+      var file = pick && pick.files && pick.files[0];
+      if(name.length < 2){ if(st) st.textContent="Nhập tên."; return; }
+      if(!email && !zalo){ if(st) st.textContent="Cần Gmail hoặc Zalo để gửi lại file."; return; }
+      if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ if(st) st.textContent="Gmail không hợp lệ."; return; }
+      if(!file){ if(st) st.textContent="Chọn file Excel."; return; }
+      if(file.size > 8*1024*1024){ if(st) st.textContent="File tối đa 8MB."; return; }
+      var sb = window.avpSupabase;
+      if(!sb){ if(st) st.textContent="Chưa kết nối được máy chủ."; return; }
+      if(st) st.textContent="Đang gửi file...";
+      var safe = file.name.replace(/[^\w.\-]+/g,"_").slice(0,80);
+      var path = "inbox/" + Date.now() + "_" + Math.random().toString(36).slice(2,8) + "_" + safe;
+      var up = await sb.storage.from("practice-uploads").upload(path, file, {upsert:false});
+      if(up.error){ if(st) st.textContent="Không tải được file. Cần chạy SQL / tạo bucket practice-uploads."; return; }
+      var rec = await sb.rpc("submit_user_file", {
+        p_name: name, p_email: email, p_zalo: zalo, p_note: note,
+        p_file_name: file.name, p_storage_path: path
+      });
+      if(rec.error){ if(st) st.textContent="File lên rồi nhưng chưa ghi phiếu. " + rec.error.message; return; }
+      if(st) st.textContent="Đã gửi. Mình sẽ trả qua Gmail/Zalo khi xử lý xong.";
+      pick.value = "";
+    });
+  });
+
 })();
