@@ -13,8 +13,8 @@
       category: "Làm sạch dữ liệu",
       skill: "Trim • Clean • Kiểu dữ liệu • Column Quality",
       filterTags: ["Làm sạch dữ liệu", "Power Query"],
-      file: "PowerQuery-11-Files.zip",
-      folder: "downloads/power-query/"
+      file: "PowerQuery_DEMO.zip",
+      folder: "downloads/video-practice/"
     },
     {
       id: "video-02",
