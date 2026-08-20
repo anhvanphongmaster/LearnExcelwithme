@@ -248,7 +248,7 @@
       filterTags: ["Công thức"],
       file: "V15_aggregate_thuc_hanh.zip",
       folder: "downloads/video-practice/"
-    }
+    },
     {
       id: "v16-Coming_soon",
       number: 23,
@@ -259,7 +259,7 @@
       filterTags: ["Wait"],
       file: "Wait",
       folder: "Wait"
-    },
+    }
   ];
 
   function fileList() {
