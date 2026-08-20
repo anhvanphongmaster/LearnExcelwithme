@@ -5,7 +5,7 @@
  */
 (function () {
   const videoPracticeData = [
-    {
+{
       id: "video-01",
       number: 1,
       icon: "🧹",
@@ -13,10 +13,10 @@
       category: "Làm sạch dữ liệu",
       skill: "Trim • Clean • Kiểu dữ liệu • Column Quality",
       filterTags: ["Làm sạch dữ liệu", "Power Query"],
-      file: "PowerQuery_DEMO.xlsx",
+      file: "01_PowerQuery_DEMO.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "video-02",
       number: 2,
       icon: "📂",
@@ -24,10 +24,10 @@
       category: "Power Query",
       skill: "Get Data → From Folder • Combine • Input_01 … Input_10",
       filterTags: ["Power Query"],
-      file: "PowerQuery-11-Files.zip",
-      folder: "downloads/power-query/"
+      file: "02_PowerQuery-11-Files.zip",
+      folder: ""
     },
-    {
+{
       id: "video-03",
       number: 3,
       icon: "📊",
@@ -35,10 +35,10 @@
       category: "Power Query",
       skill: "Close & Load • Pivot • Refresh",
       filterTags: ["Power Query"],
-      file: "PowerQuery-11-Files.zip",
-      folder: "downloads/power-query/"
+      file: "02_PowerQuery-11-Files.zip",
+      folder: ""
     },
-    {
+{
       id: "video-04",
       number: 4,
       icon: "📈",
@@ -46,219 +46,228 @@
       category: "Power Query",
       skill: "KPI • Slicer • PivotChart",
       filterTags: ["Power Query"],
-      file: "PowerQuery-11-Files.zip",
-      folder: "downloads/power-query/"
+      file: "02_PowerQuery-11-Files.zip",
+      folder: ""
     },
-
-    /* ===== 18 video sắp ra ===== */
-    {
-      id: "c2-sum-text",
-      number: 5,
-      icon: "0️⃣",
-      title: "Số nhìn như số nhưng SUM ra 0",
-      category: "Làm sạch dữ liệu",
-      skill: "VALUE • Convert to Number • Paste Special Multiply",
-      filterTags: ["Làm sạch dữ liệu", "Công thức"],
-      file: "C2_SUM_khong_ra_thuc_hanh.zip",
-      folder: "downloads/video-practice/"
-    },
-    {
-      id: "c3-ngay",
-      number: 6,
-      icon: "📅",
-      title: "10 người nhập 10 kiểu ngày",
-      category: "Nhập liệu",
-      skill: "Custom format dd/mm/yyyy • Data Validation Date • Error Alert",
-      filterTags: ["Nhập liệu", "Làm sạch dữ liệu"],
-      file: "C3_ngay_validation_thuc_hanh.zip",
-      folder: "downloads/video-practice/"
-    },
-    {
-      id: "v01-char160",
-      number: 7,
-      icon: "👻",
-      title: "Khoảng trắng ma CHAR(160)",
-      category: "Làm sạch dữ liệu",
-      skill: "LEN • CODE • MID • SUBSTITUTE • CHAR(160) • TRIM",
-      filterTags: ["Làm sạch dữ liệu", "Công thức"],
-      file: "V01_CHAR160_thuc_hanh.zip",
-      folder: "downloads/video-practice/"
-    },
-    {
+{
       id: "v02-center-across",
-      number: 8,
+      number: 5,
       icon: "↔️",
       title: "Đừng Merge — Center Across Selection",
       category: "Format",
       skill: "Format Cells • Alignment • Center Across Selection • Sort",
       filterTags: ["Format"],
-      file: "V02_center_across_thuc_hanh.zip",
+      file: "05_center_across.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
-      id: "v03-alt-visible",
-      number: 9,
-      icon: "👁️",
-      title: "Alt+; copy đúng dòng đang Filter",
-      category: "Nhập liệu",
-      skill: "Filter • Go To Special Visible cells • Alt+;",
-      filterTags: ["Nhập liệu"],
-      file: "V03_visible_cells_thuc_hanh.zip",
-      folder: "downloads/video-practice/"
-    },
-    {
+{
       id: "v04-so-viet",
-      number: 10,
+      number: 6,
       icon: "🇻🇳",
       title: "Số kiểu Việt 1.234.567 Excel không cộng",
       category: "Làm sạch dữ liệu",
       skill: "SUBSTITUTE • VALUE • dấu chấm nghìn",
       filterTags: ["Làm sạch dữ liệu", "Công thức"],
-      file: "V04_so_viet_thuc_hanh.zip",
+      file: "06_so_viet.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "v05-an-so-0",
-      number: 11,
+      number: 7,
       icon: "🫥",
       title: "Custom format ẩn số 0",
       category: "Format",
       skill: "Custom format 0;-0;;@ • #,##0;\"-\";@",
       filterTags: ["Format"],
-      file: "V05_an_so_0_thuc_hanh.zip",
+      file: "07_an_so_0.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
-      id: "v06-dropdown-2tang",
+{
+      id: "b01-dan-dong-loc",
+      number: 8,
+      icon: "📥",
+      title: "Dán vào đúng dòng đang lọc",
+      category: "Nhập liệu",
+      skill: "Filter • XLOOKUP • Sort • không dán đè dòng ẩn",
+      filterTags: ["Nhập liệu", "Công thức"],
+      file: "08_dan_dong_loc.xlsx",
+      folder: "downloads/video-practice/"
+    },
+{
+      id: "c2-sum-text",
+      number: 9,
+      icon: "0️⃣",
+      title: "Số nhìn như số nhưng SUM ra 0",
+      category: "Làm sạch dữ liệu",
+      skill: "VALUE • Convert to Number • Paste Special Multiply",
+      filterTags: ["Làm sạch dữ liệu", "Công thức"],
+      file: "09_so_nhin_nhu_so_SUM_0.xlsx",
+      folder: "downloads/video-practice/"
+    },
+{
+      id: "c3-ngay",
+      number: 10,
+      icon: "📅",
+      title: "10 người nhập 10 kiểu ngày",
+      category: "Nhập liệu",
+      skill: "Custom format dd/mm/yyyy • Data Validation Date • Error Alert",
+      filterTags: ["Nhập liệu", "Làm sạch dữ liệu"],
+      file: "10_10_kieu_ngay.xlsx",
+      folder: "downloads/video-practice/"
+    },
+{
+      id: "v01-char160",
+      number: 11,
+      icon: "👻",
+      title: "Khoảng trắng ma CHAR(160)",
+      category: "Làm sạch dữ liệu",
+      skill: "LEN • CODE • MID • SUBSTITUTE • CHAR(160) • TRIM",
+      filterTags: ["Làm sạch dữ liệu", "Công thức"],
+      file: "11_CHAR160.xlsx",
+      folder: "downloads/video-practice/"
+    },
+{
+      id: "v03-alt-visible",
       number: 12,
+      icon: "👁️",
+      title: "Alt+; copy đúng dòng đang Filter",
+      category: "Nhập liệu",
+      skill: "Filter • Go To Special Visible cells • Alt+;",
+      filterTags: ["Nhập liệu"],
+      file: "12_Alt_copy_dong_loc.xlsx",
+      folder: "downloads/video-practice/"
+    },
+{
+      id: "v06-dropdown-2tang",
+      number: 13,
       icon: "📑",
       title: "Dropdown 2 tầng: bộ phận → tên",
       category: "Nhập liệu",
       skill: "Data Validation • FILTER • INDIRECT • Table",
       filterTags: ["Nhập liệu", "Công thức"],
-      file: "V06_dropdown_2tang_thuc_hanh.zip",
+      file: "13_dropdown_2_tang.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "v07-xlookup",
-      number: 13,
+      number: 14,
       icon: "🔎",
       title: "XLOOKUP không còn #N/A",
       category: "Công thức",
       skill: "XLOOKUP if_not_found • match_mode • IFNA",
       filterTags: ["Công thức"],
-      file: "V07_xlookup_thuc_hanh.zip",
+      file: "14_XLOOKUP.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "v08-unpivot",
-      number: 14,
+      number: 15,
       icon: "↩️",
       title: "Unpivot: báo cáo nằm ngang thành dữ liệu",
       category: "Power Query",
       skill: "From Table • Unpivot Other Columns",
       filterTags: ["Power Query", "Làm sạch dữ liệu"],
-      file: "V08_unpivot_thuc_hanh.zip",
+      file: "15_Unpivot.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "v09-from-folder",
-      number: 15,
+      number: 16,
       icon: "📁",
       title: "Power Query gộp cả thư mục file tháng",
       category: "Power Query",
       skill: "Get Data From Folder • Combine • Refresh",
       filterTags: ["Power Query"],
-      file: "V09_from_folder_thuc_hanh.zip",
+      file: "16_PQ_gop_thu_muc.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "v10-fuzzy",
-      number: 16,
+      number: 17,
       icon: "🧩",
       title: "Fuzzy merge tên gần giống",
       category: "Power Query",
       skill: "Merge queries • Fuzzy • Similarity threshold",
       filterTags: ["Power Query", "Làm sạch dữ liệu"],
-      file: "V10_fuzzy_thuc_hanh.zip",
+      file: "17_Fuzzy_merge.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "c1-pq-10sheet",
-      number: 17,
+      number: 18,
       icon: "📚",
       title: "Gộp 10 sheet rồi mới biết bẩn",
       category: "Power Query",
       skill: "Connection Only • Append • Custom column • Close & Load",
       filterTags: ["Power Query", "Làm sạch dữ liệu"],
-      file: "C1_pq_10sheet_thuc_hanh.zip",
+      file: "18_PQ_10_sheet.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "v11-skip-blanks",
-      number: 18,
+      number: 19,
       icon: "📋",
       title: "Paste Special Skip Blanks",
       category: "Nhập liệu",
       skill: "Paste Special • Skip blanks • cập nhật cột thiếu ô",
       filterTags: ["Nhập liệu"],
-      file: "V11_skip_blanks_thuc_hanh.zip",
+      file: "19_Skip_Blanks.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "v12-textbefore",
-      number: 19,
+      number: 20,
       icon: "✂️",
       title: "Tách họ tên bằng TEXTBEFORE",
       category: "Công thức",
       skill: "TEXTBEFORE • TEXTAFTER • Flash Fill",
       filterTags: ["Công thức", "Làm sạch dữ liệu"],
-      file: "V12_hoten_thuc_hanh.zip",
+      file: "20_TEXTBEFORE.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "v13-filldown",
-      number: 20,
+      number: 21,
       icon: "⬇️",
       title: "Power Query Skip row + Fill Down",
       category: "Power Query",
       skill: "Skip rows • Promote headers • Fill Down",
       filterTags: ["Power Query", "Làm sạch dữ liệu"],
-      file: "V13_filldown_thuc_hanh.zip",
+      file: "21_Fill_Down.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "v14-distinct",
-      number: 21,
+      number: 22,
       icon: "🔢",
       title: "Pivot Distinct Count — Data Model",
       category: "Power Query",
       skill: "Add to Data Model • Distinct Count",
       filterTags: ["Power Query"],
-      file: "V14_distinct_thuc_hanh.zip",
+      file: "22_Distinct_Count.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "v15-aggregate",
-      number: 22,
+      number: 23,
       icon: "🧮",
       title: "AGGREGATE bỏ lỗi và dòng ẩn",
       category: "Công thức",
       skill: "AGGREGATE(9,7,range) • so với SUM / SUBTOTAL",
       filterTags: ["Công thức"],
-      file: "V15_aggregate_thuc_hanh.zip",
+      file: "23_AGGREGATE.xlsx",
       folder: "downloads/video-practice/"
     },
-    {
+{
       id: "v16-Coming_soon",
-      number: 23,
+      number: 24,
       icon: "🎆",
       title: "Sắp ra mắt",
-      category: "Các bạn đóng góp ý tưởng nhê",
+      category: "Các bạn đóng góp ý tưởng nhé",
       skill: "Wait",
       filterTags: ["Wait"],
-      file: "Wait",
-      folder: "Wait"
+      file: "",
+      folder: "downloads/video-practice/"
     }
   ];
 
@@ -353,9 +362,10 @@
     let html = "";
     videoPracticeData.forEach(function (item) {
       const released = isReleased(item);
-      if (f === "available" && !released) return;
+      if (f === "available" && !isAvailable(item)) return;
+      if (f === "video" && !tiktokUrl(item)) return;
       if (f === "coming" && released) return;
-      if (f !== "all" && f !== "available" && f !== "coming") {
+      if (f !== "all" && f !== "available" && f !== "coming" && f !== "video") {
         const tags = (item.filterTags || []).join(" ").toLowerCase();
         if (tags.indexOf(f.toLowerCase()) === -1 && item.category.toLowerCase().indexOf(f.toLowerCase()) === -1) return;
       }
