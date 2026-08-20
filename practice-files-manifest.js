@@ -1,10 +1,7 @@
 const availablePracticeFiles = [
   "PowerQuery_DEMO.xlsx",
   "PowerQuery-11-Files.xlsx"
-];
-const practiceFileAliases = {
-  "PowerQuery_DEMO.xlsx": "PowerQuery_DEMO.xlsx"
-};
+]
 const videoTikTokLinks = {
   "video-01": "",
   "video-02": "https://vt.tiktok.com/ZSVAbxkbF/",
