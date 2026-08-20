@@ -47,6 +47,7 @@
   <div class="pv-toolbar">
     <div class="pv-feedback-bar">
       <button type="button" id="pvFeedbackBtn" class="pv-feedback-btn">💡 Gửi ý tưởng / thắc mắc</button>
+      <button type="button" id="pvFileBtn" class="pv-feedback-btn pv-file-btn">📎 Gửi file Excel</button>
     </div>
     <div id="pvFeedbackModal" class="pv-modal" hidden>
       <div class="pv-modal-card">
@@ -63,6 +64,22 @@
           <button type="button" id="pvFbSend">Gửi</button>
         </div>
         <p id="pvFbStatus"></p>
+      </div>
+    </div>
+    <div id="pvFileModal" class="pv-modal" hidden>
+      <div class="pv-modal-card">
+        <h3>Gửi file để được hỗ trợ</h3>
+        <p>Bắt buộc có Gmail hoặc Zalo để nhận file đã xử lý.</p>
+        <input id="pvFileName" type="text" maxlength="80" placeholder="Tên của bạn">
+        <input id="pvFileEmail" type="email" maxlength="120" placeholder="Gmail">
+        <input id="pvFileZalo" type="text" maxlength="20" placeholder="Số Zalo">
+        <input id="pvFilePick" type="file" accept=".xlsx,.xls,.csv,.zip">
+        <textarea id="pvFileNote" rows="3" maxlength="400" placeholder="Ghi chú (không bắt buộc)"></textarea>
+        <div class="pv-modal-actions">
+          <button type="button" id="pvFileCancel">Đóng</button>
+          <button type="button" id="pvFileSend">Gửi file</button>
+        </div>
+        <p id="pvFileStatus"></p>
       </div>
     </div>
     <div class="pv-search-wrap">
