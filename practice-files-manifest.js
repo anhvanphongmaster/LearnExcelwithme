@@ -28,7 +28,7 @@ const videoTikTokLinks = {
   "video-03": "https://vt.tiktok.com/ZSVAbk8rn/",
   "video-04": "https://vt.tiktok.com/ZSVAqt4DM/",
   "v02-center-across": "",
-  "v04-so-viet": "",
+  "v04-so-viet": "https://vt.tiktok.com/ZSVy7PR1y/",
   "v05-an-so-0": "",
   "b01-dan-dong-loc": "",
   "c2-sum-text": "",
