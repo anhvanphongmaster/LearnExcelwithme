@@ -30,7 +30,7 @@ const videoTikTokLinks = {
   "v02-center-across": "",
   "v04-so-viet": "https://vt.tiktok.com/ZSVy7PR1y/",
   "v05-an-so-0": "",
-  "b01-dan-dong-loc": "",
+  "b01-dan-dong-loc": "https://www.tiktok.com/@anhvanphongmaster/video/7676466268676869383?is_from_webapp=1&sender_device=pc&web_id=7670058834664211984",
   "c2-sum-text": "",
   "c3-ngay": "",
   "v01-char160": "",
