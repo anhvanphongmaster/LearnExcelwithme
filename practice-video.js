@@ -239,12 +239,12 @@
 {
       id: "v14-distinct",
       number: 22,
-      icon: "🔢",
-      title: "Pivot Distinct Count — Data Model",
+      icon: "📊",
+      title: "Làm sạch → Pivot → Dashboard",
       category: "Power Query",
-      skill: "Add to Data Model • Distinct Count",
-      filterTags: ["Power Query"],
-      file: "22_Distinct_Count.xlsx",
+      skill: "Làm sạch • Table • Pivot • Slicer • Chart 1 trang",
+      filterTags: ["Power Query", "Làm sạch dữ liệu"],
+      file: "22_dashboard_thang.xlsx",
       folder: "downloads/video-practice/"
     },
 {

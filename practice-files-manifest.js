@@ -10,7 +10,9 @@ const availablePracticeFiles = [
   "V08_center_across_thuc_hanh.xlsx",
   "V10_so_viet_thuc_hanh.xlsx",
   "V11_an_so_0_thuc_hanh.xlsx",
-  "B01_dan_vao_dong_loc_thuc_hanh.xlsx"
+  "B01_dan_vao_dong_loc_thuc_hanh.xlsx",
+  "13_dropdown_2_tang.xlsx",
+  "22_dashboard_thang.xlsx"
 ];
 
 const practiceFileAliases = {
@@ -19,7 +21,11 @@ const practiceFileAliases = {
   "05_center_across.xlsx": "V08_center_across_thuc_hanh.xlsx",
   "06_so_viet.xlsx": "V10_so_viet_thuc_hanh.xlsx",
   "07_an_so_0.xlsx": "V11_an_so_0_thuc_hanh.xlsx",
-  "08_dan_dong_loc.xlsx": "B01_dan_vao_dong_loc_thuc_hanh.xlsx"
+  "08_dan_dong_loc.xlsx": "B01_dan_vao_dong_loc_thuc_hanh.xlsx",
+  "13_dropdown_2_tang.xlsx": "13_dropdown_2_tang.xlsx",
+  "22_dashboard_thang.xlsx": "22_dashboard_thang.xlsx",
+  "NhapLieu_Dropdown2_ChanTrung.xlsx": "13_dropdown_2_tang.xlsx",
+  "Dashboard_thang_thuc_hanh.xlsx": "22_dashboard_thang.xlsx"
 };
 
 const videoTikTokLinks = {
