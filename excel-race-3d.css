@@ -1,0 +1,32 @@
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#0b1a12;font-family:Arial,sans-serif;color:#e8fff0;overflow:hidden}
+#game{position:relative;width:100%;height:100%}
+#c{display:block;width:100%;height:100%}
+.ui{position:absolute;inset:0;pointer-events:none;display:flex;flex-direction:column;padding:12px}
+.back{pointer-events:auto;align-self:flex-start;color:#9fe3b8;text-decoration:none;font-weight:700;font-size:13px;margin-bottom:8px}
+.hud{display:flex;gap:8px;flex-wrap:wrap}
+.hud div{background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px 10px;min-width:64px}
+.hud small{display:block;font-size:10px;opacity:.75}
+.hud b{font-size:16px}
+.timer{margin-top:8px;height:8px;background:rgba(255,255,255,.12);border-radius:99px;overflow:hidden}
+.timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#2ecc71,#a8ff78);transition:width .1s linear}
+.timer i.warn{background:linear-gradient(90deg,#e67e22,#f1c40f)}
+.timer i.danger{background:linear-gradient(90deg,#c0392b,#e74c3c)}
+.panel{pointer-events:auto;margin-top:auto;background:rgba(8,24,16,.82);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:14px;backdrop-filter:blur(8px)}
+.msg{margin:0 0 8px;font-size:13px;opacity:.9}
+.q{margin:0 0 10px;font-size:16px;font-weight:800;line-height:1.35}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.ans button,.go{min-height:46px;border:0;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer}
+.ans button{background:#eaf7ef;color:#143528}
+.ans button:hover{background:#d4f0df}
+.ans button.ok{background:#2ecc71;color:#fff}
+.ans button.bad{background:#e74c3c;color:#fff}
+.go{width:100%;background:#217346;color:#fff}
+@media(max-width:560px){.ans{grid-template-columns:1fr}}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.badge3d{
+  pointer-events:none;background:#ff2d55;color:#fff;font-size:11px;font-weight:900;
+  letter-spacing:1px;padding:4px 10px;border-radius:999px;
+  box-shadow:0 0 16px rgba(255,45,85,.55);animation:pulse 1.2s infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}

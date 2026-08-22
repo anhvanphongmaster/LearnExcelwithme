@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Excel Race 3D | Anh Van Phong</title>
+  <link rel="stylesheet" href="excel-race-3d.css" />
+</head>
+<body>
+  <div id="game">
+    <canvas id="c"></canvas>
+    <div class="ui">
+      <div class="top">
+        <a class="back" href="index.html">← Trang chủ</a>
+        <span class="badge3d">MODE 3D</span>
+      </div>
+      <div class="hud">
+        <div><small>Cấp</small><b id="lv">1</b></div>
+        <div><small>Câu</small><b id="pg">0/30</b></div>
+        <div><small>Chuỗi</small><b id="st">0</b></div>
+        <div><small>Kỷ lục</small><b id="best">0</b></div>
+        <div><small>Giờ</small><b id="sec">15</b></div>
+      </div>
+      <div class="timer"><i id="fill"></i></div>
+      <div class="panel" id="panel">
+        <p class="msg" id="msg">Đang tải đồ họa 3D…</p>
+        <p class="q" id="q" hidden></p>
+        <div class="ans" id="ans" hidden>
+          <button type="button" id="a1"></button>
+          <button type="button" id="a2"></button>
+        </div>
+        <button type="button" class="go" id="start" disabled>Chờ 3D…</button>
+      </div>
+    </div>
+  </div>
+  <script src="excel-race-questions.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="excel-race-3d-legacy.js"></script>
+</body>
+</html>
