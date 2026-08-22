@@ -39,7 +39,7 @@ const videoTikTokLinks = {
   "b01-dan-dong-loc": "https://www.tiktok.com/@anhvanphongmaster/video/7676466268676869383?is_from_webapp=1&sender_device=pc&web_id=7670058834664211984",
   "c2-sum-text": "https://www.tiktok.com/@anhvanphongmaster/video/7676335681823575304?is_from_webapp=1&sender_device=pc&web_id=7670058834664211984",
   "c3-ngay": "https://www.tiktok.com/@anhvanphongmaster/video/7676084064415239431?is_from_webapp=1&sender_device=pc&web_id=7670058834664211984",
-  "v01-char160": "https://www.tiktok.com/@anhvanphongmaster/video/7675341530072304903?is_from_webapp=1&sender_device=pc&web_id=7670058834664211984",
+  "v01-char160": "https://vt.tiktok.com/ZSVmd7Bgs/",
   "v03-alt-visible": "https://www.tiktok.com/@anhvanphongmaster/video/7675341530072304903?is_from_webapp=1&sender_device=pc&web_id=7670058834664211984",
   "v06-dropdown-2tang": "",
   "v07-xlookup": "",
