@@ -278,6 +278,7 @@
 
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
       renderSummary(summary||{});
+      await loadRaceStats();
       renderTrend(trend||[]);
       renderRanking("topTools",tools||[],"tool_name","uses");
       renderRanking("topPages",pages||[],"page_path","views",labelLesson);
