@@ -118,20 +118,40 @@
     }
   }
 
-  async function waitSupabase(ms) {
+  async function ensureSupabase() {
+    if (window.avpSupabase) return window.avpSupabase;
     const t0 = Date.now();
-    while (Date.now() - t0 < ms) {
+    while (Date.now() - t0 < 4000) {
       if (window.avpSupabase) return window.avpSupabase;
-      if (window.AVP_SUPABASE_CONFIGURED === false) return null;
-      await new Promise((r) => setTimeout(r, 80));
+      if (window.AVP_SUPABASE_CONFIGURED === false) break;
+      await new Promise((r) => setTimeout(r, 100));
     }
-    return window.avpSupabase || null;
+    if (window.avpSupabase) return window.avpSupabase;
+    // Fallback: tạo client trực tiếp từ config (không cần supabase-auth.js)
+    const cfg = window.AVP_SUPABASE_CONFIG || {};
+    if (!cfg.url || !cfg.publishableKey) return null;
+    if (!window.supabase || !window.supabase.createClient) {
+      await new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
+        s.onload = resolve; s.onerror = reject;
+        document.head.appendChild(s);
+      }).catch(() => null);
+    }
+    if (window.supabase && window.supabase.createClient) {
+      window.avpSupabase = window.supabase.createClient(cfg.url, cfg.publishableKey);
+      return window.avpSupabase;
+    }
+    return null;
   }
 
   async function trackPlay(kind) {
     try {
-      const client = await waitSupabase(5000);
-      if (!client) return;
+      const client = await ensureSupabase();
+      if (!client) {
+        console.warn("[race] no supabase client");
+        return;
+      }
       const { error } = await client.from("race_plays").insert({
         event: kind || "start",
         level: level || 1,
@@ -140,6 +160,7 @@
         mode: (mode || "hoc") + "-2.5d"
       });
       if (error) console.warn("[race] insert failed:", error.message || error);
+      else console.log("[race] tracked", kind || "start");
     } catch (e) {
       console.warn("[race] trackPlay", e);
     }
