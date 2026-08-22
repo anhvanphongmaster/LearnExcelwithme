@@ -216,6 +216,21 @@
     catch(e){ console.warn("RPC fail:", name, e); return {__error:e}; }
   }
 
+  
+  async function loadRaceStats(){
+    try{
+      if(!client) return;
+      const {count:total,error:e1}=await client.from("race_plays").select("*",{count:"exact",head:true}).eq("event","start");
+      const since=new Date(); since.setHours(0,0,0,0);
+      const {count:today,error:e2}=await client.from("race_plays").select("*",{count:"exact",head:true}).eq("event","start").gte("created_at",since.toISOString());
+      const {count:crash,error:e3}=await client.from("race_plays").select("*",{count:"exact",head:true}).eq("event","crash");
+      const a=$("kpiRacePlays"), b=$("kpiRaceTodayCount"), c=$("kpiRaceCrash");
+      if(a) a.textContent=e1?"—":n(total||0);
+      if(b) b.textContent=e2?"—":n(today||0);
+      if(c) c.textContent=e3?"—":n(crash||0);
+    }catch(e){ console.warn("race stats", e); }
+  }
+
   async function loadDashboard(){
     try{
       $("adminRefresh").disabled=true;

@@ -1,0 +1,30 @@
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#0d1f16;color:#e9fff2}
+.race-wrap{max-width:920px;margin:0 auto;padding:12px 12px 40px}
+.race-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.race-top a{color:#8be1ac;text-decoration:none;font-weight:700;font-size:14px}
+.tag{background:#217346;color:#fff;font-size:11px;font-weight:900;padding:4px 10px;border-radius:999px}
+.mode-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.mode{min-height:40px;border:1px solid rgba(255,255,255,.15);border-radius:12px;background:rgba(255,255,255,.06);color:#dff5e8;font-weight:800;font-size:13px;cursor:pointer}
+.mode.active{background:#217346;border-color:#2ecc71;color:#fff}
+.hud{display:flex;flex-wrap:wrap;gap:8px}
+.hud div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:6px 10px;min-width:58px}
+.hud small{display:block;font-size:10px;opacity:.75}
+.hud b{font-size:16px}
+.timer{margin:8px 0;height:8px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden}
+.timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#27ae60,#2ecc71);transition:width .1s linear}
+.timer i.warn{background:linear-gradient(90deg,#e67e22,#f1c40f)}
+.timer i.danger{background:linear-gradient(90deg,#c0392b,#e74c3c)}
+#cv{width:100%;height:auto;display:block;border-radius:14px;background:#123225;border:1px solid #1e4a35}
+.panel{margin-top:12px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px}
+.msg{margin:0 0 8px;font-size:13px;opacity:.9}
+.q{margin:0 0 10px;font-size:16px;font-weight:800;line-height:1.35}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.ans button,.go{min-height:46px;border:0;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer}
+.ans button{background:#eaf7ef;color:#143528}
+.ans button.ok{background:#2ecc71;color:#fff}
+.ans button.bad{background:#e74c3c;color:#fff}
+.go{width:100%;background:#217346;color:#fff}
+.hint{margin:0 0 10px;padding:10px 12px;border-radius:12px;background:rgba(46,204,113,.12);border:1px solid rgba(46,204,113,.35);font-size:13px}
+.hint a{color:#8be1ac;font-weight:800;margin-left:6px}
+@media(max-width:560px){.ans,.mode-row{grid-template-columns:1fr}}

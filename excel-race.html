@@ -3,38 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>Excel Race 3D | Anh Van Phong</title>
-  <link rel="stylesheet" href="excel-race-3d.css" />
+  <title>Excel Race | Learn Excel with Anh Van Phong</title>
+  <link rel="stylesheet" href="excel-race.css" />
 </head>
 <body>
-  <div id="game">
-    <canvas id="c"></canvas>
-    <div class="ui">
-      <div class="top">
-        <a class="back" href="index.html">← Trang chủ</a>
-        <span class="badge3d">MODE 3D</span>
-      </div>
-      <div class="hud">
-        <div><small>Cấp</small><b id="lv">1</b></div>
-        <div><small>Câu</small><b id="pg">0/30</b></div>
-        <div><small>Chuỗi</small><b id="st">0</b></div>
-        <div><small>Kỷ lục</small><b id="best">0</b></div>
-        <div><small>Giờ</small><b id="sec">15</b></div>
-      </div>
-      <div class="timer"><i id="fill"></i></div>
-      <div class="panel" id="panel">
-        <p class="msg" id="msg">Đang tải đồ họa 3D…</p>
-        <p class="q" id="q" hidden></p>
-        <div class="ans" id="ans" hidden>
-          <button type="button" id="a1"></button>
-          <button type="button" id="a2"></button>
-        </div>
-        <button type="button" class="go" id="start" disabled>Chờ 3D…</button>
-      </div>
+  <div class="race-wrap">
+    <header class="race-top">
+      <a href="index.html">← Trang chủ</a>
+      <span class="tag">2.5D · 2000 câu</span>
+    </header>
+
+    <div class="mode-row" id="modeRow">
+      <button type="button" class="mode active" data-mode="hoc" id="modeHoc">Học — sai về đầu cấp</button>
+      <button type="button" class="mode" data-mode="rank" id="modeRank">Rank — sai về cấp 1</button>
     </div>
+
+    <div class="hud">
+      <div><small>Cấp</small><b id="lv">1</b></div>
+      <div><small>Câu</small><b id="pg">0/30</b></div>
+      <div><small>Chuỗi</small><b id="st">0</b></div>
+      <div><small>Kỷ lục</small><b id="best">0</b></div>
+      <div><small>Giờ</small><b id="sec">20</b></div>
+      <div><small>Mạng</small><b id="lives">—</b></div>
+    </div>
+    <div class="timer"><i id="fill"></i></div>
+    <canvas id="cv" width="900" height="360" aria-label="Đường đua"></canvas>
+
+    <section class="panel">
+      <p class="msg" id="msg">Chọn chế độ rồi bấm Bắt đầu. Giữ 2000 câu Excel — độ khó tăng theo cấp.</p>
+      <p class="q" id="q" hidden></p>
+      <div class="ans" id="ans" hidden>
+        <button type="button" id="a1"></button>
+        <button type="button" id="a2"></button>
+      </div>
+      <div class="hint" id="hint" hidden>
+        <span>Ôn thêm:</span>
+        <a id="hintLink" href="practice-video.html">Bài tập theo video</a>
+      </div>
+      <button type="button" class="go" id="start">Bắt đầu</button>
+    </section>
   </div>
   <script src="excel-race-questions.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="excel-race-3d-legacy.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="excel-race.js"></script>
 </body>
 </html>
