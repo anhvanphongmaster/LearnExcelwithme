@@ -220,14 +220,23 @@
   async function loadRaceStats(){
     try{
       if(!client) return;
+      const a=$("kpiRacePlays"), b=$("kpiRaceTodayCount"), c=$("kpiRaceCrash");
+      const sm=$("kpiRaceToday");
       const {count:total,error:e1}=await client.from("race_plays").select("*",{count:"exact",head:true}).eq("event","start");
+      if(e1){
+        if(a) a.textContent="—";
+        if(sm) sm.textContent=(e1.message||"").includes("does not exist")?"Chưa chạy race-plays.sql":("Lỗi: "+(e1.message||"đọc bảng"));
+        if(b) b.textContent="—";
+        if(c) c.textContent="—";
+        return;
+      }
       const since=new Date(); since.setHours(0,0,0,0);
       const {count:today,error:e2}=await client.from("race_plays").select("*",{count:"exact",head:true}).eq("event","start").gte("created_at",since.toISOString());
-      const {count:crash,error:e3}=await client.from("race_plays").select("*",{count:"exact",head:true}).eq("event","crash");
-      const a=$("kpiRacePlays"), b=$("kpiRaceTodayCount"), c=$("kpiRaceCrash");
-      if(a) a.textContent=e1?"—":n(total||0);
+      const {count:crash,error:e3}=await client.from("race_plays").select("*",{count:"exact",head:true}).in("event",["crash","timeout"]);
+      if(a) a.textContent=n(total||0);
       if(b) b.textContent=e2?"—":n(today||0);
       if(c) c.textContent=e3?"—":n(crash||0);
+      if(sm) sm.textContent="2.5D minigame";
     }catch(e){ console.warn("race stats", e); }
   }
 

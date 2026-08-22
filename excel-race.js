@@ -118,15 +118,31 @@
     }
   }
 
+  async function waitSupabase(ms) {
+    const t0 = Date.now();
+    while (Date.now() - t0 < ms) {
+      if (window.avpSupabase) return window.avpSupabase;
+      if (window.AVP_SUPABASE_CONFIGURED === false) return null;
+      await new Promise((r) => setTimeout(r, 80));
+    }
+    return window.avpSupabase || null;
+  }
+
   async function trackPlay(kind) {
     try {
-      const client = window.avpSupabase;
-      if (client) {
-        await client.from("race_plays").insert({
-          event: kind || "start", level, streak, best_streak: best, mode: mode + "-2.5d"
-        });
-      }
-    } catch (e) {}
+      const client = await waitSupabase(5000);
+      if (!client) return;
+      const { error } = await client.from("race_plays").insert({
+        event: kind || "start",
+        level: level || 1,
+        streak: streak || 0,
+        best_streak: best || 0,
+        mode: (mode || "hoc") + "-2.5d"
+      });
+      if (error) console.warn("[race] insert failed:", error.message || error);
+    } catch (e) {
+      console.warn("[race] trackPlay", e);
+    }
   }
 
   function shuffle(a) {
