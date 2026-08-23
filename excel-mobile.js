@@ -139,15 +139,9 @@
 
   function updateProcessLoginState(){
     if(!processBtn) return;
-
-    const loggedIn=Boolean(state.currentUser);
-    processBtn.classList.toggle("login-required-state",!loggedIn);
-
+    processBtn.classList.remove("login-required-state");
     if(!state.workbook && !state.data.length) return;
-
-    processBtn.title=loggedIn
-      ? "Xử lý file Excel"
-      : "Cần đăng nhập để xử lý file";
+    processBtn.title="Xử lý file Excel";
   }
 
   function showLoginRequired(){
@@ -1780,7 +1774,7 @@
 
     const aoa=[];
     aoa.push([report.preset.name]);
-    aoa.push(["Tạo bởi","Excel Mobile Processor"]);
+    aoa.push(["Tạo bởi","Master Excel (mobile)"]);
     aoa.push(["Nguồn dữ liệu",state.sheetName]);
     aoa.push([]);
 
@@ -3034,7 +3028,7 @@
       ){
         await navigator.share({
           title:"File Excel đã xử lý",
-          text:"File được xử lý bằng Excel Mobile Processor.",
+          text:"File được xử lý bằng Master Excel (áp dụng cho cả mobile).",
           files:[file]
         });
         addHistory("Chia sẻ file Excel kết quả.");
@@ -3428,9 +3422,6 @@
   $("smartCleanApplyBtn")?.addEventListener("click",async ()=>{
     if(state.isProcessing) return;
 
-    const loggedIn=await ensureLoggedInForProcessing();
-    if(!loggedIn) return;
-
     window.avpAnalytics?.track("excel_tool_used",{
       page:"excel-mobile.html",
       tool_name:"smartclean",
@@ -3483,13 +3474,7 @@
   processBtn.addEventListener("click",async ()=>{
     if(state.isProcessing) return;
 
-    /*
-      Người dùng được phép upload và preview file.
-      Chỉ khi thực sự bắt đầu xử lý mới yêu cầu tài khoản.
-    */
-    const loggedIn=await ensureLoggedInForProcessing();
-    if(!loggedIn) return;
-
+    /* Xử lý hoàn toàn trên trình duyệt — không bắt buộc đăng nhập */
     window.avpAnalytics?.track("excel_tool_used",{
       page:"excel-mobile.html",
       tool_name:activeTool,

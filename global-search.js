@@ -51,7 +51,7 @@
     {icon:'⬇️', title:'21 Skip row + Fill Down', desc:'Power Query Fill Down', url:'practice-video.html', type:'Video', keys:'fill down skip row power query'},
     {icon:'🔢', title:'22 Pivot Distinct Count', desc:'Data Model Distinct Count', url:'practice-video.html', type:'Video', keys:'distinct count data model pivot'},
     {icon:'🧮', title:'23 AGGREGATE bỏ lỗi và dòng ẩn', desc:'AGGREGATE vs SUM SUBTOTAL', url:'practice-video.html', type:'Video', keys:'aggregate subtotal tong dong an'},
-    {icon:'📱', title:'Excel Mobile', desc:'Upload và xử lý file Excel ngay trên điện thoại', url:'excel-mobile.html', type:'Công cụ', keys:'excel mobile dien thoai upload xu ly file'},
+    {icon:'📱', title:'Master Excel (áp dụng cho cả mobile)', desc:'Upload và xử lý file Excel trên điện thoại hoặc máy tính', url:'excel-mobile.html', type:'Công cụ', keys:'master excel mobile dien thoai upload xu ly file excel mobile'},
     {icon:'📥', title:'Tài liệu thực hành', desc:'File Excel mẫu và bài tập theo video', url:'practice-video.html', type:'Tài liệu', keys:'tai lieu download file mau excel pivot pareto qc video practice'},
     {icon:'ℹ️', title:'Giới thiệu', desc:'Thông tin về Learn Excel with Anh Van Phong', url:'gioithieu.html', type:'Trang', keys:'gioi thieu about'},
     {icon:'📩', title:'Liên hệ', desc:'Gửi câu hỏi hoặc góp ý cho website', url:'lienhe.html', type:'Trang', keys:'lien he contact gop y'}

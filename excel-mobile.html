@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Excel Mobile Processor | Learn Excel with Anh Van Phong</title>
+<title>Master Excel (áp dụng cho cả mobile) | Learn Excel with Anh Van Phong</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="upgrade.css">
 <link rel="stylesheet" href="global-search.css">
@@ -35,9 +35,9 @@
 
   <section class="mobile-excel-hero page-header">
     <div>
-      <span class="mobile-excel-kicker">📱 EXCEL MOBILE PROCESSOR</span>
-      <h1>Xử lý file Excel ngay trên điện thoại</h1>
-      <p>Không cần mở Excel trên Windows. Upload file, chọn thao tác cần làm, xem trước kết quả và tải file Excel đã xử lý.</p>
+      <span class="mobile-excel-kicker">📱 MASTER EXCEL</span>
+      <h1>Master Excel <span style="font-weight:700">(áp dụng cho cả mobile)</span></h1>
+      <p>Xử lý file Excel trên điện thoại hoặc máy tính — không cần cài Excel. Upload → chọn thao tác → xem trước → tải kết quả.</p>
     </div>
     <div class="mobile-excel-hero-badges">
       <span>📤 Upload .xlsx/.xls</span>
@@ -1096,7 +1096,19 @@
   </div>
 </footer>
 
-<script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
+  onerror="this.onerror=null;this.src='https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js'"></script>
+<script>
+/* Fallback nếu cả hai CDN chậm: báo rõ trên UI */
+window.addEventListener("load", function(){
+  setTimeout(function(){
+    if (typeof XLSX === "undefined") {
+      var m = document.getElementById("mobileProcessMessage");
+      if (m) m.textContent = "Không tải được thư viện Excel. Kiểm tra mạng rồi F5 lại trang.";
+    }
+  }, 4000);
+});
+</script>
 <script defer src="script.js"></script>
 <script defer src="global-search.js"></script>
 <script defer src="simple-nav.js"></script>
