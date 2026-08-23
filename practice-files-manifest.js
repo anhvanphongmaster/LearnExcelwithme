@@ -50,6 +50,6 @@ const videoTikTokLinks = {
   "v11-skip-blanks": "",
   "v12-textbefore": "",
   "v13-filldown": "",
-  "v14-distinct": "",
+  "v14-distinct": "https://vt.tiktok.com/ZSVuowhFo/",
   "v15-aggregate": ""
 };
