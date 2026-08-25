@@ -8,12 +8,19 @@
 .pyt-kicker{margin:0;font-size:11px;font-weight:800;letter-spacing:.08em;color:rgba(255,255,255,.85)}
 .pyt-hero h1{margin:8px 0 6px;font-size:clamp(22px,4vw,28px);font-weight:800;color:#fff}
 .pyt-sub{margin:0 0 14px;font-size:13.5px;line-height:1.45;color:rgba(255,255,255,.92)}
+.pyt-files{display:flex;flex-wrap:wrap;gap:8px}
 .pyt-file-main{
   display:inline-block;background:#fff;color:#0f5132 !important;text-decoration:none;
   font-weight:800;font-size:13px;border-radius:999px;padding:11px 16px;
   box-shadow:0 4px 14px rgba(0,0,0,.12);
 }
 .pyt-file-main:hover{filter:brightness(1.03);color:#0f5132}
+.pyt-file-alt{
+  display:inline-block;background:rgba(255,255,255,.16);color:#fff !important;text-decoration:none;
+  font-weight:800;font-size:13px;border-radius:999px;padding:11px 16px;
+  border:1px solid rgba(255,255,255,.35);
+}
+.pyt-file-alt:hover{background:rgba(255,255,255,.24);color:#fff}
 .pyt-card{background:#fff;border:1px solid #e8f0eb;border-radius:14px;padding:14px 16px;margin-bottom:10px}
 .pyt-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .pyt-num{font-size:12px;font-weight:900;color:#217346;background:#e8f5ec;border-radius:8px;padding:3px 8px}
