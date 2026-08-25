@@ -7,54 +7,43 @@
   // Bỏ LED theo chuột / tilt 3D — gây lag trên máy yếu và điện thoại
   if (orb) orb.style.display = "none";
 
-  /* Stronger typing loop, matching the reference video */
-  if (typing){
+  /* Typing slogans — RAF mượt */
+  if (typing) {
     const lines = [
+      "100+ công thức Excel đang chờ bạn",
       "Excel • Office • Productivity",
       "Học nhanh hơn. Làm việc thông minh hơn.",
-      "100+ công thức Excel đang chờ bạn khám phá.",
-      "Từ dữ liệu thô đến báo cáo chuyên nghiệp.",
-      "Thực hành • Phân tích • Tự động hóa công việc."
+      "Từ dữ liệu thô → báo cáo chuyên nghiệp",
+      "Thực hành theo video • File mẫu sẵn",
+      "Power Query • Pivot • Dashboard",
+      "Làm sạch dữ liệu trong vài bước",
+      "Đua top học viên trên Excel Race",
+      "Tự động hóa — ít click, nhiều kết quả",
+      "Beginner → Master: một lộ trình rõ ràng"
     ];
-
-    let line = 0;
-    let char = 0;
-    let deleting = false;
-    let timer;
-
-    function typeLoop(){
-      const current = lines[line];
-
+    let line = 0, char = 0, deleting = false, last = 0, holdUntil = 0;
+    const TYPE_MS = 36, DEL_MS = 22, HOLD_MS = 2400, GAP_MS = 380;
+    function render(){ typing.textContent = (lines[line]||"").slice(0,char); }
+    function frame(now){
+      requestAnimationFrame(frame);
+      const current = lines[line]||"";
+      if (!current) return;
+      if (holdUntil && now < holdUntil) return;
+      if (holdUntil && now >= holdUntil) holdUntil = 0;
       if (!deleting){
-        char++;
-        typing.textContent = current.slice(0,char);
-
-        if (char >= current.length){
-          deleting = true;
-          timer = setTimeout(typeLoop,1550);
-          return;
-        }
-
-        timer = setTimeout(typeLoop,52);
+        if (now - last < TYPE_MS) return;
+        last = now; char = Math.min(current.length, char+1); render();
+        if (char >= current.length){ deleting = true; holdUntil = now + HOLD_MS; }
       } else {
-        char--;
-        typing.textContent = current.slice(0,Math.max(0,char));
-
-        if (char <= 0){
-          deleting = false;
-          line = (line + 1) % lines.length;
-          timer = setTimeout(typeLoop,280);
-          return;
-        }
-
-        timer = setTimeout(typeLoop,24);
+        if (now - last < DEL_MS) return;
+        last = now; char = Math.max(0, char-1); render();
+        if (char <= 0){ deleting = false; line = (line+1)%lines.length; holdUntil = now + GAP_MS; }
       }
     }
-
-    /* Stop old inline type loop from visually winning by resetting content now. */
     typing.textContent = "";
     clearTimeout(window.__avpTypingTimer);
-    window.__avpTypingTimer = setTimeout(typeLoop,220);
+    if (window.__avpTypingRaf) cancelAnimationFrame(window.__avpTypingRaf);
+    window.__avpTypingTimer = setTimeout(function(){ last = performance.now(); window.__avpTypingRaf = requestAnimationFrame(frame); }, 300);
   }
 })();
 

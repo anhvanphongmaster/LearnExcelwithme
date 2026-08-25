@@ -13,10 +13,10 @@
           content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
     <title>Learn Excel with Anh Van Phong</title>
-<meta name="description" content="Học Excel miễn phí: phím tắt, công thức, PivotTable, báo cáo QC. Bài tập theo video và lộ trình từ cơ bản đến nâng cao.">
+<meta name="description" content="Học Excel miễn phí: phím tắt, công thức, PivotTable, chuyên nghiệp. Bài tập theo video và lộ trình từ cơ bản đến nâng cao.">
 <link rel="canonical" href="https://doananhtuant02.github.io/LearnExcelwithme/">
 <meta property="og:title" content="Learn Excel with Anh Van Phong">
-<meta property="og:description" content="Học Excel để làm việc — từ cơ bản đến báo cáo QC.">
+<meta property="og:description" content="Học Excel để làm việc — từ cơ bản đến chuyên nghiệp.">
 <meta property="og:url" content="https://doananhtuant02.github.io/LearnExcelwithme/">
 <meta name="robots" content="index,follow">
 
@@ -938,6 +938,444 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
 
 </style>
 
+
+<link rel="stylesheet" href="learning-leaderboard.css" />
+<link rel="stylesheet" href="avp-hover-lift.css" />
+<style id="avp-home-full-css">
+.avp-hero{position:relative;isolation:isolate;overflow:hidden;--px:0}
+.avp-hero::before{content:"";position:absolute;inset:-20% -10% auto -10%;height:70%;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(74,222,128,.18),transparent 60%);
+  animation:avpGlow 8s ease-in-out infinite alternate}
+@keyframes avpGlow{from{opacity:.55;transform:scale(1)}to{opacity:1;transform:scale(1.06)}}
+.avp-hero-inner{position:relative;z-index:2}
+.avp-title span{background:linear-gradient(90deg,#ecfdf5 0%,#a7f3d0 45%,#ecfdf5 100%);background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:avpTitleShine 7s linear infinite}
+@keyframes avpTitleShine{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+.avp-mobile-main-cta{box-shadow:0 8px 28px rgba(16,185,129,.28);animation:avpCtaBreath 3.6s ease-in-out infinite;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease,filter .25s ease}
+@keyframes avpCtaBreath{0%,100%{box-shadow:0 8px 24px rgba(16,185,129,.22)}50%{box-shadow:0 12px 32px rgba(16,185,129,.38)}}
+.avp-mobile-main-cta:hover,.avp-youtube-cta:hover,.avp-yt-practice:hover,.avp-scroll-tease-btn:hover{
+  transform:translateY(-3px) scale(1.01);filter:brightness(1.05);box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.avp-youtube-cta,.avp-yt-practice,.avp-scroll-tease-btn{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease,filter .25s ease}
+.avp-scroll-tease-btn{position:relative;overflow:hidden}
+.avp-scroll-tease-btn::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.14) 50%,transparent 60%);
+  transform:translateX(-120%);animation:avpSheen 4.5s ease-in-out infinite}
+@keyframes avpSheen{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.home-path-more--5{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:10px!important}
+.home-path-more--5 .home-more-card{position:relative;display:flex;flex-direction:column;gap:4px;min-height:88px;padding:14px 12px!important;
+  border-radius:14px!important;text-decoration:none!important;border:1px solid rgba(0,0,0,.06)!important;background:#eef7f1!important;color:#145a32!important;box-sizing:border-box;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease}
+.home-path-more--5 .home-more-2,.home-path-more--5 .home-more-5{background:#eef4fb!important}
+.home-path-more--5 .home-more-3{background:#f4eef8!important}
+.home-path-more--5 .home-more-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(20,90,50,.1)}
+.home-path-more--5 .home-more-race small{color:#1d4ed8!important;font-weight:800;background:#dbeafe;border-radius:6px;padding:2px 6px}
+.home-more-new{position:absolute;top:8px;right:8px;background:#ff2d55;color:#fff;font-size:9px;font-weight:900;padding:2px 6px;border-radius:999px}
+.learn-board--hi{margin:16px 0 28px;padding:16px;border-radius:16px;border:2px solid #22c55e;
+  background:linear-gradient(180deg,#ecfdf5,#fff 60%);box-shadow:0 0 0 4px rgba(34,197,94,.12),0 10px 28px rgba(33,115,70,.1)}
+.home-path-card{transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s ease}
+.home-path-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(20,90,50,.12)}
+.avp-rise{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.avp-rise.in{opacity:1;transform:none}
+@media(max-width:980px){.home-path-more--5{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:560px){.home-path-more--5{grid-template-columns:1fr 1fr!important}}
+@media(prefers-reduced-motion:reduce){
+  .avp-title span,.avp-mobile-main-cta,.avp-scroll-tease-btn::after,.avp-hero::before{animation:none!important}
+  .avp-rise{opacity:1;transform:none}
+}
+</style>
+
+
+<style id="avp-brand-shine">
+.avp-title{position:relative}
+.avp-title span{
+  display:inline-block;
+  background:linear-gradient(100deg,#d1fae5 0%,#ecfdf5 18%,#fff 36%,#6ee7b7 48%,#fff 60%,#ecfdf5 78%,#a7f3d0 100%);
+  background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  animation:avpBrandShine 3.2s ease-in-out infinite !important;
+  filter:drop-shadow(0 0 10px rgba(110,231,183,.35));
+}
+.avp-title::after{
+  content:"";position:absolute;left:8%;right:8%;bottom:-6px;height:2px;border-radius:999px;
+  background:linear-gradient(90deg,transparent,rgba(110,231,183,.55),transparent);
+  animation:avpBrandLine 3.2s ease-in-out infinite;pointer-events:none;
+}
+@keyframes avpBrandShine{
+  0%{background-position:100% 50%;filter:drop-shadow(0 0 6px rgba(110,231,183,.25))}
+  40%{background-position:0% 50%;filter:drop-shadow(0 0 16px rgba(167,243,208,.55))}
+  100%{background-position:-100% 50%;filter:drop-shadow(0 0 8px rgba(110,231,183,.3))}
+}
+@keyframes avpBrandLine{0%,100%{opacity:.35;transform:scaleX(.85)}40%{opacity:.9;transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){
+  .avp-title span{animation:none;background:#ecfdf5;-webkit-text-fill-color:#ecfdf5;color:#ecfdf5;filter:none}
+  .avp-title::after{animation:none}
+}
+</style>
+
+<link rel="stylesheet" href="avp-site-motion.css" />
+
+<style id="avp-locked-inline-css">
+/* === learning leaderboard === */
+
+/* Learning leaderboard on home path */
+.learn-board{
+  margin-top: 18px;
+  padding: 16px 16px 14px;
+  border-radius: 16px;
+  border: 1px solid #d5e8dc;
+  background: linear-gradient(180deg, #f7fbf8 0%, #fff 100%);
+  box-shadow: 0 4px 16px rgba(33,115,70,.06);
+}
+.learn-board-h{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+  margin-bottom: 10px;
+}
+.learn-board-h h3{
+  margin:0;font-size:16px;font-weight:900;color:#145a32;
+}
+.learn-board-h p{
+  margin:4px 0 0;font-size:12.5px;color:#5f7268;line-height:1.4;
+}
+.learn-board-ref{
+  flex-shrink:0;border:1px solid #c5ddd0;background:#fff;color:#145a32;
+  border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer;
+}
+.learn-board-ref:hover{background:#eef7f1}
+.learn-board-note{
+  margin:0 0 10px;font-size:12.5px;color:#3d4f47;line-height:1.45;
+  padding:8px 10px;border-radius:10px;background:#eef7f1;
+}
+.learn-board-note a{color:#0f766e;font-weight:800}
+.learn-board-list{
+  list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;
+}
+.lb-row{
+  display:grid;
+  grid-template-columns:36px minmax(0,1fr) auto;
+  gap:8px;align-items:center;
+  padding:8px 10px;border-radius:10px;border:1px solid #e5eee9;background:#fff;
+}
+.lb-rank{
+  width:28px;height:28px;border-radius:8px;background:#e8f5ec;color:#145a32;
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;
+}
+.lb-name{font-weight:800;font-size:13.5px;color:#173f2a;min-width:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-meta{font-size:12px;color:#5f7268;white-space:nowrap}
+.lb-badge{font-style:normal;font-weight:800;color:#b45309;background:#fff7ed;
+  border-radius:999px;padding:1px 6px;margin-left:4px;font-size:11px}
+.lb-muted{padding:10px;color:#6a7c72;font-size:13px}
+@media(max-width:640px){
+  .lb-row{grid-template-columns:32px minmax(0,1fr);grid-template-rows:auto auto}
+  .lb-meta{grid-column:2;white-space:normal}
+}
+
+.learn-board-note[hidden]{display:none!important}
+.learn-board-h p{display:none!important}
+
+
+/* Highlight learning leaderboard */
+.learn-board--hi,
+.learn-board{
+  margin-top: 18px !important;
+  padding: 16px 16px 14px !important;
+  border-radius: 16px !important;
+  border: 2px solid #22c55e !important;
+  background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 55%) !important;
+  box-shadow:
+    0 0 0 4px rgba(34,197,94,.12),
+    0 10px 28px rgba(33,115,70,.12) !important;
+}
+.learn-board-h h3{
+  color: #145a32 !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+}
+.learn-board-desc{
+  display: block !important;
+  margin: 4px 0 0 !important;
+  font-size: 12.5px !important;
+  color: #3f6b52 !important;
+  line-height: 1.4 !important;
+}
+.learn-board-desc strong{ color:#15803d; }
+.learn-board-ref{
+  border: 1px solid #86efac !important;
+  background: #fff !important;
+  color: #145a32 !important;
+  font-weight: 800 !important;
+  box-shadow: 0 2px 8px rgba(34,197,94,.15);
+}
+.learn-board-note{
+  display: block !important;
+  margin: 0 0 10px !important;
+  padding: 8px 12px !important;
+  border-radius: 10px !important;
+  background: #dcfce7 !important;
+  border: 1px solid #86efac !important;
+  color: #145a32 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+.learn-board-note[hidden]{ display:none !important; }
+.learn-board-note--guest{
+  background: #fff7ed !important;
+  border-color: #fdba74 !important;
+  color: #9a3412 !important;
+}
+.learn-board-note--guest a{
+  color: #c2410c !important;
+  font-weight: 900 !important;
+  text-decoration: underline;
+}
+.lb-row{
+  border-color: #bbf7d0 !important;
+  background: #fff !important;
+}
+.lb-rank{
+  background: #bbf7d0 !important;
+  color: #145a32 !important;
+}
+
+
+/* Spacing + always-visible CTA */
+.learn-board,
+.learn-board--hi{
+  margin-top: 20px !important;
+  margin-bottom: 28px !important;
+  padding: 16px 16px 16px !important;
+  border: 2px solid #22c55e !important;
+  border-radius: 16px !important;
+  background: linear-gradient(180deg, #ecfdf5 0%, #fff 60%) !important;
+  box-shadow: 0 0 0 4px rgba(34,197,94,.12), 0 10px 28px rgba(33,115,70,.12) !important;
+}
+.home-path-grid{
+  margin-top: 8px !important;
+}
+.learn-board-desc{
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  margin: 6px 0 0 !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+  color: #3f6b52 !important;
+  max-width: 52ch;
+}
+.learn-board-desc strong{ color:#15803d; font-weight:900; }
+.learn-board-note{
+  display: block !important;
+  visibility: visible !important;
+  margin: 12px 0 12px !important;
+  padding: 10px 12px !important;
+  border-radius: 10px !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+.learn-board-note[hidden]{ display:none !important; }
+.learn-board-note--guest{
+  background: #fff7ed !important;
+  border: 1px solid #fdba74 !important;
+  color: #9a3412 !important;
+}
+.learn-board-note--guest a{
+  color: #c2410c !important;
+  font-weight: 900 !important;
+  text-decoration: underline !important;
+}
+
+.learn-board{ margin-bottom: 28px !important; }
+.learn-board--hi{
+  border: 2px solid #22c55e !important;
+  background: linear-gradient(180deg,#ecfdf5,#fff 60%) !important;
+  box-shadow: 0 0 0 4px rgba(34,197,94,.12), 0 10px 28px rgba(33,115,70,.1) !important;
+  border-radius: 16px !important;
+  padding: 16px !important;
+}
+.learn-board-desc{ display:block !important; margin:6px 0 0; font-size:13px; color:#3f6b52; }
+.learn-board-note--guest{
+  background:#fff7ed !important; border:1px solid #fdba74 !important; color:#9a3412 !important;
+  padding:10px 12px; border-radius:10px; font-weight:700;
+}
+.learn-board-note--guest a{ color:#c2410c; font-weight:900; }
+
+/* === site motion === */
+/*! avp-site-motion.css — hiệu ứng nổi + parallax nhẹ toàn site (chỉ visual) */
+:root{
+  --avp-lift: cubic-bezier(.22,1,.36,1);
+  --avp-shadow: 0 14px 32px rgba(15,42,28,.12);
+}
+
+/* ===== Hover lift (chuột thật) ===== */
+@media (hover:hover) and (pointer:fine){
+  .course-card,
+  .practice-file-card,
+  .summary-card,
+  .level-card,
+  .continue-card,
+  .dash-panel,
+  .home-cta-card,
+  .home-practice-cta,
+  .home-path-card,
+  .home-more-card,
+  .home-book-card,
+  .learn-board,
+  .pv-hero,
+  .ml-hero,
+  .pq-hero,
+  .dashboard-hero,
+  .course-panel,
+  .pq-lesson,
+  .lesson-tips-panel,
+  .badge-card,
+  .tool-card,
+  .stat-card,
+  .lab-card,
+  .auth-card,
+  .admin-card,
+  .mail-item,
+  .pv-panel,
+  .pv-line,
+  .path-item,
+  .feature-card,
+  .content-card,
+  .grid-card,
+  article.card,
+  .card{
+    transition:
+      transform .28s var(--avp-lift),
+      box-shadow .28s ease,
+      filter .2s ease,
+      border-color .2s ease !important;
+    will-change: transform;
+  }
+
+  .course-card:hover,
+  .practice-file-card:hover,
+  .summary-card:hover,
+  .level-card:hover,
+  .continue-card:hover,
+  .home-cta-card:hover,
+  .home-practice-cta:hover,
+  .home-path-card:hover,
+  .home-more-card:hover,
+  .home-book-card:hover,
+  .course-panel:hover,
+  .pq-lesson:hover,
+  .badge-card:hover,
+  .tool-card:hover,
+  .lab-card:hover,
+  .content-card:hover,
+  .grid-card:hover,
+  article.card:hover,
+  .card:hover{
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: var(--avp-shadow) !important;
+    filter: brightness(1.03);
+  }
+
+  .path-item:hover,
+  .pv-line:hover,
+  .mail-item:hover,
+  .pq-lesson:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(15,42,28,.1) !important;
+  }
+
+  /* Banner / hero blocks trong khung */
+  .pv-hero:hover,
+  .ml-hero:hover,
+  .pq-hero:hover,
+  .dashboard-hero:hover,
+  .dash-panel:hover,
+  .learn-board:hover,
+  .lesson-tips-panel:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(15,42,28,.14) !important;
+  }
+
+  /* Buttons */
+  .btn, button.btn, a.btn, .filter-btn, .pq-btn, .complete-btn,
+  .next-lesson-btn, .continue-btn, .vote-btn, .go, .mode,
+  .avp-mobile-main-cta, .avp-youtube-cta, .avp-yt-practice,
+  .lp-filter, input[type="submit"], button[type="submit"]{
+    transition: transform .2s var(--avp-lift), box-shadow .2s ease, filter .2s ease !important;
+  }
+  .btn:hover, button.btn:hover, a.btn:hover, .filter-btn:hover, .pq-btn:hover,
+  .complete-btn:hover, .next-lesson-btn:hover, .continue-btn:hover,
+  .avp-mobile-main-cta:hover, .avp-youtube-cta:hover, .avp-yt-practice:hover,
+  input[type="submit"]:hover, button[type="submit"]:hover{
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,.14) !important;
+  }
+
+  a.course-card:hover,
+  a.home-more-card:hover,
+  a.practice-file-card:hover{
+    transform: translateY(-5px) scale(1.01);
+  }
+}
+
+/* ===== Scroll reveal ===== */
+.avp-motion-rise{
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity .65s var(--avp-lift), transform .65s var(--avp-lift);
+}
+.avp-motion-rise.avp-in{
+  opacity: 1;
+  transform: none;
+}
+
+/* ===== Parallax layer helper ===== */
+.avp-parallax-layer{
+  will-change: transform;
+  transition: transform .08s linear;
+}
+
+@media (hover:none){
+  .course-card:hover, .btn:hover{ transform:none !important; }
+}
+@media (prefers-reduced-motion: reduce){
+  .course-card, .btn, .home-path-card, .pv-hero, .avp-motion-rise{
+    transition: none !important;
+  }
+  .course-card:hover, .btn:hover{ transform:none !important; }
+  .avp-motion-rise{ opacity:1; transform:none; }
+}
+
+/* === hover === */
+/* redirected: use avp-site-motion.css */
+@import url("avp-site-motion.css");
+
+</style>
+
+
+<style id="avp-board-force">
+#learnBoard, .learn-board--hi{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  margin: 16px 0 28px !important;
+  padding: 16px !important;
+  border-radius: 16px !important;
+  border: 2px solid #22c55e !important;
+  background: linear-gradient(180deg,#ecfdf5,#fff 55%) !important;
+  box-shadow: 0 0 0 4px rgba(34,197,94,.12), 0 10px 28px rgba(33,115,70,.1) !important;
+}
+.home-path-more--5{
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:10px !important;
+}
+#avpScrollTease, .avp-scroll-tease{ display:block !important; width:100% !important; }
+@media(max-width:980px){.home-path-more--5{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:560px){.home-path-more--5{grid-template-columns:1fr 1fr!important}}
+</style>
+
 </head>
 
 
@@ -984,7 +1422,7 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
                     <span id="avpTyping"></span><span class="avp-cursor"></span>
                 </div>
 
-                <p class="avp-desc">Học Excel để làm việc — từ cơ bản đến báo cáo QC.</p>
+                <p class="avp-desc">Học Excel để làm việc — từ cơ bản đến chuyên nghiệp.</p>
 
                 
 <div class="avp-mobile-main-cta-wrap">
@@ -997,27 +1435,7 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
     </span>
     <span class="avp-mobile-main-cta-arrow">→</span>
   </a>
-  <div class="avp-home-cta-row">
-    <a class="avp-continue-cta" id="homeContinueLearn" href="excel.html">
-      <span class="avp-continue-cta-icon">▶</span>
-      <span class="avp-continue-cta-copy">
-        <strong id="homeContinueTitle">Bắt đầu học Excel cơ bản</strong>
-        <small id="homeContinueMeta">Bài 1/14 • lộ trình Beginner → Master</small>
-      </span>
-      <span class="avp-continue-cta-arrow">→</span>
-    </a>
-    <a class="avp-continue-cta avp-race-cta" href="excel-race.html">
-      <span class="avp-new-badge">NEW</span>
-      <span class="avp-continue-cta-icon">🏁</span>
-      <span class="avp-continue-cta-copy">
-        <strong>Excel Race</strong>
-        <small>Minigame • 2000 câu • đua tốc độ</small>
-      </span>
-      <span class="avp-continue-cta-arrow">→</span>
-    </a>
-  </div>
-
-  <div class="avp-yt-row">
+<div class="avp-yt-row">
     <a class="avp-youtube-cta" href="https://youtube.com/@anhvanphongmaster?si=Q0jPTW5ujoF8QtF-" target="_blank" rel="noopener noreferrer">
       <span class="avp-yt-avatars">
         <img class="avp-yt-avatar" src="https://yt3.googleusercontent.com/UGGuEhYMm-FYa9H4b-rc6_L2jLamejeyecU9jq8WTQIuJqDlJ537WHj1-1C0LtNDloO6ZNA=s176-c-k-c0x00ffffff-no-rj" width="44" height="44" alt="Anh Văn Phòng" loading="lazy" />
@@ -1040,6 +1458,14 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
       <span class="avp-yt-arrow">→</span>
     </a>
   </div>
+  <div class="avp-scroll-tease avp-scroll-tease--under-yt" id="avpScrollTease" style="width:100%;margin-top:12px;box-sizing:border-box">
+    <button type="button" class="avp-scroll-tease-btn" id="avpScrollToPath"
+      style="width:100%;box-sizing:border-box;border-radius:14px;padding:12px 16px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:#e8f5ec;cursor:pointer;text-align:center">
+      <span style="display:block;font-weight:900;font-size:13.5px">↓ Lộ trình 14 bài · Bảng xếp hạng</span>
+      <span style="display:block;font-size:12px;margin-top:4px;opacity:.9" id="avpTeasePreview">Top học viên · <b>đăng nhập</b> để có mặt trên BXH</span>
+    </button>
+  </div>
+
 </div>
 
 
@@ -1066,6 +1492,19 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
   <div class="home-path-inner">
     <h2>Lộ trình 14 bài</h2>
     <p>Học theo thứ tự. Mỗi bài có ví dụ và quiz.</p>
+
+    <div class="learn-board learn-board--hi" id="learnBoard">
+      <div class="learn-board-h" style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+        <div>
+          <h3 style="margin:0;color:#145a32">🏆 Bảng xếp hạng học tập</h3>
+          <p class="learn-board-desc" style="margin:6px 0 0;font-size:13px;color:#3f6b52">Chuỗi ngày học liên tiếp. <strong>Đăng ký / đăng nhập</strong> mới được xuất hiện trên BXH.</p>
+        </div>
+        <button type="button" class="learn-board-ref" id="learnBoardRefresh" style="border:1px solid #86efac;background:#fff;color:#145a32;font-weight:800;border-radius:999px;padding:8px 12px;cursor:pointer">Làm mới</button>
+      </div>
+      <p class="learn-board-note learn-board-note--guest" id="learnBoardNote" style="margin:12px 0;padding:10px 12px;border-radius:10px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-weight:700">👤 <a href="auth.html" style="color:#c2410c;font-weight:900">Đăng ký / Đăng nhập</a> để xuất hiện trên bảng xếp hạng.</p>
+      <ol class="learn-board-list" id="learnBoardList" style="margin:0;padding-left:20px"><li class="lb-muted">Đang tải…</li></ol>
+    </div>
+
     <div class="home-path-grid">
       <article class="home-path-card home-path-card--1">
         <span>01 · Beginner</span>
@@ -1106,10 +1545,21 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
         </ul>
       </article>
     </div>
-    <div class="home-path-more">
+    <div class="home-path-more home-path-more--5">
       <a class="home-more-card home-more-1" href="dashboard.html"><span>📊</span><strong>Tiến độ học</strong><small>XP, quiz, bài đang học</small></a>
       <a class="home-more-card home-more-2" href="excel-mobile.html"><span>📱</span><strong>Master Excel</strong><small>Áp dụng cho cả mobile</small></a>
       <a class="home-more-card home-more-3" href="master-learning.html"><span>🗺️</span><strong>Chi tiết lộ trình</strong><small>Beginner → Master</small></a>
+      <a class="home-more-card home-more-4" id="homeContinueLearn" href="excel.html">
+        <span>▶</span>
+        <strong id="homeContinueTitle">Tiếp tục lộ trình</strong>
+        <small id="homeContinueMeta">Bài 1/14 · Beginner → Master</small>
+      </a>
+      <a class="home-more-card home-more-5 home-more-race" href="excel-race.html">
+        <span class="home-more-new">NEW</span>
+        <span>🏁</span>
+        <strong>Excel Race</strong>
+        <small>Đua top học viên · 2000 câu</small>
+      </a>
     </div>
   </div>
 </section>
@@ -1310,6 +1760,342 @@ document.addEventListener("click", function(e){
   window.avpAnalytics.track("book_click", {page:"index.html", tool:title});
 });
 </script>
+  <script defer src="learning-leaderboard.js"></script>
+
+<script id="avp-home-boot">
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function ease(t){ return 1 - Math.pow(1 - t, 5); }
+  function bindScroll(){
+    var btn = document.getElementById('avpScrollToPath');
+    if (!btn || btn.__bound) return;
+    btn.__bound = true;
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      var el = document.getElementById('ky-nang-excel') || document.querySelector('.home-path');
+      if (!el) return;
+      var s = window.pageYOffset || 0;
+      var end = Math.max(0, el.getBoundingClientRect().top + s - 16);
+      var d = end - s;
+      if (Math.abs(d) < 4) return;
+      if (reduce) { window.scrollTo(0, end); return; }
+      var t0 = performance.now(), dur = Math.min(1600, Math.max(900, Math.abs(d) * 0.8));
+      (function f(n){
+        var p = Math.min(1, (n - t0) / dur);
+        window.scrollTo(0, s + d * ease(p));
+        if (p < 1) requestAnimationFrame(f);
+      })(t0);
+    });
+  }
+  function rise(){
+    if (reduce || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.home-path-card, .home-more-card, .learn-board, .home-book-card').forEach(function(n,i){
+      n.classList.add('avp-rise');
+      n.style.transitionDelay = Math.min(i * 0.05, 0.35) + 's';
+      io.observe(n);
+    });
+  }
+  function init(){ bindScroll(); rise(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+  setTimeout(bindScroll, 800);
+})();
+</script>
+
+<script defer src="avp-site-motion.js"></script>
+<script id="avp-llb-inline">
+/**
+ * Learning leaderboard — streak đăng nhập (chỉ user đã login, ẩn admin)
+ */
+(function () {
+  const VISIT_KEY = "avp_visit_days_v1";
+  const XP_KEY = "avp_xp_v2";
+
+  function $(id) { return document.getElementById(id); }
+
+  function todayStr() {
+    const d = new Date();
+    const z = (n) => String(n).padStart(2, "0");
+    // local date YYYY-MM-DD
+    return d.getFullYear() + "-" + z(d.getMonth() + 1) + "-" + z(d.getDate());
+  }
+
+  function getVisits() {
+    try {
+      const v = JSON.parse(localStorage.getItem(VISIT_KEY) || "[]");
+      return Array.isArray(v) ? v : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function trackToday() {
+    const t = todayStr();
+    let v = getVisits();
+    if (!v.includes(t)) {
+      v.push(t);
+      v = v.slice(-120);
+      try { localStorage.setItem(VISIT_KEY, JSON.stringify(v)); } catch (e) {}
+    }
+    return v;
+  }
+
+  function calcStreak(days) {
+    const set = new Set(days);
+    let n = 0;
+    const d = new Date();
+    for (;;) {
+      const s = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+      if (set.has(s)) {
+        n++;
+        d.setDate(d.getDate() - 1);
+      } else break;
+    }
+    return n;
+  }
+
+  function getXp() {
+    const n = parseInt(localStorage.getItem(XP_KEY) || "0", 10);
+    return isNaN(n) ? 0 : n;
+  }
+
+  function badge(streak) {
+    if (streak >= 30) return "🔥 30 ngày";
+    if (streak >= 7) return "⚡ 7 ngày";
+    if (streak >= 3) return "✨ 3 ngày";
+    return "";
+  }
+
+  function escapeHtml(s) {
+    return String(s || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  async function waitSupabase(ms) {
+    const t0 = Date.now();
+    while (Date.now() - t0 < (ms || 4000)) {
+      if (window.avpSupabase) return window.avpSupabase;
+      if (window.AVP_SUPABASE_CONFIGURED === false) return null;
+      await new Promise((r) => setTimeout(r, 80));
+    }
+    return window.avpSupabase || null;
+  }
+
+  async function getUser() {
+    if (window.avpCloudSync && window.avpCloudSync.getUser) {
+      try { return await window.avpCloudSync.getUser(); } catch (e) {}
+    }
+    const sb = await waitSupabase(2000);
+    if (!sb) return null;
+    try {
+      const { data } = await sb.auth.getUser();
+      return data && data.user ? data.user : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function isAdmin(sb) {
+    try {
+      const { data, error } = await sb.rpc("is_admin_user");
+      if (!error && data === true) return true;
+    } catch (e) {}
+    return false;
+  }
+
+  async function displayName(sb, user) {
+    try {
+      if (window.avpCloudSync && window.avpCloudSync.getProfile) {
+        const p = await window.avpCloudSync.getProfile(user);
+        if (p && (p.display_name || p.name)) return p.display_name || p.name;
+      }
+      const { data } = await sb.from("profiles").select("display_name,name").eq("id", user.id).maybeSingle();
+      if (data && (data.display_name || data.name)) return data.display_name || data.name;
+    } catch (e) {}
+    const email = user.email || "";
+    if (email) return email.split("@")[0];
+    return "Học viên";
+  }
+
+  async function pushScore(sb, user) {
+    if (await isAdmin(sb)) return; // admin không vào BXH
+
+    const visits = trackToday();
+    const streak = calcStreak(visits);
+    const totalDays = visits.length;
+    const xp = getXp();
+    const name = await displayName(sb, user);
+
+    const row = {
+      user_id: user.id,
+      display_name: String(name).slice(0, 40),
+      current_streak: streak,
+      best_streak: streak, // server can max() on upsert via RPC; client sends current
+      total_days: totalDays,
+      xp: xp,
+      updated_at: new Date().toISOString()
+    };
+
+    // Prefer RPC (handles best_streak max + admin skip)
+    try {
+      const { error } = await sb.rpc("upsert_learning_leaderboard", {
+        p_display_name: row.display_name,
+        p_current_streak: row.current_streak,
+        p_total_days: row.total_days,
+        p_xp: row.xp
+      });
+      if (!error) return;
+      console.warn("[learn-board] rpc", error.message || error);
+    } catch (e) {
+      console.warn("[learn-board] rpc missing?", e);
+    }
+
+    // Fallback direct upsert
+    try {
+      const { data: old } = await sb
+        .from("learning_leaderboard")
+        .select("best_streak")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      row.best_streak = Math.max(Number(old && old.best_streak) || 0, streak);
+      const { error } = await sb.from("learning_leaderboard").upsert(row, { onConflict: "user_id" });
+      if (error) console.warn("[learn-board] upsert", error.message || error);
+    } catch (e) {
+      console.warn("[learn-board] upsert fail", e);
+    }
+  }
+
+  async function loadBoard() {
+    const list = $("learnBoardList");
+    const note = $("learnBoardNote");
+    if (!list) return;
+
+    const sb = await waitSupabase(4000);
+    if (!sb) {
+      list.innerHTML = '<li class="lb-muted">Chưa có xếp hạng.</li>';
+      return;
+    }
+
+    let rows = [];
+    try {
+      const { data, error } = await sb.rpc("list_learning_leaderboard");
+      if (!error && Array.isArray(data)) rows = data;
+      else {
+        const res = await sb
+          .from("learning_leaderboard")
+          .select("display_name,current_streak,best_streak,total_days,xp")
+          .order("current_streak", { ascending: false })
+          .order("xp", { ascending: false })
+          .limit(15);
+        if (res.error) {
+          list.innerHTML = '<li class="lb-muted">Chưa có dữ liệu xếp hạng.</li>';
+          return;
+        }
+        rows = res.data || [];
+      }
+    } catch (e) {
+      list.innerHTML = '<li class="lb-muted">Chưa có xếp hạng.</li>';
+      return;
+    }
+
+    if (!rows.length) {
+      list.innerHTML = '<li class="lb-muted">Chưa có xếp hạng.</li>';
+      return;
+    }
+
+    list.innerHTML = rows.map(function (r, i) {
+      const st = Number(r.current_streak) || 0;
+      const b = badge(st);
+      return (
+        '<li class="lb-row">' +
+          '<span class="lb-rank">' + (i + 1) + "</span>" +
+          '<span class="lb-name">' + escapeHtml(r.display_name) + "</span>" +
+          '<span class="lb-meta">🔥 ' + st + " ngày" +
+            (b ? ' <em class="lb-badge">' + b + "</em>" : "") +
+            " · XP " + (Number(r.xp) || 0) +
+          "</span>" +
+        "</li>"
+      );
+    }).join("");
+  }
+
+  async function renderGate() {
+    const note = $("learnBoardNote");
+    if (!note) return;
+    const user = await getUser();
+    if (!user) {
+      note.hidden = false;
+      note.className = "learn-board-note learn-board-note--guest";
+      note.innerHTML = "👤 <a href=\"auth.html\">Đăng ký / Đăng nhập</a> để xuất hiện trên bảng xếp hạng.";
+      return;
+    }
+    const sb = await waitSupabase(2500);
+    if (sb && (await isAdmin(sb))) {
+      note.hidden = false;
+      note.className = "learn-board-note";
+      note.textContent = "Tài khoản admin không xếp hạng học viên.";
+      return;
+    }
+    const streak = calcStreak(trackToday());
+    note.hidden = false;
+    note.className = "learn-board-note";
+    note.textContent = "Chuỗi của bạn: " + streak + " ngày";
+  }
+
+  async function init() {
+    if (!$("learnBoard")) return;
+    trackToday();
+    await renderGate();
+    await loadBoard();
+
+    const user = await getUser();
+    if (user) {
+      const sb = await waitSupabase(3000);
+      if (sb) await pushScore(sb, user);
+      await loadBoard();
+    }
+
+    const btn = $("learnBoardRefresh");
+    if (btn) btn.addEventListener("click", function () { loadBoard(); renderGate(); });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+
+</script>
+
+<script id="avp-motion-inline-boot">
+(function(){
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  function rise(){
+    var sel='.home-path-card,.home-more-card,.learn-board,.home-book-card,.course-card,.pyt-card';
+    var nodes=document.querySelectorAll(sel);
+    if(!nodes.length||!window.IntersectionObserver)return;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('avp-in'); io.unobserve(en.target);} });
+    },{threshold:0.1});
+    nodes.forEach(function(n,i){
+      n.classList.add('avp-motion-rise');
+      n.style.transitionDelay=Math.min(i*0.04,0.28)+'s';
+      io.observe(n);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rise); else rise();
+})();
+</script>
+
 </body>
 
 </html> 

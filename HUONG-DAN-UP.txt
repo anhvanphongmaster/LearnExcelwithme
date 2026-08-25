@@ -1,0 +1,16 @@
+QUAN TRONG — Live hien van la ban CU (GitHub chua co file moi).
+
+CACH UP DUNG TREN GITHUB:
+1. Vao repo LearnExcelwithme
+2. Upload files → kéo CẢ THƯ MỤC giải nén (hoặc từng file)
+3. Commit to main
+4. Đợi 1–2 phút
+5. Mở tab ẨN DANH: https://anhvanphongmaster.github.io/LearnExcelwithme/
+6. Ctrl+U xem nguồn → tìm chữ: learnBoard
+   - CÓ = đã lên
+   - KHÔNG = vẫn up nhầm / chưa commit / sai repo / sai branch
+
+CHỈ CẦN UP index.html cũng ĐÃ thấy: layout mới + BXH khung + hiệu ứng (CSS/JS nhúng trong index).
+Vẫn nên up đủ file kèm theo cho trang khác + BXH cloud.
+
+KHÔNG up đè bằng bản index cũ từ máy local.

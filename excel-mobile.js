@@ -591,11 +591,13 @@
     closeCellEditor();
   }
 
-  function deleteEditingRow(){
+  async function deleteEditingRow(){
     const edit=state.editingCell;
     if(!edit || edit.rowIndex<=0 || !state.data[edit.rowIndex]) return;
 
-    const ok=window.confirm(`Xóa dòng ${edit.rowIndex+1} khỏi Sheet "${state.sheetName}"?`);
+    const ok = window.avpConfirm
+      ? await window.avpConfirm("Xóa dòng " + (edit.rowIndex+1) + ' khỏi Sheet "' + state.sheetName + '"?\nKhông hoàn tác được.', { title: "Xóa dòng Excel?", icon: "📄", tone: "danger", ok: "Xóa dòng", cancel: "Hủy" })
+      : window.confirm('Xóa dòng ' + (edit.rowIndex+1) + ' khỏi Sheet "' + state.sheetName + '"?');
     if(!ok) return;
 
     pushUndoSnapshot();
@@ -2871,9 +2873,9 @@
     state.fileSizeBytes=file.size || 0;
 
     if(state.fileSizeBytes > 35*1024*1024){
-      const ok=window.confirm(
-        `File có dung lượng ${formatBytes(state.fileSizeBytes)}. Trên điện thoại file quá lớn có thể làm trình duyệt thiếu RAM. Bạn vẫn muốn tiếp tục?`
-      );
+      const ok = window.avpConfirm
+        ? await window.avpConfirm("File khoảng " + formatBytes(state.fileSizeBytes) + ".\nTrên điện thoại, file lớn có thể làm máy chậm hoặc thiếu bộ nhớ.\n\nBạn vẫn muốn mở tiếp?", { title: "File Excel khá lớn", icon: "📱", tone: "warn", ok: "Vẫn mở", cancel: "Hủy" })
+        : window.confirm("File có dung lượng " + formatBytes(state.fileSizeBytes) + ". Trên điện thoại file quá lớn có thể làm trình duyệt thiếu RAM. Bạn vẫn muốn tiếp tục?");
       if(!ok){
         fileInput.value="";
         return;

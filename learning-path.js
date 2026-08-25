@@ -256,19 +256,18 @@
     });
   }
 
-  function resetProgress() {
-    if(!confirm("Xóa toàn bộ tiến độ Lộ trình 30 ngày?")) return;
-
-    /*
-      setItem([]) thay vì removeItem để cloud sync nhận được
-      trạng thái rỗng chính xác.
-    */
+  async function resetProgress() {
+    const ok = window.avpConfirm
+      ? await window.avpConfirm(
+          "Toàn bộ dấu hoàn thành trong Lộ trình 30 ngày sẽ bị xóa.\nBạn có thể học và đánh dấu lại từ đầu.\n\nKhông ảnh hưởng tài khoản đăng nhập.",
+          { title: "Đặt lại tiến độ 30 ngày?", icon: "📋", tone: "warn", ok: "Xóa tiến độ", cancel: "Giữ nguyên" }
+        )
+      : confirm("Xóa toàn bộ tiến độ Lộ trình 30 ngày?");
+    if (!ok) return;
     setDone([]);
     localStorage.setItem(START_KEY, new Date().toISOString().slice(0,10));
-
     document.querySelectorAll(".lp-filter").forEach(x=>x.classList.remove("active"));
     document.querySelector('.lp-filter[data-filter="all"]')?.classList.add("active");
-
     render("all");
   }
 

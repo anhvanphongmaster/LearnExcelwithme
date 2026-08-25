@@ -1,0 +1,16 @@
+
+/* Typing line smoother caret */
+.avp-typing, #avpTyping{
+  transition: opacity .15s ease;
+  min-height: 1.35em;
+}
+.avp-cursor{
+  display:inline-block;
+  margin-left:2px;
+  animation: avpCaret 1s steps(1) infinite;
+  opacity:.9;
+}
+@keyframes avpCaret{
+  0%,45%{ opacity:1; }
+  50%,100%{ opacity:0; }
+}

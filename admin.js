@@ -101,7 +101,7 @@
         }catch(e){ toast("Không tải được file"); }
       });
       $("mailDelete")?.addEventListener("click", async()=>{
-        if(!confirm("Xóa phiếu file này?")) return;
+        { const okFile = window.avpConfirm ? await window.avpConfirm("Phiếu gửi file này sẽ bị xóa khỏi danh sách admin.", { title: "Xóa phiếu file?", icon: "📎", tone: "danger", ok: "Xóa", cancel: "Hủy" }) : confirm("Xóa phiếu file này?"); if(!okFile) return; }
         await rpcSoft("admin_delete_user_file",{p_id:r.id});
         mailData.files=(mailData.files||[]).filter(x=>x.id!==r.id);
         renderMail("files");
@@ -128,7 +128,7 @@
     };
     const del=$("mailDelete");
     if(del) del.onclick=async()=>{
-      if(!confirm("Xóa thư này của "+who+"?")) return;
+      { const okMail = window.avpConfirm ? await window.avpConfirm("Xóa thư / góp ý của " + who + "?\nKhông hoàn tác được.", { title: "Xóa thư?", icon: "✉️", tone: "danger", ok: "Xóa", cancel: "Hủy" }) : confirm("Xóa thư này của "+who+"?"); if(!okMail) return; }
       const itemId=Number(r.id);
       if(mailKind==="saved"){
         if(!itemId){ toast("Thư đã giữ chưa có mã."); return; }

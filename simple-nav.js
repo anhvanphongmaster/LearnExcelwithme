@@ -1,3 +1,22 @@
+/* === AVP site motion (visual only — no data) === */
+(function () {
+  try {
+    if (!document.getElementById("avpSiteMotionCss")) {
+      var link = document.createElement("link");
+      link.id = "avpSiteMotionCss";
+      link.rel = "stylesheet";
+      link.href = "avp-site-motion.css";
+      document.head.appendChild(link);
+    }
+    if (!document.querySelector('script[src="avp-site-motion.js"]') && !window.__avpSiteMotion) {
+      var s = document.createElement("script");
+      s.src = "avp-site-motion.js";
+      s.defer = true;
+      document.head.appendChild(s);
+    }
+  } catch (e) {}
+})();
+
 
 (function(){
   document.addEventListener("DOMContentLoaded", function(){

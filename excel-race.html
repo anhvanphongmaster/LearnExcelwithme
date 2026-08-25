@@ -13,9 +13,17 @@
       <span class="tag">2.5D · 2000 câu</span>
     </header>
 
+    <div class="name-row" id="nameRow">
+      <label for="playerName">Tên xếp hạng</label>
+      <input id="playerName" type="text" maxlength="20" placeholder="Nhập tên (không trùng)" autocomplete="off" />
+      <button type="button" id="nameSave" class="name-save">Khóa tên</button>
+      <span id="nameStatus" class="name-status"></span>
+    <p class="name-gate-msg" id="nameGateMsg">⚠️ Hãy nhập tên và bấm <b>Khóa tên</b> trước khi chơi — tên này dùng để xếp hạng.</p>
+    </div>
+
     <div class="mode-row" id="modeRow">
-      <button type="button" class="mode active" data-mode="hoc" id="modeHoc">Học — sai về đầu cấp</button>
-      <button type="button" class="mode" data-mode="rank" id="modeRank">Rank — sai về cấp 1</button>
+      <button type="button" class="mode active" data-mode="hoc" id="modeHoc">📚 Học — sai về đầu cấp <small style="opacity:.85;font-weight:700">(không lên BXH)</small></button>
+      <button type="button" class="mode" data-mode="rank" id="modeRank"><span class="rank-hot">🏆 RANK — ĐUA XẾP HẠNG</span> <small class="rank-sub">sai về cấp 1 · tính BXH</small></button>
     </div>
 
     <div class="hud">
@@ -27,10 +35,14 @@
       <div><small>Mạng</small><b id="lives">—</b></div>
     </div>
     <div class="timer"><i id="fill"></i></div>
+    <div id="countOverlay" class="count-overlay" hidden>
+      <div class="count-num" id="countNum">3</div>
+      <div class="count-sub">Sẵn sàng…</div>
+    </div>
     <canvas id="cv" width="900" height="360" aria-label="Đường đua"></canvas>
 
     <section class="panel">
-      <p class="msg" id="msg">Chọn chế độ rồi bấm Bắt đầu. Giữ 2000 câu Excel — độ khó tăng theo cấp.</p>
+      <p class="msg" id="msg">Nhập tên → khóa tên → chọn mode → Bắt đầu. Tên đã có sẽ không dùng lại được.</p>
       <p class="q" id="q" hidden></p>
       <div class="ans" id="ans" hidden>
         <button type="button" id="a1"></button>
@@ -40,13 +52,41 @@
         <span>Ôn thêm:</span>
         <a id="hintLink" href="practice-video.html">Bài tập theo video</a>
       </div>
-      <button type="button" class="go" id="start">Bắt đầu</button>
+      <div class="race-go-row">
+        <button type="button" class="go" id="start">Bắt đầu</button>
+        <button type="button" class="stop-race" id="stopRace" hidden>⏹ Dừng</button>
+      </div>
+    </section>
+
+    <section class="board" id="board">
+      <div class="board-h">
+        <strong>Bảng xếp hạng</strong>
+        <span style="display:flex;gap:6px;align-items:center">
+        <button type="button" id="resetLocalBest" class="board-ref" title="Xóa kỷ lục trên máy này">Reset máy</button>
+        <button type="button" id="boardRefresh" class="board-ref">Làm mới</button>
+      </span>
+      </div>
+      <ol id="boardList" class="board-list"><li class="muted">Đang tải…</li></ol>
     </section>
   </div>
+
+  <div id="avpModal" class="avp-modal" hidden>
+    <div class="avp-modal-backdrop" data-avp-close></div>
+    <div class="avp-modal-card" role="dialog" aria-modal="true" aria-labelledby="avpModalTitle">
+      <div class="avp-modal-icon" id="avpModalIcon">📊</div>
+      <h3 class="avp-modal-title" id="avpModalTitle">Thông báo</h3>
+      <p class="avp-modal-body" id="avpModalBody"></p>
+      <div class="avp-modal-actions">
+        <button type="button" class="avp-modal-btn avp-modal-cancel" id="avpModalCancel" hidden>Hủy</button>
+        <button type="button" class="avp-modal-btn avp-modal-ok" id="avpModalOk">OK</button>
+      </div>
+    </div>
+  </div>
+
   <script src="excel-race-questions.js"></script>
   <script src="supabase-config.js"></script>
   <script type="module" src="supabase-auth.js"></script>
-<script defer src="analytics-tracker.js"></script>
+  <script defer src="analytics-tracker.js"></script>
   <script defer src="excel-race.js"></script>
 </body>
 </html>
