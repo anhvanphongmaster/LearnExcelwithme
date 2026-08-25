@@ -9,8 +9,9 @@
 .pyt-section-title{margin:18px 0 10px;font-size:13px;font-weight:800;color:#5f7268;letter-spacing:.04em;text-transform:uppercase}
 .pyt-split{display:grid;grid-template-columns:2fr 1fr;gap:12px;align-items:stretch;margin-bottom:8px}
 .pyt-split-main{display:flex;flex-direction:column;gap:10px;min-width:0}
-.pyt-side-box{height:100%;box-sizing:border-box;background:#f3faf6;border:1px solid #c5e6d1;border-radius:14px;padding:16px 14px;display:flex;flex-direction:column;gap:8px;position:sticky;top:12px}
+.pyt-side-box{height:100%;box-sizing:border-box;background:#f3faf6;border:1px solid #c5e6d1;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;position:sticky;top:12px}
 .pyt-side-clean{background:#f5f8fc;border-color:#c5d4e8}
+.pyt-side-img{width:100%;height:auto;border-radius:12px;display:block;border:1px solid #e0ebe4;object-fit:cover;max-height:150px;object-position:center}
 .pyt-side-label{margin:0;font-size:11px;font-weight:800;color:#5f7268;letter-spacing:.04em;text-transform:uppercase}
 .pyt-side-box strong{font-size:16px;color:#145a32}
 .pyt-side-clean strong{color:#1a5276}
@@ -18,7 +19,6 @@
 .pyt-side-list{margin:0;padding-left:18px;font-size:12px;color:#4d6356;line-height:1.55;flex:1}
 .pyt-dl-block{display:block;text-align:center;background:#1b6b45;color:#fff !important;text-decoration:none;font-weight:800;font-size:13px;border-radius:12px;padding:12px 10px;margin-top:auto}
 .pyt-side-clean .pyt-dl-block{background:#1a5276}
-.pyt-dl-block:hover{filter:brightness(1.06);color:#fff}
 .pyt-card{background:#fff;border:1px solid #e8f0eb;border-radius:14px;padding:14px 16px}
 .pyt-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .pyt-num{font-size:12px;font-weight:900;color:#217346;background:#e8f5ec;border-radius:8px;padding:3px 8px}
