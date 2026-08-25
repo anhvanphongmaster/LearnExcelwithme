@@ -12,7 +12,23 @@ const availablePracticeFiles = [
   "V11_an_so_0_thuc_hanh.xlsx",
   "B01_dan_vao_dong_loc_thuc_hanh.xlsx",
   "13_dropdown_2_tang.xlsx",
-  "22_dashboard_thang.xlsx"
+  "22_dashboard_thang.xlsx",
+  "Tip2_Copy_Khong_Lay_Dong_An_AltSemicolon.xlsx.xlsx",
+  "Video4_Thuc_Hanh_4000_vs_3999_Nhieu_Cot.xlsx",
+  "video-01-viet-nam-hidden-space.xlsx.xlsx",
+  "09_so_nhin_nhu_so_SUM_0.xlsx",
+  "10_10_kieu_ngay.xlsx",
+  "11_CHAR160.xlsx",
+  "12_Alt_copy_dong_loc.xlsx",
+  "14_XLOOKUP.xlsx",
+  "15_Unpivot.xlsx",
+  "16_PQ_gop_thu_muc.xlsx",
+  "17_Fuzzy_merge.xlsx",
+  "18_PQ_10_sheet.xlsx",
+  "19_Skip_Blanks.xlsx",
+  "20_TEXTBEFORE.xlsx",
+  "21_Fill_Down.xlsx",
+  "23_AGGREGATE.xlsx"
 ];
 
 const practiceFileAliases = {
@@ -22,6 +38,8 @@ const practiceFileAliases = {
   "06_so_viet.xlsx": "V10_so_viet_thuc_hanh.xlsx",
   "07_an_so_0.xlsx": "V11_an_so_0_thuc_hanh.xlsx",
   "08_dan_dong_loc.xlsx": "B01_dan_vao_dong_loc_thuc_hanh.xlsx",
+  "12_Alt_copy_dong_loc.xlsx": "Tip2_Copy_Khong_Lay_Dong_An_AltSemicolon.xlsx.xlsx",
+  "11_CHAR160.xlsx": "video-01-viet-nam-hidden-space.xlsx.xlsx",
   "13_dropdown_2_tang.xlsx": "13_dropdown_2_tang.xlsx",
   "22_dashboard_thang.xlsx": "22_dashboard_thang.xlsx",
   "NhapLieu_Dropdown2_ChanTrung.xlsx": "13_dropdown_2_tang.xlsx",

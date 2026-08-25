@@ -176,6 +176,31 @@
     });
     openMail(list, 0);
   }
+  
+  async function renderPracticeVotes(){
+    const root=document.getElementById("practiceVotesList");
+    if(!root) return;
+    try{
+      const rows=await rpcSoft("admin_list_practice_votes");
+      if(!rows || rows.__error){
+        root.innerHTML='<p style="color:#7a8b80">Chưa có dữ liệu vote (hoặc chưa chạy practice-votes.sql).</p>';
+        return;
+      }
+      if(!rows.length){
+        root.innerHTML='<p style="color:#7a8b80">Chưa có lượt vote nào.</p>';
+        return;
+      }
+      const typeLabel={need_guide:"Cần hướng dẫn",need_more_guide:"Cần hướng dẫn thêm"};
+      root.innerHTML=rows.map((r,i)=>{
+        const label=(r.lesson_number?String(r.lesson_number).padStart(2,"0")+". ":"")+(r.lesson_title||r.lesson_id);
+        const kind=typeLabel[r.vote_type]||r.vote_type;
+        return `<div class="admin-rank-row"><span class="admin-rank-label" title="${label}">${i+1}. ${label} · <em>${kind}</em></span><span class="admin-rank-value">${r.votes}</span></div>`;
+      }).join("");
+    }catch(e){
+      root.innerHTML='<p style="color:#7a8b80">Lỗi tải vote.</p>';
+    }
+  }
+
   async function renderEngagement(s){
     const hint=$("engHint");
     if(!s||s.__error){
@@ -287,6 +312,7 @@
       if(!completed?.__error) renderRanking("topCompletedLessons",completed||[],"lesson","completed_users",labelLesson);
       if(!difficulty?.__error) renderQuizDifficulty(difficulty||[]);
       if(!engagement?.__error) await renderEngagement(engagement||{});
+      await renderPracticeVotes();
       if(!newUsers?.__error) renderNewUsers(newUsers||[]);
     }catch(error){
       console.error(error);

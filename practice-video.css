@@ -328,3 +328,13 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 .pv-title{font-size:13px;line-height:1.25;}
 .pv-icon{font-size:18px;}
 .pv-download,.pv-tiktok{min-height:30px;font-size:12px;}
+
+
+.pv-vote{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-top:8px;width:100%;
+  border:1px solid #c5e0d1;background:#f3faf6;color:#145a32;
+  font-weight:800;font-size:12.5px;border-radius:10px;padding:9px 10px;cursor:pointer;
+}
+.pv-vote:hover{background:#e5f5ec}
+.pv-vote-done,.pv-vote:disabled{opacity:.75;cursor:default;background:#eef2f0;color:#5f7268;border-color:#dde5e0}

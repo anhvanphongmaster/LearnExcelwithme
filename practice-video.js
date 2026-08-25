@@ -321,6 +321,50 @@
     if (elT) elT.textContent = String(videoPracticeData.length);
   }
 
+
+  function voterKey() {
+    try {
+      var k = localStorage.getItem("avp_voter_key");
+      if (!k) {
+        k = "v_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem("avp_voter_key", k);
+      }
+      return k;
+    } catch (e) { return "v_anon"; }
+  }
+  function votedMap() {
+    try { return JSON.parse(localStorage.getItem("avp_practice_votes") || "{}") || {}; }
+    catch (e) { return {}; }
+  }
+  function markVoted(id) {
+    var m = votedMap(); m[id] = true;
+    try { localStorage.setItem("avp_practice_votes", JSON.stringify(m)); } catch (e) {}
+  }
+  function hasVoted(id) { return !!votedMap()[id]; }
+
+  async function submitVote(item, voteType, btn) {
+    if (hasVoted(item.id)) {
+      if (btn) { btn.disabled = true; btn.textContent = "✓ Đã gửi"; }
+      return;
+    }
+    if (btn) { btn.disabled = true; btn.textContent = "Đang gửi..."; }
+    markVoted(item.id);
+    try {
+      var sb = window.avpSupabase || window.supabaseClient || null;
+      if (sb && sb.rpc) {
+        var res = await sb.rpc("vote_practice_lesson", {
+          p_lesson_id: item.id,
+          p_lesson_number: item.number || null,
+          p_lesson_title: item.title || "",
+          p_vote_type: voteType,
+          p_voter_key: voterKey()
+        });
+        if (res && res.error) console.debug("vote rpc error", res.error);
+      }
+    } catch (e) { console.debug("vote rpc", e); }
+    if (btn) { btn.textContent = "✓ Đã gửi yêu cầu"; }
+  }
+
   function cardHTML(item) {
     const fileName = resolvedFile(item);
     const avail = !!fileName;
@@ -339,18 +383,38 @@
       ? downloadBlock(item, fileName)
       : '<span class="pv-locked-note">File sẽ mở khi video được phát hành.</span>';
     const tags = (item.filterTags || [item.category]).join(" ");
+    const hasVideo = !!tk;
+    const voteType = hasVideo ? "need_more_guide" : "need_guide";
+    const voteLabel = hasVideo ? "📝 Cần hướng dẫn thêm" : "📝 Cần hướng dẫn";
+    const voted = hasVoted(item.id);
+    const voteBtn = voted
+      ? '<button type="button" class="pv-vote pv-vote-done" disabled>✓ Đã gửi</button>'
+      : '<button type="button" class="pv-vote" data-vote-id="' + item.id + '" data-vote-type="' + voteType + '">' + voteLabel + "</button>";
 
     return (
       '<article class="pv-card ' + (avail ? "pv-card-available" : "pv-card-locked") + '" ' +
-      'data-status="' + status + '" data-category="' + tags + '" data-title="' + item.title.toLowerCase() + '">' +
+      'data-status="' + status + '" data-category="' + tags + '" data-title="' + item.title.toLowerCase() + '" data-id="' + item.id + '">' +
       '<div class="pv-card-top"><span class="pv-num">' + String(item.number).padStart(2, "0") + "</span>" + badge + "</div>" +
       '<div class="pv-icon">' + item.icon + "</div>" +
       '<h3 class="pv-title">' + item.title + "</h3>" +
       '<p class="pv-cat">' + item.category + "</p>" +
       '<p class="pv-skill">' + item.skill + "</p>" +
-      '<div class="pv-foot">' + tkBtn + fileBtn + "</div>" +
+      '<div class="pv-foot">' + tkBtn + fileBtn + voteBtn + "</div>" +
       "</article>"
     );
+  }
+
+
+  function bindVotes() {
+    document.querySelectorAll(".pv-vote:not([disabled])").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var id = btn.getAttribute("data-vote-id");
+        var type = btn.getAttribute("data-vote-type") || "need_guide";
+        var item = videoPracticeData.find(function (x) { return x.id === id; });
+        if (!item) return;
+        submitVote(item, type, btn);
+      });
+    });
   }
 
   function render(filter, query) {
