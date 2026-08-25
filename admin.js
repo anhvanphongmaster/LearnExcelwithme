@@ -177,29 +177,57 @@
     openMail(list, 0);
   }
   
+  
   async function renderPracticeVotes(){
     const root=document.getElementById("practiceVotesList");
     if(!root) return;
     try{
       const rows=await rpcSoft("admin_list_practice_votes");
       if(!rows || rows.__error){
-        root.innerHTML='<p style="color:#7a8b80">Chưa có dữ liệu vote (hoặc chưa chạy practice-votes.sql).</p>';
+        root.innerHTML='<div class="pvote-empty">Chưa có dữ liệu vote (hoặc chưa chạy <code>practice-votes.sql</code>).</div>';
         return;
       }
       if(!rows.length){
-        root.innerHTML='<p style="color:#7a8b80">Chưa có lượt vote nào.</p>';
+        root.innerHTML='<div class="pvote-empty">Chưa có lượt vote nào.</div>';
         return;
       }
       const typeLabel={need_guide:"Cần hướng dẫn",need_more_guide:"Cần hướng dẫn thêm"};
-      root.innerHTML=rows.map((r,i)=>{
-        const label=(r.lesson_number?String(r.lesson_number).padStart(2,"0")+". ":"")+(r.lesson_title||r.lesson_id);
+      const typeClass={need_guide:"pvote-tag-need",need_more_guide:"pvote-tag-more"};
+      let total=0, need=0, more=0;
+      rows.forEach(r=>{
+        const v=Number(r.votes)||0; total+=v;
+        if(r.vote_type==="need_more_guide") more+=v; else need+=v;
+      });
+      const max=Math.max(1, ...rows.map(r=>Number(r.votes)||0));
+      const summary=`<div class="pvote-summary">
+        <div class="pvote-stat"><span>Tổng vote</span><strong>${total}</strong></div>
+        <div class="pvote-stat"><span>Cần hướng dẫn</span><strong>${need}</strong></div>
+        <div class="pvote-stat"><span>Hướng dẫn thêm</span><strong>${more}</strong></div>
+        <div class="pvote-stat"><span>Số bài</span><strong>${rows.length}</strong></div>
+      </div>`;
+      const list=rows.map((r,i)=>{
+        const num=r.lesson_number!=null?String(r.lesson_number).padStart(2,"0"):"—";
+        const title=String(r.lesson_title||r.lesson_id||"").replace(/</g,"&lt;");
         const kind=typeLabel[r.vote_type]||r.vote_type;
-        return `<div class="admin-rank-row"><span class="admin-rank-label" title="${label}">${i+1}. ${label} · <em>${kind}</em></span><span class="admin-rank-value">${r.votes}</span></div>`;
+        const tc=typeClass[r.vote_type]||"pvote-tag-need";
+        const v=Number(r.votes)||0;
+        const pct=Math.max(8, Math.round(v/max*100));
+        return `<div class="pvote-row">
+          <div class="pvote-rank">${i+1}</div>
+          <div class="pvote-main">
+            <div class="pvote-title"><span class="pvote-num">#${num}</span> ${title}</div>
+            <div class="pvote-meta"><span class="pvote-tag ${tc}">${kind}</span></div>
+            <div class="pvote-bar"><span style="width:${pct}%"></span></div>
+          </div>
+          <div class="pvote-count"><strong>${v}</strong><small>vote</small></div>
+        </div>`;
       }).join("");
+      root.innerHTML=summary+`<div class="pvote-list">${list}</div>`;
     }catch(e){
-      root.innerHTML='<p style="color:#7a8b80">Lỗi tải vote.</p>';
+      root.innerHTML='<div class="pvote-empty">Lỗi tải vote.</div>';
     }
   }
+
 
   async function renderEngagement(s){
     const hint=$("engHint");

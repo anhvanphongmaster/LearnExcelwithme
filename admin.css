@@ -126,3 +126,30 @@ body.dark-mode .admin-denied-help summary{color:#8be1ac}
 
 .admin-mail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
 .admin-mail-del{min-height:38px;padding:0 14px;border:0;border-radius:10px;background:#c0392b;color:#fff;font-weight:700;cursor:pointer;}
+
+/* Practice votes */
+.pvote-panel{margin-top:16px}
+.pvote-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.pvote-stat{background:#f3faf6;border:1px solid #d7ebe0;border-radius:12px;padding:12px 14px}
+.pvote-stat span{display:block;font-size:12px;color:#5f7268;font-weight:600;margin-bottom:4px}
+.pvote-stat strong{font-size:22px;color:#145a32;line-height:1.1}
+.pvote-list{display:flex;flex-direction:column;gap:8px}
+.pvote-row{display:grid;grid-template-columns:40px 1fr 56px;gap:10px;align-items:center;background:#fff;border:1px solid #e6efe9;border-radius:12px;padding:12px}
+.pvote-rank{width:40px;height:40px;border-radius:10px;background:#e8f5ec;color:#145a32;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.pvote-title{font-weight:700;color:#173f2a;font-size:14px;line-height:1.35}
+.pvote-num{color:#217346;font-weight:800;margin-right:4px}
+.pvote-meta{margin-top:5px}
+.pvote-tag{display:inline-block;font-size:11px;font-weight:800;border-radius:999px;padding:3px 9px}
+.pvote-tag-need{background:#fff4e0;color:#9a6700}
+.pvote-tag-more{background:#e8f1ff;color:#1a5276}
+.pvote-bar{margin-top:8px;height:7px;background:#eef3f0;border-radius:999px;overflow:hidden}
+.pvote-bar span{display:block;height:100%;background:linear-gradient(90deg,#1b6b45,#2a9a63);border-radius:999px}
+.pvote-count{text-align:right}
+.pvote-count strong{display:block;font-size:20px;color:#145a32;line-height:1.1}
+.pvote-count small{color:#7a8b80;font-size:11px}
+.pvote-empty{color:#7a8b80;font-size:14px;padding:8px 0}
+.pvote-note{color:#7a8b80;font-size:12.5px;margin:12px 0 0}
+@media(max-width:720px){
+  .pvote-summary{grid-template-columns:1fr 1fr}
+  .pvote-row{grid-template-columns:32px 1fr 48px;gap:8px;padding:10px}
+}
