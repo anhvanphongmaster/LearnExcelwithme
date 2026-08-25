@@ -405,15 +405,23 @@
   }
 
 
+  
+  var __pvVoteBound = false;
   function bindVotes() {
-    document.querySelectorAll(".pv-vote:not([disabled])").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var id = btn.getAttribute("data-vote-id");
-        var type = btn.getAttribute("data-vote-type") || "need_guide";
-        var item = videoPracticeData.find(function (x) { return x.id === id; });
-        if (!item) return;
-        submitVote(item, type, btn);
-      });
+    var grid = document.getElementById("pvGrid");
+    if (!grid) return;
+    if (__pvVoteBound) return;
+    __pvVoteBound = true;
+    grid.addEventListener("click", function (e) {
+      var btn = e.target.closest(".pv-vote");
+      if (!btn || btn.disabled) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var id = btn.getAttribute("data-vote-id");
+      var type = btn.getAttribute("data-vote-type") || "need_guide";
+      var item = videoPracticeData.find(function (x) { return x.id === id; });
+      if (!item) return;
+      submitVote(item, type, btn);
     });
   }
 
@@ -441,6 +449,7 @@
     });
 
     grid.innerHTML = html || '<p class="pv-empty">Không tìm thấy bài phù hợp.</p>';
+    bindVotes();
   }
 
   function init() {

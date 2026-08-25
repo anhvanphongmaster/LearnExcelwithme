@@ -330,7 +330,7 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 .pv-download,.pv-tiktok{min-height:30px;font-size:12px;}
 
 
-.pv-vote{
+.pv-vote{pointer-events:auto;position:relative;z-index:2;
   display:inline-flex;align-items:center;justify-content:center;
   margin-top:8px;width:100%;
   border:1px solid #c5e0d1;background:#f3faf6;color:#145a32;
