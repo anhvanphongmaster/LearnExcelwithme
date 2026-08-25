@@ -338,3 +338,126 @@ html, body { overflow-x: hidden; max-width: 100vw; }
 }
 .pv-vote:hover{background:#e5f5ec}
 .pv-vote-done,.pv-vote:disabled{opacity:.75;cursor:default;background:#eef2f0;color:#5f7268;border-color:#dde5e0}
+
+
+/* ===== Practice panels + focus filter ===== */
+.pv-page{max-width:1100px;margin:0 auto}
+.pv-grid{display:block!important}
+.pv-groups{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
+.pv-groups-focus{grid-template-columns:1fr;max-width:720px;margin:0 auto}
+@media(max-width:820px){.pv-groups{grid-template-columns:1fr}}
+.pv-panel{
+  background:#fff;border-radius:14px;height:360px;display:flex;flex-direction:column;
+  min-width:0;overflow:hidden;border:2px solid #d5e5db;box-shadow:0 2px 10px rgba(23,63,42,.05)
+}
+.pv-panel-focus{height:min(70vh,560px);border-width:2px}
+.pv-panel-h{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid rgba(0,0,0,.06)}
+.pv-panel-name{font-weight:800;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase;letter-spacing:.02em}
+.pv-panel-count{flex-shrink:0;font-size:11px;font-weight:700;border-radius:999px;padding:2px 8px;background:rgba(255,255,255,.75)}
+.pv-panel-body{flex:1;min-height:0;overflow-y:auto;padding:4px 0 8px}
+.tone-clean{border-color:#8fd0a8}.tone-clean .pv-panel-h{background:#eaf7ef;color:#145a32}.tone-clean .pv-panel-body{background:#f7fcf8}
+.tone-pq{border-color:#8bb3e8}.tone-pq .pv-panel-h{background:#e8f1ff;color:#1a5276}.tone-pq .pv-panel-body{background:#f7faff}
+.tone-formula{border-color:#c4a6e8}.tone-formula .pv-panel-h{background:#f3eefe;color:#5b2c6f}.tone-formula .pv-panel-body{background:#fbf8ff}
+.tone-input{border-color:#f0c48a}.tone-input .pv-panel-h{background:#fff4e5;color:#9a5b00}.tone-input .pv-panel-body{background:#fffbf5}
+.tone-format{border-color:#e8a8c4}.tone-format .pv-panel-h{background:#fdeef4;color:#7d3a5e}.tone-format .pv-panel-body{background:#fff8fb}
+.tone-dash{border-color:#8ec8de}.tone-dash .pv-panel-h{background:#eaf6fb;color:#1a5f7a}.tone-dash .pv-panel-body{background:#f6fbfd}
+.tone-default{border-color:#b7d2c2}.tone-default .pv-panel-h{background:#f3faf6;color:#145a32}.tone-default .pv-panel-body{background:#fafcfb}
+.pv-line{display:grid;grid-template-columns:minmax(0,1fr) 78px;gap:8px;align-items:center;margin:6px 8px;padding:8px 10px;border:1px solid rgba(0,0,0,.08);border-radius:10px;background:rgba(255,255,255,.72);min-height:70px;box-sizing:border-box}
+.pv-line:hover{border-color:rgba(0,0,0,.14);background:#fff}
+.pv-main{min-width:0}
+.pv-main-top{display:flex;align-items:center;gap:5px;min-width:0}
+.pv-n{font-size:11px;font-weight:900;color:#217346;flex-shrink:0;width:18px}
+.pv-i{font-size:13px;flex-shrink:0;line-height:1;width:16px;text-align:center}
+.pv-t{font-size:12.5px;font-weight:750;color:#173f2a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+.pv-badge{flex-shrink:0;font-size:9.5px;font-weight:800;border-radius:999px;padding:2px 6px;white-space:nowrap}
+.pv-badge-available{background:#d5f5e3;color:#145a32}
+.pv-badge-coming{background:#f0e6c8;color:#7d6608}
+.pv-skill{margin:3px 0 0 39px;font-size:11px;color:#6a7c72;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:15px}
+.pv-vote-row{margin:6px 0 0;display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:8px}
+.pv-vote{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;border:1px solid #cfd8d3;background:#eef2f0;color:#3d4f47;font-weight:800;font-size:10.5px;border-radius:7px;padding:5px 10px;cursor:pointer;white-space:nowrap;width:auto}
+.pv-vote:hover{background:#e4ebe7}
+.pv-vote-done,.pv-vote:disabled{background:#f5f6f5;color:#9aa59f;border-color:#e5e9e7;cursor:not-allowed;pointer-events:none}
+.pv-vote-hint{flex:1 1 auto;min-width:0;font-size:10.5px;color:#5f7268;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pv-a{display:flex;flex-direction:column;gap:4px;align-items:stretch;justify-content:center;width:78px;flex-shrink:0}
+.pv-tiktok,.pv-download{display:inline-flex;align-items:center;justify-content:center;gap:3px;font-weight:800;font-size:10.5px;border-radius:6px;padding:5px 6px;white-space:nowrap;text-decoration:none;line-height:1.15;width:100%;box-sizing:border-box;text-align:center}
+.pv-tiktok{background:#111!important;color:#fff!important}
+.pv-download{background:#1b6b45;color:#fff!important}
+.pv-tt-ico{display:block;flex-shrink:0}
+.pv-hl{background:#ffe566;color:#1a1a1a;padding:0 2px;border-radius:3px;font-weight:800}
+.pv-line-hit{border-color:#f0c84a!important;box-shadow:0 0 0 2px rgba(240,200,74,.35)!important;background:#fffdf3!important}
+.pv-empty{padding:24px;text-align:center;color:#6a7c72}
+
+
+/* Vote row: center-align button + arrow + hint */
+.pv-vote-row{
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  margin-top: 6px !important;
+}
+.pv-vote{
+  flex: 0 0 auto !important;
+  align-self: center !important;
+}
+.pv-vote-arrow{
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #7a8a82;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  transform: translateY(0);
+  user-select: none;
+}
+.pv-vote-hint{
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  font-size: 10.5px !important;
+  color: #5f7268 !important;
+  line-height: 1.25 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
+/* CTA buttons on Coming soon card */
+.pv-vote-row-cta{
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  align-items: center !important;
+}
+.pv-cta-mini{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+.pv-cta-idea{
+  background: #1b6b45;
+  color: #fff;
+}
+.pv-cta-idea:hover{ filter: brightness(1.06); }
+.pv-cta-file{
+  background: #1e4f9a;
+  color: #fff;
+}
+.pv-cta-file:hover{ filter: brightness(1.06); }

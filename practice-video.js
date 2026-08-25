@@ -5,271 +5,338 @@
  */
 (function () {
   const videoPracticeData = [
-{
+    // ===== LÀM SẠCH DỮ LIỆU =====
+    {
       id: "video-01",
       number: 1,
       icon: "🧹",
       title: "Làm sạch dữ liệu • Cột trùng",
       category: "Làm sạch dữ liệu",
       skill: "Trim • Clean • Kiểu dữ liệu • Column Quality",
-      filterTags: ["Làm sạch dữ liệu", "Power Query"],
+      filterTags: ["Làm sạch dữ liệu"],
       file: "01_PowerQuery_DEMO.xlsx",
       folder: "downloads/video-practice/"
     },
-{
-      id: "video-02",
+    {
+      id: "v04-so-viet",
       number: 2,
+      icon: "VN",
+      title: "Số kiểu Việt 1.234.567 Excel không cộng",
+      category: "Làm sạch dữ liệu",
+      skill: "SUBSTITUTE • VALUE • dấu chấm nghìn",
+      filterTags: ["Làm sạch dữ liệu"],
+      file: "06_so_viet.xlsx",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "c2-sum-text",
+      number: 3,
+      icon: "0",
+      title: "Số nhìn như số nhưng SUM ra 0",
+      category: "Làm sạch dữ liệu",
+      skill: "VALUE • Convert to Number • Paste Special Multiply",
+      filterTags: ["Làm sạch dữ liệu"],
+      file: "09_so_nhin_nhu_so_SUM_0.xlsx",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "v01-char160",
+      number: 4,
+      icon: "👻",
+      title: "Khoảng trắng ma CHAR(160)",
+      category: "Làm sạch dữ liệu",
+      skill: "LEN • CODE • MID • SUBSTITUTE CHAR(160)",
+      filterTags: ["Làm sạch dữ liệu"],
+      file: "11_CHAR160.xlsx",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "clean-date-text",
+      number: 5,
+      icon: "📅",
+      title: "Ngày dạng chữ → ngày thật (DATEVALUE)",
+      category: "Làm sạch dữ liệu",
+      skill: "DATEVALUE • Text to Columns • chuẩn dd/mm/yyyy",
+      filterTags: ["Làm sạch dữ liệu"],
+      file: "",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "clean-dup-multi",
+      number: 6,
+      icon: "🧬",
+      title: "Xóa trùng theo nhiều cột",
+      category: "Làm sạch dữ liệu",
+      skill: "Remove Duplicates • UNIQUE • điều kiện 2–3 cột",
+      filterTags: ["Làm sạch dữ liệu"],
+      file: "",
+      folder: "downloads/video-practice/"
+    },
+
+    // ===== POWER QUERY =====
+    {
+      id: "video-02",
+      number: 1,
       icon: "📂",
-      title: "Gộp nhiều file Input bằng Power Query",
+      title: "Gộp file / thư mục / nhiều sheet bằng Power Query",
       category: "Power Query",
-      skill: "Get Data → From Folder • Combine • Input_01 … Input_10",
+      skill: "From Folder • Append • From File (sheet) • Combine",
       filterTags: ["Power Query"],
       file: "02_PowerQuery-11-Files.zip",
-      folder: ""
+      folder: "downloads/video-practice/"
     },
-{
+    {
       id: "video-03",
-      number: 3,
+      number: 2,
       icon: "📊",
       title: "Tạo PivotTable từ kết quả Power Query",
       category: "Power Query",
       skill: "Close & Load • Pivot • Refresh",
       filterTags: ["Power Query"],
       file: "02_PowerQuery-11-Files.zip",
-      folder: ""
+      folder: "downloads/video-practice/"
     },
-{
+    {
       id: "video-04",
-      number: 4,
+      number: 3,
       icon: "📈",
       title: "Dashboard QC từ Pivot Power Query",
       category: "Power Query",
       skill: "KPI • Slicer • PivotChart",
       filterTags: ["Power Query"],
       file: "02_PowerQuery-11-Files.zip",
-      folder: ""
-    },
-{
-      id: "v02-center-across",
-      number: 5,
-      icon: "↔️",
-      title: "Đừng Merge — Center Across Selection",
-      category: "Format",
-      skill: "Format Cells • Alignment • Center Across Selection • Sort",
-      filterTags: ["Format"],
-      file: "05_center_across.xlsx",
       folder: "downloads/video-practice/"
     },
-{
-      id: "v04-so-viet",
-      number: 6,
-      icon: "🇻🇳",
-      title: "Số kiểu Việt 1.234.567 Excel không cộng",
-      category: "Làm sạch dữ liệu",
-      skill: "SUBSTITUTE • VALUE • dấu chấm nghìn",
-      filterTags: ["Làm sạch dữ liệu", "Công thức"],
-      file: "06_so_viet.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
-      id: "v05-an-so-0",
-      number: 7,
-      icon: "🫥",
-      title: "Custom format ẩn số 0",
-      category: "Format",
-      skill: "Custom format 0;-0;;@ • #,##0;\"-\";@",
-      filterTags: ["Format"],
-      file: "07_an_so_0.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
-      id: "b01-dan-dong-loc",
-      number: 8,
-      icon: "📥",
-      title: "Dán vào đúng dòng đang lọc",
-      category: "Nhập liệu",
-      skill: "Filter • XLOOKUP • Sort • không dán đè dòng ẩn",
-      filterTags: ["Nhập liệu", "Công thức"],
-      file: "08_dan_dong_loc.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
-      id: "c2-sum-text",
-      number: 9,
-      icon: "0️⃣",
-      title: "Số nhìn như số nhưng SUM ra 0",
-      category: "Làm sạch dữ liệu",
-      skill: "VALUE • Convert to Number • Paste Special Multiply",
-      filterTags: ["Làm sạch dữ liệu", "Công thức"],
-      file: "09_so_nhin_nhu_so_SUM_0.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
-      id: "c3-ngay",
-      number: 10,
-      icon: "📅",
-      title: "10 người nhập 10 kiểu ngày",
-      category: "Nhập liệu",
-      skill: "Custom format dd/mm/yyyy • Data Validation Date • Error Alert",
-      filterTags: ["Nhập liệu", "Làm sạch dữ liệu"],
-      file: "10_10_kieu_ngay.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
-      id: "v01-char160",
-      number: 11,
-      icon: "👻",
-      title: "Khoảng trắng ma CHAR(160)",
-      category: "Làm sạch dữ liệu",
-      skill: "LEN • CODE • MID • SUBSTITUTE • CHAR(160) • TRIM",
-      filterTags: ["Làm sạch dữ liệu", "Công thức"],
-      file: "11_CHAR160.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
-      id: "v03-alt-visible",
-      number: 12,
-      icon: "👁️",
-      title: "Alt+; copy đúng dòng đang Filter",
-      category: "Nhập liệu",
-      skill: "Filter • Go To Special Visible cells • Alt+;",
-      filterTags: ["Nhập liệu"],
-      file: "12_Alt_copy_dong_loc.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
-      id: "v06-dropdown-2tang",
-      number: 13,
-      icon: "📑",
-      title: "Dropdown 2 tầng: bộ phận → tên",
-      category: "Nhập liệu",
-      skill: "Data Validation • FILTER • INDIRECT • Table",
-      filterTags: ["Nhập liệu", "Công thức"],
-      file: "13_dropdown_2_tang.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
-      id: "v07-xlookup",
-      number: 14,
-      icon: "🔎",
-      title: "XLOOKUP không còn #N/A",
-      category: "Công thức",
-      skill: "XLOOKUP if_not_found • match_mode • IFNA",
-      filterTags: ["Công thức"],
-      file: "14_XLOOKUP.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
+    {
       id: "v08-unpivot",
-      number: 15,
-      icon: "↩️",
+      number: 4,
+      icon: "↔️",
       title: "Unpivot: báo cáo nằm ngang thành dữ liệu",
       category: "Power Query",
-      skill: "From Table • Unpivot Other Columns",
-      filterTags: ["Power Query", "Làm sạch dữ liệu"],
+      skill: "Unpivot Columns • Rename • Change Type",
+      filterTags: ["Power Query"],
       file: "15_Unpivot.xlsx",
       folder: "downloads/video-practice/"
     },
-{
-      id: "v09-from-folder",
-      number: 16,
-      icon: "📁",
-      title: "Power Query gộp cả thư mục file tháng",
-      category: "Power Query",
-      skill: "Get Data From Folder • Combine • Refresh",
-      filterTags: ["Power Query"],
-      file: "16_PQ_gop_thu_muc.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
+    {
       id: "v10-fuzzy",
-      number: 17,
-      icon: "🧩",
+      number: 5,
+      icon: "🔗",
       title: "Fuzzy merge tên gần giống",
       category: "Power Query",
-      skill: "Merge queries • Fuzzy • Similarity threshold",
-      filterTags: ["Power Query", "Làm sạch dữ liệu"],
+      skill: "Merge Queries • Fuzzy Matching • Threshold",
+      filterTags: ["Power Query"],
       file: "17_Fuzzy_merge.xlsx",
       folder: "downloads/video-practice/"
     },
-{
+    {
       id: "c1-pq-10sheet",
-      number: 18,
-      icon: "📚",
-      title: "Gộp 10 sheet rồi mới biết bẩn",
+      number: 6,
+      icon: "📋",
+      title: "Gộp nhiều sheet rồi phát hiện dữ liệu bẩn",
       category: "Power Query",
-      skill: "Connection Only • Append • Custom column • Close & Load",
-      filterTags: ["Power Query", "Làm sạch dữ liệu"],
+      skill: "Append sheets • Column quality • lỗi sau khi gộp",
+      filterTags: ["Power Query"],
       file: "18_PQ_10_sheet.xlsx",
       folder: "downloads/video-practice/"
     },
-{
+    {
+      id: "v13-filldown",
+      number: 7,
+      icon: "⬇️",
+      title: "Skip row + Fill Down trong Power Query",
+      category: "Power Query",
+      skill: "Skip rows • Fill Down • Promote headers",
+      filterTags: ["Power Query"],
+      file: "21_Fill_Down.xlsx",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "v14-distinct",
+      number: 8,
+      icon: "🎯",
+      title: "Làm sạch → Pivot → Dashboard",
+      category: "Power Query",
+      skill: "Clean • Pivot • Slicer • Dashboard tháng",
+      filterTags: ["Power Query"],
+      file: "22_dashboard_thang.xlsx",
+      folder: "downloads/video-practice/"
+    },
+
+    // ===== NHẬP LIỆU =====
+    {
+      id: "b01-filter-zone",
+      number: 1,
+      icon: "📌",
+      title: "Làm việc đúng vùng đang Filter (dán / copy)",
+      category: "Nhập liệu",
+      skill: "Filter • Visible cells only • Alt+; • dán đúng dòng",
+      filterTags: ["Nhập liệu"],
+      file: "08_dan_dong_loc.xlsx",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "c3-ngay",
+      number: 2,
+      icon: "🗓️",
+      title: "10 người nhập 10 kiểu ngày",
+      category: "Nhập liệu",
+      skill: "Chuẩn hóa ngày nhập • Data Validation date",
+      filterTags: ["Nhập liệu"],
+      file: "10_10_kieu_ngay.xlsx",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "v06-dropdown-2tang",
+      number: 3,
+      icon: "📑",
+      title: "Dropdown 2 tầng: bộ phận → tên",
+      category: "Nhập liệu",
+      skill: "INDIRECT • Named range • Data Validation",
+      filterTags: ["Nhập liệu"],
+      file: "13_dropdown_2_tang.xlsx",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "valid-1tang-trung",
+      number: 4,
+      icon: "✅",
+      title: "Dropdown 1 tầng + chặn nhập trùng",
+      category: "Nhập liệu",
+      skill: "Data Validation list • COUNTIF chặn trùng",
+      filterTags: ["Nhập liệu"],
+      file: "NhapLieu_Dropdown2_ChanTrung.xlsx",
+      folder: "downloads/video-practice/"
+    },
+    {
       id: "v11-skip-blanks",
-      number: 19,
+      number: 5,
       icon: "📋",
       title: "Paste Special Skip Blanks",
       category: "Nhập liệu",
-      skill: "Paste Special • Skip blanks • cập nhật cột thiếu ô",
+      skill: "Paste Special • Skip blanks • không đè dữ liệu cũ",
       filterTags: ["Nhập liệu"],
       file: "19_Skip_Blanks.xlsx",
       folder: "downloads/video-practice/"
     },
-{
+
+    // ===== CÔNG THỨC =====
+    {
+      id: "v07-xlookup",
+      number: 1,
+      icon: "🔍",
+      title: "XLOOKUP không còn #N/A",
+      category: "Công thức",
+      skill: "XLOOKUP • if_not_found • tra cứu an toàn",
+      filterTags: ["Công thức"],
+      file: "14_XLOOKUP.xlsx",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "ct-sumifs",
+      number: 2,
+      icon: "➕",
+      title: "SUMIFS / COUNTIFS theo nhiều điều kiện",
+      category: "Công thức",
+      skill: "SUMIFS • COUNTIFS • tiêu chí ngày / khu vực",
+      filterTags: ["Công thức"],
+      file: "",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "ct-if-ifs",
+      number: 3,
+      icon: "🔀",
+      title: "IF / IFS phân loại dữ liệu",
+      category: "Công thức",
+      skill: "IF • IFS • lồng điều kiện có kiểm soát",
+      filterTags: ["Công thức"],
+      file: "",
+      folder: "downloads/video-practice/"
+    },
+    {
       id: "v12-textbefore",
-      number: 20,
+      number: 4,
       icon: "✂️",
       title: "Tách họ tên bằng TEXTBEFORE",
       category: "Công thức",
-      skill: "TEXTBEFORE • TEXTAFTER • Flash Fill",
-      filterTags: ["Công thức", "Làm sạch dữ liệu"],
+      skill: "TEXTBEFORE • TEXTAFTER • TEXTSPLIT",
+      filterTags: ["Công thức"],
       file: "20_TEXTBEFORE.xlsx",
       folder: "downloads/video-practice/"
     },
-{
-      id: "v13-filldown",
-      number: 21,
-      icon: "⬇️",
-      title: "Power Query Skip row + Fill Down",
-      category: "Power Query",
-      skill: "Skip rows • Promote headers • Fill Down",
-      filterTags: ["Power Query", "Làm sạch dữ liệu"],
-      file: "21_Fill_Down.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
-      id: "v14-distinct",
-      number: 22,
-      icon: "📊",
-      title: "Làm sạch → Pivot → Dashboard",
-      category: "Power Query",
-      skill: "Làm sạch • Table • Pivot • Slicer • Chart 1 trang",
-      filterTags: ["Power Query", "Làm sạch dữ liệu"],
-      file: "22_dashboard_thang.xlsx",
-      folder: "downloads/video-practice/"
-    },
-{
+    {
       id: "v15-aggregate",
-      number: 23,
+      number: 5,
       icon: "🧮",
       title: "AGGREGATE bỏ lỗi và dòng ẩn",
       category: "Công thức",
-      skill: "AGGREGATE(9,7,range) • so với SUM / SUBTOTAL",
+      skill: "AGGREGATE • bỏ #DIV/0! • bỏ dòng ẩn Filter",
       filterTags: ["Công thức"],
       file: "23_AGGREGATE.xlsx",
       folder: "downloads/video-practice/"
     },
-{
+
+    // ===== FORMAT =====
+    {
+      id: "v02-center-across",
+      number: 1,
+      icon: "↔️",
+      title: "Đừng Merge — Center Across Selection",
+      category: "Format",
+      skill: "Alignment • Center Across • Sort an toàn",
+      filterTags: ["Format"],
+      file: "05_center_across.xlsx",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "v05-an-so-0",
+      number: 2,
+      icon: "🚫",
+      title: "Custom format ẩn số 0",
+      category: "Format",
+      skill: "Custom format 0;-0;;@ • #,##0;-#,##0;;@",
+      filterTags: ["Format"],
+      file: "07_an_so_0.xlsx",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "fmt-cf-basic",
+      number: 3,
+      icon: "🎨",
+      title: "Conditional Formatting cơ bản",
+      category: "Format",
+      skill: "Highlight • Color scale • Rule theo giá trị",
+      filterTags: ["Format"],
+      file: "",
+      folder: "downloads/video-practice/"
+    },
+    {
+      id: "pivot-basic",
+      number: 4,
+      icon: "📉",
+      title: "PivotTable cơ bản (không cần Power Query)",
+      category: "Format",
+      skill: "Insert Pivot • Rows/Columns/Values • Refresh",
+      filterTags: ["Format", "Power Query"],
+      file: "",
+      folder: "downloads/video-practice/"
+    },
+
+    // ===== CTA =====
+    {
       id: "v16-Coming_soon",
-      number: 24,
-      icon: "🎆",
-      title: "Sắp ra mắt",
+      number: 99,
+      icon: "💡",
+      title: "Sắp ra mắt — gửi ý tưởng bài mới",
       category: "Các bạn đóng góp ý tưởng nhé",
-      skill: "Wait",
-      filterTags: ["Wait"],
+      skill: "Vote / góp ý trên trang để admin lên bài tiếp",
+      filterTags: ["Các bạn đóng góp ý tưởng nhé"],
       file: "",
       folder: "downloads/video-practice/"
     }
   ];
+
 
   function fileList() {
     return (typeof availablePracticeFiles !== "undefined" && Array.isArray(availablePracticeFiles))
@@ -306,7 +373,7 @@
     add(fileName);
     (item.extraFiles || []).forEach(add);
     return names.map(function (f) {
-      return '<a class="pv-download" href="' + folder + f + '" download>⬇ ' + f + "</a>";
+      return '<a class="pv-download" href="' + folder + f + '" download title="' + f + '">Tải file</a>' + f + "</a>";
     }).join("");
   }
 
@@ -365,58 +432,133 @@
     if (btn) { btn.textContent = "✓ Đã gửi yêu cầu"; }
   }
 
-  function cardHTML(item) {
+
+  function escapeHtml(s) {
+    return String(s || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function highlightText(text, q) {
+    const raw = String(text || "");
+    if (!q) return escapeHtml(raw);
+    const lower = raw.toLowerCase();
+    const qi = lower.indexOf(q);
+    if (qi < 0) return escapeHtml(raw);
+    return (
+      escapeHtml(raw.slice(0, qi)) +
+      '<mark class="pv-hl">' + escapeHtml(raw.slice(qi, qi + q.length)) + "</mark>" +
+      escapeHtml(raw.slice(qi + q.length))
+    );
+  }
+
+  function panelTone(cat) {
+    const c = String(cat || "").toLowerCase();
+    if (c.indexOf("làm sạch") >= 0) return "tone-clean";
+    if (c.indexOf("power query") >= 0) return "tone-pq";
+    if (c.indexOf("công thức") >= 0) return "tone-formula";
+    if (c.indexOf("nhập liệu") >= 0) return "tone-input";
+    if (c.indexOf("format") >= 0) return "tone-format";
+    if (c.indexOf("pivot") >= 0 || c.indexOf("dashboard") >= 0) return "tone-dash";
+    return "tone-default";
+  }
+
+  function cardHTML(item, localNum, q) {
     const fileName = resolvedFile(item);
     const avail = !!fileName;
     const tk = tiktokUrl(item);
-    const released = avail || !!tk;
-    const status = released ? "available" : "coming";
-    let badge;
-    if (avail && tk) badge = '<span class="pv-badge pv-badge-available">✅ Đã có video + file</span>';
-    else if (avail) badge = '<span class="pv-badge pv-badge-available">✅ Đã có file</span>';
-    else if (tk) badge = '<span class="pv-badge pv-badge-available">▶ Đã có video</span>';
-    else badge = '<span class="pv-badge pv-badge-coming">⏳ Coming soon</span>';
+    const status = (avail || !!tk) ? "available" : "coming";
+    let badge = '<span class="pv-badge pv-badge-coming">Soon</span>';
+    if (avail && tk) badge = '<span class="pv-badge pv-badge-available">Video+file</span>';
+    else if (avail) badge = '<span class="pv-badge pv-badge-available">File</span>';
+    else if (tk) badge = '<span class="pv-badge pv-badge-available">Video</span>';
+
+    const ico = '<svg class="pv-tt-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><path fill="currentColor" d="M16.5 3c.4 2.4 1.9 4.1 4.2 4.4v2.3c-1.5.1-2.9-.4-4.2-1.3v6.5c0 3.4-2.7 6.1-6.1 6.1S4.3 18.3 4.3 14.9s2.7-6.1 6.1-6.1c.3 0 .6 0 .9.1v2.5c-.3-.1-.6-.2-.9-.2-2 0-3.6 1.6-3.6 3.7s1.6 3.7 3.6 3.7 3.6-1.6 3.6-3.7V3h2.5z"/></svg>';
     const tkBtn = tk
-      ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer">▶ Xem video TikTok</a>'
-      : '<span class="pv-tiktok-soon">Video TikTok chưa gắn link</span>';
+      ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer" title="Xem trên TikTok">' + ico + ' TikTok</a>'
+      : '';
     const fileBtn = avail
-      ? downloadBlock(item, fileName)
-      : '<span class="pv-locked-note">File sẽ mở khi video được phát hành.</span>';
+      ? '<a class="pv-download" href="' + (item.folder || "downloads/video-practice/") + fileName + '" download title="' + fileName + '">Tải file</a>'
+      : '';
     const tags = (item.filterTags || [item.category]).join(" ");
     const hasVideo = !!tk;
-    const voteType = hasVideo ? "need_more_guide" : "need_guide";
-    const voteLabel = hasVideo ? "📝 Cần hướng dẫn thêm" : "📝 Cần hướng dẫn";
-    const voted = hasVoted(item.id);
-    const voteBtn = voted
-      ? '<button type="button" class="pv-vote pv-vote-done" disabled>✓ Đã gửi</button>'
-      : '<button type="button" class="pv-vote" data-vote-id="' + item.id + '" data-vote-type="' + voteType + '">' + voteLabel + "</button>";
+    const isIdeaCta = item.id === "v16-Coming_soon" || String(item.category || "").indexOf("đóng góp") >= 0 || String(item.title || "").indexOf("Sắp ra mắt") >= 0;
+    let voteRowHtml;
+    if (isIdeaCta) {
+      voteRowHtml =
+        '<div class="pv-vote-row pv-vote-row-cta">' +
+          '<button type="button" class="pv-cta-mini pv-cta-idea" data-open="feedback">💡 Gửi ý tưởng / thắc mắc</button>' +
+          '<button type="button" class="pv-cta-mini pv-cta-file" data-open="file">📎 Gửi file Excel</button>' +
+        "</div>";
+    } else {
+      const voteType = hasVideo ? "need_more_guide" : "need_guide";
+      const voteLabel = hasVideo ? "Cần hướng dẫn thêm" : "Cần hướng dẫn";
+      const voteHint = hasVideo
+        ? "Cần admin ra video hướng dẫn thêm"
+        : "Cần admin ra video hướng dẫn";
+      const voted = hasVoted(item.id);
+      const voteBtn = voted
+        ? '<button type="button" class="pv-vote pv-vote-done" disabled>✓ Đã gửi</button>'
+        : '<button type="button" class="pv-vote" data-vote-id="' + item.id + '" data-vote-type="' + voteType + '">' + voteLabel + "</button>";
+      voteRowHtml =
+        '<div class="pv-vote-row">' +
+          voteBtn +
+          '<span class="pv-vote-arrow" aria-hidden="true">→</span>' +
+          '<span class="pv-vote-hint">' + voteHint + '</span>' +
+        '</div>';
+    }
+    const num = localNum != null ? localNum : item.number;
+    const skillRaw = item.skill || "";
+    const skill = '<div class="pv-skill">' + (skillRaw ? highlightText(skillRaw, q) : "&nbsp;") + "</div>";
+    const matched = !!(q && (
+      String(item.title).toLowerCase().indexOf(q) >= 0 ||
+      String(skillRaw).toLowerCase().indexOf(q) >= 0 ||
+      String(item.category || "").toLowerCase().indexOf(q) >= 0
+    ));
 
     return (
-      '<article class="pv-card ' + (avail ? "pv-card-available" : "pv-card-locked") + '" ' +
-      'data-status="' + status + '" data-category="' + tags + '" data-title="' + item.title.toLowerCase() + '" data-id="' + item.id + '">' +
-      '<div class="pv-card-top"><span class="pv-num">' + String(item.number).padStart(2, "0") + "</span>" + badge + "</div>" +
-      '<div class="pv-icon">' + item.icon + "</div>" +
-      '<h3 class="pv-title">' + item.title + "</h3>" +
-      '<p class="pv-cat">' + item.category + "</p>" +
-      '<p class="pv-skill">' + item.skill + "</p>" +
-      '<div class="pv-foot">' + tkBtn + fileBtn + voteBtn + "</div>" +
+      '<article class="pv-line' + (matched ? " pv-line-hit" : "") + '" id="pv-item-' + item.id + '" data-status="' + status +
+      '" data-category="' + tags + '" data-title="' + String(item.title).toLowerCase() + '" data-id="' + item.id + '">' +
+        '<div class="pv-main">' +
+          '<div class="pv-main-top">' +
+            '<span class="pv-n">' + String(num).padStart(2, "0") + "</span>" +
+            '<span class="pv-i">' + item.icon + "</span>" +
+            '<span class="pv-t">' + highlightText(item.title, q) + "</span>" +
+            badge +
+          "</div>" +
+          skill +
+          voteRowHtml +
+        "</div>" +
+        '<div class="pv-a">' + tkBtn + fileBtn + "</div>" +
       "</article>"
     );
   }
 
-
-  
   var __pvVoteBound = false;
   function bindVotes() {
     var grid = document.getElementById("pvGrid");
-    if (!grid) return;
-    if (__pvVoteBound) return;
+    if (!grid || __pvVoteBound) return;
     __pvVoteBound = true;
+    grid.addEventListener("click", function (e) {
+      var cta = e.target.closest(".pv-cta-mini");
+      if (!cta) return;
+      e.preventDefault();
+      var open = cta.getAttribute("data-open");
+      if (open === "feedback") {
+        var b1 = document.getElementById("pvFeedbackBtn");
+        if (b1) b1.click();
+      } else if (open === "file") {
+        var b2 = document.getElementById("pvFileBtn");
+        if (b2) b2.click();
+      }
+    });
+
     grid.addEventListener("click", function (e) {
       var btn = e.target.closest(".pv-vote");
       if (!btn || btn.disabled) return;
       e.preventDefault();
-      e.stopPropagation();
       var id = btn.getAttribute("data-vote-id");
       var type = btn.getAttribute("data-vote-type") || "need_guide";
       var item = videoPracticeData.find(function (x) { return x.id === id; });
@@ -430,31 +572,70 @@
     if (!grid) return;
     const q = (query || "").trim().toLowerCase();
     const f = filter || "all";
+    const focusOne = f !== "all";
 
-    let html = "";
+    const items = [];
     videoPracticeData.forEach(function (item) {
-      const released = isReleased(item);
-      if (f === "available" && !isAvailable(item)) return;
-      if (f === "video" && !tiktokUrl(item)) return;
-      if (f === "coming" && released) return;
-      if (f !== "all" && f !== "available" && f !== "coming" && f !== "video") {
-        const tags = (item.filterTags || []).join(" ").toLowerCase();
-        if (tags.indexOf(f.toLowerCase()) === -1 && item.category.toLowerCase().indexOf(f.toLowerCase()) === -1) return;
+      if (f !== "all") {
+        const cat = String(item.category || "");
+        // exact or contains match for main topic
+        if (cat !== f && cat.toLowerCase().indexOf(String(f).toLowerCase()) === -1) return;
       }
       if (q) {
-        const hay = (item.title + " " + item.skill + " " + item.category).toLowerCase();
+        const hay = (item.title + " " + (item.skill || "") + " " + (item.category || "")).toLowerCase();
         if (hay.indexOf(q) === -1) return;
       }
-      html += cardHTML(item);
+      items.push(item);
     });
 
-    grid.innerHTML = html || '<p class="pv-empty">Không tìm thấy bài phù hợp.</p>';
+    if (!items.length) {
+      grid.innerHTML = '<p class="pv-empty">Không tìm thấy bài phù hợp.</p>';
+      bindVotes();
+      return;
+    }
+
+    const groups = {};
+    const order = [];
+    items.forEach(function (item) {
+      const g = item.category || "Khác";
+      if (!groups[g]) { groups[g] = []; order.push(g); }
+      groups[g].push(item);
+    });
+
+    let html = '<div class="pv-groups' + (focusOne ? " pv-groups-focus" : "") + '">';
+    let firstHitId = null;
+    order.forEach(function (g) {
+      const list = groups[g].slice().sort(function (a, b) { return (a.number || 0) - (b.number || 0); });
+      const tone = panelTone(g);
+      const title = String(g).toUpperCase();
+      html += '<section class="pv-panel ' + tone + (focusOne ? " pv-panel-focus" : "") + '">' +
+        '<header class="pv-panel-h"><span class="pv-panel-name">' + escapeHtml(title) + '</span>' +
+        '<span class="pv-panel-count">' + list.length + ' bài</span></header>' +
+        '<div class="pv-panel-body">';
+      list.forEach(function (item, idx) {
+        if (q && !firstHitId) firstHitId = item.id;
+        html += cardHTML(item, idx + 1, q);
+      });
+      html += '</div></section>';
+    });
+    html += '</div>';
+    grid.innerHTML = html;
     bindVotes();
+
+    if (q && firstHitId) {
+      const el = document.getElementById("pv-item-" + firstHitId);
+      if (el) {
+        const body = el.closest(".pv-panel-body");
+        if (body) body.scrollTop = Math.max(0, el.offsetTop - 8);
+        try { el.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) {}
+      }
+    }
   }
 
   function init() {
     updateSummary();
     render("all", "");
+    bindVotes();
 
     const search = document.getElementById("pvSearch");
     const filters = document.querySelectorAll(".pv-filter");
@@ -462,9 +643,16 @@
 
     if (search) {
       search.addEventListener("input", function () {
-        render(currentFilter, search.value);
+        render(currentFilter, search.value || "");
+      });
+      search.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          render(currentFilter, search.value || "");
+        }
       });
     }
+
     filters.forEach(function (btn) {
       btn.addEventListener("click", function () {
         filters.forEach(function (b) { b.classList.remove("active"); });
@@ -475,7 +663,7 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", init);
 
   document.addEventListener("click", function (e) {
     const dl = e.target.closest(".pv-download");
