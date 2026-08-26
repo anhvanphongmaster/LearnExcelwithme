@@ -1,70 +1,45 @@
-/**
- * Chưa login: đổi HREF nút tải thành auth.html — bấm là sang đăng ký, không cần bắt click.
- */
 (function () {
-  window.AVP_DL_FALLBACK = (typeof window.AVP_DL_FALLBACK === "boolean") ? window.AVP_DL_FALLBACK : true;
-  var SEL = "a.pv-download, a.pyt-dl-block, a.pyt-file-alt, a[href*='downloads/']";
-
-  function loginUrl() {
-    var page = (location.pathname.split("/").pop() || "index.html");
-    return "auth.html?next=" + encodeURIComponent(page) + "&tab=register";
+  function authHref() {
+    var dir = location.pathname.replace(/\/[^/]*$/, "/");
+    if (!dir) dir = "/";
+    var page = location.pathname.split("/").pop() || "index.html";
+    return dir + "auth.html?next=" + encodeURIComponent(page) + "&tab=register";
   }
-
   function hasSession() {
     try {
       for (var i = 0; i < localStorage.length; i++) {
         var k = localStorage.key(i) || "";
-        if (k.indexOf("-auth-token") >= 0) {
-          var v = localStorage.getItem(k) || "";
-          if (v.indexOf("access_token") >= 0) return true;
-        }
+        if (k.indexOf("-auth-token") >= 0 && (localStorage.getItem(k) || "").indexOf("access_token") >= 0) return true;
       }
     } catch (e) {}
     return false;
   }
-
-  function apply(loggedIn) {
-    document.querySelectorAll(SEL).forEach(function (a) {
-      var href = a.getAttribute("href") || "";
+  function apply() {
+    var logged = hasSession();
+    var url = authHref();
+    document.querySelectorAll("a.pv-download, a.pyt-dl-block, a.pyt-file-alt, a[href*='downloads/']").forEach(function (a) {
       if (!a.getAttribute("data-orig-href")) {
-        if (href.indexOf("auth.html") < 0) a.setAttribute("data-orig-href", href);
+        var h = a.getAttribute("href") || "";
+        if (h.indexOf("auth.html") < 0) a.setAttribute("data-orig-href", h);
       }
-      var orig = a.getAttribute("data-orig-href") || href;
       if (!a.getAttribute("data-orig-label")) {
-        var lab = (a.textContent || "Tải file").replace(/\s+/g, " ").trim();
-        if (/đăng nhập để tải/i.test(lab)) lab = "Tải file";
-        a.setAttribute("data-orig-label", lab || "Tải file");
+        var lab = (a.textContent || "Tải file").replace(/\s+/g," ").trim();
+        a.setAttribute("data-orig-label", /đăng nhập để tải/i.test(lab) ? "Tải file" : (lab || "Tải file"));
       }
-      if (loggedIn) {
-        a.setAttribute("href", orig);
-        a.setAttribute("download", "");
+      if (logged) {
+        a.setAttribute("href", a.getAttribute("data-orig-href") || "#");
+        a.removeAttribute("onclick");
         a.textContent = a.getAttribute("data-orig-label") || "Tải file";
-        a.classList.remove("need-login");
       } else {
-        a.setAttribute("href", loginUrl());
+        a.setAttribute("href", url);
         a.removeAttribute("download");
+        a.setAttribute("onclick", "location.href=this.getAttribute('href');return false;");
         a.textContent = "Đăng nhập để tải";
-        a.classList.add("need-login");
       }
     });
   }
-
-  apply(hasSession());
-  function boot() { apply(hasSession()); }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
-  setTimeout(boot, 400);
-  setTimeout(boot, 1200);
-
-  var lock = false;
-  if (window.MutationObserver) {
-    var mo = new MutationObserver(function () {
-      if (lock) return;
-      lock = true;
-      apply(hasSession());
-      setTimeout(function () { lock = false; }, 50);
-    });
-    function watch() { if (document.body) mo.observe(document.body, { childList: true, subtree: true }); }
-    if (document.body) watch();
-    else document.addEventListener("DOMContentLoaded", watch);
-  }
+  apply();
+  document.addEventListener("DOMContentLoaded", apply);
+  setTimeout(apply, 300);
+  setTimeout(apply, 1000);
 })();

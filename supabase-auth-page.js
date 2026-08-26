@@ -88,7 +88,17 @@ function msg(id, text, ok=false){
 }
 
 document.addEventListener("DOMContentLoaded",()=>{
+
+  function showForm(id){
+    document.querySelectorAll(".auth-form").forEach(x=>x.classList.remove("active"));
+    document.getElementById(id)?.classList.add("active");
+  }
+  document.getElementById("authSwitchLogin")?.addEventListener("click",()=>showForm("loginForm"));
+  document.getElementById("authSwitchRegister")?.addEventListener("click",()=>showForm("registerForm"));
+  showForm("registerForm");
+
   const wantTab=new URLSearchParams(location.search).get("tab");
+  if(wantTab==="login"){ showForm("loginForm"); }
   if(wantTab==="register"){
     const tab=[...document.querySelectorAll(".auth-tab")].find(x=>x.dataset.target==="registerForm");
     if(tab) tab.click();

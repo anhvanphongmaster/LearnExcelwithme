@@ -15,6 +15,11 @@
 <link rel="stylesheet" href="personal-dashboard.css">
 <link rel="stylesheet" href="cloud-sync-v11.css">
 <link href="theme-polish-v33.css" rel="stylesheet"/>
+<style>
+.auth-tabs{display:none!important}
+.auth-switch{margin:14px 0 0;text-align:center;font-size:14px;color:#3f4f47}
+.auth-switch-btn{border:0;background:none;color:#0f766e;font-weight:800;cursor:pointer;text-decoration:underline;font-size:14px}
+</style>
 </head>
 <body>
 <nav class="top-simple-nav">
@@ -51,28 +56,29 @@
   Sau đó chạy <code>supabase-setup.sql</code> trong Supabase SQL Editor.
 </div>
 
-      <div class="auth-tabs">
-        <button class="auth-tab active" data-target="loginForm">Đăng nhập</button>
-        <button class="auth-tab" data-target="registerForm">Đăng ký</button>
+      <div class="auth-tabs" hidden>
+        <button class="auth-tab" data-target="loginForm">Đăng nhập</button>
+        <button class="auth-tab active" data-target="registerForm">Đăng ký</button>
       </div>
 
-      <form id="loginForm" class="auth-form active">
+      <form id="loginForm" class="auth-form">
         <h2>Chào mừng trở lại</h2>
         <p>Đăng nhập vào tài khoản thử nghiệm của bạn.</p>
         <div class="auth-field">
-          <label>Email</label>
-          <input id="loginEmail" type="email" autocomplete="email" placeholder="ban@example.com" required>
+          <label>Tên đăng nhập</label>
+          <input id="loginEmail" type="text" autocomplete="username" placeholder="ban@example.com" required>
         </div>
         <div class="auth-field">
           <label>Mật khẩu</label>
           <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" required>
         </div>
         <button class="auth-submit" type="submit">Đăng nhập</button>
+<p class="auth-switch">Chưa có tài khoản? <button type="button" id="authSwitchRegister" class="auth-switch-btn">Đăng ký</button></p>
         <div id="loginMessage"></div>
         <div class="auth-note">Nhập tên đăng nhập và mật khẩu. (Tài khoản cũ dùng email vẫn đăng nhập được.)</div>
       </form>
 
-      <form id="registerForm" class="auth-form">
+      <form id="registerForm" class="auth-form active">
         <h2>Tạo tài khoản</h2>
         <p>Đăng ký để thử trải nghiệm người dùng cá nhân hóa.</p>
         <div class="auth-field">
@@ -80,8 +86,8 @@
           <input id="registerName" type="text" placeholder="Ví dụ: Tuấn" required>
         </div>
         <div class="auth-field">
-          <label>Email</label>
-          <input id="registerEmail" type="email" autocomplete="email" placeholder="ban@example.com" required>
+          <label>Tên đăng nhập</label>
+          <input id="registerEmail" type="text" autocomplete="username" placeholder="vd: tuan01" required>
         </div>
         <div class="auth-field">
           <label>Mật khẩu</label>
@@ -92,6 +98,7 @@
           <input id="registerPassword2" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu" required>
         </div>
         <button class="auth-submit" type="submit">Tạo tài khoản</button>
+<p class="auth-switch">Đã có tài khoản? <button type="button" id="authSwitchLogin" class="auth-switch-btn">Đăng nhập</button></p>
         <div id="registerMessage"></div>
         <div class="auth-note">Chỉ cần tên đăng nhập + mật khẩu. Không cần Gmail.</div>
       </form>
