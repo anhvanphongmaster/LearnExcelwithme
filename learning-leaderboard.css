@@ -181,3 +181,36 @@
   padding:10px 12px; border-radius:10px; font-weight:700;
 }
 .learn-board-note--guest a{ color:#c2410c; font-weight:900; }
+
+
+/* BXH học tập: không tràn trang */
+.learn-board-list,
+#learnBoardList{
+  max-height: 320px !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+  margin: 0;
+  list-style: none;
+}
+.learn-board-list li,
+#learnBoardList li{
+  margin: 6px 0;
+}
+.lb-foot{
+  text-align: center !important;
+  font-size: 12px !important;
+  color: #3f6b52 !important;
+  font-weight: 700 !important;
+  opacity: .85;
+  border: none !important;
+  background: transparent !important;
+  padding: 8px 0 2px !important;
+  list-style: none !important;
+}
+/* scrollbar nhẹ */
+#learnBoardList::-webkit-scrollbar{ width: 6px; }
+#learnBoardList::-webkit-scrollbar-thumb{
+  background: #86efac;
+  border-radius: 99px;
+}

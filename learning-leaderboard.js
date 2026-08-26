@@ -183,7 +183,7 @@
           .select("display_name,current_streak,best_streak,total_days,xp")
           .order("current_streak", { ascending: false })
           .order("xp", { ascending: false })
-          .limit(15);
+          .limit(10);
         if (res.error) {
           list.innerHTML = '<li class="lb-muted">Chưa có dữ liệu xếp hạng.</li>';
           return;
@@ -200,6 +200,9 @@
       return;
     }
 
+    // Chỉ hiện Top 10 — tránh tràn layout trang chủ
+    rows = rows.slice(0, 10);
+
     list.innerHTML = rows.map(function (r, i) {
       const st = Number(r.current_streak) || 0;
       const b = badge(st);
@@ -214,6 +217,7 @@
         "</li>"
       );
     }).join("");
+    list.insertAdjacentHTML('beforeend', '<li class="lb-foot">Top 10 học viên tích cực nhất</li>');
   }
 
   async function renderGate() {
