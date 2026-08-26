@@ -60,6 +60,32 @@
     return "";
   }
 
+
+  function medal(rank) {
+    if (rank === 1) return '<span class="lb-medal lb-gold" title="Top 1">🥇</span>';
+    if (rank === 2) return '<span class="lb-medal lb-silver" title="Top 2">🥈</span>';
+    if (rank === 3) return '<span class="lb-medal lb-bronze" title="Top 3">🥉</span>';
+    return "";
+  }
+
+  function podiumTitle(rank) {
+    if (rank === 1) return '<em class="lb-title lb-title-1">Ngọn lửa bền</em>';
+    if (rank === 2) return '<em class="lb-title lb-title-2">Siêng năng</em>';
+    if (rank === 3) return '<em class="lb-title lb-title-3">Đều đặn</em>';
+    return "";
+  }
+
+  function extraTags(r, rank) {
+    if (rank <= 3) return "";
+    const xp = Number(r.xp) || 0;
+    const days = Number(r.total_days) || 0;
+    const bits = [];
+    if (xp > 0) bits.push('<em class="lb-tag">XP ' + xp + "</em>");
+    else bits.push('<em class="lb-tag lb-tag-muted">XP Quiz — đang tích lũy</em>');
+    if (days > 0) bits.push('<em class="lb-tag">📅 ' + days + " ngày học</em>");
+    return '<span class="lb-tags">' + bits.join("") + "</span>";
+  }
+
   function escapeHtml(s) {
     return String(s || "")
       .replace(/&/g, "&amp;")
@@ -177,13 +203,13 @@
     try {
       const { data, error } = await sb.rpc("list_learning_leaderboard");
       if (!error && Array.isArray(data)) rows = data;
-      else {
+      if (!rows.length || rows.length < 30) {
         const res = await sb
           .from("learning_leaderboard")
           .select("display_name,current_streak,best_streak,total_days,xp")
           .order("current_streak", { ascending: false })
           .order("xp", { ascending: false })
-          .limit(10);
+          .limit(30); // Top 30
         if (res.error) {
           list.innerHTML = '<li class="lb-muted">Chưa có dữ liệu xếp hạng.</li>';
           return;
@@ -200,16 +226,16 @@
       return;
     }
 
-    // Chỉ hiện Top 10 — tránh tràn layout trang chủ
-    rows = rows.slice(0, 10);
+    rows = rows.slice(0, 30);
 
+    list.classList.add("lb-clip3");
     list.innerHTML = rows.map(function (r, i) {
       const st = Number(r.current_streak) || 0;
       const b = badge(st);
       return (
-        '<li class="lb-row">' +
-          '<span class="lb-rank">' + (i + 1) + "</span>" +
-          '<span class="lb-name">' + escapeHtml(r.display_name) + "</span>" +
+        '<li class="lb-row' + (i < 3 ? " lb-podium-" + (i + 1) : "") + '">' +
+          '<span class="lb-rank">' + medal(i + 1) + (i >= 3 ? (i + 1) : "") + "</span>" +
+          '<span class="lb-name">' + '<span class="lb-name-row">' + escapeHtml(r.display_name) + podiumTitle(i + 1) + '</span>' + extraTags(r, i + 1) + "</span>" +
           '<span class="lb-meta">🔥 ' + st + " ngày" +
             (b ? ' <em class="lb-badge">' + b + "</em>" : "") +
             " · XP " + (Number(r.xp) || 0) +
@@ -217,7 +243,46 @@
         "</li>"
       );
     }).join("");
-    list.insertAdjacentHTML('beforeend', '<li class="lb-foot">Top 10 học viên tích cực nhất</li>');
+
+
+    // Người đăng nhập nhưng không vào Top 30
+    (async function () {
+      const user = await getUser();
+      if (!user) return;
+      const myName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || (user.email || "").split("@")[0] || "";
+      const onBoard = rows.some(function (r) {
+        return String(r.display_name || "").trim().toLowerCase() === String(myName).trim().toLowerCase();
+      });
+      var box = document.getElementById("lbSelfNote");
+      if (box) box.remove();
+      if (onBoard) return;
+      const xp = getXp();
+      const st = calcStreak(getVisits());
+      var n = document.createElement("p");
+      n.id = "lbSelfNote";
+      n.className = "lb-self-note";
+      n.innerHTML = "Bạn chưa vào BXH Top 30 · thành tích hiện tại: <b>XP Quiz " + xp + "</b> · chuỗi <b>" + st + " ngày</b>";
+      list.insertAdjacentElement("afterend", n);
+    })();
+
+    var oldHint = document.getElementById("lbMoreWrap");
+    if (oldHint) oldHint.remove();
+    if (rows.length > 3) {
+      var hint = document.createElement("div");
+      hint.id = "lbMoreWrap";
+      hint.className = "lb-more-wrap";
+      hint.innerHTML =
+        '<div class="lb-more-hint-ui" aria-hidden="true">' +
+          '<span class="lb-chevs">' +
+            '<span class="lb-chev">▾</span>' +
+            '<span class="lb-chev">▾</span>' +
+            '<span class="lb-chev">▾</span>' +
+          "</span>" +
+          '<span class="lb-more-txt">Cuộn trong khung để xem thêm</span>' +
+          
+        "</div>";
+      list.insertAdjacentElement("afterend", hint);
+    }
   }
 
   async function renderGate() {

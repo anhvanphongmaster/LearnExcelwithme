@@ -1376,6 +1376,25 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
 @media(max-width:560px){.home-path-more--5{grid-template-columns:1fr 1fr!important}}
 </style>
 
+
+<style id="avp-tease-chev">
+.avp-tease-title{display:flex!important;align-items:center;justify-content:center;gap:8px}
+.avp-tease-chevs{display:inline-flex;flex-direction:column;align-items:center;line-height:.48;font-size:15px;font-weight:900}
+.avp-tease-chevs span{
+  background:linear-gradient(180deg,#fff,#86efac,#4ade80);background-size:100% 200%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 6px rgba(134,239,171,.55));
+  animation:avpTeaseChev 1.35s ease-in-out infinite;
+}
+.avp-tease-chevs span:nth-child(2){animation-delay:.12s}
+.avp-tease-chevs span:nth-child(3){animation-delay:.24s}
+@keyframes avpTeaseChev{
+  0%{background-position:0% 0%;transform:translateY(0)}
+  50%{background-position:0% 100%;transform:translateY(2px);filter:drop-shadow(0 0 10px rgba(134,239,171,.85))}
+  100%{background-position:0% 0%;transform:translateY(0)}
+}
+</style>
+
 </head>
 
 
@@ -1461,7 +1480,10 @@ body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#
   <div class="avp-scroll-tease avp-scroll-tease--under-yt" id="avpScrollTease" style="width:100%;margin-top:12px;box-sizing:border-box">
     <button type="button" class="avp-scroll-tease-btn" id="avpScrollToPath"
       style="width:100%;box-sizing:border-box;border-radius:14px;padding:12px 16px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:#e8f5ec;cursor:pointer;text-align:center">
-      <span style="display:block;font-weight:900;font-size:13.5px">↓ Lộ trình 14 bài · Bảng xếp hạng</span>
+      <span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">
+        <span class="avp-tease-chevs" aria-hidden="true"><span>▾</span><span>▾</span><span>▾</span></span>
+        Lộ trình 14 bài · Bảng xếp hạng
+      </span>
       <span style="display:block;font-size:12px;margin-top:4px;opacity:.9" id="avpTeasePreview">Top học viên · <b>đăng nhập</b> để có mặt trên BXH</span>
     </button>
   </div>
