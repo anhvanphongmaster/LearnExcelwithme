@@ -389,6 +389,41 @@
   }
 
 
+
+  async function currentUser() {
+    if (window.avpCloudSync && window.avpCloudSync.getUser) {
+      try { return await window.avpCloudSync.getUser(); } catch (e) {}
+    }
+    var sb = window.avpSupabase;
+    if (!sb || !sb.auth) return null;
+    try {
+      var r = await sb.auth.getUser();
+      return r && r.data && r.data.user ? r.data.user : null;
+    } catch (e) { return null; }
+  }
+  function askLogin(reason) {
+    var next = encodeURIComponent("practice-video.html");
+    function go(){ location.href = "auth.html?next=" + next; }
+    var body = reason || "Bạn cần đăng nhập để dùng chức năng này.";
+    if (window.avpConfirm) {
+      return window.avpConfirm(body, {
+        title: "Cần đăng nhập",
+        icon: "🔐",
+        tone: "warn",
+        ok: "Có, đi đăng nhập",
+        cancel: "Không"
+      }).then(function (ok) { if (ok) go(); return false; });
+    }
+    if (confirm(body + "\nĐi đăng nhập?")) go();
+    return Promise.resolve(false);
+  }
+  async function requireLogin(reason) {
+    var u = await currentUser();
+    if (u) return u;
+    await askLogin(reason);
+    return null;
+  }
+
   function voterKey() {
     try {
       var k = localStorage.getItem("avp_voter_key");
@@ -410,6 +445,8 @@
   function hasVoted(id) { return !!votedMap()[id]; }
 
   async function submitVote(item, voteType, btn) {
+    var user = await requireLogin("Đăng nhập mới vote được. Mỗi tài khoản vote 1 lần.");
+    if (!user) return;
     if (hasVoted(item.id)) {
       if (btn) { btn.disabled = true; btn.textContent = "✓ Đã gửi"; }
       return;
@@ -687,7 +724,11 @@ document.addEventListener("DOMContentLoaded", init);
     const modal = document.getElementById("pvFeedbackModal");
     if (!btn || !modal) return;
     const close = function () { modal.hidden = true; };
-    btn.addEventListener("click", function () { modal.hidden = false; });
+    btn.addEventListener("click", async function () {
+      var u = await requireLogin("Đăng nhập mới gửi ý tưởng / thắc mắc.");
+      if (!u) return;
+      modal.hidden = false;
+    });
     var cancel = document.getElementById("pvFbCancel");
     if (cancel) cancel.addEventListener("click", close);
     modal.addEventListener("click", function (e) { if (e.target === modal) close(); });
@@ -716,7 +757,11 @@ document.addEventListener("DOMContentLoaded", init);
     if(!btn || !modal) return;
     var st = document.getElementById("pvFileStatus");
     function close(){ modal.hidden = true; }
-    btn.addEventListener("click", function(){ modal.hidden = false; if(st) st.textContent=""; });
+    btn.addEventListener("click", async function(){
+      var u = await requireLogin("Đăng nhập mới gửi file Excel.");
+      if (!u) return;
+      modal.hidden = false; if(st) st.textContent="";
+    });
     var cancel = document.getElementById("pvFileCancel");
     if (cancel) cancel.addEventListener("click", close);
     modal.addEventListener("click", function(e){ if(e.target===modal) close(); });
