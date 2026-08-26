@@ -3,7 +3,7 @@
     var dir = location.pathname.replace(/\/[^/]*$/, "/");
     if (!dir) dir = "/";
     var page = location.pathname.split("/").pop() || "index.html";
-    return dir + "auth.html?next=" + encodeURIComponent(page) + "&tab=register";
+    return dir + "auth.html?v=3&next=" + encodeURIComponent(page) + "&tab=register";
   }
   function hasSession() {
     try {

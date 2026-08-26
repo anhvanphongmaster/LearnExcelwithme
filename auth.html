@@ -16,7 +16,9 @@
 <link rel="stylesheet" href="cloud-sync-v11.css">
 <link href="theme-polish-v33.css" rel="stylesheet"/>
 <style>
-.auth-tabs{display:none!important}
+.auth-tabs,.auth-tab{display:none!important}
+.auth-form{display:none!important}
+.auth-form.active{display:block!important}
 .auth-switch{margin:14px 0 0;text-align:center;font-size:14px;color:#3f4f47}
 .auth-switch-btn{border:0;background:none;color:#0f766e;font-weight:800;cursor:pointer;text-decoration:underline;font-size:14px}
 </style>
@@ -66,14 +68,14 @@
         <p>Đăng nhập vào tài khoản thử nghiệm của bạn.</p>
         <div class="auth-field">
           <label>Tên đăng nhập</label>
-          <input id="loginEmail" type="text" autocomplete="username" placeholder="ban@example.com" required>
+          <input id="loginEmail" type="text" autocomplete="username" placeholder="anhvanphong" required>
         </div>
         <div class="auth-field">
           <label>Mật khẩu</label>
           <input id="loginPassword" type="password" autocomplete="current-password" placeholder="••••••••" required>
         </div>
         <button class="auth-submit" type="submit">Đăng nhập</button>
-<p class="auth-switch">Chưa có tài khoản? <button type="button" id="authSwitchRegister" class="auth-switch-btn">Đăng ký</button></p>
+<p class="auth-switch">Chưa có tài khoản? <button type="button" id="authSwitchRegister" class="auth-switch-btn" onclick="document.getElementById('loginForm').classList.remove('active');document.getElementById('registerForm').classList.add('active');return false;">Đăng ký</button></p>
         <div id="loginMessage"></div>
         <div class="auth-note">Nhập tên đăng nhập và mật khẩu. (Tài khoản cũ dùng email vẫn đăng nhập được.)</div>
       </form>
@@ -83,11 +85,11 @@
         <p>Đăng ký để thử trải nghiệm người dùng cá nhân hóa.</p>
         <div class="auth-field">
           <label>Tên hiển thị</label>
-          <input id="registerName" type="text" placeholder="Ví dụ: Tuấn" required>
+          <input id="registerName" type="text" placeholder="Ví dụ: Anh Văn Phòng" required>
         </div>
         <div class="auth-field">
           <label>Tên đăng nhập</label>
-          <input id="registerEmail" type="text" autocomplete="username" placeholder="vd: tuan01" required>
+          <input id="registerEmail" type="text" autocomplete="username" placeholder="vd: anhvanphong" required>
         </div>
         <div class="auth-field">
           <label>Mật khẩu</label>
@@ -98,7 +100,7 @@
           <input id="registerPassword2" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu" required>
         </div>
         <button class="auth-submit" type="submit">Tạo tài khoản</button>
-<p class="auth-switch">Đã có tài khoản? <button type="button" id="authSwitchLogin" class="auth-switch-btn">Đăng nhập</button></p>
+<p class="auth-switch">Đã có tài khoản? <button type="button" id="authSwitchLogin" class="auth-switch-btn" onclick="document.getElementById('registerForm').classList.remove('active');document.getElementById('loginForm').classList.add('active');return false;">Đăng nhập</button></p>
         <div id="registerMessage"></div>
         <div class="auth-note">Chỉ cần tên đăng nhập + mật khẩu. Không cần Gmail.</div>
       </form>
