@@ -256,7 +256,7 @@
     if (gate) gate.style.display = need ? "block" : "none";
     if (start) {
       if (need) {
-        start.textContent = "🔒 Khóa tên để bắt đầu";
+        start.textContent = "🔒 Đăng nhập để chơi";
         start.style.opacity = "0.85";
       } else if (!playing) {
         start.textContent = "Bắt đầu";
@@ -272,25 +272,47 @@
     el.className = "name-status" + (kind ? " " + kind : "");
   }
 
-  function loadLocalIdentity() {
+  function accountName(user) {
+    if (!user) return "";
+    var md = user.user_metadata || {};
+    var n = md.display_name || md.full_name || md.name || "";
+    if (!n && user.email) n = String(user.email).split("@")[0];
+    n = String(n).replace(/@avp-app\.local$/i, "");
+    return normalizeName(n);
+  }
+
+  async function currentRaceUser() {
+    if (window.avpCloudSync && window.avpCloudSync.getUser) {
+      try { return await window.avpCloudSync.getUser(); } catch (e) {}
+    }
+    var sb = window.avpSupabase;
+    if (!sb || !sb.auth) return null;
     try {
-      playerName = normalizeName(localStorage.getItem(NAME_KEY) || "");
-      claimToken = localStorage.getItem(TOKEN_KEY) || "";
-    } catch {
+      var r = await sb.auth.getUser();
+      return r && r.data && r.data.user ? r.data.user : null;
+    } catch (e) { return null; }
+  }
+
+  async function loadLocalIdentity() {
+    const input = $("playerName");
+    const user = await currentRaceUser();
+    if (!user) {
       playerName = "";
       claimToken = "";
-    }
-    const input = $("playerName");
-    if (input && playerName) {
-      input.value = playerName;
-      input.disabled = true;
-    }
-    if (playerName && claimToken) {
-      setNameStatus("Tên đã khóa: " + playerName, "ok");
-      setNameGate(false);
-    } else {
+      if (input) { input.value = ""; input.disabled = true; }
+      setNameStatus("Chưa đăng nhập", "err");
       setNameGate(true);
+      const start = $("start");
+      if (start && !playing) start.textContent = "🔒 Đăng nhập để chơi";
+      return;
     }
+    playerName = accountName(user) || "HocVien";
+    claimToken = user.id || ("uid_" + playerName);
+    if (input) { input.value = playerName; input.disabled = true; }
+    setNameStatus("Chơi với tên: " + playerName, "ok");
+    setNameGate(false);
+    const gate = $("nameGateMsg");
+    if (gate) gate.style.display = "none";
   }
 
   async function claimName() {
@@ -744,9 +766,18 @@
 
   function start() {
     if (typeof playerName !== "undefined" && (!playerName || !claimToken)) {
-      $("msg").textContent = "Hãy nhập tên và bấm Khóa tên trước khi chơi.";
-      if (typeof setNameStatus === "function") setNameStatus("Cần khóa tên trước", "err");
+      $("msg").textContent = "Đăng nhập để chơi Race.";
+      if (typeof setNameStatus === "function") setNameStatus("Cần đăng nhập", "err");
       setNameGate(true);
+      var next = encodeURIComponent("excel-race.html");
+      if (window.avpConfirm) {
+        window.avpConfirm("Đăng nhập để chơi Excel Race.\nTên trên BXH lấy từ tài khoản.", {
+          title: "Excel Race", icon: "🏁", tone: "warn",
+          ok: "Có, đi đăng nhập", cancel: "Không"
+        }).then(function (ok) { if (ok) location.href = "auth.html?next=" + next; });
+      } else if (confirm("Đăng nhập để chơi?")) {
+        location.href = "auth.html?next=" + next;
+      }
       return;
     }
     all = (window.EXCEL_RACE_QUESTIONS || []).slice();
@@ -785,7 +816,7 @@
   };
   $("a1").onclick = () => answer($("a1"));
   $("a2").onclick = () => answer($("a2"));
-  if ($("nameSave")) $("nameSave").onclick = () => { claimName(); };
+  if ($("nameSave")) $("nameSave").style.display = "none";
   if ($("boardRefresh")) $("boardRefresh").onclick = () => { loadBoard(); };
   if ($("boardJump")) $("boardJump").onclick = () => {
     const el = $("board");
