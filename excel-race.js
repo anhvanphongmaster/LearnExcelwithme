@@ -442,7 +442,7 @@
       }).join("");
       list.insertAdjacentHTML("beforeend", '<li class="muted board-foot">Top 100 · cuộn để xem thêm</li>');
     } catch (e) {
-      list.innerHTML = '<li class="muted">Không tải được BXH.</li>';
+      list.innerHTML = '<li class="muted">Không tải được BXH. Kéo xuống / bấm Làm mới.</li>';
     }
   }
 
@@ -787,6 +787,14 @@
   $("a2").onclick = () => answer($("a2"));
   if ($("nameSave")) $("nameSave").onclick = () => { claimName(); };
   if ($("boardRefresh")) $("boardRefresh").onclick = () => { loadBoard(); };
+  if ($("boardJump")) $("boardJump").onclick = () => {
+    const el = $("board");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    loadBoard();
+  };
+  // Mobile: tải lại BXH sau khi layout ổn
+  setTimeout(function(){ if (typeof loadBoard === "function") loadBoard(); }, 800);
+  setTimeout(function(){ if (typeof loadBoard === "function") loadBoard(); }, 2000);
   if ($("resetLocalBest")) $("resetLocalBest").onclick = async () => {
     const ok = await avpConfirm(
       "Bạn sắp đưa chuỗi / kỷ lục về 0.\n\n• Xóa điểm trên máy này\n• Xóa điểm của bạn trên bảng xếp hạng (nếu đã khóa tên)\n\nKhông ảnh hưởng bài học hay tài khoản đăng nhập.",

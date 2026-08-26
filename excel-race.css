@@ -460,3 +460,73 @@ body{margin:0;font-family:Arial,sans-serif;background:#0d1f16;color:#e9fff2}
   padding: 8px 0 2px !important;
   list-style: none !important;
 }
+
+
+/* ===== Mobile BXH Race — luôn thấy được ===== */
+@media (max-width: 768px){
+  .board{
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 5 !important;
+    margin: 12px 0 16px !important;
+    padding: 14px 12px !important;
+    border: 2px solid #3b82f6 !important;
+    background: linear-gradient(180deg, #0f2744 0%, #13281c 100%) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.35) !important;
+    /* không bị canvas che */
+    scroll-margin-top: 72px;
+  }
+  .board-h{
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .board-h strong{
+    font-size: 16px !important;
+    color: #93c5fd !important;
+  }
+  #boardList, .board-list{
+    display: block !important;
+    max-height: 220px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    color: #e8f5ec !important;
+    padding-left: 18px !important;
+    min-height: 48px;
+  }
+  #boardList li{
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  #boardList li.me{
+    color: #fde68a !important;
+    font-weight: 800;
+  }
+  .board-ref{
+    min-height: 36px;
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+  }
+  /* nút nhảy tới BXH */
+  .board-jump{
+    display: block !important;
+    width: 100%;
+    margin: 8px 0 4px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #60a5fa;
+    background: rgba(37,99,235,.25);
+    color: #dbeafe;
+    font-weight: 800;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+  }
+}
+@media (min-width: 769px){
+  .board-jump{ display: none !important; }
+}
