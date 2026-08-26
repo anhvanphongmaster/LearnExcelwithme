@@ -421,8 +421,8 @@
         rivals = [];
         return;
       }
-      data = data.slice(0, 100);
-      rivals = data
+      const rows = data.slice(0, 100);
+      rivals = rows
         .filter(function (row) {
           return row && row.player_name && (!playerName || row.player_name !== playerName);
         })
@@ -435,7 +435,7 @@
         .filter(function (r) { return r.score > 0; })
         .sort(function (a, b) { return b.score - a.score; })
         .slice(0, 12);
-      list.innerHTML = data.map(function (row, i) {
+      list.innerHTML = rows.map(function (row, i) {
         const me = playerName && row.player_name === playerName ? " me" : "";
         return '<li class="' + me + '">' + (i + 1) + ". <b>" + escapeBoard(row.player_name) +
           "</b> — chuỗi " + row.best_streak + " · cấp " + row.best_level + "</li>";
