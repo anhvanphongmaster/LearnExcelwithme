@@ -153,3 +153,9 @@ body.dark-mode .admin-denied-help summary{color:#8be1ac}
   .pvote-summary{grid-template-columns:1fr 1fr}
   .pvote-row{grid-template-columns:32px 1fr 48px;gap:8px;padding:10px}
 }
+
+.pvote-scroll{max-height:calc(3 * 88px);overflow-y:auto;padding-right:4px;border:1px solid #d7ebe0;border-radius:14px;background:#f7fbf8}
+.pvote-scroll .pvote-list{gap:8px;padding:8px}
+.pvote-row-top{box-shadow:0 0 0 1px #b7e0c6}
+.pvote-row-top .pvote-rank{background:#145a32;color:#fff}
+.pvote-more{margin:8px 0 0;text-align:center;font-size:12px;font-weight:700;color:#217346}

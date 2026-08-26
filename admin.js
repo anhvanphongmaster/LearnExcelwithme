@@ -198,6 +198,7 @@
         const v=Number(r.votes)||0; total+=v;
         if(r.vote_type==="need_more_guide") more+=v; else need+=v;
       });
+      rows.sort((a,b)=>(Number(b.votes)||0)-(Number(a.votes)||0));
       const max=Math.max(1, ...rows.map(r=>Number(r.votes)||0));
       const summary=`<div class="pvote-summary">
         <div class="pvote-stat"><span>Tổng vote</span><strong>${total}</strong></div>
@@ -212,7 +213,7 @@
         const tc=typeClass[r.vote_type]||"pvote-tag-need";
         const v=Number(r.votes)||0;
         const pct=Math.max(8, Math.round(v/max*100));
-        return `<div class="pvote-row">
+        return `<div class="pvote-row${i<3?" pvote-row-top":""}">
           <div class="pvote-rank">${i+1}</div>
           <div class="pvote-main">
             <div class="pvote-title"><span class="pvote-num">#${num}</span> ${title}</div>
@@ -222,7 +223,7 @@
           <div class="pvote-count"><strong>${v}</strong><small>vote</small></div>
         </div>`;
       }).join("");
-      root.innerHTML=summary+`<div class="pvote-list">${list}</div>`;
+      root.innerHTML=summary+`<div class="pvote-scroll"><div class="pvote-list">${list}</div></div>`+(rows.length>3?'<p class="pvote-more">Cuộn trong khung để xem thêm</p>':'');
     }catch(e){
       root.innerHTML='<div class="pvote-empty">Lỗi tải vote.</div>';
     }
