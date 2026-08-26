@@ -88,6 +88,12 @@ function msg(id, text, ok=false){
 }
 
 document.addEventListener("DOMContentLoaded",()=>{
+  const wantTab=new URLSearchParams(location.search).get("tab");
+  if(wantTab==="register"){
+    const tab=[...document.querySelectorAll(".auth-tab")].find(x=>x.dataset.target==="registerForm");
+    if(tab) tab.click();
+  }
+
   document.querySelectorAll(".auth-tab").forEach(tab=>{
     tab.addEventListener("click",()=>{
       document.querySelectorAll(".auth-tab").forEach(x=>x.classList.remove("active"));
