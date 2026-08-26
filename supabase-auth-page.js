@@ -10,9 +10,19 @@ const configured =
 
 const supabase = configured ? createClient(cfg.url, cfg.publishableKey) : null;
 
+
+function toAuthEmail(raw){
+  raw = String(raw || "").trim();
+  if(!raw) return "";
+  if(raw.includes("@")) return raw.toLowerCase();
+  const user = raw.toLowerCase().replace(/[^a-z0-9._-]/g, "");
+  if(user.length < 3) return "";
+  return user + "@avp-app.local";
+}
+
 function getSafeRedirect(){
   const params=new URLSearchParams(location.search);
-  const target=params.get("redirect");
+  const target=params.get("redirect") || params.get("next");
 
   if(!target) return "index.html";
 
@@ -40,7 +50,7 @@ function friendlyAuthError(error){
   const text=raw.toLowerCase();
 
   if(text.includes("email rate limit exceeded") || text.includes("error sending confirmation email")){
-    return "Hệ thống tài khoản đang yêu cầu gửi email xác nhận. Quản trị viên cần tắt Confirm email trong Supabase để đăng ký trực tiếp.";
+    return "Supabase đang chặn gửi email. Vào Authentication → Providers → Email → tắt Confirm email. Rồi đăng ký lại bằng tên đăng nhập.";
   }
   if(text.includes("invalid login credentials")){
     return "Email hoặc mật khẩu chưa đúng. Vui lòng kiểm tra lại.";
@@ -82,7 +92,12 @@ document.addEventListener("DOMContentLoaded",()=>{
       return;
     }
 
-    const email=document.getElementById("loginEmail").value.trim().toLowerCase();
+    const raw=document.getElementById("loginEmail").value.trim();
+    const email=toAuthEmail(raw);
+    if(!email){
+      msg("loginMessage","Tên đăng nhập tối thiểu 3 ký tự, không dấu, không cách.");
+      return;
+    }
     const password=document.getElementById("loginPassword").value;
 
     msg("loginMessage","Đang đăng nhập...",true);
@@ -106,7 +121,12 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 
     const name=document.getElementById("registerName").value.trim();
-    const email=document.getElementById("registerEmail").value.trim().toLowerCase();
+    const raw=document.getElementById("registerEmail").value.trim();
+    const email=toAuthEmail(raw);
+    if(!email){
+      msg("registerMessage","Tên đăng nhập tối thiểu 3 ký tự, không dấu, không cách.");
+      return;
+    }
     const password=document.getElementById("registerPassword").value;
     const password2=document.getElementById("registerPassword2").value;
 
