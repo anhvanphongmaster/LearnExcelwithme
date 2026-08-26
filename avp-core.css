@@ -18,3 +18,35 @@ img,video,canvas,svg,table{max-width:100%}input,select,textarea,button{max-width
 .avp-install-banner{position:fixed;left:18px;bottom:18px;z-index:9994;max-width:340px;background:#fff;border:1px solid #d9e7df;border-radius:14px;padding:12px 14px;box-shadow:0 10px 28px rgba(0,0,0,.15);display:none}.avp-install-banner.show{display:block}.avp-install-banner strong{color:#185c37}.avp-install-banner p{margin:4px 0 10px;color:#607067;font-size:13px}
 body.dark-mode .avp-hub{background:#151b17;color:#eef4f0}body.dark-mode .avp-hub-head{background:#151b17}body.dark-mode .avp-hub-card{background:#1d2620;border-color:#34443a}body.dark-mode .avp-hub-title,body.dark-mode .avp-hub-card strong{color:#75d49d}body.dark-mode .avp-hub-close,body.dark-mode .avp-hub-btn.secondary{background:#26342b;color:#ccebd8}body.dark-mode .avp-hub-section h3,body.dark-mode .avp-hub-card small,body.dark-mode .avp-hub-empty{color:#aebbb3}body.dark-mode .avp-bookmark-btn,body.dark-mode .avp-install-banner{background:#1d2620;color:#dff3e7;border-color:#34443a}
 @media(max-width:600px){.avp-hub-fab{right:12px;bottom:70px}.avp-bookmark-btn{right:17px;bottom:132px}.avp-hub{width:100%;padding:16px}.avp-install-banner{left:10px;right:10px;max-width:none}}
+
+
+/* FAB kéo được — home ảo */
+.avp-hub-fab{
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+  transition: transform .2s ease, box-shadow .2s ease, left .2s ease, top .2s ease;
+  z-index: 9998 !important;
+}
+.avp-hub-fab:active,
+.avp-hub-fab.is-dragging{
+  cursor: grabbing;
+  transition: none !important;
+  transform: scale(1.08);
+  box-shadow: 0 12px 32px rgba(33,115,70,.4) !important;
+}
+.avp-hub-quick{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.avp-hub-quick .avp-hub-btn{
+  flex: 1 1 calc(50% - 8px);
+  text-align: center;
+  box-sizing: border-box;
+  min-width: 120px;
+}
+@media(max-width:600px){
+  .avp-hub-quick .avp-hub-btn{ flex: 1 1 100%; }
+}

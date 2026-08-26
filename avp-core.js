@@ -22,7 +22,17 @@
     const recent=h.slice(0,5).map(x=>`<div class="avp-hub-card"><strong>${esc(x.title)}</strong><small>${ago(x.ts)}</small><div class="avp-hub-actions"><a class="avp-hub-btn" href="${attr(x.url)}">Mở lại →</a></div></div>`).join('')||'<div class="avp-hub-empty">Chưa có lịch sử học trên thiết bị này.</div>';
     const books=b.slice(0,6).map(x=>`<div class="avp-hub-card avp-hub-row"><div><strong>${esc(x.title)}</strong><small>Đã lưu để học lại</small></div><a class="avp-hub-btn" href="${attr(x.url)}">Mở</a></div>`).join('')||'<div class="avp-hub-empty">Chưa lưu bài nào. Bấm biểu tượng 🔖 ở cạnh phải để lưu.</div>';
     return `<div class="avp-hub-head"><div><div class="avp-hub-title">📚 Trung tâm học tập</div><small>Tiếp tục đúng chỗ, không mất tiến độ</small></div><button class="avp-hub-close" aria-label="Đóng">×</button></div>
-      <section class="avp-hub-section"><h3>Tiến độ tổng</h3><div class="avp-hub-card"><div class="avp-hub-row"><strong>${pct}% hoàn thành</strong><small>trên thiết bị này</small></div><div class="avp-hub-progress"><span style="width:${pct}%"></span></div><div class="avp-hub-actions"><a class="avp-hub-btn" href="dashboard.html">Xem Dashboard</a><a class="avp-hub-btn secondary" href="learning-path.html">Lộ trình học</a></div></div></section>
+      <section class="avp-hub-section"><h3>Tiến độ tổng</h3><div class="avp-hub-card"><div class="avp-hub-row"><strong>${pct}% hoàn thành</strong><small>trên thiết bị này</small></div><div class="avp-hub-progress"><span style="width:${pct}%"></span></div><div class="avp-hub-actions"><a class="avp-hub-btn" href="dashboard.html">Xem Dashboard</a><a class="avp-hub-btn secondary" href="learning-path.html">Lộ trình học</a></div></div></section><section class="avp-hub-section"><h3>Chức năng nhanh</h3><div class="avp-hub-quick">
+<a class="avp-hub-btn" href="index.html">🏠 Trang chủ</a>
+<a class="avp-hub-btn" href="practice-video.html">📚 Bài tập video</a>
+<a class="avp-hub-btn" href="practice-youtube.html">▶️ YouTube practice</a>
+<a class="avp-hub-btn" href="excel-race.html">🏁 Excel Race</a>
+<a class="avp-hub-btn secondary" href="learning-path.html">🗓️ Lộ trình 30 ngày</a>
+<a class="avp-hub-btn secondary" href="excel.html">📘 Excel cơ bản</a>
+<a class="avp-hub-btn secondary" href="dashboard.html">📊 Tiến độ</a>
+<a class="avp-hub-btn secondary" href="master-learning.html">🗺️ Chi tiết lộ trình</a>
+<a class="avp-hub-btn secondary" href="auth.html">👤 Đăng nhập</a>
+</div></section>
       <section class="avp-hub-section"><h3>Học gần đây</h3>${recent}</section>
       <section class="avp-hub-section"><h3>Đã lưu</h3>${books}</section>
       <section class="avp-hub-section"><h3>Sao lưu tiến độ</h3><div class="avp-hub-card"><small>Xuất dữ liệu học tập để đổi máy/trình duyệt mà không mất tiến độ.</small><div class="avp-hub-actions"><button class="avp-hub-btn" data-export>Xuất tiến độ</button><label class="avp-hub-btn secondary" style="cursor:pointer">Nhập tiến độ<input data-import type="file" accept="application/json" hidden></label></div></div></section>`;
@@ -33,8 +43,87 @@
   function closeHub(){back.classList.remove('open')}
   function exportData(){const data={version:2,exportedAt:new Date().toISOString(),origin:'LearnExcelwithme',storage:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(/^(avp_|completedCourses|currentCourse|quizBestScore|dashboardLots|theme)/.test(k)))data.storage[k]=localStorage.getItem(k)}const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`learn-excel-progress-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href);toast('Đã xuất tiến độ')}
   function importData(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||d.origin!=='LearnExcelwithme'||!d.storage)throw 0;Object.entries(d.storage).forEach(([k,v])=>localStorage.setItem(k,v));toast('Đã khôi phục tiến độ');setTimeout(()=>location.reload(),700)}catch{(window.avpAlert?window.avpAlert('File tiến độ không hợp lệ.',{title:"Excel",icon:"📥",tone:"ok"}):alert('File tiến độ không hợp lệ.'))}};r.readAsText(f)}
-  const fab=document.createElement('button');fab.className='avp-hub-fab';fab.title='Trung tâm học tập';fab.setAttribute('aria-label','Mở trung tâm học tập');fab.textContent='📚';document.body.appendChild(fab);
-  const back=document.createElement('div');back.className='avp-hub-backdrop';back.innerHTML='<aside class="avp-hub" role="dialog" aria-modal="true" aria-label="Trung tâm học tập"></aside>';document.body.appendChild(back);const hub=back.querySelector('.avp-hub');fab.onclick=openHub;back.addEventListener('click',e=>{if(e.target===back)closeHub()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHub()});
+  const fab=document.createElement('button');fab.className='avp-hub-fab';fab.title='Trung tâm học tập — kéo để di chuyển';fab.setAttribute('aria-label','Mở trung tâm học tập');fab.textContent='📚';document.body.appendChild(fab);
+  const back=document.createElement('div');back.className='avp-hub-backdrop';back.innerHTML='<aside class="avp-hub" role="dialog" aria-modal="true" aria-label="Trung tâm học tập"></aside>';document.body.appendChild(back);const hub=back.querySelector('.avp-hub');
+  /* --- Nút ảo kéo được (giống Home iPhone), nhớ vị trí --- */
+  (function enableDragFab(btn){
+    const POS_KEY='avp_hub_fab_pos_v1';
+    const margin=8;
+    function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
+    function applyPos(pos){
+      if(!pos||typeof pos.x!=='number'||typeof pos.y!=='number')return;
+      const w=btn.offsetWidth||54,h=btn.offsetHeight||54;
+      const x=clamp(pos.x,margin,window.innerWidth-w-margin);
+      const y=clamp(pos.y,margin,window.innerHeight-h-margin);
+      btn.style.left=x+'px';
+      btn.style.top=y+'px';
+      btn.style.right='auto';
+      btn.style.bottom='auto';
+    }
+    try{
+      const saved=JSON.parse(localStorage.getItem(POS_KEY)||'null');
+      if(saved) applyPos(saved);
+    }catch(e){}
+    window.addEventListener('resize',()=>{
+      try{
+        const saved=JSON.parse(localStorage.getItem(POS_KEY)||'null');
+        if(saved) applyPos(saved);
+      }catch(e){}
+    });
+    let dragging=false, moved=false, sx=0, sy=0, ox=0, oy=0, pid=null;
+    function point(e){
+      if(e.touches&&e.touches[0]) return {x:e.touches[0].clientX,y:e.touches[0].clientY};
+      return {x:e.clientX,y:e.clientY};
+    }
+    function onDown(e){
+      if(e.button!=null&&e.button!==0)return;
+      const p=point(e);
+      const r=btn.getBoundingClientRect();
+      dragging=true; moved=false; pid=e.pointerId;
+      sx=p.x; sy=p.y; ox=r.left; oy=r.top;
+      btn.classList.add('is-dragging');
+      try{btn.setPointerCapture(e.pointerId)}catch(err){}
+      e.preventDefault();
+    }
+    function onMove(e){
+      if(!dragging)return;
+      const p=point(e);
+      const dx=p.x-sx, dy=p.y-sy;
+      if(Math.abs(dx)>6||Math.abs(dy)>6) moved=true;
+      if(!moved)return;
+      applyPos({x:ox+dx,y:oy+dy});
+      e.preventDefault();
+    }
+    function onUp(e){
+      if(!dragging)return;
+      dragging=false;
+      btn.classList.remove('is-dragging');
+      try{btn.releasePointerCapture(pid)}catch(err){}
+      if(moved){
+        const r=btn.getBoundingClientRect();
+        const pos={x:r.left,y:r.top};
+        try{localStorage.setItem(POS_KEY,JSON.stringify(pos))}catch(err){}
+        // snap to nearest horizontal edge (kiểu home ảo)
+        const mid=window.innerWidth/2;
+        const w=r.width;
+        const snapX = (r.left+w/2)<mid ? margin : window.innerWidth-w-margin;
+        applyPos({x:snapX,y:r.top});
+        try{localStorage.setItem(POS_KEY,JSON.stringify({x:snapX,y:r.top}))}catch(err){}
+        btn._skipClick=true;
+        setTimeout(()=>{btn._skipClick=false},280);
+      }
+    }
+    btn.addEventListener('pointerdown',onDown,{passive:false});
+    btn.addEventListener('pointermove',onMove,{passive:false});
+    btn.addEventListener('pointerup',onUp);
+    btn.addEventListener('pointercancel',onUp);
+    btn.addEventListener('click',function(e){
+      if(btn._skipClick){ e.preventDefault(); e.stopImmediatePropagation(); return; }
+      openHub();
+    });
+  })(fab);
+  back.addEventListener('click',e=>{if(e.target===back)closeHub()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHub()});
   if(!IGNORE.has(page)&&page!=='index.html'){
     const bm=document.createElement('button');bm.className='avp-bookmark-btn';bm.title='Lưu bài này';bm.setAttribute('aria-label','Lưu bài này');document.body.appendChild(bm);
     const sync=()=>{const b=safe(KEY_BOOK);const on=b.some(x=>x.url===page);bm.textContent=on?'🔖':'🔗';bm.classList.toggle('saved',on);bm.title=on?'Bỏ lưu bài này':'Lưu bài này'};sync();bm.onclick=()=>{let b=safe(KEY_BOOK);const i=b.findIndex(x=>x.url===page);if(i>=0){b.splice(i,1);toast('Đã bỏ lưu')}else{b.unshift({url:page,title,ts:Date.now()});b=b.slice(0,20);toast('Đã lưu bài để học lại')}save(KEY_BOOK,b);sync()}

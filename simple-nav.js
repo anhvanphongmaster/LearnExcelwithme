@@ -1,3 +1,19 @@
+/* Ensure learning hub FAB on pages missing avp-core */
+(function(){
+  try{
+    if(!document.querySelector('script[src="avp-core.js"],script[src*="/avp-core.js"]')){
+      if(!document.querySelector('link[href="avp-core.css"]')){
+        var l=document.createElement("link");
+        l.rel="stylesheet"; l.href="avp-core.css";
+        document.head.appendChild(l);
+      }
+      var s=document.createElement("script");
+      s.src="avp-core.js"; s.defer=true;
+      document.head.appendChild(s);
+    }
+  }catch(e){}
+})();
+
 /* === AVP site motion (visual only — no data) === */
 (function () {
   try {
