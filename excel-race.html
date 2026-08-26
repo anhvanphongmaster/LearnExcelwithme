@@ -15,11 +15,10 @@
     </header>
 
     <div class="name-row" id="nameRow">
-      <label for="playerName">Tên xếp hạng</label>
-      <input id="playerName" type="text" maxlength="20" placeholder="Nhập tên (không trùng)" autocomplete="off" />
-      <button type="button" id="nameSave" class="name-save">Khóa tên</button>
+      <label>Tên trên BXH</label>
+      <input id="playerName" type="text" maxlength="20" readonly autocomplete="off" placeholder="Đăng nhập để lấy tên" />
       <span id="nameStatus" class="name-status"></span>
-    <p class="name-gate-msg" id="nameGateMsg">⚠️ Hãy nhập tên và bấm <b>Khóa tên</b> trước khi chơi — tên này dùng để xếp hạng.</p>
+      <p class="name-gate-msg" id="nameGateMsg">Đăng nhập để chơi. Tên lấy từ tài khoản, không cần khóa tên.</p>
     </div>
 
     <div class="mode-row" id="modeRow">
@@ -45,7 +44,7 @@
     <canvas id="cv" width="900" height="360" aria-label="Đường đua"></canvas>
 
     <section class="panel">
-      <p class="msg" id="msg">Nhập tên → khóa tên → chọn mode → Bắt đầu. Tên đã có sẽ không dùng lại được.</p>
+      <p class="msg" id="msg">Đăng nhập → chọn Học hoặc Rank → Bắt đầu. Tên BXH lấy từ tài khoản.</p>
       <p class="q" id="q" hidden></p>
       <div class="ans" id="ans" hidden>
         <button type="button" id="a1"></button>
@@ -92,5 +91,6 @@
   <script defer src="analytics-tracker.js"></script>
   <script defer src="excel-race.js"></script>
 <script defer src="avp-core.js"></script>
+<script defer src="avp-modal.js"></script>
 </body>
 </html>
