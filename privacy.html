@@ -28,64 +28,77 @@
   </div>
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
-
 <main class="legal-page">
   <section class="legal-hero page-header">
     <span class="legal-kicker">⚖️ THÔNG TIN PHÁP LÝ</span>
     <h1>Chính sách quyền riêng tư</h1>
-    <p>Giải thích cách Excel Mobile, tài khoản và dữ liệu cục bộ được xử lý.</p>
-    <div class="legal-updated">Cập nhật: 13/08/2026</div>
+    <p>Cách website xử lý tài khoản, BXH, file thực hành và dữ liệu trên máy bạn.</p>
+    <div class="legal-updated">Cập nhật: 27/08/2026</div>
   </section>
-
   <section class="legal-content">
-    
+
 <div class="legal-highlight">
-  <strong>🔒 Nguyên tắc chính của Excel Mobile</strong>
-  <p>Nội dung file Excel được đọc và xử lý trực tiếp trong trình duyệt của thiết bị. Công cụ Excel Mobile không chủ động tải nội dung file Excel lên máy chủ của website để thực hiện các thao tác xử lý dữ liệu hiện có.</p>
+  <strong>Nguyên tắc ngắn</strong>
+  <p>Website chỉ lấy dữ liệu cần để chạy tài khoản, xếp hạng, tải file và hỗ trợ học. Không bán thông tin học viên. File Excel bạn mở trong Excel Mobile được xử lý trên máy bạn, không tự upload nội dung workbook lên server.</p>
 </div>
 
 <div class="legal-card">
-  <h2>1. File Excel của người dùng</h2>
-  <p>Khi bạn chọn file trong Excel Mobile, trình duyệt đọc file để hiển thị preview và thực hiện các thao tác bạn yêu cầu. File kết quả được tạo trong trình duyệt để bạn tải xuống hoặc chia sẻ.</p>
-  <p>Bạn vẫn nên tránh đưa dữ liệu cực kỳ nhạy cảm vào bất kỳ công cụ trực tuyến nào nếu không cần thiết và luôn giữ bản sao file gốc.</p>
+  <h2>1. Dữ liệu tài khoản</h2>
+  <p>Khi đăng ký / đăng nhập, hệ thống (Supabase) lưu tên đăng nhập hoặc email, mật khẩu đã mã hóa, tên hiển thị và mã tài khoản. Dùng để xác thực, tải file thực hành, Excel Race và bảng xếp hạng.</p>
+  <p>Tài khoản cũ đăng ký bằng email vẫn dùng được. Không yêu cầu mật khẩu Microsoft / Microsoft 365.</p>
 </div>
 
 <div class="legal-card">
-  <h2>2. Dữ liệu tài khoản</h2>
-  <p>Website sử dụng Supabase cho chức năng đăng nhập và các tính năng đồng bộ tài khoản. Khi bạn đăng ký hoặc đăng nhập, thông tin cần thiết cho việc xác thực như địa chỉ email và dữ liệu phiên đăng nhập có thể được xử lý bởi dịch vụ Supabase.</p>
+  <h2>2. Bảng xếp hạng và tiến độ học</h2>
+  <p>BXH học tập có thể hiện tên hiển thị, chuỗi ngày học, XP. Excel Race có thể hiện tên, chuỗi / cấp khi bạn chơi mode Rank.</p>
+  <p>Tiến độ quiz, XP, badge có thể lưu localStorage trên trình duyệt và đồng bộ lên tài khoản khi đã đăng nhập.</p>
 </div>
 
 <div class="legal-card">
-  <h2>3. Tiến độ học tập và cài đặt</h2>
-  <p>Một số dữ liệu như tiến độ học, trạng thái khóa học, lựa chọn giao diện hoặc workflow có thể được lưu trong trình duyệt bằng localStorage. Khi chức năng đồng bộ tài khoản được bật, một số dữ liệu tiến độ có thể được đồng bộ với tài khoản Supabase.</p>
+  <h2>3. Tải file thực hành</h2>
+  <p>Một số file chỉ tải khi đã đăng nhập. Hệ thống có thể ghi nhận tài khoản đã yêu cầu tải (không gửi nội dung file Excel của bạn lên trừ khi bạn chủ động dùng chức năng gửi file).</p>
 </div>
 
 <div class="legal-card">
-  <h2>4. Workflow Excel Mobile</h2>
-  <p>Các workflow do bạn lưu trong Excel Mobile hiện được lưu bằng localStorage trên trình duyệt đang sử dụng. Workflow lưu cấu hình thao tác, không phải toàn bộ nội dung file Excel.</p>
+  <h2>4. Ý tưởng, thắc mắc, vote, gửi file</h2>
+  <p>Khi bạn gửi ý tưởng / thắc mắc: tên và nội dung được lưu để admin đọc.</p>
+  <p>Khi gửi file nhờ xử lý: file nằm trên kho Storage, kèm tên, Gmail hoặc Zalo bạn điền để trả lời. Đừng gửi file có dữ liệu mật (lương, CCCD, mật khẩu).</p>
+  <p>Vote “cần hướng dẫn” được gắn với tài khoản / trình duyệt để mỗi bài chỉ vote một lần.</p>
 </div>
 
 <div class="legal-card">
-  <h2>5. Bảo mật</h2>
-  <p>Không chia sẻ mật khẩu, mã đăng nhập hoặc thông tin xác thực tài khoản cho người khác. Website không yêu cầu người dùng cung cấp mật khẩu Microsoft Excel, Microsoft 365 hoặc mật khẩu file Excel thông qua biểu mẫu thông thường.</p>
-</div>
-
-
-<div class="legal-card">
-  <h2>6. Thống kê sử dụng website</h2>
-  <p>Website có thể ghi nhận các sự kiện sử dụng tối giản để hiểu mức độ hoạt động, ví dụ: lượt xem trang, thời điểm đăng nhập, mở Excel Mobile và tên công cụ Excel Mobile được sử dụng.</p>
-  <p>Hệ thống analytics được thiết kế không gửi nội dung workbook, giá trị trong ô, tên file Excel hoặc toàn bộ dữ liệu bảng tính vào bảng thống kê.</p>
-  <p>Một mã visitor ngẫu nhiên có thể được lưu trong localStorage để ước tính số người truy cập duy nhất trên cùng trình duyệt. Nếu người dùng đã đăng nhập, sự kiện có thể được liên kết với ID tài khoản Supabase để thống kê người dùng hoạt động.</p>
+  <h2>5. Form liên hệ</h2>
+  <p>Form trên trang Liên hệ có thể gửi qua Formspree hoặc dịch vụ tương đương tới hộp thư quản trị. Nội dung gồm các trường bạn điền trên form.</p>
 </div>
 
 <div class="legal-card">
-  <h2>7. Thay đổi chính sách</h2>
-  <p>Chính sách này có thể được cập nhật khi website bổ sung tính năng mới, thay đổi cách lưu dữ liệu hoặc tích hợp thêm dịch vụ. Ngày cập nhật sẽ được hiển thị trên trang này.</p>
+  <h2>6. Excel Mobile</h2>
+  <p>File bạn chọn được đọc ngay trên trình duyệt để xem và xử lý. Công cụ không chủ động tải nguyên workbook lên máy chủ để làm các thao tác hiện có. Nên giữ bản sao file gốc và hạn chế đưa dữ liệu cực kỳ nhạy cảm vào công cụ online.</p>
+</div>
+
+<div class="legal-card">
+  <h2>7. Thống kê sử dụng</h2>
+  <p>Website có thể ghi lượt xem trang, bấm tải, mở video, chơi Race, đăng nhập. Có thể dùng mã khách ngẫu nhiên trong localStorage. Nếu đã đăng nhập, sự kiện có thể gắn với mã tài khoản.</p>
+  <p>Không đưa nội dung ô Excel hay toàn bộ workbook vào bảng thống kê.</p>
+</div>
+
+<div class="legal-card">
+  <h2>8. Cookie / lưu trình duyệt</h2>
+  <p>Dùng localStorage và phiên đăng nhập để nhớ tài khoản, giao diện, tiến độ. Không chạy quảng cáo bên thứ ba theo hành vi.</p>
+</div>
+
+<div class="legal-card">
+  <h2>9. Xóa dữ liệu</h2>
+  <p>Muốn xóa tài khoản, tên trên BXH hoặc file đã gửi: vào trang <a href="lienhe.html">Liên hệ</a> và nêu rõ tên đăng nhập / email. Quản trị viên sẽ xóa trên Supabase và BXH trong phạm vi kỹ thuật cho phép.</p>
+</div>
+
+<div class="legal-card">
+  <h2>10. Thay đổi chính sách</h2>
+  <p>Khi thêm tính năng mới, ngày cập nhật trên trang này sẽ đổi. Việc tiếp tục dùng website sau ngày cập nhật được hiểu là bạn đã đọc phiên bản mới.</p>
 </div>
 
   </section>
 </main>
-
 <footer class="site-footer">
   <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
   <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
@@ -96,15 +109,11 @@
     <a href="open-source.html">Mã nguồn mở</a>
   </div>
 </footer>
-
 <script defer src="simple-nav.js"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
-
 <script defer src="analytics-tracker.js"></script>
 <script defer src="avp-core.js"></script>
-<script defer src="personal-dashboard.js"></script>
-<script defer src="cloud-sync-v11.js"></script>
 <script defer src="theme-unified-v32.js"></script>
 </body>
 </html>
