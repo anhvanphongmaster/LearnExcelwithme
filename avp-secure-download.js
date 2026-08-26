@@ -7,8 +7,7 @@
   window.AVP_DL_FALLBACK = (typeof window.AVP_DL_FALLBACK === "boolean") ? window.AVP_DL_FALLBACK : true;
 
   function toast(msg) {
-    if (window.avpDialog) { window.avpDialog(msg); return; }
-    if (window.avpModal && window.avpModal.alert) { window.avpModal.alert(msg); return; }
+    if (window.avpAlert) return window.avpAlert(msg, { title: "Tải file", icon: "📁", tone: "warn" });
     alert(msg);
   }
 
@@ -56,16 +55,27 @@
       window.location.href = "downloads/" + storagePath;
       return true;
     }
-    toast("File chưa có trên kho bảo mật. Liên hệ admin.");
+    if (window.avpAlert) window.avpAlert("File chưa có trên kho bảo mật. Liên hệ admin.", { title: "Không tải được", icon: "📂", tone: "danger" });
+    else alert("File chưa có trên kho bảo mật. Liên hệ admin.");
     return false;
   }
 
   window.avpSecureDownload = async function (href, filename) {
     const user = await currentUser();
     if (!user) {
-      toast("Đăng nhập mới được tải file thực hành.");
       var next = encodeURIComponent(location.pathname.split("/").pop() || "index.html");
-      setTimeout(function () { location.href = "auth.html?next=" + next; }, 600);
+      function goLogin(){ location.href = "auth.html?next=" + next; }
+      if (window.avpConfirm) {
+        window.avpConfirm("Bạn cần đăng nhập để tải file thực hành.\nChưa có tài khoản thì bấm Có để đăng ký.", {
+          title: "Tải file thực hành",
+          icon: "🔐",
+          tone: "warn",
+          ok: "Có, đi đăng nhập",
+          cancel: "Không"
+        }).then(function (ok) { if (ok) goLogin(); });
+      } else {
+        if (confirm("Đăng nhập mới được tải file. Đi đăng nhập?")) goLogin();
+      }
       return;
     }
     var path = storagePathFromHref(href);
