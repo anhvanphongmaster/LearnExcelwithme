@@ -11,6 +11,18 @@ const configured =
 const supabase = configured ? createClient(cfg.url, cfg.publishableKey) : null;
 
 
+
+async function nameTaken(handle){
+  if(!supabase) return false;
+  try{
+    const { data, error } = await supabase.rpc("is_account_name_taken", { p_handle: handle });
+    if(error) return false;
+    return !!data;
+  }catch(e){
+    return false;
+  }
+}
+
 function toAuthEmail(raw){
   raw = String(raw || "").trim();
   if(!raw) return "";
@@ -85,6 +97,22 @@ document.addEventListener("DOMContentLoaded",()=>{
     });
   });
 
+  
+  ["registerName","registerEmail"].forEach(function(id){
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.addEventListener("blur", async function(){
+      const v=el.value.trim();
+      if(v.length<2) return;
+      if(await nameTaken(v)){
+        msg("registerMessage","Tên "" + v + "" đã có người dùng.");
+      }else{
+        const box=document.getElementById("registerMessage");
+        if(box && /đã có người/.test(box.textContent||"")) box.textContent="";
+      }
+    });
+  });
+
   document.getElementById("loginForm")?.addEventListener("submit",async e=>{
     e.preventDefault();
     if(!supabase){
@@ -139,6 +167,12 @@ document.addEventListener("DOMContentLoaded",()=>{
       return;
     }
 
+    const handle = (name || raw).trim();
+    if(await nameTaken(handle) || await nameTaken(raw)){
+      msg("registerMessage","Tên này đã có người dùng. Hãy chọn tên khác.");
+      return;
+    }
+
     msg("registerMessage","Đang tạo tài khoản...",true);
 
     const { data, error }=await supabase.auth.signUp({
@@ -155,6 +189,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 
     if(data.session){
+      try{ await supabase.rpc("claim_account_name", { p_handle: (name || raw).trim() }); }catch(e){}
       msg("registerMessage","✓ Tạo tài khoản thành công! Đang đăng nhập...",true);
       goAfterAuth(600);
     }else{
