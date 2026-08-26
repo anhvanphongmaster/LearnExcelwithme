@@ -1,14 +1,12 @@
 /**
- * Tải file thực hành — bắt đăng nhập + ưu tiên Supabase Storage (bucket: practice-uploads)
- * Bật fallback GitHub khi file chưa up Storage: window.AVP_DL_FALLBACK = true
- * Sau khi up hết Storage + xóa downloads/ trên GitHub: đặt AVP_DL_FALLBACK = false
+ * Tải file: chưa login thì nút "Đăng nhập để tải" — bấm vào trang auth, không hiện hộp thoại.
  */
 (function () {
   window.AVP_DL_FALLBACK = (typeof window.AVP_DL_FALLBACK === "boolean") ? window.AVP_DL_FALLBACK : true;
 
-  function toast(msg) {
-    if (window.avpAlert) return window.avpAlert(msg, { title: "Tải file", icon: "📁", tone: "warn" });
-    alert(msg);
+  function loginUrl() {
+    var next = encodeURIComponent((location.pathname.split("/").pop() || "index.html"));
+    return "auth.html?next=" + next;
   }
 
   async function waitSb(ms) {
@@ -40,56 +38,65 @@
     return u.replace(/^\.\//, "");
   }
 
-  async function signedOrFallback(storagePath, filename) {
+  function markDownloadButtons(loggedIn) {
+    document.querySelectorAll("a.pv-download, a.pyt-dl-block, a.pyt-file-alt, a[data-secure-dl]").forEach(function (a) {
+      a.setAttribute("data-secure-dl", "1");
+      if (loggedIn) {
+        if (a.classList.contains("pv-download")) a.textContent = "Tải file";
+        a.classList.remove("need-login");
+      } else {
+        if (a.classList.contains("pv-download") || a.classList.contains("pyt-dl-block")) {
+          a.textContent = "Đăng nhập để tải";
+        }
+        a.classList.add("need-login");
+      }
+    });
+  }
+
+  async function signedOrFallback(storagePath) {
     const sb = await waitSb(3000);
     if (sb) {
       try {
         const { data, error } = await sb.storage.from("practice-uploads").createSignedUrl(storagePath, 90);
         if (!error && data && data.signedUrl) {
           window.location.href = data.signedUrl;
-          return true;
+          return;
         }
       } catch (e) {}
     }
     if (window.AVP_DL_FALLBACK) {
       window.location.href = "downloads/" + storagePath;
-      return true;
+      return;
     }
-    if (window.avpAlert) window.avpAlert("File chưa có trên kho bảo mật. Liên hệ admin.", { title: "Không tải được", icon: "📂", tone: "danger" });
-    else alert("File chưa có trên kho bảo mật. Liên hệ admin.");
-    return false;
+    var st = document.getElementById("pvFileStatus");
+    if (st) st.textContent = "File chưa có trên kho bảo mật.";
   }
 
-  window.avpSecureDownload = async function (href, filename) {
+  window.avpSecureDownload = async function (href) {
     const user = await currentUser();
     if (!user) {
-      var next = encodeURIComponent(location.pathname.split("/").pop() || "index.html");
-      function goLogin(){ location.href = "auth.html?next=" + next; }
-      if (window.avpConfirm) {
-        window.avpConfirm("Bạn cần đăng nhập để tải file thực hành.\nChưa có tài khoản thì bấm Có để đăng ký.", {
-          title: "Tải file thực hành",
-          icon: "🔐",
-          tone: "warn",
-          ok: "Có, đi đăng nhập",
-          cancel: "Không"
-        }).then(function (ok) { if (ok) goLogin(); });
-      } else {
-        if (confirm("Đăng nhập mới được tải file. Đi đăng nhập?")) goLogin();
-      }
+      location.href = loginUrl();
       return;
     }
     var path = storagePathFromHref(href);
-    if (!path) { toast("Không tìm thấy file."); return; }
-    await signedOrFallback(path, filename || path.split("/").pop());
+    if (!path) return;
+    await signedOrFallback(path);
   };
 
   document.addEventListener("click", function (e) {
     var a = e.target.closest("a.pv-download, a.pyt-dl-block, a.pyt-file-alt, a[data-secure-dl]");
     if (!a) return;
     var href = a.getAttribute("href") || "";
-    if (!href || href === "#" || href.indexOf("javascript:") === 0) return;
-    if (href.indexOf("downloads/") < 0 && !a.hasAttribute("data-secure-dl")) return;
+    if (!href || href.indexOf("downloads/") < 0 && !a.hasAttribute("data-secure-dl")) return;
     e.preventDefault();
-    window.avpSecureDownload(href, a.getAttribute("download") || "");
+    window.avpSecureDownload(href);
   }, true);
+
+  function boot() {
+    currentUser().then(function (u) { markDownloadButtons(!!u); });
+    setTimeout(function () { currentUser().then(function (u) { markDownloadButtons(!!u); }); }, 800);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+  document.addEventListener("pv-rendered", boot);
 })();

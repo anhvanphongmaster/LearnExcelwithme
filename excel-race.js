@@ -769,15 +769,7 @@
       $("msg").textContent = "Đăng nhập để chơi Race.";
       if (typeof setNameStatus === "function") setNameStatus("Cần đăng nhập", "err");
       setNameGate(true);
-      var next = encodeURIComponent("excel-race.html");
-      if (window.avpConfirm) {
-        window.avpConfirm("Đăng nhập để chơi Excel Race.\nTên trên BXH lấy từ tài khoản.", {
-          title: "Excel Race", icon: "🏁", tone: "warn",
-          ok: "Có, đi đăng nhập", cancel: "Không"
-        }).then(function (ok) { if (ok) location.href = "auth.html?next=" + next; });
-      } else if (confirm("Đăng nhập để chơi?")) {
-        location.href = "auth.html?next=" + next;
-      }
+      location.href = "auth.html?next=" + encodeURIComponent("excel-race.html");
       return;
     }
     all = (window.EXCEL_RACE_QUESTIONS || []).slice();

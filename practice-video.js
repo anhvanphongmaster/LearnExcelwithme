@@ -402,19 +402,7 @@
     } catch (e) { return null; }
   }
   function askLogin(reason) {
-    var next = encodeURIComponent("practice-video.html");
-    function go(){ location.href = "auth.html?next=" + next; }
-    var body = reason || "Bạn cần đăng nhập để dùng chức năng này.";
-    if (window.avpConfirm) {
-      return window.avpConfirm(body, {
-        title: "Cần đăng nhập",
-        icon: "🔐",
-        tone: "warn",
-        ok: "Có, đi đăng nhập",
-        cancel: "Không"
-      }).then(function (ok) { if (ok) go(); return false; });
-    }
-    if (confirm(body + "\nĐi đăng nhập?")) go();
+    location.href = "auth.html?next=" + encodeURIComponent("practice-video.html");
     return Promise.resolve(false);
   }
   async function requireLogin(reason) {
