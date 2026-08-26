@@ -411,7 +411,7 @@
         .select("player_name,best_streak,best_level,updated_at")
         .order("best_streak", { ascending: false })
         .order("best_level", { ascending: false })
-        .limit(20);
+        .limit(100); // Top 100 BXH Race
       if (error) {
         list.innerHTML = '<li class="muted">Lỗi tải BXH: ' + (error.message || "cần tạo bảng") + "</li>";
         return;
@@ -421,6 +421,7 @@
         rivals = [];
         return;
       }
+      data = data.slice(0, 100);
       rivals = data
         .filter(function (row) {
           return row && row.player_name && (!playerName || row.player_name !== playerName);
@@ -439,6 +440,7 @@
         return '<li class="' + me + '">' + (i + 1) + ". <b>" + escapeBoard(row.player_name) +
           "</b> — chuỗi " + row.best_streak + " · cấp " + row.best_level + "</li>";
       }).join("");
+      list.insertAdjacentHTML("beforeend", '<li class="muted board-foot">Top 100 · cuộn để xem thêm</li>');
     } catch (e) {
       list.innerHTML = '<li class="muted">Không tải được BXH.</li>';
     }

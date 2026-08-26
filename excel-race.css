@@ -439,3 +439,24 @@ body{margin:0;font-family:Arial,sans-serif;background:#0d1f16;color:#e9fff2}
 @media(max-width:480px){
   .race-go-row.has-stop{ grid-template-columns: 1fr; }
 }
+
+
+/* BXH Race: tối đa khung, cuộn trong list (Top 100) */
+#boardList, .board-list, .race-board ol, .race-board ul{
+  max-height: 280px !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+}
+#boardList::-webkit-scrollbar{ width: 6px; }
+#boardList::-webkit-scrollbar-thumb{
+  background: rgba(96,165,250,.7);
+  border-radius: 99px;
+}
+.board-foot{
+  text-align: center !important;
+  font-size: 11px !important;
+  opacity: .85;
+  padding: 8px 0 2px !important;
+  list-style: none !important;
+}
