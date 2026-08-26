@@ -58,7 +58,7 @@
       category: "Làm sạch dữ liệu",
       skill: "DATEVALUE • Text to Columns • chuẩn dd/mm/yyyy",
       filterTags: ["Làm sạch dữ liệu"],
-      file: "",
+      file: "24_ngay_dang_chu.xlsx",
       folder: "downloads/video-practice/"
     },
     {
@@ -69,7 +69,7 @@
       category: "Làm sạch dữ liệu",
       skill: "Remove Duplicates • UNIQUE • điều kiện 2–3 cột",
       filterTags: ["Làm sạch dữ liệu"],
-      file: "",
+      file: "25_xoa_trung_nhieu_cot.xlsx",
       folder: "downloads/video-practice/"
     },
 
@@ -240,7 +240,7 @@
       category: "Công thức",
       skill: "SUMIFS • COUNTIFS • tiêu chí ngày / khu vực",
       filterTags: ["Công thức"],
-      file: "",
+      file: "26_sumifs_countifs.xlsx",
       folder: "downloads/video-practice/"
     },
     {
@@ -251,7 +251,7 @@
       category: "Công thức",
       skill: "IF • IFS • lồng điều kiện có kiểm soát",
       filterTags: ["Công thức"],
-      file: "",
+      file: "27_if_ifs.xlsx",
       folder: "downloads/video-practice/"
     },
     {
@@ -308,7 +308,7 @@
       category: "Format",
       skill: "Highlight • Color scale • Rule theo giá trị",
       filterTags: ["Format"],
-      file: "",
+      file: "28_conditional_format.xlsx",
       folder: "downloads/video-practice/"
     },
     {
@@ -319,7 +319,7 @@
       category: "Format",
       skill: "Insert Pivot • Rows/Columns/Values • Refresh",
       filterTags: ["Format", "Power Query"],
-      file: "",
+      file: "29_pivot_co_ban.xlsx",
       folder: "downloads/video-practice/"
     },
 

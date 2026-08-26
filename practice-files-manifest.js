@@ -28,7 +28,13 @@ const availablePracticeFiles = [
   "19_Skip_Blanks.xlsx",
   "20_TEXTBEFORE.xlsx",
   "21_Fill_Down.xlsx",
-  "23_AGGREGATE.xlsx"
+  "23_AGGREGATE.xlsx",
+  "24_ngay_dang_chu.xlsx",
+  "25_xoa_trung_nhieu_cot.xlsx",
+  "26_sumifs_countifs.xlsx",
+  "27_if_ifs.xlsx",
+  "28_conditional_format.xlsx",
+  "29_pivot_co_ban.xlsx"
 ];
 
 const practiceFileAliases = {
