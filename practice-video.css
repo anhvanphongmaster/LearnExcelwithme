@@ -881,3 +881,11 @@ body.dark-mode .pv-topic-poll-panel .pv-topic-row{
   .pv-vote{font-size:10px!important;padding:5px 8px!important}
   .pv-vote-hint{font-size:9.8px!important}
 }
+
+/* 100-bài roadmap: cấp độ hiển thị ngay trên từng bài */
+.pv-level{display:inline-flex;align-items:center;justify-content:center;margin-right:7px;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:800;line-height:1.2;white-space:nowrap;vertical-align:1px}
+.pv-level-basic{background:#eaf7ef;color:#176b43;border:1px solid #bde5cc}
+.pv-level-mid{background:#eef5ff;color:#255a9b;border:1px solid #cbdcf7}
+.pv-level-advanced{background:#fff4df;color:#9a5a00;border:1px solid #f0d49e}
+.pv-level-case{background:#f5ebff;color:#7137a6;border:1px solid #dfc7f5}
+@media (max-width:640px){.pv-level{font-size:10px;padding:2px 6px;margin-right:5px}.pv-skill{line-height:1.55}}

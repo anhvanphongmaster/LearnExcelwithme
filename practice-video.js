@@ -5,324 +5,1407 @@
  */
 (function () {
   const videoPracticeData = [
-    // ===== LÀM SẠCH DỮ LIỆU =====
     {
-      id: "video-01",
-      number: 1,
-      icon: "🧹",
-      title: "Làm sạch dữ liệu • Cột trùng",
-      category: "Làm sạch dữ liệu",
-      skill: "Trim • Clean • Kiểu dữ liệu • Column Quality",
-      filterTags: ["Làm sạch dữ liệu"],
-      file: "01_PowerQuery_DEMO.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "c2-sum-text",
+        "number": 1,
+        "icon": "0",
+        "title": "Số nhìn như số nhưng SUM ra 0",
+        "category": "Làm sạch dữ liệu",
+        "skill": "VALUE • Convert to Number • Paste Special Multiply",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "file": "09_so_nhin_nhu_so_SUM_0.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Cơ bản"
     },
     {
-      id: "v04-so-viet",
-      number: 2,
-      icon: "VN",
-      title: "Số kiểu Việt 1.234.567 Excel không cộng",
-      category: "Làm sạch dữ liệu",
-      skill: "SUBSTITUTE • VALUE • dấu chấm nghìn",
-      filterTags: ["Làm sạch dữ liệu"],
-      file: "06_so_viet.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-02-blank",
+        "category": "Làm sạch dữ liệu",
+        "number": 2,
+        "icon": "🧽",
+        "title": "Xóa dòng trống và ô trống đúng cách",
+        "skill": "Go To Special • Filter blanks • không xóa nhầm dữ liệu",
+        "file": "clean_02_blank_rows.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "c2-sum-text",
-      number: 3,
-      icon: "0",
-      title: "Số nhìn như số nhưng SUM ra 0",
-      category: "Làm sạch dữ liệu",
-      skill: "VALUE • Convert to Number • Paste Special Multiply",
-      filterTags: ["Làm sạch dữ liệu"],
-      file: "09_so_nhin_nhu_so_SUM_0.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-03-case",
+        "category": "Làm sạch dữ liệu",
+        "number": 3,
+        "icon": "🔤",
+        "title": "Chuẩn hóa chữ HOA/thường/tên riêng",
+        "skill": "UPPER • LOWER • PROPER • TRIM",
+        "file": "clean_03_case_text.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "v01-char160",
-      number: 4,
-      icon: "👻",
-      title: "Khoảng trắng ma CHAR(160)",
-      category: "Làm sạch dữ liệu",
-      skill: "LEN • CODE • MID • SUBSTITUTE CHAR(160)",
-      filterTags: ["Làm sạch dữ liệu"],
-      file: "11_CHAR160.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-04-split",
+        "category": "Làm sạch dữ liệu",
+        "number": 4,
+        "icon": "✂️",
+        "title": "Tách dữ liệu dính trong một cột",
+        "skill": "Text to Columns • LEFT/RIGHT/MID • delimiter",
+        "file": "clean_04_split_text.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "clean-date-text",
-      number: 5,
-      icon: "📅",
-      title: "Ngày dạng chữ → ngày thật (DATEVALUE)",
-      category: "Làm sạch dữ liệu",
-      skill: "DATEVALUE • Text to Columns • chuẩn dd/mm/yyyy",
-      filterTags: ["Làm sạch dữ liệu"],
-      file: "24_ngay_dang_chu.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "v04-so-viet",
+        "number": 5,
+        "icon": "VN",
+        "title": "Số kiểu Việt 1.234.567 Excel không cộng",
+        "category": "Làm sạch dữ liệu",
+        "skill": "SUBSTITUTE • VALUE • dấu chấm nghìn",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "file": "06_so_viet.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Cơ bản"
     },
     {
-      id: "clean-dup-multi",
-      number: 6,
-      icon: "🧬",
-      title: "Xóa trùng theo nhiều cột",
-      category: "Làm sạch dữ liệu",
-      skill: "Remove Duplicates • UNIQUE • điều kiện 2–3 cột",
-      filterTags: ["Làm sạch dữ liệu"],
-      file: "25_xoa_trung_nhieu_cot.xlsx",
-      folder: "downloads/video-practice/"
-    },
-
-    // ===== POWER QUERY =====
-    {
-      id: "video-02",
-      number: 1,
-      icon: "📂",
-      title: "Gộp file / thư mục / nhiều sheet bằng Power Query",
-      category: "Power Query",
-      skill: "From Folder • Append • From File (sheet) • Combine",
-      filterTags: ["Power Query"],
-      file: "02_PowerQuery-11-Files.zip",
-      folder: "downloads/video-practice/"
+        "id": "video-01",
+        "number": 6,
+        "icon": "🧹",
+        "title": "Làm sạch dữ liệu • Cột trùng",
+        "category": "Làm sạch dữ liệu",
+        "skill": "Trim • Clean • Kiểu dữ liệu • Column Quality",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "file": "01_PowerQuery_DEMO.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Cơ bản"
     },
     {
-      id: "video-03",
-      number: 2,
-      icon: "📊",
-      title: "Tạo PivotTable từ kết quả Power Query",
-      category: "Power Query",
-      skill: "Close & Load • Pivot • Refresh",
-      filterTags: ["Power Query"],
-      file: "02_PowerQuery-11-Files.zip",
-      folder: "downloads/video-practice/"
+        "id": "clean-07-leadingzero",
+        "category": "Làm sạch dữ liệu",
+        "number": 7,
+        "icon": "0️⃣",
+        "title": "Giữ mã có số 0 ở đầu",
+        "skill": "Text format • TEXT • Custom format",
+        "file": "clean_07_leading_zero.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "video-04",
-      number: 3,
-      icon: "📈",
-      title: "Dashboard QC từ Pivot Power Query",
-      category: "Power Query",
-      skill: "KPI • Slicer • PivotChart",
-      filterTags: ["Power Query"],
-      file: "02_PowerQuery-11-Files.zip",
-      folder: "downloads/video-practice/"
+        "id": "clean-08-nonprint",
+        "category": "Làm sạch dữ liệu",
+        "number": 8,
+        "icon": "🫥",
+        "title": "Xóa ký tự ẩn xuống dòng trong ô",
+        "skill": "CLEAN • SUBSTITUTE • CHAR(10)",
+        "file": "clean_08_nonprinting.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "v08-unpivot",
-      number: 4,
-      icon: "↔️",
-      title: "Unpivot: báo cáo nằm ngang thành dữ liệu",
-      category: "Power Query",
-      skill: "Unpivot Columns • Rename • Change Type",
-      filterTags: ["Power Query"],
-      file: "15_Unpivot.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-09-phone",
+        "category": "Làm sạch dữ liệu",
+        "number": 9,
+        "icon": "📞",
+        "title": "Chuẩn hóa số điện thoại lộn xộn",
+        "skill": "SUBSTITUTE • RIGHT • TEXT • chuẩn 10 số",
+        "file": "clean_09_phone.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "v10-fuzzy",
-      number: 5,
-      icon: "🔗",
-      title: "Fuzzy merge tên gần giống",
-      category: "Power Query",
-      skill: "Merge Queries • Fuzzy Matching • Threshold",
-      filterTags: ["Power Query"],
-      file: "17_Fuzzy_merge.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-10-email",
+        "category": "Làm sạch dữ liệu",
+        "number": 10,
+        "icon": "✉️",
+        "title": "Phát hiện email sai định dạng",
+        "skill": "SEARCH • IF • ký tự @ và dấu chấm",
+        "file": "clean_10_email.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "c1-pq-10sheet",
-      number: 6,
-      icon: "📋",
-      title: "Gộp nhiều sheet rồi phát hiện dữ liệu bẩn",
-      category: "Power Query",
-      skill: "Append sheets • Column quality • lỗi sau khi gộp",
-      filterTags: ["Power Query"],
-      file: "18_PQ_10_sheet.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-11-error",
+        "category": "Làm sạch dữ liệu",
+        "number": 11,
+        "icon": "⚠️",
+        "title": "Làm sạch ô lỗi #N/A, #VALUE!, #DIV/0!",
+        "skill": "IFERROR • IFNA • kiểm tra nguồn lỗi",
+        "file": "clean_11_formula_errors.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "v13-filldown",
-      number: 7,
-      icon: "⬇️",
-      title: "Skip row + Fill Down trong Power Query",
-      category: "Power Query",
-      skill: "Skip rows • Fill Down • Promote headers",
-      filterTags: ["Power Query"],
-      file: "21_Fill_Down.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-12-mixed",
+        "category": "Làm sạch dữ liệu",
+        "number": 12,
+        "icon": "🧩",
+        "title": "Một cột trộn số, text và ngày",
+        "skill": "TYPE • ISTEXT • ISNUMBER • chuẩn kiểu dữ liệu",
+        "file": "clean_12_mixed_types.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "v14-distinct",
-      number: 8,
-      icon: "🎯",
-      title: "Làm sạch → Pivot → Dashboard",
-      category: "Power Query",
-      skill: "Clean • Pivot • Slicer • Dashboard tháng",
-      filterTags: ["Power Query"],
-      file: "22_dashboard_thang.xlsx",
-      folder: "downloads/video-practice/"
-    },
-
-    // ===== NHẬP LIỆU =====
-    {
-      id: "b01-filter-zone",
-      number: 1,
-      icon: "📌",
-      title: "Làm việc đúng vùng đang Filter (dán / copy)",
-      category: "Nhập liệu",
-      skill: "Filter • Visible cells only • Alt+; • dán đúng dòng",
-      filterTags: ["Nhập liệu"],
-      file: "08_dan_dong_loc.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "v01-char160",
+        "number": 13,
+        "icon": "👻",
+        "title": "Khoảng trắng ma CHAR(160)",
+        "category": "Làm sạch dữ liệu",
+        "skill": "LEN • CODE • MID • SUBSTITUTE CHAR(160)",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "file": "11_CHAR160.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Trung cấp"
     },
     {
-      id: "c3-ngay",
-      number: 2,
-      icon: "🗓️",
-      title: "10 người nhập 10 kiểu ngày",
-      category: "Nhập liệu",
-      skill: "Chuẩn hóa ngày nhập • Data Validation date",
-      filterTags: ["Nhập liệu"],
-      file: "10_10_kieu_ngay.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-14-dup-one",
+        "category": "Làm sạch dữ liệu",
+        "number": 14,
+        "icon": "👥",
+        "title": "Tìm và xử lý trùng theo một khóa",
+        "skill": "COUNTIF • Conditional Formatting • Remove Duplicates",
+        "file": "clean_14_duplicate_key.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "v06-dropdown-2tang",
-      number: 3,
-      icon: "📑",
-      title: "Dropdown 2 tầng: bộ phận → tên",
-      category: "Nhập liệu",
-      skill: "INDIRECT • Named range • Data Validation",
-      filterTags: ["Nhập liệu"],
-      file: "13_dropdown_2_tang.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-dup-multi",
+        "number": 15,
+        "icon": "🧬",
+        "title": "Xóa trùng theo nhiều cột",
+        "category": "Làm sạch dữ liệu",
+        "skill": "Remove Duplicates • UNIQUE • điều kiện 2–3 cột",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "file": "25_xoa_trung_nhieu_cot.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Nâng cao"
     },
     {
-      id: "valid-1tang-trung",
-      number: 4,
-      icon: "✅",
-      title: "Dropdown 1 tầng + chặn nhập trùng",
-      category: "Nhập liệu",
-      skill: "Data Validation list • COUNTIF chặn trùng",
-      filterTags: ["Nhập liệu"],
-      file: "NhapLieu_Dropdown2_ChanTrung.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-16-outlier",
+        "category": "Làm sạch dữ liệu",
+        "number": 16,
+        "icon": "📏",
+        "title": "Bắt giá trị bất thường trước khi báo cáo",
+        "skill": "MIN/MAX • MEDIAN • ngưỡng nghiệp vụ",
+        "file": "clean_16_outliers.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "v11-skip-blanks",
-      number: 5,
-      icon: "📋",
-      title: "Paste Special Skip Blanks",
-      category: "Nhập liệu",
-      skill: "Paste Special • Skip blanks • không đè dữ liệu cũ",
-      filterTags: ["Nhập liệu"],
-      file: "19_Skip_Blanks.xlsx",
-      folder: "downloads/video-practice/"
-    },
-
-    // ===== CÔNG THỨC =====
-    {
-      id: "v07-xlookup",
-      number: 1,
-      icon: "🔍",
-      title: "XLOOKUP không còn #N/A",
-      category: "Công thức",
-      skill: "XLOOKUP • if_not_found • tra cứu an toàn",
-      filterTags: ["Công thức"],
-      file: "14_XLOOKUP.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-17-reconcile",
+        "category": "Làm sạch dữ liệu",
+        "number": 17,
+        "icon": "🕵️",
+        "title": "Tìm bản ghi bị thiếu giữa hai danh sách",
+        "skill": "XLOOKUP • COUNTIF • đối soát mã",
+        "file": "clean_17_reconcile.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "ct-sumifs",
-      number: 2,
-      icon: "➕",
-      title: "SUMIFS / COUNTIFS theo nhiều điều kiện",
-      category: "Công thức",
-      skill: "SUMIFS • COUNTIFS • tiêu chí ngày / khu vực",
-      filterTags: ["Công thức"],
-      file: "26_sumifs_countifs.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-18-quality",
+        "category": "Làm sạch dữ liệu",
+        "number": 18,
+        "icon": "🧪",
+        "title": "Tạo cột kiểm tra chất lượng dữ liệu",
+        "skill": "IF • AND/OR • cờ lỗi nhiều điều kiện",
+        "file": "clean_18_quality_flag.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "ct-if-ifs",
-      number: 3,
-      icon: "🔀",
-      title: "IF / IFS phân loại dữ liệu",
-      category: "Công thức",
-      skill: "IF • IFS • lồng điều kiện có kiểm soát",
-      filterTags: ["Công thức"],
-      file: "27_if_ifs.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-date-text",
+        "number": 19,
+        "icon": "📅",
+        "title": "Ngày dạng chữ → ngày thật (DATEVALUE)",
+        "category": "Làm sạch dữ liệu",
+        "skill": "DATEVALUE • Text to Columns • chuẩn dd/mm/yyyy",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "file": "24_ngay_dang_chu.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Nâng cao"
     },
     {
-      id: "v12-textbefore",
-      number: 4,
-      icon: "✂️",
-      title: "Tách họ tên bằng TEXTBEFORE",
-      category: "Công thức",
-      skill: "TEXTBEFORE • TEXTAFTER • TEXTSPLIT",
-      filterTags: ["Công thức"],
-      file: "20_TEXTBEFORE.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "clean-20-case",
+        "category": "Làm sạch dữ liệu",
+        "number": 20,
+        "icon": "🏁",
+        "title": "Case tổng hợp: cứu một file dữ liệu bẩn",
+        "skill": "Trim • kiểu dữ liệu • trùng • ngày • lỗi • đối soát",
+        "file": "clean_20_full_case.xlsx",
+        "level": "Case thực tế",
+        "filterTags": [
+            "Làm sạch dữ liệu"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "v15-aggregate",
-      number: 5,
-      icon: "🧮",
-      title: "AGGREGATE bỏ lỗi và dòng ẩn",
-      category: "Công thức",
-      skill: "AGGREGATE • bỏ #DIV/0! • bỏ dòng ẩn Filter",
-      filterTags: ["Công thức"],
-      file: "23_AGGREGATE.xlsx",
-      folder: "downloads/video-practice/"
-    },
-
-    // ===== FORMAT =====
-    {
-      id: "v02-center-across",
-      number: 1,
-      icon: "↔️",
-      title: "Đừng Merge — Center Across Selection",
-      category: "Format",
-      skill: "Alignment • Center Across • Sort an toàn",
-      filterTags: ["Format"],
-      file: "05_center_across.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "pq-01-import",
+        "category": "Power Query",
+        "number": 1,
+        "icon": "📥",
+        "title": "Nạp bảng Excel vào Power Query đúng chuẩn",
+        "skill": "From Table/Range • Headers • Data Type",
+        "file": "pq_01_import_table.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "v05-an-so-0",
-      number: 2,
-      icon: "🚫",
-      title: "Custom format ẩn số 0",
-      category: "Format",
-      skill: "Custom format 0;-0;;@ • #,##0;-#,##0;;@",
-      filterTags: ["Format"],
-      file: "07_an_so_0.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "pq-02-types",
+        "category": "Power Query",
+        "number": 2,
+        "icon": "🔢",
+        "title": "Sửa kiểu dữ liệu trước khi biến đổi",
+        "skill": "Change Type • Using Locale • lỗi kiểu dữ liệu",
+        "file": "pq_02_change_types.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "fmt-cf-basic",
-      number: 3,
-      icon: "🎨",
-      title: "Conditional Formatting cơ bản",
-      category: "Format",
-      skill: "Highlight • Color scale • Rule theo giá trị",
-      filterTags: ["Format"],
-      file: "28_conditional_format.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "pq-03-cols",
+        "category": "Power Query",
+        "number": 3,
+        "icon": "🧱",
+        "title": "Giữ, xóa và sắp xếp cột có chủ đích",
+        "skill": "Choose Columns • Remove Columns • Reorder",
+        "file": "pq_03_columns.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
     },
     {
-      id: "pivot-basic",
-      number: 4,
-      icon: "📉",
-      title: "PivotTable cơ bản (không cần Power Query)",
-      category: "Format",
-      skill: "Insert Pivot • Rows/Columns/Values • Refresh",
-      filterTags: ["Format", "Power Query"],
-      file: "29_pivot_co_ban.xlsx",
-      folder: "downloads/video-practice/"
+        "id": "pq-04-filter",
+        "category": "Power Query",
+        "number": 4,
+        "icon": "🔎",
+        "title": "Lọc dữ liệu ngay trong Power Query",
+        "skill": "Filter Rows • Sort • Remove Empty",
+        "file": "pq_04_filter_rows.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
     },
-  ];
+    {
+        "id": "pq-05-replace",
+        "category": "Power Query",
+        "number": 5,
+        "icon": "🧹",
+        "title": "Replace và chuẩn hóa giá trị hàng loạt",
+        "skill": "Replace Values • Trim • Clean • Capitalize",
+        "file": "pq_05_replace_clean.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "v13-filldown",
+        "number": 6,
+        "icon": "⬇️",
+        "title": "Skip row + Fill Down trong Power Query",
+        "category": "Power Query",
+        "skill": "Skip rows • Fill Down • Promote headers",
+        "filterTags": [
+            "Power Query"
+        ],
+        "file": "21_Fill_Down.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Cơ bản"
+    },
+    {
+        "id": "pq-07-groupby",
+        "category": "Power Query",
+        "number": 7,
+        "icon": "Σ",
+        "title": "Group By: tổng hợp không cần Pivot",
+        "skill": "Group By • Sum • Count Rows • Average",
+        "file": "pq_07_group_by.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "v08-unpivot",
+        "number": 8,
+        "icon": "↔️",
+        "title": "Unpivot: báo cáo nằm ngang thành dữ liệu",
+        "category": "Power Query",
+        "skill": "Unpivot Columns • Rename • Change Type",
+        "filterTags": [
+            "Power Query"
+        ],
+        "file": "15_Unpivot.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Trung cấp"
+    },
+    {
+        "id": "pq-09-merge",
+        "category": "Power Query",
+        "number": 9,
+        "icon": "🔗",
+        "title": "Merge hai bảng theo mã chính xác",
+        "skill": "Merge Queries • Left Outer • Expand",
+        "file": "pq_09_merge_exact.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "pq-10-antijoin",
+        "category": "Power Query",
+        "number": 10,
+        "icon": "🧭",
+        "title": "Left Anti: tìm dòng bị thiếu trong Master",
+        "skill": "Merge Queries • Left Anti • đối soát",
+        "file": "pq_10_left_anti.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "c1-pq-10sheet",
+        "number": 11,
+        "icon": "📋",
+        "title": "Gộp nhiều sheet rồi phát hiện dữ liệu bẩn",
+        "category": "Power Query",
+        "skill": "Append sheets • Column quality • lỗi sau khi gộp",
+        "filterTags": [
+            "Power Query"
+        ],
+        "file": "18_PQ_10_sheet.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Trung cấp"
+    },
+    {
+        "id": "video-02",
+        "number": 12,
+        "icon": "📂",
+        "title": "Gộp file / thư mục / nhiều sheet bằng Power Query",
+        "category": "Power Query",
+        "skill": "From Folder • Append • From File (sheet) • Combine",
+        "filterTags": [
+            "Power Query"
+        ],
+        "file": "02_PowerQuery-11-Files.zip",
+        "folder": "downloads/video-practice/",
+        "level": "Trung cấp"
+    },
+    {
+        "id": "pq-13-custom",
+        "category": "Power Query",
+        "number": 13,
+        "icon": "🧮",
+        "title": "Conditional Column và Custom Column",
+        "skill": "Add Column • Conditional • Custom • kiểu dữ liệu",
+        "file": "pq_13_custom_column.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "v10-fuzzy",
+        "number": 14,
+        "icon": "🔗",
+        "title": "Fuzzy merge tên gần giống",
+        "category": "Power Query",
+        "skill": "Merge Queries • Fuzzy Matching • Threshold",
+        "filterTags": [
+            "Power Query"
+        ],
+        "file": "17_Fuzzy_merge.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Trung cấp"
+    },
+    {
+        "id": "pq-15-schema",
+        "category": "Power Query",
+        "number": 15,
+        "icon": "🧯",
+        "title": "Gộp file khi header bị lệch và thiếu cột",
+        "skill": "Schema drift • Rename • MissingField • Append",
+        "file": "pq_15_schema_drift.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "video-03",
+        "number": 16,
+        "icon": "📊",
+        "title": "Tạo PivotTable từ kết quả Power Query",
+        "category": "Power Query",
+        "skill": "Close & Load • Pivot • Refresh",
+        "filterTags": [
+            "Power Query"
+        ],
+        "file": "02_PowerQuery-11-Files.zip",
+        "folder": "downloads/video-practice/",
+        "level": "Nâng cao"
+    },
+    {
+        "id": "pq-17-errors",
+        "category": "Power Query",
+        "number": 17,
+        "icon": "🚨",
+        "title": "Bắt lỗi sau Refresh thay vì tin 0% Error",
+        "skill": "Keep Errors • Remove Errors • kiểm tra số dòng",
+        "file": "pq_17_error_audit.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "pq-18-parameter",
+        "category": "Power Query",
+        "number": 18,
+        "icon": "🎛️",
+        "title": "Dùng Parameter để đổi nguồn và khoảng thời gian",
+        "skill": "Manage Parameters • Source • Filter động",
+        "file": "pq_18_parameters.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Power Query"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "v14-distinct",
+        "number": 19,
+        "icon": "🎯",
+        "title": "Làm sạch → Pivot → Dashboard",
+        "category": "Power Query",
+        "skill": "Clean • Pivot • Slicer • Dashboard tháng",
+        "filterTags": [
+            "Power Query"
+        ],
+        "file": "22_dashboard_thang.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Nâng cao"
+    },
+    {
+        "id": "video-04",
+        "number": 20,
+        "icon": "📈",
+        "title": "Dashboard QC từ Pivot Power Query",
+        "category": "Power Query",
+        "skill": "KPI • Slicer • PivotChart",
+        "filterTags": [
+            "Power Query"
+        ],
+        "file": "02_PowerQuery-11-Files.zip",
+        "folder": "downloads/video-practice/",
+        "level": "Case thực tế"
+    },
+    {
+        "id": "input-01-list",
+        "category": "Nhập liệu",
+        "number": 1,
+        "icon": "✅",
+        "title": "Dropdown 1 tầng cho dữ liệu chuẩn ngay từ đầu",
+        "skill": "Data Validation • List • nguồn danh mục",
+        "file": "input_01_dropdown.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "valid-1tang-trung",
+        "number": 2,
+        "icon": "✅",
+        "title": "Dropdown 1 tầng + chặn nhập trùng",
+        "category": "Nhập liệu",
+        "skill": "Data Validation list • COUNTIF chặn trùng",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "file": "NhapLieu_Dropdown2_ChanTrung.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Cơ bản"
+    },
+    {
+        "id": "input-03-number",
+        "category": "Nhập liệu",
+        "number": 3,
+        "icon": "🔢",
+        "title": "Chặn nhập số ngoài khoảng cho phép",
+        "skill": "Data Validation • Whole number • Between",
+        "file": "input_03_number_range.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "input-04-date",
+        "category": "Nhập liệu",
+        "number": 4,
+        "icon": "📅",
+        "title": "Chỉ cho nhập ngày hợp lệ",
+        "skill": "Data Validation • Date • Start/End date",
+        "file": "input_04_date_validation.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "input-05-length",
+        "category": "Nhập liệu",
+        "number": 5,
+        "icon": "🔠",
+        "title": "Giới hạn độ dài mã nhân viên",
+        "skill": "Text length • Error Alert • mã cố định",
+        "file": "input_05_text_length.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "input-06-message",
+        "category": "Nhập liệu",
+        "number": 6,
+        "icon": "💬",
+        "title": "Tạo hướng dẫn ngay khi người dùng chọn ô",
+        "skill": "Input Message • Error Alert • Stop/Warning",
+        "file": "input_06_input_message.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "input-07-custom",
+        "category": "Nhập liệu",
+        "number": 7,
+        "icon": "🧠",
+        "title": "Data Validation bằng công thức Custom",
+        "skill": "Custom Formula • COUNTIF • AND",
+        "file": "input_07_custom_validation.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "c3-ngay",
+        "number": 8,
+        "icon": "🗓️",
+        "title": "10 người nhập 10 kiểu ngày",
+        "category": "Nhập liệu",
+        "skill": "Chuẩn hóa ngày nhập • Data Validation date",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "file": "10_10_kieu_ngay.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Trung cấp"
+    },
+    {
+        "id": "input-09-future",
+        "category": "Nhập liệu",
+        "number": 9,
+        "icon": "⏳",
+        "title": "Không cho nhập ngày tương lai",
+        "skill": "TODAY • Custom Validation • kiểm soát ngày",
+        "file": "input_09_no_future_date.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "input-10-code",
+        "category": "Nhập liệu",
+        "number": 10,
+        "icon": "🪪",
+        "title": "Chặn trùng mã nhân viên khi nhập",
+        "skill": "COUNTIF • Custom Validation • unique key",
+        "file": "input_10_unique_code.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "input-11-flash",
+        "category": "Nhập liệu",
+        "number": 11,
+        "icon": "⚡",
+        "title": "Flash Fill để nhập nhanh dữ liệu theo mẫu",
+        "skill": "Flash Fill • Ctrl+E • nhận diện pattern",
+        "file": "input_11_flash_fill.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "input-12-protect",
+        "category": "Nhập liệu",
+        "number": 12,
+        "icon": "🔒",
+        "title": "Chỉ mở đúng vùng cho phép nhập",
+        "skill": "Locked cells • Protect Sheet • vùng input",
+        "file": "input_12_protect_input.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "v06-dropdown-2tang",
+        "number": 13,
+        "icon": "📑",
+        "title": "Dropdown 2 tầng: bộ phận → tên",
+        "category": "Nhập liệu",
+        "skill": "INDIRECT • Named range • Data Validation",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "file": "13_dropdown_2_tang.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Trung cấp"
+    },
+    {
+        "id": "input-13-dynamic",
+        "category": "Nhập liệu",
+        "number": 14,
+        "icon": "♻️",
+        "title": "Dropdown tự mở rộng khi danh mục tăng",
+        "skill": "Excel Table • Data Validation • danh sách động",
+        "file": "input_13_dynamic_dropdown.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "input-14-3level",
+        "category": "Nhập liệu",
+        "number": 15,
+        "icon": "🪜",
+        "title": "Dropdown 3 tầng: Khu vực → Tỉnh → Cửa hàng",
+        "skill": "Named Range • INDIRECT • dependent list",
+        "file": "input_14_dropdown_3level.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "b01-filter-zone",
+        "number": 16,
+        "icon": "📌",
+        "title": "Làm việc đúng vùng đang Filter (dán / copy)",
+        "category": "Nhập liệu",
+        "skill": "Filter • Visible cells only • Alt+; • dán đúng dòng",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "file": "08_dan_dong_loc.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Nâng cao"
+    },
+    {
+        "id": "v11-skip-blanks",
+        "number": 17,
+        "icon": "📋",
+        "title": "Paste Special Skip Blanks",
+        "category": "Nhập liệu",
+        "skill": "Paste Special • Skip blanks • không đè dữ liệu cũ",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "file": "19_Skip_Blanks.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Nâng cao"
+    },
+    {
+        "id": "input-17-team",
+        "category": "Nhập liệu",
+        "number": 18,
+        "icon": "👨‍👩‍👧‍👦",
+        "title": "Template cho nhiều người nhập mà ít sai",
+        "skill": "Validation • quy tắc nhập • cột kiểm tra",
+        "file": "input_17_team_template.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "input-18-audit",
+        "category": "Nhập liệu",
+        "number": 19,
+        "icon": "🚦",
+        "title": "Cảnh báo lỗi nhập ngay trên cùng một dòng",
+        "skill": "IF • AND/OR • Conditional Formatting",
+        "file": "input_18_input_audit.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "input-20-case",
+        "category": "Nhập liệu",
+        "number": 20,
+        "icon": "🏁",
+        "title": "Case tổng hợp: form nhập liệu phòng kinh doanh",
+        "skill": "Dropdown • Validation • Protect • kiểm tra trùng",
+        "file": "input_20_full_case.xlsx",
+        "level": "Case thực tế",
+        "filterTags": [
+            "Nhập liệu"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fx-01-sumavg",
+        "category": "Công thức",
+        "number": 1,
+        "icon": "➕",
+        "title": "SUM và AVERAGE từ dữ liệu thực tế",
+        "skill": "SUM • AVERAGE • tham chiếu vùng",
+        "file": "fx_01_sum_average.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fx-02-count",
+        "category": "Công thức",
+        "number": 2,
+        "icon": "🔢",
+        "title": "COUNT, COUNTA và COUNTBLANK khác nhau thế nào",
+        "skill": "COUNT • COUNTA • COUNTBLANK",
+        "file": "fx_02_count.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fx-03-if",
+        "category": "Công thức",
+        "number": 3,
+        "icon": "🔀",
+        "title": "IF cơ bản: đạt hay không đạt",
+        "skill": "IF • toán tử so sánh • TRUE/FALSE",
+        "file": "fx_03_if_basic.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "ct-if-ifs",
+        "number": 4,
+        "icon": "🔀",
+        "title": "IF / IFS phân loại dữ liệu",
+        "category": "Công thức",
+        "skill": "IF • IFS • lồng điều kiện có kiểm soát",
+        "filterTags": [
+            "Công thức"
+        ],
+        "file": "27_if_ifs.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Cơ bản"
+    },
+    {
+        "id": "fx-05-countif",
+        "category": "Công thức",
+        "number": 5,
+        "icon": "🎯",
+        "title": "COUNTIF và SUMIF một điều kiện",
+        "skill": "COUNTIF • SUMIF • wildcard",
+        "file": "fx_05_countif_sumif.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "ct-sumifs",
+        "number": 6,
+        "icon": "➕",
+        "title": "SUMIFS / COUNTIFS theo nhiều điều kiện",
+        "category": "Công thức",
+        "skill": "SUMIFS • COUNTIFS • tiêu chí ngày / khu vực",
+        "filterTags": [
+            "Công thức"
+        ],
+        "file": "26_sumifs_countifs.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Cơ bản"
+    },
+    {
+        "id": "fx-07-iferror",
+        "category": "Công thức",
+        "number": 7,
+        "icon": "🛡️",
+        "title": "IFERROR: báo cáo sạch lỗi nhưng không che sai",
+        "skill": "IFERROR • IFNA • kiểm tra nguyên nhân",
+        "file": "fx_07_iferror.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fx-08-text",
+        "category": "Công thức",
+        "number": 8,
+        "icon": "✂️",
+        "title": "LEFT, RIGHT, MID xử lý mã và chuỗi",
+        "skill": "LEFT • RIGHT • MID • FIND",
+        "file": "fx_08_text_basic.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "v12-textbefore",
+        "number": 9,
+        "icon": "✂️",
+        "title": "Tách họ tên bằng TEXTBEFORE",
+        "category": "Công thức",
+        "skill": "TEXTBEFORE • TEXTAFTER • TEXTSPLIT",
+        "filterTags": [
+            "Công thức"
+        ],
+        "file": "20_TEXTBEFORE.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Trung cấp"
+    },
+    {
+        "id": "fx-10-textjoin",
+        "category": "Công thức",
+        "number": 10,
+        "icon": "🧵",
+        "title": "TEXTJOIN ghép dữ liệu mà bỏ ô trống",
+        "skill": "TEXTJOIN • CONCAT • delimiter",
+        "file": "fx_10_textjoin.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fx-11-date",
+        "category": "Công thức",
+        "number": 11,
+        "icon": "🗓️",
+        "title": "TODAY, EOMONTH và tính hạn xử lý",
+        "skill": "TODAY • EOMONTH • DAYS • WORKDAY",
+        "file": "fx_11_dates.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "v07-xlookup",
+        "number": 12,
+        "icon": "🔍",
+        "title": "XLOOKUP không còn #N/A",
+        "category": "Công thức",
+        "skill": "XLOOKUP • if_not_found • tra cứu an toàn",
+        "filterTags": [
+            "Công thức"
+        ],
+        "file": "14_XLOOKUP.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Trung cấp"
+    },
+    {
+        "id": "fx-13-indexmatch",
+        "category": "Công thức",
+        "number": 13,
+        "icon": "🧭",
+        "title": "INDEX + MATCH khi không muốn VLOOKUP",
+        "skill": "INDEX • MATCH • lookup linh hoạt",
+        "file": "fx_13_index_match.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fx-14-dynamic",
+        "category": "Công thức",
+        "number": 14,
+        "icon": "🌊",
+        "title": "FILTER, SORT, UNIQUE với mảng động",
+        "skill": "FILTER • SORT • UNIQUE • spill",
+        "file": "fx_14_dynamic_array.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "v15-aggregate",
+        "number": 15,
+        "icon": "🧮",
+        "title": "AGGREGATE bỏ lỗi và dòng ẩn",
+        "category": "Công thức",
+        "skill": "AGGREGATE • bỏ #DIV/0! • bỏ dòng ẩn Filter",
+        "filterTags": [
+            "Công thức"
+        ],
+        "file": "23_AGGREGATE.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Nâng cao"
+    },
+    {
+        "id": "fx-16-sumproduct",
+        "category": "Công thức",
+        "number": 16,
+        "icon": "🧮",
+        "title": "SUMPRODUCT cho nhiều điều kiện không cột phụ",
+        "skill": "SUMPRODUCT • boolean logic • điều kiện",
+        "file": "fx_16_sumproduct.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fx-17-let",
+        "category": "Công thức",
+        "number": 17,
+        "icon": "🧠",
+        "title": "LET giúp công thức dài dễ đọc hơn",
+        "skill": "LET • biến • tái sử dụng biểu thức",
+        "file": "fx_17_let.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fx-18-audit",
+        "category": "Công thức",
+        "number": 18,
+        "icon": "🔍",
+        "title": "Bắt lỗi công thức khi kéo sai tham chiếu",
+        "skill": "F4 • absolute/relative • Trace Precedents",
+        "file": "fx_18_formula_audit.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fx-19-kpi",
+        "category": "Công thức",
+        "number": 19,
+        "icon": "📊",
+        "title": "Bộ công thức KPI bán hàng thực tế",
+        "skill": "SUMIFS • COUNTIFS • XLOOKUP • tỷ lệ",
+        "file": "fx_19_sales_kpi.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fx-20-case",
+        "category": "Công thức",
+        "number": 20,
+        "icon": "🏁",
+        "title": "Case tổng hợp: báo cáo bán hàng bằng công thức",
+        "skill": "Lookup • điều kiện • ngày • mảng động • KPI",
+        "file": "fx_20_full_case.xlsx",
+        "level": "Case thực tế",
+        "filterTags": [
+            "Công thức"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-01-number",
+        "category": "Format",
+        "number": 1,
+        "icon": "💰",
+        "title": "Định dạng số, tiền và phần trăm đúng chuẩn",
+        "skill": "Number • Currency • Accounting • Percentage",
+        "file": "fmt_01_number_formats.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-02-date",
+        "category": "Format",
+        "number": 2,
+        "icon": "📅",
+        "title": "Hiển thị ngày tháng theo nhiều kiểu",
+        "skill": "Date • Custom dd/mm/yyyy • mmm-yy",
+        "file": "fmt_02_date_formats.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-03-align",
+        "category": "Format",
+        "number": 3,
+        "icon": "📐",
+        "title": "Căn lề, Wrap Text và xuống dòng hợp lý",
+        "skill": "Alignment • Wrap Text • Alt+Enter",
+        "file": "fmt_03_alignment.xlsx",
+        "level": "Cơ bản",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "v02-center-across",
+        "number": 4,
+        "icon": "↔️",
+        "title": "Đừng Merge — Center Across Selection",
+        "category": "Format",
+        "skill": "Alignment • Center Across • Sort an toàn",
+        "filterTags": [
+            "Format"
+        ],
+        "file": "05_center_across.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Cơ bản"
+    },
+    {
+        "id": "v05-an-so-0",
+        "number": 5,
+        "icon": "🚫",
+        "title": "Custom format ẩn số 0",
+        "category": "Format",
+        "skill": "Custom format 0;-0;;@ • #,##0;-#,##0;;@",
+        "filterTags": [
+            "Format"
+        ],
+        "file": "07_an_so_0.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Cơ bản"
+    },
+    {
+        "id": "fmt-cf-basic",
+        "number": 6,
+        "icon": "🎨",
+        "title": "Conditional Formatting cơ bản",
+        "category": "Format",
+        "skill": "Highlight • Color scale • Rule theo giá trị",
+        "filterTags": [
+            "Format"
+        ],
+        "file": "28_conditional_format.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Cơ bản"
+    },
+    {
+        "id": "fmt-07-cfformula",
+        "category": "Format",
+        "number": 7,
+        "icon": "🎨",
+        "title": "Conditional Formatting bằng công thức",
+        "skill": "New Rule • Use a formula • khóa tham chiếu",
+        "file": "fmt_07_cf_formula.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-08-banding",
+        "category": "Format",
+        "number": 8,
+        "icon": "🦓",
+        "title": "Tô xen kẽ dòng không cần tô tay",
+        "skill": "Table Style • MOD/ROW • Conditional Formatting",
+        "file": "fmt_08_banded_rows.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-09-unit",
+        "category": "Format",
+        "number": 9,
+        "icon": "🏷️",
+        "title": "Hiển thị K, M, tỷ mà không đổi giá trị gốc",
+        "skill": "Custom Number Format • nghìn/triệu/tỷ",
+        "file": "fmt_09_units.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-10-databar",
+        "category": "Format",
+        "number": 10,
+        "icon": "📶",
+        "title": "Data Bar và Icon Set để nhìn KPI nhanh",
+        "skill": "Data Bars • Icon Sets • Rule thresholds",
+        "file": "fmt_10_data_bars.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-11-print",
+        "category": "Format",
+        "number": 11,
+        "icon": "🖨️",
+        "title": "Setup trang in vừa một trang mà không bóp chữ",
+        "skill": "Print Area • Orientation • Scaling • Margins",
+        "file": "fmt_11_print_setup.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-12-freeze",
+        "category": "Format",
+        "number": 12,
+        "icon": "🧊",
+        "title": "Freeze Panes đúng hàng và cột cần theo dõi",
+        "skill": "Freeze Panes • Freeze Top Row • First Column",
+        "file": "fmt_12_freeze_panes.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-13-view",
+        "category": "Format",
+        "number": 13,
+        "icon": "👀",
+        "title": "Tạo sheet dễ đọc khi dữ liệu rất dài",
+        "skill": "Zoom • Gridlines • Group • Hide/Unhide",
+        "file": "fmt_13_sheet_view.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-14-style",
+        "category": "Format",
+        "number": 14,
+        "icon": "🧱",
+        "title": "Dùng Cell Styles để đồng bộ báo cáo",
+        "skill": "Cell Styles • Theme • Format Painter",
+        "file": "fmt_14_cell_styles.xlsx",
+        "level": "Trung cấp",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-15-report",
+        "category": "Format",
+        "number": 15,
+        "icon": "🧾",
+        "title": "Biến bảng thô thành báo cáo chuyên nghiệp",
+        "skill": "Hierarchy • spacing • header • subtotal",
+        "file": "fmt_15_report_layout.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-16-protect",
+        "category": "Format",
+        "number": 16,
+        "icon": "🛡️",
+        "title": "Khóa format nhưng vẫn cho người khác nhập",
+        "skill": "Protection • Locked/Unlocked • Protect Sheet",
+        "file": "fmt_16_protect_format.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "pivot-basic",
+        "number": 17,
+        "icon": "📉",
+        "title": "PivotTable cơ bản (không cần Power Query)",
+        "category": "Format",
+        "skill": "Insert Pivot • Rows/Columns/Values • Refresh",
+        "filterTags": [
+            "Format"
+        ],
+        "file": "29_pivot_co_ban.xlsx",
+        "folder": "downloads/video-practice/",
+        "level": "Nâng cao"
+    },
+    {
+        "id": "fmt-18-pivotfmt",
+        "category": "Format",
+        "number": 18,
+        "icon": "📊",
+        "title": "Format PivotTable để Refresh không vỡ giao diện",
+        "skill": "PivotTable Options • Preserve Formatting • Layout",
+        "file": "fmt_18_pivot_format.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-19-dashboard",
+        "category": "Format",
+        "number": 19,
+        "icon": "📈",
+        "title": "Bố cục Dashboard gọn trên một màn hình",
+        "skill": "KPI cards • alignment • visual hierarchy",
+        "file": "fmt_19_dashboard_layout.xlsx",
+        "level": "Nâng cao",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    },
+    {
+        "id": "fmt-20-case",
+        "category": "Format",
+        "number": 20,
+        "icon": "🏁",
+        "title": "Case tổng hợp: makeover báo cáo quản trị",
+        "skill": "Number format • CF • print • hierarchy • dashboard",
+        "file": "fmt_20_full_case.xlsx",
+        "level": "Case thực tế",
+        "filterTags": [
+            "Format"
+        ],
+        "folder": "downloads/video-practice/"
+    }
+];
 
 
 
@@ -876,11 +1959,15 @@
         '</div>';
     const num = localNum != null ? localNum : item.number;
     const skillRaw = item.skill || "";
-    const skill = '<div class="pv-skill">' + (skillRaw ? highlightText(skillRaw, q) : "&nbsp;") + "</div>";
+    const levelRaw = item.level || "";
+    const levelSlug = levelRaw === "Cơ bản" ? "basic" : (levelRaw === "Trung cấp" ? "mid" : (levelRaw === "Nâng cao" ? "advanced" : "case"));
+    const levelBadge = levelRaw ? '<span class="pv-level pv-level-' + levelSlug + '">' + escapeHtml(levelRaw) + '</span>' : '';
+    const skill = '<div class="pv-skill">' + levelBadge + (skillRaw ? highlightText(skillRaw, q) : "&nbsp;") + "</div>";
     const matched = !!(q && (
       String(item.title).toLowerCase().indexOf(q) >= 0 ||
       String(skillRaw).toLowerCase().indexOf(q) >= 0 ||
-      String(item.category || "").toLowerCase().indexOf(q) >= 0
+      String(item.category || "").toLowerCase().indexOf(q) >= 0 ||
+      String(item.level || "").toLowerCase().indexOf(q) >= 0
     ));
 
     return (
@@ -933,7 +2020,7 @@ grid.addEventListener("click", function (e) {
         if (cat !== f && cat.toLowerCase().indexOf(String(f).toLowerCase()) === -1) return;
       }
       if (q) {
-        const hay = (item.title + " " + (item.skill || "") + " " + (item.category || "")).toLowerCase();
+        const hay = (item.title + " " + (item.skill || "") + " " + (item.level || "") + " " + (item.category || "")).toLowerCase();
         if (hay.indexOf(q) === -1) return;
       }
       items.push(item);
