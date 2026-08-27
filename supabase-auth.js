@@ -23,6 +23,23 @@ const supabase = configured
 
 window.avpSupabase = supabase;
 
+function loadAdminChatAssets() {
+  if (!document.querySelector('link[data-avp-admin-chat]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'admin-chat.css?v=20260828-chat1';
+    link.dataset.avpAdminChat = '1';
+    document.head.appendChild(link);
+  }
+  if (!document.querySelector('script[data-avp-admin-chat]')) {
+    const script = document.createElement('script');
+    script.src = 'admin-chat.js?v=20260828-chat1';
+    script.defer = true;
+    script.dataset.avpAdminChat = '1';
+    document.head.appendChild(script);
+  }
+}
+
 const PROFILE_KEY = "avpUserProfile";
 
 /*
@@ -99,50 +116,6 @@ const EXACT_STATE_KEYS = new Set([
 let applyingCloud = false;
 let syncTimer = null;
 let syncInFlight = null;
-
-/*
-  Account isolation for the admin device.
-  If the last signed-in account was Admin and a different account signs in,
-  clear Admin learning/profile data from THIS browser before loading the new account's cloud.
-*/
-const AUTH_OWNER_KEY = "avp_auth_owner_v1";
-const AUTH_OWNER_ADMIN_KEY = "avp_auth_owner_admin_v1";
-
-async function isAdminUser() {
-  if (!supabase) return false;
-  try {
-    const { data, error } = await supabase.rpc("is_admin_user");
-    return !error && data === true;
-  } catch {
-    return false;
-  }
-}
-
-function clearTrackedAccountLocalData() {
-  applyingCloud = true;
-  try {
-    PROGRESS_KEYS.forEach(key => localStorage.removeItem(key));
-    localStorage.removeItem(PROFILE_KEY);
-    localStorage.removeItem("avp_cloud_last_sync_v11");
-  } finally {
-    applyingCloud = false;
-  }
-}
-
-async function protectNewAccountFromAdminData(user) {
-  if (!user) return;
-  const previousUserId = localStorage.getItem(AUTH_OWNER_KEY) || "";
-  const previousWasAdmin = localStorage.getItem(AUTH_OWNER_ADMIN_KEY) === "1";
-  const changedAccount = previousUserId && previousUserId !== user.id;
-
-  if (changedAccount && previousWasAdmin) {
-    clearTrackedAccountLocalData();
-  }
-
-  const currentIsAdmin = await isAdminUser();
-  localStorage.setItem(AUTH_OWNER_KEY, user.id);
-  localStorage.setItem(AUTH_OWNER_ADMIN_KEY, currentIsAdmin ? "1" : "0");
-}
 
 function parseMaybe(value, fallback = null) {
   if (value === null || value === undefined) return fallback;
@@ -614,7 +587,6 @@ window.avpCloudSync = {
   loadProfileFromCloud,
   getUser,
   getProfile,
-  isAdminUser,
   mergeProgress,
   trackedKeys: [...PROGRESS_KEYS]
 };
@@ -632,7 +604,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const user = await getUser();
 
   if (user) {
-    await protectNewAccountFromAdminData(user);
+    loadAdminChatAssets();
     await loadProfileFromCloud();
     await loadAndMergeProgress();
     await updateAuthNav();
@@ -651,8 +623,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   supabase.auth.onAuthStateChange(async (event) => {
     if (event === "SIGNED_IN") {
-      const signedUser = await getUser();
-      if (signedUser) await protectNewAccountFromAdminData(signedUser);
+      loadAdminChatAssets();
       await loadProfileFromCloud();
       await loadAndMergeProgress();
     }

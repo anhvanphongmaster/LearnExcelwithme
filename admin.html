@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
-<link rel="stylesheet" href="admin.css?v=20260828-admin-panel">
+<link rel="stylesheet" href="admin.css?v=20260828-admin-chat">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#217346">
@@ -189,6 +189,27 @@ where is_admin = true;</pre>
 
 <div class="admin-section-heading admin-view-section" data-admin-section="inbox"><span>📥 HỘP THƯ</span><h2>Phản hồi cần xử lý</h2></div>
 <section class="admin-grid admin-view-section" id="adminInboxSection" data-admin-section="inbox">
+      <article class="admin-panel" id="adminChatInbox" style="grid-column:1/-1">
+        <div class="admin-chat-toolbar">
+          <div><strong>💬 Chat học viên <span class="admin-chat-unread-pill" id="adminChatUnread" hidden>0</span></strong><small>Nhận và phản hồi tin nhắn của người đã đăng nhập</small></div>
+          <button type="button" class="admin-chat-refresh" id="adminChatRefresh">↻ Làm mới</button>
+        </div>
+        <div class="admin-chat-shell">
+          <aside class="admin-chat-threads">
+            <div class="admin-chat-search"><input id="adminChatSearch" type="search" placeholder="Tìm tên hoặc email…" autocomplete="off"></div>
+            <div id="adminChatThreads"><div class="admin-chat-empty">Đang tải cuộc trò chuyện…</div></div>
+          </aside>
+          <section class="admin-chat-conversation">
+            <header class="admin-chat-conv-head"><strong id="adminChatPerson">Chọn một học viên</strong><small id="adminChatEmail">Mở cuộc trò chuyện bên trái để phản hồi.</small></header>
+            <div class="admin-chat-messages" id="adminChatMessages"><div class="admin-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
+            <div class="admin-chat-compose">
+              <textarea id="adminChatReply" maxlength="3000" rows="2" placeholder="Phản hồi học viên…"></textarea>
+              <button type="button" id="adminChatReplyBtn">Gửi</button>
+            </div>
+          </section>
+        </div>
+      </article>
+
       <article class="admin-panel" style="grid-column:1/-1">
         <div class="admin-panel-head">
           <div><span>📥 TƯƠNG TÁC</span><h2>Tải file, xem video, sách, ý tưởng</h2></div>
@@ -334,7 +355,7 @@ where is_admin = true;</pre>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
-<script defer src="admin.js?v=20260828-admin-panel"></script>
+<script defer src="admin.js?v=20260828-admin-chat"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>
