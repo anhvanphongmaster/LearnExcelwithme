@@ -455,6 +455,41 @@
       }
     } catch (e) { console.debug("vote rpc", e); }
     if (btn) { btn.textContent = "✓ Đã gửi yêu cầu"; }
+    loadPublicVoteSummary();
+  }
+
+
+  async function loadPublicVoteSummary() {
+    var box = document.getElementById("pvPublicVotes");
+    var needEl = document.getElementById("pvPublicNeed");
+    var moreEl = document.getElementById("pvPublicMore");
+    var note = document.getElementById("pvPublicVotesNote");
+    if (!box || !needEl || !moreEl) return;
+
+    var sb = window.avpSupabase || window.supabaseClient || null;
+    if (!sb || !sb.rpc) {
+      if (note) note.textContent = "Lượt vote sẽ tự cập nhật khi kết nối máy chủ sẵn sàng.";
+      return;
+    }
+
+    try {
+      var res = await sb.rpc("admin_list_practice_votes");
+      if (res && res.error) throw res.error;
+      var rows = (res && res.data) || [];
+      var need = 0, more = 0;
+      rows.forEach(function (r) {
+        var v = Number(r.votes) || 0;
+        if (r.vote_type === "need_more_guide") more += v;
+        else if (r.vote_type === "need_guide") need += v;
+      });
+      needEl.textContent = String(need);
+      moreEl.textContent = String(more);
+      box.classList.add("is-loaded");
+      if (note) note.textContent = "Cập nhật theo vote thực tế · Mỗi tài khoản / trình duyệt chỉ vote một lần cho mỗi bài.";
+    } catch (e) {
+      console.debug("public practice vote summary", e);
+      if (note) note.textContent = "Chưa tải được lượt vote. Nếu đây là lần đầu bật thống kê công khai, chạy file practice-votes-public-access.sql một lần trong Supabase.";
+    }
   }
 
 
@@ -659,6 +694,7 @@
 
   function init() {
     updateSummary();
+    setTimeout(loadPublicVoteSummary, 180);
     render("all", "");
     bindVotes();
 
