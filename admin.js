@@ -3,6 +3,7 @@
   const nf=new Intl.NumberFormat("vi-VN");
   let client=null;
   let currentDays=30;
+  let currentVoteMonth=null;
 
   const lessonNames={
     "excel.html":"Excel cơ bản","phimtatexcel.html":"100 phím tắt","congthucexcel.html":"100 công thức","filtersort.html":"Filter & Sort",
@@ -178,17 +179,34 @@
   }
   
   
+  function vnMonth(offset){
+    const now=new Date();
+    const vn=new Date(now.toLocaleString("en-US",{timeZone:"Asia/Ho_Chi_Minh"}));
+    vn.setDate(1); vn.setHours(0,0,0,0); vn.setMonth(vn.getMonth()+(offset||0));
+    return vn;
+  }
+  function monthIso(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-01`;}
+  function sameMonth(a,b){return a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth();}
+  function updateVoteMonthUI(){
+    if(!currentVoteMonth) currentVoteMonth=vnMonth(0);
+    const label=$("pvoteMonthLabel"), next=$("pvoteNextMonth");
+    if(label) label.textContent=`Tháng ${String(currentVoteMonth.getMonth()+1).padStart(2,"0")}/${currentVoteMonth.getFullYear()}`;
+    if(next) next.disabled=sameMonth(currentVoteMonth,vnMonth(0));
+  }
+
   async function renderPracticeVotes(){
     const root=document.getElementById("practiceVotesList");
     if(!root) return;
+    if(!currentVoteMonth) currentVoteMonth=vnMonth(0);
+    updateVoteMonthUI();
     try{
-      const rows=await rpcSoft("admin_list_practice_votes");
+      const rows=await rpcSoft("admin_list_practice_votes_by_month",{p_month:monthIso(currentVoteMonth)});
       if(!rows || rows.__error){
-        root.innerHTML='<div class="pvote-empty">Chưa có dữ liệu vote (hoặc chưa chạy <code>practice-votes.sql</code>).</div>';
+        root.innerHTML='<div class="pvote-empty">Chưa có dashboard vote theo tháng. Chạy file <code>practice-votes-dashboard-v2.sql</code> một lần trong Supabase.</div>';
         return;
       }
       if(!rows.length){
-        root.innerHTML='<div class="pvote-empty">Chưa có lượt vote nào.</div>';
+        root.innerHTML='<div class="pvote-summary"><div class="pvote-stat"><span>Tổng vote</span><strong>0</strong></div><div class="pvote-stat"><span>Cần hướng dẫn</span><strong>0</strong></div><div class="pvote-stat"><span>Hướng dẫn thêm</span><strong>0</strong></div><div class="pvote-stat"><span>Số bài</span><strong>0</strong></div></div><div class="pvote-empty">Tháng này chưa có lượt vote nào.</div>';
         return;
       }
       const typeLabel={need_guide:"Cần hướng dẫn",need_more_guide:"Cần hướng dẫn thêm"};
@@ -200,11 +218,12 @@
       });
       rows.sort((a,b)=>(Number(b.votes)||0)-(Number(a.votes)||0));
       const max=Math.max(1, ...rows.map(r=>Number(r.votes)||0));
+      const lessonCount=new Set(rows.map(r=>r.lesson_id)).size;
       const summary=`<div class="pvote-summary">
         <div class="pvote-stat"><span>Tổng vote</span><strong>${total}</strong></div>
         <div class="pvote-stat"><span>Cần hướng dẫn</span><strong>${need}</strong></div>
         <div class="pvote-stat"><span>Hướng dẫn thêm</span><strong>${more}</strong></div>
-        <div class="pvote-stat"><span>Số bài</span><strong>${rows.length}</strong></div>
+        <div class="pvote-stat"><span>Số bài</span><strong>${lessonCount}</strong></div>
       </div>`;
       const list=rows.map((r,i)=>{
         const num=r.lesson_number!=null?String(r.lesson_number).padStart(2,"0"):"—";
@@ -223,11 +242,26 @@
           <div class="pvote-count"><strong>${v}</strong><small>vote</small></div>
         </div>`;
       }).join("");
-      root.innerHTML=summary+`<div class="pvote-scroll"><div class="pvote-list">${list}</div></div>`+(rows.length>3?'<p class="pvote-more">Cuộn trong khung để xem thêm</p>':'');
+      root.innerHTML=summary+`<div class="pvote-scroll"><div class="pvote-list">${list}</div></div>`+(rows.length>3?'<p class="pvote-more">↕ Cuộn trong khung để xem thêm</p>':'');
     }catch(e){
-      root.innerHTML='<div class="pvote-empty">Lỗi tải vote.</div>';
+      root.innerHTML='<div class="pvote-empty">Lỗi tải vote theo tháng.</div>';
     }
   }
+
+  function bindVoteMonthNav(){
+    if(!currentVoteMonth) currentVoteMonth=vnMonth(0);
+    const prev=$("pvotePrevMonth"), next=$("pvoteNextMonth");
+    if(prev && !prev.dataset.bound){
+      prev.dataset.bound="1";
+      prev.onclick=()=>{currentVoteMonth=new Date(currentVoteMonth.getFullYear(),currentVoteMonth.getMonth()-1,1);renderPracticeVotes();};
+    }
+    if(next && !next.dataset.bound){
+      next.dataset.bound="1";
+      next.onclick=()=>{if(sameMonth(currentVoteMonth,vnMonth(0)))return;currentVoteMonth=new Date(currentVoteMonth.getFullYear(),currentVoteMonth.getMonth()+1,1);if(currentVoteMonth>vnMonth(0))currentVoteMonth=vnMonth(0);renderPracticeVotes();};
+    }
+    updateVoteMonthUI();
+  }
+
 
 
   async function renderEngagement(s){
@@ -341,6 +375,7 @@
       if(!completed?.__error) renderRanking("topCompletedLessons",completed||[],"lesson","completed_users",labelLesson);
       if(!difficulty?.__error) renderQuizDifficulty(difficulty||[]);
       if(!engagement?.__error) await renderEngagement(engagement||{});
+      bindVoteMonthNav();
       await renderPracticeVotes();
       if(!newUsers?.__error) renderNewUsers(newUsers||[]);
     }catch(error){

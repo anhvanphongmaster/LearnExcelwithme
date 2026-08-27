@@ -473,7 +473,7 @@
     }
 
     try {
-      var res = await sb.rpc("admin_list_practice_votes");
+      var res = await sb.rpc("public_practice_vote_summary");
       if (res && res.error) throw res.error;
       var rows = (res && res.data) || [];
       var need = 0, more = 0;
@@ -485,11 +485,92 @@
       needEl.textContent = String(need);
       moreEl.textContent = String(more);
       box.classList.add("is-loaded");
-      if (note) note.textContent = "Cập nhật theo vote thực tế · Mỗi tài khoản / trình duyệt chỉ vote một lần cho mỗi bài.";
+      if (note) note.textContent = "Tổng vote đang có · Dashboard bên dưới hiển thị riêng theo từng ngày.";
     } catch (e) {
       console.debug("public practice vote summary", e);
-      if (note) note.textContent = "Chưa tải được lượt vote. Nếu đây là lần đầu bật thống kê công khai, chạy file practice-votes-public-access.sql một lần trong Supabase.";
+      if (note) note.textContent = "Chưa tải được lượt vote. Hãy chạy file practice-votes-dashboard-v2.sql một lần trong Supabase.";
     }
+  }
+
+  function vnDateParts(offsetDays) {
+    var now = new Date();
+    var vnNow = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+    vnNow.setDate(vnNow.getDate() + (offsetDays || 0));
+    var y = vnNow.getFullYear();
+    var m = String(vnNow.getMonth() + 1).padStart(2, "0");
+    var d = String(vnNow.getDate()).padStart(2, "0");
+    return { iso: y + "-" + m + "-" + d, date: vnNow };
+  }
+
+  function renderDailyRows(rows) {
+    var list = document.getElementById("pvDailyList");
+    var summary = document.getElementById("pvDaySummary");
+    var hint = document.getElementById("pvDailyHint");
+    if (!list || !summary) return;
+    rows = Array.isArray(rows) ? rows.slice() : [];
+    rows.sort(function (a, b) { return (Number(b.votes) || 0) - (Number(a.votes) || 0); });
+    var total = 0, need = 0, more = 0;
+    rows.forEach(function(r){ var v=Number(r.votes)||0; total+=v; if(r.vote_type==="need_more_guide") more+=v; else need+=v; });
+    summary.innerHTML = '<div class="pv-day-stat"><small>Tổng vote</small><strong>' + total + '</strong></div>' +
+      '<div class="pv-day-stat"><small>Cần hướng dẫn</small><strong>' + need + '</strong></div>' +
+      '<div class="pv-day-stat"><small>Hướng dẫn thêm</small><strong>' + more + '</strong></div>';
+    if (!rows.length) {
+      list.innerHTML = '<div class="pv-daily-empty">Hôm này chưa có lượt vote nào. Khi có vote mới, bảng xếp hạng sẽ cập nhật tại đây.</div>';
+      if (hint) hint.style.display = "none";
+      return;
+    }
+    var max = Math.max(1, ...rows.map(function(r){ return Number(r.votes)||0; }));
+    var labels = {need_guide:"Cần hướng dẫn",need_more_guide:"Cần hướng dẫn thêm"};
+    list.innerHTML = rows.map(function(r,i){
+      var v=Number(r.votes)||0;
+      var pct=Math.max(7,Math.round(v/max*100));
+      var num=r.lesson_number!=null?String(r.lesson_number).padStart(2,"0"):"—";
+      var title=escapeHtml(r.lesson_title||r.lesson_id||"Bài thực hành");
+      var kind=r.vote_type==="need_more_guide"?"more":"need";
+      return '<div class="pv-daily-row top-' + (i+1) + '">' +
+        '<div class="pv-daily-rank">' + (i+1) + '</div>' +
+        '<div><div class="pv-daily-title"><span class="num">#' + num + '</span> ' + title + '</div>' +
+        '<div class="pv-daily-meta"><span class="pv-daily-tag ' + kind + '">' + (labels[r.vote_type]||r.vote_type) + '</span></div>' +
+        '<div class="pv-daily-bar"><span style="width:' + pct + '%"></span></div></div>' +
+        '<div class="pv-daily-count"><strong>' + v + '</strong><small>vote</small></div></div>';
+    }).join("");
+    if (hint) hint.style.display = rows.length > 3 ? "block" : "none";
+  }
+
+  async function loadDailyVoteRanking(dayIso) {
+    var list = document.getElementById("pvDailyList");
+    if (list) list.innerHTML = '<div class="pv-daily-empty">Đang tải xếp hạng…</div>';
+    var sb = window.avpSupabase || window.supabaseClient || null;
+    if (!sb || !sb.rpc) { renderDailyRows([]); return; }
+    try {
+      var res = await sb.rpc("public_list_practice_votes_by_day", { p_day: dayIso });
+      if (res && res.error) throw res.error;
+      renderDailyRows((res && res.data) || []);
+    } catch (e) {
+      console.debug("daily vote ranking", e);
+      if (list) list.innerHTML = '<div class="pv-daily-empty">Chưa tải được vote theo ngày. Hãy chạy file SQL dashboard vote mới trong Supabase.</div>';
+    }
+  }
+
+  function initDailyVoteDashboard() {
+    var tabs = document.getElementById("pvDayTabs");
+    if (!tabs) return;
+    var defs = [
+      {off:0,label:"Hôm nay"},
+      {off:-1,label:"Hôm qua"},
+      {off:-2,label:"2 ngày trước"}
+    ];
+    tabs.innerHTML = defs.map(function(x,i){
+      var d=vnDateParts(x.off);
+      var dd=String(d.date.getDate()).padStart(2,"0") + "/" + String(d.date.getMonth()+1).padStart(2,"0");
+      return '<button type="button" class="pv-day-tab' + (i===0?' active':'') + '" data-day="' + d.iso + '" role="tab">' + x.label + '<span>' + dd + '</span></button>';
+    }).join("");
+    tabs.addEventListener("click",function(e){
+      var btn=e.target.closest(".pv-day-tab"); if(!btn) return;
+      tabs.querySelectorAll(".pv-day-tab").forEach(function(b){b.classList.toggle("active",b===btn);});
+      loadDailyVoteRanking(btn.getAttribute("data-day"));
+    });
+    loadDailyVoteRanking(vnDateParts(0).iso);
   }
 
 
@@ -695,6 +776,7 @@
   function init() {
     updateSummary();
     setTimeout(loadPublicVoteSummary, 180);
+    setTimeout(initDailyVoteDashboard, 220);
     render("all", "");
     bindVotes();
 

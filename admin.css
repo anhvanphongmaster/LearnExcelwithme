@@ -159,3 +159,12 @@ body.dark-mode .admin-denied-help summary{color:#8be1ac}
 .pvote-row-top{box-shadow:0 0 0 1px #b7e0c6}
 .pvote-row-top .pvote-rank{background:#145a32;color:#fff}
 .pvote-more{margin:8px 0 0;text-align:center;font-size:12px;font-weight:700;color:#217346}
+
+/* ===== Practice vote monthly dashboard V2 ===== */
+.pvote-monthbar{display:flex;align-items:center;justify-content:center;gap:12px;margin:4px 0 14px;padding:9px;border-radius:14px;background:#f5faf7;border:1px solid #dcebe2}
+.pvote-monthbar button{width:38px;height:38px;border-radius:11px;border:1px solid #cfe2d7;background:#fff;color:#17623b;font-size:18px;font-weight:900;cursor:pointer;transition:.18s ease}
+.pvote-monthbar button:hover:not(:disabled){transform:translateY(-1px);background:#eaf7ef;border-color:#a9d4ba}
+.pvote-monthbar button:disabled{opacity:.35;cursor:not-allowed}
+.pvote-monthbar div{text-align:center;min-width:155px}.pvote-monthbar small{display:block;color:#7b8d83;font-size:10px;font-weight:700}.pvote-monthbar strong{display:block;margin-top:2px;color:#154e31;font-size:14px}
+.pvote-panel .pvote-scroll{scrollbar-width:thin;scrollbar-color:#66b987 #e6efe9}.pvote-panel .pvote-scroll::-webkit-scrollbar{width:7px}.pvote-panel .pvote-scroll::-webkit-scrollbar-track{background:#e8f1eb;border-radius:999px}.pvote-panel .pvote-scroll::-webkit-scrollbar-thumb{background:linear-gradient(#217346,#56b57d);border-radius:999px}
+@media(max-width:600px){.pvote-monthbar{gap:8px}.pvote-monthbar div{min-width:130px}.pvote-monthbar button{width:36px;height:36px}}
