@@ -1493,20 +1493,55 @@
 
   var __pvIsAdmin = false;
   var __pvAdminChecked = false;
-  async function detectPracticeAdmin() {
-    if (__pvAdminChecked) return __pvIsAdmin;
-    __pvAdminChecked = true;
-    var sb = window.avpSupabase || window.supabaseClient || null;
-    if (!sb || !sb.rpc) return false;
+  var __pvAdminChecking = null;
+  async function detectPracticeAdmin(force) {
+    if (__pvAdminChecked && !force) return __pvIsAdmin;
+    if (__pvAdminChecking && !force) return __pvAdminChecking;
+
+    __pvAdminChecking = (async function () {
+      // supabase-auth.js is a module and can finish after this script.
+      // Wait/retry instead of permanently caching false on the first early check.
+      var sb = null;
+      for (var attempt = 0; attempt < 20; attempt++) {
+        sb = window.avpSupabase || window.supabaseClient || null;
+        if (sb && sb.rpc && sb.auth) break;
+        await new Promise(function(resolve){ setTimeout(resolve, 150); });
+      }
+
+      if (!sb || !sb.rpc) {
+        __pvAdminChecked = false;
+        __pvIsAdmin = false;
+        syncLessonVoteButtons();
+        syncTopicVoteButtons();
+        return false;
+      }
+
+      try {
+        // Make sure an authenticated session is actually ready before asking the RPC.
+        if (sb.auth && sb.auth.getSession) {
+          try { await sb.auth.getSession(); } catch (ignore) {}
+        }
+        var res = await sb.rpc("is_admin_user");
+        if (res && res.error) throw res.error;
+        __pvIsAdmin = !!(res && res.data === true);
+        __pvAdminChecked = true;
+      } catch (e) {
+        console.debug("admin detect", e);
+        // Do not permanently cache a transient failure.
+        __pvIsAdmin = false;
+        __pvAdminChecked = false;
+      }
+
+      syncLessonVoteButtons();
+      syncTopicVoteButtons();
+      return __pvIsAdmin;
+    })();
+
     try {
-      var res = await sb.rpc("is_admin_user");
-      __pvIsAdmin = !!(res && !res.error && res.data === true);
-    } catch (e) {
-      __pvIsAdmin = false;
+      return await __pvAdminChecking;
+    } finally {
+      __pvAdminChecking = null;
     }
-    syncLessonVoteButtons();
-    syncTopicVoteButtons();
-    return __pvIsAdmin;
   }
 
   function voterKey() {
@@ -2160,7 +2195,9 @@ grid.addEventListener("click", function (e) {
 
   function init() {
     updateSummary();
-    setTimeout(detectPracticeAdmin, 80);
+    setTimeout(function(){ detectPracticeAdmin(false); }, 120);
+    setTimeout(function(){ if (!__pvIsAdmin) detectPracticeAdmin(true); }, 900);
+    setTimeout(function(){ if (!__pvIsAdmin) detectPracticeAdmin(true); }, 2200);
     setTimeout(loadPublicVoteSummary, 180);
     setTimeout(initDailyVoteDashboard, 220);
     render("all", "");
