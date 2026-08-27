@@ -889,3 +889,19 @@ body.dark-mode .pv-topic-poll-panel .pv-topic-row{
 .pv-level-advanced{background:#fff4df;color:#9a5a00;border:1px solid #f0d49e}
 .pv-level-case{background:#f5ebff;color:#7137a6;border:1px solid #dfc7f5}
 @media (max-width:640px){.pv-level{font-size:10px;padding:2px 6px;margin-right:5px}.pv-skill{line-height:1.55}}
+
+
+/* Admin vote tools — visible only after is_admin_user() succeeds */
+.pv-vote.pv-admin-cancel,
+.pv-topic-vote-btn.is-admin-cancel {
+  border-color: #dc8a16 !important;
+  background: #fff7e8 !important;
+  color: #9a5a00 !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+}
+.pv-vote.pv-admin-cancel:hover,
+.pv-topic-vote-btn.is-admin-cancel:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(154,90,0,.14);
+}

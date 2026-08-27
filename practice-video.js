@@ -1491,6 +1491,24 @@
     return null;
   }
 
+  var __pvIsAdmin = false;
+  var __pvAdminChecked = false;
+  async function detectPracticeAdmin() {
+    if (__pvAdminChecked) return __pvIsAdmin;
+    __pvAdminChecked = true;
+    var sb = window.avpSupabase || window.supabaseClient || null;
+    if (!sb || !sb.rpc) return false;
+    try {
+      var res = await sb.rpc("is_admin_user");
+      __pvIsAdmin = !!(res && !res.error && res.data === true);
+    } catch (e) {
+      __pvIsAdmin = false;
+    }
+    syncLessonVoteButtons();
+    syncTopicVoteButtons();
+    return __pvIsAdmin;
+  }
+
   function voterKey() {
     try {
       var k = localStorage.getItem("avp_voter_key");
@@ -1529,6 +1547,11 @@
     m[voteStorageKey(id)] = true;
     try { localStorage.setItem("avp_practice_votes", JSON.stringify(m)); } catch (e) {}
   }
+  function unmarkVoted(id) {
+    var m = votedMap();
+    delete m[voteStorageKey(id)];
+    try { localStorage.setItem("avp_practice_votes", JSON.stringify(m)); } catch (e) {}
+  }
   function hasVoted(id) {
     return !!votedMap()[voteStorageKey(id)];
   }
@@ -1558,6 +1581,29 @@
     if (btn) setLessonVoteButtonState(btn, true);
     loadPublicVoteSummary();
     loadDailyVoteRanking(vnDateParts(0).iso);
+  }
+
+  async function cancelLessonVote(item, btn) {
+    if (!__pvIsAdmin) return;
+    var sb = window.avpSupabase || window.supabaseClient || null;
+    if (!sb || !sb.rpc) return;
+    if (btn) { btn.disabled = true; btn.textContent = "Đang huỷ…"; }
+    try {
+      var res = await sb.rpc("admin_cancel_practice_lesson_vote", {
+        p_lesson_id: item.id,
+        p_voter_key: voterKey()
+      });
+      if (res && res.error) throw res.error;
+      var payload = res && res.data;
+      if (payload && payload.ok === false) throw new Error(payload.error || "cancel_failed");
+      unmarkVoted(item.id);
+      setLessonVoteButtonState(btn, false);
+      await loadPublicVoteSummary();
+      await loadDailyVoteRanking(vnDateParts(0).iso);
+    } catch (e) {
+      console.debug("admin cancel lesson vote", e);
+      if (btn) setLessonVoteButtonState(btn, true);
+    }
   }
 
 
@@ -1693,16 +1739,24 @@
     m[topicVoteStorageKey(topicId)] = true;
     try { localStorage.setItem("avp_practice_topic_votes", JSON.stringify(m)); } catch (e) {}
   }
+  function unmarkTopicVoted(topicId) {
+    var m = topicVoteMap();
+    delete m[topicVoteStorageKey(topicId)];
+    try { localStorage.setItem("avp_practice_topic_votes", JSON.stringify(m)); } catch (e) {}
+  }
 
   function setTopicVoteButtonState(btn, voted) {
     if (!btn) return;
-    btn.disabled = !!voted;
+    var adminCancel = !!(voted && __pvIsAdmin);
+    btn.disabled = !!voted && !adminCancel;
     btn.classList.toggle("is-voted", !!voted);
-    btn.textContent = voted ? "✓ Đã vote hôm nay" : "Vote";
+    btn.classList.toggle("is-admin-cancel", adminCancel);
+    btn.dataset.adminCancel = adminCancel ? "1" : "0";
+    btn.textContent = adminCancel ? "↩ Huỷ vote" : (voted ? "✓ Đã vote hôm nay" : "Vote");
     var control = btn.closest(".pv-topic-vote-control");
     var status = control ? control.querySelector(".pv-topic-vote-status") : null;
     if (status) {
-      status.textContent = voted ? "Bạn có thể vote lại vào ngày mai" : "";
+      status.textContent = adminCancel ? "Admin · có thể huỷ để test" : (voted ? "Bạn có thể vote lại vào ngày mai" : "");
       status.hidden = !voted;
     }
   }
@@ -1837,6 +1891,25 @@
     }
   }
 
+  async function cancelTopicVote(topicId, btn) {
+    if (!__pvIsAdmin) return;
+    var sb = window.avpSupabase || window.supabaseClient || null;
+    if (!sb || !sb.rpc) return;
+    if (btn) { btn.disabled = true; btn.textContent = "Đang huỷ…"; }
+    try {
+      var res = await sb.rpc("admin_cancel_practice_topic_vote", { p_topic_id: topicId });
+      if (res && res.error) throw res.error;
+      var payload = res && res.data;
+      if (payload && payload.ok === false) throw new Error(payload.error || "cancel_failed");
+      unmarkTopicVoted(topicId);
+      setTopicVoteButtonState(btn, false);
+      await loadTopicVoteSummary();
+    } catch (e) {
+      console.debug("admin cancel topic vote", e);
+      if (btn) setTopicVoteButtonState(btn, true);
+    }
+  }
+
   var __pvTopicVoteBound = false;
   var __pvTopicVoteDay = vnDayKey();
   var __pvTopicVoteDayTimer = null;
@@ -1847,7 +1920,12 @@
       var btn = e.target.closest(".pv-topic-vote-btn");
       if (!btn || btn.disabled) return;
       e.preventDefault();
-      submitTopicVote(btn.getAttribute("data-topic-vote"), btn);
+      var topicId = btn.getAttribute("data-topic-vote");
+      if (__pvIsAdmin && btn.dataset.adminCancel === "1") {
+        cancelTopicVote(topicId, btn);
+      } else {
+        submitTopicVote(topicId, btn);
+      }
     });
 
     if (!__pvTopicVoteDayTimer) {
@@ -1913,12 +1991,15 @@
     var item = videoPracticeData.find(function(x){ return x.id === id; });
     if (!item) return;
     var copy = lessonVoteCopy(item, voted);
-    btn.disabled = !!voted;
+    var adminCancel = !!(voted && __pvIsAdmin);
+    btn.disabled = !!voted && !adminCancel;
     btn.classList.toggle("pv-vote-done", !!voted);
-    btn.textContent = copy.label;
+    btn.classList.toggle("pv-admin-cancel", adminCancel);
+    btn.dataset.adminCancel = adminCancel ? "1" : "0";
+    btn.textContent = adminCancel ? "↩ Huỷ vote" : copy.label;
     var row = btn.closest(".pv-vote-row");
     var hint = row ? row.querySelector(".pv-vote-hint") : null;
-    if (hint) hint.textContent = copy.hint;
+    if (hint) hint.textContent = adminCancel ? "Admin · huỷ vote để test lại" : copy.hint;
   }
 
   function syncLessonVoteButtons() {
@@ -2001,7 +2082,11 @@ grid.addEventListener("click", function (e) {
       var type = btn.getAttribute("data-vote-type") || "need_guide";
       var item = videoPracticeData.find(function (x) { return x.id === id; });
       if (!item) return;
-      submitVote(item, type, btn);
+      if (__pvIsAdmin && btn.dataset.adminCancel === "1") {
+        cancelLessonVote(item, btn);
+      } else {
+        submitVote(item, type, btn);
+      }
     });
   }
 
@@ -2075,6 +2160,7 @@ grid.addEventListener("click", function (e) {
 
   function init() {
     updateSummary();
+    setTimeout(detectPracticeAdmin, 80);
     setTimeout(loadPublicVoteSummary, 180);
     setTimeout(initDailyVoteDashboard, 220);
     render("all", "");
