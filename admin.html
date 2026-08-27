@@ -187,6 +187,32 @@ where is_admin = true;</pre>
         <div><small>Đang xem</small><strong id="pvoteMonthLabel">Tháng hiện tại</strong></div>
         <button type="button" id="pvoteNextMonth" aria-label="Tháng sau">→</button>
       </div>
+
+      <div class="channel-vote-box" id="channelVoteBox">
+        <div class="channel-vote-head">
+          <div>
+            <span>🎬 ĐỊNH HƯỚNG KÊNH</span>
+            <strong>Tiếp tục YouTube hay tập trung TikTok?</strong>
+          </div>
+          <small id="channelVoteWinner">Đang tải vote trong tháng…</small>
+        </div>
+
+        <div class="channel-vote-grid">
+          <div class="channel-vote-card youtube">
+            <span>▶️ Tiếp tục YouTube</span>
+            <strong id="channelVoteYoutube">0</strong><small>vote</small>
+          </div>
+          <div class="channel-vote-card tiktok">
+            <span>📱 Tập trung TikTok</span>
+            <strong id="channelVoteTiktok">0</strong><small>vote</small>
+          </div>
+        </div>
+
+        <div class="channel-vote-ratio">
+          <span>Tỷ lệ chọn YouTube</span>
+          <div class="channel-vote-track"><i id="channelVoteYoutubeBar"></i></div>
+        </div>
+      </div>
       <div id="practiceVotesList"><div class="pvote-empty">Đang tải…</div></div>
       <p class="pvote-note">Mỗi tháng là một kỳ thống kê riêng. Sang tháng mới, số hiển thị tự bắt đầu lại từ 0; lịch sử tháng cũ vẫn được giữ để xem lại.</p>
     </section>
