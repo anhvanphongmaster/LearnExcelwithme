@@ -53,6 +53,30 @@
     return isNaN(n) ? 0 : n;
   }
 
+  function hasMeaningfulLearningActivity() {
+    if (getXp() > 0) return true;
+    const keys = [
+      "completedCourses",
+      "avpLearningPath30",
+      "avp_lesson_progress_v1",
+      "avp_quiz_done_v1",
+      "avp_playground_completed_v1",
+      "avp_excel_challenge_stats_v1"
+    ];
+    for (const key of keys) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) continue;
+        const v = JSON.parse(raw);
+        if (Array.isArray(v) && v.length) return true;
+        if (v && typeof v === "object" && Object.keys(v).length) {
+          if (Object.values(v).some(x => x === true || Number(x) > 0 || (x && typeof x === "object"))) return true;
+        }
+      } catch (e) {}
+    }
+    return false;
+  }
+
   function badge(streak) {
     if (streak >= 30) return "🔥 30 ngày";
     if (streak >= 7) return "⚡ 7 ngày";
@@ -141,7 +165,18 @@
   }
 
   async function pushScore(sb, user) {
+    if (window.avpCloudSync && window.avpCloudSync.ensureLocalBelongsToUser) {
+      try { await window.avpCloudSync.ensureLocalBelongsToUser(user); } catch (e) {}
+    }
     if (await isAdmin(sb)) return; // admin không vào BXH
+
+    // Tài khoản vừa tạo/đăng nhập nhưng chưa học gì sẽ chưa xuất hiện trên BXH.
+    if (!hasMeaningfulLearningActivity()) {
+      try {
+        await sb.from("learning_leaderboard").delete().eq("user_id", user.id);
+      } catch (e) {}
+      return;
+    }
 
     const visits = trackToday();
     const streak = calcStreak(visits);
@@ -203,13 +238,13 @@
     try {
       const { data, error } = await sb.rpc("list_learning_leaderboard");
       if (!error && Array.isArray(data)) rows = data;
-      if (!rows.length || rows.length < 30) {
+      if (!rows.length || rows.length < 31) {
         const res = await sb
           .from("learning_leaderboard")
           .select("display_name,current_streak,best_streak,total_days,xp")
           .order("current_streak", { ascending: false })
           .order("xp", { ascending: false })
-          .limit(30); // Top 30
+          .limit(31); // lấy dư 1 dòng để sau khi bỏ tài khoản chủ web vẫn đủ Top 30
         if (res.error) {
           list.innerHTML = '<li class="lb-muted">Chưa có dữ liệu xếp hạng.</li>';
           return;
@@ -226,7 +261,9 @@
       return;
     }
 
-    rows = rows.slice(0, 30);
+    rows = rows.filter(function (r) {
+      return String(r.display_name || "").trim().toLowerCase() !== "tuan";
+    }).slice(0, 30);
 
     list.classList.add("lb-clip3");
     list.innerHTML = rows.map(function (r, i) {
@@ -302,7 +339,7 @@
       note.textContent = "Tài khoản admin không xếp hạng học viên.";
       return;
     }
-    const streak = calcStreak(trackToday());
+    const streak = calcStreak(hasMeaningfulLearningActivity() ? trackToday() : getVisits());
     note.hidden = false;
     note.className = "learn-board-note";
     note.textContent = "Chuỗi của bạn: " + streak + " ngày";
@@ -310,7 +347,6 @@
 
   async function init() {
     if (!$("learnBoard")) return;
-    trackToday();
     await renderGate();
     await loadBoard();
 

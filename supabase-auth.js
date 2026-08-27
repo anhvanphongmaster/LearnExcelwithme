@@ -117,6 +117,44 @@ let applyingCloud = false;
 let syncTimer = null;
 let syncInFlight = null;
 
+// Tách dữ liệu local theo tài khoản.
+// Các key học vẫn giữ tên cũ để toàn bộ website hiện tại tiếp tục hoạt động,
+// nhưng khi đổi account chúng sẽ được xóa trước khi nạp cloud của account mới.
+const PROGRESS_OWNER_KEY = "avp_progress_owner_v1";
+
+function clearLocalAccountState() {
+  const oldApplying = applyingCloud;
+  applyingCloud = true;
+  try {
+    for (const key of PROGRESS_KEYS) localStorage.removeItem(key);
+    localStorage.removeItem(PROFILE_KEY);
+    localStorage.removeItem("avp_cloud_last_sync_v11");
+
+    // Bỏ các cờ hydrate cũ để trang hiện tại đọc lại dữ liệu của account mới.
+    for (let i = sessionStorage.length - 1; i >= 0; i--) {
+      const k = sessionStorage.key(i);
+      if (k && k.startsWith("avpCloudHydrated:")) sessionStorage.removeItem(k);
+    }
+  } finally {
+    applyingCloud = oldApplying;
+  }
+}
+
+async function ensureLocalBelongsToUser(user) {
+  if (!user || !user.id) return false;
+  const uid = String(user.id);
+  const owner = localStorage.getItem(PROGRESS_OWNER_KEY);
+
+  // Có owner khác => đây là đổi tài khoản trên cùng máy.
+  // Xóa sạch state của account trước, KHÔNG merge sang account mới.
+  if (owner && owner !== uid) {
+    clearLocalAccountState();
+  }
+
+  localStorage.setItem(PROGRESS_OWNER_KEY, uid);
+  return Boolean(owner && owner !== uid);
+}
+
 function parseMaybe(value, fallback = null) {
   if (value === null || value === undefined) return fallback;
   try { return JSON.parse(value); } catch { return value; }
@@ -588,6 +626,8 @@ window.avpCloudSync = {
   getUser,
   getProfile,
   mergeProgress,
+  ensureLocalBelongsToUser,
+  clearLocalAccountState,
   trackedKeys: [...PROGRESS_KEYS]
 };
 
@@ -604,6 +644,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const user = await getUser();
 
   if (user) {
+    await ensureLocalBelongsToUser(user);
     loadAdminChatAssets();
     await loadProfileFromCloud();
     await loadAndMergeProgress();
@@ -623,6 +664,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   supabase.auth.onAuthStateChange(async (event) => {
     if (event === "SIGNED_IN") {
+      const signedUser = await getUser();
+      if (signedUser) await ensureLocalBelongsToUser(signedUser);
       loadAdminChatAssets();
       await loadProfileFromCloud();
       await loadAndMergeProgress();
