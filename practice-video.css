@@ -841,3 +841,18 @@ body.dark-mode .pv-topic-poll-panel .pv-topic-row{
     height:360px;
   }
 }
+
+
+/* ===== Relative vote ranking bars ===== */
+.pv-topic-poll-panel .pv-topic-progress{
+  position:relative;
+  background:#e7efe9;
+}
+.pv-topic-poll-panel .pv-topic-progress span{
+  min-width:0;
+  background:linear-gradient(90deg,#217346,#5cc47f);
+}
+.pv-topic-poll-panel .pv-topic-percent{
+  min-width:30px;
+  font-variant-numeric:tabular-nums;
+}

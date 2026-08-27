@@ -334,8 +334,6 @@
     { id: "format", icon: "🎨", title: "Thêm nội dung chủ đề FORMAT" },
     { id: "new_topic", icon: "✨", title: "Ra thêm chủ đề mới" }
   ];
-  const PRACTICE_TOPIC_TARGET = 100;
-
   function fileList() {
     return (typeof availablePracticeFiles !== "undefined" && Array.isArray(availablePracticeFiles))
       ? availablePracticeFiles
@@ -616,7 +614,7 @@
       '<div class="pv-panel-body pv-topic-panel-body">' +
         '<div class="pv-topic-panel-intro">' +
           '<strong>📊 Bình chọn chủ đề tiếp theo</strong>' +
-          '<span>Mốc 100 vote</span>' +
+          '<span>Xếp hạng theo lượt vote</span>' +
         '</div>' +
         '<div class="pv-topic-list">' +
           practiceTopicPollData.map(function(topic){
@@ -639,7 +637,7 @@
             '</article>';
           }).join("") +
         '</div>' +
-        '<p class="pv-topic-note" id="pvTopicVoteNote">Số liệu cập nhật trực tiếp từ lượt bình chọn.</p>' +
+        '<p class="pv-topic-note" id="pvTopicVoteNote">Thanh dài nhất là chủ đề đang có nhiều vote nhất.</p>' +
       '</div>' +
     '</section>';
   }
@@ -649,14 +647,24 @@
     var totals = {};
     practiceTopicPollData.forEach(function(t){ totals[t.id] = 0; });
     (Array.isArray(rows) ? rows : []).forEach(function(r){
-      if (Object.prototype.hasOwnProperty.call(totals, r.topic_id)) totals[r.topic_id] = Number(r.votes) || 0;
+      if (Object.prototype.hasOwnProperty.call(totals, r.topic_id)) {
+        totals[r.topic_id] = Number(r.votes) || 0;
+      }
     });
+
+    var maxVotes = 0;
+    practiceTopicPollData.forEach(function(topic){
+      if ((totals[topic.id] || 0) > maxVotes) maxVotes = totals[topic.id] || 0;
+    });
+
     practiceTopicPollData.forEach(function(topic){
       var total = totals[topic.id] || 0;
-      var pct = Math.min(100, Math.max(0, Math.round(total / PRACTICE_TOPIC_TARGET * 100)));
+      var pct = maxVotes > 0 ? Math.round((total / maxVotes) * 100) : 0;
+
       var bar = document.querySelector('[data-topic-bar="' + topic.id + '"]');
       var pe = document.querySelector('[data-topic-percent="' + topic.id + '"]');
       var te = document.querySelector('[data-topic-total="' + topic.id + '"]');
+
       if (bar) bar.style.width = pct + "%";
       if (pe) pe.textContent = pct + "%";
       if (te) te.textContent = total + " lượt";
@@ -675,7 +683,7 @@
       var res = await sb.rpc("public_practice_topic_vote_summary");
       if (res && res.error) throw res.error;
       renderTopicVoteSummary((res && res.data) || []);
-      if (note) note.textContent = "Số liệu cập nhật trực tiếp từ lượt bình chọn.";
+      if (note) note.textContent = "Thanh dài nhất là chủ đề đang có nhiều vote nhất.";
     } catch (e) {
       console.debug("topic vote summary", e);
       if (note) note.textContent = "Chưa tải được dashboard. Hãy chạy SQL vote chủ đề trong Supabase.";
