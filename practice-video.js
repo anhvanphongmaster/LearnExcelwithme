@@ -608,25 +608,42 @@
   }
 
   function topicPollHTML() {
-    return '<section class="pv-topic-poll" id="pvTopicPoll" aria-live="polite">' +
-      '<header class="pv-topic-poll-head"><div>' +
-      '<span class="pv-topic-kicker">📊 BÌNH CHỌN CHỦ ĐỀ TIẾP THEO</span>' +
-      '<h2>Bạn muốn có thêm nội dung nào?</h2>' +
-      '<p>Mỗi tài khoản vote 1 lần cho mỗi chủ đề trong ngày. Mốc mục tiêu: 100 vote.</p>' +
-      '</div><span class="pv-topic-target">MỐC 100</span></header>' +
-      '<div class="pv-topic-list">' +
-      practiceTopicPollData.map(function(topic){
-        var voted = hasTopicVoted(topic.id);
-        return '<article class="pv-topic-row" data-topic-id="' + topic.id + '">' +
-          '<div class="pv-topic-name"><span class="pv-topic-icon">' + topic.icon + '</span><strong>' + escapeHtml(topic.title) + '</strong></div>' +
-          '<div class="pv-topic-action">' +
-            '<button type="button" class="pv-topic-vote-btn' + (voted ? ' is-voted' : '') + '" data-topic-vote="' + topic.id + '"' + (voted ? ' disabled' : '') + '>' + (voted ? '✓ Đã vote' : 'Vote') + '</button>' +
-            '<div class="pv-topic-progress-wrap"><div class="pv-topic-progress"><span data-topic-bar="' + topic.id + '" style="width:0%"></span></div><span class="pv-topic-percent" data-topic-percent="' + topic.id + '">0%</span></div>' +
-            '<strong class="pv-topic-total" data-topic-total="' + topic.id + '">0 lượt</strong>' +
-          '</div></article>';
-      }).join("") +
-      '</div><p class="pv-topic-note" id="pvTopicVoteNote">Số liệu cập nhật trực tiếp từ lượt bình chọn.</p></section>';
+    return '<section class="pv-panel tone-default pv-topic-poll-panel" id="pvTopicPoll" aria-live="polite">' +
+      '<header class="pv-panel-h">' +
+        '<span class="pv-panel-name">CÁC BẠN ĐÓNG GÓP Ý TƯỞNG NHÉ</span>' +
+        '<span class="pv-panel-count">6 lựa chọn</span>' +
+      '</header>' +
+      '<div class="pv-panel-body pv-topic-panel-body">' +
+        '<div class="pv-topic-panel-intro">' +
+          '<strong>📊 Bình chọn chủ đề tiếp theo</strong>' +
+          '<span>Mốc 100 vote</span>' +
+        '</div>' +
+        '<div class="pv-topic-list">' +
+          practiceTopicPollData.map(function(topic){
+            var voted = hasTopicVoted(topic.id);
+            return '<article class="pv-topic-row" data-topic-id="' + topic.id + '">' +
+              '<div class="pv-topic-name">' +
+                '<span class="pv-topic-icon">' + topic.icon + '</span>' +
+                '<strong>' + escapeHtml(topic.title) + '</strong>' +
+              '</div>' +
+              '<div class="pv-topic-action">' +
+                '<button type="button" class="pv-topic-vote-btn' + (voted ? ' is-voted' : '') + '" data-topic-vote="' + topic.id + '"' + (voted ? ' disabled' : '') + '>' +
+                  (voted ? '✓ Đã vote' : 'Vote') +
+                '</button>' +
+                '<div class="pv-topic-progress-wrap">' +
+                  '<div class="pv-topic-progress"><span data-topic-bar="' + topic.id + '" style="width:0%"></span></div>' +
+                  '<span class="pv-topic-percent" data-topic-percent="' + topic.id + '">0%</span>' +
+                '</div>' +
+                '<strong class="pv-topic-total" data-topic-total="' + topic.id + '">0 lượt</strong>' +
+              '</div>' +
+            '</article>';
+          }).join("") +
+        '</div>' +
+        '<p class="pv-topic-note" id="pvTopicVoteNote">Số liệu cập nhật trực tiếp từ lượt bình chọn.</p>' +
+      '</div>' +
+    '</section>';
   }
+
 
   function renderTopicVoteSummary(rows) {
     var totals = {};
@@ -873,8 +890,8 @@ grid.addEventListener("click", function (e) {
       });
       html += '</div></section>';
     });
-    html += '</div>';
     if (f === "all" && !q) html += topicPollHTML();
+    html += '</div>';
     grid.innerHTML = html;
     bindVotes();
     bindTopicVotes();
