@@ -357,6 +357,7 @@
       ]);
 
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
+      bindAdminViews();
       renderSummary(summary||{});
       await loadRaceStats();
       renderTrend(trend||[]);
@@ -375,6 +376,41 @@
       showDenied(`Không tải được Analytics: ${error?.message||error}`);
     }finally{$("adminRefresh").disabled=false}
   }
+  const ADMIN_VIEW_KEY="avp_admin_view_v1";
+  function setAdminView(view,opts){
+    const valid=["overview","learning","votes","inbox","analytics"];
+    if(!valid.includes(view)) view="overview";
+    document.querySelectorAll("[data-admin-section]").forEach(el=>{
+      const show=el.getAttribute("data-admin-section")===view;
+      el.classList.toggle("admin-view-hidden",!show);
+      if(show){
+        el.classList.remove("admin-view-enter");
+        void el.offsetWidth;
+        el.classList.add("admin-view-enter");
+      }
+    });
+    document.querySelectorAll(".admin-view-tabs [data-admin-view]").forEach(btn=>{
+      const on=btn.getAttribute("data-admin-view")===view;
+      btn.classList.toggle("active",on);
+      btn.setAttribute("aria-selected",on?"true":"false");
+    });
+    try{localStorage.setItem(ADMIN_VIEW_KEY,view)}catch(e){}
+    if(opts&&opts.scroll){
+      document.querySelector(".admin-command-center")?.scrollIntoView({behavior:"smooth",block:"start"});
+    }
+  }
+  function bindAdminViews(){
+    const buttons=document.querySelectorAll(".admin-view-tabs [data-admin-view]");
+    buttons.forEach(btn=>{
+      if(btn.dataset.adminBound)return;
+      btn.dataset.adminBound="1";
+      btn.addEventListener("click",()=>setAdminView(btn.getAttribute("data-admin-view"),{scroll:true}));
+    });
+    let saved="overview";
+    try{saved=localStorage.getItem(ADMIN_VIEW_KEY)||"overview"}catch(e){}
+    setAdminView(saved);
+  }
+
   async function init(){
     client=await waitForClient();
     if(!client){showDenied("Supabase chưa được cấu hình hoặc API key chưa hoạt động. Kiểm tra supabase-config.js trên live.");return}
@@ -394,6 +430,7 @@
       }
     }catch(e){ console.warn(e); }
     bindMailTabs();
+    bindAdminViews();
     loadDashboard();
   }
   $("adminPeriod")?.addEventListener("change",()=>{currentDays=Number($("adminPeriod").value)||30;loadDashboard()});

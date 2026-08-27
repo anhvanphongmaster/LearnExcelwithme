@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
-<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="admin.css?v=20260828-admin-panel">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#217346">
@@ -86,13 +86,50 @@ where is_admin = true;</pre>
 
   <div id="adminDashboard" hidden>
 
-    <section class="admin-kpi-grid" id="raceStatsSection" style="margin-top:12px">
+    <section class="admin-command-center" aria-label="Trung tâm quản trị">
+      <div class="admin-command-title">
+        <div>
+          <span class="admin-command-kicker">⚙️ TRUNG TÂM QUẢN TRỊ</span>
+          <h2>Chọn khu vực cần quản lý</h2>
+          <p>Mỗi nhóm được tách riêng để trang Admin gọn hơn và không phải cuộn qua toàn bộ dashboard.</p>
+        </div>
+        <div class="admin-status-pill"><i></i> Admin đang hoạt động</div>
+      </div>
+
+      <div class="admin-view-tabs" role="tablist" aria-label="Khu vực Admin">
+        <button type="button" class="active" data-admin-view="overview" role="tab">
+          <b>📊 Tổng quan</b><small>KPI & trạng thái website</small>
+        </button>
+        <button type="button" data-admin-view="learning" role="tab">
+          <b>🎓 Học tập</b><small>Tiến độ, bài học & quiz</small>
+        </button>
+        <button type="button" data-admin-view="votes" role="tab">
+          <b>🗳️ Vote</b><small>Nhu cầu học viên</small>
+        </button>
+        <button type="button" data-admin-view="inbox" role="tab">
+          <b>📥 Hộp thư</b><small>Thắc mắc, ý tưởng & file</small>
+        </button>
+        <button type="button" data-admin-view="analytics" role="tab">
+          <b>📈 Analytics</b><small>Xu hướng & nội dung hot</small>
+        </button>
+      </div>
+
+      <div class="admin-quick-links">
+        <a href="practice-video.html">📝 Kho bài tập</a>
+        <a href="practice-youtube.html">▶️ Kho YouTube</a>
+        <a href="profile.html">👤 Hồ sơ của tôi</a>
+        <a href="index.html">🌐 Xem website</a>
+      </div>
+    </section>
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="overview"><span>📊 TỔNG QUAN</span><h2>Sức khỏe website hôm nay</h2></div>
+    <section class="admin-kpi-grid admin-view-section" id="raceStatsSection" data-admin-section="overview">
       <article class="admin-kpi"><p>Lượt chơi Race</p><strong id="kpiRacePlays">—</strong><small id="kpiRaceToday">2.5D minigame</small></article>
       <article class="admin-kpi"><p>Race hôm nay</p><strong id="kpiRaceTodayCount">—</strong><small>event = start</small></article>
       <article class="admin-kpi"><p>Crash / hết giờ</p><strong id="kpiRaceCrash">—</strong><small>event = crash</small></article>
     </section>
 
-    <section class="admin-kpi-grid">
+    <section class="admin-kpi-grid admin-view-section" id="adminOverviewKpis" data-admin-section="overview">
       <article class="admin-kpi">
         <span>👥</span><small>Tổng tài khoản</small>
         <strong id="kpiRegistered">—</strong>
@@ -130,7 +167,7 @@ where is_admin = true;</pre>
       </article>
     </section>
 
-    <section class="admin-learning-kpis">
+    <section class="admin-learning-kpis admin-view-section" id="adminLearningKpis" data-admin-section="overview">
       <article><small>☁️ User có tiến độ Cloud</small><strong id="learnSynced">—</strong><em id="learnActive7d">—</em></article>
       <article><small>⚡ XP trung bình</small><strong id="learnAvgXP">—</strong><em id="learnMaxXP">—</em></article>
       <article><small>🧠 Quiz trung bình</small><strong id="learnAvgQuiz">—</strong><em>Trên mỗi user đã sync</em></article>
@@ -138,7 +175,8 @@ where is_admin = true;</pre>
       <article><small>🚀 Pro trở lên</small><strong id="learnPro">—</strong><em id="learnMaster">—</em></article>
     </section>
 
-    <section class="admin-two-column admin-learning-grid">
+    <div class="admin-section-heading admin-view-section" data-admin-section="learning"><span>🎓 HỌC TẬP</span><h2>Người học đang tiến bộ thế nào?</h2></div>
+    <section class="admin-two-column admin-learning-grid admin-view-section" id="adminLearningOverview" data-admin-section="learning">
       <article class="admin-panel">
         <div class="admin-panel-head"><div><span>🎓 FUNNEL</span><h2>Beginner → Master</h2></div></div>
         <div id="learningFunnel" class="admin-funnel"></div>
@@ -149,7 +187,8 @@ where is_admin = true;</pre>
       </article>
     </section>
 
-<section class="admin-grid">
+<div class="admin-section-heading admin-view-section" data-admin-section="inbox"><span>📥 HỘP THƯ</span><h2>Phản hồi cần xử lý</h2></div>
+<section class="admin-grid admin-view-section" id="adminInboxSection" data-admin-section="inbox">
       <article class="admin-panel" style="grid-column:1/-1">
         <div class="admin-panel-head">
           <div><span>📥 TƯƠNG TÁC</span><h2>Tải file, xem video, sách, ý tưởng</h2></div>
@@ -175,7 +214,8 @@ where is_admin = true;</pre>
       </article>
     </section>
 
-<section class="admin-panel pvote-panel" id="practiceVotesSection">
+<div class="admin-section-heading admin-view-section" data-admin-section="votes"><span>🗳️ VOTE</span><h2>Học viên đang muốn học gì tiếp?</h2></div>
+<section class="admin-panel pvote-panel admin-view-section" id="practiceVotesSection" data-admin-section="votes">
       <div class="admin-panel-head">
         <div>
           <span>📝 VOTE BÀI TẬP</span>
@@ -217,7 +257,7 @@ where is_admin = true;</pre>
       <p class="pvote-note">Mỗi tháng là một kỳ thống kê riêng. Sang tháng mới, số hiển thị tự bắt đầu lại từ 0; lịch sử tháng cũ vẫn được giữ để xem lại.</p>
     </section>
 
-    <section class="admin-two-column admin-learning-grid">
+    <section class="admin-two-column admin-learning-grid admin-view-section" id="adminLearningDetail" data-admin-section="learning">
       <article class="admin-panel">
         <div class="admin-panel-head"><div><span>✅ LEARNING</span><h2>Bài hoàn thành nhiều nhất</h2></div></div>
         <div id="topCompletedLessons" class="admin-ranking"></div>
@@ -229,7 +269,8 @@ where is_admin = true;</pre>
       </article>
     </section>
 
-    <section class="admin-panel">
+    <div class="admin-section-heading admin-view-section" data-admin-section="analytics"><span>📈 ANALYTICS</span><h2>Xu hướng sử dụng website</h2></div>
+    <section class="admin-panel admin-view-section" id="adminTrendSection" data-admin-section="analytics">
       <div class="admin-panel-head">
         <div>
           <span>📈 Xu hướng</span>
@@ -247,7 +288,7 @@ where is_admin = true;</pre>
       </div>
     </section>
 
-    <section class="admin-two-column">
+    <section class="admin-two-column admin-view-section" id="adminTopContentSection" data-admin-section="analytics">
       <article class="admin-panel">
         <div class="admin-panel-head">
           <div><span>🏆 TOP</span><h2>Công cụ được dùng nhiều</h2></div>
@@ -268,7 +309,7 @@ where is_admin = true;</pre>
     
     
 
-    <section class="admin-privacy-note">
+    <section class="admin-privacy-note admin-view-section" id="adminPrivacySection" data-admin-section="overview">
       <strong>🔒 Analytics tối giản dữ liệu</strong>
       <p>Dashboard chỉ thống kê sự kiện như page view, login và tên công cụ Excel Mobile đã chạy. Tracking được thiết kế không gửi nội dung workbook, giá trị ô, tên file hay dữ liệu bên trong Excel.</p>
     </section>
@@ -293,7 +334,7 @@ where is_admin = true;</pre>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
-<script defer src="admin.js"></script>
+<script defer src="admin.js?v=20260828-admin-panel"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>
