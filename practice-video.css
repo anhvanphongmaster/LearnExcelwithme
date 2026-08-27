@@ -861,3 +861,23 @@ body.dark-mode .pv-topic-poll-panel .pv-topic-row{
   min-width:30px;
   font-variant-numeric:tabular-nums;
 }
+
+/* Daily lesson vote state: keep the request meaning visible after voting */
+.pv-vote-row.is-voted .pv-vote-done,
+.pv-vote-done:disabled{
+  opacity:1;
+  background:#e8f6ee;
+  color:#17653d;
+  border-color:#b9ddc8;
+  font-weight:850;
+}
+.pv-vote-row.is-voted .pv-vote-arrow{color:#2b8a57}
+.pv-vote-row.is-voted .pv-vote-hint{
+  color:#28734d !important;
+  font-weight:750;
+}
+@media(max-width:640px){
+  .pv-vote-row{gap:5px!important}
+  .pv-vote{font-size:10px!important;padding:5px 8px!important}
+  .pv-vote-hint{font-size:9.8px!important}
+}

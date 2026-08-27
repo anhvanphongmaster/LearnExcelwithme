@@ -454,7 +454,7 @@
     var user = await requireLogin("Đăng nhập để vote. Mỗi tài khoản có thể vote lại khi sang ngày mới.");
     if (!user) return;
     if (hasVoted(item.id)) {
-      if (btn) { btn.disabled = true; btn.textContent = "✓ Đã gửi"; }
+      if (btn) setLessonVoteButtonState(btn, true);
       return;
     }
     if (btn) { btn.disabled = true; btn.textContent = "Đang gửi..."; }
@@ -472,8 +472,9 @@
         if (res && res.error) console.debug("vote rpc error", res.error);
       }
     } catch (e) { console.debug("vote rpc", e); }
-    if (btn) { btn.textContent = "✓ Đã gửi yêu cầu"; }
+    if (btn) setLessonVoteButtonState(btn, true);
     loadPublicVoteSummary();
+    loadDailyVoteRanking(vnDateParts(0).iso);
   }
 
 
@@ -526,6 +527,11 @@
     var hint = document.getElementById("pvDailyHint");
     if (!list || !summary) return;
     rows = Array.isArray(rows) ? rows.slice() : [];
+    // Trang Bài tập chỉ hiển thị vote của từng bài học.
+    // Loại các vote kênh như focus_youtube / focus_tiktok khỏi dashboard này.
+    rows = rows.filter(function(r){
+      return r && (r.vote_type === "need_guide" || r.vote_type === "need_more_guide");
+    });
     rows.sort(function (a, b) { return (Number(b.votes) || 0) - (Number(a.votes) || 0); });
     var total = 0, need = 0, more = 0;
     rows.forEach(function(r){ var v=Number(r.votes)||0; total+=v; if(r.vote_type==="need_more_guide") more+=v; else need+=v; });
@@ -767,7 +773,9 @@
         if (today !== __pvTopicVoteDay) {
           __pvTopicVoteDay = today;
           syncTopicVoteButtons();
+          syncLessonVoteButtons();
           loadTopicVoteSummary();
+          loadDailyVoteRanking(vnDateParts(0).iso);
         }
       }, 60000);
     }
@@ -805,6 +813,37 @@
     return "tone-default";
   }
 
+  function lessonVoteCopy(item, voted) {
+    var hasVideo = !!tiktokUrl(item);
+    var label = hasVideo ? "Cần hướng dẫn thêm" : "Cần hướng dẫn";
+    return {
+      label: voted ? "✓ " + label : label,
+      hint: voted
+        ? "Đã vote hôm nay · Mai vote lại"
+        : (hasVideo ? "Cần admin ra video hướng dẫn thêm" : "Cần admin ra video hướng dẫn")
+    };
+  }
+
+  function setLessonVoteButtonState(btn, voted) {
+    if (!btn) return;
+    var id = btn.getAttribute("data-vote-id");
+    var item = videoPracticeData.find(function(x){ return x.id === id; });
+    if (!item) return;
+    var copy = lessonVoteCopy(item, voted);
+    btn.disabled = !!voted;
+    btn.classList.toggle("pv-vote-done", !!voted);
+    btn.textContent = copy.label;
+    var row = btn.closest(".pv-vote-row");
+    var hint = row ? row.querySelector(".pv-vote-hint") : null;
+    if (hint) hint.textContent = copy.hint;
+  }
+
+  function syncLessonVoteButtons() {
+    document.querySelectorAll(".pv-vote[data-vote-id]").forEach(function(btn){
+      setLessonVoteButtonState(btn, hasVoted(btn.getAttribute("data-vote-id")));
+    });
+  }
+
   function cardHTML(item, localNum, q) {
     const fileName = resolvedFile(item);
     const avail = !!fileName;
@@ -826,19 +865,14 @@
     const hasVideo = !!tk;
     let voteRowHtml;
     const voteType = hasVideo ? "need_more_guide" : "need_guide";
-      const voteLabel = hasVideo ? "Cần hướng dẫn thêm" : "Cần hướng dẫn";
-      const voteHint = hasVideo
-        ? "Cần admin ra video hướng dẫn thêm"
-        : "Cần admin ra video hướng dẫn";
       const voted = hasVoted(item.id);
-      const voteBtn = voted
-        ? '<button type="button" class="pv-vote pv-vote-done" disabled>✓ Đã gửi</button>'
-        : '<button type="button" class="pv-vote" data-vote-id="' + item.id + '" data-vote-type="' + voteType + '">' + voteLabel + "</button>";
+      const voteCopy = lessonVoteCopy(item, voted);
+      const voteBtn = '<button type="button" class="pv-vote' + (voted ? ' pv-vote-done' : '') + '" data-vote-id="' + item.id + '" data-vote-type="' + voteType + '"' + (voted ? ' disabled' : '') + '>' + voteCopy.label + '</button>';
       voteRowHtml =
-        '<div class="pv-vote-row">' +
+        '<div class="pv-vote-row' + (voted ? ' is-voted' : '') + '">' +
           voteBtn +
           '<span class="pv-vote-arrow" aria-hidden="true">→</span>' +
-          '<span class="pv-vote-hint">' + voteHint + '</span>' +
+          '<span class="pv-vote-hint">' + voteCopy.hint + '</span>' +
         '</div>';
     const num = localNum != null ? localNum : item.number;
     const skillRaw = item.skill || "";
