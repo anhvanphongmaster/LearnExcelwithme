@@ -196,53 +196,45 @@
 
   async function renderPracticeVotes(){
     const root=document.getElementById("practiceVotesList");
-    if(!root) return;
+    if(!root)return;
     if(!currentVoteMonth) currentVoteMonth=vnMonth(0);
     updateVoteMonthUI();
     try{
       const rows=await rpcSoft("admin_list_practice_votes_by_month",{p_month:monthIso(currentVoteMonth)});
-      if(!rows || rows.__error){
-        root.innerHTML='<div class="pvote-empty">Chưa có dashboard vote theo tháng. Chạy file <code>practice-votes-dashboard-v2.sql</code> một lần trong Supabase.</div>';
+      if(rows===null){
+        root.innerHTML='<div class="pvote-empty">Chưa có dashboard vote theo tháng. Chạy SQL cập nhật vote kênh một lần trong Supabase.</div>';
         return;
       }
-      if(!rows.length){
-        root.innerHTML='<div class="pvote-summary"><div class="pvote-stat"><span>Tổng vote</span><strong>0</strong></div><div class="pvote-stat"><span>Cần hướng dẫn</span><strong>0</strong></div><div class="pvote-stat"><span>Hướng dẫn thêm</span><strong>0</strong></div><div class="pvote-stat"><span>Số bài</span><strong>0</strong></div></div><div class="pvote-empty">Tháng này chưa có lượt vote nào.</div>';
+      const allRows=Array.isArray(rows)?rows:[];
+      const channelRows=allRows.filter(r=>r.vote_type==="focus_youtube"||r.vote_type==="focus_tiktok"||String(r.lesson_id||"").indexOf("channel-focus-")===0);
+      const practiceRows=allRows.filter(r=>!channelRows.includes(r));
+
+      let yt=0,tt=0;
+      channelRows.forEach(r=>{const v=Number(r.votes)||0;if(r.vote_type==="focus_youtube"||r.lesson_id==="channel-focus-youtube")yt+=v;else if(r.vote_type==="focus_tiktok"||r.lesson_id==="channel-focus-tiktok")tt+=v;});
+      const ytEl=$("channelVoteYoutube"),ttEl=$("channelVoteTiktok"),win=$("channelVoteWinner"),bar=$("channelVoteYoutubeBar");
+      if(ytEl)ytEl.textContent=yt;if(ttEl)ttEl.textContent=tt;
+      const channelTotal=yt+tt, pct=channelTotal?Math.round(yt/channelTotal*100):0;
+      if(bar)bar.style.width=pct+"%";
+      if(win){
+        if(!channelTotal)win.textContent="Chưa có vote trong tháng này.";
+        else if(yt===tt)win.textContent=`Đang hòa ${yt} – ${tt}`;
+        else if(yt>tt)win.textContent=`YouTube đang dẫn ${yt} – ${tt} (${pct}%)`;
+        else win.textContent=`TikTok đang dẫn ${tt} – ${yt} (${100-pct}%)`;
+      }
+
+      if(!practiceRows.length){
+        root.innerHTML='<div class="pvote-summary"><div class="pvote-stat"><span>Tổng vote</span><strong>0</strong></div><div class="pvote-stat"><span>Cần hướng dẫn</span><strong>0</strong></div><div class="pvote-stat"><span>Hướng dẫn thêm</span><strong>0</strong></div><div class="pvote-stat"><span>Số bài</span><strong>0</strong></div></div><div class="pvote-empty">Tháng này chưa có vote hướng dẫn bài tập.</div>';
         return;
       }
-      const typeLabel={need_guide:"Cần hướng dẫn",need_more_guide:"Cần hướng dẫn thêm"};
+      const typeLabel={need_guide:"Cần hướng dẫn",need_more_guide:"Hướng dẫn thêm"};
       const typeClass={need_guide:"pvote-tag-need",need_more_guide:"pvote-tag-more"};
-      let total=0, need=0, more=0;
-      rows.forEach(r=>{
-        const v=Number(r.votes)||0; total+=v;
-        if(r.vote_type==="need_more_guide") more+=v; else need+=v;
-      });
-      rows.sort((a,b)=>(Number(b.votes)||0)-(Number(a.votes)||0));
-      const max=Math.max(1, ...rows.map(r=>Number(r.votes)||0));
-      const lessonCount=new Set(rows.map(r=>r.lesson_id)).size;
-      const summary=`<div class="pvote-summary">
-        <div class="pvote-stat"><span>Tổng vote</span><strong>${total}</strong></div>
-        <div class="pvote-stat"><span>Cần hướng dẫn</span><strong>${need}</strong></div>
-        <div class="pvote-stat"><span>Hướng dẫn thêm</span><strong>${more}</strong></div>
-        <div class="pvote-stat"><span>Số bài</span><strong>${lessonCount}</strong></div>
-      </div>`;
-      const list=rows.map((r,i)=>{
-        const num=r.lesson_number!=null?String(r.lesson_number).padStart(2,"0"):"—";
-        const title=String(r.lesson_title||r.lesson_id||"").replace(/</g,"&lt;");
-        const kind=typeLabel[r.vote_type]||r.vote_type;
-        const tc=typeClass[r.vote_type]||"pvote-tag-need";
-        const v=Number(r.votes)||0;
-        const pct=Math.max(8, Math.round(v/max*100));
-        return `<div class="pvote-row${i<3?" pvote-row-top":""}">
-          <div class="pvote-rank">${i+1}</div>
-          <div class="pvote-main">
-            <div class="pvote-title"><span class="pvote-num">#${num}</span> ${title}</div>
-            <div class="pvote-meta"><span class="pvote-tag ${tc}">${kind}</span></div>
-            <div class="pvote-bar"><span style="width:${pct}%"></span></div>
-          </div>
-          <div class="pvote-count"><strong>${v}</strong><small>vote</small></div>
-        </div>`;
-      }).join("");
-      root.innerHTML=summary+`<div class="pvote-scroll"><div class="pvote-list">${list}</div></div>`+(rows.length>3?'<p class="pvote-more">↕ Cuộn trong khung để xem thêm</p>':'');
+      let total=0,need=0,more=0; const lessonIds=new Set();
+      practiceRows.forEach(r=>{const v=Number(r.votes)||0;total+=v;lessonIds.add(r.lesson_id);if(r.vote_type==="need_more_guide")more+=v;else if(r.vote_type==="need_guide")need+=v;});
+      practiceRows.sort((a,b)=>(Number(b.votes)||0)-(Number(a.votes)||0));
+      const max=Math.max(1,...practiceRows.map(r=>Number(r.votes)||0));
+      const summary=`<div class="pvote-summary"><div class="pvote-stat"><span>Tổng vote</span><strong>${total}</strong></div><div class="pvote-stat"><span>Cần hướng dẫn</span><strong>${need}</strong></div><div class="pvote-stat"><span>Hướng dẫn thêm</span><strong>${more}</strong></div><div class="pvote-stat"><span>Số bài</span><strong>${lessonIds.size}</strong></div></div>`;
+      const list=practiceRows.map((r,i)=>{const kind=typeLabel[r.vote_type]||r.vote_type,tc=typeClass[r.vote_type]||"pvote-tag-need",v=Number(r.votes)||0,pct=Math.max(6,Math.round(v/max*100)),num=r.lesson_number?String(r.lesson_number).padStart(2,"0"):"—",title=r.lesson_title||r.lesson_id;return `<div class="pvote-row${i<3?" pvote-row-top":""}"><div class="pvote-rank">${i+1}</div><div class="pvote-main"><div class="pvote-title"><span class="pvote-num">#${num}</span> ${title}</div><div class="pvote-meta"><span class="pvote-tag ${tc}">${kind}</span></div><div class="pvote-bar"><span style="width:${pct}%"></span></div></div><div class="pvote-count"><strong>${v}</strong><small>vote</small></div></div>`;}).join("");
+      root.innerHTML=summary+`<div class="pvote-scroll"><div class="pvote-list">${list}</div></div>`+(practiceRows.length>3?'<p class="pvote-more">↕ Cuộn trong khung để xem thêm</p>':'');
     }catch(e){
       root.innerHTML='<div class="pvote-empty">Lỗi tải vote theo tháng.</div>';
     }
