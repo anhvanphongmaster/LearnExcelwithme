@@ -62,7 +62,8 @@
       var mine=b.getAttribute("data-chvote")===choice;
       b.classList.toggle("is-on", mine);
       b.classList.toggle("is-admin-cancel", !!(choice && mine && isAdmin));
-      b.disabled=!!choice && !(mine && isAdmin);
+      b.disabled=!!choice && !mine;
+      b.setAttribute("aria-disabled", (choice && mine && !isAdmin)?"true":"false");
       if(mine && isAdmin){
         b.textContent="↩ Huỷ vote";
       }else{

@@ -1783,7 +1783,8 @@
   function setTopicVoteButtonState(btn, voted) {
     if (!btn) return;
     var adminCancel = !!(voted && __pvIsAdmin);
-    btn.disabled = !!voted && !adminCancel;
+    btn.disabled = false;
+    btn.setAttribute("aria-disabled", voted && !adminCancel ? "true" : "false");
     btn.classList.toggle("is-voted", !!voted);
     btn.classList.toggle("is-admin-cancel", adminCancel);
     btn.dataset.adminCancel = adminCancel ? "1" : "0";
@@ -1823,7 +1824,7 @@
               '</div>' +
               '<div class="pv-topic-action">' +
                 '<div class="pv-topic-vote-control">' +
-                  '<button type="button" class="pv-topic-vote-btn' + (voted ? ' is-voted' : '') + '" data-topic-vote="' + topic.id + '"' + (voted ? ' disabled' : '') + '>' +
+                  '<button type="button" class="pv-topic-vote-btn' + (voted ? ' is-voted' : '') + '" data-topic-vote="' + topic.id + '">' +
                     (voted ? '✓ Đã vote hôm nay' : 'Vote') +
                   '</button>' +
                   '<small class="pv-topic-vote-status"' + (voted ? '' : ' hidden') + '>' +
@@ -1951,16 +1952,22 @@
   function bindTopicVotes() {
     if (__pvTopicVoteBound) return;
     __pvTopicVoteBound = true;
-    document.addEventListener("click", function(e){
+    document.addEventListener("click", async function(e){
       var btn = e.target.closest(".pv-topic-vote-btn");
-      if (!btn || btn.disabled) return;
+      if (!btn) return;
       e.preventDefault();
       var topicId = btn.getAttribute("data-topic-vote");
-      if (__pvIsAdmin && btn.dataset.adminCancel === "1") {
-        cancelTopicVote(topicId, btn);
-      } else {
-        submitTopicVote(topicId, btn);
+      var alreadyVoted = hasTopicVoted(topicId);
+      if (alreadyVoted) {
+        var isAdminNow = __pvIsAdmin || await detectPracticeAdmin(true);
+        if (isAdminNow) {
+          await cancelTopicVote(topicId, btn);
+        } else {
+          setTopicVoteButtonState(btn, true);
+        }
+        return;
       }
+      await submitTopicVote(topicId, btn);
     });
 
     if (!__pvTopicVoteDayTimer) {
@@ -2027,7 +2034,8 @@
     if (!item) return;
     var copy = lessonVoteCopy(item, voted);
     var adminCancel = !!(voted && __pvIsAdmin);
-    btn.disabled = !!voted && !adminCancel;
+    btn.disabled = false;
+    btn.setAttribute("aria-disabled", voted && !adminCancel ? "true" : "false");
     btn.classList.toggle("pv-vote-done", !!voted);
     btn.classList.toggle("pv-admin-cancel", adminCancel);
     btn.dataset.adminCancel = adminCancel ? "1" : "0";
@@ -2124,7 +2132,7 @@ grid.addEventListener("click", async function (e) {
         btn.disabled = false;
         var isAdminNow = __pvIsAdmin || await detectPracticeAdmin(true);
         if (isAdminNow) {
-          cancelLessonVote(item, btn);
+          await cancelLessonVote(item, btn);
         } else {
           setLessonVoteButtonState(btn, true);
         }
