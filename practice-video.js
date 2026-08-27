@@ -605,6 +605,25 @@
     try { localStorage.setItem("avp_practice_topic_votes", JSON.stringify(m)); } catch (e) {}
   }
 
+  function setTopicVoteButtonState(btn, voted) {
+    if (!btn) return;
+    btn.disabled = !!voted;
+    btn.classList.toggle("is-voted", !!voted);
+    btn.textContent = voted ? "✓ Đã vote hôm nay" : "Vote";
+    var control = btn.closest(".pv-topic-vote-control");
+    var status = control ? control.querySelector(".pv-topic-vote-status") : null;
+    if (status) {
+      status.textContent = voted ? "Bạn có thể vote lại vào ngày mai" : "";
+      status.hidden = !voted;
+    }
+  }
+
+  function syncTopicVoteButtons() {
+    document.querySelectorAll(".pv-topic-vote-btn[data-topic-vote]").forEach(function(btn){
+      setTopicVoteButtonState(btn, hasTopicVoted(btn.getAttribute("data-topic-vote")));
+    });
+  }
+
   function topicPollHTML() {
     return '<section class="pv-panel tone-default pv-topic-poll-panel" id="pvTopicPoll" aria-live="polite">' +
       '<header class="pv-panel-h">' +
@@ -625,9 +644,14 @@
                 '<strong>' + escapeHtml(topic.title) + '</strong>' +
               '</div>' +
               '<div class="pv-topic-action">' +
-                '<button type="button" class="pv-topic-vote-btn' + (voted ? ' is-voted' : '') + '" data-topic-vote="' + topic.id + '"' + (voted ? ' disabled' : '') + '>' +
-                  (voted ? '✓ Đã vote' : 'Vote') +
-                '</button>' +
+                '<div class="pv-topic-vote-control">' +
+                  '<button type="button" class="pv-topic-vote-btn' + (voted ? ' is-voted' : '') + '" data-topic-vote="' + topic.id + '"' + (voted ? ' disabled' : '') + '>' +
+                    (voted ? '✓ Đã vote hôm nay' : 'Vote') +
+                  '</button>' +
+                  '<small class="pv-topic-vote-status"' + (voted ? '' : ' hidden') + '>' +
+                    (voted ? 'Bạn có thể vote lại vào ngày mai' : '') +
+                  '</small>' +
+                '</div>' +
                 '<div class="pv-topic-progress-wrap">' +
                   '<div class="pv-topic-progress"><span data-topic-bar="' + topic.id + '" style="width:0%"></span></div>' +
                   '<span class="pv-topic-percent" data-topic-percent="' + topic.id + '">0%</span>' +
@@ -698,7 +722,7 @@
     if (!user) return;
 
     if (hasTopicVoted(topicId)) {
-      if (btn) { btn.disabled = true; btn.classList.add("is-voted"); btn.textContent = "✓ Đã vote"; }
+      setTopicVoteButtonState(btn, true);
       return;
     }
 
@@ -714,7 +738,7 @@
         throw new Error(payload.error || "vote_failed");
       }
       markTopicVoted(topicId);
-      if (btn) { btn.disabled = true; btn.classList.add("is-voted"); btn.textContent = "✓ Đã vote"; }
+      setTopicVoteButtonState(btn, true);
       await loadTopicVoteSummary();
     } catch (e) {
       console.debug("topic vote", e);
@@ -725,6 +749,8 @@
   }
 
   var __pvTopicVoteBound = false;
+  var __pvTopicVoteDay = vnDayKey();
+  var __pvTopicVoteDayTimer = null;
   function bindTopicVotes() {
     if (__pvTopicVoteBound) return;
     __pvTopicVoteBound = true;
@@ -734,6 +760,17 @@
       e.preventDefault();
       submitTopicVote(btn.getAttribute("data-topic-vote"), btn);
     });
+
+    if (!__pvTopicVoteDayTimer) {
+      __pvTopicVoteDayTimer = setInterval(function(){
+        var today = vnDayKey();
+        if (today !== __pvTopicVoteDay) {
+          __pvTopicVoteDay = today;
+          syncTopicVoteButtons();
+          loadTopicVoteSummary();
+        }
+      }, 60000);
+    }
   }
 
   function escapeHtml(s) {

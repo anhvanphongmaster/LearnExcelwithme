@@ -684,10 +684,13 @@ body.dark-mode .pv-daily-empty{background:#18271f;border-color:#344a3e;color:#a8
 .pv-topic-row:hover{transform:translateY(-2px);border-color:#bcdac7;box-shadow:0 9px 20px rgba(31,83,53,.08)}
 .pv-topic-name{display:flex;align-items:center;gap:10px;min-width:0;color:#234a34;font-size:13px;line-height:1.35}
 .pv-topic-icon{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 34px;border-radius:10px;background:#edf8f1;border:1px solid #d4eadc;font-size:16px;font-weight:900}
-.pv-topic-action{display:grid;grid-template-columns:82px minmax(130px,1fr) 72px;align-items:center;gap:9px}
-.pv-topic-vote-btn{min-height:38px;border:0;border-radius:11px;padding:0 12px;background:#217346;color:#fff;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 7px 15px rgba(33,115,70,.18);transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+.pv-topic-action{display:grid;grid-template-columns:118px minmax(130px,1fr) 72px;align-items:center;gap:9px}
+.pv-topic-vote-control{display:grid;gap:4px;align-self:center}
+.pv-topic-vote-btn{width:100%;min-height:38px;border:0;border-radius:11px;padding:0 12px;background:#217346;color:#fff;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 7px 15px rgba(33,115,70,.18);transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
 .pv-topic-vote-btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 9px 18px rgba(33,115,70,.24)}
 .pv-topic-vote-btn.is-voted,.pv-topic-vote-btn:disabled{background:#dcebe2;color:#397153;box-shadow:none;cursor:default}
+.pv-topic-vote-status{display:block;color:#6c7e73;font-size:8.5px;font-weight:700;line-height:1.2;text-align:center}
+.pv-topic-vote-status[hidden]{display:none!important}
 .pv-topic-progress-wrap{display:grid;grid-template-columns:minmax(70px,1fr) 38px;align-items:center;gap:7px;min-width:0}
 .pv-topic-progress{height:10px;overflow:hidden;border-radius:999px;background:#e6eee9;box-shadow:inset 0 1px 2px rgba(25,65,42,.07)}
 .pv-topic-progress span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#217346,#50bd79);transition:width .6s cubic-bezier(.22,.8,.24,1)}
@@ -702,6 +705,7 @@ body.dark-mode .pv-topic-icon{background:#1b3928;border-color:#315541}
 body.dark-mode .pv-topic-progress{background:#294235}
 body.dark-mode .pv-topic-total{color:#c3d7ca}
 body.dark-mode .pv-topic-vote-btn.is-voted,body.dark-mode .pv-topic-vote-btn:disabled{background:#294637;color:#a9d7bc}
+body.dark-mode .pv-topic-vote-status{color:#9eb6a8}
 @media (max-width:720px){
   .pv-topic-poll{padding:15px;border-radius:19px}
   .pv-topic-poll-head{gap:8px}
@@ -709,7 +713,7 @@ body.dark-mode .pv-topic-vote-btn.is-voted,body.dark-mode .pv-topic-vote-btn:dis
   .pv-topic-target{padding:6px 8px;font-size:9px}
   .pv-topic-row{grid-template-columns:1fr;gap:9px;padding:11px}
   .pv-topic-name{font-size:12.5px}
-  .pv-topic-action{grid-template-columns:78px minmax(0,1fr) 66px;gap:7px}
+  .pv-topic-action{grid-template-columns:108px minmax(0,1fr) 66px;gap:7px}
   .pv-topic-vote-btn{min-height:36px;padding:0 9px;font-size:11px}
   .pv-topic-progress-wrap{grid-template-columns:minmax(55px,1fr) 34px;gap:5px}
   .pv-topic-total{font-size:10.5px}
@@ -791,7 +795,7 @@ body.dark-mode .pv-topic-vote-btn.is-voted,body.dark-mode .pv-topic-vote-btn:dis
 }
 .pv-topic-poll-panel .pv-topic-action{
   display:grid;
-  grid-template-columns:68px minmax(0,1fr) 58px;
+  grid-template-columns:106px minmax(0,1fr) 58px;
   align-items:center;
   gap:7px;
 }
@@ -801,6 +805,7 @@ body.dark-mode .pv-topic-vote-btn.is-voted,body.dark-mode .pv-topic-vote-btn:dis
   border-radius:7px;
   font-size:10.5px;
 }
+.pv-topic-poll-panel .pv-topic-vote-status{font-size:7.8px;line-height:1.15}
 .pv-topic-poll-panel .pv-topic-progress-wrap{
   grid-template-columns:minmax(0,1fr) 30px;
   gap:5px;
