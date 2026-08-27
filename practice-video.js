@@ -322,21 +322,19 @@
       file: "29_pivot_co_ban.xlsx",
       folder: "downloads/video-practice/"
     },
-
-    // ===== CTA =====
-    {
-      id: "v16-Coming_soon",
-      number: 99,
-      icon: "💡",
-      title: "Sắp ra mắt — gửi ý tưởng bài mới",
-      category: "Các bạn đóng góp ý tưởng nhé",
-      skill: "Vote / góp ý trên trang để admin lên bài tiếp",
-      filterTags: ["Các bạn đóng góp ý tưởng nhé"],
-      file: "",
-      folder: "downloads/video-practice/"
-    }
   ];
 
+
+
+  const practiceTopicPollData = [
+    { id: "clean_data", icon: "🧹", title: "Thêm nội dung chủ đề LÀM SẠCH DỮ LIỆU" },
+    { id: "power_query", icon: "⚙️", title: "Thêm nội dung chủ đề POWER QUERY" },
+    { id: "data_entry", icon: "⌨️", title: "Thêm nội dung chủ đề NHẬP LIỆU" },
+    { id: "formula", icon: "ƒx", title: "Thêm nội dung chủ đề CÔNG THỨC" },
+    { id: "format", icon: "🎨", title: "Thêm nội dung chủ đề FORMAT" },
+    { id: "new_topic", icon: "✨", title: "Ra thêm chủ đề mới" }
+  ];
+  const PRACTICE_TOPIC_TARGET = 100;
 
   function fileList() {
     return (typeof availablePracticeFiles !== "undefined" && Array.isArray(availablePracticeFiles))
@@ -422,18 +420,40 @@
       return k;
     } catch (e) { return "v_anon"; }
   }
+  function vnDayKey() {
+    try {
+      var parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(new Date());
+      var m = {};
+      parts.forEach(function (p) { if (p.type !== "literal") m[p.type] = p.value; });
+      return m.year + "-" + m.month + "-" + m.day;
+    } catch (e) {
+      var d = new Date(Date.now() + 7 * 60 * 60 * 1000);
+      return d.toISOString().slice(0, 10);
+    }
+  }
   function votedMap() {
     try { return JSON.parse(localStorage.getItem("avp_practice_votes") || "{}") || {}; }
     catch (e) { return {}; }
   }
+  function voteStorageKey(id) {
+    return id + "|" + vnDayKey();
+  }
   function markVoted(id) {
-    var m = votedMap(); m[id] = true;
+    var m = votedMap();
+    m[voteStorageKey(id)] = true;
     try { localStorage.setItem("avp_practice_votes", JSON.stringify(m)); } catch (e) {}
   }
-  function hasVoted(id) { return !!votedMap()[id]; }
+  function hasVoted(id) {
+    return !!votedMap()[voteStorageKey(id)];
+  }
 
   async function submitVote(item, voteType, btn) {
-    var user = await requireLogin("Đăng nhập mới vote được. Mỗi tài khoản vote 1 lần.");
+    var user = await requireLogin("Đăng nhập để vote. Mỗi tài khoản có thể vote lại khi sang ngày mới.");
     if (!user) return;
     if (hasVoted(item.id)) {
       if (btn) { btn.disabled = true; btn.textContent = "✓ Đã gửi"; }
@@ -574,6 +594,123 @@
   }
 
 
+
+  function topicVoteMap() {
+    try { return JSON.parse(localStorage.getItem("avp_practice_topic_votes") || "{}") || {}; }
+    catch (e) { return {}; }
+  }
+  function topicVoteStorageKey(topicId) { return topicId + "|" + vnDayKey(); }
+  function hasTopicVoted(topicId) { return !!topicVoteMap()[topicVoteStorageKey(topicId)]; }
+  function markTopicVoted(topicId) {
+    var m = topicVoteMap();
+    m[topicVoteStorageKey(topicId)] = true;
+    try { localStorage.setItem("avp_practice_topic_votes", JSON.stringify(m)); } catch (e) {}
+  }
+
+  function topicPollHTML() {
+    return '<section class="pv-topic-poll" id="pvTopicPoll" aria-live="polite">' +
+      '<header class="pv-topic-poll-head"><div>' +
+      '<span class="pv-topic-kicker">📊 BÌNH CHỌN CHỦ ĐỀ TIẾP THEO</span>' +
+      '<h2>Bạn muốn có thêm nội dung nào?</h2>' +
+      '<p>Mỗi tài khoản vote 1 lần cho mỗi chủ đề trong ngày. Mốc mục tiêu: 100 vote.</p>' +
+      '</div><span class="pv-topic-target">MỐC 100</span></header>' +
+      '<div class="pv-topic-list">' +
+      practiceTopicPollData.map(function(topic){
+        var voted = hasTopicVoted(topic.id);
+        return '<article class="pv-topic-row" data-topic-id="' + topic.id + '">' +
+          '<div class="pv-topic-name"><span class="pv-topic-icon">' + topic.icon + '</span><strong>' + escapeHtml(topic.title) + '</strong></div>' +
+          '<div class="pv-topic-action">' +
+            '<button type="button" class="pv-topic-vote-btn' + (voted ? ' is-voted' : '') + '" data-topic-vote="' + topic.id + '"' + (voted ? ' disabled' : '') + '>' + (voted ? '✓ Đã vote' : 'Vote') + '</button>' +
+            '<div class="pv-topic-progress-wrap"><div class="pv-topic-progress"><span data-topic-bar="' + topic.id + '" style="width:0%"></span></div><span class="pv-topic-percent" data-topic-percent="' + topic.id + '">0%</span></div>' +
+            '<strong class="pv-topic-total" data-topic-total="' + topic.id + '">0 lượt</strong>' +
+          '</div></article>';
+      }).join("") +
+      '</div><p class="pv-topic-note" id="pvTopicVoteNote">Số liệu cập nhật trực tiếp từ lượt bình chọn.</p></section>';
+  }
+
+  function renderTopicVoteSummary(rows) {
+    var totals = {};
+    practiceTopicPollData.forEach(function(t){ totals[t.id] = 0; });
+    (Array.isArray(rows) ? rows : []).forEach(function(r){
+      if (Object.prototype.hasOwnProperty.call(totals, r.topic_id)) totals[r.topic_id] = Number(r.votes) || 0;
+    });
+    practiceTopicPollData.forEach(function(topic){
+      var total = totals[topic.id] || 0;
+      var pct = Math.min(100, Math.max(0, Math.round(total / PRACTICE_TOPIC_TARGET * 100)));
+      var bar = document.querySelector('[data-topic-bar="' + topic.id + '"]');
+      var pe = document.querySelector('[data-topic-percent="' + topic.id + '"]');
+      var te = document.querySelector('[data-topic-total="' + topic.id + '"]');
+      if (bar) bar.style.width = pct + "%";
+      if (pe) pe.textContent = pct + "%";
+      if (te) te.textContent = total + " lượt";
+    });
+  }
+
+  async function loadTopicVoteSummary() {
+    if (!document.getElementById("pvTopicPoll")) return;
+    var note = document.getElementById("pvTopicVoteNote");
+    var sb = window.avpSupabase || window.supabaseClient || null;
+    if (!sb || !sb.rpc) {
+      if (note) note.textContent = "Đang chờ kết nối máy chủ…";
+      return;
+    }
+    try {
+      var res = await sb.rpc("public_practice_topic_vote_summary");
+      if (res && res.error) throw res.error;
+      renderTopicVoteSummary((res && res.data) || []);
+      if (note) note.textContent = "Số liệu cập nhật trực tiếp từ lượt bình chọn.";
+    } catch (e) {
+      console.debug("topic vote summary", e);
+      if (note) note.textContent = "Chưa tải được dashboard. Hãy chạy SQL vote chủ đề trong Supabase.";
+    }
+  }
+
+  async function submitTopicVote(topicId, btn) {
+    var topic = practiceTopicPollData.find(function(t){ return t.id === topicId; });
+    if (!topic) return;
+
+    var user = await requireLogin("Đăng nhập để bình chọn chủ đề.");
+    if (!user) return;
+
+    if (hasTopicVoted(topicId)) {
+      if (btn) { btn.disabled = true; btn.classList.add("is-voted"); btn.textContent = "✓ Đã vote"; }
+      return;
+    }
+
+    var sb = window.avpSupabase || window.supabaseClient || null;
+    if (!sb || !sb.rpc) return;
+    if (btn) { btn.disabled = true; btn.textContent = "Đang gửi…"; }
+
+    try {
+      var res = await sb.rpc("vote_practice_topic", { p_topic_id: topic.id, p_topic_title: topic.title });
+      if (res && res.error) throw res.error;
+      var payload = res && res.data;
+      if (payload && payload.ok === false && payload.error !== "already_voted_today") {
+        throw new Error(payload.error || "vote_failed");
+      }
+      markTopicVoted(topicId);
+      if (btn) { btn.disabled = true; btn.classList.add("is-voted"); btn.textContent = "✓ Đã vote"; }
+      await loadTopicVoteSummary();
+    } catch (e) {
+      console.debug("topic vote", e);
+      if (btn) { btn.disabled = false; btn.textContent = "Vote"; }
+      var note = document.getElementById("pvTopicVoteNote");
+      if (note) note.textContent = "Chưa gửi được vote. Kiểm tra Supabase rồi thử lại.";
+    }
+  }
+
+  var __pvTopicVoteBound = false;
+  function bindTopicVotes() {
+    if (__pvTopicVoteBound) return;
+    __pvTopicVoteBound = true;
+    document.addEventListener("click", function(e){
+      var btn = e.target.closest(".pv-topic-vote-btn");
+      if (!btn || btn.disabled) return;
+      e.preventDefault();
+      submitTopicVote(btn.getAttribute("data-topic-vote"), btn);
+    });
+  }
+
   function escapeHtml(s) {
     return String(s || "")
       .replace(/&/g, "&amp;")
@@ -625,16 +762,8 @@
       : '';
     const tags = (item.filterTags || [item.category]).join(" ");
     const hasVideo = !!tk;
-    const isIdeaCta = item.id === "v16-Coming_soon" || String(item.category || "").indexOf("đóng góp") >= 0 || String(item.title || "").indexOf("Sắp ra mắt") >= 0;
     let voteRowHtml;
-    if (isIdeaCta) {
-      voteRowHtml =
-        '<div class="pv-vote-row pv-vote-row-cta">' +
-          '<button type="button" class="pv-cta-mini pv-cta-idea" data-open="feedback">💡 Gửi ý tưởng / thắc mắc</button>' +
-          '<button type="button" class="pv-cta-mini pv-cta-file" data-open="file">📎 Gửi file Excel</button>' +
-        "</div>";
-    } else {
-      const voteType = hasVideo ? "need_more_guide" : "need_guide";
+    const voteType = hasVideo ? "need_more_guide" : "need_guide";
       const voteLabel = hasVideo ? "Cần hướng dẫn thêm" : "Cần hướng dẫn";
       const voteHint = hasVideo
         ? "Cần admin ra video hướng dẫn thêm"
@@ -649,7 +778,6 @@
           '<span class="pv-vote-arrow" aria-hidden="true">→</span>' +
           '<span class="pv-vote-hint">' + voteHint + '</span>' +
         '</div>';
-    }
     const num = localNum != null ? localNum : item.number;
     const skillRaw = item.skill || "";
     const skill = '<div class="pv-skill">' + (skillRaw ? highlightText(skillRaw, q) : "&nbsp;") + "</div>";
@@ -682,21 +810,7 @@
     var grid = document.getElementById("pvGrid");
     if (!grid || __pvVoteBound) return;
     __pvVoteBound = true;
-    grid.addEventListener("click", function (e) {
-      var cta = e.target.closest(".pv-cta-mini");
-      if (!cta) return;
-      e.preventDefault();
-      var open = cta.getAttribute("data-open");
-      if (open === "feedback") {
-        var b1 = document.getElementById("pvFeedbackBtn");
-        if (b1) b1.click();
-      } else if (open === "file") {
-        var b2 = document.getElementById("pvFileBtn");
-        if (b2) b2.click();
-      }
-    });
-
-    grid.addEventListener("click", function (e) {
+grid.addEventListener("click", function (e) {
       var btn = e.target.closest(".pv-vote");
       if (!btn || btn.disabled) return;
       e.preventDefault();
@@ -760,8 +874,11 @@
       html += '</div></section>';
     });
     html += '</div>';
+    if (f === "all" && !q) html += topicPollHTML();
     grid.innerHTML = html;
     bindVotes();
+    bindTopicVotes();
+    if (f === "all" && !q) setTimeout(loadTopicVoteSummary, 0);
 
     if (q && firstHitId) {
       const el = document.getElementById("pv-item-" + firstHitId);
@@ -779,6 +896,7 @@
     setTimeout(initDailyVoteDashboard, 220);
     render("all", "");
     bindVotes();
+    bindTopicVotes();
 
     const search = document.getElementById("pvSearch");
     const filters = document.querySelectorAll(".pv-filter");
