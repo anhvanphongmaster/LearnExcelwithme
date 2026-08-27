@@ -2066,7 +2066,7 @@
     const voteType = hasVideo ? "need_more_guide" : "need_guide";
       const voted = hasVoted(item.id);
       const voteCopy = lessonVoteCopy(item, voted);
-      const voteBtn = '<button type="button" class="pv-vote' + (voted ? ' pv-vote-done' : '') + '" data-vote-id="' + item.id + '" data-vote-type="' + voteType + '"' + (voted ? ' disabled' : '') + '>' + voteCopy.label + '</button>';
+      const voteBtn = '<button type="button" class="pv-vote' + (voted ? ' pv-vote-done' : '') + '" data-vote-id="' + item.id + '" data-vote-type="' + voteType + '" aria-disabled="' + (voted ? 'true' : 'false') + '">' + voteCopy.label + '</button>';
       voteRowHtml =
         '<div class="pv-vote-row' + (voted ? ' is-voted' : '') + '">' +
           voteBtn +
@@ -2109,19 +2109,30 @@
     var grid = document.getElementById("pvGrid");
     if (!grid || __pvVoteBound) return;
     __pvVoteBound = true;
-grid.addEventListener("click", function (e) {
+grid.addEventListener("click", async function (e) {
       var btn = e.target.closest(".pv-vote");
-      if (!btn || btn.disabled) return;
+      if (!btn) return;
       e.preventDefault();
       var id = btn.getAttribute("data-vote-id");
       var type = btn.getAttribute("data-vote-type") || "need_guide";
       var item = videoPracticeData.find(function (x) { return x.id === id; });
       if (!item) return;
-      if (__pvIsAdmin && btn.dataset.adminCancel === "1") {
-        cancelLessonVote(item, btn);
-      } else {
-        submitVote(item, type, btn);
+
+      // Nếu đã vote, kiểm tra quyền Admin NGAY LÚC BẤM.
+      // Cách này không phụ thuộc trạng thái disabled/cache được render trước đó.
+      if (hasVoted(id)) {
+        btn.disabled = false;
+        var isAdminNow = __pvIsAdmin || await detectPracticeAdmin(true);
+        if (isAdminNow) {
+          cancelLessonVote(item, btn);
+        } else {
+          setLessonVoteButtonState(btn, true);
+        }
+        return;
       }
+
+      if (btn.disabled) return;
+      submitVote(item, type, btn);
     });
   }
 
