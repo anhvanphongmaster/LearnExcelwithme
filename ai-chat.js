@@ -1222,3 +1222,96 @@
     client=client||getClient();
 
     if(!client?.rpc){
+      alert("Chat Admin chưa kết nối được Supabase.");
+      return;
+    }
+
+    await currentUser();
+
+    if(!user){
+      alert("Bạn cần đăng nhập để chuyển câu hỏi cho Admin.");
+      return;
+    }
+
+    try{
+      await ensureSession();
+
+      const {data:lastQuestion,error:lastErr}=await client.rpc(
+        "avp_ai_last_user_question",
+        {p_session_id:sessionId}
+      );
+
+      if(lastErr)throw lastErr;
+
+      const question=String(lastQuestion||"").trim();
+
+      if(!question){
+        alert("Bạn chưa có câu hỏi nào để chuyển cho Admin.");
+        return;
+      }
+
+      const body=[
+        "🤖 Câu hỏi được chuyển từ AI Excel",
+        "",
+        question
+      ].join("\n");
+
+      const {error}=await client.rpc("avp_chat_send_user_message",{
+        p_body:body
+      });
+
+      if(error)throw error;
+
+      alert("Đã chuyển câu hỏi cho Admin. Bạn có thể mở Chat với Admin để theo dõi phản hồi.");
+    }catch(e){
+      console.warn("AVP AI transfer admin",e);
+      alert("Chưa chuyển được câu hỏi cho Admin. Hãy thử lại sau.");
+    }
+  }
+
+  async function start(){
+    mount();
+
+    const ready=await waitClient();
+
+    if(!ready){
+      const box=$("avpAiMessages");
+      if(box){
+        box.innerHTML='<div class="avp-ai-empty">AI Chat chưa kết nối được Supabase. Hãy tải lại trang rồi thử lại.</div>';
+      }
+      return;
+    }
+
+    await currentUser();
+    await updateNotificationBadge();
+
+    try{
+      client.auth.onAuthStateChange(async(_event,session)=>{
+        user=session?.user||null;
+        sessionId=null;
+        clearSelectedImage();
+
+        await updateNotificationBadge();
+
+        if(!$("avpAiChatPanel")?.hidden){
+          if(activeMode==="community"){
+            if(communityFilter==="leaderboard") await loadCommunityLeaderboard();
+            else await loadCommunity();
+          }else if(activeMode==="notifications"){
+            await loadNotifications();
+          }else{
+            await loadHistory();
+          }
+        }
+      });
+    }catch(e){
+      console.warn("AVP AI auth listener",e);
+    }
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",start,{once:true});
+  }else{
+    start();
+  }
+})();
