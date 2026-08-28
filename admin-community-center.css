@@ -109,3 +109,18 @@
   overflow:hidden;
   text-overflow:ellipsis;
 }
+
+
+/* COMMUNITY TAB V4 - independent from old admin view router */
+#adminCommunityTab{
+  appearance:none;
+}
+#adminCommunityTab.active{
+  border-color:#217346 !important;
+  background:#eaf7ef !important;
+  box-shadow:0 0 0 1px rgba(33,115,70,.08) inset;
+}
+#adminCommunityHeading[hidden],
+#avpAdminCommunityHost[hidden]{
+  display:none !important;
+}
