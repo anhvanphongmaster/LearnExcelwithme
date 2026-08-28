@@ -41,3 +41,21 @@
   .avp-chat-panel{left:8px!important;right:8px!important;bottom:8px!important;width:auto;height:min(72vh,610px);border-radius:19px}
   .admin-chat-shell{grid-template-columns:1fr;min-height:0}.admin-chat-threads{border-right:0;border-bottom:1px solid #e3ece6;max-height:240px}.admin-chat-conversation{min-height:420px}.admin-chat-messages{max-height:360px}
 }
+
+
+/* =========================
+   ADMIN FLOATING CHAT MODE
+   ========================= */
+.avp-chat-bubble-admin{background:linear-gradient(135deg,#173f2a,#217346);box-shadow:0 14px 36px rgba(18,70,43,.34)}
+.avp-admin-float-panel{width:min(760px,calc(100vw - 24px));height:min(620px,calc(100vh - 110px))}
+.avp-admin-float-tools{display:grid;grid-template-columns:1fr 42px;gap:8px;padding:9px 10px;border-bottom:1px solid #e2ece6;background:#fff}
+.avp-admin-float-tools input{width:100%;border:1px solid #d4e3da;border-radius:11px;padding:9px 11px;font:inherit;font-size:12px;outline:none}.avp-admin-float-tools input:focus{border-color:#217346;box-shadow:0 0 0 3px rgba(33,115,70,.08)}
+.avp-admin-float-tools button{border:1px solid #d4e3da;border-radius:11px;background:#f8fbf9;color:#217346;font-size:18px;font-weight:900;cursor:pointer}
+.avp-admin-float-body{min-height:0;flex:1;display:grid;grid-template-columns:minmax(210px,35%) 1fr}
+.avp-admin-float-threads{overflow:auto;border-right:1px solid #e2ece6;background:#fbfdfb}
+.avp-admin-float-thread{display:block;width:100%;padding:10px 11px;text-align:left;border:0;border-bottom:1px solid #edf3ef;background:transparent;cursor:pointer}.avp-admin-float-thread:hover,.avp-admin-float-thread.active{background:#edf7f1}.avp-admin-float-thread>div{display:flex;align-items:center;gap:6px}.avp-admin-float-thread b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#173f2a;font-size:12px}.avp-admin-float-thread small{display:block;margin-top:2px;color:#819087;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.avp-admin-float-thread p{margin:4px 0 0;color:#5e6c64;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.avp-admin-float-conversation{min-width:0;display:flex;flex-direction:column;background:#fff}.avp-admin-float-person{padding:10px 12px;border-bottom:1px solid #e6eee9}.avp-admin-float-person strong{display:block;color:#184b31;font-size:13px}.avp-admin-float-person small{display:block;color:#7a8880;font-size:10px;margin-top:2px}.avp-admin-float-conversation .avp-chat-messages{min-height:0}.avp-admin-float-compose textarea:disabled,.avp-admin-float-compose button:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:800px){
+  .avp-admin-float-panel{left:8px!important;right:8px!important;bottom:8px!important;width:auto;height:min(78vh,650px)}
+  .avp-admin-float-body{grid-template-columns:1fr;grid-template-rows:minmax(120px,32%) 1fr}.avp-admin-float-threads{border-right:0;border-bottom:1px solid #e2ece6}.avp-admin-float-conversation{min-height:0}.avp-admin-float-conversation .avp-chat-messages{min-height:120px}
+}

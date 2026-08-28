@@ -33,7 +33,9 @@
     let cls=type;
     if(adminView && type==="admin") cls="user";
     else if(adminView && type==="user") cls="admin";
-    const who=type==="system"?"Hệ thống":type==="admin"?"Admin":"Bạn";
+    const who=adminView
+      ? (type==="system"?"Hệ thống":type==="admin"?"Bạn (Admin)":"Học viên")
+      : (type==="system"?"Hệ thống":type==="admin"?"Admin":"Bạn");
     return `<div class="avp-msg-row ${cls}"><div class="avp-msg"><div>${esc(m.body)}</div><span class="avp-msg-meta">${esc(who)} • ${fmt(m.created_at)}</span></div></div>`;
   }
 
@@ -178,10 +180,144 @@
     try{client.channel("avp-chat-admin-live").on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)}).subscribe()}catch{}
   }
 
+  /* ================= ADMIN FLOATING BUBBLE ================= */
+  let floatThreads=[],floatActiveThread=null,floatPoll=null,floatRealtime=null;
+
+  function mountAdminFloatingUI(){
+    if($("avpAdminChatRoot"))return;
+    const root=document.createElement("div");
+    root.id="avpAdminChatRoot";
+    root.className="avp-admin-mode";
+    root.innerHTML=`
+      <button class="avp-chat-bubble avp-chat-bubble-admin" id="avpChatBubble" type="button" aria-label="Hộp thư học viên" title="Hộp thư học viên">
+        💬<span class="avp-chat-badge" id="avpChatBadge" hidden>0</span>
+      </button>
+      <section class="avp-chat-panel avp-admin-float-panel" id="avpAdminFloatPanel" hidden aria-label="Hộp thư học viên">
+        <header class="avp-chat-head">
+          <div class="avp-chat-head-icon">💬</div>
+          <div class="avp-chat-head-copy"><strong>Hộp thư Admin</strong><small>Trả lời học viên ngay trên trang này</small></div>
+          <button class="avp-chat-close" id="avpAdminFloatClose" type="button" aria-label="Đóng">×</button>
+        </header>
+        <div class="avp-admin-float-tools">
+          <input id="avpAdminFloatSearch" type="search" placeholder="Tìm tên hoặc email…" autocomplete="off">
+          <button id="avpAdminFloatRefresh" type="button" title="Làm mới">↻</button>
+        </div>
+        <div class="avp-admin-float-body">
+          <aside class="avp-admin-float-threads" id="avpAdminFloatThreads"><div class="avp-chat-empty">Đang tải học viên…</div></aside>
+          <section class="avp-admin-float-conversation">
+            <header class="avp-admin-float-person"><strong id="avpAdminFloatPerson">Chọn một học viên</strong><small id="avpAdminFloatEmail">Tin nhắn sẽ hiện ở đây.</small></header>
+            <div class="avp-chat-messages" id="avpAdminFloatMessages"><div class="avp-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
+            <div class="avp-chat-compose avp-admin-float-compose">
+              <textarea id="avpAdminFloatReply" maxlength="3000" rows="1" placeholder="Phản hồi học viên…" disabled></textarea>
+              <button class="avp-chat-send" id="avpAdminFloatSend" type="button" disabled>Gửi</button>
+            </div>
+          </section>
+        </div>
+      </section>`;
+    document.body.appendChild(root);
+    bindDrag();
+    $("avpChatBubble").addEventListener("click",async()=>{
+      if($("avpChatBubble")?.dataset.justDragged==="1")return;
+      const p=$("avpAdminFloatPanel");
+      const open=p?.hidden!==false;
+      p.hidden=!open;
+      if(open){await loadFloatingAdminThreads();}
+    });
+    $("avpAdminFloatClose").addEventListener("click",()=>{$("avpAdminFloatPanel").hidden=true});
+    $("avpAdminFloatSearch").addEventListener("input",e=>renderFloatingAdminThreads(e.target.value));
+    $("avpAdminFloatRefresh").addEventListener("click",loadFloatingAdminThreads);
+    $("avpAdminFloatSend").addEventListener("click",sendFloatingAdminMessage);
+    $("avpAdminFloatReply").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendFloatingAdminMessage()}});
+  }
+
+  function setFloatingAdminBadge(){
+    const n=floatThreads.reduce((sum,t)=>sum+(Number(t.admin_unread_count)||0),0);
+    const badge=$("avpChatBadge");if(!badge)return;
+    badge.hidden=n<=0;badge.textContent=n>99?"99+":String(n);
+  }
+
+  function renderFloatingAdminThreads(filter=""){
+    const root=$("avpAdminFloatThreads");if(!root)return;
+    const q=filter.trim().toLocaleLowerCase("vi-VN");
+    const list=floatThreads.filter(t=>!q||String(t.display_name||"").toLocaleLowerCase("vi-VN").includes(q)||String(t.email||"").toLowerCase().includes(q));
+    if(!list.length){root.innerHTML='<div class="avp-chat-empty">Chưa có cuộc trò chuyện phù hợp.</div>';return}
+    root.innerHTML=list.map(t=>`<button class="avp-admin-float-thread ${floatActiveThread===t.thread_id?"active":""}" type="button" data-float-thread="${esc(t.thread_id)}"><div><b>${esc(t.display_name||"Người học")}</b>${Number(t.admin_unread_count)>0?`<span class="admin-chat-dot">${Number(t.admin_unread_count)>99?"99+":Number(t.admin_unread_count)}</span>`:""}</div><small>${esc(t.email||"")}</small><p>${esc(t.last_message||"Chưa có tin nhắn")}</p></button>`).join("");
+    root.querySelectorAll("[data-float-thread]").forEach(btn=>btn.addEventListener("click",()=>openFloatingAdminThread(btn.dataset.floatThread)));
+  }
+
+  async function loadFloatingAdminThreads(){
+    try{
+      const rows=await rpc("avp_chat_admin_threads");
+      floatThreads=Array.isArray(rows)?rows:[];
+      setFloatingAdminBadge();
+      renderFloatingAdminThreads($("avpAdminFloatSearch")?.value||"");
+      if(floatActiveThread&&!floatThreads.some(t=>t.thread_id===floatActiveThread))floatActiveThread=null;
+    }catch(e){
+      const root=$("avpAdminFloatThreads");if(root)root.innerHTML='<div class="avp-chat-empty">Không tải được hộp thư Admin.</div>';
+      console.warn("AVP floating admin threads",e);
+    }
+  }
+
+  async function openFloatingAdminThread(id){
+    floatActiveThread=id;
+    renderFloatingAdminThreads($("avpAdminFloatSearch")?.value||"");
+    const t=floatThreads.find(x=>x.thread_id===id);
+    if($("avpAdminFloatPerson"))$("avpAdminFloatPerson").textContent=t?.display_name||"Người học";
+    if($("avpAdminFloatEmail"))$("avpAdminFloatEmail").textContent=t?.email||"";
+    const input=$("avpAdminFloatReply"),send=$("avpAdminFloatSend");
+    if(input)input.disabled=false;if(send)send.disabled=false;
+    try{
+      const rows=await rpc("avp_chat_admin_messages",{p_thread_id:id,p_limit:300});
+      const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
+      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';box.scrollTop=box.scrollHeight;}
+      await rpc("avp_chat_admin_mark_read",{p_thread_id:id});
+      await loadFloatingAdminThreads();
+      input?.focus();
+    }catch(e){console.warn("AVP floating admin open",e)}
+  }
+
+  async function sendFloatingAdminMessage(){
+    if(!floatActiveThread)return;
+    const input=$("avpAdminFloatReply"),btn=$("avpAdminFloatSend");if(!input||!btn)return;
+    const body=input.value.trim();if(!body)return;
+    btn.disabled=true;
+    try{
+      await rpc("avp_chat_admin_send_message",{p_thread_id:floatActiveThread,p_body:body});
+      input.value="";
+      await openFloatingAdminThread(floatActiveThread);
+    }catch(e){alert("Không gửi được phản hồi.");console.warn(e)}
+    finally{btn.disabled=false;input.focus()}
+  }
+
+  async function initFloatingAdmin(){
+    mountAdminFloatingUI();
+    await loadFloatingAdminThreads();
+    clearInterval(floatPoll);
+    floatPoll=setInterval(async()=>{
+      await loadFloatingAdminThreads();
+      if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden){
+        const rows=await rpc("avp_chat_admin_messages",{p_thread_id:floatActiveThread,p_limit:300}).catch(()=>[]);
+        const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
+        if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';box.scrollTop=box.scrollHeight;}
+      }
+    },15000);
+    try{
+      if(floatRealtime)client.removeChannel(floatRealtime);
+      floatRealtime=client.channel("avp-chat-admin-floating-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{
+        await loadFloatingAdminThreads();
+        if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden)await openFloatingAdminThread(floatActiveThread);
+      }).subscribe();
+    }catch{}
+  }
+
   async function start(){
     if(!(await waitClient()))return;
-    if(document.body?.dataset?.adminPage==="1"||$("adminChatInbox")){await initAdmin();return}
-    if(await isAdmin())return; // Admin khong can bong bong chat nguoi dung.
+    const admin=await isAdmin();
+    if(document.body?.dataset?.adminPage==="1"||$("adminChatInbox")){
+      if(admin)await initAdmin();
+      return;
+    }
+    if(admin){await initFloatingAdmin();return;}
     await initUser();
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
