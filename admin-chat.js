@@ -127,35 +127,6 @@
   }
 
 
-
-  function ensureSoundButtonsEverywhere(){
-    document.querySelectorAll(".avp-chat-head").forEach(head=>mountSoundButton(head));
-    updateSoundButtons();
-  }
-
-  let avpSoundObserver=null;
-  function startSoundButtonObserver(){
-    if(avpSoundObserver||!document.body)return;
-    avpSoundObserver=new MutationObserver(()=>{
-      ensureSoundButtonsEverywhere();
-    });
-    avpSoundObserver.observe(document.body,{
-      childList:true,
-      subtree:true
-    });
-    ensureSoundButtonsEverywhere();
-  }
-
-  function loadIndependentPushModule(){
-    if(document.getElementById("avpChatPushModule"))return;
-    const s=document.createElement("script");
-    s.id="avpChatPushModule";
-    s.src="chat-push.js?v=20260828-push-safe2";
-    s.defer=true;
-    s.onerror=()=>console.warn("AVP push module did not load; chat continues normally.");
-    document.head.appendChild(s);
-  }
-
   const extOf=(name)=>String(name||"").split(".").pop().toLowerCase();
   const sizeText=(n)=>{n=Number(n)||0;if(n<1024)return n+" B";if(n<1024*1024)return (n/1024).toFixed(1)+" KB";return (n/1024/1024).toFixed(1)+" MB"};
   const isImageFile=(f)=>String(f?.type||"").startsWith("image/")||["jpg","jpeg","png","webp","gif","heic","heif"].includes(extOf(f?.name));
@@ -494,10 +465,7 @@
 
   /* ================= GUEST BUBBLE ================= */
   function mountGuestUI(){
-    if($("avpAdminChatRoot")){
-      ensureSoundButtonsEverywhere();
-      return;
-    }
+    if($("avpAdminChatRoot")) return;
     const root=document.createElement("div");
     root.id="avpAdminChatRoot";
     root.className="avp-guest-mode";
@@ -532,10 +500,7 @@
 
   /* ================= USER BUBBLE ================= */
   function mountUserUI(){
-    if($("avpAdminChatRoot")){
-      ensureSoundButtonsEverywhere();
-      return;
-    }
+    if($("avpAdminChatRoot")) return;
     const root=document.createElement("div");
     root.id="avpAdminChatRoot";
     root.innerHTML=`
@@ -903,8 +868,6 @@
 
     if(admin) await initFloatingAdmin();
     else await initUser();
-
-    ensureSoundButtonsEverywhere();
   }
 
   function subscribeAuthChanges(){
@@ -921,17 +884,13 @@
       await resetChatRuntime();
       await sleep(50);
       await renderChatForCurrentUser();
-      ensureSoundButtonsEverywhere();
     });
   }
 
   async function start(){
     if(!(await waitClient())) return;
     subscribeAuthChanges();
-    startSoundButtonObserver();
     await renderChatForCurrentUser();
-    ensureSoundButtonsEverywhere();
-    loadIndependentPushModule();
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
 })();

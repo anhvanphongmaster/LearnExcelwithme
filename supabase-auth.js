@@ -27,13 +27,13 @@ function loadAdminChatAssets() {
   if (!document.querySelector('link[data-avp-admin-chat]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'admin-chat.css?v=20260828-loginpushfix1';
+    link.href = 'admin-chat.css?v=20260828-stable-hotfix1';
     link.dataset.avpAdminChat = '1';
     document.head.appendChild(link);
   }
   if (!document.querySelector('script[data-avp-admin-chat]')) {
     const script = document.createElement('script');
-    script.src = 'admin-chat.js?v=20260828-loginpushfix1';
+    script.src = 'admin-chat.js?v=20260828-stable-hotfix1';
     script.defer = true;
     script.dataset.avpAdminChat = '1';
     document.head.appendChild(script);
