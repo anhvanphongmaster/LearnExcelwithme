@@ -1,31 +1,49 @@
-/* AVP Service Worker — chat notifications */
-const CACHE_NAME="avp-chat-notify-v1";
-self.addEventListener("install",()=>self.skipWaiting());
-self.addEventListener("activate",event=>event.waitUntil(self.clients.claim()));
+const AVP_CACHE="avp-chat-push-safe-v2";
+
+self.addEventListener("install",()=>{
+  self.skipWaiting();
+});
+
+self.addEventListener("activate",event=>{
+  event.waitUntil(self.clients.claim());
+});
 
 self.addEventListener("push",event=>{
   let data={};
-  try{data=event.data?event.data.json():{}}catch{data={body:event.data?.text?.()||"Bạn có tin nhắn mới."}}
-  const title=data.title||"Anh Văn Phòng";
+  try{
+    data=event.data ? event.data.json() : {};
+  }catch{
+    data={body:event.data?.text?.()||"Bạn có tin nhắn mới."};
+  }
+
+  const title=data.title || "Anh Văn Phòng";
   const options={
-    body:data.body||"Bạn có tin nhắn mới.",
-    icon:data.icon||"./icon-192.png",
-    badge:data.badge||"./icon-192.png",
-    tag:data.tag||"avp-chat-message",
+    body:data.body || "Bạn có tin nhắn mới.",
+    tag:data.tag || "avp-chat-message",
     renotify:true,
-    data:{url:data.url||"./?openChat=1"}
+    data:{
+      url:data.url || "./",
+      thread_id:data.thread_id || null
+    }
   };
+
   event.waitUntil(self.registration.showNotification(title,options));
 });
 
 self.addEventListener("notificationclick",event=>{
   event.notification.close();
-  const target=new URL(event.notification.data?.url||"./",self.location.origin).href;
+  const target=new URL(event.notification.data?.url || "./",self.location.origin).href;
+
   event.waitUntil((async()=>{
-    const list=await clients.matchAll({type:"window",includeUncontrolled:true});
-    for(const c of list){
-      if("focus" in c){await c.navigate(target);return c.focus()}
+    const list=await self.clients.matchAll({type:"window",includeUncontrolled:true});
+    for(const client of list){
+      if("focus" in client){
+        try{
+          await client.navigate(target);
+        }catch{}
+        return client.focus();
+      }
     }
-    if(clients.openWindow)return clients.openWindow(target);
+    return self.clients.openWindow(target);
   })());
 });
