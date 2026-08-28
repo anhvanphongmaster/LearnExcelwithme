@@ -192,6 +192,11 @@
     set("engVideos", s.video_clicks);
     set("engBooks", s.book_clicks);
     set("engFeedback", s.feedback);
+    const tools=$("engByTool");
+    if(tools){
+      const rows=Array.isArray(s.by_tool)?s.by_tool:[];
+      tools.innerHTML=rows.length?rows.map((r,i)=>`<div class="admin-rank-row"><span>${i+1}</span><strong>${escapeHtml(r.tool_name||"Không rõ")}</strong><b>${n(r.clicks||0)}</b></div>`).join(""):'<p class="admin-empty">Chưa có click trong khoảng thời gian này.</p>';
+    }
     mailData.questions=s.questions||[];
     mailData.ideas=s.ideas||[];
     const saved=await rpcSoft("admin_list_saved_feedback");
@@ -222,6 +227,16 @@
   }
 
   
+  async function loadEngagementOnly(){
+    const hint=$("engHint"); if(hint) hint.textContent="Đang tải tương tác…";
+    const data=await rpcSoft("admin_engagement_summary_v2",{p_days:currentDays});
+    if(data?.__error){
+      if(hint) hint.textContent="Chưa có Engagement V2. Hãy chạy RACE-ADMIN-ENGAGEMENT-V2.sql rồi tải lại.";
+      return;
+    }
+    await renderEngagement(data||{});
+  }
+
   async function loadRaceStats(){
     try{
       if(!client) return;
@@ -246,6 +261,62 @@
     }catch(e){ console.warn("race stats", e); }
   }
 
+
+  let adminRaceCache=[];
+  function renderAdminRace(rows){
+    adminRaceCache=Array.isArray(rows)?rows:[];
+    const body=$("adminRaceBody"); if(!body)return;
+    $("raceAdminTotal").textContent=n(adminRaceCache.length);
+    $("raceAdminBest").textContent=n(Math.max(0,...adminRaceCache.map(x=>Number(x.best_streak)||0)));
+    $("raceAdminLevel").textContent=n(Math.max(1,...adminRaceCache.map(x=>Number(x.best_level)||1)));
+    if(!adminRaceCache.length){body.innerHTML='<tr><td colspan="6" class="admin-users-empty">BXH Race chưa có người chơi.</td></tr>';return}
+    body.innerHTML=adminRaceCache.map((r,i)=>`<tr data-race-user="${escapeHtml(r.user_id)}">
+      <td><b>${i+1}</b></td>
+      <td><strong>${escapeHtml(r.player_name||"Học viên")}</strong><small style="display:block;color:#74837b">${escapeHtml(r.email||"")}</small></td>
+      <td><b>🔥 ${n(r.best_streak||0)}</b></td>
+      <td><b>${n(r.best_level||1)}</b></td>
+      <td><small>${fmtDate(r.updated_at)}</small></td>
+      <td><div class="admin-race-actions"><button data-race-act="rename">Đổi tên</button><button data-race-act="reset" class="warn">Reset</button><button data-race-act="delete" class="danger">Xoá khỏi BXH</button></div></td>
+    </tr>`).join("");
+  }
+  async function loadAdminRace(){
+    const body=$("adminRaceBody"),q=$("adminRaceSearch")?.value?.trim()||"";
+    if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Đang tải BXH Race…</td></tr>';
+    const data=await rpcSoft("admin_race_list_v2",{p_search:q,p_limit:200});
+    if(data?.__error){
+      if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Chưa dùng được Race Admin V2.</td></tr>';
+      const note=$("adminRaceNotice"); if(note){note.hidden=false;note.innerHTML='Hãy chạy <code>RACE-ADMIN-ENGAGEMENT-V2.sql</code> trong Supabase rồi tải lại.'}
+      return;
+    }
+    const note=$("adminRaceNotice"); if(note)note.hidden=true;
+    renderAdminRace(data||[]);
+  }
+  async function doRaceAction(btn){
+    const tr=btn.closest("tr[data-race-user]");if(!tr)return;
+    const uid=tr.dataset.raceUser,row=adminRaceCache.find(x=>x.user_id===uid);if(!row)return;
+    const act=btn.dataset.raceAct; btn.disabled=true;
+    try{
+      if(act==="reset"){
+        if(!confirm(`Reset điểm Race của ${row.player_name}?`))return;
+        await rpc("admin_race_reset_v2",{p_user_id:uid}); toast("Đã reset điểm Race");
+      }else if(act==="delete"){
+        if(!confirm(`Xoá ${row.player_name} khỏi BXH Race? Tài khoản vẫn giữ nguyên.`))return;
+        await rpc("admin_race_delete_v2",{p_user_id:uid}); toast("Đã xoá khỏi BXH Race");
+      }else if(act==="rename"){
+        const name=prompt("Tên mới trên BXH:",row.player_name||""); if(name===null)return;
+        const clean=name.trim(); if(clean.length<2){toast("Tên tối thiểu 2 ký tự");return}
+        await rpc("admin_race_rename_v2",{p_user_id:uid,p_player_name:clean}); toast("Đã đổi tên BXH");
+      }
+      await loadAdminRace();
+    }catch(e){console.error(e);toast("Không thực hiện được: "+(e?.message||e))}
+    finally{btn.disabled=false}
+  }
+  function bindRaceAdmin(){
+    $("adminRaceReload")?.addEventListener("click",loadAdminRace);
+    $("adminRaceSearchBtn")?.addEventListener("click",loadAdminRace);
+    $("adminRaceSearch")?.addEventListener("keydown",e=>{if(e.key==="Enter")loadAdminRace()});
+    $("adminRaceBody")?.addEventListener("click",e=>{const b=e.target.closest("[data-race-act]");if(b)doRaceAction(b)});
+  }
 
   let adminUsersCache=[];
   function fmtDate(v){
@@ -401,7 +472,7 @@
         rpcSoft("admin_top_completed_lessons",{p_limit:10}),
         rpcSoft("admin_quiz_difficulty",{p_days:currentDays,p_limit:10}),
         rpcSoft("admin_new_user_trend",{p_days:Math.min(currentDays,90)}),
-        rpcSoft("admin_engagement_summary",{p_days:currentDays})
+        rpcSoft("admin_engagement_summary_v2",{p_days:currentDays})
       ]);
 
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
@@ -425,7 +496,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","learning","votes","practice","downloads","inbox","analytics"];
+    const valid=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
@@ -443,6 +514,8 @@
     });
     try{localStorage.setItem(ADMIN_VIEW_KEY,view)}catch(e){}
     if(view==="users" && !adminUsersCache.length) loadAdminUsers();
+    if(view==="race") loadAdminRace();
+    if(view==="engagement") loadEngagementOnly();
     if(view==="votes") loadAdminVoteManager();
     if(view==="downloads" && !adminDownloadLoaded) loadAdminDownloads();
     if(view==="practice" && typeof window.avpLoadPracticeLibrary==="function") window.avpLoadPracticeLibrary();
@@ -652,4 +725,5 @@
   function bindPractice(){el('adminPracticeAdd')?.addEventListener('click',async()=>{if(!practiceDownloads.length)await loadPracticeDownloads();openPracticeEditor(null)});el('adminPracticeClose')?.addEventListener('click',closePracticeEditor);el('adminPracticeCancel')?.addEventListener('click',closePracticeEditor);el('adminPracticeSave')?.addEventListener('click',savePractice);el('adminPracticeReload')?.addEventListener('click',loadPractice);el('adminPracticeSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')loadPractice()});el('adminPracticeCategory')?.addEventListener('change',loadPractice);el('adminPracticeStatus')?.addEventListener('change',loadPractice);el('adminPracticeBody')?.addEventListener('click',async e=>{const btn=e.target.closest('[data-practice-act]');if(!btn)return;const tr=btn.closest('tr'),id=tr?.dataset.practiceId,row=practiceCache.find(x=>x.id===id);if(!row)return;const act=btn.dataset.practiceAct;if(act==='edit'){if(!practiceDownloads.length)await loadPracticeDownloads();openPracticeEditor(row);return}if(act==='toggle'){btn.disabled=true;try{await prpc('admin_practice_set_active',{p_id:id,p_active:!row.is_active});ptoast(row.is_active?'Đã ẩn bài':'Đã hiện bài');await loadPractice()}catch(err){ptoast('Không đổi được trạng thái');btn.disabled=false}return}if(act==='archive'){if(!confirm('Lưu trữ bài này? Bài sẽ biến khỏi trang học nhưng dữ liệu vote cũ vẫn giữ.'))return;btn.disabled=true;try{await prpc('admin_practice_archive',{p_id:id});ptoast('Đã lưu trữ bài');await loadPractice()}catch(err){ptoast('Không lưu trữ được');btn.disabled=false}}});document.querySelectorAll('[data-admin-view="practice"]').forEach(btn=>btn.addEventListener('click',()=>{if(!practiceLoaded)loadPractice()}))}
   function bootPractice(){bindPractice();try{if(localStorage.getItem('avp_admin_view_v1')==='practice')setTimeout(loadPractice,250)}catch(e){}}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootPractice);else bootPractice();
+  bindRaceAdmin();
 })();

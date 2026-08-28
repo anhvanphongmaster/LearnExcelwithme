@@ -93,6 +93,27 @@
     visitorId:getVisitorId()
   };
 
+  // Track important user clicks across the whole site.
+  // Practice-video has its own tracking, so skip those classes to avoid double counts.
+  document.addEventListener("click", function(e){
+    const link=e.target.closest?.("a[href]");
+    if(!link) return;
+    const href=String(link.getAttribute("href")||"");
+    const label=cleanText(link.getAttribute("download") || link.textContent || href,80);
+
+    if((link.hasAttribute("download") || /(^|\/)downloads\//i.test(href)) && !link.classList.contains("pv-download")){
+      track("file_download_click",{page:currentPage(),tool_name:label,metadata:{href:href.slice(0,120)}});
+      return;
+    }
+
+    if(link.classList.contains("pv-tiktok")) return;
+    if(link.classList.contains("pyt-yt") || /(?:youtube\.com|youtu\.be|tiktok\.com)/i.test(href)){
+      // Book cards already emit book_click themselves.
+      if(link.classList.contains("home-book-card")) return;
+      track("video_click",{page:currentPage(),tool_name:label,metadata:{href:href.slice(0,120)}});
+    }
+  },true);
+
   async function start(){
     const page=currentPage();
 

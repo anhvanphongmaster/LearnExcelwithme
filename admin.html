@@ -103,6 +103,9 @@ where is_admin = true;</pre>
         <button type="button" data-admin-view="users" role="tab">
           <b>👥 Người dùng</b><small>Tài khoản, BXH & tiến độ</small>
         </button>
+        <button type="button" data-admin-view="race" role="tab">
+          <b>🏁 Excel Race</b><small>BXH, reset & xoá tên</small>
+        </button>
         <button type="button" data-admin-view="learning" role="tab">
           <b>🎓 Học tập</b><small>Tiến độ, bài học & quiz</small>
         </button>
@@ -117,6 +120,9 @@ where is_admin = true;</pre>
         </button>
         <button type="button" data-admin-view="inbox" role="tab">
           <b>📥 Hộp thư</b><small>Thắc mắc, ý tưởng & file</small>
+        </button>
+        <button type="button" data-admin-view="engagement" role="tab">
+          <b>🖱️ Tương tác</b><small>Tải file, video & bộ sách</small>
         </button>
         <button type="button" data-admin-view="analytics" role="tab">
           <b>📈 Analytics</b><small>Xu hướng & nội dung hot</small>
@@ -198,7 +204,23 @@ where is_admin = true;</pre>
       <article><small>🚀 Pro trở lên</small><strong id="learnPro">—</strong><em id="learnMaster">—</em></article>
     </section>
 
-    <div class="admin-section-heading admin-view-section" data-admin-section="users"><span>👥 NGƯỜI DÙNG</span><h2>Quản lý tài khoản học viên</h2></div>
+    <div class="admin-section-heading admin-view-section" data-admin-section="race"><span>🏁 EXCEL RACE</span><h2>Quản lý bảng xếp hạng Race</h2></div>
+<section class="admin-panel admin-race-manager admin-view-section" data-admin-section="race">
+  <div class="admin-panel-head admin-race-head">
+    <div><span>🏆 RANK V2</span><h2>Bảng xếp hạng Excel Race</h2><p>BXH gắn theo tài khoản. Có thể reset điểm, đổi tên hiển thị hoặc xoá người chơi khỏi BXH.</p></div>
+    <button type="button" id="adminRaceReload">↻ Làm mới</button>
+  </div>
+  <div class="admin-race-kpis">
+    <article><small>Người trên BXH</small><strong id="raceAdminTotal">0</strong></article>
+    <article><small>Chuỗi cao nhất</small><strong id="raceAdminBest">0</strong></article>
+    <article><small>Cấp cao nhất</small><strong id="raceAdminLevel">1</strong></article>
+  </div>
+  <div class="admin-race-toolbar"><input id="adminRaceSearch" type="search" placeholder="Tìm tên người chơi…"><button id="adminRaceSearchBtn" type="button">Tìm</button></div>
+  <div id="adminRaceNotice" class="admin-users-notice" hidden></div>
+  <div class="admin-race-table-wrap"><table class="admin-race-table"><thead><tr><th>#</th><th>Người chơi</th><th>Chuỗi</th><th>Cấp</th><th>Cập nhật</th><th>Thao tác</th></tr></thead><tbody id="adminRaceBody"><tr><td colspan="6" class="admin-users-empty">Chuyển sang tab Excel Race để tải BXH.</td></tr></tbody></table></div>
+</section>
+
+<div class="admin-section-heading admin-view-section" data-admin-section="users"><span>👥 NGƯỜI DÙNG</span><h2>Quản lý tài khoản học viên</h2></div>
     <section class="admin-panel admin-view-section admin-users-panel" data-admin-section="users">
       <div class="admin-users-toolbar">
         <div>
@@ -261,9 +283,15 @@ where is_admin = true;</pre>
         </div>
       </article>
 
+
+    </section>
+
+
+<div class="admin-section-heading admin-view-section" data-admin-section="engagement"><span>🖱️ TƯƠNG TÁC</span><h2>Click tải file, xem video & bộ sách</h2></div>
+<section class="admin-grid admin-view-section" data-admin-section="engagement">
       <article class="admin-panel" style="grid-column:1/-1">
         <div class="admin-panel-head">
-          <div><span>📥 TƯƠNG TÁC</span><h2>Tải file, xem video, sách, ý tưởng</h2></div>
+          <div><span>🖱️ TƯƠNG TÁC</span><h2>Tải file, xem video và 8 bộ sách</h2></div>
         </div>
         <div class="pd-grid" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px">
           <div class="pd-stat"><small>Lượt tải file</small><strong id="engDownloads">0</strong></div>
@@ -284,7 +312,7 @@ where is_admin = true;</pre>
         </div>
         <p id="engHint" style="color:#7a8b80;font-size:13px"></p>
       </article>
-    </section>
+</section>
 
 <div class="admin-section-heading admin-view-section" data-admin-section="votes"><span>🗳️ VOTE</span><h2>Trung tâm quản lý nhu cầu học viên</h2></div>
 <section class="admin-panel admin-vote-manager admin-view-section" id="adminVoteManager" data-admin-section="votes">

@@ -386,36 +386,20 @@
   }
 
   async function pushLeaderboard() {
-    // Chỉ mode Rank mới ghi bảng xếp hạng
     if (mode !== "rank") return;
-    if (!playerName || !claimToken) return;
+    if (!playerName) return;
     const client = await ensureSupabase();
-    if (!client) return;
+    if (!client || !client.rpc) return;
     try {
-      // only update if token matches; only increase scores
-      const { data, error } = await client
-        .from("race_leaderboard")
-        .select("best_streak,best_level,claim_token")
-        .eq("player_name", playerName)
-        .maybeSingle();
-      if (error) { console.warn("[race] board read", error); return; }
-      if (!data || data.claim_token !== claimToken) return;
-      const nextStreak = Math.max(Number(data.best_streak) || 0, best || 0, streak || 0);
-      const nextLevel = Math.max(Number(data.best_level) || 1, level || 1);
-      if (nextStreak === data.best_streak && nextLevel === data.best_level) return;
-      const { error: upErr } = await client
-        .from("race_leaderboard")
-        .update({
-          best_streak: nextStreak,
-          best_level: nextLevel,
-          updated_at: new Date().toISOString()
-        })
-        .eq("player_name", playerName)
-        .eq("claim_token", claimToken);
-      if (upErr) console.warn("[race] board update", upErr);
-      else loadBoard();
+      const { error } = await client.rpc("race_submit_score_v2", {
+        p_player_name: playerName,
+        p_best_streak: Math.max(best || 0, streak || 0),
+        p_best_level: Math.max(level || 1, 1)
+      });
+      if (error) { console.warn("[race] score v2", error); return; }
+      loadBoard();
     } catch (e) {
-      console.warn("[race] pushLeaderboard", e);
+      console.warn("[race] pushLeaderboard v2", e);
     }
   }
 
@@ -423,48 +407,42 @@
     const list = $("boardList");
     if (!list) return;
     const client = await ensureSupabase();
-    if (!client) {
-      list.innerHTML = '<li class="muted">Chưa kết nối Supabase — chạy SQL leaderboard.</li>';
+    if (!client || !client.rpc) {
+      list.innerHTML = '<li class="muted">Chưa kết nối Supabase.</li>';
       return;
     }
     try {
-      const { data, error } = await client
-        .from("race_leaderboard")
-        .select("player_name,best_streak,best_level,updated_at")
-        .order("best_streak", { ascending: false })
-        .order("best_level", { ascending: false })
-        .limit(100); // Top 100 BXH Race
+      const { data, error } = await client.rpc("race_list_leaderboard_v2", { p_limit: 100 });
       if (error) {
-        list.innerHTML = '<li class="muted">Lỗi tải BXH: ' + (error.message || "cần tạo bảng") + "</li>";
+        list.innerHTML = '<li class="muted">BXH Race chưa sẵn sàng. Admin cần chạy SQL Race V2.</li>';
+        console.warn("[race] list v2", error);
         return;
       }
-      if (!data || !data.length) {
+      const rows = Array.isArray(data) ? data : [];
+      if (!rows.length) {
         list.innerHTML = '<li class="muted">Chưa có ai trên BXH — bạn sẽ là người đầu.</li>';
         rivals = [];
         return;
       }
-      const rows = data.slice(0, 100);
       rivals = rows
-        .filter(function (row) {
-          return row && row.player_name && (!playerName || row.player_name !== playerName);
-        })
-        .map(function (row) {
-          return {
-            name: String(row.player_name),
-            score: Math.max(Number(row.best_streak) || 0, (Number(row.best_level) || 1) * 5)
-          };
-        })
-        .filter(function (r) { return r.score > 0; })
-        .sort(function (a, b) { return b.score - a.score; })
-        .slice(0, 12);
-      list.innerHTML = rows.map(function (row, i) {
+        .filter(row => row && row.player_name && (!playerName || row.player_name !== playerName))
+        .map(row => ({
+          name: String(row.player_name),
+          score: Math.max(Number(row.best_streak) || 0, (Number(row.best_level) || 1) * 5)
+        }))
+        .filter(r => r.score > 0)
+        .sort((a,b) => b.score-a.score)
+        .slice(0,12);
+      list.innerHTML = rows.map(function(row, i) {
         const me = playerName && row.player_name === playerName ? " me" : "";
-        return '<li class="' + me + '">' + (i + 1) + ". <b>" + escapeBoard(row.player_name) +
-          "</b> — chuỗi " + row.best_streak + " · cấp " + row.best_level + "</li>";
+        const rankNo = Number(row.rank_no) || (i + 1);
+        return '<li class="' + me + '">' + rankNo + '. <b>' + escapeBoard(row.player_name) +
+          '</b> — chuỗi ' + (Number(row.best_streak)||0) + ' · cấp ' + (Number(row.best_level)||1) + '</li>';
       }).join("");
       list.insertAdjacentHTML("beforeend", '<li class="muted board-foot">Top 100 · cuộn để xem thêm</li>');
     } catch (e) {
-      list.innerHTML = '<li class="muted">Không tải được BXH. Kéo xuống / bấm Làm mới.</li>';
+      console.warn("[race] loadBoard v2", e);
+      list.innerHTML = '<li class="muted">Không tải được BXH. Bấm Làm mới để thử lại.</li>';
     }
   }
 
@@ -837,12 +815,11 @@
     best = 0; streak = 0;
     if ($("best")) $("best").textContent = "0";
     if ($("st")) $("st").textContent = "0";
-    if (playerName && claimToken) {
+    if (playerName) {
       const client = await ensureSupabase();
-      if (client) {
-        await client.from("race_leaderboard").update({
-          best_streak: 0, best_level: 1, updated_at: new Date().toISOString()
-        }).eq("player_name", playerName).eq("claim_token", claimToken);
+      if (client?.rpc) {
+        const { error } = await client.rpc("race_reset_my_score_v2");
+        if (error) console.warn("[race] reset v2", error);
       }
     }
     loadBoard();
