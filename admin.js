@@ -527,7 +527,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics"];
+    const valid=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics","reviews"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
@@ -551,6 +551,7 @@
     if(view==="downloads" && !adminDownloadLoaded) loadAdminDownloads();
     if(view==="practice" && typeof window.avpLoadPracticeLibrary==="function") window.avpLoadPracticeLibrary();
     if(view==="overview" && client) checkAdminHealth();
+    if(view==="reviews" && typeof window.avpLoadSiteReviews==="function") window.avpLoadSiteReviews();
     if(opts&&opts.scroll){
       document.querySelector(".admin-command-center")?.scrollIntoView({behavior:"smooth",block:"start"});
     }
@@ -757,4 +758,28 @@
   function bindPractice(){el('adminPracticeAdd')?.addEventListener('click',async()=>{if(!practiceDownloads.length)await loadPracticeDownloads();openPracticeEditor(null)});el('adminPracticeClose')?.addEventListener('click',closePracticeEditor);el('adminPracticeCancel')?.addEventListener('click',closePracticeEditor);el('adminPracticeSave')?.addEventListener('click',savePractice);el('adminPracticeReload')?.addEventListener('click',loadPractice);el('adminPracticeSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')loadPractice()});el('adminPracticeCategory')?.addEventListener('change',loadPractice);el('adminPracticeStatus')?.addEventListener('change',loadPractice);el('adminPracticeBody')?.addEventListener('click',async e=>{const btn=e.target.closest('[data-practice-act]');if(!btn)return;const tr=btn.closest('tr'),id=tr?.dataset.practiceId,row=practiceCache.find(x=>x.id===id);if(!row)return;const act=btn.dataset.practiceAct;if(act==='edit'){if(!practiceDownloads.length)await loadPracticeDownloads();openPracticeEditor(row);return}if(act==='toggle'){btn.disabled=true;try{await prpc('admin_practice_set_active',{p_id:id,p_active:!row.is_active});ptoast(row.is_active?'Đã ẩn bài':'Đã hiện bài');await loadPractice()}catch(err){ptoast('Không đổi được trạng thái');btn.disabled=false}return}if(act==='archive'){if(!confirm('Lưu trữ bài này? Bài sẽ biến khỏi trang học nhưng dữ liệu vote cũ vẫn giữ.'))return;btn.disabled=true;try{await prpc('admin_practice_archive',{p_id:id});ptoast('Đã lưu trữ bài');await loadPractice()}catch(err){ptoast('Không lưu trữ được');btn.disabled=false}}});document.querySelectorAll('[data-admin-view="practice"]').forEach(btn=>btn.addEventListener('click',()=>{if(!practiceLoaded)loadPractice()}))}
   function bootPractice(){bindPractice();try{if(localStorage.getItem('avp_admin_view_v1')==='practice')setTimeout(loadPractice,250)}catch(e){}}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootPractice);else bootPractice();
+})();
+
+
+// ================= WEBSITE REVIEWS V1 =================
+(function(){
+  let loaded=false;
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmt=d=>{try{return new Intl.DateTimeFormat('vi-VN',{dateStyle:'short',timeStyle:'short'}).format(new Date(d))}catch{return d||'—'}};
+  async function rpc(name,args){const c=window.avpSupabase||window.supabaseClient;if(!c?.rpc)throw new Error('Supabase chưa sẵn sàng');const {data,error}=await c.rpc(name,args||{});if(error)throw error;return data}
+  function stars(n){n=Number(n)||0;return `<span class="admin-review-stars" aria-label="${n} sao">${'★'.repeat(n)}<i>${'★'.repeat(Math.max(0,5-n))}</i></span>`}
+  async function load(){
+    const body=$('adminReviewBody'),notice=$('adminReviewNotice');if(!body)return;
+    body.innerHTML='<tr><td colspan="5">Đang tải…</td></tr>';
+    try{
+      const rating=Number($('adminReviewRating')?.value||0),q=$('adminReviewSearch')?.value?.trim()||'';
+      const [sum,rows]=await Promise.all([rpc('admin_site_review_summary'),rpc('admin_site_review_list',{p_rating:rating||null,p_search:q||null,p_limit:500})]);
+      $('reviewAvg').textContent=sum?.average_rating?Number(sum.average_rating).toFixed(1)+' / 5':'—';$('reviewTotal').textContent=sum?.total_reviews??0;$('reviewWithContent').textContent=sum?.with_content??0;$('reviewFiveStar').textContent=sum?.five_star??0;
+      const arr=Array.isArray(rows)?rows:[];body.innerHTML=arr.length?arr.map(r=>`<tr><td>${stars(r.rating)}</td><td><div class="admin-review-content">${r.content?esc(r.content):'<em>Không nhập nội dung</em>'}</div></td><td><strong>${esc(r.display_name||r.email||'Khách')}</strong><small>${r.user_id?'Đã đăng nhập':'Khách trình duyệt'}</small></td><td><code>${esc(r.page_path||'—')}</code></td><td>${fmt(r.created_at)}</td></tr>`).join(''):'<tr><td colspan="5">Chưa có đánh giá nào.</td></tr>';notice.hidden=true;loaded=true;
+    }catch(e){console.warn('site reviews',e);notice.hidden=false;notice.textContent='Chưa tải được đánh giá. Hãy chạy WEBSITE-REVIEWS-V1.sql trong Supabase.';body.innerHTML='<tr><td colspan="5">Không tải được dữ liệu.</td></tr>'}
+  }
+  window.avpLoadSiteReviews=load;
+  function boot(){ $('adminReviewReload')?.addEventListener('click',load);$('adminReviewSearchBtn')?.addEventListener('click',load);$('adminReviewRating')?.addEventListener('change',load);$('adminReviewSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')load()});document.querySelectorAll('[data-admin-view="reviews"]').forEach(b=>b.addEventListener('click',()=>{if(!loaded)load()}));try{if(localStorage.getItem('avp_admin_view_v1')==='reviews')setTimeout(load,300)}catch(e){} }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();

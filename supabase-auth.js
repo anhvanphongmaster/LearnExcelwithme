@@ -27,13 +27,13 @@ function loadAdminChatAssets() {
   if (!document.querySelector('link[data-avp-admin-chat]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'admin-chat.css?v=20260828-attach1';
+    link.href = 'admin-chat.css?v=20260828-guestfinal1';
     link.dataset.avpAdminChat = '1';
     document.head.appendChild(link);
   }
   if (!document.querySelector('script[data-avp-admin-chat]')) {
     const script = document.createElement('script');
-    script.src = 'admin-chat.js?v=20260828-attach1';
+    script.src = 'admin-chat.js?v=20260828-guestfinal1';
     script.defer = true;
     script.dataset.avpAdminChat = '1';
     document.head.appendChild(script);
@@ -682,3 +682,63 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (configured && !applyingCloud) scheduleProgressSync(0);
   });
 });
+
+
+/* ===== AVP WEBSITE REVIEW PROMPT V1 ===== */
+(function(){
+  if(/(?:^|\/)admin\.html(?:$|[?#])/.test(location.pathname+location.search)) return;
+  const KEY_SUB='avp_site_review_submitted_v1';
+  const KEY_LAST='avp_site_review_last_prompt_v1';
+  const KEY_SESSION='avp_site_review_prompted_session_v1';
+  const KEY_BROWSER='avp_site_review_browser_id_v1';
+  const MIN_MS=3*60*1000, MAX_MS=5*60*1000, COOLDOWN=12*60*60*1000;
+  let activeMs=0,lastTick=Date.now(),timer=null,shown=false;
+  function browserId(){
+    let id=localStorage.getItem(KEY_BROWSER);
+    if(!id){id=(crypto.randomUUID?.()||('b_'+Date.now()+'_'+Math.random().toString(36).slice(2)));localStorage.setItem(KEY_BROWSER,id)}
+    return id;
+  }
+  function eligible(){
+    if(localStorage.getItem(KEY_SUB)==='1') return false;
+    if(sessionStorage.getItem(KEY_SESSION)==='1') return false;
+    const last=Number(localStorage.getItem(KEY_LAST)||0);
+    return !last || Date.now()-last>=COOLDOWN;
+  }
+  function css(){
+    if(document.getElementById('avpReviewStyle'))return;
+    const st=document.createElement('style');st.id='avpReviewStyle';st.textContent=`
+    .avp-review-backdrop{position:fixed;inset:0;z-index:99998;background:rgba(15,23,42,.38);display:flex;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));backdrop-filter:blur(2px)}
+    .avp-review-card{width:min(100%,460px);background:#fff;color:#111827;border:1px solid rgba(15,23,42,.08);border-radius:22px;padding:20px;box-shadow:0 24px 70px rgba(15,23,42,.22);font-family:inherit}
+    .avp-review-card h3{margin:0 0 7px;font-size:20px;line-height:1.3}.avp-review-card p{margin:0 0 16px;color:#667085;font-size:14px;line-height:1.55}
+    .avp-review-stars{display:flex;gap:7px;margin-bottom:14px}.avp-review-star{border:0;background:#fff;padding:2px;font-size:31px;filter:grayscale(1);opacity:.36;transition:.15s;cursor:pointer}.avp-review-star.on{filter:none;opacity:1;transform:translateY(-1px)}
+    .avp-review-card textarea{width:100%;box-sizing:border-box;min-height:96px;resize:vertical;border:1px solid #e5e7eb;border-radius:14px;padding:12px 13px;font:inherit;font-size:14px;outline:none;background:#fff;color:#111827}.avp-review-card textarea:focus{border-color:#cbd5e1;box-shadow:0 0 0 3px rgba(148,163,184,.14)}
+    .avp-review-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:14px}.avp-review-actions button{border-radius:12px;padding:10px 15px;font-weight:700;font:inherit;cursor:pointer}.avp-review-later{background:#fff;border:1px solid #e5e7eb;color:#475467}.avp-review-send{background:#111827;color:#fff;border:1px solid #111827}.avp-review-send:disabled{opacity:.45;cursor:not-allowed}.avp-review-note{font-size:12px;color:#98a2b3;margin-top:9px}
+    @media(min-width:700px){.avp-review-backdrop{align-items:center}.avp-review-card{padding:23px}}
+    `;document.head.appendChild(st);
+  }
+  function closePrompt(){document.getElementById('avpReviewBackdrop')?.remove()}
+  async function submitReview(rating,content,btn){
+    const c=window.avpSupabase||window.supabaseClient;
+    if(!c?.rpc) throw new Error('Supabase chưa sẵn sàng');
+    btn.disabled=true;btn.textContent='Đang gửi…';
+    try{
+      const {data,error}=await c.rpc('submit_site_review',{p_rating:rating,p_content:content||null,p_browser_id:browserId(),p_page_path:location.pathname});
+      if(error)throw error;
+      localStorage.setItem(KEY_SUB,'1');
+      closePrompt();
+      const toast=document.createElement('div');toast.textContent='Cảm ơn bạn đã đánh giá website ❤️';toast.style='position:fixed;left:50%;bottom:24px;z-index:99999;transform:translateX(-50%);background:#111827;color:#fff;padding:11px 15px;border-radius:999px;font:600 13px system-ui;box-shadow:0 8px 30px rgba(0,0,0,.2)';document.body.appendChild(toast);setTimeout(()=>toast.remove(),2300);
+    }catch(e){alert('Chưa gửi được đánh giá: '+(e?.message||e));btn.disabled=false;btn.textContent='Gửi đánh giá'}
+  }
+  function showPrompt(){
+    if(shown||!eligible())return;shown=true;sessionStorage.setItem(KEY_SESSION,'1');localStorage.setItem(KEY_LAST,String(Date.now()));css();
+    const wrap=document.createElement('div');wrap.className='avp-review-backdrop';wrap.id='avpReviewBackdrop';wrap.innerHTML=`<div class="avp-review-card" role="dialog" aria-modal="true" aria-labelledby="avpReviewTitle"><h3 id="avpReviewTitle">Bạn thấy website của Anh Văn Phòng thế nào?</h3><p>Đánh giá của bạn giúp mình biết phần nào đang hữu ích và phần nào cần cải thiện.</p><div class="avp-review-stars" aria-label="Chọn số sao">${[1,2,3,4,5].map(i=>`<button type="button" class="avp-review-star" data-star="${i}" aria-label="${i} sao">★</button>`).join('')}</div><textarea id="avpReviewContent" maxlength="1000" placeholder="Bạn có góp ý gì cho website không? (không bắt buộc)"></textarea><div class="avp-review-actions"><button type="button" class="avp-review-later">Để sau</button><button type="button" class="avp-review-send" disabled>Gửi đánh giá</button></div><div class="avp-review-note">Sau khi gửi đánh giá, thông báo này sẽ không xuất hiện lại.</div></div>`;
+    document.body.appendChild(wrap);let rating=0;const stars=[...wrap.querySelectorAll('[data-star]')],send=wrap.querySelector('.avp-review-send');
+    stars.forEach(b=>b.onclick=()=>{rating=Number(b.dataset.star);stars.forEach(x=>x.classList.toggle('on',Number(x.dataset.star)<=rating));send.disabled=!rating});
+    wrap.querySelector('.avp-review-later').onclick=closePrompt;
+    send.onclick=()=>submitReview(rating,wrap.querySelector('#avpReviewContent').value.trim(),send);
+  }
+  const threshold=MIN_MS+Math.floor(Math.random()*(MAX_MS-MIN_MS+1));
+  function tick(){const now=Date.now();if(!document.hidden&&document.hasFocus())activeMs+=Math.min(now-lastTick,5000);lastTick=now;if(activeMs>=threshold){clearInterval(timer);showPrompt()}}
+  function boot(){if(!eligible())return;timer=setInterval(tick,1000);document.addEventListener('visibilitychange',()=>{lastTick=Date.now()});window.addEventListener('focus',()=>{lastTick=Date.now()})}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
