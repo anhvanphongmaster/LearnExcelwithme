@@ -459,7 +459,8 @@
       ["votes","admin_vote_summary",{p_period:"today"}],
       ["practice","admin_practice_summary",{}],
       ["downloads","admin_download_summary",{}],
-      ["chat","avp_chat_admin_threads",{}]
+      ["chat","avp_chat_admin_threads",{}],
+      ["community","admin_system_notification_list",{p_limit:1}]
     ];
     await Promise.all(checks.map(async([key,rpcName,args])=>{
       const r=await healthRpc(rpcName,args);
@@ -528,7 +529,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics","reviews"];
+    const valid=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics","community","reviews"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
@@ -553,6 +554,9 @@
     if(view==="practice" && typeof window.avpLoadPracticeLibrary==="function") window.avpLoadPracticeLibrary();
     if(view==="overview" && client) checkAdminHealth();
     if(view==="reviews" && typeof window.avpLoadSiteReviews==="function") window.avpLoadSiteReviews();
+    if(view==="community"){
+      window.dispatchEvent(new CustomEvent("avp:admin-community-open"));
+    }
     if(opts&&opts.scroll){
       document.querySelector(".admin-command-center")?.scrollIntoView({behavior:"smooth",block:"start"});
     }

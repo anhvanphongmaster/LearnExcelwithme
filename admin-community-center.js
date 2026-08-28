@@ -574,6 +574,16 @@
     await loadNotifications();
   }
 
+  window.addEventListener("avp:admin-community-open",async()=>{
+    if(!client)return;
+    try{
+      await checkCommunityHealth?.();
+      await loadNotifications?.();
+    }catch(e){
+      console.warn("community refresh",e);
+    }
+  });
+
   if(document.readyState==="loading"){
     document.addEventListener("DOMContentLoaded",init,{once:true});
   }else{
