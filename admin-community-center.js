@@ -34,9 +34,24 @@
   async function isAdmin(){
     try{
       const {data:sessionData}=await client.auth.getSession();
-      if(!sessionData?.session?.user) return false;
-      const {data,error}=await client.rpc("is_admin_user");
-      return !error && data===true;
+      const currentUser=sessionData?.session?.user;
+      if(!currentUser) return false;
+
+      try{
+        const {data,error}=await client.rpc("is_admin_user");
+        if(!error && data===true) return true;
+      }catch{}
+
+      try{
+        const {data,error}=await client
+          .from("profiles")
+          .select("is_admin")
+          .eq("id",currentUser.id)
+          .maybeSingle();
+        if(!error && data?.is_admin===true) return true;
+      }catch{}
+
+      return false;
     }catch{
       return false;
     }
@@ -59,8 +74,11 @@
 
   function mount(){
     if($("avpAdminCommunityCenter")) return;
-    const host=$("adminDashboard");
-    if(!host) return;
+    const dashboard=$("adminDashboard");
+    if(!dashboard) return;
+
+    const staticHost=$("avpAdminCommunityHost");
+    const host=staticHost || dashboard;
 
     const section=document.createElement("section");
     section.id="avpAdminCommunityCenter";
@@ -161,9 +179,14 @@
       </div>
     `;
 
-    const firstPanel=host.querySelector(".admin-panel");
-    if(firstPanel) host.insertBefore(section,firstPanel);
-    else host.appendChild(section);
+    if(staticHost){
+      staticHost.innerHTML="";
+      staticHost.appendChild(section);
+    }else{
+      const firstPanel=host.querySelector(".admin-panel");
+      if(firstPanel) host.insertBefore(section,firstPanel);
+      else host.appendChild(section);
+    }
 
     bind();
   }
@@ -502,7 +525,14 @@
 
   async function init(){
     if(!(await waitClient()))return;
-    if(!(await isAdmin()))return;
+
+    let admin=false;
+    for(let i=0;i<20;i++){
+      admin=await isAdmin();
+      if(admin) break;
+      await new Promise(r=>setTimeout(r,250));
+    }
+    if(!admin)return;
 
     mount();
     await searchUsers();

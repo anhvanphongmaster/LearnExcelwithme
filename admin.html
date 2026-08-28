@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="personal-dashboard.css">
 <link rel="stylesheet" href="cloud-sync-v11.css">
 <link href="theme-polish-v33.css" rel="stylesheet"/>
+<link rel="stylesheet" href="admin-community-center.css?v=20260829-community2">
 </head>
 <body>
 
@@ -127,6 +128,9 @@ where is_admin = true;</pre>
         <button type="button" data-admin-view="analytics" role="tab">
           <b>📈 Analytics</b><small>Xu hướng & nội dung hot</small>
         </button>
+        <button type="button" data-admin-view="community" role="tab">
+          <b>📣 Cộng đồng</b><small>Thông báo & chứng nhận</small>
+        </button>
         <button type="button" data-admin-view="reviews" role="tab">
           <b>⭐ Đánh giá</b><small>Sao & góp ý website</small>
         </button>
@@ -155,6 +159,22 @@ where is_admin = true;</pre>
         <article data-health="chat"><span>💬 Chat</span><strong>Đang kiểm tra…</strong><small></small></article>
       </div>
     </section>
+    <div class="admin-section-heading admin-view-section" data-admin-section="community">
+      <span>📣 CỘNG ĐỒNG & THÔNG BÁO</span>
+      <h2>Trung tâm quản trị học viên</h2>
+    </div>
+    <section id="avpAdminCommunityHost" class="admin-view-section" data-admin-section="community">
+      <div class="admin-panel">
+        <div class="admin-panel-head">
+          <div>
+            <span>📣 COMMUNITY CENTER</span>
+            <h2>Đang tải khu quản trị cộng đồng...</h2>
+            <p>Nếu dòng này không đổi sau vài giây, kiểm tra file admin-community-center.js trên GitHub.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div class="admin-section-heading admin-view-section" data-admin-section="reviews">
       <span>⭐ ĐÁNH GIÁ WEBSITE</span>
       <h2>Phản hồi từ người dùng</h2>
@@ -605,5 +625,6 @@ where is_admin = true;</pre>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>
 <script defer src="theme-unified-v32.js"></script>
+<script defer src="admin-community-center.js?v=20260829-community2"></script>
 </body>
 </html>

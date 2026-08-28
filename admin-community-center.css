@@ -96,3 +96,6 @@
   .avp-acc-subhead{display:block}
   .avp-acc-subhead input{margin-top:8px;max-width:none}
 }
+
+#avpAdminCommunityHost{margin-top:12px}
+#avpAdminCommunityHost > .avp-acc-panel{margin:0}
