@@ -1841,7 +1841,7 @@
             '</article>';
           }).join("") +
         '</div>' +
-        '<p class="pv-topic-note" id="pvTopicVoteNote">Thanh dài nhất là chủ đề đang có nhiều vote nhất.</p>' +
+        '<p class="pv-topic-note" id="pvTopicVoteNote">Phần trăm được tính trên tổng số vote của tất cả lựa chọn.</p>' +
       '</div>' +
     '</section>';
   }
@@ -1856,14 +1856,14 @@
       }
     });
 
-    var maxVotes = 0;
+    var grandTotal = 0;
     practiceTopicPollData.forEach(function(topic){
-      if ((totals[topic.id] || 0) > maxVotes) maxVotes = totals[topic.id] || 0;
+      grandTotal += totals[topic.id] || 0;
     });
 
     practiceTopicPollData.forEach(function(topic){
       var total = totals[topic.id] || 0;
-      var pct = maxVotes > 0 ? Math.round((total / maxVotes) * 100) : 0;
+      var pct = grandTotal > 0 ? Math.round((total / grandTotal) * 100) : 0;
 
       var bar = document.querySelector('[data-topic-bar="' + topic.id + '"]');
       var pe = document.querySelector('[data-topic-percent="' + topic.id + '"]');
@@ -1887,7 +1887,7 @@
       var res = await sb.rpc("public_practice_topic_vote_summary");
       if (res && res.error) throw res.error;
       renderTopicVoteSummary((res && res.data) || []);
-      if (note) note.textContent = "Thanh dài nhất là chủ đề đang có nhiều vote nhất.";
+      if (note) note.textContent = "Phần trăm được tính trên tổng số vote của tất cả lựa chọn.";
     } catch (e) {
       console.debug("topic vote summary", e);
       if (note) note.textContent = "Chưa tải được dashboard. Hãy chạy SQL vote chủ đề trong Supabase.";
