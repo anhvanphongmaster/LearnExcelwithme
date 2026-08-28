@@ -465,7 +465,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","learning","votes","downloads","inbox","analytics"];
+    const valid=["overview","users","learning","votes","practice","downloads","inbox","analytics"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
