@@ -508,6 +508,7 @@
 
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
       bindAdminViews();
+    bindReviewAdmin();
       checkAdminHealth();
       renderSummary(summary||{});
       await loadRaceStats();
@@ -735,8 +736,148 @@
   $("adminPeriod")?.addEventListener("change",()=>{currentDays=Number($("adminPeriod").value)||30;loadDashboard()});
   $("adminRefresh")?.addEventListener("click",()=>{loadDashboard();toast("Đang làm mới dữ liệu...")});
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
-})();
 
+  // ===== WEBSITE REVIEWS V2 - dùng trực tiếp client Admin hiện tại =====
+  let adminReviewsLoaded=false;
+
+  function reviewEsc(s){
+    return String(s??"").replace(
+      /[&<>"']/g,
+      c=>({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+      }[c])
+    );
+  }
+
+  function reviewStars(v){
+    const n=Math.max(0,Math.min(5,Number(v)||0));
+    return `<span class="admin-review-stars">${"★".repeat(n)}<i>${"★".repeat(5-n)}</i></span>`;
+  }
+
+  function reviewDate(v){
+    try{
+      return new Intl.DateTimeFormat(
+        "vi-VN",
+        {dateStyle:"short",timeStyle:"short"}
+      ).format(new Date(v));
+    }catch{
+      return v||"—";
+    }
+  }
+
+  async function loadAdminSiteReviews(){
+    const body=$("adminReviewBody");
+    const notice=$("adminReviewNotice");
+
+    if(!body)return;
+
+    if(!client){
+      client=await waitForClient();
+    }
+
+    if(!client?.rpc){
+      if(notice){
+        notice.hidden=false;
+        notice.textContent="Supabase chưa sẵn sàng.";
+      }
+      return;
+    }
+
+    body.innerHTML='<tr><td colspan="5">Đang tải…</td></tr>';
+
+    try{
+      const rating=Number($("adminReviewRating")?.value||0);
+      const search=String($("adminReviewSearch")?.value||"").trim();
+
+      const summaryRes=await client.rpc("admin_site_review_summary");
+      if(summaryRes.error)throw summaryRes.error;
+
+      const listRes=await client.rpc(
+        "admin_site_review_list",
+        {
+          p_rating:rating||null,
+          p_search:search||null,
+          p_limit:500
+        }
+      );
+      if(listRes.error)throw listRes.error;
+
+      const sum=summaryRes.data||{};
+      const rows=Array.isArray(listRes.data)?listRes.data:[];
+
+      if($("reviewAvg")){
+        $("reviewAvg").textContent=
+          `${Number(sum.average_rating||0).toFixed(2)} / 5`;
+      }
+
+      if($("reviewTotal")){
+        $("reviewTotal").textContent=n(sum.total_reviews||0);
+      }
+
+      if($("reviewWithContent")){
+        $("reviewWithContent").textContent=n(sum.with_content||0);
+      }
+
+      if($("reviewFiveStar")){
+        $("reviewFiveStar").textContent=n(sum.five_star||0);
+      }
+
+      body.innerHTML=rows.length
+        ? rows.map(r=>`
+          <tr>
+            <td>${reviewStars(r.rating)}</td>
+            <td>
+              <div class="admin-review-content">
+                ${r.content
+                  ? reviewEsc(r.content)
+                  : '<em>Không nhập nội dung</em>'}
+              </div>
+            </td>
+            <td>
+              <strong>${reviewEsc(r.display_name||r.email||"Người dùng")}</strong>
+              <small>${reviewEsc(r.email||"")}</small>
+            </td>
+            <td><code>${reviewEsc(r.page_path||"—")}</code></td>
+            <td>${reviewDate(r.created_at)}</td>
+          </tr>
+        `).join("")
+        : '<tr><td colspan="5">Chưa có đánh giá nào.</td></tr>';
+
+      if(notice)notice.hidden=true;
+      adminReviewsLoaded=true;
+
+    }catch(e){
+      console.error("ADMIN REVIEWS ERROR",e);
+
+      if(notice){
+        notice.hidden=false;
+        notice.textContent=
+          e?.message
+            ? `Không tải được đánh giá: ${e.message}`
+            : "Không tải được đánh giá.";
+      }
+
+      body.innerHTML=
+        '<tr><td colspan="5">Không tải được dữ liệu đánh giá.</td></tr>';
+    }
+  }
+
+  window.avpLoadSiteReviews=loadAdminSiteReviews;
+
+  function bindReviewAdmin(){
+    $("adminReviewReload")?.addEventListener("click",loadAdminSiteReviews);
+    $("adminReviewSearchBtn")?.addEventListener("click",loadAdminSiteReviews);
+    $("adminReviewRating")?.addEventListener("change",loadAdminSiteReviews);
+    $("adminReviewSearch")?.addEventListener("keydown",e=>{
+      if(e.key==="Enter")loadAdminSiteReviews();
+    });
+  }
+
+})();
 
 // ================= PRACTICE LIBRARY MANAGEMENT V1 =================
 (function(){
@@ -759,174 +900,3 @@
   function bootPractice(){bindPractice();try{if(localStorage.getItem('avp_admin_view_v1')==='practice')setTimeout(loadPractice,250)}catch(e){}}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootPractice);else bootPractice();
 })();
-
-// ================= WEBSITE REVIEWS V1 =================
-(function(){
-  let loaded=false;
-
-  const $=id=>document.getElementById(id);
-
-  const esc=s=>String(s??'').replace(
-    /[&<>"']/g,
-    c=>({
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      '"':'&quot;',
-      "'":'&#39;'
-    }[c])
-  );
-
-  const fmt=d=>{
-    try{
-      return new Intl.DateTimeFormat(
-        'vi-VN',
-        {dateStyle:'short',timeStyle:'short'}
-      ).format(new Date(d));
-    }catch{
-      return d||'—';
-    }
-  };
-
-  async function rpc(name,args){
-    const c=window.avpSupabase||window.supabaseClient;
-
-    if(!c?.rpc){
-      throw new Error('Supabase chưa sẵn sàng');
-    }
-
-    const {data,error}=await c.rpc(name,args||{});
-
-    if(error)throw error;
-
-    return data;
-  }
-
-  function stars(n){
-    n=Number(n)||0;
-
-    return `
-      <span class="admin-review-stars" aria-label="${n} sao">
-        ${'★'.repeat(n)}
-        <i>${'★'.repeat(Math.max(0,5-n))}</i>
-      </span>
-    `;
-  }
-
-  async function load(){
-    const body=$('adminReviewBody');
-    const notice=$('adminReviewNotice');
-
-    if(!body)return;
-
-    body.innerHTML='<tr><td colspan="5">Đang tải…</td></tr>';
-
-    try{
-      const rating=Number(
-        $('adminReviewRating')?.value||0
-      );
-
-      const q=
-        $('adminReviewSearch')?.value?.trim()||'';
-
-      const [sum,rows]=await Promise.all([
-        rpc('admin_site_review_summary'),
-        rpc(
-          'admin_site_review_list',
-          {
-            p_rating:rating||null,
-            p_search:q||null,
-            p_limit:500
-          }
-        )
-      ]);
-
-      $('reviewAvg').textContent=
-        sum?.average_rating
-          ? Number(sum.average_rating).toFixed(1)+' / 5'
-          : '—';
-
-      $('reviewTotal').textContent=
-        sum?.total_reviews??0;
-
-      $('reviewWithContent').textContent=
-        sum?.with_content??0;
-
-      $('reviewFiveStar').textContent=
-        sum?.five_star??0;
-
-      const arr=Array.isArray(rows)?rows:[];
-
-      body.innerHTML=arr.length
-        ? arr.map(r=>`
-          <tr>
-            <td>${stars(r.rating)}</td>
-            <td>
-              <div class="admin-review-content">
-                ${r.content
-                  ? esc(r.content)
-                  : '<em>Không nhập nội dung</em>'}
-              </div>
-            </td>
-            <td>
-              <strong>${esc(r.display_name||r.email||'Khách')}</strong>
-              <small>${r.user_id?'Đã đăng nhập':'Khách trình duyệt'}</small>
-            </td>
-            <td><code>${esc(r.page_path||'—')}</code></td>
-            <td>${fmt(r.created_at)}</td>
-          </tr>
-        `).join('')
-        : '<tr><td colspan="5">Chưa có đánh giá nào.</td></tr>';
-
-      notice.hidden=true;
-      loaded=true;
-
-    }catch(e){
-      console.warn('site reviews',e);
-
-      notice.hidden=false;
-      notice.textContent=
-        'Chưa tải được đánh giá. Kiểm tra RPC review trong Supabase.';
-
-      body.innerHTML=
-        '<tr><td colspan="5">Không tải được dữ liệu.</td></tr>';
-    }
-  }
-
-  window.avpLoadSiteReviews=load;
-
-  function boot(){
-    $('adminReviewReload')
-      ?.addEventListener('click',load);
-
-    $('adminReviewSearchBtn')
-      ?.addEventListener('click',load);
-
-    $('adminReviewRating')
-      ?.addEventListener('change',load);
-
-    $('adminReviewSearch')
-      ?.addEventListener('keydown',e=>{
-        if(e.key==='Enter')load();
-      });
-
-    document
-      .querySelectorAll('[data-admin-view="reviews"]')
-      .forEach(b=>b.addEventListener('click',()=>{
-        if(!loaded)load();
-      }));
-
-    try{
-      if(localStorage.getItem('avp_admin_view_v1')==='reviews'){
-        setTimeout(load,300);
-      }
-    }catch{}
-  }
-
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',boot);
-  }else{
-    boot();
-  }
-})();
-
