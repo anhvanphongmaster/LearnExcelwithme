@@ -343,15 +343,36 @@
 
   async function hydrateAdminReadReceipts(root,thread){
     if(!root||!thread)return;
-    let lastRead=null;
-    try{lastRead=await rpc("avp_chat_admin_student_read_at",{p_thread_id:String(thread)})}catch(e){console.warn("AVP read receipt",e);return}
+
     const els=[...root.querySelectorAll("[data-read-created]")];
     els.forEach(el=>el.textContent="");
-    if(!lastRead||!els.length)return;
+
+    if(!els.length)return;
+
+    // Chỉ hiển thị trạng thái ở tin Admin mới nhất.
+    const latest=els[els.length-1];
+    latest.textContent=" · Đã gửi";
+
+    let lastRead=null;
+
+    try{
+      lastRead=await rpc(
+        "avp_chat_admin_student_read_at",
+        {p_thread_id:String(thread)}
+      );
+    }catch(e){
+      console.warn("AVP read receipt",e);
+      return;
+    }
+
+    if(!lastRead)return;
+
     const readTime=new Date(lastRead).getTime();
-    const readEls=els.filter(el=>{const sent=new Date(el.dataset.readCreated||0).getTime();return sent&&sent<=readTime});
-    const last=readEls[readEls.length-1];
-    if(last)last.textContent=" · Đã xem";
+    const sentTime=new Date(latest.dataset.readCreated||0).getTime();
+
+    if(sentTime && sentTime<=readTime){
+      latest.textContent=" · Đã xem";
+    }
   }
 
   /* ================= GUEST BUBBLE ================= */
@@ -476,6 +497,9 @@
         }
       }else await rpc("avp_chat_send_user_message",{p_body:body});
       input.value="";pendingFiles.user=[];previewFiles("user","avpChatFilePreview");await loadUserMessages();
+      if($("avpChatPanel")&&!$("avpChatPanel").hidden){
+        await markUserRead();
+      }
     }catch(e){
       const detail=e?.message||e?.error_description||String(e||"");
       alert("Chưa gửi được file. "+(detail?"Lỗi: "+detail:"Vui lòng thử lại."));
@@ -572,7 +596,7 @@
     bindFilePicker("admin","adminChatFile","adminChatFilePreview");
     $("adminChatReply")?.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAdminMessage()}});
     await loadAdminThreads();
-    adminPoll=setInterval(async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)},15000);
+    adminPoll=setInterval(async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)},7000);
     try{client.channel("avp-chat-admin-live").on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)}).subscribe()}catch{}
   }
 
@@ -708,7 +732,7 @@
         const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
         if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,floatActiveThread);box.scrollTop=box.scrollHeight;}
       }
-    },15000);
+    },7000);
     try{
       if(floatRealtime)client.removeChannel(floatRealtime);
       floatRealtime=client.channel("avp-chat-admin-floating-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{
