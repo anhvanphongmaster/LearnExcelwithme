@@ -267,3 +267,54 @@ body.dark-mode .admin-download-editor{background:#142119;border-color:#2d4737}bo
 .admin-health-grid article.bad{border-color:#efc3c3;background:#fff7f7}
 .admin-health-grid article.bad strong{color:#b42318}
 @media(max-width:760px){.admin-health-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-system-health .admin-panel-head{align-items:flex-start;gap:10px}}
+
+/* ===== Admin compact scroll containers V1 ===== */
+.admin-users-table-wrap,
+.admin-vote-history-wrap,
+.admin-practice-table-wrap,
+.admin-download-table-wrap{
+  max-height:min(62vh,620px);
+  overflow:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  scrollbar-color:#79b993 #edf4ef;
+}
+.admin-users-table-wrap::-webkit-scrollbar,
+.admin-vote-history-wrap::-webkit-scrollbar,
+.admin-practice-table-wrap::-webkit-scrollbar,
+.admin-download-table-wrap::-webkit-scrollbar{width:7px;height:7px}
+.admin-users-table-wrap::-webkit-scrollbar-track,
+.admin-vote-history-wrap::-webkit-scrollbar-track,
+.admin-practice-table-wrap::-webkit-scrollbar-track,
+.admin-download-table-wrap::-webkit-scrollbar-track{background:#edf4ef;border-radius:999px}
+.admin-users-table-wrap::-webkit-scrollbar-thumb,
+.admin-vote-history-wrap::-webkit-scrollbar-thumb,
+.admin-practice-table-wrap::-webkit-scrollbar-thumb,
+.admin-download-table-wrap::-webkit-scrollbar-thumb{background:#79b993;border-radius:999px}
+
+.admin-vote-history th,
+.admin-practice-table th,
+.admin-download-table th{
+  position:sticky;
+  top:0;
+  z-index:3;
+}
+
+/* Keep long inbox/chat content inside its own frame */
+#adminInboxSection .admin-chat-shell{max-height:min(68vh,680px);overflow:hidden}
+#adminInboxSection .admin-chat-threads,
+#adminInboxSection .admin-chat-messages{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#adminInboxSection .admin-mail-read{max-height:360px;overflow:auto;overscroll-behavior:contain}
+
+/* Ranking/analytics lists should not stretch the whole page */
+.admin-ranking{max-height:430px;overflow:auto;overscroll-behavior:contain}
+
+@media(max-width:760px){
+  .admin-users-table-wrap,
+  .admin-vote-history-wrap,
+  .admin-practice-table-wrap,
+  .admin-download-table-wrap{max-height:58vh}
+  #adminInboxSection .admin-chat-shell{max-height:62vh}
+  .admin-ranking{max-height:360px}
+}
