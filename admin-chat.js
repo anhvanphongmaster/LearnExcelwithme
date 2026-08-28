@@ -18,115 +18,6 @@
   const ALLOWED_EXT=new Set(["jpg","jpeg","png","webp","gif","heic","heif","pdf","xlsx","xls","csv","doc","docx","ppt","pptx","txt","zip"]);
   const pendingFiles={user:[],admin:[],float:[]};
 
-
-  /* ================= MESSAGE SOUND — SAFE / IN-WEB ONLY ================= */
-  const AVP_SOUND_KEY="avp_chat_sound_enabled";
-  let avpAudioCtx=null;
-  let avpAudioUnlocked=false;
-
-  function isChatSoundEnabled(){
-    return localStorage.getItem(AVP_SOUND_KEY)!=="0";
-  }
-
-  function updateSoundButtons(){
-    const on=isChatSoundEnabled();
-    document.querySelectorAll("[data-avp-chat-sound]").forEach(btn=>{
-      btn.classList.toggle("active",on);
-      btn.textContent=on?"🔊":"🔇";
-      btn.title=on?"Âm báo tin nhắn đang bật":"Bật âm báo tin nhắn";
-      btn.setAttribute("aria-label",btn.title);
-    });
-  }
-
-  function unlockChatSound(){
-    try{
-      const Ctx=window.AudioContext||window.webkitAudioContext;
-      if(!Ctx)return;
-      avpAudioCtx=avpAudioCtx||new Ctx();
-      if(avpAudioCtx.state==="suspended")avpAudioCtx.resume();
-      avpAudioUnlocked=true;
-    }catch{}
-  }
-
-  ["pointerdown","touchstart","keydown"].forEach(ev=>{
-    document.addEventListener(ev,unlockChatSound,{once:true,passive:true});
-  });
-
-  function playChatMessageSound(){
-    if(!isChatSoundEnabled())return;
-    try{
-      unlockChatSound();
-      if(!avpAudioCtx||!avpAudioUnlocked)return;
-
-      const ctx=avpAudioCtx;
-      const now=ctx.currentTime;
-
-      const master=ctx.createGain();
-      master.gain.setValueAtTime(0.0001,now);
-      master.gain.exponentialRampToValueAtTime(0.12,now+0.018);
-      master.gain.exponentialRampToValueAtTime(0.0001,now+0.38);
-      master.connect(ctx.destination);
-
-      const tone=(freq,start,duration,level)=>{
-        const osc=ctx.createOscillator();
-        const gain=ctx.createGain();
-
-        osc.type="sine";
-        osc.frequency.setValueAtTime(freq,now+start);
-        osc.frequency.exponentialRampToValueAtTime(freq*0.93,now+start+duration);
-
-        gain.gain.setValueAtTime(0.0001,now+start);
-        gain.gain.exponentialRampToValueAtTime(level,now+start+0.014);
-        gain.gain.exponentialRampToValueAtTime(0.0001,now+start+duration);
-
-        osc.connect(gain);
-        gain.connect(master);
-        osc.start(now+start);
-        osc.stop(now+start+duration+0.03);
-      };
-
-      // Âm "bụp–ting" trầm, rất ngắn, kiểu tin nhắn.
-      tone(185,0,.18,.30);
-      tone(247,.085,.24,.23);
-
-      if(navigator.vibrate)navigator.vibrate(26);
-    }catch(e){
-      console.warn("AVP chat sound",e);
-    }
-  }
-
-  function mountSoundButton(head){
-    if(!head||head.querySelector("[data-avp-chat-sound]"))return;
-
-    const btn=document.createElement("button");
-    btn.type="button";
-    btn.className="avp-chat-sound-toggle";
-    btn.dataset.avpChatSound="1";
-
-    btn.addEventListener("click",e=>{
-      e.preventDefault();
-      e.stopPropagation();
-
-      const next=!isChatSoundEnabled();
-      localStorage.setItem(AVP_SOUND_KEY,next?"1":"0");
-
-      if(next){
-        unlockChatSound();
-        // Phát rất nhẹ một lần để người dùng biết đã bật.
-        setTimeout(playChatMessageSound,30);
-      }
-
-      updateSoundButtons();
-    });
-
-    const close=head.querySelector(".avp-chat-close");
-    if(close)head.insertBefore(btn,close);
-    else head.appendChild(btn);
-
-    updateSoundButtons();
-  }
-
-
   const extOf=(name)=>String(name||"").split(".").pop().toLowerCase();
   const sizeText=(n)=>{n=Number(n)||0;if(n<1024)return n+" B";if(n<1024*1024)return (n/1024).toFixed(1)+" KB";return (n/1024/1024).toFixed(1)+" MB"};
   const isImageFile=(f)=>String(f?.type||"").startsWith("image/")||["jpg","jpeg","png","webp","gif","heic","heif"].includes(extOf(f?.name));
@@ -489,7 +380,6 @@
       </section>`;
     document.body.appendChild(root);
     bindDrag();
-    mountSoundButton(root.querySelector(".avp-chat-head"));
     $("avpChatBubble").addEventListener("click",()=>{
       if($("avpChatBubble")?.dataset.justDragged==="1")return;
       const p=$("avpGuestChatPanel");
@@ -528,7 +418,6 @@
     $("avpChatClose").addEventListener("click",()=>togglePanel(false));
     $("avpChatSend").addEventListener("click",sendUserMessage);
     bindFilePicker("user","avpChatFile","avpChatFilePreview");
-    mountSoundButton(root.querySelector(".avp-chat-head"));
     $("avpChatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendUserMessage()}});
   }
 
@@ -616,7 +505,7 @@
     },15000);
     try{
       if(realtimeChannel)client.removeChannel(realtimeChannel);
-      realtimeChannel=client.channel("avp-chat-user-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages",filter:`thread_id=eq.${threadId}`},async(payload)=>{if(payload?.new?.sender_type==="admin")playChatMessageSound();await updateUserBadge();if(!$("avpChatPanel").hidden){await loadUserMessages();await markUserRead()}}).subscribe();
+      realtimeChannel=client.channel("avp-chat-user-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages",filter:`thread_id=eq.${threadId}`},async()=>{await updateUserBadge();if(!$("avpChatPanel").hidden){await loadUserMessages();await markUserRead()}}).subscribe();
     }catch{}
   }
   async function initUser(){
@@ -676,7 +565,6 @@
   async function initAdmin(){
     if(!(await isAdmin()))return;
     startAdminPresence();
-    mountSoundButton(document.querySelector("#adminChatInbox .admin-chat-head, #adminChatInbox header"));
     await mountAutoReplySettings();
     $("adminChatSearch")?.addEventListener("input",e=>renderAdminThreads(e.target.value));
     $("adminChatRefresh")?.addEventListener("click",loadAdminThreads);
@@ -685,7 +573,7 @@
     $("adminChatReply")?.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAdminMessage()}});
     await loadAdminThreads();
     adminPoll=setInterval(async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)},15000);
-    try{client.channel("avp-chat-admin-live").on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async(payload)=>{if(payload?.new?.sender_type==="user")playChatMessageSound();await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)}).subscribe()}catch{}
+    try{client.channel("avp-chat-admin-live").on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)}).subscribe()}catch{}
   }
 
   /* ================= ADMIN FLOATING BUBBLE ================= */
@@ -823,8 +711,7 @@
     },15000);
     try{
       if(floatRealtime)client.removeChannel(floatRealtime);
-      floatRealtime=client.channel("avp-chat-admin-floating-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async(payload)=>{
-        if(payload?.new?.sender_type==="user")playChatMessageSound();
+      floatRealtime=client.channel("avp-chat-admin-floating-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{
         await loadFloatingAdminThreads();
         if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden)await openFloatingAdminThread(floatActiveThread);
       }).subscribe();
@@ -863,19 +750,11 @@
 
     if(onAdminPage){
       if(admin) await initAdmin();
-      document.querySelectorAll(".avp-chat-head").forEach(head=>{
-        mountSoundButton(head);
-      });
       return;
     }
 
     if(admin) await initFloatingAdmin();
     else await initUser();
-
-    // Fix nhẹ: gắn lại nút âm thanh sau khi UI đổi theo trạng thái đăng nhập.
-    document.querySelectorAll(".avp-chat-head").forEach(head=>{
-      mountSoundButton(head);
-    });
   }
 
   function subscribeAuthChanges(){

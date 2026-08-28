@@ -1,4 +1,4 @@
-/* AVP cleanup: remove experimental push service worker. */
+/* AVP one-time cleanup: remove experimental notification/push worker. */
 self.addEventListener("install", () => self.skipWaiting());
 
 self.addEventListener("activate", event => {
@@ -7,23 +7,13 @@ self.addEventListener("activate", event => {
       const keys = await caches.keys();
       await Promise.all(
         keys
-          .filter(k => /avp-chat-push|push-safe|push-live/i.test(k))
+          .filter(k => /avp-chat-push|push-safe|push-live|notification/i.test(k))
           .map(k => caches.delete(k))
       );
     } catch (_) {}
 
     try {
       await self.registration.unregister();
-    } catch (_) {}
-
-    try {
-      const clientsList = await self.clients.matchAll({
-        type: "window",
-        includeUncontrolled: true
-      });
-      clientsList.forEach(c => {
-        try { c.postMessage({type:"AVP_PUSH_CLEANED"}); } catch (_) {}
-      });
     } catch (_) {}
   })());
 });
