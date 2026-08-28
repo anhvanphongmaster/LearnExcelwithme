@@ -400,7 +400,7 @@
     launcher.classList.toggle('open',open);
     fab.setAttribute('aria-expanded',open?'true':'false');
     const icon=fab.querySelector('.avp-edge-main-icon');
-    if(icon)icon.textContent=open?'×':'AVP';
+    if(icon)icon.textContent='AVP';
   }
 
   function clickHiddenTool(id,label){
@@ -477,46 +477,53 @@
 
   /* Kéo dọc màn hình + snap sát viền trái/phải, nhớ vị trí. */
   (function enableDragEdgeLauncher(root,btn){
-    const POS_KEY='avp_edge_launcher_pos_v4';
-    const margin=6;
+    const POS_KEY='avp_edge_launcher_pos_v5';
+    const EDGE_GAP=6;
 
-    function clamp(v,min,max){
-      return Math.max(min,Math.min(max,v));
+    const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+
+    function sideFromX(x,w){
+      return (x + w/2) < (window.innerWidth/2) ? 'left' : 'right';
     }
 
-    function savePos(side,y){
+    function applySideClass(side){
+      root.classList.toggle('is-left',side==='left');
+      root.classList.toggle('is-right',side==='right');
+    }
+
+    function save(side,y){
       try{
-        localStorage.setItem(
-          POS_KEY,
-          JSON.stringify({side,y})
-        );
+        localStorage.setItem(POS_KEY,JSON.stringify({side,y}));
       }catch{}
     }
 
-    function applySnapped(pos){
-      const w=root.offsetWidth||48;
-      const h=root.offsetHeight||48;
+    function snapToEdge(side,y,animate=true){
+      const w=root.offsetWidth||50;
+      const h=root.offsetHeight||50;
+      const maxY=Math.max(EDGE_GAP,window.innerHeight-h-EDGE_GAP);
+      const top=clamp(Number(y)||Math.round(window.innerHeight*.55),EDGE_GAP,maxY);
 
-      const side=pos?.side==='left'?'left':'right';
-      const maxY=Math.max(margin,window.innerHeight-h-margin);
-      const y=clamp(Number(pos?.y)||Math.round(window.innerHeight*.55),margin,maxY);
+      applySideClass(side);
 
-      root.style.top=y+'px';
+      if(animate)root.classList.add('is-snapping');
+
+      root.style.top=top+'px';
       root.style.bottom='auto';
 
       if(side==='left'){
-        root.style.left=margin+'px';
+        root.style.left=EDGE_GAP+'px';
         root.style.right='auto';
-        root.classList.add('is-left');
-        root.classList.remove('is-right');
       }else{
-        root.style.right=margin+'px';
-        root.style.left='auto';
-        root.classList.add('is-right');
-        root.classList.remove('is-left');
+        root.style.left=(window.innerWidth-w-EDGE_GAP)+'px';
+        root.style.right='auto';
       }
 
+      save(side,top);
       requestAnimationFrame(positionMiniPreview);
+
+      if(animate){
+        setTimeout(()=>root.classList.remove('is-snapping'),260);
+      }
     }
 
     let saved=null;
@@ -524,59 +531,56 @@
       saved=JSON.parse(localStorage.getItem(POS_KEY)||'null');
     }catch{}
 
-    applySnapped(saved||{
-      side:'right',
-      y:Math.round(window.innerHeight*.56)
-    });
+    snapToEdge(
+      saved?.side==='left'?'left':'right',
+      saved?.y ?? Math.round(window.innerHeight*.56),
+      false
+    );
 
     window.addEventListener('resize',()=>{
-      let p=null;
+      let pos=null;
       try{
-        p=JSON.parse(localStorage.getItem(POS_KEY)||'null');
+        pos=JSON.parse(localStorage.getItem(POS_KEY)||'null');
       }catch{}
 
-      applySnapped(
-        p||{
-          side:root.classList.contains('is-left')?'left':'right',
-          y:root.getBoundingClientRect().top
-        }
+      snapToEdge(
+        pos?.side==='left'?'left':'right',
+        pos?.y ?? root.getBoundingClientRect().top,
+        false
       );
     });
 
     let dragging=false;
     let moved=false;
-    let pid=null;
+    let pointerId=null;
 
-    let startX=0;
-    let startY=0;
-    let startLeft=0;
-    let startTop=0;
+    let grabOffsetX=0;
+    let grabOffsetY=0;
 
     btn.addEventListener('pointerdown',e=>{
-      if(e.button!=null&&e.button!==0)return;
+      if(e.button!=null && e.button!==0)return;
 
       const r=root.getBoundingClientRect();
 
       dragging=true;
       moved=false;
-      pid=e.pointerId;
+      pointerId=e.pointerId;
 
-      startX=e.clientX;
-      startY=e.clientY;
-      startLeft=r.left;
-      startTop=r.top;
+      // Điểm người dùng chạm trong chính nút -> cảm giác kéo như AssistiveTouch.
+      grabOffsetX=e.clientX-r.left;
+      grabOffsetY=e.clientY-r.top;
 
-      /* Trong lúc kéo dùng left/top tuyệt đối,
-         không còn bị khóa ở một trong hai cạnh. */
       root.style.left=r.left+'px';
       root.style.right='auto';
       root.style.top=r.top+'px';
       root.style.bottom='auto';
 
       root.classList.add('is-dragging');
+      setEdgeMenu(false);
+      hideMiniPreview();
 
       try{
-        btn.setPointerCapture(pid);
+        btn.setPointerCapture(pointerId);
       }catch{}
 
       e.preventDefault();
@@ -585,96 +589,50 @@
     btn.addEventListener('pointermove',e=>{
       if(!dragging)return;
 
-      const dx=e.clientX-startX;
-      const dy=e.clientY-startY;
+      const w=root.offsetWidth||50;
+      const h=root.offsetHeight||50;
 
-      if(Math.abs(dx)>4||Math.abs(dy)>4){
+      let x=e.clientX-grabOffsetX;
+      let y=e.clientY-grabOffsetY;
+
+      x=clamp(x,EDGE_GAP,window.innerWidth-w-EDGE_GAP);
+      y=clamp(y,EDGE_GAP,window.innerHeight-h-EDGE_GAP);
+
+      const r=root.getBoundingClientRect();
+      if(Math.abs(x-r.left)>2 || Math.abs(y-r.top)>2){
         moved=true;
       }
-
-      if(!moved)return;
-
-      const w=root.offsetWidth||48;
-      const h=root.offsetHeight||48;
-
-      const x=clamp(
-        startLeft+dx,
-        margin,
-        window.innerWidth-w-margin
-      );
-
-      const y=clamp(
-        startTop+dy,
-        margin,
-        window.innerHeight-h-margin
-      );
 
       root.style.left=x+'px';
       root.style.right='auto';
       root.style.top=y+'px';
       root.style.bottom='auto';
 
-      /* Cập nhật hướng để menu/preview biết sẽ bung vào phía nào. */
-      const center=x+w/2;
-
-      if(center<window.innerWidth/2){
-        root.classList.add('is-left');
-        root.classList.remove('is-right');
-      }else{
-        root.classList.add('is-right');
-        root.classList.remove('is-left');
-      }
-
-      hideMiniPreview();
-      setEdgeMenu(false);
+      applySideClass(sideFromX(x,w));
       requestAnimationFrame(positionMiniPreview);
 
       e.preventDefault();
     },{passive:false});
 
-    function finish(){
+    function finish(e){
       if(!dragging)return;
 
       dragging=false;
       root.classList.remove('is-dragging');
 
       try{
-        btn.releasePointerCapture(pid);
+        btn.releasePointerCapture(pointerId);
       }catch{}
 
-      if(!moved)return;
+      if(moved){
+        const r=root.getBoundingClientRect();
+        const side=sideFromX(r.left,r.width);
 
-      const r=root.getBoundingClientRect();
-      const center=r.left+r.width/2;
+        snapToEdge(side,r.top,true);
 
-      const side=
-        center<window.innerWidth/2
-          ? 'left'
-          : 'right';
-
-      const pos={
-        side,
-        y:r.top
-      };
-
-      /* Thả tay -> hút về mép trái/phải gần nhất. */
-      root.classList.add('is-snapping');
-
-      requestAnimationFrame(()=>{
-        applySnapped(pos);
-        savePos(side,pos.y);
-
-        setTimeout(
-          ()=>root.classList.remove('is-snapping'),
-          230
-        );
-      });
-
-      btn.dataset.justDragged='1';
-
-      setTimeout(()=>{
-        delete btn.dataset.justDragged;
-      },280);
+        btn.dataset.justDragged='1';
+        setTimeout(()=>delete btn.dataset.justDragged,320);
+      }
     }
 
     btn.addEventListener('pointerup',finish);

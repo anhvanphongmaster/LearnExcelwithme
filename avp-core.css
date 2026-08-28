@@ -687,3 +687,194 @@ body > .avp-hub-fab{
     font-size:20px !important;
   }
 }
+
+/* =========================================================
+   AVP ASSISTIVE TOUCH V5 — FINAL OVERRIDE
+   Tròn, AVP, kéo tự do toàn màn hình, thả hút trái/phải
+   ========================================================= */
+
+#avpEdgeLauncher.avp-edge-launcher{
+  position:fixed !important;
+  z-index:2147482500 !important;
+
+  width:54px !important;
+  height:54px !important;
+
+  left:auto;
+  right:auto;
+  bottom:auto;
+
+  overflow:visible !important;
+  touch-action:none !important;
+
+  transition:
+    left .24s cubic-bezier(.22,.8,.24,1),
+    top .18s cubic-bezier(.22,.8,.24,1) !important;
+}
+
+#avpEdgeLauncher.avp-edge-launcher.is-dragging{
+  transition:none !important;
+}
+
+#avpEdgeLauncher .avp-edge-main{
+  position:absolute !important;
+  inset:0 !important;
+
+  width:54px !important;
+  height:54px !important;
+  min-width:54px !important;
+  min-height:54px !important;
+
+  padding:0 !important;
+  margin:0 !important;
+
+  border-radius:50% !important;
+  border:2px solid rgba(255,255,255,.95) !important;
+
+  background:
+    radial-gradient(circle at 35% 28%, #39d98a 0%, #217346 38%, #145a32 100%) !important;
+
+  color:#fff !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  box-shadow:
+    0 0 0 2px rgba(57,217,138,.35),
+    0 0 14px rgba(57,217,138,.85),
+    0 0 28px rgba(0,255,148,.42),
+    0 10px 26px rgba(17,94,55,.32) !important;
+
+  cursor:grab !important;
+  touch-action:none !important;
+  user-select:none !important;
+  -webkit-user-select:none !important;
+
+  transform:none !important;
+  filter:none !important;
+
+  animation:avpGlowPulse 2.2s ease-in-out infinite !important;
+}
+
+#avpEdgeLauncher .avp-edge-main::before{
+  content:"" !important;
+  position:absolute !important;
+  inset:-5px !important;
+  border-radius:50% !important;
+
+  border:1.5px solid rgba(86,255,176,.75) !important;
+
+  box-shadow:
+    0 0 9px rgba(86,255,176,.75),
+    inset 0 0 8px rgba(255,255,255,.28) !important;
+
+  pointer-events:none !important;
+}
+
+#avpEdgeLauncher .avp-edge-main::after{
+  content:"" !important;
+  position:absolute !important;
+  inset:4px !important;
+  border-radius:50% !important;
+
+  border:1px solid rgba(255,255,255,.25) !important;
+
+  pointer-events:none !important;
+}
+
+#avpEdgeLauncher .avp-edge-main-icon{
+  position:relative !important;
+  z-index:2 !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  margin:0 !important;
+  padding:0 !important;
+
+  color:#fff !important;
+
+  font:
+    900 12px/1
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif !important;
+
+  letter-spacing:.55px !important;
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.25),
+    0 0 8px rgba(255,255,255,.2) !important;
+
+  transform:none !important;
+}
+
+#avpEdgeLauncher.open .avp-edge-main-icon{
+  font-size:12px !important;
+  font-weight:900 !important;
+}
+
+#avpEdgeLauncher.is-dragging .avp-edge-main{
+  cursor:grabbing !important;
+  transform:scale(.92) !important;
+
+  box-shadow:
+    0 0 0 3px rgba(86,255,176,.5),
+    0 0 20px rgba(86,255,176,.95),
+    0 0 36px rgba(0,255,148,.55),
+    0 12px 32px rgba(17,94,55,.38) !important;
+
+  animation:none !important;
+}
+
+#avpEdgeLauncher.is-snapping .avp-edge-main{
+  transform:scale(.97) !important;
+}
+
+@keyframes avpGlowPulse{
+  0%,100%{
+    box-shadow:
+      0 0 0 2px rgba(57,217,138,.28),
+      0 0 12px rgba(57,217,138,.70),
+      0 0 24px rgba(0,255,148,.32),
+      0 10px 26px rgba(17,94,55,.30);
+  }
+
+  50%{
+    box-shadow:
+      0 0 0 3px rgba(86,255,176,.42),
+      0 0 18px rgba(86,255,176,.92),
+      0 0 34px rgba(0,255,148,.50),
+      0 10px 30px rgba(17,94,55,.36);
+  }
+}
+
+@media(max-width:600px){
+  #avpEdgeLauncher.avp-edge-launcher{
+    width:50px !important;
+    height:50px !important;
+  }
+
+  #avpEdgeLauncher .avp-edge-main{
+    width:50px !important;
+    height:50px !important;
+    min-width:50px !important;
+    min-height:50px !important;
+  }
+
+  #avpEdgeLauncher .avp-edge-main-icon{
+    font-size:11px !important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  #avpEdgeLauncher .avp-edge-main{
+    animation:none !important;
+  }
+}
