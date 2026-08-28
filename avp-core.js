@@ -72,7 +72,7 @@
       aria-expanded="false"
       title="Công cụ nhanh — kéo để di chuyển"
     >
-      <span class="avp-edge-main-icon">＋</span>
+      <span class="avp-edge-main-icon">AVP</span>
       <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
     </button>
   `;
@@ -400,7 +400,7 @@
     launcher.classList.toggle('open',open);
     fab.setAttribute('aria-expanded',open?'true':'false');
     const icon=fab.querySelector('.avp-edge-main-icon');
-    if(icon)icon.textContent=open?'×':'＋';
+    if(icon)icon.textContent=open?'×':'AVP';
   }
 
   function clickHiddenTool(id,label){
@@ -477,14 +477,23 @@
 
   /* Kéo dọc màn hình + snap sát viền trái/phải, nhớ vị trí. */
   (function enableDragEdgeLauncher(root,btn){
-    const POS_KEY='avp_edge_launcher_pos_v3';
-    const margin=3;
+    const POS_KEY='avp_edge_launcher_pos_v4';
+    const margin=6;
 
     function clamp(v,min,max){
       return Math.max(min,Math.min(max,v));
     }
 
-    function apply(pos){
+    function savePos(side,y){
+      try{
+        localStorage.setItem(
+          POS_KEY,
+          JSON.stringify({side,y})
+        );
+      }catch{}
+    }
+
+    function applySnapped(pos){
       const w=root.offsetWidth||48;
       const h=root.offsetHeight||48;
 
@@ -494,7 +503,6 @@
 
       root.style.top=y+'px';
       root.style.bottom='auto';
-      requestAnimationFrame(positionMiniPreview);
 
       if(side==='left'){
         root.style.left=margin+'px';
@@ -507,6 +515,8 @@
         root.classList.add('is-right');
         root.classList.remove('is-left');
       }
+
+      requestAnimationFrame(positionMiniPreview);
     }
 
     let saved=null;
@@ -514,88 +524,157 @@
       saved=JSON.parse(localStorage.getItem(POS_KEY)||'null');
     }catch{}
 
-    apply(saved||{side:'right',y:Math.round(window.innerHeight*.56)});
+    applySnapped(saved||{
+      side:'right',
+      y:Math.round(window.innerHeight*.56)
+    });
 
     window.addEventListener('resize',()=>{
       let p=null;
-      try{p=JSON.parse(localStorage.getItem(POS_KEY)||'null')}catch{}
-      apply(p||{side:root.classList.contains('is-left')?'left':'right',y:root.getBoundingClientRect().top});
+      try{
+        p=JSON.parse(localStorage.getItem(POS_KEY)||'null');
+      }catch{}
+
+      applySnapped(
+        p||{
+          side:root.classList.contains('is-left')?'left':'right',
+          y:root.getBoundingClientRect().top
+        }
+      );
     });
 
     let dragging=false;
     let moved=false;
-    let sx=0,sy=0,startTop=0,pid=null;
+    let pid=null;
+
+    let startX=0;
+    let startY=0;
+    let startLeft=0;
+    let startTop=0;
 
     btn.addEventListener('pointerdown',e=>{
       if(e.button!=null&&e.button!==0)return;
 
+      const r=root.getBoundingClientRect();
+
       dragging=true;
       moved=false;
       pid=e.pointerId;
-      sx=e.clientX;
-      sy=e.clientY;
-      startTop=root.getBoundingClientRect().top;
+
+      startX=e.clientX;
+      startY=e.clientY;
+      startLeft=r.left;
+      startTop=r.top;
+
+      /* Trong lúc kéo dùng left/top tuyệt đối,
+         không còn bị khóa ở một trong hai cạnh. */
+      root.style.left=r.left+'px';
+      root.style.right='auto';
+      root.style.top=r.top+'px';
+      root.style.bottom='auto';
 
       root.classList.add('is-dragging');
-      try{btn.setPointerCapture(pid)}catch{}
+
+      try{
+        btn.setPointerCapture(pid);
+      }catch{}
+
       e.preventDefault();
     },{passive:false});
 
     btn.addEventListener('pointermove',e=>{
       if(!dragging)return;
 
-      const dx=e.clientX-sx;
-      const dy=e.clientY-sy;
+      const dx=e.clientX-startX;
+      const dy=e.clientY-startY;
 
-      if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;
+      if(Math.abs(dx)>4||Math.abs(dy)>4){
+        moved=true;
+      }
+
       if(!moved)return;
 
+      const w=root.offsetWidth||48;
       const h=root.offsetHeight||48;
-      const y=clamp(startTop+dy,margin,window.innerHeight-h-margin);
 
+      const x=clamp(
+        startLeft+dx,
+        margin,
+        window.innerWidth-w-margin
+      );
+
+      const y=clamp(
+        startTop+dy,
+        margin,
+        window.innerHeight-h-margin
+      );
+
+      root.style.left=x+'px';
+      root.style.right='auto';
       root.style.top=y+'px';
+      root.style.bottom='auto';
 
-      requestAnimationFrame(positionMiniPreview);
+      /* Cập nhật hướng để menu/preview biết sẽ bung vào phía nào. */
+      const center=x+w/2;
 
-      /* trong lúc kéo, đổi bên theo vị trí ngón tay */
-      const side=e.clientX<window.innerWidth/2?'left':'right';
-
-      if(side==='left'){
-        root.style.left=margin+'px';
-        root.style.right='auto';
+      if(center<window.innerWidth/2){
         root.classList.add('is-left');
         root.classList.remove('is-right');
       }else{
-        root.style.right=margin+'px';
-        root.style.left='auto';
         root.classList.add('is-right');
         root.classList.remove('is-left');
       }
 
       hideMiniPreview();
       setEdgeMenu(false);
+      requestAnimationFrame(positionMiniPreview);
+
       e.preventDefault();
     },{passive:false});
 
-    function finish(e){
+    function finish(){
       if(!dragging)return;
 
       dragging=false;
       root.classList.remove('is-dragging');
 
-      try{btn.releasePointerCapture(pid)}catch{}
+      try{
+        btn.releasePointerCapture(pid);
+      }catch{}
 
-      if(moved){
-        const r=root.getBoundingClientRect();
-        const side=root.classList.contains('is-left')?'left':'right';
-        const pos={side,y:r.top};
+      if(!moved)return;
 
-        try{localStorage.setItem(POS_KEY,JSON.stringify(pos))}catch{}
-        apply(pos);
+      const r=root.getBoundingClientRect();
+      const center=r.left+r.width/2;
 
-        btn.dataset.justDragged='1';
-        setTimeout(()=>delete btn.dataset.justDragged,260);
-      }
+      const side=
+        center<window.innerWidth/2
+          ? 'left'
+          : 'right';
+
+      const pos={
+        side,
+        y:r.top
+      };
+
+      /* Thả tay -> hút về mép trái/phải gần nhất. */
+      root.classList.add('is-snapping');
+
+      requestAnimationFrame(()=>{
+        applySnapped(pos);
+        savePos(side,pos.y);
+
+        setTimeout(
+          ()=>root.classList.remove('is-snapping'),
+          230
+        );
+      });
+
+      btn.dataset.justDragged='1';
+
+      setTimeout(()=>{
+        delete btn.dataset.justDragged;
+      },280);
     }
 
     btn.addEventListener('pointerup',finish);

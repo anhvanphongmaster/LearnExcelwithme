@@ -596,3 +596,94 @@ body > .avp-hub-fab{
     font-size:11px !important;
   }
 }
+
+/* =========================================================
+   AVP FLOAT BUTTON V4
+   Tròn + kéo tự do + thả hút trái/phải
+   ========================================================= */
+.avp-edge-launcher{
+  width:50px !important;
+  height:50px !important;
+  transition:
+    left .22s cubic-bezier(.2,.8,.2,1),
+    right .22s cubic-bezier(.2,.8,.2,1),
+    top .12s ease !important;
+}
+
+.avp-edge-launcher.is-dragging{
+  transition:none !important;
+}
+
+.avp-edge-launcher .avp-edge-main{
+  width:50px !important;
+  height:50px !important;
+
+  border-radius:50% !important;
+  border:2px solid rgba(255,255,255,.88) !important;
+
+  background:#217346 !important;
+  color:#fff !important;
+
+  box-shadow:
+    0 8px 24px rgba(33,115,70,.28),
+    0 2px 8px rgba(0,0,0,.12) !important;
+}
+
+.avp-edge-launcher.is-left .avp-edge-main,
+.avp-edge-launcher.is-right .avp-edge-main{
+  border-radius:50% !important;
+}
+
+.avp-edge-main-icon{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  width:100% !important;
+  height:100% !important;
+
+  transform:none !important;
+
+  font:
+    800 11px/1
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif !important;
+
+  letter-spacing:.35px !important;
+}
+
+.avp-edge-launcher.open .avp-edge-main-icon{
+  font-size:22px !important;
+  font-weight:500 !important;
+}
+
+.avp-edge-launcher.is-dragging .avp-edge-main{
+  transform:scale(.94) !important;
+}
+
+.avp-edge-launcher.is-snapping .avp-edge-main{
+  transform:scale(.98) !important;
+}
+
+@media(max-width:600px){
+  .avp-edge-launcher{
+    width:46px !important;
+    height:46px !important;
+  }
+
+  .avp-edge-launcher .avp-edge-main{
+    width:46px !important;
+    height:46px !important;
+  }
+
+  .avp-edge-main-icon{
+    font-size:10px !important;
+  }
+
+  .avp-edge-launcher.open .avp-edge-main-icon{
+    font-size:20px !important;
+  }
+}
