@@ -59,3 +59,18 @@
   .avp-admin-float-panel{left:8px!important;right:8px!important;bottom:8px!important;width:auto;height:min(78vh,650px)}
   .avp-admin-float-body{grid-template-columns:1fr;grid-template-rows:minmax(120px,32%) 1fr}.avp-admin-float-threads{border-right:0;border-bottom:1px solid #e2ece6}.avp-admin-float-conversation{min-height:0}.avp-admin-float-conversation .avp-chat-messages{min-height:120px}
 }
+
+/* =========================
+   GUEST CHAT MODE
+   ========================= */
+.avp-guest-chat-panel{height:auto;max-height:min(430px,calc(100vh - 120px))}
+.avp-guest-chat-body{padding:28px 22px 24px;text-align:center;background:#fff}
+.avp-guest-chat-emoji{width:64px;height:64px;margin:0 auto 14px;border-radius:20px;display:grid;place-items:center;background:#eef7f2;font-size:31px}
+.avp-guest-chat-body strong{display:block;color:#173f2a;font-size:17px;line-height:1.35}
+.avp-guest-chat-body p{margin:9px auto 18px;max-width:310px;color:#6f7f76;font-size:12px;line-height:1.55}
+.avp-guest-chat-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.avp-guest-chat-actions a{display:flex;align-items:center;justify-content:center;min-height:44px;border-radius:13px;text-decoration:none;font-weight:850;font-size:13px}
+.avp-guest-login{background:#217346;color:#fff}
+.avp-guest-register{background:#f1f8f4;color:#217346;border:1px solid #cfe2d6}
+.avp-guest-chat-actions a:hover{filter:brightness(.98);transform:translateY(-1px)}
+@media(max-width:520px){.avp-guest-chat-actions{grid-template-columns:1fr}}

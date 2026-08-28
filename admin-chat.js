@@ -10,27 +10,27 @@
   let client=null,user=null,threadId=null,pollTimer=null,realtimeChannel=null;
 
   async function waitClient(){
-    // Supabase có thể đã có client nhưng session vẫn đang được khôi phục.
-    // Không return sớm chỉ vì getUser() ở lần đầu chưa có dữ liệu.
+    // Bong bóng chat phải xuất hiện cả với khách chưa đăng nhập.
+    // Vì vậy chỉ cần đợi Supabase client sẵn sàng; session có thể là null.
     for(let i=0;i<120;i++){
       if(window.avpSupabase){client=window.avpSupabase;break}
       await sleep(100);
     }
     if(!client) return false;
 
-    for(let i=0;i<40;i++){
+    // Cho Supabase một khoảng ngắn để khôi phục session nếu người dùng đã đăng nhập.
+    for(let i=0;i<12;i++){
       try{
         const {data:sessionData}=await client.auth.getSession();
         user=sessionData?.session?.user||null;
-        if(!user){
-          const {data:userData}=await client.auth.getUser();
-          user=userData?.user||null;
-        }
         if(user) return true;
       }catch{}
       await sleep(150);
     }
-    return false;
+
+    // Không có session => khách. Vẫn tiếp tục để mount bong bóng 💬.
+    user=null;
+    return true;
   }
   async function rpc(name,args){
     const {data,error}=await client.rpc(name,args||{});
@@ -67,6 +67,40 @@
       ? (type==="system"?"Hệ thống":type==="admin"?"Bạn (Admin)":"Học viên")
       : (type==="system"?"Hệ thống":type==="admin"?"Admin":"Bạn");
     return `<div class="avp-msg-row ${cls}"><div class="avp-msg"><div>${esc(m.body)}</div><span class="avp-msg-meta">${esc(who)} • ${fmt(m.created_at)}</span></div></div>`;
+  }
+
+  /* ================= GUEST BUBBLE ================= */
+  function mountGuestUI(){
+    if($("avpAdminChatRoot")) return;
+    const root=document.createElement("div");
+    root.id="avpAdminChatRoot";
+    root.className="avp-guest-mode";
+    root.innerHTML=`
+      <button class="avp-chat-bubble" id="avpChatBubble" type="button" aria-label="Chat với Admin" title="Chat với Admin">💬</button>
+      <section class="avp-chat-panel avp-guest-chat-panel" id="avpGuestChatPanel" hidden aria-label="Đăng nhập để chat với Admin">
+        <header class="avp-chat-head">
+          <div class="avp-chat-head-icon">💬</div>
+          <div class="avp-chat-head-copy"><strong>Chat với Admin</strong><small>Hỏi bài, báo lỗi file hoặc góp ý nội dung</small></div>
+          <button class="avp-chat-close" id="avpGuestChatClose" type="button" aria-label="Đóng">×</button>
+        </header>
+        <div class="avp-guest-chat-body">
+          <div class="avp-guest-chat-emoji">💬</div>
+          <strong>Bạn cần đăng nhập để chat với Admin</strong>
+          <p>Sau khi đăng nhập, hộp thư và lịch sử trò chuyện sẽ được đồng bộ theo tài khoản của bạn.</p>
+          <div class="avp-guest-chat-actions">
+            <a class="avp-guest-login" href="auth.html?mode=login">Đăng nhập</a>
+            <a class="avp-guest-register" href="auth.html?mode=register">Đăng ký</a>
+          </div>
+        </div>
+      </section>`;
+    document.body.appendChild(root);
+    bindDrag();
+    $("avpChatBubble").addEventListener("click",()=>{
+      if($("avpChatBubble")?.dataset.justDragged==="1")return;
+      const p=$("avpGuestChatPanel");
+      p.hidden=p.hidden===false;
+    });
+    $("avpGuestChatClose").addEventListener("click",()=>{$("avpGuestChatPanel").hidden=true});
   }
 
   /* ================= USER BUBBLE ================= */
@@ -342,6 +376,12 @@
 
   async function start(){
     if(!(await waitClient())) return;
+
+    // Khách chưa đăng nhập vẫn thấy bong bóng chat.
+    if(!user){
+      mountGuestUI();
+      return;
+    }
 
     // Quyền admin đôi khi được trả về chậm ngay sau khi session phục hồi.
     let admin=false;

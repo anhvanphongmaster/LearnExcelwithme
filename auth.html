@@ -131,5 +131,20 @@
 <script defer src="analytics-tracker.js"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="personal-dashboard.js"></script>
+<script>
+(function(){
+  function applyAuthMode(){
+    const mode=(new URLSearchParams(location.search).get('mode')||'').toLowerCase();
+    if(mode!=='login'&&mode!=='register') return;
+    const login=document.getElementById('loginForm');
+    const register=document.getElementById('registerForm');
+    if(!login||!register) return;
+    login.classList.toggle('active',mode==='login');
+    register.classList.toggle('active',mode==='register');
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',applyAuthMode);
+  else applyAuthMode();
+})();
+</script>
 </body>
 </html>
