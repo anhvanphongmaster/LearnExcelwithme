@@ -8,6 +8,7 @@
   let user = null;
   let sessionId = null;
   let sending = false;
+  let selectedImage = null;
 
   const esc = s => String(s ?? "")
     .replaceAll("&","&amp;")
@@ -62,12 +63,23 @@
           <button id="avpAiTransfer" class="avp-ai-transfer" type="button">💬 Chuyển cho Admin</button>
         </div>
 
+        <div id="avpAiImagePreview" class="avp-ai-image-preview" hidden>
+          <img id="avpAiImageThumb" alt="Ảnh đã chọn">
+          <div>
+            <strong>Ảnh đã chọn</strong>
+            <small id="avpAiImageName"></small>
+          </div>
+          <button id="avpAiImageRemove" type="button" aria-label="Bỏ ảnh">×</button>
+        </div>
+
         <form id="avpAiForm" class="avp-ai-form">
-          <textarea id="avpAiInput" maxlength="1200" rows="1" placeholder="Nhập câu hỏi..."></textarea>
+          <input id="avpAiImageInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden>
+          <button id="avpAiImagePick" class="avp-ai-image-pick" type="button" aria-label="Gửi ảnh" title="Gửi ảnh">📷</button>
+          <textarea id="avpAiInput" maxlength="1200" rows="1" placeholder="Nhập câu hỏi hoặc gửi ảnh lỗi Excel..."></textarea>
           <button id="avpAiSend" type="submit">Gửi</button>
         </form>
 
-        <div class="avp-ai-note">Tối đa ${MAX_DAILY} câu/ngày trong giai đoạn thử nghiệm.</div>
+        <div class="avp-ai-note">Tối đa ${MAX_DAILY} câu/ngày. Ảnh được dùng để AI phân tích lỗi Excel.</div>
       </section>
     `;
     document.body.appendChild(root);
@@ -77,10 +89,128 @@
     $("avpAiForm").onsubmit=send;
     $("avpAiTransfer").onclick=transferToAdmin;
 
+    $("avpAiImagePick").onclick=()=>$("avpAiImageInput").click();
+    $("avpAiImageInput").onchange=handleImagePick;
+    $("avpAiImageRemove").onclick=clearSelectedImage;
+
     $("avpAiInput").addEventListener("input",e=>{
       e.target.style.height="auto";
       e.target.style.height=Math.min(e.target.scrollHeight,120)+"px";
     });
+  }
+
+  function clearSelectedImage(){
+    if(selectedImage?.previewUrl){
+      try{URL.revokeObjectURL(selectedImage.previewUrl)}catch{}
+    }
+    selectedImage=null;
+
+    const input=$("avpAiImageInput");
+    if(input)input.value="";
+
+    const preview=$("avpAiImagePreview");
+    if(preview)preview.hidden=true;
+  }
+
+  async function normalizeImage(file){
+    if(!file || !String(file.type||"").startsWith("image/")){
+      throw new Error("INVALID_IMAGE");
+    }
+
+    if(file.size > 8 * 1024 * 1024){
+      throw new Error("IMAGE_TOO_LARGE");
+    }
+
+    const url=URL.createObjectURL(file);
+
+    try{
+      const img=new Image();
+
+      await new Promise((resolve,reject)=>{
+        img.onload=resolve;
+        img.onerror=()=>reject(new Error("IMAGE_DECODE_FAILED"));
+        img.src=url;
+      });
+
+      const maxSide=1800;
+      const scale=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight));
+      const w=Math.max(1,Math.round(img.naturalWidth*scale));
+      const h=Math.max(1,Math.round(img.naturalHeight*scale));
+
+      const canvas=document.createElement("canvas");
+      canvas.width=w;
+      canvas.height=h;
+
+      const ctx=canvas.getContext("2d");
+      ctx.drawImage(img,0,0,w,h);
+
+      const blob=await new Promise(resolve=>
+        canvas.toBlob(resolve,"image/jpeg",0.86)
+      );
+
+      if(!blob)throw new Error("IMAGE_CONVERT_FAILED");
+
+      return new File(
+        [blob],
+        `${String(file.name||"anh").replace(/\.[^.]+$/,"")}.jpg`,
+        {type:"image/jpeg"}
+      );
+    }finally{
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  async function handleImagePick(e){
+    const file=e.target.files?.[0];
+    if(!file)return;
+
+    try{
+      const normalized=await normalizeImage(file);
+
+      clearSelectedImage();
+
+      const previewUrl=URL.createObjectURL(normalized);
+      selectedImage={
+        file:normalized,
+        previewUrl,
+        originalName:file.name||"Ảnh"
+      };
+
+      $("avpAiImageThumb").src=previewUrl;
+      $("avpAiImageName").textContent=
+        `${selectedImage.originalName} · ${Math.max(1,Math.round(normalized.size/1024))} KB`;
+      $("avpAiImagePreview").hidden=false;
+    }catch(err){
+      console.warn("AVP AI image",err);
+
+      if(err?.message==="IMAGE_TOO_LARGE"){
+        alert("Ảnh quá lớn. Hãy chọn ảnh dưới 8 MB.");
+      }else{
+        alert("Không đọc được ảnh này. Hãy thử ảnh chụp màn hình, JPG hoặc PNG.");
+      }
+
+      clearSelectedImage();
+    }
+  }
+
+  async function uploadSelectedImage(){
+    if(!selectedImage?.file)return null;
+
+    const ext="jpg";
+    const id=
+      (crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`);
+    const path=`${user.id}/${id}.${ext}`;
+
+    const {error}=await client.storage
+      .from("ai-chat-images")
+      .upload(path,selectedImage.file,{
+        contentType:"image/jpeg",
+        upsert:false,
+        cacheControl:"3600"
+      });
+
+    if(error)throw error;
+    return path;
   }
 
   async function currentUser(){
@@ -133,13 +263,16 @@
   function msgHtml(m){
     const role=m.role==="assistant"?"assistant":"user";
     const text=esc(m.content||"").replace(/\n/g,"<br>");
+    const image=role==="user" && m.image_path
+      ? `<div class="avp-ai-image-chip">📷 Ảnh đính kèm</div>`
+      : "";
     const feedback=role==="assistant" && m.id ? `
       <div class="avp-ai-feedback" data-ai-msg="${esc(m.id)}">
         <button type="button" data-fb="up" aria-label="Hữu ích">👍</button>
         <button type="button" data-fb="down" aria-label="Chưa hữu ích">👎</button>
       </div>` : "";
     return `<div class="avp-ai-msg-row ${role}">
-      <div class="avp-ai-msg">${text}${feedback}</div>
+      <div class="avp-ai-msg">${image}${text}${feedback}</div>
     </div>`;
   }
 
@@ -150,7 +283,7 @@
     }
     try{
       await ensureSession();
-      const {data,error}=await client.rpc("avp_ai_history",{p_session_id:sessionId,p_limit:30});
+      const {data,error}=await client.rpc("avp_ai_history_v2",{p_session_id:sessionId,p_limit:30});
       if(error) throw error;
       const rows=Array.isArray(data)?data:[];
       const box=$("avpAiMessages");
@@ -224,7 +357,7 @@
 
     const input=$("avpAiInput");
     const text=input.value.trim();
-    if(!text) return;
+    if(!text && !selectedImage) return;
 
     const q=await quota();
     if(q.left<=0){
@@ -238,18 +371,32 @@
     try{
       await ensureSession();
 
-      const {data:saveUser,error:saveErr}=await client.rpc("avp_ai_add_user_message",{
+      let imagePath=null;
+
+      if(selectedImage){
+        imagePath=await uploadSelectedImage();
+      }
+
+      const content=text || "Hãy phân tích ảnh này và cho mình biết vấn đề cần chú ý.";
+
+      const {data:saveUser,error:saveErr}=await client.rpc("avp_ai_add_user_message_v2",{
         p_session_id:sessionId,
-        p_content:text
+        p_content:content,
+        p_image_path:imagePath
       });
       if(saveErr) throw saveErr;
 
       input.value="";
       input.style.height="auto";
+      clearSelectedImage();
+
       await loadHistory();
 
       const {data,error}=await client.functions.invoke("ai-chat",{
-        body:{session_id:sessionId}
+        body:{
+          session_id:sessionId,
+          image_path:imagePath
+        }
       });
 
       if(error) throw error;
