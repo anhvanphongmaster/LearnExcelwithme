@@ -1,0 +1,92 @@
+
+/* AVP ADMIN SYSTEM NOTIFICATIONS */
+.avp-admin-notify-panel{margin:16px 0}
+.avp-admin-notify-secondary,
+.avp-admin-notify-primary{
+  border:0;border-radius:10px;min-height:38px;padding:0 14px;
+  font:inherit;font-weight:800;cursor:pointer
+}
+.avp-admin-notify-secondary{background:#eaf5ef;color:#217346}
+.avp-admin-notify-primary{background:#217346;color:#fff}
+.avp-admin-notify-primary:disabled{opacity:.5}
+
+.avp-admin-notify-compose{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;margin:12px 0 18px;padding:14px;
+  border:1px solid #dce8e1;border-radius:14px;background:#f8fbf9
+}
+.avp-admin-notify-field{min-width:0}
+.avp-admin-notify-wide{grid-column:1/-1}
+.avp-admin-notify-field label{
+  display:block;margin:0 0 5px;color:#42564a;font-size:12px;font-weight:800
+}
+.avp-admin-notify-field input,
+.avp-admin-notify-field select,
+.avp-admin-notify-field textarea{
+  width:100%;box-sizing:border-box;border:1px solid #d7e2dc;border-radius:10px;
+  padding:9px 10px;background:#fff;font:inherit;outline:none
+}
+.avp-admin-notify-check{
+  display:flex;gap:8px;align-items:center;color:#42564a;font-size:12px;font-weight:700
+}
+.avp-admin-notify-grid{
+  display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:14px
+}
+.avp-admin-notify-grid h3{margin:0 0 8px;color:#173f2a;font-size:14px}
+.avp-admin-notify-list,.avp-admin-notify-audience{
+  max-height:500px;overflow:auto;border:1px solid #dce8e1;border-radius:14px;background:#fff
+}
+.avp-admin-notify-item{
+  padding:12px;border-bottom:1px solid #edf3ef;cursor:pointer
+}
+.avp-admin-notify-item:last-child{border-bottom:0}
+.avp-admin-notify-item:hover,.avp-admin-notify-item.active{background:#eef7f2}
+.avp-admin-notify-item.inactive{opacity:.55}
+.avp-admin-notify-item-head{display:flex;justify-content:space-between;gap:8px}
+.avp-admin-notify-item-head strong{color:#173f2a}
+.avp-admin-notify-item-head span{
+  flex:0 0 auto;border-radius:999px;padding:3px 7px;background:#e9f4ed;
+  color:#217346;font-size:10px;font-weight:800
+}
+.avp-admin-notify-item p{margin:6px 0;color:#53655b;font-size:12px;line-height:1.5}
+.avp-admin-notify-item small{color:#87948c}
+.avp-admin-notify-item-actions{display:flex;gap:6px;margin-top:8px}
+.avp-admin-notify-item-actions button{
+  border:1px solid #d8e5dc;border-radius:8px;background:#fff;color:#217346;
+  padding:6px 8px;font:inherit;font-size:11px;font-weight:800;cursor:pointer
+}
+.avp-admin-notify-summary{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:10px
+}
+.avp-admin-notify-summary>div{
+  text-align:center;border-radius:10px;background:#f5f7f6;padding:9px
+}
+.avp-admin-notify-summary strong{display:block;font-size:20px;color:#173f2a}
+.avp-admin-notify-summary span{font-size:10px;color:#75847b}
+.avp-admin-notify-summary .read{background:#ebf7ef}
+.avp-admin-notify-summary .unread{background:#fff2f3}
+.avp-admin-audience-tabs{
+  display:flex;gap:6px;padding:0 10px 10px;overflow:auto
+}
+.avp-admin-audience-tabs button{
+  flex:0 0 auto;border:1px solid #dce8e1;border-radius:999px;background:#fff;
+  padding:6px 9px;font:inherit;font-size:10px;font-weight:800;cursor:pointer
+}
+.avp-admin-audience-tabs button.active{background:#217346;color:#fff;border-color:#217346}
+.avp-admin-audience-row{
+  display:grid;grid-template-columns:12px minmax(0,1fr) auto;gap:8px;align-items:center;
+  padding:10px 12px;border-top:1px solid #edf3ef
+}
+.avp-admin-audience-dot{width:8px;height:8px;border-radius:50%;background:#e11d48}
+.avp-admin-audience-row.read .avp-admin-audience-dot{background:#22a35a}
+.avp-admin-audience-row strong,.avp-admin-audience-row small{display:block}
+.avp-admin-audience-row strong{font-size:12px;color:#294638}
+.avp-admin-audience-row small{font-size:10px;color:#8a9890;margin-top:2px}
+.avp-admin-audience-state{text-align:right}
+.avp-admin-audience-state b{display:block;font-size:11px;color:#b4233b}
+.avp-admin-audience-row.read .avp-admin-audience-state b{color:#217346}
+
+@media(max-width:800px){
+  .avp-admin-notify-compose,.avp-admin-notify-grid{grid-template-columns:1fr}
+  .avp-admin-notify-wide{grid-column:auto}
+}
