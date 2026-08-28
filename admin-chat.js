@@ -863,11 +863,19 @@
 
     if(onAdminPage){
       if(admin) await initAdmin();
+      document.querySelectorAll(".avp-chat-head").forEach(head=>{
+        mountSoundButton(head);
+      });
       return;
     }
 
     if(admin) await initFloatingAdmin();
     else await initUser();
+
+    // Fix nhẹ: gắn lại nút âm thanh sau khi UI đổi theo trạng thái đăng nhập.
+    document.querySelectorAll(".avp-chat-head").forEach(head=>{
+      mountSoundButton(head);
+    });
   }
 
   function subscribeAuthChanges(){
