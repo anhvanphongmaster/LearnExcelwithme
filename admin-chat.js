@@ -10,14 +10,27 @@
   let client=null,user=null,threadId=null,pollTimer=null,realtimeChannel=null;
 
   async function waitClient(){
-    for(let i=0;i<80;i++){
+    // Supabase có thể đã có client nhưng session vẫn đang được khôi phục.
+    // Không return sớm chỉ vì getUser() ở lần đầu chưa có dữ liệu.
+    for(let i=0;i<120;i++){
       if(window.avpSupabase){client=window.avpSupabase;break}
       await sleep(100);
     }
     if(!client) return false;
-    const {data}=await client.auth.getUser();
-    user=data?.user||null;
-    return !!user;
+
+    for(let i=0;i<40;i++){
+      try{
+        const {data:sessionData}=await client.auth.getSession();
+        user=sessionData?.session?.user||null;
+        if(!user){
+          const {data:userData}=await client.auth.getUser();
+          user=userData?.user||null;
+        }
+        if(user) return true;
+      }catch{}
+      await sleep(150);
+    }
+    return false;
   }
   async function rpc(name,args){
     const {data,error}=await client.rpc(name,args||{});
@@ -25,7 +38,24 @@
     return data;
   }
   async function isAdmin(){
-    try{return !!(await rpc("avp_chat_is_admin"))}catch{return false}
+    // Cách 1: RPC chat.
+    try{
+      const v=await rpc("avp_chat_is_admin");
+      if(v===true) return true;
+    }catch{}
+
+    // Cách 2: fallback đọc trực tiếp profiles.is_admin để bubble Admin
+    // không biến mất nếu RPC chưa sẵn sàng/cache schema.
+    try{
+      if(!user?.id) return false;
+      const {data,error}=await client
+        .from("profiles")
+        .select("is_admin")
+        .eq("id",user.id)
+        .maybeSingle();
+      if(!error && data?.is_admin===true) return true;
+    }catch{}
+    return false;
   }
 
   function msgHtml(m, adminView=false){
@@ -311,13 +341,25 @@
   }
 
   async function start(){
-    if(!(await waitClient()))return;
-    const admin=await isAdmin();
+    if(!(await waitClient())) return;
+
+    // Quyền admin đôi khi được trả về chậm ngay sau khi session phục hồi.
+    let admin=false;
+    for(let i=0;i<8;i++){
+      admin=await isAdmin();
+      if(admin) break;
+      await sleep(250);
+    }
+
     if(document.body?.dataset?.adminPage==="1"||$("adminChatInbox")){
-      if(admin)await initAdmin();
+      if(admin) await initAdmin();
       return;
     }
-    if(admin){await initFloatingAdmin();return;}
+
+    if(admin){
+      await initFloatingAdmin();
+      return;
+    }
     await initUser();
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
