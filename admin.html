@@ -132,6 +132,20 @@ where is_admin = true;</pre>
     </section>
 
     <div class="admin-section-heading admin-view-section" data-admin-section="overview"><span>📊 TỔNG QUAN</span><h2>Sức khỏe website hôm nay</h2></div>
+    <section class="admin-panel admin-system-health admin-view-section" id="adminSystemHealth" data-admin-section="overview">
+      <div class="admin-panel-head">
+        <div><span>🩺 KIỂM TRA HỆ THỐNG</span><h2>Trạng thái các module Admin</h2><p>Kiểm tra nhanh các phần đang dùng thật. Module chưa cài hoặc lỗi sẽ hiện rõ thay vì để một khối trống.</p></div>
+        <button type="button" id="adminHealthReload" class="admin-health-reload">↻ Kiểm tra</button>
+      </div>
+      <div class="admin-health-grid" id="adminHealthGrid">
+        <article data-health="analytics"><span>📈 Analytics</span><strong>Đang kiểm tra…</strong><small></small></article>
+        <article data-health="users"><span>👥 Người dùng</span><strong>Đang kiểm tra…</strong><small></small></article>
+        <article data-health="votes"><span>🗳️ Vote</span><strong>Đang kiểm tra…</strong><small></small></article>
+        <article data-health="practice"><span>📝 Kho bài tập</span><strong>Đang kiểm tra…</strong><small></small></article>
+        <article data-health="downloads"><span>📦 Tải xuống</span><strong>Đang kiểm tra…</strong><small></small></article>
+        <article data-health="chat"><span>💬 Chat</span><strong>Đang kiểm tra…</strong><small></small></article>
+      </div>
+    </section>
     <section class="admin-kpi-grid admin-view-section" id="raceStatsSection" data-admin-section="overview">
       <article class="admin-kpi"><p>Lượt chơi Race</p><strong id="kpiRacePlays">—</strong><small id="kpiRaceToday">2.5D minigame</small></article>
       <article class="admin-kpi"><p>Race hôm nay</p><strong id="kpiRaceTodayCount">—</strong><small>event = start</small></article>
@@ -498,7 +512,7 @@ where is_admin = true;</pre>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
-<script defer src="admin.js?v=20260828-practice2"></script>
+<script defer src="admin.js?v=20260828-adminaudit1"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>

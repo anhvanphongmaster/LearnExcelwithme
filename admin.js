@@ -179,82 +179,7 @@
   }
   
   
-  function vnMonth(offset){
-    const now=new Date();
-    const vn=new Date(now.toLocaleString("en-US",{timeZone:"Asia/Ho_Chi_Minh"}));
-    vn.setDate(1); vn.setHours(0,0,0,0); vn.setMonth(vn.getMonth()+(offset||0));
-    return vn;
-  }
-  function monthIso(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-01`;}
-  function sameMonth(a,b){return a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth();}
-  function updateVoteMonthUI(){
-    if(!currentVoteMonth) currentVoteMonth=vnMonth(0);
-    const label=$("pvoteMonthLabel"), next=$("pvoteNextMonth");
-    if(label) label.textContent=`Tháng ${String(currentVoteMonth.getMonth()+1).padStart(2,"0")}/${currentVoteMonth.getFullYear()}`;
-    if(next) next.disabled=sameMonth(currentVoteMonth,vnMonth(0));
-  }
-
-  async function renderPracticeVotes(){
-    const root=document.getElementById("practiceVotesList");
-    if(!root)return;
-    if(!currentVoteMonth) currentVoteMonth=vnMonth(0);
-    updateVoteMonthUI();
-    try{
-      const rows=await rpcSoft("admin_list_practice_votes_by_month",{p_month:monthIso(currentVoteMonth)});
-      if(rows===null){
-        root.innerHTML='<div class="pvote-empty">Chưa có dashboard vote theo tháng. Chạy SQL cập nhật vote kênh một lần trong Supabase.</div>';
-        return;
-      }
-      const allRows=Array.isArray(rows)?rows:[];
-      const channelRows=allRows.filter(r=>r.vote_type==="focus_youtube"||r.vote_type==="focus_tiktok"||String(r.lesson_id||"").indexOf("channel-focus-")===0);
-      const practiceRows=allRows.filter(r=>!channelRows.includes(r));
-
-      let yt=0,tt=0;
-      channelRows.forEach(r=>{const v=Number(r.votes)||0;if(r.vote_type==="focus_youtube"||r.lesson_id==="channel-focus-youtube")yt+=v;else if(r.vote_type==="focus_tiktok"||r.lesson_id==="channel-focus-tiktok")tt+=v;});
-      const ytEl=$("channelVoteYoutube"),ttEl=$("channelVoteTiktok"),win=$("channelVoteWinner"),bar=$("channelVoteYoutubeBar");
-      if(ytEl)ytEl.textContent=yt;if(ttEl)ttEl.textContent=tt;
-      const channelTotal=yt+tt, pct=channelTotal?Math.round(yt/channelTotal*100):0;
-      if(bar)bar.style.width=pct+"%";
-      if(win){
-        if(!channelTotal)win.textContent="Chưa có vote trong tháng này.";
-        else if(yt===tt)win.textContent=`Đang hòa ${yt} – ${tt}`;
-        else if(yt>tt)win.textContent=`YouTube đang dẫn ${yt} – ${tt} (${pct}%)`;
-        else win.textContent=`TikTok đang dẫn ${tt} – ${yt} (${100-pct}%)`;
-      }
-
-      if(!practiceRows.length){
-        root.innerHTML='<div class="pvote-summary"><div class="pvote-stat"><span>Tổng vote</span><strong>0</strong></div><div class="pvote-stat"><span>Cần hướng dẫn</span><strong>0</strong></div><div class="pvote-stat"><span>Hướng dẫn thêm</span><strong>0</strong></div><div class="pvote-stat"><span>Số bài</span><strong>0</strong></div></div><div class="pvote-empty">Tháng này chưa có vote hướng dẫn bài tập.</div>';
-        return;
-      }
-      const typeLabel={need_guide:"Cần hướng dẫn",need_more_guide:"Hướng dẫn thêm"};
-      const typeClass={need_guide:"pvote-tag-need",need_more_guide:"pvote-tag-more"};
-      let total=0,need=0,more=0; const lessonIds=new Set();
-      practiceRows.forEach(r=>{const v=Number(r.votes)||0;total+=v;lessonIds.add(r.lesson_id);if(r.vote_type==="need_more_guide")more+=v;else if(r.vote_type==="need_guide")need+=v;});
-      practiceRows.sort((a,b)=>(Number(b.votes)||0)-(Number(a.votes)||0));
-      const max=Math.max(1,...practiceRows.map(r=>Number(r.votes)||0));
-      const summary=`<div class="pvote-summary"><div class="pvote-stat"><span>Tổng vote</span><strong>${total}</strong></div><div class="pvote-stat"><span>Cần hướng dẫn</span><strong>${need}</strong></div><div class="pvote-stat"><span>Hướng dẫn thêm</span><strong>${more}</strong></div><div class="pvote-stat"><span>Số bài</span><strong>${lessonIds.size}</strong></div></div>`;
-      const list=practiceRows.map((r,i)=>{const kind=typeLabel[r.vote_type]||r.vote_type,tc=typeClass[r.vote_type]||"pvote-tag-need",v=Number(r.votes)||0,pct=Math.max(6,Math.round(v/max*100)),num=r.lesson_number?String(r.lesson_number).padStart(2,"0"):"—",title=r.lesson_title||r.lesson_id;return `<div class="pvote-row${i<3?" pvote-row-top":""}"><div class="pvote-rank">${i+1}</div><div class="pvote-main"><div class="pvote-title"><span class="pvote-num">#${num}</span> ${title}</div><div class="pvote-meta"><span class="pvote-tag ${tc}">${kind}</span></div><div class="pvote-bar"><span style="width:${pct}%"></span></div></div><div class="pvote-count"><strong>${v}</strong><small>vote</small></div></div>`;}).join("");
-      root.innerHTML=summary+`<div class="pvote-scroll"><div class="pvote-list">${list}</div></div>`+(practiceRows.length>3?'<p class="pvote-more">↕ Cuộn trong khung để xem thêm</p>':'');
-    }catch(e){
-      root.innerHTML='<div class="pvote-empty">Lỗi tải vote theo tháng.</div>';
-    }
-  }
-
-  function bindVoteMonthNav(){
-    if(!currentVoteMonth) currentVoteMonth=vnMonth(0);
-    const prev=$("pvotePrevMonth"), next=$("pvoteNextMonth");
-    if(prev && !prev.dataset.bound){
-      prev.dataset.bound="1";
-      prev.onclick=()=>{currentVoteMonth=new Date(currentVoteMonth.getFullYear(),currentVoteMonth.getMonth()-1,1);renderPracticeVotes();};
-    }
-    if(next && !next.dataset.bound){
-      next.dataset.bound="1";
-      next.onclick=()=>{if(sameMonth(currentVoteMonth,vnMonth(0)))return;currentVoteMonth=new Date(currentVoteMonth.getFullYear(),currentVoteMonth.getMonth()+1,1);if(currentVoteMonth>vnMonth(0))currentVoteMonth=vnMonth(0);renderPracticeVotes();};
-    }
-    updateVoteMonthUI();
-  }
-
-
+  // Legacy monthly vote dashboard removed: superseded by Vote Management V1.
 
   async function renderEngagement(s){
     const hint=$("engHint");
@@ -304,12 +229,13 @@
       const sm=$("kpiRaceToday");
       const {count:total,error:e1}=await client.from("race_plays").select("*",{count:"exact",head:true}).eq("event","start");
       if(e1){
-        if(a) a.textContent="—";
-        if(sm) sm.textContent=(e1.message||"").includes("does not exist")?"Chưa chạy race-plays.sql":("Lỗi: "+(e1.message||"đọc bảng"));
-        if(b) b.textContent="—";
-        if(c) c.textContent="—";
+        const sec=$("raceStatsSection");
+        if(sec) sec.hidden=true;
+        console.warn("Race stats disabled:", e1.message||e1);
         return;
       }
+      const sec=$("raceStatsSection");
+      if(sec) sec.hidden=false;
       const since=new Date(); since.setHours(0,0,0,0);
       const {count:today,error:e2}=await client.from("race_plays").select("*",{count:"exact",head:true}).eq("event","start").gte("created_at",since.toISOString());
       const {count:crash,error:e3}=await client.from("race_plays").select("*",{count:"exact",head:true}).in("event",["crash","timeout"]);
@@ -407,6 +333,41 @@
     $("adminUsersBody")?.addEventListener("click",e=>{const b=e.target.closest("button[data-act]");if(b)doUserAction(b)});
   }
 
+  function setHealth(name,status,message){
+    const card=document.querySelector(`[data-health="${name}"]`);
+    if(!card)return;
+    card.classList.remove("ok","warn","bad");
+    card.classList.add(status);
+    const strong=card.querySelector("strong"), small=card.querySelector("small");
+    if(strong) strong.textContent=status==="ok"?"Hoạt động":status==="warn"?"Cần kiểm tra":"Không hoạt động";
+    if(small) small.textContent=message||"";
+  }
+  async function healthRpc(name,args){
+    try{
+      const {error}=await client.rpc(name,args||{});
+      if(error) throw error;
+      return {ok:true};
+    }catch(e){return {ok:false,error:e};}
+  }
+  async function checkAdminHealth(){
+    if(!client)return;
+    const checks=[
+      ["analytics","admin_analytics_summary",{p_days:1}],
+      ["users","admin_um_list_users",{p_search:"",p_limit:1,p_offset:0}],
+      ["votes","admin_vote_summary",{p_period:"today"}],
+      ["practice","admin_practice_summary",{}],
+      ["downloads","admin_download_summary",{}],
+      ["chat","avp_chat_admin_threads",{}]
+    ];
+    await Promise.all(checks.map(async([key,rpcName,args])=>{
+      const r=await healthRpc(rpcName,args);
+      if(r.ok){setHealth(key,"ok","RPC sẵn sàng");return;}
+      const msg=String(r.error?.message||r.error||"");
+      const missing=/Could not find the function|schema cache|does not exist|404/i.test(msg);
+      setHealth(key,missing?"bad":"warn",missing?"Thiếu SQL / RPC":msg.slice(0,90));
+    }));
+  }
+
   async function loadDashboard(){
     try{
       $("adminRefresh").disabled=true;
@@ -445,6 +406,7 @@
 
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
       bindAdminViews();
+      checkAdminHealth();
       renderSummary(summary||{});
       await loadRaceStats();
       renderTrend(trend||[]);
@@ -455,8 +417,6 @@
       if(!completed?.__error) renderRanking("topCompletedLessons",completed||[],"lesson","completed_users",labelLesson);
       if(!difficulty?.__error) renderQuizDifficulty(difficulty||[]);
       if(!engagement?.__error) await renderEngagement(engagement||{});
-      bindVoteMonthNav();
-      await renderPracticeVotes();
       if(!newUsers?.__error) renderNewUsers(newUsers||[]);
     }catch(error){
       console.error(error);
@@ -485,6 +445,8 @@
     if(view==="users" && !adminUsersCache.length) loadAdminUsers();
     if(view==="votes") loadAdminVoteManager();
     if(view==="downloads" && !adminDownloadLoaded) loadAdminDownloads();
+    if(view==="practice" && typeof window.avpLoadPracticeLibrary==="function") window.avpLoadPracticeLibrary();
+    if(view==="overview" && client) checkAdminHealth();
     if(opts&&opts.scroll){
       document.querySelector(".admin-command-center")?.scrollIntoView({behavior:"smooth",block:"start"});
     }
@@ -661,6 +623,7 @@
     bindUserManagement();
     bindVoteManager();
     bindDownloadManagement();
+    $("adminHealthReload")?.addEventListener("click",()=>{checkAdminHealth();toast("Đang kiểm tra các module...")});
     loadDashboard();
   }
   $("adminPeriod")?.addEventListener("change",()=>{currentDays=Number($("adminPeriod").value)||30;loadDashboard()});
@@ -684,7 +647,9 @@
   async function loadPractice(){const notice=el('adminPracticeNotice');try{const q=el('adminPracticeSearch')?.value?.trim()||'',cat=el('adminPracticeCategory')?.value||'',status=el('adminPracticeStatus')?.value||'all';const [summary,rows]=await Promise.all([prpc('admin_practice_summary'),prpc('admin_practice_list',{p_search:q,p_category:cat,p_status:status,p_limit:700})]);el('practiceKpiTotal').textContent=summary?.total??0;el('practiceKpiLive').textContent=summary?.live??0;el('practiceKpiHidden').textContent=summary?.hidden??0;el('practiceKpiCategories').textContent=summary?.categories??0;renderPractice(rows);practiceLoaded=true;if(notice)notice.hidden=true;if(!practiceDownloads.length)await loadPracticeDownloads()}catch(e){console.warn('practice manager',e);if(notice){notice.hidden=false;notice.innerHTML='Chưa dùng được Kho bài tập động. Hãy chạy <code>ADMIN-PRACTICE-LIBRARY-V1.sql</code> trong Supabase rồi tải lại.'}}}
   function openPracticeEditor(r){const ed=el('adminPracticeEditor');if(!ed)return;ed.hidden=false;el('adminPracticeEditorTitle').textContent=r?'Sửa bài':'Thêm bài';el('practiceEditOriginalId').value=r?.id||'';el('practiceEditId').value=r?.id||'';el('practiceEditNumber').value=r?.lesson_number||1;el('practiceEditIcon').value=r?.icon||'📘';el('practiceEditTitle').value=r?.title||'';el('practiceEditCategory').value=r?.category||'';el('practiceEditSkill').value=r?.skill||'';el('practiceEditLevel').value=r?.level||'Cơ bản';el('practiceEditDownload').value=r?.download_asset_id||'';el('practiceEditVideo').value=r?.video_url||'';el('practiceEditBadge').value=r?.badge||'';el('practiceEditStatus').value=r?.status||'published';el('practiceEditActive').checked=r?!!r.is_active:true;el('practiceEditOrder').value=r?.sort_order||0;ed.scrollIntoView({behavior:'smooth',block:'nearest'})}
   function closePracticeEditor(){if(el('adminPracticeEditor'))el('adminPracticeEditor').hidden=true}
-  async function savePractice(){const b=el('adminPracticeSave');b.disabled=true;try{const payload={p_original_id:el('practiceEditOriginalId').value||null,p_id:el('practiceEditId').value.trim(),p_lesson_number:Number(el('practiceEditNumber').value||0),p_icon:el('practiceEditIcon').value.trim(),p_title:el('practiceEditTitle').value.trim(),p_category:el('practiceEditCategory').value.trim(),p_skill:el('practiceEditSkill').value.trim(),p_level:el('practiceEditLevel').value,p_download_asset_id:el('practiceEditDownload').value||null,p_video_url:el('practiceEditVideo').value.trim()||null,p_badge:el('practiceEditBadge').value||null,p_status:el('practiceEditStatus').value,p_is_active:el('practiceEditActive').checked,p_sort_order:Number(el('practiceEditOrder').value||0)};if(!payload.p_id||!payload.p_title)throw new Error('Thiếu ID hoặc tên bài');await prpc('admin_practice_save',payload);ptoast('Đã lưu bài');closePracticeEditor();await loadPractice()}catch(e){console.warn(e);toast(e.message||'Không lưu được bài')}finally{b.disabled=false}}
-  function bindPractice(){el('adminPracticeAdd')?.addEventListener('click',async()=>{if(!practiceDownloads.length)await loadPracticeDownloads();openPracticeEditor(null)});el('adminPracticeClose')?.addEventListener('click',closePracticeEditor);el('adminPracticeCancel')?.addEventListener('click',closePracticeEditor);el('adminPracticeSave')?.addEventListener('click',savePractice);el('adminPracticeReload')?.addEventListener('click',loadPractice);el('adminPracticeSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')loadPractice()});el('adminPracticeCategory')?.addEventListener('change',loadPractice);el('adminPracticeStatus')?.addEventListener('change',loadPractice);el('adminPracticeBody')?.addEventListener('click',async e=>{const btn=e.target.closest('[data-practice-act]');if(!btn)return;const tr=btn.closest('tr'),id=tr?.dataset.practiceId,row=practiceCache.find(x=>x.id===id);if(!row)return;const act=btn.dataset.practiceAct;if(act==='edit'){if(!practiceDownloads.length)await loadPracticeDownloads();openPracticeEditor(row);return}if(act==='toggle'){btn.disabled=true;try{await prpc('admin_practice_set_active',{p_id:id,p_active:!row.is_active});toast(row.is_active?'Đã ẩn bài':'Đã hiện bài');await loadPractice()}catch(err){ptoast('Không đổi được trạng thái');btn.disabled=false}return}if(act==='archive'){if(!confirm('Lưu trữ bài này? Bài sẽ biến khỏi trang học nhưng dữ liệu vote cũ vẫn giữ.'))return;btn.disabled=true;try{await prpc('admin_practice_archive',{p_id:id});ptoast('Đã lưu trữ bài');await loadPractice()}catch(err){ptoast('Không lưu trữ được');btn.disabled=false}}});document.querySelectorAll('[data-admin-view="practice"]').forEach(btn=>btn.addEventListener('click',()=>{if(!practiceLoaded)loadPractice()}))}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bindPractice);else bindPractice();
+  async function savePractice(){const b=el('adminPracticeSave');b.disabled=true;try{const payload={p_original_id:el('practiceEditOriginalId').value||null,p_id:el('practiceEditId').value.trim(),p_lesson_number:Number(el('practiceEditNumber').value||0),p_icon:el('practiceEditIcon').value.trim(),p_title:el('practiceEditTitle').value.trim(),p_category:el('practiceEditCategory').value.trim(),p_skill:el('practiceEditSkill').value.trim(),p_level:el('practiceEditLevel').value,p_download_asset_id:el('practiceEditDownload').value||null,p_video_url:el('practiceEditVideo').value.trim()||null,p_badge:el('practiceEditBadge').value||null,p_status:el('practiceEditStatus').value,p_is_active:el('practiceEditActive').checked,p_sort_order:Number(el('practiceEditOrder').value||0)};if(!payload.p_id||!payload.p_title)throw new Error('Thiếu ID hoặc tên bài');await prpc('admin_practice_save',payload);ptoast('Đã lưu bài');closePracticeEditor();await loadPractice()}catch(e){console.warn(e);ptoast(e.message||'Không lưu được bài')}finally{b.disabled=false}}
+  window.avpLoadPracticeLibrary=()=>loadPractice();
+  function bindPractice(){el('adminPracticeAdd')?.addEventListener('click',async()=>{if(!practiceDownloads.length)await loadPracticeDownloads();openPracticeEditor(null)});el('adminPracticeClose')?.addEventListener('click',closePracticeEditor);el('adminPracticeCancel')?.addEventListener('click',closePracticeEditor);el('adminPracticeSave')?.addEventListener('click',savePractice);el('adminPracticeReload')?.addEventListener('click',loadPractice);el('adminPracticeSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')loadPractice()});el('adminPracticeCategory')?.addEventListener('change',loadPractice);el('adminPracticeStatus')?.addEventListener('change',loadPractice);el('adminPracticeBody')?.addEventListener('click',async e=>{const btn=e.target.closest('[data-practice-act]');if(!btn)return;const tr=btn.closest('tr'),id=tr?.dataset.practiceId,row=practiceCache.find(x=>x.id===id);if(!row)return;const act=btn.dataset.practiceAct;if(act==='edit'){if(!practiceDownloads.length)await loadPracticeDownloads();openPracticeEditor(row);return}if(act==='toggle'){btn.disabled=true;try{await prpc('admin_practice_set_active',{p_id:id,p_active:!row.is_active});ptoast(row.is_active?'Đã ẩn bài':'Đã hiện bài');await loadPractice()}catch(err){ptoast('Không đổi được trạng thái');btn.disabled=false}return}if(act==='archive'){if(!confirm('Lưu trữ bài này? Bài sẽ biến khỏi trang học nhưng dữ liệu vote cũ vẫn giữ.'))return;btn.disabled=true;try{await prpc('admin_practice_archive',{p_id:id});ptoast('Đã lưu trữ bài');await loadPractice()}catch(err){ptoast('Không lưu trữ được');btn.disabled=false}}});document.querySelectorAll('[data-admin-view="practice"]').forEach(btn=>btn.addEventListener('click',()=>{if(!practiceLoaded)loadPractice()}))}
+  function bootPractice(){bindPractice();try{if(localStorage.getItem('avp_admin_view_v1')==='practice')setTimeout(loadPractice,250)}catch(e){}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootPractice);else bootPractice();
 })();
