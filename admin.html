@@ -155,14 +155,59 @@ where is_admin = true;</pre>
         <article data-health="chat"><span>💬 Chat</span><strong>Đang kiểm tra…</strong><small></small></article>
       </div>
     </section>
+    <div class="admin-section-heading admin-view-section" data-admin-section="reviews">
+      <span>⭐ ĐÁNH GIÁ WEBSITE</span>
+      <h2>Phản hồi từ người dùng</h2>
+    </div>
 
-    <div class="admin-section-heading admin-view-section" data-admin-section="reviews"><span>⭐ ĐÁNH GIÁ WEBSITE</span><h2>Phản hồi từ người dùng</h2></div>
     <section class="admin-panel admin-view-section admin-reviews-panel" data-admin-section="reviews">
-      <div class="admin-panel-head"><div><span>💬 FEEDBACK</span><h2>Bạn thấy website của Anh Văn Phòng thế nào?</h2><p>Xem điểm sao và nội dung góp ý mà người dùng đã gửi.</p></div><button type="button" id="adminReviewReload">↻ Làm mới</button></div>
-      <div class="admin-review-kpis"><article><small>Điểm trung bình</small><strong id="reviewAvg">—</strong></article><article><small>Tổng đánh giá</small><strong id="reviewTotal">—</strong></article><article><small>Có nội dung góp ý</small><strong id="reviewWithContent">—</strong></article><article><small>5 sao</small><strong id="reviewFiveStar">—</strong></article></div>
-      <div class="admin-review-tools"><select id="adminReviewRating"><option value="0">Tất cả số sao</option><option value="5">5 sao</option><option value="4">4 sao</option><option value="3">3 sao</option><option value="2">2 sao</option><option value="1">1 sao</option></select><input id="adminReviewSearch" type="search" placeholder="Tìm trong nội dung đánh giá…"><button id="adminReviewSearchBtn" type="button">Tìm</button></div>
+      <div class="admin-panel-head">
+        <div>
+          <span>💬 FEEDBACK</span>
+          <h2>Bạn thấy website của Anh Văn Phòng thế nào?</h2>
+          <p>Xem điểm sao và nội dung góp ý mà người dùng đã gửi.</p>
+        </div>
+        <button type="button" id="adminReviewReload">↻ Làm mới</button>
+      </div>
+
+      <div class="admin-review-kpis">
+        <article><small>Điểm trung bình</small><strong id="reviewAvg">—</strong></article>
+        <article><small>Tổng đánh giá</small><strong id="reviewTotal">—</strong></article>
+        <article><small>Có nội dung góp ý</small><strong id="reviewWithContent">—</strong></article>
+        <article><small>5 sao</small><strong id="reviewFiveStar">—</strong></article>
+      </div>
+
+      <div class="admin-review-tools">
+        <select id="adminReviewRating">
+          <option value="0">Tất cả số sao</option>
+          <option value="5">5 sao</option>
+          <option value="4">4 sao</option>
+          <option value="3">3 sao</option>
+          <option value="2">2 sao</option>
+          <option value="1">1 sao</option>
+        </select>
+        <input id="adminReviewSearch" type="search" placeholder="Tìm trong nội dung đánh giá…">
+        <button id="adminReviewSearchBtn" type="button">Tìm</button>
+      </div>
+
       <div id="adminReviewNotice" class="admin-review-notice" hidden></div>
-      <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Đánh giá</th><th>Nội dung</th><th>Người gửi</th><th>Trang</th><th>Thời gian</th></tr></thead><tbody id="adminReviewBody"><tr><td colspan="5">Đang tải…</td></tr></tbody></table></div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Đánh giá</th>
+              <th>Nội dung</th>
+              <th>Người gửi</th>
+              <th>Trang</th>
+              <th>Thời gian</th>
+            </tr>
+          </thead>
+          <tbody id="adminReviewBody">
+            <tr><td colspan="5">Đang tải…</td></tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="admin-kpi-grid admin-view-section" id="raceStatsSection" data-admin-section="overview">
@@ -288,7 +333,9 @@ where is_admin = true;</pre>
           <section class="admin-chat-conversation">
             <header class="admin-chat-conv-head"><strong id="adminChatPerson">Chọn một học viên</strong><small id="adminChatEmail">Mở cuộc trò chuyện bên trái để phản hồi.</small></header>
             <div class="admin-chat-messages" id="adminChatMessages"><div class="admin-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
+            <div class="avp-chat-file-preview" id="adminChatFilePreview" hidden></div>
             <div class="admin-chat-compose">
+              <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="adminChatFile" type="file" multiple accept="image/*,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
               <textarea id="adminChatReply" maxlength="3000" rows="2" placeholder="Phản hồi học viên…"></textarea>
               <button type="button" id="adminChatReplyBtn">Gửi</button>
             </div>
