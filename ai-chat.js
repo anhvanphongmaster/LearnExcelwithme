@@ -430,7 +430,34 @@
       await loadHistory();
     }catch(err){
       console.warn("AVP AI send",err);
-      alert("AI chưa trả lời được lúc này. Bạn có thể chuyển câu hỏi cho Admin.");
+
+      let detail="";
+
+      try{
+        const response=err?.context;
+
+        if(response && typeof response.json==="function"){
+          const payload=await response.json();
+
+          const status=payload?.provider_status;
+          const message=payload?.provider_message || payload?.error;
+
+          if(status || message){
+            detail=[
+              status ? `Mã lỗi AI: ${status}` : "",
+              message ? `Chi tiết: ${message}` : ""
+            ].filter(Boolean).join("\n");
+          }
+        }
+      }catch(parseErr){
+        console.warn("Không đọc được lỗi Edge Function",parseErr);
+      }
+
+      alert(
+        detail
+          ? `AI chưa trả lời được lúc này.\n\n${detail}`
+          : "AI chưa trả lời được lúc này. Bạn có thể chuyển câu hỏi cho Admin."
+      );
     }finally{
       sending=false;
       await quota();
