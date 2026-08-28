@@ -21,7 +21,7 @@
     if(STATE.loaded)return STATE.map;if(STATE.loading)return STATE.loading;
     STATE.loading=(async()=>{
       const c=await waitClient();if(!c)return STATE.map;STATE.client=c;
-      try{const {data,error}=await c.rpc("get_download_assets_public");if(error)throw error;STATE.map.clear();(data||[]).forEach(r=>STATE.map.set(norm(r.source_path),r));STATE.loaded=true;scan()}catch(e){console.warn("download manager fallback",e)}
+      try{const {data,error}=await c.rpc("get_download_assets_public");if(error)throw error;STATE.map.clear();(data||[]).forEach(r=>STATE.map.set(norm(r.source_path),r));STATE.loaded=true;scan();try{document.dispatchEvent(new CustomEvent("avp:downloads-resolved"))}catch(_){}}catch(e){console.warn("download manager fallback",e)}
       return STATE.map;
     })();return STATE.loading;
   }

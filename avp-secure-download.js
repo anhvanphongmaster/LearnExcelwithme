@@ -1,4 +1,6 @@
 (function () {
+  "use strict";
+
   function authHref() {
     var dir = location.pathname.replace(/\/[^/]*$/, "/");
     if (!dir) dir = "/";
@@ -16,55 +18,44 @@
     return false;
   }
 
-  function isManagedAbsoluteUrl(href) {
-    if (!href) return false;
-    return /^https?:\/\//i.test(href) && /supabase\.co\/storage\/v1\/object\//i.test(href);
+  function isStorageUrl(href) {
+    return /^https?:\/\//i.test(href || "") && /supabase\.co\/storage\/v1\/object\//i.test(href || "");
   }
 
-  function rememberCurrentTarget(a) {
+  function targetFor(a) {
+    var resolved = (a.dataset && a.dataset.avpResolvedUrl) || "";
+    if (isStorageUrl(resolved)) return resolved;
+
     var current = a.getAttribute("href") || "";
-    var resolved = a.dataset ? (a.dataset.avpResolvedUrl || "") : "";
+    if (isStorageUrl(current)) return current;
 
-    // download-manager đã resolve sang Supabase: luôn coi đây là link thật mới nhất.
-    if (resolved && isManagedAbsoluteUrl(resolved)) {
-      a.setAttribute("data-orig-href", resolved);
-      return resolved;
-    }
+    var original = a.getAttribute("data-orig-href") || "";
+    if (original && original.indexOf("auth.html") < 0) return original;
 
-    // Nếu href hiện tại đã là URL Storage thì cập nhật orig-href, không giữ path GitHub cũ.
-    if (isManagedAbsoluteUrl(current)) {
-      a.setAttribute("data-orig-href", current);
-      return current;
-    }
-
-    if (!a.getAttribute("data-orig-href")) {
-      if (current.indexOf("auth.html") < 0) a.setAttribute("data-orig-href", current);
-    }
-
-    return a.getAttribute("data-orig-href") || current || "#";
+    return current || "#";
   }
 
   function applyOne(a) {
     if (!a) return;
 
-    var logged = hasSession();
-    var url = authHref();
-    var target = rememberCurrentTarget(a);
+    var current = a.getAttribute("href") || "";
+    if (!a.getAttribute("data-orig-href") && current.indexOf("auth.html") < 0) {
+      a.setAttribute("data-orig-href", current);
+    }
 
     if (!a.getAttribute("data-orig-label")) {
       var lab = (a.textContent || "Tải file").replace(/\s+/g, " ").trim();
       a.setAttribute("data-orig-label", /đăng nhập để tải/i.test(lab) ? "Tải file" : (lab || "Tải file"));
     }
 
-    if (logged) {
-      // Kiểm tra lại ngay trước khi set href vì download-manager có thể vừa đổi URL.
-      target = rememberCurrentTarget(a);
-      a.setAttribute("href", target || "#");
+    if (hasSession()) {
+      var target = targetFor(a);
+      a.setAttribute("href", target);
       a.removeAttribute("onclick");
-      if (isManagedAbsoluteUrl(target)) a.removeAttribute("download");
+      if (isStorageUrl(target)) a.removeAttribute("download");
       a.textContent = a.getAttribute("data-orig-label") || "Tải file";
     } else {
-      a.setAttribute("href", url);
+      a.setAttribute("href", authHref());
       a.removeAttribute("download");
       a.setAttribute("onclick", "location.href=this.getAttribute('href');return false;");
       a.textContent = "Đăng nhập để tải";
@@ -74,32 +65,11 @@
   function apply(root) {
     var scope = root && root.querySelectorAll ? root : document;
     scope.querySelectorAll("a.pv-download, a.pyt-dl-block, a.pyt-file-alt, a[href*='downloads/'], a[data-avp-resolved-url]").forEach(applyOne);
-    if (root && root.matches && root.matches("a.pv-download, a.pyt-dl-block, a.pyt-file-alt, a[href*='downloads/'], a[data-avp-resolved-url]")) applyOne(root);
   }
 
   apply(document);
-  document.addEventListener("DOMContentLoaded", function(){ apply(document); });
-  setTimeout(function(){ apply(document); }, 300);
-  setTimeout(function(){ apply(document); }, 1000);
-  setTimeout(function(){ apply(document); }, 2000);
-
-  // Dynamic library/download-manager có thể thay href sau khi trang đã load.
-  // Khi đó cập nhật lại data-orig-href thay vì kéo link về GitHub cũ.
-  try {
-    new MutationObserver(function(mutations){
-      mutations.forEach(function(m){
-        if (m.type === "attributes" && m.target && m.target.tagName === "A") {
-          applyOne(m.target);
-        }
-        if (m.addedNodes) {
-          m.addedNodes.forEach(function(n){ if (n.nodeType === 1) apply(n); });
-        }
-      });
-    }).observe(document.documentElement, {
-      subtree: true,
-      childList: true,
-      attributes: true,
-      attributeFilter: ["href", "data-avp-resolved-url"]
-    });
-  } catch (e) {}
+  document.addEventListener("DOMContentLoaded", function () { apply(document); });
+  document.addEventListener("avp:downloads-resolved", function () { apply(document); });
+  setTimeout(function () { apply(document); }, 300);
+  setTimeout(function () { apply(document); }, 1200);
 })();
