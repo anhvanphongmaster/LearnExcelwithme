@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Analytics | Learn Excel with Anh Van Phong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="admin.css?v=20260829-reviews-clientfix3">
+<link rel="stylesheet" href="avp-core.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#217346">
+<link rel="stylesheet" href="personal-dashboard.css">
+<link rel="stylesheet" href="cloud-sync-v11.css">
+<link href="theme-polish-v33.css" rel="stylesheet"/>
+</head>
+<body>
+
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <a href="excel-mobile.html">📱 Excel Mobile</a>
+    <span class="auth-nav-slot"></span>
+    <a href="privacy.html">🔒 Quyền riêng tư</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="admin-page">
+  <section class="admin-hero page-header">
+    <div>
+      <span class="admin-kicker">🔐 ADMIN ONLY</span>
+      <h1>Website Analytics</h1>
+      <p>Theo dõi người dùng, hành vi học, XP, Level, quiz và mức độ hoàn thành lộ trình — không lưu nội dung file Excel.</p>
+    </div>
+
+    <div class="admin-period">
+      <label>Khoảng thời gian
+        <select id="adminPeriod">
+          <option value="7">7 ngày</option>
+          <option value="30" selected>30 ngày</option>
+          <option value="90">90 ngày</option>
+        </select>
+      </label>
+      <button id="adminRefresh" type="button">↻ Làm mới</button>
+    </div>
+  </section>
+
+  <section id="adminGate" class="admin-gate">
+    <div class="admin-loader"></div>
+    <strong>Đang kiểm tra quyền Admin...</strong>
+    <p>Trang này chỉ hiển thị dữ liệu sau khi Supabase xác nhận tài khoản Admin.</p>
+  </section>
+
+  <section id="adminDenied" class="admin-denied" hidden>
+    <div>🔒</div>
+    <h2>Không có quyền truy cập</h2>
+    <p id="adminDeniedMsg">Hãy đăng nhập bằng tài khoản đã được cấp quyền Admin.</p>
+    <ol class="admin-denied-steps">
+      <li>Mở <strong>Đăng nhập</strong> bằng nút bên dưới.</li>
+      <li>Đăng nhập đúng email admin của bạn.</li>
+      <li>Nếu vẫn bị chặn: vào Supabase → SQL Editor chạy lệnh đặt <code>is_admin = true</code> (xem HUONG-DAN bên dưới).</li>
+    </ol>
+    <div class="admin-denied-actions">
+      <a class="admin-denied-primary" href="auth.html?next=admin.html&admin=1&tab=login">Đăng nhập tài khoản Admin</a>
+      <a class="admin-denied-secondary" href="index.html">← Về trang chủ</a>
+    </div>
+    <details class="admin-denied-help">
+      <summary>Hướng dẫn cấp quyền Admin (Supabase)</summary>
+      <pre>update public.profiles
+set is_admin = true
+where id = (
+  select id from auth.users
+  where email = 'EMAIL_CUA_BAN@example.com'
+);
+
+-- Kiểm tra:
+select id, display_name, is_admin
+from public.profiles
+where is_admin = true;</pre>
+      <p>Thay email bằng email bạn dùng để đăng nhập website, rồi Run trong Supabase SQL Editor.</p>
+    </details>
+  </section>
+
+  <div id="adminDashboard" hidden>
+
+    <section class="admin-command-center" aria-label="Trung tâm quản trị">
+      <div class="admin-command-title">
+        <div>
+          <span class="admin-command-kicker">⚙️ TRUNG TÂM QUẢN TRỊ</span>
+          <h2>Chọn khu vực cần quản lý</h2>
+          <p>Mỗi nhóm được tách riêng để trang Admin gọn hơn và không phải cuộn qua toàn bộ dashboard.</p>
+        </div>
+        <div class="admin-status-pill"><i></i> Admin đang hoạt động</div>
+      </div>
+
+      <div class="admin-view-tabs" role="tablist" aria-label="Khu vực Admin">
+        <button type="button" class="active" data-admin-view="overview" role="tab">
+          <b>📊 Tổng quan</b><small>KPI & trạng thái website</small>
+        </button>
+        <button type="button" data-admin-view="users" role="tab">
+          <b>👥 Người dùng</b><small>Tài khoản, BXH & tiến độ</small>
+        </button>
+        <button type="button" data-admin-view="race" role="tab">
+          <b>🏁 Excel Race</b><small>BXH, reset & xoá tên</small>
+        </button>
+        <button type="button" data-admin-view="learning" role="tab">
+          <b>🎓 Học tập</b><small>Tiến độ, bài học & quiz</small>
+        </button>
+        <button type="button" data-admin-view="votes" role="tab">
+          <b>🗳️ Vote</b><small>Nhu cầu học viên</small>
+        </button>
+        <button type="button" data-admin-view="practice" role="tab">
+          <b>📝 Kho bài tập</b><small>Thêm, sửa, sắp xếp bài</small>
+        </button>
+        <button type="button" data-admin-view="downloads" role="tab">
+          <b>📦 Tải xuống</b><small>File & tài nguyên toàn web</small>
+        </button>
+        <button type="button" data-admin-view="inbox" role="tab">
+          <b>📥 Hộp thư</b><small>Thắc mắc, ý tưởng & file</small>
+        </button>
+        <button type="button" data-admin-view="engagement" role="tab">
+          <b>🖱️ Tương tác</b><small>Tải file, video & bộ sách</small>
+        </button>
+        <button type="button" data-admin-view="analytics" role="tab">
+          <b>📈 Analytics</b><small>Xu hướng & nội dung hot</small>
+        </button>
+        <button type="button" data-admin-view="reviews" role="tab">
+          <b>⭐ Đánh giá</b><small>Sao & góp ý website</small>
+        </button>
+      </div>
+
+      <div class="admin-quick-links">
+        <a href="practice-video.html">📝 Kho bài tập</a>
+        <a href="practice-youtube.html">▶️ Kho YouTube</a>
+        <a href="profile.html">👤 Hồ sơ của tôi</a>
+        <a href="index.html">🌐 Xem website</a>
+      </div>
+    </section>
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="overview"><span>📊 TỔNG QUAN</span><h2>Sức khỏe website hôm nay</h2></div>
+    <section class="admin-panel admin-system-health admin-view-section" id="adminSystemHealth" data-admin-section="overview">
+      <div class="admin-panel-head">
+        <div><span>🩺 KIỂM TRA HỆ THỐNG</span><h2>Trạng thái các module Admin</h2><p>Kiểm tra nhanh các phần đang dùng thật. Module chưa cài hoặc lỗi sẽ hiện rõ thay vì để một khối trống.</p></div>
+        <button type="button" id="adminHealthReload" class="admin-health-reload">↻ Kiểm tra</button>
+      </div>
+      <div class="admin-health-grid" id="adminHealthGrid">
+        <article data-health="analytics"><span>📈 Analytics</span><strong>Đang kiểm tra…</strong><small></small></article>
+        <article data-health="users"><span>👥 Người dùng</span><strong>Đang kiểm tra…</strong><small></small></article>
+        <article data-health="votes"><span>🗳️ Vote</span><strong>Đang kiểm tra…</strong><small></small></article>
+        <article data-health="practice"><span>📝 Kho bài tập</span><strong>Đang kiểm tra…</strong><small></small></article>
+        <article data-health="downloads"><span>📦 Tải xuống</span><strong>Đang kiểm tra…</strong><small></small></article>
+        <article data-health="chat"><span>💬 Chat</span><strong>Đang kiểm tra…</strong><small></small></article>
+      </div>
+    </section>
+    <div class="admin-section-heading admin-view-section" data-admin-section="reviews">
+      <span>⭐ ĐÁNH GIÁ WEBSITE</span>
+      <h2>Phản hồi từ người dùng</h2>
+    </div>
+
+    <section class="admin-panel admin-view-section admin-reviews-panel" data-admin-section="reviews">
+      <div class="admin-panel-head">
+        <div>
+          <span>💬 FEEDBACK</span>
+          <h2>Bạn thấy website của Anh Văn Phòng thế nào?</h2>
+          <p>Xem điểm sao và nội dung góp ý mà người dùng đã gửi.</p>
+        </div>
+        <button type="button" id="adminReviewReload">↻ Làm mới</button>
+      </div>
+
+      <div class="admin-review-kpis">
+        <article><small>Điểm trung bình</small><strong id="reviewAvg">—</strong></article>
+        <article><small>Tổng đánh giá</small><strong id="reviewTotal">—</strong></article>
+        <article><small>Có nội dung góp ý</small><strong id="reviewWithContent">—</strong></article>
+        <article><small>5 sao</small><strong id="reviewFiveStar">—</strong></article>
+      </div>
+
+      <div class="admin-review-tools">
+        <select id="adminReviewRating">
+          <option value="0">Tất cả số sao</option>
+          <option value="5">5 sao</option>
+          <option value="4">4 sao</option>
+          <option value="3">3 sao</option>
+          <option value="2">2 sao</option>
+          <option value="1">1 sao</option>
+        </select>
+        <input id="adminReviewSearch" type="search" placeholder="Tìm trong nội dung đánh giá…">
+        <button id="adminReviewSearchBtn" type="button">Tìm</button>
+      </div>
+
+      <div id="adminReviewNotice" class="admin-review-notice" hidden></div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Đánh giá</th>
+              <th>Nội dung</th>
+              <th>Người gửi</th>
+              <th>Trang</th>
+              <th>Thời gian</th>
+            </tr>
+          </thead>
+          <tbody id="adminReviewBody">
+            <tr><td colspan="5">Đang tải…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-kpi-grid admin-view-section" id="raceStatsSection" data-admin-section="overview">
+      <article class="admin-kpi"><p>Lượt chơi Race</p><strong id="kpiRacePlays">—</strong><small id="kpiRaceToday">2.5D minigame</small></article>
+      <article class="admin-kpi"><p>Race hôm nay</p><strong id="kpiRaceTodayCount">—</strong><small>event = start</small></article>
+      <article class="admin-kpi"><p>Crash / hết giờ</p><strong id="kpiRaceCrash">—</strong><small>event = crash</small></article>
+    </section>
+
+    <section class="admin-kpi-grid admin-view-section" id="adminOverviewKpis" data-admin-section="overview">
+      <article class="admin-kpi">
+        <span>👥</span><small>Tổng tài khoản</small>
+        <strong id="kpiRegistered">—</strong>
+        <em id="kpiNewUsers">—</em>
+      </article>
+
+      <article class="admin-kpi">
+        <span>👀</span><small>Lượt xem trang</small>
+        <strong id="kpiViews">—</strong>
+        <em id="kpiTodayViews">—</em>
+      </article>
+
+      <article class="admin-kpi">
+        <span>👤</span><small>Người truy cập</small>
+        <strong id="kpiVisitors">—</strong>
+        <em id="kpiTodayVisitors">—</em>
+      </article>
+
+      <article class="admin-kpi">
+        <span>🟢</span><small>User đăng nhập hoạt động</small>
+        <strong id="kpiActiveUsers">—</strong>
+        <em id="kpiLogins">—</em>
+      </article>
+
+      <article class="admin-kpi">
+        <span>📱</span><small>Excel Mobile users</small>
+        <strong id="kpiMobileUsers">—</strong>
+        <em>Người đã mở Excel Mobile</em>
+      </article>
+
+      <article class="admin-kpi">
+        <span>⚙️</span><small>Lượt xử lý Excel</small>
+        <strong id="kpiToolRuns">—</strong>
+        <em>Không lưu nội dung file</em>
+      </article>
+    </section>
+
+    <section class="admin-learning-kpis admin-view-section" id="adminLearningKpis" data-admin-section="overview">
+      <article><small>☁️ User có tiến độ Cloud</small><strong id="learnSynced">—</strong><em id="learnActive7d">—</em></article>
+      <article><small>⚡ XP trung bình</small><strong id="learnAvgXP">—</strong><em id="learnMaxXP">—</em></article>
+      <article><small>🧠 Quiz trung bình</small><strong id="learnAvgQuiz">—</strong><em>Trên mỗi user đã sync</em></article>
+      <article><small>🏅 Huy hiệu trung bình</small><strong id="learnAvgBadges">—</strong><em>Trên mỗi user đã sync</em></article>
+      <article><small>🚀 Pro trở lên</small><strong id="learnPro">—</strong><em id="learnMaster">—</em></article>
+    </section>
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="race"><span>🏁 EXCEL RACE</span><h2>Quản lý bảng xếp hạng Race</h2></div>
+<section class="admin-panel admin-race-manager admin-view-section" data-admin-section="race">
+  <div class="admin-panel-head admin-race-head">
+    <div><span>🏆 RANK V4</span><h2>Bảng xếp hạng Excel Race</h2><p>Giữ người chơi cũ và tự liên kết lại khi họ đăng nhập. Có thể reset, đổi tên, ẩn/hiện hoặc xoá khỏi BXH.</p></div>
+    <button type="button" id="adminRaceReload">↻ Làm mới</button>
+  </div>
+  <div class="admin-race-kpis">
+    <article><small>Người trên BXH</small><strong id="raceAdminTotal">0</strong></article>
+    <article><small>Chuỗi cao nhất</small><strong id="raceAdminBest">0</strong></article>
+    <article><small>Cấp cao nhất</small><strong id="raceAdminLevel">1</strong></article>
+  </div>
+  <div class="admin-race-toolbar"><input id="adminRaceSearch" type="search" placeholder="Tìm tên người chơi…"><button id="adminRaceSearchBtn" type="button">Tìm</button></div>
+  <div id="adminRaceNotice" class="admin-users-notice" hidden></div>
+  <div class="admin-race-table-wrap"><table class="admin-race-table"><thead><tr><th>#</th><th>Người chơi</th><th>Chuỗi</th><th>Cấp</th><th>Cập nhật</th><th>Thao tác</th></tr></thead><tbody id="adminRaceBody"><tr><td colspan="6" class="admin-users-empty">Chuyển sang tab Excel Race để tải BXH.</td></tr></tbody></table></div>
+</section>
+
+<div class="admin-section-heading admin-view-section" data-admin-section="users"><span>👥 NGƯỜI DÙNG</span><h2>Quản lý tài khoản học viên</h2></div>
+    <section class="admin-panel admin-view-section admin-users-panel" data-admin-section="users">
+      <div class="admin-users-toolbar">
+        <div>
+          <strong>Danh sách tài khoản</strong>
+          <small>Xem tiến độ, BXH, vote và quyền Admin. Các thao tác nhạy cảm đều yêu cầu xác nhận.</small>
+        </div>
+        <div class="admin-users-tools">
+          <input id="adminUserSearch" type="search" placeholder="Tìm tên hoặc email…" autocomplete="off">
+          <button id="adminUserSearchBtn" type="button">Tìm</button>
+          <button id="adminUserReloadBtn" type="button">↻</button>
+        </div>
+      </div>
+      <div class="admin-users-summary">
+        <article><small>Đang hiển thị</small><strong id="adminUsersShown">0</strong></article>
+        <article><small>Admin</small><strong id="adminUsersAdmins">0</strong></article>
+        <article><small>Ẩn khỏi BXH</small><strong id="adminUsersHidden">0</strong></article>
+        <article><small>Có XP</small><strong id="adminUsersWithXp">0</strong></article>
+      </div>
+      <div id="adminUsersNotice" class="admin-users-notice">Chạy file <code>ADMIN-USER-MANAGEMENT.sql</code> một lần trong Supabase trước khi dùng khu này.</div>
+      <div class="admin-users-table-wrap">
+        <table class="admin-users-table">
+          <thead><tr><th>Học viên</th><th>Tiến độ</th><th>Streak</th><th>BXH</th><th>Đăng nhập gần nhất</th><th>Thao tác</th></tr></thead>
+          <tbody id="adminUsersBody"><tr><td colspan="6" class="admin-users-empty">Chuyển sang tab Người dùng để tải danh sách.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="learning"><span>🎓 HỌC TẬP</span><h2>Người học đang tiến bộ thế nào?</h2></div>
+    <section class="admin-two-column admin-learning-grid admin-view-section" id="adminLearningOverview" data-admin-section="learning">
+      <article class="admin-panel">
+        <div class="admin-panel-head"><div><span>🎓 FUNNEL</span><h2>Beginner → Master</h2></div></div>
+        <div id="learningFunnel" class="admin-funnel"></div>
+      </article>
+      <article class="admin-panel">
+        <div class="admin-panel-head"><div><span>🆕 USERS</span><h2>Tài khoản mới theo ngày</h2></div></div>
+        <div id="newUserTrend" class="admin-user-trend"></div>
+      </article>
+    </section>
+
+<div class="admin-section-heading admin-view-section" data-admin-section="inbox"><span>📥 HỘP THƯ</span><h2>Phản hồi cần xử lý</h2></div>
+<section class="admin-grid admin-view-section" id="adminInboxSection" data-admin-section="inbox">
+      <article class="admin-panel" id="adminChatInbox" style="grid-column:1/-1">
+        <div class="admin-chat-toolbar">
+          <div><strong>💬 Chat học viên <span class="admin-chat-unread-pill" id="adminChatUnread" hidden>0</span></strong><small>Nhận và phản hồi tin nhắn của người đã đăng nhập</small></div>
+          <button type="button" class="admin-chat-refresh" id="adminChatRefresh">↻ Làm mới</button>
+        </div>
+        <div class="admin-chat-shell">
+          <aside class="admin-chat-threads">
+            <div class="admin-chat-search"><input id="adminChatSearch" type="search" placeholder="Tìm tên hoặc email…" autocomplete="off"></div>
+            <div id="adminChatThreads"><div class="admin-chat-empty">Đang tải cuộc trò chuyện…</div></div>
+          </aside>
+          <section class="admin-chat-conversation">
+            <header class="admin-chat-conv-head"><strong id="adminChatPerson">Chọn một học viên</strong><small id="adminChatEmail">Mở cuộc trò chuyện bên trái để phản hồi.</small></header>
+            <div class="admin-chat-messages" id="adminChatMessages"><div class="admin-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
+            <div class="avp-chat-file-preview" id="adminChatFilePreview" hidden></div>
+            <div class="admin-chat-compose">
+              <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="adminChatFile" type="file" multiple accept="image/*,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
+              <textarea id="adminChatReply" maxlength="3000" rows="2" placeholder="Phản hồi học viên…"></textarea>
+              <button type="button" id="adminChatReplyBtn">Gửi</button>
+            </div>
+          </section>
+        </div>
+      </article>
+
+
+    </section>
+
+
+<div class="admin-section-heading admin-view-section" data-admin-section="engagement"><span>🖱️ TƯƠNG TÁC</span><h2>Click tải file, xem video & bộ sách</h2></div>
+<section class="admin-grid admin-view-section" data-admin-section="engagement">
+      <article class="admin-panel" style="grid-column:1/-1">
+        <div class="admin-panel-head">
+          <div><span>🖱️ TƯƠNG TÁC</span><h2>Tải file, xem video và 8 bộ sách</h2></div>
+        </div>
+        <div class="pd-grid" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px">
+          <div class="pd-stat"><small>Lượt tải file</small><strong id="engDownloads">0</strong></div>
+          <div class="pd-stat"><small>Click xem video</small><strong id="engVideos">0</strong></div>
+          <div class="pd-stat"><small>Click 8 bộ sách</small><strong id="engBooks">0</strong></div>
+          <div class="pd-stat"><small>Ý tưởng / thắc mắc</small><strong id="engFeedback">0</strong></div>
+        </div>
+        <div id="engByTool" class="admin-ranking"></div>
+        <div class="admin-mail-tabs">
+          <button type="button" class="active" data-mail="questions" id="mailTabQ">Thắc mắc</button>
+          <button type="button" data-mail="ideas" id="mailTabI">Ý tưởng</button>
+          <button type="button" data-mail="saved" id="mailTabS">Đã giữ</button>
+          <button type="button" data-mail="files" id="mailTabF">File gửi lên</button>
+        </div>
+        <div class="admin-mail">
+          <div id="engMailList" class="admin-mail-list"></div>
+          <div id="engMailRead" class="admin-mail-read"><p>Chọn một thư bên trái để đọc.</p></div>
+        </div>
+        <p id="engHint" style="color:#7a8b80;font-size:13px"></p>
+      </article>
+</section>
+
+<div class="admin-section-heading admin-view-section" data-admin-section="votes"><span>🗳️ VOTE</span><h2>Trung tâm quản lý nhu cầu học viên</h2></div>
+<section class="admin-panel admin-vote-manager admin-view-section" id="adminVoteManager" data-admin-section="votes">
+  <div class="admin-panel-head admin-vote-head">
+    <div>
+      <span>🧭 VOTE CENTER</span>
+      <h2>3 hệ thống vote — tách riêng, dễ kiểm tra</h2>
+      <p>Vote chủ đề, yêu cầu hướng dẫn bài tập và định hướng YouTube/TikTok không còn trộn chung.</p>
+    </div>
+    <button id="adminVoteReload" class="admin-vote-refresh" type="button">↻ Làm mới</button>
+  </div>
+
+  <div class="admin-vote-periods" role="tablist" aria-label="Khoảng thời gian vote">
+    <button type="button" class="active" data-vote-period="today">Hôm nay</button>
+    <button type="button" data-vote-period="7d">7 ngày</button>
+    <button type="button" data-vote-period="all">Tổng</button>
+  </div>
+
+  <div class="admin-vote-kpis">
+    <article><small>Tổng vote</small><strong id="voteKpiTotal">—</strong><em id="voteKpiPeriod">Hôm nay</em></article>
+    <article><small>Vote chủ đề</small><strong id="voteKpiTopics">—</strong><em>Chủ đề tiếp theo</em></article>
+    <article><small>Cần hướng dẫn</small><strong id="voteKpiLessons">—</strong><em>Bài tập Excel</em></article>
+    <article><small>Vote YouTube/TikTok</small><strong id="voteKpiChannel">—</strong><em>Định hướng nội dung</em></article>
+  </div>
+
+  <div class="admin-vote-grid">
+    <article class="admin-vote-card">
+      <div class="admin-vote-card-head"><div><span>📚 CHỦ ĐỀ TIẾP THEO</span><h3>Học viên muốn học gì?</h3></div><b id="voteTopicTotal">0</b></div>
+      <div id="voteTopicRanking" class="admin-vote-ranking"><div class="pvote-empty">Đang tải…</div></div>
+    </article>
+
+    <article class="admin-vote-card">
+      <div class="admin-vote-card-head"><div><span>🙋 CẦN HƯỚNG DẪN</span><h3>Bài nào đang cần video nhất?</h3></div><b id="voteLessonTotal">0</b></div>
+      <div id="voteLessonRanking" class="admin-vote-ranking"><div class="pvote-empty">Đang tải…</div></div>
+    </article>
+
+    <article class="admin-vote-card">
+      <div class="admin-vote-card-head"><div><span>🎬 YOUTUBE / TIKTOK</span><h3>Định hướng nội dung</h3></div><b id="voteChannelTotal">0</b></div>
+      <div class="admin-channel-split">
+        <div><span>▶️ YouTube</span><strong id="voteYoutubeCount">0</strong></div>
+        <div><span>📱 TikTok</span><strong id="voteTiktokCount">0</strong></div>
+      </div>
+      <div class="admin-channel-track"><i id="voteYoutubeTrack"></i></div>
+      <p id="voteChannelWinner" class="admin-vote-winner">Chưa có vote.</p>
+    </article>
+  </div>
+
+  <div class="admin-vote-history-head">
+    <div><span>🕘 LỊCH SỬ VOTE</span><h3>Kiểm tra và xoá vote cụ thể</h3><p>Chỉ Admin mới thấy và xoá được. Xoá một dòng sẽ cập nhật dashboard ngay.</p></div>
+    <select id="adminVoteHistoryFilter" aria-label="Lọc loại vote">
+      <option value="all">Tất cả</option>
+      <option value="topic">Vote chủ đề</option>
+      <option value="lesson">Cần hướng dẫn</option>
+      <option value="channel">YouTube / TikTok</option>
+    </select>
+  </div>
+  <div class="admin-vote-history-wrap">
+    <table class="admin-vote-history">
+      <thead><tr><th>Thời gian</th><th>Loại</th><th>Nội dung</th><th>Người vote</th><th></th></tr></thead>
+      <tbody id="adminVoteHistoryBody"><tr><td colspan="5" class="admin-users-empty">Đang tải lịch sử vote…</td></tr></tbody>
+    </table>
+  </div>
+  <p id="adminVoteNotice" class="pvote-note">Chạy <code>ADMIN-VOTE-MANAGEMENT-V1.sql</code> một lần trong Supabase để bật đầy đủ khu này.</p>
+</section>
+
+    <section class="admin-two-column admin-learning-grid admin-view-section" id="adminLearningDetail" data-admin-section="learning">
+      <article class="admin-panel">
+        <div class="admin-panel-head"><div><span>✅ LEARNING</span><h2>Bài hoàn thành nhiều nhất</h2></div></div>
+        <div id="topCompletedLessons" class="admin-ranking"></div>
+      </article>
+      <article class="admin-panel">
+        <div class="admin-panel-head"><div><span>🧩 QUIZ</span><h2>Quiz khó nhất</h2></div></div>
+        <div id="quizDifficulty" class="admin-quiz-list"></div>
+        <p class="admin-panel-footnote">Dữ liệu độ khó quiz bắt đầu tích lũy từ V15.</p>
+      </article>
+    </section>
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="practice"><span>📝 KHO BÀI TẬP</span><h2>Quản lý bài tập động</h2></div>
+    <section class="admin-panel admin-practice-manager admin-view-section" data-admin-section="practice">
+      <div class="admin-practice-top">
+        <div><strong>100 bài hiện tại + bài thêm sau này</strong><small>Thêm/sửa/ẩn bài tại đây. Trang Bài tập tự đọc Supabase, không phải sửa JS khi thêm bài.</small></div>
+        <button id="adminPracticeAdd" type="button">＋ Thêm bài</button>
+      </div>
+      <div class="admin-users-summary admin-practice-kpis">
+        <article><small>Tổng bài</small><strong id="practiceKpiTotal">0</strong></article>
+        <article><small>Đang hiển thị</small><strong id="practiceKpiLive">0</strong></article>
+        <article><small>Ẩn / nháp</small><strong id="practiceKpiHidden">0</strong></article>
+        <article><small>Chủ đề</small><strong id="practiceKpiCategories">0</strong></article>
+      </div>
+      <div class="admin-practice-toolbar">
+        <input id="adminPracticeSearch" type="search" placeholder="Tìm tên bài hoặc ID…">
+        <select id="adminPracticeCategory"><option value="">Tất cả chủ đề</option></select>
+        <select id="adminPracticeStatus"><option value="all">Tất cả trạng thái</option><option value="published">Đang phát hành</option><option value="draft">Bản nháp</option><option value="archived">Đã lưu trữ</option><option value="hidden">Đang ẩn</option></select>
+        <button id="adminPracticeReload" type="button">↻ Làm mới</button>
+      </div>
+      <div id="adminPracticeEditor" class="admin-practice-editor" hidden>
+        <div class="admin-download-editor-title"><strong id="adminPracticeEditorTitle">Thêm bài</strong><button id="adminPracticeClose" type="button">×</button></div>
+        <input id="practiceEditOriginalId" type="hidden">
+        <div class="admin-practice-form">
+          <label><span>ID bài</span><input id="practiceEditId" maxlength="80" placeholder="vd: clean-21-case"></label>
+          <label><span>STT</span><input id="practiceEditNumber" type="number" min="0" value="1"></label>
+          <label><span>Icon</span><input id="practiceEditIcon" maxlength="12" value="📘"></label>
+          <label><span>Chủ đề</span><input id="practiceEditCategory" list="practiceCategoryList" maxlength="80"><datalist id="practiceCategoryList"><option>Làm sạch dữ liệu</option><option>Power Query</option><option>Nhập liệu</option><option>Công thức</option><option>Format</option></datalist></label>
+          <label class="wide"><span>Tên bài</span><input id="practiceEditTitle" maxlength="180"></label>
+          <label class="wide"><span>Kỹ năng / mô tả ngắn</span><input id="practiceEditSkill" maxlength="320"></label>
+          <label><span>Cấp độ</span><select id="practiceEditLevel"><option>Cơ bản</option><option>Trung cấp</option><option>Nâng cao</option><option>Case thực tế</option></select></label>
+          <label><span>Nhãn</span><select id="practiceEditBadge"><option value="">Không</option><option>Mới</option><option>Hot</option><option>Có video</option><option>Cần cập nhật</option></select></label>
+          <label class="wide"><span>File thực hành từ Kho tải xuống</span><select id="practiceEditDownload"><option value="">— Chưa gắn file —</option></select><small>File upload ở tab Tải xuống sẽ xuất hiện tại đây.</small></label>
+          <label class="wide"><span>Link video TikTok (nếu có)</span><input id="practiceEditVideo" maxlength="1200" placeholder="https://..."></label>
+          <label><span>Trạng thái</span><select id="practiceEditStatus"><option value="published">Phát hành</option><option value="draft">Bản nháp</option><option value="archived">Lưu trữ</option></select></label>
+          <label><span>Thứ tự nội bộ</span><input id="practiceEditOrder" type="number" value="0"></label>
+          <label class="check"><input id="practiceEditActive" type="checkbox" checked><span>Hiển thị trên trang Bài tập</span></label>
+        </div>
+        <div class="admin-download-editor-actions"><button id="adminPracticeSave" type="button">Lưu bài</button><button id="adminPracticeCancel" class="secondary" type="button">Huỷ</button></div>
+      </div>
+      <div class="admin-practice-table-wrap">
+        <table class="admin-practice-table"><thead><tr><th>STT</th><th>Bài học</th><th>Cấp độ</th><th>File</th><th>Vote</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="adminPracticeBody"><tr><td colspan="7" class="admin-users-empty">Chuyển sang tab Kho bài tập để tải dữ liệu.</td></tr></tbody></table>
+      </div>
+      <p id="adminPracticeNotice" class="admin-users-notice" hidden></p>
+    </section>
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="downloads"><span>📦 TẢI XUỐNG</span><h2>Quản lý toàn bộ file trên website</h2></div>
+    <section class="admin-panel admin-download-manager admin-view-section" data-admin-section="downloads">
+      <div class="admin-download-head">
+        <div><strong>Kho file trung tâm</strong><small>Thay file một lần, các nút tải cũ trên website tự dùng file mới.</small></div>
+        <button id="adminDownloadNew" type="button">＋ Thêm file</button>
+      </div>
+      <div class="admin-download-kpis">
+        <article><small>Tổng tài nguyên</small><strong id="dlKpiTotal">—</strong></article>
+        <article><small>Đang hiển thị</small><strong id="dlKpiActive">—</strong></article>
+        <article><small>Đang ẩn</small><strong id="dlKpiHidden">—</strong></article>
+        <article><small>Lượt tải</small><strong id="dlKpiCount">—</strong></article>
+      </div>
+      <div class="admin-download-toolbar">
+        <input id="adminDownloadSearch" type="search" placeholder="Tìm tên file hoặc đường dẫn…">
+        <select id="adminDownloadCategory"><option value="">Tất cả nhóm</option></select>
+        <select id="adminDownloadStatus"><option value="all">Tất cả trạng thái</option><option value="active">Đang hiện</option><option value="hidden">Đang ẩn</option></select>
+        <button id="adminDownloadReload" type="button">↻ Làm mới</button>
+      </div>
+      <div id="adminDownloadEditor" class="admin-download-editor" hidden>
+        <div class="admin-download-editor-title"><strong id="adminDownloadEditorTitle">Thêm tài nguyên</strong><button type="button" id="adminDownloadClose">×</button></div>
+        <input type="hidden" id="dlEditId">
+        <div class="admin-download-form">
+          <label><span>Tên hiển thị</span><input id="dlEditTitle" maxlength="160"></label>
+          <label><span>Nhóm</span><input id="dlEditCategory" maxlength="80" placeholder="Kho bài tập"></label>
+          <label class="wide"><span>Đường dẫn gốc trên website</span><input id="dlEditSource" maxlength="500" placeholder="downloads/.../file.xlsx"><small>Nút tải cũ có đường dẫn này sẽ tự được quản lý.</small></label>
+          <label class="wide"><span>Link file thay thế</span><input id="dlEditUrl" maxlength="1200" placeholder="Để trống = dùng file gốc trong GitHub"></label>
+          <label class="wide"><span>Mô tả nội bộ</span><textarea id="dlEditDescription" rows="2"></textarea></label>
+          <label><span>Thứ tự</span><input id="dlEditOrder" type="number" value="0"></label>
+          <label class="check"><input id="dlEditActive" type="checkbox" checked><span>Đang hiển thị</span></label>
+          <label class="check"><input id="dlEditFeatured" type="checkbox"><span>Đánh dấu nổi bật</span></label>
+          <label class="wide"><span>Thay / upload file mới</span><input id="dlEditFile" type="file"><small>Upload lên Supabase Storage; không cần đưa file mới lên GitHub.</small></label>
+        </div>
+        <div class="admin-download-editor-actions"><button id="adminDownloadSave" type="button">Lưu tài nguyên</button><button id="adminDownloadCancel" type="button" class="secondary">Huỷ</button></div>
+      </div>
+      <div class="admin-download-table-wrap">
+        <table class="admin-download-table"><thead><tr><th>File</th><th>Nhóm</th><th>Đường dẫn</th><th>Lượt tải</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+        <tbody id="adminDownloadBody"><tr><td colspan="6" class="admin-users-empty">Chuyển sang tab Tải xuống để tải dữ liệu.</td></tr></tbody></table>
+      </div>
+      <p id="adminDownloadNotice" class="admin-users-notice" hidden></p>
+    </section>
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="analytics"><span>📈 ANALYTICS</span><h2>Xu hướng sử dụng website</h2></div>
+    <section class="admin-panel admin-view-section" id="adminTrendSection" data-admin-section="analytics">
+      <div class="admin-panel-head">
+        <div>
+          <span>📈 Xu hướng</span>
+          <h2>Hoạt động theo ngày</h2>
+        </div>
+        <div class="admin-legend">
+          <span>■ Page views</span>
+          <span>■ Visitors</span>
+          <span>■ Tool runs</span>
+        </div>
+      </div>
+
+      <div id="trendChart" class="admin-trend-chart">
+        <p class="admin-empty">Chưa có dữ liệu.</p>
+      </div>
+    </section>
+
+    <section class="admin-two-column admin-view-section" id="adminTopContentSection" data-admin-section="analytics">
+      <article class="admin-panel">
+        <div class="admin-panel-head">
+          <div><span>🏆 TOP</span><h2>Công cụ được dùng nhiều</h2></div>
+        </div>
+        <div id="topTools" class="admin-ranking"></div>
+      </article>
+
+      <article class="admin-panel">
+        <div class="admin-panel-head">
+          <div><span>📄 TOP</span><h2>Trang được xem nhiều</h2></div>
+        </div>
+        <div id="topPages" class="admin-ranking"></div>
+      </article>
+    </section>
+
+    
+
+    
+    
+
+    <section class="admin-privacy-note admin-view-section" id="adminPrivacySection" data-admin-section="overview">
+      <strong>🔒 Analytics tối giản dữ liệu</strong>
+      <p>Dashboard chỉ thống kê sự kiện như page view, login và tên công cụ Excel Mobile đã chạy. Tracking được thiết kế không gửi nội dung workbook, giá trị ô, tên file hay dữ liệu bên trong Excel.</p>
+    </section>
+  </div>
+
+  <div id="adminToast" class="admin-toast"></div>
+</main>
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
+  <p class="site-footer-sub">Admin Analytics Dashboard</p>
+  <div class="site-footer-legal">
+    <a href="terms.html">Điều khoản</a>
+    <a href="privacy.html">Quyền riêng tư</a>
+    <a href="disclaimer.html">Tuyên bố pháp lý</a>
+    <a href="open-source.html">Mã nguồn mở</a>
+  </div>
+</footer>
+
+<script src="avp-modal.js"></script>
+<script defer src="simple-nav.js"></script>
+<script defer src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="analytics-tracker.js"></script>
+<script defer src="admin.js?v=20260829-reviews-clientfix3"></script>
+<script defer src="avp-core.js"></script>
+<script defer src="personal-dashboard.js"></script>
+<script defer src="cloud-sync-v11.js"></script>
+<script defer src="theme-unified-v32.js"></script>
+</body>
+</html>
