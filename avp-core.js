@@ -212,7 +212,12 @@
 
   window.addEventListener('avp:chat-new-message',e=>{
     const detail=e.detail||{};
-    showMiniPreview(detail);
+
+    showMiniPreview({
+      sender:detail.sender||'Tin nhắn mới',
+      body:detail.body||'Bạn vừa nhận được một tin nhắn mới.',
+      ...detail
+    });
   });
 
   window.AVPShowMiniChatPreview=showMiniPreview;
@@ -232,16 +237,37 @@
     return count;
   }
 
-  function showUnreadReturnPreview(count){
+  async function showUnreadReturnPreview(count){
     if(count<=0)return false;
 
-    showMiniPreview({
-      sender:'Tin nhắn chưa đọc',
-      body:count===1
-        ? 'Bạn có 1 tin nhắn mới. Chạm để xem.'
-        : `Bạn có ${count} tin nhắn mới. Chạm để xem.`,
-      unread:true
-    });
+    let detail=null;
+
+    try{
+      if(typeof window.AVPGetLatestUnreadPreview==="function"){
+        detail=await Promise.race([
+          window.AVPGetLatestUnreadPreview(),
+          new Promise(resolve=>setTimeout(()=>resolve(null),1800))
+        ]);
+      }
+    }catch(e){
+      console.warn("AVP unread preview content",e);
+    }
+
+    if(detail?.body){
+      showMiniPreview({
+        ...detail,
+        unread:true
+      });
+    }else{
+      showMiniPreview({
+        sender:'Tin nhắn chưa đọc',
+        body:count===1
+          ? 'Bạn có 1 tin nhắn mới. Chạm để xem.'
+          : `Bạn có ${count} tin nhắn mới. Chạm để xem.`,
+        unread:true,
+        fallback:true
+      });
+    }
 
     try{
       localStorage.setItem(

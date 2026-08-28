@@ -67,6 +67,100 @@
     }
   }
 
+  async function getLatestUnreadPreview(){
+    client=client||getClient();
+
+    if(!client?.auth||!client?.rpc)return null;
+
+    try{
+      const {data:{user:me}}=await client.auth.getUser();
+      if(!me)return null;
+
+      if(isAdmin){
+        const rows=await rpc("avp_chat_admin_threads")||[];
+        const list=Array.isArray(rows)?rows:[];
+
+        const unreadThread=list.find(x=>
+          Number(
+            x.unread_count ??
+            x.unread ??
+            x.unread_messages ??
+            0
+          )>0
+        );
+
+        if(!unreadThread)return null;
+
+        const tid=String(
+          unreadThread.thread_id ??
+          unreadThread.id ??
+          ""
+        );
+
+        if(!tid)return null;
+
+        const messages=await rpc(
+          "avp_chat_admin_thread_messages",
+          {p_thread_id:tid}
+        )||[];
+
+        const arr=Array.isArray(messages)?messages:[];
+        const msg=[...arr]
+          .reverse()
+          .find(m=>m.sender_type==="user");
+
+        if(!msg)return null;
+
+        return {
+          role:"user",
+          thread_id:tid,
+          sender:
+            unreadThread.display_name ||
+            unreadThread.full_name ||
+            unreadThread.email ||
+            "Học viên",
+          body:cleanChatPreviewText(msg.body),
+          created_at:msg.created_at||null
+        };
+      }
+
+      const session=await rpc("avp_chat_get_or_create_thread");
+      const tid=String(
+        session?.thread_id ??
+        session?.id ??
+        session ??
+        ""
+      );
+
+      if(!tid)return null;
+
+      const messages=await rpc(
+        "avp_chat_user_messages",
+        {p_thread_id:tid}
+      )||[];
+
+      const arr=Array.isArray(messages)?messages:[];
+      const msg=[...arr]
+        .reverse()
+        .find(m=>m.sender_type==="admin");
+
+      if(!msg)return null;
+
+      return {
+        role:"admin",
+        thread_id:tid,
+        sender:"Anh Văn Phòng",
+        body:cleanChatPreviewText(msg.body),
+        created_at:msg.created_at||null
+      };
+    }catch(e){
+      console.warn("AVP latest unread preview",e);
+      return null;
+    }
+  }
+
+  window.AVPGetLatestUnreadPreview=getLatestUnreadPreview;
+
   const extOf=(name)=>String(name||"").split(".").pop().toLowerCase();
   const sizeText=(n)=>{n=Number(n)||0;if(n<1024)return n+" B";if(n<1024*1024)return (n/1024).toFixed(1)+" KB";return (n/1024/1024).toFixed(1)+" MB"};
   const isImageFile=(f)=>String(f?.type||"").startsWith("image/")||["jpg","jpeg","png","webp","gif","heic","heif"].includes(extOf(f?.name));
