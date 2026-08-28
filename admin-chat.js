@@ -11,6 +11,7 @@
   let authSubscribed=false;
 
   const ATTACH_PREFIX="[[AVP_ATTACHMENT_V1]]";
+  const AUTO_REPLY_PREFIX="[[AVP_AUTO_REPLY]]";
   const CHAT_BUCKET="chat-attachments";
   const MAX_FILE_BYTES=20*1024*1024;
   const MAX_FILES_PER_SEND=5;
@@ -176,6 +177,94 @@
     return false;
   }
 
+  /* ================= SMART AUTO REPLY ================= */
+  let adminPresenceTimer=null;
+
+  async function pingAdminPresence(){
+    if(document.visibilityState!=="visible")return;
+    try{await rpc("avp_chat_admin_presence_ping")}catch(e){console.warn("AVP admin presence",e)}
+  }
+
+  function startAdminPresence(){
+    clearInterval(adminPresenceTimer);
+    pingAdminPresence();
+    adminPresenceTimer=setInterval(pingAdminPresence,60000);
+    document.addEventListener("visibilitychange",()=>{
+      if(document.visibilityState==="visible")pingAdminPresence();
+    });
+  }
+
+  async function mountAutoReplySettings(){
+    const toolbar=document.querySelector("#adminChatInbox .admin-chat-toolbar");
+    if(!toolbar||$("avpAutoReplySettings"))return;
+
+    const wrap=document.createElement("div");
+    wrap.id="avpAutoReplySettings";
+    wrap.className="avp-auto-settings";
+    wrap.innerHTML=`
+      <button type="button" class="avp-auto-settings-toggle" id="avpAutoSettingsToggle">⚡ Auto-reply</button>
+      <div class="avp-auto-settings-panel" id="avpAutoSettingsPanel" hidden>
+        <div class="avp-auto-settings-head">
+          <div><strong>Trả lời tự động thông minh</strong><small>Chỉ gửi khi Admin offline và không lặp liên tục.</small></div>
+          <label class="avp-switch"><input id="avpAutoEnabled" type="checkbox"><span></span></label>
+        </div>
+        <label class="avp-auto-field"><span>Nội dung trả lời</span><textarea id="avpAutoMessage" maxlength="1000" rows="3"></textarea></label>
+        <div class="avp-auto-grid">
+          <label class="avp-auto-field"><span>Không gửi lại trong</span>
+            <select id="avpAutoCooldown">
+              <option value="3">3 giờ</option><option value="6">6 giờ</option>
+              <option value="12">12 giờ</option><option value="24">24 giờ</option>
+            </select>
+          </label>
+          <label class="avp-auto-field"><span>Coi Admin offline sau</span>
+            <select id="avpAutoOffline">
+              <option value="5">5 phút</option><option value="7">7 phút</option>
+              <option value="10">10 phút</option><option value="15">15 phút</option>
+            </select>
+          </label>
+        </div>
+        <div class="avp-auto-settings-actions">
+          <small id="avpAutoSettingsStatus"></small>
+          <button type="button" id="avpAutoSettingsSave">Lưu cài đặt</button>
+        </div>
+      </div>`;
+    toolbar.appendChild(wrap);
+
+    const panel=$("avpAutoSettingsPanel");
+    $("avpAutoSettingsToggle")?.addEventListener("click",()=>{panel.hidden=!panel.hidden});
+
+    async function load(){
+      try{
+        const s=await rpc("avp_chat_admin_get_auto_reply_settings");
+        $("avpAutoEnabled").checked=!!s?.enabled;
+        $("avpAutoMessage").value=s?.message_text||"";
+        $("avpAutoCooldown").value=String(s?.cooldown_hours||6);
+        $("avpAutoOffline").value=String(s?.offline_after_minutes||7);
+        const st=$("avpAutoSettingsStatus");
+        if(st)st.textContent=s?.enabled?"Đang bật":"Đang tắt";
+      }catch(e){console.warn("AVP auto settings load",e)}
+    }
+
+    $("avpAutoSettingsSave")?.addEventListener("click",async()=>{
+      const btn=$("avpAutoSettingsSave"),st=$("avpAutoSettingsStatus");
+      if(btn)btn.disabled=true;
+      try{
+        await rpc("avp_chat_admin_set_auto_reply_settings",{
+          p_enabled:!!$("avpAutoEnabled")?.checked,
+          p_message_text:String($("avpAutoMessage")?.value||"").trim(),
+          p_cooldown_hours:Number($("avpAutoCooldown")?.value||6),
+          p_offline_after_minutes:Number($("avpAutoOffline")?.value||7)
+        });
+        if(st)st.textContent="Đã lưu";
+        setTimeout(()=>{if(st)st.textContent=$("avpAutoEnabled")?.checked?"Đang bật":"Đang tắt"},1400);
+      }catch(e){
+        if(st)st.textContent="Không lưu được";
+        alert("Không lưu được Auto-reply. "+(e?.message||""));
+      }finally{if(btn)btn.disabled=false}
+    });
+    await load();
+  }
+
   function msgHtml(m, adminView=false){
     const type=m.sender_type||"system";
     let cls=type;
@@ -184,8 +273,12 @@
     const who=adminView
       ? (type==="system"?"Hệ thống":type==="admin"?"Bạn (Admin)":"Học viên")
       : (type==="system"?"Hệ thống":type==="admin"?"Admin":"Bạn");
-    const a=parseAttachmentBody(m.body);
-    const content=a?attachmentCardHtml(a):`<div>${esc(m.body)}</div>`;
+    const rawBody=String(m.body||"");
+    const isAutoReply=rawBody.startsWith(AUTO_REPLY_PREFIX);
+    const displayBody=isAutoReply?rawBody.slice(AUTO_REPLY_PREFIX.length).trim():rawBody;
+    const a=parseAttachmentBody(displayBody);
+    const autoBadge=isAutoReply?'<span class="avp-auto-reply-badge">Tự động</span>':"";
+    const content=(a?attachmentCardHtml(a):`<div>${esc(displayBody)}</div>`)+autoBadge;
     const mid=esc(m.id||"");
     const react=type==="system"||!mid?"":`<div class="avp-reaction-wrap" data-reaction-message="${mid}">
       <button class="avp-reaction-like" type="button" aria-label="Thích tin nhắn" title="Chạm để 👍, giữ để chọn">👍</button>
@@ -471,6 +564,8 @@
   }
   async function initAdmin(){
     if(!(await isAdmin()))return;
+    startAdminPresence();
+    await mountAutoReplySettings();
     $("adminChatSearch")?.addEventListener("input",e=>renderAdminThreads(e.target.value));
     $("adminChatRefresh")?.addEventListener("click",loadAdminThreads);
     $("adminChatReplyBtn")?.addEventListener("click",sendAdminMessage);
@@ -602,6 +697,7 @@
   }
 
   async function initFloatingAdmin(){
+    startAdminPresence();
     mountAdminFloatingUI();
     await loadFloatingAdminThreads();
     clearInterval(floatPoll);
@@ -626,7 +722,8 @@
     try{ clearInterval(pollTimer); }catch{}
     try{ clearInterval(adminPoll); }catch{}
     try{ clearInterval(floatPoll); }catch{}
-    pollTimer=null;adminPoll=null;floatPoll=null;
+    try{ clearInterval(adminPresenceTimer); }catch{}
+    pollTimer=null;adminPoll=null;floatPoll=null;adminPresenceTimer=null;
     threadId=null;activeThread=null;floatActiveThread=null;
     try{ if(realtimeChannel&&client) await client.removeChannel(realtimeChannel); }catch{}
     try{ if(floatRealtime&&client) await client.removeChannel(floatRealtime); }catch{}
