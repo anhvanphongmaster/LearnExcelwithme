@@ -50,3 +50,256 @@ body.dark-mode .avp-hub{background:#151b17;color:#eef4f0}body.dark-mode .avp-hub
 @media(max-width:600px){
   .avp-hub-quick .avp-hub-btn{ flex: 1 1 100%; }
 }
+
+/* =========================================================
+   AVP EDGE LAUNCHER V3
+   1 nút nổi duy nhất, kéo được và chỉ nằm sát viền
+   ========================================================= */
+
+/* Hai nút chức năng gốc vẫn tồn tại để JS xử lý click,
+   nhưng không còn chiếm chỗ trên màn hình. */
+#avpChatBubble,
+#avpAiChatBubble{
+  position:fixed !important;
+  width:1px !important;
+  height:1px !important;
+  min-width:1px !important;
+  min-height:1px !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+  transform:none !important;
+  right:-20px !important;
+  bottom:-20px !important;
+  overflow:hidden !important;
+  box-shadow:none !important;
+}
+
+.avp-edge-launcher{
+  position:fixed;
+  top:56vh;
+  z-index:2147481998;
+  width:48px;
+  height:48px;
+  pointer-events:auto;
+  touch-action:none;
+}
+
+.avp-edge-launcher.is-right{
+  right:3px;
+  left:auto;
+}
+
+.avp-edge-launcher.is-left{
+  left:3px;
+  right:auto;
+}
+
+/* Nút chính nhỏ và chỉ sát viền */
+.avp-edge-launcher .avp-edge-main{
+  position:absolute !important;
+  inset:0 !important;
+
+  width:48px !important;
+  height:48px !important;
+
+  border-radius:15px !important;
+  border:1px solid rgba(255,255,255,.28) !important;
+
+  background:#217346 !important;
+  color:#fff !important;
+
+  font-size:24px !important;
+  line-height:1 !important;
+
+  box-shadow:0 8px 22px rgba(23,86,52,.22) !important;
+
+  cursor:grab !important;
+  pointer-events:auto !important;
+  touch-action:none !important;
+
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+
+  right:auto !important;
+  left:auto !important;
+  top:auto !important;
+  bottom:auto !important;
+
+  transition:
+    transform .15s ease,
+    border-radius .15s ease,
+    box-shadow .15s ease !important;
+}
+
+.avp-edge-launcher.is-right .avp-edge-main{
+  border-radius:15px 0 0 15px !important;
+}
+
+.avp-edge-launcher.is-left .avp-edge-main{
+  border-radius:0 15px 15px 0 !important;
+}
+
+.avp-edge-launcher.open .avp-edge-main{
+  transform:scale(.96);
+}
+
+.avp-edge-launcher.is-dragging .avp-edge-main{
+  cursor:grabbing !important;
+  transform:scale(.94);
+}
+
+.avp-edge-main-icon{
+  display:block;
+  transform:translateY(-1px);
+}
+
+/* Badge đỏ chưa đọc luôn nằm ngoài menu */
+.avp-edge-badge{
+  position:absolute;
+  top:-6px;
+  right:-3px;
+
+  min-width:18px;
+  height:18px;
+  padding:0 4px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:2px solid #fff;
+  border-radius:999px;
+
+  background:#e11d48;
+  color:#fff;
+
+  font:800 10px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+  box-shadow:0 3px 10px rgba(225,29,72,.28);
+  pointer-events:none;
+}
+
+.avp-edge-badge[hidden]{
+  display:none !important;
+}
+
+/* Menu bung vào trong màn hình, không bung ra ngoài viền */
+.avp-edge-menu{
+  position:absolute;
+  bottom:0;
+
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+
+  width:max-content;
+
+  pointer-events:auto;
+}
+
+.avp-edge-menu[hidden]{
+  display:none !important;
+}
+
+.avp-edge-launcher.is-right .avp-edge-menu{
+  right:56px;
+  align-items:flex-end;
+}
+
+.avp-edge-launcher.is-left .avp-edge-menu{
+  left:56px;
+  align-items:flex-start;
+}
+
+.avp-edge-action{
+  height:38px;
+  min-width:118px;
+
+  padding:0 11px;
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  border:1px solid rgba(33,115,70,.14);
+  border-radius:12px;
+
+  background:rgba(255,255,255,.96);
+  color:#214b34;
+
+  box-shadow:0 7px 20px rgba(28,68,46,.12);
+
+  font:700 12px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+
+  cursor:pointer;
+  white-space:nowrap;
+
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+
+  animation:avpEdgeMenuIn .15s ease both;
+}
+
+.avp-edge-action span{
+  width:20px;
+  text-align:center;
+  font-size:16px;
+}
+
+.avp-edge-action:active{
+  transform:scale(.96);
+}
+
+@keyframes avpEdgeMenuIn{
+  from{
+    opacity:0;
+    transform:translateX(6px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+/* CSS cũ của fab không còn điều khiển vị trí */
+body > .avp-hub-fab{
+  display:none !important;
+}
+
+@media(max-width:600px){
+  .avp-edge-launcher{
+    width:44px;
+    height:44px;
+  }
+
+  .avp-edge-launcher .avp-edge-main{
+    width:44px !important;
+    height:44px !important;
+    font-size:22px !important;
+  }
+
+  .avp-edge-launcher.is-right .avp-edge-main{
+    border-radius:14px 0 0 14px !important;
+  }
+
+  .avp-edge-launcher.is-left .avp-edge-main{
+    border-radius:0 14px 14px 0 !important;
+  }
+
+  .avp-edge-launcher.is-right .avp-edge-menu{
+    right:52px;
+  }
+
+  .avp-edge-launcher.is-left .avp-edge-menu{
+    left:52px;
+  }
+
+  .avp-edge-action{
+    height:36px;
+    min-width:110px;
+    padding:0 10px;
+    border-radius:11px;
+    font-size:11px;
+  }
+}

@@ -39,89 +39,262 @@
   }
   const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); const attr=esc;
   const ago=t=>{const m=Math.max(0,Math.floor((Date.now()-t)/60000));if(m<1)return'Vừa xem';if(m<60)return`${m} phút trước`;const h=Math.floor(m/60);if(h<24)return`${h} giờ trước`;return`${Math.floor(h/24)} ngày trước`};
-  function openHub(){back.classList.add('open');hub.innerHTML=renderHub();hub.querySelector('.avp-hub-close').onclick=closeHub;hub.querySelector('[data-export]').onclick=exportData;hub.querySelector('[data-import]').onchange=importData}
+  function openHub(){setEdgeMenu(false);back.classList.add('open');hub.innerHTML=renderHub();hub.querySelector('.avp-hub-close').onclick=closeHub;hub.querySelector('[data-export]').onclick=exportData;hub.querySelector('[data-import]').onchange=importData}
   function closeHub(){back.classList.remove('open')}
   function exportData(){const data={version:2,exportedAt:new Date().toISOString(),origin:'LearnExcelwithme',storage:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(/^(avp_|completedCourses|currentCourse|quizBestScore|dashboardLots|theme)/.test(k)))data.storage[k]=localStorage.getItem(k)}const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`learn-excel-progress-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href);toast('Đã xuất tiến độ')}
   function importData(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||d.origin!=='LearnExcelwithme'||!d.storage)throw 0;Object.entries(d.storage).forEach(([k,v])=>localStorage.setItem(k,v));toast('Đã khôi phục tiến độ');setTimeout(()=>location.reload(),700)}catch{(window.avpAlert?window.avpAlert('File tiến độ không hợp lệ.',{title:"Excel",icon:"📥",tone:"ok"}):alert('File tiến độ không hợp lệ.'))}};r.readAsText(f)}
-  const fab=document.createElement('button');fab.className='avp-hub-fab';fab.title='Trung tâm học tập — kéo để di chuyển';fab.setAttribute('aria-label','Mở trung tâm học tập');fab.textContent='📚';document.body.appendChild(fab);
-  const back=document.createElement('div');back.className='avp-hub-backdrop';back.innerHTML='<aside class="avp-hub" role="dialog" aria-modal="true" aria-label="Trung tâm học tập"></aside>';document.body.appendChild(back);const hub=back.querySelector('.avp-hub');
-  /* --- Nút ảo kéo được (giống Home iPhone), nhớ vị trí --- */
-  (function enableDragFab(btn){
-    const POS_KEY='avp_hub_fab_pos_v1';
-    const margin=8;
-    function clamp(v,min,max){return Math.max(min,Math.min(max,v))}
-    function applyPos(pos){
-      if(!pos||typeof pos.x!=='number'||typeof pos.y!=='number')return;
-      const w=btn.offsetWidth||54,h=btn.offsetHeight||54;
-      const x=clamp(pos.x,margin,window.innerWidth-w-margin);
-      const y=clamp(pos.y,margin,window.innerHeight-h-margin);
-      btn.style.left=x+'px';
-      btn.style.top=y+'px';
-      btn.style.right='auto';
-      btn.style.bottom='auto';
+  /* =========================================================
+     FLOATING ACTION HUB V3
+     1 nút duy nhất ở viền: Trung tâm học / Chat Admin / Hỏi AI
+     ========================================================= */
+  const launcher=document.createElement('div');
+  launcher.className='avp-edge-launcher is-right';
+  launcher.id='avpEdgeLauncher';
+
+  launcher.innerHTML=`
+    <div class="avp-edge-menu" id="avpEdgeMenu" hidden>
+      <button type="button" class="avp-edge-action" data-edge-action="ai">
+        <span>✨</span><b>Hỏi AI</b>
+      </button>
+      <button type="button" class="avp-edge-action" data-edge-action="learning">
+        <span>📚</span><b>Học tập</b>
+      </button>
+      <button type="button" class="avp-edge-action" data-edge-action="chat">
+        <span>💬</span><b>Chat Admin</b>
+      </button>
+    </div>
+
+    <button
+      type="button"
+      class="avp-hub-fab avp-edge-main"
+      id="avpEdgeMain"
+      aria-label="Mở công cụ nhanh"
+      aria-expanded="false"
+      title="Công cụ nhanh — kéo để di chuyển"
+    >
+      <span class="avp-edge-main-icon">＋</span>
+      <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
+    </button>
+  `;
+
+  document.body.appendChild(launcher);
+
+  const fab=launcher.querySelector('#avpEdgeMain');
+  const edgeMenu=launcher.querySelector('#avpEdgeMenu');
+  const edgeBadge=launcher.querySelector('#avpEdgeBadge');
+
+  const back=document.createElement('div');
+  back.className='avp-hub-backdrop';
+  back.innerHTML='<aside class="avp-hub" role="dialog" aria-modal="true" aria-label="Trung tâm học tập"></aside>';
+  document.body.appendChild(back);
+  const hub=back.querySelector('.avp-hub');
+
+  function setEdgeMenu(open){
+    edgeMenu.hidden=!open;
+    launcher.classList.toggle('open',open);
+    fab.setAttribute('aria-expanded',open?'true':'false');
+    const icon=fab.querySelector('.avp-edge-main-icon');
+    if(icon)icon.textContent=open?'×':'＋';
+  }
+
+  function clickHiddenTool(id,label){
+    const btn=document.getElementById(id);
+    if(btn){
+      btn.click();
+      return true;
     }
-    try{
-      const saved=JSON.parse(localStorage.getItem(POS_KEY)||'null');
-      if(saved) applyPos(saved);
-    }catch(e){}
-    window.addEventListener('resize',()=>{
-      try{
-        const saved=JSON.parse(localStorage.getItem(POS_KEY)||'null');
-        if(saved) applyPos(saved);
-      }catch(e){}
+    toast(`${label} đang tải, thử lại sau một chút`);
+    return false;
+  }
+
+  launcher.querySelectorAll('[data-edge-action]').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.preventDefault();
+      e.stopPropagation();
+
+      const action=btn.dataset.edgeAction;
+      setEdgeMenu(false);
+
+      if(action==='learning'){
+        openHub();
+      }else if(action==='chat'){
+        clickHiddenTool('avpChatBubble','Chat Admin');
+      }else if(action==='ai'){
+        clickHiddenTool('avpAiChatBubble','AI Chat');
+      }
     });
-    let dragging=false, moved=false, sx=0, sy=0, ox=0, oy=0, pid=null;
-    function point(e){
-      if(e.touches&&e.touches[0]) return {x:e.touches[0].clientX,y:e.touches[0].clientY};
-      return {x:e.clientX,y:e.clientY};
+  });
+
+  /* Mirror badge chưa đọc từ Chat Admin ra nút chính.
+     Không dùng observer toàn trang; chỉ polling rất nhẹ. */
+  function syncEdgeBadge(){
+    const chatBadge=document.getElementById('avpChatBadge');
+
+    if(!chatBadge){
+      edgeBadge.hidden=true;
+      edgeBadge.textContent='0';
+      return;
     }
-    function onDown(e){
-      if(e.button!=null&&e.button!==0)return;
-      const p=point(e);
-      const r=btn.getBoundingClientRect();
-      dragging=true; moved=false; pid=e.pointerId;
-      sx=p.x; sy=p.y; ox=r.left; oy=r.top;
-      btn.classList.add('is-dragging');
-      try{btn.setPointerCapture(e.pointerId)}catch(err){}
-      e.preventDefault();
+
+    const raw=String(chatBadge.textContent||'').trim();
+    let count=parseInt(raw.replace(/\D/g,''),10)||0;
+
+    const visible=
+      !chatBadge.hidden &&
+      getComputedStyle(chatBadge).display!=='none' &&
+      count>0;
+
+    if(!visible){
+      edgeBadge.hidden=true;
+      edgeBadge.textContent='0';
+      return;
     }
-    function onMove(e){
-      if(!dragging)return;
-      const p=point(e);
-      const dx=p.x-sx, dy=p.y-sy;
-      if(Math.abs(dx)>6||Math.abs(dy)>6) moved=true;
-      if(!moved)return;
-      applyPos({x:ox+dx,y:oy+dy});
-      e.preventDefault();
+
+    edgeBadge.hidden=false;
+    edgeBadge.textContent=count>9?'9+':String(count);
+  }
+
+  syncEdgeBadge();
+  const edgeBadgeTimer=setInterval(syncEdgeBadge,1600);
+  window.addEventListener('pagehide',()=>clearInterval(edgeBadgeTimer),{once:true});
+
+  /* Kéo dọc màn hình + snap sát viền trái/phải, nhớ vị trí. */
+  (function enableDragEdgeLauncher(root,btn){
+    const POS_KEY='avp_edge_launcher_pos_v3';
+    const margin=3;
+
+    function clamp(v,min,max){
+      return Math.max(min,Math.min(max,v));
     }
-    function onUp(e){
-      if(!dragging)return;
-      dragging=false;
-      btn.classList.remove('is-dragging');
-      try{btn.releasePointerCapture(pid)}catch(err){}
-      if(moved){
-        const r=btn.getBoundingClientRect();
-        const pos={x:r.left,y:r.top};
-        try{localStorage.setItem(POS_KEY,JSON.stringify(pos))}catch(err){}
-        // snap to nearest horizontal edge (kiểu home ảo)
-        const mid=window.innerWidth/2;
-        const w=r.width;
-        const snapX = (r.left+w/2)<mid ? margin : window.innerWidth-w-margin;
-        applyPos({x:snapX,y:r.top});
-        try{localStorage.setItem(POS_KEY,JSON.stringify({x:snapX,y:r.top}))}catch(err){}
-        btn._skipClick=true;
-        setTimeout(()=>{btn._skipClick=false},280);
+
+    function apply(pos){
+      const w=root.offsetWidth||48;
+      const h=root.offsetHeight||48;
+
+      const side=pos?.side==='left'?'left':'right';
+      const maxY=Math.max(margin,window.innerHeight-h-margin);
+      const y=clamp(Number(pos?.y)||Math.round(window.innerHeight*.55),margin,maxY);
+
+      root.style.top=y+'px';
+      root.style.bottom='auto';
+
+      if(side==='left'){
+        root.style.left=margin+'px';
+        root.style.right='auto';
+        root.classList.add('is-left');
+        root.classList.remove('is-right');
+      }else{
+        root.style.right=margin+'px';
+        root.style.left='auto';
+        root.classList.add('is-right');
+        root.classList.remove('is-left');
       }
     }
-    btn.addEventListener('pointerdown',onDown,{passive:false});
-    btn.addEventListener('pointermove',onMove,{passive:false});
-    btn.addEventListener('pointerup',onUp);
-    btn.addEventListener('pointercancel',onUp);
-    btn.addEventListener('click',function(e){
-      if(btn._skipClick){ e.preventDefault(); e.stopImmediatePropagation(); return; }
-      openHub();
+
+    let saved=null;
+    try{
+      saved=JSON.parse(localStorage.getItem(POS_KEY)||'null');
+    }catch{}
+
+    apply(saved||{side:'right',y:Math.round(window.innerHeight*.56)});
+
+    window.addEventListener('resize',()=>{
+      let p=null;
+      try{p=JSON.parse(localStorage.getItem(POS_KEY)||'null')}catch{}
+      apply(p||{side:root.classList.contains('is-left')?'left':'right',y:root.getBoundingClientRect().top});
     });
-  })(fab);
+
+    let dragging=false;
+    let moved=false;
+    let sx=0,sy=0,startTop=0,pid=null;
+
+    btn.addEventListener('pointerdown',e=>{
+      if(e.button!=null&&e.button!==0)return;
+
+      dragging=true;
+      moved=false;
+      pid=e.pointerId;
+      sx=e.clientX;
+      sy=e.clientY;
+      startTop=root.getBoundingClientRect().top;
+
+      root.classList.add('is-dragging');
+      try{btn.setPointerCapture(pid)}catch{}
+      e.preventDefault();
+    },{passive:false});
+
+    btn.addEventListener('pointermove',e=>{
+      if(!dragging)return;
+
+      const dx=e.clientX-sx;
+      const dy=e.clientY-sy;
+
+      if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;
+      if(!moved)return;
+
+      const h=root.offsetHeight||48;
+      const y=clamp(startTop+dy,margin,window.innerHeight-h-margin);
+
+      root.style.top=y+'px';
+
+      /* trong lúc kéo, đổi bên theo vị trí ngón tay */
+      const side=e.clientX<window.innerWidth/2?'left':'right';
+
+      if(side==='left'){
+        root.style.left=margin+'px';
+        root.style.right='auto';
+        root.classList.add('is-left');
+        root.classList.remove('is-right');
+      }else{
+        root.style.right=margin+'px';
+        root.style.left='auto';
+        root.classList.add('is-right');
+        root.classList.remove('is-left');
+      }
+
+      setEdgeMenu(false);
+      e.preventDefault();
+    },{passive:false});
+
+    function finish(e){
+      if(!dragging)return;
+
+      dragging=false;
+      root.classList.remove('is-dragging');
+
+      try{btn.releasePointerCapture(pid)}catch{}
+
+      if(moved){
+        const r=root.getBoundingClientRect();
+        const side=root.classList.contains('is-left')?'left':'right';
+        const pos={side,y:r.top};
+
+        try{localStorage.setItem(POS_KEY,JSON.stringify(pos))}catch{}
+        apply(pos);
+
+        btn.dataset.justDragged='1';
+        setTimeout(()=>delete btn.dataset.justDragged,260);
+      }
+    }
+
+    btn.addEventListener('pointerup',finish);
+    btn.addEventListener('pointercancel',finish);
+
+    btn.addEventListener('click',e=>{
+      if(btn.dataset.justDragged==='1'){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return;
+      }
+
+      setEdgeMenu(edgeMenu.hidden);
+    });
+  })(launcher,fab);
+
+  document.addEventListener('pointerdown',e=>{
+    if(!launcher.contains(e.target))setEdgeMenu(false);
+  },{passive:true});
+
   back.addEventListener('click',e=>{if(e.target===back)closeHub()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHub()});
   if(!IGNORE.has(page)&&page!=='index.html'){
