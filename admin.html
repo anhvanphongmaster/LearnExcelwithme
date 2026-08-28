@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
-<link rel="stylesheet" href="admin.css?v=20260828-user-management">
+<link rel="stylesheet" href="admin.css?v=20260828-downloads1">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#217346">
@@ -108,6 +108,9 @@ where is_admin = true;</pre>
         </button>
         <button type="button" data-admin-view="votes" role="tab">
           <b>🗳️ Vote</b><small>Nhu cầu học viên</small>
+        </button>
+        <button type="button" data-admin-view="downloads" role="tab">
+          <b>📦 Tải xuống</b><small>File & tài nguyên toàn web</small>
         </button>
         <button type="button" data-admin-view="inbox" role="tab">
           <b>📥 Hộp thư</b><small>Thắc mắc, ý tưởng & file</small>
@@ -266,48 +269,69 @@ where is_admin = true;</pre>
       </article>
     </section>
 
-<div class="admin-section-heading admin-view-section" data-admin-section="votes"><span>🗳️ VOTE</span><h2>Học viên đang muốn học gì tiếp?</h2></div>
-<section class="admin-panel pvote-panel admin-view-section" id="practiceVotesSection" data-admin-section="votes">
-      <div class="admin-panel-head">
-        <div>
-          <span>📝 VOTE BÀI TẬP</span>
-          <h2>Nhu cầu hướng dẫn từ học viên</h2>
-        </div>
-      </div>
-      <div class="pvote-monthbar">
-        <button type="button" id="pvotePrevMonth" aria-label="Tháng trước">←</button>
-        <div><small>Đang xem</small><strong id="pvoteMonthLabel">Tháng hiện tại</strong></div>
-        <button type="button" id="pvoteNextMonth" aria-label="Tháng sau">→</button>
-      </div>
+<div class="admin-section-heading admin-view-section" data-admin-section="votes"><span>🗳️ VOTE</span><h2>Trung tâm quản lý nhu cầu học viên</h2></div>
+<section class="admin-panel admin-vote-manager admin-view-section" id="adminVoteManager" data-admin-section="votes">
+  <div class="admin-panel-head admin-vote-head">
+    <div>
+      <span>🧭 VOTE CENTER</span>
+      <h2>3 hệ thống vote — tách riêng, dễ kiểm tra</h2>
+      <p>Vote chủ đề, yêu cầu hướng dẫn bài tập và định hướng YouTube/TikTok không còn trộn chung.</p>
+    </div>
+    <button id="adminVoteReload" class="admin-vote-refresh" type="button">↻ Làm mới</button>
+  </div>
 
-      <div class="channel-vote-box" id="channelVoteBox">
-        <div class="channel-vote-head">
-          <div>
-            <span>🎬 ĐỊNH HƯỚNG KÊNH</span>
-            <strong>Tiếp tục YouTube hay tập trung TikTok?</strong>
-          </div>
-          <small id="channelVoteWinner">Đang tải vote trong tháng…</small>
-        </div>
+  <div class="admin-vote-periods" role="tablist" aria-label="Khoảng thời gian vote">
+    <button type="button" class="active" data-vote-period="today">Hôm nay</button>
+    <button type="button" data-vote-period="7d">7 ngày</button>
+    <button type="button" data-vote-period="all">Tổng</button>
+  </div>
 
-        <div class="channel-vote-grid">
-          <div class="channel-vote-card youtube">
-            <span>▶️ Tiếp tục YouTube</span>
-            <strong id="channelVoteYoutube">0</strong><small>vote</small>
-          </div>
-          <div class="channel-vote-card tiktok">
-            <span>📱 Tập trung TikTok</span>
-            <strong id="channelVoteTiktok">0</strong><small>vote</small>
-          </div>
-        </div>
+  <div class="admin-vote-kpis">
+    <article><small>Tổng vote</small><strong id="voteKpiTotal">—</strong><em id="voteKpiPeriod">Hôm nay</em></article>
+    <article><small>Vote chủ đề</small><strong id="voteKpiTopics">—</strong><em>Chủ đề tiếp theo</em></article>
+    <article><small>Cần hướng dẫn</small><strong id="voteKpiLessons">—</strong><em>Bài tập Excel</em></article>
+    <article><small>Vote YouTube/TikTok</small><strong id="voteKpiChannel">—</strong><em>Định hướng nội dung</em></article>
+  </div>
 
-        <div class="channel-vote-ratio">
-          <span>Tỷ lệ chọn YouTube</span>
-          <div class="channel-vote-track"><i id="channelVoteYoutubeBar"></i></div>
-        </div>
+  <div class="admin-vote-grid">
+    <article class="admin-vote-card">
+      <div class="admin-vote-card-head"><div><span>📚 CHỦ ĐỀ TIẾP THEO</span><h3>Học viên muốn học gì?</h3></div><b id="voteTopicTotal">0</b></div>
+      <div id="voteTopicRanking" class="admin-vote-ranking"><div class="pvote-empty">Đang tải…</div></div>
+    </article>
+
+    <article class="admin-vote-card">
+      <div class="admin-vote-card-head"><div><span>🙋 CẦN HƯỚNG DẪN</span><h3>Bài nào đang cần video nhất?</h3></div><b id="voteLessonTotal">0</b></div>
+      <div id="voteLessonRanking" class="admin-vote-ranking"><div class="pvote-empty">Đang tải…</div></div>
+    </article>
+
+    <article class="admin-vote-card">
+      <div class="admin-vote-card-head"><div><span>🎬 YOUTUBE / TIKTOK</span><h3>Định hướng nội dung</h3></div><b id="voteChannelTotal">0</b></div>
+      <div class="admin-channel-split">
+        <div><span>▶️ YouTube</span><strong id="voteYoutubeCount">0</strong></div>
+        <div><span>📱 TikTok</span><strong id="voteTiktokCount">0</strong></div>
       </div>
-      <div id="practiceVotesList"><div class="pvote-empty">Đang tải…</div></div>
-      <p class="pvote-note">Mỗi tháng là một kỳ thống kê riêng. Sang tháng mới, số hiển thị tự bắt đầu lại từ 0; lịch sử tháng cũ vẫn được giữ để xem lại.</p>
-    </section>
+      <div class="admin-channel-track"><i id="voteYoutubeTrack"></i></div>
+      <p id="voteChannelWinner" class="admin-vote-winner">Chưa có vote.</p>
+    </article>
+  </div>
+
+  <div class="admin-vote-history-head">
+    <div><span>🕘 LỊCH SỬ VOTE</span><h3>Kiểm tra và xoá vote cụ thể</h3><p>Chỉ Admin mới thấy và xoá được. Xoá một dòng sẽ cập nhật dashboard ngay.</p></div>
+    <select id="adminVoteHistoryFilter" aria-label="Lọc loại vote">
+      <option value="all">Tất cả</option>
+      <option value="topic">Vote chủ đề</option>
+      <option value="lesson">Cần hướng dẫn</option>
+      <option value="channel">YouTube / TikTok</option>
+    </select>
+  </div>
+  <div class="admin-vote-history-wrap">
+    <table class="admin-vote-history">
+      <thead><tr><th>Thời gian</th><th>Loại</th><th>Nội dung</th><th>Người vote</th><th></th></tr></thead>
+      <tbody id="adminVoteHistoryBody"><tr><td colspan="5" class="admin-users-empty">Đang tải lịch sử vote…</td></tr></tbody>
+    </table>
+  </div>
+  <p id="adminVoteNotice" class="pvote-note">Chạy <code>ADMIN-VOTE-MANAGEMENT-V1.sql</code> một lần trong Supabase để bật đầy đủ khu này.</p>
+</section>
 
     <section class="admin-two-column admin-learning-grid admin-view-section" id="adminLearningDetail" data-admin-section="learning">
       <article class="admin-panel">
@@ -319,6 +343,47 @@ where is_admin = true;</pre>
         <div id="quizDifficulty" class="admin-quiz-list"></div>
         <p class="admin-panel-footnote">Dữ liệu độ khó quiz bắt đầu tích lũy từ V15.</p>
       </article>
+    </section>
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="downloads"><span>📦 TẢI XUỐNG</span><h2>Quản lý toàn bộ file trên website</h2></div>
+    <section class="admin-panel admin-download-manager admin-view-section" data-admin-section="downloads">
+      <div class="admin-download-head">
+        <div><strong>Kho file trung tâm</strong><small>Thay file một lần, các nút tải cũ trên website tự dùng file mới.</small></div>
+        <button id="adminDownloadNew" type="button">＋ Thêm file</button>
+      </div>
+      <div class="admin-download-kpis">
+        <article><small>Tổng tài nguyên</small><strong id="dlKpiTotal">—</strong></article>
+        <article><small>Đang hiển thị</small><strong id="dlKpiActive">—</strong></article>
+        <article><small>Đang ẩn</small><strong id="dlKpiHidden">—</strong></article>
+        <article><small>Lượt tải</small><strong id="dlKpiCount">—</strong></article>
+      </div>
+      <div class="admin-download-toolbar">
+        <input id="adminDownloadSearch" type="search" placeholder="Tìm tên file hoặc đường dẫn…">
+        <select id="adminDownloadCategory"><option value="">Tất cả nhóm</option></select>
+        <select id="adminDownloadStatus"><option value="all">Tất cả trạng thái</option><option value="active">Đang hiện</option><option value="hidden">Đang ẩn</option></select>
+        <button id="adminDownloadReload" type="button">↻ Làm mới</button>
+      </div>
+      <div id="adminDownloadEditor" class="admin-download-editor" hidden>
+        <div class="admin-download-editor-title"><strong id="adminDownloadEditorTitle">Thêm tài nguyên</strong><button type="button" id="adminDownloadClose">×</button></div>
+        <input type="hidden" id="dlEditId">
+        <div class="admin-download-form">
+          <label><span>Tên hiển thị</span><input id="dlEditTitle" maxlength="160"></label>
+          <label><span>Nhóm</span><input id="dlEditCategory" maxlength="80" placeholder="Kho bài tập"></label>
+          <label class="wide"><span>Đường dẫn gốc trên website</span><input id="dlEditSource" maxlength="500" placeholder="downloads/.../file.xlsx"><small>Nút tải cũ có đường dẫn này sẽ tự được quản lý.</small></label>
+          <label class="wide"><span>Link file thay thế</span><input id="dlEditUrl" maxlength="1200" placeholder="Để trống = dùng file gốc trong GitHub"></label>
+          <label class="wide"><span>Mô tả nội bộ</span><textarea id="dlEditDescription" rows="2"></textarea></label>
+          <label><span>Thứ tự</span><input id="dlEditOrder" type="number" value="0"></label>
+          <label class="check"><input id="dlEditActive" type="checkbox" checked><span>Đang hiển thị</span></label>
+          <label class="check"><input id="dlEditFeatured" type="checkbox"><span>Đánh dấu nổi bật</span></label>
+          <label class="wide"><span>Thay / upload file mới</span><input id="dlEditFile" type="file"><small>Upload lên Supabase Storage; không cần đưa file mới lên GitHub.</small></label>
+        </div>
+        <div class="admin-download-editor-actions"><button id="adminDownloadSave" type="button">Lưu tài nguyên</button><button id="adminDownloadCancel" type="button" class="secondary">Huỷ</button></div>
+      </div>
+      <div class="admin-download-table-wrap">
+        <table class="admin-download-table"><thead><tr><th>File</th><th>Nhóm</th><th>Đường dẫn</th><th>Lượt tải</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>
+        <tbody id="adminDownloadBody"><tr><td colspan="6" class="admin-users-empty">Chuyển sang tab Tải xuống để tải dữ liệu.</td></tr></tbody></table>
+      </div>
+      <p id="adminDownloadNotice" class="admin-users-notice" hidden></p>
     </section>
 
     <div class="admin-section-heading admin-view-section" data-admin-section="analytics"><span>📈 ANALYTICS</span><h2>Xu hướng sử dụng website</h2></div>
@@ -386,7 +451,7 @@ where is_admin = true;</pre>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
-<script defer src="admin.js?v=20260828-user-management"></script>
+<script defer src="admin.js?v=20260828-downloads1"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>

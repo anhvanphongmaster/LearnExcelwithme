@@ -465,7 +465,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","learning","votes","inbox","analytics"];
+    const valid=["overview","users","learning","votes","downloads","inbox","analytics"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
@@ -483,6 +483,8 @@
     });
     try{localStorage.setItem(ADMIN_VIEW_KEY,view)}catch(e){}
     if(view==="users" && !adminUsersCache.length) loadAdminUsers();
+    if(view==="votes") loadAdminVoteManager();
+    if(view==="downloads" && !adminDownloadLoaded) loadAdminDownloads();
     if(opts&&opts.scroll){
       document.querySelector(".admin-command-center")?.scrollIntoView({behavior:"smooth",block:"start"});
     }
@@ -497,6 +499,143 @@
     let saved="overview";
     try{saved=localStorage.getItem(ADMIN_VIEW_KEY)||"overview"}catch(e){}
     setAdminView(saved);
+  }
+
+
+  let adminVotePeriod="today";
+  function votePeriodLabel(v){return v==="today"?"Hôm nay":v==="7d"?"7 ngày":"Tổng"}
+  function voteTypeLabel(row){
+    if(row.source==="topic") return "Chủ đề";
+    if(row.vote_type==="focus_youtube") return "YouTube";
+    if(row.vote_type==="focus_tiktok") return "TikTok";
+    if(row.vote_type==="need_more_guide") return "Hướng dẫn thêm";
+    return "Cần hướng dẫn";
+  }
+  function renderVoteRanking(rootId, rows, kind){
+    const root=$(rootId); if(!root)return;
+    const list=Array.isArray(rows)?rows:[];
+    if(!list.length){root.innerHTML='<div class="pvote-empty">Chưa có vote trong khoảng này.</div>';return}
+    const max=Math.max(1,...list.map(r=>num(r.votes)));
+    root.innerHTML=list.map((r,i)=>{
+      const v=num(r.votes), pct=Math.max(6,Math.round(v/max*100));
+      const title=kind==="topic"?(r.topic_title||r.topic_id):(r.lesson_title||r.lesson_id);
+      const meta=kind==="topic"?"Chủ đề tiếp theo":(r.vote_type==="need_more_guide"?"Cần hướng dẫn thêm":"Cần hướng dẫn");
+      return `<div class="admin-vote-rank-row"><div class="admin-vote-rank-no">${i+1}</div><div class="admin-vote-rank-main"><strong>${escapeHtml(title||"(không tên)")}</strong><small>${escapeHtml(meta)}</small><div class="admin-vote-rank-track"><i style="width:${pct}%"></i></div></div><b>${n(v)}</b></div>`;
+    }).join("");
+  }
+  function renderVoteHistory(rows){
+    const body=$("adminVoteHistoryBody"); if(!body)return;
+    const filter=$("adminVoteHistoryFilter")?.value||"all";
+    let list=Array.isArray(rows)?rows:[];
+    if(filter!=="all") list=list.filter(r=>r.source===filter || (filter==="channel"&&r.source==="lesson"&&(r.vote_type==="focus_youtube"||r.vote_type==="focus_tiktok")));
+    if(!list.length){body.innerHTML='<tr><td colspan="5" class="admin-users-empty">Không có vote phù hợp.</td></tr>';return}
+    body.innerHTML=list.map(r=>`<tr data-source="${escapeHtml(r.source)}" data-id="${escapeHtml(r.vote_id)}"><td><small>${fmtDate(r.created_at)}</small></td><td><span class="admin-vote-pill">${escapeHtml(voteTypeLabel(r))}</span></td><td><strong>${escapeHtml(r.title||r.item_id||"—")}</strong></td><td><small>${escapeHtml(r.actor||"Ẩn danh")}</small></td><td><button type="button" class="admin-vote-delete" data-vote-delete="1">Xoá</button></td></tr>`).join("");
+  }
+  let adminVoteHistoryCache=[];
+  async function loadAdminVoteManager(){
+    const notice=$("adminVoteNotice");
+    try{
+      const [summary,topics,lessons,channels,history]=await Promise.all([
+        rpc("admin_vote_summary",{p_period:adminVotePeriod}),
+        rpc("admin_vote_topic_rankings",{p_period:adminVotePeriod,p_limit:10}),
+        rpc("admin_vote_lesson_rankings",{p_period:adminVotePeriod,p_limit:10}),
+        rpc("admin_vote_channel_summary",{p_period:adminVotePeriod}),
+        rpc("admin_vote_history",{p_period:adminVotePeriod,p_limit:100})
+      ]);
+      if(notice)notice.textContent=`Đang xem ${votePeriodLabel(adminVotePeriod).toLowerCase()}. Xoá vote sẽ cập nhật ngay dữ liệu Supabase.`;
+      $("voteKpiTotal").textContent=n(summary?.total_votes);
+      $("voteKpiTopics").textContent=n(summary?.topic_votes);
+      $("voteKpiLessons").textContent=n(summary?.lesson_votes);
+      $("voteKpiChannel").textContent=n(summary?.channel_votes);
+      $("voteKpiPeriod").textContent=votePeriodLabel(adminVotePeriod);
+      $("voteTopicTotal").textContent=n(summary?.topic_votes);
+      $("voteLessonTotal").textContent=n(summary?.lesson_votes);
+      $("voteChannelTotal").textContent=n(summary?.channel_votes);
+      renderVoteRanking("voteTopicRanking",topics,"topic");
+      renderVoteRanking("voteLessonRanking",lessons,"lesson");
+      const yt=num(channels?.youtube_votes), tt=num(channels?.tiktok_votes), total=yt+tt, pct=total?Math.round(yt/total*100):0;
+      $("voteYoutubeCount").textContent=n(yt); $("voteTiktokCount").textContent=n(tt);
+      $("voteYoutubeTrack").style.width=pct+"%";
+      $("voteChannelWinner").textContent=!total?"Chưa có vote.":yt===tt?`Đang hòa ${yt} – ${tt}`:yt>tt?`YouTube đang dẫn ${yt} – ${tt}`:`TikTok đang dẫn ${tt} – ${yt}`;
+      adminVoteHistoryCache=Array.isArray(history)?history:[]; renderVoteHistory(adminVoteHistoryCache);
+    }catch(e){
+      console.warn("vote manager",e);
+      if(notice)notice.innerHTML='Chưa dùng được Vote Center. Hãy chạy <code>ADMIN-VOTE-MANAGEMENT-V1.sql</code> trong Supabase rồi tải lại.';
+      ["voteTopicRanking","voteLessonRanking"].forEach(id=>{if($(id))$(id).innerHTML='<div class="pvote-empty">Thiếu RPC quản lý vote.</div>'});
+    }
+  }
+  function bindVoteManager(){
+    document.querySelectorAll("[data-vote-period]").forEach(btn=>{
+      if(btn.dataset.bound)return; btn.dataset.bound="1";
+      btn.addEventListener("click",()=>{
+        adminVotePeriod=btn.dataset.votePeriod||"today";
+        document.querySelectorAll("[data-vote-period]").forEach(x=>x.classList.toggle("active",x===btn));
+        loadAdminVoteManager();
+      });
+    });
+    $("adminVoteReload")?.addEventListener("click",()=>{loadAdminVoteManager();toast("Đang làm mới vote...")});
+    $("adminVoteHistoryFilter")?.addEventListener("change",()=>renderVoteHistory(adminVoteHistoryCache));
+    $("adminVoteHistoryBody")?.addEventListener("click",async e=>{
+      const btn=e.target.closest("[data-vote-delete]"); if(!btn)return;
+      const tr=btn.closest("tr"), source=tr?.dataset.source, id=Number(tr?.dataset.id||0); if(!source||!id)return;
+      if(!confirm("Xoá vote này khỏi Supabase?"))return;
+      btn.disabled=true;
+      try{
+        const res=await rpc("admin_vote_delete_one",{p_source:source,p_vote_id:id});
+        if(res?.ok===false) throw new Error(res.error||"delete_failed");
+        toast("Đã xoá vote"); await loadAdminVoteManager();
+      }catch(err){toast("Không xoá được vote");btn.disabled=false}
+    });
+  }
+
+  // ================= DOWNLOAD MANAGEMENT =================
+  let adminDownloadCache=[];
+  let adminDownloadLoaded=false;
+  const dlFmtSize=n=>{n=Number(n)||0;if(n<1024)return n+" B";if(n<1048576)return (n/1024).toFixed(1)+" KB";return (n/1048576).toFixed(1)+" MB"};
+  function dlCategories(){return [...new Set(adminDownloadCache.map(x=>x.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"vi"))}
+  function renderDownloadCategories(){const s=$("adminDownloadCategory");if(!s)return;const keep=s.value;s.innerHTML='<option value="">Tất cả nhóm</option>'+dlCategories().map(x=>`<option>${escapeHtml(x)}</option>`).join("");s.value=keep}
+  function renderAdminDownloads(rows){
+    adminDownloadCache=Array.isArray(rows)?rows:[];renderDownloadCategories();const body=$("adminDownloadBody");if(!body)return;
+    if(!adminDownloadCache.length){body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Không tìm thấy tài nguyên.</td></tr>';return}
+    body.innerHTML=adminDownloadCache.map(r=>`<tr data-download-id="${escapeHtml(r.id)}"><td><div class="admin-download-file"><strong>${escapeHtml(r.title||"(không tên)")}</strong><small>${escapeHtml((r.file_type||"").toUpperCase())} · ${dlFmtSize(r.file_size)}</small></div></td><td>${escapeHtml(r.category||"Khác")}</td><td><div class="admin-download-path">${escapeHtml(r.source_path||"")}</div>${r.file_url?'<small>↪ Có link thay thế</small>':''}</td><td><b>${n(r.download_count)}</b></td><td><span class="admin-download-status ${r.is_active?'on':'off'}">${r.is_active?'Đang hiện':'Đang ẩn'}</span></td><td><div class="admin-download-actions"><button data-dl-act="edit">Sửa</button><button data-dl-act="toggle">${r.is_active?'Ẩn':'Hiện'}</button><button data-dl-act="copy">Copy link</button><button data-dl-act="delete" class="danger">Xoá</button></div></td></tr>`).join("");
+  }
+  async function loadAdminDownloads(){
+    const notice=$("adminDownloadNotice");
+    try{
+      const q=$("adminDownloadSearch")?.value?.trim()||"",cat=$("adminDownloadCategory")?.value||"",status=$("adminDownloadStatus")?.value||"all";
+      const [summary,rows]=await Promise.all([rpc("admin_download_summary"),rpc("admin_download_list",{p_search:q,p_category:cat,p_status:status,p_limit:500})]);
+      $("dlKpiTotal").textContent=n(summary?.total);$("dlKpiActive").textContent=n(summary?.active);$("dlKpiHidden").textContent=n(summary?.hidden);$("dlKpiCount").textContent=n(summary?.downloads);
+      renderAdminDownloads(rows);adminDownloadLoaded=true;if(notice)notice.hidden=true;
+    }catch(e){console.warn("download manager",e);if(notice){notice.hidden=false;notice.innerHTML='Chưa dùng được Kho tải xuống. Hãy chạy <code>ADMIN-DOWNLOAD-MANAGEMENT-V1.sql</code> rồi tải lại trang.'}}
+  }
+  function openDownloadEditor(row){
+    const ed=$("adminDownloadEditor");if(!ed)return;ed.hidden=false;$("adminDownloadEditorTitle").textContent=row?"Sửa tài nguyên":"Thêm tài nguyên";$("dlEditId").value=row?.id||"";$("dlEditTitle").value=row?.title||"";$("dlEditCategory").value=row?.category||"";$("dlEditSource").value=row?.source_path||"";$("dlEditUrl").value=row?.file_url||"";$("dlEditDescription").value=row?.description||"";$("dlEditOrder").value=row?.sort_order||0;$("dlEditActive").checked=row?!!row.is_active:true;$("dlEditFeatured").checked=!!row?.is_featured;$("dlEditFile").value="";ed.scrollIntoView({behavior:"smooth",block:"nearest"});
+  }
+  function closeDownloadEditor(){$("adminDownloadEditor").hidden=true}
+  async function uploadManagedDownload(file){
+    const ext=(file.name.split('.').pop()||'').toLowerCase(), safe=file.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9._-]+/g,'-');
+    const path=`managed/${Date.now()}-${Math.random().toString(36).slice(2,8)}-${safe}`;
+    const {error}=await client.storage.from("site-downloads").upload(path,file,{upsert:false,contentType:file.type||undefined});if(error)throw error;
+    const {data}=client.storage.from("site-downloads").getPublicUrl(path);return {url:data?.publicUrl||"",path,type:ext,size:file.size||0};
+  }
+  async function saveDownloadEditor(){
+    const btn=$("adminDownloadSave");btn.disabled=true;
+    try{
+      let url=$("dlEditUrl").value.trim(),storagePath=null,fileType="",fileSize=0;const file=$("dlEditFile").files?.[0];
+      if(file){toast("Đang upload file...");const up=await uploadManagedDownload(file);url=up.url;storagePath=up.path;fileType=up.type;fileSize=up.size;$("dlEditUrl").value=url;if(!$("dlEditSource").value.trim())$("dlEditSource").value=`downloads/managed/${file.name}`;if(!$("dlEditTitle").value.trim())$("dlEditTitle").value=file.name}
+      const existing=adminDownloadCache.find(x=>x.id===$("dlEditId").value);
+      await rpc("admin_download_save",{p_id:$("dlEditId").value||null,p_source_path:$("dlEditSource").value.trim(),p_title:$("dlEditTitle").value.trim(),p_category:$("dlEditCategory").value.trim()||"Khác",p_description:$("dlEditDescription").value.trim(),p_file_url:url||null,p_storage_path:storagePath||existing?.storage_path||null,p_file_type:fileType||existing?.file_type||"",p_file_size:fileSize||existing?.file_size||0,p_is_active:$("dlEditActive").checked,p_is_featured:$("dlEditFeatured").checked,p_sort_order:Number($("dlEditOrder").value)||0});
+      toast("Đã lưu tài nguyên");closeDownloadEditor();await loadAdminDownloads();
+    }catch(e){console.error(e);toast("Không lưu được: "+(e?.message||e))}finally{btn.disabled=false}
+  }
+  function bindDownloadManagement(){
+    $("adminDownloadNew")?.addEventListener("click",()=>openDownloadEditor(null));$("adminDownloadClose")?.addEventListener("click",closeDownloadEditor);$("adminDownloadCancel")?.addEventListener("click",closeDownloadEditor);$("adminDownloadSave")?.addEventListener("click",saveDownloadEditor);$("adminDownloadReload")?.addEventListener("click",loadAdminDownloads);$("adminDownloadSearch")?.addEventListener("keydown",e=>{if(e.key==="Enter")loadAdminDownloads()});$("adminDownloadCategory")?.addEventListener("change",loadAdminDownloads);$("adminDownloadStatus")?.addEventListener("change",loadAdminDownloads);
+    $("adminDownloadBody")?.addEventListener("click",async e=>{const b=e.target.closest("[data-dl-act]");if(!b)return;const id=b.closest("tr")?.dataset.downloadId,row=adminDownloadCache.find(x=>x.id===id);if(!row)return;const act=b.dataset.dlAct;
+      if(act==="edit")return openDownloadEditor(row);
+      if(act==="copy"){const link=row.file_url||row.source_path;try{await navigator.clipboard.writeText(link);toast("Đã copy link")}catch(_){prompt("Copy link:",link)}return}
+      if(act==="toggle"){b.disabled=true;try{await rpc("admin_download_set_active",{p_id:id,p_active:!row.is_active});toast(row.is_active?"Đã ẩn file":"Đã hiện file");await loadAdminDownloads()}catch(err){toast("Không đổi được trạng thái");b.disabled=false}return}
+      if(act==="delete"){if(!confirm("Xoá tài nguyên khỏi hệ thống quản lý? File vật lý không tự bị xoá."))return;b.disabled=true;try{await rpc("admin_download_delete",{p_id:id});toast("Đã xoá tài nguyên");await loadAdminDownloads()}catch(err){toast("Không xoá được");b.disabled=false}}
+    });
   }
 
   async function init(){
@@ -520,6 +659,8 @@
     bindMailTabs();
     bindAdminViews();
     bindUserManagement();
+    bindVoteManager();
+    bindDownloadManagement();
     loadDashboard();
   }
   $("adminPeriod")?.addEventListener("change",()=>{currentDays=Number($("adminPeriod").value)||30;loadDashboard()});
