@@ -160,6 +160,8 @@
     showMiniPreview(e.detail||{});
   });
 
+  window.AVPShowMiniChatPreview=showMiniPreview;
+
   const back=document.createElement('div');
   back.className='avp-hub-backdrop';
   back.innerHTML='<aside class="avp-hub" role="dialog" aria-modal="true" aria-label="Trung tâm học tập"></aside>';
@@ -205,17 +207,20 @@
 
   /* Mirror badge chưa đọc từ Chat Admin ra nút chính.
      Không dùng observer toàn trang; chỉ polling rất nhẹ. */
+  let previousEdgeCount=0;
+
   function syncEdgeBadge(){
     const chatBadge=document.getElementById('avpChatBadge');
 
     if(!chatBadge){
       edgeBadge.hidden=true;
       edgeBadge.textContent='0';
+      previousEdgeCount=0;
       return;
     }
 
     const raw=String(chatBadge.textContent||'').trim();
-    let count=parseInt(raw.replace(/\D/g,''),10)||0;
+    const count=parseInt(raw.replace(/\D/g,''),10)||0;
 
     const visible=
       !chatBadge.hidden &&
@@ -225,11 +230,25 @@
     if(!visible){
       edgeBadge.hidden=true;
       edgeBadge.textContent='0';
+      previousEdgeCount=0;
       return;
     }
 
     edgeBadge.hidden=false;
     edgeBadge.textContent=count>9?'9+':String(count);
+
+    /* Fallback:
+       nếu badge tăng nhưng realtime preview event chưa tới,
+       vẫn bung preview để người dùng biết có tin mới. */
+    if(previousEdgeCount>0 && count>previousEdgeCount && mini.hidden){
+      showMiniPreview({
+        sender:'Tin nhắn mới',
+        body:'Bạn vừa nhận được tin nhắn mới.',
+        fallback:true
+      });
+    }
+
+    previousEdgeCount=count;
   }
 
   syncEdgeBadge();

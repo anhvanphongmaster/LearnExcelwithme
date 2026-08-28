@@ -310,7 +310,7 @@ body > .avp-hub-fab{
    ========================================================= */
 .avp-edge-mini-preview{
   position:absolute;
-  z-index:-1;
+  z-index:2;
 
   width:min(270px,calc(100vw - 78px));
   min-height:54px;
@@ -457,4 +457,22 @@ body > .avp-hub-fab{
       translateX(44px)
       scale(1);
   }
+}
+
+/* MINI PREVIEW VISIBILITY HOTFIX */
+.avp-edge-launcher{
+  overflow:visible !important;
+}
+
+.avp-edge-mini-preview{
+  visibility:visible !important;
+  pointer-events:auto !important;
+}
+
+.avp-edge-mini-preview.show{
+  opacity:1 !important;
+}
+
+.avp-edge-mini-preview.hide{
+  pointer-events:none !important;
 }
