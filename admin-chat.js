@@ -14,12 +14,12 @@
   const CHAT_BUCKET="chat-attachments";
   const MAX_FILE_BYTES=20*1024*1024;
   const MAX_FILES_PER_SEND=5;
-  const ALLOWED_EXT=new Set(["jpg","jpeg","png","webp","gif","pdf","xlsx","xls","csv","doc","docx","ppt","pptx","txt","zip"]);
+  const ALLOWED_EXT=new Set(["jpg","jpeg","png","webp","gif","heic","heif","pdf","xlsx","xls","csv","doc","docx","ppt","pptx","txt","zip"]);
   const pendingFiles={user:[],admin:[],float:[]};
 
   const extOf=(name)=>String(name||"").split(".").pop().toLowerCase();
   const sizeText=(n)=>{n=Number(n)||0;if(n<1024)return n+" B";if(n<1024*1024)return (n/1024).toFixed(1)+" KB";return (n/1024/1024).toFixed(1)+" MB"};
-  const isImageFile=(f)=>String(f?.type||"").startsWith("image/")||["jpg","jpeg","png","webp","gif"].includes(extOf(f?.name));
+  const isImageFile=(f)=>String(f?.type||"").startsWith("image/")||["jpg","jpeg","png","webp","gif","heic","heif"].includes(extOf(f?.name));
   function validateFiles(files){
     const arr=[...files].slice(0,MAX_FILES_PER_SEND);
     const bad=arr.find(f=>f.size>MAX_FILE_BYTES||!ALLOWED_EXT.has(extOf(f.name)));
@@ -255,7 +255,7 @@
         <div class="avp-chat-messages" id="avpChatMessages"><div class="avp-chat-empty">Đang tải hộp thư…</div></div>
         <div class="avp-chat-file-preview" id="avpChatFilePreview" hidden></div>
         <div class="avp-chat-compose">
-          <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="avpChatFile" type="file" multiple accept="image/*,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
+          <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="avpChatFile" type="file" multiple accept="image/*,.heic,.heif,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
           <textarea id="avpChatInput" maxlength="3000" rows="1" placeholder="Nhắn cho Admin…"></textarea>
           <button class="avp-chat-send" id="avpChatSend" type="button">Gửi</button>
         </div>
@@ -312,10 +312,19 @@
     const body=input.value.trim(),files=[...(pendingFiles.user||[])];if(!body&&!files.length)return;
     btn.disabled=true;
     try{
-      if(files.length){for(let i=0;i<files.length;i++){const meta=await uploadChatFile(files[i],"user",threadId);await rpc("avp_chat_send_user_message",{p_body:makeAttachmentBody(meta,i===0?body:"")})}}
-      else await rpc("avp_chat_send_user_message",{p_body:body});
+      await ensureThread();
+      if(files.length){
+        for(let i=0;i<files.length;i++){
+          const meta=await uploadChatFile(files[i],"user",threadId);
+          await rpc("avp_chat_send_user_message",{p_body:makeAttachmentBody(meta,i===0?body:"")});
+        }
+      }else await rpc("avp_chat_send_user_message",{p_body:body});
       input.value="";pendingFiles.user=[];previewFiles("user","avpChatFilePreview");await loadUserMessages();
-    }catch(e){alert("Chưa gửi được tin nhắn hoặc file. Vui lòng thử lại.");console.warn(e)}finally{btn.disabled=false;input.focus()}
+    }catch(e){
+      const detail=e?.message||e?.error_description||String(e||"");
+      alert("Chưa gửi được file. "+(detail?"Lỗi: "+detail:"Vui lòng thử lại."));
+      console.warn("AVP send user attachment",e);
+    }finally{btn.disabled=false;input.focus()}
   }
   async function updateUserBadge(){
     try{
@@ -427,7 +436,7 @@
             <div class="avp-chat-messages" id="avpAdminFloatMessages"><div class="avp-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
             <div class="avp-chat-file-preview" id="avpAdminFloatFilePreview" hidden></div>
             <div class="avp-chat-compose avp-admin-float-compose">
-              <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="avpAdminFloatFile" type="file" multiple accept="image/*,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
+              <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="avpAdminFloatFile" type="file" multiple accept="image/*,.heic,.heif,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
               <textarea id="avpAdminFloatReply" maxlength="3000" rows="1" placeholder="Phản hồi học viên…" disabled></textarea>
               <button class="avp-chat-send" id="avpAdminFloatSend" type="button" disabled>Gửi</button>
             </div>
@@ -500,14 +509,22 @@
   async function sendFloatingAdminMessage(){
     if(!floatActiveThread)return;
     const input=$("avpAdminFloatReply"),btn=$("avpAdminFloatSend");if(!input||!btn)return;
-    const body=input.value.trim();if(!body)return;
+    const body=input.value.trim(),files=[...(pendingFiles.float||[])];if(!body&&!files.length)return;
     btn.disabled=true;
     try{
-      await rpc("avp_chat_admin_send_message",{p_thread_id:floatActiveThread,p_body:body});
-      input.value="";
+      if(files.length){
+        for(let i=0;i<files.length;i++){
+          const meta=await uploadChatFile(files[i],"admin",floatActiveThread);
+          await rpc("avp_chat_admin_send_message",{p_thread_id:floatActiveThread,p_body:makeAttachmentBody(meta,i===0?body:"")});
+        }
+      }else await rpc("avp_chat_admin_send_message",{p_thread_id:floatActiveThread,p_body:body});
+      input.value="";pendingFiles.float=[];previewFiles("float","avpAdminFloatFilePreview");
       await openFloatingAdminThread(floatActiveThread);
-    }catch(e){alert("Không gửi được phản hồi.");console.warn(e)}
-    finally{btn.disabled=false;input.focus()}
+    }catch(e){
+      const detail=e?.message||e?.error_description||String(e||"");
+      alert("Không gửi được file. "+(detail?"Lỗi: "+detail:""));
+      console.warn("AVP floating admin attachment",e);
+    }finally{btn.disabled=false;input.focus()}
   }
 
   async function initFloatingAdmin(){
