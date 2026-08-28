@@ -12,47 +12,39 @@
     try {
       for (var i = 0; i < localStorage.length; i++) {
         var k = localStorage.key(i) || "";
-        if (k.indexOf("-auth-token") >= 0 && (localStorage.getItem(k) || "").indexOf("access_token") >= 0) return true;
+        var v = localStorage.getItem(k) || "";
+        if (k.indexOf("-auth-token") >= 0 && v.indexOf("access_token") >= 0) return true;
       }
     } catch (e) {}
     return false;
   }
 
-  function isStorageUrl(href) {
-    return /^https?:\/\//i.test(href || "") && /supabase\.co\/storage\/v1\/object\//i.test(href || "");
-  }
-
-  function targetFor(a) {
-    var resolved = (a.dataset && a.dataset.avpResolvedUrl) || "";
-    if (isStorageUrl(resolved)) return resolved;
-
-    var current = a.getAttribute("href") || "";
-    if (isStorageUrl(current)) return current;
-
-    var original = a.getAttribute("data-orig-href") || "";
-    if (original && original.indexOf("auth.html") < 0) return original;
-
-    return current || "#";
+  function isRemote(href) {
+    return /^https?:\/\//i.test(href || "");
   }
 
   function applyOne(a) {
     if (!a) return;
 
     var current = a.getAttribute("href") || "";
-    if (!a.getAttribute("data-orig-href") && current.indexOf("auth.html") < 0) {
+
+    // Khi practice-video.js đã trả URL Supabase, giữ nguyên URL đó làm nguồn thật.
+    if (isRemote(current) && current.indexOf("auth.html") < 0) {
+      a.setAttribute("data-orig-href", current);
+    } else if (!a.getAttribute("data-orig-href") && current.indexOf("auth.html") < 0) {
       a.setAttribute("data-orig-href", current);
     }
 
     if (!a.getAttribute("data-orig-label")) {
-      var lab = (a.textContent || "Tải file").replace(/\s+/g, " ").trim();
-      a.setAttribute("data-orig-label", /đăng nhập để tải/i.test(lab) ? "Tải file" : (lab || "Tải file"));
+      var label = (a.textContent || "Tải file").replace(/\s+/g, " ").trim();
+      a.setAttribute("data-orig-label", /đăng nhập để tải/i.test(label) ? "Tải file" : (label || "Tải file"));
     }
 
     if (hasSession()) {
-      var target = targetFor(a);
+      var target = a.getAttribute("data-orig-href") || current || "#";
       a.setAttribute("href", target);
       a.removeAttribute("onclick");
-      if (isStorageUrl(target)) a.removeAttribute("download");
+      if (isRemote(target)) a.removeAttribute("download");
       a.textContent = a.getAttribute("data-orig-label") || "Tải file";
     } else {
       a.setAttribute("href", authHref());
@@ -64,12 +56,29 @@
 
   function apply(root) {
     var scope = root && root.querySelectorAll ? root : document;
-    scope.querySelectorAll("a.pv-download, a.pyt-dl-block, a.pyt-file-alt, a[href*='downloads/'], a[data-avp-resolved-url]").forEach(applyOne);
+    scope.querySelectorAll("a.pv-download, a.pyt-dl-block, a.pyt-file-alt").forEach(applyOne);
   }
 
-  apply(document);
-  document.addEventListener("DOMContentLoaded", function () { apply(document); });
-  document.addEventListener("avp:downloads-resolved", function () { apply(document); });
-  setTimeout(function () { apply(document); }, 300);
-  setTimeout(function () { apply(document); }, 1200);
+  function startObserver() {
+    if (!document.documentElement) return;
+    new MutationObserver(function (mutations) {
+      mutations.forEach(function (m) {
+        m.addedNodes.forEach(function (n) {
+          if (!n || n.nodeType !== 1) return;
+          if (n.matches && n.matches("a.pv-download, a.pyt-dl-block, a.pyt-file-alt")) applyOne(n);
+          apply(n);
+        });
+      });
+    }).observe(document.documentElement, { childList: true, subtree: true });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+      apply(document);
+      startObserver();
+    }, { once: true });
+  } else {
+    apply(document);
+    startObserver();
+  }
 })();

@@ -2067,7 +2067,7 @@
     const tkBtn = tk
       ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer" title="Xem trên TikTok">' + ico + ' TikTok</a>'
       : '';
-    const downloadHref = item.sourcePath || ((item.folder || "downloads/video-practice/") + fileName);
+    const downloadHref = item.fileUrl || item.sourcePath || ((item.folder || "downloads/video-practice/") + fileName);
     const fileBtn = avail
       ? '<a class="pv-download" href="' + downloadHref + '" download title="' + fileName + '">Tải file</a>'
       : '';
@@ -2242,6 +2242,7 @@ grid.addEventListener("click", async function (e) {
           file: path ? path.slice(slash + 1) : "",
           folder: path ? path.slice(0, slash + 1) : "downloads/video-practice/",
           sourcePath: path || "",
+          fileUrl: r.file_url || "",
           tiktok: r.video_url || "",
           level: r.level || "Cơ bản",
           badge: r.badge || "",
