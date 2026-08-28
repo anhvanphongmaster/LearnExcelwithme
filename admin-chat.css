@@ -84,3 +84,38 @@
 .avp-chat-attachment{white-space:normal}.avp-chat-image .avp-image-open{display:block;width:100%;max-width:260px;border:0;padding:0;background:transparent;cursor:pointer;text-align:left}.avp-chat-image .avp-image-open>span{display:grid;place-items:center;min-height:96px;border-radius:10px;background:rgba(255,255,255,.14);font-size:12px}.avp-chat-image img{display:block;width:100%;max-height:260px;object-fit:cover;border-radius:10px}.avp-chat-image>small{display:block;margin-top:5px;font-size:10px;opacity:.7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .avp-chat-file .avp-file-open{width:100%;border:1px solid rgba(33,115,70,.18);border-radius:11px;background:rgba(255,255,255,.82);display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;padding:8px;cursor:pointer;text-align:left;color:#244c35}.avp-msg-row.user .avp-chat-file .avp-file-open{background:rgba(255,255,255,.95)}.avp-file-icon{width:34px;height:34px;border-radius:9px;background:#edf7f1;display:grid;place-items:center;font-size:17px}.avp-chat-file b,.avp-chat-file small{display:block;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.avp-chat-file b{font-size:11px}.avp-chat-file small{font-size:9px;opacity:.68;margin-top:2px}.avp-chat-file em{font-size:10px;font-style:normal;font-weight:800;color:#217346}.avp-attach-caption{margin-top:7px;white-space:pre-wrap}
 @media(max-width:520px){.avp-chat-compose,.admin-chat-compose{grid-template-columns:40px 1fr auto}.avp-chat-attach{width:40px;height:40px}.avp-chat-file b,.avp-chat-file small{max-width:145px}}
+
+/* ===== AVP Chat reactions + one-way read receipt ===== */
+.avp-reaction-wrap{position:relative;display:flex;align-items:center;gap:5px;margin-top:5px;min-height:24px}
+.avp-msg-row.user .avp-reaction-wrap{justify-content:flex-end}
+.avp-reaction-trigger{width:27px;height:27px;border:1px solid rgba(148,163,184,.28);border-radius:999px;background:rgba(255,255,255,.92);display:inline-grid;place-items:center;font-size:15px;line-height:1;cursor:pointer;padding:0;box-shadow:0 3px 10px rgba(15,23,42,.08);touch-action:manipulation}
+.avp-reaction-trigger.active{border-color:rgba(59,130,246,.45);background:#eff6ff}
+.avp-reaction-picker{position:absolute;z-index:30;left:0;bottom:31px;display:flex;gap:5px;padding:5px;border:1px solid rgba(148,163,184,.25);border-radius:999px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.18)}
+.avp-msg-row.user .avp-reaction-picker{left:auto;right:0}
+.avp-reaction-picker[hidden]{display:none!important}
+.avp-reaction-picker button{width:34px;height:34px;border:0;border-radius:999px;background:transparent;font-size:20px;line-height:1;padding:0;cursor:pointer;touch-action:manipulation}
+.avp-reaction-picker button.active,.avp-reaction-picker button:active{background:#eef2ff;transform:scale(1.06)}
+.avp-reaction-counts{font-size:11px;font-weight:700;color:#64748b;white-space:pre}
+.avp-msg-seen{display:inline-flex;margin-left:6px;font-size:10px;font-weight:700;color:#2563eb;white-space:nowrap}
+@media(max-width:640px){
+  .avp-reaction-trigger{width:29px;height:29px;font-size:16px}
+  .avp-reaction-picker{bottom:34px;padding:5px 6px}
+  .avp-reaction-picker button{width:38px;height:38px;font-size:22px}
+  .avp-reaction-counts{font-size:10px}
+}
+
+/* AVP Chat reaction 👍/👎 + one-way read receipt */
+.avp-reaction-wrap{position:relative;display:flex;align-items:center;gap:5px;margin-top:4px;min-height:22px}
+.avp-reaction-like{width:27px;height:22px;border:1px solid rgba(127,127,127,.22);border-radius:999px;background:var(--card,#fff);cursor:pointer;font-size:13px;line-height:1;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.avp-reaction-like.active{transform:scale(1.05);box-shadow:0 0 0 2px rgba(59,130,246,.18)}
+.avp-reaction-counts{font-size:11px;opacity:.78;white-space:nowrap}
+.avp-reaction-picker{position:absolute;left:0;bottom:28px;z-index:20;display:flex;gap:5px;padding:6px;border-radius:999px;background:var(--card,#fff);box-shadow:0 8px 28px rgba(0,0,0,.18);border:1px solid rgba(127,127,127,.18)}
+.avp-reaction-picker[hidden]{display:none!important}
+.avp-reaction-picker button{width:36px;height:34px;border:0;border-radius:50%;background:transparent;font-size:21px;cursor:pointer}
+.avp-reaction-picker button.active{background:rgba(59,130,246,.12)}
+.avp-admin-read-receipt{font-size:10px;font-weight:600;opacity:.82}
+@media(max-width:640px){
+  .avp-reaction-like{width:30px;height:24px}
+  .avp-reaction-picker{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);padding:8px 12px}
+  .avp-reaction-picker button{width:44px;height:40px;font-size:24px}
+}

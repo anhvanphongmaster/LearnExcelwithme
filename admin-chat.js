@@ -129,7 +129,78 @@
       : (type==="system"?"Hệ thống":type==="admin"?"Admin":"Bạn");
     const a=parseAttachmentBody(m.body);
     const content=a?attachmentCardHtml(a):`<div>${esc(m.body)}</div>`;
-    return `<div class="avp-msg-row ${cls}"><div class="avp-msg">${content}<span class="avp-msg-meta">${esc(who)} • ${fmt(m.created_at)}</span></div></div>`;
+    const mid=esc(m.id||"");
+    const react=type==="system"||!mid?"":`<div class="avp-reaction-wrap" data-reaction-message="${mid}">
+      <button class="avp-reaction-like" type="button" aria-label="Thích tin nhắn" title="Chạm để 👍, giữ để chọn">👍</button>
+      <span class="avp-reaction-counts"></span>
+      <div class="avp-reaction-picker" hidden>
+        <button type="button" data-react="like" aria-label="Thích">👍</button>
+        <button type="button" data-react="dislike" aria-label="Không thích">👎</button>
+      </div>
+    </div>`;
+    const readReceipt=adminView&&type==="admin"
+      ? `<span class="avp-admin-read-receipt" data-read-created="${esc(m.created_at||"")}"></span>`
+      : "";
+    return `<div class="avp-msg-row ${cls}" data-message-id="${mid}"><div class="avp-msg">${content}<span class="avp-msg-meta">${esc(who)} • ${fmt(m.created_at)} ${readReceipt}</span>${react}</div></div>`;
+  }
+
+  async function setReaction(messageId,reaction){
+    if(!messageId)return;
+    try{
+      await rpc("avp_chat_set_reaction",{p_message_id:String(messageId),p_reaction:reaction});
+    }catch(e){console.warn("AVP reaction",e)}
+  }
+  async function hydrateReactions(root){
+    if(!root)return;
+    const wraps=[...root.querySelectorAll("[data-reaction-message]")];
+    if(!wraps.length)return;
+    const ids=wraps.map(x=>x.dataset.reactionMessage).filter(Boolean);
+    let rows=[];
+    try{rows=await rpc("avp_chat_reactions_for_messages",{p_message_ids:ids})||[]}catch(e){console.warn("AVP reaction load",e)}
+    const map=new Map((Array.isArray(rows)?rows:[]).map(r=>[String(r.message_id),r]));
+    wraps.forEach(w=>{
+      const id=w.dataset.reactionMessage,r=map.get(String(id))||{};
+      const like=Number(r.like_count)||0,dislike=Number(r.dislike_count)||0,mine=r.my_reaction||"";
+      const counts=w.querySelector(".avp-reaction-counts");
+      if(counts)counts.textContent=[like?`👍 ${like}`:"",dislike?`👎 ${dislike}`:""].filter(Boolean).join("  ");
+      const likeBtn=w.querySelector(".avp-reaction-like"),picker=w.querySelector(".avp-reaction-picker");
+      if(likeBtn)likeBtn.classList.toggle("active",mine==="like");
+      w.querySelectorAll("[data-react]").forEach(b=>b.classList.toggle("active",b.dataset.react===mine));
+      if(w.dataset.bound==="1")return;
+      w.dataset.bound="1";
+      let holdTimer=null,longPressed=false;
+      const openPicker=()=>{longPressed=true;if(picker)picker.hidden=false};
+      if(likeBtn){
+        likeBtn.addEventListener("pointerdown",()=>{longPressed=false;holdTimer=setTimeout(openPicker,450)});
+        ["pointerup","pointercancel","pointerleave"].forEach(ev=>likeBtn.addEventListener(ev,()=>clearTimeout(holdTimer)));
+        likeBtn.addEventListener("click",async e=>{
+          e.stopPropagation();
+          if(longPressed){longPressed=false;return}
+          await setReaction(id,mine==="like"?null:"like");
+          await hydrateReactions(root);
+        });
+        likeBtn.addEventListener("contextmenu",e=>{e.preventDefault();openPicker()});
+      }
+      w.querySelectorAll("[data-react]").forEach(b=>b.addEventListener("click",async e=>{
+        e.stopPropagation();
+        await setReaction(id,mine===b.dataset.react?null:b.dataset.react);
+        if(picker)picker.hidden=true;
+        await hydrateReactions(root);
+      }));
+    });
+    document.addEventListener("click",()=>root.querySelectorAll(".avp-reaction-picker").forEach(p=>p.hidden=true),{once:true});
+  }
+
+  async function hydrateAdminReadReceipts(root,thread){
+    if(!root||!thread)return;
+    let lastRead=null;
+    try{lastRead=await rpc("avp_chat_admin_student_read_at",{p_thread_id:String(thread)})}catch(e){console.warn("AVP read receipt",e);return}
+    if(!lastRead)return;
+    const readTime=new Date(lastRead).getTime();
+    root.querySelectorAll("[data-read-created]").forEach(el=>{
+      const sent=new Date(el.dataset.readCreated||0).getTime();
+      if(sent&&sent<=readTime)el.textContent=" · Đã xem";
+    });
   }
 
   /* ================= GUEST BUBBLE ================= */
@@ -232,6 +303,7 @@
       const list=Array.isArray(rows)?rows:[];
       box.innerHTML=list.length?list.map(m=>msgHtml(m,false)).join(""):'<div class="avp-chat-empty">Bạn chưa có tin nhắn. Có gì cần hỗ trợ cứ nhắn cho Admin nhé.</div>';
       await hydrateAttachmentUrls(box);
+      await hydrateReactions(box);
       box.scrollTop=box.scrollHeight;
     }catch(e){box.innerHTML='<div class="avp-chat-empty">Chưa tải được hộp thư. Hãy kiểm tra SQL chat trong Supabase.</div>';console.warn("AVP chat load",e)}
   }
@@ -252,7 +324,13 @@
       badge.hidden=n<=0;badge.textContent=n>99?"99+":String(n);
     }catch{}
   }
-  async function markUserRead(){try{await rpc("avp_chat_mark_user_read");await updateUserBadge()}catch{}}
+  async function markUserRead(){
+    try{
+      await rpc("avp_chat_mark_user_read");
+      if(threadId)await rpc("avp_chat_mark_student_read_state",{p_thread_id:String(threadId)});
+      await updateUserBadge();
+    }catch{}
+  }
   function startUserLive(){
     clearInterval(pollTimer);pollTimer=setInterval(async()=>{await updateUserBadge();if($("avpChatPanel")&&!$("avpChatPanel").hidden)await loadUserMessages()},20000);
     try{
@@ -293,7 +371,7 @@
     try{
       const rows=await rpc("avp_chat_admin_messages",{p_thread_id:id,p_limit:300});
       const box=$("adminChatMessages");const list=Array.isArray(rows)?rows:[];
-      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="admin-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);box.scrollTop=box.scrollHeight}
+      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="admin-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,id);box.scrollTop=box.scrollHeight}
       await rpc("avp_chat_admin_mark_read",{p_thread_id:id});await loadAdminThreads();
     }catch(e){console.warn(e)}
   }
@@ -412,7 +490,7 @@
     try{
       const rows=await rpc("avp_chat_admin_messages",{p_thread_id:id,p_limit:300});
       const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
-      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);box.scrollTop=box.scrollHeight;}
+      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,id);box.scrollTop=box.scrollHeight;}
       await rpc("avp_chat_admin_mark_read",{p_thread_id:id});
       await loadFloatingAdminThreads();
       input?.focus();
@@ -441,7 +519,7 @@
       if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden){
         const rows=await rpc("avp_chat_admin_messages",{p_thread_id:floatActiveThread,p_limit:300}).catch(()=>[]);
         const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
-        if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);box.scrollTop=box.scrollHeight;}
+        if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,floatActiveThread);box.scrollTop=box.scrollHeight;}
       }
     },15000);
     try{
