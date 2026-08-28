@@ -101,6 +101,7 @@
               <button type="button" data-community-filter="leaderboard">🏆 BXH</button>
             </div>
             <div class="avp-community-toolbar-actions">
+              <button id="avpCommunityProfile" class="avp-community-notify-btn" type="button">👤 Hồ sơ</button>
               <button id="avpCommunityNotify" class="avp-community-notify-btn" type="button">
                 🔔 Thông báo
                 <span id="avpNotifyTabBadge" class="avp-tab-badge" hidden></span>
@@ -165,6 +166,7 @@
     });
 
     $("avpCommunityAsk").onclick=()=>showCommunityAskForm();
+    $("avpCommunityProfile").onclick=()=>showCommunityProfile();
     $("avpCommunityNotify").onclick=()=>switchMode("notifications");
 
     let searchTimer=null;
@@ -604,6 +606,175 @@
     }
   }
 
+
+  function communityLevelFromScore(score){
+    const s=Math.max(0,Number(score||0));
+
+    if(s>=1000)return {
+      code:"avp_expert",icon:"🥇",name:"AVP Expert",
+      min:1000,next:null,nextName:null
+    };
+
+    if(s>=500)return {
+      code:"excel_expert",icon:"🥈",name:"Excel Expert",
+      min:500,next:1000,nextName:"AVP Expert"
+    };
+
+    if(s>=200)return {
+      code:"excel_helper",icon:"🥉",name:"Excel Helper",
+      min:200,next:500,nextName:"Excel Expert"
+    };
+
+    if(s>=50)return {
+      code:"supporter",icon:"📘",name:"Người hỗ trợ",
+      min:50,next:200,nextName:"Excel Helper"
+    };
+
+    return {
+      code:"new_member",icon:"🌱",name:"Thành viên mới",
+      min:0,next:50,nextName:"Người hỗ trợ"
+    };
+  }
+
+  function communityLevelPill(score){
+    const lv=communityLevelFromScore(score);
+    return `<span class="avp-community-level ${lv.code}">${lv.icon} ${esc(lv.name)}</span>`;
+  }
+
+  async function showCommunityProfile(profileUserId=null){
+    if(!(await requireCommunityLogin()))return;
+
+    const box=$("avpCommunityContent");
+    if(!box)return;
+
+    box.innerHTML='<div class="avp-community-empty">Đang tải hồ sơ cộng đồng...</div>';
+
+    try{
+      const targetId=profileUserId || user.id;
+
+      const [
+        profileRes,
+        certRes
+      ]=await Promise.all([
+        client.rpc("community_profile",{p_user_id:targetId}),
+        client.rpc("community_certificate_status",{p_user_id:targetId})
+      ]);
+
+      if(profileRes.error)throw profileRes.error;
+      if(certRes.error)throw certRes.error;
+
+      const p=Array.isArray(profileRes.data)?profileRes.data[0]:profileRes.data;
+      if(!p){
+        box.innerHTML='<div class="avp-community-empty">Chưa có hồ sơ cộng đồng.</div>';
+        return;
+      }
+
+      renderCommunityProfile(p,Array.isArray(certRes.data)?certRes.data:[]);
+    }catch(e){
+      console.warn("Community profile",e);
+      box.innerHTML='<div class="avp-community-empty">Chưa tải được hồ sơ. Hãy chạy SQL COMMUNITY LEVELS & CERTS V1.</div>';
+    }
+  }
+
+  function renderCommunityProfile(p,certs){
+    const box=$("avpCommunityContent");
+    if(!box)return;
+
+    const level=communityLevelFromScore(p.score);
+    const current=Math.max(0,Number(p.score||0)-level.min);
+    const span=level.next===null?1:Math.max(1,level.next-level.min);
+    const progress=level.next===null?100:Math.max(0,Math.min(100,Math.round(current/span*100)));
+
+    const unlocked=certs.filter(c=>c.unlocked);
+    const locked=certs.filter(c=>!c.unlocked);
+
+    box.innerHTML=`
+      <div class="avp-community-profile">
+        <button type="button" class="avp-community-back" id="avpCommunityProfileBack">← Quay lại cộng đồng</button>
+
+        <section class="avp-profile-hero">
+          <div class="avp-profile-avatar">${level.icon}</div>
+
+          <div class="avp-profile-main">
+            <div class="avp-profile-title">
+              <h2>${esc(p.display_name||"Học viên")}</h2>
+              ${communityLevelPill(p.score)}
+            </div>
+
+            <p>Hạng cộng đồng #${Number(p.rank_position||0) || "—"} · ${Number(p.score||0)} điểm</p>
+
+            <div class="avp-level-progress">
+              <div class="avp-level-progress-bar">
+                <span style="width:${progress}%"></span>
+              </div>
+              <small>
+                ${level.next===null
+                  ? "Đã đạt cấp cao nhất hiện tại"
+                  : `Còn ${Math.max(0,level.next-Number(p.score||0))} điểm để đạt ${esc(level.nextName)}`}
+              </small>
+            </div>
+          </div>
+        </section>
+
+        <section class="avp-profile-stats">
+          <div><strong>${Number(p.answers||0)}</strong><span>Câu trả lời</span></div>
+          <div><strong>${Number(p.accepted||0)}</strong><span>Đáp án đúng</span></div>
+          <div><strong>${Number(p.helpful||0)}</strong><span>Lượt hữu ích</span></div>
+          <div><strong>${p.avg_rating?Number(p.avg_rating).toFixed(1):"—"}</strong><span>Đánh giá ⭐</span></div>
+        </section>
+
+        <section class="avp-profile-cert-section">
+          <div class="avp-profile-section-head">
+            <div>
+              <h3>🏅 Chứng nhận cộng đồng</h3>
+              <p>Chứng nhận tự mở khi đạt đủ thành tích.</p>
+            </div>
+            <strong>${unlocked.length}/${certs.length}</strong>
+          </div>
+
+          <div class="avp-cert-grid">
+            ${certs.map(c=>`
+              <article class="avp-cert-card ${c.unlocked?"unlocked":"locked"}">
+                <div class="avp-cert-icon">${c.unlocked?"🏅":"🔒"}</div>
+                <div>
+                  <strong>${esc(c.title)}</strong>
+                  <p>${esc(c.description)}</p>
+                  <small>${c.unlocked
+                    ? `✓ Đã mở · ${Number(c.progress_percent||100)}%`
+                    : `${Number(c.progress_percent||0)}% hoàn thành`}</small>
+                </div>
+              </article>
+            `).join("") || '<div class="avp-community-empty">Chưa có chứng nhận.</div>'}
+          </div>
+        </section>
+
+        <section class="avp-profile-levels">
+          <h3>Lộ trình cấp bậc</h3>
+          <div class="avp-level-roadmap">
+            ${[
+              ["🌱","Thành viên mới","0 điểm"],
+              ["📘","Người hỗ trợ","50 điểm"],
+              ["🥉","Excel Helper","200 điểm"],
+              ["🥈","Excel Expert","500 điểm"],
+              ["🥇","AVP Expert","1.000 điểm"]
+            ].map(([icon,name,req])=>`
+              <div class="${name===level.name?"current":""}">
+                <span>${icon}</span>
+                <strong>${name}</strong>
+                <small>${req}</small>
+              </div>
+            `).join("")}
+          </div>
+        </section>
+      </div>
+    `;
+
+    $("avpCommunityProfileBack").onclick=()=>{
+      if(communityFilter==="leaderboard")loadCommunityLeaderboard();
+      else loadCommunity();
+    };
+  }
+
   async function loadCommunityLeaderboard(){
     client=client||getClient();
     const box=$("avpCommunityContent");
@@ -639,6 +810,8 @@
           await refreshLeaderboardPeriod(btn.dataset.period);
         };
       });
+
+      bindCommunityProfileLinks(box);
     }catch(e){
       console.warn("Leaderboard",e);
       box.innerHTML='<div class="avp-community-empty">Chưa tải được bảng xếp hạng.</div>';
@@ -651,15 +824,25 @@
     }
 
     return rows.map((r,i)=>`
-      <div class="avp-leaderboard-row">
+      <div class="avp-leaderboard-row" data-profile-user="${esc(r.user_id)}">
         <div class="avp-rank">${i===0?"🥇":i===1?"🥈":i===2?"🥉":`#${i+1}`}</div>
         <div class="avp-leader-user">
-          <strong>${esc(r.display_name||"Học viên")}</strong>
+          <div class="avp-leader-name-line">
+            <strong>${esc(r.display_name||"Học viên")}</strong>
+            ${communityLevelPill(r.score)}
+          </div>
           <span>✅ ${Number(r.accepted||0)} đúng · 👍 ${Number(r.helpful||0)} hữu ích · ⭐ ${r.avg_rating?Number(r.avg_rating).toFixed(1):"—"}</span>
         </div>
         <div class="avp-score">${Number(r.score||0)}<span>điểm</span></div>
       </div>
     `).join("");
+  }
+
+
+  function bindCommunityProfileLinks(root){
+    root?.querySelectorAll?.("[data-profile-user]").forEach(row=>{
+      row.onclick=()=>showCommunityProfile(row.dataset.profileUser);
+    });
   }
 
   async function refreshLeaderboardPeriod(period){
@@ -670,6 +853,7 @@
       });
       if(error)throw error;
       $("avpLeaderboardRows").innerHTML=leaderboardRowsHtml(Array.isArray(data)?data:[]);
+      bindCommunityProfileLinks($("avpLeaderboardRows"));
     }catch(e){
       console.warn("Leaderboard period",e);
     }

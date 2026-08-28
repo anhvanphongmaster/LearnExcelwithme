@@ -437,3 +437,144 @@
   line-height:inherit!important;
   letter-spacing:inherit!important;
 }
+
+
+/* =========================================================
+   COMMUNITY LEVELS + CERTIFICATES V1
+   ========================================================= */
+.avp-community-level{
+  display:inline-flex;align-items:center;gap:3px;
+  border-radius:999px;padding:3px 7px;
+  font-size:8px;font-weight:900;line-height:1.2;
+  white-space:nowrap;background:#f2f4f7;color:#475467;
+}
+.avp-community-level.supporter{background:#eef4ff;color:#315b96}
+.avp-community-level.excel_helper{background:#fff6e7;color:#976000}
+.avp-community-level.excel_expert{background:#f1efff;color:#5946a8}
+.avp-community-level.avp_expert{background:#eaf7ef;color:#17683d}
+
+.avp-leaderboard-row{cursor:pointer}
+.avp-leader-name-line{
+  display:flex;align-items:center;gap:6px;min-width:0;
+}
+.avp-leader-name-line>strong{
+  min-width:0;overflow:hidden;text-overflow:ellipsis;
+}
+
+.avp-community-profile{max-width:700px;margin:0 auto}
+.avp-profile-hero{
+  display:flex;gap:14px;align-items:center;
+  padding:17px;background:linear-gradient(135deg,#174f31,#217346);
+  border-radius:18px;color:#fff;
+}
+.avp-profile-avatar{
+  flex:0 0 62px;width:62px;height:62px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.14);font-size:31px;
+  border:1px solid rgba(255,255,255,.18);
+}
+.avp-profile-main{min-width:0;flex:1}
+.avp-profile-title{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap
+}
+.avp-profile-title h2{margin:0;font-size:18px;color:#fff}
+.avp-profile-title .avp-community-level{
+  background:#fff;color:#174f31
+}
+.avp-profile-main>p{margin:4px 0 10px;font-size:10px;color:#d6eee0}
+.avp-level-progress-bar{
+  height:8px;border-radius:999px;background:rgba(255,255,255,.18);overflow:hidden
+}
+.avp-level-progress-bar span{
+  display:block;height:100%;border-radius:999px;background:#fff
+}
+.avp-level-progress small{
+  display:block;margin-top:5px;color:#d6eee0;font-size:9px
+}
+.avp-profile-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0
+}
+.avp-profile-stats>div{
+  text-align:center;background:#fff;border:1px solid #e5ebe7;
+  border-radius:13px;padding:11px 6px
+}
+.avp-profile-stats strong{
+  display:block;color:#217346;font-size:17px
+}
+.avp-profile-stats span{
+  display:block;margin-top:2px;color:#98a2b3;font-size:8.5px
+}
+
+.avp-profile-cert-section,.avp-profile-levels{
+  margin-top:10px;padding:14px;background:#fff;
+  border:1px solid #e5ebe7;border-radius:16px
+}
+.avp-profile-section-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px
+}
+.avp-profile-section-head h3,.avp-profile-levels h3{
+  margin:0;color:#263a2f;font-size:13px
+}
+.avp-profile-section-head p{
+  margin:3px 0 0;color:#98a2b3;font-size:9px
+}
+.avp-profile-section-head>strong{
+  color:#217346;font-size:15px
+}
+.avp-cert-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;margin-top:11px
+}
+.avp-cert-card{
+  display:flex;gap:9px;align-items:flex-start;
+  padding:11px;border-radius:13px;border:1px solid #e5ebe7
+}
+.avp-cert-card.locked{opacity:.62;background:#fafafa}
+.avp-cert-card.unlocked{
+  background:#f5fbf7;border-color:#bcdcc9
+}
+.avp-cert-icon{font-size:21px;line-height:1}
+.avp-cert-card strong{
+  display:block;color:#33483c;font-size:10.5px
+}
+.avp-cert-card p{
+  margin:3px 0;color:#718078;font-size:8.5px;line-height:1.4
+}
+.avp-cert-card small{
+  color:#217346;font-size:8px;font-weight:800
+}
+.avp-cert-card.locked small{color:#98a2b3}
+
+.avp-level-roadmap{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:6px;margin-top:10px
+}
+.avp-level-roadmap>div{
+  text-align:center;border:1px solid #edf0ee;border-radius:11px;
+  padding:8px 3px;background:#fafbfa
+}
+.avp-level-roadmap>div.current{
+  background:#eaf7ef;border-color:#a9d2b9
+}
+.avp-level-roadmap span{
+  display:block;font-size:18px
+}
+.avp-level-roadmap strong{
+  display:block;margin-top:3px;color:#4a5c52;font-size:7.5px
+}
+.avp-level-roadmap small{
+  display:block;margin-top:2px;color:#98a2b3;font-size:7px
+}
+
+@media(max-width:640px){
+  .avp-profile-hero{padding:14px}
+  .avp-profile-avatar{width:52px;height:52px;flex-basis:52px;font-size:26px}
+  .avp-profile-title h2{font-size:15px}
+  .avp-profile-stats{grid-template-columns:repeat(2,1fr)}
+  .avp-cert-grid{grid-template-columns:1fr}
+  .avp-level-roadmap{
+    display:flex;overflow-x:auto;scrollbar-width:none
+  }
+  .avp-level-roadmap::-webkit-scrollbar{display:none}
+  .avp-level-roadmap>div{flex:0 0 88px}
+}
