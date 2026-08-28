@@ -8,6 +8,7 @@
   const fmt=(v)=>{try{return new Date(v).toLocaleString("vi-VN",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}catch{return ""}};
   const sleep=(ms)=>new Promise(r=>setTimeout(r,ms));
   let client=null,user=null,threadId=null,pollTimer=null,realtimeChannel=null;
+  let authSubscribed=false;
 
   async function waitClient(){
     // Bong bóng chat phải xuất hiện cả với khách chưa đăng nhập.
@@ -374,33 +375,65 @@
     }catch{}
   }
 
-  async function start(){
-    if(!(await waitClient())) return;
+  async function resetChatRuntime(){
+    try{ clearInterval(pollTimer); }catch{}
+    try{ clearInterval(adminPoll); }catch{}
+    try{ clearInterval(floatPoll); }catch{}
+    pollTimer=null;adminPoll=null;floatPoll=null;
+    threadId=null;activeThread=null;floatActiveThread=null;
+    try{ if(realtimeChannel&&client) await client.removeChannel(realtimeChannel); }catch{}
+    try{ if(floatRealtime&&client) await client.removeChannel(floatRealtime); }catch{}
+    realtimeChannel=null;floatRealtime=null;
+    const root=$("avpAdminChatRoot");
+    if(root) root.remove();
+  }
 
-    // Khách chưa đăng nhập vẫn thấy bong bóng chat.
+  async function renderChatForCurrentUser(){
+    // Trang admin.html dùng hộp thư lớn có sẵn, không tạo bubble nổi chồng lên.
+    const onAdminPage=document.body?.dataset?.adminPage==="1"||$("adminChatInbox");
+
     if(!user){
-      mountGuestUI();
+      if(!onAdminPage) mountGuestUI();
       return;
     }
 
-    // Quyền admin đôi khi được trả về chậm ngay sau khi session phục hồi.
     let admin=false;
-    for(let i=0;i<8;i++){
+    for(let i=0;i<10;i++){
       admin=await isAdmin();
       if(admin) break;
-      await sleep(250);
+      await sleep(200);
     }
 
-    if(document.body?.dataset?.adminPage==="1"||$("adminChatInbox")){
+    if(onAdminPage){
       if(admin) await initAdmin();
       return;
     }
 
-    if(admin){
-      await initFloatingAdmin();
-      return;
-    }
-    await initUser();
+    if(admin) await initFloatingAdmin();
+    else await initUser();
+  }
+
+  function subscribeAuthChanges(){
+    if(authSubscribed||!client?.auth) return;
+    authSubscribed=true;
+    client.auth.onAuthStateChange(async(event,session)=>{
+      if(event!=="SIGNED_IN"&&event!=="SIGNED_OUT"&&event!=="USER_UPDATED") return;
+      const nextUser=session?.user||null;
+      const oldId=user?.id||null;
+      const nextId=nextUser?.id||null;
+      // USER_UPDATED của cùng user không cần dựng lại UI trừ khi root đang thiếu.
+      if(event==="USER_UPDATED"&&oldId===nextId&&$("avpAdminChatRoot")) return;
+      user=nextUser;
+      await resetChatRuntime();
+      await sleep(50);
+      await renderChatForCurrentUser();
+    });
+  }
+
+  async function start(){
+    if(!(await waitClient())) return;
+    subscribeAuthChanges();
+    await renderChatForCurrentUser();
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
 })();

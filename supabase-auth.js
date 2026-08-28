@@ -27,18 +27,22 @@ function loadAdminChatAssets() {
   if (!document.querySelector('link[data-avp-admin-chat]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'admin-chat.css?v=20260828-adminfloat2';
+    link.href = 'admin-chat.css?v=20260828-chatstate3';
     link.dataset.avpAdminChat = '1';
     document.head.appendChild(link);
   }
   if (!document.querySelector('script[data-avp-admin-chat]')) {
     const script = document.createElement('script');
-    script.src = 'admin-chat.js?v=20260828-adminfloat2';
+    script.src = 'admin-chat.js?v=20260828-chatstate3';
     script.defer = true;
     script.dataset.avpAdminChat = '1';
     document.head.appendChild(script);
   }
 }
+
+// Chat phai co o moi trang, ke ca khach chua dang nhap.
+// Nap asset ngay khi Supabase client duoc tao; admin-chat.js tu xu ly session.
+loadAdminChatAssets();
 
 const PROFILE_KEY = "avpUserProfile";
 
