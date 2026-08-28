@@ -358,3 +358,110 @@
     font-size:14px !important;
   }
 }
+
+/* =========================================================
+   AVP REACTION FINAL V3
+   Hai nút 👍 👎 luôn hiện dưới bong bóng
+   Mặc định trắng/trong suốt; active = xanh Excel
+   ========================================================= */
+.avp-msg .avp-reaction-wrap{
+  position:relative !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:3px !important;
+  margin:3px 0 0 1px !important;
+  padding:0 !important;
+  min-height:18px !important;
+}
+
+.avp-msg .avp-reaction-btn{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:22px !important;
+  min-width:22px !important;
+  height:18px !important;
+  padding:0 !important;
+  margin:0 !important;
+
+  border:1px solid rgba(255,255,255,.22) !important;
+  border-radius:6px !important;
+
+  background:rgba(255,255,255,.10) !important;
+  color:#fff !important;
+
+  font-size:11px !important;
+  line-height:1 !important;
+
+  box-shadow:none !important;
+  opacity:.88 !important;
+  cursor:pointer !important;
+
+  -webkit-backdrop-filter:blur(6px) !important;
+  backdrop-filter:blur(6px) !important;
+}
+
+.avp-msg .avp-reaction-btn:hover,
+.avp-msg .avp-reaction-btn:focus{
+  background:rgba(255,255,255,.17) !important;
+  opacity:1 !important;
+}
+
+.avp-msg .avp-reaction-btn:active{
+  transform:scale(.92) !important;
+}
+
+.avp-msg .avp-reaction-btn.active{
+  background:#217346 !important;
+  border-color:#217346 !important;
+  color:#fff !important;
+  opacity:1 !important;
+}
+
+/* loại bỏ hoàn toàn màu vàng từ style cũ */
+.avp-msg .avp-reaction-btn,
+.avp-msg .avp-reaction-btn *,
+.avp-msg .avp-reaction-wrap button{
+  filter:none !important;
+  text-shadow:none !important;
+}
+
+.avp-msg .avp-reaction-counts{
+  display:inline-flex !important;
+  align-items:center !important;
+  min-height:18px !important;
+  margin-left:1px !important;
+
+  color:rgba(255,255,255,.74) !important;
+  font-size:9px !important;
+  line-height:1 !important;
+  font-weight:500 !important;
+  white-space:nowrap !important;
+}
+
+/* không dùng picker cũ nữa */
+.avp-reaction-picker,
+.avp-reaction-like{
+  display:none !important;
+}
+
+@media(max-width:640px){
+  .avp-msg .avp-reaction-wrap{
+    gap:2px !important;
+    margin-top:2px !important;
+    min-height:17px !important;
+  }
+
+  .avp-msg .avp-reaction-btn{
+    width:21px !important;
+    min-width:21px !important;
+    height:17px !important;
+    border-radius:5px !important;
+    font-size:10px !important;
+  }
+
+  .avp-msg .avp-reaction-counts{
+    min-height:17px !important;
+    font-size:8.5px !important;
+  }
+}

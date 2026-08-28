@@ -18,6 +18,26 @@
   const ALLOWED_EXT=new Set(["jpg","jpeg","png","webp","gif","heic","heif","pdf","xlsx","xls","csv","doc","docx","ppt","pptx","txt","zip"]);
   const pendingFiles={user:[],admin:[],float:[]};
 
+
+  function ensureAiChatAssets(){
+    if(!document.getElementById("avpAiChatCss")){
+      const link=document.createElement("link");
+      link.id="avpAiChatCss";
+      link.rel="stylesheet";
+      link.href="ai-chat.css?v=20260828-ai-direct3";
+      document.head.appendChild(link);
+    }
+
+    if(!document.getElementById("avpAiChatScript")){
+      const script=document.createElement("script");
+      script.id="avpAiChatScript";
+      script.src="ai-chat.js?v=20260828-ai-direct3";
+      script.defer=true;
+      script.onerror=()=>console.warn("AVP AI Chat script không tải được.");
+      document.head.appendChild(script);
+    }
+  }
+
   const extOf=(name)=>String(name||"").split(".").pop().toLowerCase();
   const sizeText=(n)=>{n=Number(n)||0;if(n<1024)return n+" B";if(n<1024*1024)return (n/1024).toFixed(1)+" KB";return (n/1024/1024).toFixed(1)+" MB"};
   const isImageFile=(f)=>String(f?.type||"").startsWith("image/")||["jpg","jpeg","png","webp","gif","heic","heif"].includes(extOf(f?.name));
@@ -281,12 +301,9 @@
     const content=(a?attachmentCardHtml(a):`<div>${esc(displayBody)}</div>`)+autoBadge;
     const mid=esc(m.id||"");
     const react=type==="system"||!mid?"":`<div class="avp-reaction-wrap" data-reaction-message="${mid}">
-      <button class="avp-reaction-like" type="button" aria-label="Thích tin nhắn" title="Chạm để 👍, giữ để chọn">👍</button>
+      <button class="avp-reaction-btn" type="button" data-react="like" aria-label="Thích" title="Thích">👍</button>
+      <button class="avp-reaction-btn" type="button" data-react="dislike" aria-label="Không thích" title="Không thích">👎</button>
       <span class="avp-reaction-counts"></span>
-      <div class="avp-reaction-picker" hidden>
-        <button type="button" data-react="like" aria-label="Thích">👍</button>
-        <button type="button" data-react="dislike" aria-label="Không thích">👎</button>
-      </div>
     </div>`;
     const readReceipt=adminView&&type==="admin"
       ? `<span class="avp-admin-read-receipt" data-read-created="${esc(m.created_at||"")}"></span>`
@@ -302,77 +319,87 @@
   }
   async function hydrateReactions(root){
     if(!root)return;
+
     const wraps=[...root.querySelectorAll("[data-reaction-message]")];
     if(!wraps.length)return;
-    const ids=wraps.map(x=>x.dataset.reactionMessage).filter(Boolean);
+
+    const ids=wraps
+      .map(x=>x.dataset.reactionMessage)
+      .filter(Boolean);
+
     let rows=[];
-    try{rows=await rpc("avp_chat_reactions_for_messages",{p_message_ids:ids})||[]}catch(e){console.warn("AVP reaction load",e)}
-    const map=new Map((Array.isArray(rows)?rows:[]).map(r=>[String(r.message_id),r]));
+
+    try{
+      rows=await rpc(
+        "avp_chat_reactions_for_messages",
+        {p_message_ids:ids}
+      )||[];
+    }catch(e){
+      console.warn("AVP reaction load",e);
+    }
+
+    const map=new Map(
+      (Array.isArray(rows)?rows:[])
+        .map(r=>[String(r.message_id),r])
+    );
+
     wraps.forEach(w=>{
-      const id=w.dataset.reactionMessage,r=map.get(String(id))||{};
-      const like=Number(r.like_count)||0,dislike=Number(r.dislike_count)||0,mine=r.my_reaction||"";
+      const id=String(w.dataset.reactionMessage||"");
+      const r=map.get(id)||{};
+
+      const like=Number(r.like_count)||0;
+      const dislike=Number(r.dislike_count)||0;
+      const mine=String(r.my_reaction||"");
+
       const counts=w.querySelector(".avp-reaction-counts");
-      if(counts)counts.textContent=[like?`👍 ${like}`:"",dislike?`👎 ${dislike}`:""].filter(Boolean).join("  ");
-      const likeBtn=w.querySelector(".avp-reaction-like"),picker=w.querySelector(".avp-reaction-picker");
-      if(likeBtn)likeBtn.classList.toggle("active",mine==="like");
-      w.querySelectorAll("[data-react]").forEach(b=>b.classList.toggle("active",b.dataset.react===mine));
-      if(w.dataset.bound==="1")return;
-      w.dataset.bound="1";
-      let holdTimer=null,longPressed=false;
-      const openPicker=()=>{longPressed=true;if(picker)picker.hidden=false};
-      if(likeBtn){
-        likeBtn.addEventListener("pointerdown",()=>{longPressed=false;holdTimer=setTimeout(openPicker,450)});
-        ["pointerup","pointercancel","pointerleave"].forEach(ev=>likeBtn.addEventListener(ev,()=>clearTimeout(holdTimer)));
-        likeBtn.addEventListener("click",async e=>{
+
+      if(counts){
+        counts.textContent=[
+          like?`👍 ${like}`:"",
+          dislike?`👎 ${dislike}`:""
+        ].filter(Boolean).join("  ");
+      }
+
+      w.querySelectorAll("[data-react]").forEach(btn=>{
+        btn.classList.toggle(
+          "active",
+          btn.dataset.react===mine
+        );
+
+        if(btn.dataset.bound==="1")return;
+        btn.dataset.bound="1";
+
+        btn.addEventListener("click",async e=>{
+          e.preventDefault();
           e.stopPropagation();
-          if(longPressed){longPressed=false;return}
-          await setReaction(id,mine==="like"?null:"like");
+
+          const latestMine=
+            [...w.querySelectorAll("[data-react].active")]
+              .map(x=>x.dataset.react)[0]||"";
+
+          const value=
+            latestMine===btn.dataset.react
+              ? null
+              : btn.dataset.react;
+
+          await setReaction(id,value);
           await hydrateReactions(root);
         });
-        likeBtn.addEventListener("contextmenu",e=>{e.preventDefault();openPicker()});
-      }
-      w.querySelectorAll("[data-react]").forEach(b=>b.addEventListener("click",async e=>{
-        e.stopPropagation();
-        await setReaction(id,mine===b.dataset.react?null:b.dataset.react);
-        if(picker)picker.hidden=true;
-        await hydrateReactions(root);
-      }));
+      });
     });
-    document.addEventListener("click",()=>root.querySelectorAll(".avp-reaction-picker").forEach(p=>p.hidden=true),{once:true});
   }
 
   async function hydrateAdminReadReceipts(root,thread){
     if(!root||!thread)return;
-
+    let lastRead=null;
+    try{lastRead=await rpc("avp_chat_admin_student_read_at",{p_thread_id:String(thread)})}catch(e){console.warn("AVP read receipt",e);return}
     const els=[...root.querySelectorAll("[data-read-created]")];
     els.forEach(el=>el.textContent="");
-
-    if(!els.length)return;
-
-    // Chỉ hiển thị trạng thái ở tin Admin mới nhất.
-    const latest=els[els.length-1];
-    latest.textContent=" · Đã gửi";
-
-    let lastRead=null;
-
-    try{
-      lastRead=await rpc(
-        "avp_chat_admin_student_read_at",
-        {p_thread_id:String(thread)}
-      );
-    }catch(e){
-      console.warn("AVP read receipt",e);
-      return;
-    }
-
-    if(!lastRead)return;
-
+    if(!lastRead||!els.length)return;
     const readTime=new Date(lastRead).getTime();
-    const sentTime=new Date(latest.dataset.readCreated||0).getTime();
-
-    if(sentTime && sentTime<=readTime){
-      latest.textContent=" · Đã xem";
-    }
+    const readEls=els.filter(el=>{const sent=new Date(el.dataset.readCreated||0).getTime();return sent&&sent<=readTime});
+    const last=readEls[readEls.length-1];
+    if(last)last.textContent=" · Đã xem";
   }
 
   /* ================= GUEST BUBBLE ================= */
@@ -497,9 +524,6 @@
         }
       }else await rpc("avp_chat_send_user_message",{p_body:body});
       input.value="";pendingFiles.user=[];previewFiles("user","avpChatFilePreview");await loadUserMessages();
-      if($("avpChatPanel")&&!$("avpChatPanel").hidden){
-        await markUserRead();
-      }
     }catch(e){
       const detail=e?.message||e?.error_description||String(e||"");
       alert("Chưa gửi được file. "+(detail?"Lỗi: "+detail:"Vui lòng thử lại."));
@@ -596,7 +620,7 @@
     bindFilePicker("admin","adminChatFile","adminChatFilePreview");
     $("adminChatReply")?.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAdminMessage()}});
     await loadAdminThreads();
-    adminPoll=setInterval(async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)},7000);
+    adminPoll=setInterval(async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)},15000);
     try{client.channel("avp-chat-admin-live").on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)}).subscribe()}catch{}
   }
 
@@ -732,7 +756,7 @@
         const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
         if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,floatActiveThread);box.scrollTop=box.scrollHeight;}
       }
-    },7000);
+    },15000);
     try{
       if(floatRealtime)client.removeChannel(floatRealtime);
       floatRealtime=client.channel("avp-chat-admin-floating-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{
@@ -799,7 +823,10 @@
   }
 
   async function start(){
+    ensureAiChatAssets();
+
     if(!(await waitClient())) return;
+
     subscribeAuthChanges();
     await renderChatForCurrentUser();
   }
