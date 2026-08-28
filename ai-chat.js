@@ -193,6 +193,19 @@
     }
   }
 
+  async function fileToDataUrl(file){
+    if(!file)return "";
+
+    return await new Promise((resolve,reject)=>{
+      const reader=new FileReader();
+
+      reader.onload=()=>resolve(String(reader.result||""));
+      reader.onerror=()=>reject(new Error("IMAGE_READ_FAILED"));
+
+      reader.readAsDataURL(file);
+    });
+  }
+
   async function uploadSelectedImage(){
     if(!selectedImage?.file)return null;
 
@@ -372,9 +385,13 @@
       await ensureSession();
 
       let imagePath=null;
+      let imageData="";
+      let imageMime="";
 
       if(selectedImage){
         imagePath=await uploadSelectedImage();
+        imageData=await fileToDataUrl(selectedImage.file);
+        imageMime=selectedImage.file.type || "image/jpeg";
       }
 
       const content=text || "Hãy phân tích ảnh này và cho mình biết vấn đề cần chú ý.";
@@ -395,7 +412,9 @@
       const {data,error}=await client.functions.invoke("ai-chat",{
         body:{
           session_id:sessionId,
-          image_path:imagePath
+          image_path:imagePath,
+          image:imageData,
+          image_mime:imageMime
         }
       });
 
