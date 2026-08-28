@@ -30,71 +30,109 @@
 </nav>
 <main class="legal-page">
   <section class="legal-hero page-header">
-    <span class="legal-kicker">⚖️ THÔNG TIN PHÁP LÝ</span>
+    <span class="legal-kicker">🔐 THÔNG TIN PHÁP LÝ</span>
     <h1>Chính sách quyền riêng tư</h1>
-    <p>Cách website xử lý tài khoản, BXH, file thực hành và dữ liệu trên máy bạn.</p>
-    <div class="legal-updated">Cập nhật: 27/08/2026</div>
+    <p>Cách website xử lý tài khoản, tiến độ học, BXH, vote, chat, lượt tải và dữ liệu bạn sử dụng trên website.</p>
+    <div class="legal-updated">Cập nhật: 28/08/2026</div>
   </section>
   <section class="legal-content">
 
 <div class="legal-highlight">
-  <strong>Nguyên tắc ngắn</strong>
-  <p>Website chỉ lấy dữ liệu cần để chạy tài khoản, xếp hạng, tải file và hỗ trợ học. Không bán thông tin học viên. File Excel bạn mở trong Excel Mobile được xử lý trên máy bạn, không tự upload nội dung workbook lên server.</p>
+  <strong>Nguyên tắc chính</strong>
+  <p>Website chỉ thu thập và lưu dữ liệu cần thiết để cung cấp tài khoản, đồng bộ tiến độ, hỗ trợ học tập và cải thiện dịch vụ. Không bán dữ liệu người học cho nhà quảng cáo. Đối với các thao tác Excel Mobile hiện có, workbook được xử lý trên trình duyệt và không tự động tải toàn bộ workbook lên server.</p>
 </div>
 
 <div class="legal-card">
   <h2>1. Dữ liệu tài khoản</h2>
-  <p>Khi đăng ký / đăng nhập, hệ thống (Supabase) lưu tên đăng nhập hoặc email, mật khẩu đã mã hóa, tên hiển thị và mã tài khoản. Dùng để xác thực, tải file thực hành, Excel Race và bảng xếp hạng.</p>
-  <p>Tài khoản cũ đăng ký bằng email vẫn dùng được. Không yêu cầu mật khẩu Microsoft / Microsoft 365.</p>
+  <p>Khi đăng ký hoặc đăng nhập, hệ thống xác thực Supabase có thể lưu email, mã user, thời điểm tạo tài khoản, lần đăng nhập và metadata cần thiết. Hồ sơ website có thể lưu tên hiển thị, trạng thái Admin và các thiết lập liên quan.</p>
+  <p>Mật khẩu được xử lý bởi hệ thống xác thực; Admin website không cần xem mật khẩu dạng rõ của người dùng.</p>
 </div>
 
 <div class="legal-card">
-  <h2>2. Bảng xếp hạng và tiến độ học</h2>
-  <p>BXH học tập có thể hiện tên hiển thị, chuỗi ngày học, XP. Excel Race có thể hiện tên, chuỗi / cấp khi bạn chơi mode Rank.</p>
-  <p>Tiến độ quiz, XP, badge có thể lưu localStorage trên trình duyệt và đồng bộ lên tài khoản khi đã đăng nhập.</p>
+  <h2>2. Tiến độ học và Cloud Sync</h2>
+  <p>Website có thể lưu XP, streak, huy hiệu, Quiz, bài đã hoàn thành, trạng thái học và một số dữ liệu tiến độ khác trong trình duyệt và/hoặc Supabase để đồng bộ giữa các thiết bị.</p>
+  <p>Dữ liệu được gắn theo tài khoản để hạn chế việc một tài khoản mới trên cùng máy kế thừa tiến độ của tài khoản trước.</p>
 </div>
 
 <div class="legal-card">
-  <h2>3. Tải file thực hành</h2>
-  <p>Một số file chỉ tải khi đã đăng nhập. Hệ thống có thể ghi nhận tài khoản đã yêu cầu tải (không gửi nội dung file Excel của bạn lên trừ khi bạn chủ động dùng chức năng gửi file).</p>
+  <h2>3. Bảng xếp hạng</h2>
+  <p>BXH có thể công khai tên hiển thị, XP, streak, số ngày học hoặc thành tích tương tự. Email và mã user nội bộ không được hiển thị công khai trong BXH thông thường.</p>
+  <p>Admin có thể xem thêm dữ liệu quản trị cần thiết để xử lý lỗi, gian lận hoặc yêu cầu hỗ trợ. Tài khoản Admin hoặc tài khoản được đánh dấu ẩn có thể bị loại khỏi BXH.</p>
 </div>
 
 <div class="legal-card">
-  <h2>4. Ý tưởng, thắc mắc, vote, gửi file</h2>
-  <p>Khi bạn gửi ý tưởng / thắc mắc: tên và nội dung được lưu để admin đọc.</p>
-  <p>Khi gửi file nhờ xử lý: file nằm trên kho Storage, kèm tên, Gmail hoặc Zalo bạn điền để trả lời. Đừng gửi file có dữ liệu mật (lương, CCCD, mật khẩu).</p>
-  <p>Vote “cần hướng dẫn” được gắn với tài khoản / trình duyệt để mỗi bài chỉ vote một lần.</p>
+  <h2>4. Vote</h2>
+  <p>Khi bạn vote chủ đề, yêu cầu “Cần hướng dẫn/Cần hướng dẫn thêm” hoặc lựa chọn nội dung YouTube/TikTok, website có thể lưu mã bài/chủ đề, loại vote, ngày/giờ và mã tài khoản hoặc mã trình duyệt cần thiết để giới hạn vote.</p>
+  <p>Admin có thể xem lịch sử và thống kê vote phục vụ lập kế hoạch nội dung, đồng thời có thể xóa vote test, vote spam hoặc vote phát sinh do lỗi kỹ thuật.</p>
 </div>
 
 <div class="legal-card">
-  <h2>5. Form liên hệ</h2>
-  <p>Form trên trang Liên hệ có thể gửi qua Formspree hoặc dịch vụ tương đương tới hộp thư quản trị. Nội dung gồm các trường bạn điền trên form.</p>
+  <h2>5. Chat với Admin và thông báo</h2>
+  <p>Khi đã đăng nhập, bạn có thể gửi tin nhắn cho Admin. Hệ thống lưu lịch sử cuộc trò chuyện, thời gian gửi, trạng thái đã đọc/chưa đọc và thông tin tài khoản cần thiết để Admin trả lời đúng người.</p>
+  <p>Tài khoản mới có thể nhận một tin chào mừng tự động. Người dùng cũ có thể nhận tối đa một lời chào/động viên khi đăng nhập sang một ngày mới. Những tin này được tạo để hỗ trợ trải nghiệm học tập.</p>
+  <p>Khi chưa đăng nhập, bong bóng chat có thể vẫn xuất hiện nhưng chỉ hiển thị lời mời đăng nhập/đăng ký; tin nhắn cá nhân chưa được gửi cho đến khi người dùng đăng nhập.</p>
 </div>
 
 <div class="legal-card">
-  <h2>6. Excel Mobile</h2>
-  <p>File bạn chọn được đọc ngay trên trình duyệt để xem và xử lý. Công cụ không chủ động tải nguyên workbook lên máy chủ để làm các thao tác hiện có. Nên giữ bản sao file gốc và hạn chế đưa dữ liệu cực kỳ nhạy cảm vào công cụ online.</p>
+  <h2>6. Kho bài tập và tài nguyên tải xuống</h2>
+  <p>Hệ thống có thể lưu metadata của tài nguyên như tên file, đường dẫn, loại file, danh mục, trạng thái hiển thị, phiên bản và số lượt tải. Admin sử dụng dữ liệu này để quản lý kho bài tập và các file download trên toàn website.</p>
+  <p>Khi bạn bấm tải, website có thể tăng bộ đếm lượt tải và ghi sự kiện liên quan. Việc đếm lượt tải không có nghĩa là website đọc nội dung file cá nhân trên máy bạn.</p>
 </div>
 
 <div class="legal-card">
-  <h2>7. Thống kê sử dụng</h2>
-  <p>Website có thể ghi lượt xem trang, bấm tải, mở video, chơi Race, đăng nhập. Có thể dùng mã khách ngẫu nhiên trong localStorage. Nếu đã đăng nhập, sự kiện có thể gắn với mã tài khoản.</p>
-  <p>Không đưa nội dung ô Excel hay toàn bộ workbook vào bảng thống kê.</p>
+  <h2>7. File bạn chủ động gửi cho Admin</h2>
+  <p>Nếu bạn sử dụng chức năng gửi file nhờ hỗ trợ, file có thể được lưu trên Supabase Storage hoặc dịch vụ lưu trữ tương đương cùng thông tin bạn chủ động cung cấp để Admin phản hồi.</p>
+  <p>Không nên gửi mật khẩu, OTP, CCCD, thông tin thẻ, dữ liệu lương hoặc dữ liệu cực kỳ nhạy cảm nếu không thực sự cần thiết.</p>
 </div>
 
 <div class="legal-card">
-  <h2>8. Cookie / lưu trình duyệt</h2>
-  <p>Dùng localStorage và phiên đăng nhập để nhớ tài khoản, giao diện, tiến độ. Không chạy quảng cáo bên thứ ba theo hành vi.</p>
+  <h2>8. Excel Mobile</h2>
+  <p>Đối với các thao tác Excel Mobile hiện có, file được đọc và xử lý ngay trong trình duyệt. Website không chủ động tải toàn bộ workbook lên server để thực hiện các thao tác đó.</p>
+  <p>Tuy vậy, các tính năng khác mà bạn chủ động chọn như gửi file cho Admin là luồng riêng và có thể cần upload file theo mô tả của tính năng đó.</p>
 </div>
 
 <div class="legal-card">
-  <h2>9. Xóa dữ liệu</h2>
-  <p>Muốn xóa tài khoản, tên trên BXH hoặc file đã gửi: vào trang <a href="lienhe.html">Liên hệ</a> và nêu rõ tên đăng nhập / email. Quản trị viên sẽ xóa trên Supabase và BXH trong phạm vi kỹ thuật cho phép.</p>
+  <h2>9. Analytics và dữ liệu sử dụng</h2>
+  <p>Website có thể ghi các sự kiện như lượt xem trang, mở công cụ, lượt tải, mở video, chơi Race, vote và một số tương tác học tập. Dữ liệu này giúp Admin xem thống kê hoạt động và cải thiện nội dung.</p>
+  <p>Nếu đã đăng nhập, một số sự kiện có thể gắn với mã tài khoản. Nếu chưa đăng nhập, website có thể sử dụng mã khách hoặc dữ liệu trình duyệt cần thiết để tránh đếm sai và duy trì phiên.</p>
+  <p>Analytics không nhằm lưu toàn bộ nội dung ô Excel hoặc sao chép nguyên workbook của bạn.</p>
 </div>
 
 <div class="legal-card">
-  <h2>10. Thay đổi chính sách</h2>
-  <p>Khi thêm tính năng mới, ngày cập nhật trên trang này sẽ đổi. Việc tiếp tục dùng website sau ngày cập nhật được hiểu là bạn đã đọc phiên bản mới.</p>
+  <h2>10. localStorage, session và thiết bị</h2>
+  <p>Website sử dụng localStorage, session đăng nhập hoặc cơ chế lưu trình duyệt tương tự để nhớ giao diện, trạng thái học, mã khách và hỗ trợ đồng bộ. Khi đổi tài khoản, website có thể xóa hoặc tách một số dữ liệu local để tránh lẫn tiến độ giữa các user.</p>
+</div>
+
+<div class="legal-card">
+  <h2>11. Nhà cung cấp kỹ thuật</h2>
+  <p>Website có thể sử dụng GitHub Pages để phân phối website, Supabase cho xác thực/cơ sở dữ liệu/storage/realtime và các dịch vụ hỗ trợ khác như Formspree nếu một biểu mẫu cụ thể sử dụng dịch vụ đó. Các nhà cung cấp này có thể xử lý dữ liệu kỹ thuật cần thiết để cung cấp dịch vụ theo chính sách riêng của họ.</p>
+</div>
+
+<div class="legal-card">
+  <h2>12. Quyền truy cập của Admin</h2>
+  <p>Admin Panel có thể cho phép quản trị viên xem dữ liệu cần thiết để hỗ trợ người dùng và vận hành website, ví dụ danh sách tài khoản, tiến độ, BXH, vote, chat, kho bài tập, lượt tải và trạng thái hệ thống.</p>
+  <p>Quyền Admin được dùng cho quản trị, hỗ trợ và kiểm thử; không phải mọi dữ liệu đều được công khai cho người dùng khác.</p>
+</div>
+
+<div class="legal-card">
+  <h2>13. Lưu giữ và xóa dữ liệu</h2>
+  <p>Dữ liệu có thể được giữ trong thời gian cần thiết để duy trì tài khoản, lịch sử hỗ trợ, thống kê và tính toàn vẹn của hệ thống. Một số log hoặc bản sao lưu có thể cần thêm thời gian để được loại bỏ hoàn toàn.</p>
+  <p>Nếu muốn yêu cầu xóa tài khoản, tên khỏi BXH, lịch sử chat hoặc file đã gửi, hãy dùng hộp chat hoặc trang <a href="lienhe.html">Liên hệ</a> và cung cấp thông tin đủ để xác định đúng tài khoản.</p>
+</div>
+
+<div class="legal-card">
+  <h2>14. Bảo mật</h2>
+  <p>Website áp dụng các cơ chế xác thực, phân quyền và chính sách truy cập phù hợp với kiến trúc hiện tại. Tuy nhiên không có hệ thống Internet nào bảo đảm an toàn tuyệt đối. Bạn nên dùng mật khẩu riêng, không chia sẻ OTP và đăng xuất trên thiết bị công cộng.</p>
+</div>
+
+<div class="legal-card">
+  <h2>15. Người dùng nhỏ tuổi</h2>
+  <p>Người dưới 16 tuổi nên sử dụng website cùng sự hướng dẫn của cha mẹ, người giám hộ hoặc giáo viên và tránh cung cấp thông tin cá nhân không cần thiết.</p>
+</div>
+
+<div class="legal-card">
+  <h2>16. Thay đổi chính sách</h2>
+  <p>Khi website bổ sung tính năng hoặc thay đổi cách xử lý dữ liệu, chính sách này có thể được cập nhật. Ngày cập nhật mới nhất được hiển thị ở đầu trang.</p>
 </div>
 
   </section>
