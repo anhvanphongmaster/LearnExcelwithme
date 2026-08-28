@@ -727,6 +727,7 @@
     bindUserManagement();
     bindVoteManager();
     bindDownloadManagement();
+    bindRaceAdmin();
     $("adminHealthReload")?.addEventListener("click",()=>{checkAdminHealth();toast("Đang kiểm tra các module...")});
     loadDashboard();
   }
@@ -756,5 +757,4 @@
   function bindPractice(){el('adminPracticeAdd')?.addEventListener('click',async()=>{if(!practiceDownloads.length)await loadPracticeDownloads();openPracticeEditor(null)});el('adminPracticeClose')?.addEventListener('click',closePracticeEditor);el('adminPracticeCancel')?.addEventListener('click',closePracticeEditor);el('adminPracticeSave')?.addEventListener('click',savePractice);el('adminPracticeReload')?.addEventListener('click',loadPractice);el('adminPracticeSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')loadPractice()});el('adminPracticeCategory')?.addEventListener('change',loadPractice);el('adminPracticeStatus')?.addEventListener('change',loadPractice);el('adminPracticeBody')?.addEventListener('click',async e=>{const btn=e.target.closest('[data-practice-act]');if(!btn)return;const tr=btn.closest('tr'),id=tr?.dataset.practiceId,row=practiceCache.find(x=>x.id===id);if(!row)return;const act=btn.dataset.practiceAct;if(act==='edit'){if(!practiceDownloads.length)await loadPracticeDownloads();openPracticeEditor(row);return}if(act==='toggle'){btn.disabled=true;try{await prpc('admin_practice_set_active',{p_id:id,p_active:!row.is_active});ptoast(row.is_active?'Đã ẩn bài':'Đã hiện bài');await loadPractice()}catch(err){ptoast('Không đổi được trạng thái');btn.disabled=false}return}if(act==='archive'){if(!confirm('Lưu trữ bài này? Bài sẽ biến khỏi trang học nhưng dữ liệu vote cũ vẫn giữ.'))return;btn.disabled=true;try{await prpc('admin_practice_archive',{p_id:id});ptoast('Đã lưu trữ bài');await loadPractice()}catch(err){ptoast('Không lưu trữ được');btn.disabled=false}}});document.querySelectorAll('[data-admin-view="practice"]').forEach(btn=>btn.addEventListener('click',()=>{if(!practiceLoaded)loadPractice()}))}
   function bootPractice(){bindPractice();try{if(localStorage.getItem('avp_admin_view_v1')==='practice')setTimeout(loadPractice,250)}catch(e){}}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootPractice);else bootPractice();
-  bindRaceAdmin();
 })();
