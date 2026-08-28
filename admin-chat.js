@@ -252,12 +252,13 @@
     if(!root||!thread)return;
     let lastRead=null;
     try{lastRead=await rpc("avp_chat_admin_student_read_at",{p_thread_id:String(thread)})}catch(e){console.warn("AVP read receipt",e);return}
-    if(!lastRead)return;
+    const els=[...root.querySelectorAll("[data-read-created]")];
+    els.forEach(el=>el.textContent="");
+    if(!lastRead||!els.length)return;
     const readTime=new Date(lastRead).getTime();
-    root.querySelectorAll("[data-read-created]").forEach(el=>{
-      const sent=new Date(el.dataset.readCreated||0).getTime();
-      if(sent&&sent<=readTime)el.textContent=" · Đã xem";
-    });
+    const readEls=els.filter(el=>{const sent=new Date(el.dataset.readCreated||0).getTime();return sent&&sent<=readTime});
+    const last=readEls[readEls.length-1];
+    if(last)last.textContent=" · Đã xem";
   }
 
   /* ================= GUEST BUBBLE ================= */
@@ -345,7 +346,12 @@
   async function togglePanel(open){
     const p=$("avpChatPanel"); if(!p)return;
     p.hidden=!open;
-    if(open){await loadUserMessages();await markUserRead();$("avpChatInput")?.focus()}
+    if(open){
+      await ensureThread();
+      await loadUserMessages();
+      await markUserRead();
+      $("avpChatInput")?.focus();
+    }
   }
   async function ensureThread(){
     if(threadId)return threadId;
@@ -392,13 +398,18 @@
   }
   async function markUserRead(){
     try{
+      if(document.visibilityState!=="visible")return;
+      await ensureThread();
       await rpc("avp_chat_mark_user_read");
       if(threadId)await rpc("avp_chat_mark_student_read_state",{p_thread_id:String(threadId)});
       await updateUserBadge();
-    }catch{}
+    }catch(e){console.warn("AVP mark student read",e)}
   }
   function startUserLive(){
-    clearInterval(pollTimer);pollTimer=setInterval(async()=>{await updateUserBadge();if($("avpChatPanel")&&!$("avpChatPanel").hidden)await loadUserMessages()},20000);
+    clearInterval(pollTimer);pollTimer=setInterval(async()=>{
+      await updateUserBadge();
+      if($("avpChatPanel")&&!$("avpChatPanel").hidden){await loadUserMessages();await markUserRead()}
+    },15000);
     try{
       if(realtimeChannel)client.removeChannel(realtimeChannel);
       realtimeChannel=client.channel("avp-chat-user-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages",filter:`thread_id=eq.${threadId}`},async()=>{await updateUserBadge();if(!$("avpChatPanel").hidden){await loadUserMessages();await markUserRead()}}).subscribe();
@@ -406,6 +417,12 @@
   }
   async function initUser(){
     mountUserUI();
+    const syncReadIfOpen=async()=>{
+      const panel=$("avpChatPanel");
+      if(panel&&!panel.hidden&&document.visibilityState==="visible"){await loadUserMessages();await markUserRead()}
+    };
+    document.addEventListener("visibilitychange",syncReadIfOpen);
+    window.addEventListener("focus",syncReadIfOpen);
     try{await ensureThread();await rpc("avp_chat_ensure_daily_greeting");await updateUserBadge();startUserLive()}catch(e){console.warn("AVP chat init",e)}
   }
 
