@@ -1,6 +1,0 @@
-V32 UNIFIED THEME
-- Applied to all 38 HTML pages.
-- Dark mode now uses consistent dark surfaces, readable text, borders and inputs.
-- Master locked cards no longer become unreadably pale.
-- Pages without script.js still read and toggle the saved theme when a theme button exists.
-- Existing progress / XP / quiz / Supabase logic was not changed.
