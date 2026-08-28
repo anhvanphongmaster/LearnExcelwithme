@@ -820,3 +820,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
+
+/* ===== AVP AI CHAT LOADER V1 ===== */
+(function(){
+  if(document.getElementById('avpAiChatScript')) return;
+
+  const css=document.createElement('link');
+  css.rel='stylesheet';
+  css.href='ai-chat.css?v=20260828-ai1';
+  css.id='avpAiChatCss';
+  document.head.appendChild(css);
+
+  const js=document.createElement('script');
+  js.src='ai-chat.js?v=20260828-ai1';
+  js.defer=true;
+  js.id='avpAiChatScript';
+  document.head.appendChild(js);
+})();

@@ -1,0 +1,53 @@
+/* AVP AI CHAT V1 */
+#avpAiChatRoot{font-family:inherit}
+.avp-ai-bubble{
+  position:fixed;right:18px;bottom:88px;z-index:9996;
+  width:48px;height:48px;border:0;border-radius:50%;
+  background:#217346;color:#fff;font-size:21px;
+  box-shadow:0 10px 28px rgba(0,0,0,.2);cursor:pointer
+}
+.avp-ai-panel{
+  position:fixed;right:16px;bottom:148px;z-index:9997;
+  width:min(92vw,390px);height:min(70vh,610px);
+  background:#fff;border:1px solid rgba(15,23,42,.1);border-radius:20px;
+  box-shadow:0 24px 70px rgba(15,23,42,.22);overflow:hidden;
+  display:flex;flex-direction:column;color:#111827
+}
+.avp-ai-panel[hidden]{display:none!important}
+.avp-ai-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 15px;border-bottom:1px solid #eef0f3;background:#fff
+}
+.avp-ai-head strong{display:block;font-size:15px}
+.avp-ai-head small{display:block;color:#98a2b3;font-size:11px;margin-top:2px}
+.avp-ai-close{border:0;background:#f5f6f7;width:30px;height:30px;border-radius:9px;font-size:20px;cursor:pointer}
+.avp-ai-quota{padding:8px 14px;background:#f6faf8;color:#217346;font-size:11px;font-weight:700;border-bottom:1px solid #edf3ef}
+.avp-ai-messages{flex:1;overflow:auto;padding:14px;background:#fafafa}
+.avp-ai-empty{color:#98a2b3;font-size:13px;line-height:1.55;text-align:center;padding:34px 16px}
+.avp-ai-msg-row{display:flex;margin:8px 0}
+.avp-ai-msg-row.user{justify-content:flex-end}
+.avp-ai-msg-row.assistant{justify-content:flex-start}
+.avp-ai-msg{max-width:84%;padding:10px 12px;border-radius:15px;font-size:13px;line-height:1.5}
+.avp-ai-msg-row.user .avp-ai-msg{background:#217346;color:#fff;border-bottom-right-radius:5px}
+.avp-ai-msg-row.assistant .avp-ai-msg{background:#fff;color:#111827;border:1px solid #e8eaed;border-bottom-left-radius:5px}
+.avp-ai-feedback{display:flex;gap:4px;margin-top:6px}
+.avp-ai-feedback button{border:0;background:transparent;padding:2px 4px;font-size:12px;opacity:.45;cursor:pointer}
+.avp-ai-feedback button.active{opacity:1}
+.avp-ai-actions-row{padding:7px 12px;border-top:1px solid #eef0f3;background:#fff}
+.avp-ai-transfer{border:0;background:transparent;color:#217346;font-size:11px;font-weight:700;padding:4px 0;cursor:pointer}
+.avp-ai-form{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #eef0f3;background:#fff}
+.avp-ai-form textarea{
+  flex:1;resize:none;max-height:120px;border:1px solid #dfe3e8;border-radius:12px;
+  padding:9px 11px;font:inherit;font-size:13px;outline:none
+}
+.avp-ai-form textarea:focus{border-color:#217346;box-shadow:0 0 0 3px rgba(33,115,70,.08)}
+.avp-ai-form button{border:0;background:#217346;color:#fff;border-radius:11px;padding:0 14px;font-weight:700;cursor:pointer}
+.avp-ai-form button:disabled{opacity:.45;cursor:not-allowed}
+.avp-ai-note{padding:0 12px 10px;color:#98a2b3;font-size:10px;background:#fff}
+@media(max-width:640px){
+  .avp-ai-bubble{right:14px;bottom:82px;width:44px;height:44px;font-size:19px}
+  .avp-ai-panel{
+    left:8px;right:8px;bottom:136px;width:auto;
+    height:min(68vh,570px);border-radius:18px
+  }
+}
