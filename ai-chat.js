@@ -17,7 +17,11 @@
     .replaceAll("'","&#039;");
 
   function getClient(){
-    return window.avpSupabase || window.supabaseClient || null;
+    return window.avpSupabase ||
+           window.supabaseClient ||
+           window.sb ||
+           window._supabase ||
+           null;
   }
 
   async function waitClient(){
@@ -80,13 +84,29 @@
   }
 
   async function currentUser(){
-    const {data}=await client.auth.getUser();
-    user=data?.user||null;
+    client=client||getClient();
+
+    if(!client?.auth){
+      user=null;
+      return null;
+    }
+
+    try{
+      const {data}=await client.auth.getUser();
+      user=data?.user||null;
+    }catch{
+      user=null;
+    }
+
     return user;
   }
 
   async function ensureSession(){
     if(sessionId) return sessionId;
+
+    client=client||getClient();
+    if(!client?.rpc) throw new Error("Supabase chưa sẵn sàng");
+
     const {data,error}=await client.rpc("avp_ai_get_or_create_session");
     if(error) throw error;
     sessionId=data;
@@ -165,10 +185,22 @@
   async function toggle(open){
     const p=$("avpAiChatPanel");
     if(!p) return;
+
     p.hidden=!open;
+
     if(open){
+      client=client||getClient();
       await currentUser();
-      await loadHistory();
+
+      if(client?.rpc){
+        await loadHistory();
+      }else{
+        const box=$("avpAiMessages");
+        if(box){
+          box.innerHTML='<div class="avp-ai-empty">AI Chat đã được tải. Đang chờ hệ thống đăng nhập/Supabase sẵn sàng…</div>';
+        }
+      }
+
       setTimeout(()=>$("avpAiInput")?.focus(),50);
     }
   }
@@ -176,6 +208,13 @@
   async function send(e){
     e.preventDefault();
     if(sending) return;
+
+    client=client||getClient();
+
+    if(!client?.rpc){
+      alert("AI Chat chưa kết nối được Supabase. Hãy tải lại trang rồi thử lại.");
+      return;
+    }
 
     await currentUser();
     if(!user){
@@ -233,6 +272,13 @@
   }
 
   async function transferToAdmin(){
+    client=client||getClient();
+
+    if(!client?.rpc){
+      alert("Chat chưa kết nối được Supabase.");
+      return;
+    }
+
     await currentUser();
     if(!user){
       alert("Bạn cần đăng nhập để chuyển câu hỏi cho Admin.");
@@ -262,15 +308,31 @@
   }
 
   async function start(){
-    if(!(await waitClient())) return;
+    // Quan trọng: nút AI phải luôn hiện, không phụ thuộc Supabase.
     mount();
+
+    const ready=await waitClient();
+
+    if(!ready){
+      console.warn("AVP AI: Supabase client chưa sẵn sàng, nhưng giao diện AI vẫn được giữ.");
+      return;
+    }
+
     await currentUser();
 
-    client.auth.onAuthStateChange(async()=>{
-      user=null;sessionId=null;
-      await currentUser();
-      if(!$("avpAiChatPanel")?.hidden) await loadHistory();
-    });
+    try{
+      client.auth.onAuthStateChange(async()=>{
+        user=null;
+        sessionId=null;
+        await currentUser();
+
+        if(!$("avpAiChatPanel")?.hidden){
+          await loadHistory();
+        }
+      });
+    }catch(e){
+      console.warn("AVP AI auth listener",e);
+    }
   }
 
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});
