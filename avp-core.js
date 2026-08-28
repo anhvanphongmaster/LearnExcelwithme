@@ -83,25 +83,69 @@
   const edgeMenu=launcher.querySelector('#avpEdgeMenu');
   const edgeBadge=launcher.querySelector('#avpEdgeBadge');
 
+  /* =========================================================
+     MINI PREVIEW V2 — FIXED LAYER
+     Không nằm trong launcher để tránh bị CSS cha che.
+     ========================================================= */
   const mini=document.createElement('button');
   mini.type='button';
-  mini.className='avp-edge-mini-preview';
+  mini.className='avp-edge-mini-preview-v2';
   mini.id='avpEdgeMiniPreview';
   mini.hidden=true;
   mini.innerHTML=`
     <span class="avp-edge-mini-name"></span>
     <span class="avp-edge-mini-body"></span>
   `;
-  launcher.appendChild(mini);
+  document.body.appendChild(mini);
 
   let miniTimer=null;
   let miniDetail=null;
+  let miniHideToken=0;
+
+  const MINI_LAST_VISIT='avp_edge_last_visit_v2';
+  const MINI_LAST_GREETING='avp_edge_last_greeting_v2';
+  const MINI_LAST_UNREAD_SHOWN='avp_edge_last_unread_shown_v2';
 
   function miniDuration(text){
     const n=String(text||'').length;
     if(n<=35)return 3000;
-    if(n<=85)return 4000;
+    if(n<=90)return 4000;
     return 5000;
+  }
+
+  function launcherRect(){
+    return launcher.getBoundingClientRect();
+  }
+
+  function positionMiniPreview(){
+    if(mini.hidden)return;
+
+    const r=launcherRect();
+    const gap=8;
+    const vw=window.innerWidth;
+    const vh=window.innerHeight;
+
+    /* cho browser tính width thật trước */
+    const mr=mini.getBoundingClientRect();
+    const mw=mr.width||Math.min(270,vw-78);
+    const mh=mr.height||58;
+
+    let top=r.top+(r.height-mh)/2;
+    top=Math.max(8,Math.min(vh-mh-8,top));
+
+    mini.style.top=Math.round(top)+'px';
+
+    if(launcher.classList.contains('is-left')){
+      mini.classList.add('from-left');
+      mini.classList.remove('from-right');
+      mini.style.left=Math.round(r.right+gap)+'px';
+      mini.style.right='auto';
+    }else{
+      mini.classList.add('from-right');
+      mini.classList.remove('from-left');
+      mini.style.right=Math.round(vw-r.left+gap)+'px';
+      mini.style.left='auto';
+    }
   }
 
   function hideMiniPreview(){
@@ -110,13 +154,16 @@
 
     if(mini.hidden)return;
 
+    const token=++miniHideToken;
+
     mini.classList.remove('show');
     mini.classList.add('hide');
 
     setTimeout(()=>{
+      if(token!==miniHideToken)return;
       mini.hidden=true;
       mini.classList.remove('hide');
-    },220);
+    },240);
   }
 
   function showMiniPreview(detail){
@@ -129,11 +176,16 @@
     mini.querySelector('.avp-edge-mini-body').textContent=body;
 
     clearTimeout(miniTimer);
+    ++miniHideToken;
 
     mini.hidden=false;
     mini.classList.remove('hide');
 
+    /* position:fixed, luôn nằm ngoài mọi stacking context của launcher */
+    positionMiniPreview();
+
     requestAnimationFrame(()=>{
+      positionMiniPreview();
       mini.classList.add('show');
     });
 
@@ -143,7 +195,7 @@
     );
   }
 
-  mini.addEventListener('click',()=>{
+  function openChatFromMini(){
     hideMiniPreview();
     setEdgeMenu(false);
 
@@ -154,13 +206,162 @@
     }else{
       toast('Chat Admin đang tải, thử lại sau một chút');
     }
-  });
+  }
+
+  mini.addEventListener('click',openChatFromMini);
 
   window.addEventListener('avp:chat-new-message',e=>{
-    showMiniPreview(e.detail||{});
+    const detail=e.detail||{};
+    showMiniPreview(detail);
   });
 
   window.AVPShowMiniChatPreview=showMiniPreview;
+
+  function unreadCountFromChatBadge(){
+    const badge=document.getElementById('avpChatBadge');
+    if(!badge)return 0;
+
+    const raw=String(badge.textContent||'').trim();
+    const count=parseInt(raw.replace(/\D/g,''),10)||0;
+
+    if(
+      badge.hidden ||
+      getComputedStyle(badge).display==='none'
+    )return 0;
+
+    return count;
+  }
+
+  function showUnreadReturnPreview(count){
+    if(count<=0)return false;
+
+    showMiniPreview({
+      sender:'Tin nhắn chưa đọc',
+      body:count===1
+        ? 'Bạn có 1 tin nhắn mới. Chạm để xem.'
+        : `Bạn có ${count} tin nhắn mới. Chạm để xem.`,
+      unread:true
+    });
+
+    try{
+      localStorage.setItem(
+        MINI_LAST_UNREAD_SHOWN,
+        JSON.stringify({count,at:Date.now()})
+      );
+    }catch{}
+
+    return true;
+  }
+
+  const encouragements=[
+    ['Chào mừng bạn quay lại 👋','Tiếp tục học thêm một mẹo Excel nhé.'],
+    ['Anh Văn Phòng','Một chút mỗi ngày, Excel sẽ nhẹ nhàng hơn 💚'],
+    ['Sẵn sàng chưa? ✨','Mở một bài thực hành và làm tiếp thôi.'],
+    ['Học Excel thôi 📊','Mỗi lần quay lại là thêm một chút kỹ năng mới.']
+  ];
+
+  function showReturnGreeting(force=false){
+    if(unreadCountFromChatBadge()>0)return false;
+
+    const now=Date.now();
+    const lastGreeting=Number(localStorage.getItem(MINI_LAST_GREETING)||0);
+
+    /* Không spam khi chỉ chuyển qua lại giữa các trang nội bộ liên tục.
+       Khi quay lại sau >= 60 giây thì có thể chào lại.
+       Lần đầu vào trang vẫn cho hiện một lời chào. */
+    if(!force && lastGreeting && now-lastGreeting<60*1000){
+      return false;
+    }
+
+    const item=encouragements[
+      Math.floor(Math.random()*encouragements.length)
+    ];
+
+    showMiniPreview({
+      sender:item[0],
+      body:item[1],
+      greeting:true
+    });
+
+    try{
+      localStorage.setItem(MINI_LAST_GREETING,String(now));
+    }catch{}
+
+    return true;
+  }
+
+  function showReturnState(){
+    /* Chờ chat/badge load từ Supabase trước */
+    let tries=0;
+
+    const check=()=>{
+      tries++;
+
+      const count=unreadCountFromChatBadge();
+
+      if(count>0){
+        showUnreadReturnPreview(count);
+        return;
+      }
+
+      if(
+        document.getElementById('avpChatBadge') ||
+        tries>=12
+      ){
+        showReturnGreeting();
+        return;
+      }
+
+      setTimeout(check,350);
+    };
+
+    setTimeout(check,500);
+  }
+
+  /* Lúc vào website:
+     - có unread -> preview unread
+     - không có -> lời chào/động viên */
+  showReturnState();
+
+  let hiddenAt=0;
+
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){
+      hiddenAt=Date.now();
+      try{
+        localStorage.setItem(MINI_LAST_VISIT,String(hiddenAt));
+      }catch{}
+      return;
+    }
+
+    const awayMs=hiddenAt
+      ? Date.now()-hiddenAt
+      : 0;
+
+    /* Quay lại sau khi rời app/tab:
+       unread luôn ưu tiên; không unread thì chào nếu rời >= 60 giây */
+    setTimeout(()=>{
+      const count=unreadCountFromChatBadge();
+
+      if(count>0){
+        showUnreadReturnPreview(count);
+      }else if(awayMs>=60*1000){
+        showReturnGreeting(true);
+      }
+    },500);
+  });
+
+  window.addEventListener('focus',()=>{
+    setTimeout(()=>{
+      const count=unreadCountFromChatBadge();
+
+      if(count>0 && mini.hidden){
+        showUnreadReturnPreview(count);
+      }
+    },600);
+  });
+
+  window.addEventListener('resize',positionMiniPreview);
 
   const back=document.createElement('div');
   back.className='avp-hub-backdrop';
@@ -207,27 +408,12 @@
 
   /* Mirror badge chưa đọc từ Chat Admin ra nút chính.
      Không dùng observer toàn trang; chỉ polling rất nhẹ. */
-  let previousEdgeCount=0;
+  let previousEdgeCount=-1;
 
   function syncEdgeBadge(){
-    const chatBadge=document.getElementById('avpChatBadge');
+    const count=unreadCountFromChatBadge();
 
-    if(!chatBadge){
-      edgeBadge.hidden=true;
-      edgeBadge.textContent='0';
-      previousEdgeCount=0;
-      return;
-    }
-
-    const raw=String(chatBadge.textContent||'').trim();
-    const count=parseInt(raw.replace(/\D/g,''),10)||0;
-
-    const visible=
-      !chatBadge.hidden &&
-      getComputedStyle(chatBadge).display!=='none' &&
-      count>0;
-
-    if(!visible){
+    if(count<=0){
       edgeBadge.hidden=true;
       edgeBadge.textContent='0';
       previousEdgeCount=0;
@@ -237,23 +423,31 @@
     edgeBadge.hidden=false;
     edgeBadge.textContent=count>9?'9+':String(count);
 
-    /* Fallback:
-       nếu badge tăng nhưng realtime preview event chưa tới,
-       vẫn bung preview để người dùng biết có tin mới. */
-    if(previousEdgeCount>0 && count>previousEdgeCount && mini.hidden){
-      showMiniPreview({
-        sender:'Tin nhắn mới',
-        body:'Bạn vừa nhận được tin nhắn mới.',
-        fallback:true
-      });
+    /* Lần đầu badge xuất hiện sau khi trang load cũng phải bung,
+       không cần previous count > 0 như bản cũ. */
+    if(
+      previousEdgeCount>=0 &&
+      count>previousEdgeCount &&
+      mini.hidden
+    ){
+      showUnreadReturnPreview(count);
     }
 
     previousEdgeCount=count;
   }
 
   syncEdgeBadge();
-  const edgeBadgeTimer=setInterval(syncEdgeBadge,1600);
-  window.addEventListener('pagehide',()=>clearInterval(edgeBadgeTimer),{once:true});
+
+  const edgeBadgeTimer=setInterval(
+    syncEdgeBadge,
+    1200
+  );
+
+  window.addEventListener(
+    'pagehide',
+    ()=>clearInterval(edgeBadgeTimer),
+    {once:true}
+  );
 
   /* Kéo dọc màn hình + snap sát viền trái/phải, nhớ vị trí. */
   (function enableDragEdgeLauncher(root,btn){
@@ -274,6 +468,7 @@
 
       root.style.top=y+'px';
       root.style.bottom='auto';
+      requestAnimationFrame(positionMiniPreview);
 
       if(side==='left'){
         root.style.left=margin+'px';
@@ -333,6 +528,8 @@
       const y=clamp(startTop+dy,margin,window.innerHeight-h-margin);
 
       root.style.top=y+'px';
+
+      requestAnimationFrame(positionMiniPreview);
 
       /* trong lúc kéo, đổi bên theo vị trí ngón tay */
       const side=e.clientX<window.innerWidth/2?'left':'right';

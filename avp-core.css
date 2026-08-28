@@ -476,3 +476,123 @@ body > .avp-hub-fab{
 .avp-edge-mini-preview.hide{
   pointer-events:none !important;
 }
+
+/* =========================================================
+   AVP MINI PREVIEW V2 — FIXED BODY LAYER
+   Bảo đảm nhìn thấy trên mobile/desktop
+   ========================================================= */
+.avp-edge-mini-preview-v2{
+  position:fixed !important;
+  z-index:2147483000 !important;
+
+  width:min(270px,calc(100vw - 76px)) !important;
+  min-height:52px !important;
+  max-height:78px !important;
+
+  padding:9px 12px !important;
+
+  border:1px solid rgba(33,115,70,.15) !important;
+  border-radius:14px !important;
+
+  background:#fff !important;
+  color:#173b29 !important;
+
+  box-shadow:
+    0 12px 32px rgba(20,65,43,.18),
+    0 2px 8px rgba(20,65,43,.08) !important;
+
+  text-align:left !important;
+  cursor:pointer !important;
+
+  overflow:hidden !important;
+
+  opacity:0 !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+
+  transform:translateX(14px) scale(.97) !important;
+
+  transition:
+    opacity .20s ease,
+    transform .22s cubic-bezier(.2,.8,.2,1) !important;
+}
+
+.avp-edge-mini-preview-v2[hidden]{
+  display:none !important;
+}
+
+.avp-edge-mini-preview-v2.from-left{
+  transform:translateX(-14px) scale(.97) !important;
+}
+
+.avp-edge-mini-preview-v2.from-right{
+  transform:translateX(14px) scale(.97) !important;
+}
+
+.avp-edge-mini-preview-v2.show{
+  opacity:1 !important;
+  transform:translateX(0) scale(1) !important;
+}
+
+.avp-edge-mini-preview-v2.hide{
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+.avp-edge-mini-preview-v2 .avp-edge-mini-name{
+  display:block !important;
+
+  margin-bottom:3px !important;
+
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  white-space:nowrap !important;
+
+  color:#217346 !important;
+
+  font:
+    800 12px/1.25
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif !important;
+}
+
+.avp-edge-mini-preview-v2 .avp-edge-mini-body{
+  display:-webkit-box !important;
+  -webkit-line-clamp:2 !important;
+  -webkit-box-orient:vertical !important;
+
+  overflow:hidden !important;
+
+  color:#475467 !important;
+
+  font:
+    500 12px/1.38
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif !important;
+}
+
+@media(max-width:600px){
+  .avp-edge-mini-preview-v2{
+    width:min(245px,calc(100vw - 66px)) !important;
+    min-height:50px !important;
+    max-height:72px !important;
+
+    padding:8px 10px !important;
+
+    border-radius:13px !important;
+  }
+
+  .avp-edge-mini-preview-v2 .avp-edge-mini-name{
+    font-size:11px !important;
+  }
+
+  .avp-edge-mini-preview-v2 .avp-edge-mini-body{
+    font-size:11px !important;
+  }
+}
