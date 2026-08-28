@@ -85,139 +85,193 @@
 .avp-chat-file .avp-file-open{width:100%;border:1px solid rgba(33,115,70,.18);border-radius:11px;background:rgba(255,255,255,.82);display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;padding:8px;cursor:pointer;text-align:left;color:#244c35}.avp-msg-row.user .avp-chat-file .avp-file-open{background:rgba(255,255,255,.95)}.avp-file-icon{width:34px;height:34px;border-radius:9px;background:#edf7f1;display:grid;place-items:center;font-size:17px}.avp-chat-file b,.avp-chat-file small{display:block;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.avp-chat-file b{font-size:11px}.avp-chat-file small{font-size:9px;opacity:.68;margin-top:2px}.avp-chat-file em{font-size:10px;font-style:normal;font-weight:800;color:#217346}.avp-attach-caption{margin-top:7px;white-space:pre-wrap}
 @media(max-width:520px){.avp-chat-compose,.admin-chat-compose{grid-template-columns:40px 1fr auto}.avp-chat-attach{width:40px;height:40px}.avp-chat-file b,.avp-chat-file small{max-width:145px}}
 
-/* ===== AVP Chat reactions: clean white mobile style ===== */
+/* ===== AVP Chat reactions + one-way read receipt ===== */
+.avp-reaction-wrap{position:relative;display:flex;align-items:center;gap:5px;margin-top:5px;min-height:24px}
+.avp-msg-row.user .avp-reaction-wrap{justify-content:flex-end}
+.avp-reaction-trigger{width:27px;height:27px;border:1px solid rgba(148,163,184,.28);border-radius:999px;background:rgba(255,255,255,.92);display:inline-grid;place-items:center;font-size:15px;line-height:1;cursor:pointer;padding:0;box-shadow:0 3px 10px rgba(15,23,42,.08);touch-action:manipulation}
+.avp-reaction-trigger.active{border-color:rgba(59,130,246,.45);background:#eff6ff}
+.avp-reaction-picker{position:absolute;z-index:30;left:0;bottom:31px;display:flex;gap:5px;padding:5px;border:1px solid rgba(148,163,184,.25);border-radius:999px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.18)}
+.avp-msg-row.user .avp-reaction-picker{left:auto;right:0}
+.avp-reaction-picker[hidden]{display:none!important}
+.avp-reaction-picker button{width:34px;height:34px;border:0;border-radius:999px;background:transparent;font-size:20px;line-height:1;padding:0;cursor:pointer;touch-action:manipulation}
+.avp-reaction-picker button.active,.avp-reaction-picker button:active{background:#eef2ff;transform:scale(1.06)}
+.avp-reaction-counts{font-size:11px;font-weight:700;color:#64748b;white-space:pre}
+.avp-msg-seen{display:inline-flex;margin-left:6px;font-size:10px;font-weight:700;color:#2563eb;white-space:nowrap}
+@media(max-width:640px){
+  .avp-reaction-trigger{width:29px;height:29px;font-size:16px}
+  .avp-reaction-picker{bottom:34px;padding:5px 6px}
+  .avp-reaction-picker button{width:38px;height:38px;font-size:22px}
+  .avp-reaction-counts{font-size:10px}
+}
+
+/* =========================================================
+   AVP CHAT REACTION — MINI / CHATGPT-LIKE
+   Mặc định: trắng trong suốt, rất gọn
+   Đã chọn: xanh Excel
+   ========================================================= */
+
 .avp-reaction-wrap{
   position:relative;
   display:flex;
   align-items:center;
-  gap:6px;
-  margin-top:4px;
-  min-height:24px;
+  gap:4px;
+  margin-top:3px;
   padding-left:1px;
+  min-height:18px;
 }
-.avp-msg-row.user .avp-reaction-wrap{justify-content:flex-end}
+
 .avp-reaction-like{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:30px;
-  height:25px;
+  width:22px;
+  height:18px;
+  min-width:22px;
   padding:0;
-  border:1px solid rgba(15,23,42,.10);
-  border-radius:8px;
-  background:#fff;
-  color:#111827;
-  font-size:15px;
+  border:0;
+  border-radius:6px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:12px;
   line-height:1;
   cursor:pointer;
-  box-shadow:0 1px 3px rgba(15,23,42,.05);
-  touch-action:manipulation;
-  transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease;
+  box-shadow:none;
+  opacity:.88;
+  transition:
+    background .15s ease,
+    color .15s ease,
+    opacity .15s ease,
+    transform .12s ease;
 }
-.avp-reaction-like:active{transform:scale(.93)}
+
+.avp-reaction-like:hover{
+  background:rgba(255,255,255,.14);
+  opacity:1;
+}
+
+.avp-reaction-like:active{
+  transform:scale(.92);
+}
+
 .avp-reaction-like.active{
-  background:#fff;
-  border-color:rgba(15,23,42,.18);
-  box-shadow:0 1px 5px rgba(15,23,42,.09);
+  background:#217346;
+  color:#fff;
+  opacity:1;
+  box-shadow:none;
 }
+
 .avp-reaction-counts{
   display:inline-flex;
   align-items:center;
-  min-height:22px;
-  color:#6b7280;
-  font-size:11px;
-  font-weight:600;
-  white-space:pre;
-}
-.avp-reaction-picker{
-  position:absolute;
-  top:30px;
-  left:0;
-  z-index:60;
-  display:flex;
-  align-items:center;
   gap:3px;
-  padding:4px;
-  border:1px solid rgba(15,23,42,.09);
-  border-radius:10px;
-  background:#fff;
-  box-shadow:0 7px 22px rgba(15,23,42,.12);
-}
-.avp-msg-row.user .avp-reaction-picker{left:auto;right:0}
-.avp-reaction-picker[hidden]{display:none!important}
-.avp-reaction-picker button{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:38px;
-  height:34px;
-  padding:0;
-  border:0;
-  border-radius:7px;
-  background:#fff;
-  font-size:20px;
-  line-height:1;
-  cursor:pointer;
-  touch-action:manipulation;
-}
-.avp-reaction-picker button:active,
-.avp-reaction-picker button.active{background:#f3f4f6;transform:scale(.94)}
-.avp-admin-read-receipt{
-  color:inherit;
+  min-height:18px;
   font-size:10px;
-  font-weight:600;
-  opacity:.9;
+  line-height:1;
+  color:rgba(255,255,255,.72);
   white-space:nowrap;
 }
-.avp-chat-file .avp-file-open:disabled{opacity:.65;cursor:wait}
-@media(max-width:640px){
-  .avp-reaction-wrap{margin-top:3px}
-  .avp-reaction-like{width:30px;height:25px;font-size:15px;border-radius:8px}
-  .avp-reaction-picker{top:30px;bottom:auto;left:0;transform:none;padding:4px;border-radius:10px}
-  .avp-msg-row.user .avp-reaction-picker{left:auto;right:0}
-  .avp-reaction-picker button{width:40px;height:36px;font-size:21px}
-  .avp-reaction-counts{font-size:10px}
+
+.avp-reaction-picker{
+  position:absolute;
+  top:22px;
+  left:0;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  gap:2px;
+  padding:3px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:8px;
+  background:rgba(255,255,255,.10);
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+  box-shadow:0 5px 18px rgba(0,0,0,.12);
 }
 
-/* ================= SMART AUTO-REPLY ================= */
-.avp-auto-reply-badge{
-  display:inline-flex;align-items:center;margin-top:5px;padding:2px 7px;
-  border:1px solid rgba(0,0,0,.08);border-radius:999px;background:#fff;
-  color:#777;font-size:10px;font-weight:700;letter-spacing:.01em
+.avp-reaction-picker[hidden]{
+  display:none!important;
 }
-.avp-auto-settings{position:relative;margin-left:auto}
-.avp-auto-settings-toggle{
-  min-height:36px;padding:7px 11px;border:1px solid rgba(0,0,0,.09);
-  border-radius:10px;background:#fff;color:#222;font-weight:700;cursor:pointer
+
+.avp-reaction-picker button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:26px;
+  padding:0;
+  border:0;
+  border-radius:6px;
+  background:transparent;
+  color:#fff;
+  font-size:16px;
+  line-height:1;
+  cursor:pointer;
+  transition:
+    background .15s ease,
+    transform .12s ease;
 }
-.avp-auto-settings-panel{
-  position:absolute;right:0;top:44px;z-index:50;width:min(390px,calc(100vw - 32px));
-  padding:14px;background:#fff;border:1px solid rgba(0,0,0,.09);
-  border-radius:14px;box-shadow:0 14px 38px rgba(0,0,0,.14)
+
+.avp-reaction-picker button:hover{
+  background:rgba(255,255,255,.12);
 }
-.avp-auto-settings-head{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
-.avp-auto-settings-head div{display:grid;gap:3px}
-.avp-auto-settings-head small,.avp-auto-settings-actions small{color:#777;font-size:11px}
-.avp-auto-field{display:grid;gap:6px;margin-top:10px}
-.avp-auto-field>span{font-size:11px;font-weight:800;color:#555}
-.avp-auto-field textarea,.avp-auto-field select{
-  width:100%;box-sizing:border-box;border:1px solid rgba(0,0,0,.11);
-  border-radius:10px;background:#fff;color:#222;padding:9px 10px;font:inherit
+
+.avp-reaction-picker button:active{
+  transform:scale(.92);
 }
-.avp-auto-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.avp-auto-settings-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
-.avp-auto-settings-actions button{
-  border:0;border-radius:10px;padding:9px 14px;background:#111;color:#fff;font-weight:800;cursor:pointer
+
+.avp-reaction-picker button.active{
+  background:#217346;
+  color:#fff;
 }
-.avp-switch{position:relative;width:44px;height:26px;flex:0 0 44px}
-.avp-switch input{position:absolute;opacity:0;pointer-events:none}
-.avp-switch span{position:absolute;inset:0;border-radius:999px;background:#ddd;cursor:pointer;transition:.18s}
-.avp-switch span:after{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:.18s}
-.avp-switch input:checked+span{background:#222}
-.avp-switch input:checked+span:after{transform:translateX(18px)}
-@media(max-width:640px){
-  .avp-auto-settings{width:100%;margin-left:0}
-  .avp-auto-settings-toggle{width:100%}
-  .avp-auto-settings-panel{position:fixed;left:12px;right:12px;top:auto;bottom:calc(12px + env(safe-area-inset-bottom));width:auto;max-height:72vh;overflow:auto}
-  .avp-auto-grid{grid-template-columns:1fr}
+
+.avp-admin-read-receipt{
+  font-size:9px;
+  font-weight:500;
+  color:rgba(255,255,255,.68);
+}
+
+/* Nếu bong bóng tin nhắn là nền sáng, reaction vẫn giữ phong cách trắng/trong suốt */
+.avp-msg-row.user .avp-reaction-like,
+.avp-msg-row.admin .avp-reaction-like{
+  background:rgba(255,255,255,.08);
+}
+
+.avp-msg-row.user .avp-reaction-like.active,
+.avp-msg-row.admin .avp-reaction-like.active{
+  background:#217346;
+}
+
+/* Mobile: nhỏ, sát khung chat, không chiếm chỗ */
+@media (max-width:640px){
+  .avp-reaction-wrap{
+    gap:3px;
+    margin-top:2px;
+    min-height:17px;
+  }
+
+  .avp-reaction-like{
+    width:21px;
+    height:17px;
+    min-width:21px;
+    border-radius:5px;
+    font-size:11px;
+  }
+
+  .avp-reaction-counts{
+    min-height:17px;
+    font-size:9px;
+  }
+
+  .avp-reaction-picker{
+    top:21px;
+    padding:3px;
+    border-radius:7px;
+  }
+
+  .avp-reaction-picker button{
+    width:27px;
+    height:25px;
+    border-radius:5px;
+    font-size:15px;
+  }
 }
