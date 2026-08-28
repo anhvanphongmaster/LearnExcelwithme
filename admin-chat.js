@@ -10,6 +10,66 @@
   let client=null,user=null,threadId=null,pollTimer=null,realtimeChannel=null;
   let authSubscribed=false;
 
+  const ATTACH_PREFIX="[[AVP_ATTACHMENT_V1]]";
+  const CHAT_BUCKET="chat-attachments";
+  const MAX_FILE_BYTES=20*1024*1024;
+  const MAX_FILES_PER_SEND=5;
+  const ALLOWED_EXT=new Set(["jpg","jpeg","png","webp","gif","pdf","xlsx","xls","csv","doc","docx","ppt","pptx","txt","zip"]);
+  const pendingFiles={user:[],admin:[],float:[]};
+
+  const extOf=(name)=>String(name||"").split(".").pop().toLowerCase();
+  const sizeText=(n)=>{n=Number(n)||0;if(n<1024)return n+" B";if(n<1024*1024)return (n/1024).toFixed(1)+" KB";return (n/1024/1024).toFixed(1)+" MB"};
+  const isImageFile=(f)=>String(f?.type||"").startsWith("image/")||["jpg","jpeg","png","webp","gif"].includes(extOf(f?.name));
+  function validateFiles(files){
+    const arr=[...files].slice(0,MAX_FILES_PER_SEND);
+    const bad=arr.find(f=>f.size>MAX_FILE_BYTES||!ALLOWED_EXT.has(extOf(f.name)));
+    if(bad) throw new Error(`File ${bad.name} không được hỗ trợ hoặc lớn hơn 20 MB.`);
+    return arr;
+  }
+  function makeAttachmentBody(meta,caption=""){return ATTACH_PREFIX+JSON.stringify(meta)+"\n"+String(caption||"").trim()}
+  function parseAttachmentBody(body){
+    body=String(body||""); if(!body.startsWith(ATTACH_PREFIX))return null;
+    const rest=body.slice(ATTACH_PREFIX.length),i=rest.indexOf("\n");
+    const json=i<0?rest:rest.slice(0,i),caption=i<0?"":rest.slice(i+1);
+    try{return {meta:JSON.parse(json),caption}}catch{return null}
+  }
+  function attachmentCardHtml(a){
+    const m=a.meta||{},name=esc(m.name||"Tệp đính kèm"),size=esc(sizeText(m.size)),kind=m.kind==="image";
+    const caption=a.caption?`<div class="avp-attach-caption">${esc(a.caption)}</div>`:"";
+    if(kind)return `<div class="avp-chat-attachment avp-chat-image" data-chat-path="${esc(m.path||"")}" data-kind="image"><button type="button" class="avp-image-open" aria-label="Mở ảnh"><span>🖼️ Đang tải ảnh…</span></button><small>${name} · ${size}</small></div>${caption}`;
+    return `<div class="avp-chat-attachment avp-chat-file" data-chat-path="${esc(m.path||"")}" data-kind="file"><button type="button" class="avp-file-open"><span class="avp-file-icon">📎</span><span><b>${name}</b><small>${esc((m.ext||"").toUpperCase())} · ${size}</small></span><em>Mở</em></button></div>${caption}`;
+  }
+  async function signPath(path){
+    if(!client||!path)return null;
+    try{const {data,error}=await client.storage.from(CHAT_BUCKET).createSignedUrl(path,3600);if(error)throw error;return data?.signedUrl||null}catch(e){console.warn("AVP chat signed url",e);return null}
+  }
+  async function hydrateAttachmentUrls(root){
+    if(!root)return;
+    const nodes=[...root.querySelectorAll("[data-chat-path]")];
+    await Promise.all(nodes.map(async n=>{
+      if(n.dataset.ready==="1")return; const url=await signPath(n.dataset.chatPath); if(!url)return; n.dataset.ready="1";
+      if(n.dataset.kind==="image"){const b=n.querySelector(".avp-image-open");if(b){b.innerHTML=`<img src="${esc(url)}" alt="Ảnh trong tin nhắn" loading="lazy">`;b.onclick=()=>window.open(url,"_blank","noopener")}}
+      else{const b=n.querySelector(".avp-file-open");if(b)b.onclick=()=>window.open(url,"_blank","noopener")}
+    }));
+  }
+  async function uploadChatFile(file,scope,thread=""){
+    if(!user?.id)throw new Error("Bạn cần đăng nhập để gửi file.");
+    const ext=extOf(file.name),safe=(file.name||"file").replace(/[^a-zA-Z0-9._-]+/g,"_").slice(-90);
+    const folder=scope==="user"?`users/${user.id}`:`admin/${String(thread||"general").replace(/[^a-zA-Z0-9_-]+/g,"_")}`;
+    const path=`${folder}/${Date.now()}-${crypto.randomUUID?.()||Math.random().toString(36).slice(2)}-${safe}`;
+    const {error}=await client.storage.from(CHAT_BUCKET).upload(path,file,{cacheControl:"3600",upsert:false,contentType:file.type||undefined});
+    if(error)throw error;
+    return {path,name:file.name,size:file.size,type:file.type||"application/octet-stream",ext,kind:isImageFile(file)?"image":"file"};
+  }
+  function previewFiles(scope,hostId){
+    const host=$(hostId);if(!host)return;const list=pendingFiles[scope]||[];
+    host.hidden=!list.length;host.innerHTML=list.map((f,i)=>`<span>${isImageFile(f)?"🖼️":"📎"} ${esc(f.name)} <small>${sizeText(f.size)}</small><button type="button" data-rm-file="${i}" aria-label="Bỏ file">×</button></span>`).join("");
+    host.querySelectorAll("[data-rm-file]").forEach(b=>b.onclick=()=>{list.splice(Number(b.dataset.rmFile),1);previewFiles(scope,hostId)});
+  }
+  function bindFilePicker(scope,inputId,previewId){
+    const input=$(inputId);if(!input)return;input.addEventListener("change",()=>{try{pendingFiles[scope]=validateFiles(input.files||[]);previewFiles(scope,previewId)}catch(e){alert(e.message);pendingFiles[scope]=[]}finally{input.value=""}});
+  }
+
   async function waitClient(){
     // Bong bóng chat phải xuất hiện cả với khách chưa đăng nhập.
     // Vì vậy chỉ cần đợi Supabase client sẵn sàng; session có thể là null.
@@ -67,7 +127,9 @@
     const who=adminView
       ? (type==="system"?"Hệ thống":type==="admin"?"Bạn (Admin)":"Học viên")
       : (type==="system"?"Hệ thống":type==="admin"?"Admin":"Bạn");
-    return `<div class="avp-msg-row ${cls}"><div class="avp-msg"><div>${esc(m.body)}</div><span class="avp-msg-meta">${esc(who)} • ${fmt(m.created_at)}</span></div></div>`;
+    const a=parseAttachmentBody(m.body);
+    const content=a?attachmentCardHtml(a):`<div>${esc(m.body)}</div>`;
+    return `<div class="avp-msg-row ${cls}"><div class="avp-msg">${content}<span class="avp-msg-meta">${esc(who)} • ${fmt(m.created_at)}</span></div></div>`;
   }
 
   /* ================= GUEST BUBBLE ================= */
@@ -120,7 +182,9 @@
           <button class="avp-chat-close" id="avpChatClose" type="button" aria-label="Đóng">×</button>
         </header>
         <div class="avp-chat-messages" id="avpChatMessages"><div class="avp-chat-empty">Đang tải hộp thư…</div></div>
+        <div class="avp-chat-file-preview" id="avpChatFilePreview" hidden></div>
         <div class="avp-chat-compose">
+          <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="avpChatFile" type="file" multiple accept="image/*,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
           <textarea id="avpChatInput" maxlength="3000" rows="1" placeholder="Nhắn cho Admin…"></textarea>
           <button class="avp-chat-send" id="avpChatSend" type="button">Gửi</button>
         </div>
@@ -131,6 +195,7 @@
     $("avpChatBubble").addEventListener("click",onBubbleClick);
     $("avpChatClose").addEventListener("click",()=>togglePanel(false));
     $("avpChatSend").addEventListener("click",sendUserMessage);
+    bindFilePicker("user","avpChatFile","avpChatFilePreview");
     $("avpChatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendUserMessage()}});
   }
 
@@ -166,14 +231,19 @@
       const rows=await rpc("avp_chat_my_messages",{p_limit:150});
       const list=Array.isArray(rows)?rows:[];
       box.innerHTML=list.length?list.map(m=>msgHtml(m,false)).join(""):'<div class="avp-chat-empty">Bạn chưa có tin nhắn. Có gì cần hỗ trợ cứ nhắn cho Admin nhé.</div>';
+      await hydrateAttachmentUrls(box);
       box.scrollTop=box.scrollHeight;
     }catch(e){box.innerHTML='<div class="avp-chat-empty">Chưa tải được hộp thư. Hãy kiểm tra SQL chat trong Supabase.</div>';console.warn("AVP chat load",e)}
   }
   async function sendUserMessage(){
     const input=$("avpChatInput"),btn=$("avpChatSend"); if(!input||!btn)return;
-    const body=input.value.trim();if(!body)return;
+    const body=input.value.trim(),files=[...(pendingFiles.user||[])];if(!body&&!files.length)return;
     btn.disabled=true;
-    try{await rpc("avp_chat_send_user_message",{p_body:body});input.value="";await loadUserMessages()}catch(e){alert("Chưa gửi được tin nhắn. Vui lòng thử lại.");console.warn(e)}finally{btn.disabled=false;input.focus()}
+    try{
+      if(files.length){for(let i=0;i<files.length;i++){const meta=await uploadChatFile(files[i],"user",threadId);await rpc("avp_chat_send_user_message",{p_body:makeAttachmentBody(meta,i===0?body:"")})}}
+      else await rpc("avp_chat_send_user_message",{p_body:body});
+      input.value="";pendingFiles.user=[];previewFiles("user","avpChatFilePreview");await loadUserMessages();
+    }catch(e){alert("Chưa gửi được tin nhắn hoặc file. Vui lòng thử lại.");console.warn(e)}finally{btn.disabled=false;input.focus()}
   }
   async function updateUserBadge(){
     try{
@@ -223,22 +293,27 @@
     try{
       const rows=await rpc("avp_chat_admin_messages",{p_thread_id:id,p_limit:300});
       const box=$("adminChatMessages");const list=Array.isArray(rows)?rows:[];
-      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="admin-chat-empty">Chưa có tin nhắn.</div>';box.scrollTop=box.scrollHeight}
+      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="admin-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);box.scrollTop=box.scrollHeight}
       await rpc("avp_chat_admin_mark_read",{p_thread_id:id});await loadAdminThreads();
     }catch(e){console.warn(e)}
   }
   async function sendAdminMessage(){
     if(!activeThread)return;
     const input=$("adminChatReply"),btn=$("adminChatReplyBtn");if(!input||!btn)return;
-    const body=input.value.trim();if(!body)return;
+    const body=input.value.trim(),files=[...(pendingFiles.admin||[])];if(!body&&!files.length)return;
     btn.disabled=true;
-    try{await rpc("avp_chat_admin_send_message",{p_thread_id:activeThread,p_body:body});input.value="";await openAdminThread(activeThread)}catch(e){alert("Không gửi được phản hồi.");console.warn(e)}finally{btn.disabled=false;input.focus()}
+    try{
+      if(files.length){for(let i=0;i<files.length;i++){const meta=await uploadChatFile(files[i],"admin",activeThread);await rpc("avp_chat_admin_send_message",{p_thread_id:activeThread,p_body:makeAttachmentBody(meta,i===0?body:"")})}}
+      else await rpc("avp_chat_admin_send_message",{p_thread_id:activeThread,p_body:body});
+      input.value="";pendingFiles.admin=[];previewFiles("admin","adminChatFilePreview");await openAdminThread(activeThread);
+    }catch(e){alert("Không gửi được phản hồi hoặc file.");console.warn(e)}finally{btn.disabled=false;input.focus()}
   }
   async function initAdmin(){
     if(!(await isAdmin()))return;
     $("adminChatSearch")?.addEventListener("input",e=>renderAdminThreads(e.target.value));
     $("adminChatRefresh")?.addEventListener("click",loadAdminThreads);
     $("adminChatReplyBtn")?.addEventListener("click",sendAdminMessage);
+    bindFilePicker("admin","adminChatFile","adminChatFilePreview");
     $("adminChatReply")?.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAdminMessage()}});
     await loadAdminThreads();
     adminPoll=setInterval(async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)},15000);
@@ -272,7 +347,9 @@
           <section class="avp-admin-float-conversation">
             <header class="avp-admin-float-person"><strong id="avpAdminFloatPerson">Chọn một học viên</strong><small id="avpAdminFloatEmail">Tin nhắn sẽ hiện ở đây.</small></header>
             <div class="avp-chat-messages" id="avpAdminFloatMessages"><div class="avp-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
+            <div class="avp-chat-file-preview" id="avpAdminFloatFilePreview" hidden></div>
             <div class="avp-chat-compose avp-admin-float-compose">
+              <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="avpAdminFloatFile" type="file" multiple accept="image/*,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
               <textarea id="avpAdminFloatReply" maxlength="3000" rows="1" placeholder="Phản hồi học viên…" disabled></textarea>
               <button class="avp-chat-send" id="avpAdminFloatSend" type="button" disabled>Gửi</button>
             </div>
@@ -292,6 +369,7 @@
     $("avpAdminFloatSearch").addEventListener("input",e=>renderFloatingAdminThreads(e.target.value));
     $("avpAdminFloatRefresh").addEventListener("click",loadFloatingAdminThreads);
     $("avpAdminFloatSend").addEventListener("click",sendFloatingAdminMessage);
+    bindFilePicker("float","avpAdminFloatFile","avpAdminFloatFilePreview");
     $("avpAdminFloatReply").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendFloatingAdminMessage()}});
   }
 
@@ -334,7 +412,7 @@
     try{
       const rows=await rpc("avp_chat_admin_messages",{p_thread_id:id,p_limit:300});
       const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
-      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';box.scrollTop=box.scrollHeight;}
+      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);box.scrollTop=box.scrollHeight;}
       await rpc("avp_chat_admin_mark_read",{p_thread_id:id});
       await loadFloatingAdminThreads();
       input?.focus();
@@ -363,7 +441,7 @@
       if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden){
         const rows=await rpc("avp_chat_admin_messages",{p_thread_id:floatActiveThread,p_limit:300}).catch(()=>[]);
         const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
-        if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';box.scrollTop=box.scrollHeight;}
+        if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);box.scrollTop=box.scrollHeight;}
       }
     },15000);
     try{

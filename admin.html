@@ -275,7 +275,9 @@ where is_admin = true;</pre>
           <section class="admin-chat-conversation">
             <header class="admin-chat-conv-head"><strong id="adminChatPerson">Chọn một học viên</strong><small id="adminChatEmail">Mở cuộc trò chuyện bên trái để phản hồi.</small></header>
             <div class="admin-chat-messages" id="adminChatMessages"><div class="admin-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
+            <div class="avp-chat-file-preview" id="adminChatFilePreview" hidden></div>
             <div class="admin-chat-compose">
+              <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="adminChatFile" type="file" multiple accept="image/*,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
               <textarea id="adminChatReply" maxlength="3000" rows="2" placeholder="Phản hồi học viên…"></textarea>
               <button type="button" id="adminChatReplyBtn">Gửi</button>
             </div>
