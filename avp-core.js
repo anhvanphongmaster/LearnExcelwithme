@@ -83,6 +83,83 @@
   const edgeMenu=launcher.querySelector('#avpEdgeMenu');
   const edgeBadge=launcher.querySelector('#avpEdgeBadge');
 
+  const mini=document.createElement('button');
+  mini.type='button';
+  mini.className='avp-edge-mini-preview';
+  mini.id='avpEdgeMiniPreview';
+  mini.hidden=true;
+  mini.innerHTML=`
+    <span class="avp-edge-mini-name"></span>
+    <span class="avp-edge-mini-body"></span>
+  `;
+  launcher.appendChild(mini);
+
+  let miniTimer=null;
+  let miniDetail=null;
+
+  function miniDuration(text){
+    const n=String(text||'').length;
+    if(n<=35)return 3000;
+    if(n<=85)return 4000;
+    return 5000;
+  }
+
+  function hideMiniPreview(){
+    clearTimeout(miniTimer);
+    miniTimer=null;
+
+    if(mini.hidden)return;
+
+    mini.classList.remove('show');
+    mini.classList.add('hide');
+
+    setTimeout(()=>{
+      mini.hidden=true;
+      mini.classList.remove('hide');
+    },220);
+  }
+
+  function showMiniPreview(detail){
+    const body=String(detail?.body||'Tin nhắn mới').trim()||'Tin nhắn mới';
+    const sender=String(detail?.sender||'Tin nhắn mới').trim();
+
+    miniDetail=detail||{};
+
+    mini.querySelector('.avp-edge-mini-name').textContent=sender;
+    mini.querySelector('.avp-edge-mini-body').textContent=body;
+
+    clearTimeout(miniTimer);
+
+    mini.hidden=false;
+    mini.classList.remove('hide');
+
+    requestAnimationFrame(()=>{
+      mini.classList.add('show');
+    });
+
+    miniTimer=setTimeout(
+      hideMiniPreview,
+      miniDuration(body)
+    );
+  }
+
+  mini.addEventListener('click',()=>{
+    hideMiniPreview();
+    setEdgeMenu(false);
+
+    const chat=document.getElementById('avpChatBubble');
+
+    if(chat){
+      chat.click();
+    }else{
+      toast('Chat Admin đang tải, thử lại sau một chút');
+    }
+  });
+
+  window.addEventListener('avp:chat-new-message',e=>{
+    showMiniPreview(e.detail||{});
+  });
+
   const back=document.createElement('div');
   back.className='avp-hub-backdrop';
   back.innerHTML='<aside class="avp-hub" role="dialog" aria-modal="true" aria-label="Trung tâm học tập"></aside>';
@@ -113,6 +190,7 @@
       e.stopPropagation();
 
       const action=btn.dataset.edgeAction;
+      hideMiniPreview();
       setEdgeMenu(false);
 
       if(action==='learning'){
@@ -252,6 +330,7 @@
         root.classList.remove('is-left');
       }
 
+      hideMiniPreview();
       setEdgeMenu(false);
       e.preventDefault();
     },{passive:false});

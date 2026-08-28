@@ -303,3 +303,158 @@ body > .avp-hub-fab{
     font-size:11px;
   }
 }
+
+/* =========================================================
+   AVP MINI MESSAGE PREVIEW V1
+   Trượt từ nút viền, tự thu sau 3–5 giây
+   ========================================================= */
+.avp-edge-mini-preview{
+  position:absolute;
+  z-index:-1;
+
+  width:min(270px,calc(100vw - 78px));
+  min-height:54px;
+  max-height:76px;
+
+  padding:9px 12px;
+
+  border:1px solid rgba(33,115,70,.13);
+  border-radius:14px;
+
+  background:rgba(255,255,255,.98);
+  color:#173b29;
+
+  box-shadow:0 10px 28px rgba(20,65,43,.15);
+
+  text-align:left;
+  cursor:pointer;
+
+  overflow:hidden;
+
+  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+
+  opacity:0;
+
+  transition:
+    opacity .20s ease,
+    transform .22s cubic-bezier(.2,.8,.2,1);
+}
+
+.avp-edge-mini-preview[hidden]{
+  display:none !important;
+}
+
+.avp-edge-launcher.is-right .avp-edge-mini-preview{
+  right:5px;
+  top:50%;
+  transform:
+    translateY(-50%)
+    translateX(calc(100% - 42px))
+    scale(.96);
+
+  border-radius:14px 5px 5px 14px;
+}
+
+.avp-edge-launcher.is-left .avp-edge-mini-preview{
+  left:5px;
+  top:50%;
+  transform:
+    translateY(-50%)
+    translateX(calc(-100% + 42px))
+    scale(.96);
+
+  border-radius:5px 14px 14px 5px;
+}
+
+.avp-edge-launcher.is-right .avp-edge-mini-preview.show{
+  opacity:1;
+  transform:
+    translateY(-50%)
+    translateX(calc(-48px))
+    scale(1);
+}
+
+.avp-edge-launcher.is-left .avp-edge-mini-preview.show{
+  opacity:1;
+  transform:
+    translateY(-50%)
+    translateX(48px)
+    scale(1);
+}
+
+.avp-edge-mini-preview.hide{
+  opacity:0 !important;
+}
+
+.avp-edge-mini-name{
+  display:block;
+
+  margin-bottom:3px;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+
+  color:#217346;
+
+  font:800 12px/1.25 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+.avp-edge-mini-body{
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+
+  overflow:hidden;
+
+  color:#475467;
+
+  font:500 12px/1.35 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+/* Nút viền phải nằm trên preview, tạo cảm giác preview chui ra từ nút. */
+.avp-edge-main{
+  z-index:3 !important;
+}
+
+.avp-edge-badge{
+  z-index:4 !important;
+}
+
+/* Khi menu công cụ đang mở thì không để preview cản menu. */
+.avp-edge-launcher.open .avp-edge-mini-preview{
+  pointer-events:none;
+}
+
+@media(max-width:600px){
+  .avp-edge-mini-preview{
+    width:min(245px,calc(100vw - 68px));
+    min-height:50px;
+    max-height:70px;
+    padding:8px 10px;
+    border-radius:13px;
+  }
+
+  .avp-edge-mini-name{
+    font-size:11px;
+  }
+
+  .avp-edge-mini-body{
+    font-size:11px;
+  }
+
+  .avp-edge-launcher.is-right .avp-edge-mini-preview.show{
+    transform:
+      translateY(-50%)
+      translateX(-44px)
+      scale(1);
+  }
+
+  .avp-edge-launcher.is-left .avp-edge-mini-preview.show{
+    transform:
+      translateY(-50%)
+      translateX(44px)
+      scale(1);
+  }
+}

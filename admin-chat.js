@@ -38,6 +38,35 @@
     }
   }
 
+
+  function cleanChatPreviewText(body){
+    const raw=String(body||"");
+
+    if(raw.startsWith(ATTACH_PREFIX)){
+      const a=parseAttachmentBody(raw);
+      if(a?.caption)return a.caption.trim();
+      if(a?.meta?.kind==="image")return "Đã gửi một ảnh";
+      if(a?.meta?.name)return `Đã gửi tệp ${a.meta.name}`;
+      return "Đã gửi một tệp đính kèm";
+    }
+
+    if(raw.startsWith("[[AVP_AUTO_REPLY]]")){
+      return raw.replace("[[AVP_AUTO_REPLY]]","").trim();
+    }
+
+    return raw.trim();
+  }
+
+  function emitChatMiniPreview(detail){
+    try{
+      window.dispatchEvent(
+        new CustomEvent("avp:chat-new-message",{detail})
+      );
+    }catch(e){
+      console.warn("AVP mini preview",e);
+    }
+  }
+
   const extOf=(name)=>String(name||"").split(".").pop().toLowerCase();
   const sizeText=(n)=>{n=Number(n)||0;if(n<1024)return n+" B";if(n<1024*1024)return (n/1024).toFixed(1)+" KB";return (n/1024/1024).toFixed(1)+" MB"};
   const isImageFile=(f)=>String(f?.type||"").startsWith("image/")||["jpg","jpeg","png","webp","gif","heic","heif"].includes(extOf(f?.name));
@@ -553,7 +582,35 @@
     },15000);
     try{
       if(realtimeChannel)client.removeChannel(realtimeChannel);
-      realtimeChannel=client.channel("avp-chat-user-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages",filter:`thread_id=eq.${threadId}`},async()=>{await updateUserBadge();if(!$("avpChatPanel").hidden){await loadUserMessages();await markUserRead()}}).subscribe();
+      realtimeChannel=client.channel("avp-chat-user-"+user.id).on(
+        "postgres_changes",
+        {event:"INSERT",schema:"public",table:"admin_chat_messages",filter:`thread_id=eq.${threadId}`},
+        async(payload)=>{
+          const incoming=payload?.new||{};
+
+          if(incoming.sender_type==="admin"){
+            const panel=$("avpChatPanel");
+            const chatOpen=panel && !panel.hidden;
+
+            if(!chatOpen){
+              emitChatMiniPreview({
+                role:"admin",
+                thread_id:String(threadId||incoming.thread_id||""),
+                sender:"Anh Văn Phòng",
+                body:cleanChatPreviewText(incoming.body),
+                created_at:incoming.created_at||new Date().toISOString()
+              });
+            }
+          }
+
+          await updateUserBadge();
+
+          if(!$("avpChatPanel").hidden){
+            await loadUserMessages();
+            await markUserRead();
+          }
+        }
+      ).subscribe();
     }catch{}
   }
   async function initUser(){
@@ -621,7 +678,41 @@
     $("adminChatReply")?.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAdminMessage()}});
     await loadAdminThreads();
     adminPoll=setInterval(async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)},15000);
-    try{client.channel("avp-chat-admin-live").on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)}).subscribe()}catch{}
+    try{
+      client.channel("avp-chat-admin-live")
+        .on(
+          "postgres_changes",
+          {event:"INSERT",schema:"public",table:"admin_chat_messages"},
+          async(payload)=>{
+            const incoming=payload?.new||{};
+
+            await loadAdminThreads();
+
+            if(incoming.sender_type==="user"){
+              const t=adminThreads.find(
+                x=>String(x.thread_id)===String(incoming.thread_id)
+              );
+
+              const viewingSame=
+                activeThread &&
+                String(activeThread)===String(incoming.thread_id);
+
+              if(!viewingSame){
+                emitChatMiniPreview({
+                  role:"user",
+                  thread_id:String(incoming.thread_id||""),
+                  sender:t?.display_name||t?.email||"Học viên",
+                  body:cleanChatPreviewText(incoming.body),
+                  created_at:incoming.created_at||new Date().toISOString()
+                });
+              }
+            }
+
+            if(activeThread)await openAdminThread(activeThread);
+          }
+        )
+        .subscribe();
+    }catch{}
   }
 
   /* ================= ADMIN FLOATING BUBBLE ================= */
@@ -759,10 +850,48 @@
     },15000);
     try{
       if(floatRealtime)client.removeChannel(floatRealtime);
-      floatRealtime=client.channel("avp-chat-admin-floating-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{
-        await loadFloatingAdminThreads();
-        if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden)await openFloatingAdminThread(floatActiveThread);
-      }).subscribe();
+      floatRealtime=client.channel("avp-chat-admin-floating-"+user.id)
+        .on(
+          "postgres_changes",
+          {event:"INSERT",schema:"public",table:"admin_chat_messages"},
+          async(payload)=>{
+            const incoming=payload?.new||{};
+
+            await loadFloatingAdminThreads();
+
+            if(incoming.sender_type==="user"){
+              const t=floatThreads.find(
+                x=>String(x.thread_id)===String(incoming.thread_id)
+              );
+
+              const panel=$("avpAdminFloatPanel");
+              const viewingSame=
+                panel &&
+                !panel.hidden &&
+                floatActiveThread &&
+                String(floatActiveThread)===String(incoming.thread_id);
+
+              if(!viewingSame){
+                emitChatMiniPreview({
+                  role:"user",
+                  thread_id:String(incoming.thread_id||""),
+                  sender:t?.display_name||t?.email||"Học viên",
+                  body:cleanChatPreviewText(incoming.body),
+                  created_at:incoming.created_at||new Date().toISOString()
+                });
+              }
+            }
+
+            if(
+              floatActiveThread &&
+              $("avpAdminFloatPanel") &&
+              !$("avpAdminFloatPanel").hidden
+            ){
+              await openFloatingAdminThread(floatActiveThread);
+            }
+          }
+        )
+        .subscribe();
     }catch{}
   }
 
