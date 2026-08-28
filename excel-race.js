@@ -283,31 +283,14 @@
 
   async function currentRaceUser() {
     if (window.avpCloudSync && window.avpCloudSync.getUser) {
-      try {
-        var cloudUser = await window.avpCloudSync.getUser();
-        if (cloudUser) return cloudUser;
-      } catch (e) {}
+      try { return await window.avpCloudSync.getUser(); } catch (e) {}
     }
-
-    // supabase-auth.js is a module and may finish after this deferred script.
-    // Wait for the shared client instead of treating the first early check as logged-out.
-    var sb = await ensureSupabase();
+    var sb = window.avpSupabase;
     if (!sb || !sb.auth) return null;
-
-    for (var attempt = 0; attempt < 20; attempt++) {
-      try {
-        if (sb.auth.getSession) {
-          var s = await sb.auth.getSession();
-          var sessionUser = s && s.data && s.data.session && s.data.session.user;
-          if (sessionUser) return sessionUser;
-        }
-        var r = await sb.auth.getUser();
-        var user = r && r.data && r.data.user ? r.data.user : null;
-        if (user) return user;
-      } catch (e) {}
-      await new Promise(function(resolve){ setTimeout(resolve, 150); });
-    }
-    return null;
+    try {
+      var r = await sb.auth.getUser();
+      return r && r.data && r.data.user ? r.data.user : null;
+    } catch (e) { return null; }
   }
 
   async function loadLocalIdentity() {
@@ -853,9 +836,6 @@
     });
   }
   loadLocalIdentity();
-  // Retry identity after auth boot; harmless if already loaded.
-  setTimeout(function(){ loadLocalIdentity(); }, 900);
-  setTimeout(function(){ loadLocalIdentity(); }, 2200);
   loadBoard();
   setInterval(function () { if (typeof loadBoard === "function") loadBoard(); }, 20000);
   setMode("hoc");
