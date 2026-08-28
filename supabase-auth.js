@@ -27,13 +27,13 @@ function loadAdminChatAssets() {
   if (!document.querySelector('link[data-avp-admin-chat]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'admin-chat.css?v=20260828-pre-sound-clean1';
+    link.href = 'admin-chat.css?v=20260828-guestfinal1';
     link.dataset.avpAdminChat = '1';
     document.head.appendChild(link);
   }
   if (!document.querySelector('script[data-avp-admin-chat]')) {
     const script = document.createElement('script');
-    script.src = 'admin-chat.js?v=20260828-pre-sound-clean1';
+    script.src = 'admin-chat.js?v=20260828-guestfinal1';
     script.defer = true;
     script.dataset.avpAdminChat = '1';
     document.head.appendChild(script);
@@ -691,8 +691,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   const KEY_LAST='avp_site_review_last_prompt_v1';
   const KEY_SESSION='avp_site_review_prompted_session_v1';
   const KEY_BROWSER='avp_site_review_browser_id_v1';
+  const KEY_ACTIVE='avp_site_review_active_ms_v2';
+  const KEY_THRESHOLD='avp_site_review_threshold_ms_v2';
+
   const MIN_MS=3*60*1000, MAX_MS=5*60*1000, COOLDOWN=12*60*60*1000;
-  let activeMs=0,lastTick=Date.now(),timer=null,shown=false;
+
+  let activeMs=Math.max(0,Number(localStorage.getItem(KEY_ACTIVE)||0));
+  let lastTick=Date.now(),timer=null,shown=false;
   function browserId(){
     let id=localStorage.getItem(KEY_BROWSER);
     if(!id){id=(crypto.randomUUID?.()||('b_'+Date.now()+'_'+Math.random().toString(36).slice(2)));localStorage.setItem(KEY_BROWSER,id)}
@@ -730,15 +735,88 @@ document.addEventListener("DOMContentLoaded", async () => {
     }catch(e){alert('Chưa gửi được đánh giá: '+(e?.message||e));btn.disabled=false;btn.textContent='Gửi đánh giá'}
   }
   function showPrompt(){
-    if(shown||!eligible())return;shown=true;sessionStorage.setItem(KEY_SESSION,'1');localStorage.setItem(KEY_LAST,String(Date.now()));css();
+    if(shown||!eligible())return;
+
+    shown=true;
+    sessionStorage.setItem(KEY_SESSION,'1');
+    localStorage.setItem(KEY_LAST,String(Date.now()));
+
+    // Đã đủ thời gian và đã hiện popup: reset bộ đếm cho lần hỏi sau
+    // nếu người dùng bấm "Để sau". Cooldown 12 giờ vẫn được giữ bởi KEY_LAST.
+    activeMs=0;
+    localStorage.setItem(KEY_ACTIVE,'0');
+    localStorage.removeItem(KEY_THRESHOLD);
+
+    css();
     const wrap=document.createElement('div');wrap.className='avp-review-backdrop';wrap.id='avpReviewBackdrop';wrap.innerHTML=`<div class="avp-review-card" role="dialog" aria-modal="true" aria-labelledby="avpReviewTitle"><h3 id="avpReviewTitle">Bạn thấy website của Anh Văn Phòng thế nào?</h3><p>Đánh giá của bạn giúp mình biết phần nào đang hữu ích và phần nào cần cải thiện.</p><div class="avp-review-stars" aria-label="Chọn số sao">${[1,2,3,4,5].map(i=>`<button type="button" class="avp-review-star" data-star="${i}" aria-label="${i} sao">★</button>`).join('')}</div><textarea id="avpReviewContent" maxlength="1000" placeholder="Bạn có góp ý gì cho website không? (không bắt buộc)"></textarea><div class="avp-review-actions"><button type="button" class="avp-review-later">Để sau</button><button type="button" class="avp-review-send" disabled>Gửi đánh giá</button></div><div class="avp-review-note">Sau khi gửi đánh giá, thông báo này sẽ không xuất hiện lại.</div></div>`;
     document.body.appendChild(wrap);let rating=0;const stars=[...wrap.querySelectorAll('[data-star]')],send=wrap.querySelector('.avp-review-send');
     stars.forEach(b=>b.onclick=()=>{rating=Number(b.dataset.star);stars.forEach(x=>x.classList.toggle('on',Number(x.dataset.star)<=rating));send.disabled=!rating});
     wrap.querySelector('.avp-review-later').onclick=closePrompt;
     send.onclick=()=>submitReview(rating,wrap.querySelector('#avpReviewContent').value.trim(),send);
   }
-  const threshold=MIN_MS+Math.floor(Math.random()*(MAX_MS-MIN_MS+1));
-  function tick(){const now=Date.now();if(!document.hidden&&document.hasFocus())activeMs+=Math.min(now-lastTick,5000);lastTick=now;if(activeMs>=threshold){clearInterval(timer);showPrompt()}}
-  function boot(){if(!eligible())return;timer=setInterval(tick,1000);document.addEventListener('visibilitychange',()=>{lastTick=Date.now()});window.addEventListener('focus',()=>{lastTick=Date.now()})}
+  function getThreshold(){
+    let t=Number(localStorage.getItem(KEY_THRESHOLD)||0);
+
+    if(!t || t<MIN_MS || t>MAX_MS){
+      t=MIN_MS+Math.floor(Math.random()*(MAX_MS-MIN_MS+1));
+      localStorage.setItem(KEY_THRESHOLD,String(t));
+    }
+
+    return t;
+  }
+
+  const threshold=getThreshold();
+
+  function saveActive(){
+    localStorage.setItem(KEY_ACTIVE,String(Math.max(0,Math.floor(activeMs))));
+  }
+
+  function tick(){
+    const now=Date.now();
+
+    // Chỉ tính thời gian sử dụng thực tế khi trang đang hiển thị và có focus.
+    // Khi chuyển app/tab, thời gian đó không được cộng.
+    if(!document.hidden && document.hasFocus()){
+      activeMs+=Math.min(now-lastTick,5000);
+      saveActive();
+    }
+
+    lastTick=now;
+
+    if(activeMs>=threshold){
+      clearInterval(timer);
+      showPrompt();
+    }
+  }
+
+  function boot(){
+    if(!eligible())return;
+
+    // Nếu thời gian tích lũy từ các trang trước đã đủ,
+    // vẫn chờ DOM sẵn sàng rồi hiện ngay trong lần vào trang hiện tại.
+    if(activeMs>=threshold){
+      setTimeout(showPrompt,350);
+      return;
+    }
+
+    timer=setInterval(tick,1000);
+
+    document.addEventListener('visibilitychange',()=>{
+      saveActive();
+      lastTick=Date.now();
+    });
+
+    window.addEventListener('focus',()=>{
+      lastTick=Date.now();
+    });
+
+    window.addEventListener('pagehide',()=>{
+      saveActive();
+    });
+
+    window.addEventListener('beforeunload',()=>{
+      saveActive();
+    });
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
