@@ -90,3 +90,265 @@
   background:#f2f7f4;color:#217346
 }
 
+
+
+/* =========================================================
+   AVP SUPPORT HUB V2 - COMMUNITY + NOTIFICATIONS
+   ========================================================= */
+.avp-notify-badge{
+  position:absolute;top:-4px;right:-4px;
+  min-width:19px;height:19px;padding:0 5px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:999px;background:#e11d48;color:#fff;
+  font-size:10px;font-weight:800;border:2px solid #fff;
+}
+.avp-notify-badge[hidden],.avp-tab-badge[hidden]{display:none!important}
+
+.avp-hub-tabs{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:5px;padding:7px 9px;
+  border-bottom:1px solid #edf0f2;background:#fff;
+}
+.avp-hub-tabs button{
+  min-width:0;border:0;border-radius:10px;padding:8px 5px;
+  background:#f6f7f8;color:#667085;font:inherit;
+  font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;
+}
+.avp-hub-tabs button.active{background:#eaf5ef;color:#217346}
+.avp-tab-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-left:3px;min-width:17px;height:17px;padding:0 4px;
+  border-radius:999px;background:#e11d48;color:#fff;font-size:9px;
+}
+.avp-hub-mode{min-height:0;flex:1;display:flex;flex-direction:column}
+.avp-hub-mode[hidden]{display:none!important}
+
+.avp-ai-panel.community-mode,
+.avp-ai-panel.notification-mode{
+  width:min(94vw,820px);
+  height:min(82vh,760px);
+}
+.avp-ai-actions-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+
+/* Community toolbar */
+.avp-community-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 12px 7px;background:#fff;
+}
+.avp-community-filters{
+  display:flex;gap:5px;min-width:0;overflow-x:auto;scrollbar-width:none;
+}
+.avp-community-filters::-webkit-scrollbar{display:none}
+.avp-community-filters button,
+.avp-notification-filter button,
+.avp-period-pills button{
+  flex:0 0 auto;border:1px solid #e4e7ec;background:#fff;
+  color:#667085;border-radius:999px;padding:7px 10px;
+  font:inherit;font-size:10px;font-weight:800;cursor:pointer;
+}
+.avp-community-filters button.active,
+.avp-notification-filter button.active,
+.avp-period-pills button.active{
+  background:#217346;color:#fff;border-color:#217346;
+}
+.avp-community-ask,.avp-primary-btn{
+  border:0;border-radius:10px;background:#217346;color:#fff;
+  padding:9px 12px;font:inherit;font-size:11px;font-weight:800;cursor:pointer;
+}
+.avp-community-ask{flex:0 0 auto}
+.avp-community-search-wrap{padding:0 12px 9px;background:#fff;border-bottom:1px solid #eef0f3}
+.avp-community-search{
+  width:100%;border:1px solid #e0e5e2;border-radius:11px;
+  padding:9px 11px;font:inherit;font-size:11px;outline:none;background:#fafcfb;
+}
+.avp-community-search:focus{border-color:#217346;box-shadow:0 0 0 3px rgba(33,115,70,.08)}
+.avp-community-content,.avp-notification-content{
+  flex:1;min-height:0;overflow:auto;background:#f7f8f8;padding:12px;
+}
+.avp-community-empty{
+  color:#98a2b3;text-align:center;font-size:12px;line-height:1.6;padding:36px 16px;
+}
+.avp-community-empty-card{
+  margin:18px auto;max-width:460px;background:#fff;border:1px solid #e8ece9;
+  border-radius:16px;padding:28px 20px;
+}
+.avp-community-empty-card strong,.avp-community-empty-card span{display:block}
+.avp-community-empty-card strong{color:#344054;font-size:14px}
+.avp-community-empty-card button{
+  margin-top:14px;border:0;border-radius:9px;padding:8px 12px;
+  background:#217346;color:#fff;font:inherit;font-size:11px;font-weight:800;
+}
+.avp-community-empty-small{padding:24px}
+
+/* Question feed */
+.avp-question-card{
+  display:grid;grid-template-columns:minmax(0,1fr) 86px;gap:12px;
+  margin-bottom:9px;padding:13px 14px;background:#fff;
+  border:1px solid #e7ebe8;border-radius:15px;cursor:pointer;
+  transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease;
+}
+.avp-question-card:hover{
+  transform:translateY(-1px);border-color:#cfe1d6;
+  box-shadow:0 8px 24px rgba(22,74,44,.06);
+}
+.avp-question-main{min-width:0}
+.avp-question-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:#98a2b3;font-size:9px}
+.avp-community-topic,.avp-community-open,.avp-community-resolved{
+  display:inline-flex;align-items:center;border-radius:999px;padding:3px 7px;font-weight:800;
+}
+.avp-community-topic{background:#eef4ff;color:#315b96}
+.avp-community-open{background:#fff6e7;color:#9a6700}
+.avp-community-resolved{background:#eaf7ef;color:#217346}
+.avp-question-card h3{
+  margin:7px 0 5px;color:#1f2937;font-size:13px;line-height:1.35;
+}
+.avp-question-card p{
+  margin:0;color:#667085;font-size:10.5px;line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.avp-question-user{margin-top:8px;color:#667085;font-size:9.5px;font-weight:700}
+.avp-question-stats{
+  display:grid;grid-template-columns:1fr;align-content:center;text-align:center;
+  border-left:1px solid #eef0ef;padding-left:10px;color:#98a2b3;font-size:9px;
+}
+.avp-question-stats strong{color:#217346;font-size:16px;line-height:1.1}
+.avp-question-stats span{margin-bottom:5px}
+
+/* Forms/detail */
+.avp-community-form-card,.avp-question-detail-card,.avp-answer-compose{
+  max-width:680px;margin:0 auto 10px;background:#fff;border:1px solid #e6ebe7;
+  border-radius:15px;padding:15px;
+}
+.avp-community-back{
+  border:0;background:transparent;color:#217346;padding:0 0 10px;
+  font:inherit;font-size:10px;font-weight:800;cursor:pointer;
+}
+.avp-community-form-card h3,.avp-answer-compose h3{margin:0 0 4px;font-size:15px;color:#1f2937}
+.avp-community-form-card>p{margin:0 0 14px;color:#98a2b3;font-size:10px}
+.avp-community-form-card label{
+  display:block;margin:10px 0 5px;color:#475467;font-size:10px;font-weight:800;
+}
+.avp-community-form-card input,.avp-community-form-card select,
+.avp-community-form-card textarea,.avp-answer-compose textarea{
+  width:100%;box-sizing:border-box;border:1px solid #dde3df;border-radius:10px;
+  padding:9px 10px;background:#fff;color:#1f2937;font:inherit;font-size:11px;outline:none;
+}
+.avp-community-form-card textarea,.avp-answer-compose textarea{resize:vertical;line-height:1.5}
+.avp-community-form-card input:focus,.avp-community-form-card select:focus,
+.avp-community-form-card textarea:focus,.avp-answer-compose textarea:focus{
+  border-color:#217346;box-shadow:0 0 0 3px rgba(33,115,70,.08)
+}
+.avp-community-form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.avp-secondary-btn{
+  border:1px solid #d9dfdb;background:#fff;color:#475467;border-radius:10px;
+  padding:9px 12px;font:inherit;font-size:11px;font-weight:800;cursor:pointer;
+}
+.avp-primary-btn:disabled{opacity:.45}
+
+.avp-question-detail-card h2{font-size:17px;line-height:1.35;margin:9px 0;color:#1f2937}
+.avp-question-detail-card>p{font-size:11.5px;line-height:1.65;color:#475467;margin:0}
+.avp-answer-section-title{
+  max-width:680px;margin:14px auto 8px;display:flex;justify-content:space-between;
+  align-items:end;gap:12px;color:#344054;
+}
+.avp-answer-section-title strong{font-size:13px}
+.avp-answer-section-title span{font-size:9px;color:#98a2b3}
+.avp-answer-card{
+  max-width:680px;margin:0 auto 9px;background:#fff;border:1px solid #e6ebe7;
+  border-radius:15px;padding:13px;
+}
+.avp-answer-card.accepted{border-color:#8fc7a7;background:#fbfefc}
+.avp-accepted-label{
+  margin:-2px 0 9px;color:#217346;font-size:9px;font-weight:900;
+}
+.avp-answer-author{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.avp-answer-author strong{font-size:11px;color:#344054}
+.avp-answer-author span{font-size:9px;color:#98a2b3}
+.avp-answer-content{margin:9px 0 11px;color:#475467;font-size:11px;line-height:1.6}
+.avp-answer-actions{display:flex;gap:6px;flex-wrap:wrap}
+.avp-answer-actions button{
+  border:1px solid #e1e6e3;background:#fff;color:#667085;border-radius:9px;
+  padding:6px 8px;font:inherit;font-size:9.5px;font-weight:800;cursor:pointer;
+}
+.avp-answer-actions button.active{background:#eaf5ef;color:#217346;border-color:#bcd8c8}
+.avp-answer-actions .avp-accept-answer{color:#217346}
+.avp-answer-rating{display:flex;align-items:center;gap:1px;margin-top:9px}
+.avp-answer-rating button{
+  border:0;background:transparent;color:#d0d5dd;padding:0 1px;font-size:17px;cursor:pointer;
+}
+.avp-answer-rating button.active{color:#f6b91f}
+.avp-answer-rating span{margin-left:6px;color:#98a2b3;font-size:9px}
+.avp-answer-compose textarea{margin:8px 0}
+.avp-answer-compose .avp-primary-btn{float:right}
+.avp-answer-compose::after{content:"";display:block;clear:both}
+
+/* Leaderboard */
+.avp-leaderboard-head{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:10px;
+  margin-bottom:10px;padding:3px 2px;
+}
+.avp-leaderboard-head strong{display:block;color:#1f2937;font-size:14px}
+.avp-leaderboard-head span{display:block;margin-top:2px;color:#98a2b3;font-size:9px}
+.avp-period-pills{display:flex;gap:4px;overflow:auto}
+.avp-leaderboard-row{
+  display:grid;grid-template-columns:45px minmax(0,1fr) 72px;gap:8px;align-items:center;
+  margin-bottom:7px;padding:11px 12px;background:#fff;border:1px solid #e6ebe7;border-radius:13px;
+}
+.avp-rank{text-align:center;font-size:14px;font-weight:900;color:#475467}
+.avp-leader-user{min-width:0}
+.avp-leader-user strong{display:block;font-size:11px;color:#344054;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.avp-leader-user span{display:block;margin-top:3px;font-size:8.5px;color:#98a2b3}
+.avp-score{text-align:right;color:#217346;font-size:16px;font-weight:900}
+.avp-score span{display:block;font-size:8px;color:#98a2b3;font-weight:700}
+
+/* Notifications */
+.avp-notification-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:10px 12px;background:#fff;border-bottom:1px solid #eef0f3;
+}
+.avp-notification-filter{display:flex;gap:5px}
+#avpNotifyMarkAll{
+  border:0;background:transparent;color:#217346;font:inherit;
+  font-size:9.5px;font-weight:800;cursor:pointer;
+}
+.avp-notification-item{
+  position:relative;display:flex;gap:10px;margin-bottom:8px;padding:12px 13px;
+  background:#fff;border:1px solid #e6ebe7;border-radius:13px;cursor:pointer;
+}
+.avp-notification-item.unread{background:#f4fbf7;border-color:#c9e2d3}
+.avp-notification-item.pinned{box-shadow:inset 3px 0 0 #217346}
+.avp-notification-icon{
+  flex:0 0 36px;width:36px;height:36px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;background:#f2f6f4;font-size:17px;
+}
+.avp-notification-body{min-width:0;flex:1}
+.avp-notification-title{display:flex;align-items:center;gap:6px}
+.avp-notification-title strong{font-size:11px;color:#344054}
+.avp-notification-title span{
+  border-radius:999px;padding:2px 5px;background:#eaf5ef;color:#217346;font-size:7px;font-weight:900;
+}
+.avp-notification-body p{margin:4px 0;color:#667085;font-size:10px;line-height:1.5}
+.avp-notification-body small{color:#98a2b3;font-size:8.5px}
+.avp-unread-dot{
+  position:absolute;right:11px;top:11px;width:7px;height:7px;border-radius:50%;background:#e11d48;
+}
+
+@media(max-width:640px){
+  .avp-ai-panel.community-mode,
+  .avp-ai-panel.notification-mode{
+    left:5px;right:5px;bottom:74px;width:auto;
+    height:calc(100dvh - 86px);max-height:none;border-radius:18px;
+  }
+  .avp-hub-tabs{padding:6px}
+  .avp-hub-tabs button{font-size:10px;padding:8px 3px}
+  .avp-community-toolbar{align-items:flex-start}
+  .avp-community-filters{max-width:calc(100vw - 120px)}
+  .avp-community-ask{padding:8px 9px;font-size:10px}
+  .avp-question-card{grid-template-columns:minmax(0,1fr) 61px;padding:11px}
+  .avp-question-stats{padding-left:7px}
+  .avp-question-stats strong{font-size:14px}
+  .avp-leaderboard-head{display:block}
+  .avp-period-pills{margin-top:8px}
+  .avp-answer-section-title{display:block}
+  .avp-answer-section-title span{margin-top:2px;display:block}
+}
