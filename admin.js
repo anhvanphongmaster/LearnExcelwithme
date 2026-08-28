@@ -269,48 +269,79 @@
     $("raceAdminTotal").textContent=n(adminRaceCache.length);
     $("raceAdminBest").textContent=n(Math.max(0,...adminRaceCache.map(x=>Number(x.best_streak)||0)));
     $("raceAdminLevel").textContent=n(Math.max(1,...adminRaceCache.map(x=>Number(x.best_level)||1)));
-    if(!adminRaceCache.length){body.innerHTML='<tr><td colspan="6" class="admin-users-empty">BXH Race chưa có người chơi.</td></tr>';return}
-    body.innerHTML=adminRaceCache.map((r,i)=>`<tr data-race-user="${escapeHtml(r.user_id)}">
+    if(!adminRaceCache.length){
+      body.innerHTML='<tr><td colspan="6" class="admin-users-empty">BXH Race chưa có người chơi.</td></tr>';
+      return;
+    }
+    body.innerHTML=adminRaceCache.map((r,i)=>`<tr data-race-id="${escapeHtml(r.ranking_id)}">
       <td><b>${i+1}</b></td>
-      <td><strong>${escapeHtml(r.player_name||"Học viên")}</strong><small style="display:block;color:#74837b">${escapeHtml(r.email||"")}</small></td>
+      <td>
+        <strong>${escapeHtml(r.player_name||"Học viên")}</strong>
+        <small style="display:block;color:#74837b">
+          ${r.is_legacy ? "Legacy · chưa liên kết tài khoản" : escapeHtml(r.email||"Đã liên kết tài khoản")}
+          ${r.is_hidden ? " · ĐANG ẨN" : ""}
+        </small>
+      </td>
       <td><b>🔥 ${n(r.best_streak||0)}</b></td>
       <td><b>${n(r.best_level||1)}</b></td>
       <td><small>${fmtDate(r.updated_at)}</small></td>
-      <td><div class="admin-race-actions"><button data-race-act="rename">Đổi tên</button><button data-race-act="reset" class="warn">Reset</button><button data-race-act="delete" class="danger">Xoá khỏi BXH</button></div></td>
+      <td><div class="admin-race-actions">
+        <button data-race-act="rename">Đổi tên</button>
+        <button data-race-act="reset" class="warn">Reset</button>
+        <button data-race-act="toggle">${r.is_hidden ? "Hiện" : "Ẩn"}</button>
+        <button data-race-act="delete" class="danger">Xoá khỏi BXH</button>
+      </div></td>
     </tr>`).join("");
   }
+
   async function loadAdminRace(){
     const body=$("adminRaceBody"),q=$("adminRaceSearch")?.value?.trim()||"";
     if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Đang tải BXH Race…</td></tr>';
-    const data=await rpcSoft("admin_race_list_v2",{p_search:q,p_limit:200});
+    const data=await rpcSoft("admin_race_list_v4",{p_search:q,p_limit:300});
     if(data?.__error){
-      if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Chưa dùng được Race Admin V2.</td></tr>';
-      const note=$("adminRaceNotice"); if(note){note.hidden=false;note.innerHTML='Hãy chạy <code>RACE-ADMIN-ENGAGEMENT-V2.sql</code> trong Supabase rồi tải lại.'}
+      if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Chưa dùng được Race Admin V4.</td></tr>';
+      const note=$("adminRaceNotice");
+      if(note){
+        note.hidden=false;
+        note.innerHTML='Hãy chạy <code>EXCEL-RACE-RANK-V4-MIGRATION.sql</code> trong Supabase rồi tải lại.';
+      }
       return;
     }
     const note=$("adminRaceNotice"); if(note)note.hidden=true;
     renderAdminRace(data||[]);
   }
+
   async function doRaceAction(btn){
-    const tr=btn.closest("tr[data-race-user]");if(!tr)return;
-    const uid=tr.dataset.raceUser,row=adminRaceCache.find(x=>x.user_id===uid);if(!row)return;
+    const tr=btn.closest("tr[data-race-id]"); if(!tr)return;
+    const rid=Number(tr.dataset.raceId);
+    const row=adminRaceCache.find(x=>Number(x.ranking_id)===rid); if(!row)return;
     const act=btn.dataset.raceAct; btn.disabled=true;
     try{
       if(act==="reset"){
         if(!confirm(`Reset điểm Race của ${row.player_name}?`))return;
-        await rpc("admin_race_reset_v2",{p_user_id:uid}); toast("Đã reset điểm Race");
+        await rpc("admin_race_reset_v4",{p_ranking_id:rid});
+        toast("Đã reset điểm Race");
       }else if(act==="delete"){
-        if(!confirm(`Xoá ${row.player_name} khỏi BXH Race? Tài khoản vẫn giữ nguyên.`))return;
-        await rpc("admin_race_delete_v2",{p_user_id:uid}); toast("Đã xoá khỏi BXH Race");
+        if(!confirm(`Xoá ${row.player_name} khỏi BXH Race? Tài khoản (nếu có) vẫn giữ nguyên.`))return;
+        await rpc("admin_race_delete_v4",{p_ranking_id:rid});
+        toast("Đã xoá khỏi BXH Race");
       }else if(act==="rename"){
         const name=prompt("Tên mới trên BXH:",row.player_name||""); if(name===null)return;
         const clean=name.trim(); if(clean.length<2){toast("Tên tối thiểu 2 ký tự");return}
-        await rpc("admin_race_rename_v2",{p_user_id:uid,p_player_name:clean}); toast("Đã đổi tên BXH");
+        await rpc("admin_race_rename_v4",{p_ranking_id:rid,p_player_name:clean});
+        toast(row.is_legacy ? "Đã đổi tên legacy" : "Đã đổi tên tạm thời; lần user vào Race tên sẽ đồng bộ theo Profile");
+      }else if(act==="toggle"){
+        await rpc("admin_race_set_hidden_v4",{p_ranking_id:rid,p_hidden:!row.is_hidden});
+        toast(row.is_hidden ? "Đã hiện trên BXH" : "Đã ẩn khỏi BXH");
       }
       await loadAdminRace();
-    }catch(e){console.error(e);toast("Không thực hiện được: "+(e?.message||e))}
-    finally{btn.disabled=false}
+    }catch(e){
+      console.error(e); toast("Không thực hiện được: "+(e?.message||e));
+    }finally{
+      btn.disabled=false;
+    }
   }
+
   function bindRaceAdmin(){
     $("adminRaceReload")?.addEventListener("click",loadAdminRace);
     $("adminRaceSearchBtn")?.addEventListener("click",loadAdminRace);

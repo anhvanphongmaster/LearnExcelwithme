@@ -2,8 +2,6 @@
   const PER = 30;
   const BEST_HOC = "avp_excel_race_best_hoc";
   const BEST_RANK = "avp_excel_race_best_rank";
-  const NAME_KEY = "avp_excel_race_player_name";
-  const TOKEN_KEY = "avp_excel_race_claim_token";
   const $ = (id) => document.getElementById(id);
 
   function avpDialog({ title, body, icon, tone, confirmText, cancelText, showCancel }) {
@@ -230,7 +228,10 @@
   }
   requestAnimationFrame(loop);
 
-  function bestKey() { return mode === "rank" ? BEST_RANK : BEST_HOC; }
+  function bestKey() {
+    const base = mode === "rank" ? BEST_RANK : BEST_HOC;
+    return claimToken ? (base + ":" + claimToken) : base;
+  }
   function loadBest() {
     try { best = Number(localStorage.getItem(bestKey()) || 0) || 0; } catch { best = 0; }
     $("best").textContent = String(best);
@@ -273,176 +274,203 @@
   }
 
   function accountName(user) {
+    // Fallback only. V4 display name comes from profiles through race_sync_identity_v4().
     if (!user) return "";
     var md = user.user_metadata || {};
     var n = md.display_name || md.full_name || md.name || "";
     if (!n && user.email) n = String(user.email).split("@")[0];
-    n = String(n).replace(/@avp-app\.local$/i, "");
-    return normalizeName(n);
+    return normalizeName(String(n).replace(/@avp-app\.local$/i, ""));
   }
 
   async function currentRaceUser() {
     if (window.avpCloudSync && window.avpCloudSync.getUser) {
-      try { return await window.avpCloudSync.getUser(); } catch (e) {}
+      try {
+        var cloudUser = await window.avpCloudSync.getUser();
+        if (cloudUser) return cloudUser;
+      } catch (e) {}
     }
-    var sb = window.avpSupabase;
+
+    // supabase-auth.js is a module and may finish after this deferred script.
+    // Wait for the shared client instead of treating the first early check as logged-out.
+    var sb = await ensureSupabase();
     if (!sb || !sb.auth) return null;
-    try {
-      var r = await sb.auth.getUser();
-      return r && r.data && r.data.user ? r.data.user : null;
-    } catch (e) { return null; }
+
+    for (var attempt = 0; attempt < 20; attempt++) {
+      try {
+        if (sb.auth.getSession) {
+          var s = await sb.auth.getSession();
+          var sessionUser = s && s.data && s.data.session && s.data.session.user;
+          if (sessionUser) return sessionUser;
+        }
+        var r = await sb.auth.getUser();
+        var user = r && r.data && r.data.user ? r.data.user : null;
+        if (user) return user;
+      } catch (e) {}
+      await new Promise(function(resolve){ setTimeout(resolve, 150); });
+    }
+    return null;
   }
 
   async function loadLocalIdentity() {
     const input = $("playerName");
     const user = await currentRaceUser();
+
     if (!user) {
       playerName = "";
       claimToken = "";
       if (input) { input.value = ""; input.disabled = true; }
       setNameStatus("Chưa đăng nhập", "err");
       setNameGate(true);
-      const start = $("start");
-      if (start && !playing) start.textContent = "🔒 Đăng nhập để chơi";
-      return;
+      const startBtn = $("start");
+      if (startBtn && !playing) startBtn.textContent = "🔒 Đăng nhập để chơi";
+      return false;
     }
-    playerName = accountName(user) || "HocVien";
-    claimToken = user.id || ("uid_" + playerName);
-    if (input) { input.value = playerName; input.disabled = true; }
-    setNameStatus("Chơi với tên: " + playerName, "ok");
+
+    // claimToken is now the authenticated user id in memory only.
+    claimToken = user.id || "";
+
+    // Old browser token is used ONLY to reconnect a legacy Race row.
+    // It is not used to lock/change the current name.
+    var oldLegacyToken = "";
+    try { oldLegacyToken = localStorage.getItem("avp_excel_race_claim_token") || ""; } catch (e) {}
+
+    const client = await ensureSupabase();
+    var syncedName = "";
+
+    if (client && client.rpc) {
+      try {
+        const res = await client.rpc("race_sync_identity_v4", {
+          p_legacy_claim_token: oldLegacyToken || null
+        });
+        if (res && res.error) throw res.error;
+        const payload = res && res.data ? res.data : null;
+        syncedName = payload && payload.player_name ? String(payload.player_name) : "";
+        if (payload && payload.claimed_legacy === true) {
+          try {
+            // Legacy token is no longer needed after successful ownership migration.
+            localStorage.removeItem("avp_excel_race_claim_token");
+            localStorage.removeItem("avp_excel_race_player_name");
+          } catch (e) {}
+        }
+      } catch (e) {
+        console.error("[race] identity sync v4", e);
+      }
+    }
+
+    playerName = normalizeName(syncedName || accountName(user) || "Học viên");
+    if (input) {
+      input.value = playerName;
+      input.disabled = true;
+      input.readOnly = true;
+    }
+
+    setNameStatus("Đang chơi với tài khoản: " + playerName, "ok");
     setNameGate(false);
     const gate = $("nameGateMsg");
     if (gate) gate.style.display = "none";
-  }
 
-  async function claimName() {
-    const input = $("playerName");
-    const name = normalizeName(input ? input.value : "");
-    if (name.length < 2) {
-      setNameStatus("Tên tối thiểu 2 ký tự", "err");
-      return false;
-    }
-    if (!/^[\p{L}\p{N} _.-]+$/u.test(name)) {
-      setNameStatus("Tên chỉ gồm chữ, số, khoảng trắng, . _ -", "err");
-      return false;
-    }
-    // already claimed this browser
-    if (playerName && claimToken && playerName.toLowerCase() === name.toLowerCase()) {
-      setNameStatus("Đang dùng: " + playerName, "ok");
-      if (input) input.disabled = true;
-      return true;
-    }
-    if (playerName && claimToken && playerName.toLowerCase() !== name.toLowerCase()) {
-      setNameStatus("Máy này đã khóa tên \"" + playerName + "\". Xóa dữ liệu site để đổi.", "err");
-      if (input) { input.value = playerName; input.disabled = true; }
-      return false;
-    }
-
-    const token = (crypto.randomUUID && crypto.randomUUID()) ||
-      (String(Date.now()) + "-" + Math.random().toString(16).slice(2));
-
-    const client = await ensureSupabase();
-    if (!client) {
-      // offline fallback: local only
-      playerName = name;
-      claimToken = token;
-      try {
-        localStorage.setItem(NAME_KEY, playerName);
-        localStorage.setItem(TOKEN_KEY, claimToken);
-      } catch {}
-      if (input) input.disabled = true;
-      setNameStatus("Đã khóa (offline): " + playerName, "ok");
-      setNameGate(false);
-      return true;
-    }
-
-    const { error } = await client.from("race_leaderboard").insert({
-      player_name: name,
-      claim_token: token,
-      best_streak: 0,
-      best_level: 1
-    });
-    if (error) {
-      const msg = (error.message || "") + (error.code || "");
-      if (/duplicate|unique|23505/i.test(msg) || error.code === "23505") {
-        setNameStatus("Tên \"" + name + "\" đã có người dùng", "err");
-      } else {
-        setNameStatus("Lỗi khóa tên: " + (error.message || "thử lại"), "err");
-        console.warn(error);
-      }
-      return false;
-    }
-    playerName = name;
-    claimToken = token;
-    try {
-      localStorage.setItem(NAME_KEY, playerName);
-      localStorage.setItem(TOKEN_KEY, claimToken);
-    } catch {}
-    if (input) input.disabled = true;
-    setNameStatus("Đã khóa: " + playerName, "ok");
-    setNameGate(false);
-    loadBoard();
+    // Reload the per-account local best after identity is known.
+    loadBest();
     return true;
   }
 
-  async function pushLeaderboard() {
+  async function claimName() {
+    // V3: tên Race lấy duy nhất từ tài khoản Supabase.
+    // Không còn ghi/đọc bảng race_leaderboard + claim_token cũ.
+    var ok = await loadLocalIdentity();
+    return !!ok;
+  }
+
+  let rankPushTimer = null;
+  function scheduleRankPush(delay) {
     if (mode !== "rank") return;
-    if (!playerName) return;
+    if (rankPushTimer) clearTimeout(rankPushTimer);
+    rankPushTimer = setTimeout(function () { pushLeaderboard(); }, delay == null ? 120 : delay);
+  }
+
+  async function pushLeaderboard() {
+    if (mode !== "rank") return false;
+
+    var ready = await loadLocalIdentity();
+    if (!ready || !playerName || !claimToken) return false;
+
     const client = await ensureSupabase();
-    if (!client || !client.rpc) return;
+    if (!client || !client.rpc) {
+      if ($("msg")) $("msg").textContent = "Không kết nối được Supabase để lưu Rank.";
+      return false;
+    }
+
     try {
-      const { error } = await client.rpc("race_submit_score_v2", {
-        p_player_name: playerName,
+      const res = await client.rpc("race_submit_score_v4", {
         p_best_streak: Math.max(best || 0, streak || 0),
         p_best_level: Math.max(level || 1, 1)
       });
-      if (error) { console.warn("[race] score v2", error); return; }
-      loadBoard();
+      if (res && res.error) throw res.error;
+
+      const payload = res && res.data ? res.data : null;
+      if (payload && payload.player_name) {
+        playerName = normalizeName(payload.player_name);
+        const input = $("playerName");
+        if (input) input.value = playerName;
+      }
+
+      await loadBoard();
+      return true;
     } catch (e) {
-      console.warn("[race] pushLeaderboard v2", e);
+      console.error("[race] score v4", e);
+      if ($("msg")) $("msg").textContent = "Không lưu được Rank: " + (e.message || "RPC lỗi");
+      return false;
     }
   }
 
   async function loadBoard() {
     const list = $("boardList");
     if (!list) return;
+
     const client = await ensureSupabase();
     if (!client || !client.rpc) {
       list.innerHTML = '<li class="muted">Chưa kết nối Supabase.</li>';
       return;
     }
+
     try {
-      const { data, error } = await client.rpc("race_list_leaderboard_v2", { p_limit: 100 });
-      if (error) {
-        list.innerHTML = '<li class="muted">BXH Race chưa sẵn sàng. Admin cần chạy SQL Race V2.</li>';
-        console.warn("[race] list v2", error);
-        return;
-      }
+      const { data, error } = await client.rpc("race_list_leaderboard_v4", { p_limit: 100 });
+      if (error) throw error;
+
       const rows = Array.isArray(data) ? data : [];
       if (!rows.length) {
         list.innerHTML = '<li class="muted">Chưa có ai trên BXH — bạn sẽ là người đầu.</li>';
         rivals = [];
         return;
       }
+
       rivals = rows
-        .filter(row => row && row.player_name && (!playerName || row.player_name !== playerName))
-        .map(row => ({
-          name: String(row.player_name),
-          score: Math.max(Number(row.best_streak) || 0, (Number(row.best_level) || 1) * 5)
-        }))
-        .filter(r => r.score > 0)
-        .sort((a,b) => b.score-a.score)
+        .filter(function(row) {
+          return row && row.player_name && row.is_me !== true;
+        })
+        .map(function(row) {
+          return {
+            name: String(row.player_name),
+            score: Math.max(Number(row.best_streak) || 0, (Number(row.best_level) || 1) * 5)
+          };
+        })
+        .filter(function(r){ return r.score > 0; })
+        .sort(function(a,b){ return b.score-a.score; })
         .slice(0,12);
+
       list.innerHTML = rows.map(function(row, i) {
-        const me = playerName && row.player_name === playerName ? " me" : "";
+        const me = row.is_me === true ? " me" : "";
         const rankNo = Number(row.rank_no) || (i + 1);
+        const legacy = row.is_legacy === true ? ' <small class="race-legacy">cũ</small>' : "";
         return '<li class="' + me + '">' + rankNo + '. <b>' + escapeBoard(row.player_name) +
-          '</b> — chuỗi ' + (Number(row.best_streak)||0) + ' · cấp ' + (Number(row.best_level)||1) + '</li>';
+          '</b>' + legacy + ' — chuỗi ' + (Number(row.best_streak)||0) +
+          ' · cấp ' + (Number(row.best_level)||1) + '</li>';
       }).join("");
-      list.insertAdjacentHTML("beforeend", '<li class="muted board-foot">Top 100 · cuộn để xem thêm</li>');
+
+      list.insertAdjacentHTML("beforeend", '<li class="muted board-foot">Top 100 · người chơi cũ vẫn được giữ nguyên điểm</li>');
     } catch (e) {
-      console.warn("[race] loadBoard v2", e);
-      list.innerHTML = '<li class="muted">Không tải được BXH. Bấm Làm mới để thử lại.</li>';
+      console.error("[race] loadBoard v4", e);
+      list.innerHTML = '<li class="muted">BXH chưa tải được: ' + escapeBoard(e.message || "RPC lỗi") + '</li>';
     }
   }
 
@@ -567,7 +595,7 @@
       level += 1;
       idx = 0;
       inLevel = shuffle(pool(level));
-      trackPlay("level_up"); pushLeaderboard();
+      trackPlay("level_up"); if (mode === "rank") scheduleRankPush(50);
       if (!inLevel.length) {
         stopTimer(); playing = false; targetSpeed = 0;
         $("msg").textContent = "Hết ngân hàng 2000 câu — quá đỉnh!";
@@ -641,6 +669,7 @@
     if (ok) {
       sfxOk();
       streak += 1; saveBest(); idx += 1;
+      if (mode === "rank") scheduleRankPush(80);
       targetSpeed = Math.min(26, 6 + streak * 0.4);
       $("msg").textContent = "Đúng!";
       hud(); updateHint();
@@ -661,7 +690,10 @@
     $("lives").textContent = m === "hoc" ? "∞" : "3";
     $("msg").textContent = m === "hoc"
       ? "Mode Học: sai / hết giờ → làm lại từ đầu cấp hiện tại."
-      : "Mode Rank: 3 mạng — hết mạng về cấp 1. Khó hơn, kỷ lục riêng.";
+      : "Mode Rank: 3 mạng — điểm cập nhật trực tiếp lên bảng xếp hạng.";
+    if (m === "rank") {
+      loadLocalIdentity().then(function(){ loadBoard(); });
+    }
   }
 
   
@@ -742,8 +774,9 @@
     setTimeout(tick, 700);
   }
 
-  function start() {
-    if (typeof playerName !== "undefined" && (!playerName || !claimToken)) {
+  async function start() {
+    var ready = await loadLocalIdentity();
+    if (!ready || !playerName || !claimToken) {
       $("msg").textContent = "Đăng nhập để chơi Race.";
       if (typeof setNameStatus === "function") setNameStatus("Cần đăng nhập", "err");
       setNameGate(true);
@@ -766,12 +799,11 @@
       if ($("modeRank")) $("modeRank").disabled = true;
       $("msg").textContent = "Xuất phát!";
       trackPlay("start");
-      if (typeof pushLeaderboard === "function") pushLeaderboard();
+      if (mode === "rank") scheduleRankPush(20);
       updateHint();
       showQ();
     });
   }
-
   $("modeHoc").onclick = () => setMode("hoc");
   $("modeRank").onclick = () => setMode("rank");
   $("start").onclick = start;
@@ -811,6 +843,10 @@
     try {
       localStorage.setItem(BEST_HOC, "0");
       localStorage.setItem(BEST_RANK, "0");
+      if (claimToken) {
+        localStorage.setItem(BEST_HOC + ":" + claimToken, "0");
+        localStorage.setItem(BEST_RANK + ":" + claimToken, "0");
+      }
     } catch (e) {}
     best = 0; streak = 0;
     if ($("best")) $("best").textContent = "0";
@@ -818,8 +854,8 @@
     if (playerName) {
       const client = await ensureSupabase();
       if (client?.rpc) {
-        const { error } = await client.rpc("race_reset_my_score_v2");
-        if (error) console.warn("[race] reset v2", error);
+        const { error } = await client.rpc("race_reset_my_score_v4");
+        if (error) console.warn("[race] reset v4", error);
       }
     }
     loadBoard();
@@ -836,6 +872,9 @@
     });
   }
   loadLocalIdentity();
+  // Retry identity after auth boot; harmless if already loaded.
+  setTimeout(function(){ loadLocalIdentity(); }, 900);
+  setTimeout(function(){ loadLocalIdentity(); }, 2200);
   loadBoard();
   setInterval(function () { if (typeof loadBoard === "function") loadBoard(); }, 20000);
   setMode("hoc");
