@@ -320,6 +320,93 @@
     }catch(e){ console.warn("race stats", e); }
   }
 
+
+  let adminUsersCache=[];
+  function fmtDate(v){
+    if(!v) return "—";
+    try{return new Date(v).toLocaleString("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})}catch(e){return "—"}
+  }
+  function progressStats(row){
+    const d=row?.progress_data&&typeof row.progress_data==="object"?row.progress_data:{};
+    const xp=Math.max(Number(row?.leaderboard_xp)||0,Number(d.xp)||0,Number(d.totalXP)||0,Number(d.total_xp)||0);
+    let completed=0;
+    const candidates=[d.completedLessons,d.completed_lessons,d.completed,d.lessonsCompleted];
+    for(const v of candidates){if(Array.isArray(v)){completed=Math.max(completed,v.length)}else if(v&&typeof v==="object"){completed=Math.max(completed,Object.keys(v).filter(k=>v[k]).length)}else if(Number.isFinite(Number(v))){completed=Math.max(completed,Number(v))}}
+    return {xp,completed};
+  }
+  function renderAdminUsers(rows){
+    adminUsersCache=Array.isArray(rows)?rows:[];
+    const body=$("adminUsersBody"); if(!body)return;
+    $("adminUsersShown").textContent=n(adminUsersCache.length);
+    $("adminUsersAdmins").textContent=n(adminUsersCache.filter(x=>x.is_admin).length);
+    $("adminUsersHidden").textContent=n(adminUsersCache.filter(x=>x.exclude_from_leaderboard).length);
+    $("adminUsersWithXp").textContent=n(adminUsersCache.filter(x=>progressStats(x).xp>0).length);
+    const notice=$("adminUsersNotice"); if(notice) notice.hidden=true;
+    if(!adminUsersCache.length){body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Không tìm thấy tài khoản phù hợp.</td></tr>';return}
+    body.innerHTML=adminUsersCache.map(r=>{
+      const s=progressStats(r), hidden=!!r.exclude_from_leaderboard, adm=!!r.is_admin;
+      return `<tr data-user-id="${r.user_id}">
+        <td><div class="admin-user-identity"><strong>${escapeHtml(r.display_name||"Học viên")}${adm?' <span class="admin-user-badge admin-badge-admin">ADMIN</span>':''}</strong><small>${escapeHtml(r.email||"")}</small><em>Đăng ký ${fmtDate(r.created_at)}</em></div></td>
+        <td><div class="admin-user-progress"><b>${n(s.xp)} XP</b><small>${n(s.completed)} bài hoàn thành • ${n(r.topic_vote_count||0)} vote chủ đề</small></div></td>
+        <td><div class="admin-user-progress"><b>🔥 ${n(r.current_streak||0)} ngày</b><small>Tốt nhất ${n(r.best_streak||0)} • Tổng ${n(r.total_days||0)} ngày</small></div></td>
+        <td><span class="admin-user-badge ${hidden||adm?'admin-badge-hidden':'admin-badge-visible'}">${adm?'Admin':hidden?'Đang ẩn':'Đang hiện'}</span></td>
+        <td><small>${fmtDate(r.last_sign_in_at)}</small></td>
+        <td><div class="admin-user-actions">
+          <button type="button" data-act="leaderboard" data-hidden="${hidden?'1':'0'}" ${adm?'disabled':''}>${hidden?'Hiện BXH':'Ẩn BXH'}</button>
+          <button type="button" data-act="votes">Reset vote</button>
+          <button type="button" data-act="progress" class="danger">Reset tiến độ</button>
+          <button type="button" data-act="admin" data-admin="${adm?'1':'0'}" class="${adm?'warn':''}">${adm?'Bỏ Admin':'Cấp Admin'}</button>
+        </div></td>
+      </tr>`;
+    }).join("");
+  }
+  function escapeHtml(v){return String(v??"").replace(/[&<>'"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[ch]))}
+  async function loadAdminUsers(){
+    const body=$("adminUsersBody"),q=$("adminUserSearch")?.value?.trim()||"";
+    if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Đang tải danh sách tài khoản…</td></tr>';
+    const data=await rpcSoft("admin_um_list_users",{p_search:q,p_limit:200,p_offset:0});
+    if(data?.__error){
+      if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Chưa dùng được Quản lý người dùng. Hãy chạy ADMIN-USER-MANAGEMENT.sql trong Supabase.</td></tr>';
+      const notice=$("adminUsersNotice"); if(notice){notice.hidden=false;notice.textContent="Supabase chưa có RPC Quản lý người dùng hoặc schema chưa reload."}
+      return;
+    }
+    renderAdminUsers(data||[]);
+  }
+  async function doUserAction(btn){
+    const tr=btn.closest("tr[data-user-id]"); if(!tr)return;
+    const id=tr.dataset.userId,act=btn.dataset.act,row=adminUsersCache.find(x=>x.user_id===id); if(!row)return;
+    const who=row.display_name||row.email||"tài khoản này";
+    let ok=false;
+    try{
+      btn.disabled=true;
+      if(act==="leaderboard"){
+        const hidden=btn.dataset.hidden==="1";
+        if(!confirm(`${hidden?'Hiện':'Ẩn'} ${who} ${hidden?'trên':'khỏi'} BXH?`))return;
+        await rpc("admin_um_set_leaderboard_visibility",{p_user_id:id,p_hidden:!hidden}); ok=true;
+      }else if(act==="votes"){
+        if(!confirm(`Reset toàn bộ vote có liên kết tài khoản của ${who}?`))return;
+        const res=await rpc("admin_um_reset_votes",{p_user_id:id}); ok=true;
+        toast(`Đã reset vote • Chủ đề: ${res?.topic_deleted??0} • Bài: ${res?.lesson_deleted??0}`);
+      }else if(act==="progress"){
+        if(!confirm(`RESET TIẾN ĐỘ của ${who}? XP/BXH cloud sẽ được xóa. Thao tác này không nên dùng nếu không chắc.`))return;
+        await rpc("admin_um_reset_progress",{p_user_id:id}); ok=true;
+      }else if(act==="admin"){
+        const isAdm=btn.dataset.admin==="1";
+        if(!confirm(`${isAdm?'Bỏ':'Cấp'} quyền Admin cho ${who}?`))return;
+        const res=await rpc("admin_um_set_admin",{p_user_id:id,p_is_admin:!isAdm});
+        if(res?.ok===false) throw new Error(res.error||"Không thể đổi quyền Admin"); ok=true;
+      }
+      if(ok){toast("Đã cập nhật tài khoản");await loadAdminUsers()}
+    }catch(e){console.error(e);toast("Không thực hiện được: "+(e?.message||e))}
+    finally{btn.disabled=false}
+  }
+  function bindUserManagement(){
+    $("adminUserSearchBtn")?.addEventListener("click",loadAdminUsers);
+    $("adminUserReloadBtn")?.addEventListener("click",loadAdminUsers);
+    $("adminUserSearch")?.addEventListener("keydown",e=>{if(e.key==="Enter")loadAdminUsers()});
+    $("adminUsersBody")?.addEventListener("click",e=>{const b=e.target.closest("button[data-act]");if(b)doUserAction(b)});
+  }
+
   async function loadDashboard(){
     try{
       $("adminRefresh").disabled=true;
@@ -378,7 +465,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","learning","votes","inbox","analytics"];
+    const valid=["overview","users","learning","votes","inbox","analytics"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
@@ -395,6 +482,7 @@
       btn.setAttribute("aria-selected",on?"true":"false");
     });
     try{localStorage.setItem(ADMIN_VIEW_KEY,view)}catch(e){}
+    if(view==="users" && !adminUsersCache.length) loadAdminUsers();
     if(opts&&opts.scroll){
       document.querySelector(".admin-command-center")?.scrollIntoView({behavior:"smooth",block:"start"});
     }
@@ -431,6 +519,7 @@
     }catch(e){ console.warn(e); }
     bindMailTabs();
     bindAdminViews();
+    bindUserManagement();
     loadDashboard();
   }
   $("adminPeriod")?.addEventListener("change",()=>{currentDays=Number($("adminPeriod").value)||30;loadDashboard()});

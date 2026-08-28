@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
-<link rel="stylesheet" href="admin.css?v=20260828-admin-chat">
+<link rel="stylesheet" href="admin.css?v=20260828-user-management">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#217346">
@@ -100,6 +100,9 @@ where is_admin = true;</pre>
         <button type="button" class="active" data-admin-view="overview" role="tab">
           <b>📊 Tổng quan</b><small>KPI & trạng thái website</small>
         </button>
+        <button type="button" data-admin-view="users" role="tab">
+          <b>👥 Người dùng</b><small>Tài khoản, BXH & tiến độ</small>
+        </button>
         <button type="button" data-admin-view="learning" role="tab">
           <b>🎓 Học tập</b><small>Tiến độ, bài học & quiz</small>
         </button>
@@ -173,6 +176,34 @@ where is_admin = true;</pre>
       <article><small>🧠 Quiz trung bình</small><strong id="learnAvgQuiz">—</strong><em>Trên mỗi user đã sync</em></article>
       <article><small>🏅 Huy hiệu trung bình</small><strong id="learnAvgBadges">—</strong><em>Trên mỗi user đã sync</em></article>
       <article><small>🚀 Pro trở lên</small><strong id="learnPro">—</strong><em id="learnMaster">—</em></article>
+    </section>
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="users"><span>👥 NGƯỜI DÙNG</span><h2>Quản lý tài khoản học viên</h2></div>
+    <section class="admin-panel admin-view-section admin-users-panel" data-admin-section="users">
+      <div class="admin-users-toolbar">
+        <div>
+          <strong>Danh sách tài khoản</strong>
+          <small>Xem tiến độ, BXH, vote và quyền Admin. Các thao tác nhạy cảm đều yêu cầu xác nhận.</small>
+        </div>
+        <div class="admin-users-tools">
+          <input id="adminUserSearch" type="search" placeholder="Tìm tên hoặc email…" autocomplete="off">
+          <button id="adminUserSearchBtn" type="button">Tìm</button>
+          <button id="adminUserReloadBtn" type="button">↻</button>
+        </div>
+      </div>
+      <div class="admin-users-summary">
+        <article><small>Đang hiển thị</small><strong id="adminUsersShown">0</strong></article>
+        <article><small>Admin</small><strong id="adminUsersAdmins">0</strong></article>
+        <article><small>Ẩn khỏi BXH</small><strong id="adminUsersHidden">0</strong></article>
+        <article><small>Có XP</small><strong id="adminUsersWithXp">0</strong></article>
+      </div>
+      <div id="adminUsersNotice" class="admin-users-notice">Chạy file <code>ADMIN-USER-MANAGEMENT.sql</code> một lần trong Supabase trước khi dùng khu này.</div>
+      <div class="admin-users-table-wrap">
+        <table class="admin-users-table">
+          <thead><tr><th>Học viên</th><th>Tiến độ</th><th>Streak</th><th>BXH</th><th>Đăng nhập gần nhất</th><th>Thao tác</th></tr></thead>
+          <tbody id="adminUsersBody"><tr><td colspan="6" class="admin-users-empty">Chuyển sang tab Người dùng để tải danh sách.</td></tr></tbody>
+        </table>
+      </div>
     </section>
 
     <div class="admin-section-heading admin-view-section" data-admin-section="learning"><span>🎓 HỌC TẬP</span><h2>Người học đang tiến bộ thế nào?</h2></div>
@@ -355,7 +386,7 @@ where is_admin = true;</pre>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
-<script defer src="admin.js?v=20260828-admin-chat"></script>
+<script defer src="admin.js?v=20260828-user-management"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>
