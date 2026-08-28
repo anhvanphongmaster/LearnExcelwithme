@@ -37,19 +37,76 @@
     const m=a.meta||{},name=esc(m.name||"Tệp đính kèm"),size=esc(sizeText(m.size)),kind=m.kind==="image";
     const caption=a.caption?`<div class="avp-attach-caption">${esc(a.caption)}</div>`:"";
     if(kind)return `<div class="avp-chat-attachment avp-chat-image" data-chat-path="${esc(m.path||"")}" data-kind="image"><button type="button" class="avp-image-open" aria-label="Mở ảnh"><span>🖼️ Đang tải ảnh…</span></button><small>${name} · ${size}</small></div>${caption}`;
-    return `<div class="avp-chat-attachment avp-chat-file" data-chat-path="${esc(m.path||"")}" data-kind="file"><button type="button" class="avp-file-open"><span class="avp-file-icon">📎</span><span><b>${name}</b><small>${esc((m.ext||"").toUpperCase())} · ${size}</small></span><em>Mở</em></button></div>${caption}`;
+    return `<div class="avp-chat-attachment avp-chat-file" data-chat-path="${esc(m.path||"")}" data-chat-name="${name}" data-kind="file"><button type="button" class="avp-file-open"><span class="avp-file-icon">📎</span><span><b>${name}</b><small>${esc((m.ext||"").toUpperCase())} · ${size}</small></span><em>Tải</em></button></div>${caption}`;
   }
   async function signPath(path){
     if(!client||!path)return null;
-    try{const {data,error}=await client.storage.from(CHAT_BUCKET).createSignedUrl(path,3600);if(error)throw error;return data?.signedUrl||null}catch(e){console.warn("AVP chat signed url",e);return null}
+    try{
+      const {data,error}=await client.storage.from(CHAT_BUCKET).createSignedUrl(path,3600);
+      if(error)throw error;
+      return data?.signedUrl||null;
+    }catch(e){
+      console.warn("AVP chat signed url",e);
+      return null;
+    }
   }
+
+  async function downloadChatFile(path,fileName){
+    if(!client||!path)throw new Error("Không tìm thấy file.");
+    const {data,error}=await client.storage.from(CHAT_BUCKET).download(path);
+    if(error)throw error;
+    const blobUrl=URL.createObjectURL(data);
+    const a=document.createElement("a");
+    a.href=blobUrl;
+    a.download=fileName||"tep-dinh-kem";
+    a.style.display="none";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(blobUrl),60000);
+  }
+
   async function hydrateAttachmentUrls(root){
     if(!root)return;
     const nodes=[...root.querySelectorAll("[data-chat-path]")];
     await Promise.all(nodes.map(async n=>{
-      if(n.dataset.ready==="1")return; const url=await signPath(n.dataset.chatPath); if(!url)return; n.dataset.ready="1";
-      if(n.dataset.kind==="image"){const b=n.querySelector(".avp-image-open");if(b){b.innerHTML=`<img src="${esc(url)}" alt="Ảnh trong tin nhắn" loading="lazy">`;b.onclick=()=>window.open(url,"_blank","noopener")}}
-      else{const b=n.querySelector(".avp-file-open");if(b)b.onclick=()=>window.open(url,"_blank","noopener")}
+      if(n.dataset.ready==="1")return;
+      const path=n.dataset.chatPath;
+      if(!path)return;
+
+      if(n.dataset.kind==="image"){
+        const url=await signPath(path);
+        if(!url)return;
+        n.dataset.ready="1";
+        const b=n.querySelector(".avp-image-open");
+        if(b){
+          b.innerHTML=`<img src="${esc(url)}" alt="Ảnh trong tin nhắn" loading="lazy">`;
+          b.onclick=()=>{
+            const w=window.open(url,"_blank");
+            if(!w)location.href=url;
+          };
+        }
+      }else{
+        n.dataset.ready="1";
+        const b=n.querySelector(".avp-file-open");
+        if(b){
+          b.onclick=async()=>{
+            const old=b.querySelector("em")?.textContent||"Tải";
+            const action=b.querySelector("em");
+            if(action)action.textContent="Đang tải…";
+            b.disabled=true;
+            try{
+              await downloadChatFile(path,n.dataset.chatName||"tep-dinh-kem");
+            }catch(e){
+              console.warn("AVP chat download",e);
+              alert("Không tải được file. Lỗi: "+(e?.message||String(e)));
+            }finally{
+              b.disabled=false;
+              if(action)action.textContent=old;
+            }
+          };
+        }
+      }
     }));
   }
   async function uploadChatFile(file,scope,thread=""){
