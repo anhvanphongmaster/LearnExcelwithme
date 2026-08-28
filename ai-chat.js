@@ -880,6 +880,24 @@
     btn.className=menu.template?.className||"";
     btn.innerHTML=`<span class="avp-community-menu-icon">👥</span><span class="avp-community-menu-label">Cộng đồng</span><span id="avpCommunityMenuBadge" class="avp-community-menu-badge" hidden></span>`;
 
+    // Đồng bộ typography chính xác với nút Chat Admin hiện tại.
+    // Tránh span "Cộng đồng" bị global CSS trên website làm chữ to hơn.
+    if(menu.template){
+      const style=getComputedStyle(menu.template);
+      btn.style.fontFamily=style.fontFamily;
+      btn.style.fontSize=style.fontSize;
+      btn.style.fontWeight=style.fontWeight;
+      btn.style.lineHeight=style.lineHeight;
+
+      const label=btn.querySelector(".avp-community-menu-label");
+      if(label){
+        label.style.fontFamily=style.fontFamily;
+        label.style.fontSize=style.fontSize;
+        label.style.fontWeight=style.fontWeight;
+        label.style.lineHeight=style.lineHeight;
+      }
+    }
+
     btn.addEventListener("click",async e=>{
       e.preventDefault();
       e.stopPropagation();

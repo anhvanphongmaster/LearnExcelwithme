@@ -427,3 +427,13 @@
   .avp-community-toolbar-actions{gap:5px}
   .avp-community-notify-btn{padding:8px;font-size:9px}
 }
+
+
+/* Exact typography for external Community menu label */
+#avpExternalCommunityButton .avp-community-menu-label{
+  font-family:inherit!important;
+  font-size:inherit!important;
+  font-weight:inherit!important;
+  line-height:inherit!important;
+  letter-spacing:inherit!important;
+}
