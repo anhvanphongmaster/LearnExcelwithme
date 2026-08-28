@@ -359,13 +359,50 @@
   }
 }
 
-/* AVP chat notification button */
-.avp-chat-notify{
-  width:30px;height:30px;min-width:30px;padding:0;border:0;border-radius:9px;
-  display:inline-flex;align-items:center;justify-content:center;
-  background:rgba(255,255,255,.10);color:#fff;font-size:14px;line-height:1;
-  cursor:pointer;box-shadow:none;opacity:.86;
+/* =========================================================
+   AVP CHAT SOUND TOGGLE — MINI
+   ========================================================= */
+.avp-chat-sound-toggle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:28px;
+  height:28px;
+  min-width:28px;
+  padding:0;
+  margin-left:auto;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:8px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:13px;
+  line-height:1;
+  box-shadow:none;
+  cursor:pointer;
+  opacity:.82;
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
 }
-.avp-chat-notify:hover{background:rgba(255,255,255,.16);opacity:1}
-.avp-chat-notify.active{background:#217346;color:#fff;opacity:1}
-@media(max-width:640px){.avp-chat-notify{width:28px;height:28px;min-width:28px;font-size:13px;border-radius:8px}}
+
+.avp-chat-sound-toggle:hover,
+.avp-chat-sound-toggle:focus{
+  background:rgba(255,255,255,.14);
+  opacity:1;
+}
+
+.avp-chat-sound-toggle.active{
+  background:#217346;
+  border-color:#217346;
+  color:#fff;
+  opacity:1;
+}
+
+@media(max-width:640px){
+  .avp-chat-sound-toggle{
+    width:26px;
+    height:26px;
+    min-width:26px;
+    border-radius:7px;
+    font-size:12px;
+  }
+}
