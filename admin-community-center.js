@@ -523,6 +523,40 @@
     }
   }
 
+
+  function setCommunityHealth(ok,title,detail){
+    const card=document.querySelector('[data-health="community"]');
+    if(!card)return;
+    const strong=card.querySelector("strong");
+    const small=card.querySelector("small");
+    if(strong)strong.textContent=title || (ok?"Hoạt động":"Cần kiểm tra");
+    if(small)small.textContent=detail || "";
+    card.classList.toggle("ok",Boolean(ok));
+    card.classList.toggle("bad",!ok);
+  }
+
+  async function checkCommunityHealth(){
+    try{
+      const tests=await Promise.allSettled([
+        client.rpc("admin_system_notification_list",{p_limit:1}),
+        client.rpc("admin_notification_user_search",{p_search:null,p_limit:1})
+      ]);
+
+      const errors=tests
+        .filter(x=>x.status==="rejected" || x.value?.error)
+        .map(x=>x.reason?.message || x.value?.error?.message || "RPC lỗi");
+
+      if(errors.length){
+        setCommunityHealth(false,"Cần kiểm tra",errors[0]);
+        return;
+      }
+
+      setCommunityHealth(true,"Hoạt động","Thông báo & cộng đồng sẵn sàng");
+    }catch(e){
+      setCommunityHealth(false,"Cần kiểm tra",String(e?.message||e));
+    }
+  }
+
   async function init(){
     if(!(await waitClient()))return;
 
@@ -535,6 +569,7 @@
     if(!admin)return;
 
     mount();
+    await checkCommunityHealth();
     await searchUsers();
     await loadNotifications();
   }

@@ -99,3 +99,13 @@
 
 #avpAdminCommunityHost{margin-top:12px}
 #avpAdminCommunityHost > .avp-acc-panel{margin:0}
+
+
+/* COMMUNITY HEALTH */
+.admin-health-grid [data-health="community"].ok strong{color:#217346}
+.admin-health-grid [data-health="community"].bad strong{color:#b4233b}
+.admin-health-grid [data-health="community"] small{
+  display:block;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
