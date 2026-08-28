@@ -59,15 +59,6 @@
           <button id="avpAiClose" class="avp-ai-close" type="button" aria-label="Đóng">×</button>
         </header>
 
-        <nav class="avp-hub-tabs" aria-label="Khu hỗ trợ">
-          <button type="button" class="active" data-avp-mode="ai">🤖 AI</button>
-          <button type="button" data-avp-mode="community">👥 Cộng đồng</button>
-          <button type="button" data-avp-mode="notifications">
-            🔔 Thông báo
-            <span id="avpNotifyTabBadge" class="avp-tab-badge" hidden></span>
-          </button>
-        </nav>
-
         <div id="avpAiMode" class="avp-hub-mode">
           <div class="avp-ai-quota" id="avpAiQuota">Còn ${MAX_DAILY} câu hôm nay</div>
 
@@ -109,7 +100,13 @@
               <button type="button" data-community-filter="popular">Nổi bật</button>
               <button type="button" data-community-filter="leaderboard">🏆 BXH</button>
             </div>
-            <button id="avpCommunityAsk" class="avp-community-ask" type="button">＋ Đặt câu hỏi</button>
+            <div class="avp-community-toolbar-actions">
+              <button id="avpCommunityNotify" class="avp-community-notify-btn" type="button">
+                🔔 Thông báo
+                <span id="avpNotifyTabBadge" class="avp-tab-badge" hidden></span>
+              </button>
+              <button id="avpCommunityAsk" class="avp-community-ask" type="button">＋ Đặt câu hỏi</button>
+            </div>
           </div>
 
           <div class="avp-community-search-wrap">
@@ -123,6 +120,7 @@
 
         <div id="avpNotificationMode" class="avp-hub-mode" hidden>
           <div class="avp-notification-toolbar">
+            <button id="avpNotifyBackCommunity" class="avp-notify-back-community" type="button">← Cộng đồng</button>
             <div class="avp-notification-filter">
               <button type="button" class="active" data-notify-filter="all">Tất cả</button>
               <button type="button" data-notify-filter="personal">Cá nhân</button>
@@ -138,7 +136,11 @@
     `;
     document.body.appendChild(root);
 
-    $("avpAiChatBubble").onclick=()=>toggle(true);
+    $("avpAiChatBubble").onclick=async()=>{
+      activeMode="ai";
+      await toggle(true);
+      await switchMode("ai");
+    };
     $("avpAiClose").onclick=()=>toggle(false);
     $("avpAiForm").onsubmit=send;
     $("avpAiTransfer").onclick=transferToAdmin;
@@ -153,10 +155,6 @@
       e.target.style.height=Math.min(e.target.scrollHeight,120)+"px";
     });
 
-    root.querySelectorAll("[data-avp-mode]").forEach(btn=>{
-      btn.onclick=()=>switchMode(btn.dataset.avpMode);
-    });
-
     root.querySelectorAll("[data-community-filter]").forEach(btn=>{
       btn.onclick=()=>{
         communityFilter=btn.dataset.communityFilter;
@@ -167,6 +165,7 @@
     });
 
     $("avpCommunityAsk").onclick=()=>showCommunityAskForm();
+    $("avpCommunityNotify").onclick=()=>switchMode("notifications");
 
     let searchTimer=null;
     $("avpCommunitySearch").addEventListener("input",()=>{
@@ -182,6 +181,7 @@
     });
 
     $("avpNotifyMarkAll").onclick=markAllNotificationsRead;
+    $("avpNotifyBackCommunity").onclick=()=>switchMode("community");
   }
 
 
@@ -198,10 +198,6 @@
 
     panel.classList.toggle("community-mode",mode==="community");
     panel.classList.toggle("notification-mode",mode==="notifications");
-
-    panel.querySelectorAll("[data-avp-mode]").forEach(btn=>{
-      btn.classList.toggle("active",btn.dataset.avpMode===mode);
-    });
 
     $("avpAiMode").hidden=mode!=="ai";
     $("avpCommunityMode").hidden=mode!=="community";
@@ -696,8 +692,7 @@
       question=String(data||"").trim();
     }catch{}
 
-    await switchMode("community");
-    showCommunityAskForm(question);
+    await openCommunityPanel(question);
   }
 
   async function updateNotificationBadge(){
@@ -731,6 +726,8 @@
         el.hidden=count<=0;
         el.textContent=count>0?text:"";
       });
+
+      syncExternalCommunityBadge();
     }catch(e){
       console.warn("Notification badge",e);
     }
@@ -846,6 +843,103 @@
       alert("Chưa đánh dấu được thông báo.");
     }
   }
+
+
+  function findOuterSupportMenu(){
+    const all=[...document.querySelectorAll("button,a")];
+
+    const byText=t=>all.find(el=>{
+      const text=String(el.textContent||"").replace(/\s+/g," ").trim();
+      return text===t || text.endsWith(t);
+    });
+
+    const learning=byText("Học tập");
+    const admin=byText("Chat Admin");
+    const ai=byText("Hỏi AI");
+
+    if(learning && admin && learning.parentElement===admin.parentElement){
+      return {host:learning.parentElement,template:admin,learning,admin,ai};
+    }
+
+    if(ai && admin && ai.parentElement===admin.parentElement){
+      return {host:ai.parentElement,template:admin,learning,admin,ai};
+    }
+
+    return null;
+  }
+
+  function mountExternalCommunityButton(){
+    if($("avpExternalCommunityButton"))return true;
+
+    const menu=findOuterSupportMenu();
+    if(!menu?.host)return false;
+
+    const btn=document.createElement("button");
+    btn.id="avpExternalCommunityButton";
+    btn.type="button";
+    btn.className=menu.template?.className||"";
+    btn.innerHTML=`<span class="avp-community-menu-icon">👥</span><span class="avp-community-menu-label">Cộng đồng</span><span id="avpCommunityMenuBadge" class="avp-community-menu-badge" hidden></span>`;
+
+    btn.addEventListener("click",async e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      await openCommunityPanel();
+    });
+
+    if(menu.admin){
+      menu.host.insertBefore(btn,menu.admin);
+    }else{
+      menu.host.appendChild(btn);
+    }
+
+    return true;
+  }
+
+  async function openCommunityPanel(prefill=""){
+    const p=$("avpAiChatPanel");
+    if(!p)return;
+
+    p.hidden=false;
+    await switchMode("community");
+
+    if(prefill){
+      showCommunityAskForm(prefill);
+    }
+  }
+
+  async function openAiPanel(){
+    const p=$("avpAiChatPanel");
+    if(!p)return;
+    p.hidden=false;
+    await switchMode("ai");
+  }
+
+  function syncExternalCommunityBadge(){
+    const source=$("avpNotifyBubbleBadge");
+    const target=$("avpCommunityMenuBadge");
+    if(!target)return;
+
+    const value=String(source?.textContent||"").trim();
+    const hidden=!source || source.hidden || !value;
+
+    target.hidden=hidden;
+    target.textContent=hidden?"":value;
+  }
+
+  window.AVPCommunity={
+    open:openCommunityPanel,
+    ask:async(prefill="")=>openCommunityPanel(prefill),
+    notifications:async()=>{
+      const p=$("avpAiChatPanel");
+      if(!p)return;
+      p.hidden=false;
+      await switchMode("notifications");
+    }
+  };
+
+  window.AVPAIChat={
+    open:openAiPanel
+  };
 
   function clearSelectedImage(){
     if(selectedImage?.previewUrl){
@@ -1271,6 +1365,15 @@
 
   async function start(){
     mount();
+
+    let menuTry=0;
+    const menuTimer=setInterval(()=>{
+      menuTry++;
+      if(mountExternalCommunityButton() || menuTry>60){
+        clearInterval(menuTimer);
+        syncExternalCommunityBadge();
+      }
+    },250);
 
     const ready=await waitClient();
 

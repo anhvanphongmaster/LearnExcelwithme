@@ -352,3 +352,78 @@
   .avp-answer-section-title{display:block}
   .avp-answer-section-title span{margin-top:2px;display:block}
 }
+
+
+/* =========================================================
+   COMMUNITY OUTSIDE AI - V3
+   ========================================================= */
+
+/* AI is now a clean standalone panel. */
+.avp-hub-tabs{display:none!important}
+
+/* Community / notification modes still use the same large panel shell. */
+.avp-ai-panel.community-mode,
+.avp-ai-panel.notification-mode{
+  width:min(94vw,820px);
+  height:min(82vh,760px);
+}
+
+.avp-community-toolbar-actions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex:0 0 auto;
+}
+
+.avp-community-notify-btn,
+.avp-notify-back-community{
+  border:1px solid #dbe5df;
+  background:#fff;
+  color:#217346;
+  border-radius:10px;
+  padding:8px 10px;
+  font:inherit;
+  font-size:10px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.avp-community-notify-btn{
+  position:relative;
+  white-space:nowrap;
+}
+
+/* Button injected into the existing AVP floating menu. */
+#avpExternalCommunityButton{
+  position:relative;
+}
+
+.avp-community-menu-icon{
+  margin-right:6px;
+}
+
+.avp-community-menu-badge{
+  position:absolute;
+  top:-5px;
+  right:-6px;
+  min-width:18px;
+  height:18px;
+  padding:0 4px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:#e11d48;
+  color:#fff;
+  border:2px solid #fff;
+  font-size:9px;
+  font-weight:900;
+  line-height:1;
+}
+
+.avp-community-menu-badge[hidden]{display:none!important}
+
+@media(max-width:640px){
+  .avp-community-toolbar-actions{gap:5px}
+  .avp-community-notify-btn{padding:8px;font-size:9px}
+}
