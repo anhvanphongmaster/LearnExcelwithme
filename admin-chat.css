@@ -358,3 +358,14 @@
     font-size:14px !important;
   }
 }
+
+/* AVP chat notification button */
+.avp-chat-notify{
+  width:30px;height:30px;min-width:30px;padding:0;border:0;border-radius:9px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.10);color:#fff;font-size:14px;line-height:1;
+  cursor:pointer;box-shadow:none;opacity:.86;
+}
+.avp-chat-notify:hover{background:rgba(255,255,255,.16);opacity:1}
+.avp-chat-notify.active{background:#217346;color:#fff;opacity:1}
+@media(max-width:640px){.avp-chat-notify{width:28px;height:28px;min-width:28px;font-size:13px;border-radius:8px}}

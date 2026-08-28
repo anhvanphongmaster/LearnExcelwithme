@@ -18,6 +18,149 @@
   const ALLOWED_EXT=new Set(["jpg","jpeg","png","webp","gif","heic","heif","pdf","xlsx","xls","csv","doc","docx","ppt","pptx","txt","zip"]);
   const pendingFiles={user:[],admin:[],float:[]};
 
+
+  /* ================= MESSAGE SOUND + NOTIFICATIONS ================= */
+  const PUSH_PUBLIC_KEY="BPBURGlmoeRfonbg1ommywsDE7YBN-F17OffOWgHFVmHOiXdXqbUw8_WbGdqeB83ptW6Z8KoGxkHEHV5NEEiKxw";
+  let avpAudioCtx=null;
+  let avpSoundUnlocked=false;
+  let avpNotifyRole="user";
+
+  function b64UrlToUint8Array(base64String){
+    const padding="=".repeat((4-base64String.length%4)%4);
+    const base64=(base64String+padding).replace(/-/g,"+").replace(/_/g,"/");
+    const raw=atob(base64);
+    return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)));
+  }
+
+  function unlockMessageSound(){
+    if(avpSoundUnlocked)return;
+    try{
+      const Ctx=window.AudioContext||window.webkitAudioContext;
+      if(!Ctx)return;
+      avpAudioCtx=avpAudioCtx||new Ctx();
+      if(avpAudioCtx.state==="suspended")avpAudioCtx.resume();
+      avpSoundUnlocked=true;
+    }catch{}
+  }
+  ["pointerdown","touchstart","keydown"].forEach(ev=>document.addEventListener(ev,unlockMessageSound,{once:true,passive:true}));
+
+  function playMessageSound(){
+    try{
+      unlockMessageSound();
+      if(!avpAudioCtx)return;
+      const ctx=avpAudioCtx;
+      const now=ctx.currentTime;
+      const master=ctx.createGain();
+      master.gain.setValueAtTime(0.0001,now);
+      master.gain.exponentialRampToValueAtTime(0.13,now+0.018);
+      master.gain.exponentialRampToValueAtTime(0.0001,now+0.42);
+      master.connect(ctx.destination);
+
+      const makeTone=(freq,start,duration,volume=1)=>{
+        const osc=ctx.createOscillator(),g=ctx.createGain();
+        osc.type="triangle";
+        osc.frequency.setValueAtTime(freq,now+start);
+        osc.frequency.exponentialRampToValueAtTime(freq*0.94,now+start+duration);
+        g.gain.setValueAtTime(0.0001,now+start);
+        g.gain.exponentialRampToValueAtTime(0.34*volume,now+start+0.015);
+        g.gain.exponentialRampToValueAtTime(0.0001,now+start+duration);
+        osc.connect(g);g.connect(master);
+        osc.start(now+start);osc.stop(now+start+duration+0.02);
+      };
+      // Hai nốt trầm-ngắn kiểu tin nhắn: 220Hz -> 294Hz.
+      makeTone(220,0,.22,1);
+      makeTone(294,.11,.27,.82);
+      if(navigator.vibrate)navigator.vibrate([28,32,46]);
+    }catch(e){console.warn("AVP message sound",e)}
+  }
+
+  async function getSwRegistration(){
+    if(!("serviceWorker" in navigator))return null;
+    try{
+      return await navigator.serviceWorker.register("./service-worker.js?v=20260828-msgnotify1",{scope:"./"});
+    }catch(e){console.warn("AVP service worker",e);return null}
+  }
+
+  async function savePushSubscription(role,thread=""){
+    if(!user?.id || Notification.permission!=="granted" || !("PushManager" in window))return;
+    try{
+      const reg=await getSwRegistration();
+      if(!reg)return;
+      let sub=await reg.pushManager.getSubscription();
+      if(!sub){
+        sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64UrlToUint8Array(PUSH_PUBLIC_KEY)});
+      }
+      const j=sub.toJSON();
+      await rpc("avp_chat_save_push_subscription",{
+        p_endpoint:j.endpoint,
+        p_p256dh:j.keys?.p256dh||"",
+        p_auth:j.keys?.auth||"",
+        p_role:role,
+        p_thread_id:thread?String(thread):null
+      });
+    }catch(e){console.warn("AVP push subscription",e)}
+  }
+
+  async function requestChatNotifications(role="user",thread=""){
+    avpNotifyRole=role;
+    if(!("Notification" in window)){
+      alert("Trình duyệt này chưa hỗ trợ thông báo web.");
+      return false;
+    }
+    let perm=Notification.permission;
+    if(perm!=="granted")perm=await Notification.requestPermission();
+    updateNotifyButtons();
+    if(perm==="granted"){
+      await getSwRegistration();
+      await savePushSubscription(role,thread);
+      return true;
+    }
+    return false;
+  }
+
+  function updateNotifyButtons(){
+    document.querySelectorAll("[data-avp-notify]").forEach(btn=>{
+      const granted=("Notification" in window)&&Notification.permission==="granted";
+      btn.classList.toggle("active",granted);
+      btn.textContent=granted?"🔔":"🔕";
+      btn.title=granted?"Thông báo tin nhắn đang bật":"Bật thông báo tin nhắn";
+    });
+  }
+
+  function mountNotifyButton(head,role,threadGetter){
+    if(!head || head.querySelector("[data-avp-notify]"))return;
+    const close=head.querySelector(".avp-chat-close");
+    const b=document.createElement("button");
+    b.type="button";b.className="avp-chat-notify";b.dataset.avpNotify="1";
+    b.setAttribute("aria-label","Bật thông báo tin nhắn");
+    b.addEventListener("click",async()=>{
+      const th=typeof threadGetter==="function"?threadGetter():"";
+      const ok=await requestChatNotifications(role,th||"");
+      if(ok) b.title="Thông báo tin nhắn đang bật";
+    });
+    if(close)head.insertBefore(b,close);else head.appendChild(b);
+    updateNotifyButtons();
+  }
+
+  async function showSystemMessageNotification(kind="user",payload=null){
+    const title=kind==="admin"?"Có học viên vừa nhắn":"Tin nhắn mới từ Anh Văn Phòng";
+    let body=kind==="admin"?"Có học viên vừa gửi tin nhắn mới.":"Bạn có tin nhắn mới. Mở để xem nội dung.";
+    const raw=String(payload?.new?.body||"");
+    if(raw.startsWith(ATTACH_PREFIX))body=kind==="admin"?"Học viên vừa gửi ảnh hoặc tệp đính kèm.":"Anh Văn Phòng vừa gửi ảnh hoặc tệp đính kèm.";
+    const data={url:location.origin+location.pathname+(kind==="admin"?"?openAdminChat=1":"?openChat=1")};
+    try{
+      const reg=await getSwRegistration();
+      if(reg && Notification.permission==="granted"){
+        await reg.showNotification(title,{body,icon:"./icon-192.png",badge:"./icon-192.png",tag:"avp-chat-message",renotify:true,data});
+      }
+    }catch(e){console.warn("AVP system notification",e)}
+  }
+
+  function notifyIncoming(kind,payload){
+    playMessageSound();
+    if(document.visibilityState!=="visible" || !document.hasFocus())showSystemMessageNotification(kind,payload);
+  }
+
   const extOf=(name)=>String(name||"").split(".").pop().toLowerCase();
   const sizeText=(n)=>{n=Number(n)||0;if(n<1024)return n+" B";if(n<1024*1024)return (n/1024).toFixed(1)+" KB";return (n/1024/1024).toFixed(1)+" MB"};
   const isImageFile=(f)=>String(f?.type||"").startsWith("image/")||["jpg","jpeg","png","webp","gif","heic","heif"].includes(extOf(f?.name));
@@ -418,6 +561,7 @@
     $("avpChatClose").addEventListener("click",()=>togglePanel(false));
     $("avpChatSend").addEventListener("click",sendUserMessage);
     bindFilePicker("user","avpChatFile","avpChatFilePreview");
+    mountNotifyButton(root.querySelector(".avp-chat-head"),"user",()=>threadId||"");
     $("avpChatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendUserMessage()}});
   }
 
@@ -449,6 +593,7 @@
   async function ensureThread(){
     if(threadId)return threadId;
     threadId=await rpc("avp_chat_get_or_create_thread");
+    if(("Notification" in window)&&Notification.permission==="granted")savePushSubscription("user",threadId);
     return threadId;
   }
   async function loadUserMessages(){
@@ -505,7 +650,11 @@
     },15000);
     try{
       if(realtimeChannel)client.removeChannel(realtimeChannel);
-      realtimeChannel=client.channel("avp-chat-user-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages",filter:`thread_id=eq.${threadId}`},async()=>{await updateUserBadge();if(!$("avpChatPanel").hidden){await loadUserMessages();await markUserRead()}}).subscribe();
+      realtimeChannel=client.channel("avp-chat-user-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages",filter:`thread_id=eq.${threadId}`},async(payload)=>{
+        if(payload?.new?.sender_type==="admin")notifyIncoming("user",payload);
+        await updateUserBadge();
+        if(!$("avpChatPanel").hidden){await loadUserMessages();await markUserRead()}
+      }).subscribe();
     }catch{}
   }
   async function initUser(){
@@ -565,7 +714,9 @@
   async function initAdmin(){
     if(!(await isAdmin()))return;
     startAdminPresence();
+    mountNotifyButton(document.querySelector("#adminChatInbox .admin-chat-head, #adminChatInbox header"),"admin",()=>activeThread||"");
     await mountAutoReplySettings();
+    if(("Notification" in window)&&Notification.permission==="granted")savePushSubscription("admin","");
     $("adminChatSearch")?.addEventListener("input",e=>renderAdminThreads(e.target.value));
     $("adminChatRefresh")?.addEventListener("click",loadAdminThreads);
     $("adminChatReplyBtn")?.addEventListener("click",sendAdminMessage);
@@ -573,7 +724,10 @@
     $("adminChatReply")?.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAdminMessage()}});
     await loadAdminThreads();
     adminPoll=setInterval(async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)},15000);
-    try{client.channel("avp-chat-admin-live").on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)}).subscribe()}catch{}
+    try{client.channel("avp-chat-admin-live").on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async(payload)=>{
+      if(payload?.new?.sender_type==="user")notifyIncoming("admin",payload);
+      await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)
+    }).subscribe()}catch{}
   }
 
   /* ================= ADMIN FLOATING BUBBLE ================= */
@@ -614,6 +768,7 @@
       </section>`;
     document.body.appendChild(root);
     bindDrag();
+    mountNotifyButton(root.querySelector(".avp-chat-head"),"admin",()=>floatActiveThread||"");
     $("avpChatBubble").addEventListener("click",async()=>{
       if($("avpChatBubble")?.dataset.justDragged==="1")return;
       const p=$("avpAdminFloatPanel");
@@ -699,6 +854,7 @@
   async function initFloatingAdmin(){
     startAdminPresence();
     mountAdminFloatingUI();
+    if(("Notification" in window)&&Notification.permission==="granted")savePushSubscription("admin","");
     await loadFloatingAdminThreads();
     clearInterval(floatPoll);
     floatPoll=setInterval(async()=>{
@@ -711,7 +867,8 @@
     },15000);
     try{
       if(floatRealtime)client.removeChannel(floatRealtime);
-      floatRealtime=client.channel("avp-chat-admin-floating-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async()=>{
+      floatRealtime=client.channel("avp-chat-admin-floating-"+user.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_chat_messages"},async(payload)=>{
+        if(payload?.new?.sender_type==="user")notifyIncoming("admin",payload);
         await loadFloatingAdminThreads();
         if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden)await openFloatingAdminThread(floatActiveThread);
       }).subscribe();
@@ -755,6 +912,9 @@
 
     if(admin) await initFloatingAdmin();
     else await initUser();
+    const qp=new URLSearchParams(location.search);
+    if(!admin && qp.get("openChat")==="1")setTimeout(()=>$("avpChatBubble")?.click(),350);
+    if(admin && qp.get("openAdminChat")==="1")setTimeout(()=>$("avpChatBubble")?.click(),350);
   }
 
   function subscribeAuthChanges(){
