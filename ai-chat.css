@@ -578,3 +578,56 @@
   .avp-level-roadmap::-webkit-scrollbar{display:none}
   .avp-level-roadmap>div{flex:0 0 88px}
 }
+
+
+/* =========================================================
+   REAL CERTIFICATES V2
+   ========================================================= */
+.avp-cert-head-actions{
+  display:flex;align-items:center;gap:8px
+}
+.avp-cert-head-actions button,
+.avp-cert-actions button,
+.avp-certificate-toolbar button{
+  border:1px solid #d8e5dc;background:#fff;color:#217346;
+  border-radius:9px;padding:6px 8px;font:inherit;
+  font-size:9px;font-weight:800;cursor:pointer
+}
+.avp-cert-head-actions>strong{color:#217346;font-size:15px}
+.avp-cert-card-body{min-width:0;flex:1}
+.avp-cert-actions{
+  display:flex;gap:5px;flex-wrap:wrap;margin-top:8px
+}
+.avp-cert-card.unlocked .avp-cert-actions button:first-child{
+  background:#217346;color:#fff;border-color:#217346
+}
+
+.avp-certificate-view{max-width:760px;margin:0 auto}
+.avp-certificate-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin-bottom:10px;padding:11px 12px;background:#fff;
+  border:1px solid #e4ebe6;border-radius:13px
+}
+.avp-certificate-toolbar strong{
+  display:block;color:#254334;font-size:12px
+}
+.avp-certificate-toolbar span{
+  display:block;margin-top:3px;color:#849188;font-size:9px
+}
+.avp-certificate-toolbar>div:last-child{
+  display:flex;gap:6px;flex:0 0 auto
+}
+.avp-certificate-image-wrap{
+  padding:8px;background:#eef4f0;border-radius:15px;
+  border:1px solid #dae7df
+}
+.avp-certificate-image-wrap img{
+  display:block;width:100%;height:auto;border-radius:9px;background:#fff
+}
+.avp-cert-verify-note{
+  margin:8px 2px 0;color:#849188;font-size:9px;text-align:center
+}
+@media(max-width:640px){
+  .avp-certificate-toolbar{display:block}
+  .avp-certificate-toolbar>div:last-child{margin-top:8px}
+}

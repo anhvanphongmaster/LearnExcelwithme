@@ -657,7 +657,7 @@
         certRes
       ]=await Promise.all([
         client.rpc("community_profile",{p_user_id:targetId}),
-        client.rpc("community_certificate_status",{p_user_id:targetId})
+        client.rpc("community_certificate_wallet",{p_user_id:targetId})
       ]);
 
       if(profileRes.error)throw profileRes.error;
@@ -727,21 +727,34 @@
           <div class="avp-profile-section-head">
             <div>
               <h3>🏅 Chứng nhận cộng đồng</h3>
-              <p>Chứng nhận tự mở khi đạt đủ thành tích.</p>
+              <p>Mở khóa theo thành tích · Có mã xác minh riêng.</p>
             </div>
-            <strong>${unlocked.length}/${certs.length}</strong>
+            <div class="avp-cert-head-actions">
+              <button type="button" id="avpVerifyCertificateBtn">🔎 Xác minh</button>
+              <strong>${unlocked.length}/${certs.length}</strong>
+            </div>
           </div>
 
           <div class="avp-cert-grid">
             ${certs.map(c=>`
-              <article class="avp-cert-card ${c.unlocked?"unlocked":"locked"}">
+              <article class="avp-cert-card ${c.unlocked?"unlocked":"locked"}" data-cert-code="${esc(c.certificate_code)}">
                 <div class="avp-cert-icon">${c.unlocked?"🏅":"🔒"}</div>
-                <div>
+                <div class="avp-cert-card-body">
                   <strong>${esc(c.title)}</strong>
                   <p>${esc(c.description)}</p>
                   <small>${c.unlocked
-                    ? `✓ Đã mở · ${Number(c.progress_percent||100)}%`
+                    ? c.verification_code
+                      ? `✓ Đã cấp · Mã ${esc(c.verification_code)}`
+                      : `✓ Đã mở · ${Number(c.progress_percent||100)}%`
                     : `${Number(c.progress_percent||0)}% hoàn thành`}</small>
+
+                  ${c.unlocked ? `
+                    <div class="avp-cert-actions">
+                      <button type="button" data-cert-action="${c.verification_code?"view":"issue"}">
+                        ${c.verification_code?"👁 Xem chứng nhận":"🏅 Nhận chứng nhận"}
+                      </button>
+                      ${c.verification_code?`<button type="button" data-cert-copy="${esc(c.verification_code)}">📋 Sao chép mã</button>`:""}
+                    </div>` : ""}
                 </div>
               </article>
             `).join("") || '<div class="avp-community-empty">Chưa có chứng nhận.</div>'}
@@ -773,6 +786,240 @@
       if(communityFilter==="leaderboard")loadCommunityLeaderboard();
       else loadCommunity();
     };
+
+    $("avpVerifyCertificateBtn").onclick=verifyCommunityCertificatePrompt;
+
+    box.querySelectorAll("[data-cert-code]").forEach(card=>{
+      const code=card.dataset.certCode;
+      const cert=certs.find(x=>String(x.certificate_code)===String(code));
+      if(!cert)return;
+
+      const action=card.querySelector("[data-cert-action]");
+      if(action){
+        action.onclick=async()=>{
+          if(cert.verification_code){
+            showCommunityCertificate(p,cert);
+          }else{
+            await issueCommunityCertificate(cert.certificate_code);
+          }
+        };
+      }
+
+      const copy=card.querySelector("[data-cert-copy]");
+      if(copy){
+        copy.onclick=async()=>{
+          try{
+            await navigator.clipboard.writeText(copy.dataset.certCopy);
+            alert("Đã sao chép mã xác minh.");
+          }catch{
+            alert(`Mã xác minh: ${copy.dataset.certCopy}`);
+          }
+        };
+      }
+    });
+  }
+
+
+  async function issueCommunityCertificate(certificateCode){
+    if(!(await requireCommunityLogin()))return;
+
+    try{
+      const {data,error}=await client.rpc("community_certificate_issue",{
+        p_certificate_code:certificateCode
+      });
+      if(error)throw error;
+
+      const row=Array.isArray(data)?data[0]:data;
+      if(!row?.verification_code){
+        throw new Error("CERTIFICATE_NOT_RETURNED");
+      }
+
+      await showCommunityProfile(user.id);
+    }catch(e){
+      console.warn("Issue certificate",e);
+      const msg=String(e?.message||"");
+      if(msg.includes("CERTIFICATE_NOT_UNLOCKED")){
+        alert("Bạn chưa đủ điều kiện nhận chứng nhận này.");
+      }else{
+        alert("Chưa cấp được chứng nhận. Hãy thử lại.");
+      }
+    }
+  }
+
+  function certificateCanvas(profile,cert){
+    const canvas=document.createElement("canvas");
+    canvas.width=1600;
+    canvas.height=1131;
+
+    const ctx=canvas.getContext("2d");
+
+    ctx.fillStyle="#fbfdfb";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.strokeStyle="#217346";
+    ctx.lineWidth=18;
+    ctx.strokeRect(36,36,canvas.width-72,canvas.height-72);
+
+    ctx.strokeStyle="#9ac5aa";
+    ctx.lineWidth=3;
+    ctx.strokeRect(62,62,canvas.width-124,canvas.height-124);
+
+    ctx.fillStyle="#174f31";
+    ctx.textAlign="center";
+    ctx.font="700 42px Arial, sans-serif";
+    ctx.fillText("ANH VĂN PHÒNG",800,150);
+
+    ctx.fillStyle="#217346";
+    ctx.font="700 74px Arial, sans-serif";
+    ctx.fillText("CHỨNG NHẬN CỘNG ĐỒNG",800,270);
+
+    ctx.fillStyle="#65766c";
+    ctx.font="32px Arial, sans-serif";
+    ctx.fillText("Chứng nhận này được trao cho",800,350);
+
+    ctx.fillStyle="#163f29";
+    ctx.font="700 62px Arial, sans-serif";
+    ctx.fillText(String(profile.display_name||"Học viên"),800,455);
+
+    ctx.fillStyle="#65766c";
+    ctx.font="30px Arial, sans-serif";
+    ctx.fillText("đã đạt thành tích và được công nhận ở cấp",800,525);
+
+    ctx.fillStyle="#174f31";
+    ctx.font="700 54px Arial, sans-serif";
+    ctx.fillText(String(cert.title||"Community Certificate"),800,620);
+
+    ctx.fillStyle="#53675b";
+    ctx.font="28px Arial, sans-serif";
+    ctx.fillText(`Điểm cộng đồng: ${Number(profile.score||0)}  ·  Đáp án đúng: ${Number(profile.accepted||0)}  ·  Hữu ích: ${Number(profile.helpful||0)}`,800,705);
+
+    ctx.fillStyle="#53675b";
+    ctx.font="26px Arial, sans-serif";
+    const issued=cert.issued_at ? new Date(cert.issued_at).toLocaleDateString("vi-VN") : new Date().toLocaleDateString("vi-VN");
+    ctx.fillText(`Ngày cấp: ${issued}`,800,775);
+
+    ctx.fillStyle="#174f31";
+    ctx.font="700 28px Arial, sans-serif";
+    ctx.fillText(`Mã xác minh: ${String(cert.verification_code||"")}`,800,842);
+
+    ctx.strokeStyle="#d6e6dc";
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.moveTo(280,900);
+    ctx.lineTo(1320,900);
+    ctx.stroke();
+
+    ctx.fillStyle="#738178";
+    ctx.font="24px Arial, sans-serif";
+    ctx.fillText("Learn Excel with Anh Văn Phòng · Cộng đồng học Excel thực tế",800,955);
+
+    ctx.fillStyle="#217346";
+    ctx.beginPath();
+    ctx.arc(800,1030,42,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.fillStyle="#fff";
+    ctx.font="700 24px Arial, sans-serif";
+    ctx.fillText("AVP",800,1038);
+
+    return canvas;
+  }
+
+  function showCommunityCertificate(profile,cert){
+    const canvas=certificateCanvas(profile,cert);
+    const dataUrl=canvas.toDataURL("image/png");
+
+    const box=$("avpCommunityContent");
+    if(!box)return;
+
+    box.innerHTML=`
+      <div class="avp-certificate-view">
+        <button type="button" class="avp-community-back" id="avpCertificateBack">← Quay lại hồ sơ</button>
+
+        <div class="avp-certificate-toolbar">
+          <div>
+            <strong>${esc(cert.title)}</strong>
+            <span>Mã xác minh: ${esc(cert.verification_code||"")}</span>
+          </div>
+          <div>
+            <button type="button" id="avpCertificateDownload">⬇ PNG</button>
+            <button type="button" id="avpCertificatePrint">🖨 PDF / In</button>
+          </div>
+        </div>
+
+        <div class="avp-certificate-image-wrap">
+          <img id="avpCertificateImage" src="${dataUrl}" alt="Chứng nhận ${esc(cert.title)}">
+        </div>
+
+        <p class="avp-cert-verify-note">Chứng nhận có thể được kiểm tra bằng mã xác minh trong mục “🔎 Xác minh”.</p>
+      </div>
+    `;
+
+    $("avpCertificateBack").onclick=()=>showCommunityProfile(profile.user_id);
+
+    $("avpCertificateDownload").onclick=()=>{
+      const a=document.createElement("a");
+      a.href=dataUrl;
+      a.download=`AVP-${String(cert.certificate_code||"certificate")}-${String(profile.display_name||"hoc-vien").replace(/[^\p{L}\p{N}]+/gu,"-")}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    };
+
+    $("avpCertificatePrint").onclick=()=>{
+      const w=window.open("","_blank");
+      if(!w){
+        alert("Trình duyệt đang chặn cửa sổ in.");
+        return;
+      }
+
+      w.document.write(`
+        <!doctype html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <title>${esc(cert.title)}</title>
+            <style>
+              html,body{margin:0;background:#fff}
+              img{display:block;width:100%;max-width:1120px;margin:0 auto}
+              @media print{@page{size:A4 landscape;margin:0}img{width:100%}}
+            </style>
+          </head>
+          <body>
+            <img src="${dataUrl}" onload="setTimeout(()=>window.print(),200)">
+          </body>
+        </html>
+      `);
+      w.document.close();
+    };
+  }
+
+  async function verifyCommunityCertificatePrompt(){
+    const code=prompt("Nhập mã xác minh chứng nhận:");
+    if(!code)return;
+
+    try{
+      const {data,error}=await client.rpc("community_certificate_verify",{
+        p_verification_code:String(code).trim().toUpperCase()
+      });
+      if(error)throw error;
+
+      const row=Array.isArray(data)?data[0]:data;
+
+      if(!row){
+        alert("Không tìm thấy chứng nhận với mã này.");
+        return;
+      }
+
+      alert(
+        row.is_valid
+          ? `✅ CHỨNG NHẬN HỢP LỆ\n\n${row.display_name}\n${row.title}\nMã: ${row.verification_code}\nNgày cấp: ${new Date(row.issued_at).toLocaleDateString("vi-VN")}`
+          : `⚠️ CHỨNG NHẬN ĐÃ BỊ THU HỒI\n\n${row.display_name}\n${row.title}\nMã: ${row.verification_code}`
+      );
+    }catch(e){
+      console.warn("Verify certificate",e);
+      alert("Không tìm thấy hoặc chưa kiểm tra được mã chứng nhận.");
+    }
   }
 
   async function loadCommunityLeaderboard(){
