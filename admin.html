@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
-<link rel="stylesheet" href="admin.css?v=20260828-downloads1">
+<link rel="stylesheet" href="admin.css?v=20260828-practice1">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#217346">
@@ -108,6 +108,9 @@ where is_admin = true;</pre>
         </button>
         <button type="button" data-admin-view="votes" role="tab">
           <b>🗳️ Vote</b><small>Nhu cầu học viên</small>
+        </button>
+        <button type="button" data-admin-view="practice" role="tab">
+          <b>📝 Kho bài tập</b><small>Thêm, sửa, sắp xếp bài</small>
         </button>
         <button type="button" data-admin-view="downloads" role="tab">
           <b>📦 Tải xuống</b><small>File & tài nguyên toàn web</small>
@@ -345,6 +348,50 @@ where is_admin = true;</pre>
       </article>
     </section>
 
+    <div class="admin-section-heading admin-view-section" data-admin-section="practice"><span>📝 KHO BÀI TẬP</span><h2>Quản lý bài tập động</h2></div>
+    <section class="admin-panel admin-practice-manager admin-view-section" data-admin-section="practice">
+      <div class="admin-practice-top">
+        <div><strong>100 bài hiện tại + bài thêm sau này</strong><small>Thêm/sửa/ẩn bài tại đây. Trang Bài tập tự đọc Supabase, không phải sửa JS khi thêm bài.</small></div>
+        <button id="adminPracticeAdd" type="button">＋ Thêm bài</button>
+      </div>
+      <div class="admin-users-summary admin-practice-kpis">
+        <article><small>Tổng bài</small><strong id="practiceKpiTotal">0</strong></article>
+        <article><small>Đang hiển thị</small><strong id="practiceKpiLive">0</strong></article>
+        <article><small>Ẩn / nháp</small><strong id="practiceKpiHidden">0</strong></article>
+        <article><small>Chủ đề</small><strong id="practiceKpiCategories">0</strong></article>
+      </div>
+      <div class="admin-practice-toolbar">
+        <input id="adminPracticeSearch" type="search" placeholder="Tìm tên bài hoặc ID…">
+        <select id="adminPracticeCategory"><option value="">Tất cả chủ đề</option></select>
+        <select id="adminPracticeStatus"><option value="all">Tất cả trạng thái</option><option value="published">Đang phát hành</option><option value="draft">Bản nháp</option><option value="archived">Đã lưu trữ</option><option value="hidden">Đang ẩn</option></select>
+        <button id="adminPracticeReload" type="button">↻ Làm mới</button>
+      </div>
+      <div id="adminPracticeEditor" class="admin-practice-editor" hidden>
+        <div class="admin-download-editor-title"><strong id="adminPracticeEditorTitle">Thêm bài</strong><button id="adminPracticeClose" type="button">×</button></div>
+        <input id="practiceEditOriginalId" type="hidden">
+        <div class="admin-practice-form">
+          <label><span>ID bài</span><input id="practiceEditId" maxlength="80" placeholder="vd: clean-21-case"></label>
+          <label><span>STT</span><input id="practiceEditNumber" type="number" min="0" value="1"></label>
+          <label><span>Icon</span><input id="practiceEditIcon" maxlength="12" value="📘"></label>
+          <label><span>Chủ đề</span><input id="practiceEditCategory" list="practiceCategoryList" maxlength="80"><datalist id="practiceCategoryList"><option>Làm sạch dữ liệu</option><option>Power Query</option><option>Nhập liệu</option><option>Công thức</option><option>Format</option></datalist></label>
+          <label class="wide"><span>Tên bài</span><input id="practiceEditTitle" maxlength="180"></label>
+          <label class="wide"><span>Kỹ năng / mô tả ngắn</span><input id="practiceEditSkill" maxlength="320"></label>
+          <label><span>Cấp độ</span><select id="practiceEditLevel"><option>Cơ bản</option><option>Trung cấp</option><option>Nâng cao</option><option>Case thực tế</option></select></label>
+          <label><span>Nhãn</span><select id="practiceEditBadge"><option value="">Không</option><option>Mới</option><option>Hot</option><option>Có video</option><option>Cần cập nhật</option></select></label>
+          <label class="wide"><span>File thực hành từ Kho tải xuống</span><select id="practiceEditDownload"><option value="">— Chưa gắn file —</option></select><small>File upload ở tab Tải xuống sẽ xuất hiện tại đây.</small></label>
+          <label class="wide"><span>Link video TikTok (nếu có)</span><input id="practiceEditVideo" maxlength="1200" placeholder="https://..."></label>
+          <label><span>Trạng thái</span><select id="practiceEditStatus"><option value="published">Phát hành</option><option value="draft">Bản nháp</option><option value="archived">Lưu trữ</option></select></label>
+          <label><span>Thứ tự nội bộ</span><input id="practiceEditOrder" type="number" value="0"></label>
+          <label class="check"><input id="practiceEditActive" type="checkbox" checked><span>Hiển thị trên trang Bài tập</span></label>
+        </div>
+        <div class="admin-download-editor-actions"><button id="adminPracticeSave" type="button">Lưu bài</button><button id="adminPracticeCancel" class="secondary" type="button">Huỷ</button></div>
+      </div>
+      <div class="admin-practice-table-wrap">
+        <table class="admin-practice-table"><thead><tr><th>STT</th><th>Bài học</th><th>Cấp độ</th><th>File</th><th>Vote</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="adminPracticeBody"><tr><td colspan="7" class="admin-users-empty">Chuyển sang tab Kho bài tập để tải dữ liệu.</td></tr></tbody></table>
+      </div>
+      <p id="adminPracticeNotice" class="admin-users-notice" hidden></p>
+    </section>
+
     <div class="admin-section-heading admin-view-section" data-admin-section="downloads"><span>📦 TẢI XUỐNG</span><h2>Quản lý toàn bộ file trên website</h2></div>
     <section class="admin-panel admin-download-manager admin-view-section" data-admin-section="downloads">
       <div class="admin-download-head">
@@ -451,7 +498,7 @@ where is_admin = true;</pre>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
-<script defer src="admin.js?v=20260828-downloads1"></script>
+<script defer src="admin.js?v=20260828-practice1"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>

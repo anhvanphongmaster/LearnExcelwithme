@@ -1426,6 +1426,7 @@
     return String(name || "").replace(/\.xlsx\.xlsx$/i, ".xlsx").toLowerCase();
   }
   function resolvedFile(item) {
+    if (item && item.sourcePath) return item.file || String(item.sourcePath).split("/").pop() || "file.xlsx";
     if (!item.file) return "";
     const list = fileList();
     const aliases = (typeof practiceFileAliases !== "undefined" && practiceFileAliases) ? practiceFileAliases : {};
@@ -2060,13 +2061,15 @@
     if (avail && tk) badge = '<span class="pv-badge pv-badge-available">Video+file</span>';
     else if (avail) badge = '<span class="pv-badge pv-badge-available">File</span>';
     else if (tk) badge = '<span class="pv-badge pv-badge-available">Video</span>';
+    if (item.badge) badge = '<span class="pv-badge pv-badge-available">' + escapeHtml(item.badge) + '</span>';
 
     const ico = '<svg class="pv-tt-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><path fill="currentColor" d="M16.5 3c.4 2.4 1.9 4.1 4.2 4.4v2.3c-1.5.1-2.9-.4-4.2-1.3v6.5c0 3.4-2.7 6.1-6.1 6.1S4.3 18.3 4.3 14.9s2.7-6.1 6.1-6.1c.3 0 .6 0 .9.1v2.5c-.3-.1-.6-.2-.9-.2-2 0-3.6 1.6-3.6 3.7s1.6 3.7 3.6 3.7 3.6-1.6 3.6-3.7V3h2.5z"/></svg>';
     const tkBtn = tk
       ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer" title="Xem trên TikTok">' + ico + ' TikTok</a>'
       : '';
+    const downloadHref = item.sourcePath || ((item.folder || "downloads/video-practice/") + fileName);
     const fileBtn = avail
-      ? '<a class="pv-download" href="' + (item.folder || "downloads/video-practice/") + fileName + '" download title="' + fileName + '">Tải file</a>'
+      ? '<a class="pv-download" href="' + downloadHref + '" download title="' + fileName + '">Tải file</a>'
       : '';
     const tags = (item.filterTags || [item.category]).join(" ");
     const hasVideo = !!tk;
@@ -2212,6 +2215,50 @@ grid.addEventListener("click", async function (e) {
     }
   }
 
+
+  async function loadDynamicPracticeLibrary() {
+    var sb = null;
+    for (var attempt = 0; attempt < 20; attempt++) {
+      sb = window.avpSupabase || window.supabaseClient || null;
+      if (sb && sb.rpc) break;
+      await new Promise(function(resolve){ setTimeout(resolve, 150); });
+    }
+    if (!sb || !sb.rpc) return false;
+    try {
+      var res = await sb.rpc("get_practice_library_public");
+      if (res.error || !Array.isArray(res.data) || !res.data.length) return false;
+      var rows = res.data.filter(function(r){ return r && r.is_active && r.status === "published"; });
+      var mapped = rows.map(function(r){
+        var path = r.source_path || "";
+        var slash = path.lastIndexOf("/");
+        return {
+          id: r.id,
+          number: r.lesson_number || 0,
+          icon: r.icon || "📘",
+          title: r.title || "Bài thực hành",
+          category: r.category || "Khác",
+          skill: r.skill || "",
+          filterTags: [r.category || "Khác"],
+          file: path ? path.slice(slash + 1) : "",
+          folder: path ? path.slice(0, slash + 1) : "downloads/video-practice/",
+          sourcePath: path || "",
+          tiktok: r.video_url || "",
+          level: r.level || "Cơ bản",
+          badge: r.badge || "",
+          sortOrder: r.sort_order || 0
+        };
+      });
+      if (mapped.length) {
+        videoPracticeData.splice(0, videoPracticeData.length);
+        mapped.forEach(function(x){ videoPracticeData.push(x); });
+        return true;
+      }
+    } catch (e) {
+      console.warn("Practice library dynamic fallback:", e);
+    }
+    return false;
+  }
+
   function init() {
     updateSummary();
     setTimeout(function(){ detectPracticeAdmin(false); }, 120);
@@ -2222,6 +2269,9 @@ grid.addEventListener("click", async function (e) {
     render("all", "");
     bindVotes();
     bindTopicVotes();
+    loadDynamicPracticeLibrary().then(function(changed){
+      if (changed) { updateSummary(); render("all", ""); }
+    });
 
     const search = document.getElementById("pvSearch");
     const filters = document.querySelectorAll(".pv-filter");
