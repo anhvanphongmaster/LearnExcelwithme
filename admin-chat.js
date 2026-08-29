@@ -631,7 +631,7 @@
       box.innerHTML=list.length?list.map(m=>msgHtml(m,false)).join(""):'<div class="avp-chat-empty">Bạn chưa có tin nhắn. Có gì cần hỗ trợ cứ nhắn cho Admin nhé.</div>';
       await hydrateAttachmentUrls(box);
       await hydrateReactions(box);
-      box.scrollTop=box.scrollHeight;
+      scrollChatBoxToLatest(box);
     }catch(e){box.innerHTML='<div class="avp-chat-empty">Chưa tải được hộp thư. Hãy kiểm tra SQL chat trong Supabase.</div>';console.warn("AVP chat load",e)}
   }
   async function sendUserMessage(){
@@ -838,7 +838,11 @@
           <aside class="avp-admin-float-threads" id="avpAdminFloatThreads"><div class="avp-chat-empty">Đang tải học viên…</div></aside>
           <section class="avp-admin-float-conversation">
             <header class="avp-admin-float-person"><strong id="avpAdminFloatPerson">Chọn một học viên</strong><small id="avpAdminFloatEmail">Tin nhắn sẽ hiện ở đây.</small></header>
-            <div class="avp-chat-messages" id="avpAdminFloatMessages"><div class="avp-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
+            <div class="avp-chat-message-stage" style="position:relative;min-height:0;flex:1;display:flex;flex-direction:column">
+              <div class="avp-chat-messages" id="avpAdminFloatMessages" style="min-height:0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain"><div class="avp-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
+              <button id="avpAdminFloatLatest" type="button" aria-label="Xem tin mới nhất" title="Tin mới nhất"
+                style="position:absolute;right:10px;bottom:10px;z-index:5;border:1px solid #cfe0d6;border-radius:999px;background:#fff;color:#217346;padding:7px 10px;font-weight:800;font-size:11px;box-shadow:0 5px 15px rgba(21,64,42,.14);cursor:pointer">↓ Tin mới nhất</button>
+            </div>
             <div class="avp-chat-file-preview" id="avpAdminFloatFilePreview" hidden></div>
             <div class="avp-chat-compose avp-admin-float-compose">
               <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="avpAdminFloatFile" type="file" multiple accept="image/*,.heic,.heif,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
@@ -861,6 +865,23 @@
     $("avpAdminFloatSearch").addEventListener("input",e=>renderFloatingAdminThreads(e.target.value));
     $("avpAdminFloatRefresh").addEventListener("click",loadFloatingAdminThreads);
     $("avpAdminFloatSend").addEventListener("click",sendFloatingAdminMessage);
+
+    const floatMessages=$("avpAdminFloatMessages");
+    const latestBtn=$("avpAdminFloatLatest");
+
+    const syncLatestButton=()=>{
+      if(!floatMessages||!latestBtn)return;
+      const distance=floatMessages.scrollHeight-floatMessages.scrollTop-floatMessages.clientHeight;
+      latestBtn.hidden=distance<50;
+    };
+
+    latestBtn?.addEventListener("click",()=>{
+      scrollChatBoxToLatest(floatMessages,{smooth:true});
+      setTimeout(syncLatestButton,320);
+    });
+
+    floatMessages?.addEventListener("scroll",syncLatestButton,{passive:true});
+
     bindFilePicker("float","avpAdminFloatFile","avpAdminFloatFilePreview");
     $("avpAdminFloatReply").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendFloatingAdminMessage()}});
   }
@@ -893,6 +914,45 @@
     }
   }
 
+
+  function scrollChatBoxToLatest(box,{smooth=false}={}){
+    if(!box)return;
+
+    // Chỉ cuộn vùng tin nhắn, tuyệt đối không cuộn document/page.
+    box.style.overflowY="auto";
+    box.style.overscrollBehavior="contain";
+    box.style.webkitOverflowScrolling="touch";
+
+    const go=()=>{
+      const top=Math.max(0,box.scrollHeight-box.clientHeight);
+      try{
+        box.scrollTo({
+          top,
+          behavior:smooth?"smooth":"auto"
+        });
+      }catch{
+        box.scrollTop=top;
+      }
+    };
+
+    // Nội dung ảnh/file có thể làm chiều cao thay đổi sau khi render.
+    // Cuộn lại vài nhịp để chắc chắn tới đúng tin cuối.
+    go();
+    requestAnimationFrame(()=>{
+      go();
+      requestAnimationFrame(go);
+    });
+    setTimeout(go,80);
+    setTimeout(go,260);
+
+    box.querySelectorAll("img").forEach(img=>{
+      if(!img.complete){
+        img.addEventListener("load",go,{once:true});
+        img.addEventListener("error",go,{once:true});
+      }
+    });
+  }
+
   async function openFloatingAdminThread(id){
     floatActiveThread=id;
     renderFloatingAdminThreads($("avpAdminFloatSearch")?.value||"");
@@ -904,9 +964,12 @@
     try{
       const rows=await rpc("avp_chat_admin_messages",{p_thread_id:id,p_limit:300});
       const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
-      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,id);box.scrollTop=box.scrollHeight;}
+      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,id);scrollChatBoxToLatest(box);}
       await rpc("avp_chat_admin_mark_read",{p_thread_id:id});
       await loadFloatingAdminThreads();
+
+      const latestBtn=$("avpAdminFloatLatest");
+      if(latestBtn)latestBtn.hidden=true;
 
       // Không tự focus textarea khi chỉ bấm chọn hội thoại.
       // Trên mobile/Safari, focus() sẽ kéo viewport và làm phần trên của khung chat bị che.
@@ -933,7 +996,8 @@
       console.warn("AVP floating admin attachment",e);
     }finally{
       btn.disabled=false;
-      try{input.focus({preventScroll:true})}catch{input.focus()}
+      try{input.focus({preventScroll:true})}catch{}
+      scrollChatBoxToLatest($("avpAdminFloatMessages"),{smooth:true});
     }
   }
 
@@ -947,7 +1011,7 @@
       if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden){
         const rows=await rpc("avp_chat_admin_messages",{p_thread_id:floatActiveThread,p_limit:300}).catch(()=>[]);
         const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
-        if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,floatActiveThread);box.scrollTop=box.scrollHeight;}
+        if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,floatActiveThread);scrollChatBoxToLatest(box);}
       }
     },15000);
     try{
