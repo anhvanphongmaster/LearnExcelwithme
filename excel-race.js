@@ -667,21 +667,38 @@
       setTimeout(() => { crash = 0; softResetLevel(); }, 760);
       return;
     }
-    // Rank: đúng nghĩa 3 mạng.
-    // Sai lần 1/2 chỉ mất mạng và tiếp tục tiến độ hiện tại.
-    // Chỉ khi mất mạng thứ 3 mới reset về cấp 1.
+    // RANK: 3 mạng thật.
+    // Khi còn mạng: GIỮ NGUYÊN cấp, câu hiện tại và điểm/chuỗi.
+    // Chỉ khi mất mạng thứ 3 mới reset về cấp 1 và 0 điểm.
+    const keepLevel = level;
+    const keepIdx = idx;
+    const keepStreak = streak;
+
     lives -= 1;
     hud();
 
     if (lives > 0) {
-      $("msg").textContent = "Mất 1 mạng — còn " + lives + ". Tiếp tục!";
-      idx += 1;
+      level = keepLevel;
+      idx = keepIdx;
+      streak = keepStreak;
+
+      $("msg").textContent =
+        "Sai — còn " + lives + " mạng. Giữ nguyên " +
+        streak + " điểm · cấp " + level + ".";
+
+      hud();
+
       setTimeout(() => {
         crash = 0;
+
+        // Không gọi reset level, không xáo lại cấp, không đưa điểm về 0.
+        level = keepLevel;
+        idx = keepIdx;
+        streak = keepStreak;
         showQ();
       }, 760);
     } else {
-      $("msg").textContent = "Hết 3 mạng — về cấp 1.";
+      $("msg").textContent = "Hết 3 mạng — về cấp 1 và 0 điểm.";
       setTimeout(() => {
         crash = 0;
         hardReset();
