@@ -945,3 +945,34 @@ body > .avp-hub-fab{
 .avp-edge-action.has-unread{
   border-color:rgba(225,29,72,.16) !important;
 }
+
+
+/* INNER BADGES FIX V2 */
+.avp-edge-menu{
+  overflow:visible !important;
+}
+.avp-edge-action{
+  overflow:visible !important;
+}
+.avp-edge-action .avp-edge-section-badge{
+  position:absolute !important;
+  top:-6px !important;
+  right:-7px !important;
+  min-width:20px !important;
+  height:20px !important;
+  padding:0 5px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:999px !important;
+  background:#e11d48 !important;
+  color:#fff !important;
+  border:2px solid #fff !important;
+  font-size:10px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  z-index:30 !important;
+}
+.avp-edge-action .avp-edge-section-badge[hidden]{
+  display:none !important;
+}

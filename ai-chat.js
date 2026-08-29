@@ -1753,6 +1753,11 @@
     }
 
     publishCommunityUnreadCount(latestNotificationUnreadCount);
+    try{
+      window.dispatchEvent(new CustomEvent("avp:community-unread",{
+        detail:{count:latestNotificationUnreadCount}
+      }));
+    }catch{}
     return true;
   }
 

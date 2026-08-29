@@ -223,36 +223,31 @@
   window.AVPShowMiniChatPreview=showMiniPreview;
 
   function unreadCountFromChatBadge(){
-    const badge=document.getElementById('avpChatBadge');
-    if(!badge)return 0;
+    const candidates=[
+      document.getElementById('avpChatBadge'),
+      document.getElementById('avpChatUnreadBadge'),
+      document.querySelector('.avp-chat-badge'),
+      document.querySelector('[data-avp-chat-badge]'),
+      document.querySelector('#avpChatLauncher [class*="badge"]')
+    ].filter(Boolean);
 
-    const raw=String(badge.textContent||'').trim();
-    const count=parseInt(raw.replace(/\D/g,''),10)||0;
+    for(const badge of candidates){
+      const raw=String(badge.textContent||'').trim();
+      const count=parseInt(raw.replace(/\D/g,''),10)||0;
 
-    if(
-      badge.hidden ||
-      getComputedStyle(badge).display==='none'
-    )return 0;
+      if(count>0){
+        const style=getComputedStyle(badge);
+        if(!badge.hidden && style.display!=='none' && style.visibility!=='hidden'){
+          return count;
+        }
+      }
+    }
 
-    return count;
+    return 0;
   }
 
   function unreadCountFromCommunity(){
-    const direct=Math.max(0,Number(window.__avpCommunityUnreadCount||0));
-    if(direct>0)return direct;
-
-    const badge=document.getElementById('avpCommunityMenuBadge');
-    if(!badge)return 0;
-
-    const raw=String(badge.textContent||'').trim();
-    const count=parseInt(raw.replace(/\D/g,''),10)||0;
-
-    if(
-      badge.hidden ||
-      getComputedStyle(badge).display==='none'
-    )return 0;
-
-    return count;
+    return Math.max(0,Number(window.__avpCommunityUnreadCount||0));
   }
 
 
@@ -457,27 +452,34 @@
 
 
 
-  function tagEdgeActions(){
-    document.querySelectorAll(".avp-edge-action").forEach(btn=>{
-      if(btn.dataset.avpEdgeAction)return;
-      const txt=String(btn.textContent||"").toLowerCase();
-
-      if(txt.includes("cộng đồng")) btn.dataset.avpEdgeAction="community";
-      else if(txt.includes("chat admin") || txt.includes("admin")) btn.dataset.avpEdgeAction="chat";
-      else if(txt.includes("hỏi ai") || txt.includes(" ai")) btn.dataset.avpEdgeAction="ai";
-      else if(txt.includes("học tập")) btn.dataset.avpEdgeAction="learn";
-    });
-  }
-
-  function setEdgeSectionBadge(actionName,count){
+  function setNativeEdgeBadge(actionName,count){
     const n=Math.max(0,Number(count||0));
-    const action=document.querySelector(`[data-avp-edge-action="${actionName}"]`);
+    const action=document.querySelector(`.avp-edge-action[data-edge-action="${actionName}"]`);
     if(!action)return;
 
     let badge=action.querySelector(".avp-edge-section-badge");
     if(!badge){
       badge=document.createElement("span");
       badge.className="avp-edge-section-badge";
+      badge.setAttribute("aria-hidden","true");
+      action.appendChild(badge);
+    }
+
+    badge.hidden=n<=0;
+    badge.textContent=n>99?"99+":String(n);
+    action.classList.toggle("has-unread",n>0);
+  }
+
+  function setCommunityEdgeBadge(count){
+    const n=Math.max(0,Number(count||0));
+    const action=document.getElementById("avpExternalCommunityButton");
+    if(!action)return;
+
+    let badge=document.getElementById("avpCommunityMenuBadge");
+    if(!badge){
+      badge=document.createElement("span");
+      badge.id="avpCommunityMenuBadge";
+      badge.className="avp-community-menu-badge";
       action.appendChild(badge);
     }
 
@@ -487,16 +489,14 @@
   }
 
   function syncEdgeSectionBadges(){
-    tagEdgeActions();
-
     const chat=unreadCountFromChatBadge();
     const community=unreadCountFromCommunity();
 
-    setEdgeSectionBadge("chat",chat);
-    setEdgeSectionBadge("community",community);
+    // Menu thật đang dùng data-edge-action="chat".
+    setNativeEdgeBadge("chat",chat);
 
-    // Hỗ trợ một số bản cũ dùng tên action khác.
-    setEdgeSectionBadge("admin",chat);
+    // Cộng đồng là nút được ai-chat.js chèn riêng vào menu.
+    setCommunityEdgeBadge(community);
   }
 
   function syncEdgeBadge(){
@@ -532,23 +532,30 @@
 
   syncEdgeBadge();
 
+  fab?.addEventListener('click',()=>{
+    // Đợi menu bỏ hidden rồi gắn badge vào đúng từng nút.
+    setTimeout(syncEdgeBadge,0);
+  });
+
   window.addEventListener('avp:community-unread',syncEdgeBadge);
 
-  const chatBadgeObserver=new MutationObserver(syncEdgeBadge);
-  const observeChatBadge=()=>{
-    const badge=document.querySelector('.avp-chat-badge, #avpChatBadge, [data-avp-chat-badge]');
-    if(badge){
-      chatBadgeObserver.disconnect();
-      chatBadgeObserver.observe(badge,{
-        childList:true,
-        subtree:true,
-        attributes:true,
-        characterData:true
-      });
+  const chatBadgeObserver=new MutationObserver(mutations=>{
+    if(mutations.some(m=>{
+      const el=m.target?.nodeType===1?m.target:m.target?.parentElement;
+      return el?.closest?.('#avpChatBadge,#avpChatUnreadBadge,.avp-chat-badge,[data-avp-chat-badge],#avpChatLauncher');
+    })){
+      syncEdgeBadge();
     }
-  };
-  observeChatBadge();
-  setTimeout(observeChatBadge,1200);
+  });
+
+  if(document.body){
+    chatBadgeObserver.observe(document.body,{
+      childList:true,
+      subtree:true,
+      attributes:true,
+      characterData:true
+    });
+  }
 
   const edgeBadgeTimer=setInterval(
     syncEdgeBadge,

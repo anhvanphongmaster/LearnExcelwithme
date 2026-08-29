@@ -730,3 +730,32 @@
   color:#fff !important;
   border-color:#fff !important;
 }
+
+
+/* COMMUNITY INNER BADGE FIX V2 */
+#avpExternalCommunityButton{
+  position:relative !important;
+  overflow:visible !important;
+}
+#avpCommunityMenuBadge{
+  position:absolute !important;
+  top:-6px !important;
+  right:-7px !important;
+  min-width:20px !important;
+  height:20px !important;
+  padding:0 5px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:999px !important;
+  background:#e11d48 !important;
+  color:#fff !important;
+  border:2px solid #fff !important;
+  font-size:10px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  z-index:31 !important;
+}
+#avpCommunityMenuBadge[hidden]{
+  display:none !important;
+}
