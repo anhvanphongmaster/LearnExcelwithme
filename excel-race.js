@@ -438,13 +438,31 @@
       if (error) throw error;
 
       const rows = Array.isArray(data) ? data : [];
-      if (!rows.length) {
-        list.innerHTML = '<li class="muted">Chưa có ai trên BXH — bạn sẽ là người đầu.</li>';
+
+      // Chỉ hiện người đã thực sự có thành tích Rank.
+      // User chỉ vào Học sẽ không làm nhiễu BXH với dòng 0 điểm / cấp 1.
+      const visibleRows = rows.filter(function(row) {
+        if (!row || !row.player_name) return false;
+
+        const hasRankScore =
+          (Number(row.best_streak) || 0) > 0 ||
+          (Number(row.best_level) || 1) > 1;
+
+        if (!hasRankScore) return false;
+
+        // Khi chính user đang chơi Học, ẩn dòng của họ trên BXH ở phiên hiện tại.
+        if (mode === "hoc" && row.is_me === true) return false;
+
+        return true;
+      });
+
+      if (!visibleRows.length) {
+        list.innerHTML = '<li class="muted">Chưa có thành tích Rank nào.</li>';
         rivals = [];
         return;
       }
 
-      rivals = rows
+      rivals = visibleRows
         .filter(function(row) {
           return row && row.player_name && row.is_me !== true;
         })
@@ -458,7 +476,7 @@
         .sort(function(a,b){ return b.score-a.score; })
         .slice(0,12);
 
-      list.innerHTML = rows.map(function(row, i) {
+      list.innerHTML = visibleRows.map(function(row, i) {
         const me = row.is_me === true ? " me" : "";
         const rankNo = Number(row.rank_no) || (i + 1);
         const legacy = row.is_legacy === true ? ' <small class="race-legacy">cũ</small>' : "";
@@ -659,6 +677,37 @@
     }
   }
 
+
+  function showCorrectEffect(btn) {
+    if (!btn) return;
+
+    btn.classList.remove("race-correct-pop");
+    void btn.offsetWidth;
+    btn.classList.add("race-correct-pop");
+
+    const panel = document.querySelector(".panel");
+    if (panel) {
+      panel.classList.remove("race-correct-panel");
+      void panel.offsetWidth;
+      panel.classList.add("race-correct-panel");
+    }
+
+    const burst = document.createElement("div");
+    burst.className = "race-correct-burst";
+    burst.innerHTML = '<span>✓</span><b>ĐÚNG</b>';
+    document.body.appendChild(burst);
+
+    setTimeout(function () {
+      burst.classList.add("show");
+    }, 0);
+
+    setTimeout(function () {
+      burst.remove();
+      btn.classList.remove("race-correct-pop");
+      if (panel) panel.classList.remove("race-correct-panel");
+    }, 650);
+  }
+
   function answer(btn) {
     if (!playing || locked) return;
     locked = true;
@@ -668,12 +717,13 @@
     btn.className = ok ? "ok" : "bad";
     if (ok) {
       sfxOk();
+      showCorrectEffect(btn);
       streak += 1; saveBest(); idx += 1;
       if (mode === "rank") scheduleRankPush(80);
       targetSpeed = Math.min(26, 6 + streak * 0.4);
       $("msg").textContent = "Đúng!";
       hud(); updateHint();
-      setTimeout(showQ, 280);
+      setTimeout(showQ, 560);
     } else {
       const other = btn.id === "a1" ? $("a2") : $("a1");
       other.className = "ok";
