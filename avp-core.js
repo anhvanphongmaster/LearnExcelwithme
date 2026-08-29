@@ -455,7 +455,53 @@
      Không dùng observer toàn trang; chỉ polling rất nhẹ. */
   let previousEdgeCount=-1;
 
+
+
+  function tagEdgeActions(){
+    document.querySelectorAll(".avp-edge-action").forEach(btn=>{
+      if(btn.dataset.avpEdgeAction)return;
+      const txt=String(btn.textContent||"").toLowerCase();
+
+      if(txt.includes("cộng đồng")) btn.dataset.avpEdgeAction="community";
+      else if(txt.includes("chat admin") || txt.includes("admin")) btn.dataset.avpEdgeAction="chat";
+      else if(txt.includes("hỏi ai") || txt.includes(" ai")) btn.dataset.avpEdgeAction="ai";
+      else if(txt.includes("học tập")) btn.dataset.avpEdgeAction="learn";
+    });
+  }
+
+  function setEdgeSectionBadge(actionName,count){
+    const n=Math.max(0,Number(count||0));
+    const action=document.querySelector(`[data-avp-edge-action="${actionName}"]`);
+    if(!action)return;
+
+    let badge=action.querySelector(".avp-edge-section-badge");
+    if(!badge){
+      badge=document.createElement("span");
+      badge.className="avp-edge-section-badge";
+      action.appendChild(badge);
+    }
+
+    badge.hidden=n<=0;
+    badge.textContent=n>99?"99+":String(n);
+    action.classList.toggle("has-unread",n>0);
+  }
+
+  function syncEdgeSectionBadges(){
+    tagEdgeActions();
+
+    const chat=unreadCountFromChatBadge();
+    const community=unreadCountFromCommunity();
+
+    setEdgeSectionBadge("chat",chat);
+    setEdgeSectionBadge("community",community);
+
+    // Hỗ trợ một số bản cũ dùng tên action khác.
+    setEdgeSectionBadge("admin",chat);
+  }
+
   function syncEdgeBadge(){
+    syncEdgeSectionBadges();
+
     const count=
       unreadCountFromChatBadge()
       +
@@ -487,6 +533,22 @@
   syncEdgeBadge();
 
   window.addEventListener('avp:community-unread',syncEdgeBadge);
+
+  const chatBadgeObserver=new MutationObserver(syncEdgeBadge);
+  const observeChatBadge=()=>{
+    const badge=document.querySelector('.avp-chat-badge, #avpChatBadge, [data-avp-chat-badge]');
+    if(badge){
+      chatBadgeObserver.disconnect();
+      chatBadgeObserver.observe(badge,{
+        childList:true,
+        subtree:true,
+        attributes:true,
+        characterData:true
+      });
+    }
+  };
+  observeChatBadge();
+  setTimeout(observeChatBadge,1200);
 
   const edgeBadgeTimer=setInterval(
     syncEdgeBadge,

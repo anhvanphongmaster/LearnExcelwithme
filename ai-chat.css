@@ -721,3 +721,12 @@
   border-color:rgba(33,115,70,.09) !important;
   box-shadow:0 4px 12px rgba(28,68,46,.07) !important;
 }
+
+
+#avpCommunityMenuBadge,
+#avpNotifyBubbleBadge,
+#avpNotifyTabBadge{
+  background:#e11d48 !important;
+  color:#fff !important;
+  border-color:#fff !important;
+}

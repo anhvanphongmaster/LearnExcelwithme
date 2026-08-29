@@ -909,3 +909,39 @@ body > .avp-hub-fab{
   border-color:#fff !important;
   box-shadow:0 2px 7px rgba(225,29,72,.22) !important;
 }
+
+
+/* =========================================================
+   BADGE RIÊNG TRONG MENU AVP
+   Hiện rõ phần nào đang có thông báo chưa đọc.
+   ========================================================= */
+.avp-edge-action{
+  position:relative !important;
+}
+.avp-edge-section-badge{
+  position:absolute;
+  top:-5px;
+  right:-7px;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  background:#e11d48;
+  color:#fff;
+  border:2px solid #fff;
+  box-sizing:border-box;
+  font-size:9px;
+  line-height:1;
+  font-weight:900;
+  z-index:3;
+  box-shadow:0 2px 7px rgba(225,29,72,.22);
+}
+.avp-edge-section-badge[hidden]{
+  display:none !important;
+}
+.avp-edge-action.has-unread{
+  border-color:rgba(225,29,72,.16) !important;
+}
