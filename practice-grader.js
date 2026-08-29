@@ -70,19 +70,54 @@ function filteredLessons(){
 }
 function card(l){
   const st=submissionCache.get(l.key),locked=!!st?.submitted,active=!!l.isActive;
-  const badge=locked?`<b class="pg-status-locked">✓ ĐÃ NỘP · ${Number(st.score)||0}/${l.maxScore||100}</b>`:active?`<b>● ĐANG MỞ</b>`:`<b class="pg-status-soon">SẮP MỞ</b>`;
-  const rules=(l.rules||[]).map(x=>`<span>${esc(x)}</span>`).join("");
-  return `<article class="pg-card">
-    <div class="pg-card-head"><span class="pg-difficulty ${esc(l.difficulty)}">${DIFF_LABEL[l.difficulty]||l.difficulty}</span>${badge}</div>
-    <h3>${esc(l.title)}</h3><p>${esc(l.description||"")}</p>
-    <div class="pg-rules">${rules}</div>
-    ${active?`<div class="pg-actions">
-      <button class="pg-btn primary" type="button" data-download="${esc(l.key)}">⬇️ Tải file</button>
-      <label class="pg-btn submit${locked?" locked":""}">
-        <input type="file" hidden accept=".xlsx,.xls" data-submit="${esc(l.key)}" ${locked?"disabled":""}>
-        ${locked?"✓ Đã nộp":"📤 Nộp bài"}
-      </label></div>`:`<div class="pg-coming-note">Bài đang được chuẩn bị.</div>`}
-    <div class="pg-note">${locked?"Kết quả đã khóa. Admin mới có thể cho làm lại.":active?"Tải được nhiều lần, nhưng chỉ nộp chính thức 1 lần.":"Bài chưa mở."}</div>
+  const num=String(Number(l.order)||1).padStart(2,"0");
+  const status=locked
+    ? `<span class="pg-card-status done">✓ ĐÃ NỘP</span>`
+    : active
+      ? `<span class="pg-card-status open">● ĐANG MỞ</span>`
+      : `<span class="pg-card-status soon">SẮP MỞ</span>`;
+
+  const score=locked
+    ? `<div class="pg-card-score"><small>Điểm chính thức</small><strong>${Number(st.score)||0}<span>/${l.maxScore||100}</span></strong></div>`
+    : "";
+
+  const rules=(l.rules||[]).slice(0,4).map(x=>`<span>${esc(x)}</span>`).join("");
+
+  const actions=active
+    ? `<div class="pg-card-actions">
+        <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải file</button>
+        <label class="pg-card-btn submit${locked?" locked":""}">
+          <input type="file" hidden accept=".xlsx,.xls" data-submit="${esc(l.key)}" ${locked?"disabled":""}>
+          ${locked?"✓ Đã hoàn thành":"📤 Nộp bài"}
+        </label>
+      </div>`
+    : `<div class="pg-card-soon-note">Bài này chưa mở để nộp.</div>`;
+
+  return `<article class="pg-card pg-card-v9 ${locked?"is-done":active?"is-open":"is-soon"}" data-lesson-card="${esc(l.key)}">
+    <div class="pg-card-topline">
+      <div class="pg-card-index">#${num}</div>
+      <div class="pg-card-badges">
+        <span class="pg-difficulty ${esc(l.difficulty)}">${DIFF_LABEL[l.difficulty]||l.difficulty}</span>
+        ${status}
+      </div>
+    </div>
+
+    <div class="pg-card-main">
+      <div class="pg-card-copy">
+        <span class="pg-card-topic">${esc(l.topicLabel||"Bài tập")}</span>
+        <h3>${esc(l.title)}</h3>
+        <p>${esc(l.description||"")}</p>
+      </div>
+      ${score}
+    </div>
+
+    ${rules?`<div class="pg-card-rules">${rules}</div>`:""}
+
+    ${actions}
+
+    <div class="pg-card-foot">
+      <span>${locked?"Bài đã khóa · Admin mới có thể mở lại":active?"Tải nhiều lần · Nộp chính thức 1 lần":"Đang chuẩn bị rule chấm"}</span>
+    </div>
   </article>`;
 }
 function renderLessons(){

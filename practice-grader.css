@@ -254,3 +254,71 @@ body.dark-mode .pg-lesson-frame-head small{color:#91a79a}
   .pg-lesson-frame-head{padding:10px 11px}
   .pg-topic-panels{grid-template-columns:1fr!important}
 }
+
+
+/* ===== V9 - CARD BÀI TẬP ĐỒNG BỘ KIỂU TIKTOK ===== */
+.pg-card-v9{
+  position:relative;
+  display:block;
+  padding:13px;
+  border:1px solid #dfe9e3;
+  border-radius:16px;
+  background:linear-gradient(180deg,#fff,#fbfdfc);
+  box-shadow:0 5px 16px rgba(24,76,47,.045);
+}
+.pg-card-v9.is-done{border-color:#c8dfd0;background:linear-gradient(180deg,#fff,#f5fbf7)}
+.pg-card-v9.is-soon{opacity:.72}
+.pg-card-topline{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:9px}
+.pg-card-index{
+  min-width:36px;height:28px;display:grid;place-items:center;
+  border-radius:9px;background:#153d28;color:#fff;
+  font-size:10px;font-weight:950;letter-spacing:.04em
+}
+.pg-card-badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.pg-card-status{display:inline-flex;align-items:center;padding:4px 7px;border-radius:999px;font-size:8.5px;font-weight:950;white-space:nowrap}
+.pg-card-status.open{background:#eaf8ef;color:#176b3b}
+.pg-card-status.done{background:#edf4ff;color:#315d9a}
+.pg-card-status.soon{background:#f0f2f1;color:#7b8981}
+.pg-card-main{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.pg-card-copy{min-width:0;flex:1}
+.pg-card-topic{display:block;margin-bottom:3px;color:#7b8d82;font-size:8.5px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
+.pg-card-v9 h3{margin:0;color:#234e36;font-size:16px;line-height:1.25}
+.pg-card-v9 p{margin:5px 0 0;color:#6c7e73;font-size:11px;line-height:1.45}
+.pg-card-score{
+  flex:0 0 auto;min-width:72px;padding:8px 9px;border:1px solid #d8e7de;border-radius:12px;background:#f7fbf8;text-align:right
+}
+.pg-card-score small{display:block;color:#7c8d83;font-size:7.8px}
+.pg-card-score strong{display:block;margin-top:2px;color:#1c6840;font-size:19px;line-height:1}
+.pg-card-score strong span{font-size:9px;color:#7b8b82}
+.pg-card-rules{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:10px}
+.pg-card-rules span{
+  display:block;padding:6px 7px;border-radius:8px;background:#f5f8f6;color:#5d7064;font-size:9.2px;line-height:1.25
+}
+.pg-card-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}
+.pg-card-btn{
+  min-height:38px;display:flex;align-items:center;justify-content:center;
+  border-radius:11px;font-size:10.5px;font-weight:950;cursor:pointer;text-decoration:none
+}
+.pg-card-btn.download{border:1px solid #cfe0d6;background:#fff;color:#1f6840}
+.pg-card-btn.submit{border:1px solid #1c6d43;background:#1c6d43;color:#fff}
+.pg-card-btn.submit.locked{pointer-events:none;background:#ebf0ed;border-color:#dbe4de;color:#7a8980}
+.pg-card-soon-note{margin-top:10px;padding:9px;border-radius:10px;background:#f5f7f6;color:#7f8c85;font-size:10px;text-align:center}
+.pg-card-foot{margin-top:8px;padding-top:8px;border-top:1px dashed #e4ebe7;color:#86958c;font-size:8.8px}
+body.dark-mode .pg-card-v9{background:#15231b;border-color:#30483a}
+body.dark-mode .pg-card-v9.is-done{background:#17271e}
+body.dark-mode .pg-card-v9 h3{color:#b9e9c9}
+body.dark-mode .pg-card-v9 p,
+body.dark-mode .pg-card-foot,
+body.dark-mode .pg-card-topic{color:#91a69a}
+body.dark-mode .pg-card-rules span,
+body.dark-mode .pg-card-score{background:#122019;border-color:#30483a;color:#a5b9ad}
+body.dark-mode .pg-card-btn.download{background:#17271e;border-color:#365141;color:#b9dcc5}
+@media(max-width:620px){
+  .pg-card-v9{padding:11px;border-radius:14px}
+  .pg-card-main{display:block}
+  .pg-card-score{margin-top:9px;width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left}
+  .pg-card-score strong{margin-top:0}
+  .pg-card-rules{grid-template-columns:1fr}
+  .pg-card-actions{grid-template-columns:1fr 1fr}
+  .pg-card-v9 h3{font-size:15px}
+}
