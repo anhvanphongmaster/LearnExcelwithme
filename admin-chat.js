@@ -345,21 +345,86 @@
     return false;
   }
 
-  /* ================= SMART AUTO REPLY ================= */
+  /* ================= ADMIN PRESENCE V2 =================
+     ACTIVE = visible + focused + interaction within 2 minutes.
+     Background tabs and idle tabs stop heartbeats, so backend auto-reply
+     is no longer fooled by a browser tab that merely remains open.
+  ====================================================== */
   let adminPresenceTimer=null;
+  let adminLastInteractionAt=Date.now();
+  let adminLastPresencePingAt=0;
+  const ADMIN_IDLE_MS=2*60*1000;
+  const ADMIN_PING_MIN_GAP=15000;
 
-  async function pingAdminPresence(){
-    if(document.visibilityState!=="visible")return;
-    try{await rpc("avp_chat_admin_presence_ping")}catch(e){console.warn("AVP admin presence",e)}
+  function adminPresenceState(){
+    const visible=document.visibilityState==="visible";
+    const focused=typeof document.hasFocus==="function"?document.hasFocus():true;
+    const recent=(Date.now()-adminLastInteractionAt)<ADMIN_IDLE_MS;
+    if(!visible)return "away";
+    if(!focused)return "away";
+    if(!recent)return "idle";
+    return "active";
+  }
+
+  function publishAdminPresenceState(){
+    const state=adminPresenceState();
+    window.AVP_ADMIN_PRESENCE_STATE=state;
+    window.dispatchEvent(new CustomEvent("avp:admin-presence",{detail:{state,lastInteractionAt:adminLastInteractionAt}}));
+    return state;
+  }
+
+  async function pingAdminPresence(force=false){
+    const state=publishAdminPresenceState();
+    if(state!=="active")return false;
+    if(!force && Date.now()-adminLastPresencePingAt<ADMIN_PING_MIN_GAP)return false;
+    adminLastPresencePingAt=Date.now();
+    try{
+      await rpc("avp_chat_admin_presence_ping");
+      return true;
+    }catch(e){
+      console.warn("AVP admin presence",e);
+      return false;
+    }
+  }
+
+  function noteAdminInteraction(){
+    adminLastInteractionAt=Date.now();
+    const state=publishAdminPresenceState();
+    if(state==="active")pingAdminPresence();
   }
 
   function startAdminPresence(){
     clearInterval(adminPresenceTimer);
-    pingAdminPresence();
-    adminPresenceTimer=setInterval(pingAdminPresence,60000);
-    document.addEventListener("visibilitychange",()=>{
-      if(document.visibilityState==="visible")pingAdminPresence();
+
+    ["pointerdown","touchstart","keydown","mousedown"].forEach(evt=>{
+      window.addEventListener(evt,noteAdminInteraction,{passive:true});
     });
+
+    window.addEventListener("focus",()=>{
+      adminLastInteractionAt=Date.now();
+      publishAdminPresenceState();
+      pingAdminPresence(true);
+    });
+
+    window.addEventListener("blur",publishAdminPresenceState);
+
+    document.addEventListener("visibilitychange",()=>{
+      if(document.visibilityState==="visible"){
+        adminLastInteractionAt=Date.now();
+        publishAdminPresenceState();
+        pingAdminPresence(true);
+      }else{
+        publishAdminPresenceState();
+      }
+    });
+
+    publishAdminPresenceState();
+    pingAdminPresence(true);
+
+    adminPresenceTimer=setInterval(()=>{
+      publishAdminPresenceState();
+      pingAdminPresence();
+    },30000);
   }
 
   async function mountAutoReplySettings(){
@@ -373,7 +438,7 @@
       <button type="button" class="avp-auto-settings-toggle" id="avpAutoSettingsToggle">⚡ Auto-reply</button>
       <div class="avp-auto-settings-panel" id="avpAutoSettingsPanel" hidden>
         <div class="avp-auto-settings-head">
-          <div><strong>Trả lời tự động thông minh</strong><small>Chỉ gửi khi Admin offline và không lặp liên tục.</small></div>
+          <div><strong>Trả lời tự động thông minh</strong><small>Chỉ im lặng khi Admin đang thực sự hoạt động; tab nền/idle vẫn được coi là vắng mặt.</small></div>
           <label class="avp-switch"><input id="avpAutoEnabled" type="checkbox"><span></span></label>
         </div>
         <label class="avp-auto-field"><span>Nội dung trả lời</span><textarea id="avpAutoMessage" maxlength="1000" rows="3"></textarea></label>

@@ -41,13 +41,13 @@ function loadAdminChatAssets() {
   if (!document.querySelector('link[data-avp-admin-chat]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'admin-chat.css?v=20260830-v42-stablechat';
+    link.href = 'admin-chat.css?v=20260830-v45presence';
     link.dataset.avpAdminChat = '1';
     document.head.appendChild(link);
   }
   if (!document.querySelector('script[data-avp-admin-chat]')) {
     const script = document.createElement('script');
-    script.src = 'admin-chat.js?v=20260830-v42-stablechat';
+    script.src = 'admin-chat.js?v=20260830-v45presence';
     script.defer = true;
     script.dataset.avpAdminChat = '1';
     document.head.appendChild(script);
@@ -56,6 +56,22 @@ function loadAdminChatAssets() {
 
 // Chat phải xuất hiện cả khi chưa đăng nhập.
 // Nạp module ngay; admin-chat.js sẽ tự chuyển Khách / User / Admin theo session.
+
+  if (!document.querySelector('link[data-avp-admin-alerts]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'admin-alerts.css?v=20260830-v45';
+    link.setAttribute('data-avp-admin-alerts', '1');
+    document.head.appendChild(link);
+  }
+  if (!document.querySelector('script[data-avp-admin-alerts]')) {
+    const script = document.createElement('script');
+    script.src = 'admin-alerts.js?v=20260830-v45';
+    script.defer = true;
+    script.setAttribute('data-avp-admin-alerts', '1');
+    document.head.appendChild(script);
+  }
+
 loadAdminChatAssets();
 
 const PROFILE_KEY = "avpUserProfile";

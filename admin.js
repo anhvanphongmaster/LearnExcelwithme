@@ -509,6 +509,13 @@
 
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
       bindAdminViews();
+    try{
+      const requestedView=new URLSearchParams(location.search).get("view");
+      const validViews=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics","community","reviews","grader"];
+      if(requestedView&&validViews.includes(requestedView)){
+        setTimeout(()=>setAdminView(requestedView,{scroll:true}),80);
+      }
+    }catch(e){}
     bindReviewAdmin();
       checkAdminHealth();
       renderSummary(summary||{});

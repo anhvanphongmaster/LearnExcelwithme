@@ -1,0 +1,38 @@
+
+.avp-admin-device-alerts{
+  margin-left:auto;
+  display:flex;
+  align-items:flex-end;
+  flex-direction:column;
+  gap:3px;
+}
+.avp-admin-device-alerts button{
+  min-height:36px;
+  padding:7px 11px;
+  border:1px solid #cfe2d5;
+  border-radius:999px;
+  background:#f2faf5;
+  color:#1f6840;
+  font-size:12px;
+  font-weight:850;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(25,90,52,.07);
+}
+.avp-admin-device-alerts button:hover{background:#e7f6ec}
+.avp-admin-device-alerts small{
+  color:#819087;
+  font-size:9px;
+}
+body.dark-mode .avp-admin-device-alerts button{
+  background:#1a2c21;
+  border-color:#34513f;
+  color:#bfe2ca;
+}
+@media(max-width:700px){
+  .avp-admin-device-alerts{
+    width:100%;
+    align-items:flex-start;
+    margin-left:0;
+    margin-top:8px;
+  }
+}
