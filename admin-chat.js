@@ -653,11 +653,47 @@
       console.warn("AVP send user attachment",e);
     }finally{btn.disabled=false;input.focus()}
   }
+
+  let lastKnownUserUnread=-1;
+
   async function updateUserBadge(){
     try{
       const n=Number(await rpc("avp_chat_my_unread_count"))||0;
-      const badge=$("avpChatBadge");if(!badge)return;
-      badge.hidden=n<=0;badge.textContent=n>99?"99+":String(n);
+      const badge=$("avpChatBadge");
+
+      if(badge){
+        badge.hidden=n<=0;
+        badge.textContent=n>99?"99+":String(n);
+      }
+
+      const panel=$("avpChatPanel");
+      const chatOpen=!!(panel && !panel.hidden);
+
+      /* Nếu realtime bị miss nhưng unread tăng, vẫn phát sự kiện nổi. */
+      if(
+        lastKnownUserUnread>=0 &&
+        n>lastKnownUserUnread &&
+        !chatOpen
+      ){
+        try{
+          const detail=await getLatestUnreadPreview();
+          if(detail?.body){
+            emitChatMiniPreview(detail);
+          }else{
+            emitChatMiniPreview({
+              role:"admin",
+              sender:"Anh Văn Phòng",
+              body:n===1
+                ?"Bạn có 1 tin nhắn mới."
+                :`Bạn có ${n} tin nhắn mới.`
+            });
+          }
+        }catch(e){
+          console.warn("AVP unread fallback preview",e);
+        }
+      }
+
+      lastKnownUserUnread=n;
     }catch{}
   }
   async function markUserRead(){
@@ -715,7 +751,19 @@
     };
     document.addEventListener("visibilitychange",syncReadIfOpen);
     window.addEventListener("focus",syncReadIfOpen);
-    try{await ensureThread();await rpc("avp_chat_ensure_daily_greeting");await updateUserBadge();startUserLive()}catch(e){console.warn("AVP chat init",e)}
+    try{
+      await ensureThread();
+      await rpc("avp_chat_ensure_daily_greeting");
+      await updateUserBadge();
+      startUserLive();
+
+      /* Cho AVP core biết chat đã sẵn sàng để hiện lời chào/tin nổi. */
+      try{
+        window.dispatchEvent(new CustomEvent("avp:chat-ready"));
+      }catch{}
+    }catch(e){
+      console.warn("AVP chat init",e);
+    }
   }
 
   /* ================= ADMIN INBOX ================= */
@@ -835,10 +883,7 @@
           <aside class="avp-admin-float-threads" id="avpAdminFloatThreads"><div class="avp-chat-empty">Đang tải học viên…</div></aside>
           <section class="avp-admin-float-conversation">
             <header class="avp-admin-float-person"><strong id="avpAdminFloatPerson">Chọn một học viên</strong><small id="avpAdminFloatEmail">Tin nhắn sẽ hiện ở đây.</small></header>
-            <div class="avp-admin-float-message-stage">
-              <div class="avp-chat-messages" id="avpAdminFloatMessages"><div class="avp-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
-              <button class="avp-admin-float-latest" id="avpAdminFloatLatest" type="button" hidden>↓ Tin mới nhất</button>
-            </div>
+            <div class="avp-chat-messages" id="avpAdminFloatMessages"><div class="avp-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
             <div class="avp-chat-file-preview" id="avpAdminFloatFilePreview" hidden></div>
             <div class="avp-chat-compose avp-admin-float-compose">
               <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="avpAdminFloatFile" type="file" multiple accept="image/*,.heic,.heif,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
@@ -857,28 +902,10 @@
       p.hidden=!open;
       if(open){await loadFloatingAdminThreads();}
     });
-    $("avpAdminFloatClose").addEventListener("click",()=>{
-      $("avpAdminFloatPanel").hidden=true;
-      floatReadingHistory=false;
-    });
+    $("avpAdminFloatClose").addEventListener("click",()=>{$("avpAdminFloatPanel").hidden=true});
     $("avpAdminFloatSearch").addEventListener("input",e=>renderFloatingAdminThreads(e.target.value));
     $("avpAdminFloatRefresh").addEventListener("click",loadFloatingAdminThreads);
     $("avpAdminFloatSend").addEventListener("click",sendFloatingAdminMessage);
-
-    const floatBox=$("avpAdminFloatMessages");
-    floatBox?.addEventListener("scroll",()=>{
-      if(!floatProgrammaticScroll){
-        floatReadingHistory=!floatNearBottom(floatBox);
-      }
-      floatSyncLatestButton();
-    },{passive:true});
-
-    $("avpAdminFloatLatest")?.addEventListener("click",()=>{
-      floatReadingHistory=false;
-      floatScrollLatest({smooth:true});
-      setTimeout(floatSyncLatestButton,380);
-    });
-
     bindFilePicker("float","avpAdminFloatFile","avpAdminFloatFilePreview");
     $("avpAdminFloatReply").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendFloatingAdminMessage()}});
   }
@@ -911,108 +938,22 @@
     }
   }
 
-
-  let floatReadingHistory=false;
-  let floatProgrammaticScroll=false;
-
-  function floatNearBottom(box,threshold=70){
-    if(!box)return true;
-    return (box.scrollHeight-box.scrollTop-box.clientHeight)<=threshold;
-  }
-
-  function floatScrollLatest({smooth=false}={}){
-    const box=$("avpAdminFloatMessages");
-    if(!box)return;
-    floatProgrammaticScroll=true;
-    const top=Math.max(0,box.scrollHeight-box.clientHeight);
-    try{
-      box.scrollTo({top,behavior:smooth?"smooth":"auto"});
-    }catch{
-      box.scrollTop=top;
-    }
-    floatReadingHistory=false;
-    setTimeout(()=>{floatProgrammaticScroll=false},smooth?350:40);
-  }
-
-  function floatSyncLatestButton(){
-    const box=$("avpAdminFloatMessages");
-    const btn=$("avpAdminFloatLatest");
-    if(!box||!btn)return;
-    const near=floatNearBottom(box);
-    btn.hidden=near;
-    if(!floatProgrammaticScroll){
-      floatReadingHistory=!near;
-    }
-  }
-
-  async function refreshFloatingAdminMessages({forceLatest=false}={}){
-    if(!floatActiveThread)return;
-
-    const box=$("avpAdminFloatMessages");
-    if(!box)return;
-
-    const wasNearBottom=floatNearBottom(box);
-    const oldTop=box.scrollTop;
-    const oldHeight=box.scrollHeight;
-
-    const rows=await rpc("avp_chat_admin_messages",{
-      p_thread_id:floatActiveThread,
-      p_limit:300
-    }).catch(()=>[]);
-
-    const list=Array.isArray(rows)?rows:[];
-    box.innerHTML=list.length
-      ? list.map(m=>msgHtml(m,true)).join("")
-      : '<div class="avp-chat-empty">Chưa có tin nhắn.</div>';
-
-    await hydrateAttachmentUrls(box);
-    await hydrateReactions(box);
-    await hydrateAdminReadReceipts(box,floatActiveThread);
-
-    if(forceLatest || (!floatReadingHistory && wasNearBottom)){
-      requestAnimationFrame(()=>floatScrollLatest());
-      setTimeout(()=>floatScrollLatest(),100);
-    }else{
-      // Giữ đúng vị trí người dùng đang đọc, không kéo về cuối.
-      const delta=Math.max(0,box.scrollHeight-oldHeight);
-      floatProgrammaticScroll=true;
-      box.scrollTop=Math.max(0,oldTop+delta);
-      setTimeout(()=>{floatProgrammaticScroll=false;floatSyncLatestButton()},40);
-    }
-
-    requestAnimationFrame(floatSyncLatestButton);
-  }
-
   async function openFloatingAdminThread(id){
-    if(!id)return;
-
-    const isSwitch=String(floatActiveThread||"")!==String(id||"");
     floatActiveThread=id;
-
     renderFloatingAdminThreads($("avpAdminFloatSearch")?.value||"");
-
-    const t=floatThreads.find(x=>String(x.thread_id)===String(id));
+    const t=floatThreads.find(x=>x.thread_id===id);
     if($("avpAdminFloatPerson"))$("avpAdminFloatPerson").textContent=t?.display_name||"Người học";
     if($("avpAdminFloatEmail"))$("avpAdminFloatEmail").textContent=t?.email||"";
-
-    const input=$("avpAdminFloatReply");
-    const send=$("avpAdminFloatSend");
-    if(input)input.disabled=false;
-    if(send)send.disabled=false;
-
+    const input=$("avpAdminFloatReply"),send=$("avpAdminFloatSend");
+    if(input)input.disabled=false;if(send)send.disabled=false;
     try{
-      // Khi người dùng chủ động chọn/mở hội thoại:
-      // luôn mặc định ở tin mới nhất.
-      floatReadingHistory=false;
-      await refreshFloatingAdminMessages({forceLatest:true});
-
+      const rows=await rpc("avp_chat_admin_messages",{p_thread_id:id,p_limit:300});
+      const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
+      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,id);box.scrollTop=box.scrollHeight;}
       await rpc("avp_chat_admin_mark_read",{p_thread_id:id});
       await loadFloatingAdminThreads();
-
-      // Không focus textarea khi chỉ mở chat -> tránh kéo cả trang/mobile giật.
-    }catch(e){
-      console.warn("AVP floating admin open",e);
-    }
+      input?.focus();
+    }catch(e){console.warn("AVP floating admin open",e)}
   }
 
   async function sendFloatingAdminMessage(){
@@ -1028,16 +969,12 @@
         }
       }else await rpc("avp_chat_admin_send_message",{p_thread_id:floatActiveThread,p_body:body});
       input.value="";pendingFiles.float=[];previewFiles("float","avpAdminFloatFilePreview");
-      floatReadingHistory=false;
-      await refreshFloatingAdminMessages({forceLatest:true});
+      await openFloatingAdminThread(floatActiveThread);
     }catch(e){
       const detail=e?.message||e?.error_description||String(e||"");
       alert("Không gửi được file. "+(detail?"Lỗi: "+detail:""));
       console.warn("AVP floating admin attachment",e);
-    }finally{
-      btn.disabled=false;
-      try{input.focus({preventScroll:true})}catch{}
-    }
+    }finally{btn.disabled=false;input.focus()}
   }
 
   async function initFloatingAdmin(){
@@ -1047,12 +984,10 @@
     clearInterval(floatPoll);
     floatPoll=setInterval(async()=>{
       await loadFloatingAdminThreads();
-      if(
-        floatActiveThread &&
-        $("avpAdminFloatPanel") &&
-        !$("avpAdminFloatPanel").hidden
-      ){
-        await refreshFloatingAdminMessages({forceLatest:false});
+      if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden){
+        const rows=await rpc("avp_chat_admin_messages",{p_thread_id:floatActiveThread,p_limit:300}).catch(()=>[]);
+        const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
+        if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,floatActiveThread);box.scrollTop=box.scrollHeight;}
       }
     },15000);
     try{
@@ -1094,7 +1029,7 @@
               $("avpAdminFloatPanel") &&
               !$("avpAdminFloatPanel").hidden
             ){
-              await refreshFloatingAdminMessages({forceLatest:false});
+              await openFloatingAdminThread(floatActiveThread);
             }
           }
         )

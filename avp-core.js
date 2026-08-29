@@ -214,6 +214,17 @@
 
   mini.addEventListener('click',openChatFromMini);
 
+  window.addEventListener('avp:chat-ready',()=>{
+    setTimeout(()=>{
+      const count=unreadCountFromChatBadge();
+      if(count>0 && mini.hidden){
+        reliableShowUnread(count);
+      }else if(count<=0 && mini.hidden){
+        showReturnGreeting();
+      }
+    },250);
+  });
+
   window.addEventListener('avp:chat-new-message',e=>{
     const detail=e.detail||{};
 
@@ -362,10 +373,103 @@
     setTimeout(check,500);
   }
 
+
+  /* =========================================================
+     MINI PREVIEW RELIABLE RESTORE
+     - Tin nhắn mới: nổi ngay cạnh AVP.
+     - Nếu realtime lỡ miss: badge tăng vẫn bung preview.
+     - Không có tin chưa đọc: tự chào lại sau khi chat đã load.
+     ========================================================= */
+  let reliablePreviewBooted=false;
+  let reliableLastUnread=-1;
+
+  function reliableChatPanelOpen(){
+    const panel=document.getElementById('avpChatPanel');
+    return !!(panel && !panel.hidden);
+  }
+
+  async function reliableShowUnread(count){
+    if(count<=0 || reliableChatPanelOpen())return false;
+
+    try{
+      await showUnreadReturnPreview(count);
+      return true;
+    }catch(e){
+      console.warn('AVP reliable unread preview',e);
+      return false;
+    }
+  }
+
+  function reliablePreviewBoot(){
+    if(reliablePreviewBooted)return;
+    reliablePreviewBooted=true;
+
+    let tries=0;
+
+    const bootCheck=()=>{
+      tries++;
+
+      if(document.visibilityState!=='visible'){
+        setTimeout(bootCheck,500);
+        return;
+      }
+
+      const count=unreadCountFromChatBadge();
+
+      if(count>0){
+        reliableLastUnread=count;
+        reliableShowUnread(count);
+        return;
+      }
+
+      /* Chờ admin-chat.js mount xong rồi mới tự chào. */
+      if(
+        document.getElementById('avpChatBadge') ||
+        typeof window.AVPGetLatestUnreadPreview==='function' ||
+        tries>=16
+      ){
+        showReturnGreeting();
+        reliableLastUnread=0;
+        return;
+      }
+
+      setTimeout(bootCheck,350);
+    };
+
+    setTimeout(bootCheck,700);
+  }
+
+  /* Fallback rất nhẹ: nếu realtime không phát event nhưng badge tăng,
+     vẫn nổi preview ngay. */
+  const reliableUnreadTimer=setInterval(()=>{
+    if(document.visibilityState!=='visible')return;
+
+    const count=unreadCountFromChatBadge();
+
+    if(reliableLastUnread<0){
+      reliableLastUnread=count;
+      return;
+    }
+
+    if(
+      count>reliableLastUnread &&
+      !reliableChatPanelOpen()
+    ){
+      reliableShowUnread(count);
+    }
+
+    reliableLastUnread=count;
+  },1800);
+
+  window.addEventListener('pagehide',()=>{
+    clearInterval(reliableUnreadTimer);
+  },{once:true});
+
   /* Lúc vào website:
      - có unread -> preview unread
      - không có -> lời chào/động viên */
   showReturnState();
+  reliablePreviewBoot();
 
   let hiddenAt=0;
 
@@ -419,6 +523,15 @@
     fab.setAttribute('aria-expanded',open?'true':'false');
     const icon=fab.querySelector('.avp-edge-main-icon');
     if(icon)icon.textContent='AVP';
+
+    if(!open){
+      setTimeout(()=>{
+        const count=unreadCountFromChatBadge();
+        if(count>0 && mini.hidden && !reliableChatPanelOpen()){
+          reliableShowUnread(count);
+        }
+      },450);
+    }
   }
 
   function clickHiddenTool(id,label){
