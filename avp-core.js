@@ -59,6 +59,10 @@
       <button type="button" class="avp-edge-action" data-edge-action="learning">
         <span>📚</span><b>Học tập</b>
       </button>
+      <button type="button" class="avp-edge-action" data-edge-action="community" id="avpExternalCommunityButton">
+        <span>👥</span><b>Cộng đồng</b>
+        <span id="avpCommunityMenuBadge" class="avp-edge-section-badge" hidden>0</span>
+      </button>
       <button type="button" class="avp-edge-action" data-edge-action="chat">
         <span>💬</span><b>Chat Admin</b>
       </button>
@@ -438,6 +442,12 @@
 
       if(action==='learning'){
         openHub();
+      }else if(action==='community'){
+        if(window.AVPCommunity?.open){
+          window.AVPCommunity.open();
+        }else{
+          toast('Cộng đồng đang tải, thử lại sau một chút');
+        }
       }else if(action==='chat'){
         clickHiddenTool('avpChatBubble','Chat Admin');
       }else if(action==='ai'){
@@ -472,14 +482,14 @@
 
   function setCommunityEdgeBadge(count){
     const n=Math.max(0,Number(count||0));
-    const action=document.getElementById("avpExternalCommunityButton");
+    const action=document.querySelector('.avp-edge-action[data-edge-action="community"]');
     if(!action)return;
 
     let badge=document.getElementById("avpCommunityMenuBadge");
     if(!badge){
       badge=document.createElement("span");
       badge.id="avpCommunityMenuBadge";
-      badge.className="avp-community-menu-badge";
+      badge.className="avp-edge-section-badge";
       action.appendChild(badge);
     }
 

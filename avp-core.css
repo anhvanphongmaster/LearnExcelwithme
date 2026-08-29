@@ -976,3 +976,35 @@ body > .avp-hub-fab{
 .avp-edge-action .avp-edge-section-badge[hidden]{
   display:none !important;
 }
+
+
+/* =========================================================
+   COMMUNITY NATIVE MENU FIX
+   Cộng đồng là nút cố định của AVP menu, không còn phụ thuộc JS chèn động.
+   ========================================================= */
+.avp-edge-action[data-edge-action="community"]{
+  position:relative !important;
+  overflow:visible !important;
+}
+.avp-edge-action[data-edge-action="community"] #avpCommunityMenuBadge{
+  position:absolute !important;
+  top:-6px !important;
+  right:-7px !important;
+  min-width:20px !important;
+  height:20px !important;
+  padding:0 5px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:999px !important;
+  background:#e11d48 !important;
+  color:#fff !important;
+  border:2px solid #fff !important;
+  font-size:10px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  z-index:40 !important;
+}
+.avp-edge-action[data-edge-action="community"] #avpCommunityMenuBadge[hidden]{
+  display:none !important;
+}

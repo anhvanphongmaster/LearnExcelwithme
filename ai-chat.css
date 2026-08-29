@@ -759,3 +759,8 @@
 #avpCommunityMenuBadge[hidden]{
   display:none !important;
 }
+
+
+.avp-edge-action[data-edge-action="community"] .avp-community-menu-label{
+  font:inherit !important;
+}

@@ -827,12 +827,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const css=document.createElement('link');
   css.rel='stylesheet';
-  css.href='ai-chat.css?v=20260829-inner-badges-fix2';
+  css.href='ai-chat.css?v=20260829-community-native1';
   css.id='avpAiChatCss';
   document.head.appendChild(css);
 
   const js=document.createElement('script');
-  js.src='ai-chat.js?v=20260829-inner-badges-fix2';
+  js.src='ai-chat.js?v=20260829-community-native1';
   js.defer=true;
   js.id='avpAiChatScript';
   document.head.appendChild(js);
