@@ -394,6 +394,7 @@
 
             <div class="avp-acc-notification-actions">
               <button type="button" data-view="${esc(n.id)}">👁 Xem người đã đọc</button>
+              <button type="button" data-pin-notification="${esc(n.id)}" data-pinned="${n.is_pinned?"1":"0"}">${n.is_pinned?"📍 Bỏ ghim":"📌 Ghim"}</button>
               <button type="button" data-toggle="${esc(n.id)}" data-active="${n.is_active?"1":"0"}">${n.is_active?"Tắt":"Bật lại"}</button>
             </div>
           </article>
@@ -404,6 +405,16 @@
         btn.onclick=e=>{
           e.stopPropagation();
           showAudience(btn.dataset.view);
+        };
+      });
+
+      box.querySelectorAll("[data-pin-notification]").forEach(btn=>{
+        btn.onclick=async e=>{
+          e.stopPropagation();
+          await toggleNotificationPinned(
+            btn.dataset.pinNotification,
+            btn.dataset.pinned!=="1"
+          );
         };
       });
 
@@ -495,6 +506,16 @@
         render(btn.dataset.af);
       };
     });
+  }
+
+  async function toggleNotificationPinned(id,pinned){
+    try{
+      await rpc("admin_system_notification_set_pinned",{p_id:id,p_pinned:pinned});
+      await loadNotifications();
+    }catch(e){
+      console.warn("notification pin",e);
+      alert("Chưa cập nhật được trạng thái ghim.");
+    }
   }
 
   async function toggleNotification(id,active){
