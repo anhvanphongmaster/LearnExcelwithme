@@ -1599,7 +1599,29 @@
     }
   }
 
+  function isPersonalNotification(n){
+    if(!n)return false;
+    if(n.kind==="personal")return true;
+
+    // Thông báo kết quả chấm/chấm lại là thông báo riêng của đúng học viên,
+    // dù backend đang lưu trong system_notifications với target_type='user'.
+    const title=String(n.title||"").toLowerCase();
+    const type=String(n.type||"").toLowerCase();
+
+    return (
+      type==="practice_grader_review" ||
+      type==="practice_grader_appeal" ||
+      title.includes("kết quả chấm lại bài excel") ||
+      title.includes("kết quả kiểm tra lại bài excel")
+    );
+  }
+
+  function notificationKindLabel(n){
+    return isPersonalNotification(n) ? "Cá nhân" : "Hệ thống";
+  }
+
   function notificationIcon(n){
+    if(isPersonalNotification(n))return "🔔";
     if(n.kind==="system"){
       if(n.type==="minigame")return "🎁";
       if(n.type==="event")return "📅";
@@ -1620,8 +1642,9 @@
 
     const data=rows.filter(n=>{
       if(filter==="all")return true;
-      if(filter==="system")return n.kind==="system";
-      return n.kind==="personal";
+      if(filter==="personal")return isPersonalNotification(n);
+      if(filter==="system")return n.kind==="system" && !isPersonalNotification(n);
+      return true;
     });
 
     if(!data.length){
@@ -1638,7 +1661,7 @@
             ${n.is_pinned?'<span>GHIM</span>':""}
           </div>
           ${n.content?`<p>${esc(n.content).replace(/\n/g,"<br>")}</p>`:""}
-          <small>${communityTime(n.created_at)} · ${n.kind==="system"?"Hệ thống":"Cá nhân"}</small>
+          <small>${communityTime(n.created_at)} · ${notificationKindLabel(n)}</small>
         </div>
         ${n.is_read?"":'<i class="avp-unread-dot"></i>'}
       </article>
