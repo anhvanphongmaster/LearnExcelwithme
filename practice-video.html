@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="practice-video.css?v=20260828-ROLLBACK-STABLE1">
   <link rel="stylesheet" href="practice-hub.css?v=20260830-hub1">
-  <link rel="stylesheet" href="practice-grader.css?v=20260830-one-shot4">
+  <link rel="stylesheet" href="practice-grader.css?v=20260830-engine1">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link href="theme-polish-v33.css" rel="stylesheet"/>
@@ -159,65 +159,26 @@
       <div class="pg-stat"><small>Điểm tối đa</small><strong>100</strong></div>
     </div>
 
-    <div class="pg-topic-tabs" id="pgTopicTabs">
-      <button type="button" class="pg-topic active" data-pg-topic="clean">🧹 Làm sạch</button>
-      <button type="button" class="pg-topic" data-pg-topic="pq">⚙️ Power Query</button>
-      <button type="button" class="pg-topic" data-pg-topic="input">⌨️ Nhập liệu</button>
-      <button type="button" class="pg-topic" data-pg-topic="formula">🧮 Công thức</button>
-      <button type="button" class="pg-topic" data-pg-topic="format">🎨 Định dạng</button>
+    <div class="pg-topic-tabs" id="pgTopicTabs" role="tablist" aria-label="Chủ đề bài chấm điểm"></div>
+
+    <div class="pg-engine-toolbar">
+      <div class="pg-engine-filter">
+        <button type="button" class="active" data-pg-difficulty="all">Tất cả</button>
+        <button type="button" data-pg-difficulty="basic">🌱 Cơ bản</button>
+        <button type="button" data-pg-difficulty="intermediate">📘 Trung cấp</button>
+        <button type="button" data-pg-difficulty="advanced">🏆 Nâng cao</button>
+      </div>
+      <div class="pg-engine-summary" id="pgEngineSummary">Đang tải danh sách bài…</div>
     </div>
 
-    <div class="pg-topic-panels">
-      <article class="pg-card" data-pg-panel="clean">
-        <div class="pg-card-head"><span class="pg-difficulty basic">CƠ BẢN</span><b id="pgLessonStatus">● ĐANG MỞ</b></div>
-        <h3>#01 · Xóa dòng trống</h3>
-        <p>Xóa toàn bộ dòng trống trong sheet <strong>DuLieu</strong>, giữ nguyên tiêu đề và dữ liệu gốc.</p>
-
-        <div class="pg-rules">
-          <span>20đ · đúng sheet</span>
-          <span>20đ · đúng tiêu đề</span>
-          <span>30đ · hết dòng trống</span>
-          <span>30đ · giữ đủ dữ liệu</span>
-        </div>
-
-        <div class="pg-actions">
-          <button type="button" class="pg-btn primary" id="pgDownloadDemo">⬇️ Tải file</button>
-          <label class="pg-btn submit">
-            <input type="file" id="pgSubmitDemo" accept=".xlsx,.xls" hidden>
-            📤 Nộp bài
-          </label>
-        </div>
-
-        <div class="pg-note" id="pgFileNote">Bạn có thể tải file nhiều lần, nhưng chỉ được NỘP CHÍNH THỨC 1 lần.</div>
-        <div class="pg-result" id="pgResult" hidden></div>
-      </article>
-
-      <article class="pg-card pg-coming" data-pg-panel="pq" hidden>
-        <div class="pg-card-head"><span>POWER QUERY</span><b>ĐANG CHUẨN BỊ</b></div>
-        <h3>Power Query</h3>
-        <p>Sẽ mở sau khi rule chấm bài mẫu được test ổn định.</p>
-      </article>
-
-      <article class="pg-card pg-coming" data-pg-panel="input" hidden>
-        <div class="pg-card-head"><span>NHẬP LIỆU</span><b>ĐANG CHUẨN BỊ</b></div>
-        <h3>Nhập liệu</h3>
-        <p>Sẽ chấm Data Validation, mã duy nhất và các rule nhập liệu.</p>
-      </article>
-
-      <article class="pg-card pg-coming" data-pg-panel="formula" hidden>
-        <div class="pg-card-head"><span>CÔNG THỨC</span><b>ĐANG CHUẨN BỊ</b></div>
-        <h3>Công thức</h3>
-        <p>Sẽ chấm theo kết quả và rule, không bắt file phải giống nguyên mẫu.</p>
-      </article>
-
-      <article class="pg-card pg-coming" data-pg-panel="format" hidden>
-        <div class="pg-card-head"><span>ĐỊNH DẠNG</span><b>ĐANG CHUẨN BỊ</b></div>
-        <h3>Định dạng</h3>
-        <p>Sẽ chấm các tiêu chí định dạng quan trọng theo từng bài.</p>
+    <div class="pg-topic-panels" id="pgLessonGrid">
+      <article class="pg-card pg-coming">
+        <h3>Đang tải bài tập…</h3>
+        <p>Hệ thống đang dựng danh sách bài từ cấu hình.</p>
       </article>
     </div>
-  
-    <section class="pg-board" id="pgLeaderboard">
+
+<section class="pg-board" id="pgLeaderboard">
       <div class="pg-board-head">
         <div>
           <span class="pg-board-kicker">🏆 BẢNG XẾP HẠNG THÀNH TÍCH</span>
@@ -311,7 +272,9 @@
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
 <script defer src="practice-hub.js?v=20260830-access1"></script>
-<script defer src="practice-grader.js?v=20260830-one-shot4"></script>
+<script defer src="practice-lessons.js?v=20260830-engine1"></script>
+<script defer src="practice-lessons.js?v=20260830-engine1"></script>
+<script defer src="practice-grader.js?v=20260830-engine1"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="download-manager.js?v=20260828-ROLLBACK-STABLE1"></script>
 </body>

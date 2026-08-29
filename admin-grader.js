@@ -23,6 +23,59 @@
     return null;
   }
 
+
+  async function loadLessons(){
+    const sb=await client();
+    const root=$("adminGraderLessonList");
+    if(!sb||!root)return;
+    root.innerHTML='<div class="admin-users-empty">Đang tải…</div>';
+    try{
+      const {data,error}=await sb.rpc("admin_practice_grader_lessons");
+      if(error)throw error;
+      const rows=Array.isArray(data)?data:[];
+      root.innerHTML=rows.length?rows.map(r=>`
+        <div class="ag-lesson-row" data-lesson="${esc(r.lesson_key)}">
+          <div class="ag-lesson-main">
+            <strong>${esc(r.title)}</strong>
+            <small>${esc(r.lesson_key)}</small>
+          </div>
+          <select data-level>
+            <option value="basic"${r.difficulty==="basic"?" selected":""}>Cơ bản</option>
+            <option value="intermediate"${r.difficulty==="intermediate"?" selected":""}>Trung cấp</option>
+            <option value="advanced"${r.difficulty==="advanced"?" selected":""}>Nâng cao</option>
+          </select>
+          <label class="ag-active"><input type="checkbox" data-active ${r.is_active?"checked":""}> Mở</label>
+          <button type="button" data-save-lesson>Lưu</button>
+        </div>
+      `).join(""):'<div class="admin-users-empty">Chưa có bài.</div>';
+    }catch(e){
+      root.innerHTML=`<div class="admin-users-empty">Không tải được: ${esc(e?.message||e)}</div>`;
+    }
+  }
+
+  async function saveLesson(btn){
+    const row=btn.closest(".ag-lesson-row");
+    if(!row)return;
+    const sb=await client();
+    btn.disabled=true;
+    btn.textContent="Đang lưu…";
+    try{
+      const {error}=await sb.rpc("admin_practice_grader_set_lesson",{
+        p_lesson_key:row.dataset.lesson,
+        p_difficulty:row.querySelector("[data-level]").value,
+        p_active:row.querySelector("[data-active]").checked
+      });
+      if(error)throw error;
+      btn.textContent="Đã lưu";
+      setTimeout(()=>btn.textContent="Lưu",900);
+    }catch(e){
+      alert("Không lưu được: "+(e?.message||e));
+      btn.textContent="Lưu";
+    }finally{
+      btn.disabled=false;
+    }
+  }
+
   async function load(){
     const sb=await client();
     if(!sb)return;
@@ -103,6 +156,8 @@
 
   function bind(){
     $("adminGraderReload")?.addEventListener("click",load);
+    $("adminGraderLoadLessons")?.addEventListener("click",loadLessons);
+    $("adminGraderLessonList")?.addEventListener("click",e=>{const b=e.target.closest("[data-save-lesson]");if(b)saveLesson(b)});
     $("adminGraderSearchBtn")?.addEventListener("click",load);
     $("adminGraderDifficulty")?.addEventListener("change",load);
     $("adminGraderSearch")?.addEventListener("keydown",e=>{if(e.key==="Enter")load()});
@@ -110,7 +165,7 @@
       const b=e.target.closest("[data-reset]");
       if(b)reset(b);
     });
-    window.addEventListener("avp:admin-grader-open",()=>load());
+    window.addEventListener("avp:admin-grader-open",()=>{load();loadLessons();});
   }
 
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});

@@ -26,3 +26,21 @@
   .admin-grader-toolbar input{grid-column:1/-1;min-width:0;width:100%}
   .admin-grader-legend small{width:100%;margin-left:0}
 }
+
+.admin-grader-config{margin:14px 0;padding:13px;border:1px solid #dde8e1;border-radius:13px;background:#fbfdfc}
+.admin-grader-config-head{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.admin-grader-config-head strong{display:block;color:#234f36}
+.admin-grader-config-head small{display:block;margin-top:2px;color:#78897f;font-size:10px}
+.admin-grader-config-head button,.ag-lesson-row button{border:1px solid #cfe0d6;background:#fff;color:#1f6540;border-radius:9px;padding:7px 10px;font-weight:850;cursor:pointer}
+.admin-grader-lesson-list{display:grid;gap:7px;margin-top:10px;max-height:320px;overflow:auto}
+.ag-lesson-row{display:grid;grid-template-columns:minmax(0,1fr) 140px 70px 72px;gap:8px;align-items:center;padding:9px 10px;border:1px solid #e3ebe6;border-radius:10px;background:#fff}
+.ag-lesson-main strong{display:block;font-size:11.5px}
+.ag-lesson-main small{display:block;margin-top:2px;color:#8b9991;font-size:9px}
+.ag-lesson-row select{min-height:34px;border:1px solid #d9e4dd;border-radius:8px;background:#fff;padding:0 7px}
+.ag-active{font-size:10px;color:#53675a}
+@media(max-width:720px){
+  .admin-grader-config-head{display:block}
+  .admin-grader-config-head button{margin-top:8px}
+  .ag-lesson-row{grid-template-columns:1fr 1fr}
+  .ag-lesson-main{grid-column:1/-1}
+}
