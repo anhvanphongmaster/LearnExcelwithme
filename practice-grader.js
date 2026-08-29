@@ -169,17 +169,51 @@ function renderLessons(){
 async function loadSubmissionStates(){
   const u=await requireLogin();if(!u)return;
   const sb=await getClient();if(!sb?.rpc)return;
+
+  submissionCache.clear();
+
+  try{
+    const bulk=await sb.rpc("practice_grader_my_submissions_v18");
+    if(!bulk.error){
+      const rows=Array.isArray(bulk.data)?bulk.data:[];
+      const byKey=new Map(rows.map(r=>[String(r.lesson_key||""),r]));
+      lessons().forEach(l=>{
+        const row=byKey.get(String(l.key));
+        submissionCache.set(l.key,row?{
+          submitted:true,
+          score:Number(row.score)||0,
+          passed:!!row.passed,
+          difficulty:l.difficulty,
+          is_public:!!row.is_public,
+          grading_details:row.grading_details||{},
+          manual_reviewed:!!row.manual_reviewed,
+          appeal_id:row.appeal_id||null,
+          appeal_status:row.appeal_status||null,
+          appeal_response:row.appeal_response||null,
+          submitted_at:row.submitted_at||null
+        }:{submitted:false,difficulty:l.difficulty});
+      });
+      renderLessons();
+      renderProgress();
+      return;
+    }
+  }catch(e){
+    console.warn("[grader] bulk state fallback",e);
+  }
+
+  // Tương thích backend cũ.
   await Promise.all(lessons().map(async l=>{
     try{
       let res=await sb.rpc("practice_grader_my_submission_v12",{p_lesson_key:l.key});
-      if(res.error){
-        res=await sb.rpc("practice_grader_my_submission",{p_lesson_key:l.key});
-      }
+      if(res.error)res=await sb.rpc("practice_grader_my_submission",{p_lesson_key:l.key});
       if(res.error)throw res.error;
       const row=Array.isArray(res.data)?(res.data[0]||{submitted:false}):(res.data||{submitted:false});
       submissionCache.set(l.key,row);
-    }catch(e){submissionCache.set(l.key,{submitted:false})}
+    }catch(e){
+      submissionCache.set(l.key,{submitted:false,difficulty:l.difficulty});
+    }
   }));
+
   renderLessons();
   renderProgress();
 }
@@ -255,7 +289,215 @@ function readLessonIdentity(XLSX,wb){
   return map;
 }
 
+
+function rangeAddresses(XLSX,range){
+  if(!range)return [];
+  const r=XLSX.utils.decode_range(range);
+  const out=[];
+  for(let rr=r.s.r;rr<=r.e.r;rr++){
+    for(let cc=r.s.c;cc<=r.e.c;cc++){
+      out.push(XLSX.utils.encode_cell({r:rr,c:cc}));
+    }
+  }
+  return out;
+}
+function tableSame(actual,expected,strict=false){
+  const a=(actual||[]).filter(r=>!rowBlank(r));
+  const e=(expected||[]).filter(r=>!rowBlank(r));
+  if(a.length!==e.length)return false;
+  const width=Math.max(0,...e.map(r=>r.length));
+  for(let i=0;i<e.length;i++){
+    for(let j=0;j<width;j++){
+      const av=a[i]?.[j]??"";
+      const ev=e[i]?.[j]??"";
+      if(strict){
+        if(typeof ev==="number"){
+          if(typeof av!=="number"||Number(av)!==Number(ev))return false;
+        }else if(String(av)!==String(ev))return false;
+      }else{
+        if(String(norm(av))!==String(norm(ev)))return false;
+      }
+    }
+  }
+  return true;
+}
+function buildFormulaRows(l){
+  const funcs=l?.spec?.functions||[];
+  const f=funcs.join("|").toUpperCase();
+
+  if(/XLOOKUP|VLOOKUP|INDEX/.test(f)){
+    return [
+      ["Mã SP","Số lượng","Kết quả","","","Mã SP DM","Giá trị"],
+      ["SP01",2,"","","","SP01",120000],
+      ["SP02",5,"","","","SP02",85000],
+      ["SP03",3,"","","","SP03",210000],
+      ["SP04",8,"","","","SP04",45000],
+      ["SP05",4,"","","","SP05",160000]
+    ];
+  }
+  if(/SUMIF|COUNTIF/.test(f)){
+    return [
+      ["Nhóm","Số lượng","","","Kết quả"],
+      ["A",5,"","",""],
+      ["B",8,"","",""],
+      ["A",7,"","",""],
+      ["C",4,"","",""],
+      ["B",6,"","",""],
+      ["A",3,"","",""],
+      ["C",9,"","",""],
+      ["","","","Nhóm",""],
+      ["","","","A",""],
+      ["","","","B",""],
+      ["","","","C",""]
+    ];
+  }
+  if(/TODAY|DATE/.test(f)){
+    return [
+      ["Năm","Tháng","Ngày","Kết quả"],
+      [2026,8,1,""],
+      [2026,8,2,""],
+      [2026,8,3,""],
+      [2026,8,4,""],
+      [2026,8,5,""]
+    ];
+  }
+  if(/LEFT|RIGHT|MID|TEXTJOIN/.test(f)){
+    return [
+      ["Mã","Tên","Bộ phận","Kết quả"],
+      ["NV-QC-001","An","QC",""],
+      ["NV-PE-002","Bình","PE",""],
+      ["NV-QC-003","Chi","QC",""],
+      ["NV-MFG-004","Dũng","MFG",""],
+      ["NV-PE-005","Em","PE",""]
+    ];
+  }
+  return [
+    ["Mã","Giá trị 1","Giá trị 2","Kết quả","Nhóm"],
+    ["A",82,10,"","X"],
+    ["B",65,20,"","Y"],
+    ["C",91,30,"","X"],
+    ["D",74,40,"","Y"],
+    ["E",58,50,"","X"],
+    ["F",88,60,"","Y"],
+    ["G",70,70,"","X"],
+    ["H",95,80,"","Y"],
+    ["I",61,90,"","X"]
+  ];
+}
+async function buildSpecWorkbook(l){
+  const XLSX=await loadXLSX();
+  const wb=XLSX.utils.book_new();
+  const spec=l.spec||{};
+  const guide=[
+    `Bài: ${l.title}`,
+    l.description||"",
+    "Chỉ chỉnh sửa theo yêu cầu của bài. Không đổi tên sheet DuLieu.",
+    "Mỗi tài khoản chỉ được nộp chính thức 1 lần."
+  ];
+
+  if(spec.kind==="table"){
+    if(l.topic==="pq"){
+      const source=XLSX.utils.aoa_to_sheet(spec.input||spec.expected||[]);
+      XLSX.utils.book_append_sheet(wb,source,"Nguon1");
+
+      const reference=XLSX.utils.aoa_to_sheet(spec.expected||[]);
+      XLSX.utils.book_append_sheet(wb,reference,"Nguon2");
+
+      const header=(spec.expected?.[0]||[]);
+      const out=XLSX.utils.aoa_to_sheet([header]);
+      XLSX.utils.book_append_sheet(wb,out,"DuLieu");
+      guide.push("Dùng Power Query xử lý dữ liệu nguồn và đưa kết quả cuối vào sheet DuLieu.");
+    }else{
+      const ws=XLSX.utils.aoa_to_sheet(spec.input||[]);
+      XLSX.utils.book_append_sheet(wb,ws,"DuLieu");
+
+      if(l.topic==="input"){
+        const source=XLSX.utils.aoa_to_sheet(spec.expected||[]);
+        XLSX.utils.book_append_sheet(wb,source,"Nguon");
+        guide.push("Nhập dữ liệu vào DuLieu dựa trên sheet Nguon.");
+      }
+    }
+  }else if(spec.kind==="formula"){
+    const rows=buildFormulaRows(l);
+    const ws=XLSX.utils.aoa_to_sheet(rows);
+    XLSX.utils.book_append_sheet(wb,ws,"DuLieu");
+    guide.push(`Hoàn thành vùng ${spec.targetRange||"Kết quả"} bằng công thức Excel.`);
+    if((spec.functions||[]).length)guide.push(`Bài yêu cầu sử dụng: ${(spec.functions||[]).join(" + ")}.`);
+    guide.push("Không nhập tay kết quả thay cho công thức.");
+  }else if(spec.kind==="format"){
+    const ws=XLSX.utils.aoa_to_sheet(spec.input||[]);
+    XLSX.utils.book_append_sheet(wb,ws,"DuLieu");
+    guide.push(`Chỉ định dạng vùng ${spec.range||"B2:B6"}; không thay đổi giá trị.`);
+    guide.push("Định dạng phải đúng yêu cầu hiển thị của bài.");
+  }else{
+    const ws=XLSX.utils.aoa_to_sheet([["Chưa có dữ liệu"]]);
+    XLSX.utils.book_append_sheet(wb,ws,"DuLieu");
+  }
+
+  addGuide(XLSX,wb,`BÀI THỰC HÀNH: ${l.title}`,guide);
+  addLessonIdentity(XLSX,wb,l);
+  return {XLSX,wb};
+}
+
+function gradeSpecV18(XLSX,wb,l){
+  const spec=l.spec||{};
+  const {ws,rows}=sheetMatrix(XLSX,wb);
+
+  if(spec.kind==="table"){
+    const expected=spec.expected||[];
+    const headerOK=headersEq(rows[0]||[],expected[0]||[]);
+    const dataOK=tableSame(rows,expected,spec.compare==="strict");
+    const rowCountOK=(rows||[]).filter(r=>!rowBlank(r)).length===(expected||[]).filter(r=>!rowBlank(r)).length;
+    return enrichResult(makeChecks([
+      {label:"Đúng sheet DuLieu",points:20,ok:!!ws},
+      {label:"Đúng cấu trúc tiêu đề",points:20,ok:headerOK},
+      {label:"Đúng số bản ghi",points:20,ok:rowCountOK},
+      {label:l.topic==="pq"?"Kết quả Power Query đúng":"Dữ liệu kết quả đúng",points:40,ok:dataOK}
+    ]));
+  }
+
+  if(spec.kind==="formula"){
+    const addresses=rangeAddresses(XLSX,spec.targetRange);
+    const formulaCells=addresses.map(a=>cell(ws,a));
+    const hasAll=addresses.length>0&&formulaCells.every(isFormulaCell);
+    const functions=spec.functions||[];
+    const usesFns=hasAll&&functions.every(fn=>formulaCells.some(c=>hasFn(c?.f,fn)));
+    const coverage=addresses.length>0&&formulaCells.filter(isFormulaCell).length===addresses.length;
+
+    return enrichResult(makeChecks([
+      {label:"Đúng sheet DuLieu",points:20,ok:!!ws},
+      {label:"Có công thức thật",points:30,ok:hasAll},
+      {label:`Dùng đúng hàm ${functions.join(" + ")}`,points:30,ok:usesFns},
+      {label:"Công thức phủ đủ vùng yêu cầu",points:20,ok:coverage}
+    ]));
+  }
+
+  if(spec.kind==="format"){
+    const addresses=rangeAddresses(XLSX,spec.range);
+    const cells=addresses.map(a=>cell(ws,a));
+    const input=spec.input||[];
+    const expectedValues=input.slice(1).map(r=>r[1]);
+    const valuesOK=cells.length===expectedValues.length&&cells.every((c,i)=>Number(c?.v)===Number(expectedValues[i]));
+    const wanted=String(spec.numFmt||"").replace(/\s+/g,"").toLowerCase();
+    const formatOK=cells.length>0&&cells.every(c=>{
+      const z=String(c?.z||"").replace(/\s+/g,"").toLowerCase();
+      return z===wanted;
+    });
+
+    return enrichResult(makeChecks([
+      {label:"Đúng sheet DuLieu",points:20,ok:!!ws},
+      {label:"Giá trị không đổi",points:20,ok:valuesOK},
+      {label:"Đúng định dạng yêu cầu",points:60,ok:formatOK}
+    ]));
+  }
+
+  return enrichResult(makeChecks([
+    {label:"Rule chấm đã sẵn sàng",points:100,ok:false}
+  ]));
+}
+
 async function buildWorkbook(l){
+  if(l?.grader==="spec_v18")return await buildSpecWorkbook(l);
   const XLSX=await loadXLSX(),wb=XLSX.utils.book_new();
   const base=[["Mã NV","Họ tên","Bộ phận","Số lượng"],
     ["NV001","Nguyễn An","QC",12],["NV002","Trần Bình","PE",18],["NV003","Lê Chi","QC",15],["NV004","Phạm Dũng","MFG",22],
@@ -592,12 +834,19 @@ async function grade(l,file){
     throw new Error("WRONG_GRADER_FILE: File không khớp rule chấm của bài hiện tại.");
   }
 
-  const fn=GRADERS[l.grader];
-  if(!fn)throw new Error("GRADER_NOT_READY");
+  let result;
+  if(l.grader==="spec_v18"){
+    result=gradeSpecV18(XLSX,wb,l);
+  }else{
+    const fn=GRADERS[l.grader];
+    if(!fn)throw new Error("GRADER_NOT_READY");
+    result=fn(XLSX,wb);
+  }
 
-  const result=fn(XLSX,wb);
   result.checks=result.checks||[];
   result.score=Math.max(0,Math.min(Number(result.score)||0,Number(l.maxScore)||100));
+  result.grader=l.grader;
+  result.version="v18-full100";
   return result;
 }
 
