@@ -40,8 +40,30 @@
         return null;
       }
       try {
-        const { data, error } = await sb.auth.getUser();
-        STATE.user = error ? null : (data?.user || null);
+        // V41: session persisted locally is the first source of truth for UX.
+        // This prevents a temporary network/getUser error from looking like logout.
+        let sessionUser = null;
+
+        try {
+          const { data: sessionData } = await sb.auth.getSession();
+          sessionUser = sessionData?.session?.user || null;
+        } catch (e) {}
+
+        if (sessionUser) {
+          try {
+            const { data, error } = await sb.auth.getUser();
+            STATE.user = (!error && data?.user) ? data.user : sessionUser;
+          } catch (e) {
+            STATE.user = sessionUser;
+          }
+        } else {
+          try {
+            const { data, error } = await sb.auth.refreshSession();
+            STATE.user = (!error && data?.session?.user) ? data.session.user : null;
+          } catch (e) {
+            STATE.user = null;
+          }
+        }
       } catch (e) {
         STATE.user = null;
       }

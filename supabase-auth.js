@@ -328,9 +328,38 @@ function applyProgress(data) {
 
 async function getUser() {
   if (!supabase) return null;
-  const { data, error } = await supabase.auth.getUser();
-  if (error) return null;
-  return data.user || null;
+
+  /*
+    V41:
+    - Ưu tiên session đã persist trong localStorage.
+    - Không coi lỗi mạng tạm thời của getUser() là "đăng xuất".
+    - Supabase vẫn tự refresh token vì autoRefreshToken=true.
+  */
+  let sessionUser = null;
+
+  try {
+    const { data } = await supabase.auth.getSession();
+    sessionUser = data?.session?.user || null;
+  } catch (e) {}
+
+  if (sessionUser) {
+    try {
+      const { data, error } = await supabase.auth.getUser();
+      if (!error && data?.user) return data.user;
+    } catch (e) {}
+
+    // Có session local hợp lệ nhưng request xác thực mạng tạm lỗi:
+    // giữ trạng thái đăng nhập thay vì đẩy UI về "Đăng nhập".
+    return sessionUser;
+  }
+
+  // Không có session local: thử refresh một lần trước khi kết luận logout.
+  try {
+    const { data, error } = await supabase.auth.refreshSession();
+    if (!error && data?.session?.user) return data.session.user;
+  } catch (e) {}
+
+  return null;
 }
 
 async function getProfile(user) {
