@@ -406,12 +406,13 @@
       console.warn("Community pinned list",e);
     }
 
-    if(user?.id){
-      try{
-        const {data,error}=await client.rpc("is_admin_user");
-        if(!error)communityIsAdmin=Boolean(data);
-      }catch{}
-    }
+    try{
+      // V48.1: check Admin directly from the authenticated Supabase session.
+      // Do not depend on the local `user` variable already being populated,
+      // because the Community feed can load before currentUser() finishes.
+      const {data,error}=await client.rpc("is_admin_user");
+      if(!error)communityIsAdmin=Boolean(data);
+    }catch{}
   }
 
   async function setCommunityQuestionPinned(questionId,pinned){
