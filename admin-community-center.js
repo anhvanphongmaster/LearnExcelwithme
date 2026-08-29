@@ -433,7 +433,7 @@
 
     try{
       const [audience,stats]=await Promise.all([
-        rpc("admin_system_notification_audience",{p_notification_id:id}),
+        rpc("admin_system_notification_audience_v2",{p_notification_id:id}),
         rpc("admin_system_notification_stats",{p_notification_id:id})
       ]);
 
