@@ -264,3 +264,17 @@ body.dark .avp-grader-upload span{
     margin:0 auto;
   }
 }
+
+.avp-grader-live-badge{
+  display:inline-flex;
+  align-items:center;
+  margin-bottom:10px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#dff7e8;
+  border:1px solid #8ed7a8;
+  color:#145c32;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.04em;
+}

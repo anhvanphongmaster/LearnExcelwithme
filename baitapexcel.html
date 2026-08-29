@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="personal-dashboard.css">
 <link rel="stylesheet" href="cloud-sync-v11.css">
 <link href="theme-polish-v33.css" rel="stylesheet"/>
-<link rel="stylesheet" href="practice-grader.css?v=20260830-grader1">
+<link rel="stylesheet" href="practice-grader.css?v=20260830-visible2">
 </head>
 
 <body>
@@ -54,6 +54,45 @@
 
 
 <main>
+<section class="avp-grader-section" id="avpPracticeGrader">
+  <div class="avp-grader-live-badge">🟢 TỰ CHẤM FILE ĐANG HOẠT ĐỘNG</div>
+  <div class="avp-grader-head">
+    <span class="avp-grader-kicker">THỬ NGHIỆM · TỰ CHẤM FILE</span>
+    <h2>🧪 Bài mẫu: Xóa dòng trống</h2>
+    <p>
+      Tải file mẫu, xóa các dòng trống trong sheet <strong>DuLieu</strong>,
+      giữ nguyên dữ liệu còn lại rồi nộp lại để hệ thống chấm tự động.
+    </p>
+  </div>
+
+  <div class="avp-grader-rulebox">
+    <strong>Thang điểm 100</strong>
+    <div class="avp-grader-rules">
+      <span>20đ · Đúng sheet</span>
+      <span>20đ · Đúng tiêu đề</span>
+      <span>30đ · Không còn dòng trống</span>
+      <span>30đ · Giữ đủ 8 dòng dữ liệu</span>
+    </div>
+  </div>
+
+  <div class="avp-grader-actions">
+    <button type="button" class="avp-grader-download" id="avpGraderDownload">
+      ⬇️ Tải file thực hành
+    </button>
+
+    <label class="avp-grader-upload">
+      <input type="file" id="avpGraderFile" accept=".xlsx,.xls" hidden>
+      <span>📤 Nộp file đã làm</span>
+    </label>
+  </div>
+
+  <div class="avp-grader-status" id="avpGraderStatus">
+    File được đọc và chấm ngay trên thiết bị. Bản V1 chưa tải file của bạn lên server.
+  </div>
+
+  <div class="avp-grader-result" id="avpGraderResult" hidden></div>
+</section>
+
 
     <section class="exercise-section">
 
@@ -193,43 +232,7 @@
 
 </section>
 
-<section class="avp-grader-section" id="avpPracticeGrader">
-  <div class="avp-grader-head">
-    <span class="avp-grader-kicker">THỬ NGHIỆM · TỰ CHẤM FILE</span>
-    <h2>🧪 Bài mẫu: Xóa dòng trống</h2>
-    <p>
-      Tải file mẫu, xóa các dòng trống trong sheet <strong>DuLieu</strong>,
-      giữ nguyên dữ liệu còn lại rồi nộp lại để hệ thống chấm tự động.
-    </p>
-  </div>
 
-  <div class="avp-grader-rulebox">
-    <strong>Thang điểm 100</strong>
-    <div class="avp-grader-rules">
-      <span>20đ · Đúng sheet</span>
-      <span>20đ · Đúng tiêu đề</span>
-      <span>30đ · Không còn dòng trống</span>
-      <span>30đ · Giữ đủ 8 dòng dữ liệu</span>
-    </div>
-  </div>
-
-  <div class="avp-grader-actions">
-    <button type="button" class="avp-grader-download" id="avpGraderDownload">
-      ⬇️ Tải file thực hành
-    </button>
-
-    <label class="avp-grader-upload">
-      <input type="file" id="avpGraderFile" accept=".xlsx,.xls" hidden>
-      <span>📤 Nộp file đã làm</span>
-    </label>
-  </div>
-
-  <div class="avp-grader-status" id="avpGraderStatus">
-    File được đọc và chấm ngay trên thiết bị. Bản V1 chưa tải file của bạn lên server.
-  </div>
-
-  <div class="avp-grader-result" id="avpGraderResult" hidden></div>
-</section>
 
 </main>
 
@@ -259,7 +262,7 @@
 <script defer src="cloud-sync-v11.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script defer src="practice-grader.js?v=20260830-grader1"></script>
+<script defer src="practice-grader.js?v=20260830-visible2"></script>
 
 </body>
 </html>
