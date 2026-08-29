@@ -1,5 +1,23 @@
 (function(){
   "use strict";
+
+  function closeAllFloatingChatPanels(){
+    ["avpChatPanel","avpAdminFloatPanel","avpGuestChatPanel"].forEach(id=>{
+      const panel=document.getElementById(id);
+      if(panel) panel.hidden=true;
+    });
+  }
+
+  window.addEventListener('avp:surface-open',e=>{
+    if(e.detail?.surface!=='chat') closeAllFloatingChatPanels();
+  });
+
+  document.addEventListener('click',e=>{
+    if(e.target?.closest?.('#avpChatBubble')){
+      window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
+    }
+  },true);
+
   if(window.__AVP_ADMIN_CHAT_LOADED__) return;
   window.__AVP_ADMIN_CHAT_LOADED__=true;
 

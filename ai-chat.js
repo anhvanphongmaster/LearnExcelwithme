@@ -46,6 +46,16 @@
     return false;
   }
 
+  function announceAiHubOpen(){
+    window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
+  }
+
+  window.addEventListener('avp:surface-open',e=>{
+    if(e.detail?.surface==='aihub') return;
+    const panel=$("avpAiChatPanel");
+    if(panel) panel.hidden=true;
+  });
+
   function mount(){
     if($("avpAiChatRoot")) return;
 
@@ -149,6 +159,7 @@
 
     $("avpAiChatBubble").onclick=async()=>{
       activeMode="ai";
+      announceAiHubOpen();
       await toggle(true);
       await switchMode("ai");
     };
@@ -1856,6 +1867,7 @@
     const p=$("avpAiChatPanel");
     if(!p)return;
 
+    announceAiHubOpen();
     p.hidden=false;
     await switchMode("community");
 
@@ -1867,6 +1879,7 @@
   async function openAiPanel(){
     const p=$("avpAiChatPanel");
     if(!p)return;
+    announceAiHubOpen();
     p.hidden=false;
     await switchMode("ai");
   }
@@ -1881,6 +1894,7 @@
     notifications:async()=>{
       const p=$("avpAiChatPanel");
       if(!p)return;
+      announceAiHubOpen();
       p.hidden=false;
       await switchMode("notifications");
     }

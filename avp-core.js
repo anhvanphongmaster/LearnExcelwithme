@@ -38,7 +38,9 @@
   }
   const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); const attr=esc;
   const ago=t=>{const m=Math.max(0,Math.floor((Date.now()-t)/60000));if(m<1)return'Vừa xem';if(m<60)return`${m} phút trước`;const h=Math.floor(m/60);if(h<24)return`${h} giờ trước`;return`${Math.floor(h/24)} ngày trước`};
-  function openHub(){setEdgeMenu(false);back.classList.add('open');hub.innerHTML=renderHub();hub.querySelector('.avp-hub-close').onclick=closeHub;hub.querySelector('[data-export]').onclick=exportData;hub.querySelector('[data-import]').onchange=importData}
+  function openHub(){
+    window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'learning'}}));
+    setEdgeMenu(false);back.classList.add('open');hub.innerHTML=renderHub();hub.querySelector('.avp-hub-close').onclick=closeHub;hub.querySelector('[data-export]').onclick=exportData;hub.querySelector('[data-import]').onchange=importData}
   function closeHub(){back.classList.remove('open')}
   function exportData(){const data={version:2,exportedAt:new Date().toISOString(),origin:'LearnExcelwithme',storage:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(/^(avp_|completedCourses|currentCourse|quizBestScore|dashboardLots|theme)/.test(k)))data.storage[k]=localStorage.getItem(k)}const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`learn-excel-progress-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href);toast('Đã xuất tiến độ')}
   function importData(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||d.origin!=='LearnExcelwithme'||!d.storage)throw 0;Object.entries(d.storage).forEach(([k,v])=>localStorage.setItem(k,v));toast('Đã khôi phục tiến độ');setTimeout(()=>location.reload(),700)}catch{(window.avpAlert?window.avpAlert('File tiến độ không hợp lệ.',{title:"Excel",icon:"📥",tone:"ok"}):alert('File tiến độ không hợp lệ.'))}};r.readAsText(f)}
@@ -552,17 +554,47 @@
       hideMiniPreview();
       setEdgeMenu(false);
 
+      const aiPanel=document.getElementById('avpAiChatPanel');
+      const chatPanels=[
+        document.getElementById('avpChatPanel'),
+        document.getElementById('avpAdminFloatPanel'),
+        document.getElementById('avpGuestChatPanel')
+      ].filter(Boolean);
+
       if(action==='learning'){
+        if(back.classList.contains('open')){
+          closeHub();
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'learning'}}));
         openHub();
       }else if(action==='community'){
+        const communityAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpCommunityMode')?.hidden;
+        if(communityAlreadyOpen){
+          aiPanel.hidden=true;
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
         if(window.AVPCommunity?.open){
           window.AVPCommunity.open();
         }else{
           toast('Cộng đồng đang tải, thử lại sau một chút');
         }
       }else if(action==='chat'){
+        const chatAlreadyOpen=chatPanels.some(p=>!p.hidden);
+        if(chatAlreadyOpen){
+          chatPanels.forEach(p=>p.hidden=true);
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
         clickHiddenTool('avpChatBubble','Chat Admin');
       }else if(action==='ai'){
+        const aiAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpAiMode')?.hidden;
+        if(aiAlreadyOpen){
+          aiPanel.hidden=true;
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
         clickHiddenTool('avpAiChatBubble','AI Chat');
       }
     });
@@ -867,6 +899,10 @@
   document.addEventListener('pointerdown',e=>{
     if(!launcher.contains(e.target))setEdgeMenu(false);
   },{passive:true});
+
+  window.addEventListener('avp:surface-open',e=>{
+    if(e.detail?.surface!=='learning') closeHub();
+  });
 
   back.addEventListener('click',e=>{if(e.target===back)closeHub()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHub()});
