@@ -1,4 +1,16 @@
 (() => {
+
+  /* AVP UI POLISH V40 — global, lightweight, non-blocking */
+  (() => {
+    const id = "avp-ui-polish-v40";
+    if (document.getElementById(id)) return;
+    const link = document.createElement("link");
+    link.id = id;
+    link.rel = "stylesheet";
+    link.href = "avp-ui-polish-v40.css?v=20260830-v40";
+    document.head.appendChild(link);
+  })();
+
   const KEY_HISTORY='avp_learning_history_v2', KEY_BOOK='avp_bookmarks_v2';
   const IGNORE=new Set(['auth.html','admin.html','privacy.html','terms.html','disclaimer.html','open-source.html','lienhe.html','gioithieu.html']);
   const page=location.pathname.split('/').pop()||'index.html';
