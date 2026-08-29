@@ -631,7 +631,7 @@
       box.innerHTML=list.length?list.map(m=>msgHtml(m,false)).join(""):'<div class="avp-chat-empty">Bạn chưa có tin nhắn. Có gì cần hỗ trợ cứ nhắn cho Admin nhé.</div>';
       await hydrateAttachmentUrls(box);
       await hydrateReactions(box);
-      scrollChatBoxToLatest(box);
+      box.scrollTop=box.scrollHeight;
     }catch(e){box.innerHTML='<div class="avp-chat-empty">Chưa tải được hộp thư. Hãy kiểm tra SQL chat trong Supabase.</div>';console.warn("AVP chat load",e)}
   }
   async function sendUserMessage(){
@@ -759,10 +759,7 @@
       if(files.length){for(let i=0;i<files.length;i++){const meta=await uploadChatFile(files[i],"admin",activeThread);await rpc("avp_chat_admin_send_message",{p_thread_id:activeThread,p_body:makeAttachmentBody(meta,i===0?body:"")})}}
       else await rpc("avp_chat_admin_send_message",{p_thread_id:activeThread,p_body:body});
       input.value="";pendingFiles.admin=[];previewFiles("admin","adminChatFilePreview");await openAdminThread(activeThread);
-    }catch(e){alert("Không gửi được phản hồi hoặc file.");console.warn(e)}finally{
-      btn.disabled=false;
-      try{input.focus({preventScroll:true})}catch{input.focus()}
-    }
+    }catch(e){alert("Không gửi được phản hồi hoặc file.");console.warn(e)}finally{btn.disabled=false;input.focus()}
   }
   async function initAdmin(){
     if(!(await isAdmin()))return;
@@ -838,10 +835,9 @@
           <aside class="avp-admin-float-threads" id="avpAdminFloatThreads"><div class="avp-chat-empty">Đang tải học viên…</div></aside>
           <section class="avp-admin-float-conversation">
             <header class="avp-admin-float-person"><strong id="avpAdminFloatPerson">Chọn một học viên</strong><small id="avpAdminFloatEmail">Tin nhắn sẽ hiện ở đây.</small></header>
-            <div class="avp-chat-message-stage" style="position:relative;min-height:0;flex:1;display:flex;flex-direction:column">
-              <div class="avp-chat-messages" id="avpAdminFloatMessages" style="min-height:0;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain"><div class="avp-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
-              <button id="avpAdminFloatLatest" type="button" aria-label="Xem tin mới nhất" title="Tin mới nhất"
-                style="position:absolute;right:10px;bottom:10px;z-index:5;border:1px solid #cfe0d6;border-radius:999px;background:#fff;color:#217346;padding:7px 10px;font-weight:800;font-size:11px;box-shadow:0 5px 15px rgba(21,64,42,.14);cursor:pointer">↓ Tin mới nhất</button>
+            <div class="avp-admin-float-message-stage">
+              <div class="avp-chat-messages" id="avpAdminFloatMessages"><div class="avp-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
+              <button class="avp-admin-float-latest" id="avpAdminFloatLatest" type="button" hidden>↓ Tin mới nhất</button>
             </div>
             <div class="avp-chat-file-preview" id="avpAdminFloatFilePreview" hidden></div>
             <div class="avp-chat-compose avp-admin-float-compose">
@@ -861,26 +857,27 @@
       p.hidden=!open;
       if(open){await loadFloatingAdminThreads();}
     });
-    $("avpAdminFloatClose").addEventListener("click",()=>{$("avpAdminFloatPanel").hidden=true});
+    $("avpAdminFloatClose").addEventListener("click",()=>{
+      $("avpAdminFloatPanel").hidden=true;
+      floatReadingHistory=false;
+    });
     $("avpAdminFloatSearch").addEventListener("input",e=>renderFloatingAdminThreads(e.target.value));
     $("avpAdminFloatRefresh").addEventListener("click",loadFloatingAdminThreads);
     $("avpAdminFloatSend").addEventListener("click",sendFloatingAdminMessage);
 
-    const floatMessages=$("avpAdminFloatMessages");
-    const latestBtn=$("avpAdminFloatLatest");
+    const floatBox=$("avpAdminFloatMessages");
+    floatBox?.addEventListener("scroll",()=>{
+      if(!floatProgrammaticScroll){
+        floatReadingHistory=!floatNearBottom(floatBox);
+      }
+      floatSyncLatestButton();
+    },{passive:true});
 
-    const syncLatestButton=()=>{
-      if(!floatMessages||!latestBtn)return;
-      const distance=floatMessages.scrollHeight-floatMessages.scrollTop-floatMessages.clientHeight;
-      latestBtn.hidden=distance<50;
-    };
-
-    latestBtn?.addEventListener("click",()=>{
-      scrollChatBoxToLatest(floatMessages,{smooth:true});
-      setTimeout(syncLatestButton,320);
+    $("avpAdminFloatLatest")?.addEventListener("click",()=>{
+      floatReadingHistory=false;
+      floatScrollLatest({smooth:true});
+      setTimeout(floatSyncLatestButton,380);
     });
-
-    floatMessages?.addEventListener("scroll",syncLatestButton,{passive:true});
 
     bindFilePicker("float","avpAdminFloatFile","avpAdminFloatFilePreview");
     $("avpAdminFloatReply").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendFloatingAdminMessage()}});
@@ -915,65 +912,107 @@
   }
 
 
-  function scrollChatBoxToLatest(box,{smooth=false}={}){
+  let floatReadingHistory=false;
+  let floatProgrammaticScroll=false;
+
+  function floatNearBottom(box,threshold=70){
+    if(!box)return true;
+    return (box.scrollHeight-box.scrollTop-box.clientHeight)<=threshold;
+  }
+
+  function floatScrollLatest({smooth=false}={}){
+    const box=$("avpAdminFloatMessages");
+    if(!box)return;
+    floatProgrammaticScroll=true;
+    const top=Math.max(0,box.scrollHeight-box.clientHeight);
+    try{
+      box.scrollTo({top,behavior:smooth?"smooth":"auto"});
+    }catch{
+      box.scrollTop=top;
+    }
+    floatReadingHistory=false;
+    setTimeout(()=>{floatProgrammaticScroll=false},smooth?350:40);
+  }
+
+  function floatSyncLatestButton(){
+    const box=$("avpAdminFloatMessages");
+    const btn=$("avpAdminFloatLatest");
+    if(!box||!btn)return;
+    const near=floatNearBottom(box);
+    btn.hidden=near;
+    if(!floatProgrammaticScroll){
+      floatReadingHistory=!near;
+    }
+  }
+
+  async function refreshFloatingAdminMessages({forceLatest=false}={}){
+    if(!floatActiveThread)return;
+
+    const box=$("avpAdminFloatMessages");
     if(!box)return;
 
-    // Chỉ cuộn vùng tin nhắn, tuyệt đối không cuộn document/page.
-    box.style.overflowY="auto";
-    box.style.overscrollBehavior="contain";
-    box.style.webkitOverflowScrolling="touch";
+    const wasNearBottom=floatNearBottom(box);
+    const oldTop=box.scrollTop;
+    const oldHeight=box.scrollHeight;
 
-    const go=()=>{
-      const top=Math.max(0,box.scrollHeight-box.clientHeight);
-      try{
-        box.scrollTo({
-          top,
-          behavior:smooth?"smooth":"auto"
-        });
-      }catch{
-        box.scrollTop=top;
-      }
-    };
+    const rows=await rpc("avp_chat_admin_messages",{
+      p_thread_id:floatActiveThread,
+      p_limit:300
+    }).catch(()=>[]);
 
-    // Nội dung ảnh/file có thể làm chiều cao thay đổi sau khi render.
-    // Cuộn lại vài nhịp để chắc chắn tới đúng tin cuối.
-    go();
-    requestAnimationFrame(()=>{
-      go();
-      requestAnimationFrame(go);
-    });
-    setTimeout(go,80);
-    setTimeout(go,260);
+    const list=Array.isArray(rows)?rows:[];
+    box.innerHTML=list.length
+      ? list.map(m=>msgHtml(m,true)).join("")
+      : '<div class="avp-chat-empty">Chưa có tin nhắn.</div>';
 
-    box.querySelectorAll("img").forEach(img=>{
-      if(!img.complete){
-        img.addEventListener("load",go,{once:true});
-        img.addEventListener("error",go,{once:true});
-      }
-    });
+    await hydrateAttachmentUrls(box);
+    await hydrateReactions(box);
+    await hydrateAdminReadReceipts(box,floatActiveThread);
+
+    if(forceLatest || (!floatReadingHistory && wasNearBottom)){
+      requestAnimationFrame(()=>floatScrollLatest());
+      setTimeout(()=>floatScrollLatest(),100);
+    }else{
+      // Giữ đúng vị trí người dùng đang đọc, không kéo về cuối.
+      const delta=Math.max(0,box.scrollHeight-oldHeight);
+      floatProgrammaticScroll=true;
+      box.scrollTop=Math.max(0,oldTop+delta);
+      setTimeout(()=>{floatProgrammaticScroll=false;floatSyncLatestButton()},40);
+    }
+
+    requestAnimationFrame(floatSyncLatestButton);
   }
 
   async function openFloatingAdminThread(id){
+    if(!id)return;
+
+    const isSwitch=String(floatActiveThread||"")!==String(id||"");
     floatActiveThread=id;
+
     renderFloatingAdminThreads($("avpAdminFloatSearch")?.value||"");
-    const t=floatThreads.find(x=>x.thread_id===id);
+
+    const t=floatThreads.find(x=>String(x.thread_id)===String(id));
     if($("avpAdminFloatPerson"))$("avpAdminFloatPerson").textContent=t?.display_name||"Người học";
     if($("avpAdminFloatEmail"))$("avpAdminFloatEmail").textContent=t?.email||"";
-    const input=$("avpAdminFloatReply"),send=$("avpAdminFloatSend");
-    if(input)input.disabled=false;if(send)send.disabled=false;
+
+    const input=$("avpAdminFloatReply");
+    const send=$("avpAdminFloatSend");
+    if(input)input.disabled=false;
+    if(send)send.disabled=false;
+
     try{
-      const rows=await rpc("avp_chat_admin_messages",{p_thread_id:id,p_limit:300});
-      const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
-      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,id);scrollChatBoxToLatest(box);}
+      // Khi người dùng chủ động chọn/mở hội thoại:
+      // luôn mặc định ở tin mới nhất.
+      floatReadingHistory=false;
+      await refreshFloatingAdminMessages({forceLatest:true});
+
       await rpc("avp_chat_admin_mark_read",{p_thread_id:id});
       await loadFloatingAdminThreads();
 
-      const latestBtn=$("avpAdminFloatLatest");
-      if(latestBtn)latestBtn.hidden=true;
-
-      // Không tự focus textarea khi chỉ bấm chọn hội thoại.
-      // Trên mobile/Safari, focus() sẽ kéo viewport và làm phần trên của khung chat bị che.
-    }catch(e){console.warn("AVP floating admin open",e)}
+      // Không focus textarea khi chỉ mở chat -> tránh kéo cả trang/mobile giật.
+    }catch(e){
+      console.warn("AVP floating admin open",e);
+    }
   }
 
   async function sendFloatingAdminMessage(){
@@ -989,7 +1028,8 @@
         }
       }else await rpc("avp_chat_admin_send_message",{p_thread_id:floatActiveThread,p_body:body});
       input.value="";pendingFiles.float=[];previewFiles("float","avpAdminFloatFilePreview");
-      await openFloatingAdminThread(floatActiveThread);
+      floatReadingHistory=false;
+      await refreshFloatingAdminMessages({forceLatest:true});
     }catch(e){
       const detail=e?.message||e?.error_description||String(e||"");
       alert("Không gửi được file. "+(detail?"Lỗi: "+detail:""));
@@ -997,7 +1037,6 @@
     }finally{
       btn.disabled=false;
       try{input.focus({preventScroll:true})}catch{}
-      scrollChatBoxToLatest($("avpAdminFloatMessages"),{smooth:true});
     }
   }
 
@@ -1008,10 +1047,12 @@
     clearInterval(floatPoll);
     floatPoll=setInterval(async()=>{
       await loadFloatingAdminThreads();
-      if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden){
-        const rows=await rpc("avp_chat_admin_messages",{p_thread_id:floatActiveThread,p_limit:300}).catch(()=>[]);
-        const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
-        if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,floatActiveThread);scrollChatBoxToLatest(box);}
+      if(
+        floatActiveThread &&
+        $("avpAdminFloatPanel") &&
+        !$("avpAdminFloatPanel").hidden
+      ){
+        await refreshFloatingAdminMessages({forceLatest:false});
       }
     },15000);
     try{
@@ -1053,7 +1094,7 @@
               $("avpAdminFloatPanel") &&
               !$("avpAdminFloatPanel").hidden
             ){
-              await openFloatingAdminThread(floatActiveThread);
+              await refreshFloatingAdminMessages({forceLatest:false});
             }
           }
         )

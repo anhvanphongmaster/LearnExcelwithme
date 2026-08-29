@@ -465,3 +465,117 @@
     font-size:8.5px !important;
   }
 }
+
+
+/* =========================================================
+   AVP ADMIN FLOAT CHAT - SCROLL/LAYOUT FINAL
+   ========================================================= */
+
+.avp-admin-float-panel{
+  overflow:hidden !important;
+}
+
+.avp-admin-float-body{
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+
+.avp-admin-float-conversation{
+  min-height:0 !important;
+  overflow:hidden !important;
+  display:flex !important;
+  flex-direction:column !important;
+}
+
+.avp-admin-float-person{
+  flex:0 0 auto !important;
+}
+
+.avp-admin-float-message-stage{
+  position:relative;
+  flex:1 1 auto;
+  min-height:0;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+.avp-admin-float-conversation #avpAdminFloatMessages{
+  flex:1 1 auto !important;
+  min-height:0 !important;
+  height:0 !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  overscroll-behavior:contain !important;
+  -webkit-overflow-scrolling:touch !important;
+  touch-action:pan-y !important;
+  scroll-behavior:auto !important;
+}
+
+.avp-admin-float-compose,
+#avpAdminFloatFilePreview{
+  flex:0 0 auto !important;
+}
+
+.avp-admin-float-latest{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  z-index:8;
+  border:1px solid #cfe0d6;
+  border-radius:999px;
+  background:#fff;
+  color:#217346;
+  padding:7px 11px;
+  font:inherit;
+  font-size:10px;
+  font-weight:850;
+  box-shadow:0 5px 16px rgba(21,64,42,.14);
+  cursor:pointer;
+}
+
+.avp-admin-float-latest[hidden]{
+  display:none !important;
+}
+
+/* Desktop: toàn bộ hộp luôn nằm gọn trong viewport */
+.avp-admin-float-panel{
+  max-height:calc(100dvh - 24px) !important;
+  bottom:12px !important;
+}
+
+/* Mobile: ưu tiên hội thoại, vẫn giữ vùng nhập tin luôn nhìn thấy */
+@media(max-width:800px){
+  .avp-admin-float-panel{
+    top:8px !important;
+    bottom:8px !important;
+    left:8px !important;
+    right:8px !important;
+    width:auto !important;
+    height:auto !important;
+    max-height:none !important;
+  }
+
+  .avp-admin-float-body{
+    grid-template-columns:1fr !important;
+    grid-template-rows:minmax(90px,26%) minmax(0,1fr) !important;
+  }
+
+  .avp-admin-float-threads{
+    min-height:0 !important;
+    overflow-y:auto !important;
+    overscroll-behavior:contain !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  .avp-admin-float-conversation{
+    min-height:0 !important;
+  }
+
+  .avp-admin-float-compose{
+    position:relative !important;
+    z-index:5 !important;
+    background:#fff !important;
+  }
+}
+
