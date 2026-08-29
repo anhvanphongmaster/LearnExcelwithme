@@ -41,6 +41,14 @@ function loadXLSX(){
   return xlsxPromise;
 }
 function esc(s){return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function centerTab(btn){
+  try{btn?.scrollIntoView({behavior:"smooth",block:"nearest",inline:"center"})}catch(e){}
+}
+function resetLessonScroll(){
+  const box=$("pgLessonScroll");
+  if(box)box.scrollTo({top:0,behavior:"smooth"});
+}
+
 const norm=v=>v===null||v===undefined?"":(typeof v==="string"?v.trim():v);
 const rowBlank=row=>(row||[]).every(v=>String(norm(v))==="");
 const col=(rows,i)=>rows.map(r=>r?.[i]);
@@ -52,7 +60,7 @@ const proper=s=>cleanSpace(s).toLocaleLowerCase("vi-VN").replace(/(^|[\s-])\p{L}
 function renderTopicTabs(){
   const root=$("pgTopicTabs");if(!root)return;
   root.innerHTML=TOPICS.map(([id,label])=>`<button type="button" class="pg-topic${id===currentTopic?" active":""}" data-topic="${id}">${label}</button>`).join("");
-  root.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>{currentTopic=b.dataset.topic;renderTopicTabs();renderLessons()});
+  root.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>{currentTopic=b.dataset.topic;renderTopicTabs();renderLessons();resetLessonScroll();setTimeout(()=>centerTab(document.querySelector(`[data-topic="${currentTopic}"]`)),30)});
 }
 function filteredLessons(){
   return lessons().slice()
@@ -406,8 +414,8 @@ async function loadLeaderboard(){
 
 function bind(){
   renderTopicTabs();
-  qa("[data-pg-difficulty]").forEach(b=>b.onclick=()=>{currentDifficulty=b.dataset.pgDifficulty;qa("[data-pg-difficulty]").forEach(x=>x.classList.toggle("active",x===b));renderLessons()});
-  qa("[data-rank-difficulty]").forEach(b=>b.onclick=()=>{currentRankDifficulty=b.dataset.rankDifficulty;qa("[data-rank-difficulty]").forEach(x=>x.classList.toggle("active",x===b));loadLeaderboard()});
+  qa("[data-pg-difficulty]").forEach(b=>b.onclick=()=>{currentDifficulty=b.dataset.pgDifficulty;qa("[data-pg-difficulty]").forEach(x=>x.classList.toggle("active",x===b));renderLessons();resetLessonScroll();centerTab(b)});
+  qa("[data-rank-difficulty]").forEach(b=>b.onclick=()=>{currentRankDifficulty=b.dataset.rankDifficulty;qa("[data-rank-difficulty]").forEach(x=>x.classList.toggle("active",x===b));centerTab(b);const box=$("pgBoardScroll");if(box)box.scrollTo({top:0,behavior:"smooth"});loadLeaderboard()});
   $("pgSubmitConfirm")?.addEventListener("click",submitOfficial);
   $("pgSubmitCancel")?.addEventListener("click",closeSubmit);
   $("pgSubmitClose")?.addEventListener("click",closeSubmit);

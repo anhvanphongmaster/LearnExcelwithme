@@ -141,3 +141,116 @@ body.pg-publish-open{overflow:hidden}
   .pg-engine-summary{margin-top:7px;white-space:normal}
   .pg-topic-panels{grid-template-columns:1fr}
 }
+
+
+/* ===== V8 - TIKTOK-LIKE PRACTICE LAYOUT ===== */
+#phBranchGrader{min-width:0}
+.pg-daily-board{
+  margin:0 0 14px;
+  padding:14px;
+  border:1px solid #dce8e1;
+  border-radius:18px;
+  background:linear-gradient(180deg,#fff,#f8fbf9);
+  box-shadow:0 8px 24px rgba(24,76,47,.06);
+}
+.pg-daily-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.pg-daily-kicker{display:block;color:#1b6a40;font-size:9px;font-weight:950;letter-spacing:.1em}
+.pg-daily-head h2{margin:4px 0 3px;font-size:18px;color:#214f36}
+.pg-daily-head p{margin:0;color:#75877d;font-size:11px;line-height:1.45}
+.pg-daily-live{display:inline-flex;gap:6px;align-items:center;flex:0 0 auto;padding:6px 9px;border-radius:999px;background:#edf8f1;color:#1d6b42;font-size:9px;font-weight:950}
+.pg-daily-live i{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px rgba(29,107,66,.1)}
+
+.pg-rank-tabs,.pg-scroll-tabs{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  overscroll-behavior-inline:contain;
+  scroll-snap-type:x proximity;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.pg-rank-tabs::-webkit-scrollbar,.pg-scroll-tabs::-webkit-scrollbar{display:none}
+.pg-rank-tabs{margin-top:11px;padding-bottom:2px}
+.pg-rank-tabs button,.pg-engine-filter button,.pg-topic-tabs button{
+  scroll-snap-align:center;
+  flex:0 0 auto;
+}
+
+.pg-board-scroll{
+  margin-top:10px;
+  max-height:300px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  border:1px solid #e1ebe5;
+  border-radius:13px;
+  background:#fff;
+}
+.pg-board-list{margin:0!important;padding:7px!important}
+.pg-board-row{margin:0!important;border-radius:10px}
+.pg-board-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px}
+.pg-board-bottom>span{color:#87968e;font-size:9.5px}
+.pg-board-refresh{min-height:31px;padding:0 10px}
+
+.pg-practice-toolbar{
+  margin:0 0 12px;
+  padding:12px;
+  border:1px solid #dce8e1;
+  border-radius:16px;
+  background:#fff;
+}
+.pg-practice-toolbar .pg-topic-tabs{margin:0 0 9px}
+.pg-practice-toolbar .pg-engine-filter{margin:0}
+.pg-engine-summary{margin-top:8px!important}
+
+.pg-lesson-frame{
+  border:1px solid #dce8e1;
+  border-radius:18px;
+  background:#fff;
+  overflow:hidden;
+  box-shadow:0 8px 24px rgba(24,76,47,.05);
+}
+.pg-lesson-frame-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  border-bottom:1px solid #e6eee9;
+  background:#f9fbfa;
+}
+.pg-lesson-frame-head span{display:block;color:#74867c;font-size:8.5px;font-weight:950;letter-spacing:.1em}
+.pg-lesson-frame-head h3{margin:3px 0 0;color:#25543a;font-size:15px}
+.pg-lesson-frame-head small{color:#899991;font-size:9.5px;white-space:nowrap}
+.pg-lesson-scroll{
+  max-height:680px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth;
+  padding:12px;
+}
+.pg-topic-panels{margin:0!important}
+.pg-card{scroll-margin-top:12px}
+
+body.dark-mode .pg-daily-board,
+body.dark-mode .pg-practice-toolbar,
+body.dark-mode .pg-lesson-frame{background:#15231b;border-color:#30483a}
+body.dark-mode .pg-board-scroll{background:#122019;border-color:#30483a}
+body.dark-mode .pg-lesson-frame-head{background:#17271e;border-color:#30483a}
+body.dark-mode .pg-daily-head h2,
+body.dark-mode .pg-lesson-frame-head h3{color:#b7e9c8}
+body.dark-mode .pg-daily-head p,
+body.dark-mode .pg-board-bottom>span,
+body.dark-mode .pg-lesson-frame-head small{color:#91a79a}
+
+@media(max-width:700px){
+  .pg-daily-board{padding:12px;border-radius:16px}
+  .pg-daily-head h2{font-size:16px}
+  .pg-daily-live{padding:5px 8px}
+  .pg-board-scroll{max-height:255px}
+  .pg-practice-toolbar{padding:10px}
+  .pg-lesson-scroll{max-height:62vh;padding:9px}
+  .pg-lesson-frame-head{padding:10px 11px}
+  .pg-topic-panels{grid-template-columns:1fr!important}
+}
