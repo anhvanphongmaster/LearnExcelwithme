@@ -762,80 +762,119 @@ body.race-mode-open{
 
 
 /* =========================================================
-   EXCEL RACE — CORRECT ANSWER EFFECT V2
+   EXCEL RACE FEEDBACK V4 — đúng / sai / rung
    ========================================================= */
-.ans button.race-correct-pop{
-  animation: raceCorrectBtn .55s cubic-bezier(.2,.85,.25,1) !important;
+.ans button.race-answer-ok-fx{
+  animation:raceAnswerOk .58s cubic-bezier(.2,.85,.25,1) !important;
   background:#16a34a !important;
   border-color:#86efac !important;
   color:#fff !important;
-  box-shadow:
-    0 0 0 5px rgba(74,222,128,.22),
-    0 0 28px rgba(34,197,94,.52) !important;
+  box-shadow:0 0 0 5px rgba(74,222,128,.22),0 0 30px rgba(34,197,94,.55) !important;
 }
 
-.panel.race-correct-panel{
-  animation: raceCorrectPanel .55s ease-out;
+.ans button.race-answer-bad-fx{
+  animation:raceAnswerBad .68s ease-out !important;
+  background:#991b1b !important;
+  border-color:#f87171 !important;
+  color:#fff !important;
+  box-shadow:0 0 0 5px rgba(248,113,113,.18),0 0 30px rgba(239,68,68,.46) !important;
 }
 
-.race-correct-burst{
+.panel.race-panel-ok-fx{
+  animation:racePanelOk .58s ease-out;
+}
+
+.panel.race-panel-bad-fx{
+  animation:racePanelBad .7s ease-out;
+}
+
+.race-screen-shake{
+  animation:raceScreenShake .52s ease-out;
+}
+
+.race-answer-pop{
   position:fixed;
   left:50%;
-  top:46%;
-  z-index:10040;
+  top:45%;
+  z-index:10050;
   display:flex;
   align-items:center;
   gap:8px;
+  padding:10px 16px;
+  border-radius:999px;
   transform:translate(-50%,-50%) scale(.6);
   opacity:0;
   pointer-events:none;
-  padding:10px 16px;
-  border:1px solid rgba(134,239,172,.72);
-  border-radius:999px;
-  background:rgba(6,78,59,.94);
-  color:#ecfdf5;
-  box-shadow:0 12px 38px rgba(22,163,74,.38);
-  transition:transform .18s ease-out,opacity .18s ease-out;
+  transition:transform .16s ease-out,opacity .16s ease-out;
+  color:#fff;
+  font-weight:950;
+  letter-spacing:.06em;
+  box-shadow:0 16px 40px rgba(0,0,0,.3);
 }
 
-.race-correct-burst.show{
-  transform:translate(-50%,-50%) scale(1);
+.race-answer-pop.ok{
+  background:rgba(6,95,70,.96);
+  border:1px solid rgba(134,239,172,.8);
+}
+
+.race-answer-pop.bad{
+  background:rgba(127,29,29,.97);
+  border:1px solid rgba(252,165,165,.82);
+}
+
+.race-answer-pop.show{
   opacity:1;
+  transform:translate(-50%,-50%) scale(1);
 }
 
-.race-correct-burst span{
+.race-answer-pop span{
   width:30px;
   height:30px;
   display:grid;
   place-items:center;
   border-radius:50%;
-  background:#4ade80;
-  color:#052e16;
-  font-size:20px;
-  font-weight:950;
+  background:rgba(255,255,255,.92);
+  color:#0f172a;
+  font-size:21px;
+  line-height:1;
 }
 
-.race-correct-burst b{
-  font-size:15px;
-  letter-spacing:.08em;
-}
-
-@keyframes raceCorrectBtn{
+@keyframes raceAnswerOk{
   0%{transform:scale(1)}
-  35%{transform:scale(1.045)}
-  65%{transform:scale(.985)}
+  34%{transform:scale(1.055)}
+  68%{transform:scale(.985)}
   100%{transform:scale(1)}
 }
 
-@keyframes raceCorrectPanel{
-  0%{box-shadow:0 0 0 rgba(74,222,128,0)}
-  38%{box-shadow:0 0 0 3px rgba(74,222,128,.34),0 0 26px rgba(34,197,94,.22)}
-  100%{box-shadow:0 0 0 rgba(74,222,128,0)}
+@keyframes raceAnswerBad{
+  0%{transform:translateX(0)}
+  18%{transform:translateX(-8px)}
+  36%{transform:translateX(7px)}
+  54%{transform:translateX(-5px)}
+  72%{transform:translateX(3px)}
+  100%{transform:translateX(0)}
+}
+
+@keyframes racePanelOk{
+  0%,100%{box-shadow:none}
+  40%{box-shadow:0 0 0 3px rgba(74,222,128,.34),0 0 28px rgba(34,197,94,.2)}
+}
+
+@keyframes racePanelBad{
+  0%,100%{box-shadow:none}
+  35%{box-shadow:0 0 0 3px rgba(248,113,113,.32),0 0 30px rgba(239,68,68,.22)}
+}
+
+@keyframes raceScreenShake{
+  0%,100%{transform:translateX(0)}
+  12%{transform:translateX(-7px)}
+  25%{transform:translateX(7px)}
+  38%{transform:translateX(-6px)}
+  52%{transform:translateX(5px)}
+  66%{transform:translateX(-3px)}
+  80%{transform:translateX(2px)}
 }
 
 @media(max-width:600px){
-  .race-correct-burst{
-    top:43%;
-    padding:9px 14px;
-  }
+  .race-answer-pop{top:42%}
 }

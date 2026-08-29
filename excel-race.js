@@ -401,19 +401,21 @@
     }
 
     try {
-      // Nếu tài khoản từng bị ẩn vì chỉ chơi Học, khi thực sự chơi Rank
-      // sẽ tự bật lại trước khi ghi điểm.
-      try {
-        await client.rpc("race_unhide_my_rank_v4");
-      } catch (e) {
-        console.warn("[race] unhide rank", e);
-      }
-
       const res = await client.rpc("race_submit_score_v4", {
         p_best_streak: Math.max(best || 0, streak || 0),
         p_best_level: Math.max(level || 1, 1)
       });
       if (res && res.error) throw res.error;
+
+      // Một record từng bị ẩn vì chỉ chơi Học phải được bật lại
+      // ngay khi người dùng có thành tích Rank thật.
+      if ((Math.max(best || 0, streak || 0) > 0) || (Math.max(level || 1, 1) > 1)) {
+        const activate = await client.rpc("race_rank_activate_v4");
+        if (activate && activate.error) {
+          console.error("[race] activate rank", activate.error);
+          throw activate.error;
+        }
+      }
 
       const payload = res && res.data ? res.data : null;
       if (payload && payload.player_name) {
@@ -447,18 +449,12 @@
 
       const rows = Array.isArray(data) ? data : [];
 
-      // Chỉ hiện người đã thực sự có thành tích Rank.
-      // User chỉ vào Học sẽ không làm nhiễu BXH với dòng 0 điểm / cấp 1.
+      // Chỉ hiển thị người đã có thành tích Rank thực sự.
+      // Người chỉ chơi Học (0 chuỗi, cấp 1) không làm nhiễu BXH.
       const visibleRows = rows.filter(function(row) {
         if (!row || !row.player_name) return false;
-
-        const hasRankScore =
-          (Number(row.best_streak) || 0) > 0 ||
-          (Number(row.best_level) || 1) > 1;
-
-        if (!hasRankScore) return false;
-
-        return true;
+        return (Number(row.best_streak) || 0) > 0 ||
+               (Number(row.best_level) || 1) > 1;
       });
 
       if (!visibleRows.length) {
@@ -661,11 +657,14 @@
     locked = true;
     stopTimer();
     sfxBad();
+    const wrongBtn = document.querySelector(".ans button.bad");
+    raceFlash("bad", wrongBtn);
+    // Giữ nguyên hiệu ứng rung/lắc canvas gốc.
     crash = 1;
     trackPlay(reason === "timeout" ? "timeout" : "crash");
     if (mode === "hoc") {
       // chỉ về đầu cấp, không mất level
-      setTimeout(() => { crash = 0; softResetLevel(); }, 700);
+      setTimeout(() => { crash = 0; softResetLevel(); }, 760);
       return;
     }
     // Rank: 3 mạng
@@ -675,42 +674,54 @@
       $("msg").textContent = "Mất 1 mạng — còn " + lives + ".";
       idx = 0;
       inLevel = shuffle(pool(level));
-      setTimeout(() => { crash = 0; showQ(); }, 700);
+      setTimeout(() => { crash = 0; showQ(); }, 760);
     } else {
       $("msg").textContent = "Hết mạng — về cấp 1.";
-      setTimeout(() => { crash = 0; hardReset(); }, 700);
+      setTimeout(() => { crash = 0; hardReset(); }, 760);
     }
   }
 
 
-  function showCorrectEffect(btn) {
-    if (!btn) return;
-
-    btn.classList.remove("race-correct-pop");
-    void btn.offsetWidth;
-    btn.classList.add("race-correct-pop");
-
+  function raceFlash(kind, btn) {
+    const ok = kind === "ok";
     const panel = document.querySelector(".panel");
-    if (panel) {
-      panel.classList.remove("race-correct-panel");
-      void panel.offsetWidth;
-      panel.classList.add("race-correct-panel");
+    const wrap = document.querySelector(".race-wrap");
+
+    if (btn) {
+      btn.classList.remove("race-answer-ok-fx", "race-answer-bad-fx");
+      void btn.offsetWidth;
+      btn.classList.add(ok ? "race-answer-ok-fx" : "race-answer-bad-fx");
     }
 
-    const burst = document.createElement("div");
-    burst.className = "race-correct-burst";
-    burst.innerHTML = '<span>✓</span><b>ĐÚNG</b>';
-    document.body.appendChild(burst);
+    if (panel) {
+      panel.classList.remove("race-panel-ok-fx", "race-panel-bad-fx");
+      void panel.offsetWidth;
+      panel.classList.add(ok ? "race-panel-ok-fx" : "race-panel-bad-fx");
+    }
 
-    setTimeout(function () {
-      burst.classList.add("show");
-    }, 0);
+    if (!ok && wrap) {
+      wrap.classList.remove("race-screen-shake");
+      void wrap.offsetWidth;
+      wrap.classList.add("race-screen-shake");
+      try {
+        if (navigator.vibrate) navigator.vibrate([70, 35, 70]);
+      } catch (e) {}
+    }
 
-    setTimeout(function () {
-      burst.remove();
-      btn.classList.remove("race-correct-pop");
-      if (panel) panel.classList.remove("race-correct-panel");
-    }, 650);
+    const pop = document.createElement("div");
+    pop.className = "race-answer-pop " + (ok ? "ok" : "bad");
+    pop.innerHTML = ok
+      ? '<span>✓</span><b>ĐÚNG</b>'
+      : '<span>×</span><b>SAI</b>';
+    document.body.appendChild(pop);
+    requestAnimationFrame(function(){ pop.classList.add("show"); });
+
+    setTimeout(function(){
+      pop.remove();
+      if (btn) btn.classList.remove("race-answer-ok-fx", "race-answer-bad-fx");
+      if (panel) panel.classList.remove("race-panel-ok-fx", "race-panel-bad-fx");
+      if (wrap) wrap.classList.remove("race-screen-shake");
+    }, ok ? 620 : 760);
   }
 
   function answer(btn) {
@@ -722,7 +733,7 @@
     btn.className = ok ? "ok" : "bad";
     if (ok) {
       sfxOk();
-      showCorrectEffect(btn);
+      raceFlash("ok", btn);
       streak += 1; saveBest(); idx += 1;
       if (mode === "rank") scheduleRankPush(80);
       targetSpeed = Math.min(26, 6 + streak * 0.4);
@@ -780,6 +791,15 @@
   }
 
   function chooseRaceModeAndStart(nextMode) {
+    // Mở AudioContext ngay trong thao tác chạm của người dùng.
+    // Nếu để sau các await, iOS/Safari có thể chặn toàn bộ âm thanh.
+    try {
+      const c = ctx();
+      if (c && c.state === "suspended") c.resume();
+      // phát âm cực nhỏ để "unlock" audio, gần như không nghe thấy
+      if (c) beep(40, 0.015, "sine", 0.001);
+    } catch (e) {}
+
     closeRaceModeChooser();
     setMode(nextMode);
     start();
