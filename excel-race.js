@@ -401,6 +401,14 @@
     }
 
     try {
+      // Nếu tài khoản từng bị ẩn vì chỉ chơi Học, khi thực sự chơi Rank
+      // sẽ tự bật lại trước khi ghi điểm.
+      try {
+        await client.rpc("race_unhide_my_rank_v4");
+      } catch (e) {
+        console.warn("[race] unhide rank", e);
+      }
+
       const res = await client.rpc("race_submit_score_v4", {
         p_best_streak: Math.max(best || 0, streak || 0),
         p_best_level: Math.max(level || 1, 1)
@@ -449,9 +457,6 @@
           (Number(row.best_level) || 1) > 1;
 
         if (!hasRankScore) return false;
-
-        // Khi chính user đang chơi Học, ẩn dòng của họ trên BXH ở phiên hiện tại.
-        if (mode === "hoc" && row.is_me === true) return false;
 
         return true;
       });
