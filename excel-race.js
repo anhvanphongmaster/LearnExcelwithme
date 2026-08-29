@@ -684,19 +684,52 @@
   function setMode(m) {
     if (playing) return;
     mode = m;
-    $("modeHoc").classList.toggle("active", m === "hoc");
-    $("modeRank").classList.toggle("active", m === "rank");
     loadBest();
     $("lives").textContent = m === "hoc" ? "∞" : "3";
     $("msg").textContent = m === "hoc"
       ? "Mode Học: sai / hết giờ → làm lại từ đầu cấp hiện tại."
-      : "Mode Rank: 3 mạng — điểm cập nhật trực tiếp lên bảng xếp hạng.";
+      : "Mode Rank: 3 mạng — sai mất 1 mạng và về đầu cấp hiện tại.";
     if (m === "rank") {
       loadLocalIdentity().then(function(){ loadBoard(); });
     }
   }
 
   
+
+  function closeRaceModeChooser() {
+    const modal = $("raceModeChooser");
+    if (modal) modal.hidden = true;
+    document.body.classList.remove("race-mode-open");
+  }
+
+  async function openRaceModeChooser() {
+    if (playing) return;
+
+    const ready = await loadLocalIdentity();
+    if (!ready || !playerName || !claimToken) {
+      $("msg").textContent = "Đăng nhập để chơi Race.";
+      if (typeof setNameStatus === "function") setNameStatus("Cần đăng nhập", "err");
+      setNameGate(true);
+      location.href = "auth.html?next=" + encodeURIComponent("excel-race.html");
+      return;
+    }
+
+    const modal = $("raceModeChooser");
+    if (!modal) {
+      start();
+      return;
+    }
+
+    modal.hidden = false;
+    document.body.classList.add("race-mode-open");
+  }
+
+  function chooseRaceModeAndStart(nextMode) {
+    closeRaceModeChooser();
+    setMode(nextMode);
+    start();
+  }
+
   function stopRace() {
     if (!playing && !$("countOverlay")?.hidden === false) {
       // allow stop during countdown
@@ -716,8 +749,6 @@
     if ($("stopRace")) $("stopRace").hidden = true;
     const row = document.querySelector(".race-go-row");
     if (row) row.classList.remove("has-stop");
-    if ($("modeHoc")) $("modeHoc").disabled = false;
-    if ($("modeRank")) $("modeRank").disabled = false;
     $("msg").textContent = mode === "rank"
       ? "Đã dừng. Mode RANK — bấm Bắt đầu để đua tiếp."
       : "Đã dừng. Mode Học — bấm Bắt đầu để luyện tiếp.";
@@ -795,8 +826,6 @@
       targetSpeed = 5; speed = 3;
       $("start").hidden = true;
       showStopBtn(true);
-      if ($("modeHoc")) $("modeHoc").disabled = true;
-      if ($("modeRank")) $("modeRank").disabled = true;
       $("msg").textContent = "Xuất phát!";
       trackPlay("start");
       if (mode === "rank") scheduleRankPush(20);
@@ -804,9 +833,29 @@
       showQ();
     });
   }
-  $("modeHoc").onclick = () => setMode("hoc");
-  $("modeRank").onclick = () => setMode("rank");
-  $("start").onclick = start;
+  $("start").onclick = openRaceModeChooser;
+
+  if ($("chooseModeHoc")) {
+    $("chooseModeHoc").onclick = () => chooseRaceModeAndStart("hoc");
+  }
+
+  if ($("chooseModeRank")) {
+    $("chooseModeRank").onclick = () => chooseRaceModeAndStart("rank");
+  }
+
+  if ($("raceModeClose")) {
+    $("raceModeClose").onclick = closeRaceModeChooser;
+  }
+
+  document.querySelectorAll("[data-race-mode-close]").forEach(el => {
+    el.addEventListener("click", closeRaceModeChooser);
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && !$("raceModeChooser")?.hidden) {
+      closeRaceModeChooser();
+    }
+  });
   if ($("stopRace")) $("stopRace").onclick = () => {
     avpConfirm("Dừng cuộc đua hiện tại?\nĐiểm Rank (nếu có) vẫn được lưu khi cao hơn kỷ lục.", {
       title: "Dừng đua?",
@@ -877,5 +926,7 @@
   setTimeout(function(){ loadLocalIdentity(); }, 2200);
   loadBoard();
   setInterval(function () { if (typeof loadBoard === "function") loadBoard(); }, 20000);
-  setMode("hoc");
+  mode = "hoc";
+  loadBest();
+  $("lives").textContent = "∞";
 })();

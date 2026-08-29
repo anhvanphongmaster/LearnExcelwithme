@@ -530,3 +530,232 @@ body{margin:0;font-family:Arial,sans-serif;background:#0d1f16;color:#e9fff2}
 @media (min-width: 769px){
   .board-jump{ display: none !important; }
 }
+
+
+/* =========================================================
+   MODE CHOOSER — START FLOW
+   ========================================================= */
+body.race-mode-open{
+  overflow:hidden;
+}
+
+.race-mode-chooser{
+  position:fixed;
+  inset:0;
+  z-index:10020;
+  display:grid;
+  place-items:center;
+  padding:18px;
+}
+
+.race-mode-chooser[hidden]{
+  display:none !important;
+}
+
+.race-mode-backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(2,14,8,.76);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+}
+
+.race-mode-dialog{
+  position:relative;
+  width:min(560px,100%);
+  border:1px solid rgba(74,233,139,.46);
+  border-radius:24px;
+  padding:24px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(47,125,255,.16),transparent 34%),
+    linear-gradient(155deg,#10291c 0%,#0b1c13 100%);
+  box-shadow:
+    0 24px 70px rgba(0,0,0,.48),
+    inset 0 0 0 1px rgba(255,255,255,.035);
+  color:#effff5;
+}
+
+.race-mode-close{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:38px;
+  height:38px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;
+  background:rgba(255,255,255,.055);
+  color:#cfe9d9;
+  font-size:25px;
+  line-height:1;
+  cursor:pointer;
+}
+
+.race-mode-kicker{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:0 10px;
+  border:1px solid rgba(67,226,132,.24);
+  border-radius:999px;
+  background:rgba(30,198,97,.08);
+  color:#7af0aa;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.16em;
+}
+
+.race-mode-dialog h2{
+  margin:12px 0 4px;
+  font-size:26px;
+  line-height:1.15;
+  color:#f5fff8;
+}
+
+.race-mode-lead{
+  margin:0 0 17px;
+  color:#abc4b4;
+  font-size:14px;
+}
+
+.race-mode-options{
+  display:grid;
+  gap:11px;
+}
+
+.race-mode-option{
+  width:100%;
+  display:grid;
+  grid-template-columns:52px minmax(0,1fr) 26px;
+  align-items:center;
+  gap:12px;
+  min-height:104px;
+  padding:14px;
+  border-radius:17px;
+  text-align:left;
+  cursor:pointer;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease;
+}
+
+.race-mode-option.learn{
+  border:1px solid rgba(76,229,135,.38);
+  background:linear-gradient(135deg,rgba(37,164,88,.18),rgba(17,69,39,.28));
+  color:#effff4;
+}
+
+.race-mode-option.rank{
+  border:1px solid rgba(78,142,255,.58);
+  background:linear-gradient(135deg,rgba(40,91,205,.28),rgba(17,43,98,.36));
+  color:#f5f8ff;
+}
+
+.race-mode-option:active{
+  transform:scale(.985);
+}
+
+@media (hover:hover) and (pointer:fine){
+  .race-mode-option:hover{
+    transform:translateY(-2px);
+  }
+  .race-mode-option.learn:hover{
+    border-color:#55e991;
+    background:linear-gradient(135deg,rgba(37,164,88,.27),rgba(17,69,39,.34));
+  }
+  .race-mode-option.rank:hover{
+    border-color:#73a5ff;
+    background:linear-gradient(135deg,rgba(40,91,205,.38),rgba(17,43,98,.42));
+  }
+}
+
+.race-mode-icon{
+  width:52px;
+  height:52px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:rgba(255,255,255,.075);
+  font-size:27px;
+}
+
+.race-mode-copy{
+  min-width:0;
+  display:grid;
+  gap:4px;
+}
+
+.race-mode-copy strong{
+  font-size:18px;
+  line-height:1.15;
+}
+
+.race-mode-copy small{
+  color:#bfd0c5;
+  font-size:12.5px;
+  line-height:1.42;
+  font-weight:650;
+}
+
+.race-mode-copy em{
+  color:#83e5a8;
+  font-size:11.5px;
+  line-height:1.35;
+  font-style:normal;
+  font-weight:850;
+}
+
+.race-mode-option.rank .race-mode-copy em{
+  color:#91b8ff;
+}
+
+.race-mode-arrow{
+  justify-self:end;
+  color:#c7ddcf;
+  font-size:22px;
+  font-weight:900;
+}
+
+.race-mode-note{
+  margin-top:13px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:rgba(255,255,255,.04);
+  color:#91a89a;
+  font-size:11.5px;
+  text-align:center;
+}
+
+@media(max-width:600px){
+  .race-mode-chooser{
+    padding:14px;
+  }
+
+  .race-mode-dialog{
+    padding:20px 15px 16px;
+    border-radius:20px;
+  }
+
+  .race-mode-dialog h2{
+    padding-right:38px;
+    font-size:23px;
+  }
+
+  .race-mode-option{
+    grid-template-columns:46px minmax(0,1fr) 20px;
+    gap:10px;
+    min-height:100px;
+    padding:12px;
+  }
+
+  .race-mode-icon{
+    width:46px;
+    height:46px;
+    font-size:24px;
+  }
+
+  .race-mode-copy strong{
+    font-size:17px;
+  }
+
+  .race-mode-copy small{
+    font-size:12px;
+  }
+}

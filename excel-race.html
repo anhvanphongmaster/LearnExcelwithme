@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>Excel Race | Learn Excel with Anh Van Phong</title>
-  <link rel="stylesheet" href="excel-race.css?v=20260827" />
+  <link rel="stylesheet" href="excel-race.css?v=20260830-modechooser1" />
 <link rel="stylesheet" href="avp-core.css" />
 </head>
 <body>
@@ -19,11 +19,6 @@
       <input id="playerName" type="text" maxlength="20" readonly autocomplete="off" placeholder="Đăng nhập để lấy tên" />
       <span id="nameStatus" class="name-status"></span>
       <p class="name-gate-msg" id="nameGateMsg">Đăng nhập để chơi. Tên lấy từ tài khoản, không cần khóa tên.</p>
-    </div>
-
-    <div class="mode-row" id="modeRow">
-      <button type="button" class="mode active" data-mode="hoc" id="modeHoc">📚 Học — sai về đầu cấp <small style="opacity:.85;font-weight:700">(không lên BXH)</small></button>
-      <button type="button" class="mode" data-mode="rank" id="modeRank"><span class="rank-hot">🏆 RANK — ĐUA XẾP HẠNG</span> <small class="rank-sub">sai về cấp 1 · tính BXH</small></button>
     </div>
 
     <button type="button" class="board-jump" id="boardJump">🏆 Xem bảng xếp hạng ↓</button>
@@ -44,7 +39,7 @@
     <canvas id="cv" width="900" height="360" aria-label="Đường đua"></canvas>
 
     <section class="panel">
-      <p class="msg" id="msg">Đăng nhập → chọn Học hoặc Rank → Bắt đầu. Tên BXH lấy từ tài khoản.</p>
+      <p class="msg" id="msg">Đăng nhập → bấm Bắt đầu → chọn chế độ Học hoặc Rank.</p>
       <p class="q" id="q" hidden></p>
       <div class="ans" id="ans" hidden>
         <button type="button" id="a1"></button>
@@ -72,6 +67,44 @@
     </section>
   </div>
 
+
+  <div id="raceModeChooser" class="race-mode-chooser" hidden>
+    <div class="race-mode-backdrop" data-race-mode-close></div>
+    <div class="race-mode-dialog" role="dialog" aria-modal="true" aria-labelledby="raceModeTitle">
+      <button type="button" class="race-mode-close" id="raceModeClose" aria-label="Đóng">×</button>
+
+      <div class="race-mode-kicker">EXCEL RACE</div>
+      <h2 id="raceModeTitle">Chọn chế độ chơi</h2>
+      <p class="race-mode-lead">Chọn một chế độ để bắt đầu cuộc đua.</p>
+
+      <div class="race-mode-options">
+        <button type="button" class="race-mode-option learn" id="chooseModeHoc">
+          <span class="race-mode-icon">📚</span>
+          <span class="race-mode-copy">
+            <strong>Học</strong>
+            <small>Sai hoặc hết giờ → quay về đầu cấp hiện tại.</small>
+            <em>Không tính vào bảng xếp hạng.</em>
+          </span>
+          <span class="race-mode-arrow">→</span>
+        </button>
+
+        <button type="button" class="race-mode-option rank" id="chooseModeRank">
+          <span class="race-mode-icon">🏆</span>
+          <span class="race-mode-copy">
+            <strong>Rank</strong>
+            <small>Sai → mất 1 mạng và quay về đầu cấp hiện tại.</small>
+            <em>❤️ 3 mạng · Có tính bảng xếp hạng.</em>
+          </span>
+          <span class="race-mode-arrow">→</span>
+        </button>
+      </div>
+
+      <div class="race-mode-note">
+        Rank hết 3 mạng sẽ quay về cấp 1.
+      </div>
+    </div>
+  </div>
+
   <div id="avpModal" class="avp-modal" hidden>
     <div class="avp-modal-backdrop" data-avp-close></div>
     <div class="avp-modal-card" role="dialog" aria-modal="true" aria-labelledby="avpModalTitle">
@@ -89,7 +122,7 @@
   <script src="supabase-config.js"></script>
   <script type="module" src="supabase-auth.js"></script>
   <script defer src="analytics-tracker.js"></script>
-  <script defer src="excel-race.js?v=20260828-RANKV4-MIGRATION1"></script>
+  <script defer src="excel-race.js?v=20260830-modechooser1"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="avp-modal.js"></script>
 </body>
