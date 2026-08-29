@@ -60,13 +60,13 @@ function loadAdminChatAssets() {
   if (!document.querySelector('link[data-avp-admin-alerts]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'admin-alerts.css?v=20260830-v45';
+    link.href = 'admin-alerts.css?v=20260830-v46push';
     link.setAttribute('data-avp-admin-alerts', '1');
     document.head.appendChild(link);
   }
   if (!document.querySelector('script[data-avp-admin-alerts]')) {
     const script = document.createElement('script');
-    script.src = 'admin-alerts.js?v=20260830-v45';
+    script.src = 'admin-alerts.js?v=20260830-v46push';
     script.defer = true;
     script.setAttribute('data-avp-admin-alerts', '1');
     document.head.appendChild(script);

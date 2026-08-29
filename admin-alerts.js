@@ -1,22 +1,12 @@
 (() => {
 "use strict";
 
-const STORE="avp_admin_device_alerts_v45";
-const SNAP="avp_admin_alert_snapshot_v45";
-const POLL_MS=20000;
+const STORE="avp_admin_web_push_v46";
+const VAPID_PUBLIC_KEY="BFxmt13_QrywtqzR4quLrMHefc9LbrMuodSThZslO9Qb-b3LksiS3XzniutjGl99Ce3Vn8fqPtf7SymsFlVJp4c";
 
-let client=null,user=null,timer=null,admin=false,baselineReady=false;
-let snapshot={chatUnread:0,graderKey:"",reviewKey:"",communityKey:""};
+let client=null;
+let admin=false;
 
-function loadSnapshot(){
-  try{
-    const v=JSON.parse(localStorage.getItem(SNAP)||"{}");
-    snapshot={...snapshot,...v};
-  }catch{}
-}
-function saveSnapshot(){
-  try{localStorage.setItem(SNAP,JSON.stringify(snapshot))}catch{}
-}
 function enabled(){
   try{return localStorage.getItem(STORE)==="1"}catch{return false}
 }
@@ -24,128 +14,146 @@ function setEnabled(v){
   try{localStorage.setItem(STORE,v?"1":"0")}catch{}
 }
 async function waitClient(){
-  for(let i=0;i<40;i++){
+  for(let i=0;i<50;i++){
     const c=window.avpSupabase||window.supabaseClient;
     if(c?.auth){client=c;return c}
     await new Promise(r=>setTimeout(r,100));
   }
   return null;
 }
-async function getUser(){
-  try{
-    const {data}=await client.auth.getSession();
-    return data?.session?.user||null;
-  }catch{return null}
+async function rpc(name,args={}){
+  const {data,error}=await client.rpc(name,args);
+  if(error)throw error;
+  return data;
 }
 async function isAdmin(){
   try{
-    const {data,error}=await client.rpc("avp_chat_is_admin");
-    if(!error&&data===true)return true;
+    const v=await rpc("is_admin_user");
+    if(v===true)return true;
   }catch{}
   try{
-    const {data,error}=await client.rpc("is_admin_user");
-    if(!error&&data===true)return true;
-  }catch{}
-  return false;
+    const v=await rpc("avp_chat_is_admin");
+    return v===true;
+  }catch{return false}
 }
-function inactive(){
-  const state=window.AVP_ADMIN_PRESENCE_STATE;
-  if(state)return state!=="active";
-  return document.hidden || !(typeof document.hasFocus==="function"?document.hasFocus():true);
+function b64ToUint8Array(base64String){
+  const padding="=".repeat((4-base64String.length%4)%4);
+  const base64=(base64String+padding).replace(/-/g,"+").replace(/_/g,"/");
+  const raw=atob(base64);
+  return Uint8Array.from([...raw].map(ch=>ch.charCodeAt(0)));
 }
-async function registration(){
-  if(!("serviceWorker" in navigator))return null;
+function isIOS(){
+  return /iphone|ipad|ipod/i.test(navigator.userAgent||"");
+}
+function isStandalone(){
+  return window.matchMedia?.("(display-mode: standalone)")?.matches===true ||
+         navigator.standalone===true;
+}
+function supportState(){
+  if(!("serviceWorker" in navigator))return {ok:false,reason:"Trình duyệt không hỗ trợ Service Worker."};
+  if(!("PushManager" in window))return {ok:false,reason:isIOS()?"Trên iPhone, hãy thêm website vào Màn hình chính rồi mở từ icon đó.":"Trình duyệt này chưa hỗ trợ Web Push."};
+  if(!("Notification" in window))return {ok:false,reason:"Thiết bị không hỗ trợ Notification API."};
+  if(isIOS()&&!isStandalone())return {ok:false,reason:"Trên iPhone/iPad, hãy Add to Home Screen rồi mở website từ icon ngoài màn hình chính."};
+  return {ok:true,reason:""};
+}
+async function getRegistration(){
+  return await navigator.serviceWorker.ready;
+}
+async function currentSubscription(){
   try{
-    const reg=await navigator.serviceWorker.ready;
-    return reg||null;
+    const reg=await getRegistration();
+    return await reg.pushManager.getSubscription();
   }catch{return null}
 }
-async function notify(title,body,url,tag){
-  if(!enabled()||Notification.permission!=="granted"||!inactive())return;
-  const opts={
-    body:String(body||""),
-    icon:"icon-192.png",
-    badge:"icon-192.png",
-    tag:tag||"avp-admin",
-    renotify:true,
-    data:{url:url||"admin.html"},
-    vibrate:[100,60,100]
+function subscriptionJson(sub){
+  const j=sub.toJSON();
+  return {
+    endpoint:j.endpoint||sub.endpoint,
+    p256dh:j.keys?.p256dh||"",
+    auth:j.keys?.auth||""
   };
+}
+function deviceLabel(){
+  const ua=navigator.userAgent||"";
+  if(/iphone|ipad/i.test(ua))return "iPhone/iPad";
+  if(/android/i.test(ua))return "Android";
+  if(/windows/i.test(ua))return "Windows";
+  if(/macintosh|mac os/i.test(ua))return "Mac";
+  return navigator.platform||"Thiết bị";
+}
+async function saveSubscription(sub){
+  const s=subscriptionJson(sub);
+  if(!s.endpoint||!s.p256dh||!s.auth)throw new Error("PUSH_KEYS_MISSING");
+  await rpc("admin_push_subscription_upsert",{
+    p_endpoint:s.endpoint,
+    p_p256dh:s.p256dh,
+    p_auth:s.auth,
+    p_user_agent:navigator.userAgent||"",
+    p_device_label:deviceLabel()
+  });
+}
+async function subscribe(){
+  const state=supportState();
+  if(!state.ok)throw new Error(state.reason);
+
+  if(Notification.permission==="denied"){
+    throw new Error("Thông báo đang bị chặn trong cài đặt của trình duyệt/thiết bị.");
+  }
+
+  const permission=Notification.permission==="granted"
+    ?"granted"
+    :await Notification.requestPermission();
+
+  if(permission!=="granted")throw new Error("Bạn chưa cấp quyền thông báo.");
+
+  const reg=await getRegistration();
+  let sub=await reg.pushManager.getSubscription();
+
+  if(!sub){
+    sub=await reg.pushManager.subscribe({
+      userVisibleOnly:true,
+      applicationServerKey:b64ToUint8Array(VAPID_PUBLIC_KEY)
+    });
+  }
+
+  await saveSubscription(sub);
+  setEnabled(true);
+
   try{
-    const reg=await registration();
-    if(reg?.showNotification){
-      await reg.showNotification(title,opts);
-      return;
-    }
+    await reg.showNotification("🔔 Web Push Admin đã bật",{
+      body:"Thiết bị này sẽ nhận thông báo ngay cả khi website không mở.",
+      icon:"icon-192.png",
+      badge:"icon-192.png",
+      tag:"avp-push-enabled",
+      data:{url:"admin.html"}
+    });
   }catch{}
-  try{new Notification(title,opts)}catch{}
+
+  return sub;
 }
-function newestKey(rows){
-  if(!Array.isArray(rows)||!rows.length)return "";
-  const r=rows[0]||{};
-  return String(r.id||r.created_at||r.updated_at||JSON.stringify(r).slice(0,120));
-}
-async function rpc(name,args={}){
-  try{
-    const {data,error}=await client.rpc(name,args);
-    if(error)throw error;
-    return data;
-  }catch{return null}
-}
-async function checkChat(){
-  const rows=await rpc("avp_chat_admin_threads",{p_limit:100});
-  if(!Array.isArray(rows))return;
-  const unread=rows.reduce((s,r)=>s+(Number(r.unread_count)||0),0);
-  if(baselineReady&&unread>snapshot.chatUnread){
-    const latest=rows.find(r=>(Number(r.unread_count)||0)>0);
-    const sender=latest?.display_name||latest?.email||"Học viên";
-    await notify("💬 Tin nhắn mới",`${sender} vừa gửi tin nhắn cho bạn.`,"admin.html?view=inbox","avp-chat");
+async function unsubscribe(){
+  const sub=await currentSubscription();
+  if(sub){
+    try{
+      await rpc("admin_push_subscription_remove",{p_endpoint:sub.endpoint});
+    }catch(e){console.warn("Remove push subscription",e)}
+    try{await sub.unsubscribe()}catch{}
   }
-  snapshot.chatUnread=unread;
+  setEnabled(false);
 }
-async function checkGrader(){
-  const rows=await rpc("admin_practice_grader_appeals",{p_status:"pending",p_limit:20});
-  if(!Array.isArray(rows))return;
-  const key=newestKey(rows);
-  if(baselineReady&&key&&snapshot.graderKey&&key!==snapshot.graderKey){
-    const r=rows[0]||{};
-    await notify("🧪 Yêu cầu chấm lại",`${r.display_name||r.email||"Học viên"} gửi yêu cầu kiểm tra bài ${r.lesson_title||r.lesson_key||""}.`,"admin.html?view=grader","avp-grader");
-  }
-  snapshot.graderKey=key;
-}
-async function checkReviews(){
-  const rows=await rpc("admin_site_review_list",{p_rating:null,p_search:null,p_limit:20});
-  if(!Array.isArray(rows))return;
-  const key=newestKey(rows);
-  if(baselineReady&&key&&snapshot.reviewKey&&key!==snapshot.reviewKey){
-    const r=rows[0]||{};
-    const stars=Number(r.rating)||0;
-    const text=String(r.content||"").trim();
-    await notify(`⭐ Đánh giá mới ${stars}/5`,text?text.slice(0,120):"Có đánh giá website mới.","admin.html?view=reviews","avp-review");
-  }
-  snapshot.reviewKey=key;
-}
-async function checkCommunity(){
-  const rows=await rpc("admin_community_moderation_queue",{p_status:"open",p_limit:30});
-  if(!Array.isArray(rows))return;
-  const key=newestKey(rows);
-  if(baselineReady&&key&&snapshot.communityKey&&key!==snapshot.communityKey){
-    const r=rows[0]||{};
-    await notify("📣 Phản hồi cộng đồng mới",r.reason_label||r.reason||"Có nội dung mới cần Admin kiểm tra.","admin.html?view=community","avp-community");
-  }
-  snapshot.communityKey=key;
-}
-async function poll(){
-  if(!admin||!client)return;
-  await Promise.allSettled([checkChat(),checkGrader(),checkReviews(),checkCommunity()]);
-  saveSnapshot();
-  baselineReady=true;
-}
-function statusText(){
-  if(!("Notification" in window))return "Thiết bị không hỗ trợ";
+function statusText(sub){
+  const state=supportState();
+  if(!state.ok)return "Chưa hỗ trợ";
   if(Notification.permission==="denied")return "Đã chặn";
-  if(Notification.permission==="granted"&&enabled())return "Đã bật";
-  return "Chưa bật";
+  if(sub&&enabled())return "Push đã bật";
+  return "Bật thông báo";
+}
+async function refreshButton(){
+  const btn=document.getElementById("avpAdminDeviceAlertsBtn");
+  if(!btn)return;
+  const sub=await currentSubscription();
+  btn.querySelector("span").textContent=statusText(sub);
+  btn.classList.toggle("is-on",!!sub&&enabled());
 }
 function mountButton(){
   if(document.getElementById("avpAdminDeviceAlerts"))return;
@@ -155,53 +163,52 @@ function mountButton(){
   const wrap=document.createElement("div");
   wrap.className="avp-admin-device-alerts";
   wrap.id="avpAdminDeviceAlerts";
-  wrap.innerHTML=`<button type="button" id="avpAdminDeviceAlertsBtn">🔔 <span>${statusText()}</span></button>
-    <small>Chat · chấm lại · đánh giá · cộng đồng</small>`;
+  wrap.innerHTML=`<button type="button" id="avpAdminDeviceAlertsBtn">🔔 <span>Bật thông báo</span></button>
+    <small>Web Push · nhận cả khi đã thoát trang</small>`;
   host.appendChild(wrap);
 
   const btn=document.getElementById("avpAdminDeviceAlertsBtn");
   btn?.addEventListener("click",async()=>{
-    if(!("Notification" in window)){
-      alert("Trình duyệt này chưa hỗ trợ thông báo web.");
-      return;
-    }
-    if(Notification.permission==="denied"){
-      alert("Thông báo đang bị chặn. Hãy bật lại quyền Notification trong cài đặt trình duyệt/PWA.");
-      return;
-    }
-    const permission=Notification.permission==="granted"
-      ?"granted"
-      :await Notification.requestPermission();
-
-    if(permission==="granted"){
-      setEnabled(true);
-      btn.querySelector("span").textContent="Đã bật";
-      await notify("🔔 Thông báo Admin đã bật","Bạn sẽ nhận cảnh báo khi đang rời tab và có phản ứng mới từ học viên.","admin.html","avp-enabled");
-      poll();
-    }else{
-      setEnabled(false);
-      btn.querySelector("span").textContent=statusText();
+    btn.disabled=true;
+    try{
+      const sub=await currentSubscription();
+      if(sub&&enabled()){
+        if(confirm("Tắt Web Push trên thiết bị này?"))await unsubscribe();
+      }else{
+        await subscribe();
+      }
+    }catch(e){
+      alert(e?.message||"Chưa bật được Web Push.");
+      console.warn("Admin Web Push",e);
+    }finally{
+      btn.disabled=false;
+      await refreshButton();
     }
   });
+
+  refreshButton();
+}
+async function restoreSubscription(){
+  if(!enabled())return;
+  const sub=await currentSubscription();
+  if(!sub)return;
+  try{await saveSubscription(sub)}catch(e){console.warn("Refresh push subscription",e)}
 }
 async function init(){
-  loadSnapshot();
   client=await waitClient();
   if(!client)return;
-  user=await getUser();
-  if(!user)return;
+
+  try{
+    const {data}=await client.auth.getSession();
+    if(!data?.session?.user)return;
+  }catch{return}
+
   admin=await isAdmin();
   if(!admin)return;
 
   mountButton();
-  await poll();
-
-  clearInterval(timer);
-  timer=setInterval(poll,POLL_MS);
-
-  document.addEventListener("visibilitychange",()=>{
-    if(document.visibilityState==="hidden")poll();
-  });
+  await restoreSubscription();
 }
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});
+else init();
 })();

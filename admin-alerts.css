@@ -36,3 +36,11 @@ body.dark-mode .avp-admin-device-alerts button{
     margin-top:8px;
   }
 }
+
+.avp-admin-device-alerts button.is-on{
+  background:#217346;
+  border-color:#217346;
+  color:#fff;
+  box-shadow:0 6px 16px rgba(33,115,70,.18);
+}
+.avp-admin-device-alerts button:disabled{opacity:.62;cursor:wait}

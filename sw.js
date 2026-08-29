@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260830-final43";
+const CACHE = "learnexcel-assets-v20260830-push46";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -90,8 +90,38 @@ self.addEventListener("fetch", event => {
 });
 
 
+
+self.addEventListener("push", event => {
+  let data = {};
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch (e) {
+    data = { title: "Anh Văn Phòng", body: event.data ? event.data.text() : "" };
+  }
+
+  const title = data.title || "Anh Văn Phòng";
+  const options = {
+    body: data.body || "Có phản hồi mới từ người dùng.",
+    icon: data.icon || "icon-192.png",
+    badge: data.badge || "icon-192.png",
+    tag: data.tag || "avp-admin-push",
+    renotify: true,
+    data: { url: data.url || "admin.html" },
+    vibrate: [120, 70, 120]
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(title, options).then(() => {
+      if ("setAppBadge" in self.navigator) {
+        return self.navigator.setAppBadge().catch(() => {});
+      }
+    })
+  );
+});
+
 self.addEventListener("notificationclick", event => {
   event.notification.close();
+  if ("clearAppBadge" in self.navigator) self.navigator.clearAppBadge().catch(() => {});
   const target = new URL(event.notification?.data?.url || "admin.html", self.location.origin).href;
 
   event.waitUntil(
