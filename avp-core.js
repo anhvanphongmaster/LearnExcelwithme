@@ -237,6 +237,25 @@
     return count;
   }
 
+  function unreadCountFromCommunity(){
+    const direct=Math.max(0,Number(window.__avpCommunityUnreadCount||0));
+    if(direct>0)return direct;
+
+    const badge=document.getElementById('avpCommunityMenuBadge');
+    if(!badge)return 0;
+
+    const raw=String(badge.textContent||'').trim();
+    const count=parseInt(raw.replace(/\D/g,''),10)||0;
+
+    if(
+      badge.hidden ||
+      getComputedStyle(badge).display==='none'
+    )return 0;
+
+    return count;
+  }
+
+
   async function showUnreadReturnPreview(count){
     if(count<=0)return false;
 
@@ -262,8 +281,8 @@
       showMiniPreview({
         sender:'Tin nhắn chưa đọc',
         body:count===1
-          ? 'Bạn có 1 tin nhắn mới. Chạm để xem.'
-          : `Bạn có ${count} tin nhắn mới. Chạm để xem.`,
+          ? 'Bạn có 1 thông báo mới. Chạm để xem.'
+          : `Bạn có ${count} thông báo mới. Chạm để xem.`,
         unread:true,
         fallback:true
       });
@@ -437,7 +456,10 @@
   let previousEdgeCount=-1;
 
   function syncEdgeBadge(){
-    const count=unreadCountFromChatBadge();
+    const count=
+      unreadCountFromChatBadge()
+      +
+      unreadCountFromCommunity();
 
     if(count<=0){
       edgeBadge.hidden=true;
@@ -463,6 +485,8 @@
   }
 
   syncEdgeBadge();
+
+  window.addEventListener('avp:community-unread',syncEdgeBadge);
 
   const edgeBadgeTimer=setInterval(
     syncEdgeBadge,

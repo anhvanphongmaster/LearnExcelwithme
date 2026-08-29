@@ -18,6 +18,7 @@
   let communityAnswerImage = null;
   let communityAvatarMap = new Map();
   let communityProfileAvatar = null;
+  let latestNotificationUnreadCount = 0;
 
   const esc = s => String(s ?? "")
     .replaceAll("&","&amp;")
@@ -1526,39 +1527,49 @@
     await openCommunityPanel(question);
   }
 
+
+  function publishCommunityUnreadCount(count){
+    const n=Math.max(0,Number(count||0));
+    latestNotificationUnreadCount=n;
+    window.__avpCommunityUnreadCount=n;
+
+    const text=n>99?"99+":String(n);
+    const bubble=$("avpNotifyBubbleBadge");
+    const tab=$("avpNotifyTabBadge");
+    const external=$("avpCommunityMenuBadge");
+
+    [bubble,tab,external].forEach(el=>{
+      if(!el)return;
+      el.hidden=n<=0;
+      el.textContent=n>0?text:"";
+    });
+
+    try{
+      window.dispatchEvent(new CustomEvent("avp:community-unread",{
+        detail:{count:n}
+      }));
+    }catch{}
+  }
+
   async function updateNotificationBadge(){
     client=client||getClient();
 
-    const bubble=$("avpNotifyBubbleBadge");
-    const tab=$("avpNotifyTabBadge");
-
     if(!client?.rpc){
-      if(bubble)bubble.hidden=true;
-      if(tab)tab.hidden=true;
+      publishCommunityUnreadCount(0);
       return;
     }
 
     await currentUser();
+
     if(!user){
-      if(bubble)bubble.hidden=true;
-      if(tab)tab.hidden=true;
+      publishCommunityUnreadCount(0);
       return;
     }
 
     try{
       const {data,error}=await client.rpc("notification_unread_count");
       if(error)throw error;
-
-      const count=Math.max(0,Number(data||0));
-      const text=count>99?"99+":String(count);
-
-      [bubble,tab].forEach(el=>{
-        if(!el)return;
-        el.hidden=count<=0;
-        el.textContent=count>0?text:"";
-      });
-
-      syncExternalCommunityBadge();
+      publishCommunityUnreadCount(data);
     }catch(e){
       console.warn("Notification badge",e);
     }
@@ -1741,6 +1752,7 @@
       menu.host.appendChild(btn);
     }
 
+    publishCommunityUnreadCount(latestNotificationUnreadCount);
     return true;
   }
 
@@ -1764,15 +1776,7 @@
   }
 
   function syncExternalCommunityBadge(){
-    const source=$("avpNotifyBubbleBadge");
-    const target=$("avpCommunityMenuBadge");
-    if(!target)return;
-
-    const value=String(source?.textContent||"").trim();
-    const hidden=!source || source.hidden || !value;
-
-    target.hidden=hidden;
-    target.textContent=hidden?"":value;
+    publishCommunityUnreadCount(latestNotificationUnreadCount);
   }
 
   window.AVPCommunity={
@@ -2236,6 +2240,22 @@
 
     await currentUser();
     await updateNotificationBadge();
+
+    const unreadTimer=setInterval(()=>{
+      updateNotificationBadge();
+    },20000);
+
+    const refreshUnread=()=>updateNotificationBadge();
+
+    window.addEventListener("focus",refreshUnread);
+    document.addEventListener("visibilitychange",()=>{
+      if(document.visibilityState==="visible")refreshUnread();
+    });
+
+    window.addEventListener("pagehide",()=>{
+      clearInterval(unreadTimer);
+      window.removeEventListener("focus",refreshUnread);
+    },{once:true});
 
     try{
       client.auth.onAuthStateChange(async(_event,session)=>{

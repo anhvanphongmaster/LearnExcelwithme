@@ -878,3 +878,34 @@ body > .avp-hub-fab{
     animation:none !important;
   }
 }
+
+
+/* =========================================================
+   AVP SOFT / PALE UI V1
+   Nút AVP nhạt hơn, nhẹ mắt hơn nhưng vẫn rõ.
+   ========================================================= */
+.avp-edge-launcher .avp-edge-main{
+  background:#edf7f1 !important;
+  color:#4f755e !important;
+  border-color:rgba(33,115,70,.11) !important;
+  box-shadow:0 5px 14px rgba(33,115,70,.09) !important;
+}
+.avp-edge-launcher .avp-edge-main-icon{
+  color:#4f755e !important;
+  font-weight:800 !important;
+}
+.avp-edge-action{
+  background:rgba(250,253,251,.97) !important;
+  color:#5b7164 !important;
+  border-color:rgba(33,115,70,.09) !important;
+  box-shadow:0 4px 12px rgba(28,68,46,.07) !important;
+}
+.avp-edge-action span{
+  opacity:.78;
+}
+.avp-edge-badge{
+  background:#e11d48 !important;
+  color:#fff !important;
+  border-color:#fff !important;
+  box-shadow:0 2px 7px rgba(225,29,72,.22) !important;
+}
