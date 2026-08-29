@@ -759,7 +759,10 @@
       if(files.length){for(let i=0;i<files.length;i++){const meta=await uploadChatFile(files[i],"admin",activeThread);await rpc("avp_chat_admin_send_message",{p_thread_id:activeThread,p_body:makeAttachmentBody(meta,i===0?body:"")})}}
       else await rpc("avp_chat_admin_send_message",{p_thread_id:activeThread,p_body:body});
       input.value="";pendingFiles.admin=[];previewFiles("admin","adminChatFilePreview");await openAdminThread(activeThread);
-    }catch(e){alert("Không gửi được phản hồi hoặc file.");console.warn(e)}finally{btn.disabled=false;input.focus()}
+    }catch(e){alert("Không gửi được phản hồi hoặc file.");console.warn(e)}finally{
+      btn.disabled=false;
+      try{input.focus({preventScroll:true})}catch{input.focus()}
+    }
   }
   async function initAdmin(){
     if(!(await isAdmin()))return;
@@ -904,7 +907,9 @@
       if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,id);box.scrollTop=box.scrollHeight;}
       await rpc("avp_chat_admin_mark_read",{p_thread_id:id});
       await loadFloatingAdminThreads();
-      input?.focus();
+
+      // Không tự focus textarea khi chỉ bấm chọn hội thoại.
+      // Trên mobile/Safari, focus() sẽ kéo viewport và làm phần trên của khung chat bị che.
     }catch(e){console.warn("AVP floating admin open",e)}
   }
 
@@ -926,7 +931,10 @@
       const detail=e?.message||e?.error_description||String(e||"");
       alert("Không gửi được file. "+(detail?"Lỗi: "+detail:""));
       console.warn("AVP floating admin attachment",e);
-    }finally{btn.disabled=false;input.focus()}
+    }finally{
+      btn.disabled=false;
+      try{input.focus({preventScroll:true})}catch{input.focus()}
+    }
   }
 
   async function initFloatingAdmin(){
