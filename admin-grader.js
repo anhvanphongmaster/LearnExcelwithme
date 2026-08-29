@@ -86,6 +86,25 @@
     const sb=await client();
     const root=$("adminGraderAppealList");
     if(!sb||!root)return;
+
+    // Badge luôn phản ánh số yêu cầu đang chờ, không phụ thuộc filter hiện tại.
+    try{
+      const pendingRes=await sb.rpc("admin_practice_grader_appeals",{p_status:"pending",p_limit:200});
+      if(!pendingRes.error){
+        const pendingRows=Array.isArray(pendingRes.data)?pendingRes.data:[];
+        const count=pendingRows.length;
+        const badge=$("adminGraderPendingBadge");
+        const kpi=$("agPendingAppeals");
+        if(kpi)kpi.textContent=String(count);
+        if(badge){
+          badge.textContent=count>99?"99+":String(count);
+          badge.hidden=count===0;
+          badge.classList.toggle("pulse",count>0);
+        }
+      }
+    }catch(e){
+      console.warn("[admin grader] pending badge",e);
+    }
     const status=$("adminGraderAppealStatus")?.value||null;
     root.innerHTML='<div class="admin-users-empty">Đang tải yêu cầu…</div>';
     try{
@@ -292,6 +311,9 @@
       if(b)reset(b);
     });
     window.addEventListener("avp:admin-grader-open",()=>{load();loadLessons();loadLessonStats();loadAppeals();});
+
+    // Tải badge chờ xử lý ngay khi Admin dashboard sẵn sàng.
+    setTimeout(()=>{ loadAppeals(); },700);
   }
 
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});

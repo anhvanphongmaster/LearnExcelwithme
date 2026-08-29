@@ -76,3 +76,39 @@
   .ag-appeal-tools{margin-top:8px}.admin-grader-config-head{align-items:flex-start}
   .ag-appeal-review{grid-template-columns:1fr}.ag-appeal-actions{display:grid;grid-template-columns:1fr 1fr}.ag-appeal-actions button:first-child{grid-column:1/-1}
 }
+
+
+/* ===== V16 - ADMIN GRADER PENDING BADGE ===== */
+.admin-grader-tab{position:relative}
+.ag-tab-title{display:flex;align-items:center;gap:7px;min-width:0}
+.ag-pending-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:19px;
+  height:19px;
+  padding:0 5px;
+  border-radius:999px;
+  background:#d92d48;
+  color:#fff;
+  font-style:normal;
+  font-size:9px;
+  font-weight:950;
+  line-height:1;
+  box-shadow:0 0 0 3px rgba(217,45,72,.10);
+}
+.ag-pending-badge[hidden]{display:none!important}
+.ag-pending-badge.pulse{animation:agPendingPulse 1.8s ease-in-out infinite}
+@keyframes agPendingPulse{
+  0%,100%{box-shadow:0 0 0 3px rgba(217,45,72,.10)}
+  50%{box-shadow:0 0 0 7px rgba(217,45,72,.05)}
+}
+.admin-grader-kpis{grid-template-columns:repeat(5,minmax(0,1fr))}
+.admin-grader-kpis .ag-kpi-pending{border-color:#efd1d7;background:#fff8fa}
+.admin-grader-kpis .ag-kpi-pending strong{color:#c12844}
+@media(max-width:760px){
+  .admin-grader-kpis{grid-template-columns:repeat(2,1fr)}
+  .admin-grader-kpis .ag-kpi-pending{grid-column:1/-1}
+}
+body.dark-mode .admin-grader-kpis .ag-kpi-pending{background:#2a171c;border-color:#5b2b36}
+body.dark-mode .admin-grader-kpis .ag-kpi-pending strong{color:#ff9bad}

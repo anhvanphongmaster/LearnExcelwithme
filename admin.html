@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="cloud-sync-v11.css">
 <link href="theme-polish-v33.css" rel="stylesheet"/>
 <link rel="stylesheet" href="admin-community-center.css?v=20260829-moderation1">
-<link rel="stylesheet" href="admin-grader.css?v=20260830-v12appeal1">
+<link rel="stylesheet" href="admin-grader.css?v=20260830-v16badge1">
 </head>
 <body>
 
@@ -135,8 +135,9 @@ where is_admin = true;</pre>
         <button type="button" data-admin-view="reviews" role="tab">
           <b>⭐ Đánh giá</b><small>Sao & góp ý website</small>
         </button>
-              <button type="button" data-admin-view="grader" role="tab">
-          <b>🧪 Chấm điểm</b><small>Bài nộp, cấp độ & reset lượt</small>
+              <button type="button" data-admin-view="grader" role="tab" class="admin-grader-tab">
+          <span class="ag-tab-title"><b>🧪 Chấm điểm</b><i id="adminGraderPendingBadge" class="ag-pending-badge" hidden>0</i></span>
+          <small>Bài nộp, cấp độ & yêu cầu chấm lại</small>
         </button>
       </div>
 
@@ -625,6 +626,7 @@ where is_admin = true;</pre>
         <article><small>Lượt nộp chính thức</small><strong id="agSubmissions">0</strong></article>
         <article><small>Người đã làm</small><strong id="agUsers">0</strong></article>
         <article><small>Điểm trung bình</small><strong id="agAvgScore">0</strong></article>
+        <article class="ag-kpi-pending"><small>Chờ chấm lại</small><strong id="agPendingAppeals">0</strong></article>
       </div>
 
       <div class="admin-grader-toolbar">
@@ -741,6 +743,6 @@ where is_admin = true;</pre>
 <script defer src="cloud-sync-v11.js"></script>
 <script defer src="theme-unified-v32.js"></script>
 <script defer src="admin-community-center.js?v=20260829-moderation1"></script>
-<script defer src="admin-grader.js?v=20260830-v12appeal1"></script>
+<script defer src="admin-grader.js?v=20260830-v16badge1"></script>
 </body>
 </html>
