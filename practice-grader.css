@@ -68,3 +68,40 @@
   .pg-result{grid-template-columns:1fr}
   .pg-score{margin:0 auto}
 }
+
+.pg-board{margin-top:16px;padding:16px;border-radius:18px;border:1px solid #d8e7de;background:radial-gradient(circle at 100% 0%,rgba(253,224,71,.10),transparent 30%),#fff;box-shadow:0 10px 24px rgba(15,23,42,.05)}
+.pg-board-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.pg-board-kicker{display:inline-flex;padding:5px 9px;border-radius:999px;background:#fff8d7;color:#7a5a00;font-size:10px;font-weight:900;letter-spacing:.08em}
+.pg-board-head h3{margin:8px 0 4px;color:#153d28;font-size:19px}
+.pg-board-head p{margin:0;color:#66766d;font-size:12px;line-height:1.45}
+.pg-board-refresh{flex:0 0 auto;border:1px solid #cfe1d5;background:#fff;color:#1d6740;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:900;cursor:pointer}
+.pg-board-list{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:7px}
+.pg-board-row{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:8px 10px;align-items:center;padding:10px 11px;border:1px solid #e1e9e4;border-radius:12px;background:#f9fbfa}
+.pg-board-row.me{border-color:#f1d56b;background:#fffbea;box-shadow:inset 3px 0 0 #eab308}
+.pg-board-rank{grid-row:1 / span 2;font-weight:900;text-align:center}
+.pg-board-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#244a35;font-size:12.5px;font-weight:900}
+.pg-board-score{color:#176b3b;font-size:18px;font-weight:950}
+.pg-board-score small{font-size:9px;color:#7c9084}
+.pg-board-meta{grid-column:2 / 4;color:#7a8b81;font-size:10.5px}
+.pg-board-empty{padding:16px;border-radius:11px;background:#f6f8f7;color:#7a8a80;text-align:center;font-size:12px}
+
+body.pg-publish-open{overflow:hidden}
+.pg-publish-modal{position:fixed;inset:0;z-index:10050;display:grid;place-items:center;padding:16px}
+.pg-publish-modal[hidden]{display:none!important}
+.pg-publish-backdrop{position:absolute;inset:0;background:rgba(4,18,10,.76);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.pg-publish-card{position:relative;width:min(430px,100%);padding:22px;border-radius:22px;border:1px solid rgba(110,231,151,.42);background:radial-gradient(circle at 100% 0%,rgba(59,130,246,.17),transparent 34%),linear-gradient(155deg,#11291c,#0c1d14);color:#effbf3;box-shadow:0 24px 70px rgba(0,0,0,.48);text-align:center}
+.pg-publish-close{position:absolute;right:11px;top:11px;width:36px;height:36px;border:1px solid rgba(255,255,255,.12);border-radius:11px;background:rgba(255,255,255,.05);color:#d9eee1;font-size:23px;cursor:pointer}
+.pg-publish-icon{width:58px;height:58px;margin:0 auto 10px;display:grid;place-items:center;border-radius:18px;background:rgba(250,204,21,.12);border:1px solid rgba(250,204,21,.24);font-size:30px}
+.pg-publish-kicker{color:#8fe7b0;font-size:10px;font-weight:900;letter-spacing:.11em}
+.pg-publish-card h3{margin:7px 0 5px;font-size:22px}
+.pg-publish-card>p{margin:0;color:#afc7b8;font-size:12.5px}
+.pg-publish-score{width:104px;height:104px;margin:16px auto;display:grid;place-items:center;align-content:center;border-radius:50%;border:7px solid #4ade80;background:#133422}
+.pg-publish-score strong{font-size:34px;line-height:1}
+.pg-publish-score span{margin-top:3px;color:#9db9a7;font-size:11px}
+.pg-publish-note{padding:10px 11px;border-radius:11px;background:rgba(255,255,255,.045);color:#9fb5a7;font-size:11px;line-height:1.45}
+.pg-publish-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+.pg-publish-btn{min-height:44px;border-radius:11px;font-weight:900;cursor:pointer}
+.pg-publish-btn.ghost{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#dcece2}
+.pg-publish-btn.primary{border:0;background:linear-gradient(180deg,#4ade80,#22a65a);color:#062d18}
+.pg-publish-manage{margin-top:10px;border:0;background:transparent;color:#93a99b;text-decoration:underline;font-size:10.5px;cursor:pointer}
+@media(max-width:600px){.pg-board-head{display:block}.pg-board-refresh{margin-top:10px}.pg-board-row{grid-template-columns:36px minmax(0,1fr) auto}.pg-publish-card{padding:20px 15px 16px}.pg-publish-actions{grid-template-columns:1fr}}

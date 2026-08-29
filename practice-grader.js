@@ -89,6 +89,7 @@
       </div>
     `;
     note(score === 100 ? "Chấm xong: 100/100. Bài đã đạt." : `Chấm xong: ${score}/100. Xem chi tiết bên dưới.`, score === 100 ? "ok" : "warn");
+    setTimeout(() => offerPublish(score), 220);
   }
 
   async function downloadDemo() {
@@ -161,6 +162,176 @@
     }
   }
 
+
+  let pendingScore = null;
+
+  async function getClient() {
+    if (window.avpSupabase) return window.avpSupabase;
+    const started = Date.now();
+    while (Date.now() - started < 3500) {
+      if (window.avpSupabase) return window.avpSupabase;
+      await new Promise(r => setTimeout(r, 100));
+    }
+    return null;
+  }
+
+  async function getUser() {
+    const sb = await getClient();
+    if (!sb?.auth) return null;
+    try {
+      const r = await sb.auth.getUser();
+      return r?.data?.user || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function openPublishModal(score) {
+    pendingScore = Number(score) || 0;
+    $("pgPublishScore").textContent = String(pendingScore);
+    $("pgPublishText").textContent =
+      pendingScore >= 100
+        ? "Xuất sắc! Bạn vừa đạt điểm tuyệt đối."
+        : pendingScore >= 70
+          ? "Bạn vừa hoàn thành một lượt thực hành khá tốt."
+          : "Bạn vừa có thêm một lượt thực hành.";
+
+    $("pgPublishModal").hidden = false;
+    document.body.classList.add("pg-publish-open");
+  }
+
+  function closePublishModal() {
+    if ($("pgPublishModal")) $("pgPublishModal").hidden = true;
+    document.body.classList.remove("pg-publish-open");
+  }
+
+  async function offerPublish(score) {
+    openPublishModal(score);
+    const user = await getUser();
+    if ($("pgPublishYes")) {
+      $("pgPublishYes").textContent = user ? "🏆 Ghi thành tích" : "🔐 Đăng nhập & ghi điểm";
+    }
+    if ($("pgHideFromBoard")) $("pgHideFromBoard").hidden = !user;
+  }
+
+  async function publishScore() {
+    const score = Math.max(0, Math.min(100, Number(pendingScore) || 0));
+    const user = await getUser();
+
+    if (!user) {
+      location.href = "auth.html?next=" + encodeURIComponent("practice-video.html#grader");
+      return;
+    }
+
+    const sb = await getClient();
+    if (!sb?.rpc) {
+      note("Chưa kết nối Supabase để ghi thành tích.", "bad");
+      return;
+    }
+
+    const btn = $("pgPublishYes");
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Đang ghi…";
+    }
+
+    try {
+      const { error } = await sb.rpc("practice_grader_submit_score", {
+        p_lesson_key: "clean_blank_rows_01",
+        p_score: score
+      });
+      if (error) throw error;
+
+      closePublishModal();
+      note("Đã ghi thành tích lên bảng xếp hạng.", "ok");
+      await loadLeaderboard();
+    } catch (e) {
+      console.error("[practice leaderboard] submit", e);
+      note("Không ghi được thành tích: " + (e?.message || "RPC lỗi"), "bad");
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "🏆 Ghi thành tích";
+      }
+    }
+  }
+
+  async function setPrivate() {
+    const user = await getUser();
+    if (user) {
+      const sb = await getClient();
+      try {
+        await sb?.rpc?.("practice_grader_set_visibility", { p_visible: false });
+      } catch (e) {}
+    }
+    closePublishModal();
+    note("Điểm lần này không được đưa lên bảng xếp hạng.", "ok");
+    await loadLeaderboard();
+  }
+
+  async function hideMyScore() {
+    const user = await getUser();
+    if (!user) return;
+
+    const sb = await getClient();
+    try {
+      const { error } = await sb.rpc("practice_grader_set_visibility", { p_visible: false });
+      if (error) throw error;
+      closePublishModal();
+      note("Đã ẩn thành tích của bạn khỏi bảng xếp hạng.", "ok");
+      await loadLeaderboard();
+    } catch (e) {
+      note("Chưa ẩn được thành tích: " + (e?.message || "RPC lỗi"), "bad");
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  async function loadLeaderboard() {
+    const list = $("pgBoardList");
+    if (!list) return;
+
+    const sb = await getClient();
+    if (!sb?.rpc) {
+      list.innerHTML = '<li class="pg-board-empty">Chưa kết nối bảng xếp hạng.</li>';
+      return;
+    }
+
+    list.innerHTML = '<li class="pg-board-empty">Đang tải thành tích…</li>';
+
+    try {
+      const { data, error } = await sb.rpc("practice_grader_leaderboard", { p_limit: 50 });
+      if (error) throw error;
+
+      const rows = Array.isArray(data) ? data : [];
+      if (!rows.length) {
+        list.innerHTML = '<li class="pg-board-empty">Chưa có thành tích công khai — bạn có thể là người đầu tiên.</li>';
+        return;
+      }
+
+      list.innerHTML = rows.map((row, i) => {
+        const rank = Number(row.rank_no) || (i + 1);
+        const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `${rank}.`;
+        return `
+          <li class="pg-board-row${row.is_me ? " me" : ""}">
+            <span class="pg-board-rank">${medal}</span>
+            <span class="pg-board-name">${escapeHtml(row.display_name || "Học viên")}${row.is_me ? " · Bạn" : ""}</span>
+            <span class="pg-board-score">${Number(row.best_score) || 0}<small>/100</small></span>
+            <span class="pg-board-meta">${Number(row.passed_lessons) || 0} bài đạt · ${Number(row.attempts) || 0} lượt</span>
+          </li>
+        `;
+      }).join("");
+    } catch (e) {
+      console.error("[practice leaderboard] list", e);
+      list.innerHTML = '<li class="pg-board-empty">BXH chưa tải được.</li>';
+    }
+  }
+
   function init() {
     $("pgDownloadDemo")?.addEventListener("click", downloadDemo);
     $("pgSubmitDemo")?.addEventListener("change", e => {
@@ -168,6 +339,22 @@
       gradeFile(file);
       e.target.value = "";
     });
+
+    $("pgPublishYes")?.addEventListener("click", publishScore);
+    $("pgPublishPrivate")?.addEventListener("click", setPrivate);
+    $("pgHideFromBoard")?.addEventListener("click", hideMyScore);
+    $("pgPublishClose")?.addEventListener("click", closePublishModal);
+    document.querySelectorAll("[data-pg-publish-close]").forEach(el => {
+      el.addEventListener("click", closePublishModal);
+    });
+
+    $("pgBoardRefresh")?.addEventListener("click", loadLeaderboard);
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && !$("pgPublishModal")?.hidden) closePublishModal();
+    });
+
+    loadLeaderboard();
   }
 
   if (document.readyState === "loading") {

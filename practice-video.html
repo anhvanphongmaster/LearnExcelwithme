@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="practice-video.css?v=20260828-ROLLBACK-STABLE1">
   <link rel="stylesheet" href="practice-hub.css?v=20260830-hub1">
-  <link rel="stylesheet" href="practice-grader.css?v=20260830-hub1">
+  <link rel="stylesheet" href="practice-grader.css?v=20260830-rank2">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link href="theme-polish-v33.css" rel="stylesheet"/>
@@ -216,6 +216,50 @@
         <p>Sẽ chấm các tiêu chí định dạng quan trọng theo từng bài.</p>
       </article>
     </div>
+  
+    <section class="pg-board" id="pgLeaderboard">
+      <div class="pg-board-head">
+        <div>
+          <span class="pg-board-kicker">🏆 BẢNG XẾP HẠNG THÀNH TÍCH</span>
+          <h3>Top thực hành có chấm điểm</h3>
+          <p>Chỉ hiển thị người học đã tự nguyện đưa thành tích lên bảng xếp hạng.</p>
+        </div>
+        <button type="button" class="pg-board-refresh" id="pgBoardRefresh">Làm mới</button>
+      </div>
+
+      <div class="pg-board-me" id="pgBoardMe" hidden></div>
+      <ol class="pg-board-list" id="pgBoardList">
+        <li class="pg-board-empty">Chưa tải bảng xếp hạng.</li>
+      </ol>
+    </section>
+
+    <div class="pg-publish-modal" id="pgPublishModal" hidden>
+      <div class="pg-publish-backdrop" data-pg-publish-close></div>
+      <div class="pg-publish-card" role="dialog" aria-modal="true" aria-labelledby="pgPublishTitle">
+        <button type="button" class="pg-publish-close" id="pgPublishClose" aria-label="Đóng">×</button>
+        <div class="pg-publish-icon">🏆</div>
+        <span class="pg-publish-kicker">THÀNH TÍCH CỦA BẠN</span>
+        <h3 id="pgPublishTitle">Đưa điểm lên bảng xếp hạng?</h3>
+        <p id="pgPublishText">Bạn vừa hoàn thành bài thực hành.</p>
+
+        <div class="pg-publish-score">
+          <strong id="pgPublishScore">0</strong>
+          <span>/100</span>
+        </div>
+
+        <div class="pg-publish-note">
+          Bạn có thể chọn không công khai. Việc chấm bài vẫn hoạt động bình thường.
+        </div>
+
+        <div class="pg-publish-actions">
+          <button type="button" class="pg-publish-btn ghost" id="pgPublishPrivate">Không lên BXH</button>
+          <button type="button" class="pg-publish-btn primary" id="pgPublishYes">🏆 Ghi thành tích</button>
+        </div>
+
+        <button type="button" class="pg-publish-manage" id="pgHideFromBoard" hidden>Ẩn thành tích của tôi khỏi BXH</button>
+      </div>
+    </div>
+
   </section>
 
 </main>
@@ -243,7 +287,7 @@
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260828-ROLLBACK-STABLE1"></script>
 <script defer src="practice-hub.js?v=20260830-hub1"></script>
-<script defer src="practice-grader.js?v=20260830-hub1"></script>
+<script defer src="practice-grader.js?v=20260830-rank2"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="download-manager.js?v=20260828-ROLLBACK-STABLE1"></script>
 </body>
