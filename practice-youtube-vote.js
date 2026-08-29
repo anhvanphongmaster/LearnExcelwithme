@@ -137,6 +137,16 @@
 
     document.querySelectorAll("[data-chvote]").forEach(function(b){
       b.addEventListener("click",async function(){
+        var access=window.AVPAccess;
+        var user=access ? await access.requireLogin({
+          next:"practice-video.html#youtube",
+          reason:"Đăng nhập để vote."
+        }) : null;
+        if(!user){
+          if(!access) location.href="auth.html?next="+encodeURIComponent("practice-video.html#youtube");
+          return;
+        }
+
         var choice=b.getAttribute("data-chvote");
         var oldChoice=picked();
         if(oldChoice){

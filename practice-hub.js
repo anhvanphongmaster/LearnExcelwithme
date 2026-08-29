@@ -61,7 +61,25 @@
 
   function init() {
     qa("[data-practice-branch]").forEach(btn => {
-      btn.addEventListener("click", () => setBranch(btn.dataset.practiceBranch));
+      btn.addEventListener("click", async () => {
+        const branch = btn.dataset.practiceBranch;
+
+        if (branch === "grader") {
+          const access = window.AVPAccess;
+          if (!access) {
+            location.href = "auth.html?next=" + encodeURIComponent("practice-video.html#grader");
+            return;
+          }
+
+          const user = await access.requireLogin({
+            next: "practice-video.html#grader",
+            reason: "Đăng nhập để làm bài chấm điểm."
+          });
+          if (!user) return;
+        }
+
+        setBranch(branch);
+      });
     });
 
     initTopicTabs();
@@ -75,7 +93,23 @@
     const hash = location.hash.replace("#","");
     if (["tiktok","youtube","grader"].includes(hash)) initial = hash;
 
-    setBranch(initial);
+    if (initial === "grader") {
+      (async () => {
+        const access = window.AVPAccess;
+        if (!access) {
+          setBranch("tiktok");
+          return;
+        }
+        const user = await access.getUser(true);
+        if (user) setBranch("grader");
+        else {
+          setBranch("tiktok");
+          access.goLogin("practice-video.html#grader");
+        }
+      })();
+    } else {
+      setBranch(initial);
+    }
   }
 
   if (document.readyState === "loading") {

@@ -1471,10 +1471,8 @@
 
 
   async function currentUser() {
-    if (window.avpCloudSync && window.avpCloudSync.getUser) {
-      try { return await window.avpCloudSync.getUser(); } catch (e) {}
-    }
-    var sb = window.avpSupabase;
+    if (window.AVPAccess) return await window.AVPAccess.getUser(true);
+    var sb = window.avpSupabase || window.supabaseClient || null;
     if (!sb || !sb.auth) return null;
     try {
       var r = await sb.auth.getUser();
@@ -1482,10 +1480,20 @@
     } catch (e) { return null; }
   }
   function askLogin(reason) {
+    if (window.AVPAccess) {
+      window.AVPAccess.goLogin("practice-video.html");
+      return Promise.resolve(false);
+    }
     location.href = "auth.html?next=" + encodeURIComponent("practice-video.html");
     return Promise.resolve(false);
   }
   async function requireLogin(reason) {
+    if (window.AVPAccess) {
+      return await window.AVPAccess.requireLogin({
+        next: "practice-video.html",
+        reason: reason || "Đăng nhập để tiếp tục."
+      });
+    }
     var u = await currentUser();
     if (u) return u;
     await askLogin(reason);

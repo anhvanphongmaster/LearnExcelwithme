@@ -89,10 +89,18 @@
       </div>
     `;
     note(score === 100 ? "Chấm xong: 100/100. Bài đã đạt." : `Chấm xong: ${score}/100. Xem chi tiết bên dưới.`, score === 100 ? "ok" : "warn");
-    setTimeout(() => offerPublish(score), 220);
+
+    // Mọi lần nộp đều được ghi nhận ngay để chống spam.
+    recordAttemptThenOffer(score);
   }
 
   async function downloadDemo() {
+    const user = await window.AVPAccess?.requireLogin({
+      next: "practice-video.html#grader",
+      reason: "Đăng nhập để tải bài thực hành."
+    });
+    if (!user) return;
+
     try {
       const XLSX = await loadXLSX();
       const wb = XLSX.utils.book_new();
@@ -121,6 +129,12 @@
 
   async function gradeFile(file) {
     if (!file) return;
+
+    const user = await window.AVPAccess?.requireLogin({
+      next: "practice-video.html#grader",
+      reason: "Đăng nhập để nộp và chấm bài."
+    });
+    if (!user) return;
     if (!/\.(xlsx|xls)$/i.test(file.name)) {
       note("Chỉ nhận file Excel .xlsx hoặc .xls.", "bad");
       return;
@@ -164,6 +178,8 @@
 
 
   let pendingScore = null;
+  let pendingAttempt = 1;
+  let pendingAchievement = 0;
 
   async function getClient() {
     if (window.avpSupabase) return window.avpSupabase;
@@ -190,11 +206,7 @@
     pendingScore = Number(score) || 0;
     $("pgPublishScore").textContent = String(pendingScore);
     $("pgPublishText").textContent =
-      pendingScore >= 100
-        ? "Xuất sắc! Bạn vừa đạt điểm tuyệt đối."
-        : pendingScore >= 70
-          ? "Bạn vừa hoàn thành một lượt thực hành khá tốt."
-          : "Bạn vừa có thêm một lượt thực hành.";
+      `Điểm bài ${pendingScore}/100 · Thành tích ${pendingAchievement} điểm · Lần thử ${pendingAttempt}.`;
 
     $("pgPublishModal").hidden = false;
     document.body.classList.add("pg-publish-open");
@@ -203,6 +215,37 @@
   function closePublishModal() {
     if ($("pgPublishModal")) $("pgPublishModal").hidden = true;
     document.body.classList.remove("pg-publish-open");
+  }
+
+
+  async function recordAttemptThenOffer(score) {
+    const user = await getUser();
+    if (!user) return;
+
+    const sb = await getClient();
+    if (!sb?.rpc) {
+      note("Chưa kết nối Supabase để ghi lượt làm.", "bad");
+      return;
+    }
+
+    try {
+      const { data, error } = await sb.rpc("practice_grader_record_attempt", {
+        p_lesson_key: "clean_blank_rows_01",
+        p_score: Math.max(0, Math.min(100, Number(score) || 0))
+      });
+      if (error) throw error;
+
+      const attempt = Number(data?.attempt) || 1;
+      const achievement = Number(data?.achievement_score) || 0;
+
+      pendingAttempt = attempt;
+      pendingAchievement = achievement;
+
+      setTimeout(() => offerPublish(score), 220);
+    } catch (e) {
+      console.error("[practice grader] record attempt", e);
+      note("Không ghi được lượt làm: " + (e?.message || "RPC lỗi"), "bad");
+    }
   }
 
   async function offerPublish(score) {
@@ -236,9 +279,8 @@
     }
 
     try {
-      const { error } = await sb.rpc("practice_grader_submit_score", {
-        p_lesson_key: "clean_blank_rows_01",
-        p_score: score
+      const { error } = await sb.rpc("practice_grader_set_visibility", {
+        p_visible: true
       });
       if (error) throw error;
 
