@@ -19,6 +19,8 @@
   let communityAvatarMap = new Map();
   let communityProfileAvatar = null;
   let latestNotificationUnreadCount = 0;
+  let communityIsAdmin = false;
+  let communityPinnedIds = new Set();
 
   const esc = s => String(s ?? "")
     .replaceAll("&","&amp;")
@@ -128,9 +130,12 @@
           <div class="avp-notification-toolbar">
             <button id="avpNotifyBackCommunity" class="avp-notify-back-community" type="button">← Cộng đồng</button>
             <div class="avp-notification-filter">
-              <button type="button" class="active" data-notify-filter="all">Tất cả</button>
-              <button type="button" data-notify-filter="personal">Cá nhân</button>
-              <button type="button" data-notify-filter="system">Hệ thống</button>
+              <button type="button" class="active" data-notify-filter="personal">
+                Cá nhân <span id="avpNotifyPersonalBadge" class="avp-notify-filter-badge" hidden></span>
+              </button>
+              <button type="button" data-notify-filter="system">
+                Hệ thống <span id="avpNotifySystemBadge" class="avp-notify-filter-badge" hidden></span>
+              </button>
             </div>
             <button id="avpNotifyMarkAll" type="button">Đánh dấu đã đọc</button>
           </div>
@@ -225,7 +230,7 @@
       return;
     }
 
-    setPanelHeader("Trung tâm thông báo","Cá nhân · Cộng đồng · Hệ thống");
+    setPanelHeader("Trung tâm thông báo","Cá nhân · Hệ thống");
     await currentUser();
     await loadNotifications();
   }
@@ -371,11 +376,56 @@
       if(error)throw error;
 
       communityQuestions=Array.isArray(data)?data:[];
+
+      await loadCommunityPinState();
+      communityQuestions=communityQuestions
+        .map(q=>({...q,is_pinned:communityPinnedIds.has(String(q.id))}))
+        .sort((a,b)=>Number(Boolean(b.is_pinned))-Number(Boolean(a.is_pinned)));
+
       await loadCommunityAvatarMap(communityQuestions.map(q=>q.user_id));
       renderCommunityFeed(communityQuestions);
     }catch(e){
       console.warn("Community list",e);
       $("avpCommunityContent").innerHTML='<div class="avp-community-empty">Chưa tải được cộng đồng. Hãy kiểm tra SQL COMMUNITY V1 đã chạy thành công.</div>';
+    }
+  }
+
+  async function loadCommunityPinState(){
+    communityPinnedIds=new Set();
+    communityIsAdmin=false;
+
+    try{
+      const {data,error}=await client.rpc("community_question_pinned_ids");
+      if(!error){
+        (Array.isArray(data)?data:[]).forEach(r=>{
+          const id=r?.question_id ?? r?.id ?? r;
+          if(id!==null && id!==undefined)communityPinnedIds.add(String(id));
+        });
+      }
+    }catch(e){
+      console.warn("Community pinned list",e);
+    }
+
+    if(user?.id){
+      try{
+        const {data,error}=await client.rpc("is_admin_user");
+        if(!error)communityIsAdmin=Boolean(data);
+      }catch{}
+    }
+  }
+
+  async function setCommunityQuestionPinned(questionId,pinned){
+    if(!(await requireCommunityLogin()))return;
+    try{
+      const {error}=await client.rpc("admin_community_question_set_pinned",{
+        p_question_id:String(questionId),
+        p_pinned:Boolean(pinned)
+      });
+      if(error)throw error;
+      await loadCommunity();
+    }catch(e){
+      console.warn("Community pin",e);
+      alert("Chưa cập nhật được trạng thái ghim bài.");
     }
   }
 
@@ -399,6 +449,7 @@
         <div class="avp-question-main">
           <div class="avp-question-meta">
             ${communityStatus(q)}
+            ${q.is_pinned?'<span class="avp-community-pin-label">📌 Đã ghim</span>':""}
             ${q.topic?`<span class="avp-community-topic">${esc(q.topic)}</span>`:""}
             <span>${communityTime(q.created_at)}</span>
           </div>
@@ -411,7 +462,10 @@
               <span>${esc(q.display_name||"Học viên")}</span>
               ${communityTrustBadge(q.user_id)}
             </button>
-            <button type="button" class="avp-report-btn" data-report-question="${esc(q.id)}">🚩 Báo cáo</button>
+            <div class="avp-question-card-actions">
+              ${communityIsAdmin?`<button type="button" class="avp-pin-question-btn ${q.is_pinned?"active":""}" data-pin-question="${esc(q.id)}" data-pinned="${q.is_pinned?"1":"0"}">${q.is_pinned?"📍 Bỏ ghim":"📌 Ghim bài"}</button>`:""}
+              <button type="button" class="avp-report-btn" data-report-question="${esc(q.id)}">🚩 Báo cáo</button>
+            </div>
           </div>
         </div>
         <div class="avp-question-stats">
@@ -429,6 +483,12 @@
     });
     box.querySelectorAll("[data-report-question]").forEach(btn=>{
       btn.onclick=e=>{e.stopPropagation();reportCommunityTarget("question",btn.dataset.reportQuestion);};
+    });
+    box.querySelectorAll("[data-pin-question]").forEach(btn=>{
+      btn.onclick=e=>{
+        e.stopPropagation();
+        setCommunityQuestionPinned(btn.dataset.pinQuestion,btn.dataset.pinned!=="1");
+      };
     });
     bindCommunityImageOpen(box);
   }
@@ -690,6 +750,7 @@
         <article class="avp-question-detail-card">
           <div class="avp-question-meta">
             ${communityStatus(q)}
+            ${q.is_pinned?'<span class="avp-community-pin-label">📌 Đã ghim</span>':""}
             ${q.topic?`<span class="avp-community-topic">${esc(q.topic)}</span>`:""}
             <span>${communityTime(q.created_at)}</span>
           </div>
@@ -702,7 +763,10 @@
               <span>${esc(q.display_name||"Học viên")}</span>
               ${communityTrustBadge(q.user_id)}
             </button>
-            <button type="button" class="avp-report-btn" data-report-question="${esc(q.id)}">🚩 Báo cáo</button>
+            <div class="avp-question-card-actions">
+              ${communityIsAdmin?`<button type="button" class="avp-pin-question-btn ${q.is_pinned?"active":""}" data-pin-question="${esc(q.id)}" data-pinned="${q.is_pinned?"1":"0"}">${q.is_pinned?"📍 Bỏ ghim":"📌 Ghim bài"}</button>`:""}
+              <button type="button" class="avp-report-btn" data-report-question="${esc(q.id)}">🚩 Báo cáo</button>
+            </div>
           </div>
         </article>
 
@@ -1590,7 +1654,8 @@
       if(error)throw error;
 
       window.__avpNotifications=Array.isArray(data)?data:[];
-      const active=document.querySelector("[data-notify-filter].active")?.dataset.notifyFilter||"all";
+      const active=document.querySelector("[data-notify-filter].active")?.dataset.notifyFilter||"personal";
+      updateNotificationCategoryBadges(window.__avpNotifications);
       renderNotifications(window.__avpNotifications,active);
       await updateNotificationBadge();
     }catch(e){
@@ -1616,8 +1681,25 @@
     );
   }
 
+  function isSystemNotification(n){
+    return Boolean(n) && !isPersonalNotification(n);
+  }
+
   function notificationKindLabel(n){
     return isPersonalNotification(n) ? "Cá nhân" : "Hệ thống";
+  }
+
+  function updateNotificationCategoryBadges(rows){
+    const list=Array.isArray(rows)?rows:[];
+    const personal=list.filter(n=>!n.is_read && isPersonalNotification(n)).length;
+    const system=list.filter(n=>!n.is_read && isSystemNotification(n)).length;
+
+    [["avpNotifyPersonalBadge",personal],["avpNotifySystemBadge",system]].forEach(([id,count])=>{
+      const el=$(id);
+      if(!el)return;
+      el.hidden=count<=0;
+      el.textContent=count>99?"99+":String(count);
+    });
   }
 
   function notificationIcon(n){
@@ -1641,10 +1723,9 @@
     if(!box)return;
 
     const data=rows.filter(n=>{
-      if(filter==="all")return true;
       if(filter==="personal")return isPersonalNotification(n);
-      if(filter==="system")return n.kind==="system" && !isPersonalNotification(n);
-      return true;
+      if(filter==="system")return isSystemNotification(n);
+      return isPersonalNotification(n);
     });
 
     if(!data.length){
@@ -1683,6 +1764,9 @@
         const row=(window.__avpNotifications||[]).find(x=>x.notification_key===key);
         if(row)row.is_read=true;
 
+        // Cập nhật số ngay tại giao diện: đọc 1 thông báo = giảm đúng 1.
+        publishCommunityUnreadCount(Math.max(0,latestNotificationUnreadCount-1));
+        updateNotificationCategoryBadges(window.__avpNotifications||[]);
         await updateNotificationBadge();
       }catch(e){
         console.warn("Mark notification read",e);
