@@ -96,6 +96,7 @@
         <button type="button" class="active" data-acc-tab="send">📢 Gửi thông báo</button>
         <button type="button" data-acc-tab="history">📚 Lịch sử</button>
         <button type="button" data-acc-tab="certs">🏅 Chứng nhận</button>
+        <button type="button" data-acc-tab="moderation">🛡️ Kiểm duyệt</button>
       </div>
 
       <div id="avpAccSendTab" class="avp-acc-tab">
@@ -177,6 +178,21 @@
         </div>
         <div id="avpAccCertList" class="avp-acc-cert-list"></div>
       </div>
+
+      <div id="avpAccModerationTab" class="avp-acc-tab" hidden>
+        <div class="avp-acc-subhead">
+          <div>
+            <h3>🛡️ Hàng chờ kiểm duyệt</h3>
+            <span>Report từ học viên + cảnh báo tự động về lừa đảo/link đáng ngờ.</span>
+          </div>
+          <select id="avpModerationStatus">
+            <option value="open">Chờ xử lý</option>
+            <option value="all">Tất cả</option>
+            <option value="resolved">Đã xử lý</option>
+          </select>
+        </div>
+        <div id="avpModerationList" class="avp-moderation-list"></div>
+      </div>
     `;
 
     if(staticHost){
@@ -199,8 +215,10 @@
         $("avpAccSendTab").hidden=tab!=="send";
         $("avpAccHistoryTab").hidden=tab!=="history";
         $("avpAccCertsTab").hidden=tab!=="certs";
+        $("avpAccModerationTab").hidden=tab!=="moderation";
         if(tab==="history") await loadNotifications();
         if(tab==="certs") await loadCertificates();
+        if(tab==="moderation") await loadModeration();
       };
     });
 
@@ -222,6 +240,7 @@
     };
 
     $("avpAccSend").onclick=sendNotification;
+    $("avpModerationStatus").onchange=loadModeration;
     $("avpAccRefresh").onclick=async()=>{
       await loadNotifications();
       await loadCertificates();
@@ -431,6 +450,95 @@
       await loadNotifications();
     }catch(e){
       alert("Chưa cập nhật được trạng thái.");
+    }
+  }
+
+
+  async function loadModeration(){
+    const box=$("avpModerationList");
+    if(!box)return;
+    box.innerHTML='<p class="admin-empty">Đang tải hàng chờ kiểm duyệt...</p>';
+
+    try{
+      const status=$("avpModerationStatus")?.value||"open";
+      const rows=await rpc("admin_community_moderation_queue",{
+        p_status:status,
+        p_limit:200
+      });
+      renderModeration(Array.isArray(rows)?rows:[]);
+    }catch(e){
+      console.warn("moderation queue",e);
+      box.innerHTML='<p class="admin-empty">Chưa tải được kiểm duyệt. Hãy chạy SQL PROFILE + MODERATION V1.</p>';
+    }
+  }
+
+  function moderationReasonLabel(v){
+    return ({
+      spam:"Spam",
+      scam:"Lừa đảo",
+      suspicious_link:"Link/liên hệ đáng ngờ",
+      sensitive:"Nội dung nhạy cảm",
+      harassment:"Quấy rối/xúc phạm",
+      impersonation:"Giả mạo",
+      auto_risk:"Hệ thống phát hiện rủi ro",
+      other:"Khác"
+    })[v]||v||"Báo cáo";
+  }
+
+  function renderModeration(rows){
+    const box=$("avpModerationList");
+    if(!rows.length){
+      box.innerHTML='<p class="admin-empty">Không có report phù hợp.</p>';
+      return;
+    }
+
+    box.innerHTML=rows.map(r=>`
+      <article class="avp-mod-card ${r.status==="open"?"open":"closed"}">
+        <div class="avp-mod-head">
+          <div>
+            <strong>${esc(moderationReasonLabel(r.reason))}</strong>
+            <span>${esc(r.target_type)} · ${fmt(r.created_at)}</span>
+          </div>
+          <b>${r.auto_flag?"🤖 Tự động":"🚩 Người dùng báo cáo"}</b>
+        </div>
+        <div class="avp-mod-user">
+          <strong>${esc(r.target_display_name||"Học viên")}</strong>
+          <small>${esc(r.target_email||"")}</small>
+          ${r.community_status&&r.community_status!=="active"?`<em>${esc(r.community_status)}</em>`:""}
+        </div>
+        <p>${esc(r.content_preview||r.detail||"Không có nội dung xem trước.")}</p>
+        ${r.detail?`<small class="avp-mod-detail">Ghi chú: ${esc(r.detail)}</small>`:""}
+        <div class="avp-mod-actions">
+          ${r.status==="open"?`
+            <button data-mod-action="dismiss" data-report="${esc(r.id)}">Bỏ qua</button>
+            ${r.target_type!=="profile"?`<button data-mod-action="hide" data-report="${esc(r.id)}">Ẩn nội dung</button>`:""}
+            <button data-mod-action="warn" data-report="${esc(r.id)}">⚠️ Cảnh cáo</button>
+            <button data-mod-action="restrict" data-report="${esc(r.id)}">Hạn chế</button>
+            <button data-mod-action="suspend" data-report="${esc(r.id)}" class="danger">Khoá Cộng đồng</button>
+          `:`<button data-mod-action="reopen" data-report="${esc(r.id)}">Mở lại report</button>`}
+        </div>
+      </article>
+    `).join("");
+
+    box.querySelectorAll("[data-mod-action]").forEach(btn=>{
+      btn.onclick=()=>moderationAction(btn.dataset.report,btn.dataset.modAction);
+    });
+  }
+
+  async function moderationAction(reportId,action){
+    const dangerous=["hide","restrict","suspend"].includes(action);
+    if(dangerous && !confirm("Xác nhận thao tác kiểm duyệt này?"))return;
+
+    try{
+      await rpc("admin_community_moderation_action",{
+        p_report_id:reportId,
+        p_action:action,
+        p_note:null
+      });
+      await loadModeration();
+    }catch(e){
+      console.warn("moderation action",e);
+      alert("Chưa thực hiện được thao tác kiểm duyệt.");
     }
   }
 

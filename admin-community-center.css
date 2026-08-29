@@ -124,3 +124,27 @@
 #avpAdminCommunityHost[hidden]{
   display:none !important;
 }
+
+
+/* MODERATION CENTER */
+.avp-moderation-list{
+  max-height:620px;overflow:auto;border:1px solid #dfe9e3;border-radius:14px;background:#fff
+}
+.avp-mod-card{padding:12px;border-bottom:1px solid #edf2ef}
+.avp-mod-card.open{border-left:4px solid #d9822b}
+.avp-mod-card.closed{opacity:.62}
+.avp-mod-head{display:flex;justify-content:space-between;gap:8px}
+.avp-mod-head strong{display:block;color:#344b3e;font-size:12px}
+.avp-mod-head span,.avp-mod-head b{font-size:9px;color:#87948c}
+.avp-mod-user{display:flex;align-items:center;gap:7px;margin-top:8px}
+.avp-mod-user strong{font-size:11px;color:#31503e}
+.avp-mod-user small{font-size:9px;color:#8a978f}
+.avp-mod-user em{font-style:normal;font-size:8px;padding:3px 6px;border-radius:999px;background:#fff0e2;color:#9a5b00}
+.avp-mod-card>p{margin:8px 0;color:#52635a;font-size:11px;line-height:1.45}
+.avp-mod-detail{display:block;color:#8b6b43;font-size:9px}
+.avp-mod-actions{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.avp-mod-actions button{
+  border:1px solid #d5e1da;border-radius:8px;background:#fff;color:#217346;
+  padding:6px 8px;font:inherit;font-size:9px;font-weight:800;cursor:pointer
+}
+.avp-mod-actions button.danger{border-color:#efc1c5;color:#a82736;background:#fff7f8}

@@ -16,6 +16,8 @@
   let currentCommunityQuestion = null;
   let communityQuestionImage = null;
   let communityAnswerImage = null;
+  let communityAvatarMap = new Map();
+  let communityProfileAvatar = null;
 
   const esc = s => String(s ?? "")
     .replaceAll("&","&amp;")
@@ -247,6 +249,101 @@
       : '<span class="avp-community-open">Đang hỏi</span>';
   }
 
+
+  function avatarPublicUrl(path){
+    if(!path)return "";
+    if(/^https?:\/\//i.test(path))return path;
+    try{
+      return client.storage.from("community-avatars").getPublicUrl(path)?.data?.publicUrl||"";
+    }catch{return ""}
+  }
+
+  function communityAvatarHtml(userId,displayName,size="sm"){
+    const row=communityAvatarMap.get(String(userId||""));
+    const url=avatarPublicUrl(row?.avatar_path);
+    const name=String(displayName||row?.display_name||"Học viên");
+    const first=(name.trim()[0]||"A").toUpperCase();
+    return url
+      ? `<span class="avp-community-avatar ${size}"><img src="${esc(url)}" alt="${esc(name)}" loading="lazy"></span>`
+      : `<span class="avp-community-avatar ${size} fallback">${esc(first)}</span>`;
+  }
+
+  async function loadCommunityAvatarMap(ids){
+    const uniq=[...new Set((ids||[]).filter(Boolean).map(String))];
+    if(!uniq.length)return;
+    try{
+      const {data,error}=await client.rpc("community_avatar_map",{p_user_ids:uniq});
+      if(error)throw error;
+      (Array.isArray(data)?data:[]).forEach(r=>communityAvatarMap.set(String(r.user_id),r));
+    }catch(e){
+      console.warn("Avatar map",e);
+    }
+  }
+
+  function communityTrustBadge(userId){
+    const r=communityAvatarMap.get(String(userId||""));
+    if(r?.trust_status==="trusted")return '<span class="avp-trusted-badge">✓ Đáng tin cậy</span>';
+    if(r?.community_status==="restricted")return '<span class="avp-restricted-badge">Hạn chế</span>';
+    return "";
+  }
+
+  function reportReasonPrompt(){
+    const raw=prompt(
+      "Báo cáo nội dung này:\n\n"+
+      "1 - Spam\n"+
+      "2 - Lừa đảo / yêu cầu chuyển tiền\n"+
+      "3 - Link hoặc liên hệ đáng ngờ\n"+
+      "4 - Nội dung nhạy cảm\n"+
+      "5 - Quấy rối / xúc phạm\n"+
+      "6 - Giả mạo\n"+
+      "7 - Khác\n\n"+
+      "Nhập số từ 1 đến 7:"
+    );
+    if(!raw)return null;
+    const map={
+      "1":"spam","2":"scam","3":"suspicious_link","4":"sensitive",
+      "5":"harassment","6":"impersonation","7":"other"
+    };
+    return map[String(raw).trim()]||null;
+  }
+
+  async function reportCommunityTarget(targetType,targetId){
+    if(!(await requireCommunityLogin()))return;
+    const reason=reportReasonPrompt();
+    if(!reason)return;
+
+    const detail=prompt("Mô tả thêm (không bắt buộc):") || null;
+
+    try{
+      const {error}=await client.rpc("community_report_create",{
+        p_target_type:targetType,
+        p_target_id:targetId,
+        p_reason:reason,
+        p_detail:detail
+      });
+      if(error)throw error;
+      alert("🚩 Đã gửi báo cáo. Admin sẽ kiểm tra nội dung này.");
+    }catch(e){
+      const msg=String(e?.message||"");
+      if(msg.includes("SELF_REPORT")) alert("Bạn không thể báo cáo nội dung của chính mình.");
+      else if(msg.includes("ALREADY_REPORTED")) alert("Bạn đã báo cáo nội dung này rồi.");
+      else alert("Chưa gửi được báo cáo.");
+    }
+  }
+
+  function contentRiskWarning(text){
+    const s=String(text||"").toLowerCase();
+    const contact=/(https?:\/\/|www\.|t\.me\/|telegram|zalo|whatsapp|discord\.gg)/i.test(s);
+    const money=/(chuyển\s*khoản|đặt\s*cọc|ck\b|momo|ngân\s*hàng|bank|nạp\s*tiền|mua\s*bán\s*tài\s*khoản)/i.test(s);
+    if(contact && money){
+      return "⚠️ Nội dung có link/liên hệ kèm từ khóa thanh toán. Bài có thể được đưa vào hàng chờ kiểm duyệt.";
+    }
+    if(contact){
+      return "⚠️ Link ngoài có thể được hệ thống gắn cờ để Admin kiểm tra.";
+    }
+    return "";
+  }
+
   async function requireCommunityLogin(){
     await currentUser();
     if(user)return true;
@@ -273,6 +370,7 @@
       if(error)throw error;
 
       communityQuestions=Array.isArray(data)?data:[];
+      await loadCommunityAvatarMap(communityQuestions.map(q=>q.user_id));
       renderCommunityFeed(communityQuestions);
     }catch(e){
       console.warn("Community list",e);
@@ -306,7 +404,14 @@
           <h3>${esc(q.title)}</h3>
           <p>${esc(q.content).replace(/\n/g,"<br>")}</p>
           ${communityImageHtml(q.image_path,q.title)}
-          <div class="avp-question-user">👤 ${esc(q.display_name||"Học viên")}</div>
+          <div class="avp-question-user avp-question-user-rich">
+            <button type="button" class="avp-profile-link" data-profile-user="${esc(q.user_id)}">
+              ${communityAvatarHtml(q.user_id,q.display_name)}
+              <span>${esc(q.display_name||"Học viên")}</span>
+              ${communityTrustBadge(q.user_id)}
+            </button>
+            <button type="button" class="avp-report-btn" data-report-question="${esc(q.id)}">🚩 Báo cáo</button>
+          </div>
         </div>
         <div class="avp-question-stats">
           <strong>${Number(q.answer_count||0)}</strong><span>trả lời</span>
@@ -317,6 +422,12 @@
 
     box.querySelectorAll("[data-question-id]").forEach(card=>{
       card.onclick=()=>openCommunityQuestion(card.dataset.questionId);
+    });
+    box.querySelectorAll("[data-profile-user]").forEach(btn=>{
+      btn.onclick=e=>{e.stopPropagation();showCommunityProfile(btn.dataset.profileUser);};
+    });
+    box.querySelectorAll("[data-report-question]").forEach(btn=>{
+      btn.onclick=e=>{e.stopPropagation();reportCommunityTarget("question",btn.dataset.reportQuestion);};
     });
     bindCommunityImageOpen(box);
   }
@@ -445,6 +556,7 @@
 
         <label>Nội dung câu hỏi</label>
         <textarea id="avpQuestionContent" maxlength="5000" rows="7" placeholder="Bạn đã làm gì, đang lỗi ở bước nào?">${esc(prefill)}</textarea>
+        <div id="avpQuestionRiskWarning" class="avp-risk-warning" hidden></div>
 
         <label>Ảnh minh hoạ <small>(không bắt buộc)</small></label>
         <label class="avp-community-image-picker">
@@ -464,6 +576,12 @@
     $("avpCommunityAskBack").onclick=()=>{clearCommunityPickedImage("question");loadCommunity();};
     $("avpCommunityAskCancel").onclick=()=>{clearCommunityPickedImage("question");loadCommunity();};
     $("avpQuestionImage").onchange=e=>pickCommunityImage(e.target.files?.[0],"question");
+    $("avpQuestionContent").oninput=e=>{
+      const warn=contentRiskWarning(e.target.value);
+      const box=$("avpQuestionRiskWarning");
+      box.hidden=!warn;
+      box.textContent=warn;
+    };
     $("avpCommunityAskSubmit").onclick=createCommunityQuestion;
   }
 
@@ -541,7 +659,9 @@
     try{
       const {data,error}=await client.rpc("community_answer_list",{p_question_id:q.id});
       if(error)throw error;
-      renderCommunityQuestion(q,Array.isArray(data)?data:[]);
+      const answers=Array.isArray(data)?data:[];
+      await loadCommunityAvatarMap([q.user_id,...answers.map(a=>a.user_id)]);
+      renderCommunityQuestion(q,answers);
     }catch(e){
       console.warn("Community answers",e);
       box.innerHTML='<div class="avp-community-empty">Chưa tải được câu trả lời.</div>';
@@ -575,7 +695,14 @@
           <h2>${esc(q.title)}</h2>
           <p>${esc(q.content).replace(/\n/g,"<br>")}</p>
           ${communityImageHtml(q.image_path,q.title)}
-          <div class="avp-question-user">👤 ${esc(q.display_name||"Học viên")}</div>
+          <div class="avp-question-user avp-question-user-rich">
+            <button type="button" class="avp-profile-link" data-profile-user="${esc(q.user_id)}">
+              ${communityAvatarHtml(q.user_id,q.display_name)}
+              <span>${esc(q.display_name||"Học viên")}</span>
+              ${communityTrustBadge(q.user_id)}
+            </button>
+            <button type="button" class="avp-report-btn" data-report-question="${esc(q.id)}">🚩 Báo cáo</button>
+          </div>
         </article>
 
         <div class="avp-answer-section-title">
@@ -587,9 +714,14 @@
           ${answers.length?answers.map(a=>`
             <article class="avp-answer-card ${a.is_accepted?"accepted":""}" data-answer-id="${esc(a.id)}">
               ${a.is_accepted?'<div class="avp-accepted-label">✅ Câu trả lời được chấp nhận</div>':""}
-              <div class="avp-answer-author">
-                <strong>${esc(a.display_name||"Học viên")}</strong>
+              <div class="avp-answer-author avp-answer-author-rich">
+                <button type="button" class="avp-profile-link" data-profile-user="${esc(a.user_id)}">
+                  ${communityAvatarHtml(a.user_id,a.display_name)}
+                  <strong>${esc(a.display_name||"Học viên")}</strong>
+                  ${communityTrustBadge(a.user_id)}
+                </button>
                 <span>${communityTime(a.created_at)}</span>
+                <button type="button" class="avp-report-btn" data-report-answer="${esc(a.id)}">🚩</button>
               </div>
               <div class="avp-answer-content">${esc(a.content).replace(/\n/g,"<br>")}</div>
               ${communityImageHtml(a.image_path,"Ảnh câu trả lời")}
@@ -608,6 +740,7 @@
         <div class="avp-answer-compose">
           <h3>Viết câu trả lời</h3>
           <textarea id="avpAnswerContent" maxlength="5000" rows="4" placeholder="Chia sẻ cách xử lý rõ ràng, dễ làm theo..."></textarea>
+          <div id="avpAnswerRiskWarning" class="avp-risk-warning" hidden></div>
           <div class="avp-answer-compose-actions">
             <label class="avp-community-image-picker compact">
               <span>📷 Thêm ảnh</span>
@@ -623,8 +756,23 @@
     clearCommunityPickedImage("answer");
     $("avpCommunityDetailBack").onclick=()=>{clearCommunityPickedImage("answer");loadCommunity();};
     $("avpAnswerImage").onchange=e=>pickCommunityImage(e.target.files?.[0],"answer");
+    $("avpAnswerContent").oninput=e=>{
+      const warn=contentRiskWarning(e.target.value);
+      const risk=$("avpAnswerRiskWarning");
+      risk.hidden=!warn;
+      risk.textContent=warn;
+    };
     $("avpAnswerSubmit").onclick=createCommunityAnswer;
     bindCommunityImageOpen(box);
+    box.querySelectorAll("[data-profile-user]").forEach(btn=>{
+      btn.onclick=e=>{e.stopPropagation();showCommunityProfile(btn.dataset.profileUser);};
+    });
+    box.querySelectorAll("[data-report-question]").forEach(btn=>{
+      btn.onclick=e=>{e.stopPropagation();reportCommunityTarget("question",btn.dataset.reportQuestion);};
+    });
+    box.querySelectorAll("[data-report-answer]").forEach(btn=>{
+      btn.onclick=e=>{e.stopPropagation();reportCommunityTarget("answer",btn.dataset.reportAnswer);};
+    });
 
     box.querySelectorAll("[data-answer-id]").forEach(card=>{
       const aid=card.dataset.answerId;
@@ -780,29 +928,34 @@
 
       const [
         profileRes,
-        certRes
+        certRes,
+        socialRes
       ]=await Promise.all([
         client.rpc("community_profile",{p_user_id:targetId}),
-        client.rpc("community_certificate_wallet",{p_user_id:targetId})
+        client.rpc("community_certificate_wallet",{p_user_id:targetId}),
+        client.rpc("community_user_profile_get",{p_user_id:targetId})
       ]);
 
       if(profileRes.error)throw profileRes.error;
       if(certRes.error)throw certRes.error;
+      if(socialRes.error)throw socialRes.error;
 
       const p=Array.isArray(profileRes.data)?profileRes.data[0]:profileRes.data;
+      const social=Array.isArray(socialRes.data)?socialRes.data[0]:socialRes.data;
       if(!p){
         box.innerHTML='<div class="avp-community-empty">Chưa có hồ sơ cộng đồng.</div>';
         return;
       }
 
-      renderCommunityProfile(p,Array.isArray(certRes.data)?certRes.data:[]);
+      if(social)communityAvatarMap.set(String(targetId),social);
+      renderCommunityProfile(p,Array.isArray(certRes.data)?certRes.data:[],social||{});
     }catch(e){
       console.warn("Community profile",e);
       box.innerHTML='<div class="avp-community-empty">Chưa tải được hồ sơ. Hãy chạy SQL COMMUNITY LEVELS & CERTS V1.</div>';
     }
   }
 
-  function renderCommunityProfile(p,certs){
+  function renderCommunityProfile(p,certs,social={}){
     const box=$("avpCommunityContent");
     if(!box)return;
 
@@ -819,7 +972,11 @@
         <button type="button" class="avp-community-back" id="avpCommunityProfileBack">← Quay lại cộng đồng</button>
 
         <section class="avp-profile-hero">
-          <div class="avp-profile-avatar">${level.icon}</div>
+          <div class="avp-profile-avatar avp-profile-avatar-real">
+            ${avatarPublicUrl(social.avatar_path)
+              ? `<img src="${esc(avatarPublicUrl(social.avatar_path))}" alt="${esc(p.display_name||"Học viên")}">`
+              : level.icon}
+          </div>
 
           <div class="avp-profile-main">
             <div class="avp-profile-title">
@@ -838,6 +995,14 @@
                   ? "Đã đạt cấp cao nhất hiện tại"
                   : `Còn ${Math.max(0,level.next-Number(p.score||0))} điểm để đạt ${esc(level.nextName)}`}
               </small>
+            </div>
+
+            ${social.bio?`<p class="avp-community-bio">${esc(social.bio)}</p>`:""}
+            <div class="avp-profile-community-actions">
+              ${String(p.user_id)===String(user?.id)
+                ? '<button type="button" id="avpEditCommunityProfile">✏️ Sửa hồ sơ</button>'
+                : `<button type="button" id="avpReportCommunityProfile">🚩 Báo cáo hồ sơ</button>`}
+              ${social.trust_status==="trusted"?'<span class="avp-trusted-badge">✓ Tài khoản đáng tin cậy</span>':""}
             </div>
           </div>
         </section>
@@ -915,6 +1080,13 @@
 
     $("avpVerifyCertificateBtn").onclick=verifyCommunityCertificatePrompt;
 
+    if($("avpEditCommunityProfile")){
+      $("avpEditCommunityProfile").onclick=()=>showCommunityProfileEditor(p,social);
+    }
+    if($("avpReportCommunityProfile")){
+      $("avpReportCommunityProfile").onclick=()=>reportCommunityTarget("profile",p.user_id);
+    }
+
     box.querySelectorAll("[data-cert-code]").forEach(card=>{
       const code=card.dataset.certCode;
       const cert=certs.find(x=>String(x.certificate_code)===String(code));
@@ -945,6 +1117,108 @@
     });
   }
 
+
+
+  async function chooseCommunityAvatar(file){
+    if(!file)return;
+    if(!/^image\//i.test(file.type||"")){
+      alert("Chỉ hỗ trợ file ảnh.");
+      return;
+    }
+    if(file.size>5*1024*1024){
+      alert("Avatar tối đa 5 MB.");
+      return;
+    }
+    try{
+      const normalized=await normalizeImage(file);
+      if(communityProfileAvatar?.previewUrl){
+        try{URL.revokeObjectURL(communityProfileAvatar.previewUrl)}catch{}
+      }
+      communityProfileAvatar={
+        file:normalized,
+        previewUrl:URL.createObjectURL(normalized)
+      };
+      const img=$("avpProfileAvatarPreview");
+      if(img)img.src=communityProfileAvatar.previewUrl;
+    }catch{
+      alert("Không đọc được ảnh.");
+    }
+  }
+
+  async function uploadCommunityAvatar(){
+    if(!communityProfileAvatar?.file)return null;
+    if(!user?.id)throw new Error("LOGIN_REQUIRED");
+    const path=`${user.id}/avatar-${Date.now()}.jpg`;
+    const {error}=await client.storage.from("community-avatars").upload(
+      path,
+      communityProfileAvatar.file,
+      {contentType:"image/jpeg",cacheControl:"3600",upsert:false}
+    );
+    if(error)throw error;
+    return path;
+  }
+
+  function showCommunityProfileEditor(p,social){
+    const box=$("avpCommunityContent");
+    if(!box)return;
+    const current=avatarPublicUrl(social?.avatar_path);
+    communityProfileAvatar=null;
+
+    box.innerHTML=`
+      <div class="avp-community-profile-editor">
+        <button type="button" class="avp-community-back" id="avpProfileEditBack">← Quay lại hồ sơ</button>
+        <section class="avp-profile-edit-card">
+          <h2>Chỉnh sửa hồ sơ Cộng đồng</h2>
+          <p>Không chia sẻ số điện thoại, tài khoản ngân hàng hoặc thông tin liên hệ để mua bán trong phần giới thiệu.</p>
+
+          <div class="avp-profile-edit-avatar-row">
+            <img id="avpProfileAvatarPreview" src="${esc(current||"")}" class="${current?"":"empty"}" alt="Avatar">
+            <label class="avp-community-image-picker compact">
+              <span>📷 Đổi avatar</span>
+              <input id="avpProfileAvatarInput" type="file" accept="image/*">
+            </label>
+          </div>
+
+          <label>Giới thiệu ngắn</label>
+          <textarea id="avpProfileBio" maxlength="240" rows="4" placeholder="Ví dụ: Mình đang học Power Query và Dashboard...">${esc(social?.bio||"")}</textarea>
+          <small class="avp-profile-safety-note">🔒 Không nên đăng số điện thoại, Zalo, Telegram, link thanh toán hoặc thông tin tài chính.</small>
+
+          <div class="avp-community-form-actions">
+            <button type="button" id="avpProfileEditCancel" class="secondary">Huỷ</button>
+            <button type="button" id="avpProfileEditSave" class="primary">Lưu hồ sơ</button>
+          </div>
+        </section>
+      </div>
+    `;
+
+    $("avpProfileEditBack").onclick=()=>showCommunityProfile(p.user_id);
+    $("avpProfileEditCancel").onclick=()=>showCommunityProfile(p.user_id);
+    $("avpProfileAvatarInput").onchange=e=>chooseCommunityAvatar(e.target.files?.[0]);
+    $("avpProfileEditSave").onclick=async()=>{
+      const btn=$("avpProfileEditSave");
+      btn.disabled=true;
+      try{
+        const avatarPath=await uploadCommunityAvatar();
+        const bio=String($("avpProfileBio")?.value||"").trim();
+        const {error}=await client.rpc("community_user_profile_update",{
+          p_avatar_path:avatarPath,
+          p_bio:bio
+        });
+        if(error)throw error;
+        communityProfileAvatar=null;
+        await showCommunityProfile(p.user_id);
+      }catch(e){
+        const msg=String(e?.message||"");
+        if(msg.includes("PROFILE_CONTACT_NOT_ALLOWED")){
+          alert("Hồ sơ không được chứa link, số điện thoại hoặc thông tin liên hệ/thanh toán.");
+        }else{
+          alert("Chưa lưu được hồ sơ.");
+        }
+      }finally{
+        btn.disabled=false;
+      }
+    };
+  }
 
   async function issueCommunityCertificate(certificateCode){
     if(!(await requireCommunityLogin()))return;

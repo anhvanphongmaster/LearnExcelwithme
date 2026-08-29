@@ -647,3 +647,68 @@
 .avp-community-image-open img{display:block;width:100%;max-height:420px;object-fit:contain;background:#f8faf9}
 .avp-answer-compose-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}
 @media(max-width:640px){.avp-community-image-open{max-width:100%}.avp-answer-compose-actions{align-items:stretch}}
+
+
+/* =========================================================
+   COMMUNITY PROFILE + MODERATION V1
+   ========================================================= */
+.avp-community-avatar{
+  display:inline-flex;align-items:center;justify-content:center;
+  flex:0 0 auto;border-radius:50%;overflow:hidden;
+  background:#e9f5ed;color:#217346;font-weight:900;
+  border:1px solid #cfe4d7;
+}
+.avp-community-avatar.sm{width:26px;height:26px;font-size:10px}
+.avp-community-avatar img{width:100%;height:100%;object-fit:cover}
+.avp-question-user-rich{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.avp-profile-link{
+  display:inline-flex;align-items:center;gap:7px;min-width:0;
+  border:0;background:transparent;padding:0;color:inherit;
+  font:inherit;cursor:pointer;text-align:left
+}
+.avp-profile-link>span,.avp-profile-link>strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.avp-trusted-badge,.avp-restricted-badge{
+  display:inline-flex;align-items:center;border-radius:999px;
+  padding:3px 6px;font-size:7.5px;font-weight:900;white-space:nowrap
+}
+.avp-trusted-badge{background:#eaf7ef;color:#217346}
+.avp-restricted-badge{background:#fff4e8;color:#a15c00}
+.avp-report-btn{
+  border:0;background:transparent;color:#9b4751;
+  font:inherit;font-size:9px;font-weight:800;cursor:pointer;white-space:nowrap
+}
+.avp-answer-author-rich{display:flex;align-items:center;gap:7px}
+.avp-answer-author-rich>.avp-profile-link{flex:1}
+.avp-risk-warning{
+  margin-top:7px;padding:8px 10px;border-radius:10px;
+  background:#fff7e8;color:#875800;border:1px solid #efd7a4;
+  font-size:9px;line-height:1.4
+}
+.avp-risk-warning[hidden]{display:none!important}
+.avp-profile-avatar-real img{width:100%;height:100%;object-fit:cover}
+.avp-community-bio{margin:8px 0 0!important;color:#e6f3eb!important;font-size:10px!important;line-height:1.45}
+.avp-profile-community-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:8px}
+.avp-profile-community-actions button{
+  border:1px solid rgba(255,255,255,.3);border-radius:9px;
+  background:rgba(255,255,255,.12);color:#fff;padding:6px 8px;
+  font:inherit;font-size:9px;font-weight:800;cursor:pointer
+}
+.avp-profile-edit-card{
+  max-width:620px;margin:0 auto;padding:16px;background:#fff;
+  border:1px solid #e1e9e4;border-radius:17px
+}
+.avp-profile-edit-card h2{margin:0;color:#284438;font-size:17px}
+.avp-profile-edit-card>p{color:#7a8981;font-size:10px;line-height:1.5}
+.avp-profile-edit-avatar-row{display:flex;align-items:center;gap:12px;margin:14px 0}
+#avpProfileAvatarPreview{
+  width:76px;height:76px;border-radius:50%;object-fit:cover;background:#eef4f0;
+  border:2px solid #cde2d5
+}
+#avpProfileAvatarPreview.empty{visibility:hidden}
+.avp-profile-edit-card>label{display:block;margin:10px 0 5px;font-size:11px;font-weight:900;color:#3b5145}
+.avp-profile-edit-card textarea{
+  width:100%;box-sizing:border-box;border:1px solid #d8e3dc;border-radius:11px;
+  padding:10px;font:inherit;resize:vertical
+}
+.avp-profile-safety-note{display:block;margin-top:6px;color:#8a6a3e;font-size:8.5px;line-height:1.4}
+
