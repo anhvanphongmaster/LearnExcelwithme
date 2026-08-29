@@ -573,20 +573,54 @@ function closeSubmit(){
   pendingLesson=null;pendingFile=null;
 }
 async function submitOfficial(){
-  const l=pendingLesson,f=pendingFile;if(!l||!f)return;
-  const sb=await getClient();if(!sb?.rpc)return;
-  const user=await requireLogin();if(!user)return;
-  const btn=$("pgSubmitConfirm");btn.disabled=true;btn.textContent="Đang chấm…";
+  const l=pendingLesson,f=pendingFile;
+  if(!l||!f){
+    closeSubmit();
+    return;
+  }
+
+  const sb=await getClient();
+  if(!sb?.rpc){
+    closeSubmit();
+    alert("Không kết nối được Supabase. Bạn có thể chọn bài khác và thử lại.");
+    return;
+  }
+
+  const user=await requireLogin();
+  if(!user){
+    closeSubmit();
+    return;
+  }
+
+  const btn=$("pgSubmitConfirm");
+  if(btn){
+    btn.disabled=true;
+    btn.textContent="Đang chấm…";
+  }
+
   let filePath=null;
+  let stage="grade";
+
   try{
+    // 1. Chấm file trên thiết bị.
     const result=await grade(l,f);
+
+    // 2. Lưu bản gốc để Admin có thể xem nếu học viên khiếu nại.
+    stage="upload";
     filePath=await uploadSubmissionFile(sb,user,l,f);
 
+    // 3. Khóa lượt nộp trong DB.
+    stage="save";
     const {data,error}=await sb.rpc("practice_grader_submit_once_v12",{
       p_lesson_key:l.key,
       p_score:result.score,
       p_file_path:filePath,
-      p_grading_details:{score:result.score,grader:result.grader,version:result.version,checks:result.checks}
+      p_grading_details:{
+        score:result.score,
+        grader:result.grader,
+        version:result.version,
+        checks:result.checks
+      }
     });
     if(error)throw error;
 
@@ -596,21 +630,73 @@ async function submitOfficial(){
       passed:result.score>=70,
       difficulty:l.difficulty,
       is_public:false,
-      grading_details:{score:result.score,grader:result.grader,version:result.version,checks:result.checks},
+      grading_details:{
+        score:result.score,
+        grader:result.grader,
+        version:result.version,
+        checks:result.checks
+      },
       appeal_status:null
     };
-    submissionCache.set(l.key,state);
-    closeSubmit();renderLessons();renderProgress();showResult(l,result);openPublish(l,result.score);await loadLeaderboard();
-  }catch(e){
-    if(filePath)await removeSubmissionFile(sb,filePath);
-    const msg=String(e?.message||e);
-    if(/ALREADY_SUBMITTED/i.test(msg)){
-      alert("Bài này đã nộp trước đó. Admin mới có thể mở lại.");
-      closeSubmit();await loadSubmissionStates();
-    }else alert("Không nộp được bài: "+msg);
-  }finally{btn.disabled=false;btn.textContent="Nộp chính thức"}
-}
 
+    submissionCache.set(l.key,state);
+
+    // Luôn đóng modal trước khi dựng lại danh sách.
+    closeSubmit();
+    renderLessons();
+    renderProgress();
+    showResult(l,result);
+    openPublish(l,result.score);
+    await loadLeaderboard();
+
+  }catch(e){
+    // Nếu file đã upload nhưng DB chưa nhận bài, xóa file rác.
+    if(filePath){
+      await removeSubmissionFile(sb,filePath);
+    }
+
+    const msg=String(e?.message||e||"UNKNOWN_ERROR");
+
+    // QUAN TRỌNG:
+    // lỗi của một bài không được giữ modal/overlay và khóa các bài khác.
+    closeSubmit();
+    document.body.classList.remove("pg-publish-open");
+
+    if(/ALREADY_SUBMITTED/i.test(msg)){
+      alert("Bài này đã được nộp trước đó. Hệ thống sẽ tải lại trạng thái bài.");
+      await loadSubmissionStates();
+    }else{
+      // Dựng lại card/input để người dùng có thể nộp bài khác ngay lập tức.
+      renderLessons();
+
+      let prefix="Không nộp được bài.";
+      if(stage==="grade"){
+        prefix="Không chấm được file.";
+      }else if(stage==="upload"){
+        prefix="Không lưu được file bài nộp.";
+      }else if(stage==="save"){
+        prefix="File đã được chấm nhưng chưa lưu được kết quả.";
+      }
+
+      alert(prefix+" Bạn vẫn có thể nộp bài khác.\n\nChi tiết: "+msg);
+    }
+
+  }finally{
+    const currentBtn=$("pgSubmitConfirm");
+    if(currentBtn){
+      currentBtn.disabled=false;
+      currentBtn.textContent="Nộp chính thức";
+    }
+
+    // Safety reset tránh trạng thái kẹt sau lỗi mobile/Safari.
+    if($("pgSubmitModal")?.hidden){
+      pendingFile=null;
+      if(!$("pgPublishModal") || $("pgPublishModal").hidden){
+        document.body.classList.remove("pg-publish-open");
+      }
+    }
+  }
+}
 function showResult(l,r){
   const panel=$("pgResult"),body=$("pgResultBody");if(!panel||!body)return;
   const checks=(r.checks||[]);
