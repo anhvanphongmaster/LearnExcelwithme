@@ -12,6 +12,31 @@
 
   const ATTACH_PREFIX="[[AVP_ATTACHMENT_V1]]";
   const AUTO_REPLY_PREFIX="[[AVP_AUTO_REPLY]]";
+
+  const AUTO_REPLY_PHRASES=[
+    "mình đang bận một chút nên chưa thể phản hồi ngay",
+    "mình đã nhận được tin nhắn của bạn nhé",
+    "mình sẽ kiểm tra và phản hồi khi quay lại",
+    "mình sẽ xem và trả lời sớm nhất có thể"
+  ];
+
+  function isAutomaticChatMessage(m){
+    const raw=String(m?.body||"");
+    const normalized=raw
+      .replace(AUTO_REPLY_PREFIX,"")
+      .trim()
+      .toLocaleLowerCase("vi-VN");
+
+    return !!(
+      raw.startsWith(AUTO_REPLY_PREFIX) ||
+      m?.is_auto_reply===true ||
+      m?.auto_reply===true ||
+      String(m?.message_type||"").toLowerCase()==="auto_reply" ||
+      String(m?.kind||"").toLowerCase()==="auto_reply" ||
+      AUTO_REPLY_PHRASES.some(x=>normalized.includes(x))
+    );
+  }
+
   const CHAT_BUCKET="chat-attachments";
   const MAX_FILE_BYTES=20*1024*1024;
   const MAX_FILES_PER_SEND=5;
@@ -410,28 +435,86 @@
 
   function msgHtml(m, adminView=false){
     const type=m.sender_type||"system";
-    let cls=type;
-    if(adminView && type==="admin") cls="user";
-    else if(adminView && type==="user") cls="admin";
-    const who=adminView
-      ? (type==="system"?"Hệ thống":type==="admin"?"Bạn (Admin)":"Học viên")
-      : (type==="system"?"Hệ thống":type==="admin"?"Admin":"Bạn");
+    const isAutoReply=isAutomaticChatMessage(m);
+
+    let cls=isAutoReply?"system":type;
+    if(!isAutoReply){
+      if(adminView && type==="admin") cls="user";
+      else if(adminView && type==="user") cls="admin";
+    }
+
+    const who=isAutoReply
+      ? "Hệ thống"
+      : adminView
+        ? (type==="system"?"Hệ thống":type==="admin"?"Bạn (Admin)":"Học viên")
+        : (type==="system"?"Hệ thống":type==="admin"?"Admin":"Bạn");
+
     const rawBody=String(m.body||"");
-    const isAutoReply=rawBody.startsWith(AUTO_REPLY_PREFIX);
-    const displayBody=isAutoReply?rawBody.slice(AUTO_REPLY_PREFIX.length).trim():rawBody;
+    const displayBody=rawBody.startsWith(AUTO_REPLY_PREFIX)
+      ? rawBody.slice(AUTO_REPLY_PREFIX.length).trim()
+      : rawBody;
+
     const a=parseAttachmentBody(displayBody);
     const autoBadge=isAutoReply?'<span class="avp-auto-reply-badge">Tự động</span>':"";
     const content=(a?attachmentCardHtml(a):`<div>${esc(displayBody)}</div>`)+autoBadge;
     const mid=esc(m.id||"");
-    const react=type==="system"||!mid?"":`<div class="avp-reaction-wrap" data-reaction-message="${mid}">
+
+    const react=type==="system"||isAutoReply||!mid?"":`<div class="avp-reaction-wrap" data-reaction-message="${mid}">
       <button class="avp-reaction-btn" type="button" data-react="like" aria-label="Thích" title="Thích">👍</button>
       <button class="avp-reaction-btn" type="button" data-react="dislike" aria-label="Không thích" title="Không thích">👎</button>
       <span class="avp-reaction-counts"></span>
     </div>`;
-    const readReceipt=adminView&&type==="admin"
+
+    const readReceipt=adminView&&!isAutoReply&&type==="admin"
       ? `<span class="avp-admin-read-receipt" data-read-created="${esc(m.created_at||"")}"></span>`
       : "";
+
     return `<div class="avp-msg-row ${cls}" data-message-id="${mid}"><div class="avp-msg">${content}<span class="avp-msg-meta">${esc(who)} • ${fmt(m.created_at)} ${readReceipt}</span>${react}</div></div>`;
+  }
+
+
+  function avpMessageSignature(list,adminView=false){
+    return JSON.stringify((list||[]).map(m=>[
+      String(m.id||""),
+      String(m.sender_type||""),
+      String(m.body||""),
+      String(m.created_at||""),
+      isAutomaticChatMessage(m)?1:0,
+      adminView?1:0
+    ]));
+  }
+
+  function avpNearBottom(box,threshold=90){
+    if(!box)return true;
+    return (box.scrollHeight-box.scrollTop-box.clientHeight)<=threshold;
+  }
+
+  async function avpRenderMessages(box,list,adminView=false,opts={}){
+    if(!box)return false;
+    const arr=Array.isArray(list)?list:[];
+    const sig=avpMessageSignature(arr,adminView);
+
+    if(box.dataset.avpMsgSignature===sig)return false;
+
+    const nearBottom=avpNearBottom(box);
+    const prevTop=box.scrollTop;
+
+    box.innerHTML=arr.length
+      ? arr.map(m=>msgHtml(m,adminView)).join("")
+      : `<div class="${adminView?"admin-chat-empty":"avp-chat-empty"}">${adminView?"Chưa có tin nhắn.":"Bạn chưa có tin nhắn. Có gì cần hỗ trợ cứ nhắn cho Admin nhé."}</div>`;
+
+    box.dataset.avpMsgSignature=sig;
+
+    await hydrateAttachmentUrls(box);
+    await hydrateReactions(box);
+    if(adminView && opts.threadId){
+      await hydrateAdminReadReceipts(box,opts.threadId);
+    }
+
+    if(opts.forceBottom || nearBottom) box.scrollTop=box.scrollHeight;
+    else box.scrollTop=prevTop;
+
+    return true;
   }
 
   async function setReaction(messageId,reaction){
@@ -612,7 +695,7 @@
     p.hidden=!open;
     if(open){
       await ensureThread();
-      await loadUserMessages();
+      await loadUserMessages(true);
       await markUserRead();
       $("avpChatInput")?.focus();
     }
@@ -622,17 +705,19 @@
     threadId=await rpc("avp_chat_get_or_create_thread");
     return threadId;
   }
-  async function loadUserMessages(){
+  async function loadUserMessages(forceBottom=false){
     const box=$("avpChatMessages");if(!box)return;
     try{
       await ensureThread();
       const rows=await rpc("avp_chat_my_messages",{p_limit:150});
       const list=Array.isArray(rows)?rows:[];
-      box.innerHTML=list.length?list.map(m=>msgHtml(m,false)).join(""):'<div class="avp-chat-empty">Bạn chưa có tin nhắn. Có gì cần hỗ trợ cứ nhắn cho Admin nhé.</div>';
-      await hydrateAttachmentUrls(box);
-      await hydrateReactions(box);
-      box.scrollTop=box.scrollHeight;
-    }catch(e){box.innerHTML='<div class="avp-chat-empty">Chưa tải được hộp thư. Hãy kiểm tra SQL chat trong Supabase.</div>';console.warn("AVP chat load",e)}
+      await avpRenderMessages(box,list,false,{forceBottom});
+    }catch(e){
+      if(!box.dataset.avpMsgSignature){
+        box.innerHTML='<div class="avp-chat-empty">Chưa tải được hộp thư. Hãy kiểm tra SQL chat trong Supabase.</div>';
+      }
+      console.warn("AVP chat load",e)
+    }
   }
   async function sendUserMessage(){
     const input=$("avpChatInput"),btn=$("avpChatSend"); if(!input||!btn)return;
@@ -794,7 +879,7 @@
     try{
       const rows=await rpc("avp_chat_admin_messages",{p_thread_id:id,p_limit:300});
       const box=$("adminChatMessages");const list=Array.isArray(rows)?rows:[];
-      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="admin-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,id);box.scrollTop=box.scrollHeight}
+      if(box)await avpRenderMessages(box,list,true,{threadId:id});
       await rpc("avp_chat_admin_mark_read",{p_thread_id:id});await loadAdminThreads();
     }catch(e){console.warn(e)}
   }
@@ -949,7 +1034,7 @@
     try{
       const rows=await rpc("avp_chat_admin_messages",{p_thread_id:id,p_limit:300});
       const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
-      if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,id);box.scrollTop=box.scrollHeight;}
+      if(box)await avpRenderMessages(box,list,true,{threadId:id});
       await rpc("avp_chat_admin_mark_read",{p_thread_id:id});
       await loadFloatingAdminThreads();
       input?.focus();
@@ -987,7 +1072,7 @@
       if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden){
         const rows=await rpc("avp_chat_admin_messages",{p_thread_id:floatActiveThread,p_limit:300}).catch(()=>[]);
         const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
-        if(box){box.innerHTML=list.length?list.map(m=>msgHtml(m,true)).join(""):'<div class="avp-chat-empty">Chưa có tin nhắn.</div>';await hydrateAttachmentUrls(box);await hydrateReactions(box);await hydrateAdminReadReceipts(box,floatActiveThread);box.scrollTop=box.scrollHeight;}
+        if(box)await avpRenderMessages(box,list,true,{threadId:floatActiveThread});
       }
     },15000);
     try{

@@ -581,21 +581,43 @@
 
 
 
-/* ===== AVP CHAT V42 — stability ===== */
+/* AVP CHAT V44 */
 .avp-chat-messages,
 .admin-chat-messages{
   overflow-anchor:none;
   overscroll-behavior:contain;
+  scroll-behavior:auto !important;
 }
-.avp-chat-panel,
-.avp-admin-float-panel,
-.admin-chat-shell{
-  contain:layout paint;
+
+.avp-auto-reply-badge{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  margin-top:7px;
+  padding:3px 8px;
+  border-radius:999px;
+  border:1px solid rgba(33,115,70,.15);
+  background:#edf7f1;
+  color:#356b4b;
+  font-size:10px;
+  font-weight:800;
 }
-@media(max-width:640px){
-  .avp-chat-panel,
-  .avp-admin-float-panel{
-    transform:translateZ(0);
-    -webkit-transform:translateZ(0);
-  }
+
+.avp-msg-row.system .avp-msg{
+  background:#f7faf8 !important;
+  color:#365646 !important;
+  border:1px solid #dce9e0 !important;
+  box-shadow:0 3px 10px rgba(28,73,48,.04) !important;
+}
+
+body.dark-mode .avp-msg-row.system .avp-msg{
+  background:#17241c !important;
+  color:#c7dbce !important;
+  border-color:#30473a !important;
+}
+
+body.dark-mode .avp-auto-reply-badge{
+  background:#21372a;
+  color:#b8dec5;
+  border-color:#365543;
 }

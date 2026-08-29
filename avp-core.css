@@ -1047,3 +1047,216 @@ body > .avp-hub-fab{
 }
 .avp-edge-section-badge[hidden],
 #avpCommunityMenuBadge[hidden]{display:none!important}
+
+
+/* =========================================================
+   AVP FLOATING DOCK V44
+   Nổi bật vừa đủ — bỏ nền/vòng sáng thừa.
+   ========================================================= */
+
+#avpEdgeLauncher.avp-edge-launcher{
+  width:54px !important;
+  height:54px !important;
+  overflow:visible !important;
+}
+
+#avpEdgeLauncher .avp-edge-main{
+  width:54px !important;
+  height:54px !important;
+  min-width:54px !important;
+  min-height:54px !important;
+
+  border-radius:50% !important;
+  border:1.5px solid rgba(255,255,255,.94) !important;
+
+  background:
+    linear-gradient(145deg,#2a8b58 0%,#217346 52%,#145a32 100%) !important;
+
+  color:#fff !important;
+
+  /* Một shadow chính + glow nhỏ, không còn nhiều vòng nền. */
+  box-shadow:
+    0 9px 22px rgba(18,91,52,.28),
+    0 0 0 3px rgba(48,184,105,.12),
+    0 0 14px rgba(48,184,105,.23) !important;
+
+  animation:avpV44Breathe 3.4s ease-in-out infinite !important;
+  filter:none !important;
+}
+
+#avpEdgeLauncher .avp-edge-main::before{
+  content:"" !important;
+  position:absolute !important;
+  inset:4px !important;
+  border-radius:50% !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  box-shadow:none !important;
+  pointer-events:none !important;
+}
+
+#avpEdgeLauncher .avp-edge-main::after{
+  display:none !important;
+  content:none !important;
+}
+
+#avpEdgeLauncher .avp-edge-main-icon{
+  color:#fff !important;
+  font-weight:900 !important;
+  font-size:11px !important;
+  letter-spacing:.6px !important;
+  text-shadow:0 1px 2px rgba(0,0,0,.18) !important;
+}
+
+/* Khi menu mở: nút vẫn nổi nhưng không phát sáng mạnh. */
+#avpEdgeLauncher.open .avp-edge-main{
+  box-shadow:
+    0 10px 24px rgba(18,91,52,.30),
+    0 0 0 3px rgba(48,184,105,.16) !important;
+  animation:none !important;
+}
+
+#avpEdgeLauncher.is-dragging .avp-edge-main{
+  transform:scale(.94) !important;
+  box-shadow:0 8px 20px rgba(18,91,52,.24) !important;
+  animation:none !important;
+}
+
+@keyframes avpV44Breathe{
+  0%,100%{
+    box-shadow:
+      0 9px 22px rgba(18,91,52,.28),
+      0 0 0 3px rgba(48,184,105,.10),
+      0 0 11px rgba(48,184,105,.16);
+  }
+  50%{
+    box-shadow:
+      0 10px 25px rgba(18,91,52,.31),
+      0 0 0 4px rgba(48,184,105,.15),
+      0 0 16px rgba(48,184,105,.24);
+  }
+}
+
+/* Menu thành dock gọn, không còn 4 "khối trắng" rời quá lớn. */
+#avpEdgeLauncher .avp-edge-menu{
+  width:164px !important;
+  padding:6px !important;
+  gap:3px !important;
+
+  border:1px solid rgba(33,115,70,.14) !important;
+  border-radius:16px !important;
+
+  background:rgba(250,253,251,.94) !important;
+  -webkit-backdrop-filter:blur(14px) saturate(1.15) !important;
+  backdrop-filter:blur(14px) saturate(1.15) !important;
+
+  box-shadow:
+    0 16px 38px rgba(21,75,45,.14),
+    0 2px 8px rgba(0,0,0,.05) !important;
+
+  overflow:hidden !important;
+}
+
+#avpEdgeLauncher .avp-edge-action{
+  position:relative !important;
+  min-height:42px !important;
+  width:100% !important;
+
+  padding:7px 9px !important;
+  gap:9px !important;
+
+  border:0 !important;
+  border-radius:10px !important;
+
+  background:transparent !important;
+  color:#395b47 !important;
+  box-shadow:none !important;
+
+  justify-content:flex-start !important;
+  text-align:left !important;
+}
+
+#avpEdgeLauncher .avp-edge-action:hover{
+  background:#eaf6ef !important;
+  color:#145a32 !important;
+  transform:none !important;
+}
+
+#avpEdgeLauncher .avp-edge-action:active{
+  background:#dff1e6 !important;
+  transform:scale(.985) !important;
+}
+
+#avpEdgeLauncher .avp-edge-action > span:first-child{
+  width:24px !important;
+  min-width:24px !important;
+  height:24px !important;
+
+  display:grid !important;
+  place-items:center !important;
+
+  border-radius:7px !important;
+  background:rgba(33,115,70,.08) !important;
+
+  font-size:14px !important;
+}
+
+#avpEdgeLauncher .avp-edge-action b{
+  font-size:12px !important;
+  line-height:1.2 !important;
+  font-weight:800 !important;
+  white-space:nowrap !important;
+}
+
+/* Badge nổi vừa đủ, không tạo thêm "nền" cho nút chính. */
+#avpEdgeLauncher .avp-edge-badge,
+#avpEdgeLauncher .avp-edge-section-badge{
+  box-shadow:0 3px 9px rgba(139,24,54,.18) !important;
+}
+
+/* Dark mode */
+body.dark-mode #avpEdgeLauncher .avp-edge-menu{
+  background:rgba(21,35,27,.94) !important;
+  border-color:rgba(104,159,125,.22) !important;
+}
+
+body.dark-mode #avpEdgeLauncher .avp-edge-action{
+  color:#c2d8ca !important;
+}
+
+body.dark-mode #avpEdgeLauncher .avp-edge-action:hover{
+  background:#213a2b !important;
+  color:#e1f4e7 !important;
+}
+
+body.dark-mode #avpEdgeLauncher .avp-edge-action > span:first-child{
+  background:rgba(107,196,139,.10) !important;
+}
+
+@media(max-width:600px){
+  #avpEdgeLauncher.avp-edge-launcher{
+    width:50px !important;
+    height:50px !important;
+  }
+
+  #avpEdgeLauncher .avp-edge-main{
+    width:50px !important;
+    height:50px !important;
+    min-width:50px !important;
+    min-height:50px !important;
+  }
+
+  #avpEdgeLauncher .avp-edge-menu{
+    width:154px !important;
+  }
+
+  #avpEdgeLauncher .avp-edge-action{
+    min-height:40px !important;
+    padding:6px 8px !important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  #avpEdgeLauncher .avp-edge-main{
+    animation:none !important;
+  }
+}
