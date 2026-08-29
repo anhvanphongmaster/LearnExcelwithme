@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="practice-video.css?v=20260828-ROLLBACK-STABLE1">
   <link rel="stylesheet" href="practice-hub.css?v=20260830-hub1">
-  <link rel="stylesheet" href="practice-grader.css?v=20260830-v10finish1">
+  <link rel="stylesheet" href="practice-grader.css?v=20260830-v12appeal1">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link href="theme-polish-v33.css" rel="stylesheet"/>
@@ -237,6 +237,18 @@
       </div>
     </section>
 
+
+    <section class="pg-result-panel" id="pgResult" hidden>
+      <div class="pg-result-head">
+        <div>
+          <span>🤖 ĐÁNH GIÁ TỰ ĐỘNG</span>
+          <h3 id="pgResultTitle">Kết quả chấm bài</h3>
+        </div>
+        <button type="button" id="pgResultClose">Đóng</button>
+      </div>
+      <div id="pgResultBody"></div>
+    </section>
+
 <div class="pg-submit-modal" id="pgSubmitModal" hidden>
       <div class="pg-publish-backdrop" data-pg-submit-close></div>
       <div class="pg-submit-card" role="dialog" aria-modal="true" aria-labelledby="pgSubmitTitle">
@@ -249,6 +261,37 @@
         <div class="pg-publish-actions">
           <button type="button" class="pg-publish-btn ghost" id="pgSubmitCancel">Kiểm tra lại file</button>
           <button type="button" class="pg-publish-btn danger" id="pgSubmitConfirm">Nộp chính thức</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="pg-appeal-modal" id="pgAppealModal" hidden>
+      <div class="pg-publish-backdrop" data-pg-appeal-close></div>
+      <div class="pg-submit-card pg-appeal-card" role="dialog" aria-modal="true" aria-labelledby="pgAppealTitle">
+        <button type="button" class="pg-publish-close" id="pgAppealClose" aria-label="Đóng">×</button>
+        <div class="pg-submit-icon">⚑</div>
+        <span class="pg-publish-kicker">BÁO CÁO CHẤM SAI</span>
+        <h3 id="pgAppealTitle">Yêu cầu Admin chấm lại</h3>
+        <p id="pgAppealLesson">Bài tập</p>
+
+        <label class="pg-appeal-field">
+          <span>Vì sao bạn cho rằng hệ thống chấm sai?</span>
+          <textarea id="pgAppealReason" maxlength="1000" rows="5" placeholder="Ví dụ: Mình đã dùng đúng công thức IF ở D2:D7 nhưng hệ thống báo thiếu công thức..."></textarea>
+        </label>
+
+        <label class="pg-appeal-public">
+          <input type="checkbox" id="pgAppealKeepPublic">
+          <span>Giữ điểm hiện tại trên BXH trong lúc chờ Admin duyệt</span>
+        </label>
+
+        <div class="pg-publish-note">
+          Admin có thể xem file bạn đã nộp, giữ nguyên điểm hoặc chấm lại thủ công. Kết quả xử lý sẽ được gửi qua thông báo cá nhân trong Cộng đồng.
+        </div>
+
+        <div class="pg-publish-actions">
+          <button type="button" class="pg-publish-btn ghost" id="pgAppealCancel">Huỷ</button>
+          <button type="button" class="pg-publish-btn danger" id="pgAppealSend">Gửi yêu cầu</button>
         </div>
       </div>
     </div>
@@ -307,8 +350,8 @@
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
 <script defer src="practice-hub.js?v=20260830-access1"></script>
-<script defer src="practice-lessons.js?v=20260830-v10finish1"></script>
-<script defer src="practice-grader.js?v=20260830-v10finish1"></script>
+<script defer src="practice-lessons.js?v=20260830-v12appeal1"></script>
+<script defer src="practice-grader.js?v=20260830-v12appeal1"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="download-manager.js?v=20260828-ROLLBACK-STABLE1"></script>
 </body>

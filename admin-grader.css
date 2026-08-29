@@ -55,3 +55,24 @@
   .ag-stat-row{grid-template-columns:28px minmax(0,1fr) 70px}
   .ag-stat-row>span:nth-last-child(2),.ag-stat-row>span:last-child{grid-column:auto}
 }
+
+.admin-grader-appeals{margin:14px 0;padding:13px;border:1px solid #eadfca;border-radius:13px;background:#fffdf8}
+.ag-appeal-tools{display:flex;gap:7px;align-items:center}.ag-appeal-tools select{min-height:34px;border:1px solid #ddd8cc;border-radius:9px;background:#fff;padding:0 8px}
+.admin-grader-appeal-list{display:grid;gap:9px;margin-top:11px;max-height:560px;overflow:auto}
+.ag-appeal-card{padding:11px;border:1px solid #e4e9e6;border-radius:12px;background:#fff}
+.ag-appeal-card.pending{border-color:#ead7ad}
+.ag-appeal-card.approved{border-color:#bddcc8}
+.ag-appeal-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.ag-appeal-head strong{display:block;color:#244f37;font-size:12px}.ag-appeal-head small{display:block;margin-top:2px;color:#819087;font-size:9px}
+.ag-appeal-head>span{padding:4px 7px;border-radius:999px;background:#f4f5f4;color:#6c7a72;font-size:8.5px;font-weight:900}
+.ag-appeal-score{display:flex;gap:14px;margin-top:8px;font-size:10px;color:#65766c}.ag-appeal-score b{color:#1f6140}
+.ag-appeal-reason,.ag-appeal-response{margin-top:8px;padding:8px;border-radius:9px;background:#f7f9f8;color:#52655a;font-size:10px;line-height:1.45}
+.ag-appeal-review{display:grid;grid-template-columns:150px 1fr;gap:8px;margin-top:9px}
+.ag-appeal-review label{font-size:9px;color:#6f7e75}.ag-appeal-review input,.ag-appeal-review textarea{width:100%;margin-top:4px;border:1px solid #dbe5df;border-radius:8px;background:#fff;padding:7px;font:inherit}
+.ag-appeal-actions{display:flex;justify-content:flex-end;gap:7px;flex-wrap:wrap;margin-top:9px}
+.ag-appeal-actions button{border:1px solid #d5e1d9;background:#fff;color:#315f46;border-radius:9px;padding:7px 9px;font-size:9.5px;font-weight:850}
+.ag-appeal-actions .reject{border-color:#ead4bf;color:#8b5633}.ag-appeal-actions .approve{background:#247247;border-color:#247247;color:#fff}
+@media(max-width:720px){
+  .ag-appeal-tools{margin-top:8px}.admin-grader-config-head{align-items:flex-start}
+  .ag-appeal-review{grid-template-columns:1fr}.ag-appeal-actions{display:grid;grid-template-columns:1fr 1fr}.ag-appeal-actions button:first-child{grid-column:1/-1}
+}

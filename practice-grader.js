@@ -7,7 +7,7 @@ const DIFF_LABEL={basic:"🌱 Cơ bản",intermediate:"📘 Trung cấp",advance
 const TOPICS=[["all","Tất cả"],["clean","🧹 Làm sạch"],["pq","⚙️ Power Query"],["input","⌨️ Nhập liệu"],["formula","🧮 Công thức"],["format","🎨 Định dạng"]];
 
 let currentTopic="all",currentDifficulty="all",currentRankDifficulty="basic";
-let pendingLesson=null,pendingFile=null,xlsxPromise=null;
+let pendingLesson=null,pendingFile=null,pendingAppealLesson=null,xlsxPromise=null;
 const submissionCache=new Map();
 
 const lessons=()=>Array.isArray(window.AVP_PRACTICE_LESSONS)?window.AVP_PRACTICE_LESSONS:[];
@@ -71,6 +71,7 @@ function filteredLessons(){
 function card(l){
   const st=submissionCache.get(l.key),locked=!!st?.submitted,active=!!l.isActive;
   const num=String(Number(l.order)||1).padStart(2,"0");
+  const appealStatus=st?.appeal_status||"";
   const status=locked
     ? `<span class="pg-card-status done">✓ ĐÃ NỘP</span>`
     : active
@@ -78,20 +79,35 @@ function card(l){
       : `<span class="pg-card-status soon">SẮP MỞ</span>`;
 
   const score=locked
-    ? `<div class="pg-card-score"><small>Điểm chính thức</small><strong>${Number(st.score)||0}<span>/${l.maxScore||100}</span></strong></div>`
+    ? `<div class="pg-card-score"><small>Điểm hiện tại</small><strong>${Number(st.score)||0}<span>/${l.maxScore||100}</span></strong></div>`
     : "";
 
   const rules=(l.rules||[]).slice(0,4).map(x=>`<span>${esc(x)}</span>`).join("");
 
-  const actions=active
-    ? `<div class="pg-card-actions">
-        <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải file</button>
-        <label class="pg-card-btn submit${locked?" locked":""}">
-          <input type="file" hidden accept=".xlsx,.xls" data-submit="${esc(l.key)}" ${locked?"disabled":""}>
-          ${locked?"✓ Đã hoàn thành":"📤 Nộp bài"}
-        </label>
-      </div>`
-    : `<div class="pg-card-soon-note">Bài này chưa mở để nộp.</div>`;
+  let actions="";
+  if(active&&!locked){
+    actions=`<div class="pg-card-actions">
+      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải file</button>
+      <label class="pg-card-btn submit">
+        <input type="file" hidden accept=".xlsx,.xls" data-submit="${esc(l.key)}">
+        📤 Nộp bài
+      </label>
+    </div>`;
+  }else if(active&&locked){
+    const appealCopy=appealStatus==="pending"?"⏳ Đang chờ Admin":appealStatus==="approved"?"✓ Đã chấm lại":appealStatus==="rejected"?"✓ Đã phản hồi":"⚑ Báo chấm sai";
+    actions=`<div class="pg-card-actions">
+      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải lại file</button>
+      <button class="pg-card-btn review" type="button" data-review="${esc(l.key)}">🤖 Xem đánh giá</button>
+      <button class="pg-card-btn visibility ${st?.is_public?"public":"private"}" type="button" data-visibility="${esc(l.key)}">
+        ${st?.is_public?"🏆 Đang lên BXH":"🔒 Chưa lên BXH"}
+      </button>
+      <button class="pg-card-btn appeal${appealStatus?" has-status":""}" type="button" data-appeal="${esc(l.key)}" ${appealStatus?"disabled":""}>
+        ${appealCopy}
+      </button>
+    </div>`;
+  }else{
+    actions=`<div class="pg-card-soon-note">Bài này chưa mở để nộp.</div>`;
+  }
 
   return `<article class="pg-card pg-card-v9 ${locked?"is-done":active?"is-open":"is-soon"}" data-lesson-card="${esc(l.key)}">
     <div class="pg-card-topline">
@@ -101,7 +117,6 @@ function card(l){
         ${status}
       </div>
     </div>
-
     <div class="pg-card-main">
       <div class="pg-card-copy">
         <span class="pg-card-topic">${esc(l.topicLabel||"Bài tập")}</span>
@@ -110,13 +125,12 @@ function card(l){
       </div>
       ${score}
     </div>
-
     ${rules?`<div class="pg-card-rules">${rules}</div>`:""}
-
     ${actions}
-
     <div class="pg-card-foot">
-      <span>${locked?"Bài đã khóa · Admin mới có thể mở lại":active?"Tải nhiều lần · Nộp chính thức 1 lần":"Đang chuẩn bị rule chấm"}</span>
+      <span>${locked
+        ? (appealStatus==="pending"?"Yêu cầu chấm lại đang chờ Admin xử lý":appealStatus==="approved"?"Admin đã duyệt và chấm lại":appealStatus==="rejected"?"Admin đã kiểm tra và giữ nguyên điểm":"Bài đã khóa · Có thể báo chấm sai nếu cần")
+        : active?"Tải nhiều lần · Nộp chính thức 1 lần":"Đang chuẩn bị rule chấm"}</span>
     </div>
   </article>`;
 }
@@ -130,15 +144,22 @@ function renderLessons(){
 
   grid.querySelectorAll("[data-download]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.download);if(l)downloadLesson(l)});
   grid.querySelectorAll("[data-submit]").forEach(i=>i.onchange=e=>{const f=e.target.files?.[0];e.target.value="";const l=lessons().find(x=>x.key===i.dataset.submit);if(l&&f)onFilePicked(l,f)});
+  grid.querySelectorAll("[data-review]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.review);if(l)showStoredReview(l)});
+  grid.querySelectorAll("[data-visibility]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.visibility);if(l)toggleResultVisibility(l)});
+  grid.querySelectorAll("[data-appeal]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.appeal);if(l)openAppeal(l)});
 }
 async function loadSubmissionStates(){
   const u=await requireLogin();if(!u)return;
   const sb=await getClient();if(!sb?.rpc)return;
   await Promise.all(lessons().map(async l=>{
     try{
-      const {data,error}=await sb.rpc("practice_grader_my_submission",{p_lesson_key:l.key});
-      if(error)throw error;
-      submissionCache.set(l.key,Array.isArray(data)?(data[0]||{submitted:false}):(data||{submitted:false}));
+      let res=await sb.rpc("practice_grader_my_submission_v12",{p_lesson_key:l.key});
+      if(res.error){
+        res=await sb.rpc("practice_grader_my_submission",{p_lesson_key:l.key});
+      }
+      if(res.error)throw res.error;
+      const row=Array.isArray(res.data)?(res.data[0]||{submitted:false}):(res.data||{submitted:false});
+      submissionCache.set(l.key,row);
     }catch(e){submissionCache.set(l.key,{submitted:false})}
   }));
   renderLessons();
@@ -250,6 +271,10 @@ async function buildWorkbook(l){
       rows=[["Mã SP","Số lượng","Đơn giá"],["SP01",2,""],["SP02",5,""],["SP03",3,""],["SP04",8,""],["SP05",4,""],[],["Danh mục","Đơn giá"],["SP01",120000],["SP02",85000],["SP03",210000],["SP04",45000],["SP05",160000]];
       guide.push("Dùng XLOOKUP tại C2:C6 để tra Đơn giá từ bảng Danh mục A9:B13.");
       break;
+    case "format_number_v1":
+      rows=[["Mã SP","Doanh thu"],["SP01",1250000],["SP02",985000],["SP03",2415000],["SP04",760000],["SP05",3100000]];
+      guide.push("Giữ nguyên giá trị. Định dạng B2:B6 là Number có dấu phân cách hàng nghìn, 0 chữ số thập phân.");
+      break;
     default:
       throw new Error("WORKBOOK_NOT_READY");
   }
@@ -277,6 +302,38 @@ function checkBase8(rows){
   return rows.length===8&&expected.every((e,r)=>e.every((v,c)=>valueEq(rows[r]?.[c],v)));
 }
 function makeChecks(items){return {checks:items,score:items.reduce((s,x)=>s+(x.ok?x.points:0),0)}}
+
+
+function feedbackCategory(label){
+  const s=String(label||"").toLowerCase();
+  if(s.includes("công thức")||s.includes("if")||s.includes("sumif")||s.includes("xlookup"))return "Công thức";
+  if(s.includes("định dạng")||s.includes("format"))return "Định dạng";
+  if(s.includes("sheet")||s.includes("tiêu đề")||s.includes("cấu trúc"))return "Cấu trúc";
+  if(s.includes("kiểu")||s.includes("number")||s.includes("date"))return "Kiểu dữ liệu";
+  return "Dữ liệu / kết quả";
+}
+function defaultFeedback(check){
+  if(check.detail)return check.detail;
+  if(check.ok)return "Đạt đúng yêu cầu.";
+  const s=String(check.label||"").toLowerCase();
+  if(s.includes("công thức thật"))return "Không phát hiện công thức Excel ở một hoặc nhiều ô bắt buộc. Nhập tay kết quả không được tính là công thức.";
+  if(s.includes("dùng đúng"))return "Công thức có tồn tại nhưng hàm sử dụng không đúng hàm mà đề bài yêu cầu.";
+  if(s.includes("định dạng"))return "Giá trị có thể đúng nhưng định dạng ô chưa khớp yêu cầu của bài.";
+  if(s.includes("tiêu đề"))return "Tên cột hoặc vị trí tiêu đề đã bị thay đổi.";
+  if(s.includes("sheet"))return "Thiếu sheet bắt buộc hoặc tên sheet đã bị đổi.";
+  if(s.includes("kết quả đúng"))return "Có một hoặc nhiều ô cho kết quả khác đáp án chuẩn.";
+  if(s.includes("duplicate"))return "Vẫn còn dữ liệu trùng hoặc đã xóa nhầm bản ghi cần giữ.";
+  if(s.includes("dòng trống"))return "Vẫn còn dòng trống trong vùng dữ liệu.";
+  return "Nội dung này chưa đạt rule chấm tự động của bài.";
+}
+function enrichResult(result){
+  result.checks=(result.checks||[]).map(c=>({
+    ...c,
+    category:c.category||feedbackCategory(c.label),
+    detail:defaultFeedback(c)
+  }));
+  return result;
+}
 
 const GRADERS={
   clean_blank_rows_v1(XLSX,wb){
@@ -430,6 +487,21 @@ const GRADERS={
       {label:"Dùng đúng XLOOKUP",points:20,ok:formulas.every(c=>hasFn(c?.f,"XLOOKUP"))},
       {label:"Kết quả đúng",points:20,ok:["C2","C3","C4","C5","C6"].every((a,i)=>Number(cell(ws,a)?.v)===expected[i])}
     ]);
+  },
+  format_number_v1(XLSX,wb){
+    const {ws,rows}=sheetMatrix(XLSX,wb);
+    const exp=[1250000,985000,2415000,760000,3100000];
+    const cells=["B2","B3","B4","B5","B6"].map(a=>cell(ws,a));
+    const valuesOK=cells.every((c,i)=>Number(c?.v)===exp[i]);
+    const fmtOK=cells.every(c=>{
+      const z=String(c?.z||"");
+      return z.includes("#,##0") || z.includes("#.##0") || /^[#0,.\s]+$/.test(z)&&z!=="General";
+    });
+    return makeChecks([
+      {label:"Đúng cấu trúc bài",points:20,ok:!!ws&&headersEq(rows[0],["Mã SP","Doanh thu"]),detail:"Sheet DuLieu phải giữ nguyên 2 cột Mã SP và Doanh thu."},
+      {label:"Giá trị không đổi",points:40,ok:valuesOK,detail:valuesOK?"Giá trị Doanh thu được giữ nguyên.":"Một hoặc nhiều giá trị Doanh thu đã bị thay đổi."},
+      {label:"Đúng định dạng số",points:40,ok:fmtOK,detail:fmtOK?"B2:B6 đã có định dạng số hàng nghìn.":"B2:B6 chưa đồng nhất định dạng Number có dấu phân cách hàng nghìn và 0 chữ số thập phân."}
+    ]);
   }
 };
 
@@ -437,7 +509,8 @@ async function grade(l,file){
   if(!file||file.size<1000)throw new Error("FILE_INVALID");
   if(file.size>15*1024*1024)throw new Error("FILE_TOO_LARGE");
 
-  const XLSX=await loadXLSX(),buf=await file.arrayBuffer(),wb=XLSX.read(buf,{type:"array",cellDates:true,cellFormula:true});
+  const XLSX=await loadXLSX(),buf=await file.arrayBuffer(),
+    wb=XLSX.read(buf,{type:"array",cellDates:true,cellFormula:true,cellNF:true,cellStyles:true});
 
   if(!wb?.SheetNames?.length)throw new Error("WORKBOOK_EMPTY");
   if(!wb.SheetNames.includes("DuLieu"))throw new Error("MISSING_DULIEU_SHEET");
@@ -445,10 +518,27 @@ async function grade(l,file){
   const fn=GRADERS[l.grader];
   if(!fn)throw new Error("GRADER_NOT_READY");
 
-  const result=fn(XLSX,wb);
-  result.checks=result.checks||[];
+  const result=enrichResult(fn(XLSX,wb));
   result.score=Math.max(0,Math.min(Number(result.score)||0,Number(l.maxScore)||100));
+  result.grader=l.grader;
+  result.version="v12";
   return result;
+}
+
+
+async function uploadSubmissionFile(sb,user,l,file){
+  const ext=(file.name.split(".").pop()||"xlsx").toLowerCase().replace(/[^a-z0-9]/g,"")||"xlsx";
+  const path=`${user.id}/${l.key}/submission-${Date.now()}.${ext}`;
+  const {error}=await sb.storage.from("practice-submissions").upload(path,file,{
+    upsert:false,
+    contentType:file.type||"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  });
+  if(error)throw error;
+  return path;
+}
+async function removeSubmissionFile(sb,path){
+  if(!path)return;
+  try{await sb.storage.from("practice-submissions").remove([path])}catch(e){}
 }
 
 /* -------------------- Submission -------------------- */
@@ -467,37 +557,136 @@ function closeSubmit(){
 async function submitOfficial(){
   const l=pendingLesson,f=pendingFile;if(!l||!f)return;
   const sb=await getClient();if(!sb?.rpc)return;
+  const user=await requireLogin();if(!user)return;
   const btn=$("pgSubmitConfirm");btn.disabled=true;btn.textContent="Đang chấm…";
+  let filePath=null;
   try{
     const result=await grade(l,f);
-    const {error}=await sb.rpc("practice_grader_submit_once",{p_lesson_key:l.key,p_score:result.score});
+    filePath=await uploadSubmissionFile(sb,user,l,f);
+
+    const {data,error}=await sb.rpc("practice_grader_submit_once_v12",{
+      p_lesson_key:l.key,
+      p_score:result.score,
+      p_file_path:filePath,
+      p_grading_details:{score:result.score,grader:result.grader,version:result.version,checks:result.checks}
+    });
     if(error)throw error;
-    submissionCache.set(l.key,{submitted:true,score:result.score,passed:result.score>=70,difficulty:l.difficulty});
+
+    const state={
+      submitted:true,
+      score:result.score,
+      passed:result.score>=70,
+      difficulty:l.difficulty,
+      is_public:false,
+      grading_details:{score:result.score,grader:result.grader,version:result.version,checks:result.checks},
+      appeal_status:null
+    };
+    submissionCache.set(l.key,state);
     closeSubmit();renderLessons();renderProgress();showResult(l,result);openPublish(l,result.score);await loadLeaderboard();
   }catch(e){
+    if(filePath)await removeSubmissionFile(sb,filePath);
     const msg=String(e?.message||e);
-    if(/ALREADY_SUBMITTED/i.test(msg)){alert("Bài này đã nộp trước đó. Admin mới có thể mở lại.");submissionCache.set(l.key,{submitted:true});closeSubmit();renderLessons()}
-    else alert("Không nộp được bài: "+msg);
+    if(/ALREADY_SUBMITTED/i.test(msg)){
+      alert("Bài này đã nộp trước đó. Admin mới có thể mở lại.");
+      closeSubmit();await loadSubmissionStates();
+    }else alert("Không nộp được bài: "+msg);
   }finally{btn.disabled=false;btn.textContent="Nộp chính thức"}
 }
+
 function showResult(l,r){
-  const el=$("pgResult");if(!el)return;
-  el.hidden=false;
-  el.innerHTML=`<div class="pg-score"><strong>${r.score}</strong><span>/${l.maxScore||100}</span></div>
-  <div class="pg-checks">${r.checks.map(x=>`<div class="pg-check ${x.ok?"ok":"bad"}"><b>${x.ok?"✓":"×"} ${esc(x.label)} · ${x.points}đ</b></div>`).join("")}</div>`;
+  const panel=$("pgResult"),body=$("pgResultBody");if(!panel||!body)return;
+  const checks=(r.checks||[]);
+  $("pgResultTitle").textContent=`${l.title} · ${r.score}/${l.maxScore||100}`;
+  body.innerHTML=`
+    <div class="pg-score"><strong>${r.score}</strong><span>/${l.maxScore||100}</span></div>
+    <div class="pg-auto-summary">${checks.filter(x=>x.ok).length}/${checks.length} tiêu chí đạt</div>
+    <div class="pg-checks pg-checks-detailed">
+      ${checks.map(x=>`
+        <div class="pg-check ${x.ok?"ok":"bad"}">
+          <div class="pg-check-title">
+            <b>${x.ok?"✓":"×"} ${esc(x.label)} · ${x.points}đ</b>
+            <span>${esc(x.category||feedbackCategory(x.label))}</span>
+          </div>
+          <small>${esc(x.detail||defaultFeedback(x))}</small>
+        </div>`).join("")}
+    </div>`;
+  panel.hidden=false;
+  panel.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
+function showStoredReview(l){
+  const st=submissionCache.get(l.key);
+  if(!st?.submitted)return;
+  const details=st.grading_details||{};
+  const checks=Array.isArray(details.checks)?details.checks:[];
+  showResult(l,{score:Number(st.score)||0,checks});
+}
+
 function openPublish(l,score){
+  pendingLesson=l;
   $("pgPublishScore").textContent=String(score);
   $("pgPublishText").textContent=`${l.title} · ${DIFF_LABEL[l.difficulty]||l.difficulty} · ${score}/${l.maxScore||100}`;
   $("pgPublishModal").hidden=false;document.body.classList.add("pg-publish-open");
 }
 function closePublish(){$("pgPublishModal").hidden=true;document.body.classList.remove("pg-publish-open")}
-async function setVisibility(v){
-  const sb=await getClient();if(!sb?.rpc)return;
-  const {error}=await sb.rpc("practice_grader_set_visibility",{p_visible:!!v});
-  if(error){alert(error.message);return}
-  closePublish();await loadLeaderboard();
+
+async function setResultVisibility(l,v){
+  const sb=await getClient();if(!sb?.rpc||!l)return false;
+  const {error}=await sb.rpc("practice_grader_set_result_visibility",{p_lesson_key:l.key,p_visible:!!v});
+  if(error){alert("Không cập nhật được BXH: "+error.message);return false}
+  const st=submissionCache.get(l.key)||{};
+  st.is_public=!!v;submissionCache.set(l.key,st);
+  renderLessons();await loadLeaderboard();
+  return true;
 }
+async function setVisibility(v){
+  const l=pendingLesson;
+  if(!l)return;
+  const ok=await setResultVisibility(l,v);
+  if(ok)closePublish();
+}
+async function toggleResultVisibility(l){
+  const st=submissionCache.get(l.key);
+  if(!st?.submitted)return;
+  await setResultVisibility(l,!st.is_public);
+}
+
+function openAppeal(l){
+  const st=submissionCache.get(l.key);
+  if(!st?.submitted)return;
+  if(st.appeal_status){alert("Bài này đã có yêu cầu chấm lại hoặc đã được Admin xử lý.");return}
+  pendingAppealLesson=l;
+  $("pgAppealLesson").textContent=`${l.title} · Điểm hiện tại ${Number(st.score)||0}/${l.maxScore||100}`;
+  $("pgAppealReason").value="";
+  $("pgAppealKeepPublic").checked=!!st.is_public;
+  $("pgAppealModal").hidden=false;
+  document.body.classList.add("pg-publish-open");
+}
+function closeAppeal(){
+  $("pgAppealModal").hidden=true;
+  document.body.classList.remove("pg-publish-open");
+  pendingAppealLesson=null;
+}
+async function sendAppeal(){
+  const l=pendingAppealLesson;if(!l)return;
+  const reason=String($("pgAppealReason")?.value||"").trim();
+  if(reason.length<10){alert("Bạn hãy mô tả rõ lỗi chấm, tối thiểu 10 ký tự.");return}
+  const btn=$("pgAppealSend");btn.disabled=true;btn.textContent="Đang gửi…";
+  try{
+    const keepPublic=!!$("pgAppealKeepPublic")?.checked;
+    await setResultVisibility(l,keepPublic);
+    const sb=await getClient();
+    const {data,error}=await sb.rpc("practice_grader_create_appeal",{p_lesson_key:l.key,p_reason:reason});
+    if(error)throw error;
+    const st=submissionCache.get(l.key)||{};
+    st.appeal_status="pending";st.appeal_id=data?.id||data?.appeal_id||null;st.is_public=keepPublic;
+    submissionCache.set(l.key,st);
+    closeAppeal();renderLessons();
+    alert("Đã gửi yêu cầu chấm lại. Kết quả xử lý sẽ được gửi qua thông báo cá nhân trong Cộng đồng.");
+  }catch(e){
+    alert("Chưa gửi được yêu cầu: "+String(e?.message||e));
+  }finally{btn.disabled=false;btn.textContent="Gửi yêu cầu"}
+}
+
 async function loadLeaderboard(){
   const list=$("pgBoardList");if(!list)return;
   const sb=await getClient();if(!sb?.rpc)return;
@@ -526,6 +715,11 @@ function bind(){
   $("pgPublishClose")?.addEventListener("click",closePublish);
   qa("[data-pg-publish-close]").forEach(x=>x.onclick=closePublish);
   $("pgBoardRefresh")?.addEventListener("click",loadLeaderboard);
+  $("pgResultClose")?.addEventListener("click",()=>{$("pgResult").hidden=true});
+  $("pgAppealSend")?.addEventListener("click",sendAppeal);
+  $("pgAppealCancel")?.addEventListener("click",closeAppeal);
+  $("pgAppealClose")?.addEventListener("click",closeAppeal);
+  qa("[data-pg-appeal-close]").forEach(x=>x.onclick=closeAppeal);
   renderLessons();loadSubmissionStates();loadLeaderboard();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();

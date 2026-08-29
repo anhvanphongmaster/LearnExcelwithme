@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="cloud-sync-v11.css">
 <link href="theme-polish-v33.css" rel="stylesheet"/>
 <link rel="stylesheet" href="admin-community-center.css?v=20260829-moderation1">
-<link rel="stylesheet" href="admin-grader.css?v=20260830-v11-placementfix1">
+<link rel="stylesheet" href="admin-grader.css?v=20260830-v12appeal1">
 </head>
 <body>
 
@@ -658,7 +658,29 @@ where is_admin = true;</pre>
       </div>
 
 
-      <div class="admin-grader-performance">
+      
+      <div class="admin-grader-appeals">
+        <div class="admin-grader-config-head">
+          <div>
+            <strong>⚑ Yêu cầu chấm lại</strong>
+            <small>Học viên báo hệ thống chấm sai. Admin có thể mở file gốc, chấm lại thủ công hoặc giữ nguyên điểm.</small>
+          </div>
+          <div class="ag-appeal-tools">
+            <select id="adminGraderAppealStatus">
+              <option value="pending">Đang chờ</option>
+              <option value="">Tất cả</option>
+              <option value="approved">Đã chấm lại</option>
+              <option value="rejected">Giữ nguyên điểm</option>
+            </select>
+            <button type="button" id="adminGraderLoadAppeals">Làm mới</button>
+          </div>
+        </div>
+        <div id="adminGraderAppealList" class="admin-grader-appeal-list">
+          <div class="admin-users-empty">Chưa tải yêu cầu.</div>
+        </div>
+      </div>
+
+<div class="admin-grader-performance">
         <div class="admin-grader-config-head">
           <div>
             <strong>📊 Hiệu quả từng bài</strong>
@@ -719,6 +741,6 @@ where is_admin = true;</pre>
 <script defer src="cloud-sync-v11.js"></script>
 <script defer src="theme-unified-v32.js"></script>
 <script defer src="admin-community-center.js?v=20260829-moderation1"></script>
-<script defer src="admin-grader.js?v=20260830-v11-placementfix1"></script>
+<script defer src="admin-grader.js?v=20260830-v12appeal1"></script>
 </body>
 </html>

@@ -217,5 +217,21 @@
       requiredFunctions:["XLOOKUP"],
       rules:["20đ · đúng cấu trúc","40đ · có công thức thật","20đ · đúng XLOOKUP","20đ · kết quả đúng"]
     }
+,
+    {
+      key:"format_number_01",
+      title:"Định dạng số hàng nghìn",
+      topic:"format",
+      topicLabel:"Định dạng",
+      difficulty:"basic",
+      order:1,
+      maxScore:100,
+      isActive:true,
+      grader:"format_number_v1",
+      fileName:"AVP_DD_01_Dinh_Dang_So.xlsx",
+      description:"Giữ nguyên giá trị Doanh thu và định dạng B2:B6 theo kiểu số có dấu phân cách hàng nghìn.",
+      gradingMode:"format",
+      rules:["20đ · đúng cấu trúc","40đ · giá trị không đổi","40đ · đúng định dạng số"]
+    }
   ];
 })();

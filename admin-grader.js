@@ -77,6 +77,99 @@
   }
 
 
+
+  function appealStatusLabel(v){
+    return v==="approved"?"Đã chấm lại":v==="rejected"?"Giữ nguyên điểm":"Đang chờ";
+  }
+
+  async function loadAppeals(){
+    const sb=await client();
+    const root=$("adminGraderAppealList");
+    if(!sb||!root)return;
+    const status=$("adminGraderAppealStatus")?.value||null;
+    root.innerHTML='<div class="admin-users-empty">Đang tải yêu cầu…</div>';
+    try{
+      const {data,error}=await sb.rpc("admin_practice_grader_appeals",{p_status:status,p_limit:200});
+      if(error)throw error;
+      const rows=Array.isArray(data)?data:[];
+      root.innerHTML=rows.length?rows.map(r=>`
+        <article class="ag-appeal-card ${esc(r.status)}" data-appeal-id="${esc(r.id)}" data-file="${esc(r.file_path||"")}">
+          <div class="ag-appeal-head">
+            <div>
+              <strong>${esc(r.display_name||"Học viên")}</strong>
+              <small>${esc(r.lesson_title||r.lesson_key)} · ${diffLabel(r.difficulty)}</small>
+            </div>
+            <span>${appealStatusLabel(r.status)}</span>
+          </div>
+          <div class="ag-appeal-score">
+            <span>Điểm hệ thống <b>${Number(r.original_score)||0}/100</b></span>
+            ${r.status!=="pending"?`<span>Điểm sau xử lý <b>${Number(r.final_score??r.original_score)||0}/100</b></span>`:""}
+          </div>
+          <div class="ag-appeal-reason"><b>Học viên báo:</b> ${esc(r.reason||"")}</div>
+          ${r.status==="pending"?`
+            <div class="ag-appeal-review">
+              <label>Điểm Admin chấm lại
+                <input type="number" min="0" max="100" step="1" data-manual-score value="${Number(r.original_score)||0}">
+              </label>
+              <label class="wide">Phản hồi cho học viên
+                <textarea rows="3" maxlength="1000" data-admin-response placeholder="Giải thích ngắn gọn vì sao đổi điểm hoặc giữ nguyên..."></textarea>
+              </label>
+            </div>
+            <div class="ag-appeal-actions">
+              <button type="button" data-open-file>📄 Mở file đã nộp</button>
+              <button type="button" class="reject" data-resolve="reject">Giữ nguyên điểm</button>
+              <button type="button" class="approve" data-resolve="approve">✓ Duyệt & chấm lại</button>
+            </div>`:
+            `<div class="ag-appeal-response"><b>Admin:</b> ${esc(r.admin_response||"")}</div>`}
+        </article>
+      `).join(""):'<div class="admin-users-empty">Không có yêu cầu phù hợp.</div>';
+    }catch(e){
+      root.innerHTML=`<div class="admin-users-empty">Không tải được: ${esc(e?.message||e)}</div>`;
+    }
+  }
+
+  async function openAppealFile(btn){
+    const card=btn.closest(".ag-appeal-card");
+    const path=card?.dataset.file;
+    if(!path)return alert("Bài nộp này chưa có file lưu trên Storage.");
+    const sb=await client();
+    try{
+      const {data,error}=await sb.storage.from("practice-submissions").createSignedUrl(path,300);
+      if(error)throw error;
+      if(!data?.signedUrl)throw new Error("Không tạo được link tạm.");
+      window.open(data.signedUrl,"_blank","noopener");
+    }catch(e){alert("Không mở được file: "+(e?.message||e))}
+  }
+
+  async function resolveAppeal(btn,approve){
+    const card=btn.closest(".ag-appeal-card");
+    const id=Number(card?.dataset.appealId);
+    if(!id)return;
+    const score=Number(card.querySelector("[data-manual-score]")?.value);
+    const response=String(card.querySelector("[data-admin-response]")?.value||"").trim();
+    if(response.length<3)return alert("Nhập phản hồi cho học viên.");
+    if(approve&&(score<0||score>100||!Number.isFinite(score)))return alert("Điểm chấm lại phải từ 0 đến 100.");
+
+    const ok=confirm(approve
+      ? `Duyệt chấm lại thành ${score}/100 và gửi thông báo cho học viên?`
+      : "Giữ nguyên điểm hệ thống và gửi phản hồi cho học viên?");
+    if(!ok)return;
+
+    const sb=await client();
+    btn.disabled=true;
+    try{
+      const {error}=await sb.rpc("admin_practice_grader_resolve_appeal",{
+        p_appeal_id:id,
+        p_approve:!!approve,
+        p_new_score:approve?score:null,
+        p_response:response
+      });
+      if(error)throw error;
+      await Promise.all([loadAppeals(),load(),loadLessonStats()]);
+    }catch(e){alert("Chưa xử lý được: "+(e?.message||e))}
+    finally{btn.disabled=false}
+  }
+
   async function loadLessonStats(){
     const sb=await client();
     const root=$("adminGraderStatsList");
@@ -181,6 +274,14 @@
   function bind(){
     $("adminGraderReload")?.addEventListener("click",load);
     $("adminGraderLoadStats")?.addEventListener("click",loadLessonStats);
+    $("adminGraderLoadAppeals")?.addEventListener("click",loadAppeals);
+    $("adminGraderAppealStatus")?.addEventListener("change",loadAppeals);
+    $("adminGraderAppealList")?.addEventListener("click",e=>{
+      const open=e.target.closest("[data-open-file]");
+      if(open)return openAppealFile(open);
+      const action=e.target.closest("[data-resolve]");
+      if(action)return resolveAppeal(action,action.dataset.resolve==="approve");
+    });
     $("adminGraderLoadLessons")?.addEventListener("click",loadLessons);
     $("adminGraderLessonList")?.addEventListener("click",e=>{const b=e.target.closest("[data-save-lesson]");if(b)saveLesson(b)});
     $("adminGraderSearchBtn")?.addEventListener("click",load);
@@ -190,7 +291,7 @@
       const b=e.target.closest("[data-reset]");
       if(b)reset(b);
     });
-    window.addEventListener("avp:admin-grader-open",()=>{load();loadLessons();loadLessonStats();});
+    window.addEventListener("avp:admin-grader-open",()=>{load();loadLessons();loadLessonStats();loadAppeals();});
   }
 
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});
