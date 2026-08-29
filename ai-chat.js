@@ -14,6 +14,8 @@
   let communityFilter = "latest";
   let communityQuestions = [];
   let currentCommunityQuestion = null;
+  let communityQuestionImage = null;
+  let communityAnswerImage = null;
 
   const esc = s => String(s ?? "")
     .replaceAll("&","&amp;")
@@ -303,6 +305,7 @@
           </div>
           <h3>${esc(q.title)}</h3>
           <p>${esc(q.content).replace(/\n/g,"<br>")}</p>
+          ${communityImageHtml(q.image_path,q.title)}
           <div class="avp-question-user">👤 ${esc(q.display_name||"Học viên")}</div>
         </div>
         <div class="avp-question-stats">
@@ -314,6 +317,103 @@
 
     box.querySelectorAll("[data-question-id]").forEach(card=>{
       card.onclick=()=>openCommunityQuestion(card.dataset.questionId);
+    });
+    bindCommunityImageOpen(box);
+  }
+
+
+  function clearCommunityPickedImage(kind){
+    const state=kind==="answer"?communityAnswerImage:communityQuestionImage;
+    if(state?.previewUrl){
+      try{URL.revokeObjectURL(state.previewUrl)}catch{}
+    }
+    if(kind==="answer")communityAnswerImage=null;
+    else communityQuestionImage=null;
+  }
+
+  async function pickCommunityImage(file,kind){
+    if(!file)return;
+    if(!/^image\//i.test(file.type||"")){
+      alert("Chỉ hỗ trợ file ảnh.");
+      return;
+    }
+    if(file.size>8*1024*1024){
+      alert("Ảnh quá lớn. Hãy chọn ảnh dưới 8 MB.");
+      return;
+    }
+    try{
+      const normalized=await normalizeImage(file);
+      clearCommunityPickedImage(kind);
+      const state={file:normalized,previewUrl:URL.createObjectURL(normalized),originalName:file.name||"Ảnh"};
+      if(kind==="answer")communityAnswerImage=state;
+      else communityQuestionImage=state;
+      renderCommunityImagePreview(kind);
+    }catch(e){
+      console.warn("Community image",e);
+      alert("Không đọc được ảnh. Hãy thử JPG, PNG hoặc ảnh chụp màn hình.");
+    }
+  }
+
+  function renderCommunityImagePreview(kind){
+    const state=kind==="answer"?communityAnswerImage:communityQuestionImage;
+    const box=$(kind==="answer"?"avpAnswerImagePreview":"avpQuestionImagePreview");
+    if(!box)return;
+    if(!state){
+      box.hidden=true;
+      box.innerHTML="";
+      return;
+    }
+    box.hidden=false;
+    box.innerHTML=`
+      <img src="${state.previewUrl}" alt="Ảnh đính kèm">
+      <div><strong>${esc(state.originalName)}</strong><small>${Math.max(1,Math.round(state.file.size/1024))} KB</small></div>
+      <button type="button" data-remove-community-image="${kind}" aria-label="Xoá ảnh">×</button>
+    `;
+    box.querySelector("[data-remove-community-image]")?.addEventListener("click",()=>{
+      clearCommunityPickedImage(kind);
+      renderCommunityImagePreview(kind);
+      const input=$(kind==="answer"?"avpAnswerImage":"avpQuestionImage");
+      if(input)input.value="";
+    });
+  }
+
+  async function uploadCommunityImage(kind){
+    const state=kind==="answer"?communityAnswerImage:communityQuestionImage;
+    if(!state?.file)return null;
+    if(!user?.id)await currentUser();
+    if(!user?.id)throw new Error("LOGIN_REQUIRED");
+    const id=crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    const path=`${user.id}/${kind}/${id}.jpg`;
+    const {error}=await client.storage.from("community-images").upload(path,state.file,{
+      contentType:"image/jpeg",cacheControl:"3600",upsert:false
+    });
+    if(error)throw error;
+    return path;
+  }
+
+  function communityImageUrl(path){
+    if(!path)return "";
+    if(/^https?:\/\//i.test(path))return path;
+    try{
+      return client.storage.from("community-images").getPublicUrl(path)?.data?.publicUrl||"";
+    }catch{return ""}
+  }
+
+  function communityImageHtml(path,alt="Ảnh đính kèm"){
+    const url=communityImageUrl(path);
+    if(!url)return "";
+    return `<button type="button" class="avp-community-image-open" data-image-url="${esc(url)}" aria-label="Mở ảnh">
+      <img src="${esc(url)}" alt="${esc(alt)}" loading="lazy">
+    </button>`;
+  }
+
+  function bindCommunityImageOpen(root){
+    root?.querySelectorAll?.("[data-image-url]").forEach(btn=>{
+      btn.onclick=e=>{
+        e.stopPropagation();
+        const url=btn.dataset.imageUrl;
+        if(url)window.open(url,"_blank","noopener");
+      };
     });
   }
 
@@ -346,6 +446,13 @@
         <label>Nội dung câu hỏi</label>
         <textarea id="avpQuestionContent" maxlength="5000" rows="7" placeholder="Bạn đã làm gì, đang lỗi ở bước nào?">${esc(prefill)}</textarea>
 
+        <label>Ảnh minh hoạ <small>(không bắt buộc)</small></label>
+        <label class="avp-community-image-picker">
+          <span>📷 Chọn ảnh / ảnh chụp màn hình</span>
+          <input id="avpQuestionImage" type="file" accept="image/*">
+        </label>
+        <div id="avpQuestionImagePreview" class="avp-community-image-preview" hidden></div>
+
         <div class="avp-community-form-actions">
           <button type="button" class="avp-secondary-btn" id="avpCommunityAskCancel">Huỷ</button>
           <button type="button" class="avp-primary-btn" id="avpCommunityAskSubmit">Đăng câu hỏi</button>
@@ -353,8 +460,10 @@
       </div>
     `;
 
-    $("avpCommunityAskBack").onclick=()=>loadCommunity();
-    $("avpCommunityAskCancel").onclick=()=>loadCommunity();
+    clearCommunityPickedImage("question");
+    $("avpCommunityAskBack").onclick=()=>{clearCommunityPickedImage("question");loadCommunity();};
+    $("avpCommunityAskCancel").onclick=()=>{clearCommunityPickedImage("question");loadCommunity();};
+    $("avpQuestionImage").onchange=e=>pickCommunityImage(e.target.files?.[0],"question");
     $("avpCommunityAskSubmit").onclick=createCommunityQuestion;
   }
 
@@ -378,12 +487,13 @@
     btn.disabled=true;
 
     try{
+      const imagePath=await uploadCommunityImage("question");
       const {data,error}=await client.rpc("community_question_create",{
         p_title:title,
         p_content:content,
         p_topic:topic||null,
         p_page_path:location.pathname,
-        p_image_path:null
+        p_image_path:imagePath
       });
       if(error)throw error;
 
@@ -391,6 +501,7 @@
       document.querySelectorAll("[data-community-filter]").forEach(b=>{
         b.classList.toggle("active",b.dataset.communityFilter==="latest");
       });
+      clearCommunityPickedImage("question");
       await loadCommunity();
       if(data) await openCommunityQuestion(String(data));
     }catch(e){
@@ -463,6 +574,7 @@
           </div>
           <h2>${esc(q.title)}</h2>
           <p>${esc(q.content).replace(/\n/g,"<br>")}</p>
+          ${communityImageHtml(q.image_path,q.title)}
           <div class="avp-question-user">👤 ${esc(q.display_name||"Học viên")}</div>
         </article>
 
@@ -480,6 +592,7 @@
                 <span>${communityTime(a.created_at)}</span>
               </div>
               <div class="avp-answer-content">${esc(a.content).replace(/\n/g,"<br>")}</div>
+              ${communityImageHtml(a.image_path,"Ảnh câu trả lời")}
 
               <div class="avp-answer-actions">
                 <button type="button" data-vote="1" class="${Number(a.my_vote)===1?"active":""}">👍 ${Number(a.helpful||0)}</button>
@@ -495,13 +608,23 @@
         <div class="avp-answer-compose">
           <h3>Viết câu trả lời</h3>
           <textarea id="avpAnswerContent" maxlength="5000" rows="4" placeholder="Chia sẻ cách xử lý rõ ràng, dễ làm theo..."></textarea>
-          <button type="button" id="avpAnswerSubmit" class="avp-primary-btn">Gửi câu trả lời</button>
+          <div class="avp-answer-compose-actions">
+            <label class="avp-community-image-picker compact">
+              <span>📷 Thêm ảnh</span>
+              <input id="avpAnswerImage" type="file" accept="image/*">
+            </label>
+            <button type="button" id="avpAnswerSubmit" class="avp-primary-btn">Gửi câu trả lời</button>
+          </div>
+          <div id="avpAnswerImagePreview" class="avp-community-image-preview" hidden></div>
         </div>
       </div>
     `;
 
-    $("avpCommunityDetailBack").onclick=()=>loadCommunity();
+    clearCommunityPickedImage("answer");
+    $("avpCommunityDetailBack").onclick=()=>{clearCommunityPickedImage("answer");loadCommunity();};
+    $("avpAnswerImage").onchange=e=>pickCommunityImage(e.target.files?.[0],"answer");
     $("avpAnswerSubmit").onclick=createCommunityAnswer;
+    bindCommunityImageOpen(box);
 
     box.querySelectorAll("[data-answer-id]").forEach(card=>{
       const aid=card.dataset.answerId;
@@ -523,22 +646,25 @@
     if(!(await requireCommunityLogin()))return;
     if(!currentCommunityQuestion)return;
 
-    const content=String($("avpAnswerContent")?.value||"").trim();
-    if(content.length<2){
-      alert("Hãy nhập nội dung câu trả lời.");
+    let content=String($("avpAnswerContent")?.value||"").trim();
+    if(content.length<2 && !communityAnswerImage){
+      alert("Hãy nhập nội dung hoặc thêm ảnh cho câu trả lời.");
       return;
     }
+    if(content.length<2)content="Ảnh minh hoạ / hướng dẫn.";
 
     const btn=$("avpAnswerSubmit");
     btn.disabled=true;
 
     try{
+      const imagePath=await uploadCommunityImage("answer");
       const {error}=await client.rpc("community_answer_create",{
         p_question_id:currentCommunityQuestion.id,
         p_content:content,
-        p_image_path:null
+        p_image_path:imagePath
       });
       if(error)throw error;
+      clearCommunityPickedImage("answer");
       await openCommunityQuestion(currentCommunityQuestion.id);
       await updateNotificationBadge();
     }catch(e){
