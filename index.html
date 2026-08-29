@@ -1439,6 +1439,41 @@ a.avp-yt-combo.avp-mobile-main-cta{
 }
 </style>
 
+
+<style>
+.avp-practice-hub-cta{
+  position:relative;
+  overflow:visible;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(85,187,255,.18),transparent 34%),
+    linear-gradient(135deg,#145f3b,#1d7b4e) !important;
+  border-color:rgba(173,245,200,.6) !important;
+}
+.avp-practice-hub-badges{
+  position:absolute;
+  top:-10px;
+  right:12px;
+  display:flex;
+  gap:5px;
+  z-index:3;
+}
+.avp-mini-channel{
+  width:24px;
+  height:24px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  border:2px solid rgba(255,255,255,.9);
+  box-shadow:0 3px 10px rgba(0,0,0,.2);
+}
+.avp-mini-channel-tt{background:#111;}
+.avp-mini-channel-yt{background:#ff0000;}
+.avp-mini-channel-grade{background:#2563eb;}
+</style>
+
 </head>
 
 
@@ -1489,33 +1524,21 @@ a.avp-yt-combo.avp-mobile-main-cta{
 
                 
 <div class="avp-mobile-main-cta-wrap">
-  <a class="avp-mobile-main-cta" href="practice-video.html">
-    <span class="avp-brand-badge avp-brand-tt" aria-hidden="true">
-      <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#fff" d="M14.5 3c.3 2.2 1.6 4 3.8 4.7V10c-1.3 0-2.6-.4-3.8-1.2v6.1c0 3.2-2.6 5.6-5.8 5.1C6 19.6 4.2 17.3 4.5 14.6c.3-2.4 2.3-4.3 4.8-4.5.4 0 .7 0 1 .1v2.8c-.3-.1-.6-.2-1-.1-1.3.1-2.3 1.3-2.2 2.6.1 1.3 1.2 2.3 2.6 2.3 1.5 0 2.6-1.2 2.6-2.6V3h2.2z"/></svg>
+  <a class="avp-mobile-main-cta avp-practice-hub-cta" href="practice-video.html">
+    <span class="avp-practice-hub-badges" aria-hidden="true">
+      <span class="avp-mini-channel avp-mini-channel-tt">♪</span>
+      <span class="avp-mini-channel avp-mini-channel-yt">▶</span>
+      <span class="avp-mini-channel avp-mini-channel-grade">✓</span>
     </span>
     <span class="avp-mobile-main-cta-icon">📚</span>
     <span class="avp-mobile-main-cta-copy">
-      <strong>Bài tập thực hành theo video</strong>
-      <small>Video mới → File thực hành mới → Làm ngay trên Excel</small>
-      <small style="opacity:.85;font-size:12px;display:block;margin-top:2px">Cập nhật theo từng video trên kênh TikTok.</small>
+      <strong>Bài tập Excel</strong>
+      <small>3 cách thực hành trong cùng một khu</small>
+      <small style="opacity:.88;font-size:12px;display:block;margin-top:2px">TikTok · YouTube · Chấm điểm tự động</small>
     </span>
     <span class="avp-mobile-main-cta-arrow">→</span>
   </a>
-<a class="avp-mobile-main-cta avp-yt-combo" href="practice-youtube.html">
-    <span class="avp-brand-badge avp-brand-yt" aria-hidden="true">
-      <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#fff" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
-    </span>
-    <span class="avp-mobile-main-cta-icon avp-yt-combo-ava">
-      <img src="https://yt3.googleusercontent.com/UGGuEhYMm-FYa9H4b-rc6_L2jLamejeyecU9jq8WTQIuJqDlJ537WHj1-1C0LtNDloO6ZNA=s176-c-k-c0x00ffffff-no-rj" width="40" height="40" alt="" />
-    </span>
-    <span class="avp-mobile-main-cta-copy">
-      <strong>Học trên YouTube + file thực hành</strong>
-      <small>@anhvanphongmaster → Project Sales Dashboard</small>
-      <small style="opacity:.85;font-size:12px;display:block;margin-top:2px">Video dài + file làm theo từng phần.</small>
-    </span>
-    <span class="avp-mobile-main-cta-arrow">→</span>
-  </a>
-  <div class="avp-scroll-tease avp-scroll-tease--under-yt" id="avpScrollTease" style="width:100%;margin-top:12px;box-sizing:border-box">
+<div class="avp-scroll-tease avp-scroll-tease--under-yt" id="avpScrollTease" style="width:100%;margin-top:12px;box-sizing:border-box">
     <button type="button" class="avp-scroll-tease-btn" id="avpScrollToPath"
       style="width:100%;box-sizing:border-box;border-radius:14px;padding:12px 16px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:#e8f5ec;cursor:pointer;text-align:center">
       <span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">

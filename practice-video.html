@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bài tập thực hành theo video | Learn Excel with Anh Van Phong</title>
-  <meta name="description" content="Mỗi video Excel trên kênh đều có file thực hành tương ứng. File nào đã phát hành sẽ được mở khóa để tải.">
+  <title>Bài tập Excel | Learn Excel with Anh Van Phong</title>
+  <meta name="description" content="Khu bài tập Excel gồm thực hành theo TikTok, YouTube và chấm điểm file tự động.">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="global-search.css">
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="practice-video.css?v=20260828-ROLLBACK-STABLE1">
+  <link rel="stylesheet" href="practice-hub.css?v=20260830-hub1">
+  <link rel="stylesheet" href="practice-grader.css?v=20260830-hub1">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link href="theme-polish-v33.css" rel="stylesheet"/>
@@ -33,17 +35,61 @@
 <main class="pv-page">
   <a class="pv-back" href="index.html">← Về Trang chủ</a>
 
-  <section class="pv-hero">
-    <span class="pv-kicker">VIDEO PRACTICE LIBRARY</span>
-    <h1>📚 Bài tập thực hành theo video</h1>
-    <p>Mỗi video mới sẽ có file Excel thực hành tương ứng. File nào đã phát hành sẽ được mở khóa để tải.</p>
-    <div class="pv-stats">
-      <div class="pv-stat"><small>Video kế hoạch</small><strong id="pvStatTotal">10</strong></div>
-      <div class="pv-stat"><small>File đã có</small><strong id="pvStatAvailable">0</strong></div>
-      <div class="pv-stat"><small>Coming soon</small><strong id="pvStatComing">10</strong></div>
+  <section class="pv-hero pv-hero-hub">
+    <span class="pv-kicker">PRACTICE HUB</span>
+    <h1>📚 Bài tập Excel</h1>
+    <p>Một khu thực hành chung với 3 cách luyện: theo TikTok, theo YouTube hoặc nộp file để hệ thống tự chấm.</p>
+    <div class="pv-stats pv-hub-stats">
+      <div class="pv-stat"><small>Luồng thực hành</small><strong>3</strong></div>
+      <div class="pv-stat"><small>Kho TikTok</small><strong id="pvStatTotal">100</strong></div>
+      <div class="pv-stat"><small>Chấm tự động</small><strong>BETA</strong></div>
+      <span id="pvStatAvailable" hidden>0</span>
+      <span id="pvStatComing" hidden>0</span>
     </div>
   </section>
 
+  <section class="ph-switch" aria-labelledby="phSwitchTitle">
+    <div class="ph-switch-head">
+      <span>CHỌN CÁCH THỰC HÀNH</span>
+      <h2 id="phSwitchTitle">Bạn muốn luyện theo cách nào?</h2>
+      <p>Chạm vào một ô. Nội dung bên dưới sẽ đổi, các chức năng chung của website vẫn giữ nguyên.</p>
+    </div>
+
+    <div class="ph-switch-grid" role="tablist" aria-label="Ba luồng bài tập">
+      <button type="button" class="ph-choice active" data-practice-branch="tiktok" role="tab" aria-selected="true">
+        <span class="ph-choice-icon">📱</span>
+        <span class="ph-choice-copy">
+          <span class="ph-choice-eyebrow">TIKTOK PRACTICE</span>
+          <strong>Theo video TikTok</strong>
+          <small>Kho bài hiện tại · vote nhu cầu · file thực hành.</small>
+        </span>
+        <span class="ph-choice-arrow">→</span>
+      </button>
+
+      <button type="button" class="ph-choice youtube" data-practice-branch="youtube" role="tab" aria-selected="false">
+        <span class="ph-choice-icon">▶️</span>
+        <span class="ph-choice-copy">
+          <span class="ph-choice-eyebrow">YOUTUBE PROJECT</span>
+          <strong>Theo YouTube</strong>
+          <small>Project dài · file theo từng phần · tài nguyên kèm theo.</small>
+        </span>
+        <span class="ph-choice-arrow">→</span>
+      </button>
+
+      <button type="button" class="ph-choice grader" data-practice-branch="grader" role="tab" aria-selected="false">
+        <span class="ph-choice-new">MỚI</span>
+        <span class="ph-choice-icon">🧪</span>
+        <span class="ph-choice-copy">
+          <span class="ph-choice-eyebrow">AUTO GRADING</span>
+          <strong>Chấm điểm tự động</strong>
+          <small>Tải file → làm Excel → nộp lại → nhận điểm.</small>
+        </span>
+        <span class="ph-choice-arrow">→</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="phBranchTiktok" class="ph-branch ph-branch-active">
   <section class="pv-daily-votes" id="pvDailyVotes" aria-live="polite">
     <div class="pv-daily-head">
       <div>
@@ -77,6 +123,101 @@
   </div>
 
   <div class="pv-grid" id="pvGrid"></div>
+  </section>
+
+  <section id="phBranchYoutube" class="ph-branch" hidden>
+    <div class="ph-branch-intro youtube">
+      <div>
+        <span class="ph-branch-kicker">YOUTUBE PRACTICE</span>
+        <h2>▶️ Project & file thực hành YouTube</h2>
+        <p>Nội dung YouTube được giữ nguyên. Trang chỉ tải phần này khi bạn chọn YouTube để tránh làm nặng khu bài tập.</p>
+      </div>
+      <span class="ph-lazy-badge">TẢI KHI CẦN</span>
+    </div>
+    <div class="ph-youtube-frame-wrap" id="phYoutubeFrameWrap">
+      <div class="ph-youtube-placeholder">
+        <div class="ph-loader-dot"></div>
+        <strong>Chọn YouTube để tải nội dung</strong>
+        <small>Không tải trước để giữ trang nhẹ trên mobile.</small>
+      </div>
+    </div>
+  </section>
+
+  <section id="phBranchGrader" class="ph-branch" hidden>
+    <div class="ph-branch-intro grader">
+      <div>
+        <span class="ph-branch-kicker">AUTO GRADING · BETA</span>
+        <h2>🧪 Bài tập có chấm điểm</h2>
+        <p>Chia theo chủ đề giống kho bài tập. Bản đầu tiên mở 1 bài thật để test cơ chế trước khi nhân rộng.</p>
+      </div>
+      <span class="ph-lazy-badge">CHẤM TRÊN THIẾT BỊ</span>
+    </div>
+
+    <div class="pg-dashboard">
+      <div class="pg-stat"><small>Chủ đề</small><strong>5</strong></div>
+      <div class="pg-stat"><small>Bài đang mở</small><strong>1</strong></div>
+      <div class="pg-stat"><small>Điểm tối đa</small><strong>100</strong></div>
+    </div>
+
+    <div class="pg-topic-tabs" id="pgTopicTabs">
+      <button type="button" class="pg-topic active" data-pg-topic="clean">🧹 Làm sạch</button>
+      <button type="button" class="pg-topic" data-pg-topic="pq">⚙️ Power Query</button>
+      <button type="button" class="pg-topic" data-pg-topic="input">⌨️ Nhập liệu</button>
+      <button type="button" class="pg-topic" data-pg-topic="formula">🧮 Công thức</button>
+      <button type="button" class="pg-topic" data-pg-topic="format">🎨 Định dạng</button>
+    </div>
+
+    <div class="pg-topic-panels">
+      <article class="pg-card" data-pg-panel="clean">
+        <div class="pg-card-head"><span>CƠ BẢN</span><b>● ĐANG MỞ</b></div>
+        <h3>#01 · Xóa dòng trống</h3>
+        <p>Xóa toàn bộ dòng trống trong sheet <strong>DuLieu</strong>, giữ nguyên tiêu đề và dữ liệu gốc.</p>
+
+        <div class="pg-rules">
+          <span>20đ · đúng sheet</span>
+          <span>20đ · đúng tiêu đề</span>
+          <span>30đ · hết dòng trống</span>
+          <span>30đ · giữ đủ dữ liệu</span>
+        </div>
+
+        <div class="pg-actions">
+          <button type="button" class="pg-btn primary" id="pgDownloadDemo">⬇️ Tải file</button>
+          <label class="pg-btn submit">
+            <input type="file" id="pgSubmitDemo" accept=".xlsx,.xls" hidden>
+            📤 Nộp bài
+          </label>
+        </div>
+
+        <div class="pg-note" id="pgFileNote">Thư viện Excel chỉ tải khi bạn bấm Tải file hoặc Nộp bài.</div>
+        <div class="pg-result" id="pgResult" hidden></div>
+      </article>
+
+      <article class="pg-card pg-coming" data-pg-panel="pq" hidden>
+        <div class="pg-card-head"><span>POWER QUERY</span><b>ĐANG CHUẨN BỊ</b></div>
+        <h3>Power Query</h3>
+        <p>Sẽ mở sau khi rule chấm bài mẫu được test ổn định.</p>
+      </article>
+
+      <article class="pg-card pg-coming" data-pg-panel="input" hidden>
+        <div class="pg-card-head"><span>NHẬP LIỆU</span><b>ĐANG CHUẨN BỊ</b></div>
+        <h3>Nhập liệu</h3>
+        <p>Sẽ chấm Data Validation, mã duy nhất và các rule nhập liệu.</p>
+      </article>
+
+      <article class="pg-card pg-coming" data-pg-panel="formula" hidden>
+        <div class="pg-card-head"><span>CÔNG THỨC</span><b>ĐANG CHUẨN BỊ</b></div>
+        <h3>Công thức</h3>
+        <p>Sẽ chấm theo kết quả và rule, không bắt file phải giống nguyên mẫu.</p>
+      </article>
+
+      <article class="pg-card pg-coming" data-pg-panel="format" hidden>
+        <div class="pg-card-head"><span>ĐỊNH DẠNG</span><b>ĐANG CHUẨN BỊ</b></div>
+        <h3>Định dạng</h3>
+        <p>Sẽ chấm các tiêu chí định dạng quan trọng theo từng bài.</p>
+      </article>
+    </div>
+  </section>
+
 </main>
 
 <footer class="site-footer">
@@ -101,6 +242,8 @@
 <script defer src="practice-video.js?v=20260828-FILEURL-PROD1"></script>
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260828-ROLLBACK-STABLE1"></script>
+<script defer src="practice-hub.js?v=20260830-hub1"></script>
+<script defer src="practice-grader.js?v=20260830-hub1"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="download-manager.js?v=20260828-ROLLBACK-STABLE1"></script>
 </body>

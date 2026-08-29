@@ -9,6 +9,23 @@
 <link rel="stylesheet" href="practice-youtube.css"/>
   <link rel="stylesheet" href="avp-site-motion.css" />
 <link rel="stylesheet" href="avp-core.css" />
+
+<style>
+html.avp-embedded-youtube, html.avp-embedded-youtube body{background:transparent!important}
+html.avp-embedded-youtube .pyt-page{max-width:none!important;margin:0!important;padding:6px 2px 20px!important}
+html.avp-embedded-youtube .pyt-back{display:none!important}
+</style>
+<script>
+(function(){
+  try{
+    var q=new URLSearchParams(location.search);
+    if(q.get("embed")==="1"){
+      document.documentElement.classList.add("avp-embedded-youtube");
+    }
+  }catch(e){}
+})();
+</script>
+
 </head>
 <body>
 <main class="pyt-page">
