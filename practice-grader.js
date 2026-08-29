@@ -142,6 +142,31 @@ async function loadSubmissionStates(){
     }catch(e){submissionCache.set(l.key,{submitted:false})}
   }));
   renderLessons();
+  renderProgress();
+}
+
+
+function renderProgress(){
+  const all=lessons().filter(l=>l.isActive);
+  const states=all.map(l=>({lesson:l,state:submissionCache.get(l.key)}));
+  const done=states.filter(x=>x.state?.submitted);
+  const total=all.length;
+  const percent=total?Math.round(done.length/total*100):0;
+  const avg=done.length?Math.round(done.reduce((s,x)=>s+(Number(x.state.score)||0),0)/done.length):0;
+
+  const countLevel=level=>{
+    const ls=all.filter(l=>l.difficulty===level);
+    const d=ls.filter(l=>submissionCache.get(l.key)?.submitted).length;
+    return `${d}/${ls.length}`;
+  };
+
+  if($("pgProgressPercent"))$("pgProgressPercent").textContent=`${percent}%`;
+  if($("pgProgressBar"))$("pgProgressBar").style.width=`${percent}%`;
+  if($("pgProgressDone"))$("pgProgressDone").textContent=`${done.length}/${total}`;
+  if($("pgProgressAvg"))$("pgProgressAvg").textContent=String(avg);
+  if($("pgProgressBasic"))$("pgProgressBasic").textContent=countLevel("basic");
+  if($("pgProgressIntermediate"))$("pgProgressIntermediate").textContent=countLevel("intermediate");
+  if($("pgProgressAdvanced"))$("pgProgressAdvanced").textContent=countLevel("advanced");
 }
 
 /* -------------------- Workbook generators -------------------- */
@@ -216,6 +241,14 @@ async function buildWorkbook(l){
     case "formula_revenue_v1":
       rows=[["Mã SP","Số lượng","Đơn giá","Doanh thu"],["SP01",2,120000,""],["SP02",5,85000,""],["SP03",3,210000,""],["SP04",8,45000,""],["SP05",4,160000,""]];
       guide.push("Tính Doanh thu = Số lượng × Đơn giá ở D2:D6. Công thức tương đương được chấp nhận, nhập tay không được.");
+      break;
+    case "formula_sumif_v1":
+      rows=[["Bộ phận","Số lượng"],["QC",12],["PE",18],["QC",15],["MFG",22],["PE",16],["QC",19],["MFG",14],["QC",21],[],["Bộ phận cần tính","Tổng"],["QC",""],["PE",""],["MFG",""]];
+      guide.push("Dùng SUMIF tại B12:B14 để tính tổng Số lượng theo Bộ phận.");
+      break;
+    case "formula_xlookup_v1":
+      rows=[["Mã SP","Số lượng","Đơn giá"],["SP01",2,""],["SP02",5,""],["SP03",3,""],["SP04",8,""],["SP05",4,""],[],["Danh mục","Đơn giá"],["SP01",120000],["SP02",85000],["SP03",210000],["SP04",45000],["SP05",160000]];
+      guide.push("Dùng XLOOKUP tại C2:C6 để tra Đơn giá từ bảng Danh mục A9:B13.");
       break;
     default:
       throw new Error("WORKBOOK_NOT_READY");
@@ -375,14 +408,47 @@ const GRADERS={
       {label:"Có công thức toàn bộ D2:D6",points:40,ok:formulas.every(isFormulaCell)},
       {label:"Kết quả đúng",points:40,ok:body.length===5&&body.every((r,i)=>Number(r[3])===exp[i])}
     ]);
+  },
+  formula_sumif_v1(XLSX,wb){
+    const {ws,rows}=sheetMatrix(XLSX,wb);
+    const formulas=["B12","B13","B14"].map(a=>cell(ws,a));
+    const expected=[67,34,36];
+    return makeChecks([
+      {label:"Đúng cấu trúc bài",points:20,ok:!!ws&&String(norm(cell(ws,"A11")?.v))==="Bộ phận cần tính"},
+      {label:"Có công thức thật B12:B14",points:40,ok:formulas.every(isFormulaCell)},
+      {label:"Dùng đúng SUMIF",points:20,ok:formulas.every(c=>hasFn(c?.f,"SUMIF"))},
+      {label:"Kết quả đúng",points:20,ok:["B12","B13","B14"].every((a,i)=>Number(cell(ws,a)?.v)===expected[i])}
+    ]);
+  },
+  formula_xlookup_v1(XLSX,wb){
+    const {ws}=sheetMatrix(XLSX,wb);
+    const formulas=["C2","C3","C4","C5","C6"].map(a=>cell(ws,a));
+    const expected=[120000,85000,210000,45000,160000];
+    return makeChecks([
+      {label:"Đúng cấu trúc bài",points:20,ok:!!ws&&String(norm(cell(ws,"A1")?.v))==="Mã SP"&&String(norm(cell(ws,"A8")?.v))==="Danh mục"},
+      {label:"Có công thức thật C2:C6",points:40,ok:formulas.every(isFormulaCell)},
+      {label:"Dùng đúng XLOOKUP",points:20,ok:formulas.every(c=>hasFn(c?.f,"XLOOKUP"))},
+      {label:"Kết quả đúng",points:20,ok:["C2","C3","C4","C5","C6"].every((a,i)=>Number(cell(ws,a)?.v)===expected[i])}
+    ]);
   }
 };
 
 async function grade(l,file){
+  if(!file||file.size<1000)throw new Error("FILE_INVALID");
+  if(file.size>15*1024*1024)throw new Error("FILE_TOO_LARGE");
+
   const XLSX=await loadXLSX(),buf=await file.arrayBuffer(),wb=XLSX.read(buf,{type:"array",cellDates:true,cellFormula:true});
+
+  if(!wb?.SheetNames?.length)throw new Error("WORKBOOK_EMPTY");
+  if(!wb.SheetNames.includes("DuLieu"))throw new Error("MISSING_DULIEU_SHEET");
+
   const fn=GRADERS[l.grader];
   if(!fn)throw new Error("GRADER_NOT_READY");
-  return fn(XLSX,wb);
+
+  const result=fn(XLSX,wb);
+  result.checks=result.checks||[];
+  result.score=Math.max(0,Math.min(Number(result.score)||0,Number(l.maxScore)||100));
+  return result;
 }
 
 /* -------------------- Submission -------------------- */
@@ -407,7 +473,7 @@ async function submitOfficial(){
     const {error}=await sb.rpc("practice_grader_submit_once",{p_lesson_key:l.key,p_score:result.score});
     if(error)throw error;
     submissionCache.set(l.key,{submitted:true,score:result.score,passed:result.score>=70,difficulty:l.difficulty});
-    closeSubmit();renderLessons();showResult(l,result);openPublish(l,result.score);await loadLeaderboard();
+    closeSubmit();renderLessons();renderProgress();showResult(l,result);openPublish(l,result.score);await loadLeaderboard();
   }catch(e){
     const msg=String(e?.message||e);
     if(/ALREADY_SUBMITTED/i.test(msg)){alert("Bài này đã nộp trước đó. Admin mới có thể mở lại.");submissionCache.set(l.key,{submitted:true});closeSubmit();renderLessons()}

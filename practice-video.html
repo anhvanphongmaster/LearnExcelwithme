@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="practice-video.css?v=20260828-ROLLBACK-STABLE1">
   <link rel="stylesheet" href="practice-hub.css?v=20260830-hub1">
-  <link rel="stylesheet" href="practice-grader.css?v=20260830-v9cards1">
+  <link rel="stylesheet" href="practice-grader.css?v=20260830-v10finish1">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link href="theme-polish-v33.css" rel="stylesheet"/>
@@ -153,7 +153,28 @@
     </div>
 
     <!-- BXH được đưa lên đầu, cấu trúc cuộn giống khu TikTok -->
-    <section class="pg-daily-board" aria-live="polite">
+    
+    <section class="pg-progress-panel" id="pgProgressPanel">
+      <div class="pg-progress-head">
+        <div>
+          <span>📈 TIẾN ĐỘ CỦA BẠN</span>
+          <h3>Hồ sơ thực hành</h3>
+        </div>
+        <strong id="pgProgressPercent">0%</strong>
+      </div>
+
+      <div class="pg-progress-track"><i id="pgProgressBar" style="width:0%"></i></div>
+
+      <div class="pg-progress-stats">
+        <article><small>Đã hoàn thành</small><strong id="pgProgressDone">0/0</strong></article>
+        <article><small>Điểm trung bình</small><strong id="pgProgressAvg">0</strong></article>
+        <article><small>Cơ bản</small><strong id="pgProgressBasic">0/0</strong></article>
+        <article><small>Trung cấp</small><strong id="pgProgressIntermediate">0/0</strong></article>
+        <article><small>Nâng cao</small><strong id="pgProgressAdvanced">0/0</strong></article>
+      </div>
+    </section>
+
+<section class="pg-daily-board" aria-live="polite">
       <div class="pg-daily-head">
         <div>
           <span class="pg-daily-kicker">🏆 XẾP HẠNG BÀI TẬP</span>
@@ -286,8 +307,8 @@
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
 <script defer src="practice-hub.js?v=20260830-access1"></script>
-<script defer src="practice-lessons.js?v=20260830-v8layout1"></script>
-<script defer src="practice-grader.js?v=20260830-v9cards1"></script>
+<script defer src="practice-lessons.js?v=20260830-v10finish1"></script>
+<script defer src="practice-grader.js?v=20260830-v10finish1"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="download-manager.js?v=20260828-ROLLBACK-STABLE1"></script>
 </body>

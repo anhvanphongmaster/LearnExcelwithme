@@ -184,5 +184,38 @@
       gradingMode:"formula_result",
       rules:["20đ · đúng sheet/header","40đ · có công thức ở toàn bộ dòng","40đ · kết quả đúng"]
     }
+,
+    {
+      key:"formula_sumif_03",
+      title:"SUMIF theo bộ phận",
+      topic:"formula",
+      topicLabel:"Công thức",
+      difficulty:"intermediate",
+      order:3,
+      maxScore:100,
+      isActive:true,
+      grader:"formula_sumif_v1",
+      fileName:"AVP_CT_03_SUMIF.xlsx",
+      description:"Dùng SUMIF tính tổng Số lượng của từng Bộ phận. Nhập tay đúng số vẫn mất điểm công thức.",
+      gradingMode:"exact_formula",
+      requiredFunctions:["SUMIF"],
+      rules:["20đ · đúng cấu trúc","40đ · có công thức thật","20đ · đúng SUMIF","20đ · kết quả đúng"]
+    },
+    {
+      key:"formula_xlookup_04",
+      title:"XLOOKUP tra đơn giá",
+      topic:"formula",
+      topicLabel:"Công thức",
+      difficulty:"advanced",
+      order:4,
+      maxScore:100,
+      isActive:true,
+      grader:"formula_xlookup_v1",
+      fileName:"AVP_CT_04_XLOOKUP.xlsx",
+      description:"Dùng XLOOKUP tra Đơn giá từ bảng danh mục. Bắt buộc có công thức XLOOKUP tại toàn bộ dòng.",
+      gradingMode:"exact_formula",
+      requiredFunctions:["XLOOKUP"],
+      rules:["20đ · đúng cấu trúc","40đ · có công thức thật","20đ · đúng XLOOKUP","20đ · kết quả đúng"]
+    }
   ];
 })();

@@ -76,6 +76,30 @@
     }
   }
 
+
+  async function loadLessonStats(){
+    const sb=await client();
+    const root=$("adminGraderStatsList");
+    if(!sb||!root)return;
+    root.innerHTML='<div class="admin-users-empty">Đang tải…</div>';
+    try{
+      const {data,error}=await sb.rpc("admin_practice_grader_lesson_stats");
+      if(error)throw error;
+      const rows=Array.isArray(data)?data:[];
+      root.innerHTML=rows.length?rows.map((r,i)=>`
+        <div class="ag-stat-row">
+          <span class="ag-stat-no">${i+1}</span>
+          <span class="ag-stat-main"><strong>${esc(r.lesson_title)}</strong><small>${diffLabel(r.difficulty)}</small></span>
+          <span><small>Lượt làm</small><b>${Number(r.submissions)||0}</b></span>
+          <span><small>Điểm TB</small><b>${Number(r.avg_score)||0}</b></span>
+          <span><small>Tỷ lệ đạt</small><b>${Number(r.pass_rate)||0}%</b></span>
+        </div>
+      `).join(""):'<div class="admin-users-empty">Chưa có dữ liệu bài nộp.</div>';
+    }catch(e){
+      root.innerHTML=`<div class="admin-users-empty">Không tải được: ${esc(e?.message||e)}</div>`;
+    }
+  }
+
   async function load(){
     const sb=await client();
     if(!sb)return;
@@ -156,6 +180,7 @@
 
   function bind(){
     $("adminGraderReload")?.addEventListener("click",load);
+    $("adminGraderLoadStats")?.addEventListener("click",loadLessonStats);
     $("adminGraderLoadLessons")?.addEventListener("click",loadLessons);
     $("adminGraderLessonList")?.addEventListener("click",e=>{const b=e.target.closest("[data-save-lesson]");if(b)saveLesson(b)});
     $("adminGraderSearchBtn")?.addEventListener("click",load);
@@ -165,7 +190,7 @@
       const b=e.target.closest("[data-reset]");
       if(b)reset(b);
     });
-    window.addEventListener("avp:admin-grader-open",()=>{load();loadLessons();});
+    window.addEventListener("avp:admin-grader-open",()=>{load();loadLessons();loadLessonStats();});
   }
 
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});

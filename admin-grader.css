@@ -44,3 +44,14 @@
   .ag-lesson-row{grid-template-columns:1fr 1fr}
   .ag-lesson-main{grid-column:1/-1}
 }
+
+.admin-grader-performance{margin:14px 0;padding:13px;border:1px solid #dde8e1;border-radius:13px;background:#fbfdfc}
+.admin-grader-stats-list{display:grid;gap:6px;margin-top:10px;max-height:330px;overflow:auto}
+.ag-stat-row{display:grid;grid-template-columns:28px minmax(0,1fr) 82px 82px 82px;gap:7px;align-items:center;padding:8px 9px;border:1px solid #e3ebe6;border-radius:10px;background:#fff}
+.ag-stat-no{width:25px;height:25px;display:grid;place-items:center;border-radius:8px;background:#edf4ef;color:#2d6847;font-size:9px;font-weight:950}
+.ag-stat-main strong{display:block;font-size:11px}.ag-stat-main small{color:#809087;font-size:9px}
+.ag-stat-row>span:not(.ag-stat-main):not(.ag-stat-no){text-align:right}.ag-stat-row small{display:block;color:#84938b;font-size:8px}.ag-stat-row b{font-size:11px;color:#225d3c}
+@media(max-width:720px){
+  .ag-stat-row{grid-template-columns:28px minmax(0,1fr) 70px}
+  .ag-stat-row>span:nth-last-child(2),.ag-stat-row>span:last-child{grid-column:auto}
+}

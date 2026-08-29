@@ -322,3 +322,31 @@ body.dark-mode .pg-card-btn.download{background:#17271e;border-color:#365141;col
   .pg-card-actions{grid-template-columns:1fr 1fr}
   .pg-card-v9 h3{font-size:15px}
 }
+
+
+/* ===== V10 - PERSONAL PROGRESS ===== */
+.pg-progress-panel{
+  margin:0 0 14px;
+  padding:13px;
+  border:1px solid #dce8e1;
+  border-radius:17px;
+  background:linear-gradient(180deg,#fff,#f8fbf9);
+}
+.pg-progress-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.pg-progress-head span{display:block;color:#71847a;font-size:8.5px;font-weight:950;letter-spacing:.1em}
+.pg-progress-head h3{margin:3px 0 0;color:#244f37;font-size:16px}
+.pg-progress-head>strong{color:#1d6d43;font-size:22px}
+.pg-progress-track{height:8px;margin-top:10px;border-radius:999px;background:#e8efeb;overflow:hidden}
+.pg-progress-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#2f7c50,#65a77d);transition:width .35s ease}
+.pg-progress-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:10px}
+.pg-progress-stats article{padding:8px;border:1px solid #e1ebe5;border-radius:10px;background:#fff;text-align:center}
+.pg-progress-stats small{display:block;color:#7a8c82;font-size:8px}
+.pg-progress-stats strong{display:block;margin-top:2px;color:#21583a;font-size:14px}
+body.dark-mode .pg-progress-panel{background:#15231b;border-color:#30483a}
+body.dark-mode .pg-progress-stats article{background:#122019;border-color:#30483a}
+body.dark-mode .pg-progress-head h3,
+body.dark-mode .pg-progress-stats strong{color:#b7e9c8}
+@media(max-width:700px){
+  .pg-progress-stats{grid-template-columns:repeat(2,1fr)}
+  .pg-progress-stats article:first-child{grid-column:1/-1}
+}
