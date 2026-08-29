@@ -764,3 +764,11 @@
 .avp-edge-action[data-edge-action="community"] .avp-community-menu-label{
   font:inherit !important;
 }
+
+
+#avpExternalCommunityButton{position:relative!important;overflow:visible!important}
+#avpCommunityMenuBadge{
+  background:#e11d48!important;
+  color:#fff!important;
+  border-color:#fff!important;
+}

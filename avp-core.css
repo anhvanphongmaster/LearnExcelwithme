@@ -1008,3 +1008,42 @@ body > .avp-hub-fab{
 .avp-edge-action[data-edge-action="community"] #avpCommunityMenuBadge[hidden]{
   display:none !important;
 }
+
+
+/* AVP FINAL 5-FILE OVERRIDES */
+.avp-edge-menu{overflow:visible!important}
+.avp-edge-action{position:relative!important;overflow:visible!important}
+.avp-edge-main{
+  background:#edf7f1!important;
+  color:#4f755e!important;
+  border-color:rgba(33,115,70,.11)!important;
+  box-shadow:0 5px 14px rgba(33,115,70,.09)!important;
+}
+.avp-edge-action{
+  background:rgba(250,253,251,.97)!important;
+  color:#5b7164!important;
+  border-color:rgba(33,115,70,.09)!important;
+  box-shadow:0 4px 12px rgba(28,68,46,.07)!important;
+}
+.avp-edge-section-badge,
+#avpCommunityMenuBadge{
+  position:absolute!important;
+  top:-6px!important;
+  right:-7px!important;
+  min-width:20px!important;
+  height:20px!important;
+  padding:0 5px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-radius:999px!important;
+  background:#e11d48!important;
+  color:#fff!important;
+  border:2px solid #fff!important;
+  font-size:10px!important;
+  line-height:1!important;
+  font-weight:900!important;
+  z-index:40!important;
+}
+.avp-edge-section-badge[hidden],
+#avpCommunityMenuBadge[hidden]{display:none!important}

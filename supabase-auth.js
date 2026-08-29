@@ -1,4 +1,18 @@
 
+;(function avpForceAssetRefresh(){
+  try{
+    const KEY="avp_asset_refresh_20260829_5file_final";
+    const params=new URLSearchParams(location.search);
+    if(!params.has("avprefresh") && sessionStorage.getItem(KEY)!=="1"){
+      sessionStorage.setItem(KEY,"1");
+      params.set("avprefresh","20260829");
+      const qs=params.toString();
+      location.replace(location.pathname+(qs?"?"+qs:"")+location.hash);
+    }
+  }catch(e){}
+})();
+
+
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const cfg = window.AVP_SUPABASE_CONFIG || {};
