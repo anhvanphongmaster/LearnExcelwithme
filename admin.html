@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="cloud-sync-v11.css">
 <link href="theme-polish-v33.css" rel="stylesheet"/>
 <link rel="stylesheet" href="admin-community-center.css?v=20260829-moderation1">
+<link rel="stylesheet" href="admin-grader.css?v=20260830-v4">
 </head>
 <body>
 
@@ -133,6 +134,9 @@ where is_admin = true;</pre>
         </button>
         <button type="button" data-admin-view="reviews" role="tab">
           <b>⭐ Đánh giá</b><small>Sao & góp ý website</small>
+        </button>
+              <button type="button" data-admin-view="grader" role="tab">
+          <b>🧪 Chấm điểm</b><small>Bài nộp, cấp độ & reset lượt</small>
         </button>
       </div>
 
@@ -602,7 +606,64 @@ where is_admin = true;</pre>
     </section>
   </div>
 
-  <div id="adminToast" class="admin-toast"></div>
+  <div id="adminToast" class="admin-toast">
+    <div class="admin-section-heading admin-view-section" data-admin-section="grader">
+      <span>🧪 AUTO GRADING</span><h2>Quản lý bài tập chấm điểm</h2>
+    </div>
+
+    <section class="admin-panel admin-view-section admin-grader-manager" data-admin-section="grader">
+      <div class="admin-panel-head">
+        <div>
+          <span>ONE SHOT SYSTEM</span>
+          <h2>Bài nộp & bảng xếp hạng</h2>
+          <p>Mỗi tài khoản chỉ có 1 lượt nộp cho mỗi bài. Admin có thể reset khi có lỗi hoặc cần đặc cách.</p>
+        </div>
+        <button type="button" id="adminGraderReload">↻ Làm mới</button>
+      </div>
+
+      <div class="admin-grader-kpis">
+        <article><small>Bài đang mở</small><strong id="agActiveLessons">0</strong></article>
+        <article><small>Lượt nộp chính thức</small><strong id="agSubmissions">0</strong></article>
+        <article><small>Người đã làm</small><strong id="agUsers">0</strong></article>
+        <article><small>Điểm trung bình</small><strong id="agAvgScore">0</strong></article>
+      </div>
+
+      <div class="admin-grader-toolbar">
+        <select id="adminGraderDifficulty">
+          <option value="">Tất cả cấp độ</option>
+          <option value="basic">Cơ bản</option>
+          <option value="intermediate">Trung cấp</option>
+          <option value="advanced">Nâng cao</option>
+        </select>
+        <input id="adminGraderSearch" type="search" placeholder="Tìm học viên hoặc bài…">
+        <button type="button" id="adminGraderSearchBtn">Tìm</button>
+      </div>
+
+      <div class="admin-grader-legend">
+        <span>🌱 Cơ bản</span><span>📘 Trung cấp</span><span>🏆 Nâng cao</span>
+        <small>Reset chỉ dùng khi bài nộp lỗi hoặc cần cho phép làm lại.</small>
+      </div>
+
+      <div class="admin-table-wrap admin-grader-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Học viên</th>
+              <th>Bài</th>
+              <th>Cấp độ</th>
+              <th>Điểm</th>
+              <th>BXH</th>
+              <th>Thời gian</th>
+              <th>Quản lý</th>
+            </tr>
+          </thead>
+          <tbody id="adminGraderBody">
+            <tr><td colspan="7">Chọn khu Chấm điểm để tải dữ liệu.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+</div>
 </main>
 
 <footer class="site-footer">
@@ -627,5 +688,6 @@ where is_admin = true;</pre>
 <script defer src="cloud-sync-v11.js"></script>
 <script defer src="theme-unified-v32.js"></script>
 <script defer src="admin-community-center.js?v=20260829-moderation1"></script>
+<script defer src="admin-grader.js?v=20260830-v4"></script>
 </body>
 </html>

@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="practice-video.css?v=20260828-ROLLBACK-STABLE1">
   <link rel="stylesheet" href="practice-hub.css?v=20260830-hub1">
-  <link rel="stylesheet" href="practice-grader.css?v=20260830-rank2">
+  <link rel="stylesheet" href="practice-grader.css?v=20260830-one-shot4">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link href="theme-polish-v33.css" rel="stylesheet"/>
@@ -146,9 +146,9 @@
   <section id="phBranchGrader" class="ph-branch" hidden>
     <div class="ph-branch-intro grader">
       <div>
-        <span class="ph-branch-kicker">AUTO GRADING · BETA</span>
+        <span class="ph-branch-kicker">AUTO GRADING · ONE SHOT</span>
         <h2>🧪 Bài tập có chấm điểm</h2>
-        <p>Chia theo chủ đề giống kho bài tập. Bản đầu tiên mở 1 bài thật để test cơ chế trước khi nhân rộng.</p>
+        <p>Mỗi bài chỉ được nộp chính thức 1 lần. Hãy kiểm tra kỹ file trước khi xác nhận chấm.</p>
       </div>
       <span class="ph-lazy-badge">CHẤM TRÊN THIẾT BỊ</span>
     </div>
@@ -169,7 +169,7 @@
 
     <div class="pg-topic-panels">
       <article class="pg-card" data-pg-panel="clean">
-        <div class="pg-card-head"><span>CƠ BẢN</span><b>● ĐANG MỞ</b></div>
+        <div class="pg-card-head"><span class="pg-difficulty basic">CƠ BẢN</span><b id="pgLessonStatus">● ĐANG MỞ</b></div>
         <h3>#01 · Xóa dòng trống</h3>
         <p>Xóa toàn bộ dòng trống trong sheet <strong>DuLieu</strong>, giữ nguyên tiêu đề và dữ liệu gốc.</p>
 
@@ -188,7 +188,7 @@
           </label>
         </div>
 
-        <div class="pg-note" id="pgFileNote">Thư viện Excel chỉ tải khi bạn bấm Tải file hoặc Nộp bài.</div>
+        <div class="pg-note" id="pgFileNote">Bạn có thể tải file nhiều lần, nhưng chỉ được NỘP CHÍNH THỨC 1 lần.</div>
         <div class="pg-result" id="pgResult" hidden></div>
       </article>
 
@@ -221,19 +221,43 @@
       <div class="pg-board-head">
         <div>
           <span class="pg-board-kicker">🏆 BẢNG XẾP HẠNG THÀNH TÍCH</span>
-          <h3>Top thực hành có chấm điểm</h3>
-          <p>Chỉ hiển thị người học đã tự nguyện đưa thành tích lên bảng xếp hạng.</p>
+          <h3>Thành tích bài tập chấm điểm</h3>
+          <p>Mỗi cấp độ có bảng xếp hạng riêng. Chỉ hiển thị người học đã chọn công khai thành tích.</p>
         </div>
         <button type="button" class="pg-board-refresh" id="pgBoardRefresh">Làm mới</button>
       </div>
 
+      <div class="pg-rank-tabs" id="pgRankTabs" role="tablist">
+        <button type="button" class="active" data-rank-difficulty="basic">🌱 Cơ bản</button>
+        <button type="button" data-rank-difficulty="intermediate">📘 Trung cấp</button>
+        <button type="button" data-rank-difficulty="advanced">🏆 Nâng cao</button>
+        <button type="button" data-rank-difficulty="overall">⭐ Tổng</button>
+      </div>
+
       <div class="pg-board-me" id="pgBoardMe" hidden></div>
       <ol class="pg-board-list" id="pgBoardList">
-        <li class="pg-board-empty">Chưa tải bảng xếp hạng.</li>
+        <li class="pg-board-empty">Đang tải bảng xếp hạng…</li>
       </ol>
     </section>
 
-    <div class="pg-publish-modal" id="pgPublishModal" hidden>
+    
+    <div class="pg-submit-modal" id="pgSubmitModal" hidden>
+      <div class="pg-publish-backdrop" data-pg-submit-close></div>
+      <div class="pg-submit-card" role="dialog" aria-modal="true" aria-labelledby="pgSubmitTitle">
+        <button type="button" class="pg-publish-close" id="pgSubmitClose" aria-label="Đóng">×</button>
+        <div class="pg-submit-icon">⚠️</div>
+        <span class="pg-publish-kicker">NỘP BÀI CHÍNH THỨC</span>
+        <h3 id="pgSubmitTitle">Mỗi bài chỉ được nộp 1 lần</h3>
+        <p>Hãy chắc chắn file đã hoàn thành. Sau khi xác nhận, điểm của bài này sẽ bị khóa và bạn không thể nộp lại.</p>
+        <div class="pg-submit-file" id="pgSubmitFileName">Chưa chọn file</div>
+        <div class="pg-publish-actions">
+          <button type="button" class="pg-publish-btn ghost" id="pgSubmitCancel">Kiểm tra lại file</button>
+          <button type="button" class="pg-publish-btn danger" id="pgSubmitConfirm">Nộp chính thức</button>
+        </div>
+      </div>
+    </div>
+
+<div class="pg-publish-modal" id="pgPublishModal" hidden>
       <div class="pg-publish-backdrop" data-pg-publish-close></div>
       <div class="pg-publish-card" role="dialog" aria-modal="true" aria-labelledby="pgPublishTitle">
         <button type="button" class="pg-publish-close" id="pgPublishClose" aria-label="Đóng">×</button>
@@ -248,11 +272,11 @@
         </div>
 
         <div class="pg-publish-note">
-          Bạn có thể chọn không công khai. Việc chấm bài vẫn hoạt động bình thường.
+          Kết quả đã được khóa cho bài này. Bạn chỉ đang chọn có công khai thành tích lên BXH hay không.
         </div>
 
         <div class="pg-publish-actions">
-          <button type="button" class="pg-publish-btn ghost" id="pgPublishPrivate">Không lên BXH</button>
+          <button type="button" class="pg-publish-btn ghost" id="pgPublishPrivate">Giữ riêng tư</button>
           <button type="button" class="pg-publish-btn primary" id="pgPublishYes">🏆 Ghi thành tích</button>
         </div>
 
@@ -287,7 +311,7 @@
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
 <script defer src="practice-hub.js?v=20260830-access1"></script>
-<script defer src="practice-grader.js?v=20260830-access1"></script>
+<script defer src="practice-grader.js?v=20260830-one-shot4"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="download-manager.js?v=20260828-ROLLBACK-STABLE1"></script>
 </body>

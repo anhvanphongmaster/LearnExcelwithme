@@ -529,7 +529,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics","community","reviews"];
+    const valid=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics","community","reviews","grader"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
@@ -554,6 +554,7 @@
     if(view==="practice" && typeof window.avpLoadPracticeLibrary==="function") window.avpLoadPracticeLibrary();
     if(view==="overview" && client) checkAdminHealth();
     if(view==="reviews" && typeof window.avpLoadSiteReviews==="function") window.avpLoadSiteReviews();
+    if(view==="grader") window.dispatchEvent(new CustomEvent("avp:admin-grader-open"));
     if(view==="community"){
       window.dispatchEvent(new CustomEvent("avp:admin-community-open"));
     }

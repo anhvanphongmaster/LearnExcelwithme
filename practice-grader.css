@@ -105,3 +105,22 @@ body.pg-publish-open{overflow:hidden}
 .pg-publish-btn.primary{border:0;background:linear-gradient(180deg,#4ade80,#22a65a);color:#062d18}
 .pg-publish-manage{margin-top:10px;border:0;background:transparent;color:#93a99b;text-decoration:underline;font-size:10.5px;cursor:pointer}
 @media(max-width:600px){.pg-board-head{display:block}.pg-board-refresh{margin-top:10px}.pg-board-row{grid-template-columns:36px minmax(0,1fr) auto}.pg-publish-card{padding:20px 15px 16px}.pg-publish-actions{grid-template-columns:1fr}}
+
+
+/* ===== V4 ONE-SHOT + DIFFICULTY ===== */
+.pg-difficulty{display:inline-flex!important;padding:4px 8px;border-radius:999px}
+.pg-difficulty.basic{background:#eaf8ef;color:#176b3b!important}
+.pg-status-locked{color:#7b5d00!important}
+.pg-btn.submit.locked{opacity:.5;pointer-events:none;filter:grayscale(.35)}
+.pg-rank-tabs{display:flex;gap:7px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.pg-rank-tabs::-webkit-scrollbar{display:none}
+.pg-rank-tabs button{flex:0 0 auto;border:1px solid #dbe6df;background:#fff;color:#496254;border-radius:999px;padding:7px 10px;font-size:10.5px;font-weight:900;cursor:pointer}
+.pg-rank-tabs button.active{background:#1d6d43;border-color:#1d6d43;color:#fff}
+.pg-submit-modal{position:fixed;inset:0;z-index:10060;display:grid;place-items:center;padding:16px}
+.pg-submit-modal[hidden]{display:none!important}
+.pg-submit-card{position:relative;width:min(430px,100%);padding:22px;border-radius:22px;border:1px solid rgba(251,191,36,.42);background:radial-gradient(circle at 100% 0%,rgba(245,158,11,.16),transparent 34%),linear-gradient(155deg,#211b10,#14110a);color:#fff8e8;box-shadow:0 24px 70px rgba(0,0,0,.5);text-align:center}
+.pg-submit-card h3{margin:8px 0 6px;font-size:22px}
+.pg-submit-card>p{margin:0;color:#d4c7a9;font-size:12.5px;line-height:1.5}
+.pg-submit-icon{width:58px;height:58px;margin:0 auto 10px;display:grid;place-items:center;border-radius:18px;background:rgba(245,158,11,.13);border:1px solid rgba(245,158,11,.28);font-size:29px}
+.pg-submit-file{margin-top:14px;padding:10px 11px;border-radius:10px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);font-size:11.5px;color:#f7e7bd;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pg-publish-btn.danger{border:0;background:linear-gradient(180deg,#f6b73c,#d98a00);color:#2b1b00}

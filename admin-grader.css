@@ -1,0 +1,28 @@
+
+.admin-grader-manager{padding:18px}
+.admin-grader-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.admin-grader-kpis article{padding:13px;border:1px solid #dfe9e3;border-radius:13px;background:#f8fbf9}
+.admin-grader-kpis small{display:block;color:#72827a;font-size:10px}
+.admin-grader-kpis strong{display:block;margin-top:4px;color:#185f39;font-size:22px}
+.admin-grader-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.admin-grader-toolbar select,.admin-grader-toolbar input{min-height:38px;border:1px solid #d7e4dc;border-radius:10px;background:#fff;padding:0 10px}
+.admin-grader-toolbar input{flex:1;min-width:210px}
+.admin-grader-toolbar button,.ag-reset{min-height:36px;border:1px solid #cfe0d6;border-radius:10px;background:#fff;color:#1f6540;font-weight:850;cursor:pointer;padding:0 11px}
+.admin-grader-legend{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:9px 10px;border:1px dashed #d8e5dd;border-radius:11px;background:#fbfdfc;font-size:10px;color:#53695c}
+.admin-grader-legend small{margin-left:auto;color:#8a6a18}
+.ag-sub{display:block;color:#8a9990;font-size:9px;margin-top:2px}
+.ag-diff,.ag-public,.ag-private{display:inline-flex;padding:4px 7px;border-radius:999px;font-size:9.5px;font-weight:900;white-space:nowrap}
+.ag-diff.basic{background:#eaf8ef;color:#176b3b}
+.ag-diff.intermediate{background:#eef4ff;color:#2859a3}
+.ag-diff.advanced{background:#fff6db;color:#8a5d00}
+.ag-public{background:#eaf8ef;color:#176b3b}
+.ag-private{background:#f1f3f2;color:#6e7d74}
+.ag-score{color:#185f39}
+.ag-reset{border-color:#f0d6a3;color:#8a5b00;background:#fffaf0}
+.admin-grader-table-wrap{max-height:520px;overflow:auto}
+@media(max-width:760px){
+  .admin-grader-kpis{grid-template-columns:repeat(2,1fr)}
+  .admin-grader-toolbar{display:grid;grid-template-columns:1fr 1fr}
+  .admin-grader-toolbar input{grid-column:1/-1;min-width:0;width:100%}
+  .admin-grader-legend small{width:100%;margin-left:0}
+}
