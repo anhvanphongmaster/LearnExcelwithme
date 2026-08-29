@@ -44,6 +44,10 @@ function close(){
 }
 window.AVPPracticeGuides={open,render};
 function init(){
+  const modal=$("pgGuideModal");
+  if(modal && modal.parentElement!==document.body){
+    document.body.appendChild(modal);
+  }
   $("pgGuideSearch")?.addEventListener("input",render);
   $("pgGuideTopic")?.addEventListener("change",render);
   $("pgGuideDifficulty")?.addEventListener("change",render);

@@ -8,6 +8,7 @@ const TOPICS=[["all","Tất cả"],["clean","🧹 Làm sạch"],["pq","⚙️ Po
 
 let currentTopic="all",currentDifficulty="all",currentRankDifficulty="basic";
 let pendingLesson=null,pendingFile=null,pendingAppealLesson=null,xlsxPromise=null;
+let isAdminTester=false;
 const submissionCache=new Map();
 
 const lessons=()=>Array.isArray(window.AVP_PRACTICE_LESSONS)?window.AVP_PRACTICE_LESSONS:[];
@@ -19,6 +20,16 @@ async function getClient(){
     await new Promise(r=>setTimeout(r,100));
   }
   return null;
+}
+
+async function detectAdminTester(sb){
+  try{
+    const {data,error}=await sb.rpc("is_admin_user");
+    if(error)return false;
+    return data===true || data==="true";
+  }catch(e){
+    return false;
+  }
 }
 async function requireLogin(){
   if(window.AVPAccess)return await window.AVPAccess.requireLogin({next:"practice-video.html#grader",reason:"Đăng nhập để làm bài chấm điểm."});
@@ -69,17 +80,19 @@ function filteredLessons(){
     .filter(l=>currentDifficulty==="all"||l.difficulty===currentDifficulty);
 }
 function card(l){
-  const st=submissionCache.get(l.key),locked=!!st?.submitted,active=!!l.isActive;
+  const st=submissionCache.get(l.key),submitted=!!st?.submitted,locked=submitted&&!isAdminTester,active=!!l.isActive;
   const num=String(Number(l.order)||1).padStart(2,"0");
   const appealStatus=st?.appeal_status||"";
-  const status=locked
+  const status=submitted&&isAdminTester
+    ? `<span class="pg-card-status done">🛠 ADMIN TEST</span>`
+    : locked
     ? `<span class="pg-card-status done">✓ ĐÃ NỘP</span>`
     : active
       ? `<span class="pg-card-status open">● ĐANG MỞ</span>`
       : `<span class="pg-card-status soon">SẮP MỞ</span>`;
 
-  const score=locked
-    ? `<div class="pg-card-score"><small>Điểm hiện tại</small><strong>${Number(st.score)||0}<span>/${l.maxScore||100}</span></strong></div>`
+  const score=submitted
+    ? `<div class="pg-card-score"><small>${isAdminTester?"Điểm test gần nhất":"Điểm hiện tại"}</small><strong>${Number(st.score)||0}<span>/${l.maxScore||100}</span></strong></div>`
     : "";
 
   const rules=(l.rules||[]).slice(0,4).map(x=>`<span>${esc(x)}</span>`).join("");
@@ -89,7 +102,7 @@ function card(l){
     actions=`<div class="pg-card-actions">
       <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải file</button><button class="pg-card-btn review" type="button" data-guide-open="${esc(l.key)}">📖 Hướng dẫn</button>
       <label class="pg-card-btn submit pg-file-submit">
-        <span>📤 Nộp bài</span>
+        <span>${isAdminTester&&submitted?"🛠 Nộp test lại":"📤 Nộp bài"}</span>
         <input type="file" class="pg-file-input" accept=".xlsx,.xls" data-submit="${esc(l.key)}" aria-label="Nộp file Excel">
       </label>
     </div>`;
@@ -171,6 +184,7 @@ async function loadSubmissionStates(){
   const u=await requireLogin();if(!u)return;
   const sb=await getClient();if(!sb?.rpc)return;
 
+  isAdminTester=await detectAdminTester(sb);
   submissionCache.clear();
 
   try{
@@ -870,10 +884,10 @@ async function removeSubmissionFile(sb,path){
 /* -------------------- Submission -------------------- */
 async function onFilePicked(l,file){
   const u=await requireLogin();if(!u)return;
-  if(submissionCache.get(l.key)?.submitted){alert("Bài này đã nộp chính thức.");return}
+  if(submissionCache.get(l.key)?.submitted&&!isAdminTester){alert("Bài này đã nộp chính thức.");return}
   if(!/\.(xlsx|xls)$/i.test(file.name)){alert("Chỉ nhận .xlsx hoặc .xls.");return}
   pendingLesson=l;pendingFile=file;
-  $("pgSubmitFileName").textContent=`${file.name} · ${l.title}`;
+  $("pgSubmitFileName").textContent=`${file.name} · ${l.title}${isAdminTester?" · ADMIN TEST":""}`;
   $("pgSubmitModal").hidden=false;document.body.classList.add("pg-publish-open");
 }
 function closeSubmit(){
