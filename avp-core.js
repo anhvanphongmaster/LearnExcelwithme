@@ -1,16 +1,4 @@
 (() => {
-
-  /* AVP UI POLISH V40 — global, lightweight, non-blocking */
-  (() => {
-    const id = "avp-ui-polish-v40";
-    if (document.getElementById(id)) return;
-    const link = document.createElement("link");
-    link.id = id;
-    link.rel = "stylesheet";
-    link.href = "avp-ui-polish-v40.css?v=20260830-v40";
-    document.head.appendChild(link);
-  })();
-
   const KEY_HISTORY='avp_learning_history_v2', KEY_BOOK='avp_bookmarks_v2';
   const IGNORE=new Set(['auth.html','admin.html','privacy.html','terms.html','disclaimer.html','open-source.html','lienhe.html','gioithieu.html']);
   const page=location.pathname.split('/').pop()||'index.html';
@@ -36,8 +24,7 @@
     return `<div class="avp-hub-head"><div><div class="avp-hub-title">📚 Trung tâm học tập</div><small>Tiếp tục đúng chỗ, không mất tiến độ</small></div><button class="avp-hub-close" aria-label="Đóng">×</button></div>
       <section class="avp-hub-section"><h3>Tiến độ tổng</h3><div class="avp-hub-card"><div class="avp-hub-row"><strong>${pct}% hoàn thành</strong><small>trên thiết bị này</small></div><div class="avp-hub-progress"><span style="width:${pct}%"></span></div><div class="avp-hub-actions"><a class="avp-hub-btn" href="dashboard.html">Xem Dashboard</a><a class="avp-hub-btn secondary" href="learning-path.html">Lộ trình học</a></div></div></section><section class="avp-hub-section"><h3>Chức năng nhanh</h3><div class="avp-hub-quick">
 <a class="avp-hub-btn" href="index.html">🏠 Trang chủ</a>
-<a class="avp-hub-btn" href="practice-video.html">📚 Bài tập video</a>
-<a class="avp-hub-btn" href="practice-youtube.html">▶️ YouTube practice</a>
+<a class="avp-hub-btn" href="practice-video.html">📚 Practice Hub</a>
 <a class="avp-hub-btn" href="excel-race.html">🏁 Excel Race</a>
 <a class="avp-hub-btn secondary" href="learning-path.html">🗓️ Lộ trình 30 ngày</a>
 <a class="avp-hub-btn secondary" href="excel.html">📘 Excel cơ bản</a>

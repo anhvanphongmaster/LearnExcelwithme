@@ -509,3 +509,98 @@ body.dark-mode .avp-edge-menu{
     transition-duration:.01ms!important;
   }
 }
+
+
+/* =========================================================
+   V43 FINAL POLISH + CLEANUP
+   ========================================================= */
+
+img,video,canvas,svg{
+  max-width:100%;
+}
+
+[id]{
+  scroll-margin-top:76px;
+}
+
+.site-footer{
+  margin-top:34px;
+  border-top:1px solid var(--avp-line);
+  background:rgba(255,255,255,.58);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.site-footer a{
+  text-underline-offset:3px;
+}
+
+.pv-grid,
+.pg-grid,
+.pg-guide-list{
+  align-items:start;
+}
+
+.pg-card,
+.pv-card{
+  isolation:isolate;
+}
+
+.pg-card-actions > *,
+.ph-choice,
+.avp-hub-btn{
+  touch-action:manipulation;
+}
+
+.admin-dashboard,
+.admin-content,
+.admin-main{
+  min-width:0;
+}
+
+.admin-card,
+.admin-panel,
+.admin-section{
+  overflow-wrap:anywhere;
+}
+
+@media(min-width:1100px){
+  .admin-content,
+  .admin-main{
+    max-width:1440px;
+    margin-inline:auto;
+  }
+}
+
+@media(max-width:768px){
+  .site-footer{
+    margin-top:24px;
+    padding-bottom:max(20px,env(safe-area-inset-bottom));
+  }
+
+  .pg-card,
+  .pv-card,
+  .ph-choice{
+    box-shadow:0 5px 16px rgba(24,74,47,.07);
+  }
+
+  .pg-card:hover,
+  .pv-card:hover,
+  .ph-choice:hover{
+    transform:none;
+  }
+
+  .top-simple-nav{
+    padding-top:env(safe-area-inset-top);
+  }
+}
+
+body.dark-mode .site-footer{
+  background:rgba(15,24,19,.72);
+  border-color:#2d4337;
+}
+
+/* Do not animate initial page content when browser restores a background tab. */
+@media(prefers-reduced-motion:reduce){
+  main{animation:none!important}
+}
