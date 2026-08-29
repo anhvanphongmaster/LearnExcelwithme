@@ -667,17 +667,25 @@
       setTimeout(() => { crash = 0; softResetLevel(); }, 760);
       return;
     }
-    // Rank: 3 mạng
+    // Rank: đúng nghĩa 3 mạng.
+    // Sai lần 1/2 chỉ mất mạng và tiếp tục tiến độ hiện tại.
+    // Chỉ khi mất mạng thứ 3 mới reset về cấp 1.
     lives -= 1;
     hud();
+
     if (lives > 0) {
-      $("msg").textContent = "Mất 1 mạng — còn " + lives + ".";
-      idx = 0;
-      inLevel = shuffle(pool(level));
-      setTimeout(() => { crash = 0; showQ(); }, 760);
+      $("msg").textContent = "Mất 1 mạng — còn " + lives + ". Tiếp tục!";
+      idx += 1;
+      setTimeout(() => {
+        crash = 0;
+        showQ();
+      }, 760);
     } else {
-      $("msg").textContent = "Hết mạng — về cấp 1.";
-      setTimeout(() => { crash = 0; hardReset(); }, 760);
+      $("msg").textContent = "Hết 3 mạng — về cấp 1.";
+      setTimeout(() => {
+        crash = 0;
+        hardReset();
+      }, 760);
     }
   }
 
