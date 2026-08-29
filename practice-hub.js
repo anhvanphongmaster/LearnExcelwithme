@@ -10,7 +10,8 @@
     const map = {
       tiktok: q("#phBranchTiktok"),
       youtube: q("#phBranchYoutube"),
-      grader: q("#phBranchGrader")
+      grader: q("#phBranchGrader"),
+      guide: q("#phBranchGuide")
     };
 
     Object.entries(map).forEach(([key, el]) => {
@@ -87,11 +88,11 @@
     let initial = "tiktok";
     try {
       const saved = sessionStorage.getItem("avp_practice_branch");
-      if (["tiktok","youtube","grader"].includes(saved)) initial = saved;
+      if (["tiktok","youtube","grader","guide"].includes(saved)) initial = saved;
     } catch(e) {}
 
     const hash = location.hash.replace("#","");
-    if (["tiktok","youtube","grader"].includes(hash)) initial = hash;
+    if (["tiktok","youtube","grader","guide"].includes(hash)) initial = hash;
 
     if (initial === "grader") {
       (async () => {

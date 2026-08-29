@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="practice-video.css?v=20260828-ROLLBACK-STABLE1">
   <link rel="stylesheet" href="practice-hub.css?v=20260830-hub1">
   <link rel="stylesheet" href="practice-grader.css?v=20260830-v12appeal1">
+  <link rel="stylesheet" href="practice-guides.css?v=20260830-v19guides">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link href="theme-polish-v33.css" rel="stylesheet"/>
@@ -38,9 +39,9 @@
   <section class="pv-hero pv-hero-hub">
     <span class="pv-kicker">PRACTICE HUB</span>
     <h1>📚 Bài tập Excel</h1>
-    <p>Một khu thực hành chung với 3 cách luyện: theo TikTok, theo YouTube hoặc nộp file để hệ thống tự chấm.</p>
+    <p>Một khu thực hành chung với 4 cách luyện: theo TikTok, theo YouTube hoặc nộp file để hệ thống tự chấm.</p>
     <div class="pv-stats pv-hub-stats">
-      <div class="pv-stat"><small>Luồng thực hành</small><strong>3</strong></div>
+      <div class="pv-stat"><small>Luồng thực hành</small><strong>4</strong></div>
       <div class="pv-stat"><small>Kho TikTok</small><strong id="pvStatTotal">100</strong></div>
       <div class="pv-stat"><small>Chấm tự động</small><strong>BETA</strong></div>
       <span id="pvStatAvailable" hidden>0</span>
@@ -55,7 +56,7 @@
       <p>Chạm vào một ô. Nội dung bên dưới sẽ đổi, các chức năng chung của website vẫn giữ nguyên.</p>
     </div>
 
-    <div class="ph-switch-grid" role="tablist" aria-label="Ba luồng bài tập">
+    <div class="ph-switch-grid" role="tablist" aria-label="Bốn luồng bài tập">
       <button type="button" class="ph-choice active" data-practice-branch="tiktok" role="tab" aria-selected="true">
         <span class="ph-choice-icon">📱</span>
         <span class="ph-choice-copy">
@@ -83,6 +84,15 @@
           <span class="ph-choice-eyebrow">AUTO GRADING</span>
           <strong>Chấm điểm tự động</strong>
           <small>Tải file → làm Excel → nộp lại → nhận điểm.</small>
+        </span>
+        <span class="ph-choice-arrow">→</span>
+      </button>
+      <button type="button" class="ph-choice guide" data-practice-branch="guide" role="tab" aria-selected="false">
+        <span class="ph-choice-icon">📖</span>
+        <span class="ph-choice-copy">
+          <span class="ph-choice-eyebrow">PRACTICE GUIDE</span>
+          <strong>Hướng dẫn làm bài</strong>
+          <small>100 bài · gợi ý cách làm · không có đáp án sẵn.</small>
         </span>
         <span class="ph-choice-arrow">→</span>
       </button>
@@ -143,7 +153,46 @@
     </div>
   </section>
 
-  <section id="phBranchGrader" class="ph-branch" hidden><div class="ph-branch-intro grader">
+  
+  <section id="phBranchGuide" class="ph-branch" hidden>
+    <div class="ph-branch-intro">
+      <div>
+        <span class="ph-branch-kicker">PRACTICE GUIDE · 100 BÀI</span>
+        <h2>📖 Hướng dẫn làm bài</h2>
+        <p>Chỉ gợi ý cách làm và lỗi cần tránh. Không cung cấp đáp án hoặc công thức hoàn chỉnh.</p>
+      </div>
+      <span class="ph-lazy-badge">100 HƯỚNG DẪN</span>
+    </div>
+    <div class="pg-guide-shell">
+      <div class="pg-guide-tools">
+        <input id="pgGuideSearch" type="search" placeholder="Tìm bài hướng dẫn...">
+        <select id="pgGuideTopic">
+          <option value="all">Tất cả chủ đề</option>
+          <option value="clean">Làm sạch dữ liệu</option>
+          <option value="pq">Power Query</option>
+          <option value="formula">Công thức</option>
+          <option value="input">Nhập liệu</option>
+          <option value="format">Định dạng</option>
+        </select>
+        <select id="pgGuideDifficulty">
+          <option value="all">Tất cả cấp độ</option>
+          <option value="basic">Cơ bản</option>
+          <option value="intermediate">Trung cấp</option>
+          <option value="advanced">Nâng cao</option>
+        </select>
+      </div>
+      <div class="pg-guide-list" id="pgGuideList"></div>
+    </div>
+    <div class="pg-guide-modal" id="pgGuideModal" hidden>
+      <div class="pg-publish-backdrop" data-pg-guide-close></div>
+      <div class="pg-guide-card" role="dialog" aria-modal="true">
+        <button type="button" class="pg-publish-close" id="pgGuideClose" aria-label="Đóng">×</button>
+        <div id="pgGuideModalBody"></div>
+      </div>
+    </div>
+  </section>
+
+<section id="phBranchGrader" class="ph-branch" hidden><div class="ph-branch-intro grader">
       <div>
         <span class="ph-branch-kicker">AUTO GRADING · ONE SHOT</span>
         <h2>🧪 Bài tập có chấm điểm</h2>
@@ -349,9 +398,11 @@
 <script defer src="practice-video.js?v=20260830-access1"></script>
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
-<script defer src="practice-hub.js?v=20260830-access1"></script>
+<script defer src="practice-hub.js?v=20260830-v19guides"></script>
+<script defer src="practice-guides.js?v=20260830-v19guides"></script>
+<script defer src="practice-guides-runtime.js?v=20260830-v19guides"></script>
 <script defer src="practice-lessons.js?v=20260830-v18full100"></script>
-<script defer src="practice-grader.js?v=20260830-v18full100"></script>
+<script defer src="practice-grader.js?v=20260830-v19guides"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="download-manager.js?v=20260828-ROLLBACK-STABLE1"></script>
 </body>

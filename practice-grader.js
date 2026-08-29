@@ -87,7 +87,7 @@ function card(l){
   let actions="";
   if(active&&!locked){
     actions=`<div class="pg-card-actions">
-      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải file</button>
+      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải file</button><button class="pg-card-btn review" type="button" data-guide-open="${esc(l.key)}">📖 Hướng dẫn</button>
       <label class="pg-card-btn submit pg-file-submit">
         <span>📤 Nộp bài</span>
         <input type="file" class="pg-file-input" accept=".xlsx,.xls" data-submit="${esc(l.key)}" aria-label="Nộp file Excel">
@@ -163,6 +163,7 @@ function renderLessons(){
     label.setAttribute("role","button");
   });
   grid.querySelectorAll("[data-review]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.review);if(l)showStoredReview(l)});
+  grid.querySelectorAll("[data-guide-open]").forEach(b=>b.onclick=()=>window.AVPPracticeGuides?.open(b.dataset.guideOpen));
   grid.querySelectorAll("[data-visibility]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.visibility);if(l)toggleResultVisibility(l)});
   grid.querySelectorAll("[data-appeal]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.appeal);if(l)openAppeal(l)});
 }
