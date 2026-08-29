@@ -88,9 +88,9 @@ function card(l){
   if(active&&!locked){
     actions=`<div class="pg-card-actions">
       <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải file</button>
-      <label class="pg-card-btn submit">
-        <input type="file" hidden accept=".xlsx,.xls" data-submit="${esc(l.key)}">
-        📤 Nộp bài
+      <label class="pg-card-btn submit pg-file-submit">
+        <span>📤 Nộp bài</span>
+        <input type="file" class="pg-file-input" accept=".xlsx,.xls" data-submit="${esc(l.key)}" aria-label="Nộp file Excel">
       </label>
     </div>`;
   }else if(active&&locked){
@@ -143,7 +143,25 @@ function renderLessons(){
   if($("pgEngineSummary"))$("pgEngineSummary").textContent=`${active}/${lessons().length} bài đang mở · ${submitted} bài đã nộp`;
 
   grid.querySelectorAll("[data-download]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.download);if(l)downloadLesson(l)});
-  grid.querySelectorAll("[data-submit]").forEach(i=>i.onchange=e=>{const f=e.target.files?.[0];e.target.value="";const l=lessons().find(x=>x.key===i.dataset.submit);if(l&&f)onFilePicked(l,f)});
+  grid.querySelectorAll("[data-submit]").forEach(i=>{
+    i.onchange=e=>{
+      const f=e.target.files?.[0];
+      const lessonKey=i.dataset.submit;
+      const l=lessons().find(x=>x.key===lessonKey);
+      if(l&&f)onFilePicked(l,f);
+      e.target.value="";
+    };
+  });
+  grid.querySelectorAll(".pg-file-submit").forEach(label=>{
+    label.addEventListener("keydown",e=>{
+      if((e.key==="Enter"||e.key===" ")&&!e.target.matches("input")){
+        e.preventDefault();
+        label.querySelector('input[type="file"]')?.click();
+      }
+    });
+    label.setAttribute("tabindex","0");
+    label.setAttribute("role","button");
+  });
   grid.querySelectorAll("[data-review]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.review);if(l)showStoredReview(l)});
   grid.querySelectorAll("[data-visibility]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.visibility);if(l)toggleResultVisibility(l)});
   grid.querySelectorAll("[data-appeal]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.appeal);if(l)openAppeal(l)});

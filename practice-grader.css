@@ -390,3 +390,31 @@ body.dark-mode .pg-result-head button{background:#17271e;border-color:#30483a;co
   .pg-check-title{display:block}
   .pg-check-title span{display:inline-flex;margin-top:5px}
 }
+
+
+/* ===== V13 - FIX NỘP FILE TRÊN iOS / MOBILE ===== */
+.pg-file-submit{
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-select:none;
+  touch-action:manipulation;
+}
+.pg-file-submit>span{
+  pointer-events:none;
+}
+.pg-file-input{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  cursor:pointer;
+  z-index:3;
+  font-size:100px;
+}
+.pg-file-submit:focus-visible{
+  outline:2px solid #2f7c50;
+  outline-offset:2px;
+}
