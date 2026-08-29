@@ -335,25 +335,70 @@
     try{
       const rows=await rpc("admin_system_notification_list",{p_limit:150});
       const data=Array.isArray(rows)?rows:[];
+
       if(!data.length){
         box.innerHTML='<p class="admin-empty">Chưa có thông báo hệ thống.</p>';
         return;
       }
 
-      box.innerHTML=data.map(n=>`
-        <article class="avp-acc-notification ${n.is_active?"":"inactive"} ${String(n.id)===String(selectedNotificationId)?"active":""}" data-notification="${esc(n.id)}">
-          <div class="avp-acc-notification-head">
-            <strong>${esc(n.title)}</strong>
-            <span>${esc(catLabel(n.category))}</span>
-          </div>
-          <p>${esc(n.content)}</p>
-          <small>${fmt(n.created_at)} · ${n.target_type==="all"?"Tất cả học viên":"Một học viên"} · Đã đọc ${Number(n.read_count||0)}</small>
-          <div class="avp-acc-notification-actions">
-            <button type="button" data-view="${esc(n.id)}">👁 Đã đọc / chưa đọc</button>
-            <button type="button" data-toggle="${esc(n.id)}" data-active="${n.is_active?"1":"0"}">${n.is_active?"Tắt":"Bật lại"}</button>
-          </div>
-        </article>
-      `).join("");
+      const enriched=await Promise.all(
+        data.map(async n=>{
+          try{
+            const stats=await rpc("admin_system_notification_stats",{
+              p_notification_id:n.id
+            });
+            const s=Array.isArray(stats)?stats[0]:stats;
+            return {...n,__stats:s||{}};
+          }catch(e){
+            console.warn("notification stats",n.id,e);
+            return {...n,__stats:{}};
+          }
+        })
+      );
+
+      box.innerHTML=enriched.map(n=>{
+        const s=n.__stats||{};
+        const total=Number(s.total_recipients||0);
+        const read=Number(s.read_count ?? n.read_count ?? 0);
+        const unread=Number(
+          s.unread_count ??
+          Math.max(0,total-read)
+        );
+        const rate=total>0
+          ? Math.round((read/total)*1000)/10
+          : 0;
+
+        return `
+          <article class="avp-acc-notification ${n.is_active?"":"inactive"} ${String(n.id)===String(selectedNotificationId)?"active":""}" data-notification="${esc(n.id)}">
+            <div class="avp-acc-notification-head">
+              <strong>${esc(n.title)}</strong>
+              <span>${esc(catLabel(n.category))}</span>
+            </div>
+
+            <p>${esc(n.content)}</p>
+
+            <div class="avp-notification-read-dashboard">
+              <div class="avp-notification-read-numbers">
+                <span>👥 ${total} người nhận</span>
+                <span>👀 ${read} đã đọc</span>
+                <span>⏳ ${unread} chưa đọc</span>
+                <b>${rate}%</b>
+              </div>
+
+              <div class="avp-notification-read-progress" aria-label="${rate}% đã đọc">
+                <span style="width:${Math.max(0,Math.min(100,rate))}%"></span>
+              </div>
+            </div>
+
+            <small>${fmt(n.created_at)} · ${n.target_type==="all"?"Tất cả học viên":"Một học viên"}</small>
+
+            <div class="avp-acc-notification-actions">
+              <button type="button" data-view="${esc(n.id)}">👁 Xem người đã đọc</button>
+              <button type="button" data-toggle="${esc(n.id)}" data-active="${n.is_active?"1":"0"}">${n.is_active?"Tắt":"Bật lại"}</button>
+            </div>
+          </article>
+        `;
+      }).join("");
 
       box.querySelectorAll("[data-view]").forEach(btn=>{
         btn.onclick=e=>{
@@ -365,7 +410,10 @@
       box.querySelectorAll("[data-toggle]").forEach(btn=>{
         btn.onclick=async e=>{
           e.stopPropagation();
-          await toggleNotification(btn.dataset.toggle,btn.dataset.active!=="1");
+          await toggleNotification(
+            btn.dataset.toggle,
+            btn.dataset.active!=="1"
+          );
         };
       });
 
@@ -392,8 +440,13 @@
       const rows=Array.isArray(audience)?audience:[];
       const s=Array.isArray(stats)?stats[0]:stats;
 
+      const total=Number(s?.total_recipients||0);
+      const readCount=Number(s?.read_count||0);
+      const unreadCount=Number(s?.unread_count||0);
+      const rate=total>0?Math.round((readCount/total)*1000)/10:0;
+
       $("avpAccAudienceHint").textContent=
-        `${Number(s?.total_recipients||0)} người nhận · ${Number(s?.read_count||0)} đã đọc · ${Number(s?.unread_count||0)} chưa đọc`;
+        `${total} người nhận · ${readCount} đã đọc · ${unreadCount} chưa đọc · ${rate}%`;
 
       renderAudience(rows);
       await loadNotifications();

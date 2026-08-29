@@ -148,3 +148,47 @@
   padding:6px 8px;font:inherit;font-size:9px;font-weight:800;cursor:pointer
 }
 .avp-mod-actions button.danger{border-color:#efc1c5;color:#a82736;background:#fff7f8}
+
+
+/* SYSTEM NOTIFICATION READ DASHBOARD V1 */
+.avp-notification-read-dashboard{
+  margin:9px 0 7px;
+  padding:9px 10px;
+  border:1px solid #e1e9e4;
+  border-radius:11px;
+  background:#fafdfb;
+}
+.avp-notification-read-numbers{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  font-size:9px;
+  color:#68786f;
+}
+.avp-notification-read-numbers b{
+  margin-left:auto;
+  font-size:11px;
+  color:#217346;
+}
+.avp-notification-read-progress{
+  height:6px;
+  margin-top:7px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#edf2ef;
+}
+.avp-notification-read-progress>span{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:#86b99a;
+}
+@media(max-width:640px){
+  .avp-notification-read-numbers{
+    gap:6px 9px;
+  }
+  .avp-notification-read-numbers b{
+    margin-left:0;
+  }
+}
