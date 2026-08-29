@@ -219,6 +219,42 @@ function appendData(XLSX,wb,rows,widths){
   ws["!cols"]=(widths||[]).map(w=>({wch:w}));
   XLSX.utils.book_append_sheet(wb,ws,"DuLieu");
 }
+function addLessonIdentity(XLSX,wb,l){
+  const meta=XLSX.utils.aoa_to_sheet([
+    ["AVP_PRACTICE_FILE","1"],
+    ["lesson_key",String(l.key||"")],
+    ["grader",String(l.grader||"")],
+    ["version","20260830-v17"]
+  ]);
+  XLSX.utils.book_append_sheet(wb,meta,"_AVP_META");
+
+  // Ẩn sheet metadata. Người học không cần thao tác vào đây.
+  wb.Workbook=wb.Workbook||{};
+  wb.Workbook.Sheets=wb.Workbook.Sheets||[];
+  const idx=wb.SheetNames.indexOf("_AVP_META");
+  if(idx>=0){
+    while(wb.Workbook.Sheets.length<wb.SheetNames.length){
+      wb.Workbook.Sheets.push({});
+    }
+    wb.Workbook.Sheets[idx]={
+      ...(wb.Workbook.Sheets[idx]||{}),
+      name:"_AVP_META",
+      Hidden:2
+    };
+  }
+}
+function readLessonIdentity(XLSX,wb){
+  const ws=wb?.Sheets?.["_AVP_META"];
+  if(!ws)return null;
+  const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:"",raw:true});
+  const map={};
+  rows.forEach(r=>{
+    const k=String(r?.[0]??"").trim();
+    if(k)map[k]=String(r?.[1]??"").trim();
+  });
+  return map;
+}
+
 async function buildWorkbook(l){
   const XLSX=await loadXLSX(),wb=XLSX.utils.book_new();
   const base=[["Mã NV","Họ tên","Bộ phận","Số lượng"],
@@ -298,6 +334,7 @@ async function buildWorkbook(l){
   }
   appendData(XLSX,wb,rows,[12,22,16,14]);
   addGuide(XLSX,wb,`BÀI THỰC HÀNH: ${l.title}`,guide);
+  addLessonIdentity(XLSX,wb,l);
   return {XLSX,wb};
 }
 async function downloadLesson(l){
@@ -527,19 +564,40 @@ async function grade(l,file){
   if(!file||file.size<1000)throw new Error("FILE_INVALID");
   if(file.size>15*1024*1024)throw new Error("FILE_TOO_LARGE");
 
-  const XLSX=await loadXLSX(),buf=await file.arrayBuffer(),
-    wb=XLSX.read(buf,{type:"array",cellDates:true,cellFormula:true,cellNF:true,cellStyles:true});
+  const XLSX=await loadXLSX();
+  const buf=await file.arrayBuffer();
+  const wb=XLSX.read(buf,{
+    type:"array",
+    cellDates:true,
+    cellFormula:true,
+    cellNF:true,
+    cellStyles:true
+  });
 
   if(!wb?.SheetNames?.length)throw new Error("WORKBOOK_EMPTY");
   if(!wb.SheetNames.includes("DuLieu"))throw new Error("MISSING_DULIEU_SHEET");
 
+  // Chống lấy file của bài khác nộp sang bài hiện tại.
+  const identity=readLessonIdentity(XLSX,wb);
+  if(!identity){
+    throw new Error("WRONG_PRACTICE_FILE: File này không phải file gốc của bài đang nộp. Hãy tải lại file đúng từ chính card bài này.");
+  }
+  if(identity.AVP_PRACTICE_FILE!=="1"){
+    throw new Error("WRONG_PRACTICE_FILE: Không nhận diện được file thực hành.");
+  }
+  if(identity.lesson_key!==String(l.key||"")){
+    throw new Error(`WRONG_LESSON_FILE: Bạn đang nộp file của bài "${identity.lesson_key||"khác"}" vào bài "${l.key}". Hãy chọn đúng file.`);
+  }
+  if(identity.grader!==String(l.grader||"")){
+    throw new Error("WRONG_GRADER_FILE: File không khớp rule chấm của bài hiện tại.");
+  }
+
   const fn=GRADERS[l.grader];
   if(!fn)throw new Error("GRADER_NOT_READY");
 
-  const result=enrichResult(fn(XLSX,wb));
+  const result=fn(XLSX,wb);
+  result.checks=result.checks||[];
   result.score=Math.max(0,Math.min(Number(result.score)||0,Number(l.maxScore)||100));
-  result.grader=l.grader;
-  result.version="v12";
   return result;
 }
 
@@ -670,7 +728,9 @@ async function submitOfficial(){
       renderLessons();
 
       let prefix="Không nộp được bài.";
-      if(stage==="grade"){
+      if(/WRONG_PRACTICE_FILE|WRONG_LESSON_FILE|WRONG_GRADER_FILE/i.test(msg)){
+        prefix="Sai file bài tập.";
+      }else if(stage==="grade"){
         prefix="Không chấm được file.";
       }else if(stage==="upload"){
         prefix="Không lưu được file bài nộp.";
