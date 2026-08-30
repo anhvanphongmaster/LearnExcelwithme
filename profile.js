@@ -57,14 +57,22 @@ function avatarLabel(avatar,name){
 }
 
 function calcProfileStats(){
-  const courses=pJSON('completedCourses',[]);
-  const pg=pJSON(PG_KEY_PROFILE,{});
-  const quiz=Math.min(5,parseInt(localStorage.getItem('quizBestScore')||'0',10)||0);
-  const pgDone=Object.values(pg).filter(Boolean).length;
-  const bonus=Number(localStorage.getItem('avp_bonus_xp_v1')||0)||0;
-  const xp=Math.min(6,courses.length)*20+pgDone*10+quiz*10+bonus;
+  const route=[
+    'excel.html','phimtatexcel.html','congthucexcel.html','filtersort.html',
+    'pivottable.html','bieudopareto.html','baocaoexcel.html','excel-nang-cao.html',
+    'power-query-course.html','power-pivot-dax.html','dashboard-dong.html',
+    'practice-lab.html','vba-macro.html','solver-whatif.html'
+  ];
+  const lessonProgress=pJSON('avp_lesson_progress_v1',{});
+  const quizProgress=pJSON('avp_quiz_done_v1',{});
+  const completed=route.filter((file)=>{
+    const key=file.replace(/\.html$/,'');
+    return !!(lessonProgress[key] || quizProgress[file]);
+  }).length;
+  const days=pJSON(PROFILE_ACTIVITY_KEY,[]);
+  const xp=Number(localStorage.getItem('avp_xp_v2')||localStorage.getItem('avp_bonus_xp_v1')||0)||0;
   const level=Math.floor(xp/100)+1;
-  return {courses:Math.min(6,courses.length),pg:pgDone,quiz,xp,level};
+  return {courses:completed,pg:days.length,quiz:0,xp,level};
 }
 
 function updateInitialChoice(name){
@@ -83,8 +91,8 @@ function renderProfile(){
   document.getElementById('profileGoalView').textContent=p.goal;
   document.getElementById('profileXP').textContent=s.xp;
   document.getElementById('profileLevel').textContent=s.level;
-  document.getElementById('profileCourseCount').textContent=s.courses+'/6';
-  document.getElementById('profilePGCount').textContent=s.pg+'/10';
+  document.getElementById('profileCourseCount').textContent=s.courses+'/14';
+  document.getElementById('profilePGCount').textContent=String(s.pg);
 
   document.getElementById('profileName').value=p.name;
   document.getElementById('profileGoal').value=p.goal;
@@ -154,13 +162,11 @@ function renderProfileActivity(){
   const days=pJSON(PROFILE_ACTIVITY_KEY,[]);
   const items=[];
 
-  if(s.pg) items.push(['🧪','Playground','Bạn đã hoàn thành '+s.pg+'/10 bài thực hành.']);
-  if(s.courses) items.push(['📚','Lộ trình Excel','Bạn đã hoàn thành '+s.courses+'/6 chuyên đề.']);
-  if(s.quiz) items.push(['🎯','Quiz tốt nhất','Điểm cao nhất hiện tại: '+s.quiz+'/5.']);
-  if(days.length) items.push(['🔥','Hoạt động gần đây','Đã ghi nhận hoạt động học trong '+days.length+' ngày.']);
+  if(s.courses) items.push(['📚','Tiến độ học','Bạn đã hoàn thành '+s.courses+'/14 bài trong lộ trình Skill Map.']);
+  if(days.length) items.push(['✓','Hoạt động học','Đã ghi nhận hoạt động học trong '+days.length+' ngày.']);
 
   if(!items.length){
-    items.push(['🌱','Bắt đầu hành trình','Hãy hoàn thành một bài học hoặc Playground để tạo lịch sử hoạt động.']);
+    items.push(['→','Bắt đầu học','Mở Skill Map để chọn bài đầu tiên hoặc tiếp tục đúng chỗ đang dở.']);
   }
 
   box.innerHTML=items.map(i=>`
