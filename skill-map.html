@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Skill Map | Learn Excel with Anh Van Phong</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="simple-nav.css">
+  <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="global-search.css">
+  <link rel="stylesheet" href="skill-map.css?v=20260831-v70">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#217346">
+  <link rel="stylesheet" href="theme-polish-v33.css">
+</head>
+<body>
+
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
+    <a href="practice-video.html">📚 Bài tập</a>
+    <a href="master-learning.html">🗺️ Lộ trình</a>
+    <a href="excel-race.html">🏁 Race</a>
+    <span class="auth-nav-slot"></span>
+    <a href="profile.html">👤 Hồ sơ</a>
+    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="sm-page">
+  <section class="sm-hero">
+    <div>
+      <span class="sm-kicker">EXCEL SKILL MAP</span>
+      <h1>Bản đồ kỹ năng của bạn</h1>
+      <p>Không còn học rời rạc. Mỗi kỹ năng là một node; vượt quiz để mở khóa nhánh tiếp theo và nhìn thấy hành trình của chính bạn.</p>
+    </div>
+
+    <div class="sm-hero-stats">
+      <div><small>Đã mở khóa</small><strong id="smUnlocked">0/14</strong></div>
+      <div><small>Đã hoàn thành</small><strong id="smDone">0/14</strong></div>
+      <div><small>XP</small><strong id="smXP">0</strong></div>
+      <div><small>Tiến độ</small><strong id="smPct">0%</strong></div>
+    </div>
+  </section>
+
+  <section class="sm-today" id="smToday">
+    <div class="sm-today-icon">⚡</div>
+    <div class="sm-today-copy">
+      <span>HÔM NAY NÊN HỌC</span>
+      <h2 id="smTodayTitle">Đang xác định bài tiếp theo…</h2>
+      <p id="smTodayDesc">Skill Map sẽ dựa trên tiến độ hiện tại để chọn node phù hợp nhất.</p>
+    </div>
+    <a id="smTodayLink" href="excel.html">Bắt đầu →</a>
+  </section>
+
+  <section class="sm-map-shell">
+    <div class="sm-map-head">
+      <div>
+        <span class="sm-kicker">BEGINNER → MASTER</span>
+        <h2>Mở khóa từng vùng kỹ năng</h2>
+      </div>
+      <div class="sm-legend">
+        <span><i class="done"></i>Hoàn thành</span>
+        <span><i class="current"></i>Đang học</span>
+        <span><i class="open"></i>Đã mở</span>
+        <span><i class="locked"></i>Khóa</span>
+      </div>
+    </div>
+
+    <div class="sm-map" id="smMap">
+      <svg class="sm-lines" id="smLines" aria-hidden="true"></svg>
+      <div class="sm-zones" id="smZones"></div>
+    </div>
+  </section>
+
+  <section class="sm-footer-actions">
+    <a href="practice-video.html">📚 Luyện ngay trong Practice Hub</a>
+    <a href="master-learning.html">🗺️ Xem lộ trình chi tiết</a>
+    <a href="dashboard.html">📊 Xem Dashboard tiến độ</a>
+  </section>
+</main>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-auth.js"></script>
+<script src="simple-nav.js"></script>
+<script src="global-search.js"></script>
+<script src="skill-map.js?v=20260831-v70"></script>
+<script src="avp-core.js"></script>
+</body>
+</html>
