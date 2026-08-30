@@ -4,146 +4,80 @@
   const q = (s, r=document) => r.querySelector(s);
   const qa = (s, r=document) => Array.from(r.querySelectorAll(s));
 
-  const page = q(".pv-page");
   const chooser = q(".ph-switch");
-
+  const header = q("#phFocusHeader");
   let youtubeLoaded = false;
-  let entering = false;
+  let busy = false;
 
-  const sourceMeta = {
+  const sources = {
     tiktok: {
-      icon: "📱",
-      kicker: "TIKTOK PRACTICE",
-      title: "Theo video TikTok",
-      desc: "Kho bài TikTok, vote nhu cầu và file thực hành."
+      icon:"📱",
+      kicker:"TIKTOK PRACTICE",
+      title:"Theo video TikTok",
+      desc:"Kho bài TikTok, vote nhu cầu và file thực hành."
     },
     youtube: {
-      icon: "▶️",
-      kicker: "YOUTUBE PROJECT",
-      title: "Theo YouTube",
-      desc: "Project dài, file theo từng phần và tài nguyên đi kèm."
+      icon:"▶️",
+      kicker:"YOUTUBE PROJECT",
+      title:"Theo YouTube",
+      desc:"Project dài, file theo từng phần và tài nguyên đi kèm."
     },
     grader: {
-      icon: "🧪",
-      kicker: "AUTO GRADING",
-      title: "Chấm điểm tự động",
-      desc: "Tải file, làm Excel, nộp lại và nhận điểm từ hệ thống."
+      icon:"🧪",
+      kicker:"AUTO GRADING",
+      title:"Chấm điểm tự động",
+      desc:"Tải file, làm Excel, nộp lại và nhận điểm từ hệ thống."
     },
     guide: {
-      icon: "📖",
-      kicker: "PRACTICE GUIDE",
-      title: "Hướng dẫn làm bài",
-      desc: "100 bài với gợi ý cách làm và lỗi cần tránh, không có đáp án sẵn."
+      icon:"📖",
+      kicker:"PRACTICE GUIDE",
+      title:"Hướng dẫn làm bài",
+      desc:"100 bài với gợi ý cách làm và lỗi cần tránh, không có đáp án sẵn."
     }
   };
 
-  const branchMap = () => ({
-    tiktok: q("#phBranchTiktok"),
-    youtube: q("#phBranchYoutube"),
-    grader: q("#phBranchGrader"),
-    guide: q("#phBranchGuide")
+  const branches = () => ({
+    tiktok:q("#phBranchTiktok"),
+    youtube:q("#phBranchYoutube"),
+    grader:q("#phBranchGrader"),
+    guide:q("#phBranchGuide")
   });
 
-  function reducedMotion() {
-    return !!(
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    );
+  function reducedMotion(){
+    return !!(window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }
 
-  function resetHorizontalScroll() {
-    try {
-      document.documentElement.scrollLeft = 0;
-      document.body.scrollLeft = 0;
-    } catch(e) {}
+  function sleep(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  function ensureFocusHeader() {
-    let header = q("#phFocusHeader");
-    if (header) return header;
-
-    header = document.createElement("section");
-    header.id = "phFocusHeader";
-    header.className = "ph-focus-header";
-    header.hidden = true;
-    header.setAttribute("aria-live", "polite");
-    header.innerHTML = `
-      <div class="ph-focus-icon" id="phFocusIcon">📱</div>
-      <div class="ph-focus-copy">
-        <span class="ph-focus-kicker" id="phFocusKicker"></span>
-        <h1 class="ph-focus-title" id="phFocusTitle"></h1>
-        <p class="ph-focus-desc" id="phFocusDesc"></p>
-      </div>
-      <button type="button" class="ph-source-back" id="phSourceBack">
-        ← Chọn nguồn khác
-      </button>
-    `;
-
-    chooser.insertAdjacentElement("afterend", header);
-    q("#phSourceBack", header).addEventListener("click", closeSource);
-    return header;
-  }
-
-  function fillFocusHeader(name) {
-    const meta = sourceMeta[name] || sourceMeta.tiktok;
-    const header = ensureFocusHeader();
-
-    q("#phFocusIcon", header).textContent = meta.icon;
-    q("#phFocusKicker", header).textContent = meta.kicker;
-    q("#phFocusTitle", header).textContent = meta.title;
-    q("#phFocusDesc", header).textContent = meta.desc;
-
-    return header;
-  }
-
-  function hideAllBranches() {
-    Object.values(branchMap()).forEach(el => {
-      if (!el) return;
+  function hideBranches(){
+    Object.values(branches()).forEach(el => {
+      if(!el) return;
       el.hidden = true;
-      el.classList.remove("ph-branch-active", "ph-focus-reveal");
+      el.classList.remove("ph-v56-reveal");
     });
 
     qa("[data-practice-branch]").forEach(btn => {
-      btn.classList.remove("active", "is-entering-source");
-      btn.setAttribute("aria-selected", "false");
+      btn.classList.remove("active","is-picked");
+      btn.setAttribute("aria-selected","false");
     });
   }
 
-  function showOnlyBranch(name, animate=true) {
-    hideAllBranches();
-
-    const target = branchMap()[name];
-    if (!target) return null;
-
-    target.hidden = false;
-    target.classList.add("ph-branch-active");
-
-    if (animate && !reducedMotion()) {
-      target.classList.remove("ph-focus-reveal");
-      void target.offsetWidth;
-      target.classList.add("ph-focus-reveal");
-      window.setTimeout(() => {
-        target.classList.remove("ph-focus-reveal");
-      }, 700);
-    }
-
-    const btn = q(`[data-practice-branch="${name}"]`);
-    if (btn) {
-      btn.classList.add("active");
-      btn.setAttribute("aria-selected", "true");
-    }
-
-    if (name === "youtube") loadYoutube();
-    return target;
+  function fillHeader(name){
+    const meta = sources[name] || sources.tiktok;
+    q("#phFocusIcon").textContent = meta.icon;
+    q("#phFocusKicker").textContent = meta.kicker;
+    q("#phFocusTitle").textContent = meta.title;
+    q("#phFocusDesc").textContent = meta.desc;
   }
 
-  function loadYoutube() {
-    if (youtubeLoaded) return;
+  function loadYoutube(){
+    if(youtubeLoaded) return;
     youtubeLoaded = true;
-
     const wrap = q("#phYoutubeFrameWrap");
-    if (!wrap) return;
-
+    if(!wrap) return;
     wrap.innerHTML = `
       <iframe
         class="ph-youtube-frame"
@@ -154,202 +88,95 @@
     `;
   }
 
-  function showFinalView(name, animateBranch) {
-    resetHorizontalScroll();
+  function showBranch(name, animate=true){
+    hideBranches();
 
-    const header = fillFocusHeader(name);
-    page?.classList.add("ph-source-open");
+    const target = branches()[name];
+    if(!target) return;
+
+    target.hidden = false;
+
+    if(name === "youtube") loadYoutube();
+
+    const btn = q(`[data-practice-branch="${name}"]`);
+    if(btn){
+      btn.classList.add("active");
+      btn.setAttribute("aria-selected","true");
+    }
+
+    if(animate && !reducedMotion()){
+      void target.offsetWidth;
+      target.classList.add("ph-v56-reveal");
+      setTimeout(() => target.classList.remove("ph-v56-reveal"), 600);
+    }
+  }
+
+  async function openSource(name, btn, animate=true){
+    if(busy || !branches()[name]) return;
+    busy = true;
+
+    fillHeader(name);
+
+    if(animate && !reducedMotion() && btn){
+      chooser.classList.add("is-choosing");
+      btn.classList.add("is-picked");
+      await sleep(360);
+
+      chooser.classList.add("is-leaving");
+      await sleep(260);
+    }
+
+    chooser.hidden = true;
+    chooser.classList.remove("is-choosing","is-leaving");
+    btn?.classList.remove("is-picked");
+
     header.hidden = false;
-    header.classList.remove("is-visible");
-    void header.offsetWidth;
-    header.classList.add("is-visible");
+    header.classList.remove("is-opening");
+    if(animate && !reducedMotion()){
+      void header.offsetWidth;
+      header.classList.add("is-opening");
+    }
 
-    showOnlyBranch(name, animateBranch);
+    showBranch(name, animate);
+    history.replaceState(null,"","#"+name);
 
-    history.replaceState(null, "", "#" + name);
-
-    const top = Math.max(
-      0,
-      header.getBoundingClientRect().top + window.scrollY - 86
-    );
-
+    const top = Math.max(0, header.getBoundingClientRect().top + window.scrollY - 88);
     window.scrollTo({
-      left: 0,
       top,
-      behavior: reducedMotion() ? "auto" : "smooth"
-    });
-  }
-
-  async function animateCardToHeader(btn, name) {
-    const header = fillFocusHeader(name);
-
-    // Measure final header at the LEFT/CENTERED document position.
-    resetHorizontalScroll();
-    header.hidden = false;
-    header.classList.add("is-visible");
-    header.style.visibility = "hidden";
-    page?.classList.remove("ph-source-open");
-
-    const finalRect = header.getBoundingClientRect();
-
-    header.hidden = true;
-    header.classList.remove("is-visible");
-    header.style.visibility = "";
-
-    const startRect = btn.getBoundingClientRect();
-
-    const stage = document.createElement("div");
-    stage.className = "ph-source-stage";
-    document.body.appendChild(stage);
-
-    const clone = btn.cloneNode(true);
-    clone.classList.add("ph-source-stage-card");
-    clone.classList.remove("active", "is-entering-source");
-    clone.disabled = true;
-    clone.removeAttribute("role");
-    clone.removeAttribute("aria-selected");
-
-    Object.assign(clone.style, {
-      left: startRect.left + "px",
-      top: startRect.top + "px",
-      width: startRect.width + "px",
-      height: startRect.height + "px",
-      borderRadius: getComputedStyle(btn).borderRadius || "20px"
-    });
-
-    stage.appendChild(clone);
-    void stage.offsetWidth;
-    stage.classList.add("is-active");
-
-    // First impact: obvious zoom on both desktop and mobile.
-    try {
-      await clone.animate([
-        {
-          transform:"scale(1)",
-          opacity:1
-        },
-        {
-          transform:"scale(1.12)",
-          opacity:1
-        },
-        {
-          transform:"scale(1.06)",
-          opacity:1
-        }
-      ], {
-        duration:330,
-        easing:"cubic-bezier(.16,.84,.24,1)",
-        fill:"forwards"
-      }).finished;
-    } catch(e) {
-      await new Promise(r => setTimeout(r, 330));
-    }
-
-    // Then card itself expands into the header rectangle.
-    try {
-      await clone.animate([
-        {
-          left:startRect.left + "px",
-          top:startRect.top + "px",
-          width:startRect.width + "px",
-          height:startRect.height + "px",
-          borderRadius:"20px",
-          transform:"scale(1.06)",
-          opacity:1
-        },
-        {
-          left:finalRect.left + "px",
-          top:Math.max(18, finalRect.top) + "px",
-          width:finalRect.width + "px",
-          height:Math.max(160, finalRect.height) + "px",
-          borderRadius:"24px",
-          transform:"scale(1)",
-          opacity:.94
-        }
-      ], {
-        duration:520,
-        easing:"cubic-bezier(.18,.82,.24,1)",
-        fill:"forwards"
-      }).finished;
-    } catch(e) {
-      await new Promise(r => setTimeout(r, 520));
-    }
-
-    showFinalView(name, true);
-
-    try {
-      await clone.animate([
-        {opacity:.94},
-        {opacity:0}
-      ], {
-        duration:180,
-        easing:"ease-out",
-        fill:"forwards"
-      }).finished;
-    } catch(e) {}
-
-    stage.remove();
-  }
-
-  async function openSource(name, btn, {animate=true} = {}) {
-    if (entering) return;
-    if (!branchMap()[name]) return;
-
-    entering = true;
-    resetHorizontalScroll();
-
-    if (!animate || reducedMotion() || !btn) {
-      showFinalView(name, false);
-      entering = false;
-      return;
-    }
-
-    chooser?.classList.add("is-entering");
-    btn.classList.add("is-entering-source");
-
-    await animateCardToHeader(btn, name);
-
-    chooser?.classList.remove("is-entering");
-    btn.classList.remove("is-entering-source");
-    entering = false;
-  }
-
-  function closeSource() {
-    if (entering) return;
-
-    hideAllBranches();
-
-    const header = ensureFocusHeader();
-    header.classList.remove("is-visible");
-    header.hidden = true;
-
-    page?.classList.remove("ph-source-open");
-    chooser?.classList.remove("is-entering");
-
-    history.replaceState(null, "", location.pathname + location.search);
-    resetHorizontalScroll();
-
-    const top = Math.max(
-      0,
-      chooser.getBoundingClientRect().top + window.scrollY - 86
-    );
-
-    window.scrollTo({
       left:0,
+      behavior:reducedMotion() ? "auto" : "smooth"
+    });
+
+    await sleep(animate ? 480 : 0);
+    header.classList.remove("is-opening");
+    busy = false;
+  }
+
+  function closeSource(){
+    if(busy) return;
+
+    hideBranches();
+    header.hidden = true;
+    chooser.hidden = false;
+    chooser.classList.remove("is-choosing","is-leaving");
+
+    history.replaceState(null,"",location.pathname + location.search);
+
+    const top = Math.max(0, chooser.getBoundingClientRect().top + window.scrollY - 88);
+    window.scrollTo({
       top,
+      left:0,
       behavior:reducedMotion() ? "auto" : "smooth"
     });
   }
 
-  function initTopicTabs() {
+  function initTopicTabs(){
     qa("[data-pg-topic]").forEach(btn => {
       btn.addEventListener("click", () => {
         const topic = btn.dataset.pgTopic;
-
-        qa("[data-pg-topic]").forEach(x => {
-          x.classList.toggle("active", x === btn);
-        });
-
+        qa("[data-pg-topic]").forEach(x =>
+          x.classList.toggle("active", x === btn)
+        );
         qa("[data-pg-panel]").forEach(panel => {
           panel.hidden = panel.dataset.pgPanel !== topic;
         });
@@ -357,35 +184,31 @@
     });
   }
 
-  function bindChooser() {
+  function init(){
+    hideBranches();
+    header.hidden = true;
+    chooser.hidden = false;
+
     qa("[data-practice-branch]").forEach(btn => {
       btn.addEventListener("click", () => {
-        openSource(btn.dataset.practiceBranch, btn, {animate:true});
+        openSource(btn.dataset.practiceBranch, btn, true);
       });
     });
-  }
 
-  function init() {
-    resetHorizontalScroll();
-    ensureFocusHeader();
-    hideAllBranches();
-    bindChooser();
+    q("#phSourceBack")?.addEventListener("click", closeSource);
+
     initTopicTabs();
 
-    // Vào bình thường: chỉ 4 nguồn.
-    // Deep link rõ ràng (#grader...) vẫn mở thẳng đúng nguồn.
-    const hash = location.hash.replace("#", "");
-    if (["tiktok","youtube","grader","guide"].includes(hash)) {
+    const hash = location.hash.replace("#","");
+    if(["tiktok","youtube","grader","guide"].includes(hash)){
       const btn = q(`[data-practice-branch="${hash}"]`);
-      window.setTimeout(() => {
-        openSource(hash, btn, {animate:false});
-      }, 0);
+      openSource(hash, btn, false);
     }
   }
 
-  if (document.readyState === "loading") {
+  if(document.readyState === "loading"){
     document.addEventListener("DOMContentLoaded", init, {once:true});
-  } else {
+  }else{
     init();
   }
 })();

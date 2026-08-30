@@ -103,190 +103,173 @@
 
 
 /* =========================================================
-   AVP V54 — PRACTICE SOURCE GATE
-   Vào Bài tập Excel: chỉ thấy 4 nguồn.
-   Chọn nguồn: card phóng thành header, chỉ còn nội dung nguồn đó.
+   AVP V56 — STABLE SOURCE GATE
+   Không dùng clone/fixed morph. Hiệu ứng hoàn toàn in-flow,
+   ổn định trên desktop và mobile.
    ========================================================= */
 
-/* Trang chọn nguồn không cần hero lớn cũ. */
-.pv-hero-hub{
-  display:none!important;
+.pv-hero-hub{display:none!important}
+
+.pv-page{
+  width:min(1180px,calc(100% - 32px))!important;
+  max-width:1180px!important;
+  margin-inline:auto!important;
+  padding-inline:0!important;
+  overflow:visible!important;
 }
 
 .ph-switch{
-  margin-top:18px;
-  padding:22px;
-  overflow:visible;
-  transition:opacity .25s ease, transform .34s cubic-bezier(.2,.8,.2,1);
-}
-
-.ph-switch-head{
-  margin-bottom:18px;
+  width:100%!important;
+  margin:22px 0!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
 }
 
 .ph-switch-grid{
-  display:grid;
+  display:grid!important;
   grid-template-columns:repeat(4,minmax(0,1fr))!important;
   gap:14px!important;
-  align-items:stretch;
+  align-items:stretch!important;
 }
 
 .ph-choice{
-  position:relative;
-  min-width:0;
-  min-height:158px;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  justify-content:center;
-  gap:11px;
-  padding:18px 17px 42px;
-  border-radius:20px;
-  transform:translateZ(0);
-  transform-origin:center center;
-  will-change:transform,opacity,box-shadow;
+  min-width:0!important;
+  min-height:150px!important;
+  height:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:flex-start!important;
+  gap:10px!important;
+  padding:18px 17px 42px!important;
+  position:relative!important;
+  border-radius:20px!important;
+  transform-origin:center center!important;
   transition:
-    transform .28s cubic-bezier(.2,.8,.2,1),
-    opacity .24s ease,
-    box-shadow .28s ease,
-    border-color .24s ease,
-    filter .24s ease;
+    transform .34s cubic-bezier(.18,.82,.24,1),
+    opacity .26s ease,
+    filter .26s ease,
+    box-shadow .34s ease!important;
 }
 
-.ph-choice-icon{
-  width:48px;
-  height:48px;
-  display:grid;
-  place-items:center;
-  flex:0 0 auto;
-}
-
-.ph-choice-copy{
-  min-width:0;
-}
-
-.ph-choice-copy strong{
-  display:block;
-  font-size:16px;
-  line-height:1.18;
-}
-
-.ph-choice-copy small{
-  display:block;
-  margin-top:5px;
-  line-height:1.4;
-}
-
-.ph-choice-arrow{
-  position:absolute;
-  right:15px;
-  bottom:13px;
-  width:30px;
-  height:30px;
-  display:grid;
-  place-items:center;
-  border-radius:999px;
-  background:rgba(23,97,55,.07);
-  transition:transform .25s ease,background .25s ease;
+.ph-choice .ph-choice-arrow{
+  position:absolute!important;
+  right:14px!important;
+  bottom:12px!important;
 }
 
 .ph-choice:hover{
-  transform:translateY(-5px) scale(1.025);
-  box-shadow:0 18px 42px rgba(25,89,51,.14);
+  transform:translateY(-4px) scale(1.025)!important;
+  box-shadow:0 16px 38px rgba(22,91,51,.14)!important;
 }
 
-.ph-choice:hover .ph-choice-arrow{
-  transform:translateX(4px);
-  background:rgba(23,97,55,.12);
+/* Click stage 1: selected card visibly zooms in place. */
+.ph-switch.is-choosing .ph-choice:not(.is-picked){
+  opacity:.22!important;
+  filter:saturate(.55)!important;
+  transform:scale(.94)!important;
 }
 
-/* Trong lúc chọn, ba nguồn còn lại lùi xuống rõ ràng cả desktop lẫn mobile. */
-.ph-switch.is-entering .ph-choice:not(.is-entering-source){
-  opacity:.28;
-  filter:saturate(.65);
-  transform:scale(.94);
-  pointer-events:none;
+.ph-choice.is-picked{
+  z-index:2!important;
+  transform:translateY(-8px) scale(1.11)!important;
+  box-shadow:0 26px 60px rgba(19,88,48,.24)!important;
 }
 
-.ph-choice.is-entering-source{
-  z-index:5;
-  transform:translateY(-8px) scale(1.075);
-  box-shadow:0 24px 56px rgba(16,86,47,.23);
+/* Click stage 2: whole chooser zooms/fades away. */
+.ph-switch.is-leaving{
+  animation:phChooserLeaveV56 .28s ease both;
 }
 
-/* Header nguồn sau khi card đã phóng lớn. */
-.ph-focus-header{
-  position:relative;
-  display:none;
-  min-height:160px;
-  margin:18px 0 18px;
-  padding:24px 26px;
-  border:1px solid #cce3d3;
-  border-radius:24px;
-  background:
-    radial-gradient(circle at 92% 15%,rgba(255,255,255,.72),transparent 28%),
-    linear-gradient(135deg,#176b3b 0%,#217346 55%,#2b8650 100%);
-  color:#fff;
-  overflow:hidden;
-  box-shadow:0 18px 44px rgba(19,90,50,.17);
-  transform-origin:center center;
+@keyframes phChooserLeaveV56{
+  from{opacity:1;transform:scale(1)}
+  to{opacity:0;transform:scale(1.025)}
 }
 
-.ph-focus-header[hidden]{
-  display:none!important;
-}
-
-.ph-focus-header.is-visible{
+/* Header is normal page flow: no horizontal drift possible. */
+.ph-focus-header-v56{
+  width:100%!important;
+  box-sizing:border-box!important;
+  min-height:170px;
+  margin:22px 0 18px;
+  padding:26px 28px;
   display:flex;
   align-items:center;
   gap:18px;
-  animation:phHeaderSettle .46s cubic-bezier(.18,.82,.24,1) both;
+  border:1px solid #c7dfd0;
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 92% 10%,rgba(255,255,255,.24),transparent 32%),
+    linear-gradient(135deg,#176b3b,#217346 58%,#2d8752);
+  color:#fff;
+  box-shadow:0 18px 44px rgba(19,90,50,.15);
+  overflow:hidden;
+  transform-origin:top center;
 }
 
-.ph-focus-icon{
-  width:68px;
-  height:68px;
-  flex:0 0 68px;
+.ph-focus-header-v56[hidden]{display:none!important}
+
+.ph-focus-header-v56.is-opening{
+  animation:phHeaderOpenV56 .48s cubic-bezier(.16,.84,.24,1) both;
+}
+
+@keyframes phHeaderOpenV56{
+  0%{
+    opacity:0;
+    transform:translateY(-10px) scale(.76);
+    border-radius:32px;
+  }
+  55%{
+    opacity:1;
+    transform:translateY(1px) scale(1.025);
+  }
+  100%{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.ph-focus-icon-v56{
+  width:72px;
+  height:72px;
+  flex:0 0 72px;
   display:grid;
   place-items:center;
   border-radius:20px;
-  background:rgba(255,255,255,.16);
-  border:1px solid rgba(255,255,255,.25);
-  font-size:34px;
-  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.24);
+  font-size:35px;
 }
 
-.ph-focus-copy{
-  min-width:0;
+.ph-focus-copy-v56{
   flex:1;
+  min-width:0;
 }
 
-.ph-focus-kicker{
+.ph-focus-kicker-v56{
   display:block;
   margin-bottom:5px;
   font-size:11px;
   font-weight:900;
   letter-spacing:.12em;
-  opacity:.8;
+  opacity:.82;
 }
 
-.ph-focus-title{
-  margin:0;
-  color:#fff;
-  font-size:clamp(25px,3.2vw,40px);
-  line-height:1.08;
+.ph-focus-copy-v56 h1{
+  margin:0!important;
+  color:#fff!important;
+  font-size:clamp(27px,3vw,40px)!important;
+  line-height:1.08!important;
 }
 
-.ph-focus-desc{
-  margin:7px 0 0;
-  max-width:760px;
-  color:rgba(255,255,255,.88);
-  font-size:14px;
-  line-height:1.5;
+.ph-focus-copy-v56 p{
+  margin:8px 0 0!important;
+  color:rgba(255,255,255,.9)!important;
+  font-size:14px!important;
+  line-height:1.5!important;
 }
 
-.ph-source-back{
+.ph-source-back-v56{
   flex:0 0 auto;
   align-self:flex-start;
   border:1px solid rgba(255,255,255,.34);
@@ -298,267 +281,82 @@
   font-size:11px;
   font-weight:900;
   cursor:pointer;
-  backdrop-filter:blur(8px);
 }
 
-.ph-source-back:hover{
-  background:rgba(255,255,255,.2);
+.ph-branch.ph-v56-reveal{
+  animation:phBranchRevealV56 .45s cubic-bezier(.18,.82,.24,1) both;
 }
 
-@keyframes phHeaderSettle{
-  0%{opacity:.35;transform:scale(.965) translateY(7px)}
-  100%{opacity:1;transform:none}
+@keyframes phBranchRevealV56{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
 }
 
-/* Clone của card dùng để morph thành header. */
-.ph-source-morph{
-  position:fixed!important;
-  z-index:2147483000!important;
-  margin:0!important;
-  pointer-events:none!important;
-  overflow:hidden!important;
-  transform-origin:center center!important;
-  will-change:transform,opacity,border-radius;
-  box-shadow:0 24px 65px rgba(14,69,39,.28)!important;
-}
-
-/* Chỉ render 1 nguồn tại một thời điểm. */
-.ph-branch{
-  margin-top:0;
-}
-
-.ph-branch.ph-focus-reveal{
-  animation:phBranchFocusReveal .52s cubic-bezier(.18,.82,.24,1) both;
-}
-
-@keyframes phBranchFocusReveal{
-  0%{
-    opacity:0;
-    transform:translateY(18px) scale(.982);
-  }
-  100%{
-    opacity:1;
-    transform:none;
-  }
-}
-
-/* Khi đang ở trong một nguồn: chooser biến mất hoàn toàn. */
-.pv-page.ph-source-open .ph-switch{
-  display:none!important;
-}
-
-.pv-page.ph-source-open .ph-focus-header{
-  display:flex;
-}
-
-@media(max-width:980px){
+@media(max-width:900px){
   .ph-switch-grid{
     grid-template-columns:repeat(2,minmax(0,1fr))!important;
   }
 }
 
-@media(max-width:720px){
+@media(max-width:640px){
+  .pv-page{
+    width:calc(100% - 20px)!important;
+  }
+
   .ph-switch{
-    padding:15px;
+    padding:14px!important;
   }
 
   .ph-switch-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr))!important;
     gap:10px!important;
   }
 
   .ph-choice{
-    min-height:154px;
-    padding:14px 12px 38px;
-    border-radius:17px;
+    min-height:148px!important;
+    padding:14px 12px 38px!important;
+    border-radius:17px!important;
   }
 
-  .ph-choice-copy strong{
-    font-size:14px;
-  }
+  .ph-choice-copy strong{font-size:14px!important}
+  .ph-choice-copy small{font-size:10.5px!important;line-height:1.35!important}
+  .ph-choice-eyebrow{font-size:8.5px!important}
 
-  .ph-choice-copy small{
-    font-size:10.5px;
-  }
-
-  .ph-choice-eyebrow{
-    font-size:8.5px;
-  }
-
-  .ph-focus-header{
-    min-height:0;
+  .ph-focus-header-v56{
     padding:17px 15px;
-    border-radius:19px;
+    min-height:0;
     align-items:flex-start;
     flex-wrap:wrap;
     gap:12px;
+    border-radius:19px;
   }
 
-  .ph-focus-icon{
+  .ph-focus-icon-v56{
     width:54px;
     height:54px;
     flex-basis:54px;
-    border-radius:16px;
     font-size:27px;
+    border-radius:16px;
   }
 
-  .ph-focus-copy{
+  .ph-focus-copy-v56{
     width:calc(100% - 70px);
   }
 
-  .ph-focus-title{
-    font-size:24px;
-  }
+  .ph-focus-copy-v56 h1{font-size:24px!important}
+  .ph-focus-copy-v56 p{font-size:12px!important}
 
-  .ph-focus-desc{
-    font-size:12px;
-  }
-
-  .ph-source-back{
+  .ph-source-back-v56{
     order:3;
     margin-left:auto;
-  }
-}
-
-@media(max-width:380px){
-  .ph-choice{
-    min-height:160px;
-    padding-left:10px;
-    padding-right:10px;
   }
 }
 
 @media(prefers-reduced-motion:reduce){
   .ph-choice,
   .ph-switch,
-  .ph-focus-header,
-  .ph-branch.ph-focus-reveal{
-    animation:none!important;
+  .ph-focus-header-v56,
+  .ph-branch{
     transition:none!important;
-  }
-}
-
-
-/* =========================================================
-   AVP V55 — SOURCE GATE DESKTOP FIX
-   - Chống trang bị trôi ngang làm mất title/header.
-   - Morph/zoom nhìn rõ trên desktop.
-   - Header luôn chứa đủ icon + title + mô tả.
-   ========================================================= */
-
-html,
-body{
-  width:100%!important;
-  max-width:100%!important;
-  overflow-x:clip!important;
-}
-
-.pv-page{
-  width:min(1100px,calc(100% - 28px))!important;
-  max-width:1100px!important;
-  margin-left:auto!important;
-  margin-right:auto!important;
-  box-sizing:border-box!important;
-  overflow:visible!important;
-}
-
-.pv-page > *,
-.ph-switch,
-.ph-switch-grid,
-.ph-focus-header,
-.ph-branch{
-  max-width:100%!important;
-  box-sizing:border-box!important;
-}
-
-.ph-focus-header{
-  width:100%!important;
-  margin-left:0!important;
-  margin-right:0!important;
-}
-
-.ph-focus-header.is-visible .ph-focus-icon,
-.ph-focus-header.is-visible .ph-focus-copy,
-.ph-focus-header.is-visible .ph-source-back{
-  opacity:1!important;
-  visibility:visible!important;
-}
-
-/* Full viewport animation layer, independent from page scroll position. */
-.ph-source-stage{
-  position:fixed;
-  inset:0;
-  z-index:2147482500;
-  pointer-events:none;
-  background:rgba(244,250,246,0);
-  transition:background .28s ease;
-  overflow:hidden;
-}
-
-.ph-source-stage.is-active{
-  background:rgba(244,250,246,.42);
-}
-
-.ph-source-stage-card{
-  position:fixed!important;
-  z-index:2147482600!important;
-  margin:0!important;
-  pointer-events:none!important;
-  overflow:hidden!important;
-  transform-origin:center center!important;
-  will-change:left,top,width,height,transform,opacity,border-radius;
-  box-shadow:0 24px 70px rgba(12,72,38,.28)!important;
-}
-
-@keyframes phDesktopImpact{
-  0%{transform:scale(1)}
-  48%{transform:scale(1.115)}
-  100%{transform:scale(1.06)}
-}
-
-.ph-choice.is-entering-source{
-  animation:phDesktopImpact .34s cubic-bezier(.16,.84,.24,1) both;
-}
-
-/* Desktop makes the chosen source feel like it becomes the page header. */
-@media(min-width:981px){
-  .ph-switch{
-    padding:26px;
-  }
-
-  .ph-switch-grid{
-    gap:18px!important;
-  }
-
-  .ph-choice{
-    min-height:172px;
-    padding:20px 19px 44px;
-  }
-
-  .ph-focus-header{
-    min-height:180px;
-    padding:28px 30px;
-  }
-
-  .ph-focus-icon{
-    width:76px;
-    height:76px;
-    flex-basis:76px;
-    font-size:38px;
-  }
-
-  .ph-focus-title{
-    font-size:38px;
-  }
-}
-
-/* Fallback for browsers where overflow:clip is not supported. */
-@supports not (overflow:clip){
-  html,body{overflow-x:hidden!important}
-}
-
-@media(max-width:720px){
-  .pv-page{
-    width:calc(100% - 20px)!important;
+    animation:none!important;
   }
 }
