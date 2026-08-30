@@ -1446,17 +1446,19 @@
     return isAvailable(item) || !!tiktokUrl(item);
   }
 
-  function practiceDownloadHref(item, fileName) {
-    if (item && item.fileUrl) return item.fileUrl;
-    if (item && item.sourcePath) return item.sourcePath;
+  function practiceStaticHref(item, fileName) {
+    if (!fileName) return "";
 
-    /* Một số file Power Query cũ nằm ở root thay vì video-practice. */
+    /* File ZIP Power Query này đang nằm ở ROOT repo, không nằm trong
+       downloads/video-practice/. Đây là đường dẫn thực tế của source. */
     if (fileName === "PowerQuery-11-Files.zip") {
       return "PowerQuery-11-Files.zip";
     }
 
-    const folder = (item && item.folder) || "downloads/video-practice/";
-    return folder + fileName;
+    if (item && item.sourcePath) return item.sourcePath;
+    if (item && item.fileUrl) return item.fileUrl;
+
+    return ((item && item.folder) || "downloads/video-practice/") + fileName;
   }
 
   function downloadBlock(item, fileName) {
@@ -1466,12 +1468,12 @@
     (item.extraFiles || []).forEach(add);
 
     return names.map(function (f) {
-      const href = practiceDownloadHref(item, f);
+      const href = practiceStaticHref(item, f);
       const remote = /^https?:\/\//i.test(href);
-      return '<a class="pv-download" data-avp-practice-download="1" href="' +
-        href + '"' +
-        (remote ? ' target="_blank" rel="noopener noreferrer"' : ' download') +
-        ' title="' + f + '">Tải file</a>';
+      return '<a class="pv-download" data-avp-static-href="' +
+        escapeHtml(href) + '" href="' + escapeHtml(href) + '"' +
+        (remote ? ' target="_blank" rel="noopener noreferrer"' : ' download="' + escapeHtml(f) + '"') +
+        ' title="' + escapeHtml(f) + '">Tải file</a>';
     }).join("");
   }
 
@@ -2093,12 +2095,15 @@
     const tkBtn = tk
       ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer" title="Xem trên TikTok">' + ico + ' TikTok</a>'
       : '';
-    const downloadHref = practiceDownloadHref(item, fileName);
+    const downloadHref = practiceStaticHref(item, fileName);
     const isRemoteDownload = /^https?:\/\//i.test(downloadHref);
     const fileBtn = avail
-      ? '<a class="pv-download" data-avp-practice-download="1" href="' + downloadHref + '"' +
-        (isRemoteDownload ? ' target="_blank" rel="noopener noreferrer"' : ' download') +
-        ' title="' + fileName + '">Tải file</a>'
+      ? '<a class="pv-download" data-avp-static-href="' + escapeHtml(downloadHref) +
+        '" href="' + escapeHtml(downloadHref) + '"' +
+        (isRemoteDownload
+          ? ' target="_blank" rel="noopener noreferrer"'
+          : ' download="' + escapeHtml(fileName) + '"') +
+        ' title="' + escapeHtml(fileName) + '">Tải file</a>'
       : '';
     const tags = (item.filterTags || [item.category]).join(" ");
     const hasVideo = !!tk;
@@ -2330,6 +2335,93 @@ grid.addEventListener("click", async function (e) {
   }
 
 document.addEventListener("DOMContentLoaded", init);
+
+
+  async function avpWaitAccessForPracticeDownload() {
+    if (window.AVPAccess) return window.AVPAccess;
+    for (let i = 0; i < 30; i++) {
+      await new Promise(function(resolve){ setTimeout(resolve, 50); });
+      if (window.AVPAccess) return window.AVPAccess;
+    }
+    return null;
+  }
+
+  async function avpDownloadPracticeFile(anchor) {
+    const href =
+      anchor.getAttribute("data-avp-static-href") ||
+      anchor.getAttribute("href") ||
+      "";
+    if (!href) return;
+
+    const access = await avpWaitAccessForPracticeDownload();
+    if (access && typeof access.getUser === "function") {
+      const user = await access.getUser(true);
+      if (!user) {
+        access.goLogin("practice-video.html#tiktok");
+        return;
+      }
+    }
+
+    /* URL ngoài website: sau auth thì mở trực tiếp. */
+    if (/^https?:\/\//i.test(href)) {
+      window.open(href, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    const absolute = new URL(href, location.href).href;
+
+    try {
+      const response = await fetch(absolute, {
+        method: "GET",
+        credentials: "same-origin",
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        throw new Error("HTTP " + response.status + " • " + href);
+      }
+
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const temp = document.createElement("a");
+      temp.href = blobUrl;
+      temp.download =
+        anchor.getAttribute("download") ||
+        anchor.getAttribute("title") ||
+        href.split("/").pop() ||
+        "practice-file";
+      temp.rel = "noopener";
+      temp.style.display = "none";
+
+      /* Không có class pv-download, href là blob: => các guard khác bỏ qua. */
+      document.body.appendChild(temp);
+      temp.click();
+      temp.remove();
+
+      setTimeout(function(){
+        URL.revokeObjectURL(blobUrl);
+      }, 30000);
+    } catch (err) {
+      console.error("[TikTok Practice download]", err);
+      alert(
+        "Không tải được file.\\n\\nĐường dẫn: " + href +
+        "\\nLỗi: " + (err && err.message ? err.message : "Không xác định")
+      );
+    }
+  }
+
+  /* Capture-phase và đăng ký từ practice-video.js để chặn trước
+     avp-access/download-manager. */
+  document.addEventListener("click", function(e){
+    const a = e.target && e.target.closest
+      ? e.target.closest("a.pv-download")
+      : null;
+    if (!a) return;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    avpDownloadPracticeFile(a);
+  }, true);
 
   document.addEventListener("click", function (e) {
     const dl = e.target.closest(".pv-download");

@@ -1,8 +1,6 @@
 const availablePracticeFiles = [
   "PowerQuery_DEMO.xlsx",
   "PowerQuery-11-Files.zip",
-  "01_PowerQuery_DEMO.xlsx",
-  "02_PowerQuery-11-Files.zip",
   "05_center_across.xlsx",
   "06_so_viet.xlsx",
   "07_an_so_0.xlsx",
