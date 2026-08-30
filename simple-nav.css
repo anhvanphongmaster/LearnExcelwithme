@@ -1748,3 +1748,141 @@ body.core-topic-page .avp-install-banner{display:none!important}
 }
 
 .avp-page-back-wrap,.lesson-action-row,.lesson-home-link{display:none !important;}
+
+
+/* =========================================================
+   AVP V82 — UNIFIED HEADER / LESS MENU CLUTTER
+   ========================================================= */
+.top-simple-nav{
+  min-height:68px;
+  padding:10px 20px !important;
+  background:rgba(255,255,255,.96) !important;
+  border-bottom:1px solid #dfe9e3 !important;
+  box-shadow:0 4px 18px rgba(26,72,45,.045);
+}
+.top-simple-links{
+  width:min(100%,1040px);
+  justify-content:center;
+  gap:4px;
+}
+.top-simple-links>a,
+.top-search-button,
+.top-theme-button,
+.auth-nav-button{
+  min-height:40px;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:750;
+}
+.top-simple-links>a{
+  color:#4f6358;
+}
+.top-simple-links>a:hover,
+.top-search-button:hover,
+.top-theme-button:hover{
+  background:#eef6f1;
+  color:#185c37;
+}
+.top-simple-links>a.is-current,
+.top-simple-links>a[aria-current="page"]{
+  background:#e8f4ed;
+  color:#185c37;
+  border-color:#cfe3d7;
+}
+.top-search-button{
+  color:#4f6358;
+}
+.top-search-button::before{
+  content:"⌕";
+  font-size:16px;
+  line-height:1;
+}
+.top-theme-button{
+  flex:0 0 40px;
+  width:40px;
+  min-width:40px;
+  padding:0;
+  border:1px solid #dfe8e2;
+  color:#385246;
+}
+.auth-nav-slot{
+  display:flex;
+  align-items:center;
+}
+.auth-nav-slot .auth-nav-button{
+  white-space:nowrap;
+}
+
+body.dark-mode .top-simple-nav{
+  background:rgba(17,25,21,.96) !important;
+  border-bottom-color:#2d3c34 !important;
+  box-shadow:none;
+}
+body.dark-mode .top-simple-links>a.is-current,
+body.dark-mode .top-simple-links>a[aria-current="page"]{
+  background:#193026;
+  color:#78d59e;
+  border-color:#31513f;
+}
+
+@media(max-width:900px){
+  body{padding-top:64px}
+  .top-simple-nav{
+    min-height:64px;
+    padding:10px 14px !important;
+    justify-content:flex-end !important;
+  }
+  .top-mobile-toggle{
+    display:inline-grid !important;
+    place-items:center;
+    flex:0 0 42px;
+    font-size:20px;
+  }
+  .top-simple-links{
+    position:absolute;
+    top:calc(100% + 6px);
+    left:10px;
+    right:10px;
+    width:auto !important;
+    margin:0 !important;
+    padding:8px;
+    gap:2px;
+    border:1px solid #dfe9e3;
+    border-radius:16px;
+    background:rgba(255,255,255,.985);
+    box-shadow:0 18px 44px rgba(17,53,32,.14);
+  }
+  .top-simple-nav.open .top-simple-links{display:flex}
+  .top-simple-links>a,
+  .top-search-button,
+  .top-theme-button,
+  .auth-nav-slot,
+  .auth-nav-slot .auth-nav-button{
+    width:100%;
+  }
+  .top-simple-links>a,
+  .top-search-button,
+  .auth-nav-slot .auth-nav-button{
+    justify-content:flex-start;
+    min-height:42px;
+    padding:0 12px;
+  }
+  .top-theme-button{
+    width:100%;
+    justify-content:flex-start;
+    padding:0 12px;
+  }
+  .top-theme-button::after{
+    content:"Giao diện";
+    margin-left:8px;
+  }
+  body.dark-mode .top-simple-links{
+    background:rgba(18,26,22,.99);
+    border-color:#2d3c34;
+  }
+}
+
+@media print{
+  .top-simple-nav{display:none !important}
+  body{padding-top:0 !important}
+}

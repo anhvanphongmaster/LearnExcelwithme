@@ -27,8 +27,22 @@ html.avp-embedded-youtube .pyt-back{display:none!important}
 })();
 </script>
 
+  <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="global-search.css">
 </head>
 <body>
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
 <main class="pyt-page">
 <p class="pyt-back"><a href="index.html">← Về Trang chủ</a></p>
 <header class="pyt-hero">
@@ -138,5 +152,6 @@ html.avp-embedded-youtube .pyt-back{display:none!important}
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
 <script defer src="practice-youtube-vote.js?v=20260830-access1"></script>
+<script defer src="global-search.js"></script>
 </body>
 </html>

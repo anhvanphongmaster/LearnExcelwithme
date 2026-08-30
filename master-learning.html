@@ -1,6 +1,17 @@
 <!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Master Learning Path | Learn Excel with Anh Van Phong</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="simple-nav.css"><link rel="stylesheet" href="auth.css"><link rel="stylesheet" href="global-search.css"><link rel="stylesheet" href="master-learning.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#217346"><link href="theme-polish-v33.css" rel="stylesheet"/>
 </head><body>
-<nav class="top-simple-nav"><div class="top-simple-links"><a href="index.html">🏠 Trang chủ</a><button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button><a href="practice-video.html">📚 Bài tập</a><a href="excel-race.html">🏁 Race</a><a href="dashboard.html">📊 Dashboard</a><span class="auth-nav-slot"></span><a href="profile.html">👤 Hồ sơ</a><a href="lienhe.html">✉️ Liên hệ</a><button id="themeToggle" type="button" class="top-theme-button">🌙</button></div><button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button></nav>
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
 <main class="ml-page" id="masterLearningRoot">
 <section class="ml-hero"><div class="ml-kicker">BEGINNER → MASTER</div><h1>Master Learning Path</h1><p>Một lộ trình duy nhất để biết chính xác bài nào cần học, bài nào đã vượt qua và điều kiện nào còn thiếu. Mỗi chặng được mở khóa bằng quiz và XP, không chỉ bằng việc mở trang.</p><div class="ml-summary"><div class="ml-stat"><small>Quiz hoàn thành</small><strong id="mlDone">0/13</strong></div><div class="ml-stat"><small>XP khóa học</small><strong id="mlXP">0</strong></div><div class="ml-stat"><small>Cấp hiện tại</small><strong id="mlLevel">Rookie</strong></div><div class="ml-stat"><small>Toàn lộ trình</small><strong id="mlPct">0%</strong></div></div><div class="ml-progress"><i id="mlProgress"></i></div></section>
 <div class="ml-quick-links" style="display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 8px">

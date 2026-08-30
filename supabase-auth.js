@@ -597,11 +597,9 @@ async function updateAuthNav() {
           <span>Tài khoản</span>
         </button>
         <div class="auth-dropdown">
-          <a href="profile.html">👤 Hồ sơ</a>
-          <a href="dashboard.html">📊 Tiến độ học</a>
-          <a href="achievements.html">🏆 Thành tích</a>
-          <button type="button" class="auth-sync-now">☁️ Đồng bộ ngay</button>
-          <button type="button" class="auth-nav-button auth-logout-direct">↪ Đăng xuất</button>
+          <a href="profile.html">Hồ sơ</a>
+          <a href="dashboard.html">Tiến độ học</a>
+          <button type="button" class="auth-nav-button auth-logout-direct">Đăng xuất</button>
         </div>
       </div>`;
   });

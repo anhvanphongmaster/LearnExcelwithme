@@ -4,8 +4,20 @@ body{margin:0;font-family:Arial,sans-serif;background:#f5f8f6;color:#1c2821}.her
 <link rel="stylesheet" href="personal-dashboard.css">
 <link rel="stylesheet" href="cloud-sync-v11.css">
 <link href="theme-polish-v33.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="auth.css">
 </head><body>
-<nav class="top-simple-nav"><div class="top-simple-inner"><a class="top-simple-brand" href="index.html">📗 Learn Excel</a><button class="top-mobile-toggle" type="button">☰</button><div class="top-simple-links"><a href="index.html">Trang chủ</a><a href="excel.html">Cơ bản</a><a href="excel-nang-cao.html" class="active">Nâng cao</a><a href="baitapexcel.html">Bài tập</a><a href="dashboard.html">Tiến độ</a><button id="themeToggle" type="button">🌙</button></div></div></nav>
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
 <header class="hero"><span>📐 CHUYÊN ĐỀ NÂNG CAO</span><h1>Power Pivot & DAX</h1><p>Mô hình dữ liệu nhiều bảng và tạo KPI bằng Measure. Đây là bước tiếp theo khi PivotTable thường bắt đầu chạm giới hạn.</p></header>
 <main class="wrap"><section class="lesson-grid"><article class="lesson"><div class="num">01</div><h2>Khi nào cần Power Pivot</h2><p>Dùng khi dữ liệu nằm ở nhiều bảng liên quan như Master Lot, Defect, Model và Calendar. Thay vì VLOOKUP mọi thứ vào một bảng khổng lồ, hãy tạo quan hệ giữa các bảng.</p><ul><li>Tạo Table cho từng nguồn dữ liệu</li><li>Thêm vào Data Model</li><li>Tạo Relationship bằng khóa chung</li><li>Dùng PivotTable từ Data Model</li></ul></article><article class="lesson"><div class="num">02</div><h2>Measure khác Calculated Column</h2><p>Calculated Column tính cho từng dòng. Measure tính theo ngữ cảnh lọc của Pivot/Dashboard và phù hợp cho KPI.</p><ul><li>Measure gọn hơn khi dữ liệu lớn</li><li>Tự thay đổi theo Slicer/Filter</li><li>Nên dùng Measure cho Total, Rate, Average, KPI</li></ul></article><article class="lesson"><div class="num">03</div><h2>DAX cơ bản nên biết</h2><p>Bắt đầu từ SUM, COUNTROWS, DISTINCTCOUNT, DIVIDE và CALCULATE.</p><div class="code">Total Input := SUM(Lots[Input])
 Total NG := SUM(Defects[NG])

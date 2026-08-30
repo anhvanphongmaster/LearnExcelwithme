@@ -16,16 +16,15 @@
 </head>
 <body>
 
-<nav class="top-simple-nav">
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
-    <a href="index.html">🏠 Trang chủ</a>
-    <button id="avpSearchTrigger" type="button" class="top-search-button">🔎 Tìm kiếm</button>
-    <a href="practice-video.html">📚 Bài tập</a>
-    <a href="master-learning.html">🗺️ Lộ trình</a>
-    <a href="excel-race.html">🏁 Race</a>
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
     <span class="auth-nav-slot"></span>
-    <a href="profile.html">👤 Hồ sơ</a>
-    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
   </div>
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
@@ -259,9 +258,6 @@
     <button type="button" id="smRewardClaim">Nhận phần thưởng</button>
   </div>
 </div>
-
-<script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-auth.js"></script>
 <script src="simple-nav.js"></script>
 <script src="global-search.js"></script>

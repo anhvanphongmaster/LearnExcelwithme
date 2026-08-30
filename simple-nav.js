@@ -1,7 +1,9 @@
 /* Ensure learning hub FAB on pages missing avp-core */
 (function(){
   try{
-    if(!document.querySelector('script[src="avp-core.js"],script[src*="/avp-core.js"]')){
+    const page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
+    const noCore=new Set(["certificate.html"]);
+    if(!noCore.has(page) && !document.querySelector('script[src="avp-core.js"],script[src*="/avp-core.js"]')){
       if(!document.querySelector('link[href="avp-core.css"]')){
         var l=document.createElement("link");
         l.rel="stylesheet"; l.href="avp-core.css";
@@ -62,6 +64,41 @@
     /* AVP V62: bỏ hẳn brand phụ "📗 Learn Excel". */
     if(nav){
       nav.querySelectorAll(".top-simple-brand").forEach(function(el){ el.remove(); });
+
+      /* V82: một header duy nhất, chỉ 4 hướng chính.
+         Trang con được đánh dấu theo khu thay vì nhồi thêm link vào header. */
+      const page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
+      const groups={
+        home:new Set(["","index.html","gioithieu.html","lienhe.html","terms.html","privacy.html","disclaimer.html","open-source.html"]),
+        learn:new Set([
+          "skill-map.html","master-learning.html","learning-path.html","excel.html",
+          "phimtatexcel.html","congthucexcel.html","filtersort.html","pivottable.html",
+          "bieudopareto.html","baocaoexcel.html","excel-nang-cao.html",
+          "power-query-course.html","power-pivot-dax.html","dashboard-dong.html",
+          "vba-macro.html","solver-whatif.html","focus-room.html","certificate.html"
+        ]),
+        practice:new Set([
+          "practice-video.html","practice-youtube.html","practice-lab.html",
+          "baitapexcel.html","excel-race.html"
+        ]),
+        tools:new Set([
+          "tools-center.html","excel-mobile.html","formula-finder.html",
+          "qc-dashboard.html","playground.html"
+        ])
+      };
+
+      let current=null;
+      Object.keys(groups).some(function(key){
+        if(groups[key].has(page)){ current=key; return true; }
+        return false;
+      });
+
+      nav.querySelectorAll("[data-avp-nav]").forEach(function(link){
+        const on=link.dataset.avpNav===current;
+        link.classList.toggle("is-current",on);
+        if(on) link.setAttribute("aria-current","page");
+        else link.removeAttribute("aria-current");
+      });
     }
 
     if(nav && !nav.querySelector(".auth-nav-slot")){

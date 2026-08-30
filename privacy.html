@@ -15,16 +15,18 @@
 <link rel="stylesheet" href="personal-dashboard.css">
 <link rel="stylesheet" href="cloud-sync-v11.css">
 <link href="theme-polish-v33.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="global-search.css">
 </head>
 <body>
-<nav class="top-simple-nav">
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
-    <a href="index.html">🏠 Trang chủ</a>
-    <a href="excel-mobile.html">📱 Excel Mobile</a>
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
     <span class="auth-nav-slot"></span>
-    <a href="gioithieu.html">ℹ️ Giới thiệu</a>
-    <a href="lienhe.html">📩 Liên hệ</a>
-    <button id="themeToggle" type="button" class="top-theme-button">🌙</button>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
   </div>
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
@@ -175,5 +177,6 @@
 <script defer src="analytics-tracker.js"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="theme-unified-v32.js"></script>
+<script defer src="global-search.js"></script>
 </body>
 </html>

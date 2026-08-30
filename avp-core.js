@@ -57,9 +57,6 @@
       <button type="button" class="avp-edge-action" data-edge-action="ai">
         <span>✨</span><b>Hỏi AI</b>
       </button>
-      <button type="button" class="avp-edge-action" data-edge-action="learning">
-        <span>📚</span><b>Học tập</b>
-      </button>
       <button type="button" class="avp-edge-action" data-edge-action="community" id="avpExternalCommunityButton">
         <span>👥</span><b>Cộng đồng</b>
         <span id="avpCommunityMenuBadge" class="avp-edge-section-badge" hidden>0</span>
@@ -906,10 +903,8 @@
 
   back.addEventListener('click',e=>{if(e.target===back)closeHub()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHub()});
-  if(!IGNORE.has(page)&&page!=='index.html'){
-    const bm=document.createElement('button');bm.className='avp-bookmark-btn';bm.title='Lưu bài này';bm.setAttribute('aria-label','Lưu bài này');document.body.appendChild(bm);
-    const sync=()=>{const b=safe(KEY_BOOK);const on=b.some(x=>x.url===page);bm.textContent=on?'🔖':'🔗';bm.classList.toggle('saved',on);bm.title=on?'Bỏ lưu bài này':'Lưu bài này'};sync();bm.onclick=()=>{let b=safe(KEY_BOOK);const i=b.findIndex(x=>x.url===page);if(i>=0){b.splice(i,1);toast('Đã bỏ lưu')}else{b.unshift({url:page,title,ts:Date.now()});b=b.slice(0,20);toast('Đã lưu bài để học lại')}save(KEY_BOOK,b);sync()}
-  }
+  /* V82: bỏ nút bookmark nổi để giảm số nút cố định trên màn hình.
+     Dữ liệu bookmark cũ vẫn được giữ nguyên trong localStorage. */
   if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
   let deferred;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;showInstall()});
   function showInstall(){if(sessionStorage.getItem('avp_install_hide'))return;const b=document.createElement('div');b.className='avp-install-banner show';b.innerHTML='<strong>📱 Cài Learn Excel như ứng dụng</strong><p>Mở nhanh hơn và dùng được một phần nội dung khi mạng yếu.</p><div class="avp-hub-actions"><button class="avp-hub-btn" data-install>Cài ứng dụng</button><button class="avp-hub-btn secondary" data-hide>Để sau</button></div>';document.body.appendChild(b);b.querySelector('[data-install]').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;deferred=null;b.remove()}};b.querySelector('[data-hide]').onclick=()=>{sessionStorage.setItem('avp_install_hide','1');b.remove()}}
