@@ -6,11 +6,9 @@
 
   const page = q(".pv-page");
   const chooser = q(".ph-switch");
-  const grid = q(".ph-switch-grid");
 
   let youtubeLoaded = false;
   let entering = false;
-  let activeBranch = null;
 
   const sourceMeta = {
     tiktok: {
@@ -47,8 +45,17 @@
   });
 
   function reducedMotion() {
-    return !!(window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    return !!(
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }
+
+  function resetHorizontalScroll() {
+    try {
+      document.documentElement.scrollLeft = 0;
+      document.body.scrollLeft = 0;
+    } catch(e) {}
   }
 
   function ensureFocusHeader() {
@@ -67,7 +74,9 @@
         <h1 class="ph-focus-title" id="phFocusTitle"></h1>
         <p class="ph-focus-desc" id="phFocusDesc"></p>
       </div>
-      <button type="button" class="ph-source-back" id="phSourceBack">← Chọn nguồn khác</button>
+      <button type="button" class="ph-source-back" id="phSourceBack">
+        ← Chọn nguồn khác
+      </button>
     `;
 
     chooser.insertAdjacentElement("afterend", header);
@@ -78,10 +87,12 @@
   function fillFocusHeader(name) {
     const meta = sourceMeta[name] || sourceMeta.tiktok;
     const header = ensureFocusHeader();
+
     q("#phFocusIcon", header).textContent = meta.icon;
     q("#phFocusKicker", header).textContent = meta.kicker;
     q("#phFocusTitle", header).textContent = meta.title;
     q("#phFocusDesc", header).textContent = meta.desc;
+
     return header;
   }
 
@@ -111,7 +122,9 @@
       target.classList.remove("ph-focus-reveal");
       void target.offsetWidth;
       target.classList.add("ph-focus-reveal");
-      window.setTimeout(() => target.classList.remove("ph-focus-reveal"), 650);
+      window.setTimeout(() => {
+        target.classList.remove("ph-focus-reveal");
+      }, 700);
     }
 
     const btn = q(`[data-practice-branch="${name}"]`);
@@ -121,7 +134,6 @@
     }
 
     if (name === "youtube") loadYoutube();
-    activeBranch = name;
     return target;
   }
 
@@ -142,137 +154,169 @@
     `;
   }
 
-  function createMorphClone(btn) {
-    const rect = btn.getBoundingClientRect();
+  function showFinalView(name, animateBranch) {
+    resetHorizontalScroll();
+
+    const header = fillFocusHeader(name);
+    page?.classList.add("ph-source-open");
+    header.hidden = false;
+    header.classList.remove("is-visible");
+    void header.offsetWidth;
+    header.classList.add("is-visible");
+
+    showOnlyBranch(name, animateBranch);
+
+    history.replaceState(null, "", "#" + name);
+
+    const top = Math.max(
+      0,
+      header.getBoundingClientRect().top + window.scrollY - 86
+    );
+
+    window.scrollTo({
+      left: 0,
+      top,
+      behavior: reducedMotion() ? "auto" : "smooth"
+    });
+  }
+
+  async function animateCardToHeader(btn, name) {
+    const header = fillFocusHeader(name);
+
+    // Measure final header at the LEFT/CENTERED document position.
+    resetHorizontalScroll();
+    header.hidden = false;
+    header.classList.add("is-visible");
+    header.style.visibility = "hidden";
+    page?.classList.remove("ph-source-open");
+
+    const finalRect = header.getBoundingClientRect();
+
+    header.hidden = true;
+    header.classList.remove("is-visible");
+    header.style.visibility = "";
+
+    const startRect = btn.getBoundingClientRect();
+
+    const stage = document.createElement("div");
+    stage.className = "ph-source-stage";
+    document.body.appendChild(stage);
+
     const clone = btn.cloneNode(true);
-    clone.classList.add("ph-source-morph");
+    clone.classList.add("ph-source-stage-card");
     clone.classList.remove("active", "is-entering-source");
     clone.disabled = true;
     clone.removeAttribute("role");
     clone.removeAttribute("aria-selected");
 
     Object.assign(clone.style, {
-      left: rect.left + "px",
-      top: rect.top + "px",
-      width: rect.width + "px",
-      height: rect.height + "px"
+      left: startRect.left + "px",
+      top: startRect.top + "px",
+      width: startRect.width + "px",
+      height: startRect.height + "px",
+      borderRadius: getComputedStyle(btn).borderRadius || "20px"
     });
 
-    document.body.appendChild(clone);
-    return {clone, rect};
-  }
+    stage.appendChild(clone);
+    void stage.offsetWidth;
+    stage.classList.add("is-active");
 
-  function scrollToHeader() {
-    const header = q("#phFocusHeader");
-    if (!header) return;
-    const top = Math.max(
-      0,
-      header.getBoundingClientRect().top + window.scrollY - 88
-    );
-    window.scrollTo({
-      top,
-      behavior: reducedMotion() ? "auto" : "smooth"
-    });
+    // First impact: obvious zoom on both desktop and mobile.
+    try {
+      await clone.animate([
+        {
+          transform:"scale(1)",
+          opacity:1
+        },
+        {
+          transform:"scale(1.12)",
+          opacity:1
+        },
+        {
+          transform:"scale(1.06)",
+          opacity:1
+        }
+      ], {
+        duration:330,
+        easing:"cubic-bezier(.16,.84,.24,1)",
+        fill:"forwards"
+      }).finished;
+    } catch(e) {
+      await new Promise(r => setTimeout(r, 330));
+    }
+
+    // Then card itself expands into the header rectangle.
+    try {
+      await clone.animate([
+        {
+          left:startRect.left + "px",
+          top:startRect.top + "px",
+          width:startRect.width + "px",
+          height:startRect.height + "px",
+          borderRadius:"20px",
+          transform:"scale(1.06)",
+          opacity:1
+        },
+        {
+          left:finalRect.left + "px",
+          top:Math.max(18, finalRect.top) + "px",
+          width:finalRect.width + "px",
+          height:Math.max(160, finalRect.height) + "px",
+          borderRadius:"24px",
+          transform:"scale(1)",
+          opacity:.94
+        }
+      ], {
+        duration:520,
+        easing:"cubic-bezier(.18,.82,.24,1)",
+        fill:"forwards"
+      }).finished;
+    } catch(e) {
+      await new Promise(r => setTimeout(r, 520));
+    }
+
+    showFinalView(name, true);
+
+    try {
+      await clone.animate([
+        {opacity:.94},
+        {opacity:0}
+      ], {
+        duration:180,
+        easing:"ease-out",
+        fill:"forwards"
+      }).finished;
+    } catch(e) {}
+
+    stage.remove();
   }
 
   async function openSource(name, btn, {animate=true} = {}) {
     if (entering) return;
-    const target = branchMap()[name];
-    if (!target) return;
+    if (!branchMap()[name]) return;
 
     entering = true;
-    const header = fillFocusHeader(name);
-
-    // Put the future header into layout only for measurement.
-    header.hidden = false;
-    header.classList.remove("is-visible");
-    header.style.visibility = "hidden";
-    page?.classList.remove("ph-source-open");
-
-    const headerRect = header.getBoundingClientRect();
-    header.hidden = true;
-    header.style.visibility = "";
+    resetHorizontalScroll();
 
     if (!animate || reducedMotion() || !btn) {
-      page?.classList.add("ph-source-open");
-      header.hidden = false;
-      header.classList.add("is-visible");
-      showOnlyBranch(name, false);
-      history.replaceState(null, "", "#"+name);
+      showFinalView(name, false);
       entering = false;
-      scrollToHeader();
       return;
     }
 
     chooser?.classList.add("is-entering");
     btn.classList.add("is-entering-source");
 
-    let flight = null;
-    try { flight = createMorphClone(btn); } catch(e) {}
-
-    if (flight?.clone) {
-      const start = flight.rect;
-      const startCX = start.left + start.width / 2;
-      const startCY = start.top + start.height / 2;
-      const endCX = headerRect.left + headerRect.width / 2;
-      const endCY = headerRect.top + Math.min(headerRect.height, 165) / 2;
-
-      const dx = endCX - startCX;
-      const dy = endCY - startCY;
-      const sx = Math.max(.9, Math.min(4, headerRect.width / Math.max(1,start.width)));
-      const sy = Math.max(.75, Math.min(1.7, Math.min(headerRect.height,165) / Math.max(1,start.height)));
-
-      try {
-        const animation = flight.clone.animate([
-          {
-            transform:"translate3d(0,0,0) scale(1,1)",
-            opacity:1,
-            borderRadius:"20px"
-          },
-          {
-            offset:.28,
-            transform:"translate3d("+(dx*.20)+"px,"+(dy*.16)+"px,0) scale(1.08,1.05)",
-            opacity:1,
-            borderRadius:"22px"
-          },
-          {
-            transform:"translate3d("+dx+"px,"+dy+"px,0) scale("+sx+","+sy+")",
-            opacity:.08,
-            borderRadius:"24px"
-          }
-        ], {
-          duration:620,
-          easing:"cubic-bezier(.16,.84,.24,1)",
-          fill:"forwards"
-        });
-
-        await animation.finished.catch(() => {});
-      } catch(e) {
-        await new Promise(r => setTimeout(r, 620));
-      }
-
-      flight.clone.remove();
-    } else {
-      await new Promise(r => setTimeout(r, 420));
-    }
-
-    // Enter single-source mode only after the zoom animation.
-    page?.classList.add("ph-source-open");
-    header.hidden = false;
-    header.classList.add("is-visible");
-    showOnlyBranch(name, true);
+    await animateCardToHeader(btn, name);
 
     chooser?.classList.remove("is-entering");
     btn.classList.remove("is-entering-source");
-
-    history.replaceState(null, "", "#"+name);
     entering = false;
-    scrollToHeader();
   }
 
   function closeSource() {
     if (entering) return;
-    activeBranch = null;
+
     hideAllBranches();
 
     const header = ensureFocusHeader();
@@ -283,14 +327,17 @@
     chooser?.classList.remove("is-entering");
 
     history.replaceState(null, "", location.pathname + location.search);
+    resetHorizontalScroll();
 
     const top = Math.max(
       0,
-      chooser.getBoundingClientRect().top + window.scrollY - 88
+      chooser.getBoundingClientRect().top + window.scrollY - 86
     );
+
     window.scrollTo({
+      left:0,
       top,
-      behavior: reducedMotion() ? "auto" : "smooth"
+      behavior:reducedMotion() ? "auto" : "smooth"
     });
   }
 
@@ -298,9 +345,11 @@
     qa("[data-pg-topic]").forEach(btn => {
       btn.addEventListener("click", () => {
         const topic = btn.dataset.pgTopic;
-        qa("[data-pg-topic]").forEach(x =>
-          x.classList.toggle("active", x === btn)
-        );
+
+        qa("[data-pg-topic]").forEach(x => {
+          x.classList.toggle("active", x === btn);
+        });
+
         qa("[data-pg-panel]").forEach(panel => {
           panel.hidden = panel.dataset.pgPanel !== topic;
         });
@@ -311,25 +360,26 @@
   function bindChooser() {
     qa("[data-practice-branch]").forEach(btn => {
       btn.addEventListener("click", () => {
-        // Không chặn Auto Grading ở đây.
-        // practice-grader.js tự xử lý đăng nhập khi người dùng tải/nộp bài.
         openSource(btn.dataset.practiceBranch, btn, {animate:true});
       });
     });
   }
 
   function init() {
+    resetHorizontalScroll();
     ensureFocusHeader();
     hideAllBranches();
     bindChooser();
     initTopicTabs();
 
-    // Bình thường vào trang: CHỈ 4 nguồn.
-    // Chỉ tự mở khi có deep-link rõ ràng, ví dụ sau khi login quay về #grader.
+    // Vào bình thường: chỉ 4 nguồn.
+    // Deep link rõ ràng (#grader...) vẫn mở thẳng đúng nguồn.
     const hash = location.hash.replace("#", "");
     if (["tiktok","youtube","grader","guide"].includes(hash)) {
       const btn = q(`[data-practice-branch="${hash}"]`);
-      window.setTimeout(() => openSource(hash, btn, {animate:false}), 0);
+      window.setTimeout(() => {
+        openSource(hash, btn, {animate:false});
+      }, 0);
     }
   }
 

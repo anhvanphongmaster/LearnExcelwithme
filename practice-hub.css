@@ -437,3 +437,128 @@
     transition:none!important;
   }
 }
+
+
+/* =========================================================
+   AVP V55 — SOURCE GATE DESKTOP FIX
+   - Chống trang bị trôi ngang làm mất title/header.
+   - Morph/zoom nhìn rõ trên desktop.
+   - Header luôn chứa đủ icon + title + mô tả.
+   ========================================================= */
+
+html,
+body{
+  width:100%!important;
+  max-width:100%!important;
+  overflow-x:clip!important;
+}
+
+.pv-page{
+  width:min(1100px,calc(100% - 28px))!important;
+  max-width:1100px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+}
+
+.pv-page > *,
+.ph-switch,
+.ph-switch-grid,
+.ph-focus-header,
+.ph-branch{
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+
+.ph-focus-header{
+  width:100%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+
+.ph-focus-header.is-visible .ph-focus-icon,
+.ph-focus-header.is-visible .ph-focus-copy,
+.ph-focus-header.is-visible .ph-source-back{
+  opacity:1!important;
+  visibility:visible!important;
+}
+
+/* Full viewport animation layer, independent from page scroll position. */
+.ph-source-stage{
+  position:fixed;
+  inset:0;
+  z-index:2147482500;
+  pointer-events:none;
+  background:rgba(244,250,246,0);
+  transition:background .28s ease;
+  overflow:hidden;
+}
+
+.ph-source-stage.is-active{
+  background:rgba(244,250,246,.42);
+}
+
+.ph-source-stage-card{
+  position:fixed!important;
+  z-index:2147482600!important;
+  margin:0!important;
+  pointer-events:none!important;
+  overflow:hidden!important;
+  transform-origin:center center!important;
+  will-change:left,top,width,height,transform,opacity,border-radius;
+  box-shadow:0 24px 70px rgba(12,72,38,.28)!important;
+}
+
+@keyframes phDesktopImpact{
+  0%{transform:scale(1)}
+  48%{transform:scale(1.115)}
+  100%{transform:scale(1.06)}
+}
+
+.ph-choice.is-entering-source{
+  animation:phDesktopImpact .34s cubic-bezier(.16,.84,.24,1) both;
+}
+
+/* Desktop makes the chosen source feel like it becomes the page header. */
+@media(min-width:981px){
+  .ph-switch{
+    padding:26px;
+  }
+
+  .ph-switch-grid{
+    gap:18px!important;
+  }
+
+  .ph-choice{
+    min-height:172px;
+    padding:20px 19px 44px;
+  }
+
+  .ph-focus-header{
+    min-height:180px;
+    padding:28px 30px;
+  }
+
+  .ph-focus-icon{
+    width:76px;
+    height:76px;
+    flex-basis:76px;
+    font-size:38px;
+  }
+
+  .ph-focus-title{
+    font-size:38px;
+  }
+}
+
+/* Fallback for browsers where overflow:clip is not supported. */
+@supports not (overflow:clip){
+  html,body{overflow-x:hidden!important}
+}
+
+@media(max-width:720px){
+  .pv-page{
+    width:calc(100% - 20px)!important;
+  }
+}
