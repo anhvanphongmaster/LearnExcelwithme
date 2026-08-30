@@ -2223,6 +2223,14 @@
       const {data,error}=await client.functions.invoke("ai-chat",{
         body:{
           session_id:sessionId,
+
+          /* Tương thích cả Edge Function kiểu cũ và mới:
+             một số bản đang deploy yêu cầu message trực tiếp,
+             trong khi bản mới đọc lịch sử theo session_id. */
+          message:content,
+          content:content,
+          question:content,
+
           image_path:imagePath,
           image:imageData,
           image_mime:imageMime
@@ -2236,6 +2244,8 @@
           p_session_id:sessionId,
           p_content:"AI đang ở chế độ thử nghiệm và chưa kết nối model. Bạn vẫn có thể dùng nút “Chuyển cho Admin” để gửi câu hỏi này."
         });
+      }else if(data?.error){
+        throw new Error(String(data.error));
       }
 
       await loadHistory();
