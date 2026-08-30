@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="global-search.css">
-  <link rel="stylesheet" href="skill-map.css?v=20260831-v79-comeback">
+  <link rel="stylesheet" href="skill-map.css?v=20260831-v85-audit3">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link rel="stylesheet" href="theme-polish-v33.css">
@@ -31,87 +31,64 @@
 
 <main class="sm-page">
   <section class="sm-hero">
-    <div>
+    <div class="sm-hero-copy">
       <span class="sm-kicker">EXCEL SKILL MAP</span>
-      <h1>Bản đồ kỹ năng của bạn</h1>
-      <p>Không còn học rời rạc. Mỗi kỹ năng là một node; vượt quiz để mở khóa nhánh tiếp theo và nhìn thấy hành trình của chính bạn.</p>
+      <h1>Lộ trình học Excel của bạn</h1>
+      <p>Đi theo từng kỹ năng, học đúng phần tiếp theo và quay lại đúng nơi bạn đang dở.</p>
     </div>
 
     <div class="sm-hero-stats">
-      <div><small>Đã mở khóa</small><strong id="smUnlocked">0/14</strong></div>
-      <div><small>Đã hoàn thành</small><strong id="smDone">0/14</strong></div>
-      <div><small>XP</small><strong id="smXP">0</strong></div>
+      <div><small>Hoàn thành</small><strong id="smDone">0/14</strong></div>
       <div><small>Tiến độ</small><strong id="smPct">0%</strong></div>
+      <div><small>XP</small><strong id="smXP">0</strong></div>
+      <div><small>Chặng hiện tại</small><strong id="smStage">Nền tảng</strong></div>
     </div>
   </section>
 
-  <section class="sm-today" id="smToday">
-    <div class="sm-today-icon">⚡</div>
-    <div class="sm-today-copy">
-      <span>HÔM NAY NÊN HỌC</span>
-      <h2 id="smTodayTitle">Đang xác định bài tiếp theo…</h2>
-      <p id="smTodayDesc">Skill Map sẽ dựa trên tiến độ hiện tại để chọn node phù hợp nhất.</p>
+  <section class="sm-next-card" id="smToday">
+    <div class="sm-next-badge">TIẾP TỤC HỌC</div>
+    <div class="sm-next-main">
+      <div>
+        <span id="smTodayStage">Nền tảng</span>
+        <h2 id="smTodayTitle">Đang xác định bài tiếp theo…</h2>
+        <p id="smTodayDesc">Skill Map sẽ chọn bài tiếp theo dựa trên tiến độ hiện tại.</p>
+      </div>
+      <a id="smTodayLink" href="excel.html">Học tiếp →</a>
     </div>
-    <a id="smTodayLink" href="excel.html">Bắt đầu →</a>
   </section>
 
-
-  <section class="sm-daily-grid">
+  <section class="sm-quick-grid">
     <article class="sm-mission-card">
-      <div class="sm-section-head">
-        <div>
-          <span class="sm-kicker">DAILY MISSION</span>
-          <h2>Nhiệm vụ hôm nay</h2>
-        </div>
-        <div class="sm-mission-ring" id="smMissionRing">
-          <strong id="smMissionCount">0/3</strong>
-          <span>hoàn thành</span>
-        </div>
+      <div class="sm-quick-icon">✓</div>
+      <div class="sm-quick-copy">
+        <span class="sm-kicker">NHIỆM VỤ HÔM NAY</span>
+        <h2 id="smMissionTitle">Hoàn thành bài tiếp theo</h2>
+        <p id="smMissionDesc">Chỉ cần hoàn thành một kỹ năng. Không cần học quá nhiều trong một lần.</p>
       </div>
-
-      <div class="sm-mission-list" id="smMissionList"></div>
-
-      <div class="sm-daily-reward" id="smDailyReward">
-        <div>
-          <span>🎁 DAILY REWARD</span>
-          <strong>Hoàn thành 3/3 để nhận +25 XP</strong>
-        </div>
-        <button type="button" id="smDailyClaim" disabled>Chưa đủ điều kiện</button>
-      </div>
+      <div class="sm-mission-status" id="smMissionStatus">Chưa hoàn thành</div>
     </article>
 
-    <article class="sm-coach-card">
-      <div class="sm-coach-head">
-        <div class="sm-coach-avatar">AI</div>
-        <div>
-          <span class="sm-kicker">AI COACH</span>
-          <h2>Coach của bạn</h2>
-        </div>
-        <span class="sm-coach-status">● ONLINE</span>
+    <a class="sm-focus-card" href="focus-room.html">
+      <div class="sm-quick-icon">25</div>
+      <div class="sm-quick-copy">
+        <span class="sm-kicker">FOCUS ROOM</span>
+        <h2>Học tập trung 25 phút</h2>
+        <p>Khi bạn có ít thời gian và muốn bắt đầu ngay.</p>
       </div>
-
-      <div class="sm-coach-message">
-        <p id="smCoachMessage">Đang phân tích tiến độ học của bạn…</p>
-      </div>
-
-      <div class="sm-coach-insights" id="smCoachInsights"></div>
-
-      <div class="sm-coach-actions">
-        <button type="button" id="smCoachAsk">💬 Hỏi AI Coach</button>
-        <a id="smCoachAction" href="practice-video.html">Làm bài Coach đề xuất →</a>
-      </div>
-    </article>
+      <strong>Vào học →</strong>
+    </a>
   </section>
 
   <section class="sm-map-shell">
     <div class="sm-map-head">
       <div>
         <span class="sm-kicker">BEGINNER → MASTER</span>
-        <h2>Mở khóa từng vùng kỹ năng</h2>
+        <h2>Bản đồ kỹ năng</h2>
+        <p>Hoàn thành chặng trước để mở khóa chặng tiếp theo.</p>
       </div>
-      <div class="sm-legend">
+      <div class="sm-legend" aria-label="Chú thích trạng thái">
         <span><i class="done"></i>Hoàn thành</span>
-        <span><i class="current"></i>Đang học</span>
+        <span><i class="current"></i>Học tiếp</span>
         <span><i class="open"></i>Đã mở</span>
         <span><i class="locked"></i>Khóa</span>
       </div>
@@ -123,146 +100,23 @@
     </div>
   </section>
 
-
-
-  <section class="sm-streak-card" id="smStreakCard">
-    <div class="sm-streak-main">
-      <div class="sm-streak-flame" id="smStreakFlame">🔥</div>
-      <div>
-        <span class="sm-kicker">LEARNING STREAK</span>
-        <h2><strong id="smStreakDays">0</strong> ngày liên tiếp</h2>
-        <p id="smStreakMessage">Hoàn thành hoạt động học để bắt đầu streak.</p>
-      </div>
-    </div>
-
-    <div class="sm-streak-week" id="smStreakWeek"></div>
-
-    <div class="sm-streak-stats">
-      <div><small>Kỷ lục</small><strong id="smBestStreak">0 ngày</strong></div>
-      <div><small>7 ngày gần nhất</small><strong id="smActive7">0/7</strong></div>
-      <div><small>Trạng thái hôm nay</small><strong id="smTodayStudy">Chưa học</strong></div>
-    </div>
-  </section>
-
-
-  <section class="sm-retention-grid">
-    <article class="sm-comeback-card" id="smComebackCard">
-      <div class="sm-comeback-icon">🛡️</div>
-      <div class="sm-comeback-copy">
-        <span class="sm-kicker">STREAK PROTECTION</span>
-        <h2 id="smFreezeTitle">Streak Freeze</h2>
-        <p id="smFreezeText">Giữ chuỗi học khi bạn bỏ lỡ một ngày.</p>
-      </div>
-      <div class="sm-freeze-stock">
-        <small>Đang có</small>
-        <strong id="smFreezeStock">0 🧊</strong>
-      </div>
-      <button type="button" id="smFreezeAction">Xem điều kiện</button>
-    </article>
-
-    <article class="sm-milestone-card">
-      <div class="sm-section-head">
-        <div>
-          <span class="sm-kicker">LONG-TERM REWARDS</span>
-          <h2>Mốc quay lại</h2>
-        </div>
-        <div class="sm-milestone-mini" id="smNextMilestone">7 ngày</div>
-      </div>
-      <div class="sm-milestones" id="smMilestones"></div>
-    </article>
-  </section>
-  <section class="sm-competitive-grid">
-    <article class="sm-boss-card">
-      <div class="sm-boss-top">
-        <div>
-          <span class="sm-kicker">WEEKEND BOSS</span>
-          <h2>Boss Challenge tuần này</h2>
-          <p id="smBossDesc">Hoàn thành chuỗi nhiệm vụ để hạ Boss và nhận thưởng tuần.</p>
-        </div>
-        <div class="sm-boss-badge" id="smBossBadge">BOSS</div>
-      </div>
-
-      <div class="sm-boss-body">
-        <div class="sm-boss-avatar" id="smBossAvatar">👹</div>
-        <div class="sm-boss-info">
-          <div class="sm-boss-hp-head">
-            <strong id="smBossName">Excel Overlord</strong>
-            <span id="smBossHpText">100 HP</span>
-          </div>
-          <div class="sm-boss-hp">
-            <div class="sm-boss-hp-fill" id="smBossHpFill"></div>
-          </div>
-          <div class="sm-boss-meta">
-            <span id="smBossStatus">Chưa bắt đầu</span>
-            <span id="smBossReward">Thưởng: +100 XP</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="sm-boss-missions" id="smBossMissions"></div>
-
-      <div class="sm-boss-actions">
-        <button type="button" id="smBossAttack">⚔️ Tấn công Boss</button>
-        <a href="practice-video.html" id="smBossPractice">Luyện để gây sát thương →</a>
-      </div>
-    </article>
-
-    <article class="sm-league-card">
-      <div class="sm-section-head">
-        <div>
-          <span class="sm-kicker">WEEKLY LEAGUE</span>
-          <h2>League tuần</h2>
-        </div>
-        <div class="sm-league-rank" id="smLeagueRank">#--</div>
-      </div>
-
-      <div class="sm-league-summary">
-        <div>
-          <small>Điểm tuần</small>
-          <strong id="smLeagueScore">0</strong>
-        </div>
-        <div>
-          <small>Hạng hiện tại</small>
-          <strong id="smLeagueTier">Bronze</strong>
-        </div>
-        <div>
-          <small>Còn lại</small>
-          <strong id="smLeagueTime">--</strong>
-        </div>
-      </div>
-
-      <div class="sm-league-board" id="smLeagueBoard"></div>
-
-      <div class="sm-league-note" id="smLeagueNote">
-        Đang đồng bộ bảng xếp hạng tuần từ cộng đồng…
-      </div>
-    </article>
-  </section>
-
   <section class="sm-footer-actions">
-    <a href="focus-room.html">⏱️ Vào Focus Room</a>
-    <a href="master-learning.html">🗺️ Xem lộ trình chi tiết</a>
-    <a href="dashboard.html">📊 Xem Dashboard tiến độ</a>
+    <a href="practice-video.html">
+      <span>Thực hành</span>
+      <strong>Làm bài tập Excel →</strong>
+    </a>
+    <a href="dashboard.html">
+      <span>Tiến độ</span>
+      <strong>Xem kết quả học tập →</strong>
+    </a>
   </section>
 </main>
 
-
-<div class="sm-reward" id="smReward" hidden>
-  <div class="sm-reward-card" role="dialog" aria-modal="true" aria-labelledby="smRewardTitle">
-    <button type="button" class="sm-reward-close" id="smRewardClose">×</button>
-    <div class="sm-reward-burst" aria-hidden="true">✨</div>
-    <div class="sm-reward-chest">🎁</div>
-    <span class="sm-kicker">CHECKPOINT REWARD</span>
-    <h2 id="smRewardTitle">Mở khóa phần thưởng!</h2>
-    <p id="smRewardText">Bạn vừa hoàn thành một chặng kỹ năng.</p>
-    <button type="button" id="smRewardClaim">Nhận phần thưởng</button>
-  </div>
-</div>
 <script src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script src="simple-nav.js"></script>
 <script src="global-search.js"></script>
-<script src="skill-map.js?v=20260831-v79-comeback"></script>
+<script src="skill-map.js?v=20260831-v85-audit3"></script>
 <script src="avp-core.js"></script>
 </body>
 </html>
