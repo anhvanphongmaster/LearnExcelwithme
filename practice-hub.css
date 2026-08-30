@@ -103,192 +103,274 @@
 
 
 /* =========================================================
-   AVP V53 — PRACTICE HUB SOURCE CARDS / EXPAND MOTION TEST
-   4 equal sources on desktop, 2x2 on mobile.
+   AVP V54 — PRACTICE SOURCE GATE
+   Vào Bài tập Excel: chỉ thấy 4 nguồn.
+   Chọn nguồn: card phóng thành header, chỉ còn nội dung nguồn đó.
    ========================================================= */
 
+/* Trang chọn nguồn không cần hero lớn cũ. */
+.pv-hero-hub{
+  display:none!important;
+}
+
 .ph-switch{
+  margin-top:18px;
+  padding:22px;
   overflow:visible;
+  transition:opacity .25s ease, transform .34s cubic-bezier(.2,.8,.2,1);
+}
+
+.ph-switch-head{
+  margin-bottom:18px;
 }
 
 .ph-switch-grid{
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:14px;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:14px!important;
   align-items:stretch;
 }
 
 .ph-choice{
-  min-height:138px;
+  position:relative;
+  min-width:0;
+  min-height:158px;
   height:100%;
-  grid-template-columns:50px minmax(0,1fr);
-  grid-template-rows:auto;
-  align-content:center;
-  padding:17px 16px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:11px;
+  padding:18px 17px 42px;
   border-radius:20px;
-  isolation:isolate;
+  transform:translateZ(0);
   transform-origin:center center;
   will-change:transform,opacity,box-shadow;
   transition:
-    transform .32s cubic-bezier(.2,.8,.2,1),
-    opacity .28s ease,
-    border-color .28s ease,
-    box-shadow .32s ease,
-    filter .28s ease;
+    transform .28s cubic-bezier(.2,.8,.2,1),
+    opacity .24s ease,
+    box-shadow .28s ease,
+    border-color .24s ease,
+    filter .24s ease;
 }
 
-.ph-choice .ph-choice-arrow{
+.ph-choice-icon{
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+}
+
+.ph-choice-copy{
+  min-width:0;
+}
+
+.ph-choice-copy strong{
+  display:block;
+  font-size:16px;
+  line-height:1.18;
+}
+
+.ph-choice-copy small{
+  display:block;
+  margin-top:5px;
+  line-height:1.4;
+}
+
+.ph-choice-arrow{
   position:absolute;
-  right:14px;
+  right:15px;
   bottom:13px;
-  width:28px;
-  height:28px;
+  width:30px;
+  height:30px;
   display:grid;
   place-items:center;
   border-radius:999px;
-  background:rgba(20,58,39,.055);
-  transition:transform .28s cubic-bezier(.2,.8,.2,1),background .28s ease;
+  background:rgba(23,97,55,.07);
+  transition:transform .25s ease,background .25s ease;
 }
 
 .ph-choice:hover{
-  transform:translateY(-4px) scale(1.018);
-  box-shadow:0 16px 34px rgba(20,78,46,.13);
+  transform:translateY(-5px) scale(1.025);
+  box-shadow:0 18px 42px rgba(25,89,51,.14);
 }
 
 .ph-choice:hover .ph-choice-arrow{
-  transform:translateX(3px);
-  background:rgba(20,58,39,.09);
+  transform:translateX(4px);
+  background:rgba(23,97,55,.12);
 }
 
-.ph-choice.active{
-  transform:translateY(-4px) scale(1.025);
-}
-
-.ph-choice.guide{
-  border-color:#cfe2d4;
-  background:linear-gradient(145deg,#fff,#f7fcf8);
-}
-
-.ph-choice.guide .ph-choice-icon{
-  background:#eef8f1;
-}
-
-.ph-switch-grid.is-switching .ph-choice{
+/* Trong lúc chọn, ba nguồn còn lại lùi xuống rõ ràng cả desktop lẫn mobile. */
+.ph-switch.is-entering .ph-choice:not(.is-entering-source){
+  opacity:.28;
+  filter:saturate(.65);
+  transform:scale(.94);
   pointer-events:none;
 }
 
-.ph-switch-grid.is-switching .ph-choice:not(.is-launching){
-  opacity:.46;
-  filter:saturate(.72);
-  transform:scale(.965);
+.ph-choice.is-entering-source{
+  z-index:5;
+  transform:translateY(-8px) scale(1.075);
+  box-shadow:0 24px 56px rgba(16,86,47,.23);
 }
 
-.ph-choice.is-launching{
-  z-index:3;
-  transform:translateY(-7px) scale(1.065);
-  box-shadow:0 22px 48px rgba(20,88,50,.22);
+/* Header nguồn sau khi card đã phóng lớn. */
+.ph-focus-header{
+  position:relative;
+  display:none;
+  min-height:160px;
+  margin:18px 0 18px;
+  padding:24px 26px;
+  border:1px solid #cce3d3;
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 92% 15%,rgba(255,255,255,.72),transparent 28%),
+    linear-gradient(135deg,#176b3b 0%,#217346 55%,#2b8650 100%);
+  color:#fff;
+  overflow:hidden;
+  box-shadow:0 18px 44px rgba(19,90,50,.17);
+  transform-origin:center center;
 }
 
-.ph-choice.is-launching::after{
-  content:"";
-  position:absolute;
-  inset:-1px;
-  border-radius:inherit;
-  border:2px solid rgba(44,174,93,.45);
-  animation:phSourcePulse .48s ease-out both;
-  pointer-events:none;
+.ph-focus-header[hidden]{
+  display:none!important;
 }
 
-@keyframes phSourcePulse{
-  0%{opacity:0;transform:scale(.98)}
-  35%{opacity:1}
-  100%{opacity:0;transform:scale(1.075)}
+.ph-focus-header.is-visible{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  animation:phHeaderSettle .46s cubic-bezier(.18,.82,.24,1) both;
 }
 
-/* Flying card used only during the transition. */
-.ph-choice-flight{
+.ph-focus-icon{
+  width:68px;
+  height:68px;
+  flex:0 0 68px;
+  display:grid;
+  place-items:center;
+  border-radius:20px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.25);
+  font-size:34px;
+  backdrop-filter:blur(8px);
+}
+
+.ph-focus-copy{
+  min-width:0;
+  flex:1;
+}
+
+.ph-focus-kicker{
+  display:block;
+  margin-bottom:5px;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.12em;
+  opacity:.8;
+}
+
+.ph-focus-title{
+  margin:0;
+  color:#fff;
+  font-size:clamp(25px,3.2vw,40px);
+  line-height:1.08;
+}
+
+.ph-focus-desc{
+  margin:7px 0 0;
+  max-width:760px;
+  color:rgba(255,255,255,.88);
+  font-size:14px;
+  line-height:1.5;
+}
+
+.ph-source-back{
+  flex:0 0 auto;
+  align-self:flex-start;
+  border:1px solid rgba(255,255,255,.34);
+  border-radius:999px;
+  padding:9px 12px;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  font:inherit;
+  font-size:11px;
+  font-weight:900;
+  cursor:pointer;
+  backdrop-filter:blur(8px);
+}
+
+.ph-source-back:hover{
+  background:rgba(255,255,255,.2);
+}
+
+@keyframes phHeaderSettle{
+  0%{opacity:.35;transform:scale(.965) translateY(7px)}
+  100%{opacity:1;transform:none}
+}
+
+/* Clone của card dùng để morph thành header. */
+.ph-source-morph{
   position:fixed!important;
-  z-index:2147482000!important;
+  z-index:2147483000!important;
   margin:0!important;
   pointer-events:none!important;
   overflow:hidden!important;
   transform-origin:center center!important;
-  box-shadow:0 24px 60px rgba(8,53,28,.24)!important;
+  will-change:transform,opacity,border-radius;
+  box-shadow:0 24px 65px rgba(14,69,39,.28)!important;
 }
 
+/* Chỉ render 1 nguồn tại một thời điểm. */
 .ph-branch{
-  transform-origin:top center;
+  margin-top:0;
 }
 
-.ph-branch.ph-branch-reveal{
-  animation:phBranchExpand .48s cubic-bezier(.18,.82,.24,1) both;
+.ph-branch.ph-focus-reveal{
+  animation:phBranchFocusReveal .52s cubic-bezier(.18,.82,.24,1) both;
 }
 
-@keyframes phBranchExpand{
+@keyframes phBranchFocusReveal{
   0%{
-    opacity:.15;
-    transform:translateY(12px) scale(.975);
-    filter:blur(1px);
-  }
-  55%{
-    opacity:.85;
+    opacity:0;
+    transform:translateY(18px) scale(.982);
   }
   100%{
     opacity:1;
     transform:none;
-    filter:none;
   }
 }
 
-.ph-branch.ph-branch-flash{
-  position:relative;
+/* Khi đang ở trong một nguồn: chooser biến mất hoàn toàn. */
+.pv-page.ph-source-open .ph-switch{
+  display:none!important;
 }
 
-.ph-branch.ph-branch-flash::before{
-  content:"";
-  position:absolute;
-  inset:-8px;
-  border-radius:22px;
-  border:2px solid rgba(52,181,102,.24);
-  opacity:0;
-  pointer-events:none;
-  animation:phDestinationGlow .65s ease-out;
+.pv-page.ph-source-open .ph-focus-header{
+  display:flex;
 }
 
-@keyframes phDestinationGlow{
-  0%{opacity:0;transform:scale(.99)}
-  28%{opacity:1}
-  100%{opacity:0;transform:scale(1.012)}
-}
-
-/* Tablet/mobile: keep exactly 2 columns for the four sources. */
 @media(max-width:980px){
   .ph-switch-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:11px;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
   }
 }
 
-@media(max-width:760px){
+@media(max-width:720px){
+  .ph-switch{
+    padding:15px;
+  }
+
   .ph-switch-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:10px;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:10px!important;
   }
 
   .ph-choice{
-    min-height:142px;
-    grid-template-columns:1fr;
-    align-content:start;
-    gap:9px;
+    min-height:154px;
     padding:14px 12px 38px;
-  }
-
-  .ph-choice-icon{
-    width:44px;
-    height:44px;
-  }
-
-  .ph-choice-copy{
-    gap:4px;
+    border-radius:17px;
   }
 
   .ph-choice-copy strong{
@@ -297,56 +379,60 @@
 
   .ph-choice-copy small{
     font-size:10.5px;
-    line-height:1.35;
   }
 
   .ph-choice-eyebrow{
     font-size:8.5px;
-    letter-spacing:.06em;
   }
 
-  .ph-choice .ph-choice-arrow{
-    right:11px;
-    bottom:10px;
+  .ph-focus-header{
+    min-height:0;
+    padding:17px 15px;
+    border-radius:19px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:12px;
   }
 
-  .ph-choice-new{
-    right:8px;
-    top:-7px;
+  .ph-focus-icon{
+    width:54px;
+    height:54px;
+    flex-basis:54px;
+    border-radius:16px;
+    font-size:27px;
+  }
+
+  .ph-focus-copy{
+    width:calc(100% - 70px);
+  }
+
+  .ph-focus-title{
+    font-size:24px;
+  }
+
+  .ph-focus-desc{
+    font-size:12px;
+  }
+
+  .ph-source-back{
+    order:3;
+    margin-left:auto;
   }
 }
 
-@media(max-width:390px){
-  .ph-switch{
-    padding:12px;
-  }
-
-  .ph-switch-grid{
-    gap:8px;
-  }
-
+@media(max-width:380px){
   .ph-choice{
-    min-height:148px;
-    padding:12px 10px 36px;
-    border-radius:16px;
-  }
-
-  .ph-choice-copy strong{
-    font-size:13.5px;
-  }
-
-  .ph-choice-copy small{
-    font-size:10px;
+    min-height:160px;
+    padding-left:10px;
+    padding-right:10px;
   }
 }
 
 @media(prefers-reduced-motion:reduce){
   .ph-choice,
-  .ph-choice .ph-choice-arrow,
-  .ph-branch-active,
-  .ph-branch.ph-branch-reveal,
-  .ph-choice.is-launching::after,
-  .ph-branch.ph-branch-flash::before{
+  .ph-switch,
+  .ph-focus-header,
+  .ph-branch.ph-focus-reveal{
     animation:none!important;
     transition:none!important;
   }

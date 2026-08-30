@@ -4,8 +4,40 @@
   const q = (s, r=document) => r.querySelector(s);
   const qa = (s, r=document) => Array.from(r.querySelectorAll(s));
 
+  const page = q(".pv-page");
+  const chooser = q(".ph-switch");
+  const grid = q(".ph-switch-grid");
+
   let youtubeLoaded = false;
-  let switching = false;
+  let entering = false;
+  let activeBranch = null;
+
+  const sourceMeta = {
+    tiktok: {
+      icon: "📱",
+      kicker: "TIKTOK PRACTICE",
+      title: "Theo video TikTok",
+      desc: "Kho bài TikTok, vote nhu cầu và file thực hành."
+    },
+    youtube: {
+      icon: "▶️",
+      kicker: "YOUTUBE PROJECT",
+      title: "Theo YouTube",
+      desc: "Project dài, file theo từng phần và tài nguyên đi kèm."
+    },
+    grader: {
+      icon: "🧪",
+      kicker: "AUTO GRADING",
+      title: "Chấm điểm tự động",
+      desc: "Tải file, làm Excel, nộp lại và nhận điểm từ hệ thống."
+    },
+    guide: {
+      icon: "📖",
+      kicker: "PRACTICE GUIDE",
+      title: "Hướng dẫn làm bài",
+      desc: "100 bài với gợi ý cách làm và lỗi cần tránh, không có đáp án sẵn."
+    }
+  };
 
   const branchMap = () => ({
     tiktok: q("#phBranchTiktok"),
@@ -14,40 +46,83 @@
     guide: q("#phBranchGuide")
   });
 
-  function markSelected(name) {
+  function reducedMotion() {
+    return !!(window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
+
+  function ensureFocusHeader() {
+    let header = q("#phFocusHeader");
+    if (header) return header;
+
+    header = document.createElement("section");
+    header.id = "phFocusHeader";
+    header.className = "ph-focus-header";
+    header.hidden = true;
+    header.setAttribute("aria-live", "polite");
+    header.innerHTML = `
+      <div class="ph-focus-icon" id="phFocusIcon">📱</div>
+      <div class="ph-focus-copy">
+        <span class="ph-focus-kicker" id="phFocusKicker"></span>
+        <h1 class="ph-focus-title" id="phFocusTitle"></h1>
+        <p class="ph-focus-desc" id="phFocusDesc"></p>
+      </div>
+      <button type="button" class="ph-source-back" id="phSourceBack">← Chọn nguồn khác</button>
+    `;
+
+    chooser.insertAdjacentElement("afterend", header);
+    q("#phSourceBack", header).addEventListener("click", closeSource);
+    return header;
+  }
+
+  function fillFocusHeader(name) {
+    const meta = sourceMeta[name] || sourceMeta.tiktok;
+    const header = ensureFocusHeader();
+    q("#phFocusIcon", header).textContent = meta.icon;
+    q("#phFocusKicker", header).textContent = meta.kicker;
+    q("#phFocusTitle", header).textContent = meta.title;
+    q("#phFocusDesc", header).textContent = meta.desc;
+    return header;
+  }
+
+  function hideAllBranches() {
+    Object.values(branchMap()).forEach(el => {
+      if (!el) return;
+      el.hidden = true;
+      el.classList.remove("ph-branch-active", "ph-focus-reveal");
+    });
+
     qa("[data-practice-branch]").forEach(btn => {
-      const active = btn.dataset.practiceBranch === name;
-      btn.classList.toggle("active", active);
-      btn.setAttribute("aria-selected", active ? "true" : "false");
-      btn.tabIndex = active ? 0 : -1;
+      btn.classList.remove("active", "is-entering-source");
+      btn.setAttribute("aria-selected", "false");
     });
   }
 
-  function showBranch(name, {animate=true} = {}) {
-    const map = branchMap();
+  function showOnlyBranch(name, animate=true) {
+    hideAllBranches();
 
-    Object.entries(map).forEach(([key, el]) => {
-      if (!el) return;
-      const active = key === name;
-      el.hidden = !active;
-      el.classList.toggle("ph-branch-active", active);
+    const target = branchMap()[name];
+    if (!target) return null;
 
-      if (active && animate) {
-        el.classList.remove("ph-branch-reveal", "ph-branch-flash");
-        void el.offsetWidth;
-        el.classList.add("ph-branch-reveal", "ph-branch-flash");
-        window.setTimeout(() => {
-          el.classList.remove("ph-branch-reveal", "ph-branch-flash");
-        }, 760);
-      }
-    });
+    target.hidden = false;
+    target.classList.add("ph-branch-active");
 
-    markSelected(name);
+    if (animate && !reducedMotion()) {
+      target.classList.remove("ph-focus-reveal");
+      void target.offsetWidth;
+      target.classList.add("ph-focus-reveal");
+      window.setTimeout(() => target.classList.remove("ph-focus-reveal"), 650);
+    }
+
+    const btn = q(`[data-practice-branch="${name}"]`);
+    if (btn) {
+      btn.classList.add("active");
+      btn.setAttribute("aria-selected", "true");
+    }
 
     if (name === "youtube") loadYoutube();
-    try { sessionStorage.setItem("avp_practice_branch", name); } catch(e) {}
-
-    return map[name] || null;
+    activeBranch = name;
+    return target;
   }
 
   function loadYoutube() {
@@ -67,28 +142,14 @@
     `;
   }
 
-  function prefersReducedMotion() {
-    return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  }
-
-  function smoothReveal(target) {
-    if (!target) return;
-    const top = target.getBoundingClientRect().top + window.scrollY - 92;
-    window.scrollTo({
-      top: Math.max(0, top),
-      behavior: prefersReducedMotion() ? "auto" : "smooth"
-    });
-  }
-
-  function makeFlightClone(btn) {
+  function createMorphClone(btn) {
     const rect = btn.getBoundingClientRect();
     const clone = btn.cloneNode(true);
-    clone.classList.add("ph-choice-flight");
-    clone.classList.remove("active", "is-launching");
+    clone.classList.add("ph-source-morph");
+    clone.classList.remove("active", "is-entering-source");
+    clone.disabled = true;
     clone.removeAttribute("role");
     clone.removeAttribute("aria-selected");
-    clone.removeAttribute("tabindex");
-    clone.disabled = true;
 
     Object.assign(clone.style, {
       left: rect.left + "px",
@@ -101,90 +162,145 @@
     return {clone, rect};
   }
 
-  async function animateBranchSwitch(btn, branch) {
-    if (switching) return;
-    switching = true;
+  function scrollToHeader() {
+    const header = q("#phFocusHeader");
+    if (!header) return;
+    const top = Math.max(
+      0,
+      header.getBoundingClientRect().top + window.scrollY - 88
+    );
+    window.scrollTo({
+      top,
+      behavior: reducedMotion() ? "auto" : "smooth"
+    });
+  }
 
-    const grid = q(".ph-switch-grid");
-    const current = q(".ph-choice.active");
-    const targetAlreadyActive = current === btn;
+  async function openSource(name, btn, {animate=true} = {}) {
+    if (entering) return;
+    const target = branchMap()[name];
+    if (!target) return;
 
-    if (grid) grid.classList.add("is-switching");
-    btn.classList.add("is-launching");
+    entering = true;
+    const header = fillFocusHeader(name);
 
-    if (prefersReducedMotion()) {
-      const target = showBranch(branch, {animate:false});
-      if (grid) grid.classList.remove("is-switching");
-      btn.classList.remove("is-launching");
-      switching = false;
-      smoothReveal(target);
+    // Put the future header into layout only for measurement.
+    header.hidden = false;
+    header.classList.remove("is-visible");
+    header.style.visibility = "hidden";
+    page?.classList.remove("ph-source-open");
+
+    const headerRect = header.getBoundingClientRect();
+    header.hidden = true;
+    header.style.visibility = "";
+
+    if (!animate || reducedMotion() || !btn) {
+      page?.classList.add("ph-source-open");
+      header.hidden = false;
+      header.classList.add("is-visible");
+      showOnlyBranch(name, false);
+      history.replaceState(null, "", "#"+name);
+      entering = false;
+      scrollToHeader();
       return;
     }
 
+    chooser?.classList.add("is-entering");
+    btn.classList.add("is-entering-source");
+
     let flight = null;
-    try {
-      flight = makeFlightClone(btn);
-    } catch(e) {}
+    try { flight = createMorphClone(btn); } catch(e) {}
 
-    await new Promise(resolve => window.setTimeout(resolve, 150));
-
-    const target = showBranch(branch, {animate:true});
-
-    if (flight && flight.clone && target) {
+    if (flight?.clone) {
       const start = flight.rect;
-      const end = target.getBoundingClientRect();
+      const startCX = start.left + start.width / 2;
+      const startCY = start.top + start.height / 2;
+      const endCX = headerRect.left + headerRect.width / 2;
+      const endCY = headerRect.top + Math.min(headerRect.height, 165) / 2;
 
-      const targetX = Math.max(16, Math.min(window.innerWidth - 16, end.left + Math.min(end.width, 420) / 2));
-      const targetY = Math.max(80, Math.min(window.innerHeight - 80, end.top + 68));
-      const startX = start.left + start.width / 2;
-      const startY = start.top + start.height / 2;
-
-      const dx = targetX - startX;
-      const dy = targetY - startY;
-      const scaleX = Math.max(.58, Math.min(1.45, Math.min(end.width, 420) / Math.max(start.width, 1)));
-      const scale = Math.min(1.16, Math.max(.72, scaleX));
+      const dx = endCX - startCX;
+      const dy = endCY - startCY;
+      const sx = Math.max(.9, Math.min(4, headerRect.width / Math.max(1,start.width)));
+      const sy = Math.max(.75, Math.min(1.7, Math.min(headerRect.height,165) / Math.max(1,start.height)));
 
       try {
-        const anim = flight.clone.animate([
-          {transform:"translate3d(0,0,0) scale(1)", opacity:1, filter:"blur(0px)"},
-          {offset:.35, transform:"translate3d("+(dx*.34)+"px,"+(dy*.28)+"px,0) scale(1.07)", opacity:.94},
-          {transform:"translate3d("+dx+"px,"+dy+"px,0) scale("+scale+")", opacity:0, filter:"blur(2px)"}
+        const animation = flight.clone.animate([
+          {
+            transform:"translate3d(0,0,0) scale(1,1)",
+            opacity:1,
+            borderRadius:"20px"
+          },
+          {
+            offset:.28,
+            transform:"translate3d("+(dx*.20)+"px,"+(dy*.16)+"px,0) scale(1.08,1.05)",
+            opacity:1,
+            borderRadius:"22px"
+          },
+          {
+            transform:"translate3d("+dx+"px,"+dy+"px,0) scale("+sx+","+sy+")",
+            opacity:.08,
+            borderRadius:"24px"
+          }
         ], {
-          duration:430,
-          easing:"cubic-bezier(.2,.78,.22,1)",
+          duration:620,
+          easing:"cubic-bezier(.16,.84,.24,1)",
           fill:"forwards"
         });
-        await anim.finished.catch(() => {});
+
+        await animation.finished.catch(() => {});
       } catch(e) {
-        await new Promise(resolve => window.setTimeout(resolve, 360));
+        await new Promise(r => setTimeout(r, 620));
       }
 
       flight.clone.remove();
     } else {
-      await new Promise(resolve => window.setTimeout(resolve, 260));
+      await new Promise(r => setTimeout(r, 420));
     }
 
-    if (grid) grid.classList.remove("is-switching");
-    btn.classList.remove("is-launching");
-    switching = false;
+    // Enter single-source mode only after the zoom animation.
+    page?.classList.add("ph-source-open");
+    header.hidden = false;
+    header.classList.add("is-visible");
+    showOnlyBranch(name, true);
 
-    smoothReveal(target);
+    chooser?.classList.remove("is-entering");
+    btn.classList.remove("is-entering-source");
 
-    // When tapping the already selected source, replay the reveal so the card
-    // still feels like an entrance to that content.
-    if (targetAlreadyActive && target) {
-      target.classList.remove("ph-branch-reveal");
-      void target.offsetWidth;
-      target.classList.add("ph-branch-reveal");
-      window.setTimeout(() => target.classList.remove("ph-branch-reveal"), 600);
-    }
+    history.replaceState(null, "", "#"+name);
+    entering = false;
+    scrollToHeader();
+  }
+
+  function closeSource() {
+    if (entering) return;
+    activeBranch = null;
+    hideAllBranches();
+
+    const header = ensureFocusHeader();
+    header.classList.remove("is-visible");
+    header.hidden = true;
+
+    page?.classList.remove("ph-source-open");
+    chooser?.classList.remove("is-entering");
+
+    history.replaceState(null, "", location.pathname + location.search);
+
+    const top = Math.max(
+      0,
+      chooser.getBoundingClientRect().top + window.scrollY - 88
+    );
+    window.scrollTo({
+      top,
+      behavior: reducedMotion() ? "auto" : "smooth"
+    });
   }
 
   function initTopicTabs() {
     qa("[data-pg-topic]").forEach(btn => {
       btn.addEventListener("click", () => {
         const topic = btn.dataset.pgTopic;
-        qa("[data-pg-topic]").forEach(x => x.classList.toggle("active", x === btn));
+        qa("[data-pg-topic]").forEach(x =>
+          x.classList.toggle("active", x === btn)
+        );
         qa("[data-pg-panel]").forEach(panel => {
           panel.hidden = panel.dataset.pgPanel !== topic;
         });
@@ -192,62 +308,28 @@
     });
   }
 
-  async function canEnterGrader() {
-    const access = window.AVPAccess;
-    if (!access) {
-      location.href = "auth.html?next=" + encodeURIComponent("practice-video.html#grader");
-      return false;
-    }
-
-    const user = await access.requireLogin({
-      next: "practice-video.html#grader",
-      reason: "Đăng nhập để làm bài chấm điểm."
+  function bindChooser() {
+    qa("[data-practice-branch]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        // Không chặn Auto Grading ở đây.
+        // practice-grader.js tự xử lý đăng nhập khi người dùng tải/nộp bài.
+        openSource(btn.dataset.practiceBranch, btn, {animate:true});
+      });
     });
-    return !!user;
   }
 
   function init() {
-    qa("[data-practice-branch]").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        if (switching) return;
-        const branch = btn.dataset.practiceBranch;
-
-        if (branch === "grader") {
-          const ok = await canEnterGrader();
-          if (!ok) return;
-        }
-
-        animateBranchSwitch(btn, branch);
-      });
-    });
-
+    ensureFocusHeader();
+    hideAllBranches();
+    bindChooser();
     initTopicTabs();
 
-    let initial = "tiktok";
-    try {
-      const saved = sessionStorage.getItem("avp_practice_branch");
-      if (["tiktok","youtube","grader","guide"].includes(saved)) initial = saved;
-    } catch(e) {}
-
-    const hash = location.hash.replace("#","");
-    if (["tiktok","youtube","grader","guide"].includes(hash)) initial = hash;
-
-    if (initial === "grader") {
-      (async () => {
-        const access = window.AVPAccess;
-        if (!access) {
-          showBranch("tiktok", {animate:false});
-          return;
-        }
-        const user = await access.getUser(true);
-        if (user) showBranch("grader", {animate:false});
-        else {
-          showBranch("tiktok", {animate:false});
-          access.goLogin("practice-video.html#grader");
-        }
-      })();
-    } else {
-      showBranch(initial, {animate:false});
+    // Bình thường vào trang: CHỈ 4 nguồn.
+    // Chỉ tự mở khi có deep-link rõ ràng, ví dụ sau khi login quay về #grader.
+    const hash = location.hash.replace("#", "");
+    if (["tiktok","youtube","grader","guide"].includes(hash)) {
+      const btn = q(`[data-practice-branch="${hash}"]`);
+      window.setTimeout(() => openSource(hash, btn, {animate:false}), 0);
     }
   }
 
