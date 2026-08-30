@@ -248,6 +248,10 @@
     $("frSummaryMinutes").textContent=used+"m";
     $("frSummaryTasks").textContent=tasks+"/3";
     $("frSummaryXP").textContent="+"+reward;
+    if($("frSummaryContinue")){
+      $("frSummaryContinue").href=g.link;
+      $("frSummaryContinue").textContent="Tiếp tục "+g.title+" →";
+    }
     $("frSummary").hidden=false;
 
     remaining=selectedMinutes*60;

@@ -33,26 +33,17 @@
 </nav>
 
 <main class="pv-page">
-  <a class="pv-back" href="index.html">← Về Trang chủ</a>
-
   <section class="pv-hero pv-hero-hub">
     <span class="pv-kicker">PRACTICE HUB</span>
-    <h1>📚 Bài tập Excel</h1>
-    <p>Một khu thực hành chung với 4 cách luyện: theo TikTok, theo YouTube hoặc nộp file để hệ thống tự chấm.</p>
-    <div class="pv-stats pv-hub-stats">
-      <div class="pv-stat"><small>Luồng thực hành</small><strong>4</strong></div>
-      <div class="pv-stat"><small>Kho TikTok</small><strong id="pvStatTotal">100</strong></div>
-      <div class="pv-stat"><small>Chấm tự động</small><strong>BETA</strong></div>
-      <span id="pvStatAvailable" hidden>0</span>
-      <span id="pvStatComing" hidden>0</span>
-    </div>
+    <h1>Bài tập Excel</h1>
+    <p>Chọn đúng cách bạn muốn luyện: bài theo TikTok, project YouTube, chấm file tự động hoặc xem hướng dẫn thực hành.</p>
   </section>
 
   <section class="ph-switch" aria-labelledby="phSwitchTitle">
     <div class="ph-switch-head">
-      <span>4 NGUỒN BÀI TẬP</span>
-      <h2 id="phSwitchTitle">Chọn nguồn bạn muốn luyện</h2>
-      <p>Chọn một nguồn để mở riêng khu bài tập tương ứng.</p>
+      <span>CHỌN CÁCH LUYỆN</span>
+      <h2 id="phSwitchTitle">Bạn muốn luyện theo cách nào?</h2>
+      <p>Mỗi lựa chọn mở một luồng riêng. Khi muốn đổi, dùng nút “Chọn cách luyện khác”.</p>
     </div>
 
     <div class="ph-switch-grid" role="tablist" aria-label="Bốn luồng bài tập">
@@ -105,7 +96,7 @@
       <h1 id="phFocusTitle">Theo video TikTok</h1>
       <p id="phFocusDesc">Kho bài TikTok, vote nhu cầu và file thực hành.</p>
     </div>
-    <button type="button" id="phSourceBack" class="ph-source-back-v56">← Chọn nguồn khác</button>
+    <button type="button" id="phSourceBack" class="ph-source-back-v56">← Chọn cách luyện khác</button>
   </section>
 
 
@@ -132,7 +123,7 @@
       <span aria-hidden="true">🔎</span>
       <input id="pvSearch" type="search" placeholder="Tìm bài thực hành..." autocomplete="off">
     </div>
-    <p class="pv-lab-hint" style="margin:8px 0 12px;font-size:13px;color:#5f7268">Cần dataset lab thêm? Xem <a href="practice-lab.html" style="font-weight:700;color:#145a32">Practice Lab</a>.</p><div class="pv-filters" id="pvFilters">
+    <p class="pv-lab-hint" style="margin:8px 0 12px;font-size:13px;color:#5f7268">Muốn luyện theo case dài hơn? <a href="practice-lab.html" style="font-weight:700;color:#145a32">Mở Practice Lab</a>.</p><div class="pv-filters" id="pvFilters">
       <button type="button" class="pv-filter active" data-filter="all">Tất cả</button>
       <button type="button" class="pv-filter" data-filter="Làm sạch dữ liệu">Làm sạch</button>
       <button type="button" class="pv-filter" data-filter="Power Query">Power Query</button>

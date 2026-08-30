@@ -62,3 +62,13 @@
 .pyt-chvote-btn:disabled{opacity:.7;cursor:default}
 .pyt-chvote-st{font-size:11px;color:rgba(255,255,255,.9);font-weight:700}
 @media(max-width:640px){.pyt-chvote-btn{width:100%;text-align:center}}
+
+
+/* V90 — embedded YouTube practice belongs to Practice Hub, so avoid duplicate navigation */
+.pyt-embedded .top-simple-nav,
+.pyt-embedded .pyt-back{
+  display:none!important;
+}
+.pyt-embedded .pyt-page{
+  margin-top:10px!important;
+}

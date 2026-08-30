@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="global-search.css">
-  <link rel="stylesheet" href="focus-room.css?v=20260831-v80">
+  <link rel="stylesheet" href="focus-room.css?v=20260831-v90">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
 </head>
@@ -28,6 +28,10 @@
 </nav>
 
 <main class="fr-page">
+  <div class="fr-context">
+    <a href="skill-map.html">← Quay lại Skill Map</a>
+    <span>Focus Room · Học tập trung</span>
+  </div>
   <section class="fr-hero">
     <div>
       <span class="fr-kicker">FOCUS STUDY SESSION</span>
@@ -123,13 +127,16 @@
       <div><small>XP nhận</small><strong id="frSummaryXP">+0</strong></div>
     </div>
 
-    <button type="button" id="frSummaryDone">Xong</button>
+    <div class="fr-summary-actions">
+      <a id="frSummaryContinue" href="skill-map.html">Tiếp tục nội dung →</a>
+      <button type="button" id="frSummaryDone">Đóng</button>
+    </div>
   </div>
 </div>
 <script src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script src="simple-nav.js"></script>
-<script src="focus-room.js?v=20260831-v80"></script>
+<script src="focus-room.js?v=20260831-v90"></script>
 <script src="avp-core.js"></script>
 <script defer src="global-search.js"></script>
 </body>

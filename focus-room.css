@@ -86,3 +86,49 @@ body{
 #frSummaryDone{border:0;border-radius:999px;padding:10px 18px;background:#217346;color:#fff;font:inherit;font-size:10px;font-weight:900;cursor:pointer}
 @media(max-width:820px){.fr-hero,.fr-grid{grid-template-columns:1fr}.fr-stats{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:520px){.fr-page{width:calc(100% - 18px)}.fr-hero{padding:20px 17px}.fr-stats{grid-template-columns:1fr}.fr-timer{font-size:56px}.fr-actions{grid-template-columns:1fr}.fr-history-row{grid-template-columns:1fr auto}.fr-history-row span:last-child{display:none}}
+
+
+/* V90 — clearer Focus Room entry/exit flow */
+.fr-context{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 10px;
+  color:#75857c;
+  font-size:9px;
+}
+.fr-context a{
+  color:#217346;
+  text-decoration:none;
+  font-weight:900;
+}
+.fr-summary-actions{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+  margin-top:12px;
+}
+#frSummaryContinue{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:40px;
+  padding:9px 14px;
+  border-radius:999px;
+  background:#217346;
+  color:#fff;
+  text-decoration:none;
+  font-size:10px;
+  font-weight:900;
+}
+#frSummaryDone{
+  min-height:40px;
+  background:#eef7f2!important;
+  color:#185c37!important;
+  border:1px solid #bfd9c9!important;
+}
+@media(max-width:520px){
+  .fr-context{align-items:flex-start;flex-direction:column;gap:3px}
+  .fr-summary-actions{grid-template-columns:1fr}
+}

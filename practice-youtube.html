@@ -31,6 +31,16 @@ html.avp-embedded-youtube .pyt-back{display:none!important}
   <link rel="stylesheet" href="global-search.css">
 </head>
 <body>
+<script>
+(function(){
+  try{
+    if(new URLSearchParams(location.search).get("embed")==="1"){
+      document.documentElement.classList.add("pyt-embedded");
+      document.body.classList.add("pyt-embedded");
+    }
+  }catch(e){}
+})();
+</script>
 <nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
     <a href="index.html" data-avp-nav="home">Trang chủ</a>
@@ -44,7 +54,7 @@ html.avp-embedded-youtube .pyt-back{display:none!important}
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
 <main class="pyt-page">
-<p class="pyt-back"><a href="index.html">← Về Trang chủ</a></p>
+<p class="pyt-back"><a href="practice-video.html">← Quay lại Practice Hub</a></p>
 <header class="pyt-hero">
   <div class="pyt-chvote" id="pytChVote">
     <span class="pyt-chvote-lab">Bạn muốn admin làm tiếp?</span>
