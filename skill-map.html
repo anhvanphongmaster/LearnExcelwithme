@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="global-search.css">
-  <link rel="stylesheet" href="skill-map.css?v=20260831-v71-wow">
+  <link rel="stylesheet" href="skill-map.css?v=20260831-v72-daily-coach">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link rel="stylesheet" href="theme-polish-v33.css">
@@ -54,6 +54,54 @@
       <p id="smTodayDesc">Skill Map sẽ dựa trên tiến độ hiện tại để chọn node phù hợp nhất.</p>
     </div>
     <a id="smTodayLink" href="excel.html">Bắt đầu →</a>
+  </section>
+
+
+  <section class="sm-daily-grid">
+    <article class="sm-mission-card">
+      <div class="sm-section-head">
+        <div>
+          <span class="sm-kicker">DAILY MISSION</span>
+          <h2>Nhiệm vụ hôm nay</h2>
+        </div>
+        <div class="sm-mission-ring" id="smMissionRing">
+          <strong id="smMissionCount">0/3</strong>
+          <span>hoàn thành</span>
+        </div>
+      </div>
+
+      <div class="sm-mission-list" id="smMissionList"></div>
+
+      <div class="sm-daily-reward" id="smDailyReward">
+        <div>
+          <span>🎁 DAILY REWARD</span>
+          <strong>Hoàn thành 3/3 để nhận +25 XP</strong>
+        </div>
+        <button type="button" id="smDailyClaim" disabled>Chưa đủ điều kiện</button>
+      </div>
+    </article>
+
+    <article class="sm-coach-card">
+      <div class="sm-coach-head">
+        <div class="sm-coach-avatar">AI</div>
+        <div>
+          <span class="sm-kicker">AI COACH</span>
+          <h2>Coach của bạn</h2>
+        </div>
+        <span class="sm-coach-status">● ONLINE</span>
+      </div>
+
+      <div class="sm-coach-message">
+        <p id="smCoachMessage">Đang phân tích tiến độ học của bạn…</p>
+      </div>
+
+      <div class="sm-coach-insights" id="smCoachInsights"></div>
+
+      <div class="sm-coach-actions">
+        <button type="button" id="smCoachAsk">💬 Hỏi AI Coach</button>
+        <a id="smCoachAction" href="practice-video.html">Làm bài Coach đề xuất →</a>
+      </div>
+    </article>
   </section>
 
   <section class="sm-map-shell">
@@ -101,7 +149,7 @@
 <script src="supabase-auth.js"></script>
 <script src="simple-nav.js"></script>
 <script src="global-search.js"></script>
-<script src="skill-map.js?v=20260831-v71-wow"></script>
+<script src="skill-map.js?v=20260831-v72-daily-coach"></script>
 <script src="avp-core.js"></script>
 </body>
 </html>

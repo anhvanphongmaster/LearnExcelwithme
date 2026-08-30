@@ -102,6 +102,180 @@
     return {q,p,done,stageDone,unlocked,all,doneCount,unlockedCount,next};
   }
 
+
+  function localDateKey(){
+    const d = new Date();
+    return [
+      d.getFullYear(),
+      String(d.getMonth()+1).padStart(2,"0"),
+      String(d.getDate()).padStart(2,"0")
+    ].join("-");
+  }
+
+  function dailyState(s){
+    const key = "avp_skillmap_daily_v72_" + localDateKey();
+    let saved = {};
+    try{ saved = JSON.parse(localStorage.getItem(key) || "{}"); }catch(e){}
+
+    if(typeof saved.xpBase !== "number"){
+      saved.xpBase = xp();
+      saved.doneBase = s.doneCount;
+      saved.claimed = false;
+      localStorage.setItem(key, JSON.stringify(saved));
+    }
+
+    const nextLesson = s.next?.lesson || null;
+    const mission1Done = s.doneCount > (saved.doneBase || 0);
+    const mission2Done = xp() >= (saved.xpBase || 0) + 20;
+    const quizMap = json(QKEY,{});
+    const mission3Done = Object.keys(quizMap).length > Number(saved.quizBase || 0);
+
+    if(saved.quizBase == null){
+      saved.quizBase = Object.keys(quizMap).length;
+      localStorage.setItem(key, JSON.stringify(saved));
+    }
+
+    return {
+      key,
+      saved,
+      missions:[
+        {
+          icon:"🎯",
+          title:nextLesson ? "Hoàn thành 1 node kỹ năng" : "Ôn lại 1 node bất kỳ",
+          desc:nextLesson ? "Ưu tiên: " + nextLesson[2] : "Bạn đã hoàn thành Skill Map, hãy ôn lại một kỹ năng.",
+          done:mission1Done
+        },
+        {
+          icon:"⚡",
+          title:"Kiếm thêm 20 XP",
+          desc:"Học, làm quiz hoặc nhận thưởng checkpoint.",
+          done:mission2Done
+        },
+        {
+          icon:"🧠",
+          title:"Hoàn thành thêm 1 Quiz",
+          desc:"Củng cố kiến thức bằng một bài kiểm tra ngắn.",
+          done:mission3Done
+        }
+      ]
+    };
+  }
+
+  function renderDaily(s){
+    const d = dailyState(s);
+    const list = $("smMissionList");
+    if(!list) return;
+
+    list.innerHTML = d.missions.map((m,i)=>`
+      <div class="sm-mission ${m.done ? "done" : ""}">
+        <div class="sm-mission-icon">${m.icon}</div>
+        <div>
+          <strong>${m.title}</strong>
+          <small>${m.desc}</small>
+        </div>
+        <div class="sm-mission-status">${m.done ? "✓ Xong" : "Chưa xong"}</div>
+      </div>
+    `).join("");
+
+    const doneCount = d.missions.filter(m=>m.done).length;
+    $("smMissionCount").textContent = doneCount + "/3";
+    $("smMissionRing").style.setProperty("--mission-pct",(doneCount/3*100)+"%");
+
+    const claim = $("smDailyClaim");
+    if(d.saved.claimed){
+      claim.disabled = true;
+      claim.textContent = "✓ Đã nhận +25 XP";
+    }else if(doneCount === 3){
+      claim.disabled = false;
+      claim.textContent = "Nhận +25 XP";
+    }else{
+      claim.disabled = true;
+      claim.textContent = "Chưa đủ điều kiện";
+    }
+
+    claim.onclick = () => {
+      const latest = dailyState(state());
+      if(latest.saved.claimed) return;
+      if(latest.missions.filter(m=>m.done).length < 3) return;
+
+      latest.saved.claimed = true;
+      localStorage.setItem(latest.key,JSON.stringify(latest.saved));
+      localStorage.setItem(XPKEY,String(xp()+25));
+      render();
+    };
+  }
+
+  function coachData(s){
+    const total = s.all.length;
+    const pct = Math.round((s.doneCount/total)*100);
+    let message = "";
+    let focus = "Excel cơ bản";
+    let actionHref = "excel.html";
+    let strength = "Đang xây nền";
+    let status = "Khởi động";
+
+    if(s.next){
+      focus = s.next.lesson[2];
+      actionHref = s.next.lesson[1];
+    }
+
+    if(pct === 0){
+      message = "Bạn đang ở điểm bắt đầu. Hôm nay chỉ cần hoàn thành node đầu tiên, đừng cố học quá nhiều. Mục tiêu là tạo nhịp học đều.";
+    }else if(pct < 30){
+      message = "Bạn đã bắt đầu có đà. Hãy ưu tiên hoàn thành chặng Nền tảng trước khi nhảy sang các kỹ năng nâng cao.";
+      strength = "Nền tảng đang hình thành";
+      status = "Đang tăng tốc";
+    }else if(pct < 65){
+      message = "Tiến độ khá tốt. Bạn nên xen kẽ 1 node mới với 1 bài thực hành để tránh học lý thuyết quá nhiều mà không áp dụng.";
+      strength = "Phân tích & thực hành";
+      status = "Đang tiến bộ";
+    }else if(pct < 100){
+      message = "Bạn đã đi khá xa trên Skill Map. Từ đây nên ưu tiên Power Query, Dashboard và các case thực chiến để tạo năng lực làm việc thật.";
+      strength = "Kỹ năng ứng dụng";
+      status = "Nâng cao";
+    }else{
+      message = "Bạn đã hoàn thành toàn bộ Skill Map. Giai đoạn tiếp theo không phải học thêm node, mà là làm project, Boss Challenge và duy trì tốc độ thực hành.";
+      strength = "Toàn diện";
+      status = "Master";
+      focus = "Practice Hub";
+      actionHref = "practice-video.html";
+    }
+
+    return {message,focus,actionHref,strength,status,pct};
+  }
+
+  function renderCoach(s){
+    const c = coachData(s);
+    $("smCoachMessage").textContent = c.message;
+    $("smCoachInsights").innerHTML = `
+      <div class="sm-coach-insight"><span>COACH ĐÁNH GIÁ</span><strong>${c.status}</strong></div>
+      <div class="sm-coach-insight"><span>NÊN ƯU TIÊN</span><strong>${c.focus}</strong></div>
+      <div class="sm-coach-insight"><span>ĐIỂM MẠNH</span><strong>${c.strength}</strong></div>
+      <div class="sm-coach-insight"><span>TIẾN ĐỘ</span><strong>${c.pct}% Skill Map</strong></div>
+    `;
+    $("smCoachAction").href = c.actionHref;
+    $("smCoachAction").textContent = "Làm bài Coach đề xuất →";
+  }
+
+  function openAiCoach(){
+    try{
+      window.dispatchEvent(new CustomEvent("avp:surface-open",{detail:{surface:"aihub"}}));
+    }catch(e){}
+
+    const bubble = document.getElementById("avpAiChatBubble");
+    if(bubble){
+      bubble.click();
+      return;
+    }
+
+    if(window.AVPCommunity?.openAI){
+      window.AVPCommunity.openAI();
+      return;
+    }
+
+    alert("AI Coach đang tải. Bạn có thể mở mục Hỏi AI từ nút AVP.");
+  }
+
   function render(){
     const previousUnlocked = Number(sessionStorage.getItem("avp_skillmap_unlocked_v71") || 0);
     const s = state();
@@ -112,6 +286,8 @@
     $("smDone").textContent = s.doneCount + "/" + total;
     $("smXP").textContent = xp();
     $("smPct").textContent = pct + "%";
+    renderDaily(s);
+    renderCoach(s);
 
     if(s.next){
       $("smTodayTitle").textContent = s.next.lesson[2];
@@ -331,6 +507,7 @@
   }
 
   function init(){
+    $("smCoachAsk")?.addEventListener("click", openAiCoach);
     $("smRewardClose")?.addEventListener("click", closeReward);
     $("smReward")?.addEventListener("click", e => {
       if(e.target === $("smReward")) closeReward();

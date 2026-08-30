@@ -692,3 +692,272 @@ body{
   .sm-node.sm-unlock-fx,
   .sm-zone.sm-zone-unlock{animation:none!important}
 }
+
+
+/* =========================================================
+   AVP V72 — DAILY MISSION + AI COACH
+   ========================================================= */
+
+.sm-daily-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:14px;
+  margin:0 0 16px;
+}
+
+.sm-mission-card,
+.sm-coach-card{
+  border:1px solid #d5e6dc;
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 14px 34px rgba(22,76,44,.08);
+  overflow:hidden;
+}
+
+.sm-mission-card{
+  padding:18px;
+}
+
+.sm-section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.sm-section-head h2,
+.sm-coach-head h2{
+  margin:3px 0 0;
+  font-size:20px;
+}
+
+.sm-mission-ring{
+  width:72px;
+  height:72px;
+  flex:0 0 72px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at center,#fff 54%,transparent 55%),
+    conic-gradient(#217346 var(--mission-pct,0%),#e5eee8 0);
+}
+.sm-mission-ring strong{font-size:15px;line-height:1}
+.sm-mission-ring span{margin-top:3px;font-size:7px;color:#788a80;font-weight:800}
+
+.sm-mission-list{
+  display:grid;
+  gap:8px;
+}
+
+.sm-mission{
+  position:relative;
+  display:grid;
+  grid-template-columns:34px minmax(0,1fr) auto;
+  gap:10px;
+  align-items:center;
+  min-height:60px;
+  padding:10px 11px;
+  border:1px solid #e1ebe5;
+  border-radius:14px;
+  background:#fbfdfb;
+}
+
+.sm-mission.done{
+  border-color:#a7d5b8;
+  background:#f1fbf4;
+}
+
+.sm-mission-icon{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:#edf5f0;
+}
+
+.sm-mission strong{
+  display:block;
+  font-size:11px;
+}
+.sm-mission small{
+  display:block;
+  margin-top:2px;
+  color:#7f8f86;
+  font-size:9px;
+}
+
+.sm-mission-status{
+  min-width:54px;
+  text-align:right;
+  font-size:9px;
+  font-weight:900;
+  color:#7b8d83;
+}
+.sm-mission.done .sm-mission-status{
+  color:#217346;
+}
+
+.sm-daily-reward{
+  margin-top:12px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  padding:11px 12px;
+  border-radius:14px;
+  background:linear-gradient(145deg,#fff8e5,#fff1bf);
+  border:1px solid #f4d98e;
+}
+.sm-daily-reward span,
+.sm-daily-reward strong{display:block}
+.sm-daily-reward span{font-size:8px;font-weight:900;color:#9d6a00;letter-spacing:.08em}
+.sm-daily-reward strong{margin-top:2px;font-size:10px;color:#5f480f}
+
+.sm-daily-reward button{
+  border:0;
+  border-radius:999px;
+  padding:8px 11px;
+  background:#d8c68c;
+  color:#fff;
+  font:inherit;
+  font-size:9px;
+  font-weight:900;
+}
+.sm-daily-reward button:not(:disabled){
+  background:#217346;
+  cursor:pointer;
+  animation:smDailyReady 1.6s ease-in-out infinite;
+}
+@keyframes smDailyReady{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.05)}
+}
+
+.sm-coach-card{
+  padding:18px;
+  background:
+    radial-gradient(circle at 90% 5%,rgba(72,177,111,.10),transparent 30%),
+    #fff;
+}
+
+.sm-coach-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.sm-coach-avatar{
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:linear-gradient(145deg,#17683a,#2e8b55);
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+  box-shadow:0 8px 18px rgba(25,104,58,.18);
+}
+
+.sm-coach-status{
+  margin-left:auto;
+  color:#2a9b58;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.sm-coach-message{
+  position:relative;
+  padding:14px 15px;
+  border:1px solid #dce9e1;
+  border-radius:16px;
+  background:#f7fbf8;
+}
+.sm-coach-message::before{
+  content:"";
+  position:absolute;
+  top:-7px;
+  left:17px;
+  width:12px;height:12px;
+  background:#f7fbf8;
+  border-left:1px solid #dce9e1;
+  border-top:1px solid #dce9e1;
+  transform:rotate(45deg);
+}
+.sm-coach-message p{
+  margin:0;
+  color:#385244;
+  font-size:11px;
+  line-height:1.6;
+}
+
+.sm-coach-insights{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  margin:10px 0;
+}
+.sm-coach-insight{
+  padding:9px 10px;
+  border:1px solid #e3ebe6;
+  border-radius:12px;
+  background:#fff;
+}
+.sm-coach-insight span,
+.sm-coach-insight strong{display:block}
+.sm-coach-insight span{font-size:8px;color:#819087;font-weight:800}
+.sm-coach-insight strong{margin-top:3px;font-size:11px}
+
+.sm-coach-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.sm-coach-actions button,
+.sm-coach-actions a{
+  flex:1 1 150px;
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:11px;
+  font:inherit;
+  font-size:10px;
+  font-weight:900;
+  text-decoration:none;
+}
+.sm-coach-actions button{
+  border:1px solid #cfe0d6;
+  background:#fff;
+  color:#217346;
+  cursor:pointer;
+}
+.sm-coach-actions a{
+  background:#217346;
+  color:#fff;
+}
+
+@media(max-width:840px){
+  .sm-daily-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:480px){
+  .sm-mission{
+    grid-template-columns:32px minmax(0,1fr);
+  }
+  .sm-mission-status{
+    grid-column:2;
+    text-align:left;
+  }
+  .sm-daily-reward{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .sm-daily-reward button{width:100%}
+}
