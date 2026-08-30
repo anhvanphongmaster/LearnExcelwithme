@@ -1,10 +1,78 @@
-/*! avp-site-motion.css — hiệu ứng nổi + parallax nhẹ toàn site (chỉ visual) */
+/*! avp-site-motion.css — V87 global motion + compact banners */
 :root{
-  --avp-lift: cubic-bezier(.22,1,.36,1);
-  --avp-shadow: 0 14px 32px rgba(15,42,28,.12);
+  --avp-lift:cubic-bezier(.22,1,.36,1);
+  --avp-shadow:0 12px 28px rgba(15,42,28,.11);
+  --avp-fast:155ms;
+  --avp-normal:280ms;
 }
 
-/* ===== Hover lift (chuột thật) ===== */
+/* =========================================================
+   PAGE ENTER / EXIT — desktop + mobile
+   ========================================================= */
+html.avp-page-ready body{
+  transition:
+    opacity var(--avp-fast) ease,
+    transform var(--avp-fast) var(--avp-lift),
+    filter var(--avp-fast) ease;
+}
+
+html.avp-page-leaving body{
+  opacity:.72;
+  transform:translate3d(0,3px,0) scale(.997);
+  filter:saturate(.96);
+  pointer-events:none;
+}
+
+html.avp-page-leaving::after{
+  content:"";
+  position:fixed;
+  z-index:2147483000;
+  inset:0;
+  pointer-events:none;
+  opacity:1;
+  background:
+    radial-gradient(
+      190px circle at var(--avp-nav-x,50%) var(--avp-nav-y,50%),
+      rgba(61,164,98,.12),
+      transparent 70%
+    );
+  animation:avpNavFlash var(--avp-fast) ease both;
+}
+
+html.avp-page-entered body{
+  animation:avpPageIn .32s var(--avp-lift) both;
+}
+
+@keyframes avpPageIn{
+  from{opacity:.72;transform:translate3d(0,5px,0)}
+  to{opacity:1;transform:none}
+}
+@keyframes avpNavFlash{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+/* =========================================================
+   PRESS / TAP FEEDBACK
+   ========================================================= */
+a[href],button,[role="button"],
+input[type="button"],input[type="submit"]{
+  -webkit-tap-highlight-color:transparent;
+}
+
+.avp-pressing{
+  animation:avpTap .24s var(--avp-lift)!important;
+}
+
+@keyframes avpTap{
+  0%{transform:scale(1)}
+  45%{transform:scale(.975)}
+  100%{transform:scale(1)}
+}
+
+/* =========================================================
+   GLOBAL CARD MOTION
+   ========================================================= */
 @media (hover:hover) and (pointer:fine){
   .course-card,
   .practice-file-card,
@@ -16,12 +84,15 @@
   .home-practice-cta,
   .home-path-card,
   .home-more-card,
-  .home-book-card,
   .learn-board,
   .pv-hero,
   .ml-hero,
   .pq-hero,
   .dashboard-hero,
+  .tools-hero,
+  .qc-hero,
+  .fr-hero,
+  .sm-hero,
   .course-panel,
   .pq-lesson,
   .lesson-tips-panel,
@@ -38,14 +109,14 @@
   .feature-card,
   .content-card,
   .grid-card,
+  .ref-card,
   article.card,
   .card{
     transition:
-      transform .28s var(--avp-lift),
-      box-shadow .28s ease,
-      filter .2s ease,
-      border-color .2s ease !important;
-    will-change: transform;
+      transform .24s var(--avp-lift),
+      box-shadow .24s ease,
+      filter .18s ease,
+      border-color .18s ease!important;
   }
 
   .course-card:hover,
@@ -57,7 +128,6 @@
   .home-practice-cta:hover,
   .home-path-card:hover,
   .home-more-card:hover,
-  .home-book-card:hover,
   .course-panel:hover,
   .pq-lesson:hover,
   .badge-card:hover,
@@ -65,80 +135,240 @@
   .lab-card:hover,
   .content-card:hover,
   .grid-card:hover,
+  .ref-card:hover,
   article.card:hover,
   .card:hover{
-    transform: translateY(-5px) scale(1.01);
-    box-shadow: var(--avp-shadow) !important;
-    filter: brightness(1.03);
+    transform:translateY(-3px) scale(1.006);
+    box-shadow:var(--avp-shadow)!important;
+    filter:brightness(1.018);
   }
 
-  .path-item:hover,
-  .pv-line:hover,
-  .mail-item:hover,
-  .pq-lesson:hover{
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(15,42,28,.1) !important;
+  .path-item:hover,.pv-line:hover,.mail-item:hover{
+    transform:translateY(-2px);
+    box-shadow:0 7px 18px rgba(15,42,28,.09)!important;
   }
 
-  /* Banner / hero blocks trong khung */
-  .pv-hero:hover,
-  .ml-hero:hover,
-  .pq-hero:hover,
-  .dashboard-hero:hover,
-  .dash-panel:hover,
-  .learn-board:hover,
-  .lesson-tips-panel:hover{
-    transform: translateY(-4px);
-    box-shadow: 0 16px 36px rgba(15,42,28,.14) !important;
+  .btn,button.btn,a.btn,.filter-btn,.pq-btn,.complete-btn,
+  .next-lesson-btn,.continue-btn,.vote-btn,.go,.mode,
+  .avp-mobile-main-cta,.avp-youtube-cta,.avp-yt-practice,
+  .lp-filter,input[type="submit"],button[type="submit"]{
+    transition:
+      transform .18s var(--avp-lift),
+      box-shadow .18s ease,
+      filter .18s ease!important;
   }
 
-  /* Buttons */
-  .btn, button.btn, a.btn, .filter-btn, .pq-btn, .complete-btn,
-  .next-lesson-btn, .continue-btn, .vote-btn, .go, .mode,
-  .avp-mobile-main-cta, .avp-youtube-cta, .avp-yt-practice,
-  .lp-filter, input[type="submit"], button[type="submit"]{
-    transition: transform .2s var(--avp-lift), box-shadow .2s ease, filter .2s ease !important;
-  }
-  .btn:hover, button.btn:hover, a.btn:hover, .filter-btn:hover, .pq-btn:hover,
-  .complete-btn:hover, .next-lesson-btn:hover, .continue-btn:hover,
-  .avp-mobile-main-cta:hover, .avp-youtube-cta:hover, .avp-yt-practice:hover,
-  input[type="submit"]:hover, button[type="submit"]:hover{
-    transform: translateY(-2px);
-    filter: brightness(1.05);
-    box-shadow: 0 8px 20px rgba(0,0,0,.14) !important;
-  }
-
-  a.course-card:hover,
-  a.home-more-card:hover,
-  a.practice-file-card:hover{
-    transform: translateY(-5px) scale(1.01);
+  .btn:hover,button.btn:hover,a.btn:hover,.filter-btn:hover,.pq-btn:hover,
+  .complete-btn:hover,.next-lesson-btn:hover,.continue-btn:hover,
+  .avp-mobile-main-cta:hover,.avp-youtube-cta:hover,.avp-yt-practice:hover,
+  input[type="submit"]:hover,button[type="submit"]:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.035);
+    box-shadow:0 7px 18px rgba(0,0,0,.12)!important;
   }
 }
 
-/* ===== Scroll reveal ===== */
+/* =========================================================
+   SCROLL REVEAL
+   ========================================================= */
 .avp-motion-rise{
-  opacity: 0;
-  transform: translate3d(0, 22px, 0);
-  transition: opacity .65s var(--avp-lift), transform .65s var(--avp-lift);
+  opacity:0;
+  transform:translate3d(0,16px,0);
+  transition:
+    opacity .48s var(--avp-lift) var(--avp-rise-delay,0s),
+    transform .48s var(--avp-lift) var(--avp-rise-delay,0s);
 }
 .avp-motion-rise.avp-in{
-  opacity: 1;
-  transform: none;
+  opacity:1;
+  transform:none;
 }
 
-/* ===== Parallax layer helper ===== */
+/* =========================================================
+   COMPACT HERO / BANNER AUDIT
+   Bring content above the fold sooner.
+   ========================================================= */
+:where(
+  .pv-hero,
+  .ml-hero,
+  .pq-hero,
+  .dashboard-hero,
+  .tools-hero,
+  .qc-hero,
+  .fr-hero,
+  .sm-hero,
+  .lp-hero,
+  .pyt-hero,
+  .adv-hero,
+  .ach-hero,
+  .achievement-learning-hero,
+  .mobile-excel-hero,
+  .legal-hero,
+  .pl-hero
+){
+  min-height:0!important;
+  padding-top:22px!important;
+  padding-bottom:22px!important;
+  margin-top:12px!important;
+  margin-bottom:14px!important;
+  border-radius:20px!important;
+}
+
+:where(
+  .pv-hero,
+  .ml-hero,
+  .pq-hero,
+  .dashboard-hero,
+  .tools-hero,
+  .qc-hero,
+  .fr-hero,
+  .sm-hero,
+  .lp-hero,
+  .pyt-hero,
+  .adv-hero,
+  .ach-hero,
+  .achievement-learning-hero,
+  .mobile-excel-hero,
+  .legal-hero,
+  .pl-hero
+) h1{
+  margin-top:5px!important;
+  margin-bottom:7px!important;
+  font-size:clamp(25px,4vw,38px)!important;
+  line-height:1.08!important;
+}
+
+:where(
+  .pv-hero,
+  .ml-hero,
+  .pq-hero,
+  .dashboard-hero,
+  .tools-hero,
+  .qc-hero,
+  .fr-hero,
+  .sm-hero,
+  .lp-hero,
+  .pyt-hero,
+  .adv-hero,
+  .ach-hero,
+  .achievement-learning-hero,
+  .mobile-excel-hero,
+  .legal-hero,
+  .pl-hero
+) p{
+  line-height:1.52!important;
+}
+
+/* Homepage: remove the old 650px visual wall without deleting effects. */
+.avp-hero{
+  min-height:0!important;
+  padding:54px 20px 42px!important;
+}
+.avp-hero .avp-title{
+  margin-top:8px!important;
+  margin-bottom:8px!important;
+  font-size:clamp(34px,5vw,56px)!important;
+  line-height:1.02!important;
+}
+.avp-hero .avp-desc{
+  margin-top:8px!important;
+  margin-bottom:14px!important;
+  max-width:620px!important;
+}
+.avp-hero .avp-mini-info{
+  margin-top:12px!important;
+}
+.avp-hero .avp-scroll-hint{
+  display:none!important;
+}
+
+/* Don't allow statistics embedded in hero to become a second banner. */
+:where(.lp-overview,.sm-hero-stats,.fr-stats,.level-card){
+  gap:8px!important;
+}
+:where(.lp-overview,.sm-hero-stats,.fr-stats) > *{
+  padding-top:10px!important;
+  padding-bottom:10px!important;
+}
+
+/* Tiny parallax only. Does not move layout on touch devices. */
 .avp-parallax-layer{
-  will-change: transform;
-  transition: transform .08s linear;
+  transform:translate3d(var(--avp-px-x,0),var(--avp-px-y,0),0);
+  will-change:transform;
 }
 
-@media (hover:none){
-  .course-card:hover, .btn:hover{ transform:none !important; }
+/* Native smooth anchor movement as a fallback. */
+html.avp-motion-enabled{
+  scroll-behavior:smooth;
 }
-@media (prefers-reduced-motion: reduce){
-  .course-card, .btn, .home-path-card, .pv-hero, .avp-motion-rise{
-    transition: none !important;
+
+/* =========================================================
+   MOBILE / TABLET
+   ========================================================= */
+@media(max-width:900px){
+  .avp-hero{
+    padding:34px 16px 28px!important;
   }
-  .course-card:hover, .btn:hover{ transform:none !important; }
-  .avp-motion-rise{ opacity:1; transform:none; }
+
+  :where(
+    .pv-hero,.ml-hero,.pq-hero,.dashboard-hero,.tools-hero,.qc-hero,
+    .fr-hero,.sm-hero,.lp-hero,.pyt-hero,.adv-hero,.ach-hero,
+    .achievement-learning-hero,.mobile-excel-hero,.legal-hero,.pl-hero
+  ){
+    padding:18px 16px!important;
+    border-radius:17px!important;
+  }
+
+  :where(
+    .pv-hero,.ml-hero,.pq-hero,.dashboard-hero,.tools-hero,.qc-hero,
+    .fr-hero,.sm-hero,.lp-hero,.pyt-hero,.adv-hero,.ach-hero,
+    .achievement-learning-hero,.mobile-excel-hero,.legal-hero,.pl-hero
+  ) h1{
+    font-size:clamp(23px,7vw,32px)!important;
+  }
+}
+
+@media(max-width:560px){
+  .avp-hero{
+    padding:26px 14px 22px!important;
+  }
+
+  .avp-hero .avp-title{
+    font-size:clamp(30px,10vw,42px)!important;
+  }
+
+  .avp-hero .avp-tagline{
+    min-height:24px!important;
+  }
+
+  .avp-hero .avp-mobile-main-cta-wrap{
+    margin-top:10px!important;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY / LOW-MOTION DEVICES
+   ========================================================= */
+@media (hover:none){
+  .avp-parallax-layer{
+    transform:none!important;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  html.avp-page-ready body,
+  .avp-motion-rise,
+  .avp-parallax-layer,
+  .avp-pressing,
+  a,button,[role="button"]{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+  }
+  .avp-motion-rise{
+    opacity:1!important;
+  }
+  html.avp-page-leaving::after{
+    display:none!important;
+  }
 }
