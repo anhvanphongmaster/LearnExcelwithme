@@ -3,6 +3,7 @@
 
   const $ = id => document.getElementById(id);
   const MAX_DAILY = 5;
+  let quotaAdmin=false;
 
   let client = null;
   let user = null;
@@ -2062,19 +2063,76 @@
   }
 
   async function quota(){
+    const el=$("avpAiQuota");
+    const sendBtn=$("avpAiSend");
+
+    if(!user){
+      quotaAdmin=false;
+      if(el) el.textContent=`Còn ${MAX_DAILY}/${MAX_DAILY} câu hôm nay`;
+      return {used:0,limit:MAX_DAILY,left:MAX_DAILY,isAdmin:false};
+    }
+
+    /* Lớp 1: dùng RPC quota chính. */
     try{
       const {data,error}=await client.rpc("avp_ai_quota_status_v77");
       if(error) throw error;
+
+      const isAdmin=data?.is_admin===true;
+      quotaAdmin=isAdmin;
+
+      if(isAdmin){
+        if(el) el.textContent="∞ Không giới hạn · Admin";
+        if(sendBtn) sendBtn.disabled=!!sending;
+        return {
+          used:0,
+          limit:Number.POSITIVE_INFINITY,
+          left:Number.POSITIVE_INFINITY,
+          isAdmin:true
+        };
+      }
+
       const used=Number(data?.used||0);
       const limit=Number(data?.limit||MAX_DAILY);
       const left=Math.max(0,limit-used);
-      const el=$("avpAiQuota");
+
       if(el) el.textContent=`Còn ${left}/${limit} câu hôm nay`;
-      const sendBtn=$("avpAiSend");
       if(sendBtn) sendBtn.disabled=left<=0 || sending;
-      return {used,limit,left};
-    }catch{
-      return {used:0,limit:MAX_DAILY,left:MAX_DAILY};
+
+      return {used,limit,left,isAdmin:false};
+    }catch(rpcErr){
+      console.warn("AVP AI quota status RPC",rpcErr);
+
+      /* Lớp 2 dự phòng:
+         nếu RPC cũ/cache/chưa cập nhật thì đọc profiles.is_admin trực tiếp.
+         Admin vẫn không bị khóa bởi giới hạn 5 câu ở frontend. */
+      try{
+        const {data:profile,error:profileErr}=await client
+          .from("profiles")
+          .select("is_admin")
+          .eq("id",user.id)
+          .maybeSingle();
+
+        if(profileErr) throw profileErr;
+
+        if(profile?.is_admin===true){
+          quotaAdmin=true;
+          if(el) el.textContent="∞ Không giới hạn · Admin";
+          if(sendBtn) sendBtn.disabled=!!sending;
+          return {
+            used:0,
+            limit:Number.POSITIVE_INFINITY,
+            left:Number.POSITIVE_INFINITY,
+            isAdmin:true
+          };
+        }
+      }catch(profileErr){
+        console.warn("AVP AI admin fallback",profileErr);
+      }
+
+      quotaAdmin=false;
+      if(el) el.textContent=`Còn ${MAX_DAILY}/${MAX_DAILY} câu hôm nay`;
+      if(sendBtn) sendBtn.disabled=!!sending;
+      return {used:0,limit:MAX_DAILY,left:MAX_DAILY,isAdmin:false};
     }
   }
 
@@ -2214,7 +2272,7 @@
     if(!text && !selectedImage) return;
 
     const q=await quota();
-    if(q.left<=0){
+    if(!q.isAdmin && q.left<=0){
       alert("Bạn đã dùng hết 5 câu AI hôm nay. Ngày mai hệ thống sẽ tự mở lại.");
       return;
     }
@@ -2285,11 +2343,13 @@
 
       /* Chỉ tính quota SAU KHI Edge Function trả thành công.
          request_id có unique constraint nên cùng một lượt không thể bị trừ 2 lần. */
-      const {error:quotaCommitErr}=await client.rpc("avp_ai_quota_commit_v77",{
-        p_request_id:quotaRequestId
-      });
-      if(quotaCommitErr){
-        console.warn("AVP AI quota commit",quotaCommitErr);
+      if(!quotaAdmin){
+        const {error:quotaCommitErr}=await client.rpc("avp_ai_quota_commit_v77",{
+          p_request_id:quotaRequestId
+        });
+        if(quotaCommitErr){
+          console.warn("AVP AI quota commit",quotaCommitErr);
+        }
       }
 
       await loadHistory();
