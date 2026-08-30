@@ -1451,7 +1451,10 @@
 
     /* File ZIP Power Query này đang nằm ở ROOT repo, không nằm trong
        downloads/video-practice/. Đây là đường dẫn thực tế của source. */
-    if (fileName === "PowerQuery-11-Files.zip") {
+    if (
+      fileName === "PowerQuery-11-Files.zip" ||
+      fileName === "02_PowerQuery-11-Files.zip"
+    ) {
       return "PowerQuery-11-Files.zip";
     }
 
