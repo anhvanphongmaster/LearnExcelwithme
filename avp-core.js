@@ -78,7 +78,7 @@
       id="avpEdgeMain"
       aria-label="Mở công cụ nhanh"
       aria-expanded="false"
-      title="Công cụ nhanh — kéo để di chuyển"
+      title="AVP — Công cụ nhanh"
     >
       <span class="avp-edge-main-icon">AVP</span>
       <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
@@ -754,15 +754,18 @@
     {once:true}
   );
 
-  /* AVP V58: launcher cố định, không kéo thả. */
-  launcher.classList.remove('is-left','is-right','is-dragging','is-snapping');
-  launcher.classList.add('avp-fixed-launcher');
+  /* AVP V61: AVP là một mục thật trong menu, tuyệt đối không dùng fixed/floating. */
+  launcher.classList.remove(
+    'is-left','is-right','is-dragging','is-snapping','avp-fixed-launcher'
+  );
 
   function avpPlaceLauncherInNav(){
     if (AVP_EMBEDDED) return;
     const host =
       document.querySelector('.main-nav nav, header nav, .nav-links, .navbar, .top-nav, nav');
     if (host){
+      launcher.classList.remove('avp-fixed-launcher','is-left','is-right','is-dragging','is-snapping');
+      launcher.classList.remove('avp-fixed-launcher','is-left','is-right','is-dragging','is-snapping');
       launcher.classList.add('avp-nav-launcher');
       const firstNavItem = host.firstElementChild;
       if (launcher.parentElement !== host){
