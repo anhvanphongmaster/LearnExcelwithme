@@ -103,6 +103,7 @@
   }
 
   function render(){
+    const previousUnlocked = Number(sessionStorage.getItem("avp_skillmap_unlocked_v71") || 0);
     const s = state();
     const total = s.all.length;
     const pct = Math.round((s.doneCount / total) * 100);
@@ -163,8 +164,10 @@
         `;
       }).join("");
 
+      const zoneComplete = stage.lessons.every(s.done);
+
       return `
-        <section class="sm-zone ${open ? "" : "locked-zone"}" data-zone="${stageIndex}">
+        <section class="sm-zone ${open ? "" : "locked-zone"} ${zoneComplete ? "sm-zone-complete" : ""}" data-zone="${stageIndex}">
           <div class="sm-zone-head">
             <div class="sm-zone-icon">${stage.icon}</div>
             <div>
@@ -187,7 +190,114 @@
       });
     });
 
-    requestAnimationFrame(drawLines);
+    sessionStorage.setItem("avp_skillmap_unlocked_v71", String(s.unlockedCount));
+
+    requestAnimationFrame(() => {
+      drawLines();
+      renderWowOverlays(s);
+
+      if (previousUnlocked > 0 && s.unlockedCount > previousUnlocked) {
+        const justUnlocked = Array.from(document.querySelectorAll(".sm-node.open"))
+          .slice(0, s.unlockedCount - previousUnlocked);
+        justUnlocked.forEach((node, i) => {
+          setTimeout(() => {
+            node.classList.add("sm-unlock-fx");
+            setTimeout(() => node.classList.remove("sm-unlock-fx"), 900);
+          }, i * 120);
+        });
+      }
+    });
+  }
+
+  function renderWowOverlays(s){
+    const map = $("smMap");
+    if(!map) return;
+
+    map.querySelectorAll(".sm-avatar-marker,.sm-checkpoint,.sm-map-progress,.sm-map-progress-fill")
+      .forEach(el => el.remove());
+
+    const track = document.createElement("div");
+    track.className = "sm-map-progress";
+    map.appendChild(track);
+
+    const fill = document.createElement("div");
+    fill.className = "sm-map-progress-fill";
+    fill.style.height = Math.max(0, Math.min(1, s.doneCount / s.all.length)) * Math.max(0, map.clientHeight - 88) + "px";
+    map.appendChild(fill);
+
+    const current = map.querySelector(".sm-node.current") || map.querySelector(".sm-node.open");
+    if(current && window.innerWidth > 980){
+      const mr = map.getBoundingClientRect();
+      const nr = current.getBoundingClientRect();
+      const avatar = document.createElement("div");
+      avatar.className = "sm-avatar-marker";
+      avatar.textContent = "🧑‍💻";
+      avatar.style.left = Math.max(4, nr.left - mr.left - 56) + "px";
+      avatar.style.top = (nr.top - mr.top + nr.height/2 - 23) + "px";
+      map.appendChild(avatar);
+    }
+
+    map.querySelectorAll(".sm-zone").forEach((zone, index) => {
+      if(window.innerWidth <= 980) return;
+
+      const zr = zone.getBoundingClientRect();
+      const mr = map.getBoundingClientRect();
+      const chest = document.createElement("button");
+      chest.type = "button";
+      chest.className = "sm-checkpoint";
+      chest.textContent = "🎁";
+
+      const stageComplete = stages[index].lessons.every(s.done);
+      const claimedKey = "avp_skillmap_reward_claimed_v71_" + index;
+      const claimed = localStorage.getItem(claimedKey) === "1";
+
+      if(stageComplete && !claimed) chest.classList.add("ready");
+      if(claimed) chest.style.opacity = ".45";
+
+      chest.style.left = (index % 2 === 0
+        ? zr.right - mr.left + 8
+        : zr.left - mr.left - 52) + "px";
+      chest.style.top = (zr.top - mr.top + 28) + "px";
+
+      chest.addEventListener("click", () => {
+        if(!stageComplete){
+          alert("🎁 Hoàn thành toàn bộ node của chặng này để mở checkpoint reward.");
+          return;
+        }
+        if(claimed){
+          alert("✅ Bạn đã nhận phần thưởng của checkpoint này.");
+          return;
+        }
+        openReward(index);
+      });
+
+      map.appendChild(chest);
+    });
+  }
+
+  function openReward(stageIndex){
+    const stage = stages[stageIndex];
+    const rewardXP = [30,50,80,120][stageIndex] || 30;
+
+    $("smRewardTitle").textContent = "Hoàn thành chặng " + stage.name + "!";
+    $("smRewardText").textContent =
+      "Bạn đã vượt qua toàn bộ node của chặng này. Nhận +" + rewardXP +
+      " XP checkpoint và mở đường sang kỹ năng tiếp theo.";
+
+    $("smReward").hidden = false;
+    $("smRewardClaim").onclick = () => {
+      const key = "avp_skillmap_reward_claimed_v71_" + stageIndex;
+      if(localStorage.getItem(key) !== "1"){
+        localStorage.setItem(key,"1");
+        localStorage.setItem(XPKEY, String(xp() + rewardXP));
+      }
+      $("smReward").hidden = true;
+      render();
+    };
+  }
+
+  function closeReward(){
+    $("smReward").hidden = true;
   }
 
   function drawLines(){
@@ -221,6 +331,11 @@
   }
 
   function init(){
+    $("smRewardClose")?.addEventListener("click", closeReward);
+    $("smReward")?.addEventListener("click", e => {
+      if(e.target === $("smReward")) closeReward();
+    });
+
     render();
     window.addEventListener("resize",() => {
       clearTimeout(window.__smResize);

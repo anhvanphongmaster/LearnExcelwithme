@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="global-search.css">
-  <link rel="stylesheet" href="skill-map.css?v=20260831-v70">
+  <link rel="stylesheet" href="skill-map.css?v=20260831-v71-wow">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link rel="stylesheet" href="theme-polish-v33.css">
@@ -83,12 +83,25 @@
   </section>
 </main>
 
+
+<div class="sm-reward" id="smReward" hidden>
+  <div class="sm-reward-card" role="dialog" aria-modal="true" aria-labelledby="smRewardTitle">
+    <button type="button" class="sm-reward-close" id="smRewardClose">×</button>
+    <div class="sm-reward-burst" aria-hidden="true">✨</div>
+    <div class="sm-reward-chest">🎁</div>
+    <span class="sm-kicker">CHECKPOINT REWARD</span>
+    <h2 id="smRewardTitle">Mở khóa phần thưởng!</h2>
+    <p id="smRewardText">Bạn vừa hoàn thành một chặng kỹ năng.</p>
+    <button type="button" id="smRewardClaim">Nhận phần thưởng</button>
+  </div>
+</div>
+
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-auth.js"></script>
 <script src="simple-nav.js"></script>
 <script src="global-search.js"></script>
-<script src="skill-map.js?v=20260831-v70"></script>
+<script src="skill-map.js?v=20260831-v71-wow"></script>
 <script src="avp-core.js"></script>
 </body>
 </html>
