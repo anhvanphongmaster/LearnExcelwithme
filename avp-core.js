@@ -1,4 +1,8 @@
 (() => {
+  /* AVP V58: embedded pages must never create a second floating AVP. */
+  if (window.self !== window.top) {
+    return;
+  }
   const KEY_HISTORY='avp_learning_history_v2', KEY_BOOK='avp_bookmarks_v2';
   const IGNORE=new Set(['auth.html','admin.html','privacy.html','terms.html','disclaimer.html','open-source.html','lienhe.html','gioithieu.html']);
   const page=location.pathname.split('/').pop()||'index.html';
@@ -545,6 +549,52 @@
     return false;
   }
 
+  function runEdgeAction(action){
+    const aiPanel=document.getElementById('avpAiChatPanel');
+    const chatPanels=[
+      document.getElementById('avpChatPanel'),
+      document.getElementById('avpAdminFloatPanel'),
+      document.getElementById('avpGuestChatPanel')
+    ].filter(Boolean);
+
+    if(action==='learning'){
+      if(back.classList.contains('open')){
+        closeHub();
+        return;
+      }
+      window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'learning'}}));
+      openHub();
+    }else if(action==='community'){
+      const communityAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpCommunityMode')?.hidden;
+      if(communityAlreadyOpen){
+        aiPanel.hidden=true;
+        return;
+      }
+      window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
+      if(window.AVPCommunity?.open){
+        window.AVPCommunity.open();
+      }else{
+        toast('Cộng đồng đang tải, thử lại sau một chút');
+      }
+    }else if(action==='chat'){
+      const chatAlreadyOpen=chatPanels.some(p=>!p.hidden);
+      if(chatAlreadyOpen){
+        chatPanels.forEach(p=>p.hidden=true);
+        return;
+      }
+      window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
+      clickHiddenTool('avpChatBubble','Chat Admin');
+    }else if(action==='ai'){
+      const aiAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpAiMode')?.hidden;
+      if(aiAlreadyOpen){
+        aiPanel.hidden=true;
+        return;
+      }
+      window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
+      clickHiddenTool('avpAiChatBubble','AI Chat');
+    }
+  }
+
   launcher.querySelectorAll('[data-edge-action]').forEach(btn=>{
     btn.addEventListener('click',e=>{
       e.preventDefault();
@@ -552,51 +602,19 @@
 
       const action=btn.dataset.edgeAction;
       hideMiniPreview();
-      setEdgeMenu(false);
 
-      const aiPanel=document.getElementById('avpAiChatPanel');
-      const chatPanels=[
-        document.getElementById('avpChatPanel'),
-        document.getElementById('avpAdminFloatPanel'),
-        document.getElementById('avpGuestChatPanel')
-      ].filter(Boolean);
+      /* Mục được chọn phóng ra từ nút AVP trước khi mở panel. */
+      btn.classList.remove('avp-edge-action-launching');
+      void btn.offsetWidth;
+      btn.classList.add('avp-edge-action-launching');
+      launcher.classList.add('avp-edge-launching');
 
-      if(action==='learning'){
-        if(back.classList.contains('open')){
-          closeHub();
-          return;
-        }
-        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'learning'}}));
-        openHub();
-      }else if(action==='community'){
-        const communityAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpCommunityMode')?.hidden;
-        if(communityAlreadyOpen){
-          aiPanel.hidden=true;
-          return;
-        }
-        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
-        if(window.AVPCommunity?.open){
-          window.AVPCommunity.open();
-        }else{
-          toast('Cộng đồng đang tải, thử lại sau một chút');
-        }
-      }else if(action==='chat'){
-        const chatAlreadyOpen=chatPanels.some(p=>!p.hidden);
-        if(chatAlreadyOpen){
-          chatPanels.forEach(p=>p.hidden=true);
-          return;
-        }
-        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
-        clickHiddenTool('avpChatBubble','Chat Admin');
-      }else if(action==='ai'){
-        const aiAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpAiMode')?.hidden;
-        if(aiAlreadyOpen){
-          aiPanel.hidden=true;
-          return;
-        }
-        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
-        clickHiddenTool('avpAiChatBubble','AI Chat');
-      }
+      setTimeout(()=>{
+        setEdgeMenu(false);
+        btn.classList.remove('avp-edge-action-launching');
+        launcher.classList.remove('avp-edge-launching');
+        runEdgeAction(action);
+      },230);
     });
   });
 
@@ -722,179 +740,16 @@
     {once:true}
   );
 
-  /* Kéo dọc màn hình + snap sát viền trái/phải, nhớ vị trí. */
-  (function enableDragEdgeLauncher(root,btn){
-    const POS_KEY='avp_edge_launcher_pos_v5';
-    const EDGE_GAP=6;
+  /* AVP V58: launcher cố định, không kéo thả. */
+  launcher.classList.remove('is-left','is-right','is-dragging','is-snapping');
+  launcher.classList.add('avp-fixed-launcher');
 
-    const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+  fab.addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    setEdgeMenu(edgeMenu.hidden);
+  });
 
-    function sideFromX(x,w){
-      return (x + w/2) < (window.innerWidth/2) ? 'left' : 'right';
-    }
-
-    function applySideClass(side){
-      root.classList.toggle('is-left',side==='left');
-      root.classList.toggle('is-right',side==='right');
-    }
-
-    function save(side,y){
-      try{
-        localStorage.setItem(POS_KEY,JSON.stringify({side,y}));
-      }catch{}
-    }
-
-    function snapToEdge(side,y,animate=true){
-      const w=root.offsetWidth||50;
-      const h=root.offsetHeight||50;
-      const maxY=Math.max(EDGE_GAP,window.innerHeight-h-EDGE_GAP);
-      const top=clamp(Number(y)||Math.round(window.innerHeight*.55),EDGE_GAP,maxY);
-
-      applySideClass(side);
-
-      if(animate)root.classList.add('is-snapping');
-
-      root.style.top=top+'px';
-      root.style.bottom='auto';
-
-      if(side==='left'){
-        root.style.left=EDGE_GAP+'px';
-        root.style.right='auto';
-      }else{
-        root.style.left=(window.innerWidth-w-EDGE_GAP)+'px';
-        root.style.right='auto';
-      }
-
-      save(side,top);
-      requestAnimationFrame(positionMiniPreview);
-
-      if(animate){
-        setTimeout(()=>root.classList.remove('is-snapping'),260);
-      }
-    }
-
-    let saved=null;
-    try{
-      saved=JSON.parse(localStorage.getItem(POS_KEY)||'null');
-    }catch{}
-
-    snapToEdge(
-      saved?.side==='left'?'left':'right',
-      saved?.y ?? Math.round(window.innerHeight*.56),
-      false
-    );
-
-    window.addEventListener('resize',()=>{
-      let pos=null;
-      try{
-        pos=JSON.parse(localStorage.getItem(POS_KEY)||'null');
-      }catch{}
-
-      snapToEdge(
-        pos?.side==='left'?'left':'right',
-        pos?.y ?? root.getBoundingClientRect().top,
-        false
-      );
-    });
-
-    let dragging=false;
-    let moved=false;
-    let pointerId=null;
-
-    let grabOffsetX=0;
-    let grabOffsetY=0;
-
-    btn.addEventListener('pointerdown',e=>{
-      if(e.button!=null && e.button!==0)return;
-
-      const r=root.getBoundingClientRect();
-
-      dragging=true;
-      moved=false;
-      pointerId=e.pointerId;
-
-      // Điểm người dùng chạm trong chính nút -> cảm giác kéo như AssistiveTouch.
-      grabOffsetX=e.clientX-r.left;
-      grabOffsetY=e.clientY-r.top;
-
-      root.style.left=r.left+'px';
-      root.style.right='auto';
-      root.style.top=r.top+'px';
-      root.style.bottom='auto';
-
-      root.classList.add('is-dragging');
-      setEdgeMenu(false);
-      hideMiniPreview();
-
-      try{
-        btn.setPointerCapture(pointerId);
-      }catch{}
-
-      e.preventDefault();
-    },{passive:false});
-
-    btn.addEventListener('pointermove',e=>{
-      if(!dragging)return;
-
-      const w=root.offsetWidth||50;
-      const h=root.offsetHeight||50;
-
-      let x=e.clientX-grabOffsetX;
-      let y=e.clientY-grabOffsetY;
-
-      x=clamp(x,EDGE_GAP,window.innerWidth-w-EDGE_GAP);
-      y=clamp(y,EDGE_GAP,window.innerHeight-h-EDGE_GAP);
-
-      const r=root.getBoundingClientRect();
-      if(Math.abs(x-r.left)>2 || Math.abs(y-r.top)>2){
-        moved=true;
-      }
-
-      root.style.left=x+'px';
-      root.style.right='auto';
-      root.style.top=y+'px';
-      root.style.bottom='auto';
-
-      applySideClass(sideFromX(x,w));
-      requestAnimationFrame(positionMiniPreview);
-
-      e.preventDefault();
-    },{passive:false});
-
-    function finish(e){
-      if(!dragging)return;
-
-      dragging=false;
-      root.classList.remove('is-dragging');
-
-      try{
-        btn.releasePointerCapture(pointerId);
-      }catch{}
-
-      if(moved){
-        const r=root.getBoundingClientRect();
-        const side=sideFromX(r.left,r.width);
-
-        snapToEdge(side,r.top,true);
-
-        btn.dataset.justDragged='1';
-        setTimeout(()=>delete btn.dataset.justDragged,320);
-      }
-    }
-
-    btn.addEventListener('pointerup',finish);
-    btn.addEventListener('pointercancel',finish);
-
-    btn.addEventListener('click',e=>{
-      if(btn.dataset.justDragged==='1'){
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        return;
-      }
-
-      setEdgeMenu(edgeMenu.hidden);
-    });
-  })(launcher,fab);
 
   document.addEventListener('pointerdown',e=>{
     if(!launcher.contains(e.target))setEdgeMenu(false);
