@@ -961,3 +961,251 @@ body{
   }
   .sm-daily-reward button{width:100%}
 }
+
+
+/* =========================================================
+   AVP V73 — WEEKEND BOSS + WEEKLY LEAGUE
+   ========================================================= */
+
+.sm-competitive-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:14px;
+  margin-top:16px;
+}
+
+.sm-boss-card,
+.sm-league-card{
+  border:1px solid #d6e5dc;
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 16px 38px rgba(22,73,43,.08);
+}
+
+.sm-boss-card{
+  padding:18px;
+  background:
+    radial-gradient(circle at 92% 10%,rgba(242,131,67,.12),transparent 30%),
+    linear-gradient(145deg,#fff,#fffaf7);
+}
+
+.sm-boss-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+.sm-boss-top h2{margin:3px 0 4px;font-size:20px}
+.sm-boss-top p{margin:0;color:#7b867f;font-size:10px;line-height:1.45}
+
+.sm-boss-badge{
+  padding:7px 9px;
+  border-radius:999px;
+  background:#fff0e7;
+  color:#b95d21;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.08em;
+  border:1px solid #f0c8ad;
+}
+
+.sm-boss-body{
+  display:grid;
+  grid-template-columns:72px 1fr;
+  gap:13px;
+  align-items:center;
+  margin:15px 0 12px;
+}
+
+.sm-boss-avatar{
+  width:72px;
+  height:72px;
+  display:grid;
+  place-items:center;
+  border-radius:22px;
+  background:linear-gradient(145deg,#3d2a27,#6c3d31);
+  font-size:38px;
+  box-shadow:0 12px 28px rgba(75,44,33,.2);
+}
+
+.sm-boss-hp-head,
+.sm-boss-meta{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:center;
+}
+.sm-boss-hp-head strong{font-size:13px}
+.sm-boss-hp-head span{font-size:9px;font-weight:900;color:#b65030}
+
+.sm-boss-hp{
+  height:14px;
+  margin:7px 0 6px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#f1e7e3;
+}
+.sm-boss-hp-fill{
+  width:100%;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#d84f3e,#f28a50);
+  transition:width .45s ease;
+}
+
+.sm-boss-meta{
+  color:#7b8981;
+  font-size:8px;
+  font-weight:800;
+}
+
+.sm-boss-missions{
+  display:grid;
+  gap:7px;
+  margin:10px 0 12px;
+}
+.sm-boss-mission{
+  display:grid;
+  grid-template-columns:30px 1fr auto;
+  gap:9px;
+  align-items:center;
+  padding:9px 10px;
+  border:1px solid #eadfd9;
+  border-radius:13px;
+  background:#fff;
+}
+.sm-boss-mission.done{
+  border-color:#acd6b9;
+  background:#f3fbf5;
+}
+.sm-boss-mission-icon{
+  width:30px;height:30px;display:grid;place-items:center;border-radius:10px;background:#f5eee9;
+}
+.sm-boss-mission strong{display:block;font-size:10px}
+.sm-boss-mission small{display:block;margin-top:2px;color:#858f89;font-size:8px}
+.sm-boss-dmg{
+  min-width:48px;
+  text-align:right;
+  font-size:9px;
+  font-weight:900;
+  color:#b95d21;
+}
+.sm-boss-mission.done .sm-boss-dmg{color:#217346}
+
+.sm-boss-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.sm-boss-actions button,
+.sm-boss-actions a{
+  flex:1 1 150px;
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:11px;
+  font:inherit;
+  font-size:10px;
+  font-weight:900;
+  text-decoration:none;
+}
+.sm-boss-actions button{
+  border:0;
+  background:#ad4930;
+  color:#fff;
+  cursor:pointer;
+}
+.sm-boss-actions button:disabled{
+  cursor:not-allowed;
+  opacity:.5;
+}
+.sm-boss-actions a{
+  border:1px solid #eadbd4;
+  color:#9a4d32;
+  background:#fff;
+}
+
+.sm-boss-card.boss-defeated{
+  animation:smBossDefeat .7s ease both;
+}
+@keyframes smBossDefeat{
+  0%{transform:scale(1)}
+  40%{transform:scale(1.025);box-shadow:0 0 0 12px rgba(54,172,95,.08)}
+  100%{transform:none}
+}
+
+.sm-league-card{
+  padding:18px;
+}
+
+.sm-league-rank{
+  min-width:58px;
+  padding:10px 12px;
+  text-align:center;
+  border-radius:16px;
+  background:#eef6f1;
+  color:#217346;
+  font-weight:900;
+}
+
+.sm-league-summary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+  margin-bottom:10px;
+}
+.sm-league-summary>div{
+  padding:10px;
+  border:1px solid #e1ebe5;
+  border-radius:13px;
+  background:#fafcfb;
+}
+.sm-league-summary small,
+.sm-league-summary strong{display:block}
+.sm-league-summary small{font-size:8px;color:#839087;font-weight:800}
+.sm-league-summary strong{margin-top:3px;font-size:14px}
+
+.sm-league-board{
+  display:grid;
+  gap:6px;
+}
+.sm-league-row{
+  display:grid;
+  grid-template-columns:28px 1fr auto;
+  gap:8px;
+  align-items:center;
+  padding:8px 9px;
+  border-radius:12px;
+  background:#f8fbf9;
+  border:1px solid #e5ece8;
+}
+.sm-league-row.you{
+  background:#eef8f1;
+  border-color:#a9d5b7;
+}
+.sm-league-pos{
+  width:28px;height:28px;display:grid;place-items:center;border-radius:9px;background:#edf3ef;font-size:9px;font-weight:900;
+}
+.sm-league-row.you .sm-league-pos{background:#217346;color:#fff}
+.sm-league-user strong{display:block;font-size:10px}
+.sm-league-user small{display:block;margin-top:2px;color:#8a958e;font-size:8px}
+.sm-league-score{font-size:10px;font-weight:900;color:#486455}
+
+.sm-league-note{
+  margin-top:10px;
+  padding:9px 10px;
+  border-radius:11px;
+  background:#f3f6f4;
+  color:#7a8880;
+  font-size:8px;
+  line-height:1.45;
+}
+
+@media(max-width:840px){
+  .sm-competitive-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:480px){
+  .sm-league-summary{grid-template-columns:1fr}
+}

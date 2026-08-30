@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="global-search.css">
-  <link rel="stylesheet" href="skill-map.css?v=20260831-v72-daily-coach">
+  <link rel="stylesheet" href="skill-map.css?v=20260831-v73-boss-league">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link rel="stylesheet" href="theme-polish-v33.css">
@@ -124,6 +124,75 @@
     </div>
   </section>
 
+
+  <section class="sm-competitive-grid">
+    <article class="sm-boss-card">
+      <div class="sm-boss-top">
+        <div>
+          <span class="sm-kicker">WEEKEND BOSS</span>
+          <h2>Boss Challenge tuần này</h2>
+          <p id="smBossDesc">Hoàn thành chuỗi nhiệm vụ để hạ Boss và nhận thưởng tuần.</p>
+        </div>
+        <div class="sm-boss-badge" id="smBossBadge">BOSS</div>
+      </div>
+
+      <div class="sm-boss-body">
+        <div class="sm-boss-avatar" id="smBossAvatar">👹</div>
+        <div class="sm-boss-info">
+          <div class="sm-boss-hp-head">
+            <strong id="smBossName">Excel Overlord</strong>
+            <span id="smBossHpText">100 HP</span>
+          </div>
+          <div class="sm-boss-hp">
+            <div class="sm-boss-hp-fill" id="smBossHpFill"></div>
+          </div>
+          <div class="sm-boss-meta">
+            <span id="smBossStatus">Chưa bắt đầu</span>
+            <span id="smBossReward">Thưởng: +100 XP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sm-boss-missions" id="smBossMissions"></div>
+
+      <div class="sm-boss-actions">
+        <button type="button" id="smBossAttack">⚔️ Tấn công Boss</button>
+        <a href="practice-video.html" id="smBossPractice">Luyện để gây sát thương →</a>
+      </div>
+    </article>
+
+    <article class="sm-league-card">
+      <div class="sm-section-head">
+        <div>
+          <span class="sm-kicker">WEEKLY LEAGUE</span>
+          <h2>League tuần</h2>
+        </div>
+        <div class="sm-league-rank" id="smLeagueRank">#--</div>
+      </div>
+
+      <div class="sm-league-summary">
+        <div>
+          <small>Điểm tuần</small>
+          <strong id="smLeagueScore">0</strong>
+        </div>
+        <div>
+          <small>Hạng hiện tại</small>
+          <strong id="smLeagueTier">Bronze</strong>
+        </div>
+        <div>
+          <small>Còn lại</small>
+          <strong id="smLeagueTime">--</strong>
+        </div>
+      </div>
+
+      <div class="sm-league-board" id="smLeagueBoard"></div>
+
+      <div class="sm-league-note">
+        League V1 dùng dữ liệu cục bộ để test trải nghiệm. Bản sau có thể nối BXH Supabase theo tuần.
+      </div>
+    </article>
+  </section>
+
   <section class="sm-footer-actions">
     <a href="practice-video.html">📚 Luyện ngay trong Practice Hub</a>
     <a href="master-learning.html">🗺️ Xem lộ trình chi tiết</a>
@@ -149,7 +218,7 @@
 <script src="supabase-auth.js"></script>
 <script src="simple-nav.js"></script>
 <script src="global-search.js"></script>
-<script src="skill-map.js?v=20260831-v72-daily-coach"></script>
+<script src="skill-map.js?v=20260831-v73-boss-league"></script>
 <script src="avp-core.js"></script>
 </body>
 </html>

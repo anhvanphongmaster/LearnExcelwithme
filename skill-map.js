@@ -205,6 +205,159 @@
     };
   }
 
+
+  function weekKey(){
+    const d = new Date();
+    const day = (d.getDay()+6)%7;
+    const monday = new Date(d);
+    monday.setDate(d.getDate()-day);
+    monday.setHours(0,0,0,0);
+    return [
+      monday.getFullYear(),
+      String(monday.getMonth()+1).padStart(2,"0"),
+      String(monday.getDate()).padStart(2,"0")
+    ].join("-");
+  }
+
+  function weekEndsIn(){
+    const now = new Date();
+    const day = (now.getDay()+6)%7;
+    const end = new Date(now);
+    end.setDate(now.getDate() + (6-day));
+    end.setHours(23,59,59,999);
+    const ms = Math.max(0,end-now);
+    const days = Math.floor(ms/86400000);
+    const hours = Math.floor((ms%86400000)/3600000);
+    return days + "d " + hours + "h";
+  }
+
+  function bossState(s){
+    const key = "avp_skillmap_boss_v73_" + weekKey();
+    let saved = {};
+    try{ saved = JSON.parse(localStorage.getItem(key) || "{}"); }catch(e){}
+
+    if(saved.baseDone == null){
+      saved.baseDone = s.doneCount;
+      saved.baseXP = xp();
+      saved.defeated = false;
+      saved.rewarded = false;
+      localStorage.setItem(key,JSON.stringify(saved));
+    }
+
+    const doneDelta = Math.max(0,s.doneCount - Number(saved.baseDone||0));
+    const xpDelta = Math.max(0,xp() - Number(saved.baseXP||0));
+
+    const m1 = doneDelta >= 2;
+    const m2 = xpDelta >= 60;
+    const m3 = s.doneCount >= Math.max(3, Math.ceil(s.all.length*.35));
+
+    const damage =
+      (m1 ? 35 : Math.min(30,doneDelta*15)) +
+      (m2 ? 35 : Math.min(30,Math.floor(xpDelta/10)*5)) +
+      (m3 ? 30 : 0);
+
+    const hp = Math.max(0,100-damage);
+
+    if(hp===0 && !saved.defeated){
+      saved.defeated = true;
+      localStorage.setItem(key,JSON.stringify(saved));
+    }
+
+    return {
+      key,saved,hp,damage,
+      missions:[
+        {icon:"🧩",title:"Hoàn thành 2 node",desc:"Mỗi node gây sát thương Boss.",done:m1,dmg:m1?35:Math.min(30,doneDelta*15)},
+        {icon:"⚡",title:"Kiếm 60 XP tuần",desc:"XP từ học, quiz và checkpoint đều được tính.",done:m2,dmg:m2?35:Math.min(30,Math.floor(xpDelta/10)*5)},
+        {icon:"🏆",title:"Đạt mốc tiến độ",desc:"Hoàn thành ít nhất 35% Skill Map.",done:m3,dmg:m3?30:0}
+      ]
+    };
+  }
+
+  function renderBoss(s){
+    const b = bossState(s);
+    $("smBossHpFill").style.width = b.hp + "%";
+    $("smBossHpText").textContent = b.hp + " HP";
+    $("smBossStatus").textContent = b.hp===0 ? "Boss đã bị hạ!" : "Đã gây " + b.damage + " sát thương";
+    $("smBossMissions").innerHTML = b.missions.map(m=>`
+      <div class="sm-boss-mission ${m.done?"done":""}">
+        <div class="sm-boss-mission-icon">${m.icon}</div>
+        <div>
+          <strong>${m.title}</strong>
+          <small>${m.desc}</small>
+        </div>
+        <div class="sm-boss-dmg">${m.done?"✓ ":""}${m.dmg} DMG</div>
+      </div>
+    `).join("");
+
+    const attack = $("smBossAttack");
+    if(b.hp===0 && !b.saved.rewarded){
+      attack.disabled = false;
+      attack.textContent = "🎁 Nhận +100 XP";
+    }else if(b.hp===0 && b.saved.rewarded){
+      attack.disabled = true;
+      attack.textContent = "✓ Đã nhận thưởng";
+    }else{
+      attack.disabled = true;
+      attack.textContent = "⚔️ " + b.damage + "/100 DMG";
+    }
+
+    attack.onclick = () => {
+      const latest = bossState(state());
+      if(latest.hp!==0 || latest.saved.rewarded) return;
+      latest.saved.rewarded = true;
+      localStorage.setItem(latest.key,JSON.stringify(latest.saved));
+      localStorage.setItem(XPKEY,String(xp()+100));
+      document.querySelector(".sm-boss-card")?.classList.add("boss-defeated");
+      setTimeout(()=>render(),650);
+    };
+  }
+
+  function leagueScore(s){
+    const dailyBonus = Object.keys(localStorage)
+      .filter(k=>k.startsWith("avp_skillmap_daily_v72_"))
+      .reduce((sum,k)=>{
+        try{
+          const v=JSON.parse(localStorage.getItem(k)||"{}");
+          return sum + (v.claimed?25:0);
+        }catch(e){return sum}
+      },0);
+
+    return s.doneCount*120 + xp() + dailyBonus;
+  }
+
+  function renderLeague(s){
+    const score = leagueScore(s);
+    const tier =
+      score>=2400 ? "Diamond" :
+      score>=1500 ? "Gold" :
+      score>=800 ? "Silver" : "Bronze";
+
+    const bots = [
+      {name:"Minh Excel",score:score+420,desc:"Power Query"},
+      {name:"Lan Office",score:score+180,desc:"Dashboard"},
+      {name:"Bạn",score:score,desc:"Skill Map",you:true},
+      {name:"Huy Data",score:Math.max(0,score-120),desc:"Pivot"},
+      {name:"An QC",score:Math.max(0,score-310),desc:"Formula"}
+    ].sort((a,b)=>b.score-a.score);
+
+    const rank = bots.findIndex(x=>x.you)+1;
+    $("smLeagueRank").textContent = "#" + rank;
+    $("smLeagueScore").textContent = score.toLocaleString("vi-VN");
+    $("smLeagueTier").textContent = tier;
+    $("smLeagueTime").textContent = weekEndsIn();
+
+    $("smLeagueBoard").innerHTML = bots.map((u,i)=>`
+      <div class="sm-league-row ${u.you?"you":""}">
+        <div class="sm-league-pos">#${i+1}</div>
+        <div class="sm-league-user">
+          <strong>${u.name}</strong>
+          <small>${u.desc}${u.you?" • Bạn":""}</small>
+        </div>
+        <div class="sm-league-score">${u.score.toLocaleString("vi-VN")}</div>
+      </div>
+    `).join("");
+  }
+
   function coachData(s){
     const total = s.all.length;
     const pct = Math.round((s.doneCount/total)*100);
@@ -288,6 +441,8 @@
     $("smPct").textContent = pct + "%";
     renderDaily(s);
     renderCoach(s);
+    renderBoss(s);
+    renderLeague(s);
 
     if(s.next){
       $("smTodayTitle").textContent = s.next.lesson[2];
