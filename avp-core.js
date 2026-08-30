@@ -1,8 +1,7 @@
 (() => {
-  /* AVP V58: embedded pages must never create a second floating AVP. */
-  if (window.self !== window.top) {
-    return;
-  }
+  /* AVP V60: vẫn cho core chạy trong iframe để giữ các tính năng nền
+     (auth/thông báo/tin nhắn tự động), nhưng không render AVP launcher trùng. */
+  const AVP_EMBEDDED = window.self !== window.top;
   const KEY_HISTORY='avp_learning_history_v2', KEY_BOOK='avp_bookmarks_v2';
   const IGNORE=new Set(['auth.html','admin.html','privacy.html','terms.html','disclaimer.html','open-source.html','lienhe.html','gioithieu.html']);
   const page=location.pathname.split('/').pop()||'index.html';
@@ -89,9 +88,16 @@
   const avpNavHost =
     document.querySelector('.main-nav nav, header nav, .nav-links, .navbar, .top-nav, nav');
 
-  if (avpNavHost) {
+  if (AVP_EMBEDDED) {
+    launcher.remove();
+  } else if (avpNavHost) {
     launcher.classList.add('avp-nav-launcher');
-    avpNavHost.appendChild(launcher);
+    const firstNavItem = avpNavHost.firstElementChild;
+    if (firstNavItem) {
+      avpNavHost.insertBefore(launcher, firstNavItem);
+    } else {
+      avpNavHost.appendChild(launcher);
+    }
   } else {
     document.body.appendChild(launcher);
   }
@@ -753,11 +759,18 @@
   launcher.classList.add('avp-fixed-launcher');
 
   function avpPlaceLauncherInNav(){
+    if (AVP_EMBEDDED) return;
     const host =
       document.querySelector('.main-nav nav, header nav, .nav-links, .navbar, .top-nav, nav');
-    if (host && launcher.parentElement !== host){
+    if (host){
       launcher.classList.add('avp-nav-launcher');
-      host.appendChild(launcher);
+      const firstNavItem = host.firstElementChild;
+      if (launcher.parentElement !== host){
+        if (firstNavItem) host.insertBefore(launcher, firstNavItem);
+        else host.appendChild(launcher);
+      } else if (host.firstElementChild !== launcher){
+        host.insertBefore(launcher, host.firstElementChild);
+      }
     }
   }
   avpPlaceLauncherInNav();

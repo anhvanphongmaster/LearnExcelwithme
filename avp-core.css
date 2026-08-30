@@ -1584,3 +1584,48 @@ nav a.avp-brand,
     min-width:0!important;
   }
 }
+
+
+/* =========================================================
+   AVP V60 — NAV ORDER + NORMAL NAV STYLE
+   ========================================================= */
+.avp-edge-launcher.avp-nav-launcher{
+  order:-9999!important;
+}
+
+.avp-edge-launcher.avp-nav-launcher .avp-edge-main{
+  width:auto!important;
+  min-width:auto!important;
+  height:auto!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:inherit!important;
+  box-shadow:none!important;
+  font-size:inherit!important;
+  font-weight:800!important;
+  letter-spacing:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:4px!important;
+}
+
+.avp-edge-launcher.avp-nav-launcher .avp-edge-main::before{
+  content:"◉";
+  color:#217346;
+  font-size:13px;
+}
+
+.avp-edge-launcher.avp-nav-launcher.open .avp-edge-main{
+  background:transparent!important;
+  color:#217346!important;
+  transform:scale(1.04)!important;
+}
+
+/* Desktop: AVP đứng trước Trang chủ. */
+@media(min-width:701px){
+  .avp-edge-launcher.avp-nav-launcher{
+    margin-right:18px!important;
+  }
+}
