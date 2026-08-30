@@ -325,37 +325,117 @@
     return s.doneCount*120 + xp() + dailyBonus;
   }
 
+  function supabaseClient(){
+    return window.avpSupabase || window.supabaseClient || null;
+  }
+
+  async function syncRealLeague(s){
+    const sb = supabaseClient();
+    const note = $("smLeagueNote");
+    const board = $("smLeagueBoard");
+
+    if(!sb){
+      if(note) note.textContent = "Chưa kết nối được Supabase. League sẽ tự đồng bộ khi kết nối sẵn sàng.";
+      return null;
+    }
+
+    const score = leagueScore(s);
+    $("smLeagueScore").textContent = score.toLocaleString("vi-VN");
+    $("smLeagueTime").textContent = weekEndsIn();
+
+    try{
+      const { data: sessionData } = await sb.auth.getSession();
+      const user = sessionData?.session?.user || null;
+
+      if(!user){
+        if(note) note.textContent = "Đăng nhập để ghi điểm vào League tuần. Bạn vẫn có thể xem BXH cộng đồng.";
+      }else{
+        await sb.rpc("weekly_league_upsert_v74",{
+          p_score:score,
+          p_xp:xp(),
+          p_completed:s.doneCount
+        });
+      }
+
+      const {data:top,error:topError} = await sb.rpc("weekly_league_top_v74",{p_limit:10});
+      if(topError) throw topError;
+
+      const rows = Array.isArray(top) ? top : [];
+      if(!rows.length){
+        board.innerHTML = '<div class="sm-league-empty">Chưa có người chơi trong League tuần này.</div>';
+      }else{
+        board.innerHTML = rows.map((u,i)=>{
+          const isYou = !!(user && u.user_id === user.id);
+          const cls = [
+            "sm-league-row",
+            isYou ? "you" : "",
+            i===0 ? "top1" : i===1 ? "top2" : i===2 ? "top3" : ""
+          ].filter(Boolean).join(" ");
+
+          return `
+            <div class="${cls}">
+              <div class="sm-league-pos">#${i+1}</div>
+              <div class="sm-league-user">
+                <strong>${escapeLeague(u.display_name || "Học viên")}</strong>
+                <small>${isYou ? "Bạn • " : ""}${escapeLeague(u.tier || "Bronze")}</small>
+              </div>
+              <div class="sm-league-score">${Number(u.score||0).toLocaleString("vi-VN")}</div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      if(user){
+        const {data:mine,error:mineError} = await sb.rpc("weekly_league_my_rank_v74");
+        if(mineError) throw mineError;
+
+        const me = Array.isArray(mine) ? mine[0] : mine;
+        if(me){
+          $("smLeagueRank").textContent = "#" + Number(me.rank||0);
+          $("smLeagueTier").textContent = me.tier || "Bronze";
+        }
+        if(note) note.textContent = "BXH cộng đồng thật • Tự reset theo tuần • Điểm được đồng bộ khi bạn mở Skill Map.";
+      }else{
+        $("smLeagueRank").textContent = "#--";
+        $("smLeagueTier").textContent = "Guest";
+      }
+
+      return rows;
+    }catch(err){
+      console.error("[SkillMap V74 League]",err);
+      if(note) note.textContent = "League chưa đồng bộ được. Kiểm tra SQL V74/RPC rồi tải lại trang.";
+      return null;
+    }
+  }
+
+  function escapeLeague(v){
+    return String(v ?? "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+  }
+
   function renderLeague(s){
     const score = leagueScore(s);
-    const tier =
+    $("smLeagueScore").textContent = score.toLocaleString("vi-VN");
+    $("smLeagueTier").textContent =
       score>=2400 ? "Diamond" :
       score>=1500 ? "Gold" :
       score>=800 ? "Silver" : "Bronze";
-
-    const bots = [
-      {name:"Minh Excel",score:score+420,desc:"Power Query"},
-      {name:"Lan Office",score:score+180,desc:"Dashboard"},
-      {name:"Bạn",score:score,desc:"Skill Map",you:true},
-      {name:"Huy Data",score:Math.max(0,score-120),desc:"Pivot"},
-      {name:"An QC",score:Math.max(0,score-310),desc:"Formula"}
-    ].sort((a,b)=>b.score-a.score);
-
-    const rank = bots.findIndex(x=>x.you)+1;
-    $("smLeagueRank").textContent = "#" + rank;
-    $("smLeagueScore").textContent = score.toLocaleString("vi-VN");
-    $("smLeagueTier").textContent = tier;
     $("smLeagueTime").textContent = weekEndsIn();
+    $("smLeagueRank").textContent = "#--";
 
-    $("smLeagueBoard").innerHTML = bots.map((u,i)=>`
-      <div class="sm-league-row ${u.you?"you":""}">
-        <div class="sm-league-pos">#${i+1}</div>
-        <div class="sm-league-user">
-          <strong>${u.name}</strong>
-          <small>${u.desc}${u.you?" • Bạn":""}</small>
-        </div>
-        <div class="sm-league-score">${u.score.toLocaleString("vi-VN")}</div>
-      </div>
-    `).join("");
+    const board = $("smLeagueBoard");
+    board.classList.add("sm-league-syncing");
+    board.innerHTML = '<div class="sm-league-empty">Đang tải League tuần…</div>';
+
+    clearTimeout(window.__avpLeagueSync);
+    window.__avpLeagueSync = setTimeout(async()=>{
+      await syncRealLeague(s);
+      board.classList.remove("sm-league-syncing");
+    },250);
   }
 
   function coachData(s){

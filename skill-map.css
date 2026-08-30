@@ -1209,3 +1209,22 @@ body{
 @media(max-width:480px){
   .sm-league-summary{grid-template-columns:1fr}
 }
+
+
+/* =========================================================
+   AVP V74 — REAL WEEKLY LEAGUE
+   ========================================================= */
+.sm-league-syncing{
+  opacity:.65;
+}
+.sm-league-row.top1 .sm-league-pos{background:#f7d66a;color:#624c00}
+.sm-league-row.top2 .sm-league-pos{background:#dfe6ea;color:#4a5960}
+.sm-league-row.top3 .sm-league-pos{background:#e8b98e;color:#6d4324}
+.sm-league-empty{
+  padding:16px;
+  border:1px dashed #d9e5de;
+  border-radius:13px;
+  color:#7a8a81;
+  font-size:10px;
+  text-align:center;
+}
