@@ -144,6 +144,14 @@
         temp.href = href;
         temp.download = a.getAttribute("download") || "";
         temp.rel = "noopener";
+
+        /* AVP V67:
+           Link tạm này là hành động tải đã được xác thực.
+           Đánh dấu public/bypass để capture guard không chặn chính
+           temp.click() lần thứ hai, nếu không sẽ tạo vòng lặp và
+           trình duyệt không bao giờ bắt đầu tải file. */
+        temp.dataset.avpPublicDownload = "1";
+
         temp.style.display = "none";
         document.body.appendChild(temp);
         temp.click();
