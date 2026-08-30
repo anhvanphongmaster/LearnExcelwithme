@@ -1,5 +1,28 @@
 
 /* =========================================================
+   V89 — GLOBAL CTA SYSTEM
+   One semantic CTA palette for the whole website.
+   ========================================================= */
+(function loadAvpCtaSystem(){
+  if(document.getElementById("avpCtaSystemCss")) return;
+
+  const link=document.createElement("link");
+  link.id="avpCtaSystemCss";
+  link.rel="stylesheet";
+  link.href="avp-cta-system.css?v=20260831-v89";
+  document.head.appendChild(link);
+
+  if(!document.getElementById("avpCtaSystemJs")){
+    const s=document.createElement("script");
+    s.id="avpCtaSystemJs";
+    s.src="avp-cta-system.js?v=20260831-v89";
+    s.defer=true;
+    document.head.appendChild(s);
+  }
+})();
+
+
+/* =========================================================
    V83 — GLOBAL SITE MAINTENANCE
    State is controlled from Admin > Tổng quan.
    Fail-open: if Supabase/RPC is unavailable, the website is not blocked.
@@ -216,12 +239,12 @@
       var link = document.createElement("link");
       link.id = "avpSiteMotionCss";
       link.rel = "stylesheet";
-      link.href = "avp-site-motion.css?v=20260831-v87-global-motion";
+      link.href = "avp-site-motion.css";
       document.head.appendChild(link);
     }
     if (!document.querySelector('script[src="avp-site-motion.js"]') && !window.__avpSiteMotion) {
       var s = document.createElement("script");
-      s.src = "avp-site-motion.js?v=20260831-v87-global-motion";
+      s.src = "avp-site-motion.js";
       s.defer = true;
       document.head.appendChild(s);
     }
