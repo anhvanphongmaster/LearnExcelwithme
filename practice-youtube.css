@@ -72,3 +72,44 @@
 .pyt-embedded .pyt-page{
   margin-top:10px!important;
 }
+
+
+/* =========================================================
+   V91 — YouTube Practice embedded inside Practice Hub
+   Hide ALL site-level chrome inside the iframe.
+   The parent Practice Hub owns navigation and floating tools.
+   ========================================================= */
+html.avp-embedded-youtube .top-simple-nav,
+html.avp-embedded-youtube .pyt-back,
+html.avp-embedded-youtube .avp-page-back-wrap,
+html.avp-embedded-youtube .core-topic-nav,
+html.avp-embedded-youtube .avp-hub-fab,
+html.avp-embedded-youtube .avp-edge-menu,
+html.avp-embedded-youtube .avp-hub-backdrop,
+html.avp-embedded-youtube .avp-install-banner,
+html.avp-embedded-youtube .avp-toast-host,
+.pyt-embedded .top-simple-nav,
+.pyt-embedded .pyt-back,
+.pyt-embedded .avp-page-back-wrap,
+.pyt-embedded .core-topic-nav,
+.pyt-embedded .avp-hub-fab,
+.pyt-embedded .avp-edge-menu,
+.pyt-embedded .avp-hub-backdrop,
+.pyt-embedded .avp-install-banner,
+.pyt-embedded .avp-toast-host{
+  display:none!important;
+}
+
+/* Prevent hidden fixed chrome from reserving visual spacing. */
+html.avp-embedded-youtube body,
+body.pyt-embedded{
+  padding-top:0!important;
+  margin-top:0!important;
+}
+
+html.avp-embedded-youtube .pyt-page,
+body.pyt-embedded .pyt-page{
+  max-width:none!important;
+  margin:0!important;
+  padding:6px 2px 20px!important;
+}
