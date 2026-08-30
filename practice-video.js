@@ -1446,14 +1446,32 @@
     return isAvailable(item) || !!tiktokUrl(item);
   }
 
+  function practiceDownloadHref(item, fileName) {
+    if (item && item.fileUrl) return item.fileUrl;
+    if (item && item.sourcePath) return item.sourcePath;
+
+    /* Một số file Power Query cũ nằm ở root thay vì video-practice. */
+    if (fileName === "PowerQuery-11-Files.zip") {
+      return "PowerQuery-11-Files.zip";
+    }
+
+    const folder = (item && item.folder) || "downloads/video-practice/";
+    return folder + fileName;
+  }
+
   function downloadBlock(item, fileName) {
-    const folder = item.folder || "downloads/power-query/";
     const names = [];
     function add(f) { if (f && names.indexOf(f) === -1) names.push(f); }
     add(fileName);
     (item.extraFiles || []).forEach(add);
+
     return names.map(function (f) {
-      return '<a class="pv-download" href="' + folder + f + '" download title="' + f + '">Tải file</a>' + f + "</a>";
+      const href = practiceDownloadHref(item, f);
+      const remote = /^https?:\/\//i.test(href);
+      return '<a class="pv-download" data-avp-practice-download="1" href="' +
+        href + '"' +
+        (remote ? ' target="_blank" rel="noopener noreferrer"' : ' download') +
+        ' title="' + f + '">Tải file</a>';
     }).join("");
   }
 
@@ -2075,10 +2093,12 @@
     const tkBtn = tk
       ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer" title="Xem trên TikTok">' + ico + ' TikTok</a>'
       : '';
-    const downloadHref = item.fileUrl || item.sourcePath || ((item.folder || "downloads/video-practice/") + fileName);
+    const downloadHref = practiceDownloadHref(item, fileName);
     const isRemoteDownload = /^https?:\/\//i.test(downloadHref);
     const fileBtn = avail
-      ? '<a class="pv-download" href="' + downloadHref + '"' + (isRemoteDownload ? ' target="_blank" rel="noopener noreferrer"' : ' download') + ' title="' + fileName + '">Tải file</a>'
+      ? '<a class="pv-download" data-avp-practice-download="1" href="' + downloadHref + '"' +
+        (isRemoteDownload ? ' target="_blank" rel="noopener noreferrer"' : ' download') +
+        ' title="' + fileName + '">Tải file</a>'
       : '';
     const tags = (item.filterTags || [item.category]).join(" ");
     const hasVideo = !!tk;

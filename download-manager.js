@@ -27,6 +27,11 @@
   }
   function apply(a){
     if(!a||a.dataset.avpDownloadBound==="1")return;
+
+    /* TikTok Practice dùng file tĩnh trong repo.
+       Không rewrite sang URL backend để tránh link hết hạn / sai mapping. */
+    if(a.dataset.avpPracticeDownload==="1")return;
+
     const key=norm(a.getAttribute("href"));if(!key||!key.startsWith("downloads/"))return;
     a.dataset.avpDownloadBound="1";a.dataset.avpDownloadKey=key;
     const row=STATE.map.get(key);
