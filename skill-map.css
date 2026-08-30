@@ -1228,3 +1228,164 @@ body{
   font-size:10px;
   text-align:center;
 }
+
+
+/* =========================================================
+   AVP V75 — REAL LEARNING STREAK ENGINE
+   ========================================================= */
+.sm-streak-card{
+  display:grid;
+  grid-template-columns:minmax(250px,.9fr) minmax(300px,1.2fr) minmax(220px,.8fr);
+  gap:14px;
+  align-items:center;
+  margin-top:16px;
+  padding:18px;
+  border:1px solid #eadfca;
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 6% 40%,rgba(255,168,60,.13),transparent 24%),
+    linear-gradient(145deg,#fffdf8,#fffaf0);
+  box-shadow:0 15px 34px rgba(87,67,24,.07);
+}
+
+.sm-streak-main{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.sm-streak-main h2{
+  margin:3px 0 3px;
+  font-size:20px;
+}
+.sm-streak-main h2 strong{
+  color:#d87515;
+  font-size:30px;
+}
+.sm-streak-main p{
+  margin:0;
+  color:#7f7767;
+  font-size:9px;
+  line-height:1.45;
+}
+
+.sm-streak-flame{
+  width:58px;
+  height:58px;
+  flex:0 0 58px;
+  display:grid;
+  place-items:center;
+  border-radius:18px;
+  background:linear-gradient(145deg,#fff1d7,#ffe0a5);
+  font-size:30px;
+  box-shadow:0 10px 22px rgba(197,123,28,.15);
+}
+.sm-streak-flame.hot{
+  animation:smFlame 1.25s ease-in-out infinite alternate;
+}
+@keyframes smFlame{
+  from{transform:translateY(0) rotate(-2deg) scale(1)}
+  to{transform:translateY(-4px) rotate(2deg) scale(1.06)}
+}
+
+.sm-streak-week{
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:6px;
+}
+.sm-streak-day{
+  min-width:0;
+  padding:8px 3px;
+  text-align:center;
+  border:1px solid #eadfd0;
+  border-radius:12px;
+  background:#fff;
+}
+.sm-streak-day span,
+.sm-streak-day strong{
+  display:block;
+}
+.sm-streak-day span{
+  color:#918879;
+  font-size:7px;
+  font-weight:900;
+}
+.sm-streak-day strong{
+  margin-top:4px;
+  font-size:15px;
+  filter:grayscale(1);
+  opacity:.38;
+}
+.sm-streak-day.active{
+  background:#fff6e5;
+  border-color:#efc782;
+}
+.sm-streak-day.active strong{
+  filter:none;
+  opacity:1;
+}
+.sm-streak-day.today{
+  box-shadow:0 0 0 2px rgba(224,140,28,.18);
+}
+
+.sm-streak-stats{
+  display:grid;
+  gap:6px;
+}
+.sm-streak-stats>div{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+  padding:8px 10px;
+  border:1px solid #ece3d5;
+  border-radius:11px;
+  background:rgba(255,255,255,.72);
+}
+.sm-streak-stats small{font-size:8px;color:#8c8376;font-weight:800}
+.sm-streak-stats strong{font-size:10px}
+
+@media(max-width:900px){
+  .sm-streak-card{grid-template-columns:1fr}
+}
+
+
+.sm-retention-grid{
+  display:grid;
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  gap:14px;
+  margin-top:14px;
+}
+.sm-comeback-card,.sm-milestone-card{
+  border:1px solid #d8e5dd;border-radius:22px;background:#fff;
+  box-shadow:0 14px 34px rgba(23,73,44,.07);
+}
+.sm-comeback-card{
+  display:grid;grid-template-columns:54px minmax(0,1fr) auto auto;
+  gap:12px;align-items:center;padding:17px;
+  background:radial-gradient(circle at 8% 50%,rgba(80,151,223,.10),transparent 28%),linear-gradient(145deg,#fff,#f7fbff);
+}
+.sm-comeback-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:17px;background:#edf5ff;font-size:26px}
+.sm-comeback-copy h2{margin:3px 0 3px;font-size:18px}
+.sm-comeback-copy p{margin:0;color:#78867e;font-size:9px;line-height:1.45}
+.sm-freeze-stock{min-width:68px;text-align:center;padding:9px 10px;border:1px solid #dbe7ef;border-radius:13px;background:#fff}
+.sm-freeze-stock small,.sm-freeze-stock strong{display:block}
+.sm-freeze-stock small{font-size:8px;color:#849097;font-weight:800}
+.sm-freeze-stock strong{margin-top:3px;font-size:12px;color:#306c9a}
+.sm-comeback-card button{border:0;border-radius:999px;padding:9px 12px;background:#2f6f9f;color:#fff;font:inherit;font-size:9px;font-weight:900;cursor:pointer}
+.sm-milestone-card{padding:17px}
+.sm-milestone-mini{padding:8px 10px;border-radius:999px;background:#f0f6f2;color:#217346;font-size:9px;font-weight:900}
+.sm-milestones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sm-milestone{padding:13px 11px;border:1px solid #e1e9e4;border-radius:15px;background:#fafcfb}
+.sm-milestone.unlocked{border-color:#f0cf83;background:linear-gradient(145deg,#fffaf0,#fff4d4)}
+.sm-milestone.claimed{border-color:#a7d4b5;background:#f2fbf5}
+.sm-milestone-icon{font-size:24px}
+.sm-milestone strong{display:block;margin-top:6px;font-size:11px}
+.sm-milestone small{display:block;margin-top:3px;color:#7f8b84;font-size:8px;line-height:1.4}
+.sm-milestone button{width:100%;margin-top:8px;border:0;border-radius:9px;padding:7px 6px;background:#d9e1dc;color:#68776e;font:inherit;font-size:8px;font-weight:900}
+.sm-milestone.unlocked button{background:#217346;color:#fff;cursor:pointer}
+.sm-milestone.claimed button{background:#dceee2;color:#217346}
+.sm-comeback-banner{margin:0 0 14px;padding:13px 15px;border:1px solid #efcf8e;border-radius:16px;background:linear-gradient(145deg,#fffaf0,#fff1cc);color:#624d18;box-shadow:0 10px 24px rgba(118,86,17,.08)}
+.sm-comeback-banner strong{display:block;font-size:12px}
+.sm-comeback-banner span{display:block;margin-top:3px;font-size:9px;line-height:1.45}
+@media(max-width:860px){.sm-retention-grid{grid-template-columns:1fr}.sm-comeback-card{grid-template-columns:48px 1fr}.sm-freeze-stock,.sm-comeback-card button{grid-column:2}}
+@media(max-width:520px){.sm-milestones{grid-template-columns:1fr}}

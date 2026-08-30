@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="global-search.css">
-  <link rel="stylesheet" href="skill-map.css?v=20260831-v74-real-league">
+  <link rel="stylesheet" href="skill-map.css?v=20260831-v79-comeback">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#217346">
   <link rel="stylesheet" href="theme-polish-v33.css">
@@ -125,6 +125,53 @@
   </section>
 
 
+
+  <section class="sm-streak-card" id="smStreakCard">
+    <div class="sm-streak-main">
+      <div class="sm-streak-flame" id="smStreakFlame">🔥</div>
+      <div>
+        <span class="sm-kicker">LEARNING STREAK</span>
+        <h2><strong id="smStreakDays">0</strong> ngày liên tiếp</h2>
+        <p id="smStreakMessage">Hoàn thành hoạt động học để bắt đầu streak.</p>
+      </div>
+    </div>
+
+    <div class="sm-streak-week" id="smStreakWeek"></div>
+
+    <div class="sm-streak-stats">
+      <div><small>Kỷ lục</small><strong id="smBestStreak">0 ngày</strong></div>
+      <div><small>7 ngày gần nhất</small><strong id="smActive7">0/7</strong></div>
+      <div><small>Trạng thái hôm nay</small><strong id="smTodayStudy">Chưa học</strong></div>
+    </div>
+  </section>
+
+
+  <section class="sm-retention-grid">
+    <article class="sm-comeback-card" id="smComebackCard">
+      <div class="sm-comeback-icon">🛡️</div>
+      <div class="sm-comeback-copy">
+        <span class="sm-kicker">STREAK PROTECTION</span>
+        <h2 id="smFreezeTitle">Streak Freeze</h2>
+        <p id="smFreezeText">Giữ chuỗi học khi bạn bỏ lỡ một ngày.</p>
+      </div>
+      <div class="sm-freeze-stock">
+        <small>Đang có</small>
+        <strong id="smFreezeStock">0 🧊</strong>
+      </div>
+      <button type="button" id="smFreezeAction">Xem điều kiện</button>
+    </article>
+
+    <article class="sm-milestone-card">
+      <div class="sm-section-head">
+        <div>
+          <span class="sm-kicker">LONG-TERM REWARDS</span>
+          <h2>Mốc quay lại</h2>
+        </div>
+        <div class="sm-milestone-mini" id="smNextMilestone">7 ngày</div>
+      </div>
+      <div class="sm-milestones" id="smMilestones"></div>
+    </article>
+  </section>
   <section class="sm-competitive-grid">
     <article class="sm-boss-card">
       <div class="sm-boss-top">
@@ -218,7 +265,7 @@
 <script src="supabase-auth.js"></script>
 <script src="simple-nav.js"></script>
 <script src="global-search.js"></script>
-<script src="skill-map.js?v=20260831-v74-real-league"></script>
+<script src="skill-map.js?v=20260831-v79-comeback"></script>
 <script src="avp-core.js"></script>
 </body>
 </html>

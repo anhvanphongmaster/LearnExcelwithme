@@ -438,6 +438,246 @@
     },250);
   }
 
+
+  function dateOnlyLocal(offsetDays){
+    const d = new Date();
+    d.setDate(d.getDate()+offsetDays);
+    return [
+      d.getFullYear(),
+      String(d.getMonth()+1).padStart(2,"0"),
+      String(d.getDate()).padStart(2,"0")
+    ].join("-");
+  }
+
+  async function maybeTouchStudyActivity(s){
+    const sb = supabaseClient();
+    if(!sb) return;
+
+    try{
+      const {data:sessionData} = await sb.auth.getSession();
+      const user = sessionData?.session?.user;
+      if(!user) return;
+
+      const key = "avp_study_snapshot_v75_" + user.id;
+      let prev = {};
+      try{ prev = JSON.parse(localStorage.getItem(key) || "{}"); }catch(e){}
+
+      const nowSnapshot = {
+        done:s.doneCount,
+        xp:xp(),
+        quiz:Object.keys(json(QKEY,{})).length
+      };
+
+      if(prev.done == null){
+        localStorage.setItem(key,JSON.stringify(nowSnapshot));
+        return;
+      }
+
+      const dDone = Math.max(0,nowSnapshot.done-Number(prev.done||0));
+      const dXp = Math.max(0,nowSnapshot.xp-Number(prev.xp||0));
+      const dQuiz = Math.max(0,nowSnapshot.quiz-Number(prev.quiz||0));
+
+      if(dDone>0 || dXp>0 || dQuiz>0){
+        await sb.rpc("study_activity_touch_v75",{
+          p_nodes:dDone,
+          p_xp:dXp,
+          p_quiz:dQuiz
+        });
+        localStorage.setItem(key,JSON.stringify(nowSnapshot));
+      }
+    }catch(err){
+      console.warn("[SkillMap V75 activity]",err);
+    }
+  }
+
+  function renderStreakWeek(activeDates){
+    const container = $("smStreakWeek");
+    if(!container) return;
+
+    const days = ["T2","T3","T4","T5","T6","T7","CN"];
+    const today = new Date();
+    const iso = (today.getDay()+6)%7;
+    const monday = new Date(today);
+    monday.setDate(today.getDate()-iso);
+
+    const activeSet = new Set(activeDates || []);
+
+    container.innerHTML = days.map((label,i)=>{
+      const d = new Date(monday);
+      d.setDate(monday.getDate()+i);
+      const key = [
+        d.getFullYear(),
+        String(d.getMonth()+1).padStart(2,"0"),
+        String(d.getDate()).padStart(2,"0")
+      ].join("-");
+      const active = activeSet.has(key);
+      const isToday = key === dateOnlyLocal(0);
+      return `
+        <div class="sm-streak-day ${active?"active":""} ${isToday?"today":""}">
+          <span>${label}</span>
+          <strong>${active?"🔥":"○"}</strong>
+        </div>
+      `;
+    }).join("");
+  }
+
+  async function renderRealStreak(s){
+    const sb = supabaseClient();
+    if(!sb){
+      $("smStreakMessage").textContent = "Chưa kết nối Supabase.";
+      renderStreakWeek([]);
+      return;
+    }
+
+    await maybeTouchStudyActivity(s);
+
+    try{
+      const {data,error} = await sb.rpc("study_streak_summary_v75");
+      if(error) throw error;
+
+      const row = Array.isArray(data) ? data[0] : data;
+      if(!row){
+        $("smStreakMessage").textContent = "Đăng nhập và hoàn thành hoạt động học để bắt đầu streak.";
+        renderStreakWeek([]);
+        return;
+      }
+
+      const current = Number(row.current_streak||0);
+      const best = Number(row.best_streak||0);
+      const active7 = Number(row.active_last_7||0);
+      const studiedToday = !!row.studied_today;
+      const activeDates = Array.isArray(row.week_dates) ? row.week_dates : [];
+
+      $("smStreakDays").textContent = current;
+      $("smBestStreak").textContent = best + " ngày";
+      $("smActive7").textContent = active7 + "/7";
+      $("smTodayStudy").textContent = studiedToday ? "✓ Đã học" : "Chưa học";
+
+      const flame = $("smStreakFlame");
+      flame.classList.toggle("hot",current>0);
+
+      if(studiedToday && current>=7){
+        $("smStreakMessage").textContent = "Quá tốt — bạn đang giữ streak " + current + " ngày. Đừng để chuỗi này đứt!";
+      }else if(studiedToday){
+        $("smStreakMessage").textContent = "Hôm nay đã được tính streak. Quay lại ngày mai để nối chuỗi.";
+      }else if(current>0){
+        $("smStreakMessage").textContent = "Bạn còn hôm nay để giữ streak " + current + " ngày.";
+      }else{
+        $("smStreakMessage").textContent = "Hoàn thành một hoạt động học thật để bắt đầu streak.";
+      }
+
+      renderStreakWeek(activeDates);
+      renderFreeze(row);
+      renderMilestones(row);
+    }catch(err){
+      console.error("[SkillMap V75 streak]",err);
+      $("smStreakMessage").textContent = "Streak chưa đồng bộ được. Kiểm tra SQL V75.";
+      renderStreakWeek([]);
+    }
+  }
+
+
+  function retentionLocal(){
+    const key="avp_retention_v79";
+    let data={};
+    try{data=JSON.parse(localStorage.getItem(key)||"{}");}catch(e){}
+    data.freeze=Number(data.freeze||0);
+    data.claimed=data.claimed||{};
+    data.lastSeen=data.lastSeen||null;
+    return {key,data};
+  }
+
+  function saveRetention(r){
+    localStorage.setItem(r.key,JSON.stringify(r.data));
+  }
+
+  function daysBetween(a,b){
+    if(!a||!b) return 0;
+    const x=new Date(a+"T00:00:00");
+    const y=new Date(b+"T00:00:00");
+    return Math.round((y-x)/86400000);
+  }
+
+  function renderComebackLocal(){
+    const r=retentionLocal();
+    const today=localDateKey();
+    const gap=r.data.lastSeen?daysBetween(r.data.lastSeen,today):0;
+
+    if(gap>=2&&!sessionStorage.getItem("avp_comeback_shown_v79")){
+      const banner=document.createElement("div");
+      banner.className="sm-comeback-banner";
+      banner.innerHTML="<strong>👋 Chào mừng bạn quay lại!</strong><span>Bạn đã vắng "+gap+" ngày. Hôm nay chỉ cần hoàn thành 1 nhiệm vụ nhỏ để lấy lại nhịp học.</span>";
+      document.querySelector(".sm-daily-grid")?.before(banner);
+      sessionStorage.setItem("avp_comeback_shown_v79","1");
+    }
+
+    r.data.lastSeen=today;
+    saveRetention(r);
+  }
+
+  function renderFreeze(summary){
+    const r=retentionLocal();
+    const current=Number(summary?.current_streak||0);
+    const best=Number(summary?.best_streak||0);
+
+    if(best>=7&&!r.data.claimed.freeze7){
+      r.data.freeze+=1;
+      r.data.claimed.freeze7=true;
+      saveRetention(r);
+    }
+
+    $("smFreezeStock").textContent=r.data.freeze+" 🧊";
+    $("smFreezeTitle").textContent=current>=7?"Streak đang rất mạnh":"Streak Freeze";
+    $("smFreezeText").textContent=current>=7
+      ?"Bạn có thể dùng Freeze nếu bỏ lỡ đúng 1 ngày trong tương lai."
+      :"Đạt streak 7 ngày để nhận Freeze đầu tiên.";
+
+    $("smFreezeAction").onclick=()=>{
+      alert("🧊 Streak Freeze\n\nBạn đang có: "+r.data.freeze+"\n\nFreeze dùng để bảo vệ chuỗi khi bỏ lỡ đúng 1 ngày.");
+    };
+  }
+
+  function renderMilestones(summary){
+    const best=Number(summary?.best_streak||0);
+    const r=retentionLocal();
+    const milestones=[
+      {days:7,icon:"🥉",reward:"+50 XP + 1 Freeze",xp:50,freeze:1},
+      {days:14,icon:"🥈",reward:"+100 XP",xp:100,freeze:0},
+      {days:30,icon:"🥇",reward:"+250 XP + 2 Freeze",xp:250,freeze:2}
+    ];
+
+    const next=milestones.find(m=>best<m.days);
+    $("smNextMilestone").textContent=next?next.days+" ngày":"Đã mở hết";
+
+    $("smMilestones").innerHTML=milestones.map(m=>{
+      const unlocked=best>=m.days;
+      const claimed=!!r.data.claimed["m"+m.days];
+      return `<div class="sm-milestone ${claimed?"claimed":unlocked?"unlocked":""}">
+        <div class="sm-milestone-icon">${m.icon}</div>
+        <strong>${m.days} ngày streak</strong>
+        <small>${m.reward}</small>
+        <button type="button" data-milestone="${m.days}" ${(!unlocked||claimed)?"disabled":""}>
+          ${claimed?"✓ Đã nhận":unlocked?"Nhận thưởng":"Chưa mở"}
+        </button>
+      </div>`;
+    }).join("");
+
+    $("smMilestones").querySelectorAll("button[data-milestone]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const days=Number(btn.dataset.milestone);
+        const m=milestones.find(x=>x.days===days);
+        const latest=retentionLocal();
+        if(!m||best<m.days||latest.data.claimed["m"+days]) return;
+
+        latest.data.claimed["m"+days]=true;
+        latest.data.freeze+=m.freeze;
+        saveRetention(latest);
+        localStorage.setItem(XPKEY,String(xp()+m.xp));
+        render();
+      });
+    });
+  }
+
   function coachData(s){
     const total = s.all.length;
     const pct = Math.round((s.doneCount/total)*100);
@@ -523,6 +763,7 @@
     renderCoach(s);
     renderBoss(s);
     renderLeague(s);
+    renderRealStreak(s);
 
     if(s.next){
       $("smTodayTitle").textContent = s.next.lesson[2];
@@ -742,6 +983,7 @@
   }
 
   function init(){
+    renderComebackLocal();
     $("smCoachAsk")?.addEventListener("click", openAiCoach);
     $("smRewardClose")?.addEventListener("click", closeReward);
     $("smReward")?.addEventListener("click", e => {
