@@ -2063,7 +2063,7 @@
 
   async function quota(){
     try{
-      const {data,error}=await client.rpc("avp_ai_quota_status");
+      const {data,error}=await client.rpc("avp_ai_quota_status_v77");
       if(error) throw error;
       const used=Number(data?.used||0);
       const limit=Number(data?.limit||MAX_DAILY);
@@ -2206,6 +2206,8 @@
       }
 
       const content=text || "Hãy phân tích ảnh này và cho mình biết vấn đề cần chú ý.";
+      const quotaRequestId =
+        (crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`);
 
       const {data:saveUser,error:saveErr}=await client.rpc("avp_ai_add_user_message_v2",{
         p_session_id:sessionId,
@@ -2230,6 +2232,7 @@
           message:content,
           content:content,
           question:content,
+          request_id:quotaRequestId,
 
           image_path:imagePath,
           image:imageData,
@@ -2240,12 +2243,18 @@
       if(error) throw error;
 
       if(data?.error==="PROVIDER_NOT_CONFIGURED"){
-        await client.rpc("avp_ai_add_assistant_message",{
-          p_session_id:sessionId,
-          p_content:"AI đang ở chế độ thử nghiệm và chưa kết nối model. Bạn vẫn có thể dùng nút “Chuyển cho Admin” để gửi câu hỏi này."
-        });
+        throw new Error("PROVIDER_NOT_CONFIGURED");
       }else if(data?.error){
         throw new Error(String(data.error));
+      }
+
+      /* Chỉ tính quota SAU KHI Edge Function trả thành công.
+         request_id có unique constraint nên cùng một lượt không thể bị trừ 2 lần. */
+      const {error:quotaCommitErr}=await client.rpc("avp_ai_quota_commit_v77",{
+        p_request_id:quotaRequestId
+      });
+      if(quotaCommitErr){
+        console.warn("AVP AI quota commit",quotaCommitErr);
       }
 
       await loadHistory();
