@@ -100,3 +100,254 @@
   .ph-lazy-badge{display:inline-flex;margin-top:10px}
   .ph-youtube-frame{height:1500px}
 }
+
+
+/* =========================================================
+   AVP V53 — PRACTICE HUB SOURCE CARDS / EXPAND MOTION TEST
+   4 equal sources on desktop, 2x2 on mobile.
+   ========================================================= */
+
+.ph-switch{
+  overflow:visible;
+}
+
+.ph-switch-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  align-items:stretch;
+}
+
+.ph-choice{
+  min-height:138px;
+  height:100%;
+  grid-template-columns:50px minmax(0,1fr);
+  grid-template-rows:auto;
+  align-content:center;
+  padding:17px 16px;
+  border-radius:20px;
+  isolation:isolate;
+  transform-origin:center center;
+  will-change:transform,opacity,box-shadow;
+  transition:
+    transform .32s cubic-bezier(.2,.8,.2,1),
+    opacity .28s ease,
+    border-color .28s ease,
+    box-shadow .32s ease,
+    filter .28s ease;
+}
+
+.ph-choice .ph-choice-arrow{
+  position:absolute;
+  right:14px;
+  bottom:13px;
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  background:rgba(20,58,39,.055);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1),background .28s ease;
+}
+
+.ph-choice:hover{
+  transform:translateY(-4px) scale(1.018);
+  box-shadow:0 16px 34px rgba(20,78,46,.13);
+}
+
+.ph-choice:hover .ph-choice-arrow{
+  transform:translateX(3px);
+  background:rgba(20,58,39,.09);
+}
+
+.ph-choice.active{
+  transform:translateY(-4px) scale(1.025);
+}
+
+.ph-choice.guide{
+  border-color:#cfe2d4;
+  background:linear-gradient(145deg,#fff,#f7fcf8);
+}
+
+.ph-choice.guide .ph-choice-icon{
+  background:#eef8f1;
+}
+
+.ph-switch-grid.is-switching .ph-choice{
+  pointer-events:none;
+}
+
+.ph-switch-grid.is-switching .ph-choice:not(.is-launching){
+  opacity:.46;
+  filter:saturate(.72);
+  transform:scale(.965);
+}
+
+.ph-choice.is-launching{
+  z-index:3;
+  transform:translateY(-7px) scale(1.065);
+  box-shadow:0 22px 48px rgba(20,88,50,.22);
+}
+
+.ph-choice.is-launching::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  border:2px solid rgba(44,174,93,.45);
+  animation:phSourcePulse .48s ease-out both;
+  pointer-events:none;
+}
+
+@keyframes phSourcePulse{
+  0%{opacity:0;transform:scale(.98)}
+  35%{opacity:1}
+  100%{opacity:0;transform:scale(1.075)}
+}
+
+/* Flying card used only during the transition. */
+.ph-choice-flight{
+  position:fixed!important;
+  z-index:2147482000!important;
+  margin:0!important;
+  pointer-events:none!important;
+  overflow:hidden!important;
+  transform-origin:center center!important;
+  box-shadow:0 24px 60px rgba(8,53,28,.24)!important;
+}
+
+.ph-branch{
+  transform-origin:top center;
+}
+
+.ph-branch.ph-branch-reveal{
+  animation:phBranchExpand .48s cubic-bezier(.18,.82,.24,1) both;
+}
+
+@keyframes phBranchExpand{
+  0%{
+    opacity:.15;
+    transform:translateY(12px) scale(.975);
+    filter:blur(1px);
+  }
+  55%{
+    opacity:.85;
+  }
+  100%{
+    opacity:1;
+    transform:none;
+    filter:none;
+  }
+}
+
+.ph-branch.ph-branch-flash{
+  position:relative;
+}
+
+.ph-branch.ph-branch-flash::before{
+  content:"";
+  position:absolute;
+  inset:-8px;
+  border-radius:22px;
+  border:2px solid rgba(52,181,102,.24);
+  opacity:0;
+  pointer-events:none;
+  animation:phDestinationGlow .65s ease-out;
+}
+
+@keyframes phDestinationGlow{
+  0%{opacity:0;transform:scale(.99)}
+  28%{opacity:1}
+  100%{opacity:0;transform:scale(1.012)}
+}
+
+/* Tablet/mobile: keep exactly 2 columns for the four sources. */
+@media(max-width:980px){
+  .ph-switch-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:11px;
+  }
+}
+
+@media(max-width:760px){
+  .ph-switch-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .ph-choice{
+    min-height:142px;
+    grid-template-columns:1fr;
+    align-content:start;
+    gap:9px;
+    padding:14px 12px 38px;
+  }
+
+  .ph-choice-icon{
+    width:44px;
+    height:44px;
+  }
+
+  .ph-choice-copy{
+    gap:4px;
+  }
+
+  .ph-choice-copy strong{
+    font-size:14px;
+  }
+
+  .ph-choice-copy small{
+    font-size:10.5px;
+    line-height:1.35;
+  }
+
+  .ph-choice-eyebrow{
+    font-size:8.5px;
+    letter-spacing:.06em;
+  }
+
+  .ph-choice .ph-choice-arrow{
+    right:11px;
+    bottom:10px;
+  }
+
+  .ph-choice-new{
+    right:8px;
+    top:-7px;
+  }
+}
+
+@media(max-width:390px){
+  .ph-switch{
+    padding:12px;
+  }
+
+  .ph-switch-grid{
+    gap:8px;
+  }
+
+  .ph-choice{
+    min-height:148px;
+    padding:12px 10px 36px;
+    border-radius:16px;
+  }
+
+  .ph-choice-copy strong{
+    font-size:13.5px;
+  }
+
+  .ph-choice-copy small{
+    font-size:10px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .ph-choice,
+  .ph-choice .ph-choice-arrow,
+  .ph-branch-active,
+  .ph-branch.ph-branch-reveal,
+  .ph-choice.is-launching::after,
+  .ph-branch.ph-branch-flash::before{
+    animation:none!important;
+    transition:none!important;
+  }
+}
