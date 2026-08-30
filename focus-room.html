@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Focus Room | Learn Excel with Anh Van Phong</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="simple-nav.css">
+  <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="global-search.css">
+  <link rel="stylesheet" href="focus-room.css?v=20260831-v80">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#217346">
+</head>
+<body>
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">🏠 Trang chủ</a>
+    <a href="skill-map.html">🧭 Skill Map</a>
+    <a href="practice-video.html">📚 Bài tập</a>
+    <a href="excel-race.html">🏁 Race</a>
+    <span class="auth-nav-slot"></span>
+    <a href="profile.html">👤 Hồ sơ</a>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="fr-page">
+  <section class="fr-hero">
+    <div>
+      <span class="fr-kicker">FOCUS STUDY SESSION</span>
+      <h1>25 phút học thật</h1>
+      <p>Chọn mục tiêu, bắt đầu phiên học, hoàn thành nhiệm vụ và nhận báo cáo cuối phiên.</p>
+    </div>
+    <div class="fr-stats">
+      <div><small>Phiên đã hoàn thành</small><strong id="frSessions">0</strong></div>
+      <div><small>Tổng phút tập trung</small><strong id="frMinutes">0</strong></div>
+      <div><small>Phiên tốt nhất</small><strong id="frBest">0m</strong></div>
+    </div>
+  </section>
+
+  <section class="fr-grid">
+    <article class="fr-session-card">
+      <div class="fr-session-head">
+        <div>
+          <span class="fr-kicker">PHIÊN HIỆN TẠI</span>
+          <h2 id="frTitle">Chưa bắt đầu</h2>
+        </div>
+        <span class="fr-state" id="frState">READY</span>
+      </div>
+
+      <div class="fr-timer" id="frTimer">25:00</div>
+      <div class="fr-progress"><div id="frProgress"></div></div>
+
+      <div class="fr-presets" id="frPresets">
+        <button type="button" data-min="15">15 phút</button>
+        <button type="button" data-min="25" class="active">25 phút</button>
+        <button type="button" data-min="40">40 phút</button>
+      </div>
+
+      <label class="fr-field">
+        <span>Mục tiêu phiên học</span>
+        <select id="frGoal">
+          <option value="formula">Ôn công thức Excel</option>
+          <option value="clean">Làm sạch dữ liệu</option>
+          <option value="powerquery">Power Query</option>
+          <option value="pivot">PivotTable</option>
+          <option value="dashboard">Dashboard</option>
+          <option value="practice">Làm bài thực hành</option>
+        </select>
+      </label>
+
+      <div class="fr-actions">
+        <button type="button" id="frStart">▶ Bắt đầu</button>
+        <button type="button" id="frPause" disabled>⏸ Tạm dừng</button>
+        <button type="button" id="frFinish" disabled>✓ Kết thúc phiên</button>
+      </div>
+    </article>
+
+    <article class="fr-plan-card">
+      <div class="fr-section-head">
+        <div>
+          <span class="fr-kicker">SESSION PLAN</span>
+          <h2>3 bước trong phiên</h2>
+        </div>
+        <span id="frPlanCount">0/3</span>
+      </div>
+
+      <div id="frPlan" class="fr-plan"></div>
+
+      <a id="frStudyLink" class="fr-study-link" href="practice-video.html">
+        Mở nội dung học →
+      </a>
+    </article>
+  </section>
+
+  <section class="fr-history-card">
+    <div class="fr-section-head">
+      <div>
+        <span class="fr-kicker">STUDY HISTORY</span>
+        <h2>Lịch sử tập trung</h2>
+      </div>
+      <button type="button" id="frClearHistory">Xóa lịch sử</button>
+    </div>
+
+    <div id="frHistory" class="fr-history"></div>
+  </section>
+</main>
+
+<div class="fr-summary" id="frSummary" hidden>
+  <div class="fr-summary-card">
+    <button type="button" class="fr-close" id="frSummaryClose">×</button>
+    <div class="fr-summary-icon">🏆</div>
+    <span class="fr-kicker">SESSION COMPLETE</span>
+    <h2 id="frSummaryTitle">Hoàn thành phiên học</h2>
+    <p id="frSummaryText"></p>
+
+    <div class="fr-summary-stats">
+      <div><small>Thời gian</small><strong id="frSummaryMinutes">0m</strong></div>
+      <div><small>Nhiệm vụ</small><strong id="frSummaryTasks">0/3</strong></div>
+      <div><small>XP nhận</small><strong id="frSummaryXP">+0</strong></div>
+    </div>
+
+    <button type="button" id="frSummaryDone">Xong</button>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-auth.js"></script>
+<script src="simple-nav.js"></script>
+<script src="focus-room.js?v=20260831-v80"></script>
+<script src="avp-core.js"></script>
+</body>
+</html>
