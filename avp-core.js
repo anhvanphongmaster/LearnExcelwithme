@@ -760,29 +760,53 @@
   );
 
   function avpPlaceLauncherInNav(){
-    if (AVP_EMBEDDED) return;
+    if (AVP_EMBEDDED) return false;
 
-    /* Xóa brand cũ nếu simple-nav/cache còn tạo. */
     document.querySelectorAll('.top-simple-brand').forEach(el=>el.remove());
 
-    const host =
-      document.querySelector('.top-simple-links, .main-nav nav, header nav, .nav-links, .navbar, .top-nav, nav');
+    const host = document.querySelector('.top-simple-nav .top-simple-links');
+    if(!host) return false;
 
-    if(host){
-      launcher.classList.remove(
-        'avp-fixed-launcher','is-left','is-right','is-dragging','is-snapping'
-      );
-      launcher.classList.add('avp-nav-launcher');
+    launcher.classList.remove(
+      'avp-fixed-launcher','is-left','is-right','is-dragging','is-snapping'
+    );
+    launcher.classList.add('avp-nav-launcher');
 
-      /* Đặt AVP thành item đầu tiên của nhóm link => ngay trước Trang chủ. */
-      const firstItem = host.firstElementChild;
-      if(firstItem !== launcher){
-        host.insertBefore(launcher, firstItem || null);
-      }
+    /* AVP phải là con trực tiếp đầu tiên của .top-simple-links. */
+    if(launcher.parentElement !== host || host.firstElementChild !== launcher){
+      host.insertBefore(launcher, host.firstElementChild || null);
     }
+
+    launcher.classList.add('avp-nav-ready');
+    return true;
   }
-  avpPlaceLauncherInNav();
-  setTimeout(avpPlaceLauncherInNav, 250);
+
+  function avpKeepLauncherInCorrectNav(){
+    if(avpPlaceLauncherInNav()) return;
+
+    let tries=0;
+    const timer=setInterval(()=>{
+      tries++;
+      if(avpPlaceLauncherInNav() || tries>=40){
+        clearInterval(timer);
+      }
+    },125);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', avpKeepLauncherInCorrectNav, {once:true});
+  }else{
+    avpKeepLauncherInCorrectNav();
+  }
+
+  /* Nếu simple-nav/auth render lại menu sau đó, tự đưa AVP về đúng vị trí. */
+  const navObserver=new MutationObserver(()=>{
+    const host=document.querySelector('.top-simple-nav .top-simple-links');
+    if(host && (launcher.parentElement!==host || host.firstElementChild!==launcher)){
+      avpPlaceLauncherInNav();
+    }
+  });
+  navObserver.observe(document.documentElement,{childList:true,subtree:true});
 
   fab.addEventListener('click',e=>{
     e.preventDefault();

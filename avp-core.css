@@ -1866,3 +1866,153 @@ nav a.avp-brand,
     margin:0!important;
   }
 }
+
+
+/* =========================================================
+   AVP V63 — KHÓA AVP NGAY TRƯỚC TRANG CHỦ
+   Nếu AVP chưa nằm đúng .top-simple-links thì ẩn hoàn toàn,
+   tránh xuất hiện ở góc trái header.
+   ========================================================= */
+
+/* Mặc định: launcher chưa đặt đúng thì không được hiện. */
+#avpEdgeLauncher{
+  visibility:hidden!important;
+}
+
+/* Chỉ hiện khi là con trực tiếp đầu tiên của nhóm menu. */
+.top-simple-nav .top-simple-links > #avpEdgeLauncher.avp-nav-ready{
+  visibility:visible!important;
+  position:relative!important;
+  inset:auto!important;
+  top:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  left:auto!important;
+
+  display:inline-flex!important;
+  align-items:center!important;
+  flex:0 0 auto!important;
+
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+
+  margin:0 6px 0 0!important;
+  padding:0!important;
+  transform:none!important;
+  box-shadow:none!important;
+  filter:none!important;
+  order:0!important;
+  z-index:10!important;
+}
+
+/* AVP cùng cấp, cùng nhịp với Trang chủ/Tìm kiếm. */
+.top-simple-nav .top-simple-links > #avpEdgeLauncher.avp-nav-ready #avpEdgeMain{
+  position:relative!important;
+  inset:auto!important;
+
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+
+  width:auto!important;
+  min-width:54px!important;
+  max-width:none!important;
+  height:42px!important;
+  min-height:42px!important;
+
+  margin:0!important;
+  padding:0 12px!important;
+
+  border:1px solid transparent!important;
+  border-radius:10px!important;
+  background:transparent!important;
+  color:#183d2a!important;
+
+  box-shadow:none!important;
+  transform:none!important;
+
+  font-family:Arial,sans-serif!important;
+  font-size:14px!important;
+  font-weight:800!important;
+  line-height:1.2!important;
+}
+
+.top-simple-nav .top-simple-links > #avpEdgeLauncher.avp-nav-ready #avpEdgeMain:hover,
+.top-simple-nav .top-simple-links > #avpEdgeLauncher.avp-nav-ready.open #avpEdgeMain{
+  background:#edf6f1!important;
+  color:#0f5c35!important;
+}
+
+/* Không còn bất kỳ hình tròn/floating nào. */
+.top-simple-nav .top-simple-links > #avpEdgeLauncher .avp-edge-main-icon{
+  position:static!important;
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:inherit!important;
+  box-shadow:none!important;
+  transform:none!important;
+  font:inherit!important;
+}
+
+/* Menu con vẫn xổ dưới AVP. */
+.top-simple-nav .top-simple-links > #avpEdgeLauncher .avp-edge-menu{
+  position:absolute!important;
+  top:48px!important;
+  left:0!important;
+  right:auto!important;
+  bottom:auto!important;
+  width:178px!important;
+  min-width:178px!important;
+  margin:0!important;
+  transform:none!important;
+}
+
+/* Desktop: AVP + Trang chủ + ... cùng trong một cụm giữa header. */
+@media(min-width:901px){
+  .top-simple-nav .top-simple-links{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:6px!important;
+    margin:0 auto!important;
+  }
+}
+
+/* Mobile: AVP là item đầu tiên trong menu hamburger. */
+@media(max-width:900px){
+  .top-simple-nav .top-simple-links > #avpEdgeLauncher.avp-nav-ready{
+    width:100%!important;
+    margin:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+  }
+
+  .top-simple-nav .top-simple-links > #avpEdgeLauncher.avp-nav-ready #avpEdgeMain{
+    width:100%!important;
+    justify-content:flex-start!important;
+    min-height:52px!important;
+    height:52px!important;
+    padding:0 16px!important;
+  }
+
+  .top-simple-nav .top-simple-links > #avpEdgeLauncher .avp-edge-menu{
+    position:relative!important;
+    top:auto!important;
+    left:auto!important;
+    width:100%!important;
+    min-width:0!important;
+    margin-top:6px!important;
+  }
+}
