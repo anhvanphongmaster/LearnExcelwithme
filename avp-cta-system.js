@@ -68,8 +68,8 @@
       href.includes("youtube.com") ||
       href.includes("youtu.be") ||
       cls.includes("pyt-yt") ||
-      cls.split(/\s+/).includes("youtube") ||
-      text.includes("youtube")
+      (cls.split(/\s+/).includes("youtube") &&
+       (href.includes("youtube") || href.includes("youtu.be")))
     ){
       el.classList.add("avp-cta-auto","avp-cta-youtube");
       return;
@@ -104,9 +104,12 @@
     }
 
     // Main user intent.
+    // Cards with lots of descriptive copy are not recolored automatically.
+    const compactActionText=text.length<=52;
     if(
-      tag==="INPUT" && type==="submit" ||
-      /(bắt đầu|học tiếp|tiếp tục|bài tiếp theo|đi thực hành|làm bài|làm ngay|vào học|mở bài|xem bài|nộp bài|gửi bài|lưu|áp dụng|đăng nhập|đăng ký|tải file|tải toàn bộ|download|chấm điểm|kiểm tra kết quả|xác nhận|hoàn thành|đánh dấu đã học|thử ngay|tạo |xuất |tra cứu|tìm kiếm ngay)/i.test(text)
+      (tag==="INPUT" && type==="submit") ||
+      (compactActionText &&
+       /(bắt đầu|học tiếp|tiếp tục|bài tiếp theo|đi thực hành|làm bài|làm ngay|vào học|mở bài|xem bài|nộp bài|gửi bài|lưu|áp dụng|đăng nhập|đăng ký|tải file|tải toàn bộ|download|chấm điểm|kiểm tra kết quả|xác nhận|hoàn thành|đánh dấu đã học|thử ngay|tạo |xuất |tra cứu|tìm kiếm ngay)/i.test(text))
     ){
       el.classList.add("avp-cta-auto","avp-cta-primary");
       return;

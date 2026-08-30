@@ -9,13 +9,13 @@
   const link=document.createElement("link");
   link.id="avpCtaSystemCss";
   link.rel="stylesheet";
-  link.href="avp-cta-system.css?v=20260831-v89";
+  link.href="avp-cta-system.css?v=20260831-v93";
   document.head.appendChild(link);
 
   if(!document.getElementById("avpCtaSystemJs")){
     const s=document.createElement("script");
     s.id="avpCtaSystemJs";
-    s.src="avp-cta-system.js?v=20260831-v89";
+    s.src="avp-cta-system.js?v=20260831-v93";
     s.defer=true;
     document.head.appendChild(s);
   }
@@ -239,12 +239,12 @@
       var link = document.createElement("link");
       link.id = "avpSiteMotionCss";
       link.rel = "stylesheet";
-      link.href = "avp-site-motion.css";
+      link.href = "avp-site-motion.css?v=20260831-v93";
       document.head.appendChild(link);
     }
     if (!document.querySelector('script[src="avp-site-motion.js"]') && !window.__avpSiteMotion) {
       var s = document.createElement("script");
-      s.src = "avp-site-motion.js";
+      s.src = "avp-site-motion.js?v=20260831-v93";
       s.defer = true;
       document.head.appendChild(s);
     }

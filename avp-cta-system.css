@@ -207,7 +207,6 @@ a.avp-cta-danger{
 
 /* Keep real YouTube actions branded. */
 .pyt-yt,
-.youtube,
 a[href*="youtube.com"].avp-cta-auto,
 a[href*="youtu.be"].avp-cta-auto{
   background:var(--avp-cta-youtube)!important;
