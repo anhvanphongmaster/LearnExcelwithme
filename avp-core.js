@@ -1,7 +1,4 @@
 (() => {
-  /* AVP V60: vẫn cho core chạy trong iframe để giữ các tính năng nền
-     (auth/thông báo/tin nhắn tự động), nhưng không render AVP launcher trùng. */
-  const AVP_EMBEDDED = window.self !== window.top;
   const KEY_HISTORY='avp_learning_history_v2', KEY_BOOK='avp_bookmarks_v2';
   const IGNORE=new Set(['auth.html','admin.html','privacy.html','terms.html','disclaimer.html','open-source.html','lienhe.html','gioithieu.html']);
   const page=location.pathname.split('/').pop()||'index.html';
@@ -78,29 +75,14 @@
       id="avpEdgeMain"
       aria-label="Mở công cụ nhanh"
       aria-expanded="false"
-      title="AVP — Công cụ nhanh"
+      title="Công cụ nhanh — kéo để di chuyển"
     >
       <span class="avp-edge-main-icon">AVP</span>
       <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
     </button>
   `;
 
-  const avpNavHost =
-    document.querySelector('.top-simple-links, .main-nav nav, header nav, .nav-links, .navbar, .top-nav, nav');
-
-  if (AVP_EMBEDDED) {
-    launcher.remove();
-  } else if (avpNavHost) {
-    launcher.classList.add('avp-nav-launcher');
-    const firstNavItem = avpNavHost.firstElementChild;
-    if (firstNavItem) {
-      avpNavHost.insertBefore(launcher, firstNavItem);
-    } else {
-      avpNavHost.appendChild(launcher);
-    }
-  } else {
-    document.body.appendChild(launcher);
-  }
+  document.body.appendChild(launcher);
 
   const fab=launcher.querySelector('#avpEdgeMain');
   const edgeMenu=launcher.querySelector('#avpEdgeMenu');
@@ -563,52 +545,6 @@
     return false;
   }
 
-  function runEdgeAction(action){
-    const aiPanel=document.getElementById('avpAiChatPanel');
-    const chatPanels=[
-      document.getElementById('avpChatPanel'),
-      document.getElementById('avpAdminFloatPanel'),
-      document.getElementById('avpGuestChatPanel')
-    ].filter(Boolean);
-
-    if(action==='learning'){
-      if(back.classList.contains('open')){
-        closeHub();
-        return;
-      }
-      window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'learning'}}));
-      openHub();
-    }else if(action==='community'){
-      const communityAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpCommunityMode')?.hidden;
-      if(communityAlreadyOpen){
-        aiPanel.hidden=true;
-        return;
-      }
-      window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
-      if(window.AVPCommunity?.open){
-        window.AVPCommunity.open();
-      }else{
-        toast('Cộng đồng đang tải, thử lại sau một chút');
-      }
-    }else if(action==='chat'){
-      const chatAlreadyOpen=chatPanels.some(p=>!p.hidden);
-      if(chatAlreadyOpen){
-        chatPanels.forEach(p=>p.hidden=true);
-        return;
-      }
-      window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
-      clickHiddenTool('avpChatBubble','Chat Admin');
-    }else if(action==='ai'){
-      const aiAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpAiMode')?.hidden;
-      if(aiAlreadyOpen){
-        aiPanel.hidden=true;
-        return;
-      }
-      window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
-      clickHiddenTool('avpAiChatBubble','AI Chat');
-    }
-  }
-
   launcher.querySelectorAll('[data-edge-action]').forEach(btn=>{
     btn.addEventListener('click',e=>{
       e.preventDefault();
@@ -616,19 +552,51 @@
 
       const action=btn.dataset.edgeAction;
       hideMiniPreview();
+      setEdgeMenu(false);
 
-      /* Mục được chọn phóng ra từ nút AVP trước khi mở panel. */
-      btn.classList.remove('avp-edge-action-launching');
-      void btn.offsetWidth;
-      btn.classList.add('avp-edge-action-launching');
-      launcher.classList.add('avp-edge-launching');
+      const aiPanel=document.getElementById('avpAiChatPanel');
+      const chatPanels=[
+        document.getElementById('avpChatPanel'),
+        document.getElementById('avpAdminFloatPanel'),
+        document.getElementById('avpGuestChatPanel')
+      ].filter(Boolean);
 
-      setTimeout(()=>{
-        setEdgeMenu(false);
-        btn.classList.remove('avp-edge-action-launching');
-        launcher.classList.remove('avp-edge-launching');
-        runEdgeAction(action);
-      },230);
+      if(action==='learning'){
+        if(back.classList.contains('open')){
+          closeHub();
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'learning'}}));
+        openHub();
+      }else if(action==='community'){
+        const communityAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpCommunityMode')?.hidden;
+        if(communityAlreadyOpen){
+          aiPanel.hidden=true;
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
+        if(window.AVPCommunity?.open){
+          window.AVPCommunity.open();
+        }else{
+          toast('Cộng đồng đang tải, thử lại sau một chút');
+        }
+      }else if(action==='chat'){
+        const chatAlreadyOpen=chatPanels.some(p=>!p.hidden);
+        if(chatAlreadyOpen){
+          chatPanels.forEach(p=>p.hidden=true);
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
+        clickHiddenTool('avpChatBubble','Chat Admin');
+      }else if(action==='ai'){
+        const aiAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpAiMode')?.hidden;
+        if(aiAlreadyOpen){
+          aiPanel.hidden=true;
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
+        clickHiddenTool('avpAiChatBubble','AI Chat');
+      }
     });
   });
 
@@ -754,66 +722,179 @@
     {once:true}
   );
 
-  /* AVP V61: AVP là một mục thật trong menu, tuyệt đối không dùng fixed/floating. */
-  launcher.classList.remove(
-    'is-left','is-right','is-dragging','is-snapping','avp-fixed-launcher'
-  );
+  /* Kéo dọc màn hình + snap sát viền trái/phải, nhớ vị trí. */
+  (function enableDragEdgeLauncher(root,btn){
+    const POS_KEY='avp_edge_launcher_pos_v5';
+    const EDGE_GAP=6;
 
-  function avpPlaceLauncherInNav(){
-    if (AVP_EMBEDDED) return false;
+    const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 
-    document.querySelectorAll('.top-simple-brand').forEach(el=>el.remove());
-
-    const host = document.querySelector('.top-simple-nav .top-simple-links');
-    if(!host) return false;
-
-    launcher.classList.remove(
-      'avp-fixed-launcher','is-left','is-right','is-dragging','is-snapping'
-    );
-    launcher.classList.add('avp-nav-launcher');
-
-    /* AVP phải là con trực tiếp đầu tiên của .top-simple-links. */
-    if(launcher.parentElement !== host || host.firstElementChild !== launcher){
-      host.insertBefore(launcher, host.firstElementChild || null);
+    function sideFromX(x,w){
+      return (x + w/2) < (window.innerWidth/2) ? 'left' : 'right';
     }
 
-    launcher.classList.add('avp-nav-ready');
-    return true;
-  }
+    function applySideClass(side){
+      root.classList.toggle('is-left',side==='left');
+      root.classList.toggle('is-right',side==='right');
+    }
 
-  function avpKeepLauncherInCorrectNav(){
-    if(avpPlaceLauncherInNav()) return;
+    function save(side,y){
+      try{
+        localStorage.setItem(POS_KEY,JSON.stringify({side,y}));
+      }catch{}
+    }
 
-    let tries=0;
-    const timer=setInterval(()=>{
-      tries++;
-      if(avpPlaceLauncherInNav() || tries>=40){
-        clearInterval(timer);
+    function snapToEdge(side,y,animate=true){
+      const w=root.offsetWidth||50;
+      const h=root.offsetHeight||50;
+      const maxY=Math.max(EDGE_GAP,window.innerHeight-h-EDGE_GAP);
+      const top=clamp(Number(y)||Math.round(window.innerHeight*.55),EDGE_GAP,maxY);
+
+      applySideClass(side);
+
+      if(animate)root.classList.add('is-snapping');
+
+      root.style.top=top+'px';
+      root.style.bottom='auto';
+
+      if(side==='left'){
+        root.style.left=EDGE_GAP+'px';
+        root.style.right='auto';
+      }else{
+        root.style.left=(window.innerWidth-w-EDGE_GAP)+'px';
+        root.style.right='auto';
       }
-    },125);
-  }
 
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', avpKeepLauncherInCorrectNav, {once:true});
-  }else{
-    avpKeepLauncherInCorrectNav();
-  }
+      save(side,top);
+      requestAnimationFrame(positionMiniPreview);
 
-  /* Nếu simple-nav/auth render lại menu sau đó, tự đưa AVP về đúng vị trí. */
-  const navObserver=new MutationObserver(()=>{
-    const host=document.querySelector('.top-simple-nav .top-simple-links');
-    if(host && (launcher.parentElement!==host || host.firstElementChild!==launcher)){
-      avpPlaceLauncherInNav();
+      if(animate){
+        setTimeout(()=>root.classList.remove('is-snapping'),260);
+      }
     }
-  });
-  navObserver.observe(document.documentElement,{childList:true,subtree:true});
 
-  fab.addEventListener('click',e=>{
-    e.preventDefault();
-    e.stopPropagation();
-    setEdgeMenu(edgeMenu.hidden);
-  });
+    let saved=null;
+    try{
+      saved=JSON.parse(localStorage.getItem(POS_KEY)||'null');
+    }catch{}
 
+    snapToEdge(
+      saved?.side==='left'?'left':'right',
+      saved?.y ?? Math.round(window.innerHeight*.56),
+      false
+    );
+
+    window.addEventListener('resize',()=>{
+      let pos=null;
+      try{
+        pos=JSON.parse(localStorage.getItem(POS_KEY)||'null');
+      }catch{}
+
+      snapToEdge(
+        pos?.side==='left'?'left':'right',
+        pos?.y ?? root.getBoundingClientRect().top,
+        false
+      );
+    });
+
+    let dragging=false;
+    let moved=false;
+    let pointerId=null;
+
+    let grabOffsetX=0;
+    let grabOffsetY=0;
+
+    btn.addEventListener('pointerdown',e=>{
+      if(e.button!=null && e.button!==0)return;
+
+      const r=root.getBoundingClientRect();
+
+      dragging=true;
+      moved=false;
+      pointerId=e.pointerId;
+
+      // Điểm người dùng chạm trong chính nút -> cảm giác kéo như AssistiveTouch.
+      grabOffsetX=e.clientX-r.left;
+      grabOffsetY=e.clientY-r.top;
+
+      root.style.left=r.left+'px';
+      root.style.right='auto';
+      root.style.top=r.top+'px';
+      root.style.bottom='auto';
+
+      root.classList.add('is-dragging');
+      setEdgeMenu(false);
+      hideMiniPreview();
+
+      try{
+        btn.setPointerCapture(pointerId);
+      }catch{}
+
+      e.preventDefault();
+    },{passive:false});
+
+    btn.addEventListener('pointermove',e=>{
+      if(!dragging)return;
+
+      const w=root.offsetWidth||50;
+      const h=root.offsetHeight||50;
+
+      let x=e.clientX-grabOffsetX;
+      let y=e.clientY-grabOffsetY;
+
+      x=clamp(x,EDGE_GAP,window.innerWidth-w-EDGE_GAP);
+      y=clamp(y,EDGE_GAP,window.innerHeight-h-EDGE_GAP);
+
+      const r=root.getBoundingClientRect();
+      if(Math.abs(x-r.left)>2 || Math.abs(y-r.top)>2){
+        moved=true;
+      }
+
+      root.style.left=x+'px';
+      root.style.right='auto';
+      root.style.top=y+'px';
+      root.style.bottom='auto';
+
+      applySideClass(sideFromX(x,w));
+      requestAnimationFrame(positionMiniPreview);
+
+      e.preventDefault();
+    },{passive:false});
+
+    function finish(e){
+      if(!dragging)return;
+
+      dragging=false;
+      root.classList.remove('is-dragging');
+
+      try{
+        btn.releasePointerCapture(pointerId);
+      }catch{}
+
+      if(moved){
+        const r=root.getBoundingClientRect();
+        const side=sideFromX(r.left,r.width);
+
+        snapToEdge(side,r.top,true);
+
+        btn.dataset.justDragged='1';
+        setTimeout(()=>delete btn.dataset.justDragged,320);
+      }
+    }
+
+    btn.addEventListener('pointerup',finish);
+    btn.addEventListener('pointercancel',finish);
+
+    btn.addEventListener('click',e=>{
+      if(btn.dataset.justDragged==='1'){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return;
+      }
+
+      setEdgeMenu(edgeMenu.hidden);
+    });
+  })(launcher,fab);
 
   document.addEventListener('pointerdown',e=>{
     if(!launcher.contains(e.target))setEdgeMenu(false);
