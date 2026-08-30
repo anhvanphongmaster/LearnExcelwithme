@@ -86,7 +86,7 @@
   `;
 
   const avpNavHost =
-    document.querySelector('.main-nav nav, header nav, .nav-links, .navbar, .top-nav, nav');
+    document.querySelector('.top-simple-links, .main-nav nav, header nav, .nav-links, .navbar, .top-nav, nav');
 
   if (AVP_EMBEDDED) {
     launcher.remove();
@@ -761,18 +761,23 @@
 
   function avpPlaceLauncherInNav(){
     if (AVP_EMBEDDED) return;
+
+    /* Xóa brand cũ nếu simple-nav/cache còn tạo. */
+    document.querySelectorAll('.top-simple-brand').forEach(el=>el.remove());
+
     const host =
-      document.querySelector('.main-nav nav, header nav, .nav-links, .navbar, .top-nav, nav');
-    if (host){
-      launcher.classList.remove('avp-fixed-launcher','is-left','is-right','is-dragging','is-snapping');
-      launcher.classList.remove('avp-fixed-launcher','is-left','is-right','is-dragging','is-snapping');
+      document.querySelector('.top-simple-links, .main-nav nav, header nav, .nav-links, .navbar, .top-nav, nav');
+
+    if(host){
+      launcher.classList.remove(
+        'avp-fixed-launcher','is-left','is-right','is-dragging','is-snapping'
+      );
       launcher.classList.add('avp-nav-launcher');
-      const firstNavItem = host.firstElementChild;
-      if (launcher.parentElement !== host){
-        if (firstNavItem) host.insertBefore(launcher, firstNavItem);
-        else host.appendChild(launcher);
-      } else if (host.firstElementChild !== launcher){
-        host.insertBefore(launcher, host.firstElementChild);
+
+      /* Đặt AVP thành item đầu tiên của nhóm link => ngay trước Trang chủ. */
+      const firstItem = host.firstElementChild;
+      if(firstItem !== launcher){
+        host.insertBefore(launcher, firstItem || null);
       }
     }
   }

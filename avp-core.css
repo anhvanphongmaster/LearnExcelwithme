@@ -1590,7 +1590,6 @@ nav a.avp-brand,
    AVP V60 — NAV ORDER + NORMAL NAV STYLE
    ========================================================= */
 .avp-edge-launcher.avp-nav-launcher{
-  order:-9999!important;
 }
 
 .avp-edge-launcher.avp-nav-launcher .avp-edge-main{
@@ -1652,7 +1651,6 @@ nav a.avp-brand,
   display:inline-flex!important;
   align-items:center!important;
   flex:0 0 auto!important;
-  order:-9999!important;
   overflow:visible!important;
   transform:none!important;
   box-shadow:none!important;
@@ -1806,5 +1804,65 @@ nav a.avp-brand,
     margin-top:5px!important;
     box-shadow:none!important;
     background:#f7fbf8!important;
+  }
+}
+
+
+/* =========================================================
+   AVP V62 — AVP đứng NGAY TRƯỚC Trang chủ
+   + bỏ hẳn brand "📗 Learn Excel"
+   ========================================================= */
+
+.top-simple-nav > .top-simple-brand,
+.top-simple-nav .top-simple-brand{
+  display:none!important;
+}
+
+/* AVP là item đầu tiên BÊN TRONG nhóm .top-simple-links,
+   vì vậy đứng sát trước Trang chủ thay vì tận mép trái header. */
+.top-simple-links > #avpEdgeLauncher.avp-nav-launcher{
+  position:relative!important;
+  inset:auto!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0 8px 0 0!important;
+  padding:0!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  flex:0 0 auto!important;
+  order:0!important;
+  transform:none!important;
+  box-shadow:none!important;
+}
+
+/* Các mục menu giữ nguyên thứ tự tự nhiên sau AVP. */
+.top-simple-links > #avpEdgeLauncher.avp-nav-launcher + a,
+.top-simple-links > #avpEdgeLauncher.avp-nav-launcher + button{
+  margin-left:0!important;
+}
+
+/* AVP nhìn như một menu item, không phải vòng tròn nổi. */
+.top-simple-links > #avpEdgeLauncher #avpEdgeMain{
+  height:40px!important;
+  min-height:40px!important;
+  padding:0 10px!important;
+  border:0!important;
+  border-radius:9px!important;
+  background:transparent!important;
+  color:#174a2e!important;
+  box-shadow:none!important;
+  transform:none!important;
+}
+
+.top-simple-links > #avpEdgeLauncher #avpEdgeMain:hover,
+.top-simple-links > #avpEdgeLauncher.open #avpEdgeMain{
+  background:#edf7f1!important;
+}
+
+/* Mobile: nằm trong danh sách menu như các mục còn lại. */
+@media(max-width:900px){
+  .top-simple-links > #avpEdgeLauncher.avp-nav-launcher{
+    width:100%!important;
+    margin:0!important;
   }
 }

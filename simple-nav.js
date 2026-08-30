@@ -59,14 +59,11 @@
       toggle.setAttribute("aria-label", "Đóng menu");
       toggle.innerHTML = "✕";
     }
-
-    if(nav && !nav.querySelector(".top-simple-brand")){
-      const brand=document.createElement("a");
-      brand.className="top-simple-brand";
-      brand.href="index.html";
-      brand.textContent="📗 Learn Excel";
-      nav.insertBefore(brand, nav.firstChild);
+    /* AVP V62: bỏ hẳn brand phụ "📗 Learn Excel". */
+    if(nav){
+      nav.querySelectorAll(".top-simple-brand").forEach(function(el){ el.remove(); });
     }
+
     if(nav && !nav.querySelector(".auth-nav-slot")){
       const slot=document.createElement("span");
       slot.className="auth-nav-slot";
