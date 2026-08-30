@@ -44,8 +44,7 @@
   });
 
   function reducedMotion(){
-    return !!(window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    return false;
   }
 
   function sleep(ms){

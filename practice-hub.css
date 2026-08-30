@@ -351,12 +351,114 @@
   }
 }
 
-@media(prefers-reduced-motion:reduce){
-  .ph-choice,
-  .ph-switch,
-  .ph-focus-header-v56,
-  .ph-branch{
-    transition:none!important;
-    animation:none!important;
+
+
+/* =========================================================
+   AVP V57 — LEGACY DESKTOP MOTION
+   Cố ý dùng transform/opacity/keyframes cơ bản để chạy trên
+   Chrome/Edge/Firefox/Safari đời cũ hơn. Không phụ thuộc
+   prefers-reduced-motion, Web Animations API hay backdrop-filter.
+   ========================================================= */
+
+.ph-choice{
+  -webkit-transition:
+    -webkit-transform .34s ease,
+    opacity .26s ease,
+    box-shadow .34s ease!important;
+  transition:
+    transform .34s ease,
+    opacity .26s ease,
+    box-shadow .34s ease!important;
+  -webkit-transform-origin:center center!important;
+  transform-origin:center center!important;
+}
+
+.ph-switch.is-choosing .ph-choice:not(.is-picked){
+  -webkit-transform:scale(.94)!important;
+  transform:scale(.94)!important;
+}
+
+.ph-choice.is-picked{
+  -webkit-transform:translateY(-8px) scale(1.11)!important;
+  transform:translateY(-8px) scale(1.11)!important;
+  -webkit-animation:phLegacyCardPulse .42s ease both!important;
+  animation:phLegacyCardPulse .42s ease both!important;
+}
+
+@-webkit-keyframes phLegacyCardPulse{
+  0%{-webkit-transform:translateY(0) scale(1);transform:translateY(0) scale(1)}
+  55%{-webkit-transform:translateY(-10px) scale(1.13);transform:translateY(-10px) scale(1.13)}
+  100%{-webkit-transform:translateY(-8px) scale(1.11);transform:translateY(-8px) scale(1.11)}
+}
+@keyframes phLegacyCardPulse{
+  0%{transform:translateY(0) scale(1)}
+  55%{transform:translateY(-10px) scale(1.13)}
+  100%{transform:translateY(-8px) scale(1.11)}
+}
+
+.ph-switch.is-leaving{
+  -webkit-animation:phLegacyChooserOut .30s ease both!important;
+  animation:phLegacyChooserOut .30s ease both!important;
+}
+
+@-webkit-keyframes phLegacyChooserOut{
+  0%{opacity:1;-webkit-transform:scale(1);transform:scale(1)}
+  100%{opacity:0;-webkit-transform:scale(1.03);transform:scale(1.03)}
+}
+@keyframes phLegacyChooserOut{
+  0%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.03)}
+}
+
+.ph-focus-header-v56.is-opening{
+  -webkit-animation:phLegacyHeaderIn .52s ease both!important;
+  animation:phLegacyHeaderIn .52s ease both!important;
+}
+
+@-webkit-keyframes phLegacyHeaderIn{
+  0%{
+    opacity:0;
+    -webkit-transform:translateY(-14px) scale(.84);
+    transform:translateY(-14px) scale(.84);
+  }
+  65%{
+    opacity:1;
+    -webkit-transform:translateY(2px) scale(1.03);
+    transform:translateY(2px) scale(1.03);
+  }
+  100%{
+    opacity:1;
+    -webkit-transform:translateY(0) scale(1);
+    transform:translateY(0) scale(1);
+  }
+}
+@keyframes phLegacyHeaderIn{
+  0%{opacity:0;transform:translateY(-14px) scale(.84)}
+  65%{opacity:1;transform:translateY(2px) scale(1.03)}
+  100%{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.ph-branch.ph-v56-reveal{
+  -webkit-animation:phLegacyBranchIn .48s ease both!important;
+  animation:phLegacyBranchIn .48s ease both!important;
+}
+
+@-webkit-keyframes phLegacyBranchIn{
+  0%{opacity:0;-webkit-transform:translateY(22px);transform:translateY(22px)}
+  100%{opacity:1;-webkit-transform:translateY(0);transform:translateY(0)}
+}
+@keyframes phLegacyBranchIn{
+  0%{opacity:0;transform:translateY(22px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+
+/* Tránh clamp cho browser cũ. */
+.ph-focus-copy-v56 h1{
+  font-size:38px!important;
+}
+
+@media(max-width:640px){
+  .ph-focus-copy-v56 h1{
+    font-size:24px!important;
   }
 }
