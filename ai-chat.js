@@ -2078,9 +2078,39 @@
     }
   }
 
+  function cleanAiAnswer(raw){
+    let s=String(raw||"");
+
+    /* Không hiển thị cú pháp Markdown thô trong bong bóng chat. */
+    s=s
+      .replace(/^\s*```[a-zA-Z0-9_-]*\s*$/gm,"")
+      .replace(/^\s*```\s*$/gm,"")
+      .replace(/^\s{0,3}#{1,6}\s+/gm,"")
+      .replace(/^\s*(?:---+|\*\*\*+|___+)\s*$/gm,"")
+      .replace(/\*\*(.*?)\*\*/g,"$1")
+      .replace(/__(.*?)__/g,"$1")
+      .replace(/`([^`\n]+)`/g,"$1");
+
+    /* Bỏ emoji/icon trang trí do AI chèn vào tiêu đề/dòng trả lời.
+       Giữ nguyên chữ, số, công thức Excel và dấu câu thông thường. */
+    s=s.replace(
+      /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu,
+      ""
+    );
+
+    /* Dọn khoảng trắng sinh ra sau khi bỏ Markdown/icon. */
+    s=s
+      .replace(/[ \t]+\n/g,"\n")
+      .replace(/\n{3,}/g,"\n\n")
+      .trim();
+
+    return s;
+  }
+
   function msgHtml(m){
     const role=m.role==="assistant"?"assistant":"user";
-    const text=esc(m.content||"").replace(/\n/g,"<br>");
+    const rawText=role==="assistant" ? cleanAiAnswer(m.content||"") : (m.content||"");
+    const text=esc(rawText).replace(/\n/g,"<br>");
     const image=role==="user" && m.image_path
       ? `<div class="avp-ai-image-chip">📷 Ảnh đính kèm</div>`
       : "";
@@ -2222,16 +2252,21 @@
 
       await loadHistory();
 
+      const aiPrompt =
+        "Trả lời bằng tiếng Việt, ngắn gọn và trực tiếp. " +
+        "Không dùng Markdown (#, ##, **, ```, ---), không emoji/icon trang trí. " +
+        "Chỉ dùng xuống dòng khi cần. Với công thức Excel, ghi công thức trực tiếp.\n\n" +
+        content;
+
       const {data,error}=await client.functions.invoke("ai-chat",{
         body:{
           session_id:sessionId,
 
-          /* Tương thích cả Edge Function kiểu cũ và mới:
-             một số bản đang deploy yêu cầu message trực tiếp,
-             trong khi bản mới đọc lịch sử theo session_id. */
-          message:content,
-          content:content,
-          question:content,
+          /* Gửi bản prompt gọn cho Edge Function để giảm ký tự trang trí
+             và tránh tốn token vào Markdown/emoji. */
+          message:aiPrompt,
+          content:aiPrompt,
+          question:aiPrompt,
           request_id:quotaRequestId,
 
           image_path:imagePath,
