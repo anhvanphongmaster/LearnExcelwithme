@@ -86,7 +86,15 @@
     </button>
   `;
 
-  document.body.appendChild(launcher);
+  const avpNavHost =
+    document.querySelector('.main-nav nav, header nav, .nav-links, .navbar, .top-nav, nav');
+
+  if (avpNavHost) {
+    launcher.classList.add('avp-nav-launcher');
+    avpNavHost.appendChild(launcher);
+  } else {
+    document.body.appendChild(launcher);
+  }
 
   const fab=launcher.querySelector('#avpEdgeMain');
   const edgeMenu=launcher.querySelector('#avpEdgeMenu');
@@ -743,6 +751,17 @@
   /* AVP V58: launcher cố định, không kéo thả. */
   launcher.classList.remove('is-left','is-right','is-dragging','is-snapping');
   launcher.classList.add('avp-fixed-launcher');
+
+  function avpPlaceLauncherInNav(){
+    const host =
+      document.querySelector('.main-nav nav, header nav, .nav-links, .navbar, .top-nav, nav');
+    if (host && launcher.parentElement !== host){
+      launcher.classList.add('avp-nav-launcher');
+      host.appendChild(launcher);
+    }
+  }
+  avpPlaceLauncherInNav();
+  setTimeout(avpPlaceLauncherInNav, 250);
 
   fab.addEventListener('click',e=>{
     e.preventDefault();

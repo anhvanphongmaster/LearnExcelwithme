@@ -1460,3 +1460,127 @@ body.avp-embedded-youtube .avp-edge-launcher,
 body.avp-embedded-youtube .avp-edge-mini-preview-v2{
   display:none!important;
 }
+
+
+/* =========================================================
+   AVP V59 — AVP nằm trong menu chính
+   Cùng cấp Trang chủ / Tìm kiếm / Giới thiệu / Liên hệ / Tài khoản.
+   Không còn nút AVP nổi riêng.
+   ========================================================= */
+
+/* Ẩn link thương hiệu phụ "📗 Learn Excel" nếu core/nav cũ còn render. */
+nav a.avp-brand,
+.main-nav a.avp-brand,
+.nav-links a.avp-brand,
+.top-nav a.avp-brand{
+  display:none!important;
+}
+
+/* Launcher trở thành 1 item thật trong navigation. */
+.avp-edge-launcher.avp-nav-launcher,
+.avp-edge-launcher.avp-fixed-launcher.avp-nav-launcher{
+  position:relative!important;
+  inset:auto!important;
+  top:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  left:auto!important;
+  width:auto!important;
+  height:auto!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  overflow:visible!important;
+  z-index:1200!important;
+  margin:0!important;
+  transform:none!important;
+}
+
+.avp-edge-launcher.avp-nav-launcher .avp-edge-main{
+  position:relative!important;
+  inset:auto!important;
+  width:auto!important;
+  min-width:54px!important;
+  height:40px!important;
+  padding:0 13px!important;
+  border-radius:11px!important;
+  border:1px solid #b9c8bf!important;
+  background:#fff!important;
+  color:#164b2e!important;
+  box-shadow:none!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  letter-spacing:.02em!important;
+  transform:none!important;
+}
+
+.avp-edge-launcher.avp-nav-launcher .avp-edge-main::after{
+  content:"";
+}
+
+.avp-edge-launcher.avp-nav-launcher.open .avp-edge-main{
+  background:#217346!important;
+  color:#fff!important;
+  border-color:#217346!important;
+  transform:scale(1.04)!important;
+}
+
+/* Menu 4 option xổ xuống từ chính item AVP trong nav. */
+.avp-edge-launcher.avp-nav-launcher .avp-edge-menu{
+  position:absolute!important;
+  top:48px!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:auto!important;
+  width:178px!important;
+  margin:0!important;
+  transform:translateX(-50%)!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:8px!important;
+  align-items:stretch!important;
+  z-index:1300!important;
+}
+
+.avp-edge-launcher.avp-nav-launcher .avp-edge-menu[hidden]{
+  display:none!important;
+}
+
+.avp-edge-launcher.avp-nav-launcher .avp-edge-action{
+  width:178px!important;
+  min-width:178px!important;
+  height:44px!important;
+  margin:0!important;
+}
+
+/* Mobile: AVP vẫn nằm trong hamburger/menu, không bay ra ngoài màn hình. */
+@media(max-width:700px){
+  .avp-edge-launcher.avp-nav-launcher,
+  .avp-edge-launcher.avp-fixed-launcher.avp-nav-launcher{
+    position:relative!important;
+    top:auto!important;
+    right:auto!important;
+    left:auto!important;
+    width:100%!important;
+    height:auto!important;
+  }
+
+  .avp-edge-launcher.avp-nav-launcher .avp-edge-main{
+    width:100%!important;
+    min-height:44px!important;
+    justify-content:flex-start!important;
+  }
+
+  .avp-edge-launcher.avp-nav-launcher .avp-edge-menu{
+    position:relative!important;
+    top:auto!important;
+    left:auto!important;
+    transform:none!important;
+    width:100%!important;
+    margin-top:8px!important;
+  }
+
+  .avp-edge-launcher.avp-nav-launcher .avp-edge-action{
+    width:100%!important;
+    min-width:0!important;
+  }
+}
