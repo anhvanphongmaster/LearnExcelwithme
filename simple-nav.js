@@ -1,3 +1,196 @@
+
+/* =========================================================
+   V83 — GLOBAL SITE MAINTENANCE
+   State is controlled from Admin > Tổng quan.
+   Fail-open: if Supabase/RPC is unavailable, the website is not blocked.
+   Admin and auth pages remain accessible so maintenance cannot lock Admin out.
+   ========================================================= */
+(function(){
+  "use strict";
+
+  const CHECK_MS=30000;
+  const page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
+  const operatorPages=new Set(["admin.html","auth.html"]);
+  let timer=null;
+  let countdownTimer=null;
+  let lastEnabled=false;
+
+  function escText(v){ return String(v??""); }
+
+  async function waitClient(timeout=5000){
+    const start=Date.now();
+    while(Date.now()-start<timeout){
+      const c=window.avpSupabase||window.supabaseClient;
+      if(c) return c;
+      await new Promise(r=>setTimeout(r,80));
+    }
+    return window.avpSupabase||window.supabaseClient||null;
+  }
+
+  async function isAdmin(client){
+    try{
+      const {data:sess}=await client.auth.getSession();
+      if(!sess?.session?.user) return false;
+      const {data,error}=await client.rpc("avp_is_admin");
+      if(error) return false;
+      return data===true;
+    }catch(e){ return false; }
+  }
+
+  function removeOverlay(reload){
+    clearInterval(countdownTimer);
+    countdownTimer=null;
+    document.documentElement.classList.remove("avp-maintenance-active");
+    document.getElementById("avpSiteMaintenance")?.remove();
+    if(reload) location.reload();
+  }
+
+  function formatEnd(iso){
+    if(!iso) return "";
+    const d=new Date(iso);
+    if(Number.isNaN(d.getTime())) return "";
+    return d.toLocaleString("vi-VN",{
+      day:"2-digit",month:"2-digit",year:"numeric",
+      hour:"2-digit",minute:"2-digit"
+    });
+  }
+
+  function countdownText(iso){
+    const end=new Date(iso).getTime();
+    if(!Number.isFinite(end)) return "";
+    const diff=end-Date.now();
+    if(diff<=0) return "Đang hoàn thiện các bước cuối";
+    const total=Math.floor(diff/1000);
+    const d=Math.floor(total/86400);
+    const h=Math.floor((total%86400)/3600);
+    const m=Math.floor((total%3600)/60);
+    const s=total%60;
+    if(d>0) return `${d} ngày ${h} giờ ${m} phút`;
+    if(h>0) return `${h} giờ ${m} phút ${s} giây`;
+    return `${m} phút ${s} giây`;
+  }
+
+  function mountOverlay(row){
+    lastEnabled=true;
+    let root=document.getElementById("avpSiteMaintenance");
+    if(!root){
+      root=document.createElement("div");
+      root.id="avpSiteMaintenance";
+      root.className="avp-site-maintenance";
+      root.setAttribute("role","dialog");
+      root.setAttribute("aria-modal","true");
+      root.innerHTML=`
+        <div class="avp-maintenance-card">
+          <div class="avp-maintenance-brand">AVP</div>
+          <span class="avp-maintenance-kicker">SYSTEM MAINTENANCE</span>
+          <h1 id="avpMaintenanceTitle"></h1>
+          <p id="avpMaintenanceMessage"></p>
+
+          <div class="avp-maintenance-time" id="avpMaintenanceTime" hidden>
+            <small>DỰ KIẾN HOÀN TẤT</small>
+            <strong id="avpMaintenanceEnd"></strong>
+            <span id="avpMaintenanceCountdown"></span>
+          </div>
+
+          <div class="avp-maintenance-status">
+            <i></i>
+            <span>Hệ thống đang được cập nhật</span>
+          </div>
+          <small class="avp-maintenance-foot">Trang sẽ tự mở lại khi quá trình bảo trì kết thúc.</small>
+        </div>`;
+      document.body.appendChild(root);
+    }
+
+    document.documentElement.classList.add("avp-maintenance-active");
+    root.querySelector("#avpMaintenanceTitle").textContent=escText(row.title||"Website đang được bảo trì");
+    root.querySelector("#avpMaintenanceMessage").textContent=escText(row.message||"Website đang được cập nhật. Vui lòng quay lại sau.");
+
+    const timeBox=root.querySelector("#avpMaintenanceTime");
+    const endEl=root.querySelector("#avpMaintenanceEnd");
+    const countEl=root.querySelector("#avpMaintenanceCountdown");
+    const hasEnd=!!row.estimated_end && !!formatEnd(row.estimated_end);
+
+    timeBox.hidden=!hasEnd;
+    if(hasEnd){
+      endEl.textContent=formatEnd(row.estimated_end);
+      countEl.hidden=row.show_countdown===false;
+
+      clearInterval(countdownTimer);
+      const tick=()=>{
+        if(row.show_countdown===false) return;
+        countEl.textContent=countdownText(row.estimated_end);
+      };
+      tick();
+      countdownTimer=setInterval(tick,1000);
+    }
+  }
+
+  function mountAdminBadge(){
+    if(document.getElementById("avpMaintenanceAdminBadge")) return;
+    const b=document.createElement("a");
+    b.id="avpMaintenanceAdminBadge";
+    b.className="avp-maintenance-admin-badge";
+    b.href="admin.html";
+    b.textContent="🛠️ BẢO TRÌ ĐANG BẬT";
+    b.title="Bạn là Admin nên website không bị khóa trên tài khoản này.";
+    document.body.appendChild(b);
+  }
+
+  async function checkMaintenance(){
+    if(operatorPages.has(page)) return;
+
+    const client=await waitClient();
+    if(!client) return;
+
+    try{
+      const {data,error}=await client.rpc("site_maintenance_public_v83");
+      if(error) throw error;
+      const row=Array.isArray(data)?data[0]:data;
+      const enabled=!!row?.enabled;
+
+      if(!enabled){
+        document.getElementById("avpMaintenanceAdminBadge")?.remove();
+        if(lastEnabled && document.getElementById("avpSiteMaintenance")){
+          removeOverlay(true);
+        }else{
+          lastEnabled=false;
+          removeOverlay(false);
+        }
+        return;
+      }
+
+      if(await isAdmin(client)){
+        lastEnabled=true;
+        removeOverlay(false);
+        mountAdminBadge();
+        return;
+      }
+
+      document.getElementById("avpMaintenanceAdminBadge")?.remove();
+      mountOverlay(row||{});
+    }catch(err){
+      console.warn("[AVP maintenance] check failed:",err);
+      /* Fail-open intentionally. */
+    }
+  }
+
+  function boot(){
+    checkMaintenance();
+    clearInterval(timer);
+    timer=setInterval(checkMaintenance,CHECK_MS);
+    document.addEventListener("visibilitychange",()=>{
+      if(document.visibilityState==="visible") checkMaintenance();
+    });
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",boot,{once:true});
+  }else{
+    boot();
+  }
+})();
+
+
 /* Ensure learning hub FAB on pages missing avp-core */
 (function(){
   try{

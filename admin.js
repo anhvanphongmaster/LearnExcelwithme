@@ -471,6 +471,149 @@
     }));
   }
 
+
+  // =========================================================
+  // V83 — Site Maintenance Admin
+  // =========================================================
+  let adminMaintenanceBound=false;
+
+  function maintenanceToLocalInput(iso){
+    if(!iso) return "";
+    const d=new Date(iso);
+    if(Number.isNaN(d.getTime())) return "";
+    const pad=n=>String(n).padStart(2,"0");
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  function maintenanceFromLocalInput(value){
+    if(!value) return null;
+    const d=new Date(value);
+    return Number.isNaN(d.getTime()) ? null : d.toISOString();
+  }
+
+  function updateMaintenancePreview(){
+    const title=$("adminMaintenanceTitle")?.value?.trim() || "Website đang được bảo trì";
+    const message=$("adminMaintenanceMessage")?.value?.trim() || "Chúng tôi đang nâng cấp hệ thống để trải nghiệm học tập tốt hơn.";
+    const end=$("adminMaintenanceEnd")?.value || "";
+
+    if($("adminMaintenancePreviewTitle")) $("adminMaintenancePreviewTitle").textContent=title;
+    if($("adminMaintenancePreviewMessage")) $("adminMaintenancePreviewMessage").textContent=message;
+    if($("adminMaintenanceMessageCount")) $("adminMaintenanceMessageCount").textContent=String(($("adminMaintenanceMessage")?.value||"").length);
+
+    if($("adminMaintenancePreviewTime")){
+      if(!end){
+        $("adminMaintenancePreviewTime").textContent="Chưa đặt thời gian hoàn tất.";
+      }else{
+        const d=new Date(end);
+        $("adminMaintenancePreviewTime").textContent=Number.isNaN(d.getTime())
+          ? "Thời gian chưa hợp lệ."
+          : "Dự kiến hoàn tất: "+d.toLocaleString("vi-VN");
+      }
+    }
+  }
+
+  function renderMaintenanceStatus(row){
+    const enabled=!!row?.enabled;
+    const live=$("adminMaintenanceLive");
+    if(live){
+      live.classList.toggle("on",enabled);
+      live.classList.toggle("off",!enabled);
+      const span=live.querySelector("span");
+      if(span) span.textContent=enabled ? "ĐANG BẢO TRÌ" : "Website đang mở";
+    }
+
+    if($("adminMaintenanceEnabled")) $("adminMaintenanceEnabled").checked=enabled;
+    if($("adminMaintenanceTitle")) $("adminMaintenanceTitle").value=row?.title || "Website đang được bảo trì";
+    if($("adminMaintenanceMessage")) $("adminMaintenanceMessage").value=row?.message || "";
+    if($("adminMaintenanceEnd")) $("adminMaintenanceEnd").value=maintenanceToLocalInput(row?.estimated_end);
+    if($("adminMaintenanceCountdown")) $("adminMaintenanceCountdown").checked=row?.show_countdown!==false;
+
+    updateMaintenancePreview();
+  }
+
+  async function loadAdminMaintenance(){
+    if(!client) return;
+    const notice=$("adminMaintenanceNotice");
+    try{
+      if(notice) notice.textContent="Đang tải trạng thái bảo trì…";
+      const {data,error}=await client.rpc("admin_site_maintenance_get_v83");
+      if(error) throw error;
+      const row=Array.isArray(data)?data[0]:data;
+      renderMaintenanceStatus(row||{});
+      if(notice) notice.textContent="Trạng thái đã đồng bộ từ Supabase.";
+    }catch(err){
+      console.error("[Admin maintenance load]",err);
+      if(notice) notice.textContent="Không tải được chế độ bảo trì. Hãy chạy SQL V83 rồi thử lại.";
+    }
+  }
+
+  async function saveAdminMaintenance(forceOff){
+    if(!client) return;
+    const save=$("adminMaintenanceSave");
+    const off=$("adminMaintenanceOff");
+    const notice=$("adminMaintenanceNotice");
+
+    const enabled=forceOff ? false : !!$("adminMaintenanceEnabled")?.checked;
+    const title=($("adminMaintenanceTitle")?.value||"").trim() || "Website đang được bảo trì";
+    const message=($("adminMaintenanceMessage")?.value||"").trim();
+    const estimatedEnd=maintenanceFromLocalInput($("adminMaintenanceEnd")?.value||"");
+    const showCountdown=!!$("adminMaintenanceCountdown")?.checked;
+
+    if(enabled && !message){
+      toast("Nhập nội dung bảo trì trước khi bật.");
+      $("adminMaintenanceMessage")?.focus();
+      return;
+    }
+
+    try{
+      if(save) save.disabled=true;
+      if(off) off.disabled=true;
+      if(notice) notice.textContent=enabled ? "Đang bật chế độ bảo trì…" : "Đang tắt chế độ bảo trì…";
+
+      const {data,error}=await client.rpc("admin_site_maintenance_set_v83",{
+        p_enabled:enabled,
+        p_title:title,
+        p_message:message || "Website đang được cập nhật. Vui lòng quay lại sau.",
+        p_estimated_end:estimatedEnd,
+        p_show_countdown:showCountdown
+      });
+      if(error) throw error;
+
+      const row=Array.isArray(data)?data[0]:data;
+      renderMaintenanceStatus(row||{enabled,title,message,estimated_end:estimatedEnd,show_countdown:showCountdown});
+      toast(enabled ? "Đã bật bảo trì toàn website." : "Đã tắt bảo trì.");
+      if(notice){
+        notice.textContent=enabled
+          ? "Bảo trì đang bật. Người truy cập sẽ thấy thông báo trong tối đa khoảng 30 giây."
+          : "Website đã mở lại cho người truy cập.";
+      }
+    }catch(err){
+      console.error("[Admin maintenance save]",err);
+      if(notice) notice.textContent="Không lưu được: "+(err?.message||err);
+      toast("Không cập nhật được chế độ bảo trì.");
+    }finally{
+      if(save) save.disabled=false;
+      if(off) off.disabled=false;
+    }
+  }
+
+  function bindAdminMaintenance(){
+    if(adminMaintenanceBound) return;
+    adminMaintenanceBound=true;
+
+    ["adminMaintenanceTitle","adminMaintenanceMessage","adminMaintenanceEnd"].forEach(id=>{
+      $(id)?.addEventListener("input",updateMaintenancePreview);
+    });
+    $("adminMaintenanceCountdown")?.addEventListener("change",updateMaintenancePreview);
+    $("adminMaintenanceSave")?.addEventListener("click",()=>saveAdminMaintenance(false));
+    $("adminMaintenanceOff")?.addEventListener("click",()=>{
+      if(confirm("Tắt chế độ bảo trì và mở lại website cho mọi người?")){
+        saveAdminMaintenance(true);
+      }
+    });
+    $("adminMaintenanceReload")?.addEventListener("click",loadAdminMaintenance);
+  }
+
   async function loadDashboard(){
     try{
       $("adminRefresh").disabled=true;
@@ -509,6 +652,8 @@
 
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
       bindAdminViews();
+      bindAdminMaintenance();
+      loadAdminMaintenance();
     try{
       const requestedView=new URLSearchParams(location.search).get("view");
       const validViews=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics","community","reviews","grader"];

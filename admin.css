@@ -421,3 +421,167 @@ body.dark-mode .admin-download-editor{background:#142119;border-color:#2d4737}bo
   }
 }
 
+
+
+/* =========================================================
+   V83 — ADMIN SITE MAINTENANCE
+   ========================================================= */
+.admin-maintenance-panel{
+  border-color:#d9e6de;
+  background:
+    radial-gradient(circle at 95% 6%,rgba(238,174,71,.08),transparent 25%),
+    #fff;
+}
+.admin-maintenance-head{align-items:center}
+.admin-maintenance-live{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  flex:0 0 auto;
+  padding:8px 11px;
+  border-radius:999px;
+  background:#f1f5f2;
+  color:#627168;
+  font-size:10px;
+  font-weight:900;
+}
+.admin-maintenance-live i{
+  width:8px;height:8px;border-radius:50%;background:#9da9a1;
+}
+.admin-maintenance-live.on{background:#fff1e8;color:#ad512f}
+.admin-maintenance-live.on i{background:#e56f45;box-shadow:0 0 0 5px rgba(229,111,69,.10)}
+.admin-maintenance-live.off{background:#edf8f1;color:#237444}
+.admin-maintenance-live.off i{background:#35a05e}
+
+.admin-maintenance-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:16px;
+}
+.admin-maintenance-full{grid-column:1/-1}
+
+.admin-maintenance-field{
+  display:block;
+  padding:12px;
+  border:1px solid #e0e9e3;
+  border-radius:14px;
+  background:#fbfdfb;
+}
+.admin-maintenance-field>span{
+  display:block;
+  margin-bottom:6px;
+  color:#41604d;
+  font-size:10px;
+  font-weight:900;
+}
+.admin-maintenance-field input,
+.admin-maintenance-field textarea{
+  width:100%;
+  border:1px solid #d4e2d9;
+  border-radius:10px;
+  background:#fff;
+  color:#173d28;
+  padding:10px 11px;
+  font:inherit;
+  font-size:11px;
+  outline:none;
+}
+.admin-maintenance-field textarea{resize:vertical;min-height:96px}
+.admin-maintenance-field input:focus,
+.admin-maintenance-field textarea:focus{
+  border-color:#6aac82;
+  box-shadow:0 0 0 3px rgba(33,115,70,.08);
+}
+.admin-maintenance-field small{
+  display:block;margin-top:5px;color:#849087;font-size:8px;text-align:right;
+}
+
+.admin-maintenance-toggle{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:1fr 46px;
+  gap:14px;
+  align-items:center;
+  padding:13px 14px;
+  border:1px solid #dfe9e3;
+  border-radius:14px;
+  background:#fafcfb;
+  cursor:pointer;
+}
+.admin-maintenance-toggle span strong,
+.admin-maintenance-toggle span small{display:block}
+.admin-maintenance-toggle span strong{font-size:11px}
+.admin-maintenance-toggle span small{margin-top:3px;color:#7e8d84;font-size:8px;line-height:1.45}
+.admin-maintenance-toggle input{position:absolute;opacity:0;pointer-events:none}
+.admin-maintenance-toggle>i{
+  position:relative;
+  width:44px;height:24px;
+  border-radius:999px;
+  background:#dbe4de;
+  transition:.2s ease;
+}
+.admin-maintenance-toggle>i::after{
+  content:"";
+  position:absolute;top:3px;left:3px;
+  width:18px;height:18px;border-radius:50%;
+  background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.16);
+  transition:.2s ease;
+}
+.admin-maintenance-toggle input:checked+i{background:#d9613f}
+.admin-maintenance-toggle input:checked+i::after{transform:translateX(20px)}
+.admin-maintenance-compact{grid-column:auto}
+
+.admin-maintenance-preview{
+  margin-top:12px;
+  padding:14px 15px;
+  border-radius:15px;
+  background:#0b2c1a;
+  color:#fff;
+}
+.admin-maintenance-preview>span{
+  display:block;color:#99cfac;font-size:8px;font-weight:900;letter-spacing:.12em
+}
+.admin-maintenance-preview>strong{display:block;margin-top:5px;font-size:14px}
+.admin-maintenance-preview>p{
+  margin:5px 0 0;color:rgba(255,255,255,.73);
+  white-space:pre-line;font-size:9px;line-height:1.55
+}
+.admin-maintenance-preview>small{display:block;margin-top:7px;color:#b8dbc5;font-size:8px}
+
+.admin-maintenance-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+.admin-maintenance-actions button{
+  border:0;
+  border-radius:10px;
+  padding:10px 13px;
+  font:inherit;
+  font-size:9px;
+  font-weight:900;
+  cursor:pointer;
+}
+.admin-maintenance-save{background:#217346;color:#fff}
+.admin-maintenance-off{background:#fff0ea;color:#ad4d2d}
+.admin-maintenance-reload{background:#edf3ef;color:#42604d}
+.admin-maintenance-actions button:disabled{opacity:.5;cursor:not-allowed}
+
+.admin-maintenance-note{
+  margin-top:10px;
+  padding:9px 11px;
+  border-radius:10px;
+  background:#f4f7f5;
+  color:#748178;
+  font-size:8px;
+  line-height:1.5;
+}
+
+@media(max-width:760px){
+  .admin-maintenance-grid{grid-template-columns:1fr}
+  .admin-maintenance-full,
+  .admin-maintenance-compact{grid-column:1}
+  .admin-maintenance-head{align-items:flex-start}
+}

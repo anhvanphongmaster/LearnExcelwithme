@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
-<link rel="stylesheet" href="admin.css?v=20260829-reviews-clientfix3">
+<link rel="stylesheet" href="admin.css?v=20260831-v83-maintenance">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="admin-manifest.webmanifest">
 <meta name="theme-color" content="#217346">
@@ -168,6 +168,74 @@ where is_admin = true;</pre>
         <article data-health="community"><span>📣 Cộng đồng</span><strong>Đang kiểm tra…</strong><small>Thông báo & chứng nhận</small></article>
       </div>
     </section>
+
+    <section class="admin-panel admin-maintenance-panel admin-view-section" id="adminMaintenancePanel" data-admin-section="overview">
+      <div class="admin-panel-head admin-maintenance-head">
+        <div>
+          <span>🛠️ BẢO TRÌ WEBSITE</span>
+          <h2>Chế độ bảo trì toàn website</h2>
+          <p>Bật khi cần cập nhật lớn. Admin vẫn vào được website để kiểm tra, còn người truy cập sẽ thấy màn hình bảo trì.</p>
+        </div>
+        <div class="admin-maintenance-live" id="adminMaintenanceLive">
+          <i></i><span>Đang kiểm tra…</span>
+        </div>
+      </div>
+
+      <div class="admin-maintenance-grid">
+        <label class="admin-maintenance-toggle">
+          <span>
+            <strong>Bật chế độ bảo trì</strong>
+            <small>Chặn các trang dành cho người truy cập. Admin và trang đăng nhập quản trị vẫn truy cập được.</small>
+          </span>
+          <input type="checkbox" id="adminMaintenanceEnabled">
+          <i aria-hidden="true"></i>
+        </label>
+
+        <label class="admin-maintenance-field admin-maintenance-full">
+          <span>Tiêu đề hiển thị</span>
+          <input id="adminMaintenanceTitle" type="text" maxlength="120" placeholder="Website đang được bảo trì">
+        </label>
+
+        <label class="admin-maintenance-field admin-maintenance-full">
+          <span>Nội dung thông báo</span>
+          <textarea id="adminMaintenanceMessage" rows="4" maxlength="800" placeholder="Chúng tôi đang nâng cấp hệ thống để trải nghiệm học tập tốt hơn..."></textarea>
+          <small><b id="adminMaintenanceMessageCount">0</b>/800 ký tự</small>
+        </label>
+
+        <label class="admin-maintenance-field">
+          <span>Dự kiến hoàn tất</span>
+          <input id="adminMaintenanceEnd" type="datetime-local">
+          <small>Để trống nếu chưa xác định được thời gian.</small>
+        </label>
+
+        <label class="admin-maintenance-toggle admin-maintenance-compact">
+          <span>
+            <strong>Hiện đếm ngược</strong>
+            <small>Chỉ hiển thị khi có thời gian hoàn tất trong tương lai.</small>
+          </span>
+          <input type="checkbox" id="adminMaintenanceCountdown" checked>
+          <i aria-hidden="true"></i>
+        </label>
+      </div>
+
+      <div class="admin-maintenance-preview">
+        <span>PREVIEW</span>
+        <strong id="adminMaintenancePreviewTitle">Website đang được bảo trì</strong>
+        <p id="adminMaintenancePreviewMessage">Nội dung thông báo sẽ hiển thị tại đây.</p>
+        <small id="adminMaintenancePreviewTime">Chưa đặt thời gian hoàn tất.</small>
+      </div>
+
+      <div class="admin-maintenance-actions">
+        <button type="button" class="admin-maintenance-save" id="adminMaintenanceSave">Lưu & áp dụng</button>
+        <button type="button" class="admin-maintenance-off" id="adminMaintenanceOff">Tắt bảo trì ngay</button>
+        <button type="button" class="admin-maintenance-reload" id="adminMaintenanceReload">↻ Tải trạng thái</button>
+      </div>
+
+      <div class="admin-maintenance-note" id="adminMaintenanceNotice">
+        Thay đổi được lưu trên Supabase và áp dụng cho toàn website. Người đang mở website sẽ tự nhận trạng thái mới trong tối đa khoảng 30 giây.
+      </div>
+    </section>
+
     <div class="admin-section-heading admin-view-section" data-admin-section="community">
       <span>📣 CỘNG ĐỒNG & THÔNG BÁO</span>
       <h2>Trung tâm quản trị học viên</h2>
@@ -740,7 +808,7 @@ where is_admin = true;</pre>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
-<script defer src="admin.js?v=20260829-community-router-fixed"></script>
+<script defer src="admin.js?v=20260831-v83-maintenance"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>

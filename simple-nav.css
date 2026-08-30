@@ -1886,3 +1886,132 @@ body.dark-mode .top-simple-links>a[aria-current="page"]{
   .top-simple-nav{display:none !important}
   body{padding-top:0 !important}
 }
+
+
+/* =========================================================
+   V83 — GLOBAL SITE MAINTENANCE
+   ========================================================= */
+html.avp-maintenance-active,
+html.avp-maintenance-active body{
+  overflow:hidden!important;
+}
+
+.avp-site-maintenance{
+  position:fixed;
+  inset:0;
+  z-index:2147483647;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  background:
+    radial-gradient(circle at 15% 15%,rgba(49,154,88,.16),transparent 30%),
+    radial-gradient(circle at 84% 76%,rgba(35,112,68,.15),transparent 28%),
+    #061a0f;
+  color:#fff;
+}
+
+.avp-site-maintenance .avp-maintenance-card{
+  width:min(590px,100%);
+  padding:36px 32px 30px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:28px;
+  background:rgba(10,44,26,.92);
+  box-shadow:0 34px 100px rgba(0,0,0,.36);
+  backdrop-filter:blur(12px);
+}
+
+.avp-maintenance-brand{
+  width:68px;height:68px;margin:0 auto 17px;
+  display:grid;place-items:center;border-radius:20px;
+  background:linear-gradient(145deg,#1d6d40,#2f8b57);
+  font-size:18px;font-weight:950;letter-spacing:.08em;
+  box-shadow:0 13px 30px rgba(31,124,72,.25);
+}
+
+.avp-site-maintenance .avp-maintenance-kicker{
+  display:block;
+  color:#a9dcbc;
+  font-size:10px;font-weight:900;letter-spacing:.15em;
+}
+
+.avp-site-maintenance h1{
+  margin:8px 0 12px;
+  font-size:clamp(31px,5vw,48px);
+  line-height:1.05;
+  letter-spacing:-.035em;
+}
+
+.avp-site-maintenance #avpMaintenanceMessage{
+  max-width:490px;
+  margin:0 auto;
+  color:rgba(255,255,255,.78);
+  white-space:pre-line;
+  font-size:14px;
+  line-height:1.72;
+}
+
+.avp-maintenance-time{
+  margin:20px auto 14px;
+  max-width:410px;
+  padding:14px 16px;
+  border:1px solid rgba(137,215,163,.18);
+  border-radius:17px;
+  background:rgba(255,255,255,.055);
+}
+.avp-maintenance-time[hidden]{display:none!important}
+.avp-maintenance-time small,
+.avp-maintenance-time strong,
+.avp-maintenance-time span{display:block}
+.avp-maintenance-time small{color:#9dcfb0;font-size:8px;font-weight:900;letter-spacing:.12em}
+.avp-maintenance-time strong{margin-top:4px;font-size:14px}
+.avp-maintenance-time span{margin-top:5px;color:#bfe9cd;font-size:11px;font-weight:800}
+
+.avp-site-maintenance .avp-maintenance-status{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:8px;padding:8px 12px;border-radius:999px;
+  border:1px solid rgba(98,203,134,.19);
+  background:rgba(73,159,103,.10);
+  color:#c9ecd5;font-size:10px;font-weight:800;
+}
+.avp-site-maintenance .avp-maintenance-status i{
+  width:8px;height:8px;border-radius:50%;background:#54c57b;
+  box-shadow:0 0 0 6px rgba(84,197,123,.10);
+  animation:avpMaintPulse 1.55s ease-in-out infinite;
+}
+.avp-maintenance-foot{
+  display:block;margin-top:13px;
+  color:rgba(255,255,255,.42);
+  font-size:9px;
+}
+
+.avp-maintenance-admin-badge{
+  position:fixed;
+  z-index:2147483000;
+  left:50%;top:10px;
+  transform:translateX(-50%);
+  padding:7px 11px;
+  border:1px solid rgba(255,177,70,.36);
+  border-radius:999px;
+  background:#5b3a0d;
+  color:#ffe2a2!important;
+  text-decoration:none!important;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.05em;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
+
+@keyframes avpMaintPulse{
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(.7);opacity:.55}
+}
+
+@media(max-width:560px){
+  .avp-site-maintenance{padding:13px}
+  .avp-site-maintenance .avp-maintenance-card{padding:29px 20px 25px;border-radius:23px}
+}
+
+/* =========================================================
+   V83 — ADMIN MAINTENANCE PANEL
+   ========================================================= */
