@@ -1001,11 +1001,37 @@ a.avp-yt-combo.avp-mobile-main-cta{
 .avp-mobile-main-cta:hover,.avp-youtube-cta:hover,.avp-yt-practice:hover,.avp-scroll-tease-btn:hover{
   transform:translateY(-3px) scale(1.01);filter:brightness(1.05);box-shadow:0 12px 28px rgba(0,0,0,.22)}
 .avp-youtube-cta,.avp-yt-practice,.avp-scroll-tease-btn{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease,filter .25s ease}
-.avp-scroll-tease-btn{position:relative;overflow:hidden}
-.avp-scroll-tease-btn::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.14) 50%,transparent 60%);
-  transform:translateX(-120%);animation:avpSheen 4.5s ease-in-out infinite}
-@keyframes avpSheen{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.avp-scroll-tease-btn{position:relative;overflow:hidden;isolation:isolate}
+.avp-scroll-tease-btn::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  border-radius:inherit;
+  transform:none!important;
+  background:
+    linear-gradient(
+      108deg,
+      transparent 0%,
+      transparent 34%,
+      rgba(255,255,255,.04) 42%,
+      rgba(255,255,255,.22) 50%,
+      rgba(255,255,255,.05) 58%,
+      transparent 66%,
+      transparent 100%
+    );
+  background-size:240% 100%;
+  background-position:145% 0;
+  animation:avpRouteSheenSafe 4.8s ease-in-out infinite!important;
+}
+.avp-scroll-tease-btn > *{position:relative;z-index:1}
+@keyframes avpRouteSheenSafe{
+  0%,62%{background-position:145% 0;opacity:0}
+  68%{opacity:1}
+  88%{background-position:-145% 0;opacity:1}
+  100%{background-position:-145% 0;opacity:0}
+}
 .home-path-more--5{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:10px!important}
 .home-path-more--5 .home-more-card{position:relative;display:flex;flex-direction:column;gap:4px;min-height:88px;padding:14px 12px!important;
   border-radius:14px!important;text-decoration:none!important;border:1px solid rgba(0,0,0,.06)!important;background:#eef7f1!important;color:#145a32!important;box-sizing:border-box;
