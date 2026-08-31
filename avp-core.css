@@ -1756,3 +1756,19 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 #avpEdgeLauncher.is-robot.is-dragging{
   right:auto !important;
 }
+
+/* Phone: PNG trong suốt, không dùng mp4 caro. Desktop: webm vẫy 3-6s */
+.avp-bot-img{
+  display:block !important;
+  background:transparent !important;
+}
+.avp-bot-vid{display:none !important}
+@media (hover:hover) and (pointer:fine){
+  .avp-bot-vid{display:block !important}
+  .avp-bot-img{display:none !important}
+}
+#avpEdgeLauncher.is-robot .avp-bot-img,
+#avpEdgeLauncher.is-robot .avp-bot-vid{
+  background:transparent !important;
+  mix-blend-mode:normal !important;
+}
