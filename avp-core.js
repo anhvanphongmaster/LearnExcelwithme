@@ -1228,6 +1228,9 @@
 
     function tick(){
       var open=el.classList.contains("open");
+      el.style.pointerEvents="none";
+      el.style.width="76px";
+      el.style.height="90px";
       if(!open && !lift){
         el.classList.add("is-walking");
         x+=dir*2.4;
@@ -1242,6 +1245,7 @@
         if(arms[0])arms[0].style.transform="rotate("+(-s)+"deg)";
         if(arms[1])arms[1].style.transform="rotate("+s+"deg)";
       }else if(open && !lift){
+        place(12);
         phase+=0.35;
         if(arms[1])arms[1].style.transform="rotate("+(-20+Math.sin(phase)*48)+"deg)";
         if(arms[0])arms[0].style.transform="rotate(8deg)";

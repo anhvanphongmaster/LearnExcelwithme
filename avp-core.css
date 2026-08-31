@@ -1972,3 +1972,22 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   pointer-events:auto !important;
   z-index:2147483647 !important;
 }
+
+#avpEdgeLauncher.is-robot,
+#avpEdgeLauncher.is-robot.open{
+  width:76px !important;
+  height:90px !important;
+  pointer-events:none !important;
+  overflow:visible !important;
+}
+#avpEdgeLauncher.is-robot.open .avp-bot-25d{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+}
+#avpEdgeLauncher.is-robot .avp-edge-menu{
+  pointer-events:auto !important;
+}
+#avpEdgeLauncher.is-robot.open .avp-edge-main{
+  pointer-events:auto !important;
+}
