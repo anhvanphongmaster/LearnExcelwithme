@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="vi"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hướng dẫn thực hành | Learn Excel with Anh Van Phong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="avp-core.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="practice-workspace.css?v=20260831-v101">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#217346">
+<link rel="stylesheet" href="practice-guides.css?v=20260831-v101"><link rel="stylesheet" href="practice-grader.css?v=20260831-v101">
+</head><body><nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+<main class="pw-page">
+  <div class="pw-backline"><a href="practice-video.html">← Practice Hub</a><span>Hướng dẫn thực hành</span></div>
+  <header class="pw-hero pw-hero-compact">
+    <span class="pw-kicker">PRACTICE GUIDE</span>
+    <h1>Hướng dẫn thực hành</h1>
+    <p>Tra cứu hướng làm và lỗi thường gặp. Không hiển thị đáp án hay công thức hoàn chỉnh.</p>
+  </header>
+  <section class="pw-source-switch" aria-label="Đổi nguồn thực hành">
+  <div class="pw-source-title">
+    <span>NGUỒN THỰC HÀNH</span>
+    <strong>Chuyển nhanh sang khu khác</strong>
+  </div>
+  <div class="pw-source-links">
+    <a href="practice-tiktok.html" data-source="tiktok"><span>TikTok</span><small>Kho bài + file</small></a>
+    <a href="practice-youtube.html" data-source="youtube"><span>YouTube</span><small>Project theo video</small></a>
+    <a href="practice-grader.html" data-source="grader"><span>Tự chấm</span><small>Nộp file & nhận điểm</small></a>
+    <a href="practice-guides.html" data-source="guide"><span>Hướng dẫn</span><small>Gợi ý cách làm</small></a>
+  </div>
+</section>
+  <section class="pw-workspace" data-active-source="guide">
+    
+<div class="pw-section-head">
+  <div><span class="pw-eyebrow">100 HƯỚNG DẪN</span><h2>Tìm bài và xem đúng gợi ý cần thiết</h2></div>
+  <div class="pw-flow-hint"><span>1 Tìm bài</span><b>→</b><span>2 Mở hướng dẫn</span><b>→</b><span>3 Tự làm</span></div>
+</div>
+<div class="pw-callout">
+  <strong>Đây là nguồn hướng dẫn, không phải nơi tải đề.</strong>
+  <span>Nếu cần file thực hành hãy chuyển sang TikTok Practice hoặc Tự chấm bằng thanh nguồn phía trên.</span>
+</div>
+
+<div class="ph-branch-intro">
+<div>
+<span class="ph-branch-kicker">PRACTICE GUIDE · 100 BÀI</span>
+<h2>📖 Hướng dẫn làm bài</h2>
+<p>Chỉ gợi ý cách làm và lỗi cần tránh. Không cung cấp đáp án hoặc công thức hoàn chỉnh.</p>
+</div>
+<span class="ph-lazy-badge">100 HƯỚNG DẪN</span>
+</div>
+<div class="pg-guide-shell">
+<div class="pg-guide-tools">
+<input id="pgGuideSearch" placeholder="Tìm bài hướng dẫn..." type="search"/>
+<select id="pgGuideTopic">
+<option value="all">Tất cả chủ đề</option>
+<option value="clean">Làm sạch dữ liệu</option>
+<option value="pq">Power Query</option>
+<option value="formula">Công thức</option>
+<option value="input">Nhập liệu</option>
+<option value="format">Định dạng</option>
+</select>
+<select id="pgGuideDifficulty">
+<option value="all">Tất cả cấp độ</option>
+<option value="basic">Cơ bản</option>
+<option value="intermediate">Trung cấp</option>
+<option value="advanced">Nâng cao</option>
+</select>
+</div>
+<div class="pg-guide-list" id="pgGuideList"></div>
+</div>
+<div class="pg-guide-modal" hidden="" id="pgGuideModal">
+<div class="pg-publish-backdrop" data-pg-guide-close=""></div>
+<div aria-modal="true" class="pg-guide-card" role="dialog">
+<button aria-label="Đóng" class="pg-publish-close" id="pgGuideClose" type="button">×</button>
+<div id="pgGuideModalBody"></div>
+</div>
+</div>
+
+
+  </section>
+</main>
+<script defer src="simple-nav.js"></script>
+<script defer src="global-search.js"></script>
+<script defer src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="analytics-tracker.js"></script>
+<script defer src="avp-core.js"></script>
+<script defer src="practice-lessons.js?v=20260830-v18full100"></script>
+<script defer src="practice-guides.js?v=20260830-v19guides"></script>
+<script defer src="practice-guides-runtime.js?v=20260830-v20admin-test-guidefix"></script>
+<script>
+document.querySelectorAll('.pw-source-links a').forEach(a=>{if(a.dataset.source==='guide')a.classList.add('is-current')});
+</script>
+</body></html>
