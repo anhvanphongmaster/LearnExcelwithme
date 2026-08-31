@@ -79,13 +79,14 @@
       aria-expanded="false"
       title="Công cụ nhanh — kéo để di chuyển"
     >
-      <span class="avp-bot" aria-hidden="true">
-        <video id="avpBotVid" class="avp-bot-vid" autoplay muted playsinline loop>
-          <source src="avp-bot.webm" type="video/webm">
-        </video>
-        <img class="avp-bot-img" src="avp-bot-wave.png" alt="">
-      </span>
-      <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
+      <span class="avp-bot avp-bot-25d" aria-hidden="true">
+        <span class="b25-head"><i class="b25-eye l"></i><i class="b25-eye r"></i><i class="b25-smile"></i></span>
+        <span class="b25-arm l"></span>
+        <span class="b25-body">AVP</span>
+        <span class="b25-arm r"></span>
+        <span class="b25-leg l"></span>
+        <span class="b25-leg r"></span>
+      </span><span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
     </button>
   `;
 
@@ -808,6 +809,7 @@
 
   /* Kéo dọc màn hình + snap sát viền trái/phải, nhớ vị trí. */
   (function enableDragEdgeLauncher(root,btn){
+    if(root.classList.contains('is-robot'))return;
     const POS_KEY='avp_edge_launcher_pos_v5';
     const EDGE_GAP=6;
 
@@ -1170,3 +1172,30 @@
 /* Global Download Manager loader */
 (()=>{if(document.querySelector('script[data-avp-download-manager]'))return;const s=document.createElement('script');s.src='download-manager.js?v=20260828a';s.defer=true;s.dataset.avpDownloadManager='1';document.head.appendChild(s);})();
 
+
+/* B25 WALK */
+(function(){
+  function go(){
+    var el=document.getElementById("avpEdgeLauncher");
+    if(!el){setTimeout(go,200);return;}
+    el.classList.add("is-robot","is-walking");
+    var x=16,dir=1;
+    function tick(){
+      if(!el.classList.contains("open")){
+        x+=dir*2.2;
+        var max=Math.max(20,(window.innerWidth||400)-80);
+        if(x>=max){x=max;dir=-1;el.classList.add("face-left");}
+        if(x<=12){x=12;dir=1;el.classList.remove("face-left");}
+      }
+      el.style.setProperty("left","0px","important");
+      el.style.setProperty("right","auto","important");
+      el.style.setProperty("top","auto","important");
+      el.style.setProperty("bottom","10px","important");
+      el.style.setProperty("transform","translateX("+x+"px)","important");
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);
+  else go();
+})();
