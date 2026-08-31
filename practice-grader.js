@@ -100,17 +100,17 @@ function card(l){
   let actions="";
   if(active&&!locked){
     actions=`<div class="pg-card-actions">
-      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">TẢI FILE BÀI TẬP ↓</button><button class="pg-card-btn review" type="button" data-guide-open="${esc(l.key)}">XEM HƯỚNG DẪN →</button>
+      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải file</button><button class="pg-card-btn review" type="button" data-guide-open="${esc(l.key)}">📖 Hướng dẫn</button>
       <label class="pg-card-btn submit pg-file-submit">
-        <span>${isAdminTester&&submitted?"NỘP TEST LẠI ↑":"NỘP FILE ĐỂ CHẤM ↑"}</span>
+        <span>${isAdminTester&&submitted?"🛠 Nộp test lại":"📤 Nộp bài"}</span>
         <input type="file" class="pg-file-input" accept=".xlsx,.xls" data-submit="${esc(l.key)}" aria-label="Nộp file Excel">
       </label>
     </div>`;
   }else if(active&&locked){
     const appealCopy=appealStatus==="pending"?"⏳ Đang chờ Admin":appealStatus==="approved"?"✓ Đã chấm lại":appealStatus==="rejected"?"✓ Đã phản hồi":"⚑ Báo chấm sai";
     actions=`<div class="pg-card-actions">
-      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">TẢI LẠI FILE ↓</button>
-      <button class="pg-card-btn review" type="button" data-review="${esc(l.key)}">XEM ĐÁNH GIÁ →</button>
+      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải lại file</button>
+      <button class="pg-card-btn review" type="button" data-review="${esc(l.key)}">🤖 Xem đánh giá</button>
       <button class="pg-card-btn visibility ${st?.is_public?"public":"private"}" type="button" data-visibility="${esc(l.key)}">
         ${st?.is_public?"🏆 Đang lên BXH":"🔒 Chưa lên BXH"}
       </button>
@@ -1151,71 +1151,4 @@ function bind(){
   renderLessons();loadSubmissionStates();loadLeaderboard();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
-})();
-
-
-/* =========================================================
-   V104 — Auto Grading library UX
-   Keep scoring/ranking logic intact, reorganize visual flow only.
-   ========================================================= */
-(function(){
-  function avpGraderLibraryUX(){
-    const workspace=document.querySelector('.pw-workspace');
-    const frame=document.querySelector('.pg-lesson-frame');
-    if(!workspace || !frame) return;
-
-    // Make lesson library the primary section.
-    const toolbar=document.querySelector('.pg-practice-toolbar');
-    if(toolbar && toolbar.parentNode===workspace){
-      workspace.insertBefore(toolbar, frame);
-    }
-
-    // Move progress and ranking below the lesson library as secondary information.
-    const progress=document.getElementById('pgProgressPanel');
-    const board=document.querySelector('.pg-daily-board');
-    const result=document.getElementById('pgResult');
-
-    let secondary=document.querySelector('.pg-secondary-zone-v104');
-    if(!secondary){
-      secondary=document.createElement('section');
-      secondary.className='pg-secondary-zone-v104';
-      secondary.innerHTML='<div class="pg-secondary-head-v104"><span>TIẾN ĐỘ & XẾP HẠNG</span><strong>Xem sau khi làm bài</strong></div>';
-      frame.insertAdjacentElement('afterend',secondary);
-    }
-
-    if(progress) secondary.appendChild(progress);
-    if(board) secondary.appendChild(board);
-    if(result) secondary.insertAdjacentElement('afterend',result);
-
-    // Rename lesson frame heading.
-    const head=frame.querySelector('.pg-lesson-frame-head');
-    if(head){
-      const tag=head.querySelector('span');
-      const h3=head.querySelector('h3');
-      const small=head.querySelector('small');
-      if(tag) tag.textContent='DANH SÁCH BÀI';
-      if(h3) h3.textContent='Chọn một bài để bắt đầu';
-      if(small) small.textContent='Tải đề → làm bài → nộp file';
-    }
-
-    // Re-label topic area so it reads like a library selector.
-    if(toolbar){
-      toolbar.classList.add('pg-library-selector-v104');
-      const topicTabs=document.getElementById('pgTopicTabs');
-      if(topicTabs && !toolbar.querySelector('.pg-library-selector-title-v104')){
-        const title=document.createElement('div');
-        title.className='pg-library-selector-title-v104';
-        title.innerHTML='<span>01 · CHỌN CHỦ ĐỀ</span><strong>Chọn một chủ đề để lọc danh sách bài bên dưới</strong>';
-        toolbar.insertBefore(title,topicTabs);
-      }
-    }
-
-    frame.classList.add('pg-library-frame-v104');
-  }
-
-  if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',()=>setTimeout(avpGraderLibraryUX,80),{once:true});
-  }else{
-    setTimeout(avpGraderLibraryUX,80);
-  }
 })();

@@ -278,13 +278,3 @@ html.pyt-embedded .pyt-page{width:100%!important;margin:0!important;padding:0 2p
   .pyt-tab-panel{animation:none}
   .pyt-project-card,.pyt-lesson,.pyt-roadmap button{transition:none!important}
 }
-
-/* V101 — clearer actions and destinations */
-.pyt-source-explain{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-top:10px;padding:10px 12px;border:1px solid #cfe1d6;border-radius:12px;background:#f7fbf8}
-.pyt-source-explain span,.pyt-source-explain strong{display:block}.pyt-source-explain span{color:#217346;font-size:7px;font-weight:950;letter-spacing:.1em}.pyt-source-explain strong{margin-top:2px;font-size:10px}.pyt-source-explain p{margin:0;color:#66786d;font-size:8px}
-.pyt-download-main{position:relative!important;padding:13px 14px!important;box-shadow:0 7px 18px rgba(33,115,70,.18)!important}
-.pyt-download-main span{font-size:11px!important;letter-spacing:.02em}
-.pyt-download-main::after{content:"Nhấn để tải file về máy";display:block;margin-top:4px;color:rgba(255,255,255,.78);font-size:7px;font-weight:700}
-.pyt-video-btn{display:inline-flex!important;align-items:center!important;gap:6px!important;background:#217346!important}
-.pyt-shared-files>a{border-color:#bcd9c7!important;background:#f9fcfa!important}.pyt-shared-files>a b{padding:5px 7px;border-radius:8px;background:#eaf6ef;color:#185c37!important}
-@media(max-width:640px){.pyt-source-explain{align-items:flex-start;flex-direction:column}}
