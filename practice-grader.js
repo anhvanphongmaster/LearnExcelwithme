@@ -1217,6 +1217,24 @@ async function giftStar(btn){
         if(!ins.error)saved=true;
       }catch(e){}
     }
+    const fromName=user?.user_metadata?.full_name||user?.user_metadata?.name||"Một học viên";
+    const title="Bạn vừa được tặng 1 sao";
+    const content=fromName+" đã tặng bạn 1 sao trên bảng xếp hạng bài tập chấm điểm.";
+    try{
+      await sb.rpc("notification_personal_create",{p_user_id:toId,p_title:title,p_content:content,p_type:"practice_grader_star"});
+    }catch(e){}
+    try{
+      await sb.rpc("admin_system_notification_create",{
+        p_title:title,
+        p_content:content,
+        p_category:"practice_grader_star",
+        p_target_type:"user",
+        p_target_user_id:toId,
+        p_starts_at:new Date().toISOString(),
+        p_expires_at:null,
+        p_is_pinned:false
+      });
+    }catch(e){}
   }
   store.given[fromId+"|"+stamp]=1;
   const key=toId||name;

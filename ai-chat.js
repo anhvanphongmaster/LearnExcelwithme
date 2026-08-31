@@ -1689,6 +1689,7 @@
     return (
       type==="practice_grader_review" ||
       type==="practice_grader_appeal" ||
+      type==="practice_grader_star" ||
       title.includes("kết quả chấm lại bài excel") ||
       title.includes("kết quả kiểm tra lại bài excel")
     );

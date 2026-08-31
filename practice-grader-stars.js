@@ -46,6 +46,25 @@
       row.appendChild(btn);
     });
   }
+
+  async function notifyStarGift(sb, toId, fromUser, toName){
+    if(!sb || !toId) return false;
+    var fromName = (fromUser && (fromUser.user_metadata && (fromUser.user_metadata.full_name || fromUser.user_metadata.name))) || "Một học viên";
+    var title = "Bạn vừa được tặng 1 sao";
+    var content = fromName + " đã tặng bạn 1 sao trên bảng xếp hạng bài tập chấm điểm.";
+    var tries = [
+      ["practice_grader_gift_star", {p_to_user_id: toId}],
+      ["notification_personal_create", {p_user_id: toId, p_title: title, p_content: content, p_type: "practice_grader_star"}],
+      ["admin_system_notification_create", {p_title: title, p_content: content, p_category: "practice_grader_star", p_target_type: "user", p_target_user_id: toId, p_starts_at: new Date().toISOString(), p_expires_at: null, p_is_pinned: false}]
+    ];
+    for (var i=0;i<tries.length;i++){
+      try{
+        var res = await sb.rpc(tries[i][0], tries[i][1]);
+        if(!res.error) return true;
+      }catch(e){}
+    }
+    return false;
+  }
   async function gift(btn){
     var row=btn.closest(".pg-board-row");
     if(!row)return;
@@ -70,6 +89,13 @@
       alert("Hôm nay bạn đã tặng sao cho "+name+" rồi.");
       return;
     }
+
+    var toId=row.getAttribute("data-user-id")||"";
+    try{
+      var sb=window.avpSupabase;
+      if(!sb && window.AVPAccess && window.AVPAccess.client) sb=window.AVPAccess.client();
+      if(sb && toId) await notifyStarGift(sb, toId, user, name);
+    }catch(e){}
     s.given[stamp]=1;
     var k=keyOf(row)||name;
     s.counts[k]=(Number(s.counts[k])||0)+1;
