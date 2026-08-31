@@ -50,7 +50,7 @@
      1 nút duy nhất ở viền: Trung tâm học / Chat Admin / Hỏi AI
      ========================================================= */
   const launcher=document.createElement('div');
-  launcher.className='avp-edge-launcher is-right';
+  launcher.className='avp-edge-launcher is-right is-robot is-walking';
   launcher.id='avpEdgeLauncher';
 
   launcher.innerHTML=`
@@ -79,7 +79,15 @@
       aria-expanded="false"
       title="Công cụ nhanh — kéo để di chuyển"
     >
-      <span class="avp-edge-main-icon">AVP</span>
+      <span class="avp-bot" aria-hidden="true">
+        <span class="avp-bot-head"><i class="avp-bot-eye"></i><i class="avp-bot-eye"></i></span>
+        <span class="avp-bot-arm avp-bot-arm-l"></span>
+        <span class="avp-bot-body">AVP</span>
+        <span class="avp-bot-arm avp-bot-arm-r"></span>
+        <span class="avp-bot-leg avp-bot-leg-l"></span>
+        <span class="avp-bot-leg avp-bot-leg-r"></span>
+      </span>
+      <span class="avp-edge-main-icon" hidden>AVP</span>
       <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
     </button>
   `;
@@ -542,6 +550,14 @@
     fab.setAttribute('aria-expanded',open?'true':'false');
     const icon=fab.querySelector('.avp-edge-main-icon');
     if(icon)icon.textContent='AVP';
+    if(open){
+      launcher.classList.remove('is-walking');
+      launcher.classList.add('is-greeting');
+      fab.style.transform='none';
+    }else{
+      launcher.classList.remove('is-greeting');
+      launcher.classList.add('is-walking');
+    }
 
     if(!open){
       setTimeout(()=>{
@@ -861,6 +877,7 @@
     let grabOffsetY=0;
 
     btn.addEventListener('pointerdown',e=>{
+      if(launcher.classList.contains('is-robot'))return;
       if(e.button!=null && e.button!==0)return;
 
       const r=root.getBoundingClientRect();
@@ -964,6 +981,40 @@
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHub()});
   /* V82: bỏ nút bookmark nổi để giảm số nút cố định trên màn hình.
      Dữ liệu bookmark cũ vẫn được giữ nguyên trong localStorage. */
+
+
+  (function avpRobotWalk(){
+    if(AVP_EMBEDDED)return;
+    const PAD=16;
+    let x=PAD;
+    let dir=1;
+    const SPEED=0.9;
+    function w(){return Math.max(56, fab.offsetWidth||56)}
+    function maxX(){return Math.max(PAD, window.innerWidth - w() - PAD)}
+    function frame(){
+      if(!launcher.classList.contains('is-walking') || launcher.classList.contains('open')){
+        requestAnimationFrame(frame);
+        return;
+      }
+      x+=dir*SPEED;
+      const mx=maxX();
+      if(x>=mx){x=mx;dir=-1}
+      if(x<=PAD){x=PAD;dir=1}
+      launcher.style.left=x+'px';
+      launcher.style.right='auto';
+      launcher.style.top='auto';
+      launcher.style.bottom=PAD+'px';
+      launcher.classList.toggle('face-left', dir<0);
+      requestAnimationFrame(frame);
+    }
+    launcher.style.left=x+'px';
+    launcher.style.right='auto';
+    launcher.style.top='auto';
+    launcher.style.bottom=PAD+'px';
+    requestAnimationFrame(frame);
+    window.addEventListener('resize',()=>{ if(x>maxX()) x=maxX(); });
+  })();
+
   if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
   let deferred;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;showInstall()});
   function showInstall(){if(sessionStorage.getItem('avp_install_hide'))return;const b=document.createElement('div');b.className='avp-install-banner show';b.innerHTML='<strong>📱 Cài Learn Excel như ứng dụng</strong><p>Mở nhanh hơn và dùng được một phần nội dung khi mạng yếu.</p><div class="avp-hub-actions"><button class="avp-hub-btn" data-install>Cài ứng dụng</button><button class="avp-hub-btn secondary" data-hide>Để sau</button></div>';document.body.appendChild(b);b.querySelector('[data-install]').onclick=async()=>{if(deferred){deferred.prompt();await deferred.userChoice;deferred=null;b.remove()}};b.querySelector('[data-hide]').onclick=()=>{sessionStorage.setItem('avp_install_hide','1');b.remove()}}

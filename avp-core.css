@@ -1344,3 +1344,114 @@ body.dark-mode #avpEdgeLauncher .avp-edge-action > span:first-child{
 @media (prefers-reduced-motion:reduce){
   #avpEdgeLauncher.has-pulse .avp-edge-main::before{ animation:none !important; }
 }
+
+
+/* AVP robot patrol */
+.avp-edge-launcher.is-robot{
+  position:fixed !important;
+  top:auto !important;
+  right:auto !important;
+  width:64px !important;
+  height:72px !important;
+  z-index:9996 !important;
+  background:transparent !important;
+  pointer-events:none !important;
+}
+.avp-edge-launcher.is-robot .avp-edge-main{
+  pointer-events:auto !important;
+  width:64px !important;
+  height:72px !important;
+  border-radius:18px !important;
+  border:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  overflow:visible !important;
+}
+.avp-edge-launcher.is-robot .avp-edge-main::before{display:none !important}
+.avp-edge-launcher.is-robot .avp-edge-menu{
+  pointer-events:auto !important;
+  bottom:78px !important;
+  left:50% !important;
+  right:auto !important;
+  transform:translateX(-50%) !important;
+}
+.avp-bot{
+  position:relative;
+  width:48px;
+  height:62px;
+  display:block;
+  margin:0 auto;
+}
+.avp-bot-head{
+  position:absolute;
+  left:10px;top:0;
+  width:28px;height:22px;
+  border-radius:8px 8px 6px 6px;
+  background:linear-gradient(#3cc56f,#1f7a4a);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.35), 0 2px 0 #0d3b24;
+}
+.avp-bot-eye{
+  position:absolute;top:7px;
+  width:6px;height:6px;border-radius:50%;
+  background:#e8fff0;
+  box-shadow:0 0 4px #fff;
+}
+.avp-bot-eye:first-child{left:5px}
+.avp-bot-eye:last-child{right:5px}
+.avp-bot-body{
+  position:absolute;
+  left:8px;top:22px;
+  width:32px;height:24px;
+  border-radius:8px;
+  background:linear-gradient(#2d9a5c,#165533);
+  color:#fff;
+  font:800 9px/24px system-ui,sans-serif;
+  text-align:center;
+  letter-spacing:.04em;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.25);
+}
+.avp-bot-arm{
+  position:absolute;top:24px;
+  width:7px;height:16px;
+  border-radius:4px;
+  background:#1f7a4a;
+  transform-origin:top center;
+}
+.avp-bot-arm-l{left:2px}
+.avp-bot-arm-r{right:2px}
+.avp-bot-leg{
+  position:absolute;top:44px;
+  width:8px;height:16px;
+  border-radius:4px;
+  background:#0f3d28;
+  transform-origin:top center;
+}
+.avp-bot-leg-l{left:12px}
+.avp-bot-leg-r{right:12px}
+.avp-edge-launcher.is-walking.face-left .avp-bot{transform:scaleX(-1)}
+.avp-edge-launcher.is-walking .avp-bot-leg-l{animation:avpBotStep 0.36s linear infinite}
+.avp-edge-launcher.is-walking .avp-bot-leg-r{animation:avpBotStep 0.36s linear infinite reverse}
+.avp-edge-launcher.is-walking .avp-bot-arm-l{animation:avpBotStep 0.36s linear infinite reverse}
+.avp-edge-launcher.is-walking .avp-bot-arm-r{animation:avpBotStep 0.36s linear infinite}
+.avp-edge-launcher.is-greeting .avp-bot{transform:none}
+.avp-edge-launcher.is-greeting .avp-bot-arm-r{
+  animation:avpBotWave .45s ease-in-out infinite;
+  transform-origin:top center;
+}
+@keyframes avpBotStep{
+  0%{transform:rotate(18deg)}
+  50%{transform:rotate(-18deg)}
+  100%{transform:rotate(18deg)}
+}
+@keyframes avpBotWave{
+  0%{transform:rotate(10deg)}
+  50%{transform:rotate(-70deg)}
+  100%{transform:rotate(10deg)}
+}
+@media (prefers-reduced-motion:reduce){
+  .avp-edge-launcher.is-walking .avp-bot-leg-l,
+  .avp-edge-launcher.is-walking .avp-bot-leg-r,
+  .avp-edge-launcher.is-walking .avp-bot-arm-l,
+  .avp-edge-launcher.is-walking .avp-bot-arm-r,
+  .avp-edge-launcher.is-greeting .avp-bot-arm-r{animation:none !important}
+}
