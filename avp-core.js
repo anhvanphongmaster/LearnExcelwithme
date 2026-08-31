@@ -852,13 +852,16 @@
       saved=JSON.parse(localStorage.getItem(POS_KEY)||'null');
     }catch{}
 
-    snapToEdge(
-      saved?.side==='left'?'left':'right',
-      saved?.y ?? Math.round(window.innerHeight*.56),
-      false
-    );
+    if(!root.classList.contains('is-robot')){
+      snapToEdge(
+        saved?.side==='left'?'left':'right',
+        saved?.y ?? Math.round(window.innerHeight*.56),
+        false
+      );
+    }
 
     window.addEventListener('resize',()=>{
+      if(root.classList.contains('is-robot'))return;
       let pos=null;
       try{
         pos=JSON.parse(localStorage.getItem(POS_KEY)||'null');
@@ -991,9 +994,17 @@
   (function avpRobotWalk(){
     if(AVP_EMBEDDED)return;
     const PAD=16;
+    const POS_BOT='avp_bot_walk_x_v1';
     let x=PAD;
     let yBottom=PAD;
     let dir=1;
+    try{
+      const savedBot=JSON.parse(localStorage.getItem(POS_BOT)||'null');
+      if(savedBot && typeof savedBot.x==='number'){
+        x=savedBot.x;
+        dir=savedBot.dir===-1?-1:1;
+      }
+    }catch(e){}
     const SPEED=0.9;
     let lifting=false;
     let liftMoved=false;
@@ -1065,6 +1076,9 @@
 
     function w(){return Math.max(56, fab.offsetWidth||56)}
     function maxX(){return Math.max(PAD, window.innerWidth - w() - PAD)}
+    function persistWalk(){
+      try{localStorage.setItem(POS_BOT,JSON.stringify({x:x,dir:dir}));}catch(e){}
+    }
     function applyPos(px, bottom){
       launcher.style.left=px+"px";
       launcher.style.right="auto";
@@ -1080,6 +1094,10 @@
         if(x<=PAD){x=PAD;dir=1}
         applyPos(x, PAD);
         launcher.classList.toggle("face-left", dir<0);
+        if(!window.__avpBotSaveT || Date.now()-window.__avpBotSaveT>400){
+          window.__avpBotSaveT=Date.now();
+          persistWalk();
+        }
       }
       if(!bubble.hidden) placeBubble();
       requestAnimationFrame(frame);
@@ -1128,7 +1146,9 @@
     applyPos(x, PAD);
     requestAnimationFrame(frame);
     talkLoop();
-    window.addEventListener("resize",()=>{ if(x>maxX()) x=maxX(); placeBubble(); });
+    window.addEventListener("resize",()=>{ if(x>maxX()) x=maxX(); placeBubble(); persistWalk(); });
+    window.addEventListener("pagehide",persistWalk);
+    document.addEventListener("visibilitychange",()=>{ if(document.hidden) persistWalk(); });
   })();
 
   if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
