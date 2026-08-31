@@ -771,8 +771,7 @@
     <link rel="stylesheet" href="global-search.css">
     <link rel="stylesheet" href="simple-nav.css">
     <link rel="stylesheet" href="home-effects.css">
-<link rel="stylesheet" href="home-desktop-shine-fix-v111.css?v=20260831-v111">
-    <link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#217346">
@@ -1473,6 +1472,15 @@ a.avp-yt-combo.avp-mobile-main-cta{
 .avp-mini-channel-tt{background:#111;}
 .avp-mini-channel-yt{background:#ff0000;}
 .avp-mini-channel-grade{background:#2563eb;}
+
+/* Homepage effect repair:
+   keep current Practice Hub layout/badges, but clip only the shine layer
+   so the original home-effects.css animation works on desktop too. */
+.avp-practice-hub-cta::before{
+  border-radius:inherit;
+  clip-path:inset(0 round 16px);
+  -webkit-clip-path:inset(0 round 16px);
+}
 </style>
 
 
