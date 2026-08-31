@@ -1350,7 +1350,7 @@ body.dark-mode #avpEdgeLauncher .avp-edge-action > span:first-child{
 .avp-edge-launcher.is-robot{
   position:fixed !important;
   top:52vh !important;
-  right:8px !important;
+  right:auto !important;
   left:auto !important;
   width:64px !important;
   height:72px !important;
@@ -1641,7 +1641,7 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 #avpEdgeLauncher.is-robot{
   position:fixed !important;
   top:52vh !important;
-  right:8px !important;
+  right:auto !important;
   left:auto !important;
   bottom:auto !important;
   width:96px !important;
@@ -1750,7 +1750,7 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 /* RIGHT EDGE = mép phải màn hình */
 #avpEdgeLauncher.is-robot{
   left:auto !important;
-  right:8px !important;
+  right:auto !important;
   bottom:auto !important;
 }
 #avpEdgeLauncher.is-robot.is-dragging{
@@ -1888,7 +1888,7 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 /* LAST: robot is a 76px box at bottom-right ONLY */
 #avpEdgeLauncher.is-robot{
   left:auto !important;
-  right:10px !important;
+  right:auto !important;
   top:auto !important;
   bottom:12px !important;
   width:76px !important;
@@ -1902,4 +1902,16 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   width:76px !important;
   height:90px !important;
   pointer-events:auto !important;
+}
+
+#avpEdgeLauncher.open .avp-edge-menu{
+  display:flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+}
+
+#avpEdgeLauncher.is-robot{
+  right:auto !important;
+  width:76px !important;
+  height:90px !important;
 }
