@@ -659,3 +659,22 @@ document.addEventListener("DOMContentLoaded", function(){
     document.head.appendChild(l);
   }catch(e){}
 })();
+
+(function(){
+  try{
+    var page=(location.pathname.split("/").pop()||"").toLowerCase();
+    if(!/practice-video|practice-grader/.test(page))return;
+    if(document.querySelector('script[src*="practice-grader-stars.js"]'))return;
+    var s=document.createElement("script");
+    s.src="practice-grader-stars.js?v=20260831-s2";
+    s.defer=true;
+    document.head.appendChild(s);
+    if(!document.getElementById("avpPgStarCss")){
+      var l=document.createElement("link");
+      l.id="avpPgStarCss";
+      l.rel="stylesheet";
+      l.href="practice-grader.css?v=20260831-star1";
+      document.head.appendChild(l);
+    }
+  }catch(e){}
+})();

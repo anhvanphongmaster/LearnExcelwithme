@@ -1123,11 +1123,111 @@ async function loadLeaderboard(){
     const {data,error}=await sb.rpc("practice_grader_leaderboard_v4",{p_difficulty:currentRankDifficulty,p_limit:50});
     if(error)throw error;
     const rows=Array.isArray(data)?data:[];
+    const starMap=await loadStarCounts(sb,rows);
     list.innerHTML=rows.length?rows.map((r,i)=>{
       const rank=Number(r.rank_no)||(i+1),medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":`${rank}.`;
-      return `<li class="pg-board-row${r.is_me?" me":""}"><span class="pg-board-rank">${medal}</span><span class="pg-board-name">${esc(r.display_name||"Học viên")}${r.is_me?" · Bạn":""}</span><span class="pg-board-score">${Number(r.total_score)||0}<small>đ</small></span><span class="pg-board-meta">${Number(r.submitted_lessons)||0} bài · TB ${Number(r.avg_score)||0}/100</span></li>`;
+      const uid=String(r.user_id||r.id||r.uid||"");
+      const stars=Number(r.star_count||r.stars||starMap[uid]||0);
+      const self=!!r.is_me;
+      return `<li class="pg-board-row${self?" me":""}" data-user-id="${esc(uid)}" data-name="${esc(r.display_name||"Học viên")}">
+        <span class="pg-board-rank">${medal}</span>
+        <span class="pg-board-name">${esc(r.display_name||"Học viên")}${self?" · Bạn":""}</span>
+        <span class="pg-board-score">${Number(r.total_score)||0}<small>đ</small></span>
+        <button type="button" class="pg-star-btn" data-gift-star ${self?"disabled":""} title="${self?"Không tự tặng sao":"Tặng 1 sao"}">★ <b class="pg-star-count">${stars}</b></button>
+        <span class="pg-board-meta">${Number(r.submitted_lessons)||0} bài · TB ${Number(r.avg_score)||0}/100</span>
+      </li>`;
     }).join(""):'<li class="pg-board-empty">Chưa có thành tích công khai.</li>';
   }catch(e){list.innerHTML='<li class="pg-board-empty">BXH chưa tải được.</li>'}
+}
+
+function starStore(){
+  try{return JSON.parse(localStorage.getItem("avp_pg_stars_v1")||"{}")}catch(e){return {counts:{},given:{}}}
+}
+function saveStarStore(s){
+  localStorage.setItem("avp_pg_stars_v1",JSON.stringify(s));
+}
+function todayKey(){
+  const d=new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+async function loadStarCounts(sb,rows){
+  const local=starStore();
+  const map=Object.assign({},local.counts||{});
+  const ids=rows.map(r=>r.user_id||r.id||r.uid).filter(Boolean);
+  if(!sb||!ids.length)return map;
+  try{
+    const rpc=await sb.rpc("practice_grader_star_counts",{p_user_ids:ids});
+    if(!rpc.error && Array.isArray(rpc.data)){
+      rpc.data.forEach(x=>{
+        const id=String(x.user_id||x.id||"");
+        if(id)map[id]=Number(x.star_count||x.stars||0);
+      });
+    }
+  }catch(e){}
+  try{
+    const {data,error}=await sb.from("practice_grader_stars").select("to_user_id");
+    if(!error && Array.isArray(data)){
+      const c={};
+      data.forEach(x=>{
+        const id=String(x.to_user_id||"");
+        if(id)c[id]=(c[id]||0)+1;
+      });
+      Object.assign(map,c);
+    }
+  }catch(e){}
+  return map;
+}
+async function giftStar(btn){
+  const row=btn.closest(".pg-board-row");
+  if(!row)return;
+  const toId=row.dataset.userId||"";
+  const name=row.dataset.name||"học viên";
+  if(row.classList.contains("me")||btn.disabled){
+    alert("Không thể tự tặng sao cho mình.");
+    return;
+  }
+  const user=await requireLogin();
+  if(!user)return;
+  const fromId=user.id||"";
+  if(fromId&&toId&&fromId===toId){
+    alert("Không thể tự tặng sao cho mình.");
+    return;
+  }
+  const store=starStore();
+  store.given=store.given||{};
+  const stamp=todayKey()+"|"+(toId||name);
+  if(store.given[fromId+"|"+stamp]){
+    alert("Hôm nay bạn đã tặng sao cho "+name+" rồi.");
+    return;
+  }
+  btn.disabled=true;
+  const sb=await getClient();
+  let saved=false;
+  if(sb&&toId){
+    try{
+      const rpc=await sb.rpc("practice_grader_gift_star",{p_to_user_id:toId});
+      if(!rpc.error)saved=true;
+    }catch(e){}
+    if(!saved){
+      try{
+        const ins=await sb.from("practice_grader_stars").insert({
+          from_user_id:fromId,
+          to_user_id:toId
+        });
+        if(!ins.error)saved=true;
+      }catch(e){}
+    }
+  }
+  store.given[fromId+"|"+stamp]=1;
+  const key=toId||name;
+  store.counts=store.counts||{};
+  store.counts[key]=(Number(store.counts[key])||0)+1;
+  saveStarStore(store);
+  const countEl=btn.querySelector(".pg-star-count");
+  if(countEl)countEl.textContent=String((Number(countEl.textContent)||0)+1);
+  btn.classList.add("is-given");
+  if(window.avpAlert)window.avpAlert("Đã tặng 1 sao cho "+name+".",{title:"Sao",icon:"⭐",tone:"ok"});
+  else alert("Đã tặng 1 sao cho "+name+".");
 }
 
 function bind(){
@@ -1143,6 +1243,10 @@ function bind(){
   $("pgPublishClose")?.addEventListener("click",closePublish);
   qa("[data-pg-publish-close]").forEach(x=>x.onclick=closePublish);
   $("pgBoardRefresh")?.addEventListener("click",loadLeaderboard);
+  $("pgBoardList")?.addEventListener("click",e=>{
+    const btn=e.target.closest("[data-gift-star]");
+    if(btn)giftStar(btn);
+  });
   $("pgResultClose")?.addEventListener("click",()=>{$("pgResult").hidden=true});
   $("pgAppealSend")?.addEventListener("click",sendAppeal);
   $("pgAppealCancel")?.addEventListener("click",closeAppeal);
