@@ -1,5 +1,0 @@
-VAPID_PUBLIC_KEY=BPBURGlmoeRfonbg1ommywsDE7YBN-F17OffOWgHFVmHOiXdXqbUw8_WbGdqeB83ptW6Z8KoGxkHEHV5NEEiKxw
-VAPID_PRIVATE_KEY=NAtry0-25ji7_wSNJ5qKI_uvpgnKQZUpDmqOwcHRMtg
-VAPID_SUBJECT=mailto:YOUR_EMAIL
-
-LƯU Ý: PRIVATE KEY chỉ đặt trong Supabase Edge Function Secrets, KHÔNG upload lên GitHub.

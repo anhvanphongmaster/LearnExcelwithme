@@ -1,7 +1,0 @@
-PUSH NGOÀI WEB:
-1) Chạy CHAT-PUSH-V2.sql.
-2) Up đè admin-chat.js, admin-chat.css, supabase-auth.js.
-3) Upload thêm chat-push.js và service-worker.js ở thư mục gốc website.
-4) Push khi ĐÓNG HẲN web còn cần VAPID public/private key + server/Edge Function gửi Web Push.
-   Không đặt VAPID private key trong file frontend.
-5) Trên iPhone, web push cần website được Add to Home Screen và người dùng cấp quyền.
