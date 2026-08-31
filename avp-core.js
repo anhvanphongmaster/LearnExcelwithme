@@ -808,7 +808,6 @@
 
   /* Kéo dọc màn hình + snap sát viền trái/phải, nhớ vị trí. */
   (function enableDragEdgeLauncher(root,btn){
-    if(root.classList.contains('is-robot'))return;
     const POS_KEY='avp_edge_launcher_pos_v5';
     const EDGE_GAP=6;
 
@@ -841,14 +840,13 @@
 
       root.style.top=top+'px';
       root.style.bottom='auto';
+      root.style.transform='none';
 
-      if(side==='left'){
-        root.style.left=EDGE_GAP+'px';
-        root.style.right='auto';
-      }else{
-        root.style.left=(window.innerWidth-w-EDGE_GAP)+'px';
-        root.style.right='auto';
-      }
+      // luôn hút về phải
+      root.style.left=(window.innerWidth-w-EDGE_GAP)+'px';
+      root.style.right='auto';
+      applySideClass('right');
+
 
       save(side,top);
       requestAnimationFrame(positionMiniPreview);
@@ -864,7 +862,7 @@
     }catch{}
 
     snapToEdge(
-      saved?.side==='left'?'left':'right',
+      'right',
       saved?.y ?? Math.round(window.innerHeight*.56),
       false
     );
@@ -890,10 +888,6 @@
     let grabOffsetY=0;
 
     btn.addEventListener('pointerdown',e=>{
-      if(launcher.classList.contains('is-robot')){
-        window.__avpBotLiftStart={y:e.clientY,x:e.clientX};
-        return;
-      }
       if(e.button!=null && e.button!==0)return;
 
       const r=root.getBoundingClientRect();
@@ -1174,79 +1168,3 @@
 /* Global Download Manager loader */
 (()=>{if(document.querySelector('script[data-avp-download-manager]'))return;const s=document.createElement('script');s.src='download-manager.js?v=20260828a';s.defer=true;s.dataset.avpDownloadManager='1';document.head.appendChild(s);})();
 
-/* STANDALONE ROBOT PATROL */
-(function(){
-  function run(){
-    var el=document.getElementById("avpEdgeLauncher");
-    if(!el){setTimeout(run,200);return;}
-    el.classList.add("is-robot","is-walking");
-    var talk=document.getElementById("avpBotTalk");
-    if(!talk){
-      talk=document.createElement("div");
-      talk.id="avpBotTalk";
-      el.appendChild(talk);
-    }
-    talk.style.cssText="position:absolute;left:50%;bottom:120px;transform:translateX(-50%);width:200px;background:#143526;color:#fff;padding:8px 10px;border-radius:12px;font:700 13px/1.35 system-ui,sans-serif;z-index:2147483647;text-align:center;box-shadow:0 8px 18px rgba(0,0,0,.25)";
-    var lines=["Xin chào, học Excel vui nhé!","Đi từng bước là tiến bộ.","Chúc bạn học tốt.","Mở bài tập khi rảnh 5 phút.","Bạn làm được mà."];
-    var i=0;
-    function showTalk(){
-      if(el.classList.contains("open")||el.classList.contains("is-lifted")){
-        talk.style.visibility="hidden";
-        return;
-      }
-      talk.style.visibility="visible";
-      talk.textContent=lines[i%lines.length];
-    }
-    showTalk();
-    setInterval(function(){
-      i++;
-      showTalk();
-      setTimeout(function(){
-        if(!el.classList.contains("open")) talk.style.visibility="hidden";
-      },2500);
-    },5000);
-
-    var x=24,dir=1,lift=0;
-    var startY=null;
-    el.addEventListener("pointerdown",function(e){
-      if(e.target.closest(".avp-edge-menu"))return;
-      startY=e.clientY;
-    });
-    window.addEventListener("pointermove",function(e){
-      if(startY==null)return;
-      if(startY-e.clientY>22){
-        lift=1;
-        el.classList.add("is-lifted","is-crying");
-        el.classList.remove("is-walking");
-        el.style.setProperty("bottom",(window.innerHeight-e.clientY-20)+"px","important");
-      }
-    });
-    window.addEventListener("pointerup",function(){
-      startY=null;
-      if(lift){
-        lift=0;
-        el.classList.remove("is-lifted","is-crying");
-        el.classList.add("is-walking");
-        el.style.setProperty("bottom","12px","important");
-      }
-    });
-
-    function tick(){
-      if(!el.classList.contains("open") && !lift){
-        x+=dir*4;
-        var max=Math.max(30,(window.innerWidth||800)-110);
-        if(x>=max){x=max;dir=-1;}
-        if(x<=16){x=16;dir=1;}
-      }
-      el.style.setProperty("left","0px","important");
-      el.style.setProperty("top","auto","important");
-      el.style.setProperty("right","auto","important");
-      if(!lift) el.style.setProperty("bottom","12px","important");
-      el.style.setProperty("transform","translate3d("+x+"px,0,0)","important");
-      requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",run);
-  else run();
-})();

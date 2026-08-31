@@ -1742,3 +1742,6 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   right:auto !important;
   width:96px !important;
 }
+
+#avpBotTalk{display:none !important}
+#avpEdgeLauncher.is-robot{transform:none !important}
