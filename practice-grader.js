@@ -1151,12 +1151,11 @@ function todayKey(){
   return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 }
 async function loadStarCounts(sb,rows){
-  const local=starStore();
-  const map=Object.assign({},local.counts||{});
-  const ids=rows.map(r=>r.user_id||r.id||r.uid).filter(Boolean);
-  if(!sb||!ids.length)return map;
+  const map={};
+  if(!sb)return map;
   try{
-    const rpc=await sb.rpc("practice_grader_star_counts",{p_user_ids:ids});
+    let rpc=await sb.rpc("practice_grader_star_counts");
+    if(rpc.error)rpc=await sb.rpc("practice_grader_star_counts",{p_user_ids:null});
     if(!rpc.error && Array.isArray(rpc.data)){
       rpc.data.forEach(x=>{
         const id=String(x.user_id||x.id||"");

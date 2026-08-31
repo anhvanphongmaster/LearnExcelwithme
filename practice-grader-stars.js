@@ -27,15 +27,46 @@
   function keyOf(row){
     return (row.getAttribute("data-user-id")||row.querySelector(".pg-board-name")?.textContent||"").trim();
   }
+  var serverCounts=null;
+  async function refreshServerCounts(){
+    var sb=window.avpSupabase;
+    if(!sb)return {};
+    var map={};
+    try{
+      var rpc=await sb.rpc("practice_grader_star_counts");
+      if(rpc.error)rpc=await sb.rpc("practice_grader_star_counts",{p_user_ids:null});
+      if(!rpc.error && Array.isArray(rpc.data)){
+        rpc.data.forEach(function(x){
+          var id=String(x.user_id||x.id||"");
+          if(id)map[id]=Number(x.star_count||x.stars||0);
+        });
+      }
+    }catch(e){}
+    try{
+      var res=await sb.from("practice_grader_stars").select("to_user_id");
+      if(!res.error && Array.isArray(res.data)){
+        res.data.forEach(function(x){
+          var id=String(x.to_user_id||"");
+          if(id)map[id]=(map[id]||0)+1;
+        });
+      }
+    }catch(e){}
+    serverCounts=map;
+    return map;
+  }
   function enhance(list){
     if(!list)return;
     list.querySelectorAll(".pg-board-row").forEach(function(row){
-      if(row.querySelector(".pg-star-btn"))return;
       var name=(row.querySelector(".pg-board-name")?.textContent||"Học viên").replace(" · Bạn","").trim();
       var self=row.classList.contains("me") || /· Bạn/.test(row.textContent||"");
-      var s=store();
-      var k=keyOf(row)||name;
-      var n=Number((s.counts||{})[k]||0);
+      var k=row.getAttribute("data-user-id")||keyOf(row)||name;
+      var n=Number((serverCounts||{})[k]||0);
+      var exist=row.querySelector(".pg-star-btn");
+      if(exist){
+        var c=exist.querySelector(".pg-star-count");
+        if(c && serverCounts) c.textContent=String(n);
+        return;
+      }
       var btn=document.createElement("button");
       btn.type="button";
       btn.className="pg-star-btn";
@@ -115,8 +146,8 @@
     });
     enhance(list);
     new MutationObserver(function(){enhance(list)}).observe(list,{childList:true,subtree:true});
-    setTimeout(function(){enhance(list)},800);
-    setTimeout(function(){enhance(list)},2000);
+    refreshServerCounts().then(function(){enhance(list)});
+    setTimeout(function(){refreshServerCounts().then(function(){enhance(list)})},1200);
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);
   else boot();
