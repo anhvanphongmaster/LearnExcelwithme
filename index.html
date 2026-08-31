@@ -771,6 +771,7 @@
     <link rel="stylesheet" href="global-search.css">
     <link rel="stylesheet" href="simple-nav.css">
     <link rel="stylesheet" href="home-effects.css">
+<link rel="stylesheet" href="home-revive-v106.css?v=20260831-v106">
     <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1474,44 +1475,6 @@ a.avp-yt-combo.avp-mobile-main-cta{
 .avp-mini-channel-grade{background:#2563eb;}
 </style>
 
-<style id="avp-audit2-safe-home">
-
-.home-board-secondary{margin-top:22px}
-.home-board-secondary .learn-board{
-  border:1px solid #d5e8dc!important;
-  box-shadow:0 4px 16px rgba(33,115,70,.06)!important;
-  background:linear-gradient(180deg,#f7fbf8,#fff)!important;
-}
-.home-reference{margin:18px auto 0;padding:0 16px}
-.home-reference-inner{
-  max-width:1120px;margin:0 auto;display:flex;align-items:center;
-  justify-content:space-between;gap:24px;padding:20px 22px;
-  border:1px solid #d9e7df;border-radius:18px;background:#fff;
-  box-shadow:0 8px 24px rgba(23,70,43,.05)
-}
-.home-reference-kicker{
-  display:block;margin-bottom:4px;color:#217346;font-size:10px;
-  font-weight:900;letter-spacing:.12em
-}
-.home-reference-inner h2{margin:0 0 5px;color:#173f2a;font-size:20px}
-.home-reference-inner p{
-  margin:0;max-width:720px;color:#66756d;font-size:12.5px;line-height:1.55
-}
-.home-reference-inner small{
-  display:block;margin-top:6px;color:#839088;font-size:10px
-}
-.home-reference-inner>a{
-  flex:0 0 auto;padding:10px 14px;border-radius:999px;background:#eef7f2;
-  color:#145a32;border:1px solid #c7dfd1;text-decoration:none;
-  font-size:11px;font-weight:900
-}
-.home-reference-inner>a:hover{background:#e4f2e9}
-@media(max-width:700px){
-  .home-reference-inner{align-items:flex-start;flex-direction:column;padding:17px}
-  .home-reference-inner>a{width:100%;text-align:center}
-}
-
-</style>
 </head>
 
 
@@ -1581,9 +1544,9 @@ a.avp-yt-combo.avp-mobile-main-cta{
       style="width:100%;box-sizing:border-box;border-radius:14px;padding:12px 16px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:#e8f5ec;cursor:pointer;text-align:center">
       <span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">
         <span class="avp-tease-chevs" aria-hidden="true"><span>▾</span><span>▾</span><span>▾</span></span>
-        Lộ trình 14 bài · Bắt đầu học
+        Lộ trình 14 bài · Bảng xếp hạng
       </span>
-      <span style="display:block;font-size:12px;margin-top:4px;opacity:.9" id="avpTeasePreview">Đi từ nền tảng đến thực chiến theo từng chặng</span>
+      <span style="display:block;font-size:12px;margin-top:4px;opacity:.9" id="avpTeasePreview">Top học viên · <b>đăng nhập</b> để có mặt trên BXH</span>
     </button>
   </div>
 
@@ -1613,6 +1576,18 @@ a.avp-yt-combo.avp-mobile-main-cta{
   <div class="home-path-inner">
     <h2>Lộ trình 14 bài</h2>
     <p>Học theo thứ tự. Mỗi bài có ví dụ và quiz.</p>
+
+    <div class="learn-board learn-board--hi" id="learnBoard">
+      <div class="learn-board-h" style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+        <div>
+          <h3 style="margin:0;color:#145a32">🏆 Bảng xếp hạng học tập</h3>
+          <p class="learn-board-desc" style="margin:6px 0 0;font-size:13px;color:#3f6b52">Chuỗi ngày học liên tiếp. <strong>Đăng ký / đăng nhập</strong> mới được xuất hiện trên BXH.</p>
+        </div>
+        <button type="button" class="learn-board-ref" id="learnBoardRefresh" style="border:1px solid #86efac;background:#fff;color:#145a32;font-weight:800;border-radius:999px;padding:8px 12px;cursor:pointer">Làm mới</button>
+      </div>
+      <p class="learn-board-note learn-board-note--guest" id="learnBoardNote" style="margin:12px 0;padding:10px 12px;border-radius:10px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-weight:700">👤 <a href="auth.html" style="color:#c2410c;font-weight:900">Đăng ký / Đăng nhập</a> để xuất hiện trên bảng xếp hạng.</p>
+      <ol class="learn-board-list" id="learnBoardList" style="margin:0;padding-left:20px"><li class="lb-muted">Đang tải…</li></ol>
+    </div>
 
     <div class="home-path-grid">
       <article class="home-path-card home-path-card--1">
@@ -1671,33 +1646,57 @@ a.avp-yt-combo.avp-mobile-main-cta{
         <small>Luyện nhanh khi muốn thử sức</small>
       </a>
     </div>
-
-    <div class="home-board-secondary">
-<div class="learn-board learn-board--hi" id="learnBoard">
-      <div class="learn-board-h" style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
-        <div>
-          <h3 style="margin:0;color:#145a32">Bảng xếp hạng học tập</h3>
-          <p class="learn-board-desc" style="margin:6px 0 0;font-size:13px;color:#3f6b52">Dành cho người muốn theo dõi chuỗi học và thành tích cộng đồng.</p>
-        </div>
-        <button type="button" class="learn-board-ref" id="learnBoardRefresh" style="border:1px solid #86efac;background:#fff;color:#145a32;font-weight:800;border-radius:999px;padding:8px 12px;cursor:pointer">Làm mới</button>
-      </div>
-      <p class="learn-board-note learn-board-note--guest" id="learnBoardNote" style="margin:12px 0;padding:10px 12px;border-radius:10px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-weight:700">👤 <a href="auth.html" style="color:#c2410c;font-weight:900">Đăng ký / Đăng nhập</a> để xuất hiện trên bảng xếp hạng.</p>
-      <ol class="learn-board-list" id="learnBoardList" style="margin:0;padding-left:20px"><li class="lb-muted">Đang tải…</li></ol>
-    </div>
-    </div>
-</div>
+  </div>
 </section>
 
 
-<section class="home-reference" id="home-books">
-  <div class="home-reference-inner">
-    <div>
-      <span class="home-reference-kicker">TÀI LIỆU THAM KHẢO</span>
-      <h2>Sách &amp; tài liệu học thêm</h2>
-      <p>Nếu cần tài liệu ngoài website, mình đã gom các gợi ý vào một trang riêng để trang chủ tập trung vào việc học.</p>
-      <small>Một số liên kết là liên kết tiếp thị (affiliate). Giá bạn trả không thay đổi.</small>
+<section class="home-path" id="home-books">
+  <div class="home-path-inner">
+    <h2>Sách &amp; combo tham khảo</h2>
+    <p>Tài liệu văn phòng nên đọc thêm. Bấm để xem trên TikTok.</p>
+    <p class="home-aff-note">Một số liên kết sách là liên kết tiếp thị (affiliate). Nếu bạn mua, kênh có thể nhận hoa hồng — giá bạn trả không đổi.</p>
+    <div class="home-books-grid">
+      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ4jKcjLN2-kMdxG/" target="_blank" rel="noopener noreferrer">
+        <span>01</span>
+        <strong>Combo 2 sách Excel + Word</strong>
+        <small>Từ cơ bản đến nâng cao · Tặng 101 phím tắt + bảng hàm</small>
+      </a>
+      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ4kUmEHX8-HL8BK/" target="_blank" rel="noopener noreferrer">
+        <span>02</span>
+        <strong>Sách Excel ứng dụng văn phòng</strong>
+        <small>Từ cơ bản đến nâng cao · D01 · Tặng Nhân Dân</small>
+      </a>
+      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ4UxDKAvd-jIkjw/" target="_blank" rel="noopener noreferrer">
+        <span>03</span>
+        <strong>150 thủ thuật Excel</strong>
+        <small>Ứng dụng văn phòng · D03 · Tặng Nhân Dân</small>
+      </a>
+      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ4yhxCToc-ZFom4/" target="_blank" rel="noopener noreferrer">
+        <span>04</span>
+        <strong>68 biểu mẫu Excel</strong>
+        <small>Ứng dụng văn phòng · D08 · Tặng Nhân Dân</small>
+      </a>
+      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ45uA2xc1-0UWI6/" target="_blank" rel="noopener noreferrer">
+        <span>05</span>
+        <strong>Combo Excel + PowerPoint</strong>
+        <small>Từ cơ bản đến nâng cao · Tặng 101 phím tắt + bảng hàm</small>
+      </a>
+      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ4ujnqkLw-wNTz6/" target="_blank" rel="noopener noreferrer">
+        <span>06</span>
+        <strong>Combo 8 sách tin học</strong>
+        <small>Word, Excel, PowerPoint, Sheets, Power Query, hàm…</small>
+      </a>
+      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ49YEBbmC-aPx7U/" target="_blank" rel="noopener noreferrer">
+        <span>07</span>
+        <strong>Combo 3 sách AI + Excel + Word</strong>
+        <small>Ứng dụng văn phòng · Tặng 101 phím tắt + bảng hàm</small>
+      </a>
+      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQqb1YDhhV-IYinU/" target="_blank" rel="noopener noreferrer">
+        <span>08</span>
+        <strong>Sách 101 phím tắt tin học văn phòng</strong>
+        <small>D09 · Phím tắt Word / Excel văn phòng</small>
+      </a>
     </div>
-    <a href="tai-lieu-tham-khao.html">Xem tài liệu tham khảo →</a>
   </div>
 </section>
 
@@ -1816,6 +1815,7 @@ function lenDauTrang() {
     <script defer src="global-search.js"></script>
     <script defer src="simple-nav.js"></script>
     <script defer src="home-effects.js"></script>
+<script defer src="home-revive-v106.js?v=20260831-v106"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
     
@@ -1828,7 +1828,14 @@ function lenDauTrang() {
 
 
 <script defer src="cloud-sync-v11.js"></script>
-
+<script>
+document.addEventListener("click", function(e){
+  const a = e.target.closest("#home-books .home-book-card");
+  if(!a || !window.avpAnalytics) return;
+  const title = (a.querySelector("strong")?.textContent || a.textContent || "sach").trim().slice(0,80);
+  window.avpAnalytics.track("book_click", {page:"index.html", tool:title});
+});
+</script>
   <script defer src="learning-leaderboard.js"></script>
 
 <script id="avp-home-boot">
