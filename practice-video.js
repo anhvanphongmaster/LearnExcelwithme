@@ -1476,7 +1476,7 @@
       return '<a class="pv-download" data-avp-static-href="' +
         escapeHtml(href) + '" href="' + escapeHtml(href) + '"' +
         (remote ? ' target="_blank" rel="noopener noreferrer"' : ' download="' + escapeHtml(f) + '"') +
-        ' title="' + escapeHtml(f) + '">Tải file</a>';
+        ' title="' + escapeHtml(f) + '">TẢI FILE EXCEL ↓</a>';
     }).join("");
   }
 
@@ -2096,7 +2096,7 @@
 
     const ico = '<svg class="pv-tt-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><path fill="currentColor" d="M16.5 3c.4 2.4 1.9 4.1 4.2 4.4v2.3c-1.5.1-2.9-.4-4.2-1.3v6.5c0 3.4-2.7 6.1-6.1 6.1S4.3 18.3 4.3 14.9s2.7-6.1 6.1-6.1c.3 0 .6 0 .9.1v2.5c-.3-.1-.6-.2-.9-.2-2 0-3.6 1.6-3.6 3.7s1.6 3.7 3.6 3.7 3.6-1.6 3.6-3.7V3h2.5z"/></svg>';
     const tkBtn = tk
-      ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer" title="Xem trên TikTok">' + ico + ' TikTok</a>'
+      ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer" title="Mở video trên TikTok">' + ico + ' Mở TikTok ↗</a>'
       : '';
     const downloadHref = practiceStaticHref(item, fileName);
     const isRemoteDownload = /^https?:\/\//i.test(downloadHref);
@@ -2106,7 +2106,7 @@
         (isRemoteDownload
           ? ' target="_blank" rel="noopener noreferrer"'
           : ' download="' + escapeHtml(fileName) + '"') +
-        ' title="' + escapeHtml(fileName) + '">Tải file</a>'
+        ' title="' + escapeHtml(fileName) + '">TẢI FILE EXCEL ↓</a>'
       : '';
     const tags = (item.filterTags || [item.category]).join(" ");
     const hasVideo = !!tk;
@@ -2225,9 +2225,13 @@ grid.addEventListener("click", async function (e) {
       const list = groups[g].slice().sort(function (a, b) { return (a.number || 0) - (b.number || 0); });
       const tone = panelTone(g);
       const title = String(g).toUpperCase();
-      html += '<section class="pv-panel ' + tone + (focusOne ? " pv-panel-focus" : "") + '">' +
-        '<header class="pv-panel-h"><span class="pv-panel-name">' + escapeHtml(title) + '</span>' +
-        '<span class="pv-panel-count">' + list.length + ' bài</span></header>' +
+      html += '<section class="pv-panel pv-panel-v102 ' + tone + (focusOne ? " pv-panel-focus is-open" : (order.indexOf(g)===0 ? " is-open" : "")) + '">' +
+        '<button type="button" class="pv-panel-h pv-panel-toggle" aria-expanded="' + ((focusOne || order.indexOf(g)===0) ? 'true' : 'false') + '">' +
+          '<span class="pv-panel-head-copy"><span class="pv-panel-name">' + escapeHtml(title) + '</span>' +
+          '<small>Chọn để xem danh sách bài trong chủ đề này</small></span>' +
+          '<span class="pv-panel-count">' + list.length + ' bài</span>' +
+          '<span class="pv-panel-chevron">⌄</span>' +
+        '</button>' +
         '<div class="pv-panel-body">';
       list.forEach(function (item, idx) {
         if (q && !firstHitId) firstHitId = item.id;
@@ -2238,6 +2242,28 @@ grid.addEventListener("click", async function (e) {
     if (f === "all" && !q) html += topicPollHTML();
     html += '</div>';
     grid.innerHTML = html;
+
+    grid.querySelectorAll(".pv-panel-toggle").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var panel=btn.closest(".pv-panel");
+        if(!panel) return;
+        var willOpen=!panel.classList.contains("is-open");
+
+        if(!focusOne){
+          grid.querySelectorAll(".pv-panel.is-open").forEach(function(other){
+            if(other!==panel){
+              other.classList.remove("is-open");
+              var ob=other.querySelector(".pv-panel-toggle");
+              if(ob) ob.setAttribute("aria-expanded","false");
+            }
+          });
+        }
+
+        panel.classList.toggle("is-open",willOpen);
+        btn.setAttribute("aria-expanded",willOpen ? "true" : "false");
+      });
+    });
+
     bindVotes();
     bindTopicVotes();
     if (f === "all" && !q) setTimeout(loadTopicVoteSummary, 0);

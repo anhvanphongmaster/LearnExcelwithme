@@ -100,17 +100,17 @@ function card(l){
   let actions="";
   if(active&&!locked){
     actions=`<div class="pg-card-actions">
-      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải file</button><button class="pg-card-btn review" type="button" data-guide-open="${esc(l.key)}">📖 Hướng dẫn</button>
+      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">TẢI FILE BÀI TẬP ↓</button><button class="pg-card-btn review" type="button" data-guide-open="${esc(l.key)}">XEM HƯỚNG DẪN →</button>
       <label class="pg-card-btn submit pg-file-submit">
-        <span>${isAdminTester&&submitted?"🛠 Nộp test lại":"📤 Nộp bài"}</span>
+        <span>${isAdminTester&&submitted?"NỘP TEST LẠI ↑":"NỘP FILE ĐỂ CHẤM ↑"}</span>
         <input type="file" class="pg-file-input" accept=".xlsx,.xls" data-submit="${esc(l.key)}" aria-label="Nộp file Excel">
       </label>
     </div>`;
   }else if(active&&locked){
     const appealCopy=appealStatus==="pending"?"⏳ Đang chờ Admin":appealStatus==="approved"?"✓ Đã chấm lại":appealStatus==="rejected"?"✓ Đã phản hồi":"⚑ Báo chấm sai";
     actions=`<div class="pg-card-actions">
-      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải lại file</button>
-      <button class="pg-card-btn review" type="button" data-review="${esc(l.key)}">🤖 Xem đánh giá</button>
+      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">TẢI LẠI FILE ↓</button>
+      <button class="pg-card-btn review" type="button" data-review="${esc(l.key)}">XEM ĐÁNH GIÁ →</button>
       <button class="pg-card-btn visibility ${st?.is_public?"public":"private"}" type="button" data-visibility="${esc(l.key)}">
         ${st?.is_public?"🏆 Đang lên BXH":"🔒 Chưa lên BXH"}
       </button>

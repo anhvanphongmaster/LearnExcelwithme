@@ -15,12 +15,13 @@ function render(){
     const hay=`${g.title} ${g.topicLabel} ${g.objective}`.toLowerCase();
     return (!q||hay.includes(q))&&(topic==="all"||g.topic===topic)&&(level==="all"||g.difficulty===level);
   });
-  root.innerHTML=list.length?list.map(g=>`
+  root.innerHTML=list.length?list.map((g,index)=>`
     <article class="pg-guide-item">
+      <div class="pg-guide-index">${String(index+1).padStart(2,"0")}</div>
       <div class="pg-guide-badges"><span>${esc(g.topicLabel)}</span><span>${esc(diff(g.difficulty))}</span></div>
       <h3>${esc(g.title)}</h3>
       <p>${esc(g.objective)}</p>
-      <button type="button" class="pg-guide-open" data-guide="${esc(g.lessonKey)}">📖 Xem hướng dẫn</button>
+      <button type="button" class="pg-guide-open" data-guide="${esc(g.lessonKey)}">MỞ HƯỚNG DẪN →</button>
     </article>`).join(""):`<div class="pg-board-empty">Không tìm thấy hướng dẫn phù hợp.</div>`;
   root.querySelectorAll("[data-guide]").forEach(b=>b.onclick=()=>open(b.dataset.guide));
 }
