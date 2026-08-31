@@ -4,28 +4,10 @@
   --avp-y:0;
 }
 
-/* Native cross-document zoom (Chrome/Edge/Safari mới).
-   Firefox không hỗ trợ → JS fallback, không chặn click. */
+/* Tắt View Transition tự chế — trang bài tập không dùng cái này.
+   Zoom đi theo đúng nhịp practice-hub: 360ms chọn + 260ms rời. */
 @view-transition{
-  navigation:auto;
-}
-
-::view-transition-old(root){
-  animation:avpPageOld .26s ease both;
-  transform-origin:50% 42%;
-}
-::view-transition-new(root){
-  animation:avpPageNew .34s var(--avp-motion-ease) both;
-  transform-origin:50% 42%;
-}
-
-@keyframes avpPageOld{
-  from{opacity:1;transform:scale(1)}
-  to{opacity:0;transform:scale(1.045)}
-}
-@keyframes avpPageNew{
-  from{opacity:0;transform:scale(.96)}
-  to{opacity:1;transform:none}
+  navigation:none;
 }
 
 .avp-pressing{
@@ -133,6 +115,13 @@ input[type="button"],input[type="submit"]{
   transform:translateY(-8px) scale(1.11) !important;
   box-shadow:0 26px 60px rgba(19,88,48,.24) !important;
   transition:transform .34s cubic-bezier(.18,.82,.24,1),box-shadow .34s ease !important;
+}
+.avp-zoom-grid.avp-zoom-leaving{
+  animation:phChooserLeaveV56 .28s ease both;
+}
+@keyframes phChooserLeaveV56{
+  from{opacity:1;transform:scale(1)}
+  to{opacity:0;transform:scale(1.025)}
 }
 html.avp-arriving .avp-hero,
 html.avp-arriving .pv-hero,

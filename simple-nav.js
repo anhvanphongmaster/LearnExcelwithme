@@ -239,12 +239,12 @@
       var link = document.createElement("link");
       link.id = "avpSiteMotionCss";
       link.rel = "stylesheet";
-      link.href = "avp-site-motion.css?v=20260831-v94b";
+      link.href = "avp-site-motion.css?v=20260831-v94c";
       document.head.appendChild(link);
     }
     if (!document.querySelector('script[src*="avp-site-motion.js"]') && !window.__avpSiteMotionV94 && !window.__avpSiteMotion) {
       var s = document.createElement("script");
-      s.src = "avp-site-motion.js?v=20260831-v94b";
+      s.src = "avp-site-motion.js?v=20260831-v94c";
       s.defer = true;
       document.head.appendChild(s);
     }

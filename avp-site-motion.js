@@ -158,12 +158,17 @@
     if(document.documentElement.dataset.avpZoomBound==="1")return;
     document.documentElement.dataset.avpZoomBound="1";
 
+    let busy=false;
+
     document.addEventListener("click",function(e){
-      if(e.defaultPrevented)return;
+      if(busy){
+        e.preventDefault();
+        return;
+      }
       if(e.button!==0)return;
       if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
 
-      /* Practice Hub đã có zoom riêng — không chồng */
+      /* Trang bài tập giữ nguyên practice-hub.js */
       if(e.target.closest(".ph-switch,[data-practice-branch],#phSourceBack"))return;
       if(e.target.closest("form,input,textarea,select,iframe,.avp-edge-launcher,#avpEdgeMenu"))return;
 
@@ -176,17 +181,23 @@
       const card=link.closest(ZOOM_CARD_SEL);
       if(!card)return;
 
+      e.preventDefault();
+      busy=true;
+
       const grid=card.parentElement;
       if(grid){
         grid.classList.add("avp-zoom-grid","avp-zoom-choosing");
-        card.classList.add("avp-zoom-picked");
       }
+      card.classList.add("avp-zoom-picked");
 
-      e.preventDefault();
-      document.documentElement.classList.add("avp-leaving");
       const href=link.href;
+
+      /* Đúng nhịp video / practice-hub: 360 chọn + 260 rời */
       setTimeout(function(){
-        location.href=href;
+        if(grid) grid.classList.add("avp-zoom-leaving");
+        setTimeout(function(){
+          location.href=href;
+        },260);
       },360);
     },true);
   }
@@ -200,7 +211,7 @@
           document.documentElement.classList.add("avp-arriving");
           setTimeout(function(){
             document.documentElement.classList.remove("avp-arriving");
-          },520);
+          },480);
         }
       }
     }catch(e){}
