@@ -58,9 +58,9 @@
       <button type="button" class="avp-edge-action" data-edge-action="ai">
         <span>✨</span><b>Hỏi AI</b>
       </button>
-      <a class="avp-edge-action" data-edge-action="dictionary" href="excel-dictionary.html">
+      <button type="button" class="avp-edge-action" data-edge-action="dictionary">
         <span>📘</span><b>Từ điển Excel</b>
-      </a>
+      </button>
       <button type="button" class="avp-edge-action" data-edge-action="community" id="avpExternalCommunityButton">
         <span>👥</span><b>Cộng đồng</b>
         <span id="avpCommunityMenuBadge" class="avp-edge-section-badge" hidden>0</span>
@@ -79,32 +79,20 @@
       aria-expanded="false"
       title="Công cụ nhanh — kéo để di chuyển"
     >
-      <span class="avp-bot avp-bot-25d" aria-hidden="true">
-        <span class="b25-head"><i class="b25-eye l"></i><i class="b25-eye r"></i><i class="b25-smile"></i></span>
-        <span class="b25-arm l"></span>
-        <span class="b25-body">AVP</span>
-        <span class="b25-arm r"></span>
-        <span class="b25-leg l"></span>
-        <span class="b25-leg r"></span>
-      </span><span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
+      <span class="avp-bot" aria-hidden="true">
+        <span class="avp-bot-head"><i class="avp-bot-eye"></i><i class="avp-bot-eye"></i><i class="avp-bot-mouth"></i><i class="avp-bot-tear l"></i><i class="avp-bot-tear r"></i></span>
+        <span class="avp-bot-arm avp-bot-arm-l"></span>
+        <span class="avp-bot-body">AVP</span>
+        <span class="avp-bot-arm avp-bot-arm-r"></span>
+        <span class="avp-bot-leg avp-bot-leg-l"></span>
+        <span class="avp-bot-leg avp-bot-leg-r"></span>
+      </span>
+      <span class="avp-edge-main-icon" hidden>AVP</span>
+      <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
     </button>
   `;
 
   document.body.appendChild(launcher);
-
-
-
-  (function(){
-    const base=(location.pathname.replace(/[^/]+$/,"")||"./");
-    const vid=launcher.querySelector("#avpBotVid");
-    if(vid){
-      vid.style.display="block";
-      const play=()=>vid.play().catch(()=>{});
-      vid.addEventListener("canplay",play);
-      play();
-    }
-  })();
-
   document.documentElement.classList.add('avp-has-robot');
   if(AVP_EMBEDDED){launcher.hidden=true;launcher.style.display='none';}
 
@@ -558,18 +546,19 @@
   document.body.appendChild(back);
   const hub=back.querySelector('.avp-hub');
 
-  window.setAvpEdgeMenu=function setEdgeMenu(open){
+  function setEdgeMenu(open){
     edgeMenu.hidden=!open;
     launcher.classList.toggle('open',open);
     fab.setAttribute('aria-expanded',open?'true':'false');
+    const icon=fab.querySelector('.avp-edge-main-icon');
+    if(icon)icon.textContent='AVP';
     if(open){
       launcher.classList.remove('is-walking');
       launcher.classList.add('is-greeting');
-      try{window.playAvpBotSeg && window.playAvpBotSeg(3,5.9)}catch(e){}
+      fab.style.transform='none';
     }else{
       launcher.classList.remove('is-greeting');
       launcher.classList.add('is-walking');
-      try{window.playAvpBotSeg && window.playAvpBotSeg(3,5.9)}catch(e){}
     }
 
     if(!open){
@@ -592,33 +581,83 @@
     return false;
   }
 
-  launcher.addEventListener('click',function(e){
-    var item=e.target.closest('[data-edge-action]');
-    if(!item||!launcher.contains(item))return;
-    var act=item.dataset.edgeAction;
-    if(act==='dictionary'){
-      e.stopImmediatePropagation();
-      location.href='excel-dictionary.html';
-      return;
-    }
-  },true);
-
   launcher.querySelectorAll('[data-edge-action]').forEach(btn=>{
-    btn.addEventListener('click',function(e){
-      const action=btn.dataset.edgeAction;
-      if(action==='dictionary')return; /* <a href> + capture */
+    btn.addEventListener('click',async e=>{
       e.preventDefault();
       e.stopPropagation();
+
+      const action=btn.dataset.edgeAction;
       hideMiniPreview();
       setEdgeMenu(false);
-      if(action==='ai'){
-        if(window.AVPAIChat&&window.AVPAIChat.open) window.AVPAIChat.open();
-        else document.getElementById('avpAiChatBubble')?.click();
+
+      const next=location.pathname.split('/').pop()||'index.html';
+      let user=null;
+      try{
+        if(window.AVPAccess&&typeof window.AVPAccess.getUser==='function'){
+          user=await window.AVPAccess.getUser(false);
+        }
+      }catch(err){}
+      if(!user){
+        try{
+          const sb=window.avpSupabase;
+          if(sb?.auth){
+            const sess=await sb.auth.getSession();
+            user=sess?.data?.session?.user||null;
+          }
+        }catch(err){}
+      }
+      if(!user){
+        toast('Đăng nhập để dùng Hỏi AI, Từ điển, Cộng đồng và Chat Admin');
+        return;
+      }
+
+      const aiPanel=document.getElementById('avpAiChatPanel');
+      const chatPanels=[
+        document.getElementById('avpChatPanel'),
+        document.getElementById('avpAdminFloatPanel'),
+        document.getElementById('avpGuestChatPanel')
+      ].filter(Boolean);
+
+      if(action==='dictionary'){
+        window.location.href='excel-dictionary.html';
+        return;
+      }
+
+      if(action==='learning'){
+        if(back.classList.contains('open')){
+          closeHub();
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'learning'}}));
+        openHub();
       }else if(action==='community'){
-        if(window.AVPCommunity&&window.AVPCommunity.open) window.AVPCommunity.open();
-        else document.getElementById('avpAiChatBubble')?.click();
+        const communityAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpCommunityMode')?.hidden;
+        if(communityAlreadyOpen){
+          aiPanel.hidden=true;
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
+        if(window.AVPCommunity?.open){
+          window.AVPCommunity.open();
+        }else{
+          toast('Cộng đồng đang tải, thử lại sau một chút');
+        }
       }else if(action==='chat'){
-        document.getElementById('avpChatBubble')?.click();
+        const chatAlreadyOpen=chatPanels.some(p=>!p.hidden);
+        if(chatAlreadyOpen){
+          chatPanels.forEach(p=>p.hidden=true);
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
+        clickHiddenTool('avpChatBubble','Chat Admin');
+      }else if(action==='ai'){
+        const aiAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpAiMode')?.hidden;
+        if(aiAlreadyOpen){
+          aiPanel.hidden=true;
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
+        clickHiddenTool('avpAiChatBubble','AI Chat');
       }
     });
   });
@@ -759,7 +798,6 @@
 
   /* Kéo dọc màn hình + snap sát viền trái/phải, nhớ vị trí. */
   (function enableDragEdgeLauncher(root,btn){
-    if(root.classList.contains('is-robot'))return;
     const POS_KEY='avp_edge_launcher_pos_v5';
     const EDGE_GAP=6;
 
@@ -792,15 +830,14 @@
 
       root.style.top=top+'px';
       root.style.bottom='auto';
-      root.style.transform='none';
 
-      applySideClass('right');
-      root.style.setProperty('left','auto','important');
-      root.style.setProperty('right','8px','important');
-      root.style.setProperty('bottom','auto','important');
-      root.style.setProperty('top',top+'px','important');
-      root.style.setProperty('transform','none','important');
-
+      if(side==='left'){
+        root.style.left=EDGE_GAP+'px';
+        root.style.right='auto';
+      }else{
+        root.style.left=(window.innerWidth-w-EDGE_GAP)+'px';
+        root.style.right='auto';
+      }
 
       save(side,top);
       requestAnimationFrame(positionMiniPreview);
@@ -816,7 +853,7 @@
     }catch{}
 
     snapToEdge(
-      'right',
+      saved?.side==='left'?'left':'right',
       saved?.y ?? Math.round(window.innerHeight*.56),
       false
     );
@@ -842,6 +879,10 @@
     let grabOffsetY=0;
 
     btn.addEventListener('pointerdown',e=>{
+      if(launcher.classList.contains('is-robot')){
+        window.__avpBotLiftStart={y:e.clientY,x:e.clientX};
+        return;
+      }
       if(e.button!=null && e.button!==0)return;
 
       const r=root.getBoundingClientRect();
@@ -854,10 +895,10 @@
       grabOffsetX=e.clientX-r.left;
       grabOffsetY=e.clientY-r.top;
 
-      root.style.setProperty('left',r.left+'px','important');
-      root.style.setProperty('right','auto','important');
-      root.style.setProperty('top',r.top+'px','important');
-      root.style.setProperty('bottom','auto','important');
+      root.style.left=r.left+'px';
+      root.style.right='auto';
+      root.style.top=r.top+'px';
+      root.style.bottom='auto';
 
       root.classList.add('is-dragging');
       setEdgeMenu(false);
@@ -887,10 +928,10 @@
         moved=true;
       }
 
-      root.style.setProperty('left',x+'px','important');
-      root.style.setProperty('right','auto','important');
-      root.style.setProperty('top',y+'px','important');
-      root.style.setProperty('bottom','auto','important');
+      root.style.left=x+'px';
+      root.style.right='auto';
+      root.style.top=y+'px';
+      root.style.bottom='auto';
 
       applySideClass(sideFromX(x,w));
       requestAnimationFrame(positionMiniPreview);
@@ -948,29 +989,12 @@
 
 
   (function avpRobotWalk(){
-    return; // replaced by standalone patrol
     if(AVP_EMBEDDED)return;
     const PAD=16;
-    const vid=document.getElementById("avpBotVid");
-    let seg=[3,5.9];
-    window.playAvpBotSeg=function playBotSeg(a,b){
-      seg=[a,b];
-      if(!vid)return;
-      try{vid.currentTime=a; vid.play();}catch(e){}
-    }
-    if(vid){
-      vid.addEventListener("timeupdate",()=>{
-        if(vid.currentTime>=seg[1] || vid.currentTime<seg[0]-0.05){
-          vid.currentTime=seg[0];
-        }
-      });
-      playBotSeg(3,5.9);
-    }
-
-    let x=40;
+    let x=PAD;
     let yBottom=PAD;
     let dir=1;
-    const SPEED=2.4;
+    const SPEED=0.9;
     let lifting=false;
     let liftMoved=false;
     let startY=0, startX=0, grabY=0;
@@ -993,7 +1017,6 @@
     bubble.className="avp-bot-bubble";
     bubble.id="avpBotBubble";
     bubble.hidden=true;
-    bubble.style.zIndex="2147483646";
     document.body.appendChild(bubble);
 
     function unreadNow(){
@@ -1043,11 +1066,10 @@
     function w(){return Math.max(56, fab.offsetWidth||56)}
     function maxX(){return Math.max(PAD, window.innerWidth - w() - PAD)}
     function applyPos(px, bottom){
-      launcher.style.setProperty("left","0px","important");
-      launcher.style.setProperty("right","auto","important");
-      launcher.style.setProperty("top","auto","important");
-      launcher.style.setProperty("bottom", bottom+"px","important");
-      launcher.style.setProperty("transform","translateX("+px+"px)","important");
+      launcher.style.left=px+"px";
+      launcher.style.right="auto";
+      launcher.style.top="auto";
+      launcher.style.bottom=bottom+"px";
     }
 
     function frame(){
@@ -1081,7 +1103,6 @@
         liftMoved=true;
         launcher.classList.add("is-lifted","is-crying");
         launcher.classList.remove("is-walking","is-greeting","open");
-        playBotSeg(3,5.9);
         edgeMenu.hidden=true;
         const bottom=Math.max(PAD, window.innerHeight - e.clientY - 36);
         applyPos(Math.max(PAD, Math.min(e.clientX-32, maxX())), bottom);
@@ -1099,10 +1120,7 @@
       lifting=false;
       liftMoved=false;
       applyPos(x, PAD);
-      if(!launcher.classList.contains("open")){
-        launcher.classList.add("is-walking");
-        playBotSeg(3,5.9);
-      }
+      if(!launcher.classList.contains("open")) launcher.classList.add("is-walking");
     }
     fab.addEventListener("pointerup", dropLift);
     fab.addEventListener("pointercancel", dropLift);
@@ -1121,186 +1139,3 @@
 
 /* Global Download Manager loader */
 (()=>{if(document.querySelector('script[data-avp-download-manager]'))return;const s=document.createElement('script');s.src='download-manager.js?v=20260828a';s.defer=true;s.dataset.avpDownloadManager='1';document.head.appendChild(s);})();
-
-
-
-
-(function(){
-  if(window.__avpRobotV1)return;
-  window.__avpRobotV1=true;
-
-  var css="\
-#avpEdgeLauncher.is-robot{left:0!important;right:auto!important;top:auto!important;bottom:12px!important;width:76px!important;height:90px!important;pointer-events:none!important;background:transparent!important;overflow:visible!important;z-index:30!important}\
-#avpEdgeLauncher.is-robot .avp-edge-main{inset:auto!important;width:76px!important;height:90px!important;background:transparent!important;border:0!important;box-shadow:none!important;pointer-events:auto!important;cursor:pointer!important}\
-#avpEdgeLauncher.is-robot .avp-edge-main::before,#avpEdgeLauncher.is-robot .avp-bot-vid,#avpEdgeLauncher.is-robot .avp-bot-img{display:none!important}\
-#avpEdgeLauncher.is-robot .avp-edge-menu{pointer-events:auto!important;z-index:2147483647!important;bottom:96px!important;left:50%!important;transform:translateX(-50%)!important}\
-#avpEdgeLauncher.is-robot .avp-edge-menu *{pointer-events:auto!important}\
-#avpEdgeLauncher.is-robot .avp-edge-badge{pointer-events:none!important}\
-.avp-bot-25d{position:relative;width:56px;height:76px;margin:0 auto;filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))}\
-#avpEdgeLauncher.face-left .avp-bot-25d{transform:scaleX(-1)}\
-.b25-head{position:absolute;left:14px;top:0;width:28px;height:22px;border-radius:8px 8px 6px 6px;background:linear-gradient(145deg,#5edc8a,#1f7a4a 58%,#0f3d28);box-shadow:inset 0 2px 0 rgba(255,255,255,.35)}\
-.b25-eye{position:absolute;top:7px;width:6px;height:6px;border-radius:50%;background:#eafff2}\
-.b25-eye.l{left:5px}.b25-eye.r{right:5px}\
-.b25-smile{position:absolute;left:9px;bottom:3px;width:10px;height:5px;border:2px solid #0b2a1a;border-top:0;border-radius:0 0 8px 8px}\
-.b25-body{position:absolute;left:10px;top:22px;width:36px;height:26px;border-radius:8px;background:linear-gradient(160deg,#3cb56f,#165533);color:#fff;font:800 10px/26px system-ui,sans-serif;text-align:center;box-shadow:inset 0 2px 0 rgba(255,255,255,.22)}\
-.b25-arm{position:absolute;top:24px;width:7px;height:16px;border-radius:4px;background:linear-gradient(#2f9a5c,#0f3d28);transform-origin:top center}\
-.b25-arm.l{left:4px}.b25-arm.r{right:4px}\
-.b25-leg{position:absolute;top:46px;width:8px;height:16px;border-radius:4px;background:#0f3d28;transform-origin:top center}\
-.b25-leg.l{left:16px}.b25-leg.r{right:16px}\
-#avpBotTalk{position:absolute;left:50%;bottom:92px;transform:translateX(-50%);min-width:130px;max-width:190px;padding:7px 10px;border-radius:10px;background:#143526;color:#fff;font:700 12px/1.3 system-ui;display:none;z-index:2147483647;pointer-events:none;text-align:center}\
-#avpBotTalk.show{display:block}\
-#avpEdgeLauncher.is-lifted .b25-smile{width:12px;height:3px;border:0;background:#0b2a1a;top:14px;bottom:auto}\
-#avpEdgeLauncher.is-lifted .b25-head:before,#avpEdgeLauncher.is-lifted .b25-head:after{content:'';position:absolute;top:12px;width:5px;height:10px;border-radius:50%;background:#2aa8ff}\
-#avpEdgeLauncher.is-lifted .b25-head:before{left:3px}\
-#avpEdgeLauncher.is-lifted .b25-head:after{right:3px}\
-";
-  var st=document.createElement("style");
-  st.textContent=css;
-  document.head.appendChild(st);
-
-  function ready(fn){
-    if(document.getElementById("avpEdgeLauncher"))fn();
-    else setTimeout(function(){ready(fn);},50);
-  }
-
-  ready(function(){
-    var el=document.getElementById("avpEdgeLauncher");
-    var fab=document.getElementById("avpEdgeMain");
-    if(!el||!fab)return;
-    el.classList.add("is-robot","is-walking");
-    el.style.pointerEvents="none";
-    el.style.width="76px";
-    el.style.height="90px";
-    fab.style.pointerEvents="auto";
-    var menuEl=document.getElementById("avpEdgeMenu");
-    if(menuEl) menuEl.style.pointerEvents="auto";
-    el.querySelectorAll("[data-edge-action]").forEach(function(b){
-      b.style.pointerEvents="auto";
-      b.style.position="relative";
-      b.style.zIndex="2147483647";
-    });
-
-
-    var box=fab.querySelector(".avp-bot");
-    if(!box || !box.querySelector(".b25-body")){
-      var wrap=document.createElement("span");
-      wrap.className="avp-bot avp-bot-25d";
-      wrap.innerHTML='<span class="b25-head"><i class="b25-eye l"></i><i class="b25-eye r"></i><i class="b25-smile"></i></span><span class="b25-arm l"></span><span class="b25-body">AVP</span><span class="b25-arm r"></span><span class="b25-leg l"></span><span class="b25-leg r"></span>';
-      if(box) box.replaceWith(wrap); else fab.insertBefore(wrap, fab.firstChild);
-    }
-
-    var talk=document.getElementById("avpBotTalk");
-    if(!talk){
-      talk=document.createElement("div");
-      talk.id="avpBotTalk";
-      el.appendChild(talk);
-    }
-    var lines=["Xin chào!","Học Excel vui nhé","Đi từng bước thôi","Chúc bạn học tốt"];
-    var li=0, talkOn=localStorage.getItem("avp_bot_chat")!=="off";
-    function hideTalk(){talk.classList.remove("show");}
-    function showTalk(){
-      if(!talkOn || el.classList.contains("open") || el.classList.contains("is-lifted")){hideTalk();return;}
-      talk.textContent=lines[li%lines.length];
-      talk.classList.add("show");
-    }
-    showTalk();
-    setInterval(function(){
-      li++;
-      showTalk();
-      setTimeout(hideTalk,2200);
-    },5200);
-
-    var legs=el.querySelectorAll(".b25-leg");
-    var arms=el.querySelectorAll(".b25-arm");
-    var x=16,dir=1,phase=0,lift=false,sy=null,sx=null,moved=false;
-
-    function place(bottom){
-      el.style.setProperty("left","0px","important");
-      el.style.setProperty("right","auto","important");
-      el.style.setProperty("top","auto","important");
-      el.style.setProperty("bottom",(bottom==null?12:bottom)+"px","important");
-      el.style.setProperty("width","76px","important");
-      el.style.setProperty("height","90px","important");
-      el.style.setProperty("transform","translateX("+x+"px)","important");
-      el.style.setProperty("z-index","20","important");
-    }
-    place(12);
-
-    function tick(){
-      var open=el.classList.contains("open");
-      el.style.pointerEvents="none";
-      el.style.width="76px";
-      el.style.height="90px";
-      if(!open && !lift){
-        el.classList.add("is-walking");
-        x+=dir*2.4;
-        var max=Math.max(20,(window.innerWidth||400)-90);
-        if(x>=max){x=max;dir=-1;el.classList.add("face-left");}
-        if(x<=12){x=12;dir=1;el.classList.remove("face-left");}
-        place(12);
-        phase+=0.28;
-        var s=Math.sin(phase)*16;
-        if(legs[0])legs[0].style.transform="rotate("+s+"deg)";
-        if(legs[1])legs[1].style.transform="rotate("+(-s)+"deg)";
-        if(arms[0])arms[0].style.transform="rotate("+(-s)+"deg)";
-        if(arms[1])arms[1].style.transform="rotate("+s+"deg)";
-      }else if(open && !lift){
-        place(12);
-        phase+=0.35;
-        if(arms[1])arms[1].style.transform="rotate("+(-20+Math.sin(phase)*48)+"deg)";
-        if(arms[0])arms[0].style.transform="rotate(8deg)";
-      }
-      requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-
-    fab.addEventListener("pointerdown",function(e){
-      if(e.target.closest && e.target.closest(".avp-edge-menu"))return;
-      if(e.button!=null && e.button!==0)return;
-      sy=e.clientY;sx=e.clientX;moved=false;lift=false;
-    });
-    window.addEventListener("pointermove",function(e){
-      if(sy==null)return;
-      var dy=sy-e.clientY,dist=Math.hypot(e.clientX-sx,e.clientY-sy);
-      if(dy>26 && dist>26){
-        lift=true;moved=true;
-        el.classList.add("is-lifted","is-crying");
-        el.classList.remove("is-walking","open","is-greeting");
-        var menu=document.getElementById("avpEdgeMenu");
-        if(menu)menu.hidden=true;
-        hideTalk();
-        place(Math.max(12,window.innerHeight-e.clientY-40));
-      }
-    });
-    window.addEventListener("pointerup",function(){
-      sy=null;
-      if(lift){
-        lift=false;
-        el.classList.remove("is-lifted","is-crying");
-        el.classList.add("is-walking");
-        place(10);
-      }
-    });
-    fab.addEventListener("click",function(e){
-      if(moved||lift)return;
-      if(e.target.closest && e.target.closest(".avp-edge-menu"))return;
-      var menu=document.getElementById("avpEdgeMenu");
-      if(!menu)return;
-      var open=menu.hidden || menu.getAttribute("hidden")!==null;
-      menu.hidden=!open;
-      if(open){
-        menu.removeAttribute("hidden");
-        menu.style.setProperty("display","flex","important");
-        el.classList.add("open","is-greeting");
-        el.classList.remove("is-walking");
-      }else{
-        menu.setAttribute("hidden","");
-        menu.style.setProperty("display","none","important");
-        el.classList.remove("open","is-greeting");
-        el.classList.add("is-walking");
-      }
-      if(window.setAvpEdgeMenu) window.setAvpEdgeMenu(open);
-    });
-  });
-})();
-
