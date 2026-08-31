@@ -1721,3 +1721,18 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   background:transparent !important;
   opacity:1 !important;
 }
+
+#avpEdgeLauncher.is-robot .avp-edge-menu{
+  bottom:132px !important;
+  left:50% !important;
+  right:auto !important;
+  transform:translateX(-50%) !important;
+  align-items:stretch !important;
+  z-index:2147483647 !important;
+}
+#avpBotBubble.avp-bot-bubble{
+  z-index:2147483646 !important;
+  display:block;
+}
+#avpBotBubble.avp-bot-bubble[hidden]{display:none !important}
+#avpBotBubble.avp-bot-bubble.show{display:block !important;opacity:1 !important}

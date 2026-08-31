@@ -1020,7 +1020,7 @@
     let x=PAD;
     let yBottom=PAD;
     let dir=1;
-    const SPEED=0.9;
+    const SPEED=2.4;
     let lifting=false;
     let liftMoved=false;
     let startY=0, startX=0, grabY=0;
@@ -1043,6 +1043,7 @@
     bubble.className="avp-bot-bubble";
     bubble.id="avpBotBubble";
     bubble.hidden=true;
+    bubble.style.zIndex="2147483646";
     document.body.appendChild(bubble);
 
     function unreadNow(){
