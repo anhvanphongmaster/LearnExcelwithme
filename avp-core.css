@@ -1613,3 +1613,25 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   pointer-events:none;
   display:block;
 }
+
+/* ROBOT VISIBLE FALLBACK */
+.avp-edge-launcher.is-robot{
+  width:84px !important;
+  height:110px !important;
+  overflow:visible !important;
+  opacity:1 !important;
+}
+.avp-edge-launcher.is-robot .avp-edge-main{
+  width:84px !important;
+  height:110px !important;
+  opacity:1 !important;
+  background:transparent !important;
+}
+.avp-bot{width:80px;height:104px}
+.avp-bot-img,.avp-bot-vid{
+  position:absolute;left:0;top:0;
+  width:80px;height:104px;
+  object-fit:contain;
+}
+.avp-bot-vid{z-index:1}
+.avp-bot-img{z-index:0}

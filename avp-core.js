@@ -80,7 +80,8 @@
       title="Công cụ nhanh — kéo để di chuyển"
     >
       <span class="avp-bot" aria-hidden="true">
-        <video class="avp-bot-vid" id="avpBotVid" src="avp-bot.webm" muted playsinline loop></video>
+        <img class="avp-bot-img" src="avp-bot-wave.png" alt="AVP">
+        <video class="avp-bot-vid" id="avpBotVid" src="avp-bot.webm" poster="avp-bot-wave.png" muted playsinline loop></video>
       </span>
       <span class="avp-edge-main-icon" hidden>AVP</span>
       <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
