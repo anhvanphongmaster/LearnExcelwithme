@@ -1,3 +1,14 @@
+(function(){
+  try{
+    if(!document.getElementById("avpPgStarCssFile")){
+      var l=document.createElement("link");
+      l.id="avpPgStarCssFile";
+      l.rel="stylesheet";
+      l.href="practice-grader-stars.css?v=20260831-vis";
+      document.head.appendChild(l);
+    }
+  }catch(e){}
+})();
 /*! practice-grader-stars.js — gắn nút tặng sao vào BXH sau khi list render */
 (function(){
   "use strict";
