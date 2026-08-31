@@ -80,12 +80,8 @@
       title="Công cụ nhanh — kéo để di chuyển"
     >
       <span class="avp-bot" aria-hidden="true">
-        <span class="avp-bot-head"><i class="avp-bot-eye"></i><i class="avp-bot-eye"></i><i class="avp-bot-mouth"></i><i class="avp-bot-tear l"></i><i class="avp-bot-tear r"></i></span>
-        <span class="avp-bot-arm avp-bot-arm-l"></span>
-        <span class="avp-bot-body">AVP</span>
-        <span class="avp-bot-arm avp-bot-arm-r"></span>
-        <span class="avp-bot-leg avp-bot-leg-l"></span>
-        <span class="avp-bot-leg avp-bot-leg-r"></span>
+        <img class="avp-bot-img" src="avp-bot-wave.png" alt="">
+        <i class="avp-bot-tear l"></i><i class="avp-bot-tear r"></i>
       </span>
       <span class="avp-edge-main-icon" hidden>AVP</span>
       <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
