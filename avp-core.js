@@ -1258,27 +1258,25 @@
 
     var legs=el.querySelectorAll(".b25-leg");
     var arms=el.querySelectorAll(".b25-arm");
-    var x=16,dir=1,phase=0,lift=false,sy=null,sx=null,moved=false;
+    var phase=0,lift=false,sy=null,sx=null,moved=false;
 
     function place(bottom){
-      el.style.setProperty("left","0px","important");
-      el.style.setProperty("right","auto","important");
+      el.style.setProperty("left","auto","important");
+      el.style.setProperty("right","10px","important");
       el.style.setProperty("top","auto","important");
-      el.style.setProperty("bottom",(bottom==null?10:bottom)+"px","important");
-      el.style.setProperty("transform","translateX("+x+"px)","important");
+      el.style.setProperty("bottom",(bottom==null?12:bottom)+"px","important");
+      el.style.setProperty("transform","none","important");
+      el.style.setProperty("z-index","30","important");
     }
+    place(12);
 
     function tick(){
       var open=el.classList.contains("open");
       if(!open && !lift){
         el.classList.add("is-walking");
-        x+=dir*2.2;
-        var max=Math.max(20,(window.innerWidth||400)-86);
-        if(x>=max){x=max;dir=-1;el.classList.add("face-left");}
-        if(x<=12){x=12;dir=1;el.classList.remove("face-left");}
-        place(10);
+        place(12);
         phase+=0.28;
-        var s=Math.sin(phase)*18;
+        var s=Math.sin(phase)*16;
         if(legs[0])legs[0].style.transform="rotate("+s+"deg)";
         if(legs[1])legs[1].style.transform="rotate("+(-s)+"deg)";
         if(arms[0])arms[0].style.transform="rotate("+(-s)+"deg)";
@@ -1307,7 +1305,7 @@
         var menu=document.getElementById("avpEdgeMenu");
         if(menu)menu.hidden=true;
         hideTalk();
-        place(Math.max(10,window.innerHeight-e.clientY-40));
+        place(Math.max(12,window.innerHeight-e.clientY-40));
       }
     });
     window.addEventListener("pointerup",function(){
