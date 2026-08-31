@@ -1670,3 +1670,26 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 #avpEdgeLauncher.is-robot .avp-bot-vid{
   z-index:1 !important;
 }
+
+/* ROBOT 3D ONLY — kill old oval + AVP text */
+#avpEdgeLauncher.is-robot .avp-edge-main,
+#avpEdgeLauncher.is-robot .avp-hub-fab{
+  background:none !important;
+  background-image:none !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  outline:0 !important;
+}
+#avpEdgeLauncher.is-robot .avp-edge-main::before,
+#avpEdgeLauncher.is-robot .avp-edge-main::after{
+  display:none !important;
+  content:none !important;
+}
+#avpEdgeLauncher.is-robot .avp-edge-main-icon{
+  display:none !important;
+}
+#avpEdgeLauncher.is-robot .avp-bot-img{
+  background:transparent !important;
+  filter:drop-shadow(0 10px 14px rgba(0,20,10,.45)) drop-shadow(0 2px 0 rgba(255,255,255,.2));
+}

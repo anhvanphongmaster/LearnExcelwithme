@@ -80,10 +80,9 @@
       title="Công cụ nhanh — kéo để di chuyển"
     >
       <span class="avp-bot" aria-hidden="true">
-        <img class="avp-bot-img" src="avp-bot-wave.png" alt="AVP">
-        <video class="avp-bot-vid" id="avpBotVid" src="avp-bot.webm" poster="avp-bot-wave.png" muted playsinline loop></video>
+        <img class="avp-bot-img" src="avp-bot-wave.png" alt="">
+        <video class="avp-bot-vid" id="avpBotVid" src="avp-bot.webm" muted playsinline loop></video>
       </span>
-      <span class="avp-edge-main-icon" hidden>AVP</span>
       <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
     </button>
   `;
@@ -559,8 +558,6 @@
     edgeMenu.hidden=!open;
     launcher.classList.toggle('open',open);
     fab.setAttribute('aria-expanded',open?'true':'false');
-    const icon=fab.querySelector('.avp-edge-main-icon');
-    if(icon)icon.textContent='AVP';
     if(open){
       launcher.classList.remove('is-walking');
       launcher.classList.add('is-greeting');
