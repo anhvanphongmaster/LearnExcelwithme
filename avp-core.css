@@ -1569,3 +1569,53 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   50%{transform:rotate(12deg) translateY(2px)}
   100%{transform:rotate(-12deg) translateY(-2px)}
 }
+
+
+/* =========================================================
+   ROBOT LOOK ONLY — gỡ vòng tròn gem/V44, giữ robot CSS
+   Không đụng menu, badge, click, walk, lift.
+   ========================================================= */
+#avpEdgeLauncher.is-robot,
+#avpEdgeLauncher.is-robot.avp-edge-launcher{
+  width:64px !important;
+  height:72px !important;
+  background:transparent !important;
+  overflow:visible !important;
+}
+#avpEdgeLauncher.is-robot .avp-edge-main,
+#avpEdgeLauncher.is-robot.avp-edge-launcher .avp-edge-main{
+  width:64px !important;
+  height:72px !important;
+  min-width:64px !important;
+  min-height:72px !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  filter:none !important;
+  animation:none !important;
+  overflow:visible !important;
+}
+#avpEdgeLauncher.is-robot .avp-edge-main::before,
+#avpEdgeLauncher.is-robot .avp-edge-main::after,
+#avpEdgeLauncher.is-robot.has-pulse .avp-edge-main::before{
+  display:none !important;
+  content:none !important;
+  animation:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+#avpEdgeLauncher.is-robot .avp-edge-main-icon{
+  display:none !important;
+}
+#avpEdgeLauncher.is-robot .avp-bot{
+  display:block !important;
+  filter:drop-shadow(0 8px 10px rgba(0,20,10,.35));
+}
+#avpEdgeLauncher.is-robot.open .avp-edge-main,
+#avpEdgeLauncher.is-robot.is-dragging .avp-edge-main{
+  background:transparent !important;
+  box-shadow:none !important;
+  animation:none !important;
+  transform:none !important;
+}
