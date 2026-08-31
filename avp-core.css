@@ -1915,3 +1915,19 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   width:76px !important;
   height:90px !important;
 }
+
+.ph-switch,.ph-choice,[data-practice-branch],#phFocusHeader{
+  position:relative !important;
+  z-index:80 !important;
+  pointer-events:auto !important;
+}
+#avpEdgeLauncher.is-robot{z-index:20 !important}
+
+#avpEdgeLauncher.is-robot .avp-edge-menu,
+#avpEdgeLauncher.is-robot .avp-edge-action,
+#avpEdgeLauncher.is-robot [data-edge-action]{
+  pointer-events:auto !important;
+  position:relative !important;
+  z-index:2147483647 !important;
+}
+#avpBotTalk{pointer-events:none !important}
