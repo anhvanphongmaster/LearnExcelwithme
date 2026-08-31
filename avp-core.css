@@ -1831,3 +1831,25 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 #avpEdgeLauncher.is-greeting .b25-arm.r{animation:b25w .45s ease-in-out infinite}
 @keyframes b25s{0%{transform:rotate(16deg)}50%{transform:rotate(-16deg)}100%{transform:rotate(16deg)}}
 @keyframes b25w{0%{transform:rotate(12deg)}50%{transform:rotate(-70deg)}100%{transform:rotate(12deg)}}
+
+#avpBotTalk{
+  position:absolute;left:50%;bottom:90px;transform:translateX(-50%);
+  min-width:140px;max-width:200px;padding:7px 10px;border-radius:10px;
+  background:#143526;color:#fff;font:700 12px/1.3 system-ui;
+  display:none;z-index:2147483647;pointer-events:none;text-align:center;
+}
+#avpBotTalk.show{display:block}
+#avpEdgeLauncher.is-lifted .b25-smile{
+  width:12px;height:3px;border:0;background:#0b2a1a;border-radius:2px;top:14px;bottom:auto;
+}
+#avpEdgeLauncher.is-lifted .b25-head::after,
+#avpEdgeLauncher.is-lifted .b25-head::before{
+  content:"";position:absolute;top:12px;width:5px;height:10px;border-radius:50%;
+  background:linear-gradient(#7fd7ff,#1a7bd4);animation:b25tear .45s linear infinite;
+}
+#avpEdgeLauncher.is-lifted .b25-head::before{left:3px}
+#avpEdgeLauncher.is-lifted .b25-head::after{right:3px}
+#avpEdgeLauncher.is-lifted .avp-bot-25d{animation:b25wig .18s ease-in-out infinite}
+@keyframes b25tear{to{transform:translateY(10px);opacity:.2}}
+@keyframes b25wig{50%{transform:rotate(10deg)}}
+#avpEdgeLauncher.is-robot .avp-edge-badge{display:grid !important}
