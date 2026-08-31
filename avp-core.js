@@ -1171,3 +1171,50 @@
 
 /* Global Download Manager loader */
 (()=>{if(document.querySelector('script[data-avp-download-manager]'))return;const s=document.createElement('script');s.src='download-manager.js?v=20260828a';s.defer=true;s.dataset.avpDownloadManager='1';document.head.appendChild(s);})();
+/* STANDALONE ROBOT PATROL */
+(function(){
+  function run(){
+    var el=document.getElementById("avpEdgeLauncher");
+    if(!el){setTimeout(run,200);return;}
+    el.classList.add("is-robot","is-walking");
+    var talk=document.getElementById("avpBotTalk");
+    if(!talk){
+      talk=document.createElement("div");
+      talk.id="avpBotTalk";
+      talk.style.cssText="position:absolute;left:50%;bottom:118px;transform:translateX(-50%);min-width:160px;max-width:220px;background:#143526;color:#fff;padding:7px 10px;border-radius:10px;font:700 12px/1.3 system-ui;z-index:2147483647;pointer-events:none;text-align:center";
+      el.appendChild(talk);
+    }
+    var lines=["Xin chào!","Học Excel vui nhé","Đi từng bước thôi","Chúc bạn học tốt","Bạn làm được mà"];
+    var li=0, shown=1, t0=Date.now();
+    function say(){
+      if(el.classList.contains("open")){talk.style.display="none";return;}
+      talk.style.display="block";
+      talk.textContent=lines[li%lines.length];
+    }
+    say();
+    setInterval(function(){
+      var n=Date.now()-t0;
+      if(el.classList.contains("open")){talk.style.display="none";return;}
+      if(n>2500 && shown){talk.style.display="none";shown=0;t0=Date.now();}
+      else if(n>2500 && !shown){li++;shown=1;t0=Date.now();say();}
+    },200);
+    var x=20,dir=1;
+    function tick(){
+      if(!el.classList.contains("open") && !el.classList.contains("is-lifted")){
+        x+=dir*3;
+        var max=Math.max(20,(window.innerWidth||400)-100);
+        if(x>max){x=max;dir=-1;}
+        if(x<16){x=16;dir=1;}
+      }
+      el.style.setProperty("left","0px","important");
+      el.style.setProperty("bottom","12px","important");
+      el.style.setProperty("top","auto","important");
+      el.style.setProperty("right","auto","important");
+      el.style.setProperty("transform","translateX("+x+"px)","important");
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",run);
+  else run();
+})();
