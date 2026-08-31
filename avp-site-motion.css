@@ -1,32 +1,33 @@
-/*! avp-site-motion.css — V93 smooth motion, no fake page delay */
+/*! avp-site-motion.css — V94 parallax + zoom, no layout rewrite */
 :root{
   --avp-motion-ease:cubic-bezier(.22,1,.36,1);
+  --avp-y:0;
 }
 
-/* Native browser cross-document transition.
-   No JS setTimeout, no delayed navigation, no full-body blur/fade. */
+/* Native cross-document zoom (Chrome/Edge/Safari mới).
+   Firefox không hỗ trợ → JS fallback, không chặn click. */
 @view-transition{
   navigation:auto;
 }
 
 ::view-transition-old(root){
-  animation:avpPageOld .16s ease both;
+  animation:avpPageOld .26s ease both;
+  transform-origin:50% 42%;
 }
 ::view-transition-new(root){
-  animation:avpPageNew .24s var(--avp-motion-ease) both;
+  animation:avpPageNew .34s var(--avp-motion-ease) both;
+  transform-origin:50% 42%;
 }
 
 @keyframes avpPageOld{
-  from{opacity:1}
-  to{opacity:.96}
+  from{opacity:1;transform:scale(1)}
+  to{opacity:0;transform:scale(1.045)}
 }
 @keyframes avpPageNew{
-  from{opacity:.88;transform:translateY(4px)}
+  from{opacity:0;transform:scale(.96)}
   to{opacity:1;transform:none}
 }
 
-/* Tap/click response similar in feel to Practice Hub cards,
-   but short enough to never feel like loading latency. */
 .avp-pressing{
   animation:avpTapV93 .17s var(--avp-motion-ease)!important;
 }
@@ -41,7 +42,6 @@ input[type="button"],input[type="submit"]{
   -webkit-tap-highlight-color:transparent;
 }
 
-/* Lightweight reveal. */
 .avp-motion-rise{
   opacity:0;
   transform:translateY(10px);
@@ -54,7 +54,44 @@ input[type="button"],input[type="submit"]{
   transform:none;
 }
 
-/* Consistent hover — movement only, no unexpected recoloring. */
+/* Depth layer — absolute, không đẩy layout, không bắt chuột */
+.avp-depth-bg{
+  position:absolute !important;
+  inset:-28% -12% auto -12% !important;
+  height:78% !important;
+  pointer-events:none !important;
+  z-index:0 !important;
+  border-radius:inherit;
+  background:
+    radial-gradient(ellipse at 20% 0%,rgba(255,255,255,.18),transparent 46%),
+    radial-gradient(ellipse at 88% 30%,rgba(33,115,70,.14),transparent 42%);
+  transform:translate3d(0,calc(var(--avp-y,0) * .16px),0);
+  will-change:transform;
+}
+.avp-hero,
+.pv-hero,
+.ml-hero,
+.pq-hero,
+.dashboard-hero{
+  position:relative;
+}
+.avp-hero > *:not(.avp-depth-bg),
+.pv-hero > *:not(.avp-depth-bg),
+.ml-hero > *:not(.avp-depth-bg),
+.pq-hero > *:not(.avp-depth-bg),
+.dashboard-hero > *:not(.avp-depth-bg){
+  position:relative;
+  z-index:1;
+}
+
+/* Scroll parallax nhẹ cho tiêu đề section — không đụng card/bảng */
+.avp-motion-enabled .avp-hero-inner,
+.avp-motion-enabled .pv-hero-copy,
+.avp-motion-enabled .ml-hero-copy{
+  transform:translate3d(0,calc(var(--avp-y,0) * .04px),0);
+  will-change:transform;
+}
+
 @media(hover:hover) and (pointer:fine){
   :where(
     .course-card,.practice-file-card,.summary-card,.level-card,
@@ -83,21 +120,77 @@ input[type="button"],input[type="submit"]{
   }
 }
 
+/* Zoom in-flow giống 4 luồng — chỉ card được bấm, không scale body */
+.avp-zoom-grid.avp-zoom-choosing > :not(.avp-zoom-picked){
+  opacity:.28 !important;
+  filter:saturate(.6);
+  transform:scale(.96) !important;
+  pointer-events:none;
+  transition:transform .28s var(--avp-motion-ease),opacity .22s ease,filter .22s ease !important;
+}
+.avp-zoom-picked{
+  z-index:3 !important;
+  transform:translateY(-8px) scale(1.08) !important;
+  box-shadow:0 22px 48px rgba(19,88,48,.22) !important;
+  transition:transform .32s var(--avp-motion-ease),box-shadow .32s ease !important;
+}
+
+/* Fallback khi không có View Transition: fade/scale vùng nội dung, giữ nav */
+html.avp-leaving .avp-page,
+html.avp-leaving .pv-page,
+html.avp-leaving main,
+html.avp-leaving .wrap,
+html.avp-leaving .page-wrap,
+html.avp-leaving .home-path,
+html.avp-leaving .avp-hero{
+  animation:avpLeaveFallback .2s ease both;
+  transform-origin:50% 30%;
+}
+@keyframes avpLeaveFallback{
+  from{opacity:1;transform:scale(1)}
+  to{opacity:.2;transform:scale(1.03)}
+}
+
 html.avp-motion-enabled{scroll-behavior:smooth}
 
 @media(prefers-reduced-motion:reduce){
   @view-transition{navigation:none}
   html{scroll-behavior:auto!important}
-  .avp-motion-rise{
+  .avp-motion-rise,
+  .avp-depth-bg,
+  .avp-motion-enabled .avp-hero-inner,
+  .avp-motion-enabled .pv-hero-copy,
+  .avp-motion-enabled .ml-hero-copy,
+  .avp-zoom-picked,
+  .avp-zoom-grid.avp-zoom-choosing > :not(.avp-zoom-picked){
     opacity:1!important;
     transform:none!important;
+    filter:none!important;
     transition:none!important;
+    animation:none!important;
   }
-  .avp-pressing{
+  .avp-pressing,
+  html.avp-leaving .avp-page,
+  html.avp-leaving .pv-page,
+  html.avp-leaving main,
+  html.avp-leaving .wrap,
+  html.avp-leaving .page-wrap,
+  html.avp-leaving .home-path,
+  html.avp-leaving .avp-hero{
     animation:none!important;
   }
   ::view-transition-old(root),
   ::view-transition-new(root){
     animation:none!important;
+  }
+}
+
+@media(max-width:700px){
+  /* Mobile: parallax yếu hơn, không scale lớn */
+  .avp-depth-bg{
+    transform:translate3d(0,calc(var(--avp-y,0) * .08px),0);
+  }
+  .avp-zoom-picked{
+    transform:translateY(-4px) scale(1.04) !important;
   }
 }
