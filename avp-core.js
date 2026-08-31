@@ -808,6 +808,7 @@
 
   /* Kéo dọc màn hình + snap sát viền trái/phải, nhớ vị trí. */
   (function enableDragEdgeLauncher(root,btn){
+    if(root.classList.contains('is-robot'))return;
     const POS_KEY='avp_edge_launcher_pos_v5';
     const EDGE_GAP=6;
 
@@ -999,6 +1000,7 @@
 
 
   (function avpRobotWalk(){
+    return; // replaced by standalone patrol
     if(AVP_EMBEDDED)return;
     const PAD=16;
     const vid=document.getElementById("avpBotVid");
@@ -1171,6 +1173,7 @@
 
 /* Global Download Manager loader */
 (()=>{if(document.querySelector('script[data-avp-download-manager]'))return;const s=document.createElement('script');s.src='download-manager.js?v=20260828a';s.defer=true;s.dataset.avpDownloadManager='1';document.head.appendChild(s);})();
+
 /* STANDALONE ROBOT PATROL */
 (function(){
   function run(){
@@ -1181,36 +1184,65 @@
     if(!talk){
       talk=document.createElement("div");
       talk.id="avpBotTalk";
-      talk.style.cssText="position:absolute;left:50%;bottom:118px;transform:translateX(-50%);min-width:160px;max-width:220px;background:#143526;color:#fff;padding:7px 10px;border-radius:10px;font:700 12px/1.3 system-ui;z-index:2147483647;pointer-events:none;text-align:center";
       el.appendChild(talk);
     }
-    var lines=["Xin chào!","Học Excel vui nhé","Đi từng bước thôi","Chúc bạn học tốt","Bạn làm được mà"];
-    var li=0, shown=1, t0=Date.now();
-    function say(){
-      if(el.classList.contains("open")){talk.style.display="none";return;}
-      talk.style.display="block";
-      talk.textContent=lines[li%lines.length];
+    talk.style.cssText="position:absolute;left:50%;bottom:120px;transform:translateX(-50%);width:200px;background:#143526;color:#fff;padding:8px 10px;border-radius:12px;font:700 13px/1.35 system-ui,sans-serif;z-index:2147483647;text-align:center;box-shadow:0 8px 18px rgba(0,0,0,.25)";
+    var lines=["Xin chào, học Excel vui nhé!","Đi từng bước là tiến bộ.","Chúc bạn học tốt.","Mở bài tập khi rảnh 5 phút.","Bạn làm được mà."];
+    var i=0;
+    function showTalk(){
+      if(el.classList.contains("open")||el.classList.contains("is-lifted")){
+        talk.style.visibility="hidden";
+        return;
+      }
+      talk.style.visibility="visible";
+      talk.textContent=lines[i%lines.length];
     }
-    say();
+    showTalk();
     setInterval(function(){
-      var n=Date.now()-t0;
-      if(el.classList.contains("open")){talk.style.display="none";return;}
-      if(n>2500 && shown){talk.style.display="none";shown=0;t0=Date.now();}
-      else if(n>2500 && !shown){li++;shown=1;t0=Date.now();say();}
-    },200);
-    var x=20,dir=1;
+      i++;
+      showTalk();
+      setTimeout(function(){
+        if(!el.classList.contains("open")) talk.style.visibility="hidden";
+      },2500);
+    },5000);
+
+    var x=24,dir=1,lift=0;
+    var startY=null;
+    el.addEventListener("pointerdown",function(e){
+      if(e.target.closest(".avp-edge-menu"))return;
+      startY=e.clientY;
+    });
+    window.addEventListener("pointermove",function(e){
+      if(startY==null)return;
+      if(startY-e.clientY>22){
+        lift=1;
+        el.classList.add("is-lifted","is-crying");
+        el.classList.remove("is-walking");
+        el.style.setProperty("bottom",(window.innerHeight-e.clientY-20)+"px","important");
+      }
+    });
+    window.addEventListener("pointerup",function(){
+      startY=null;
+      if(lift){
+        lift=0;
+        el.classList.remove("is-lifted","is-crying");
+        el.classList.add("is-walking");
+        el.style.setProperty("bottom","12px","important");
+      }
+    });
+
     function tick(){
-      if(!el.classList.contains("open") && !el.classList.contains("is-lifted")){
-        x+=dir*3;
-        var max=Math.max(20,(window.innerWidth||400)-100);
-        if(x>max){x=max;dir=-1;}
-        if(x<16){x=16;dir=1;}
+      if(!el.classList.contains("open") && !lift){
+        x+=dir*4;
+        var max=Math.max(30,(window.innerWidth||800)-110);
+        if(x>=max){x=max;dir=-1;}
+        if(x<=16){x=16;dir=1;}
       }
       el.style.setProperty("left","0px","important");
-      el.style.setProperty("bottom","12px","important");
       el.style.setProperty("top","auto","important");
       el.style.setProperty("right","auto","important");
-      el.style.setProperty("transform","translateX("+x+"px)","important");
+      if(!lift) el.style.setProperty("bottom","12px","important");
+      el.style.setProperty("transform","translate3d("+x+"px,0,0)","important");
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
