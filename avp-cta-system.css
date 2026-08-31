@@ -268,3 +268,34 @@ html[data-theme="dark"] .auth-tab:not(.active){
 @media(prefers-reduced-motion:reduce){
   .avp-cta-auto{transition:none!important}
 }
+
+
+/* V94 hardening: internal links/cards never inherit YouTube red. */
+a.avp-cta-youtube:not([href*="youtube.com"]):not([href*="youtu.be"]),
+button.avp-cta-youtube,
+.avp-cta-youtube.ph-choice,
+.avp-cta-youtube.avp-mobile-main-cta,
+.avp-cta-youtube.avp-practice-hub-cta{
+  background:#217346!important;
+  border-color:#217346!important;
+  color:#fff!important;
+}
+
+a[href*="youtube.com"].avp-cta-youtube,
+a[href*="youtu.be"].avp-cta-youtube{
+  background:#e62117!important;
+  border-color:#e62117!important;
+  color:#fff!important;
+}
+
+/* Internal navigation cards remain green/neutral on hover, focus and active. */
+a[href^="practice-"].avp-cta-auto:hover,
+a[href^="practice-"].avp-cta-auto:focus-visible,
+a[href^="practice-"].avp-cta-auto:active,
+a[href="practice-video.html"].avp-cta-auto:hover,
+a[href="practice-video.html"].avp-cta-auto:focus-visible,
+a[href="practice-video.html"].avp-cta-auto:active{
+  background:#185c37!important;
+  border-color:#185c37!important;
+  color:#fff!important;
+}

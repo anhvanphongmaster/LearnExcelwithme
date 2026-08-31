@@ -63,13 +63,19 @@
     const href=(el.getAttribute("href")||"").toLowerCase();
     const cls=(el.className||"").toString().toLowerCase();
 
+    // Internal website controls must never inherit platform-red styling.
+    if(
+      href &&
+      !href.includes("youtube.com") &&
+      !href.includes("youtu.be")
+    ){
+      el.classList.remove("avp-cta-youtube");
+    }
+
     // Brand exception.
     if(
       href.includes("youtube.com") ||
-      href.includes("youtu.be") ||
-      cls.includes("pyt-yt") ||
-      (cls.split(/\s+/).includes("youtube") &&
-       (href.includes("youtube") || href.includes("youtu.be")))
+      href.includes("youtu.be")
     ){
       el.classList.add("avp-cta-auto","avp-cta-youtube");
       return;

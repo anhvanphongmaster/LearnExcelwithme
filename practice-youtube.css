@@ -113,3 +113,43 @@ body.pyt-embedded .pyt-page{
   margin:0!important;
   padding:6px 2px 20px!important;
 }
+
+
+/* =========================================================
+   V94 — YouTube Practice internal content follows site green.
+   Only the actual outbound "Xem trên YouTube" button stays red.
+   ========================================================= */
+.pyt-hero,
+.pyt-section,
+.pyt-card,
+.pyt-project,
+.pyt-feature,
+.pyt-project-card,
+.pyt-featured,
+.pyt-featured-card{
+  border-color:#cfe3d6!important;
+}
+
+/* Any old channel/project emphasis is green, not platform red/blue. */
+.pyt-project-header,
+.pyt-featured-header,
+.pyt-highlight,
+.pyt-badge,
+.pyt-chip{
+  background:#eef8f2!important;
+  color:#185c37!important;
+  border-color:#c6dfd0!important;
+}
+
+/* Preserve YouTube brand ONLY on actual outbound YouTube button. */
+.pyt-yt{
+  background:#e62117!important;
+  border-color:#e62117!important;
+  color:#fff!important;
+}
+.pyt-yt:hover,
+.pyt-yt:focus-visible{
+  background:#c91b12!important;
+  border-color:#c91b12!important;
+  color:#fff!important;
+}

@@ -526,3 +526,89 @@
 .ph-choice-arrow{
   color:#217346!important;
 }
+
+
+/* =========================================================
+   V94 — INTERNAL UI MUST STAY IN THE AVP GREEN SYSTEM
+   Red is reserved for real destructive/error states and
+   outbound YouTube buttons only.
+   ========================================================= */
+
+/* Practice source chooser: all four choices use one palette in every state. */
+.ph-choice,
+.ph-choice:hover,
+.ph-choice:focus,
+.ph-choice:focus-visible,
+.ph-choice:active,
+.ph-choice.active,
+.ph-choice.is-picked,
+.ph-choice.youtube,
+.ph-choice.youtube:hover,
+.ph-choice.youtube:focus,
+.ph-choice.youtube:focus-visible,
+.ph-choice.youtube:active,
+.ph-choice.youtube.active,
+.ph-choice.youtube.is-picked,
+.ph-choice.grader,
+.ph-choice.grader:hover,
+.ph-choice.grader:focus,
+.ph-choice.grader:focus-visible,
+.ph-choice.grader:active,
+.ph-choice.grader.active,
+.ph-choice.grader.is-picked,
+.ph-choice.guide,
+.ph-choice.guide:hover,
+.ph-choice.guide:focus,
+.ph-choice.guide:focus-visible,
+.ph-choice.guide:active,
+.ph-choice.guide.active,
+.ph-choice.guide.is-picked{
+  background:linear-gradient(145deg,#ffffff,#f4faf6)!important;
+  color:#173f2a!important;
+  border-color:#b8d7c4!important;
+}
+
+.ph-choice:hover,
+.ph-choice:focus-visible,
+.ph-choice.active,
+.ph-choice.is-picked,
+.ph-choice.youtube:hover,
+.ph-choice.youtube:focus-visible,
+.ph-choice.youtube.active,
+.ph-choice.youtube.is-picked,
+.ph-choice.grader:hover,
+.ph-choice.grader:focus-visible,
+.ph-choice.grader.active,
+.ph-choice.grader.is-picked,
+.ph-choice.guide:hover,
+.ph-choice.guide:focus-visible,
+.ph-choice.guide.active,
+.ph-choice.guide.is-picked{
+  border-color:#217346!important;
+  box-shadow:0 14px 34px rgba(33,115,70,.14)!important;
+}
+
+.ph-choice.youtube .ph-choice-icon,
+.ph-choice.grader .ph-choice-icon,
+.ph-choice.guide .ph-choice-icon,
+.ph-choice .ph-choice-icon{
+  background:#eaf6ef!important;
+  color:#185c37!important;
+  border-color:#cce3d4!important;
+}
+
+.ph-choice-eyebrow,
+.ph-choice.youtube .ph-choice-eyebrow,
+.ph-choice.grader .ph-choice-eyebrow,
+.ph-choice.guide .ph-choice-eyebrow,
+.ph-choice-arrow{
+  color:#217346!important;
+}
+
+/* Remove blue/red "NEW" badge from the green learning UI. */
+.ph-choice-new{
+  background:#217346!important;
+  color:#fff!important;
+  border-color:#217346!important;
+  box-shadow:0 4px 12px rgba(33,115,70,.20)!important;
+}
