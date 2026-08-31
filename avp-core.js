@@ -89,6 +89,19 @@
   `;
 
   document.body.appendChild(launcher);
+  (function(){
+    const base=(location.pathname.replace(/[^/]+$/,"")||"./");
+    const img=launcher.querySelector(".avp-bot-img");
+    const vid=launcher.querySelector("#avpBotVid");
+    if(img) img.src=base+"avp-bot-wave.png";
+    if(vid){
+      vid.style.display="none";
+      vid.src=base+"avp-bot.webm";
+      vid.addEventListener("canplay",()=>{vid.style.display="block";},{once:true});
+      vid.addEventListener("error",()=>{vid.style.display="none";});
+    }
+  })();
+
   document.documentElement.classList.add('avp-has-robot');
   if(AVP_EMBEDDED){launcher.hidden=true;launcher.style.display='none';}
 
@@ -1080,10 +1093,10 @@
     function w(){return Math.max(56, fab.offsetWidth||56)}
     function maxX(){return Math.max(PAD, window.innerWidth - w() - PAD)}
     function applyPos(px, bottom){
-      launcher.style.left=px+"px";
-      launcher.style.right="auto";
-      launcher.style.top="auto";
-      launcher.style.bottom=bottom+"px";
+      launcher.style.setProperty("left", px+"px", "important");
+      launcher.style.setProperty("right", "auto", "important");
+      launcher.style.setProperty("top", "auto", "important");
+      launcher.style.setProperty("bottom", bottom+"px", "important");
     }
 
     function frame(){

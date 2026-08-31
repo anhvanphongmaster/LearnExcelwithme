@@ -1635,3 +1635,38 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 }
 .avp-bot-vid{z-index:1}
 .avp-bot-img{z-index:0}
+
+/* FORCE ROBOT ON SCREEN */
+#avpEdgeLauncher.is-robot{
+  position:fixed !important;
+  top:auto !important;
+  right:auto !important;
+  left:12px !important;
+  bottom:16px !important;
+  width:96px !important;
+  height:120px !important;
+  z-index:2147483000 !important;
+  display:block !important;
+  opacity:1 !important;
+  overflow:visible !important;
+  pointer-events:auto !important;
+}
+#avpEdgeLauncher.is-robot .avp-edge-main{
+  width:96px !important;
+  height:120px !important;
+  inset:auto !important;
+  background:transparent !important;
+  display:flex !important;
+  opacity:1 !important;
+}
+#avpEdgeLauncher.is-robot .avp-bot-img{
+  position:relative !important;
+  z-index:2 !important;
+  display:block !important;
+  width:88px !important;
+  height:112px !important;
+  opacity:1 !important;
+}
+#avpEdgeLauncher.is-robot .avp-bot-vid{
+  z-index:1 !important;
+}
