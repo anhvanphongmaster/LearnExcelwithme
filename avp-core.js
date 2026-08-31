@@ -80,7 +80,7 @@
       title="Công cụ nhanh — kéo để di chuyển"
     >
       <span class="avp-bot" aria-hidden="true">
-        <span class="avp-bot-head"><i class="avp-bot-eye"></i><i class="avp-bot-eye"></i></span>
+        <span class="avp-bot-head"><i class="avp-bot-eye"></i><i class="avp-bot-eye"></i><i class="avp-bot-mouth"></i><i class="avp-bot-tear l"></i><i class="avp-bot-tear r"></i></span>
         <span class="avp-bot-arm avp-bot-arm-l"></span>
         <span class="avp-bot-body">AVP</span>
         <span class="avp-bot-arm avp-bot-arm-r"></span>
@@ -93,6 +93,7 @@
   `;
 
   document.body.appendChild(launcher);
+  document.documentElement.classList.add('avp-has-robot');
   if(AVP_EMBEDDED){launcher.hidden=true;launcher.style.display='none';}
 
   const fab=launcher.querySelector('#avpEdgeMain');
@@ -184,6 +185,7 @@
   }
 
   function showMiniPreview(detail){
+    if(launcher.classList.contains('is-robot'))return;
     const body=String(detail?.body||'Tin nhắn mới').trim()||'Tin nhắn mới';
     const sender=String(detail?.sender||'Tin nhắn mới').trim();
 
@@ -877,7 +879,10 @@
     let grabOffsetY=0;
 
     btn.addEventListener('pointerdown',e=>{
-      if(launcher.classList.contains('is-robot'))return;
+      if(launcher.classList.contains('is-robot')){
+        window.__avpBotLiftStart={y:e.clientY,x:e.clientX};
+        return;
+      }
       if(e.button!=null && e.button!==0)return;
 
       const r=root.getBoundingClientRect();
@@ -959,7 +964,7 @@
     btn.addEventListener('pointercancel',finish);
 
     btn.addEventListener('click',e=>{
-      if(btn.dataset.justDragged==='1'){
+      if(btn.dataset.justDragged==='1' || btn.dataset.justLifted==='1'){
         e.preventDefault();
         e.stopImmediatePropagation();
         return;
@@ -987,8 +992,13 @@
     if(AVP_EMBEDDED)return;
     const PAD=16;
     let x=PAD;
+    let yBottom=PAD;
     let dir=1;
     const SPEED=0.9;
+    let lifting=false;
+    let liftMoved=false;
+    let startY=0, startX=0, grabY=0;
+
     const HELLO=[
       "Xin chào, học Excel vui vẻ nhé!",
       "Chào bạn, hôm nay luyện thêm một công thức nha.",
@@ -1012,9 +1022,6 @@
     function unreadNow(){
       return unreadCountFromChatBadge()+unreadCountFromCommunity()+starUnread;
     }
-    function pickHello(){
-      return HELLO[Math.floor(Math.random()*HELLO.length)];
-    }
     function placeBubble(){
       const r=launcher.getBoundingClientRect();
       const bw=Math.min(240, window.innerWidth-24);
@@ -1037,17 +1044,17 @@
     }
     async function talkLoop(){
       while(true){
-        if(launcher.classList.contains("open")){
+        if(launcher.classList.contains("open") || lifting){
           bubble.hidden=true;
           await new Promise(r=>setTimeout(r,400));
           continue;
         }
         const unread=unreadNow();
-        await showLine(pickHello(), 2200+Math.floor(Math.random()*800));
-        if(launcher.classList.contains("open")) continue;
+        await showLine(HELLO[Math.floor(Math.random()*HELLO.length)], 2200+Math.floor(Math.random()*800));
+        if(launcher.classList.contains("open") || lifting) continue;
         if(unread>0){
           await new Promise(r=>setTimeout(r,1500));
-          if(launcher.classList.contains("open")) continue;
+          if(launcher.classList.contains("open") || lifting) continue;
           const n=unreadNow()||unread;
           await showLine(n>1?("Bạn có "+n+" tin nhắn mới chưa đọc"):"Bạn có tin nhắn mới chưa đọc", 2600);
         }else{
@@ -1058,25 +1065,67 @@
 
     function w(){return Math.max(56, fab.offsetWidth||56)}
     function maxX(){return Math.max(PAD, window.innerWidth - w() - PAD)}
+    function applyPos(px, bottom){
+      launcher.style.left=px+"px";
+      launcher.style.right="auto";
+      launcher.style.top="auto";
+      launcher.style.bottom=bottom+"px";
+    }
+
     function frame(){
-      if(launcher.classList.contains("is-walking") && !launcher.classList.contains("open")){
+      if(!lifting && launcher.classList.contains("is-walking") && !launcher.classList.contains("open")){
         x+=dir*SPEED;
         const mx=maxX();
         if(x>=mx){x=mx;dir=-1}
         if(x<=PAD){x=PAD;dir=1}
-        launcher.style.left=x+"px";
-        launcher.style.right="auto";
-        launcher.style.top="auto";
-        launcher.style.bottom=PAD+"px";
+        applyPos(x, PAD);
         launcher.classList.toggle("face-left", dir<0);
       }
       if(!bubble.hidden) placeBubble();
       requestAnimationFrame(frame);
     }
-    launcher.style.left=x+"px";
-    launcher.style.right="auto";
-    launcher.style.top="auto";
-    launcher.style.bottom=PAD+"px";
+
+    fab.addEventListener("pointerdown", function(e){
+      if(e.button!=null && e.button!==0)return;
+      lifting=false;
+      liftMoved=false;
+      startY=e.clientY;
+      startX=e.clientX;
+      grabY=e.clientY;
+      try{fab.setPointerCapture(e.pointerId)}catch(err){}
+    });
+    fab.addEventListener("pointermove", function(e){
+      if(startY==null)return;
+      const dy=startY-e.clientY;
+      const dist=Math.hypot(e.clientX-startX, e.clientY-startY);
+      if(dy>18 && dist>18){
+        lifting=true;
+        liftMoved=true;
+        launcher.classList.add("is-lifted","is-crying");
+        launcher.classList.remove("is-walking","is-greeting","open");
+        edgeMenu.hidden=true;
+        const bottom=Math.max(PAD, window.innerHeight - e.clientY - 36);
+        applyPos(Math.max(PAD, Math.min(e.clientX-32, maxX())), bottom);
+      }
+    });
+    function dropLift(){
+      startY=null;
+      if(!liftMoved){
+        lifting=false;
+        return;
+      }
+      fab.dataset.justLifted="1";
+      setTimeout(()=>delete fab.dataset.justLifted,200);
+      launcher.classList.remove("is-lifted","is-crying");
+      lifting=false;
+      liftMoved=false;
+      applyPos(x, PAD);
+      if(!launcher.classList.contains("open")) launcher.classList.add("is-walking");
+    }
+    fab.addEventListener("pointerup", dropLift);
+    fab.addEventListener("pointercancel", dropLift);
+
+    applyPos(x, PAD);
     requestAnimationFrame(frame);
     talkLoop();
     window.addEventListener("resize",()=>{ if(x>maxX()) x=maxX(); placeBubble(); });

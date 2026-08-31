@@ -1512,3 +1512,60 @@ body.dark-mode #avpEdgeLauncher .avp-edge-action > span:first-child{
   border:6px solid transparent;
   border-top-color:#143526;
 }
+
+html.avp-has-robot .avp-edge-mini-preview-v2,
+.avp-edge-launcher.is-robot ~ .avp-edge-mini-preview-v2,
+#avpEdgeMiniPreview{
+  display:none !important;
+}
+.avp-bot{
+  perspective:220px;
+}
+.avp-bot-head,.avp-bot-body{
+  border:1px solid rgba(255,255,255,.28);
+}
+.avp-bot-mouth{
+  position:absolute;
+  left:9px;bottom:3px;
+  width:10px;height:5px;
+  border:2px solid #0b2a1a;
+  border-top:0;
+  border-radius:0 0 8px 8px;
+}
+.avp-edge-launcher.is-greeting .avp-bot-mouth{
+  border-radius:0 0 10px 10px;
+  height:6px;
+}
+.avp-bot-tear{
+  display:none;
+  position:absolute;
+  top:12px;
+  width:5px;height:10px;
+  border-radius:50% 50% 50% 50%;
+  background:linear-gradient(#7fd7ff,#1a7bd4);
+}
+.avp-bot-tear.l{left:3px}
+.avp-bot-tear.r{right:3px}
+.avp-edge-launcher.is-crying .avp-bot-mouth{
+  top:14px;bottom:auto;left:8px;
+  width:12px;height:3px;
+  border:0;
+  background:#0b2a1a;
+  border-radius:2px;
+}
+.avp-edge-launcher.is-crying .avp-bot-tear{
+  display:block;
+  animation:avpTear 0.5s linear infinite;
+}
+.avp-edge-launcher.is-lifted .avp-bot{
+  animation:avpWriggle .18s ease-in-out infinite;
+}
+@keyframes avpTear{
+  0%{transform:translateY(0);opacity:1}
+  100%{transform:translateY(10px);opacity:.15}
+}
+@keyframes avpWriggle{
+  0%{transform:rotate(-12deg) translateY(-2px)}
+  50%{transform:rotate(12deg) translateY(2px)}
+  100%{transform:rotate(-12deg) translateY(-2px)}
+}
