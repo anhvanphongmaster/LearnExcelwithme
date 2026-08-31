@@ -1,0 +1,141 @@
+
+/* V109 — FIX: visible channel badges + unmistakable moving light sweep.
+   Only banner visuals are changed; homepage layout/content is untouched. */
+
+.avp-feature-banner{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+}
+
+/* Strong, continuous shine sweep. */
+.avp-feature-banner::before{
+  content:""!important;
+  position:absolute!important;
+  z-index:4!important;
+  top:-65%!important;
+  bottom:-65%!important;
+  left:-42%!important;
+  width:34%!important;
+  pointer-events:none!important;
+  transform:skewX(-20deg)!important;
+  background:linear-gradient(
+    90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,.08) 18%,
+    rgba(255,255,255,.72) 48%,
+    rgba(255,255,255,.18) 68%,
+    rgba(255,255,255,0) 100%
+  )!important;
+  filter:blur(1px)!important;
+  mix-blend-mode:screen!important;
+  animation:avpBannerSweepV109 2.65s ease-in-out infinite!important;
+}
+
+@keyframes avpBannerSweepV109{
+  0%{left:-42%;opacity:0}
+  10%{opacity:1}
+  72%{left:118%;opacity:.95}
+  100%{left:118%;opacity:0}
+}
+
+/* Keep all banner content above the normal background but below the shine. */
+.avp-feature-banner > *{
+  position:relative;
+  z-index:3;
+}
+
+/* FIX: V108 clipped these because they were at top:-10px while the card used overflow:hidden. */
+.avp-practice-hub-badges{
+  position:absolute!important;
+  z-index:6!important;
+  top:8px!important;
+  right:12px!important;
+  display:flex!important;
+  gap:5px!important;
+  opacity:1!important;
+  visibility:visible!important;
+  transform:none!important;
+}
+.avp-practice-hub-cta .avp-mobile-main-cta-copy{
+  padding-right:74px!important;
+}
+
+.avp-mini-channel{
+  width:25px!important;
+  height:25px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:50%!important;
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:950!important;
+  line-height:1!important;
+  border:2px solid rgba(255,255,255,.96)!important;
+  box-shadow:0 3px 10px rgba(0,0,0,.26)!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+.avp-mini-channel-tt{background:#101010!important}
+.avp-mini-channel-yt{background:#ff0033!important}
+.avp-mini-channel-grade{background:#2563eb!important}
+
+/* Restore strong glass-light edge like the older homepage banners. */
+.avp-practice-hub-cta,
+.avp-excel-doctor-cta{
+  border:1px solid rgba(176,245,201,.58)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.13),
+    0 10px 28px rgba(5,39,23,.25)!important;
+}
+.avp-practice-hub-cta{
+  background:
+    radial-gradient(circle at 100% 0%,rgba(108,224,155,.18),transparent 32%),
+    linear-gradient(135deg,#145f3b,#237e50)!important;
+}
+.avp-excel-doctor-cta{
+  background:
+    radial-gradient(circle at 100% 0%,rgba(127,242,174,.18),transparent 30%),
+    linear-gradient(135deg,#123f2a,#217346)!important;
+}
+
+/* NEW badge must stay above the shimmer. */
+.avp-feature-new{
+  z-index:7!important;
+  top:8px!important;
+  right:10px!important;
+}
+
+@media(hover:hover) and (pointer:fine){
+  .avp-feature-banner:hover{
+    transform:translateY(-3px)!important;
+    filter:brightness(1.035)!important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.16),
+      0 17px 38px rgba(5,39,23,.32)!important;
+  }
+}
+
+/* Mobile: keep badges clear without colliding with title. */
+@media(max-width:520px){
+  .avp-practice-hub-badges{
+    top:8px!important;
+    right:9px!important;
+  }
+  .avp-practice-hub-cta .avp-mobile-main-cta-copy{
+    padding-right:64px!important;
+  }
+  .avp-mini-channel{
+    width:22px!important;
+    height:22px!important;
+    font-size:10px!important;
+  }
+}
+
+/* Respect accessibility preference only. */
+@media(prefers-reduced-motion:reduce){
+  .avp-feature-banner::before{
+    animation:none!important;
+    display:none!important;
+  }
+}
