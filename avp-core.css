@@ -1293,3 +1293,60 @@ body.dark-mode #avpEdgeLauncher .avp-edge-action > span:first-child{
   min-width:20px !important;
   height:20px !important;
 }
+
+
+/* AVP GEM 4D + pulse only when unread */
+.avp-edge-launcher .avp-edge-main{
+  border-radius:50% !important;
+  border:1px solid rgba(255,255,255,.42) !important;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,.28), transparent 42%),
+    linear-gradient(160deg, #2f9a5c 0%, #217346 55%, #165533 100%) !important;
+  box-shadow:
+    inset 0 2px 3px rgba(255,255,255,.35),
+    inset 0 -6px 10px rgba(0,30,16,.28),
+    0 10px 22px rgba(15,60,35,.32),
+    0 0 0 3px rgba(255,255,255,.12) !important;
+  text-shadow:0 1px 0 rgba(0,0,0,.22);
+}
+.avp-edge-launcher.is-right .avp-edge-main,
+.avp-edge-launcher.is-left .avp-edge-main{
+  border-radius:50% !important;
+}
+.avp-edge-main-icon{
+  font-size:13px !important;
+  font-weight:800 !important;
+  letter-spacing:.04em;
+  transform:translateZ(8px);
+}
+.avp-edge-launcher .avp-edge-main::before{
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border-radius:50%;
+  border:2px solid rgba(190,255,214,.35);
+  pointer-events:none;
+  opacity:.85;
+}
+.avp-edge-launcher.has-pulse .avp-edge-main::before,
+.avp-edge-launcher .avp-edge-main.has-pulse::before{
+  animation:avpGemBreath 2.4s ease-in-out infinite;
+}
+@keyframes avpGemBreath{
+  0%,100%{
+    transform:scale(1);
+    opacity:.4;
+    box-shadow:0 0 0 0 rgba(33,115,70,.0);
+  }
+  50%{
+    transform:scale(1.08);
+    opacity:1;
+    box-shadow:0 0 18px 4px rgba(80,200,120,.28);
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .avp-edge-launcher.has-pulse .avp-edge-main::before,
+  .avp-edge-launcher .avp-edge-main.has-pulse::before{
+    animation:none !important;
+  }
+}

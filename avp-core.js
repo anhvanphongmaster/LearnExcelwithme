@@ -711,11 +711,15 @@
       edgeBadge.hidden=true;
       edgeBadge.textContent='0';
       previousEdgeCount=0;
+      fab?.classList.remove("has-pulse");
+      launcher?.classList.remove("has-pulse");
       return;
     }
 
     edgeBadge.hidden=false;
     edgeBadge.textContent=count>9?'9+':String(count);
+    fab?.classList.add("has-pulse");
+    launcher?.classList.add("has-pulse");
 
     /* Lần đầu badge xuất hiện sau khi trang load cũng phải bung,
        không cần previous count > 0 như bản cũ. */
