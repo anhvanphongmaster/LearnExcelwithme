@@ -614,6 +614,30 @@
     $("adminMaintenanceReload")?.addEventListener("click",loadAdminMaintenance);
   }
 
+
+  function renderFeatureUsage(s){
+    if(!s || s.__error) return;
+
+    const set=(id,v)=>{const el=$(id);if(el)el.textContent=n(v);};
+    set("fuDictionaryOpen",s.dictionary_opens);
+    set("fuDictionarySearch",s.dictionary_searches);
+    set("fuDoctorOpen",s.doctor_opens);
+    set("fuDoctorScans",s.doctor_scans);
+    set("fuDoctorCompleted",s.doctor_scan_completed);
+    set("fuDoctorIssues",s.doctor_issues_found);
+    set("fuDoctorToDictionary",s.doctor_to_dictionary);
+
+    const dv=$("fuDictionaryVisitors");
+    if(dv) dv.textContent=`${n(s.dictionary_unique_visitors)} người dùng`;
+    const dd=$("fuDictionaryDetails");
+    if(dd) dd.textContent=`${n(s.dictionary_detail_opens)} mục đã mở`;
+    const docv=$("fuDoctorVisitors");
+    if(docv) docv.textContent=`${n(s.doctor_unique_visitors)} người dùng`;
+
+    renderRanking("fuTopSearches",s.top_searches||[],"label","uses");
+    renderRanking("fuTopDetails",s.top_details||[],"label","uses");
+  }
+
   async function loadDashboard(){
     try{
       $("adminRefresh").disabled=true;
@@ -641,13 +665,14 @@
       }
 
       // Learning RPCs — optional, không chặn cả dashboard nếu 1 hàm lỗi
-      const [learning,funnel,completed,difficulty,newUsers,engagement] = await Promise.all([
+      const [learning,funnel,completed,difficulty,newUsers,engagement,featureUsage] = await Promise.all([
         rpcSoft("admin_learning_summary"),
         rpcSoft("admin_learning_funnel"),
         rpcSoft("admin_top_completed_lessons",{p_limit:10}),
         rpcSoft("admin_quiz_difficulty",{p_days:currentDays,p_limit:10}),
         rpcSoft("admin_new_user_trend",{p_days:Math.min(currentDays,90)}),
-        rpcSoft("admin_engagement_summary_v2",{p_days:currentDays})
+        rpcSoft("admin_engagement_summary_v2",{p_days:currentDays}),
+        rpcSoft("admin_feature_usage_summary",{p_days:currentDays})
       ]);
 
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
@@ -674,6 +699,7 @@
       if(!difficulty?.__error) renderQuizDifficulty(difficulty||[]);
       if(!engagement?.__error) await renderEngagement(engagement||{});
       if(!newUsers?.__error) renderNewUsers(newUsers||[]);
+      if(!featureUsage?.__error) renderFeatureUsage(featureUsage||{});
     }catch(error){
       console.error(error);
       showDenied(`Không tải được Analytics: ${error?.message||error}`);

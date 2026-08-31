@@ -58,3 +58,78 @@ function render(file,wb,s){
 async function analyze(file){if(!file)return;if(typeof XLSX==="undefined"){alert("Chưa tải được bộ đọc Excel. Kiểm tra mạng rồi thử lại.");return}show("Đọc workbook…","Excel Doctor đang mở cấu trúc file trên thiết bị của bạn.");try{const buf=await file.arrayBuffer(),wb=XLSX.read(buf,{type:"array",cellDates:true,cellFormula:true,cellStyles:true,cellNF:true,cellText:true});show("Quét dữ liệu & công thức…","Đang kiểm tra từng sheet, header, formula và dependency.");await new Promise(r=>setTimeout(r,60));const s=wb.SheetNames.map(n=>analyze(wb.Sheets[n],n));hide();render(file,wb,s)}catch(e){console.error(e);hide();alert("Không đọc được workbook. File có thể có mật khẩu, hỏng cấu trúc hoặc dùng tính năng bộ đọc trình duyệt chưa hỗ trợ.")}}
 choose?.addEventListener("click",()=>fileInput.click());fileInput?.addEventListener("change",()=>analyze(fileInput.files?.[0]));["dragenter","dragover"].forEach(ev=>drop?.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("is-drag")}));["dragleave","drop"].forEach(ev=>drop?.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("is-drag")}));drop?.addEventListener("drop",e=>analyze(e.dataTransfer?.files?.[0]));$("edScanAnother")?.addEventListener("click",()=>{report.hidden=true;fileInput.value="";drop.scrollIntoView({behavior:"smooth",block:"center"})});
 })();
+
+;(() => {
+  const waitTrack = (eventName, options = {}) => {
+    let tries = 0;
+    const run = () => {
+      if (window.avpAnalytics?.track) {
+        window.avpAnalytics.track(eventName, options);
+        return;
+      }
+      if (++tries < 25) setTimeout(run, 120);
+    };
+    run();
+  };
+
+  waitTrack("excel_doctor_open", {
+    page: "excel-doctor.html",
+    tool_name: "Excel Doctor"
+  });
+
+  const fileInput = document.getElementById("edFile");
+  let scanStartedAt = 0;
+
+  fileInput?.addEventListener("change", () => {
+    if (!fileInput.files?.[0]) return;
+    scanStartedAt = Date.now();
+    waitTrack("excel_doctor_scan", {
+      page: "excel-doctor.html",
+      tool_name: "Workbook scan",
+      metadata: {
+        extension: (fileInput.files[0].name.split(".").pop() || "").slice(0, 12),
+        size_kb: Math.round(fileInput.files[0].size / 1024)
+      }
+    });
+  });
+
+  // Doctor renders the report after scanning; observe it becoming visible.
+  const report = document.getElementById("edReport");
+  if (report) {
+    const obs = new MutationObserver(() => {
+      if (report.hidden) return;
+
+      const issueEls = [...report.querySelectorAll(".ed-issue-count")];
+      const issueCount = issueEls.reduce((sum, el) => {
+        const m = String(el.textContent || "").match(/\d+/);
+        return sum + (m ? Number(m[0]) : 0);
+      }, 0);
+
+      const scoreText = document.getElementById("edScore")?.textContent || "";
+      const score = Number((scoreText.match(/\d+/) || [0])[0]);
+
+      waitTrack("excel_doctor_scan_complete", {
+        page: "excel-doctor.html",
+        tool_name: "Workbook scan",
+        metadata: {
+          issues: issueCount,
+          score,
+          duration_ms: scanStartedAt ? Math.max(0, Date.now() - scanStartedAt) : 0
+        }
+      });
+
+      obs.disconnect();
+    });
+    obs.observe(report, { attributes: true, attributeFilter: ["hidden"], subtree: false });
+  }
+
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest?.(".ed-dict-link");
+    if (!link) return;
+    waitTrack("excel_doctor_to_dictionary", {
+      page: "excel-doctor.html",
+      tool_name: (link.closest(".ed-issue")?.querySelector("h3")?.textContent || "Doctor issue").slice(0, 80)
+    });
+  }, true);
+})();
+
