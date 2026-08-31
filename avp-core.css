@@ -1605,3 +1605,11 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   0%,100%{transform:rotate(-2deg)}
   50%{transform:rotate(6deg)}
 }
+
+.avp-bot-vid{
+  width:72px;height:92px;
+  object-fit:contain;
+  background:transparent;
+  pointer-events:none;
+  display:block;
+}

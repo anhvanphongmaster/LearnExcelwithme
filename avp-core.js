@@ -80,8 +80,7 @@
       title="Công cụ nhanh — kéo để di chuyển"
     >
       <span class="avp-bot" aria-hidden="true">
-        <img class="avp-bot-img" src="avp-bot-wave.png" alt="">
-        <i class="avp-bot-tear l"></i><i class="avp-bot-tear r"></i>
+        <video class="avp-bot-vid" id="avpBotVid" src="avp-bot.webm" muted playsinline loop></video>
       </span>
       <span class="avp-edge-main-icon" hidden>AVP</span>
       <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
@@ -552,9 +551,11 @@
       launcher.classList.remove('is-walking');
       launcher.classList.add('is-greeting');
       fab.style.transform='none';
+      try{window.playAvpBotSeg && window.playAvpBotSeg(3,5.9)}catch(e){}
     }else{
       launcher.classList.remove('is-greeting');
       launcher.classList.add('is-walking');
+      try{window.playAvpBotSeg && window.playAvpBotSeg(0,2.9)}catch(e){}
     }
 
     if(!open){
@@ -987,6 +988,22 @@
   (function avpRobotWalk(){
     if(AVP_EMBEDDED)return;
     const PAD=16;
+    const vid=document.getElementById("avpBotVid");
+    let seg=[0,2.9];
+    window.playAvpBotSeg=function playBotSeg(a,b){
+      seg=[a,b];
+      if(!vid)return;
+      try{vid.currentTime=a; vid.play();}catch(e){}
+    }
+    if(vid){
+      vid.addEventListener("timeupdate",()=>{
+        if(vid.currentTime>=seg[1] || vid.currentTime<seg[0]-0.05){
+          vid.currentTime=seg[0];
+        }
+      });
+      playBotSeg(0,2.9);
+    }
+
     let x=PAD;
     let yBottom=PAD;
     let dir=1;
@@ -1099,6 +1116,7 @@
         liftMoved=true;
         launcher.classList.add("is-lifted","is-crying");
         launcher.classList.remove("is-walking","is-greeting","open");
+        playBotSeg(6,9.9);
         edgeMenu.hidden=true;
         const bottom=Math.max(PAD, window.innerHeight - e.clientY - 36);
         applyPos(Math.max(PAD, Math.min(e.clientX-32, maxX())), bottom);
@@ -1116,7 +1134,10 @@
       lifting=false;
       liftMoved=false;
       applyPos(x, PAD);
-      if(!launcher.classList.contains("open")) launcher.classList.add("is-walking");
+      if(!launcher.classList.contains("open")){
+        launcher.classList.add("is-walking");
+        playBotSeg(0,2.9);
+      }
     }
     fab.addEventListener("pointerup", dropLift);
     fab.addEventListener("pointercancel", dropLift);
