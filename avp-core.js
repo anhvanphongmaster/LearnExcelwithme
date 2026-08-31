@@ -604,61 +604,21 @@
   },true);
 
   launcher.querySelectorAll('[data-edge-action]').forEach(btn=>{
-    btn.addEventListener('click',async e=>{
+    btn.addEventListener('click',function(e){
+      const action=btn.dataset.edgeAction;
+      if(action==='dictionary')return; /* <a href> + capture */
       e.preventDefault();
       e.stopPropagation();
-
-      const action=btn.dataset.edgeAction;
       hideMiniPreview();
       setEdgeMenu(false);
-
-      const aiPanel=document.getElementById('avpAiChatPanel');
-      const chatPanels=[
-        document.getElementById('avpChatPanel'),
-        document.getElementById('avpAdminFloatPanel'),
-        document.getElementById('avpGuestChatPanel')
-      ].filter(Boolean);
-
-      if(action==='dictionary'){
-        window.location.href='excel-dictionary.html';
-        return;
-      }
-
-      if(action==='learning'){
-        if(back.classList.contains('open')){
-          closeHub();
-          return;
-        }
-        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'learning'}}));
-        openHub();
+      if(action==='ai'){
+        if(window.AVPAIChat&&window.AVPAIChat.open) window.AVPAIChat.open();
+        else document.getElementById('avpAiChatBubble')?.click();
       }else if(action==='community'){
-        const communityAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpCommunityMode')?.hidden;
-        if(communityAlreadyOpen){
-          aiPanel.hidden=true;
-          return;
-        }
-        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
-        if(window.AVPCommunity?.open){
-          window.AVPCommunity.open();
-        }else{
-          toast('Cộng đồng đang tải, thử lại sau một chút');
-        }
+        if(window.AVPCommunity&&window.AVPCommunity.open) window.AVPCommunity.open();
+        else document.getElementById('avpAiChatBubble')?.click();
       }else if(action==='chat'){
-        const chatAlreadyOpen=chatPanels.some(p=>!p.hidden);
-        if(chatAlreadyOpen){
-          chatPanels.forEach(p=>p.hidden=true);
-          return;
-        }
-        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
-        clickHiddenTool('avpChatBubble','Chat Admin');
-      }else if(action==='ai'){
-        const aiAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpAiMode')?.hidden;
-        if(aiAlreadyOpen){
-          aiPanel.hidden=true;
-          return;
-        }
-        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'aihub'}}));
-        clickHiddenTool('avpAiChatBubble','AI Chat');
+        document.getElementById('avpChatBubble')?.click();
       }
     });
   });
