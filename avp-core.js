@@ -1,8 +1,5 @@
 (() => {
   const KEY_HISTORY='avp_learning_history_v2', KEY_BOOK='avp_bookmarks_v2';
-  const AVP_EMBEDDED=(function(){try{return new URLSearchParams(location.search).get('embed')==='1'||window.self!==window.top;}catch(e){return window.self!==window.top;}})();
-  if(AVP_EMBEDDED){document.documentElement.classList.add('avp-embedded-frame','avp-embedded-youtube');}
-
   const IGNORE=new Set(['auth.html','admin.html','privacy.html','terms.html','disclaimer.html','open-source.html','lienhe.html','gioithieu.html']);
   const page=location.pathname.split('/').pop()||'index.html';
   const title=(document.querySelector('h1')?.textContent||document.title.split('|')[0]||page).trim();
@@ -84,7 +81,6 @@
   `;
 
   document.body.appendChild(launcher);
-  if(AVP_EMBEDDED){launcher.hidden=true;launcher.style.display='none';}
 
   const fab=launcher.querySelector('#avpEdgeMain');
   const edgeMenu=launcher.querySelector('#avpEdgeMenu');
@@ -104,7 +100,6 @@
     <span class="avp-edge-mini-body"></span>
   `;
   document.body.appendChild(mini);
-  if(AVP_EMBEDDED){mini.hidden=true;mini.style.display='none';}
 
   let miniTimer=null;
   let miniDetail=null;
@@ -548,27 +543,69 @@
     return false;
   }
 
+
+  /* =========================================================
+     LOGIN GATE — AVP quick menu
+     Hỏi AI / Từ điển Excel / Cộng đồng / Chat Admin
+     Khách vẫn xem/học các phần công khai khác bình thường.
+     ========================================================= */
+  const AVP_LOGIN_REQUIRED_ACTIONS=new Set(['ai','dictionary','community','chat']);
+
+  async function avpGetSignedInUser(){
+    let sb=window.avpSupabase||window.supabaseClient||window.sb||window._supabase||null;
+
+    /* supabase-config/auth có thể load chậm hơn avp-core một chút. */
+    if(!sb?.auth){
+      for(let i=0;i<12 && !sb?.auth;i++){
+        await new Promise(r=>setTimeout(r,80));
+        sb=window.avpSupabase||window.supabaseClient||window.sb||window._supabase||null;
+      }
+    }
+    if(!sb?.auth) return null;
+
+    try{
+      const {data}=await sb.auth.getSession();
+      if(data?.session?.user) return data.session.user;
+    }catch(_){}
+
+    try{
+      const {data,error}=await sb.auth.getUser();
+      if(!error && data?.user) return data.user;
+    }catch(_){}
+
+    return null;
+  }
+
+  async function avpRequireLoginForEdgeAction(action){
+    if(!AVP_LOGIN_REQUIRED_ACTIONS.has(action)) return true;
+
+    const user=await avpGetSignedInUser();
+    if(user) return true;
+
+    try{
+      sessionStorage.setItem('avp_login_return_to',location.href);
+      sessionStorage.setItem('avp_login_return_action',action);
+    }catch(_){}
+
+    toast('Vui lòng đăng nhập để sử dụng tính năng này');
+    setTimeout(()=>{ window.location.href='auth.html'; },260);
+    return false;
+  }
+
   launcher.querySelectorAll('[data-edge-action]').forEach(btn=>{
     btn.addEventListener('click',async e=>{
       e.preventDefault();
       e.stopPropagation();
 
       const action=btn.dataset.edgeAction;
-      hideMiniPreview();
-      setEdgeMenu(false);
 
-      const next=location.pathname.split('/').pop()||'index.html';
-      if(window.AVPAccess&&typeof window.AVPAccess.requireLogin==='function'){
-        const user=await window.AVPAccess.requireLogin({next});
-        if(!user){
-          toast('Đăng nhập để dùng Hỏi AI, Từ điển, Cộng đồng và Chat Admin');
-          return;
-        }
-      }else{
-        toast('Đăng nhập để dùng tính năng này');
-        location.href='auth.html?next='+encodeURIComponent(next);
+      if(!(await avpRequireLoginForEdgeAction(action))){
+        setEdgeMenu(false);
         return;
       }
+
+      hideMiniPreview();
+      setEdgeMenu(false);
 
       const aiPanel=document.getElementById('avpAiChatPanel');
       const chatPanels=[
