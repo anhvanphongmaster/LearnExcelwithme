@@ -1,280 +1,64 @@
 
-:root{
-  --pyt-green:#217346;
-  --pyt-green-dark:#185c37;
-  --pyt-text:#173f2a;
-  --pyt-muted:#6f8076;
-  --pyt-line:#d7e7dd;
-  --pyt-soft:#f3faf6;
-  --pyt-white:#fff;
-}
+.pyt-page{max-width:920px;margin:0 auto;padding:16px 16px 40px;font-family:system-ui,Arial,sans-serif;color:#173f2a}
+.pyt-back a{color:#217346;text-decoration:none;font-weight:700;font-size:14px}
+.pyt-hero{background:linear-gradient(135deg,#0f5132,#1b6b45 55%,#2a9a63);color:#fff;border-radius:18px;padding:20px 18px;margin:12px 0 14px;box-shadow:0 12px 32px rgba(15,81,50,.28)}
+.pyt-kicker{margin:0;font-size:11px;font-weight:800;letter-spacing:.08em;color:rgba(255,255,255,.85)}
+.pyt-hero h1{margin:8px 0 6px;font-size:clamp(22px,4vw,28px);font-weight:800;color:#fff}
+.pyt-sub{margin:0 0 14px;font-size:13.5px;line-height:1.45;color:rgba(255,255,255,.92)}
+.pyt-files{display:flex;flex-wrap:wrap;gap:8px}
+.pyt-file-alt{display:inline-block;background:#fff;color:#0f5132!important;text-decoration:none;font-weight:800;font-size:12.5px;border-radius:999px;padding:10px 14px}
+.pyt-section-title{margin:18px 0 10px;font-size:13px;font-weight:800;color:#5f7268;letter-spacing:.04em;text-transform:uppercase}
+.pyt-split{display:grid;grid-template-columns:2fr 1fr;gap:12px;align-items:stretch;margin-bottom:8px}
+.pyt-split-main{display:flex;flex-direction:column;gap:10px;min-width:0}
+.pyt-side-box{height:100%;box-sizing:border-box;background:#f3faf6;border:1px solid #c5e6d1;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;position:sticky;top:12px}
+.pyt-side-clean{background:#f5f8fc;border-color:#c5d4e8}
+.pyt-side-svg{width:100%;height:auto;display:block;border-radius:12px}
+.pyt-side-label{margin:0;font-size:11px;font-weight:800;color:#5f7268;letter-spacing:.04em;text-transform:uppercase}
+.pyt-side-box strong{font-size:16px;color:#145a32}
+.pyt-side-clean strong{color:#1a5276}
+.pyt-side-desc{margin:0;font-size:12px;color:#5f7268;line-height:1.45}
+.pyt-side-list{margin:0;padding-left:18px;font-size:12px;color:#4d6356;line-height:1.55;flex:1}
+.pyt-dl-block{display:block;text-align:center;background:#1b6b45;color:#fff!important;text-decoration:none;font-weight:800;font-size:13px;border-radius:12px;padding:12px 10px;margin-top:auto}
+.pyt-side-clean .pyt-dl-block{background:#1a5276}
+.pyt-card{background:#fff;border:1px solid #e8f0eb;border-radius:14px;padding:14px 16px}
+.pyt-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.pyt-num{font-size:12px;font-weight:900;color:#217346;background:#e8f5ec;border-radius:8px;padding:3px 8px}
+.pyt-badge{font-size:11px;font-weight:800;border-radius:999px;padding:3px 8px}
+.pyt-badge.ok{background:#d5f5e3;color:#145a32}
+.pyt-badge.soon{background:#f0e6c8;color:#7d6608}
+.pyt-card h2{margin:0 0 6px;font-size:16px}
+.pyt-card p{margin:0 0 10px;font-size:13px;color:#5f7268;line-height:1.4}
+.pyt-yt{display:inline-flex;align-items:center;gap:8px;background:#ff0000;color:#fff!important;text-decoration:none;font-weight:800;font-size:13px;border-radius:999px;padding:9px 14px}
+.pyt-muted{font-size:12px;color:#8a9690}
+@media(max-width:720px){.pyt-split{grid-template-columns:1fr}.pyt-side-box{position:static}}
 
-*{box-sizing:border-box}
 
-.pyt-page{
-  width:min(1080px,calc(100% - 28px));
-  margin:16px auto 52px;
-  color:var(--pyt-text);
-  font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;
-}
-
-.pyt-context{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:9px;
-  color:#7e8c84;
-  font-size:9px;
-}
-.pyt-context a{color:var(--pyt-green);font-weight:900;text-decoration:none}
-
-.pyt-hero{
-  padding:20px 22px;
-  border:1px solid #cfe4d6;
-  border-radius:18px;
-  background:linear-gradient(135deg,#f8fcf9,#edf8f1);
-}
-.pyt-kicker,.pyt-eyebrow{
-  color:var(--pyt-green);
-  font-size:8px;
-  font-weight:950;
-  letter-spacing:.11em;
-}
-.pyt-hero h1{margin:4px 0 5px;font-size:clamp(27px,4vw,38px)}
-.pyt-hero p{max-width:780px;margin:0;color:var(--pyt-muted);font-size:11px;line-height:1.55}
-
-.pyt-library{margin-top:14px}
-.pyt-section-head{
-  display:flex;align-items:end;justify-content:space-between;gap:16px;
-  margin-bottom:9px;padding:0 2px;
-}
-.pyt-section-head h2{margin:3px 0 0;font-size:18px}
-.pyt-count{
-  padding:6px 9px;border:1px solid #cfe2d6;border-radius:999px;
-  background:#f5faf7;color:var(--pyt-green);font-size:8px
-}
-
-.pyt-project-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px;
-}
-.pyt-project-card{
-  display:grid;
-  grid-template-columns:120px minmax(0,1fr) auto;
-  gap:13px;align-items:center;
-  width:100%;padding:12px;
-  border:1px solid var(--pyt-line);border-radius:16px;
-  background:#fff;color:var(--pyt-text);text-align:left;cursor:pointer;
-  transition:transform .2s cubic-bezier(.22,1,.36,1),border-color .2s ease,box-shadow .2s ease;
-}
-.pyt-project-card.is-selected{border-color:#9cc9ac;box-shadow:0 7px 18px rgba(33,115,70,.08)}
-.pyt-project-cover{
-  overflow:hidden;border-radius:12px;background:var(--pyt-soft)
-}
-.pyt-project-cover svg{display:block;width:100%;height:auto}
-.pyt-project-card-copy{min-width:0}
-.pyt-project-card-copy>span{color:var(--pyt-green);font-size:7px;font-weight:950;letter-spacing:.08em}
-.pyt-project-card h3{margin:3px 0;font-size:14px}
-.pyt-project-card p{margin:0;color:var(--pyt-muted);font-size:8px;line-height:1.4}
-.pyt-project-progress{height:4px;margin:7px 0 3px;border-radius:999px;background:#edf3ef;overflow:hidden}
-.pyt-project-progress i{display:block;height:100%;background:var(--pyt-green)}
-.pyt-project-card small{color:#7e8d84;font-size:7px}
-.pyt-project-card>b{color:var(--pyt-green);font-size:8px;white-space:nowrap}
-
-.pyt-workspace{
-  margin-top:14px;
-  overflow:hidden;
-  border:1px solid var(--pyt-line);
-  border-radius:20px;
-  background:#fff;
-  box-shadow:0 10px 28px rgba(22,72,43,.05);
-}
-.pyt-workspace-head{
-  display:flex;justify-content:space-between;gap:18px;align-items:center;
-  padding:18px 20px;
-}
-.pyt-workspace-head h2{margin:3px 0 3px;font-size:21px}
-.pyt-workspace-head p{max-width:720px;margin:0;color:var(--pyt-muted);font-size:9px;line-height:1.5}
-.pyt-workspace-status{
-  min-width:76px;padding:9px;border-radius:12px;background:var(--pyt-soft);text-align:center
-}
-.pyt-workspace-status strong{display:block;color:var(--pyt-green);font-size:17px}
-.pyt-workspace-status span{font-size:7px;color:#74847a}
-
-.pyt-tabs{
-  display:flex;gap:6px;padding:9px 18px;
-  border-top:1px solid #e8efeb;border-bottom:1px solid #e8efeb;
-  background:#fbfdfb;overflow:auto
-}
-.pyt-tab{
-  flex:0 0 auto;padding:8px 11px;border:1px solid #cfe2d6;border-radius:999px;
-  background:#fff;color:#456355;font-size:8px;font-weight:900;cursor:pointer
-}
-.pyt-tab.is-active{
-  border-color:var(--pyt-green);background:var(--pyt-green);color:#fff
-}
-
-.pyt-tab-panel{display:none;padding:18px}
-.pyt-tab-panel.is-active{display:block;animation:pytPanelIn .24s cubic-bezier(.22,1,.36,1)}
-@keyframes pytPanelIn{from{opacity:.35;transform:translateY(6px)}to{opacity:1;transform:none}}
-
-.pyt-overview-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);gap:12px}
-.pyt-overview-main,.pyt-shared-files{
-  padding:16px;border:1px solid #dfebe3;border-radius:16px;background:#fbfdfb
-}
-.pyt-overview-main h3,.pyt-shared-files h3{margin:4px 0 5px;font-size:15px}
-.pyt-overview-main>p{margin:0;color:var(--pyt-muted);font-size:9px;line-height:1.55}
-
-.pyt-roadmap{display:grid;grid-template-columns:1fr 34px 1fr;align-items:center;margin-top:14px}
-.pyt-roadmap>i{height:2px;background:#bdd9c7}
-.pyt-roadmap button{
-  display:grid;grid-template-columns:30px 1fr auto;gap:9px;align-items:center;
-  min-width:0;padding:10px;border:1px solid #cfe2d6;border-radius:13px;
-  background:#fff;color:var(--pyt-text);text-align:left;cursor:pointer
-}
-.pyt-roadmap button>span{
-  width:30px;height:30px;display:grid;place-items:center;border-radius:9px;
-  background:#eaf6ef;color:var(--pyt-green);font-size:8px;font-weight:950
-}
-.pyt-roadmap strong,.pyt-roadmap small{display:block}
-.pyt-roadmap strong{font-size:9px}
-.pyt-roadmap small{margin-top:2px;color:#7d8b83;font-size:7px}
-.pyt-roadmap b{color:var(--pyt-green);font-size:8px}
-
-.pyt-shared-files{background:#f7fbf8}
-.pyt-shared-files>a{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  margin-top:7px;padding:9px 10px;border:1px solid #d4e6db;border-radius:10px;
-  background:#fff;color:var(--pyt-text);text-decoration:none;font-size:8px
-}
-.pyt-shared-files>a b{color:var(--pyt-green);font-size:7px}
-
-.pyt-vote-box{
-  display:flex;justify-content:space-between;align-items:center;gap:14px;
-  margin-top:12px;padding:12px 14px;border:1px solid #dfeae3;border-radius:14px;background:#fff
-}
-.pyt-vote-box strong{display:block;margin-top:3px;font-size:10px}
-.pyt-chvote{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
-.pyt-chvote-btn{
-  padding:7px 9px;border:1px solid #c7dfd0;border-radius:999px;
-  background:#fff;color:var(--pyt-green-dark);font-size:8px;font-weight:900;cursor:pointer
-}
-.pyt-chvote-btn:hover,.pyt-chvote-btn.is-on{border-color:var(--pyt-green);background:#eef8f2}
-.pyt-chvote-st{width:100%;font-size:7px;color:#78877f;text-align:right}
-
-.pyt-phase-layout{
-  display:grid;grid-template-columns:minmax(0,1.55fr) minmax(290px,.45fr);
-  gap:14px;align-items:start
-}
-.pyt-phase-title{margin-bottom:9px}
-.pyt-phase-title h3{margin:3px 0;font-size:17px}
-.pyt-phase-title p{margin:0;color:var(--pyt-muted);font-size:8px}
-
-.pyt-lessons{min-width:0}
-.pyt-lesson{
-  display:grid;grid-template-columns:42px minmax(0,1fr) auto;
-  gap:11px;align-items:center;
-  margin-bottom:8px;padding:11px;
-  border:1px solid #dce9e1;border-radius:13px;background:#fff
-}
-.pyt-lesson-num{
-  width:40px;height:40px;display:grid;place-items:center;border-radius:11px;
-  background:#eaf6ef;color:var(--pyt-green);font-size:10px;font-weight:950
-}
-.pyt-ready,.pyt-soon{font-size:7px;font-weight:950;letter-spacing:.07em}
-.pyt-ready{color:var(--pyt-green)}
-.pyt-soon{color:#8a6c28}
-.pyt-lesson h4{margin:2px 0 3px;font-size:12px}
-.pyt-lesson p{margin:0;color:var(--pyt-muted);font-size:8px;line-height:1.4}
-.pyt-video-btn{
-  padding:8px 10px;border-radius:9px;background:var(--pyt-green)!important;
-  color:#fff!important;text-decoration:none;font-size:8px;font-weight:900;white-space:nowrap
-}
-.pyt-video-btn:hover{background:var(--pyt-green-dark)!important}
-.pyt-wait{
-  padding:7px 8px;border-radius:9px;background:#f2f5f3;color:#89958e;
-  font-size:7px;font-weight:850;white-space:nowrap
-}
-
-.pyt-file-feature{
-  position:sticky;top:12px;
-  padding:13px;border:1px solid #bcdac7;border-radius:16px;
-  background:linear-gradient(180deg,#f5fbf7,#edf8f1);
-  box-shadow:0 10px 24px rgba(33,115,70,.08)
-}
-.pyt-file-visual{
-  overflow:hidden;margin-bottom:10px;border-radius:12px;border:1px solid #cfe2d6;background:#fff
-}
-.pyt-file-visual svg{display:block;width:100%;height:auto}
-.pyt-file-label{
-  display:block;color:var(--pyt-green);font-size:7px;font-weight:950;letter-spacing:.09em
-}
-.pyt-file-feature h3{margin:4px 0 4px;font-size:15px}
-.pyt-file-feature>p{margin:0;color:var(--pyt-muted);font-size:8px;line-height:1.45}
-.pyt-file-feature ul{margin:9px 0;padding-left:17px;color:#52685b;font-size:8px;line-height:1.6}
-.pyt-download-main{
-  display:block;padding:11px 12px;border-radius:11px;
-  background:var(--pyt-green)!important;color:#fff!important;text-decoration:none
-}
-.pyt-download-main span,.pyt-download-main small{display:block}
-.pyt-download-main span{font-size:10px;font-weight:950}
-.pyt-download-main small{margin-top:2px;color:rgba(255,255,255,.78);font-size:7px}
-.pyt-download-main:hover{background:var(--pyt-green-dark)!important}
-
-.pyt-future-note{
-  display:flex;align-items:center;gap:10px;margin-top:11px;padding:10px 12px;
-  border:1px dashed #cfe1d6;border-radius:12px;background:#fafcfb
-}
-.pyt-future-note>span{
-  flex:0 0 auto;padding:5px 7px;border-radius:8px;background:#edf7f1;
-  color:var(--pyt-green);font-size:7px;font-weight:950
-}
-.pyt-future-note p{margin:0;color:#75847c;font-size:8px;line-height:1.45}
-
-/* Embedded in Practice Hub: no duplicate site-level chrome. */
-html.pyt-embedded body{margin:0!important;padding:0!important;background:transparent!important}
-html.pyt-embedded .top-simple-nav,
-html.pyt-embedded .pyt-context{display:none!important}
-html.pyt-embedded .pyt-page{width:100%!important;margin:0!important;padding:0 2px 18px!important}
-
-/* Gentle local interaction only. */
-@media(hover:hover) and (pointer:fine){
-  .pyt-project-card:hover,.pyt-lesson:hover,.pyt-roadmap button:hover{
-    transform:translateY(-2px);border-color:#a9cfb7;
-    box-shadow:0 8px 18px rgba(22,72,43,.07)
+/* === Hover lift (local backup) === */
+@media (hover:hover) and (pointer:fine){
+  .pyt-card, .pyt-side-box, .pyt-hero, .pyt-yt, .pyt-files a, .pyt-file-alt, .pyt-back, .pyt-dl-block a{
+    transition: transform .28s cubic-bezier(.22,1,.36,1), box-shadow .28s ease, filter .2s ease;
   }
-  .pyt-shared-files>a:hover{border-color:#a9cfb7;background:#f8fcf9}
+  .pyt-card:hover, .pyt-side-box:hover{
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 14px 32px rgba(15,42,28,.12);
+  }
+  .pyt-yt:hover, .pyt-files a:hover, .pyt-file-alt:hover, .pyt-dl-block a:hover, .pyt-back:hover{
+    transform: translateY(-3px) scale(1.03);
+    filter: brightness(1.06);
+    box-shadow: 0 10px 22px rgba(0,0,0,.16);
+  }
+  .pyt-hero:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(15,42,28,.18);
+  }
 }
 
-@media(max-width:820px){
-  .pyt-project-grid{grid-template-columns:1fr}
-  .pyt-overview-grid,.pyt-phase-layout{grid-template-columns:1fr}
-  .pyt-file-feature{position:static}
-}
-
-@media(max-width:620px){
-  .pyt-page{width:calc(100% - 18px);margin-top:10px}
-  .pyt-hero{padding:16px}
-  .pyt-project-card{grid-template-columns:86px minmax(0,1fr)}
-  .pyt-project-card>b{grid-column:2}
-  .pyt-workspace-head{align-items:flex-start}
-  .pyt-workspace-status{display:none}
-  .pyt-tabs{padding:8px 11px}
-  .pyt-tab-panel{padding:12px}
-  .pyt-overview-grid{grid-template-columns:1fr}
-  .pyt-roadmap{grid-template-columns:1fr;gap:6px}
-  .pyt-roadmap>i{width:2px;height:14px;margin:auto}
-  .pyt-vote-box{align-items:flex-start;flex-direction:column}
-  .pyt-chvote{justify-content:flex-start}
-  .pyt-chvote-st{text-align:left}
-  .pyt-lesson{grid-template-columns:38px minmax(0,1fr)}
-  .pyt-lesson-num{width:36px;height:36px}
-  .pyt-video-btn,.pyt-wait{grid-column:2;justify-self:start}
-  .pyt-future-note{align-items:flex-start}
-}
-
-@media(prefers-reduced-motion:reduce){
-  .pyt-tab-panel{animation:none}
-  .pyt-project-card,.pyt-lesson,.pyt-roadmap button{transition:none!important}
-}
+.pyt-hero{position:relative}
+.pyt-chvote{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px}
+.pyt-chvote-lab{width:100%;font-size:11px;font-weight:800;letter-spacing:.02em;color:rgba(255,255,255,.88)}
+.pyt-chvote-btn{border:0;border-radius:999px;padding:6px 10px;font-size:11.5px;font-weight:800;cursor:pointer;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.pyt-chvote-btn:hover{background:rgba(255,255,255,.28)}
+.pyt-chvote-btn.is-on{background:#fff;color:#0f5132}
+.pyt-chvote-btn:disabled{opacity:.7;cursor:default}
+.pyt-chvote-st{font-size:11px;color:rgba(255,255,255,.9);font-weight:700}
+@media(max-width:640px){.pyt-chvote-btn{width:100%;text-align:center}}
