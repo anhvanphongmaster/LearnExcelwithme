@@ -1,0 +1,54 @@
+/*! home-mini-bounce.css — desktop + mobile, thắng vá */
+.avp-practice-hub-cta{
+  overflow:visible !important;
+}
+.avp-practice-hub-badges{
+  overflow:visible !important;
+  perspective:200px !important;
+  z-index:8 !important;
+}
+.avp-mini-channel{
+  position:relative !important;
+  transform-style:preserve-3d !important;
+  transform-origin:50% 80% !important;
+  will-change:transform;
+  overflow:hidden !important;
+}
+.avp-mini-channel::after{
+  content:"" !important;
+  position:absolute !important;
+  inset:-30% !important;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.0) 40%,rgba(255,255,255,.9) 50%,rgba(255,255,255,0) 60%,transparent 72%) !important;
+  pointer-events:none !important;
+}
+.avp-mini-channel-tt{
+  animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) 0s infinite !important;
+}
+.avp-mini-channel-yt{
+  animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) .28s infinite !important;
+}
+.avp-mini-channel-grade{
+  animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) .56s infinite !important;
+}
+.avp-mini-channel-tt::after{
+  animation:avpMiniFlash 1.8s ease-in-out 0s infinite !important;
+}
+.avp-mini-channel-yt::after{
+  animation:avpMiniFlash 1.8s ease-in-out .28s infinite !important;
+}
+.avp-mini-channel-grade::after{
+  animation:avpMiniFlash 1.8s ease-in-out .56s infinite !important;
+}
+@keyframes avpMiniBounce{
+  0%,16%,100%{transform:translate3d(0,0,0) scale(1) rotateX(0) rotateY(0)}
+  30%{transform:translate3d(0,-8px,12px) scale(1.16) rotateX(18deg) rotateY(-12deg)}
+  44%{transform:translate3d(0,-2px,4px) scale(1.05) rotateX(-8deg) rotateY(8deg)}
+  56%{transform:translate3d(0,-6px,8px) scale(1.1) rotateX(10deg) rotateY(-6deg)}
+  72%{transform:translate3d(0,0,0) scale(1) rotateX(0) rotateY(0)}
+}
+@keyframes avpMiniFlash{
+  0%,20%{transform:translateX(-140%) rotate(18deg);opacity:0}
+  32%{opacity:1}
+  48%{transform:translateX(140%) rotate(18deg);opacity:.25}
+  49%,100%{opacity:0;transform:translateX(140%) rotate(18deg)}
+}

@@ -648,3 +648,14 @@ document.addEventListener("DOMContentLoaded", function(){
     el.textContent = "© 2026 Learn Excel with Anh Van Phong. Bảo lưu mọi quyền.";
   });
 });
+
+(function(){
+  try{
+    if(document.getElementById("avpMiniBounceCss"))return;
+    var l=document.createElement("link");
+    l.id="avpMiniBounceCss";
+    l.rel="stylesheet";
+    l.href="home-mini-bounce.css?v=20260831-desk";
+    document.head.appendChild(l);
+  }catch(e){}
+})();
