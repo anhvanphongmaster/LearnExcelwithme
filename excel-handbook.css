@@ -30,3 +30,164 @@ body{background:#f3f7f4}
 .hb-lightbox{position:fixed;z-index:10050;inset:0;display:grid;place-items:center;padding:30px;background:rgba(6,22,14,.86)}.hb-lightbox[hidden]{display:none}.hb-lightbox img{max-width:min(1200px,94vw);max-height:84vh;border-radius:10px;background:#fff;box-shadow:0 22px 70px rgba(0,0,0,.45)}.hb-lightbox button{position:fixed;right:22px;top:18px;width:40px;height:40px;border:1px solid rgba(255,255,255,.3);border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:24px;cursor:pointer}.hb-lightbox small{position:fixed;bottom:16px;color:rgba(255,255,255,.7);font-size:8px}
 @media(max-width:900px){.hb-layout{grid-template-columns:1fr}.hb-sidebar{position:static}.hb-mobile-toc{display:block;width:100%;padding:10px 12px;border:1px solid #c9dfd1;border-radius:10px;background:#fff;color:#185c37;font-size:9px;font-weight:950;text-align:left}.hb-toc{display:none;margin-top:6px}.hb-toc.is-open{display:block}.hb-process{grid-template-columns:1fr 1fr 1fr}}
 @media(max-width:650px){.hb-page{width:calc(100% - 18px);margin-top:9px}.hb-hero{grid-template-columns:78px minmax(0,1fr);gap:13px;padding:15px}.hb-cover{width:78px;height:104px}.hb-cover strong{font-size:24px}.hb-hero h1{font-size:27px}.hb-chapter{padding:14px}.hb-steps,.hb-rule-grid{grid-template-columns:1fr}.hb-formula{grid-template-columns:1fr}.hb-process{grid-template-columns:1fr}.hb-figure-pair{grid-template-columns:1fr}}
+
+
+/* =========================================================
+   V113 — Handbook book UX reset
+   ========================================================= */
+.hb-page{
+  width:min(1160px,calc(100% - 28px))!important;
+}
+.hb-hero{
+  grid-template-columns:112px minmax(0,1fr)!important;
+  padding:20px!important;
+  border-radius:18px!important;
+}
+.hb-cover{
+  width:112px!important;
+  height:148px!important;
+}
+.hb-layout{
+  grid-template-columns:228px minmax(0,1fr)!important;
+  gap:16px!important;
+}
+
+/* TOC: all neutral by default. Never show visited links as selected. */
+.hb-toc>a,
+.hb-toc>a:link,
+.hb-toc>a:visited{
+  position:relative!important;
+  background:#fff!important;
+  color:#344c3d!important;
+  border-left:3px solid transparent!important;
+  transition:background .15s ease,border-color .15s ease,color .15s ease!important;
+}
+.hb-toc>a:hover{
+  background:#f6faf7!important;
+  color:#185c37!important;
+}
+.hb-toc>a.is-active,
+.hb-toc>a.is-active:visited{
+  background:#edf8f1!important;
+  color:#185c37!important;
+  border-left-color:#217346!important;
+}
+.hb-toc>a.is-active span{
+  background:#217346!important;
+  color:#fff!important;
+}
+.hb-toc>a:not(.is-active) span{
+  background:#edf5f0!important;
+  color:#217346!important;
+}
+
+/* Book pages */
+.hb-chapter{
+  position:relative!important;
+  margin-bottom:18px!important;
+  padding:24px 26px 28px!important;
+  border:1px solid #d6e3da!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(90deg,rgba(33,115,70,.025) 0,rgba(33,115,70,.025) 1px,transparent 1px,transparent 100%),
+    #fff!important;
+  box-shadow:0 10px 24px rgba(24,72,45,.055)!important;
+}
+.hb-chapter::before{
+  content:"";
+  position:absolute;
+  left:0;top:18px;bottom:18px;width:4px;
+  border-radius:0 4px 4px 0;
+  background:#dcefe3;
+}
+.hb-chapter-head{
+  padding-bottom:14px!important;
+}
+.hb-chapter-head>span{
+  font-size:8px!important;
+}
+.hb-chapter-head h2{
+  font-size:24px!important;
+  line-height:1.2!important;
+}
+.hb-chapter-head p{
+  max-width:760px!important;
+  font-size:9px!important;
+  line-height:1.6!important;
+}
+
+/* Illustration treatment: look like a figure in a book, not a giant screenshot */
+.hb-figure{
+  margin:16px 0 4px!important;
+}
+.hb-figure button{
+  padding:10px!important;
+  border:1px solid #d8e4dc!important;
+  border-radius:12px!important;
+  background:#f7faf8!important;
+}
+.hb-figure img{
+  width:100%!important;
+  max-height:430px!important;
+  object-fit:contain!important;
+  background:#fff!important;
+  border-radius:7px!important;
+}
+.hb-figure figcaption{
+  margin:7px 4px 0!important;
+  font-size:8px!important;
+  line-height:1.5!important;
+}
+
+/* Reading blocks */
+.hb-note,.hb-tip,.hb-warning{
+  align-items:flex-start!important;
+  font-size:8.5px!important;
+}
+.hb-steps>div,.hb-rule-grid>div{
+  min-height:112px!important;
+}
+.hb-steps h3,.hb-rule-grid strong{
+  font-size:10px!important;
+}
+.hb-steps p,.hb-rule-grid p{
+  font-size:8px!important;
+}
+.hb-formula code{
+  font-size:9px!important;
+}
+.hb-formula span{
+  font-size:8.5px!important;
+}
+
+/* Page footer added by JS */
+.hb-page-foot-v113{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-top:18px;
+  padding-top:10px;
+  border-top:1px solid #edf2ef;
+  color:#859188;
+  font-size:7px;
+}
+.hb-page-foot-v113 b{
+  color:#217346;
+  font-size:8px;
+}
+
+/* Desktop TOC should remain readable and not dominate */
+@media(min-width:901px){
+  .hb-sidebar{top:68px!important}
+  .hb-toc{max-height:calc(100vh - 86px)!important;overflow:auto!important}
+}
+
+@media(max-width:900px){
+  .hb-layout{grid-template-columns:1fr!important}
+}
+@media(max-width:650px){
+  .hb-chapter{padding:17px 15px 20px!important}
+  .hb-chapter-head h2{font-size:20px!important}
+  .hb-figure img{max-height:none!important}
+}
