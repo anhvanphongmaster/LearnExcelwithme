@@ -1619,3 +1619,56 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   animation:none !important;
   transform:none !important;
 }
+
+
+/* Face + motion — chỉ ngoại hình */
+#avpEdgeLauncher.is-robot .avp-bot-eye{
+  position:absolute !important;
+  top:7px !important;
+  width:6px !important;
+  height:6px !important;
+  border-radius:50% !important;
+  background:#e8fff0 !important;
+}
+#avpEdgeLauncher.is-robot .avp-bot-head .avp-bot-eye:nth-of-type(1){
+  left:5px !important;
+  right:auto !important;
+}
+#avpEdgeLauncher.is-robot .avp-bot-head .avp-bot-eye:nth-of-type(2){
+  right:5px !important;
+  left:auto !important;
+}
+#avpEdgeLauncher.is-robot .avp-bot-mouth{
+  left:9px !important;
+  right:auto !important;
+  bottom:3px !important;
+  top:auto !important;
+}
+#avpEdgeLauncher.is-robot.is-walking .avp-bot-leg-l{
+  animation:avpBotStep 0.36s linear infinite !important;
+}
+#avpEdgeLauncher.is-robot.is-walking .avp-bot-leg-r{
+  animation:avpBotStep 0.36s linear infinite reverse !important;
+}
+#avpEdgeLauncher.is-robot.is-walking .avp-bot-arm-l{
+  animation:avpBotStep 0.36s linear infinite reverse !important;
+}
+#avpEdgeLauncher.is-robot.is-walking .avp-bot-arm-r{
+  animation:avpBotStep 0.36s linear infinite !important;
+}
+#avpEdgeLauncher.is-robot.is-greeting .avp-bot-arm-r{
+  animation:avpBotWaveHuman .55s ease-in-out infinite !important;
+}
+#avpEdgeLauncher.is-robot.is-lifted .avp-bot{
+  animation:avpWriggle .18s ease-in-out infinite !important;
+}
+@media (prefers-reduced-motion:reduce){
+  #avpEdgeLauncher.is-robot.is-walking .avp-bot-leg-l,
+  #avpEdgeLauncher.is-robot.is-walking .avp-bot-leg-r,
+  #avpEdgeLauncher.is-robot.is-walking .avp-bot-arm-l,
+  #avpEdgeLauncher.is-robot.is-walking .avp-bot-arm-r,
+  #avpEdgeLauncher.is-robot.is-greeting .avp-bot-arm-r,
+  #avpEdgeLauncher.is-robot.is-lifted .avp-bot{
+    animation-duration:.36s !important;
+  }
+}
