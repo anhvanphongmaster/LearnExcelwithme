@@ -55,3 +55,64 @@
 }
 @media(max-width:820px){.pw-source-switch{grid-template-columns:1fr}.pw-source-links{grid-template-columns:1fr 1fr}}
 @media(max-width:640px){.pw-page{width:calc(100% - 18px);margin-top:10px}.pw-hero{padding:16px}.pw-hub-grid{grid-template-columns:1fr}.pw-workspace{padding:11px}.pw-section-head{align-items:flex-start;flex-direction:column}.pw-flow-hint{flex-wrap:wrap}.pw-callout{flex-direction:column}.pw-callout span{text-align:left}}
+
+
+/* =========================================================
+   V104 — Shared library wayfinding
+   ========================================================= */
+.pw-library-map{
+  display:grid;
+  grid-template-columns:1fr auto 1fr auto 1fr;
+  gap:10px;
+  align-items:center;
+  margin:12px 0;
+  padding:12px;
+  border:1px solid #cfe1d6;
+  border-radius:15px;
+  background:#f8fcf9;
+}
+.pw-library-map>i{
+  color:#9aae9f;
+  font-style:normal;
+  font-size:14px;
+  font-weight:950;
+}
+.pw-library-map-step{
+  display:grid;
+  grid-template-columns:30px minmax(0,1fr);
+  gap:9px;
+  align-items:center;
+  min-width:0;
+}
+.pw-library-map-step>b{
+  width:30px;height:30px;
+  display:grid;place-items:center;
+  border-radius:9px;
+  background:#217346;
+  color:#fff;
+  font-size:9px;
+}
+.pw-library-map-step span,
+.pw-library-map-step strong,
+.pw-library-map-step small{
+  display:block;
+}
+.pw-library-map-step strong{
+  color:#173f2a;
+  font-size:9px;
+}
+.pw-library-map-step small{
+  margin-top:2px;
+  color:#74857b;
+  font-size:7px;
+  line-height:1.35;
+}
+@media(max-width:700px){
+  .pw-library-map{
+    grid-template-columns:1fr;
+  }
+  .pw-library-map>i{
+    transform:rotate(90deg);
+    justify-self:center;
+  }
+}

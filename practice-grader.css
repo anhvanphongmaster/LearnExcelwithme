@@ -421,19 +421,89 @@ body.dark-mode .pg-result-head button{background:#17271e;border-color:#30483a;co
 
 
 /* =========================================================
-   V102 — Auto Grading lesson list
+   V104 — Auto Grading Library
    ========================================================= */
-.pg-lesson-frame{
+.pg-library-selector-v104{
+  padding:14px!important;
   border:1px solid #d7e7dd!important;
   border-radius:16px!important;
-  background:#fff!important;
-  overflow:hidden!important;
+  background:#f9fcfa!important;
+  margin-bottom:10px!important;
 }
-.pg-lesson-scroll{
-  max-height:none!important;
+.pg-library-selector-title-v104{
+  margin-bottom:10px!important;
+}
+.pg-library-selector-title-v104 span,
+.pg-library-selector-title-v104 strong{
+  display:block!important;
+}
+.pg-library-selector-title-v104 span{
+  color:#217346!important;
+  font-size:7px!important;
+  font-weight:950!important;
+  letter-spacing:.10em!important;
+}
+.pg-library-selector-title-v104 strong{
+  margin-top:3px!important;
+  color:#173f2a!important;
+  font-size:11px!important;
+}
+.pg-topic-tabs{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:7px!important;
   overflow:visible!important;
 }
-.pg-topic-panels{
+.pg-topic-tabs button{
+  min-height:36px!important;
+  padding:8px 11px!important;
+  border:1px solid #cadfd1!important;
+  border-radius:999px!important;
+  background:#fff!important;
+  color:#315743!important;
+  font-size:8px!important;
+  font-weight:900!important;
+}
+.pg-topic-tabs button.active{
+  border-color:#217346!important;
+  background:#217346!important;
+  color:#fff!important;
+}
+.pg-engine-filter{
+  margin-top:8px!important;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:6px!important;
+}
+.pg-engine-filter button{
+  min-height:31px!important;
+  padding:6px 9px!important;
+  border-radius:9px!important;
+  font-size:7px!important;
+}
+.pg-engine-summary{
+  margin-top:8px!important;
+  color:#75857c!important;
+  font-size:8px!important;
+}
+.pg-library-frame-v104{
+  overflow:hidden!important;
+  border:1px solid #d7e7dd!important;
+  border-radius:18px!important;
+  background:#fff!important;
+}
+.pg-library-frame-v104 .pg-lesson-frame-head{
+  padding:14px 16px!important;
+  background:linear-gradient(180deg,#fbfdfb,#f5faf7)!important;
+  border-bottom:1px solid #e3ede7!important;
+}
+.pg-library-frame-v104 .pg-lesson-scroll{
+  max-height:640px!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  scrollbar-gutter:stable!important;
+}
+.pg-library-frame-v104 .pg-topic-panels{
   display:grid!important;
   grid-template-columns:1fr!important;
   gap:9px!important;
@@ -441,88 +511,67 @@ body.dark-mode .pg-result-head button{background:#17271e;border-color:#30483a;co
 }
 .pg-card.pg-card-v9{
   padding:14px!important;
-  border:1px solid #dce9e1!important;
+  border:1px solid #dce8e1!important;
   border-radius:14px!important;
   background:#fff!important;
-  box-shadow:none!important;
-}
-.pg-card-topline{
-  display:flex!important;
-  justify-content:space-between!important;
-  gap:10px!important;
-  align-items:center!important;
-}
-.pg-card-index{
-  color:#217346!important;
-  font-size:9px!important;
-  font-weight:950!important;
-}
-.pg-card-main{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) auto!important;
-  gap:12px!important;
-  align-items:start!important;
-  margin-top:8px!important;
-}
-.pg-card-copy h3{
-  margin:3px 0!important;
-  font-size:13px!important;
-  line-height:1.35!important;
-}
-.pg-card-copy p{
-  margin:0!important;
-  color:#718179!important;
-  font-size:8px!important;
-  line-height:1.45!important;
-}
-.pg-card-rules{
-  display:flex!important;
-  flex-wrap:wrap!important;
-  gap:5px!important;
-  margin:9px 0!important;
-}
-.pg-card-rules span{
-  padding:4px 7px!important;
-  border-radius:999px!important;
-  background:#f1f6f3!important;
-  color:#607268!important;
-  font-size:7px!important;
 }
 .pg-card-actions{
-  display:flex!important;
-  flex-wrap:wrap!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
   gap:6px!important;
   margin-top:10px!important;
 }
 .pg-card-btn{
-  min-height:36px!important;
-  padding:8px 10px!important;
+  min-height:38px!important;
   border-radius:9px!important;
-  font-size:8px!important;
+  font-size:7.5px!important;
   font-weight:950!important;
 }
 .pg-card-btn.download{
-  order:1!important;
-  border-color:#217346!important;
   background:#217346!important;
+  border-color:#217346!important;
   color:#fff!important;
   box-shadow:0 5px 12px rgba(33,115,70,.14)!important;
 }
-.pg-card-btn.review{order:2!important}
-.pg-card-btn.submit{
-  order:3!important;
-  border-color:#9ec9ad!important;
+.pg-card-btn.review{
   background:#edf8f1!important;
+  border-color:#bdd9c6!important;
   color:#185c37!important;
 }
-.pg-card-foot{
-  margin-top:8px!important;
-  padding-top:8px!important;
-  border-top:1px solid #edf2ef!important;
-  color:#829087!important;
-  font-size:7px!important;
+.pg-card-btn.submit{
+  background:#fff!important;
+  border:1px solid #217346!important;
+  color:#185c37!important;
 }
-@media(max-width:650px){
-  .pg-card-main{grid-template-columns:1fr!important}
-  .pg-card-actions{display:grid!important;grid-template-columns:1fr!important}
+.pg-secondary-zone-v104{
+  margin-top:14px!important;
+  padding:12px!important;
+  border:1px solid #e0e9e3!important;
+  border-radius:16px!important;
+  background:#fafcfb!important;
+}
+.pg-secondary-head-v104{
+  margin-bottom:9px!important;
+}
+.pg-secondary-head-v104 span,
+.pg-secondary-head-v104 strong{
+  display:block!important;
+}
+.pg-secondary-head-v104 span{
+  color:#217346!important;
+  font-size:7px!important;
+  font-weight:950!important;
+  letter-spacing:.1em!important;
+}
+.pg-secondary-head-v104 strong{
+  margin-top:2px!important;
+  font-size:10px!important;
+  color:#66786d!important;
+}
+.pg-secondary-zone-v104 .pg-progress-panel,
+.pg-secondary-zone-v104 .pg-daily-board{
+  margin-top:8px!important;
+}
+@media(max-width:680px){
+  .pg-card-actions{grid-template-columns:1fr!important}
 }

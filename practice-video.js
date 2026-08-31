@@ -2096,7 +2096,7 @@
 
     const ico = '<svg class="pv-tt-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><path fill="currentColor" d="M16.5 3c.4 2.4 1.9 4.1 4.2 4.4v2.3c-1.5.1-2.9-.4-4.2-1.3v6.5c0 3.4-2.7 6.1-6.1 6.1S4.3 18.3 4.3 14.9s2.7-6.1 6.1-6.1c.3 0 .6 0 .9.1v2.5c-.3-.1-.6-.2-.9-.2-2 0-3.6 1.6-3.6 3.7s1.6 3.7 3.6 3.7 3.6-1.6 3.6-3.7V3h2.5z"/></svg>';
     const tkBtn = tk
-      ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer" title="Mở video trên TikTok">' + ico + ' Mở TikTok ↗</a>'
+      ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer" title="Mở video trên TikTok">' + ico + ' XEM VIDEO TIKTOK ↗</a>'
       : '';
     const downloadHref = practiceStaticHref(item, fileName);
     const isRemoteDownload = /^https?:\/\//i.test(downloadHref);
@@ -2108,6 +2108,7 @@
           : ' download="' + escapeHtml(fileName) + '"') +
         ' title="' + escapeHtml(fileName) + '">TẢI FILE EXCEL ↓</a>'
       : '';
+    const guideBtn = '<a class="pv-guide-link" href="practice-guides.html?lesson=' + encodeURIComponent(item.id) + '">XEM HƯỚNG DẪN →</a>';
     const tags = (item.filterTags || [item.category]).join(" ");
     const hasVideo = !!tk;
     let voteRowHtml;
@@ -2147,7 +2148,7 @@
           skill +
           voteRowHtml +
         "</div>" +
-        '<div class="pv-a">' + tkBtn + fileBtn + "</div>" +
+        '<div class="pv-a">' + tkBtn + guideBtn + fileBtn + "</div>" +
       "</article>"
     );
   }
@@ -2187,97 +2188,167 @@ grid.addEventListener("click", async function (e) {
   function render(filter, query) {
     const grid = document.getElementById("pvGrid");
     if (!grid) return;
+
     const q = (query || "").trim().toLowerCase();
     const f = filter || "all";
-    const focusOne = f !== "all";
 
-    const items = [];
-    videoPracticeData.forEach(function (item) {
-      if (f !== "all") {
-        const cat = String(item.category || "");
-        // exact or contains match for main topic
-        if (cat !== f && cat.toLowerCase().indexOf(String(f).toLowerCase()) === -1) return;
+    const allItems = videoPracticeData.slice();
+    const categoryMap = {};
+    const categoryOrder = [];
+
+    allItems.forEach(function(item){
+      const g = item.category || "Khác";
+      if(!categoryMap[g]){
+        categoryMap[g] = [];
+        categoryOrder.push(g);
       }
-      if (q) {
-        const hay = (item.title + " " + (item.skill || "") + " " + (item.level || "") + " " + (item.category || "")).toLowerCase();
-        if (hay.indexOf(q) === -1) return;
-      }
-      items.push(item);
+      categoryMap[g].push(item);
     });
 
-    if (!items.length) {
-      grid.innerHTML = '<p class="pv-empty">Không tìm thấy bài phù hợp.</p>';
+    // Search always returns one flat result list across all topics.
+    if(q){
+      const matches = allItems.filter(function(item){
+        const hay = (
+          (item.title || "") + " " +
+          (item.skill || "") + " " +
+          (item.level || "") + " " +
+          (item.category || "")
+        ).toLowerCase();
+        return hay.indexOf(q)!==-1;
+      }).sort(function(a,b){ return (a.number||0)-(b.number||0); });
+
+      if(!matches.length){
+        grid.innerHTML =
+          '<section class="pv-library-view">' +
+            '<div class="pv-library-head">' +
+              '<div><span class="pv-library-kicker">KẾT QUẢ TÌM KIẾM</span><h2>Không tìm thấy bài phù hợp</h2></div>' +
+              '<span class="pv-library-total">0 bài</span>' +
+            '</div>' +
+            '<div class="pv-empty">Thử từ khóa khác hoặc chọn một chủ đề ở phía trên.</div>' +
+          '</section>';
+        return;
+      }
+
+      let html =
+        '<section class="pv-library-view">' +
+          '<div class="pv-library-head">' +
+            '<div><span class="pv-library-kicker">KẾT QUẢ TÌM KIẾM</span><h2>' + matches.length + ' bài phù hợp</h2></div>' +
+            '<span class="pv-library-total">' + matches.length + ' bài</span>' +
+          '</div>' +
+          '<div class="pv-library-scroll"><div class="pv-library-list">';
+
+      matches.forEach(function(item,idx){
+        html += cardHTML(item, idx+1, q);
+      });
+
+      html += '</div></div></section>';
+      grid.innerHTML=html;
       bindVotes();
       return;
     }
 
-    const groups = {};
-    const order = [];
-    items.forEach(function (item) {
-      const g = item.category || "Khác";
-      if (!groups[g]) { groups[g] = []; order.push(g); }
-      groups[g].push(item);
-    });
+    // "All" becomes a clean topic directory instead of rendering five long lists at once.
+    if(f==="all"){
+      let total=allItems.length;
+      let html =
+        '<section class="pv-library-overview">' +
+          '<div class="pv-library-head">' +
+            '<div><span class="pv-library-kicker">THƯ VIỆN BÀI TẬP</span><h2>Chọn một chủ đề để xem danh sách bài</h2>' +
+            '<p>Mỗi chủ đề mở riêng 20 bài trong một khung cuộn duy nhất. Không còn nhiều khung scroll cùng lúc.</p></div>' +
+            '<span class="pv-library-total">' + total + ' bài</span>' +
+          '</div>' +
+          '<div class="pv-topic-directory">';
 
-    let html = '<div class="pv-groups' + (focusOne ? " pv-groups-focus" : "") + '">';
-    let firstHitId = null;
-    order.forEach(function (g) {
-      const list = groups[g].slice().sort(function (a, b) { return (a.number || 0) - (b.number || 0); });
-      const tone = panelTone(g);
-      const title = String(g).toUpperCase();
-      html += '<section class="pv-panel pv-panel-v102 ' + tone + (focusOne ? " pv-panel-focus is-open" : (order.indexOf(g)===0 ? " is-open" : "")) + '">' +
-        '<button type="button" class="pv-panel-h pv-panel-toggle" aria-expanded="' + ((focusOne || order.indexOf(g)===0) ? 'true' : 'false') + '">' +
-          '<span class="pv-panel-head-copy"><span class="pv-panel-name">' + escapeHtml(title) + '</span>' +
-          '<small>Chọn để xem danh sách bài trong chủ đề này</small></span>' +
-          '<span class="pv-panel-count">' + list.length + ' bài</span>' +
-          '<span class="pv-panel-chevron">⌄</span>' +
-        '</button>' +
-        '<div class="pv-panel-body">';
-      list.forEach(function (item, idx) {
-        if (q && !firstHitId) firstHitId = item.id;
-        html += cardHTML(item, idx + 1, q);
+      categoryOrder.forEach(function(g,index){
+        const list=categoryMap[g].slice().sort(function(a,b){return (a.number||0)-(b.number||0);});
+        const available=list.filter(function(item){ return !!resolvedFile(item); }).length;
+        const videos=list.filter(function(item){ return !!tiktokUrl(item); }).length;
+        html +=
+          '<button type="button" class="pv-topic-card" data-open-topic="' + escapeHtml(g) + '">' +
+            '<span class="pv-topic-card-num">' + String(index+1).padStart(2,"0") + '</span>' +
+            '<span class="pv-topic-card-copy">' +
+              '<strong>' + escapeHtml(String(g).toUpperCase()) + '</strong>' +
+              '<small>' + list.length + ' bài · ' + available + ' file · ' + videos + ' video</small>' +
+            '</span>' +
+            '<span class="pv-topic-card-arrow">Xem bài →</span>' +
+          '</button>';
       });
+
       html += '</div></section>';
-    });
-    if (f === "all" && !q) html += topicPollHTML();
-    html += '</div>';
-    grid.innerHTML = html;
+      if(!q) html += topicPollHTML();
+      grid.innerHTML=html;
 
-    grid.querySelectorAll(".pv-panel-toggle").forEach(function(btn){
-      btn.addEventListener("click", function(){
-        var panel=btn.closest(".pv-panel");
-        if(!panel) return;
-        var willOpen=!panel.classList.contains("is-open");
-
-        if(!focusOne){
-          grid.querySelectorAll(".pv-panel.is-open").forEach(function(other){
-            if(other!==panel){
-              other.classList.remove("is-open");
-              var ob=other.querySelector(".pv-panel-toggle");
-              if(ob) ob.setAttribute("aria-expanded","false");
-            }
+      grid.querySelectorAll("[data-open-topic]").forEach(function(btn){
+        btn.addEventListener("click",function(){
+          const topic=btn.getAttribute("data-open-topic")||"all";
+          const filterBtn=[...document.querySelectorAll(".pv-filter")].find(function(b){
+            return (b.getAttribute("data-filter")||"")===topic;
           });
-        }
-
-        panel.classList.toggle("is-open",willOpen);
-        btn.setAttribute("aria-expanded",willOpen ? "true" : "false");
+          document.querySelectorAll(".pv-filter").forEach(function(b){b.classList.remove("active");});
+          if(filterBtn) filterBtn.classList.add("active");
+          render(topic,"");
+          try{
+            document.getElementById("pvGrid").scrollIntoView({behavior:"smooth",block:"start"});
+          }catch(e){}
+        });
       });
+
+      bindTopicVotes();
+      setTimeout(loadTopicVoteSummary,0);
+      return;
+    }
+
+    // One selected topic = one single scrollable lesson list.
+    let topicItems = allItems.filter(function(item){
+      const cat=String(item.category||"");
+      return cat===f || cat.toLowerCase().indexOf(String(f).toLowerCase())!==-1;
+    }).sort(function(a,b){ return (a.number||0)-(b.number||0); });
+
+    if(!topicItems.length){
+      grid.innerHTML='<p class="pv-empty">Chưa có bài trong chủ đề này.</p>';
+      return;
+    }
+
+    const available=topicItems.filter(function(item){return !!resolvedFile(item);}).length;
+    const videos=topicItems.filter(function(item){return !!tiktokUrl(item);}).length;
+
+    let html =
+      '<section class="pv-library-view">' +
+        '<div class="pv-library-head pv-library-head-sticky">' +
+          '<div>' +
+            '<span class="pv-library-kicker">CHỦ ĐỀ</span>' +
+            '<h2>' + escapeHtml(String(f).toUpperCase()) + '</h2>' +
+            '<p>' + topicItems.length + ' bài · ' + available + ' file thực hành · ' + videos + ' video TikTok</p>' +
+          '</div>' +
+          '<button type="button" class="pv-library-back" data-library-back>← Tất cả chủ đề</button>' +
+        '</div>' +
+        '<div class="pv-library-scroll" tabindex="0" aria-label="Danh sách bài ' + escapeHtml(f) + '">' +
+          '<div class="pv-library-list">';
+
+    topicItems.forEach(function(item,idx){
+      html += cardHTML(item, idx+1, "");
     });
+
+    html +=
+          '</div>' +
+        '</div>' +
+        '<div class="pv-library-foot">Cuộn trong khung để xem đủ ' + topicItems.length + ' bài.</div>' +
+      '</section>';
+
+    grid.innerHTML=html;
+
+    const back=grid.querySelector("[data-library-back]");
+    if(back){
+      back.addEventListener("click",function(){
+        document.querySelectorAll(".pv-filter").forEach(function(b){
+          b.classList.toggle("active",(b.getAttribute("data-filter")||"")==="all");
+        });
+        render("all","");
+      });
+    }
 
     bindVotes();
-    bindTopicVotes();
-    if (f === "all" && !q) setTimeout(loadTopicVoteSummary, 0);
-
-    if (q && firstHitId) {
-      const el = document.getElementById("pv-item-" + firstHitId);
-      if (el) {
-        const body = el.closest(".pv-panel-body");
-        if (body) body.scrollTop = Math.max(0, el.offsetTop - 8);
-        try { el.scrollIntoView({ behavior: "smooth", block: "center" }); } catch (e) {}
-      }
-    }
   }
-
 
   async function loadDynamicPracticeLibrary() {
     var sb = null;
