@@ -449,12 +449,12 @@
 
       "certificate.html": ["master-learning.html", "Master Learning Path"],
       "master-learning.html": ["index.html", "Trang chủ"],
-      "learning-path.html": ["master-learning.html", "Lộ trình học"],
+      "learning-path.html": ["skill-map.html", "Skill Map"],
       "practice-lab.html": ["index.html", "Trang chủ"],
       "dashboard.html": ["index.html", "Trang chủ"],
       "profile.html": ["dashboard.html", "Hồ sơ & Thành tích"],
       "achievements.html": ["dashboard.html", "Hồ sơ & Thành tích"],
-      "achievement-learning.html": ["dashboard.html", "Hồ sơ & Thành tích"],
+      "achievement-learning.html": ["achievements.html", "Thành tích"],
       "formula-finder.html": ["tools-center.html", "Công cụ"],
       "tools-center.html": ["index.html", "Trang chủ"],
       "qc-dashboard.html": ["tools-center.html", "Công cụ"],
@@ -550,7 +550,7 @@
 
     const crumb = document.createElement("div");
     crumb.className = "core-topic-crumb";
-    crumb.innerHTML = '<a href="index.html">Trang chủ</a><span>›</span><a href="master-learning.html">Lộ trình</a><span>›</span><strong>' + topics[idx][2] + " • " + topics[idx][1] + '</strong>';
+    crumb.innerHTML = '<a href="index.html">Trang chủ</a><span>›</span><a href="skill-map.html">Lộ trình</a><span>›</span><strong>' + topics[idx][2] + " • " + topics[idx][1] + '</strong>';
     top.appendChild(crumb);
 
     const status = document.createElement("div");
