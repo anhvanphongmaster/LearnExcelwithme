@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Excel Doctor | Learn Excel with Anh Van Phong</title>
+  <meta name="description" content="Tự động kiểm tra file Excel ngay trong trình duyệt: text-number, duplicate, khoảng trắng, dữ liệu lẫn kiểu và lỗi công thức.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="simple-nav.css">
+  <link rel="stylesheet" href="global-search.css">
+  <link rel="stylesheet" href="avp-core.css">
+  <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="excel-doctor.css?v=20260831-v108">
+  <meta name="theme-color" content="#217346">
+</head>
+<body>
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="ed-page">
+  <div class="ed-back"><a href="index.html">← Trang chủ</a><span>Excel Doctor · NEW</span></div>
+
+  <header class="ed-hero">
+    <div>
+      <span class="ed-kicker">AUTOMATION TOOL · NEW</span>
+      <h1>Excel Doctor</h1>
+      <p>Đưa file Excel vào đây. Hệ thống tự quét những lỗi dữ liệu thường làm báo cáo sai và giải thích vì sao bạn nên xử lý chúng.</p>
+    </div>
+    <div class="ed-privacy">
+      <strong>🔒 Xử lý ngay trên thiết bị</strong>
+      <small>File được đọc trong trình duyệt. Excel Doctor không tải file của bạn lên máy chủ.</small>
+    </div>
+  </header>
+
+  <section class="ed-upload-card" id="edDropZone">
+    <input id="edFile" type="file" accept=".xlsx,.xls,.xlsm,.xlsb" hidden>
+    <div class="ed-upload-icon">＋</div>
+    <span class="ed-upload-kicker">BẮT ĐẦU KIỂM TRA</span>
+    <h2>Kéo file Excel vào đây</h2>
+    <p>hoặc chọn file từ máy của bạn</p>
+    <button type="button" id="edChoose">Chọn file Excel</button>
+    <small>Hỗ trợ .xlsx · .xls · .xlsm · .xlsb</small>
+  </section>
+
+  <section class="ed-status" id="edStatus" hidden aria-live="polite">
+    <div class="ed-status-copy">
+      <span id="edStatusKicker">ĐANG PHÂN TÍCH</span>
+      <strong id="edStatusTitle">Đọc workbook…</strong>
+      <small id="edStatusText">Excel Doctor đang kiểm tra dữ liệu.</small>
+    </div>
+    <div class="ed-spinner" aria-hidden="true"></div>
+  </section>
+
+  <section class="ed-report" id="edReport" hidden>
+    <div class="ed-report-head">
+      <div>
+        <span class="ed-kicker">KẾT QUẢ KIỂM TRA</span>
+        <h2 id="edFileName">Workbook</h2>
+        <p id="edWorkbookMeta"></p>
+      </div>
+      <div class="ed-health">
+        <span>Mức độ sạch dữ liệu</span>
+        <strong id="edScore">—</strong>
+        <small id="edScoreLabel">Đang đánh giá</small>
+      </div>
+    </div>
+
+    <div class="ed-summary-grid" id="edSummary"></div>
+
+    <div class="ed-priority">
+      <div class="ed-section-title">
+        <div><span>ƯU TIÊN XỬ LÝ</span><h2>Những điểm cần chú ý trước</h2></div>
+        <button type="button" id="edScanAnother">Kiểm tra file khác</button>
+      </div>
+      <div class="ed-issues" id="edIssues"></div>
+    </div>
+
+    <section class="ed-learning" id="edLearning">
+      <div class="ed-section-title">
+        <div><span>HỌC TỪ FILE CỦA BẠN</span><h2>Kiến thức liên quan</h2></div>
+      </div>
+      <div class="ed-learning-grid" id="edLearningGrid"></div>
+    </section>
+  </section>
+
+  <section class="ed-about">
+    <span class="ed-kicker">EXCEL DOCTOR KIỂM TRA GÌ?</span>
+    <div class="ed-about-grid">
+      <article><b>01</b><strong>Số đang lưu dạng Text</strong><p>Nhìn giống số nhưng SUM, Pivot hoặc Power Query có thể xử lý sai.</p></article>
+      <article><b>02</b><strong>Dòng trùng</strong><p>Phát hiện các dòng dữ liệu giống nhau trong vùng đang sử dụng.</p></article>
+      <article><b>03</b><strong>Khoảng trắng thừa</strong><p>Tìm text có khoảng trắng đầu/cuối hoặc nhiều khoảng trắng liên tiếp.</p></article>
+      <article><b>04</b><strong>Kiểu dữ liệu lẫn nhau</strong><p>Một cột vừa có Number vừa có Text/Date là dấu hiệu cần kiểm tra.</p></article>
+      <article><b>05</b><strong>Ô lỗi Excel</strong><p>Phát hiện các ô lỗi như #N/A, #VALUE!, #REF!, #DIV/0! nếu có trong workbook.</p></article>
+      <article><b>06</b><strong>Dòng trống trong dữ liệu</strong><p>Phát hiện các hàng trống nằm giữa vùng dữ liệu đang sử dụng.</p></article>
+    </div>
+  </section>
+</main>
+
+<script defer src="simple-nav.js"></script>
+<script defer src="global-search.js"></script>
+<script defer src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="analytics-tracker.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
+  onerror="this.onerror=null;this.src='https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js'"></script>
+<script defer src="excel-doctor.js?v=20260831-v108"></script>
+<script defer src="avp-core.js"></script>
+</body>
+</html>
