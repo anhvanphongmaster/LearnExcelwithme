@@ -771,6 +771,7 @@
     <link rel="stylesheet" href="global-search.css">
     <link rel="stylesheet" href="simple-nav.css">
     <link rel="stylesheet" href="home-effects.css">
+<link rel="stylesheet" href="home-page-motion.css?v=20260831-rootfix">
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1001,37 +1002,11 @@ a.avp-yt-combo.avp-mobile-main-cta{
 .avp-mobile-main-cta:hover,.avp-youtube-cta:hover,.avp-yt-practice:hover,.avp-scroll-tease-btn:hover{
   transform:translateY(-3px) scale(1.01);filter:brightness(1.05);box-shadow:0 12px 28px rgba(0,0,0,.22)}
 .avp-youtube-cta,.avp-yt-practice,.avp-scroll-tease-btn{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease,filter .25s ease}
-.avp-scroll-tease-btn{position:relative;overflow:hidden;isolation:isolate}
-.avp-scroll-tease-btn::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  border-radius:inherit;
-  transform:none!important;
-  background:
-    linear-gradient(
-      108deg,
-      transparent 0%,
-      transparent 34%,
-      rgba(255,255,255,.04) 42%,
-      rgba(255,255,255,.22) 50%,
-      rgba(255,255,255,.05) 58%,
-      transparent 66%,
-      transparent 100%
-    );
-  background-size:240% 100%;
-  background-position:145% 0;
-  animation:avpRouteSheenSafe 4.8s ease-in-out infinite!important;
-}
-.avp-scroll-tease-btn > *{position:relative;z-index:1}
-@keyframes avpRouteSheenSafe{
-  0%,62%{background-position:145% 0;opacity:0}
-  68%{opacity:1}
-  88%{background-position:-145% 0;opacity:1}
-  100%{background-position:-145% 0;opacity:0}
-}
+.avp-scroll-tease-btn{position:relative;overflow:hidden}
+.avp-scroll-tease-btn::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.14) 50%,transparent 60%);
+  transform:translateX(-120%);animation:avpSheen 4.5s ease-in-out infinite}
+@keyframes avpSheen{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
 .home-path-more--5{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:10px!important}
 .home-path-more--5 .home-more-card{position:relative;display:flex;flex-direction:column;gap:4px;min-height:88px;padding:14px 12px!important;
   border-radius:14px!important;text-decoration:none!important;border:1px solid rgba(0,0,0,.06)!important;background:#eef7f1!important;color:#145a32!important;box-sizing:border-box;
@@ -1082,8 +1057,6 @@ a.avp-yt-combo.avp-mobile-main-cta{
   .avp-title::after{animation:none}
 }
 </style>
-
-<link rel="stylesheet" href="avp-site-motion.css" />
 
 <style id="avp-locked-inline-css">
 /* === learning leaderboard === */
@@ -1498,41 +1471,6 @@ a.avp-yt-combo.avp-mobile-main-cta{
 .avp-mini-channel-tt{background:#111;}
 .avp-mini-channel-yt{background:#ff0000;}
 .avp-mini-channel-grade{background:#2563eb;}
-
-/* FINAL DESKTOP SHINE FIX
-   Keep badges outside the card, but make the shine itself stay inside.
-   No translateX is used here, so no white strip can escape to the left. */
-.avp-practice-hub-cta::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-  border-radius:inherit;
-  transform:none !important;
-  animation:avpPracticeHubShineSafe 4.2s ease-in-out infinite !important;
-  background:
-    linear-gradient(
-      110deg,
-      transparent 0%,
-      transparent 32%,
-      rgba(255,255,255,.08) 42%,
-      rgba(255,255,255,.42) 50%,
-      rgba(255,255,255,.08) 58%,
-      transparent 68%,
-      transparent 100%
-    );
-  background-size:240% 100%;
-  background-position:145% 0;
-  overflow:hidden;
-}
-@keyframes avpPracticeHubShineSafe{
-  0%,64%{background-position:145% 0;opacity:0}
-  68%{opacity:1}
-  88%{background-position:-145% 0;opacity:1}
-  100%{background-position:-145% 0;opacity:0}
-}
 </style>
 
 
@@ -1572,6 +1510,83 @@ a.avp-yt-combo.avp-mobile-main-cta{
   .home-ref-item-v114{grid-template-columns:44px minmax(0,1fr);padding:11px}
   .home-ref-icon-v114{width:44px;height:44px}
   .home-ref-item-v114>b{grid-column:2;justify-self:start}
+}
+</style>
+
+
+<style id="homeRootCauseEffectFix">
+/* Keep current layout. Restore only homepage visual effects. */
+.avp-practice-hub-cta{isolation:isolate}
+.avp-practice-hub-cta::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  border-radius:inherit;
+  transform:none!important;
+  background:linear-gradient(
+    110deg,
+    transparent 0%,transparent 31%,
+    rgba(255,255,255,.07) 40%,
+    rgba(255,255,255,.48) 49%,
+    rgba(255,255,255,.12) 56%,
+    transparent 66%,transparent 100%
+  );
+  background-size:240% 100%;
+  background-position:145% 0;
+  animation:avpPracticeSafeShineRoot 4.15s ease-in-out infinite!important;
+}
+@keyframes avpPracticeSafeShineRoot{
+  0%,62%{background-position:145% 0;opacity:0}
+  67%{opacity:1}
+  88%{background-position:-145% 0;opacity:1}
+  100%{background-position:-145% 0;opacity:0}
+}
+
+.avp-scroll-tease-btn{isolation:isolate}
+.avp-scroll-tease-btn::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  border-radius:inherit;
+  transform:none!important;
+  background:linear-gradient(
+    108deg,
+    transparent 0%,transparent 34%,
+    rgba(255,255,255,.03) 42%,
+    rgba(255,255,255,.20) 50%,
+    rgba(255,255,255,.04) 58%,
+    transparent 66%,transparent 100%
+  )!important;
+  background-size:240% 100%!important;
+  background-position:145% 0;
+  animation:avpRouteSafeShineRoot 4.7s ease-in-out infinite!important;
+}
+.avp-scroll-tease-btn>*{position:relative;z-index:1}
+@keyframes avpRouteSafeShineRoot{
+  0%,64%{background-position:145% 0;opacity:0}
+  70%{opacity:1}
+  90%{background-position:-145% 0;opacity:1}
+  100%{background-position:-145% 0;opacity:0}
+}
+
+@media (hover:hover) and (pointer:fine){
+  .home-ref-item-v114{
+    transition:
+      transform .28s cubic-bezier(.22,1,.36,1),
+      box-shadow .28s ease,
+      filter .2s ease,
+      border-color .2s ease!important;
+  }
+  .home-ref-item-v114:hover{
+    transform:translateY(-5px) scale(1.01);
+    box-shadow:0 14px 32px rgba(15,42,28,.12)!important;
+    filter:brightness(1.03);
+  }
 }
 </style>
 
@@ -1891,6 +1906,7 @@ function lenDauTrang() {
     <script defer src="global-search.js"></script>
     <script defer src="simple-nav.js"></script>
     <script defer src="home-effects.js"></script>
+<script defer src="home-page-motion.js?v=20260831-rootfix"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
     
@@ -1958,7 +1974,6 @@ document.addEventListener("click", function(e){
 })();
 </script>
 
-<script defer src="avp-site-motion.js"></script>
 <script id="avp-llb-inline">
 /**
  * Learning leaderboard — streak đăng nhập (chỉ user đã login, ẩn admin)
