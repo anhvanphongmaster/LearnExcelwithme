@@ -39,7 +39,7 @@
       <p>Một cuốn sách điện tử để đọc từ đầu đến cuối hoặc mở đúng chương cần tra. Ảnh minh hoạ bên trong được render trực tiếp từ workbook mẫu của chính cẩm nang.</p>
       <div class="hb-hero-actions">
         <a class="hb-primary" href="#chap-01">Bắt đầu từ Chương 01 →</a>
-        <a class="hb-secondary" href="assets/handbook/Excel_Handbook_Minh_Hoa.xlsx" download>Tải workbook minh hoạ ↓</a>
+        <a class="hb-secondary" href="Excel_Handbook_Minh_Hoa.xlsx" download>Tải workbook minh hoạ ↓</a>
       </div>
     </div>
   </header>
@@ -68,7 +68,7 @@
       <section class="hb-chapter" id="chap-01">
         <div class="hb-chapter-head"><span>CHƯƠNG 01</span><h2>Bắt đầu đúng với Excel</h2><p>Đừng học nút trước. Hãy hiểu cấu trúc của một workbook: file → sheet → vùng dữ liệu → ô.</p></div>
         <div class="hb-note"><b>Mục tiêu</b><span>Biết một bảng dữ liệu tốt phải có một hàng tiêu đề, mỗi cột chỉ mang một loại thông tin và mỗi dòng là một bản ghi.</span></div>
-        <figure class="hb-figure"><button data-zoom-image><img src="assets/handbook/01-nhap-lieu.png" alt="Workbook mẫu danh sách nhân viên"></button><figcaption>Workbook mẫu: một bảng dữ liệu nhân sự được tổ chức theo hàng và cột rõ ràng. Bấm ảnh để phóng to.</figcaption></figure>
+        <figure class="hb-figure"><button data-zoom-image><img src="handbook-01-nhap-lieu.png" alt="Workbook mẫu danh sách nhân viên"></button><figcaption>Workbook mẫu: một bảng dữ liệu nhân sự được tổ chức theo hàng và cột rõ ràng. Bấm ảnh để phóng to.</figcaption></figure>
         <div class="hb-steps">
           <div><b>01</b><h3>Mỗi cột = một trường dữ liệu</h3><p>Ví dụ Mã NV, Họ tên, Phòng ban, Ngày vào và Lương phải nằm ở các cột riêng.</p></div>
           <div><b>02</b><h3>Mỗi dòng = một bản ghi</h3><p>Một nhân viên chỉ nên chiếm một dòng. Không chèn tiêu đề phụ vào giữa bảng.</p></div>
@@ -78,7 +78,7 @@
 
       <section class="hb-chapter" id="chap-02">
         <div class="hb-chapter-head"><span>CHƯƠNG 02</span><h2>Nhập dữ liệu đúng ngay từ đầu</h2><p>Phần lớn lỗi báo cáo bắt đầu từ lúc nhập liệu.</p></div>
-        <figure class="hb-figure"><button data-zoom-image><img src="assets/handbook/01-nhap-lieu.png" alt="Ví dụ nhập liệu Excel đúng cấu trúc"></button><figcaption>Ngày là Date, lương là Number, trạng thái là Text. Đây là nền tảng để Filter, Pivot và Power Query hoạt động đúng.</figcaption></figure>
+        <figure class="hb-figure"><button data-zoom-image><img src="handbook-01-nhap-lieu.png" alt="Ví dụ nhập liệu Excel đúng cấu trúc"></button><figcaption>Ngày là Date, lương là Number, trạng thái là Text. Đây là nền tảng để Filter, Pivot và Power Query hoạt động đúng.</figcaption></figure>
         <div class="hb-rule-grid">
           <div><span>NUMBER</span><strong>Số phải thật sự là số</strong><p>Không thêm chữ “VNĐ” trực tiếp vào giá trị. Dùng Number Format.</p></div>
           <div><span>DATE</span><strong>Ngày phải là Date</strong><p>Tránh nhập ngày bằng chuỗi text nếu sau này cần nhóm tháng/quý.</p></div>
@@ -88,7 +88,7 @@
 
       <section class="hb-chapter" id="chap-03">
         <div class="hb-chapter-head"><span>CHƯƠNG 03</span><h2>Công thức: từ phép tính đến IF</h2><p>Hãy đọc công thức như một câu lệnh nghiệp vụ, không học thuộc ký tự.</p></div>
-        <figure class="hb-figure"><button data-zoom-image><img src="assets/handbook/02-cong-thuc.png" alt="Workbook minh hoạ công thức doanh thu và IF"></button><figcaption>Doanh thu = Số lượng × Đơn giá. Thưởng được quyết định bằng IF theo ngưỡng doanh thu.</figcaption></figure>
+        <figure class="hb-figure"><button data-zoom-image><img src="handbook-02-cong-thuc.png" alt="Workbook minh hoạ công thức doanh thu và IF"></button><figcaption>Doanh thu = Số lượng × Đơn giá. Thưởng được quyết định bằng IF theo ngưỡng doanh thu.</figcaption></figure>
         <div class="hb-formula"><code>=B2*C2</code><span>→ Lấy số lượng ở B2 nhân đơn giá ở C2.</span></div>
         <div class="hb-formula"><code>=IF(D2&gt;=2000000,D2*5%,0)</code><span>→ Nếu doanh thu đạt 2 triệu thì thưởng 5%, ngược lại bằng 0.</span></div>
         <div class="hb-tip"><b>Ghi nhớ</b> Sau khi nhập một công thức, hãy kiểm tra bằng một vài dòng mà bạn có thể tính nhẩm.</div>
@@ -96,14 +96,14 @@
 
       <section class="hb-chapter" id="chap-04">
         <div class="hb-chapter-head"><span>CHƯƠNG 04</span><h2>Tra cứu với XLOOKUP</h2><p>XLOOKUP giải quyết một việc rất phổ biến: lấy thông tin từ bảng khác dựa trên một mã khóa.</p></div>
-        <figure class="hb-figure"><button data-zoom-image><img src="assets/handbook/03-xlookup.png" alt="Workbook minh hoạ XLOOKUP"></button><figcaption>Nhập SP03 và lấy lại Tên sản phẩm + Giá từ bảng danh mục bên trái.</figcaption></figure>
+        <figure class="hb-figure"><button data-zoom-image><img src="handbook-03-xlookup.png" alt="Workbook minh hoạ XLOOKUP"></button><figcaption>Nhập SP03 và lấy lại Tên sản phẩm + Giá từ bảng danh mục bên trái.</figcaption></figure>
         <div class="hb-formula"><code>=XLOOKUP(F2,A2:A7,B2:B7,"Không tìm thấy")</code><span>→ Tìm mã ở F2 trong cột A và trả về tên ở cột B.</span></div>
         <div class="hb-warning"><b>Lỗi hay gặp</b><span>Mã ở hai bảng nhìn giống nhau nhưng một bên có khoảng trắng hoặc kiểu dữ liệu khác nhau.</span></div>
       </section>
 
       <section class="hb-chapter" id="chap-05">
         <div class="hb-chapter-head"><span>CHƯƠNG 05</span><h2>Filter &amp; Sort để đọc dữ liệu nhanh</h2><p>Lọc và sắp xếp là kỹ năng phân tích, không chỉ là thao tác giao diện.</p></div>
-        <figure class="hb-figure"><button data-zoom-image><img src="assets/handbook/05-filter-sort.png" alt="Bảng doanh thu để thực hành Filter và Sort"></button><figcaption>Ví dụ: lọc riêng HCM, sau đó sắp xếp Doanh thu giảm dần để tìm ngày bán tốt nhất.</figcaption></figure>
+        <figure class="hb-figure"><button data-zoom-image><img src="handbook-05-filter-sort.png" alt="Bảng doanh thu để thực hành Filter và Sort"></button><figcaption>Ví dụ: lọc riêng HCM, sau đó sắp xếp Doanh thu giảm dần để tìm ngày bán tốt nhất.</figcaption></figure>
         <div class="hb-steps">
           <div><b>01</b><h3>Lọc theo câu hỏi</h3><p>“Cửa hàng nào?”, “Thời gian nào?”, “Nhân viên nào?” — điều kiện phải phục vụ câu hỏi.</p></div>
           <div><b>02</b><h3>Sắp xếp toàn bộ bảng</h3><p>Không sort riêng một cột nếu dữ liệu liên quan nằm ở nhiều cột.</p></div>
@@ -112,7 +112,7 @@
 
       <section class="hb-chapter" id="chap-06">
         <div class="hb-chapter-head"><span>CHƯƠNG 06</span><h2>Làm sạch dữ liệu thực tế</h2><p>Đây là chương quan trọng nhất nếu bạn thường nhận file từ nhiều người nhập liệu.</p></div>
-        <figure class="hb-figure"><button data-zoom-image><img src="assets/handbook/04-lam-sach.png" alt="Workbook dữ liệu lỗi để làm sạch"></button><figcaption>Trong một bảng nhỏ đã có: khoảng trắng, text-number, dòng trùng, chữ hoa/thường không đồng nhất và giá trị N/A.</figcaption></figure>
+        <figure class="hb-figure"><button data-zoom-image><img src="handbook-04-lam-sach.png" alt="Workbook dữ liệu lỗi để làm sạch"></button><figcaption>Trong một bảng nhỏ đã có: khoảng trắng, text-number, dòng trùng, chữ hoa/thường không đồng nhất và giá trị N/A.</figcaption></figure>
         <div class="hb-checklist">
           <label><input type="checkbox"> Kiểm tra dòng trùng theo đúng khóa nghiệp vụ.</label>
           <label><input type="checkbox"> Tìm Number đang lưu dạng Text.</label>
@@ -125,7 +125,7 @@
 
       <section class="hb-chapter" id="chap-07">
         <div class="hb-chapter-head"><span>CHƯƠNG 07</span><h2>PivotTable để tổng hợp</h2><p>PivotTable biến hàng nghìn dòng thành vài con số có ý nghĩa.</p></div>
-        <figure class="hb-figure"><button data-zoom-image><img src="assets/handbook/06-pivot.png" alt="Bảng tổng hợp kiểu PivotTable"></button><figcaption>Một báo cáo tổng hợp tốt cho phép nhìn doanh thu, đơn hàng và CR theo khu vực.</figcaption></figure>
+        <figure class="hb-figure"><button data-zoom-image><img src="handbook-06-pivot.png" alt="Bảng tổng hợp kiểu PivotTable"></button><figcaption>Một báo cáo tổng hợp tốt cho phép nhìn doanh thu, đơn hàng và CR theo khu vực.</figcaption></figure>
         <div class="hb-rule-grid">
           <div><span>ROWS</span><strong>Đối tượng muốn so sánh</strong><p>Khu vực, cửa hàng, nhân viên, sản phẩm.</p></div>
           <div><span>VALUES</span><strong>Chỉ số muốn đo</strong><p>Doanh thu, số lượng, đơn hàng, trung bình.</p></div>
@@ -135,7 +135,7 @@
 
       <section class="hb-chapter" id="chap-08">
         <div class="hb-chapter-head"><span>CHƯƠNG 08</span><h2>Power Query: quy trình lặp lại</h2><p>Khi công việc “tháng nào cũng làm lại”, hãy nghĩ đến Power Query.</p></div>
-        <figure class="hb-figure"><button data-zoom-image><img src="assets/handbook/08-power-query.png" alt="Nguồn dữ liệu chuẩn bị cho Power Query"></button><figcaption>Nguồn tốt cho Power Query: header rõ, dữ liệu theo dòng, không có subtotal chen giữa.</figcaption></figure>
+        <figure class="hb-figure"><button data-zoom-image><img src="handbook-08-power-query.png" alt="Nguồn dữ liệu chuẩn bị cho Power Query"></button><figcaption>Nguồn tốt cho Power Query: header rõ, dữ liệu theo dòng, không có subtotal chen giữa.</figcaption></figure>
         <div class="hb-steps">
           <div><b>01</b><h3>Connect</h3><p>Kết nối file/folder/table nguồn thay vì copy-paste thủ công.</p></div>
           <div><b>02</b><h3>Transform</h3><p>Đổi kiểu dữ liệu, Trim/Clean, Split, Merge hoặc Append.</p></div>
@@ -146,7 +146,7 @@
 
       <section class="hb-chapter" id="chap-09">
         <div class="hb-chapter-head"><span>CHƯƠNG 09</span><h2>Dashboard có mục tiêu</h2><p>Dashboard không phải nơi chứa càng nhiều biểu đồ càng tốt.</p></div>
-        <figure class="hb-figure"><button data-zoom-image><img src="assets/handbook/07-dashboard.png" alt="Workbook minh hoạ Sales Dashboard"></button><figcaption>Một dashboard tối giản: KPI chính ở trên, bảng phân tích ở dưới và một câu hỏi kinh doanh rõ ràng.</figcaption></figure>
+        <figure class="hb-figure"><button data-zoom-image><img src="handbook-07-dashboard.png" alt="Workbook minh hoạ Sales Dashboard"></button><figcaption>Một dashboard tối giản: KPI chính ở trên, bảng phân tích ở dưới và một câu hỏi kinh doanh rõ ràng.</figcaption></figure>
         <div class="hb-rule-grid">
           <div><span>KPI</span><strong>Chỉ số chính</strong><p>Doanh thu, đơn hàng, CR, Target.</p></div>
           <div><span>COMPARE</span><strong>So sánh</strong><p>Thực tế vs Target, kỳ này vs kỳ trước.</p></div>
@@ -174,7 +174,7 @@
           <div><b>4</b><strong>ANALYZE</strong><span>Công thức, Pivot, Power Query hoặc mô hình dữ liệu.</span></div>
           <div><b>5</b><strong>REPORT</strong><span>Trình bày chỉ số giúp người xem ra quyết định.</span></div>
         </div>
-        <figure class="hb-figure hb-figure-pair"><button data-zoom-image><img src="assets/handbook/04-lam-sach.png" alt="Dữ liệu trước khi xử lý"></button><button data-zoom-image><img src="assets/handbook/07-dashboard.png" alt="Kết quả sau khi xử lý thành dashboard"></button><figcaption>Tư duy A–Z: từ nguồn dữ liệu có vấn đề đến đầu ra có thể sử dụng.</figcaption></figure>
+        <figure class="hb-figure hb-figure-pair"><button data-zoom-image><img src="handbook-04-lam-sach.png" alt="Dữ liệu trước khi xử lý"></button><button data-zoom-image><img src="handbook-07-dashboard.png" alt="Kết quả sau khi xử lý thành dashboard"></button><figcaption>Tư duy A–Z: từ nguồn dữ liệu có vấn đề đến đầu ra có thể sử dụng.</figcaption></figure>
       </section>
 
       <section class="hb-chapter" id="chap-12">
@@ -192,7 +192,7 @@
         <div class="hb-finish">
           <span>ĐỌC XONG CẨM NANG?</span>
           <h2>Hãy mở workbook minh hoạ và tự kiểm tra từng sheet.</h2>
-          <div><a href="assets/handbook/Excel_Handbook_Minh_Hoa.xlsx" download>Tải workbook minh hoạ ↓</a><a href="practice-video.html">Đi đến Bài tập Excel →</a></div>
+          <div><a href="Excel_Handbook_Minh_Hoa.xlsx" download>Tải workbook minh hoạ ↓</a><a href="practice-video.html">Đi đến Bài tập Excel →</a></div>
         </div>
       </section>
     </article>
