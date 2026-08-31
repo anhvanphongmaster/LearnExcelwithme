@@ -1621,6 +1621,19 @@
       el.hidden=n<=0;
       el.textContent=n>0?text:"";
     });
+    const notifyBtn=$("avpCommunityNotify");
+    if(notifyBtn){
+      notifyBtn.style.position="relative";
+      let mark=document.getElementById("avpNotifyTabBadge");
+      if(!mark){
+        mark=document.createElement("span");
+        mark.id="avpNotifyTabBadge";
+        mark.className="avp-tab-badge";
+        notifyBtn.appendChild(mark);
+      }
+      mark.hidden=n<=0;
+      mark.textContent=n>0?text:"";
+    }
 
     try{
       window.dispatchEvent(new CustomEvent("avp:community-unread",{
@@ -1644,18 +1657,16 @@
       return;
     }
 
+    let base=0, extra=0;
     try{
       const {data,error}=await client.rpc("notification_unread_count");
-      if(error)throw error;
-      let extra=0;
-      try{
-        const star=await client.from("practice_grader_star_notifs").select("id",{count:"exact",head:true}).eq("is_read",false);
-        extra=Number(star.count||0);
-      }catch(err){}
-      publishCommunityUnreadCount(Number(data||0)+extra);
-    }catch(e){
-      console.warn("Notification badge",e);
-    }
+      if(!error) base=Number(data||0);
+    }catch(e){}
+    try{
+      const star=await client.from("practice_grader_star_notifs").select("id").eq("is_read",false);
+      extra=Array.isArray(star.data)?star.data.length:Number(star.count||0);
+    }catch(e){}
+    publishCommunityUnreadCount(base+extra);
   }
 
   async function loadNotifications(){
