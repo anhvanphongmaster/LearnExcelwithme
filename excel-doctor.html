@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="global-search.css">
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="auth.css">
-  <link rel="stylesheet" href="excel-doctor.css?v=20260831-v108">
+  <link rel="stylesheet" href="excel-doctor.css?v=20260831-pro">
   <meta name="theme-color" content="#217346">
 </head>
 <body>
@@ -34,7 +34,7 @@
     <div>
       <span class="ed-kicker">AUTOMATION TOOL · NEW</span>
       <h1>Excel Doctor</h1>
-      <p>Đưa file Excel vào đây. Hệ thống tự quét những lỗi dữ liệu thường làm báo cáo sai và giải thích vì sao bạn nên xử lý chúng.</p>
+      <p>Đưa file Excel vào đây. Doctor quét dữ liệu, công thức và cấu trúc workbook để tìm các điểm đáng nghi trước khi bạn mất thời gian dò thủ công.</p>
     </div>
     <div class="ed-privacy">
       <strong>🔒 Xử lý ngay trên thiết bị</strong>
@@ -94,17 +94,19 @@
   </section>
 
   <section class="ed-about">
-    <span class="ed-kicker">EXCEL DOCTOR KIỂM TRA GÌ?</span>
-    <div class="ed-about-grid">
-      <article><b>01</b><strong>Số đang lưu dạng Text</strong><p>Nhìn giống số nhưng SUM, Pivot hoặc Power Query có thể xử lý sai.</p></article>
-      <article><b>02</b><strong>Dòng trùng</strong><p>Phát hiện các dòng dữ liệu giống nhau trong vùng đang sử dụng.</p></article>
-      <article><b>03</b><strong>Khoảng trắng thừa</strong><p>Tìm text có khoảng trắng đầu/cuối hoặc nhiều khoảng trắng liên tiếp.</p></article>
-      <article><b>04</b><strong>Kiểu dữ liệu lẫn nhau</strong><p>Một cột vừa có Number vừa có Text/Date là dấu hiệu cần kiểm tra.</p></article>
-      <article><b>05</b><strong>Ô lỗi Excel</strong><p>Phát hiện các ô lỗi như #N/A, #VALUE!, #REF!, #DIV/0! nếu có trong workbook.</p></article>
-      <article><b>06</b><strong>Dòng trống trong dữ liệu</strong><p>Phát hiện các hàng trống nằm giữa vùng dữ liệu đang sử dụng.</p></article>
-    </div>
-  </section>
-</main>
+<span class="ed-kicker">EXCEL DOCTOR PRO KIỂM TRA GÌ?</span>
+<div class="ed-about-grid">
+<article><b>01</b><strong>Dữ liệu sai kiểu</strong><p>Text-number, date dạng text, cột lẫn kiểu, khoảng trắng và ký tự ẩn.</p></article>
+<article><b>02</b><strong>Duplicate & cấu trúc</strong><p>Dòng trùng, header trống/trùng, dòng trống giữa bảng và merged cells.</p></article>
+<article><b>03</b><strong>Lỗi công thức</strong><p>#N/A, #VALUE!, #REF!, #DIV/0! và công thức có tham chiếu gãy.</p></article>
+<article><b>04</b><strong>Công thức đáng nghi</strong><p>VLOOKUP approximate, full-column formulas, volatile functions và công thức quá dài.</p></article>
+<article><b>05</b><strong>Liên kết ngoài</strong><p>External workbook references, Named Range lỗi/#REF và sheet ẩn.</p></article>
+<article><b>06</b><strong>Hiệu năng</strong><p>UsedRange phình, mật độ dữ liệu thấp, quá nhiều công thức hoặc merge.</p></article>
+<article><b>07</b><strong>Pattern công thức</strong><p>Tìm các ô có công thức khác số đông trong cùng cột.</p></article>
+<article><b>08</b><strong>Tra cứu nguyên nhân</strong><p>Mỗi phát hiện dẫn thẳng sang Từ điển Excel để xem cách xử lý.</p></article>
+</div>
+<div class="ed-limit-note"><b>Lưu ý:</b> Doctor tìm dấu hiệu kỹ thuật đáng nghi. Nó không thể tự biết toàn bộ logic nghiệp vụ/KPI nếu file không có định nghĩa đi kèm.</div>
+</section></main>
 
 <script defer src="simple-nav.js"></script>
 <script defer src="global-search.js"></script>
@@ -113,7 +115,7 @@
 <script defer src="analytics-tracker.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
   onerror="this.onerror=null;this.src='https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js'"></script>
-<script defer src="excel-doctor.js?v=20260831-v108"></script>
+<script defer src="excel-doctor.js?v=20260831-pro"></script>
 <script defer src="avp-core.js"></script>
 </body>
 </html>

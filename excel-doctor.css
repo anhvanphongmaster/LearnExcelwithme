@@ -72,3 +72,5 @@
 @media(max-width:560px){
   .ed-page{width:calc(100% - 18px);margin-top:10px}.ed-hero{padding:17px}.ed-report-head{align-items:flex-start;flex-direction:column}.ed-health{text-align:left}.ed-summary-grid,.ed-learning-grid,.ed-about-grid{grid-template-columns:1fr}.ed-issue{grid-template-columns:32px minmax(0,1fr)}.ed-issue-count{grid-column:2;justify-self:start}.ed-section-title{align-items:flex-start;flex-direction:column}
 }
+
+.ed-about-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.ed-limit-note{margin-top:9px;padding:10px 12px;border-left:4px solid #217346;border-radius:9px;background:#eef8f2;color:#5d7064;font-size:8px;line-height:1.55}.ed-issue.deep{border-color:#d9e6de;background:#f9fcfa}.ed-issue.deep .ed-issue-icon{background:#e9f5ee;color:#185c37}.ed-dict-link{display:inline-flex;margin-top:6px;color:#185c37;text-decoration:none;font-size:7.5px;font-weight:950}.ed-dict-link:hover{text-decoration:underline}@media(max-width:900px){.ed-about-grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.ed-about-grid{grid-template-columns:1fr}}
