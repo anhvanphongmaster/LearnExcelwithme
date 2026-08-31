@@ -24,7 +24,7 @@ function analyze(ws,name){
 const flatten=(s,k)=>s.flatMap(x=>x[k]||[]),sample=a=>a.slice(0,4).map(x=>x.sheet?`${x.sheet}!${x.cell||("R"+x.row)}${x.value?": "+x.value:""}`:(x.name||x.value||"")).join(" · "),href=q=>"excel-dictionary.html?q="+encodeURIComponent(q);
 function render(file,wb,s){
  const meta={sheets:s.length,rows:s.reduce((a,x)=>a+x.rows,0),cells:s.reduce((a,x)=>a+x.used,0),formulas:s.reduce((a,x)=>a+x.formulas,0),merged:s.reduce((a,x)=>a+x.merged,0)};
- const names=wb.Workbook?.Names||[],broken=names.filter(n=>/#REF!/i.test(String(n.Ref||""))).map(n=>({name:n.Name,value:n.Ref})),extNames=names.filter(n=>EXT.test(String(n.Ref||""))).map(n=>({name:n.Name,value:n.Ref})),hidden=(wb.Workbook?.Sheets||[]).filter(x=>x.Hidden).map(x=>({name:x.name,value:x.Hidden===2?"Very Hidden":"Hidden"})),sparse=s.filter(x=>x.sparse).map(x=>({name:x.name,value:`UsedRange ${x.rows}×${x.cols}, used ${x.used}`}));
+ const names=Array.isArray(wb.Workbook?.Names)?wb.Workbook.Names:[],broken=names.filter(n=>/#REF!/i.test(String(n.Ref||""))).map(n=>({name:n.Name,value:n.Ref})),extNames=names.filter(n=>EXT.test(String(n.Ref||""))).map(n=>({name:n.Name,value:n.Ref})),hidden=(Array.isArray(wb.Workbook?.Sheets)?wb.Workbook.Sheets:[]).filter(x=>x.Hidden).map(x=>({name:x.name,value:x.Hidden===2?"Very Hidden":"Hidden"})),sparse=s.filter(x=>x.sparse).map(x=>({name:x.name,value:`UsedRange ${x.rows}×${x.cols}, used ${x.used}`}));
  const I=(type,details,sev,title,desc,q)=>({type,details,count:details.length,sev,title,desc,q}),mergeDetails=s.filter(x=>x.merged).map(x=>({name:x.name,value:`${x.merged} merged ranges`}));
  const issues=[
   I("errors",flatten(s,"errors"),"high","Ô đang chứa lỗi Excel","Các lỗi như #N/A, #VALUE!, #REF! có thể lan sang báo cáo.","#N/A #VALUE #REF lỗi công thức"),
@@ -55,7 +55,88 @@ function render(file,wb,s){
  const learn=issues.slice(0,6).map(x=>({title:x.title,href:href(x.q)}));if(!learn.length)learn.push({title:"Audit workbook",href:href("audit workbook")},{title:"Power Query làm sạch",href:href("Power Query làm sạch")},{title:"Công thức nâng cao",href:"excel-dictionary.html"});
  $("edLearningGrid").innerHTML=learn.map(x=>`<a class="ed-learn-card" href="${esc(x.href)}"><span>TRA CỨU</span><strong>${esc(x.title)}</strong><small>Từ phát hiện trong file của bạn</small><b>Mở Từ điển →</b></a>`).join("");report.hidden=false;report.scrollIntoView({behavior:"smooth",block:"start"});
 }
-async function analyze(file){if(!file)return;if(typeof XLSX==="undefined"){alert("Chưa tải được bộ đọc Excel. Kiểm tra mạng rồi thử lại.");return}show("Đọc workbook…","Excel Doctor đang mở cấu trúc file trên thiết bị của bạn.");try{const buf=await file.arrayBuffer(),wb=XLSX.read(buf,{type:"array",cellDates:true,cellFormula:true,cellStyles:true,cellNF:true,cellText:true});show("Quét dữ liệu & công thức…","Đang kiểm tra từng sheet, header, formula và dependency.");await new Promise(r=>setTimeout(r,60));const s=wb.SheetNames.map(n=>analyze(wb.Sheets[n],n));hide();render(file,wb,s)}catch(e){console.error(e);hide();alert("Không đọc được workbook. File có thể có mật khẩu, hỏng cấu trúc hoặc dùng tính năng bộ đọc trình duyệt chưa hỗ trợ.")}}
+function emptySheetResult(name){
+ return {name,rows:0,cols:0,used:0,formulas:0,merged:0,numericText:[],whitespace:[],errors:[],blankRows:[],dups:[],mixed:[],dateText:[],blankHeaders:[],dupHeaders:[],refFormulas:[],external:[],volatile:[],fullcol:[],vlookupApprox:[],complex:[],inconsistent:[],sparse:false};
+}
+async function analyze(file){
+ if(!file)return;
+ if(typeof XLSX==="undefined"){
+   alert("Chưa tải được bộ đọc Excel. Kiểm tra kết nối mạng rồi thử lại.");
+   return;
+ }
+
+ let buf;
+ show("Đọc file…","Đang nạp workbook từ thiết bị của bạn.");
+ try{
+   buf=await file.arrayBuffer();
+ }catch(err){
+   console.error("Excel Doctor: file.arrayBuffer failed",err);
+   hide();
+   alert("Không đọc được dữ liệu file từ trình duyệt. Hãy chọn lại file rồi thử lại.");
+   return;
+ }
+
+ let wb=null,readError=null;
+ const attempts=[
+   {type:"array",cellDates:true},
+   {type:"array",cellDates:false},
+   {type:"array"}
+ ];
+
+ for(const opts of attempts){
+   try{
+     wb=XLSX.read(buf,opts);
+     if(wb&&Array.isArray(wb.SheetNames)&&wb.SheetNames.length)break;
+     wb=null;
+   }catch(err){
+     readError=err;
+     console.warn("Excel Doctor read attempt failed",opts,err);
+   }
+ }
+
+ if(!wb){
+   hide();
+   const detail=String(readError?.message||readError||"Không rõ lỗi").slice(0,180);
+   alert("Doctor chưa mở được workbook này.\n\nChi tiết kỹ thuật: "+detail+"\n\nNếu đây là .xlsx/.xlsm bình thường, hãy gửi file để kiểm tra Doctor thay vì sửa file.");
+   return;
+ }
+
+ show("Quét dữ liệu & công thức…","Workbook đã mở được. Đang kiểm tra từng sheet, header, formula và dependency.");
+ await new Promise(r=>setTimeout(r,50));
+
+ const sheets=[];
+ const scanErrors=[];
+ for(const name of wb.SheetNames){
+   try{
+     const ws=wb.Sheets?.[name];
+     if(!ws){scanErrors.push(name+": thiếu worksheet object");sheets.push(emptySheetResult(name));continue}
+     sheets.push(analyze(ws,name));
+   }catch(err){
+     console.error("Excel Doctor sheet scan failed:",name,err);
+     scanErrors.push(name+": "+String(err?.message||err).slice(0,120));
+     sheets.push(emptySheetResult(name));
+   }
+ }
+
+ try{
+   hide();
+   render(file,wb,sheets);
+
+   if(scanErrors.length){
+     const issues=document.getElementById("edIssues");
+     if(issues){
+       const warn=document.createElement("article");
+       warn.className="ed-issue medium deep";
+       warn.innerHTML='<div class="ed-issue-icon">i</div><div><h3>Một số sheet chưa quét hết</h3><p>Workbook đã mở thành công nhưng Doctor bỏ qua '+scanErrors.length+' sheet/khối gặp lỗi phân tích để phần còn lại vẫn có báo cáo.</p><div class="ed-issue-samples">'+esc(scanErrors.slice(0,3).join(" · "))+'</div></div><span class="ed-issue-count">'+scanErrors.length+' cảnh báo</span>';
+       issues.prepend(warn);
+     }
+   }
+ }catch(err){
+   console.error("Excel Doctor render failed",err);
+   hide();
+   alert("Workbook đã mở được nhưng Doctor gặp lỗi khi dựng báo cáo.\n\nChi tiết kỹ thuật: "+String(err?.message||err).slice(0,180));
+ }
+}
 choose?.addEventListener("click",()=>fileInput.click());fileInput?.addEventListener("change",()=>analyze(fileInput.files?.[0]));["dragenter","dragover"].forEach(ev=>drop?.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("is-drag")}));["dragleave","drop"].forEach(ev=>drop?.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("is-drag")}));drop?.addEventListener("drop",e=>analyze(e.dataTransfer?.files?.[0]));$("edScanAnother")?.addEventListener("click",()=>{report.hidden=true;fileInput.value="";drop.scrollIntoView({behavior:"smooth",block:"center"})});
 })();
 
