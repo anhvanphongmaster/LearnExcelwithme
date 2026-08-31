@@ -1745,7 +1745,7 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 }
 
 #avpBotTalk{display:none !important}
-#avpEdgeLauncher.is-robot{transform:none !important}
+
 
 /* RIGHT EDGE = mép phải màn hình */
 #avpEdgeLauncher.is-robot{
@@ -1931,3 +1931,44 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   z-index:2147483647 !important;
 }
 #avpBotTalk{pointer-events:none !important}
+
+/* ROBOT FINAL — visible when menu open, menu clickable */
+#avpEdgeLauncher.is-robot{
+  position:fixed !important;
+  left:0 !important;
+  right:auto !important;
+  top:auto !important;
+  bottom:12px !important;
+  width:76px !important;
+  height:90px !important;
+  overflow:visible !important;
+  pointer-events:none !important;
+  z-index:30 !important;
+}
+#avpEdgeLauncher.is-robot .avp-edge-main{
+  inset:auto !important;
+  width:76px !important;
+  height:90px !important;
+  overflow:visible !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  pointer-events:auto !important;
+  transform:none !important;
+}
+#avpEdgeLauncher.is-robot.open .avp-bot-25d,
+#avpEdgeLauncher.is-robot .avp-bot-25d{
+  display:block !important;
+  visibility:visible !important;
+  opacity:1 !important;
+}
+#avpEdgeLauncher.open .avp-edge-menu{
+  display:flex !important;
+  visibility:visible !important;
+}
+#avpEdgeLauncher.is-robot .avp-edge-menu,
+#avpEdgeLauncher.is-robot .avp-edge-action,
+#avpEdgeLauncher.is-robot [data-edge-action]{
+  pointer-events:auto !important;
+  z-index:2147483647 !important;
+}

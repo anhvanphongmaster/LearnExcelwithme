@@ -565,7 +565,6 @@
     if(open){
       launcher.classList.remove('is-walking');
       launcher.classList.add('is-greeting');
-      fab.style.transform='none';
       try{window.playAvpBotSeg && window.playAvpBotSeg(3,5.9)}catch(e){}
     }else{
       launcher.classList.remove('is-greeting');
