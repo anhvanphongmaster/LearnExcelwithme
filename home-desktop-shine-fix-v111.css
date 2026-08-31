@@ -1,0 +1,80 @@
+
+/* V111 — desktop homepage shine fix
+   Fixes the original CTA shine escaping outside the card on desktop.
+   Does not alter homepage layout/content. */
+
+/* Root cause:
+   .avp-mobile-main-cta uses ::before for the shine and home-effects.css expects overflow:hidden.
+   Later .avp-practice-hub-cta overrides overflow:visible, so on desktop the animated pseudo-element
+   travels outside the card and appears as a white bar on the far left of the hero. */
+
+/* Clip the shine to the card again. */
+.avp-practice-hub-cta{
+  overflow:hidden!important;
+  isolation:isolate!important;
+}
+
+/* Keep channel badges INSIDE the clipped card, so they remain visible. */
+.avp-practice-hub-badges{
+  top:8px!important;
+  right:12px!important;
+  z-index:5!important;
+}
+
+/* Make room for badges so text never collides with them. */
+.avp-practice-hub-cta .avp-mobile-main-cta-copy{
+  padding-right:78px!important;
+}
+
+/* Ensure the original moving shine is clearly visible inside the card. */
+.avp-practice-hub-cta::before{
+  z-index:2!important;
+  inset:0!important;
+  width:auto!important;
+  height:auto!important;
+  background:linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255,255,255,.06) 36%,
+    rgba(255,255,255,.48) 49%,
+    rgba(255,255,255,.10) 60%,
+    transparent 76%
+  )!important;
+  transform:translateX(-135%)!important;
+  animation:avpMobileCtaShine 3.4s ease-in-out infinite!important;
+  pointer-events:none!important;
+}
+
+/* Content must stay above the sweep. */
+.avp-practice-hub-cta > *{
+  position:relative;
+  z-index:3;
+}
+.avp-practice-hub-badges{
+  position:absolute!important;
+}
+
+/* Desktop-only refinement. */
+@media(min-width:701px){
+  .avp-practice-hub-cta::before{
+    animation-duration:3.1s!important;
+  }
+}
+
+/* Mobile keeps the same behavior but badges are slightly tighter. */
+@media(max-width:700px){
+  .avp-practice-hub-badges{
+    top:7px!important;
+    right:9px!important;
+  }
+  .avp-practice-hub-cta .avp-mobile-main-cta-copy{
+    padding-right:68px!important;
+  }
+}
+
+/* Respect reduced-motion only when the OS explicitly asks for it. */
+@media(prefers-reduced-motion:reduce){
+  .avp-practice-hub-cta::before{
+    animation:none!important;
+  }
+}
