@@ -573,15 +573,23 @@
       setEdgeMenu(false);
 
       const next=location.pathname.split('/').pop()||'index.html';
-      if(window.AVPAccess&&typeof window.AVPAccess.requireLogin==='function'){
-        const user=await window.AVPAccess.requireLogin({next});
-        if(!user){
-          toast('Đăng nhập để dùng Hỏi AI, Từ điển, Cộng đồng và Chat Admin');
-          return;
+      let user=null;
+      try{
+        if(window.AVPAccess&&typeof window.AVPAccess.getUser==='function'){
+          user=await window.AVPAccess.getUser(false);
         }
-      }else{
-        toast('Đăng nhập để dùng tính năng này');
-        location.href='auth.html?next='+encodeURIComponent(next);
+      }catch(err){}
+      if(!user){
+        try{
+          const sb=window.avpSupabase;
+          if(sb?.auth){
+            const sess=await sb.auth.getSession();
+            user=sess?.data?.session?.user||null;
+          }
+        }catch(err){}
+      }
+      if(!user){
+        toast('Đăng nhập để dùng Hỏi AI, Từ điển, Cộng đồng và Chat Admin');
         return;
       }
 
