@@ -91,6 +91,13 @@
   `;
 
   document.body.appendChild(launcher);
+  (function(){
+    if(document.querySelector("script[data-avp-robot]"))return;
+    var s=document.createElement("script");
+    s.src="avp-robot.js";
+    s.dataset.avpRobot="1";
+    document.head.appendChild(s);
+  })();
 
 
   (function(){
@@ -1174,110 +1181,3 @@
 
 
 
-/* B25 WALK + WAVE + LIFT */
-(function(){
-  function go(){
-    var el=document.getElementById("avpEdgeLauncher");
-    var fab=document.getElementById("avpEdgeMain");
-    if(!el||!fab){setTimeout(go,200);return;}
-    el.classList.add("is-robot","is-walking");
-
-    var talkOn=localStorage.getItem("avp_bot_chat")!=="off";
-    var talk=document.getElementById("avpBotTalk");
-    if(!talk){
-      talk=document.createElement("div");
-      talk.id="avpBotTalk";
-      el.appendChild(talk);
-    }
-    var lines=["Xin chào!","Học Excel vui nhé","Đi từng bước thôi","Chúc bạn học tốt"];
-    var li=0;
-    function showTalk(on){
-      if(!talkOn||!on||el.classList.contains("open")||el.classList.contains("is-lifted")){
-        talk.classList.remove("show");
-        return;
-      }
-      talk.textContent=lines[li%lines.length];
-      talk.classList.add("show");
-    }
-    showTalk(true);
-    setInterval(function(){
-      li++;
-      showTalk(true);
-      setTimeout(function(){talk.classList.remove("show");},2200);
-    },5000);
-
-    var x=16,dir=1,lift=false,startY=null,startX=null,moved=false;
-    function place(bottom){
-      el.style.setProperty("left","0px","important");
-      el.style.setProperty("right","auto","important");
-      el.style.setProperty("top","auto","important");
-      el.style.setProperty("bottom",(bottom==null?10:bottom)+"px","important");
-      el.style.setProperty("transform","translateX("+x+"px)","important");
-    }
-    var legs=el.querySelectorAll(".b25-leg");
-    var arms=el.querySelectorAll(".b25-arm");
-    var phase=0;
-    function tick(){
-      if(!el.classList.contains("open") && !lift){
-        el.classList.add("is-walking");
-        x+=dir*2.2;
-        var max=Math.max(20,(window.innerWidth||400)-80);
-        if(x>=max){x=max;dir=-1;el.classList.add("face-left");}
-        if(x<=12){x=12;dir=1;el.classList.remove("face-left");}
-        place(10);
-        phase+=0.28;
-        var s=Math.sin(phase)*18;
-        if(legs[0]) legs[0].style.transform="rotate("+s+"deg)";
-        if(legs[1]) legs[1].style.transform="rotate("+(-s)+"deg)";
-        if(arms[0]) arms[0].style.transform="rotate("+(-s)+"deg)";
-        if(arms[1]) arms[1].style.transform="rotate("+s+"deg)";
-      }else if(el.classList.contains("open") && arms[1]){
-        phase+=0.35;
-        arms[1].style.transform="rotate("+(-20+Math.sin(phase)*50)+"deg)";
-        if(arms[0]) arms[0].style.transform="rotate(8deg)";
-        if(legs[0]) legs[0].style.transform="none";
-        if(legs[1]) legs[1].style.transform="none";
-      }
-      requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-
-    fab.addEventListener("click",function(e){
-      if(moved||lift) return;
-      if(e.target.closest && e.target.closest(".avp-edge-menu")) return;
-      if(window.setAvpEdgeMenu){
-        var menu=document.getElementById("avpEdgeMenu");
-        window.setAvpEdgeMenu(menu && menu.hidden);
-      }
-    });
-    fab.addEventListener("pointerdown",function(e){
-      if(e.button!=null && e.button!==0)return;
-      startY=e.clientY; startX=e.clientX; moved=false; lift=false;
-    });
-    window.addEventListener("pointermove",function(e){
-      if(startY==null)return;
-      var dy=startY-e.clientY, dist=Math.hypot(e.clientX-startX,e.clientY-startY);
-      if(dy>24 && dist>24){
-        lift=true; moved=true;
-        el.classList.add("is-lifted","is-crying");
-        el.classList.remove("is-walking","open","is-greeting");
-        var menu=document.getElementById("avpEdgeMenu");
-        if(menu)menu.hidden=true;
-        showTalk(false);
-        var b=Math.max(10, window.innerHeight-e.clientY-40);
-        place(b);
-      }
-    });
-    window.addEventListener("pointerup",function(){
-      startY=null;
-      if(lift){
-        lift=false;
-        el.classList.remove("is-lifted","is-crying");
-        el.classList.add("is-walking");
-        place(10);
-      }
-    });
-  }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);
-  else go();
-})();
