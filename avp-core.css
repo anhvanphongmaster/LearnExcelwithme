@@ -1700,8 +1700,6 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   display:block !important;
   background:transparent !important;
 }
-#avpEdgeLauncher.is-robot .avp-bot-img,
-#avpEdgeLauncher.is-robot .avp-bot-vid{display:none !important}
 
 #avpBot3d{display:none !important}
 #avpEdgeLauncher.is-robot .avp-bot-img{
@@ -1714,3 +1712,12 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 }
 #avpEdgeLauncher.is-robot .avp-edge-main-icon{display:none !important}
 #avpEdgeLauncher.is-robot .avp-edge-main::before{display:none !important}
+
+#avpEdgeLauncher.is-robot .avp-bot-vid{
+  display:block !important;
+  width:88px !important;
+  height:112px !important;
+  object-fit:contain !important;
+  background:transparent !important;
+  opacity:1 !important;
+}
