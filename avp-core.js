@@ -989,30 +989,97 @@
     let x=PAD;
     let dir=1;
     const SPEED=0.9;
+    const HELLO=[
+      "Xin chào, học Excel vui vẻ nhé!",
+      "Chào bạn, hôm nay luyện thêm một công thức nha.",
+      "Đi từng bước là tiến bộ rồi.",
+      "Mở Bài tập Excel khi rảnh 5 phút cũng được.",
+      "Bạn làm được — cứ thử một hàm mới.",
+      "Chúc bạn học tập hiệu quả!",
+      "Nhớ lưu file thực hành của mình nhé.",
+      "PivotTable không khó nếu làm chậm.",
+      "VLOOKUP/XLOOKUP: kiên nhẫn là ra.",
+      "Uống nước, rồi làm tiếp một bài nhỏ.",
+      "Chào mừng trở lại Learn Excel!",
+      "Hôm nay chỉ cần đúng hơn hôm qua."
+    ];
+    const bubble=document.createElement("div");
+    bubble.className="avp-bot-bubble";
+    bubble.id="avpBotBubble";
+    bubble.hidden=true;
+    document.body.appendChild(bubble);
+
+    function unreadNow(){
+      return unreadCountFromChatBadge()+unreadCountFromCommunity()+starUnread;
+    }
+    function pickHello(){
+      return HELLO[Math.floor(Math.random()*HELLO.length)];
+    }
+    function placeBubble(){
+      const r=launcher.getBoundingClientRect();
+      const bw=Math.min(240, window.innerWidth-24);
+      let left=r.left+r.width/2-bw/2;
+      left=Math.max(12, Math.min(left, window.innerWidth-bw-12));
+      bubble.style.width=bw+"px";
+      bubble.style.left=left+"px";
+      bubble.style.bottom=(window.innerHeight-r.top+10)+"px";
+    }
+    function showLine(text,ms){
+      bubble.textContent=text;
+      bubble.hidden=false;
+      bubble.classList.add("show");
+      placeBubble();
+      return new Promise(res=>setTimeout(()=>{
+        bubble.classList.remove("show");
+        bubble.hidden=true;
+        res();
+      },ms));
+    }
+    async function talkLoop(){
+      while(true){
+        if(launcher.classList.contains("open")){
+          bubble.hidden=true;
+          await new Promise(r=>setTimeout(r,400));
+          continue;
+        }
+        const unread=unreadNow();
+        await showLine(pickHello(), 2200+Math.floor(Math.random()*800));
+        if(launcher.classList.contains("open")) continue;
+        if(unread>0){
+          await new Promise(r=>setTimeout(r,1500));
+          if(launcher.classList.contains("open")) continue;
+          const n=unreadNow()||unread;
+          await showLine(n>1?("Bạn có "+n+" tin nhắn mới chưa đọc"):"Bạn có tin nhắn mới chưa đọc", 2600);
+        }else{
+          await new Promise(r=>setTimeout(r,3000));
+        }
+      }
+    }
+
     function w(){return Math.max(56, fab.offsetWidth||56)}
     function maxX(){return Math.max(PAD, window.innerWidth - w() - PAD)}
     function frame(){
-      if(!launcher.classList.contains('is-walking') || launcher.classList.contains('open')){
-        requestAnimationFrame(frame);
-        return;
+      if(launcher.classList.contains("is-walking") && !launcher.classList.contains("open")){
+        x+=dir*SPEED;
+        const mx=maxX();
+        if(x>=mx){x=mx;dir=-1}
+        if(x<=PAD){x=PAD;dir=1}
+        launcher.style.left=x+"px";
+        launcher.style.right="auto";
+        launcher.style.top="auto";
+        launcher.style.bottom=PAD+"px";
+        launcher.classList.toggle("face-left", dir<0);
       }
-      x+=dir*SPEED;
-      const mx=maxX();
-      if(x>=mx){x=mx;dir=-1}
-      if(x<=PAD){x=PAD;dir=1}
-      launcher.style.left=x+'px';
-      launcher.style.right='auto';
-      launcher.style.top='auto';
-      launcher.style.bottom=PAD+'px';
-      launcher.classList.toggle('face-left', dir<0);
+      if(!bubble.hidden) placeBubble();
       requestAnimationFrame(frame);
     }
-    launcher.style.left=x+'px';
-    launcher.style.right='auto';
-    launcher.style.top='auto';
-    launcher.style.bottom=PAD+'px';
+    launcher.style.left=x+"px";
+    launcher.style.right="auto";
+    launcher.style.top="auto";
+    launcher.style.bottom=PAD+"px";
     requestAnimationFrame(frame);
-    window.addEventListener('resize',()=>{ if(x>maxX()) x=maxX(); });
+    talkLoop();
+    window.addEventListener("resize",()=>{ if(x>maxX()) x=maxX(); placeBubble(); });
   })();
 
   if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));

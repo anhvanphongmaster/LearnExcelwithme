@@ -1455,3 +1455,60 @@ body.dark-mode #avpEdgeLauncher .avp-edge-action > span:first-child{
   .avp-edge-launcher.is-walking .avp-bot-arm-r,
   .avp-edge-launcher.is-greeting .avp-bot-arm-r{animation:none !important}
 }
+
+
+/* Robot 3D + bubble follow */
+.avp-bot{
+  transform-style:preserve-3d;
+  filter:drop-shadow(0 8px 10px rgba(0,20,10,.35));
+}
+.avp-bot-head{
+  background:linear-gradient(145deg,#6ee09a 0%,#2f9a5c 42%,#165533 100%) !important;
+  transform:translateZ(12px);
+}
+.avp-bot-body{
+  background:linear-gradient(160deg,#45c077,#1b6b42 60%,#0c3320) !important;
+  transform:translateZ(8px);
+  box-shadow:inset 0 3px 0 rgba(255,255,255,.28), 4px 6px 0 rgba(0,20,10,.2) !important;
+}
+.avp-bot-arm,.avp-bot-leg{
+  background:linear-gradient(#2f9a5c,#0f3d28) !important;
+  box-shadow:2px 3px 0 rgba(0,20,10,.22);
+}
+.avp-edge-launcher.is-greeting .avp-bot-arm-r{
+  animation:avpBotWaveHuman .55s ease-in-out infinite !important;
+}
+@keyframes avpBotWaveHuman{
+  0%{transform:rotate(12deg) translateZ(6px)}
+  25%{transform:rotate(-55deg) translateZ(6px)}
+  50%{transform:rotate(8deg) translateZ(6px)}
+  75%{transform:rotate(-62deg) translateZ(6px)}
+  100%{transform:rotate(12deg) translateZ(6px)}
+}
+.avp-bot-bubble{
+  position:fixed;
+  z-index:9997;
+  max-width:240px;
+  padding:8px 10px;
+  border-radius:12px 12px 12px 4px;
+  background:#143526;
+  color:#f3fff7;
+  font:700 12px/1.35 system-ui,sans-serif;
+  box-shadow:0 8px 22px rgba(0,20,10,.28);
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity .2s ease, transform .2s ease;
+}
+.avp-bot-bubble.show{
+  opacity:1;
+  transform:translateY(0);
+}
+.avp-bot-bubble::after{
+  content:"";
+  position:absolute;
+  left:22px;
+  bottom:-6px;
+  border:6px solid transparent;
+  border-top-color:#143526;
+}
