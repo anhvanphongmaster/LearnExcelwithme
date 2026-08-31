@@ -1853,3 +1853,9 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 @keyframes b25tear{to{transform:translateY(10px);opacity:.2}}
 @keyframes b25wig{50%{transform:rotate(10deg)}}
 #avpEdgeLauncher.is-robot .avp-edge-badge{display:grid !important}
+
+#avpEdgeLauncher.is-robot, #avpEdgeLauncher.is-robot .avp-edge-main{
+  pointer-events:auto !important;
+  cursor:pointer !important;
+}
+#avpBotTalk.show{display:block !important; opacity:1 !important;}

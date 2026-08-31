@@ -557,7 +557,7 @@
   document.body.appendChild(back);
   const hub=back.querySelector('.avp-hub');
 
-  function setEdgeMenu(open){
+  window.setAvpEdgeMenu=function setEdgeMenu(open){
     edgeMenu.hidden=!open;
     launcher.classList.toggle('open',open);
     fab.setAttribute('aria-expanded',open?'true':'false');
@@ -1227,6 +1227,14 @@
     }
     requestAnimationFrame(tick);
 
+    fab.addEventListener("click",function(e){
+      if(moved||lift) return;
+      e.preventDefault();
+      if(window.setAvpEdgeMenu){
+        var menu=document.getElementById("avpEdgeMenu");
+        window.setAvpEdgeMenu(menu && menu.hidden);
+      }
+    });
     fab.addEventListener("pointerdown",function(e){
       if(e.button!=null && e.button!==0)return;
       startY=e.clientY; startX=e.clientX; moved=false; lift=false;
