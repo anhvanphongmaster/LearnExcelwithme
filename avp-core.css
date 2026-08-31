@@ -1702,3 +1702,15 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 }
 #avpEdgeLauncher.is-robot .avp-bot-img,
 #avpEdgeLauncher.is-robot .avp-bot-vid{display:none !important}
+
+#avpBot3d{display:none !important}
+#avpEdgeLauncher.is-robot .avp-bot-img{
+  display:block !important;
+  width:88px !important;
+  height:112px !important;
+  object-fit:contain !important;
+  background:transparent !important;
+  filter:drop-shadow(0 8px 12px rgba(0,0,0,.35));
+}
+#avpEdgeLauncher.is-robot .avp-edge-main-icon{display:none !important}
+#avpEdgeLauncher.is-robot .avp-edge-main::before{display:none !important}

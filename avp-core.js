@@ -80,19 +80,14 @@
       title="Công cụ nhanh — kéo để di chuyển"
     >
       <span class="avp-bot" aria-hidden="true">
-        <canvas id="avpBot3d" class="avp-bot-3d" width="96" height="120"></canvas>
+        <img class="avp-bot-img" src="avp-bot-wave.png" alt="">
       </span>
       <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
     </button>
   `;
 
   document.body.appendChild(launcher);
-  (function(){
-    if(document.querySelector('script[src*="avp-bot-3d.js"]'))return;
-    var s=document.createElement("script");
-    s.src="avp-bot-3d.js";
-    document.head.appendChild(s);
-  })();
+
   (function(){
     const base=(location.pathname.replace(/[^/]+$/,"")||"./");
     const img=launcher.querySelector(".avp-bot-img");
