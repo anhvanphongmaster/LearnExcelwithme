@@ -242,8 +242,8 @@
 (function(){
   try{
     const page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
-    const noCore=new Set(["certificate.html"]);
-    if(!noCore.has(page) && !document.querySelector('script[src="avp-core.js"],script[src*="/avp-core.js"]')){
+    if(window.self!==window.top) return;
+    if(!document.querySelector('script[src="avp-core.js"],script[src*="/avp-core.js"]')){
       if(!document.querySelector('link[href="avp-core.css"]')){
         var l=document.createElement("link");
         l.rel="stylesheet"; l.href="avp-core.css";
