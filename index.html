@@ -1471,6 +1471,46 @@ a.avp-yt-combo.avp-mobile-main-cta{
 .avp-mini-channel-tt{background:#111;}
 .avp-mini-channel-yt{background:#ff0000;}
 .avp-mini-channel-grade{background:#2563eb;}
+.avp-practice-hub-badges{
+  overflow:visible!important;
+  perspective:180px;
+}
+.avp-mini-channel{
+  position:relative;
+  transform-style:preserve-3d;
+  transform-origin:50% 80%;
+  overflow:hidden;
+}
+.avp-mini-channel::after{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.0) 42%,rgba(255,255,255,.85) 50%,rgba(255,255,255,0) 58%,transparent 70%);
+  transform:translateX(-120%) rotate(18deg);
+  pointer-events:none;
+}
+.avp-mini-channel-tt{animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) 0s infinite}
+.avp-mini-channel-yt{animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) .28s infinite}
+.avp-mini-channel-grade{animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) .56s infinite}
+.avp-mini-channel-tt::after{animation:avpMiniFlash 1.8s ease-in-out 0s infinite}
+.avp-mini-channel-yt::after{animation:avpMiniFlash 1.8s ease-in-out .28s infinite}
+.avp-mini-channel-grade::after{animation:avpMiniFlash 1.8s ease-in-out .56s infinite}
+@keyframes avpMiniBounce{
+  0%,18%,100%{transform:translateY(0) scale(1) rotateX(0) rotateY(0)}
+  32%{transform:translateY(-7px) scale(1.14) rotateX(16deg) rotateY(-10deg)}
+  46%{transform:translateY(-2px) scale(1.04) rotateX(-6deg) rotateY(8deg)}
+  58%{transform:translateY(-5px) scale(1.08) rotateX(10deg) rotateY(-4deg)}
+  72%{transform:translateY(0) scale(1) rotateX(0) rotateY(0)}
+}
+@keyframes avpMiniFlash{
+  0%,22%{transform:translateX(-130%) rotate(18deg);opacity:0}
+  32%{opacity:1}
+  48%{transform:translateX(130%) rotate(18deg);opacity:.3}
+  49%,100%{opacity:0;transform:translateX(130%) rotate(18deg)}
+}
+@media (prefers-reduced-motion:reduce){
+  .avp-mini-channel,.avp-mini-channel::after{animation:none!important}
+}
 </style>
 
 
