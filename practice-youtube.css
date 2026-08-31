@@ -1,155 +1,421 @@
 
-.pyt-page{max-width:920px;margin:0 auto;padding:16px 16px 40px;font-family:system-ui,Arial,sans-serif;color:#173f2a}
-.pyt-back a{color:#217346;text-decoration:none;font-weight:700;font-size:14px}
-.pyt-hero{background:linear-gradient(135deg,#0f5132,#1b6b45 55%,#2a9a63);color:#fff;border-radius:18px;padding:20px 18px;margin:12px 0 14px;box-shadow:0 12px 32px rgba(15,81,50,.28)}
-.pyt-kicker{margin:0;font-size:11px;font-weight:800;letter-spacing:.08em;color:rgba(255,255,255,.85)}
-.pyt-hero h1{margin:8px 0 6px;font-size:clamp(22px,4vw,28px);font-weight:800;color:#fff}
-.pyt-sub{margin:0 0 14px;font-size:13.5px;line-height:1.45;color:rgba(255,255,255,.92)}
-.pyt-files{display:flex;flex-wrap:wrap;gap:8px}
-.pyt-file-alt{display:inline-block;background:#fff;color:#0f5132!important;text-decoration:none;font-weight:800;font-size:12.5px;border-radius:999px;padding:10px 14px}
-.pyt-section-title{margin:18px 0 10px;font-size:13px;font-weight:800;color:#5f7268;letter-spacing:.04em;text-transform:uppercase}
-.pyt-split{display:grid;grid-template-columns:2fr 1fr;gap:12px;align-items:stretch;margin-bottom:8px}
-.pyt-split-main{display:flex;flex-direction:column;gap:10px;min-width:0}
-.pyt-side-box{height:100%;box-sizing:border-box;background:#f3faf6;border:1px solid #c5e6d1;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;position:sticky;top:12px}
-.pyt-side-clean{background:#f5f8fc;border-color:#c5d4e8}
-.pyt-side-svg{width:100%;height:auto;display:block;border-radius:12px}
-.pyt-side-label{margin:0;font-size:11px;font-weight:800;color:#5f7268;letter-spacing:.04em;text-transform:uppercase}
-.pyt-side-box strong{font-size:16px;color:#145a32}
-.pyt-side-clean strong{color:#1a5276}
-.pyt-side-desc{margin:0;font-size:12px;color:#5f7268;line-height:1.45}
-.pyt-side-list{margin:0;padding-left:18px;font-size:12px;color:#4d6356;line-height:1.55;flex:1}
-.pyt-dl-block{display:block;text-align:center;background:#1b6b45;color:#fff!important;text-decoration:none;font-weight:800;font-size:13px;border-radius:12px;padding:12px 10px;margin-top:auto}
-.pyt-side-clean .pyt-dl-block{background:#1a5276}
-.pyt-card{background:#fff;border:1px solid #e8f0eb;border-radius:14px;padding:14px 16px}
-.pyt-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.pyt-num{font-size:12px;font-weight:900;color:#217346;background:#e8f5ec;border-radius:8px;padding:3px 8px}
-.pyt-badge{font-size:11px;font-weight:800;border-radius:999px;padding:3px 8px}
-.pyt-badge.ok{background:#d5f5e3;color:#145a32}
-.pyt-badge.soon{background:#f0e6c8;color:#7d6608}
-.pyt-card h2{margin:0 0 6px;font-size:16px}
-.pyt-card p{margin:0 0 10px;font-size:13px;color:#5f7268;line-height:1.4}
-.pyt-yt{display:inline-flex;align-items:center;gap:8px;background:#ff0000;color:#fff!important;text-decoration:none;font-weight:800;font-size:13px;border-radius:999px;padding:9px 14px}
-.pyt-muted{font-size:12px;color:#8a9690}
-@media(max-width:720px){.pyt-split{grid-template-columns:1fr}.pyt-side-box{position:static}}
-
-
-/* === Hover lift (local backup) === */
-@media (hover:hover) and (pointer:fine){
-  .pyt-card, .pyt-side-box, .pyt-hero, .pyt-yt, .pyt-files a, .pyt-file-alt, .pyt-back, .pyt-dl-block a{
-    transition: transform .28s cubic-bezier(.22,1,.36,1), box-shadow .28s ease, filter .2s ease;
-  }
-  .pyt-card:hover, .pyt-side-box:hover{
-    transform: translateY(-5px) scale(1.01);
-    box-shadow: 0 14px 32px rgba(15,42,28,.12);
-  }
-  .pyt-yt:hover, .pyt-files a:hover, .pyt-file-alt:hover, .pyt-dl-block a:hover, .pyt-back:hover{
-    transform: translateY(-3px) scale(1.03);
-    filter: brightness(1.06);
-    box-shadow: 0 10px 22px rgba(0,0,0,.16);
-  }
-  .pyt-hero:hover{
-    transform: translateY(-4px);
-    box-shadow: 0 16px 36px rgba(15,42,28,.18);
-  }
+.pyt-page{
+  width:min(1040px,calc(100% - 28px));
+  margin:18px auto 48px;
+  color:#173f2a;
+  font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;
 }
 
-.pyt-hero{position:relative}
-.pyt-chvote{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px}
-.pyt-chvote-lab{width:100%;font-size:11px;font-weight:800;letter-spacing:.02em;color:rgba(255,255,255,.88)}
-.pyt-chvote-btn{border:0;border-radius:999px;padding:6px 10px;font-size:11.5px;font-weight:800;cursor:pointer;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.35)}
-.pyt-chvote-btn:hover{background:rgba(255,255,255,.28)}
-.pyt-chvote-btn.is-on{background:#fff;color:#0f5132}
-.pyt-chvote-btn:disabled{opacity:.7;cursor:default}
-.pyt-chvote-st{font-size:11px;color:rgba(255,255,255,.9);font-weight:700}
-@media(max-width:640px){.pyt-chvote-btn{width:100%;text-align:center}}
+.pyt-context{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:0 0 10px;
+  color:#78887f;
+  font-size:10px;
+}
+.pyt-context a{
+  color:#217346;
+  text-decoration:none;
+  font-weight:900;
+}
 
+.pyt-hero{
+  padding:22px 24px;
+  border:1px solid #cfe4d6;
+  border-radius:20px;
+  background:linear-gradient(135deg,#f7fcf9,#edf8f1);
+}
+.pyt-kicker{
+  margin:0;
+  color:#217346;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.12em;
+}
+.pyt-hero h1{
+  margin:5px 0 7px;
+  color:#173f2a;
+  font-size:clamp(27px,4vw,38px);
+  line-height:1.08;
+}
+.pyt-sub{
+  margin:0;
+  max-width:760px;
+  color:#64776c;
+  font-size:12px;
+  line-height:1.6;
+}
 
-/* V90 — embedded YouTube practice belongs to Practice Hub, so avoid duplicate navigation */
-.pyt-embedded .top-simple-nav,
-.pyt-embedded .pyt-back{
+.pyt-project-list{
+  display:grid;
+  gap:12px;
+  margin-top:14px;
+}
+
+.pyt-project{
+  overflow:hidden;
+  border:1px solid #d8e7de;
+  border-radius:19px;
+  background:#fff;
+  box-shadow:0 8px 22px rgba(20,70,41,.05);
+}
+.pyt-project-head{
+  width:100%;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto auto;
+  gap:14px;
+  align-items:center;
+  padding:17px 18px;
+  border:0;
+  background:#fff;
+  color:#173f2a;
+  text-align:left;
+  cursor:pointer;
+}
+.pyt-project-head:hover{
+  background:#f8fcf9;
+}
+.pyt-project-index{
+  padding:6px 8px;
+  border-radius:9px;
+  background:#edf7f1;
+  color:#217346;
+  font-size:8px;
+  font-weight:950;
+  letter-spacing:.08em;
+}
+.pyt-project-copy h2{
+  margin:0 0 3px;
+  font-size:17px;
+}
+.pyt-project-copy p{
+  margin:0;
+  color:#708077;
+  font-size:10px;
+  line-height:1.45;
+}
+.pyt-project-meta{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:2px;
+}
+.pyt-project-meta strong{
+  color:#217346;
+  font-size:10px;
+}
+.pyt-project-meta span{
+  color:#8a968f;
+  font-size:8px;
+}
+.pyt-project-chevron{
+  color:#217346;
+  font-size:18px;
+  transition:transform .2s ease;
+}
+.pyt-project.is-open .pyt-project-chevron{
+  transform:rotate(180deg);
+}
+
+.pyt-project-body{
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  border-top:1px solid transparent;
+  transition:max-height .45s cubic-bezier(.22,1,.36,1),opacity .22s ease,border-color .22s ease;
+}
+.pyt-project.is-open .pyt-project-body{
+  max-height:4200px;
+  opacity:1;
+  border-top-color:#e5eee8;
+}
+
+.pyt-project-toolbar{
+  padding:14px 18px;
+  background:#fbfdfb;
+}
+.pyt-toolbar-label{
+  display:block;
+  margin-bottom:6px;
+  color:#6a7a71;
+  font-size:8px;
+  font-weight:950;
+  letter-spacing:.10em;
+}
+.pyt-toolbar-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+.pyt-toolbar-links a{
+  padding:7px 9px;
+  border:1px solid #cfe2d6;
+  border-radius:999px;
+  background:#fff;
+  color:#185c37;
+  text-decoration:none;
+  font-size:9px;
+  font-weight:850;
+}
+
+.pyt-phase{
+  padding:17px 18px 4px;
+}
+.pyt-phase + .pyt-phase{
+  margin-top:8px;
+  border-top:1px dashed #d8e5dd;
+}
+.pyt-phase-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:10px;
+}
+.pyt-phase-head span{
+  color:#217346;
+  font-size:8px;
+  font-weight:950;
+  letter-spacing:.10em;
+}
+.pyt-phase-head h3{
+  margin:3px 0 2px;
+  font-size:16px;
+}
+.pyt-phase-head p{
+  margin:0;
+  color:#78887f;
+  font-size:9px;
+}
+.pyt-download{
+  flex:0 0 auto;
+  padding:8px 10px;
+  border:1px solid #bad8c5;
+  border-radius:10px;
+  background:#eef8f2;
+  color:#185c37!important;
+  text-decoration:none;
+  font-size:9px;
+  font-weight:900;
+}
+
+.pyt-parts{
+  display:grid;
+  gap:8px;
+}
+.pyt-part{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) auto;
+  gap:12px;
+  align-items:center;
+  min-width:0;
+  padding:12px;
+  border:1px solid #e0ebe4;
+  border-radius:14px;
+  background:#fff;
+  transition:transform .18s cubic-bezier(.22,1,.36,1),border-color .18s ease,box-shadow .18s ease;
+}
+.pyt-part-num{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:#edf7f1;
+  color:#217346;
+  font-size:11px;
+  font-weight:950;
+}
+.pyt-part-main{
+  min-width:0;
+}
+.pyt-part-status{
+  display:inline-block;
+  margin-bottom:3px;
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:.07em;
+}
+.pyt-part-status.ready{color:#217346}
+.pyt-part-status.soon{color:#8a6c28}
+.pyt-part h4{
+  margin:0 0 3px;
+  font-size:13px;
+  line-height:1.35;
+}
+.pyt-part p{
+  margin:0;
+  color:#718178;
+  font-size:9px;
+  line-height:1.45;
+}
+.pyt-youtube-link{
+  padding:8px 10px;
+  border-radius:10px;
+  background:#217346;
+  color:#fff!important;
+  text-decoration:none;
+  font-size:9px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.pyt-part-wait{
+  padding:7px 9px;
+  border-radius:9px;
+  background:#f4f6f5;
+  color:#89958e;
+  font-size:8px;
+  font-weight:850;
+  white-space:nowrap;
+}
+
+.pyt-project-bottom{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:16px;
+  align-items:center;
+  margin-top:14px;
+  padding:14px 18px 18px;
+  border-top:1px solid #e6eee9;
+  background:#fbfdfb;
+}
+.pyt-project-bottom p{
+  margin:0;
+  color:#77867e;
+  font-size:9px;
+  line-height:1.45;
+}
+.pyt-chvote{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:6px;
+}
+.pyt-chvote-btn{
+  padding:7px 9px;
+  border:1px solid #c6dfd0;
+  border-radius:999px;
+  background:#fff;
+  color:#185c37;
+  font-size:8px;
+  font-weight:900;
+  cursor:pointer;
+}
+.pyt-chvote-btn:hover,
+.pyt-chvote-btn.is-on{
+  border-color:#217346;
+  background:#eef8f2;
+}
+.pyt-chvote-btn:disabled{
+  opacity:.6;
+  cursor:default;
+}
+.pyt-chvote-st{
+  width:100%;
+  color:#75857c;
+  font-size:8px;
+  text-align:right;
+}
+
+.pyt-empty-note{
+  margin-top:12px;
+  padding:11px 13px;
+  border:1px dashed #cfe0d5;
+  border-radius:12px;
+  background:#f9fcfa;
+  color:#738179;
+  font-size:9px;
+  line-height:1.5;
+}
+
+/* Embedded inside Practice Hub: parent owns all site navigation. */
+html.pyt-embedded body{
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+}
+html.pyt-embedded .top-simple-nav,
+html.pyt-embedded .pyt-context{
   display:none!important;
 }
-.pyt-embedded .pyt-page{
-  margin-top:10px!important;
+html.pyt-embedded .pyt-page{
+  width:100%!important;
+  margin:0!important;
+  padding:0 2px 18px!important;
 }
-
-
-/* =========================================================
-   V91 — YouTube Practice embedded inside Practice Hub
-   Hide ALL site-level chrome inside the iframe.
-   The parent Practice Hub owns navigation and floating tools.
-   ========================================================= */
-html.avp-embedded-youtube .top-simple-nav,
-html.avp-embedded-youtube .pyt-back,
-html.avp-embedded-youtube .avp-page-back-wrap,
-html.avp-embedded-youtube .core-topic-nav,
-html.avp-embedded-youtube .avp-hub-fab,
-html.avp-embedded-youtube .avp-edge-menu,
-html.avp-embedded-youtube .avp-hub-backdrop,
-html.avp-embedded-youtube .avp-install-banner,
-html.avp-embedded-youtube .avp-toast-host,
-.pyt-embedded .top-simple-nav,
-.pyt-embedded .pyt-back,
-.pyt-embedded .avp-page-back-wrap,
-.pyt-embedded .core-topic-nav,
-.pyt-embedded .avp-hub-fab,
-.pyt-embedded .avp-edge-menu,
-.pyt-embedded .avp-hub-backdrop,
-.pyt-embedded .avp-install-banner,
-.pyt-embedded .avp-toast-host{
-  display:none!important;
-}
-
-/* Prevent hidden fixed chrome from reserving visual spacing. */
-html.avp-embedded-youtube body,
-body.pyt-embedded{
-  padding-top:0!important;
+html.pyt-embedded .pyt-hero{
   margin-top:0!important;
 }
 
-html.avp-embedded-youtube .pyt-page,
-body.pyt-embedded .pyt-page{
-  max-width:none!important;
-  margin:0!important;
-  padding:6px 2px 20px!important;
+/* Smooth, local-only interaction. No duplicated global page-transition scripts in embed. */
+@media(hover:hover) and (pointer:fine){
+  .pyt-part:hover{
+    transform:translateY(-2px);
+    border-color:#b9d8c5;
+    box-shadow:0 8px 18px rgba(20,70,41,.06);
+  }
+  .pyt-toolbar-links a:hover,
+  .pyt-download:hover,
+  .pyt-youtube-link:hover{
+    filter:brightness(.98);
+  }
 }
 
-
-/* =========================================================
-   V94 — YouTube Practice internal content follows site green.
-   Only the actual outbound "Xem trên YouTube" button stays red.
-   ========================================================= */
-.pyt-hero,
-.pyt-section,
-.pyt-card,
-.pyt-project,
-.pyt-feature,
-.pyt-project-card,
-.pyt-featured,
-.pyt-featured-card{
-  border-color:#cfe3d6!important;
+@media(max-width:720px){
+  .pyt-page{width:calc(100% - 18px);margin-top:10px}
+  .pyt-hero{padding:18px}
+  .pyt-project-head{
+    grid-template-columns:auto minmax(0,1fr) auto;
+    gap:10px;
+    padding:14px;
+  }
+  .pyt-project-meta{
+    grid-column:2;
+    align-items:flex-start;
+    flex-direction:row;
+    gap:8px;
+  }
+  .pyt-project-chevron{
+    grid-column:3;
+    grid-row:1 / span 2;
+  }
+  .pyt-phase{padding:14px 12px 3px}
+  .pyt-phase-head{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:8px;
+  }
+  .pyt-download{
+    width:100%;
+    text-align:center;
+  }
+  .pyt-part{
+    grid-template-columns:38px minmax(0,1fr);
+    gap:9px;
+  }
+  .pyt-part-num{
+    width:36px;height:36px;
+  }
+  .pyt-youtube-link,
+  .pyt-part-wait{
+    grid-column:2;
+    justify-self:start;
+  }
+  .pyt-project-bottom{
+    grid-template-columns:1fr;
+  }
+  .pyt-chvote{
+    justify-content:flex-start;
+  }
+  .pyt-chvote-st{text-align:left}
 }
 
-/* Any old channel/project emphasis is green, not platform red/blue. */
-.pyt-project-header,
-.pyt-featured-header,
-.pyt-highlight,
-.pyt-badge,
-.pyt-chip{
-  background:#eef8f2!important;
-  color:#185c37!important;
-  border-color:#c6dfd0!important;
-}
-
-/* Preserve YouTube brand ONLY on actual outbound YouTube button. */
-.pyt-yt{
-  background:#e62117!important;
-  border-color:#e62117!important;
-  color:#fff!important;
-}
-.pyt-yt:hover,
-.pyt-yt:focus-visible{
-  background:#c91b12!important;
-  border-color:#c91b12!important;
-  color:#fff!important;
+@media(prefers-reduced-motion:reduce){
+  .pyt-project-body,
+  .pyt-project-chevron,
+  .pyt-part{
+    transition:none!important;
+  }
 }

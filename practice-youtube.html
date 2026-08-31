@@ -3,44 +3,25 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>YouTube Practice | Learn Excel</title>
+<title>YouTube Practice | Learn Excel with Anh Van Phong</title>
+
 <link rel="stylesheet" href="style.css"/>
 <link rel="stylesheet" href="simple-nav.css"/>
-<link rel="stylesheet" href="practice-youtube.css"/>
-  <link rel="stylesheet" href="avp-site-motion.css" />
-<link rel="stylesheet" href="avp-core.css" />
-<link rel="stylesheet" href="avp-ui-polish-v40.css?v=20260830-v43final" />
+<link rel="stylesheet" href="practice-youtube.css?v=20260831-v95"/>
+<link rel="stylesheet" href="auth.css"/>
+<link rel="stylesheet" href="global-search.css"/>
 
-<style>
-html.avp-embedded-youtube, html.avp-embedded-youtube body{background:transparent!important}
-html.avp-embedded-youtube .pyt-page{max-width:none!important;margin:0!important;padding:6px 2px 20px!important}
-html.avp-embedded-youtube .pyt-back{display:none!important}
-</style>
 <script>
 (function(){
   try{
-    var q=new URLSearchParams(location.search);
-    if(q.get("embed")==="1"){
-      document.documentElement.classList.add("avp-embedded-youtube");
-    }
+    const embedded=new URLSearchParams(location.search).get("embed")==="1";
+    document.documentElement.classList.toggle("pyt-embedded",embedded);
   }catch(e){}
 })();
 </script>
-
-  <link rel="stylesheet" href="auth.css">
-  <link rel="stylesheet" href="global-search.css">
 </head>
+
 <body>
-<script>
-(function(){
-  try{
-    if(new URLSearchParams(location.search).get("embed")==="1"){
-      document.documentElement.classList.add("pyt-embedded");
-      document.body.classList.add("pyt-embedded");
-    }
-  }catch(e){}
-})();
-</script>
 <nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
     <a href="index.html" data-avp-nav="home">Trang chủ</a>
@@ -53,115 +34,187 @@ html.avp-embedded-youtube .pyt-back{display:none!important}
   </div>
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
+
 <main class="pyt-page">
-<p class="pyt-back"><a href="practice-video.html">← Quay lại Practice Hub</a></p>
-<header class="pyt-hero">
-  <div class="pyt-chvote" id="pytChVote">
-    <span class="pyt-chvote-lab">Bạn muốn admin làm tiếp?</span>
-    <button type="button" class="pyt-chvote-btn" data-chvote="youtube">Tiếp tục làm thêm video YouTube</button>
-    <button type="button" class="pyt-chvote-btn" data-chvote="tiktok">Tập trung làm trên TikTok</button>
-    <span class="pyt-chvote-st" id="pytChVoteSt"></span>
+  <div class="pyt-context">
+    <a href="practice-video.html">← Quay lại Practice Hub</a>
+    <span>YouTube Practice</span>
   </div>
-  <p class="pyt-kicker">YOUTUBE PRACTICE</p>
-  <h1>Project Sales Dashboard</h1>
-  <p class="pyt-sub">P1–P3 làm sạch dữ liệu thô · P4–P6 Pivot &amp; Dashboard trên file sạch</p>
-  <div class="pyt-files">
-    <a class="pyt-file-alt" href="downloads/youtube-practice/List_Cong_Thuc_Power_Query_Hay_Dung.xlsx" download>📘 Công thức Power Query hay dùng</a>
-    <a class="pyt-file-alt" href="downloads/youtube-practice/Kien_Thuc_Tip_Trick_Power_Query.xlsx" download>⚡ Tips &amp; Tricks Power Query</a>
-    <a class="pyt-file-alt" href="downloads/youtube-practice/Kien_Thuc_Tip_Trick_Pivot_Dashboard.xlsx" download>📊 Tips &amp; Tricks Pivot–Dashboard</a>
-  </div>
-</header>
 
-<p class="pyt-section-title">Giai đoạn 1 · Làm sạch (P1–P3)</p>
-<section class="pyt-split">
-  <div class="pyt-split-main">
-    <article class="pyt-card">
-      <div class="pyt-top"><span class="pyt-num">P1</span><span class="pyt-badge ok">Có video</span></div>
-      <h2>Gộp 8 sheet doanh số bằng Power Query</h2>
-      <p>Chuẩn hóa cấu trúc, xử lý lệch tên cột, Append về Master_DoanhSo</p>
-      <a class="pyt-yt" href="https://youtu.be/GGruK_BusXY?si=HnN67TZh4JQDm-wJ" target="_blank" rel="noopener">▶ Xem trên YouTube</a>
-    </article>
-    <article class="pyt-card">
-      <div class="pyt-top"><span class="pyt-num">P2</span><span class="pyt-badge ok">Có video</span></div>
-      <h2>Làm sạch dữ liệu bẩn nâng cao</h2>
-      <p>Ngày/số dạng text, khoảng trắng, SKU lỗi, ô trống, duplicate, giá trị không đồng nhất</p>
-      <a class="pyt-yt" href="https://youtu.be/-3OhkVqgdko?si=x1v-ELaYYUH7Isla" target="_blank" rel="noopener">▶ Xem trên YouTube</a>
-    </article>
-    <article class="pyt-card">
-      <div class="pyt-top"><span class="pyt-num">P3</span><span class="pyt-badge ok">Có video</span></div>
-      <h2>Kiểm tra logic + chuẩn hóa Master Data</h2>
-      <p>Số lượng âm, đơn giá 0, chiết khấu bất thường, phí ship âm, doanh thu sai</p>
-      <a class="pyt-yt" href="https://youtu.be/DTDlTbH-CBo?si=2DI6et3gRcSJIb1k" target="_blank" rel="noopener">▶ Xem trên YouTube</a>
-    </article>
-  </div>
-  <aside class="pyt-split-side">
-    <div class="pyt-side-box">
-      <svg class="pyt-side-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="160" rx="12" fill="#eef7f2"/><rect x="24" y="28" width="120" height="104" rx="8" fill="#fff" stroke="#c5e6d1"/><rect x="32" y="36" width="104" height="14" rx="3" fill="#d8eee2"/><rect x="32" y="56" width="70" height="8" rx="2" fill="#f5c6cb"/><rect x="108" y="56" width="28" height="8" rx="2" fill="#ffe8a3"/><rect x="32" y="70" width="50" height="8" rx="2" fill="#ddd"/><rect x="90" y="70" width="46" height="8" rx="2" fill="#f5c6cb"/><rect x="32" y="84" width="80" height="8" rx="2" fill="#ffe8a3"/><rect x="32" y="98" width="40" height="8" rx="2" fill="#f5c6cb"/><rect x="80" y="98" width="56" height="8" rx="2" fill="#ddd"/><circle cx="176" cy="80" r="18" fill="#1b6b45"/><path d="M170 80h12M176 74v12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><rect x="204" y="28" width="92" height="104" rx="8" fill="#fff" stroke="#9ecfb0"/><rect x="212" y="36" width="76" height="14" rx="3" fill="#d8eee2"/><circle cx="220" cy="60" r="3" fill="#1b6b45"/><circle cx="220" cy="74" r="3" fill="#1b6b45"/><circle cx="220" cy="88" r="3" fill="#1b6b45"/><circle cx="220" cy="102" r="3" fill="#1b6b45"/><rect x="230" y="57" width="50" height="6" rx="2" fill="#c5e6d1"/><rect x="230" y="71" width="50" height="6" rx="2" fill="#c5e6d1"/><rect x="230" y="85" width="50" height="6" rx="2" fill="#c5e6d1"/><rect x="230" y="99" width="50" height="6" rx="2" fill="#c5e6d1"/></svg>
-      <p class="pyt-side-label">File dùng chung · P1–P3</p>
-      <strong>Dữ liệu thô</strong>
-      <p class="pyt-side-desc">File sales “bẩn” để luyện gộp sheet, làm sạch và kiểm tra logic trước khi phân tích.</p>
-      <ul class="pyt-side-list">
-        <li>Nhiều sheet / lệch cột</li>
-        <li>Ngày &amp; số dạng text</li>
-        <li>SKU, null, duplicate</li>
-        <li>Logic doanh thu cần kiểm</li>
-      </ul>
-      <a class="pyt-dl-block" href="downloads/youtube-practice/Du_An_Sales_Du_Lieu_Tho.xlsx" download>⬇ Tải file thực hành (dữ liệu thô)</a>
+  <header class="pyt-hero">
+    <div>
+      <p class="pyt-kicker">YOUTUBE PRACTICE</p>
+      <h1>Project thực hành theo video</h1>
+      <p class="pyt-sub">
+        Mỗi project là một mục riêng. Bên trong project mới chia thành các phần/video để bạn học đúng thứ tự mà không phải cuộn qua một danh sách dài.
+      </p>
     </div>
-  </aside>
-</section>
+  </header>
 
-<p class="pyt-section-title">Giai đoạn 2 · Phân tích &amp; Dashboard (P4–P6)</p>
-<section class="pyt-split">
-  <div class="pyt-split-main">
-    <article class="pyt-card">
-      <div class="pyt-top"><span class="pyt-num">P4</span><span class="pyt-badge soon">Sắp có video</span></div>
-      <h2>Phân tích Sales bằng Pivot</h2>
-      <p>Doanh thu, khu vực, NVBH, sản phẩm, kênh, trạng thái đơn, KPI chính</p>
-      <span class="pyt-muted">Video: sắp gắn link</span>
+  <section class="pyt-project-list" aria-label="Danh sách project YouTube">
+
+    <article class="pyt-project is-open" data-project="sales-dashboard">
+      <button type="button" class="pyt-project-head" aria-expanded="true">
+        <div class="pyt-project-index">PROJECT 01</div>
+        <div class="pyt-project-copy">
+          <h2>Sales Dashboard</h2>
+          <p>Từ dữ liệu thô → làm sạch → Pivot → Dashboard hoàn chỉnh.</p>
+        </div>
+        <div class="pyt-project-meta">
+          <strong>6 phần</strong>
+          <span>3 video đã có</span>
+        </div>
+        <span class="pyt-project-chevron" aria-hidden="true">⌄</span>
+      </button>
+
+      <div class="pyt-project-body">
+        <div class="pyt-project-toolbar">
+          <div>
+            <span class="pyt-toolbar-label">TÀI LIỆU DÙNG CHUNG</span>
+            <div class="pyt-toolbar-links">
+              <a href="downloads/youtube-practice/List_Cong_Thuc_Power_Query_Hay_Dung.xlsx" download>Công thức Power Query</a>
+              <a href="downloads/youtube-practice/Kien_Thuc_Tip_Trick_Power_Query.xlsx" download>Tips Power Query</a>
+              <a href="downloads/youtube-practice/Kien_Thuc_Tip_Trick_Pivot_Dashboard.xlsx" download>Tips Pivot & Dashboard</a>
+            </div>
+          </div>
+        </div>
+
+        <section class="pyt-phase">
+          <div class="pyt-phase-head">
+            <div>
+              <span>GIAI ĐOẠN 1</span>
+              <h3>Làm sạch dữ liệu</h3>
+              <p>P1–P3 sử dụng chung file dữ liệu thô.</p>
+            </div>
+            <a class="pyt-download" href="downloads/youtube-practice/Du_An_Sales_Du_Lieu_Tho.xlsx" download>
+              Tải file dữ liệu thô
+            </a>
+          </div>
+
+          <div class="pyt-parts">
+            <article class="pyt-part">
+              <div class="pyt-part-num">P1</div>
+              <div class="pyt-part-main">
+                <div class="pyt-part-status ready">Đã có video</div>
+                <h4>Gộp 8 sheet doanh số bằng Power Query</h4>
+                <p>Chuẩn hóa cấu trúc, xử lý lệch tên cột và Append về Master_DoanhSo.</p>
+              </div>
+              <a class="pyt-youtube-link" href="https://youtu.be/GGruK_BusXY?si=HnN67TZh4JQDm-wJ" target="_blank" rel="noopener">Xem video →</a>
+            </article>
+
+            <article class="pyt-part">
+              <div class="pyt-part-num">P2</div>
+              <div class="pyt-part-main">
+                <div class="pyt-part-status ready">Đã có video</div>
+                <h4>Làm sạch dữ liệu bẩn nâng cao</h4>
+                <p>Ngày/số dạng text, khoảng trắng, SKU lỗi, ô trống, duplicate và dữ liệu không đồng nhất.</p>
+              </div>
+              <a class="pyt-youtube-link" href="https://youtu.be/-3OhkVqgdko?si=x1v-ELaYYUH7Isla" target="_blank" rel="noopener">Xem video →</a>
+            </article>
+
+            <article class="pyt-part">
+              <div class="pyt-part-num">P3</div>
+              <div class="pyt-part-main">
+                <div class="pyt-part-status ready">Đã có video</div>
+                <h4>Kiểm tra logic + chuẩn hóa Master Data</h4>
+                <p>Số lượng âm, đơn giá 0, chiết khấu bất thường, phí ship âm và doanh thu sai.</p>
+              </div>
+              <a class="pyt-youtube-link" href="https://youtu.be/DTDlTbH-CBo?si=2DI6et3gRcSJIb1k" target="_blank" rel="noopener">Xem video →</a>
+            </article>
+          </div>
+        </section>
+
+        <section class="pyt-phase">
+          <div class="pyt-phase-head">
+            <div>
+              <span>GIAI ĐOẠN 2</span>
+              <h3>Phân tích & Dashboard</h3>
+              <p>P4–P6 tiếp tục trên cùng project Sales Dashboard bằng file dữ liệu sạch.</p>
+            </div>
+            <a class="pyt-download" href="downloads/youtube-practice/Du_An_Sales_Sach.xlsx" download>
+              Tải file dữ liệu sạch
+            </a>
+          </div>
+
+          <div class="pyt-parts">
+            <article class="pyt-part">
+              <div class="pyt-part-num">P4</div>
+              <div class="pyt-part-main">
+                <div class="pyt-part-status soon">Sắp có video</div>
+                <h4>Phân tích Sales bằng Pivot</h4>
+                <p>Doanh thu, khu vực, nhân viên bán hàng, sản phẩm, kênh, trạng thái đơn và KPI chính.</p>
+              </div>
+              <span class="pyt-part-wait">Đang chuẩn bị</span>
+            </article>
+
+            <article class="pyt-part">
+              <div class="pyt-part-num">P5</div>
+              <div class="pyt-part-main">
+                <div class="pyt-part-status soon">Sắp có video</div>
+                <h4>Xây Sales Dashboard</h4>
+                <p>Bố cục, KPI card, Pivot Chart, biểu đồ chính và cách sắp xếp dashboard dễ đọc.</p>
+              </div>
+              <span class="pyt-part-wait">Đang chuẩn bị</span>
+            </article>
+
+            <article class="pyt-part">
+              <div class="pyt-part-num">P6</div>
+              <div class="pyt-part-main">
+                <div class="pyt-part-status soon">Sắp có video</div>
+                <h4>Dashboard nâng cao + hoàn thiện project</h4>
+                <p>Slicer, Timeline, Refresh Power Query → Pivot → Dashboard và Before/After.</p>
+              </div>
+              <span class="pyt-part-wait">Đang chuẩn bị</span>
+            </article>
+          </div>
+        </section>
+
+        <div class="pyt-project-bottom">
+          <div>
+            <span class="pyt-toolbar-label">BẠN MUỐN ADMIN LÀM TIẾP?</span>
+            <p>Vote chỉ phục vụ định hướng nội dung tiếp theo, không làm thay đổi thứ tự 6 phần trong project này.</p>
+          </div>
+          <div class="pyt-chvote" id="pytChVote">
+            <button type="button" class="pyt-chvote-btn" data-chvote="youtube">Làm thêm video YouTube</button>
+            <button type="button" class="pyt-chvote-btn" data-chvote="tiktok">Tập trung TikTok</button>
+            <span class="pyt-chvote-st" id="pytChVoteSt"></span>
+          </div>
+        </div>
+      </div>
     </article>
-    <article class="pyt-card">
-      <div class="pyt-top"><span class="pyt-num">P5</span><span class="pyt-badge soon">Sắp có video</span></div>
-      <h2>Xây Sales Dashboard</h2>
-      <p>Bố cục, KPI card, Pivot Chart, biểu đồ chính, sắp xếp dễ nhìn</p>
-      <span class="pyt-muted">Video: sắp gắn link</span>
-    </article>
-    <article class="pyt-card">
-      <div class="pyt-top"><span class="pyt-num">P6</span><span class="pyt-badge soon">Sắp có video</span></div>
-      <h2>Dashboard nâng cao + hoàn thiện project</h2>
-      <p>Slicer, Timeline, Refresh PQ → Pivot → Dashboard, Before/After</p>
-      <span class="pyt-muted">Video: sắp gắn link</span>
-    </article>
+
+  </section>
+
+  <div class="pyt-empty-note">
+    Project YouTube mới sau này sẽ được thêm thành <strong>một mục riêng</strong> ở danh sách này, không trộn các phần của nhiều project với nhau.
   </div>
-  <aside class="pyt-split-side">
-    <div class="pyt-side-box pyt-side-clean">
-      <svg class="pyt-side-svg" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="160" rx="12" fill="#eef3fa"/><rect x="20" y="20" width="70" height="36" rx="8" fill="#fff" stroke="#c5d4e8"/><rect x="28" y="28" width="28" height="6" rx="2" fill="#a8c4e8"/><rect x="28" y="40" width="40" height="8" rx="2" fill="#1a5276"/><rect x="100" y="20" width="70" height="36" rx="8" fill="#fff" stroke="#c5d4e8"/><rect x="108" y="28" width="28" height="6" rx="2" fill="#a8c4e8"/><rect x="108" y="40" width="40" height="8" rx="2" fill="#217346"/><rect x="180" y="20" width="120" height="120" rx="8" fill="#fff" stroke="#c5d4e8"/><rect x="196" y="100" width="14" height="28" rx="2" fill="#5b9bd5"/><rect x="216" y="80" width="14" height="48" rx="2" fill="#2e75b6"/><rect x="236" y="60" width="14" height="68" rx="2" fill="#1a5276"/><rect x="256" y="90" width="14" height="38" rx="2" fill="#9dc3e6"/><rect x="20" y="66" width="150" height="74" rx="8" fill="#fff" stroke="#c5d4e8"/><circle cx="70" cy="103" r="28" fill="none" stroke="#5b9bd5" stroke-width="10" stroke-dasharray="60 40"/><circle cx="70" cy="103" r="28" fill="none" stroke="#1a5276" stroke-width="10" stroke-dasharray="30 70" stroke-dashoffset="-60"/></svg>
-      <p class="pyt-side-label">File dùng chung · P4–P6</p>
-      <strong>Dữ liệu sạch</strong>
-      <p class="pyt-side-desc">File đã chuẩn (~12.800 dòng) để làm Pivot, KPI và Dashboard.</p>
-      <ul class="pyt-side-list">
-        <li>Số lượng &amp; đơn giá &gt; 0</li>
-        <li>Chiết khấu 0–20%</li>
-        <li>Doanh thu khớp công thức</li>
-        <li>Sẵn sàng phân tích</li>
-      </ul>
-      <a class="pyt-dl-block" href="downloads/youtube-practice/Du_An_Sales_Sach.xlsx" download>⬇ Tải file thực hành (dữ liệu sạch)</a>
-    </div>
-  </aside>
-</section>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
-
-  <script defer src="avp-site-motion.js"></script>
-  <script defer src="simple-nav.js"></script>
-<script defer src="avp-core.js"></script>
-<script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
 <script defer src="practice-youtube-vote.js?v=20260830-access1"></script>
-<script defer src="global-search.js"></script>
+<script defer src="practice-youtube.js?v=20260831-v95"></script>
+
+<script>
+(function(){
+  let embedded=false;
+  try{ embedded=new URLSearchParams(location.search).get("embed")==="1"; }catch(e){}
+
+  if(!embedded){
+    [
+      ["simple-nav.js","script"],
+      ["global-search.js","script"],
+      ["avp-core.js","script"]
+    ].forEach(([src])=>{
+      const s=document.createElement("script");
+      s.src=src;
+      s.defer=true;
+      document.body.appendChild(s);
+    });
+  }
+})();
+</script>
 </body>
 </html>
