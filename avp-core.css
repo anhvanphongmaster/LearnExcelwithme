@@ -1859,3 +1859,28 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   cursor:pointer !important;
 }
 #avpBotTalk.show{display:block !important; opacity:1 !important;}
+
+.b25-arm,.b25-leg{will-change:transform}
+@media (prefers-reduced-motion:reduce){
+  #avpEdgeLauncher.is-walking .b25-leg.l,
+  #avpEdgeLauncher.is-walking .b25-leg.r,
+  #avpEdgeLauncher.is-walking .b25-arm.l,
+  #avpEdgeLauncher.is-walking .b25-arm.r,
+  #avpEdgeLauncher.open .b25-arm.r{animation:b25s .32s linear infinite !important}
+}
+
+#avpEdgeLauncher.is-robot{
+  pointer-events:none !important;
+}
+#avpEdgeLauncher.is-robot .avp-edge-main,
+#avpEdgeLauncher.is-robot .avp-edge-menu,
+#avpEdgeLauncher.is-robot .avp-edge-menu *,
+#avpEdgeLauncher.is-robot .avp-edge-action,
+#avpEdgeLauncher.is-robot .avp-edge-badge{
+  pointer-events:auto !important;
+}
+#avpEdgeLauncher.is-robot .avp-edge-menu{
+  z-index:2147483647 !important;
+  pointer-events:auto !important;
+}
+#avpBotTalk{pointer-events:none !important}

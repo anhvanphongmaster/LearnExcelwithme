@@ -1214,6 +1214,9 @@
       el.style.setProperty("bottom",(bottom==null?10:bottom)+"px","important");
       el.style.setProperty("transform","translateX("+x+"px)","important");
     }
+    var legs=el.querySelectorAll(".b25-leg");
+    var arms=el.querySelectorAll(".b25-arm");
+    var phase=0;
     function tick(){
       if(!el.classList.contains("open") && !lift){
         el.classList.add("is-walking");
@@ -1222,6 +1225,18 @@
         if(x>=max){x=max;dir=-1;el.classList.add("face-left");}
         if(x<=12){x=12;dir=1;el.classList.remove("face-left");}
         place(10);
+        phase+=0.28;
+        var s=Math.sin(phase)*18;
+        if(legs[0]) legs[0].style.transform="rotate("+s+"deg)";
+        if(legs[1]) legs[1].style.transform="rotate("+(-s)+"deg)";
+        if(arms[0]) arms[0].style.transform="rotate("+(-s)+"deg)";
+        if(arms[1]) arms[1].style.transform="rotate("+s+"deg)";
+      }else if(el.classList.contains("open") && arms[1]){
+        phase+=0.35;
+        arms[1].style.transform="rotate("+(-20+Math.sin(phase)*50)+"deg)";
+        if(arms[0]) arms[0].style.transform="rotate(8deg)";
+        if(legs[0]) legs[0].style.transform="none";
+        if(legs[1]) legs[1].style.transform="none";
       }
       requestAnimationFrame(tick);
     }
@@ -1229,7 +1244,7 @@
 
     fab.addEventListener("click",function(e){
       if(moved||lift) return;
-      e.preventDefault();
+      if(e.target.closest && e.target.closest(".avp-edge-menu")) return;
       if(window.setAvpEdgeMenu){
         var menu=document.getElementById("avpEdgeMenu");
         window.setAvpEdgeMenu(menu && menu.hidden);
