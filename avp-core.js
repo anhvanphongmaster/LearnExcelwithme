@@ -601,33 +601,6 @@
       hideMiniPreview();
       setEdgeMenu(false);
 
-      const next=location.pathname.split('/').pop()||'index.html';
-      let user=null;
-      function timed(p,ms){
-        return Promise.race([
-          p,
-          new Promise(res=>setTimeout(()=>res(null),ms))
-        ]);
-      }
-      try{
-        if(window.AVPAccess&&typeof window.AVPAccess.getUser==='function'){
-          user=await timed(window.AVPAccess.getUser(false),900);
-        }
-      }catch(err){}
-      if(!user){
-        try{
-          const sb=window.avpSupabase;
-          if(sb?.auth){
-            const sess=await timed(sb.auth.getSession(),900);
-            user=sess?.data?.session?.user||null;
-          }
-        }catch(err){}
-      }
-      if(!user){
-        toast('Đăng nhập để dùng Hỏi AI, Từ điển, Cộng đồng và Chat Admin');
-        return;
-      }
-
       const aiPanel=document.getElementById('avpAiChatPanel');
       const chatPanels=[
         document.getElementById('avpChatPanel'),
