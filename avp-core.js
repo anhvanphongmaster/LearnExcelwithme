@@ -842,10 +842,12 @@
       root.style.bottom='auto';
       root.style.transform='none';
 
-      // luôn hút về phải
-      root.style.left=(window.innerWidth-w-EDGE_GAP)+'px';
-      root.style.right='auto';
       applySideClass('right');
+      root.style.setProperty('left','auto','important');
+      root.style.setProperty('right','8px','important');
+      root.style.setProperty('bottom','auto','important');
+      root.style.setProperty('top',top+'px','important');
+      root.style.setProperty('transform','none','important');
 
 
       save(side,top);
@@ -900,10 +902,10 @@
       grabOffsetX=e.clientX-r.left;
       grabOffsetY=e.clientY-r.top;
 
-      root.style.left=r.left+'px';
-      root.style.right='auto';
-      root.style.top=r.top+'px';
-      root.style.bottom='auto';
+      root.style.setProperty('left',r.left+'px','important');
+      root.style.setProperty('right','auto','important');
+      root.style.setProperty('top',r.top+'px','important');
+      root.style.setProperty('bottom','auto','important');
 
       root.classList.add('is-dragging');
       setEdgeMenu(false);
@@ -933,10 +935,10 @@
         moved=true;
       }
 
-      root.style.left=x+'px';
-      root.style.right='auto';
-      root.style.top=y+'px';
-      root.style.bottom='auto';
+      root.style.setProperty('left',x+'px','important');
+      root.style.setProperty('right','auto','important');
+      root.style.setProperty('top',y+'px','important');
+      root.style.setProperty('bottom','auto','important');
 
       applySideClass(sideFromX(x,w));
       requestAnimationFrame(positionMiniPreview);
