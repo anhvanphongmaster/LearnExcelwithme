@@ -1476,28 +1476,42 @@ a.avp-yt-combo.avp-mobile-main-cta{
 </style>
 
 
-<style id="homeHandbookV110">
-.home-handbook-card{
-  display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;
-  margin:0 0 18px;padding:15px 16px;border:1px solid #b9d8c4;border-radius:16px;
-  background:linear-gradient(135deg,#eef8f2,#ffffff);text-decoration:none;color:#173f2a;
-  box-shadow:0 8px 22px rgba(20,72,43,.07);transition:.18s ease;
+
+<style id="homeBooksCompactV114">
+.home-reference-v114{margin:18px auto 0;padding:0 16px}
+.home-reference-grid-v114{
+  max-width:1120px;margin:0 auto;display:grid!important;
+  grid-template-columns:1fr 1fr;gap:10px;padding:12px!important;
+  border:1px solid #d9e7df;border-radius:18px;background:#fff;
+  box-shadow:0 8px 24px rgba(23,70,43,.05)
 }
-.home-handbook-cover{
-  width:64px;height:78px;display:grid;place-items:center;border-radius:9px 13px 13px 9px;
-  background:linear-gradient(145deg,#185c37,#217346);color:#fff;font-weight:950;font-size:18px;
-  box-shadow:inset 5px 0 0 rgba(255,255,255,.10),0 7px 16px rgba(24,92,55,.18)
+.home-ref-item-v114{
+  min-width:0;display:grid;grid-template-columns:52px minmax(0,1fr) auto;
+  gap:12px;align-items:center;padding:13px 14px;border:1px solid #dbe7df;
+  border-radius:14px;background:#f9fcfa;color:#173f2a;text-decoration:none;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease
 }
-.home-handbook-copy{display:grid;gap:3px;min-width:0}
-.home-handbook-copy small{color:#217346;font-size:9px;font-weight:950;letter-spacing:.08em}
-.home-handbook-copy strong{font-size:16px;color:#173f2a}
-.home-handbook-copy em{font-style:normal;color:#697a70;font-size:11px;line-height:1.45}
-.home-handbook-card>b{color:#185c37;font-size:11px;white-space:nowrap}
-.home-handbook-card:hover{transform:translateY(-2px);border-color:#88bd99;box-shadow:0 12px 28px rgba(20,72,43,.10)}
-@media(max-width:650px){
- .home-handbook-card{grid-template-columns:52px minmax(0,1fr);padding:13px}
- .home-handbook-cover{width:52px;height:64px;font-size:15px}
- .home-handbook-card>b{grid-column:2;justify-self:start}
+.home-ref-handbook-v114{background:#f1f9f4;border-color:#c6dfcf}
+.home-ref-icon-v114{
+  width:52px;height:52px;display:grid;place-items:center;border-radius:12px;
+  background:#edf6f0;font-size:21px
+}
+.home-ref-cover-v114{
+  background:linear-gradient(145deg,#185c37,#217346);color:#fff;
+  font-size:13px;font-weight:950;box-shadow:inset 4px 0 0 rgba(255,255,255,.10)
+}
+.home-ref-copy-v114{min-width:0;display:grid;gap:2px}
+.home-ref-copy-v114 small{color:#217346;font-size:8px;font-weight:950;letter-spacing:.08em}
+.home-ref-copy-v114 strong{color:#173f2a;font-size:14px;line-height:1.3}
+.home-ref-copy-v114 em{font-style:normal;color:#718078;font-size:10px;line-height:1.4}
+.home-ref-item-v114>b{color:#185c37;font-size:10px;white-space:nowrap}
+.home-ref-item-v114:hover{transform:translateY(-2px);border-color:#9ec9ad;box-shadow:0 8px 18px rgba(22,72,43,.07)}
+@media(max-width:760px){.home-reference-grid-v114{grid-template-columns:1fr}}
+@media(max-width:520px){
+  .home-reference-v114{padding:0 10px}
+  .home-ref-item-v114{grid-template-columns:44px minmax(0,1fr);padding:11px}
+  .home-ref-icon-v114{width:44px;height:44px}
+  .home-ref-item-v114>b{grid-column:2;justify-self:start}
 }
 </style>
 
@@ -1676,65 +1690,31 @@ a.avp-yt-combo.avp-mobile-main-cta{
 </section>
 
 
-<section class="home-path" id="home-books">
-  <div class="home-path-inner">
 
-    <a class="home-handbook-card" href="excel-handbook.html">
-      <span class="home-handbook-cover" aria-hidden="true">A–Z</span>
-      <span class="home-handbook-copy">
+<section class="home-reference home-reference-v114" id="home-books">
+  <div class="home-reference-inner home-reference-grid-v114">
+    <a class="home-ref-item-v114 home-ref-handbook-v114" href="excel-handbook.html">
+      <span class="home-ref-icon-v114 home-ref-cover-v114" aria-hidden="true">A–Z</span>
+      <span class="home-ref-copy-v114">
         <small>CẨM NANG NỘI BỘ · MỚI</small>
         <strong>Excel từ A–Z bằng hình ảnh</strong>
-        <em>Đọc như một cuốn sách · 12 chương · ảnh minh hoạ trực tiếp từ workbook mẫu</em>
+        <em>12 chương · minh hoạ từ workbook · đọc như sách thực hành</em>
       </span>
       <b>Đọc cẩm nang →</b>
     </a>
-    <h2>Sách &amp; combo tham khảo</h2>
-    <p>Tài liệu văn phòng nên đọc thêm. Bấm để xem trên TikTok.</p>
-    <p class="home-aff-note">Một số liên kết sách là liên kết tiếp thị (affiliate). Nếu bạn mua, kênh có thể nhận hoa hồng — giá bạn trả không đổi.</p>
-    <div class="home-books-grid">
-      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ4jKcjLN2-kMdxG/" target="_blank" rel="noopener noreferrer">
-        <span>01</span>
-        <strong>Combo 2 sách Excel + Word</strong>
-        <small>Từ cơ bản đến nâng cao · Tặng 101 phím tắt + bảng hàm</small>
-      </a>
-      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ4kUmEHX8-HL8BK/" target="_blank" rel="noopener noreferrer">
-        <span>02</span>
-        <strong>Sách Excel ứng dụng văn phòng</strong>
-        <small>Từ cơ bản đến nâng cao · D01 · Tặng Nhân Dân</small>
-      </a>
-      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ4UxDKAvd-jIkjw/" target="_blank" rel="noopener noreferrer">
-        <span>03</span>
-        <strong>150 thủ thuật Excel</strong>
-        <small>Ứng dụng văn phòng · D03 · Tặng Nhân Dân</small>
-      </a>
-      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ4yhxCToc-ZFom4/" target="_blank" rel="noopener noreferrer">
-        <span>04</span>
-        <strong>68 biểu mẫu Excel</strong>
-        <small>Ứng dụng văn phòng · D08 · Tặng Nhân Dân</small>
-      </a>
-      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ45uA2xc1-0UWI6/" target="_blank" rel="noopener noreferrer">
-        <span>05</span>
-        <strong>Combo Excel + PowerPoint</strong>
-        <small>Từ cơ bản đến nâng cao · Tặng 101 phím tắt + bảng hàm</small>
-      </a>
-      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ4ujnqkLw-wNTz6/" target="_blank" rel="noopener noreferrer">
-        <span>06</span>
-        <strong>Combo 8 sách tin học</strong>
-        <small>Word, Excel, PowerPoint, Sheets, Power Query, hàm…</small>
-      </a>
-      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQ49YEBbmC-aPx7U/" target="_blank" rel="noopener noreferrer">
-        <span>07</span>
-        <strong>Combo 3 sách AI + Excel + Word</strong>
-        <small>Ứng dụng văn phòng · Tặng 101 phím tắt + bảng hàm</small>
-      </a>
-      <a class="home-book-card" href="https://vt.tiktok.com/ZS9kQqb1YDhhV-IYinU/" target="_blank" rel="noopener noreferrer">
-        <span>08</span>
-        <strong>Sách 101 phím tắt tin học văn phòng</strong>
-        <small>D09 · Phím tắt Word / Excel văn phòng</small>
-      </a>
-    </div>
+
+    <a class="home-ref-item-v114" href="tai-lieu-tham-khao.html">
+      <span class="home-ref-icon-v114" aria-hidden="true">📚</span>
+      <span class="home-ref-copy-v114">
+        <small>TÀI LIỆU THAM KHẢO</small>
+        <strong>Sách &amp; tài liệu học thêm</strong>
+        <em>Toàn bộ sách/combo affiliate được gom ở một trang riêng.</em>
+      </span>
+      <b>Xem tài liệu →</b>
+    </a>
   </div>
 </section>
+
 
 <footer class="site-footer">
   <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
