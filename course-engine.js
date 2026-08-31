@@ -34,7 +34,7 @@
    const i=LESSON_FLOW.findIndex(x=>x[0]===fileName);
    if(i<0) return null;
    if(i<LESSON_FLOW.length-1) return LESSON_FLOW[i+1];
-   return ["master-learning.html","Master Learning Path"];
+   return ["skill-map.html","Skill Map"];
  }
  function file(){return (location.pathname.split('/').pop()||'index.html').toLowerCase()}
  function getXP(){return +(localStorage.getItem(XPKEY)||0)}

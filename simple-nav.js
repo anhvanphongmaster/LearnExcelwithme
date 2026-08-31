@@ -447,7 +447,7 @@
       "vba-macro.html": ["excel-nang-cao.html", "Kỹ năng nâng cao"],
       "solver-whatif.html": ["excel-nang-cao.html", "Kỹ năng nâng cao"],
 
-      "certificate.html": ["master-learning.html", "Master Learning Path"],
+      "certificate.html": ["skill-map.html", "Skill Map"],
       "master-learning.html": ["index.html", "Trang chủ"],
       "learning-path.html": ["skill-map.html", "Skill Map"],
       "practice-lab.html": ["index.html", "Trang chủ"],
@@ -568,15 +568,15 @@
       prev.href = topics[idx-1][0];
       prev.textContent = "← " + topics[idx-1][1];
     } else {
-      prev.href = "master-learning.html";
-      prev.textContent = "← Lộ trình";
+      prev.href = "skill-map.html";
+      prev.textContent = "← Skill Map";
     }
     actions.appendChild(prev);
 
     const all = document.createElement("a");
-    all.href = "master-learning.html";
+    all.href = "skill-map.html";
     all.className = "core-topic-all";
-    all.textContent = "Lộ trình học";
+    all.textContent = "Skill Map";
     actions.appendChild(all);
 
     const next = document.createElement("a");
@@ -585,8 +585,8 @@
       next.href = topics[idx+1][0];
       next.textContent = topics[idx+1][1] + " →";
     } else {
-      next.href = "master-learning.html";
-      next.textContent = "Hoàn thành lộ trình →";
+      next.href = "skill-map.html";
+      next.textContent = "Xem Skill Map →";
     }
     actions.appendChild(next);
     box.appendChild(actions);

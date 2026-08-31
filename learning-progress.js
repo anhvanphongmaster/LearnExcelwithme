@@ -92,9 +92,9 @@
       const i=lessons.findIndex(x=>x.url===next.url)+1;
       if(meta) meta.textContent='Bài '+i+'/'+lessons.length+(last&&last.title?' • vừa xem: '+last.title:'');
     }else{
-      a.href='master-learning.html';
+      a.href='skill-map.html';
       if(title) title.textContent='Bạn đã hoàn thành lộ trình';
-      if(meta) meta.textContent='Xem Master Learning Path và chứng nhận';
+      if(meta) meta.textContent='Xem lại Skill Map hoặc chuyển sang thực hành';
     }
   }
 
