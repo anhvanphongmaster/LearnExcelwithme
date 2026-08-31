@@ -1,0 +1,104 @@
+
+/* V107 — homepage effects only. Layout/content untouched. */
+.avp-hero{
+  overflow:hidden;
+}
+.avp-orb{
+  display:block!important;
+  left:auto!important;
+  top:-140px!important;
+  right:-120px!important;
+  width:460px!important;
+  height:460px!important;
+  opacity:.62!important;
+  filter:blur(34px)!important;
+  pointer-events:none!important;
+  animation:avpHomeOrbFloat 8s ease-in-out infinite alternate!important;
+}
+@keyframes avpHomeOrbFloat{
+  from{transform:translate3d(-12px,-5px,0) scale(.96)}
+  to{transform:translate3d(18px,24px,0) scale(1.07)}
+}
+
+/* Small ambient glow instead of mouse-follow effects. */
+.avp-hero::before{
+  animation:avpHomeGlow 7s ease-in-out infinite alternate;
+}
+@keyframes avpHomeGlow{
+  from{opacity:.58;transform:scale(.98)}
+  to{opacity:.94;transform:scale(1.03)}
+}
+
+/* Smooth section/card reveal; does not delay navigation. */
+.home-v107-reveal{
+  opacity:0;
+  transform:translateY(12px);
+  transition:
+    opacity .40s cubic-bezier(.22,1,.36,1),
+    transform .40s cubic-bezier(.22,1,.36,1);
+}
+.home-v107-reveal.home-v107-in{
+  opacity:1;
+  transform:none;
+}
+
+@media(hover:hover) and (pointer:fine){
+  :where(
+    .home-path-card,
+    .home-more-card,
+    .home-cta-card,
+    .course-card,
+    .home-reference-inner,
+    .learn-board
+  ){
+    transition:
+      transform .20s cubic-bezier(.22,1,.36,1),
+      box-shadow .20s ease,
+      border-color .20s ease!important;
+  }
+  :where(
+    .home-path-card,
+    .home-more-card,
+    .home-cta-card,
+    .course-card,
+    .home-reference-inner
+  ):hover{
+    transform:translateY(-4px)!important;
+    box-shadow:0 14px 30px rgba(15,68,39,.11)!important;
+  }
+}
+
+/* Press feedback only; navigation remains instant. */
+.home-v107-press{
+  animation:homeV107Press .16s cubic-bezier(.22,1,.36,1)!important;
+}
+@keyframes homeV107Press{
+  0%{transform:scale(1)}
+  48%{transform:scale(.978)}
+  100%{transform:scale(1)}
+}
+
+@media(max-width:700px){
+  .avp-orb{
+    width:320px!important;
+    height:320px!important;
+    right:-135px!important;
+    top:-80px!important;
+    opacity:.42!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .avp-orb,
+  .avp-hero::before{
+    animation:none!important;
+  }
+  .home-v107-reveal{
+    opacity:1!important;
+    transform:none!important;
+    transition:none!important;
+  }
+  .home-v107-press{
+    animation:none!important;
+  }
+}
