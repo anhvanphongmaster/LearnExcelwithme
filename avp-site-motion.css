@@ -120,19 +120,32 @@ input[type="button"],input[type="submit"]{
   }
 }
 
-/* Zoom in-flow giống 4 luồng — chỉ card được bấm, không scale body */
+/* Zoom in-flow — đúng số V56 clip 4 luồng */
 .avp-zoom-grid.avp-zoom-choosing > :not(.avp-zoom-picked){
-  opacity:.28 !important;
-  filter:saturate(.6);
-  transform:scale(.96) !important;
+  opacity:.22 !important;
+  filter:saturate(.55) !important;
+  transform:scale(.94) !important;
   pointer-events:none;
-  transition:transform .28s var(--avp-motion-ease),opacity .22s ease,filter .22s ease !important;
+  transition:transform .34s cubic-bezier(.18,.82,.24,1),opacity .26s ease,filter .26s ease !important;
 }
 .avp-zoom-picked{
   z-index:3 !important;
-  transform:translateY(-8px) scale(1.08) !important;
-  box-shadow:0 22px 48px rgba(19,88,48,.22) !important;
-  transition:transform .32s var(--avp-motion-ease),box-shadow .32s ease !important;
+  transform:translateY(-8px) scale(1.11) !important;
+  box-shadow:0 26px 60px rgba(19,88,48,.24) !important;
+  transition:transform .34s cubic-bezier(.18,.82,.24,1),box-shadow .34s ease !important;
+}
+html.avp-arriving .avp-hero,
+html.avp-arriving .pv-hero,
+html.avp-arriving .ml-hero,
+html.avp-arriving .pq-hero,
+html.avp-arriving .dashboard-hero{
+  animation:phHeaderOpenV56 .48s cubic-bezier(.16,.84,.24,1) both;
+  transform-origin:top center;
+}
+@keyframes phHeaderOpenV56{
+  0%{opacity:0;transform:translateY(-10px) scale(.76)}
+  55%{opacity:1;transform:translateY(1px) scale(1.025)}
+  100%{opacity:1;transform:none}
 }
 
 /* Fallback khi không có View Transition: fade/scale vùng nội dung, giữ nav */

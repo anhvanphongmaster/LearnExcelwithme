@@ -182,23 +182,28 @@
         card.classList.add("avp-zoom-picked");
       }
 
-      const supportsVT=typeof document.startViewTransition==="function";
-      if(supportsVT){
-        /* Browser tự zoom root — không delay navigation */
-        return;
-      }
-
       e.preventDefault();
       document.documentElement.classList.add("avp-leaving");
       const href=link.href;
       setTimeout(function(){
         location.href=href;
-      },180);
+      },360);
     },true);
   }
 
   function boot(){
     document.documentElement.classList.add("avp-motion-enabled");
+    try{
+      if(document.referrer){
+        const ref=new URL(document.referrer);
+        if(ref.origin===location.origin){
+          document.documentElement.classList.add("avp-arriving");
+          setTimeout(function(){
+            document.documentElement.classList.remove("avp-arriving");
+          },520);
+        }
+      }
+    }catch(e){}
     setupRise();
     setupPress();
     setupAnchorScroll();
