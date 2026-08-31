@@ -1,13 +1,25 @@
-<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="Dashboard cá nhân Learn Excel with Anh Van Phong: theo dõi XP, Level, tiến độ Excel, Quiz, Playground, streak và huy hiệu."><title>Dashboard cá nhân | Learn Excel with Anh Van Phong</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="upgrade.css"><link rel="stylesheet" href="dashboard.css">    <link rel="stylesheet" href="global-search.css">
-    <link rel="stylesheet" href="simple-nav.css">
-    <link rel="stylesheet" href="auth.css">
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Dashboard học tập Learn Excel with Anh Van Phong: theo dõi tiến độ 14 bài, XP, chuỗi học và tiếp tục đúng bài đang dở.">
+<title>Dashboard học tập | Learn Excel with Anh Van Phong</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="upgrade.css">
+<link rel="stylesheet" href="dashboard.css?v=20260831-v99">
+<link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="avp-core.css">
+<link rel="stylesheet" href="cloud-sync-v11.css">
+<link rel="stylesheet" href="theme-polish-v33.css">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#217346">
-<link rel="stylesheet" href="personal-dashboard.css">
-<link rel="stylesheet" href="cloud-sync-v11.css">
-<link href="theme-polish-v33.css" rel="stylesheet"/>
-</head><body class="dashboard-page">
+</head>
+
+<body class="dashboard-page">
 
 <nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
@@ -22,16 +34,157 @@
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
 
-<header class="dashboard-header"><div class="dashboard-hero"><div><span class="dashboard-kicker">PERSONAL LEARNING CENTER</span><h1>Dashboard cá nhân</h1><p>Một nơi để theo dõi hành trình học Excel của bạn: chuyên đề đã học, Playground, điểm Quiz, XP, Level, streak và các huy hiệu đã mở khóa.</p></div><div class="level-card"><div class="level-top"><div><div class="level-label">LEVEL</div><div class="level-number" id="dashLevel">1</div></div><div><div class="rank-name" id="dashRank">Excel Starter</div><div class="xp-total" id="dashXP">0 XP tổng</div></div></div><div class="level-bar"><span id="dashLevelBar"></span></div><div class="level-next"><span id="dashLevelProgress">0 / 100 XP</span><span id="dashNextLevel">100 XP tới Level 2</span></div></div></div></header><main class="dashboard-main">
-<div class="cloud-sync-status" id="cloudSyncStatus">
-  <span class="cloud-sync-dot"></span>
-  <span id="cloudSyncStatusText">☁️ Kiểm tra đồng bộ...</span>
-</div>
-<section class="summary-grid"><div class="summary-card"><span class="summary-icon">📚</span><span class="summary-value" id="statCourses">0/6</span><span class="summary-label">Chuyên đề hoàn thành</span></div><div class="summary-card"><span class="summary-icon">🧪</span><span class="summary-value" id="statPlayground">0/10</span><span class="summary-label">Playground hoàn thành</span></div><div class="summary-card"><span class="summary-icon">🎯</span><span class="summary-value" id="statQuiz">0/10</span><span class="summary-label">Điểm Quiz tốt nhất</span></div><div class="summary-card"><span class="summary-icon">🔥</span><span class="summary-value" id="statStreak">0 ngày</span><span class="summary-label">Chuỗi học hiện tại</span></div></section><section class="dashboard-grid"><div class="dash-panel"><div class="panel-head"><h2>📈 Tiến độ kỹ năng</h2><a href="skill-map.html">Xem Skill Map →</a></div><div class="skill-row"><div class="skill-meta"><span class="skill-name">Lộ trình Excel</span><span class="skill-value" id="courseSkillText">0%</span></div><div class="skill-track"><div class="skill-fill" id="courseSkill"></div></div></div><div class="skill-row"><div class="skill-meta"><span class="skill-name">Excel Playground</span><span class="skill-value" id="pgSkillText">0%</span></div><div class="skill-track"><div class="skill-fill" id="pgSkill"></div></div></div><div class="skill-row"><div class="skill-meta"><span class="skill-name">Quiz kiến thức</span><span class="skill-value" id="quizSkillText">0%</span></div><div class="skill-track"><div class="skill-fill" id="quizSkill"></div></div></div><div class="skill-row"><div class="skill-meta"><span class="skill-name">Tổng quan</span><span class="skill-value" id="overallSkillText">0%</span></div><div class="skill-track"><div class="skill-fill" id="overallSkill"></div></div></div></div><div class="dash-panel"><div class="panel-head"><h2>▶ Tiếp tục học</h2></div><div class="continue-card"><span class="continue-label">GỢI Ý TIẾP THEO</span><h3 id="continueTitle">Phím tắt Excel</h3><p id="continueText">Tiếp tục lộ trình của bạn.</p><a class="continue-btn" id="continueButton" href="skill-map.html">Tiếp tục học →</a></div><div class="dashboard-actions"><a href="playground.html">🧪 Playground</a><a href="practice-video.html">Thực hành Excel</a><a href="profile.html">🪪 Hồ sơ</a></div></div><div class="dash-panel"><div class="panel-head"><h2>🏆 Huy hiệu</h2></div><div class="badge-grid"><div class="badge" id="badgeFirst"><span class="badge-icon">🌱</span><strong>Khởi đầu</strong><small>Hoàn thành chuyên đề đầu tiên.</small></div><div class="badge" id="badgeCourse"><span class="badge-icon">🎓</span><strong>Excel Foundation</strong><small>Hoàn thành đủ 6 chuyên đề.</small></div><div class="badge" id="badgePG"><span class="badge-icon">🧪</span><strong>Excel Explorer</strong><small>Hoàn thành 10 bài Playground.</small></div><div class="badge" id="badgeQuiz"><span class="badge-icon">🎯</span><strong>Quiz Master</strong><small>Đạt ít nhất 8/10 điểm Quiz.</small></div><div class="badge" id="badgeStreak"><span class="badge-icon">🔥</span><strong>3-Day Streak</strong><small>Học liên tục ít nhất 3 ngày.</small></div><div class="badge" id="badgeData"><span class="badge-icon">📊</span><strong>Data Tracker</strong><small>Lưu ít nhất 3 Lot trên Dashboard dữ liệu.</small></div></div></div><div class="dash-panel"><div class="panel-head"><h2>⚡ Hoạt động của bạn</h2></div><div class="activity-list" id="activityList"></div><div class="dashboard-actions"><button onclick="resetDashboardData()">↺ Đặt lại dữ liệu học</button></div></div></section><div style="text-align:center;margin:0 auto 35px"><a href="achievements.html" class="dash-primary">🏆 Xem Thành tích & Nhiệm vụ</a></div></main>
+<header class="dashboard-header">
+  <div class="dashboard-hero">
+    <div>
+      <span class="dashboard-kicker">LEARNING DASHBOARD</span>
+      <h1>Tiến độ học tập</h1>
+      <p>Xem bạn đang ở đâu trong lộ trình 14 bài và tiếp tục đúng nội dung cần học tiếp.</p>
+    </div>
+
+    <div class="level-card">
+      <div class="level-top">
+        <div>
+          <div class="level-label">LEVEL</div>
+          <div class="level-number" id="dashLevel">1</div>
+        </div>
+        <div>
+          <div class="rank-name" id="dashRank">Excel Starter</div>
+          <div class="xp-total" id="dashXP">0 XP tổng</div>
+        </div>
+      </div>
+      <div class="level-bar"><span id="dashLevelBar"></span></div>
+      <div class="level-next">
+        <span id="dashLevelProgress">0 / 100 XP</span>
+        <span id="dashNextLevel">100 XP tới Level 2</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="dashboard-main">
+
+  <div class="cloud-sync-status" id="cloudSyncStatus">
+    <span class="cloud-sync-dot"></span>
+    <span id="cloudSyncStatusText">Đang kiểm tra đồng bộ...</span>
+  </div>
+
+  <section class="summary-grid">
+    <div class="summary-card">
+      <span class="summary-value" id="statLessons">0/14</span>
+      <span class="summary-label">Bài học hoàn thành</span>
+    </div>
+    <div class="summary-card">
+      <span class="summary-value" id="statProgress">0%</span>
+      <span class="summary-label">Tiến độ lộ trình</span>
+    </div>
+    <div class="summary-card">
+      <span class="summary-value" id="statXP">0</span>
+      <span class="summary-label">XP hiện tại</span>
+    </div>
+    <div class="summary-card">
+      <span class="summary-value" id="statStreak">0 ngày</span>
+      <span class="summary-label">Chuỗi học hiện tại</span>
+    </div>
+  </section>
+
+  <section class="dashboard-grid">
+    <div class="dash-panel">
+      <div class="panel-head">
+        <h2>Tiến độ theo chặng</h2>
+        <a href="skill-map.html">Xem Skill Map →</a>
+      </div>
+
+      <div class="skill-row">
+        <div class="skill-meta">
+          <span class="skill-name">Nền tảng</span>
+          <span class="skill-value" id="stageFoundationText">0/4</span>
+        </div>
+        <div class="skill-track"><div class="skill-fill" id="stageFoundation"></div></div>
+      </div>
+
+      <div class="skill-row">
+        <div class="skill-meta">
+          <span class="skill-name">Phân tích</span>
+          <span class="skill-value" id="stageAnalysisText">0/3</span>
+        </div>
+        <div class="skill-track"><div class="skill-fill" id="stageAnalysis"></div></div>
+      </div>
+
+      <div class="skill-row">
+        <div class="skill-meta">
+          <span class="skill-name">Dữ liệu & Dashboard</span>
+          <span class="skill-value" id="stageDataText">0/5</span>
+        </div>
+        <div class="skill-track"><div class="skill-fill" id="stageData"></div></div>
+      </div>
+
+      <div class="skill-row">
+        <div class="skill-meta">
+          <span class="skill-name">Tự động hóa</span>
+          <span class="skill-value" id="stageAutomationText">0/2</span>
+        </div>
+        <div class="skill-track"><div class="skill-fill" id="stageAutomation"></div></div>
+      </div>
+    </div>
+
+    <div class="dash-panel dashboard-next-panel">
+      <div class="panel-head">
+        <h2>Tiếp tục học</h2>
+      </div>
+
+      <div class="continue-card">
+        <span class="continue-label" id="continueStage">BÀI TIẾP THEO</span>
+        <h3 id="continueTitle">Đang xác định…</h3>
+        <p id="continueText">Dashboard sẽ chọn bài tiếp theo từ tiến độ Skill Map của bạn.</p>
+        <a class="continue-btn" id="continueButton" href="skill-map.html">Tiếp tục học →</a>
+      </div>
+
+      <div class="dashboard-actions dashboard-actions-secondary">
+        <a href="practice-video.html">Đi thực hành</a>
+        <a href="profile.html">Hồ sơ</a>
+      </div>
+    </div>
+
+    <div class="dash-panel dashboard-activity-panel">
+      <div class="panel-head">
+        <h2>Hoạt động gần đây</h2>
+        <a href="achievements.html">Xem thành tích →</a>
+      </div>
+      <div class="activity-list" id="activityList"></div>
+    </div>
+
+    <div class="dash-panel dashboard-guide-panel">
+      <div class="panel-head">
+        <h2>Nên làm gì tiếp?</h2>
+      </div>
+
+      <div class="dashboard-guide">
+        <a href="skill-map.html">
+          <strong>1. Học theo Skill Map</strong>
+          <span>Đi đúng thứ tự và tiếp tục bài đang dở.</span>
+        </a>
+        <a href="practice-video.html">
+          <strong>2. Thực hành</strong>
+          <span>Dùng TikTok, YouTube project, chấm file hoặc hướng dẫn.</span>
+        </a>
+        <a href="achievements.html">
+          <strong>3. Xem thành tích</strong>
+          <span>Theo dõi Level, XP và huy hiệu đã mở.</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="dashboard-maintenance-actions">
+    <button type="button" id="dashboardResetBtn">Đặt lại tiến độ trên thiết bị này</button>
+  </div>
+
+</main>
+
 <footer class="site-footer">
   <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
   <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
-
   <div class="site-footer-legal">
     <a href="terms.html">Điều khoản</a>
     <a href="privacy.html">Quyền riêng tư</a>
@@ -39,14 +192,19 @@
     <a href="open-source.html">Mã nguồn mở</a>
   </div>
 </footer>
-<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button><script defer src="script.js"></script><script defer src="dashboard.js"></script>    <script defer src="gamification.js"></script><script defer src="global-search.js"></script>
-    <script defer src="simple-nav.js"></script>
+
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script defer src="script.js"></script>
+<script defer src="dashboard.js?v=20260831-v99"></script>
+<script defer src="gamification.js"></script>
+<script defer src="global-search.js"></script>
+<script defer src="simple-nav.js"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="cloud-sync-ui.js"></script>
-
 <script defer src="analytics-tracker.js"></script>
 <script defer src="avp-core.js"></script>
-<script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>
-</body></html>
+</body>
+</html>
