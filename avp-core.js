@@ -1017,7 +1017,7 @@
       playBotSeg(0,2.9);
     }
 
-    let x=PAD;
+    let x=40;
     let yBottom=PAD;
     let dir=1;
     const SPEED=2.4;
@@ -1093,10 +1093,11 @@
     function w(){return Math.max(56, fab.offsetWidth||56)}
     function maxX(){return Math.max(PAD, window.innerWidth - w() - PAD)}
     function applyPos(px, bottom){
-      launcher.style.setProperty("left", px+"px", "important");
-      launcher.style.setProperty("right", "auto", "important");
-      launcher.style.setProperty("top", "auto", "important");
-      launcher.style.setProperty("bottom", bottom+"px", "important");
+      launcher.style.setProperty("left","0px","important");
+      launcher.style.setProperty("right","auto","important");
+      launcher.style.setProperty("top","auto","important");
+      launcher.style.setProperty("bottom", bottom+"px","important");
+      launcher.style.setProperty("transform","translateX("+px+"px)","important");
     }
 
     function frame(){

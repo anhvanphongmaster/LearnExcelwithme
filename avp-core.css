@@ -1641,7 +1641,7 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   position:fixed !important;
   top:auto !important;
   right:auto !important;
-  left:12px !important;
+  left:0 !important;
   bottom:16px !important;
   width:96px !important;
   height:120px !important;
@@ -1736,3 +1736,9 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
 }
 #avpBotBubble.avp-bot-bubble[hidden]{display:none !important}
 #avpBotBubble.avp-bot-bubble.show{display:block !important;opacity:1 !important}
+
+#avpEdgeLauncher.is-robot{
+  left:0 !important;
+  right:auto !important;
+  width:96px !important;
+}
