@@ -462,3 +462,12 @@
     font-size:24px!important;
   }
 }
+
+/* Khóa khu 4 nguồn — không nhận transform/press từ motion toàn site */
+.ph-switch,.ph-choice,.ph-choice *{
+  will-change:auto;
+}
+.ph-choice.avp-pressing,
+.ph-choice.avp-motion-rise{
+  opacity:1 !important;
+}

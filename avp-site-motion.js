@@ -13,7 +13,7 @@
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
 
-  const SKIP_HEAVY=/^(admin\.html|admin-|auth\.html|certificate\.html|practice-grader\.html|playground\.html)/.test(page)
+  const SKIP_HEAVY=/^(admin\.html|admin-|auth\.html|certificate\.html|practice-grader\.html|practice-video\.html|playground\.html)/.test(page)
     || inIframe
     || document.documentElement.hasAttribute("data-avp-no-motion");
 
@@ -83,6 +83,7 @@
     document.documentElement.dataset.avpPressBound="1";
 
     document.addEventListener("pointerdown",e=>{
+      if(e.target.closest(".ph-switch,.ph-choice,[data-practice-branch]"))return;
       const target=e.target.closest(PRESS_SEL);
       if(!target)return;
       press(target);

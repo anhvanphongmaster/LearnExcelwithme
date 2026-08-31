@@ -6,7 +6,7 @@
 
   if(window.self!==window.top)return;
   var page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
-  if(/^(admin\.html|auth\.html|certificate\.html)/.test(page))return;
+  if(/^(admin\.html|auth\.html|certificate\.html|practice-video\.html|practice-grader\.html)/.test(page))return;
 
   var busy=false;
 

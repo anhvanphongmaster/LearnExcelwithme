@@ -259,16 +259,18 @@
 /* === AVP site motion (visual only — no data) === */
 (function () {
   try {
+    var page=(location.pathname.split("/").pop()||"").toLowerCase();
+    if(/practice-video|practice-grader/.test(page)) return;
     if (!document.getElementById("avpSiteMotionCss")) {
       var link = document.createElement("link");
       link.id = "avpSiteMotionCss";
       link.rel = "stylesheet";
-      link.href = "avp-site-motion.css?v=20260831-v94c";
+      link.href = "avp-site-motion.css?v=20260831-v94d";
       document.head.appendChild(link);
     }
     if (!document.querySelector('script[src*="avp-site-motion.js"]') && !window.__avpSiteMotionV94 && !window.__avpSiteMotion) {
       var s = document.createElement("script");
-      s.src = "avp-site-motion.js?v=20260831-v94c";
+      s.src = "avp-site-motion.js?v=20260831-v94d";
       s.defer = true;
       document.head.appendChild(s);
     }
@@ -277,6 +279,8 @@
 
 /* Zoom copy V56 — file riêng, luôn gắn cuối, không phụ thuộc vá cũ */
 (function () {
+  var page=(location.pathname.split("/").pop()||"").toLowerCase();
+  if(/practice-video|practice-grader/.test(page)) return;
   try {
     if (document.querySelector('script[src*="avp-zoom-copy-v56.js"]')) return;
     var s = document.createElement("script");
