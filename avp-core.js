@@ -1181,8 +1181,8 @@
   window.__avpRobotV1=true;
 
   var css="\
-#avpEdgeLauncher.is-robot{width:76px!important;height:90px!important;pointer-events:none!important;background:transparent!important;overflow:visible!important;z-index:2147483000!important}\
-#avpEdgeLauncher.is-robot .avp-edge-main{width:76px!important;height:90px!important;background:transparent!important;border:0!important;box-shadow:none!important;pointer-events:auto!important;cursor:pointer!important}\
+#avpEdgeLauncher.is-robot{left:auto!important;right:10px!important;top:auto!important;bottom:12px!important;width:76px!important;height:90px!important;pointer-events:none!important;background:transparent!important;overflow:visible!important;z-index:30!important}\
+#avpEdgeLauncher.is-robot .avp-edge-main{inset:auto!important;width:76px!important;height:90px!important;background:transparent!important;border:0!important;box-shadow:none!important;pointer-events:auto!important;cursor:pointer!important}\
 #avpEdgeLauncher.is-robot .avp-edge-main::before,#avpEdgeLauncher.is-robot .avp-bot-vid,#avpEdgeLauncher.is-robot .avp-bot-img{display:none!important}\
 #avpEdgeLauncher.is-robot .avp-edge-menu{pointer-events:auto!important;z-index:2147483647!important;bottom:96px!important;left:50%!important;transform:translateX(-50%)!important}\
 #avpEdgeLauncher.is-robot .avp-edge-menu *{pointer-events:auto!important}\
