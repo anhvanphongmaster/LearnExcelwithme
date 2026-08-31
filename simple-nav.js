@@ -256,8 +256,9 @@
   }catch(e){}
 })();
 
-/* === AVP site motion (visual only — no data) === */
+/* === AVP site motion DISABLED — tránh phá trang === */
 (function () {
+  return;
   try {
     var page=(location.pathname.split("/").pop()||"").toLowerCase();
     if(/practice-video|practice-grader/.test(page)) return;
@@ -277,8 +278,9 @@
   } catch (e) {}
 })();
 
-/* Zoom copy V56 — file riêng, luôn gắn cuối, không phụ thuộc vá cũ */
+/* Zoom copy DISABLED */
 (function () {
+  return;
   var page=(location.pathname.split("/").pop()||"").toLowerCase();
   if(/practice-video|practice-grader/.test(page)) return;
   try {
@@ -665,6 +667,7 @@ document.addEventListener("DOMContentLoaded", function(){
 })();
 
 (function(){
+  return;
   try{
     var page=(location.pathname.split("/").pop()||"").toLowerCase();
     if(!/practice-video|practice-grader/.test(page))return;
