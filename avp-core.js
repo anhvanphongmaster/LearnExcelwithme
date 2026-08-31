@@ -1219,6 +1219,13 @@
     var fab=document.getElementById("avpEdgeMain");
     if(!el||!fab)return;
     el.classList.add("is-robot","is-walking");
+    el.style.pointerEvents="none";
+    el.style.width="76px";
+    el.style.height="90px";
+    fab.style.pointerEvents="auto";
+    var menuEl=document.getElementById("avpEdgeMenu");
+    if(menuEl) menuEl.style.pointerEvents="auto";
+
 
     var box=fab.querySelector(".avp-bot");
     if(!box || !box.querySelector(".b25-body")){
