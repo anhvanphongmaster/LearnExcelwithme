@@ -1276,3 +1276,20 @@ body.dark-mode #avpEdgeLauncher .avp-edge-action > span:first-child{
     animation:none !important;
   }
 }
+
+
+/* AVP MENU BADGE INLINE — số nằm trong hàng, không bị cắt */
+.avp-edge-action{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+.avp-edge-action .avp-edge-section-badge,
+.avp-edge-action[data-edge-action="community"] #avpCommunityMenuBadge{
+  position:static !important;
+  top:auto !important;
+  right:auto !important;
+  margin-left:auto !important;
+  min-width:20px !important;
+  height:20px !important;
+}

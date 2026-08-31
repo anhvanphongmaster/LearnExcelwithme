@@ -67,6 +67,7 @@
       </button>
       <button type="button" class="avp-edge-action" data-edge-action="chat">
         <span>💬</span><b>Chat Admin</b>
+        <span class="avp-edge-section-badge" hidden>0</span>
       </button>
     </div>
 
@@ -660,7 +661,7 @@
   }
 
   function setCommunityEdgeBadge(count){
-    const n=Math.max(0,Number(count||0));
+    const n=Math.max(0,Number(count||0)+starUnread);
     const action=document.querySelector('.avp-edge-action[data-edge-action="community"]');
     if(!action)return;
 
