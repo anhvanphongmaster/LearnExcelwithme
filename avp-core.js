@@ -80,8 +80,10 @@
       title="Công cụ nhanh — kéo để di chuyển"
     >
       <span class="avp-bot" aria-hidden="true">
-        <video id="avpBotVid" class="avp-bot-vid" src="avp-bot.webm" poster="avp-bot-wave.png" muted playsinline loop></video>
-        <img class="avp-bot-img" src="avp-bot-wave.png" alt="">
+        <video id="avpBotVid" class="avp-bot-vid" autoplay muted playsinline loop>
+          <source src="avp-bot.webm" type="video/webm">
+          <source src="avp-bot.mp4" type="video/mp4">
+        </video>
       </span>
       <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
     </button>
@@ -92,14 +94,12 @@
 
   (function(){
     const base=(location.pathname.replace(/[^/]+$/,"")||"./");
-    const img=launcher.querySelector(".avp-bot-img");
     const vid=launcher.querySelector("#avpBotVid");
-    if(img) img.src=base+"avp-bot-wave.png";
     if(vid){
-      vid.style.display="none";
-      vid.src=base+"avp-bot.webm";
-      vid.addEventListener("canplay",()=>{vid.style.display="block";},{once:true});
-      vid.addEventListener("error",()=>{vid.style.display="none";});
+      vid.style.display="block";
+      const play=()=>vid.play().catch(()=>{});
+      vid.addEventListener("canplay",play);
+      play();
     }
   })();
 
