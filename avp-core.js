@@ -1,5 +1,8 @@
 (() => {
   const KEY_HISTORY='avp_learning_history_v2', KEY_BOOK='avp_bookmarks_v2';
+  const AVP_EMBEDDED=(function(){try{return new URLSearchParams(location.search).get('embed')==='1'||window.self!==window.top;}catch(e){return window.self!==window.top;}})();
+  if(AVP_EMBEDDED){document.documentElement.classList.add('avp-embedded-frame','avp-embedded-youtube');}
+
   const IGNORE=new Set(['auth.html','admin.html','privacy.html','terms.html','disclaimer.html','open-source.html','lienhe.html','gioithieu.html']);
   const page=location.pathname.split('/').pop()||'index.html';
   const title=(document.querySelector('h1')?.textContent||document.title.split('|')[0]||page).trim();
@@ -81,6 +84,7 @@
   `;
 
   document.body.appendChild(launcher);
+  if(AVP_EMBEDDED){launcher.hidden=true;launcher.style.display='none';}
 
   const fab=launcher.querySelector('#avpEdgeMain');
   const edgeMenu=launcher.querySelector('#avpEdgeMenu');
@@ -100,6 +104,7 @@
     <span class="avp-edge-mini-body"></span>
   `;
   document.body.appendChild(mini);
+  if(AVP_EMBEDDED){mini.hidden=true;mini.style.display='none';}
 
   let miniTimer=null;
   let miniDetail=null;

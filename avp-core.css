@@ -1,3 +1,19 @@
+html.avp-embedded-frame .top-simple-nav,
+html.avp-embedded-youtube .top-simple-nav,
+html.avp-embedded-frame .avp-edge-launcher,
+html.avp-embedded-youtube .avp-edge-launcher,
+html.avp-embedded-frame .avp-hub-fab,
+html.avp-embedded-youtube .avp-hub-fab,
+html.avp-embedded-frame .avp-install-banner,
+html.avp-embedded-youtube .avp-install-banner,
+html.avp-embedded-frame .avp-edge-mini-preview-v2,
+html.avp-embedded-youtube .avp-edge-mini-preview-v2,
+html.avp-embedded-frame .avp-hub-backdrop,
+html.avp-embedded-youtube .avp-hub-backdrop{
+  display:none !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+}
 /* AVP Core Upgrade 2026-08-16: mobile stability + learning hub + PWA UI */
 html{scroll-behavior:smooth;max-width:100%;overflow-x:hidden}body{max-width:100%;overflow-x:hidden}
 img,video,canvas,svg,table{max-width:100%}input,select,textarea,button{max-width:100%}

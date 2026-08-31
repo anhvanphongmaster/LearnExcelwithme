@@ -1,4 +1,28 @@
 
+(function avpHideEmbeddedChrome(){
+  var embedded=false;
+  try{
+    embedded=new URLSearchParams(location.search).get("embed")==="1" || window.self!==window.top;
+  }catch(e){
+    embedded=window.self!==window.top;
+  }
+  if(!embedded)return;
+  document.documentElement.classList.add("avp-embedded-frame","avp-embedded-youtube");
+  function hide(){
+    var n=document.querySelector(".top-simple-nav");
+    if(n){n.hidden=true;n.style.display="none";}
+    var l=document.getElementById("avpEdgeLauncher");
+    if(l){l.hidden=true;l.style.display="none";}
+    document.querySelectorAll(".avp-install-banner,.avp-edge-mini-preview-v2").forEach(function(el){el.remove();});
+  }
+  hide();
+  document.addEventListener("DOMContentLoaded",hide);
+  setTimeout(hide,0);
+  setTimeout(hide,300);
+  setTimeout(hide,900);
+  setTimeout(hide,1800);
+})();
+
 /* =========================================================
    V89 — GLOBAL CTA SYSTEM
    One semantic CTA palette for the whole website.
