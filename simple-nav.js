@@ -251,6 +251,18 @@
   } catch (e) {}
 })();
 
+/* Zoom copy V56 — file riêng, luôn gắn cuối, không phụ thuộc vá cũ */
+(function () {
+  try {
+    if (document.querySelector('script[src*="avp-zoom-copy-v56.js"]')) return;
+    var s = document.createElement("script");
+    s.src = "avp-zoom-copy-v56.js?v=20260831-v56";
+    s.defer = true;
+    document.head.appendChild(s);
+  } catch (e) {}
+})();
+
+
 
 (function(){
   document.addEventListener("DOMContentLoaded", function(){
