@@ -237,6 +237,7 @@
     if(mode==="community"){
       setPanelHeader("Cộng đồng Anh Văn Phòng","Hỏi đáp · Chia sẻ · Cùng tiến bộ");
       await currentUser();
+      await updateNotificationBadge();
       if(communityFilter==="leaderboard") await loadCommunityLeaderboard();
       else await loadCommunity();
       return;
@@ -1646,7 +1647,12 @@
     try{
       const {data,error}=await client.rpc("notification_unread_count");
       if(error)throw error;
-      publishCommunityUnreadCount(data);
+      let extra=0;
+      try{
+        const star=await client.from("practice_grader_star_notifs").select("id",{count:"exact",head:true}).eq("is_read",false);
+        extra=Number(star.count||0);
+      }catch(err){}
+      publishCommunityUnreadCount(Number(data||0)+extra);
     }catch(e){
       console.warn("Notification badge",e);
     }
@@ -1704,14 +1710,18 @@
     // Thông báo kết quả chấm/chấm lại là thông báo riêng của đúng học viên,
     // dù backend đang lưu trong system_notifications với target_type='user'.
     const title=String(n.title||"").toLowerCase();
-    const type=String(n.type||"").toLowerCase();
+    const type=String(n.type||n.category||"").toLowerCase();
+    const content=String(n.content||"").toLowerCase();
 
     return (
       type==="practice_grader_review" ||
       type==="practice_grader_appeal" ||
       type==="practice_grader_star" ||
       title.includes("kết quả chấm lại bài excel") ||
-      title.includes("kết quả kiểm tra lại bài excel")
+      title.includes("kết quả kiểm tra lại bài excel") ||
+      title.includes("tặng 1 sao") ||
+      title.includes("được tặng") && title.includes("sao") ||
+      content.includes("tặng bạn 1 sao")
     );
   }
 
@@ -1737,6 +1747,7 @@
   }
 
   function notificationIcon(n){
+    if(String(n.type||n.category||"").toLowerCase()==="practice_grader_star")return "⭐";
     if(isPersonalNotification(n))return "🔔";
     if(n.kind==="system"){
       if(n.type==="minigame")return "🎁";

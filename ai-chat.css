@@ -796,3 +796,26 @@
   font-weight:900;cursor:pointer;
 }
 .avp-pin-question-btn.active{background:#fff7dd;border-color:#f1d77f;color:#805500}
+
+
+/* NOTIFY TAB BADGE VISIBLE */
+#avpCommunityNotify{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:6px !important;
+}
+#avpNotifyTabBadge{
+  position:static !important;
+  display:inline-flex !important;
+  min-width:18px !important;
+  height:18px !important;
+  margin-left:0 !important;
+  background:#e11d48 !important;
+  color:#fff !important;
+  border-radius:999px !important;
+  font-size:10px !important;
+  font-weight:900 !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+#avpNotifyTabBadge[hidden]{display:none !important}
