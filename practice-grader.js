@@ -181,7 +181,11 @@ function renderLessons(){
   grid.querySelectorAll("[data-appeal]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.appeal);if(l)openAppeal(l)});
 }
 async function loadSubmissionStates(){
-  const u=await requireLogin();if(!u)return;
+  let u=null;
+  try{
+    u=window.AVPAccess?await window.AVPAccess.getUser():null;
+  }catch(e){u=null}
+  if(!u)return;
   const sb=await getClient();if(!sb?.rpc)return;
 
   isAdminTester=await detectAdminTester(sb);

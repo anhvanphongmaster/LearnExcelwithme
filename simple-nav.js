@@ -280,7 +280,7 @@
   try {
     if (document.querySelector('script[src*="avp-zoom-copy-v56.js"]')) return;
     var s = document.createElement("script");
-    s.src = "avp-zoom-copy-v56.js?v=20260831-b";
+    s.src = "avp-zoom-copy-v56.js?v=20260831-submitfix";
     s.defer = true;
     document.head.appendChild(s);
   } catch (e) {}

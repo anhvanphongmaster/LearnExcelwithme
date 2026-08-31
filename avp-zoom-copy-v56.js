@@ -48,13 +48,14 @@
   }
 
   document.addEventListener("click",function(e){
-    if(busy){e.preventDefault();return;}
     if(e.button!==0)return;
     if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    if(e.target.closest("input,textarea,select,button,label,.pg-file-submit,.pg-card-btn,[data-submit],[data-download]"))return;
     if(e.target.closest(".ph-switch,[data-practice-branch],#phSourceBack"))return;
-    if(e.target.closest(".top-simple-nav,form,iframe,.avp-edge-launcher"))return;
+    if(e.target.closest(".top-simple-nav,form,iframe,.avp-edge-launcher,.pg-submit-modal,.pg-appeal-modal,.pg-publish-modal"))return;
 
     var link=e.target.closest("a[href]");
+    if(busy)return;
     if(!link)return;
     if(link.target && link.target!=="_self")return;
     if(link.hasAttribute("download"))return;
