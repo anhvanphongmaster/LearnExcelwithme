@@ -1809,23 +1809,40 @@
     });
   }
 
+  async function markStarNotifRead(key){
+    try{
+      if(!key)return;
+      await client.from("practice_grader_star_notifs").update({is_read:true}).eq("notification_key",key);
+    }catch(e){}
+  }
+
   async function markNotificationRead(key,item){
     if(item?.classList.contains("unread")){
       try{
-        const {error}=await client.rpc("notification_mark_read",{p_key:key});
-        if(error)throw error;
+        const isStar=/^star/i.test(String(key||"")) || item?.querySelector(".avp-notification-title")?.textContent?.includes("tặng 1 sao");
+        if(isStar){
+          await markStarNotifRead(key);
+        }else{
+          const {error}=await client.rpc("notification_mark_read",{p_key:key});
+          if(error) throw error;
+        }
         item.classList.remove("unread");
         item.querySelector(".avp-unread-dot")?.remove();
 
         const row=(window.__avpNotifications||[]).find(x=>x.notification_key===key);
         if(row)row.is_read=true;
 
-        // Cập nhật số ngay tại giao diện: đọc 1 thông báo = giảm đúng 1.
         publishCommunityUnreadCount(Math.max(0,latestNotificationUnreadCount-1));
         updateNotificationCategoryBadges(window.__avpNotifications||[]);
         await updateNotificationBadge();
       }catch(e){
-        console.warn("Mark notification read",e);
+        try{ await markStarNotifRead(key); }catch(err){}
+        item.classList.remove("unread");
+        item.querySelector(".avp-unread-dot")?.remove();
+        const row=(window.__avpNotifications||[]).find(x=>x.notification_key===key);
+        if(row)row.is_read=true;
+        await updateNotificationBadge();
+        updateNotificationCategoryBadges(window.__avpNotifications||[]);
       }
     }
 
@@ -1840,9 +1857,15 @@
     if(!(await requireCommunityLogin()))return;
 
     try{
-      const {error}=await client.rpc("notification_mark_all_read");
-      if(error)throw error;
+      try{
+        await client.rpc("notification_mark_all_read");
+      }catch(e){}
+      try{
+        await client.from("practice_grader_star_notifs").update({is_read:true}).eq("is_read",false);
+      }catch(e){}
+      (window.__avpNotifications||[]).forEach(n=>{n.is_read=true});
       await loadNotifications();
+      await updateNotificationBadge();
     }catch(e){
       console.warn("Mark all notifications",e);
       alert("Chưa đánh dấu được thông báo.");
