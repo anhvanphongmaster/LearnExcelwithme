@@ -549,13 +549,26 @@
   }
 
   launcher.querySelectorAll('[data-edge-action]').forEach(btn=>{
-    btn.addEventListener('click',e=>{
+    btn.addEventListener('click',async e=>{
       e.preventDefault();
       e.stopPropagation();
 
       const action=btn.dataset.edgeAction;
       hideMiniPreview();
       setEdgeMenu(false);
+
+      const next=location.pathname.split('/').pop()||'index.html';
+      if(window.AVPAccess&&typeof window.AVPAccess.requireLogin==='function'){
+        const user=await window.AVPAccess.requireLogin({next});
+        if(!user){
+          toast('Đăng nhập để dùng Hỏi AI, Từ điển, Cộng đồng và Chat Admin');
+          return;
+        }
+      }else{
+        toast('Đăng nhập để dùng tính năng này');
+        location.href='auth.html?next='+encodeURIComponent(next);
+        return;
+      }
 
       const aiPanel=document.getElementById('avpAiChatPanel');
       const chatPanels=[
