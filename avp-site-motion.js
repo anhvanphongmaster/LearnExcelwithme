@@ -162,11 +162,8 @@
     let busy=false;
 
     document.addEventListener("click",function(e){
-      if(busy){
-        e.preventDefault();
-        return;
-      }
       if(e.button!==0)return;
+      if(busy)return;
       if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
 
       /* Trang bài tập giữ nguyên practice-hub.js */

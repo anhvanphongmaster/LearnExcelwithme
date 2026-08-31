@@ -74,7 +74,7 @@
     if(!document.getElementById("avpAiChatScript")){
       const script=document.createElement("script");
       script.id="avpAiChatScript";
-      script.src="ai-chat.js?v=20260828-ai-direct3";
+      script.src="ai-chat.js?v=20260831-notify2";
       script.defer=true;
       script.onerror=()=>console.warn("AVP AI Chat script không tải được.");
       document.head.appendChild(script);

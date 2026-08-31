@@ -260,7 +260,8 @@
 (function () {
   try {
     var page=(location.pathname.split("/").pop()||"").toLowerCase();
-    if(/practice-video|practice-grader/.test(page)) return;
+    if(/practice-video|practice-grader|index\.html|^$/.test(page)) return;
+    if(document.querySelector('script[src*="home-page-motion"]')) return;
     if (!document.getElementById("avpSiteMotionCss")) {
       var link = document.createElement("link");
       link.id = "avpSiteMotionCss";
@@ -655,6 +656,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
 (function(){
   try{
+    var page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
+    if(page && page!=="index.html")return;
     if(document.getElementById("avpMiniBounceCss"))return;
     var l=document.createElement("link");
     l.id="avpMiniBounceCss";

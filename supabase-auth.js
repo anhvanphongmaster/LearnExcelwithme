@@ -889,7 +889,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.head.appendChild(css);
 
   const js=document.createElement('script');
-  js.src='ai-chat.js?v=20260829-community-native1';
+  js.src='ai-chat.js?v=20260831-notify2';
   js.defer=true;
   js.id='avpAiChatScript';
   document.head.appendChild(js);
