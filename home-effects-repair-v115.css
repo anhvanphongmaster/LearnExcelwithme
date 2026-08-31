@@ -1,0 +1,106 @@
+
+/* =========================================================
+   V115 — HOME EFFECTS REPAIR
+   Base: user's latest full-site ZIP.
+   Goal: restore the ORIGINAL homepage effects without
+   changing layout/content/navigation.
+   ========================================================= */
+
+/*
+ROOT CAUSE:
+The V111 patch applied:
+  transform: translateX(-135%) !important;
+to .avp-practice-hub-cta::before.
+
+The original @keyframes animates `transform`, but an !important
+static transform wins the cascade, so the shine cannot move.
+On desktop that made the effect appear frozen/missing.
+*/
+
+/* Keep the original badge layout exactly as the current page defines it. */
+.avp-practice-hub-cta{
+  isolation:isolate;
+}
+
+/*
+Use background-position for the shine instead of translating the
+pseudo-element. This keeps the light completely inside the card even
+though the parent needs overflow:visible for the TikTok/YouTube badges.
+*/
+.avp-practice-hub-cta::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+
+  transform:none !important;
+  width:auto;
+  height:auto;
+
+  background:
+    linear-gradient(
+      112deg,
+      transparent 0%,
+      transparent 34%,
+      rgba(255,255,255,.08) 42%,
+      rgba(255,255,255,.52) 50%,
+      rgba(255,255,255,.10) 58%,
+      transparent 66%,
+      transparent 100%
+    );
+  background-size:240% 100%;
+  background-position:145% 0;
+
+  animation:avpHomeSafeShineV115 3.5s ease-in-out infinite !important;
+  border-radius:inherit;
+}
+
+/* Original content stays above the light sweep. */
+.avp-practice-hub-cta > :not(.avp-practice-hub-badges){
+  position:relative;
+  z-index:2;
+}
+.avp-practice-hub-badges{
+  z-index:4;
+}
+
+/* One visible sweep, followed by a short rest. */
+@keyframes avpHomeSafeShineV115{
+  0%,48%{
+    background-position:145% 0;
+    opacity:0;
+  }
+  54%{
+    opacity:1;
+  }
+  82%{
+    background-position:-145% 0;
+    opacity:.95;
+  }
+  100%{
+    background-position:-145% 0;
+    opacity:0;
+  }
+}
+
+/* Restore the original hero ambient effects if another patch muted them. */
+.avp-grid-bg{
+  animation:avpGridDrift 14s linear infinite !important;
+}
+.avp-title span{
+  animation:avpTitleGlow 5s ease-in-out infinite alternate !important;
+}
+.avp-cursor{
+  animation:avpBlink .8s steps(1,end) infinite !important;
+}
+
+/* Do not interfere with users who explicitly disable motion at OS level. */
+@media(prefers-reduced-motion:reduce){
+  .avp-practice-hub-cta::before,
+  .avp-grid-bg,
+  .avp-title span,
+  .avp-cursor{
+    animation:none !important;
+  }
+}
