@@ -80,6 +80,7 @@
       title="Công cụ nhanh — kéo để di chuyển"
     >
       <span class="avp-bot" aria-hidden="true">
+        <video id="avpBotVid" class="avp-bot-vid" src="avp-bot.webm" poster="avp-bot-wave.png" muted playsinline loop></video>
         <img class="avp-bot-img" src="avp-bot-wave.png" alt="">
       </span>
       <span class="avp-edge-badge" id="avpEdgeBadge" hidden>0</span>
@@ -87,6 +88,7 @@
   `;
 
   document.body.appendChild(launcher);
+
 
   (function(){
     const base=(location.pathname.replace(/[^/]+$/,"")||"./");
