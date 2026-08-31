@@ -1667,6 +1667,26 @@
       if(error)throw error;
 
       window.__avpNotifications=Array.isArray(data)?data:[];
+      try{
+        const extra=await client.from("practice_grader_star_notifs").select("*").order("created_at",{ascending:false}).limit(80);
+        if(!extra.error && Array.isArray(extra.data)){
+          const have=new Set(window.__avpNotifications.map(n=>n.notification_key));
+          extra.data.forEach(row=>{
+            const key=row.notification_key||("star-"+row.id);
+            if(have.has(key))return;
+            window.__avpNotifications.unshift({
+              notification_key:key,
+              title:row.title,
+              content:row.content,
+              type:row.type||"practice_grader_star",
+              kind:"personal",
+              is_read:!!row.is_read,
+              is_pinned:!!row.is_pinned,
+              created_at:row.created_at
+            });
+          });
+        }
+      }catch(err){}
       const active=document.querySelector("[data-notify-filter].active")?.dataset.notifyFilter||"personal";
       updateNotificationCategoryBadges(window.__avpNotifications);
       renderNotifications(window.__avpNotifications,active);

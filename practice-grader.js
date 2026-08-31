@@ -1205,39 +1205,34 @@ async function giftStar(btn){
   }
   btn.disabled=true;
   const sb=await getClient();
-  let saved=false;
-  if(sb&&toId){
-    try{
-      const rpc=await sb.rpc("practice_grader_gift_star",{p_to_user_id:toId});
-      if(!rpc.error)saved=true;
-    }catch(e){}
-    if(!saved){
-      try{
-        const ins=await sb.from("practice_grader_stars").insert({
-          from_user_id:fromId,
-          to_user_id:toId
-        });
-        if(!ins.error)saved=true;
-      }catch(e){}
-    }
-    const fromName=user?.user_metadata?.full_name||user?.user_metadata?.name||"Một học viên";
-    const title="Bạn vừa được tặng 1 sao";
-    const content=fromName+" đã tặng bạn 1 sao trên bảng xếp hạng bài tập chấm điểm.";
-    try{
-      await sb.rpc("notification_personal_create",{p_user_id:toId,p_title:title,p_content:content,p_type:"practice_grader_star"});
-    }catch(e){}
-    try{
-      await sb.rpc("admin_system_notification_create",{
-        p_title:title,
-        p_content:content,
-        p_category:"practice_grader_star",
-        p_target_type:"user",
-        p_target_user_id:toId,
-        p_starts_at:new Date().toISOString(),
-        p_expires_at:null,
-        p_is_pinned:false
-      });
-    }catch(e){}
+  if(!sb){
+    btn.disabled=false;
+    alert("Chưa kết nối được server.");
+    return;
+  }
+  if(!toId){
+    btn.disabled=false;
+    alert("Không gửi thông báo được vì dòng này thiếu ID học viên.");
+    return;
+  }
+  const fromName=user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email||"Một học viên";
+  const title="Bạn vừa được tặng 1 sao";
+  const content=fromName+" đã tặng bạn 1 sao trên bảng xếp hạng bài tập chấm điểm.";
+  const notifKey="star:"+fromId+":"+toId+":"+todayKey();
+  const starIns=await sb.from("practice_grader_stars").insert({from_user_id:fromId,to_user_id:toId});
+  const noteIns=await sb.from("practice_grader_star_notifs").insert({
+    notification_key:notifKey,
+    from_user_id:fromId,
+    to_user_id:toId,
+    title,
+    content,
+    type:"practice_grader_star",
+    kind:"personal"
+  });
+  if(noteIns.error){
+    btn.disabled=false;
+    alert("Tặng sao rồi nhưng chưa gửi được thông báo. Chạy SQL bảng practice_grader_star_notifs trước.\n\n"+String(noteIns.error.message||noteIns.error));
+    return;
   }
   store.given[fromId+"|"+stamp]=1;
   const key=toId||name;
