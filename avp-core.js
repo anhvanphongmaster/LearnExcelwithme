@@ -55,6 +55,9 @@
       <button type="button" class="avp-edge-action" data-edge-action="ai">
         <span>✨</span><b>Hỏi AI</b>
       </button>
+      <button type="button" class="avp-edge-action" data-edge-action="dictionary">
+        <span>📘</span><b>Từ điển Excel</b>
+      </button>
       <button type="button" class="avp-edge-action" data-edge-action="community" id="avpExternalCommunityButton">
         <span>👥</span><b>Cộng đồng</b>
         <span id="avpCommunityMenuBadge" class="avp-edge-section-badge" hidden>0</span>
@@ -555,6 +558,11 @@
         document.getElementById('avpAdminFloatPanel'),
         document.getElementById('avpGuestChatPanel')
       ].filter(Boolean);
+
+      if(action==='dictionary'){
+        window.location.href='excel-dictionary.html';
+        return;
+      }
 
       if(action==='learning'){
         if(back.classList.contains('open')){
