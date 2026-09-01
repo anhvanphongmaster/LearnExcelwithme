@@ -87,7 +87,6 @@
         ],
         "file": "01_PowerQuery_DEMO.xlsx",
         "folder": "downloads/video-practice/",
-        "tiktok": "https://vt.tiktok.com/ZSVGYr9Pp/",
         "level": "Cơ bản"
     },
     {
@@ -858,8 +857,7 @@
         "filterTags": [
             "Công thức"
         ],
-        "folder": "downloads/video-practice/",
-        "tiktok": "https://vt.tiktok.com/ZSVT2btWG/"
+        "folder": "downloads/video-practice/"
     },
     {
         "id": "fx-02-count",
@@ -1139,8 +1137,7 @@
         "filterTags": [
             "Format"
         ],
-        "folder": "downloads/video-practice/",
-        "tiktok": "https://www.tiktok.com/@anhvanphongmaster/video/7677174991460355346?is_from_webapp=1&sender_device=pc&web_id=7670058834664211984"
+        "folder": "downloads/video-practice/"
     },
     {
         "id": "fmt-02-date",
@@ -2291,8 +2288,7 @@ grid.addEventListener("click", async function (e) {
     setTimeout(loadPublicVoteSummary,180);
     setTimeout(initDailyVoteDashboard,220);
     render("all","");bindVotes();bindTopicVotes();
-    /* Trang TikTok giữ nguyên thư viện/roll tĩnh đã kiểm chứng.
-       Link video Admin được ghép độc lập bởi practice-tiktok-video-links.js. */
+    loadDynamicPracticeLibrary().then(function(changed){if(changed){updateSummary();__pvCurrentTopic=null;render("all","");}});
     const search=document.getElementById("pvSearch");
     if(search){search.addEventListener("input",function(){if(__pvCurrentTopic)render(__pvCurrentTopic,search.value||"");});}
     // BXH giữ rail ngang 3 thẻ; không dùng carousel 3D để bộ lọc ngày luôn hiện.

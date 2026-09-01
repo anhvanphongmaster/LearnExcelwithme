@@ -12,28 +12,6 @@ let pendingLesson=null,pendingFile=null,pendingAppealLesson=null,xlsxPromise=nul
 let isAdminTester=false;
 const submissionCache=new Map();
 
-function selectedTopicLabel(){
-  return ROLL_TOPICS.find(x=>x[0]===currentTopic)?.[2]||"Chủ đề tự chấm";
-}
-function openTopicLessons(){
-  const picker=$("pgTopicPicker"),frame=$("pgLessonFrame");
-  if(picker)picker.hidden=true;
-  if(frame)frame.hidden=false;
-  const title=$("pgLessonTopicTitle");
-  if(title)title.textContent=`${selectedTopicLabel()} · Chọn bài để tải file và nộp`;
-  renderLessons();resetLessonScroll();
-  requestAnimationFrame(()=>frame?.scrollIntoView({behavior:"smooth",block:"start"}));
-}
-function returnToTopicPicker(){
-  const picker=$("pgTopicPicker"),frame=$("pgLessonFrame");
-  if(frame)frame.hidden=true;
-  if(picker)picker.hidden=false;
-  const root=$("pgTopicRoll");
-  const idx=Math.max(0,ROLL_TOPICS.findIndex(x=>x[0]===currentTopic));
-  setTimeout(()=>root?._avpPracticeRoll?.go(idx),0);
-  requestAnimationFrame(()=>picker?.scrollIntoView({behavior:"smooth",block:"start"}));
-}
-
 const lessons=()=>Array.isArray(window.AVP_PRACTICE_LESSONS)?window.AVP_PRACTICE_LESSONS:[];
 
 async function getClient(){
@@ -103,9 +81,8 @@ function renderTopicTabs(){
   const root=$("pgTopicRoll");if(root){delete root.dataset.rollReady;root._avpPracticeRoll=null;window.AVPPracticeRoll?.init(root);const idx=Math.max(0,ROLL_TOPICS.findIndex(x=>x[0]===currentTopic));setTimeout(()=>root._avpPracticeRoll?.go(idx),0);}
   stage.querySelectorAll("[data-topic-roll]").forEach(c=>c.addEventListener("click",()=>{
     const id=c.dataset.topicRoll;
-    currentTopic=id;
-    renderTopicTabs();
-    openTopicLessons();
+    if(id!==currentTopic){currentTopic=id;renderTopicTabs();renderLessons();resetLessonScroll();}
+    document.querySelector(".pg-lesson-frame")?.scrollIntoView({behavior:"smooth",block:"start"});
   }));
 }
 
@@ -1270,7 +1247,6 @@ async function giftStar(btn){
 
 function bind(){
   renderTopicTabs();
-  $("pgTopicBack")?.addEventListener("click",returnToTopicPicker);
   qa("[data-pg-difficulty]").forEach(b=>b.onclick=()=>{currentDifficulty=b.dataset.pgDifficulty;qa("[data-pg-difficulty]").forEach(x=>x.classList.toggle("active",x===b));renderLessons();resetLessonScroll();centerTab(b)});
   qa("[data-rank-difficulty]").forEach(b=>b.onclick=()=>{currentRankDifficulty=b.dataset.rankDifficulty;qa("[data-rank-difficulty]").forEach(x=>x.classList.toggle("active",x===b));centerTab(b);const box=$("pgBoardScroll");if(box)box.scrollTo({top:0,behavior:"smooth"});loadLeaderboard()});
   $("pgSubmitConfirm")?.addEventListener("click",submitOfficial);
