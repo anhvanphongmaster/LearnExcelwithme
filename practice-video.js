@@ -2238,9 +2238,7 @@ grid.addEventListener("click", async function (e) {
 
   async function loadDynamicPracticeLibrary() {
     var sb = null;
-    /* supabase-auth.js là ES module tải qua CDN. Trên mạng chậm, 3 giây cũ
-       khiến trang bỏ cuộc trước khi client sẵn sàng và giữ data tĩnh không có video_url. */
-    for (var attempt = 0; attempt < 80; attempt++) {
+    for (var attempt = 0; attempt < 20; attempt++) {
       sb = window.avpSupabase || window.supabaseClient || null;
       if (sb && sb.rpc) break;
       await new Promise(function(resolve){ setTimeout(resolve, 150); });
@@ -2249,11 +2247,7 @@ grid.addEventListener("click", async function (e) {
     try {
       var res = await sb.rpc("get_practice_library_public");
       if (res.error || !Array.isArray(res.data) || !res.data.length) return false;
-      /* RPC public có thể đã lọc active/published ở phía SQL và không trả lại
-         hai cột trạng thái. Chỉ loại khi giá trị trả về nói rõ là ẩn/nháp. */
-      var rows = res.data.filter(function(r){
-        return r && r.is_active !== false && r.status !== "draft" && r.status !== "archived";
-      });
+      var rows = res.data.filter(function(r){ return r && r.is_active && r.status === "published"; });
       var mapped = rows.map(function(r){
         var path = r.source_path || "";
         var slash = path.lastIndexOf("/");
@@ -2276,42 +2270,14 @@ grid.addEventListener("click", async function (e) {
         };
       });
       if (mapped.length) {
-        /* Không thay cả thư viện tĩnh bằng vài bản ghi Admin. Làm vậy sẽ mất
-           nguồn thực hành, chủ đề và toàn bộ cấu trúc roll. Ghép đúng bài theo
-           id; trường rỗng từ Supabase không được ghi đè dữ liệu gốc. */
-        mapped.forEach(function(x){
-          var current = videoPracticeData.find(function(item){ return item.id === x.id; });
-          if (!current) { videoPracticeData.push(x); return; }
-          ["number","icon","title","category","skill","level","badge","sortOrder"].forEach(function(key){
-            if (x[key] !== "" && x[key] !== null && x[key] !== undefined) current[key] = x[key];
-          });
-          if (x.tiktok) current.tiktok = x.tiktok;
-          if (x.sourcePath) {
-            current.sourcePath = x.sourcePath;
-            current.file = x.file;
-            current.folder = x.folder;
-          }
-          if (x.fileUrl) current.fileUrl = x.fileUrl;
-          current.filterTags = [current.category];
-        });
+        videoPracticeData.splice(0, videoPracticeData.length);
+        mapped.forEach(function(x){ videoPracticeData.push(x); });
         return true;
       }
     } catch (e) {
       console.warn("Practice library dynamic fallback:", e);
     }
     return false;
-  }
-
-  var __pvDynamicRetry = 0;
-  function refreshDynamicPracticeLibrary() {
-    return loadDynamicPracticeLibrary().then(function(changed){
-      if(changed){updateSummary();__pvCurrentTopic=null;render("all","");return true;}
-      if(__pvDynamicRetry < 2){
-        __pvDynamicRetry++;
-        setTimeout(refreshDynamicPracticeLibrary,__pvDynamicRetry*2500);
-      }
-      return false;
-    });
   }
 
   function init() {
@@ -2322,7 +2288,8 @@ grid.addEventListener("click", async function (e) {
     setTimeout(loadPublicVoteSummary,180);
     setTimeout(initDailyVoteDashboard,220);
     render("all","");bindVotes();bindTopicVotes();
-    refreshDynamicPracticeLibrary();
+    /* Trang TikTok giữ nguyên thư viện/roll tĩnh đã kiểm chứng.
+       Link video Admin được ghép độc lập bởi practice-tiktok-video-links.js. */
     const search=document.getElementById("pvSearch");
     if(search){search.addEventListener("input",function(){if(__pvCurrentTopic)render(__pvCurrentTopic,search.value||"");});}
     // BXH giữ rail ngang 3 thẻ; không dùng carousel 3D để bộ lọc ngày luôn hiện.
