@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 220" role="img" aria-labelledby="t d">
+<title id="t">Làm sạch dữ liệu bẩn</title><desc id="d">Bảng lỗi được biến đổi thành bảng sạch và hợp lệ.</desc>
+<rect width="640" height="220" rx="22" fill="#fffaf3"/><g font-family="Arial,sans-serif">
+<text x="42" y="30" fill="#a05c3a" font-size="13" font-weight="800">DỮ LIỆU LỖI</text><rect x="36" y="42" width="230" height="142" rx="13" fill="#fff" stroke="#e0c4ae"/><path d="M36 74h230M36 110h230M36 146h230M112 42v142M192 42v142" stroke="#eadbd0"/>
+<g fill="#a94b3d" font-size="13"><text x="53" y="97">  SP01 </text><text x="126" y="97">text-number</text><text x="205" y="97">!</text><text x="53" y="133">sp01</text><text x="126" y="133">trùng</text><text x="205" y="133">×</text><text x="53" y="169">N/A</text><text x="126" y="169">ô trống</text><text x="205" y="169">!</text></g>
+<circle cx="320" cy="112" r="32" fill="#f3dfc6"/><path d="M305 109h29M324 99l11 10-11 10" stroke="#8a5a2b" stroke-width="4" fill="none" stroke-linecap="round"/>
+<text x="374" y="30" fill="#477057" font-size="13" font-weight="800">DỮ LIỆU SẠCH</text><rect x="368" y="42" width="236" height="142" rx="13" fill="#fff" stroke="#b9d4c3"/><path d="M368 74h236M368 110h236M368 146h236M447 42v142M527 42v142" stroke="#dce9e1"/>
+<g fill="#35664b" font-size="13"><text x="388" y="97">SP01</text><text x="468" y="97">1250</text><text x="548" y="97">✓</text><text x="388" y="133">SP02</text><text x="468" y="133">980</text><text x="548" y="133">✓</text><text x="388" y="169">SP03</text><text x="468" y="169">760</text><text x="548" y="169">✓</text></g>
+<rect x="438" y="190" width="166" height="22" rx="11" fill="#477057"/><text x="461" y="206" fill="#fff" font-size="12" font-weight="700">TRIM · CLEAN · DEDUPE</text></g></svg>
