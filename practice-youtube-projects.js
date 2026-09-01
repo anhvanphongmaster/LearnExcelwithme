@@ -7,7 +7,8 @@
   function safeUrl(v){
     const s=String(v||"").trim();
     if(!s||/^(javascript|data|vbscript):/i.test(s))return "";
-    return /^(https?:\/\/|\.?\/?[\wÀ-ỹ()[\] ._%-]+(?:\/[\wÀ-ỹ()[\] ._?&=%#-]+)*)$/i.test(s)?s:"";
+    if(/^https?:\/\/[^\s<>"']+$/i.test(s))return s;
+    return /^\.?\/?[\wÀ-ỹ()[\] ._%-]+(?:\/[\wÀ-ỹ()[\] ._?&=%#-]+)*$/i.test(s)?s:"";
   }
   async function waitClient(){for(let i=0;i<45;i++){const c=window.avpSupabase||window.supabaseClient||window._supabaseClient;if(c?.rpc)return c;await new Promise(r=>setTimeout(r,120))}return null}
   function tone(v){return v==="raw"?"pyt-group-raw":v==="clean"?"pyt-group-clean":"pyt-group-neutral"}
