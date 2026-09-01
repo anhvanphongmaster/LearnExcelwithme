@@ -127,7 +127,7 @@
 
 .ph-switch-grid{
   display:grid!important;
-  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
   gap:14px!important;
   align-items:stretch!important;
 }
@@ -462,3 +462,50 @@
     font-size:24px!important;
   }
 }
+
+/* =========================================================
+   PROFESSIONAL TRACK — SAME MOTION SYSTEM AS THE 4 EXISTING FLOWS
+   Chỉ thêm accent; hover/click animation dùng nguyên .ph-choice V56.
+   ========================================================= */
+.ph-choice.professional{
+  border-color:#b8d9c4!important;
+  background:linear-gradient(145deg,#fff,#f3fbf6)!important;
+}
+.ph-choice.professional .ph-choice-icon{
+  background:#e8f7ee!important;
+}
+.ph-choice.professional .ph-choice-eyebrow{
+  color:#217346!important;
+}
+.ph-choice.professional .professional-new{
+  background:#217346!important;
+  box-shadow:0 4px 12px rgba(33,115,70,.24)!important;
+}
+
+/* 5 card cùng một hàng ở desktop lớn. */
+@media(min-width:1040px){
+  .ph-switch-grid{
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  }
+}
+
+/* Tablet/desktop hẹp: 2 cột, card cuối full hàng để bố cục không lệch. */
+@media(min-width:761px) and (max-width:1039px){
+  .ph-switch-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .ph-choice.professional{
+    grid-column:1 / -1!important;
+  }
+}
+
+/* Mobile vẫn giữ đúng hệ 1 cột hiện tại. */
+@media(max-width:760px){
+  .ph-switch-grid{
+    grid-template-columns:1fr!important;
+  }
+  .ph-choice.professional{
+    grid-column:auto!important;
+  }
+}
+

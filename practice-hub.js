@@ -194,6 +194,25 @@
       });
     });
 
+    q("[data-professional-track]")?.addEventListener("click", async e => {
+      if(busy) return;
+      e.preventDefault();
+      const link=e.currentTarget;
+      const href=link.href;
+      busy=true;
+
+      if(!reducedMotion()){
+        chooser.classList.add("is-choosing");
+        link.classList.add("is-picked");
+        await sleep(360);
+
+        chooser.classList.add("is-leaving");
+        await sleep(260);
+      }
+
+      location.href=href;
+    });
+
     q("#phSourceBack")?.addEventListener("click", closeSource);
 
     initTopicTabs();
