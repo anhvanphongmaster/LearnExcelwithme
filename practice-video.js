@@ -2238,7 +2238,9 @@ grid.addEventListener("click", async function (e) {
 
   async function loadDynamicPracticeLibrary() {
     var sb = null;
-    for (var attempt = 0; attempt < 20; attempt++) {
+    /* supabase-auth.js là ES module tải qua CDN. Trên mạng chậm, 3 giây cũ
+       khiến trang bỏ cuộc trước khi client sẵn sàng và giữ data tĩnh không có video_url. */
+    for (var attempt = 0; attempt < 80; attempt++) {
       sb = window.avpSupabase || window.supabaseClient || null;
       if (sb && sb.rpc) break;
       await new Promise(function(resolve){ setTimeout(resolve, 150); });
@@ -2247,7 +2249,11 @@ grid.addEventListener("click", async function (e) {
     try {
       var res = await sb.rpc("get_practice_library_public");
       if (res.error || !Array.isArray(res.data) || !res.data.length) return false;
-      var rows = res.data.filter(function(r){ return r && r.is_active && r.status === "published"; });
+      /* RPC public có thể đã lọc active/published ở phía SQL và không trả lại
+         hai cột trạng thái. Chỉ loại khi giá trị trả về nói rõ là ẩn/nháp. */
+      var rows = res.data.filter(function(r){
+        return r && r.is_active !== false && r.status !== "draft" && r.status !== "archived";
+      });
       var mapped = rows.map(function(r){
         var path = r.source_path || "";
         var slash = path.lastIndexOf("/");
@@ -2280,6 +2286,18 @@ grid.addEventListener("click", async function (e) {
     return false;
   }
 
+  var __pvDynamicRetry = 0;
+  function refreshDynamicPracticeLibrary() {
+    return loadDynamicPracticeLibrary().then(function(changed){
+      if(changed){updateSummary();__pvCurrentTopic=null;render("all","");return true;}
+      if(__pvDynamicRetry < 2){
+        __pvDynamicRetry++;
+        setTimeout(refreshDynamicPracticeLibrary,__pvDynamicRetry*2500);
+      }
+      return false;
+    });
+  }
+
   function init() {
     updateSummary();
     setTimeout(function(){ detectPracticeAdmin(false); },120);
@@ -2288,7 +2306,7 @@ grid.addEventListener("click", async function (e) {
     setTimeout(loadPublicVoteSummary,180);
     setTimeout(initDailyVoteDashboard,220);
     render("all","");bindVotes();bindTopicVotes();
-    loadDynamicPracticeLibrary().then(function(changed){if(changed){updateSummary();__pvCurrentTopic=null;render("all","");}});
+    refreshDynamicPracticeLibrary();
     const search=document.getElementById("pvSearch");
     if(search){search.addEventListener("input",function(){if(__pvCurrentTopic)render(__pvCurrentTopic,search.value||"");});}
     // BXH giữ rail ngang 3 thẻ; không dùng carousel 3D để bộ lọc ngày luôn hiện.
