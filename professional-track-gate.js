@@ -19,7 +19,7 @@
   }
 
   function deny(reason){
-    const qs=reason?`?reason=${encodeURIComponent(reason)}`:"";
+    const qs=`?intro=0${reason?`&reason=${encodeURIComponent(reason)}`:""}`;
     location.replace(`professional-access.html${qs}`);
   }
 
@@ -32,7 +32,7 @@
 
     const {data:{session}}=await sb.auth.getSession();
     if(!session?.user){
-      location.replace("auth.html?next=professional-track.html");
+      location.replace(`auth.html?next=${encodeURIComponent(location.pathname.split("/").pop()||"professional-track.html")}`);
       return;
     }
 

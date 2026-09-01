@@ -153,11 +153,12 @@
       return;
     }
 
-    // Admin luôn vào thẳng khu Professional Track được bảo vệ.
+    // Admin vẫn xem trang thành tích / trạng thái như một hub cố định.
+    // Không redirect thẳng sang Professional Track để tránh làm mất đường quay lại.
     try{
       const adminRes=await sb.rpc("is_admin_user");
       if(!adminRes.error && adminRes.data===true){
-        location.replace("professional-track.html");
+        renderAdminAccess();
         return;
       }
     }catch(_){}

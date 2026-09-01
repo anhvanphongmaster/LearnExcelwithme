@@ -120,8 +120,13 @@
     if(await wait(260,myToken)) close();
   }
 
+  function shouldPlay(){
+    const q=new URLSearchParams(location.search);
+    return q.get("intro")!=="0";
+  }
+
   function startNow(){
-    // Always recreate the intro immediately whenever this document is actually loaded.
+    if(!shouldPlay()) return;
     requestAnimationFrame(()=>requestAnimationFrame(replay));
   }
 
@@ -141,7 +146,7 @@
 
   // Returning to the tab after browser/webview restoration.
   document.addEventListener("visibilitychange",()=>{
-    if(document.visibilityState==="visible" && !document.getElementById(ID)){
+    if(document.visibilityState==="visible" && shouldPlay() && !document.getElementById(ID)){
       replay();
     }
   });
