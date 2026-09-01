@@ -87,6 +87,7 @@
         ],
         "file": "01_PowerQuery_DEMO.xlsx",
         "folder": "downloads/video-practice/",
+        "tiktok": "https://vt.tiktok.com/ZSVGYr9Pp/",
         "level": "Cơ bản"
     },
     {
@@ -857,7 +858,8 @@
         "filterTags": [
             "Công thức"
         ],
-        "folder": "downloads/video-practice/"
+        "folder": "downloads/video-practice/",
+        "tiktok": "https://vt.tiktok.com/ZSVT2btWG/"
     },
     {
         "id": "fx-02-count",
@@ -1137,7 +1139,8 @@
         "filterTags": [
             "Format"
         ],
-        "folder": "downloads/video-practice/"
+        "folder": "downloads/video-practice/",
+        "tiktok": "https://www.tiktok.com/@anhvanphongmaster/video/7677174991460355346?is_from_webapp=1&sender_device=pc&web_id=7670058834664211984"
     },
     {
         "id": "fmt-02-date",
