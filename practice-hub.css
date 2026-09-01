@@ -509,3 +509,27 @@
   }
 }
 
+/* Professional Track là thẻ <a>, nên reset style mặc định của link
+   để chữ đồng nhất hoàn toàn với 4 .ph-choice còn lại. */
+.ph-choice.professional,
+.ph-choice.professional:link,
+.ph-choice.professional:visited,
+.ph-choice.professional:hover,
+.ph-choice.professional:active{
+  text-decoration:none!important;
+  color:inherit!important;
+}
+.ph-choice.professional *,
+.ph-choice.professional *:link,
+.ph-choice.professional *:visited{
+  text-decoration:none!important;
+}
+.ph-choice.professional .ph-choice-copy,
+.ph-choice.professional .ph-choice-copy strong,
+.ph-choice.professional .ph-choice-copy small{
+  color:inherit;
+}
+.ph-choice.professional .ph-choice-eyebrow{
+  text-decoration:none!important;
+}
+

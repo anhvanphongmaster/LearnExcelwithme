@@ -83,17 +83,7 @@
     if(e.key==="Escape" && document.body.contains(intro)) closeIntro();
   });
 
-  // Chỉ phát một lần trong mỗi tab/session.
-  // Nếu quay lại trang trong cùng phiên thì bỏ intro để tránh gây khó chịu.
-  const key="avp_professional_intro_seen_v1";
-  let seen=false;
-  try{seen=sessionStorage.getItem(key)==="1"}catch(_){}
-
-  if(seen){
-    intro.remove();
-    return;
-  }
-
-  try{sessionStorage.setItem(key,"1")}catch(_){}
+  // Luôn phát intro mỗi lần người dùng mở Professional Track.
+  // Không lưu trạng thái "đã xem" trong sessionStorage.
   run();
 })();
