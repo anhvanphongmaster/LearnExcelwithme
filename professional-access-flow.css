@@ -1,0 +1,78 @@
+
+/* Professional Access — explicit entry CTA.
+   Scoped to this page only; no global/robot/motion changes. */
+.pt-enter-wrap{
+  margin-top:18px;
+}
+.pt-enter-wrap[hidden]{
+  display:none !important;
+}
+.pt-enter-track{
+  display:grid;
+  grid-template-columns:1fr auto;
+  grid-template-areas:
+    "kicker arrow"
+    "title arrow"
+    "desc arrow";
+  gap:3px 18px;
+  align-items:center;
+  width:100%;
+  box-sizing:border-box;
+  padding:18px 20px;
+  border:1px solid #9fd0b3;
+  border-radius:14px;
+  background:linear-gradient(180deg,#f3fbf6 0%,#eaf7ef 100%);
+  color:#143f28;
+  text-decoration:none !important;
+  box-shadow:0 8px 22px rgba(24,85,50,.08);
+}
+.pt-enter-track::after{
+  content:"→";
+  grid-area:arrow;
+  display:grid;
+  place-items:center;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#176a3d;
+  color:#fff;
+  font-size:20px;
+  font-weight:900;
+}
+.pt-enter-track:hover{
+  border-color:#65ae82;
+  background:linear-gradient(180deg,#eef9f2 0%,#e2f3e8 100%);
+  box-shadow:0 10px 26px rgba(24,85,50,.12);
+}
+.pt-enter-kicker{
+  grid-area:kicker;
+  color:#217346;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:1.2px;
+}
+.pt-enter-track strong{
+  grid-area:title;
+  display:block;
+  margin-top:2px;
+  font-size:16px;
+  line-height:1.35;
+}
+.pt-enter-track small{
+  grid-area:desc;
+  color:#60776a;
+  font-size:10.5px;
+  line-height:1.45;
+}
+.pt-enter-track[data-mode="admin"] .pt-enter-kicker::after{
+  content:" · ADMIN";
+}
+@media(max-width:640px){
+  .pt-enter-track{
+    grid-template-columns:1fr auto;
+    padding:15px 16px;
+  }
+  .pt-enter-track::after{
+    width:38px;height:38px;font-size:18px;
+  }
+}

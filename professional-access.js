@@ -30,6 +30,14 @@
     $("ptStatusBadge").className=`pt-status-badge ${kind||""}`.trim();
   }
 
+  function setEnterTrackVisible(show, mode){
+    const wrap=$("ptEnterWrap");
+    const link=$("ptEnterTrack");
+    if(!wrap||!link)return;
+    wrap.hidden=!show;
+    link.dataset.mode=mode||"learner";
+  }
+
   function render(s){
     const basic=Number(s.basic_score)||0;
     const intermediate=Number(s.intermediate_score)||0;
@@ -41,12 +49,14 @@
     setCriterion("days",days,LIMITS.days);
 
     const action=$("ptActionArea");
+    setEnterTrackVisible(false);
     $("ptApplyCard").hidden=true;
     if($("ptProgramCard"))$("ptProgramCard").hidden=true;
 
     if(s.can_access || s.status==="approved"){
       setStatus("approved","Bạn đã được mở khóa","Hồ sơ đã được Admin xác nhận. Bạn có thể vào Lộ trình Excel Chuyên nghiệp.","ĐÃ PHÊ DUYỆT");
-      action.innerHTML='<p>✓ Bạn đã hoàn tất toàn bộ quy trình xét duyệt. <a href="professional-track.html">Vào Professional Track →</a></p>';
+      action.innerHTML='<p>✓ Bạn đã hoàn tất toàn bộ quy trình xét duyệt. Khu bài tập Professional đã được mở cho tài khoản này.</p>';
+      setEnterTrackVisible(true,"learner");
       if($("ptProgramCard"))$("ptProgramCard").hidden=true;
       return;
     }
@@ -137,17 +147,20 @@
     $("ptApplyCard").hidden=true;
     if($("ptProgramCard"))$("ptProgramCard").hidden=false;
     $("ptActionArea").innerHTML="<p>✓ Bạn đang truy cập bằng quyền Admin. Các điều kiện học viên không áp dụng cho tài khoản này.</p>";
+    setEnterTrackVisible(true,"admin");
   }
 
   async function load(){
     const sb=await client();
     if(!sb){
+      setEnterTrackVisible(false);
       setStatus("rejected","Chưa kết nối được hệ thống","Không tìm thấy Supabase client. Hãy tải lại trang.","LỖI KẾT NỐI");
       return;
     }
 
     const {data:{session}}=await sb.auth.getSession();
     if(!session?.user){
+      setEnterTrackVisible(false);
       setStatus("","Bạn cần đăng nhập","Điều kiện tham gia gắn với tài khoản và kết quả chấm điểm của từng học viên.","YÊU CẦU ĐĂNG NHẬP");
       $("ptActionArea").innerHTML='<p><a href="auth.html?next=professional-access.html">Đăng nhập để kiểm tra điều kiện →</a></p>';
       return;
