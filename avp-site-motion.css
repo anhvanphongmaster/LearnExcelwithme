@@ -52,6 +52,9 @@ input[type="button"],input[type="submit"]{
 }
 .avp-hero,
 .pv-hero,
+.pw-hero,
+.pyt-hero,
+.ph-direct-hero,
 .ml-hero,
 .pq-hero,
 .dashboard-hero{
@@ -59,6 +62,9 @@ input[type="button"],input[type="submit"]{
 }
 .avp-hero > *:not(.avp-depth-bg),
 .pv-hero > *:not(.avp-depth-bg),
+.pw-hero > *:not(.avp-depth-bg),
+.pyt-hero > *:not(.avp-depth-bg),
+.ph-direct-hero > *:not(.avp-depth-bg),
 .ml-hero > *:not(.avp-depth-bg),
 .pq-hero > *:not(.avp-depth-bg),
 .dashboard-hero > *:not(.avp-depth-bg){

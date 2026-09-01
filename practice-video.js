@@ -1729,6 +1729,7 @@
       return r && (r.vote_type === "need_guide" || r.vote_type === "need_more_guide");
     });
     rows.sort(function (a, b) { return (Number(b.votes) || 0) - (Number(a.votes) || 0); });
+    rows = rows.slice(0, 9);
     var total = 0, need = 0, more = 0;
     rows.forEach(function(r){ var v=Number(r.votes)||0; total+=v; if(r.vote_type==="need_more_guide") more+=v; else need+=v; });
     summary.innerHTML = '<div class="pv-day-stat"><small>Tổng vote</small><strong>' + total + '</strong></div>' +
@@ -1754,7 +1755,10 @@
         '<div class="pv-daily-bar"><span style="width:' + pct + '%"></span></div></div>' +
         '<div class="pv-daily-count"><strong>' + v + '</strong><small>vote</small></div></div>';
     }).join("");
-    if (hint) hint.style.display = rows.length > 3 ? "block" : "none";
+    if (hint) {
+      hint.style.display = rows.length > 3 ? "block" : "none";
+      hint.textContent = "↔ Cuộn ngang để xem tối đa 9 bài";
+    }
   }
 
   async function loadDailyVoteRanking(dayIso) {
@@ -2283,9 +2287,7 @@ grid.addEventListener("click", async function (e) {
     loadDynamicPracticeLibrary().then(function(changed){if(changed){updateSummary();__pvCurrentTopic=null;render("all","");}});
     const search=document.getElementById("pvSearch");
     if(search){search.addEventListener("input",function(){if(__pvCurrentTopic)render(__pvCurrentTopic,search.value||"");});}
-    // Daily ranking becomes a finite roll once its rows are loaded.
-    const list=document.getElementById("pvDailyList");
-    if(list){list.setAttribute("data-practice-roll-stage","");const old=list.parentElement; if(old){old.classList.add("ranking-roll","avp-practice-roll");old.setAttribute("data-practice-roll","");old.setAttribute("data-roll-kind","ranking");old.setAttribute("tabindex","0");window.AVPPracticeRoll?.watchList(list);}}
+    // BXH là rail ngang 3 thẻ/khung; không dùng roll 3D để bộ lọc ngày luôn hiện.
   }
 
 document.addEventListener("DOMContentLoaded", init);

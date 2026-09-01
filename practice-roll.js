@@ -77,7 +77,8 @@
       const dot=e.target.closest("[data-practice-roll-dot]");if(dot){go(Number(dot.dataset.practiceRollDot));return;}
       const card=e.target.closest("[data-practice-roll-card]");if(!card)return;
       const i=cards.indexOf(card);if(i<0)return;
-      if(i!==Math.round(target)){e.preventDefault();e.stopPropagation();go(i);}
+      const opens=card.matches("[data-topic-open],[data-topic-roll],[data-project],[data-topic-contribute]");
+      if(i!==Math.round(target) && !opens){e.preventDefault();e.stopPropagation();go(i);}
     },true);
     root._avpPracticeRoll={go,cards,get index(){return Math.round(target)}};
     draw();

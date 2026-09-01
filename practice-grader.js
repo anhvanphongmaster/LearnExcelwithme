@@ -79,7 +79,11 @@ function renderTopicTabs(){
     return `<article class="pg-topic-roll-card${id===currentTopic?" active":""}" data-practice-roll-card data-topic-roll="${id}"><span>0${i+1}</span><div><div style="font-size:30px">${icon}</div><h3>${label}</h3><p>${count} bài tự chấm · nhiều mức độ và tình huống.</p></div><small>${id===currentTopic?"Đang chọn":"Chọn chủ đề →"}</small></article>`;
   }).join("");
   const root=$("pgTopicRoll");if(root){delete root.dataset.rollReady;root._avpPracticeRoll=null;window.AVPPracticeRoll?.init(root);const idx=Math.max(0,ROLL_TOPICS.findIndex(x=>x[0]===currentTopic));setTimeout(()=>root._avpPracticeRoll?.go(idx),0);}
-  stage.querySelectorAll("[data-topic-roll]").forEach(c=>c.addEventListener("click",()=>{const id=c.dataset.topicRoll;if(id===currentTopic)return;currentTopic=id;renderTopicTabs();renderLessons();resetLessonScroll();}));
+  stage.querySelectorAll("[data-topic-roll]").forEach(c=>c.addEventListener("click",()=>{
+    const id=c.dataset.topicRoll;
+    if(id!==currentTopic){currentTopic=id;renderTopicTabs();renderLessons();resetLessonScroll();}
+    document.querySelector(".pg-lesson-frame")?.scrollIntoView({behavior:"smooth",block:"start"});
+  }));
 }
 
 function filteredLessons(){
@@ -1121,7 +1125,7 @@ async function loadLeaderboard(){
   try{
     const {data,error}=await sb.rpc("practice_grader_leaderboard_v4",{p_difficulty:currentRankDifficulty,p_limit:50});
     if(error)throw error;
-    const rows=Array.isArray(data)?data:[];
+    const rows=(Array.isArray(data)?data:[]).slice(0,9);
     const starMap=await loadStarCounts(sb,rows);
     list.innerHTML=rows.length?rows.map((r,i)=>{
       const rank=Number(r.rank_no)||(i+1),medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":`${rank}.`;

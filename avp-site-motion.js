@@ -13,7 +13,7 @@
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
 
-  const SKIP_HEAVY=/^(admin\.html|admin-|auth\.html|certificate\.html|practice-grader\.html|practice-video\.html|playground\.html)/.test(page)
+  const SKIP_HEAVY=/^(admin\.html|admin-|auth\.html|certificate\.html|playground\.html)/.test(page)
     || inIframe
     || document.documentElement.hasAttribute("data-avp-no-motion");
 
@@ -31,13 +31,13 @@
     "input[type='button']","input[type='submit']"
   ].join(",");
 
-  const HERO_SEL=".avp-hero,.pv-hero,.ml-hero,.pq-hero,.dashboard-hero";
+  const HERO_SEL=".avp-hero,.pv-hero,.pw-hero,.pyt-hero,.ph-direct-hero,.ml-hero,.pq-hero,.dashboard-hero";
 
   const ZOOM_CARD_SEL=[
     ".home-path-card",".home-more-card",".home-cta-card",
     ".course-card",".level-card",".tool-card",".lab-card",
     ".feature-card",".content-card",".summary-card",
-    ".practice-file-card",".home-book-card"
+    ".practice-file-card",".home-book-card",".ph-flow-link"
   ].join(",");
 
   function setupRise(){
