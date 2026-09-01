@@ -8,11 +8,48 @@
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="professional-track.css?v=20260901-structure1">
+<link rel="stylesheet" href="professional-intro.css?v=20260901-cinematic1">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="stylesheet" href="global-search.css">
 <meta name="theme-color" content="#217346">
 </head>
 <body>
+<div class="pti-intro" id="ptiIntro" aria-live="polite">
+  <div class="pti-stage" aria-hidden="true">
+    <span class="pti-orbit pti-orbit-a"></span>
+    <span class="pti-orbit pti-orbit-b"></span>
+    <span class="pti-line pti-line-a"></span>
+    <span class="pti-line pti-line-b"></span>
+    <span class="pti-glow"></span>
+  </div>
+
+  <button type="button" class="pti-skip" id="ptiSkip">Bỏ qua</button>
+
+  <div class="pti-content">
+    <div class="pti-mark" aria-hidden="true">
+      <span>AVP</span>
+    </div>
+
+    <p class="pti-eyebrow">PROFESSIONAL TRACK</p>
+    <h1>Lộ trình Excel Chuyên nghiệp</h1>
+
+    <div class="pti-rule" aria-hidden="true"><i></i></div>
+
+    <p class="pti-type" id="ptiTypeText"></p>
+    <span class="pti-caret" id="ptiCaret" aria-hidden="true"></span>
+
+    <div class="pti-footer" id="ptiFooter">
+      <span>CASE THỰC TẾ</span>
+      <i></i>
+      <span>TƯ DUY NGHIỆP VỤ</span>
+      <i></i>
+      <span>CHẤM ĐIỂM</span>
+      <i></i>
+      <span>ADMIN SUPPORT</span>
+    </div>
+  </div>
+</div>
+
 <nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
     <a href="index.html" data-avp-nav="home">Trang chủ</a>
@@ -124,6 +161,7 @@
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
 <script defer src="professional-track.js?v=20260901-structure1"></script>
+<script defer src="professional-intro.js?v=20260901-cinematic1"></script>
 <script defer src="avp-core.js"></script>
 </body>
 </html>

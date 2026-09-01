@@ -1,0 +1,275 @@
+/* =========================================================
+   PROFESSIONAL TRACK — CINEMATIC INTRO
+   Scoped 100% bằng tiền tố .pti- để không ảnh hưởng motion khác.
+   ========================================================= */
+
+.pti-intro{
+  position:fixed;
+  inset:0;
+  z-index:2147482500;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 46%,rgba(39,167,92,.16),transparent 31%),
+    linear-gradient(145deg,#051b11 0%,#0a2b1c 46%,#071b12 100%);
+  color:#f4fff8;
+  font-family:Arial,sans-serif;
+  isolation:isolate;
+}
+
+.pti-intro.pti-exit{
+  pointer-events:none;
+  animation:ptiExit .72s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.pti-stage{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.pti-stage::before{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  background-image:
+    linear-gradient(rgba(116,220,155,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(116,220,155,.045) 1px,transparent 1px);
+  background-size:58px 58px;
+  transform:perspective(700px) rotateX(61deg) translateY(16%);
+  transform-origin:center bottom;
+  animation:ptiGridDrift 12s linear infinite;
+}
+
+.pti-glow{
+  position:absolute;
+  width:min(70vw,800px);
+  aspect-ratio:1;
+  left:50%;
+  top:50%;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(48,184,99,.18),rgba(48,184,99,.04) 43%,transparent 68%);
+  transform:translate(-50%,-50%);
+  filter:blur(12px);
+  animation:ptiGlow 3.4s ease-in-out infinite;
+}
+
+.pti-orbit{
+  position:absolute;
+  left:50%;
+  top:50%;
+  border:1px solid rgba(146,241,181,.12);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+}
+.pti-orbit-a{
+  width:min(72vw,780px);
+  aspect-ratio:1;
+  animation:ptiOrbit 14s linear infinite;
+}
+.pti-orbit-b{
+  width:min(48vw,520px);
+  aspect-ratio:1;
+  border-style:dashed;
+  animation:ptiOrbitReverse 11s linear infinite;
+}
+
+.pti-line{
+  position:absolute;
+  height:1px;
+  width:34vw;
+  max-width:440px;
+  background:linear-gradient(90deg,transparent,rgba(125,235,166,.55),transparent);
+  opacity:.6;
+}
+.pti-line-a{left:-5vw;top:31%;transform:rotate(-12deg)}
+.pti-line-b{right:-4vw;bottom:27%;transform:rotate(-12deg)}
+
+.pti-content{
+  position:relative;
+  z-index:2;
+  width:min(860px,calc(100% - 36px));
+  text-align:center;
+  padding:28px 18px;
+}
+
+.pti-mark{
+  width:72px;
+  height:72px;
+  margin:0 auto 20px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(161,240,190,.34);
+  border-radius:21px;
+  background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.035));
+  box-shadow:
+    0 18px 60px rgba(0,0,0,.24),
+    inset 0 0 0 1px rgba(255,255,255,.025);
+  animation:ptiMarkIn .7s cubic-bezier(.22,1,.36,1) both;
+}
+.pti-mark span{
+  font-size:18px;
+  font-weight:950;
+  letter-spacing:2px;
+  color:#aaf0c2;
+}
+
+.pti-eyebrow{
+  margin:0 0 12px;
+  font-size:10px;
+  letter-spacing:4px;
+  font-weight:950;
+  color:#8ce7ad;
+  opacity:0;
+  animation:ptiRise .7s .20s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.pti-content h1{
+  margin:0;
+  font-size:clamp(34px,6vw,68px);
+  line-height:1.02;
+  letter-spacing:-2.4px;
+  color:#f8fff9;
+  opacity:0;
+  animation:ptiRise .8s .34s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.pti-rule{
+  width:min(380px,64vw);
+  height:1px;
+  margin:24px auto 23px;
+  background:rgba(255,255,255,.09);
+  overflow:hidden;
+}
+.pti-rule i{
+  display:block;
+  width:46%;
+  height:100%;
+  background:linear-gradient(90deg,transparent,#8ce7ad,transparent);
+  animation:ptiRuleSweep 1.8s .7s ease-in-out both;
+}
+
+.pti-type{
+  display:inline;
+  margin:0;
+  min-height:60px;
+  max-width:760px;
+  color:#d9eadf;
+  font-size:clamp(15px,2.1vw,21px);
+  line-height:1.7;
+  font-weight:520;
+}
+
+.pti-type strong{color:#fff}
+
+.pti-caret{
+  display:inline-block;
+  width:2px;
+  height:1.05em;
+  margin-left:3px;
+  vertical-align:-2px;
+  background:#9df0ba;
+  animation:ptiCaret .75s steps(1,end) infinite;
+}
+
+.pti-footer{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:30px;
+  opacity:0;
+  animation:ptiFooterIn .7s 1.6s ease forwards;
+}
+.pti-footer span{
+  color:#8da99a;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:1.25px;
+}
+.pti-footer i{
+  width:3px;height:3px;border-radius:50%;background:#4eb978;
+}
+
+.pti-skip{
+  position:absolute;
+  z-index:4;
+  top:max(18px,env(safe-area-inset-top));
+  right:20px;
+  min-height:36px;
+  padding:0 13px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  color:#bad0c2;
+  font:inherit;
+  font-size:9px;
+  font-weight:850;
+  cursor:pointer;
+  backdrop-filter:blur(12px);
+}
+.pti-skip:hover{
+  background:rgba(255,255,255,.10);
+  color:#fff;
+}
+
+@keyframes ptiMarkIn{
+  from{opacity:0;transform:scale(.7) translateY(14px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+@keyframes ptiRise{
+  from{opacity:0;transform:translateY(22px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes ptiGridDrift{
+  from{transform:perspective(700px) rotateX(61deg) translateY(16%) translateX(0)}
+  to{transform:perspective(700px) rotateX(61deg) translateY(16%) translateX(58px)}
+}
+@keyframes ptiOrbit{
+  to{transform:translate(-50%,-50%) rotate(360deg)}
+}
+@keyframes ptiOrbitReverse{
+  to{transform:translate(-50%,-50%) rotate(-360deg)}
+}
+@keyframes ptiGlow{
+  0%,100%{opacity:.72;transform:translate(-50%,-50%) scale(.96)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}
+}
+@keyframes ptiRuleSweep{
+  from{transform:translateX(-130%)}
+  to{transform:translateX(250%)}
+}
+@keyframes ptiCaret{
+  0%,48%{opacity:1}
+  49%,100%{opacity:0}
+}
+@keyframes ptiFooterIn{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes ptiExit{
+  0%{opacity:1;filter:blur(0)}
+  100%{opacity:0;filter:blur(8px);visibility:hidden}
+}
+
+@media(max-width:600px){
+  .pti-content{width:min(100% - 24px,860px);padding:22px 10px}
+  .pti-mark{width:60px;height:60px;border-radius:18px;margin-bottom:17px}
+  .pti-content h1{font-size:clamp(30px,10vw,46px);letter-spacing:-1.4px}
+  .pti-type{font-size:14px;line-height:1.65}
+  .pti-footer{gap:7px;margin-top:24px}
+  .pti-footer span{font-size:7px}
+  .pti-orbit-a{width:110vw}
+  .pti-orbit-b{width:78vw}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .pti-stage::before,.pti-glow,.pti-orbit,.pti-mark,.pti-eyebrow,
+  .pti-content h1,.pti-rule i,.pti-caret,.pti-footer{
+    animation:none!important;
+  }
+  .pti-mark,.pti-eyebrow,.pti-content h1,.pti-footer{opacity:1}
+}
