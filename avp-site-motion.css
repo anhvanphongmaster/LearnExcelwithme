@@ -88,7 +88,7 @@ input[type="button"],input[type="submit"]{
     .dash-panel,.pq-lesson,.course-panel,.path-item,.learn-board,
     .pv-panel,.badge-card,.lab-card,.tool-card,.qc-card,.ref-card,
     .sm-node,.sm-zone,.fr-session-card,.achievement-card,
-    .feature-card,.content-card,.grid-card,article.card,.card
+    .feature-card,.content-card,.grid-card,article.card,.card,.ph-flow-link
   ){
     transition:
       transform .20s var(--avp-motion-ease),
@@ -102,7 +102,7 @@ input[type="button"],input[type="submit"]{
     .pq-lesson,.course-panel,.path-item,.pv-panel,.badge-card,
     .lab-card,.tool-card,.qc-card,.ref-card,.sm-node,
     .fr-session-card,.achievement-card,.feature-card,.content-card,
-    .grid-card,article.card,.card
+    .grid-card,article.card,.card,.ph-flow-link
   ):hover{
     transform:translateY(-3px);
     box-shadow:0 12px 28px rgba(18,73,43,.09)!important;
@@ -130,19 +130,15 @@ input[type="button"],input[type="submit"]{
   from{opacity:1;transform:scale(1)}
   to{opacity:0;transform:scale(1.025)}
 }
-html.avp-arriving .avp-hero,
-html.avp-arriving .pv-hero,
-html.avp-arriving .pw-hero,
-html.avp-arriving .pyt-hero,
-html.avp-arriving .ph-direct-hero,
-html.avp-arriving .ml-hero,
-html.avp-arriving .pq-hero,
-html.avp-arriving .dashboard-hero{
+html.avp-arriving main,
+html.avp-arriving .pw-page,
+html.avp-arriving .pyt-page,
+html.avp-arriving .ph-direct-page{
   animation:phHeaderOpenV56 .48s cubic-bezier(.16,.84,.24,1) both;
   transform-origin:top center;
 }
 @keyframes phHeaderOpenV56{
-  0%{opacity:0;transform:translateY(-10px) scale(.76)}
+  0%{opacity:0;transform:translateY(-10px) scale(.94)}
   55%{opacity:1;transform:translateY(1px) scale(1.025)}
   100%{opacity:1;transform:none}
 }

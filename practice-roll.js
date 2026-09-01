@@ -7,25 +7,12 @@
     const stage=root.querySelector("[data-practice-roll-stage]")||root;
     const cards=[...stage.querySelectorAll(":scope > [data-practice-roll-card]")];
     if(!cards.length)return;
-    // Desktop ưu tiên thao tác: dùng rail ngang native, không gắn transform/pointer capture.
-    // Mobile mới dùng carousel 3D để giữ trải nghiệm vuốt gọn.
-    if(window.matchMedia && window.matchMedia("(min-width: 901px)").matches){
-      root.dataset.rollReady="desktop";
-      cards.forEach(card=>{
-        card.style.removeProperty("transform");
-        card.style.removeProperty("opacity");
-        card.style.removeProperty("z-index");
-        card.style.removeProperty("filter");
-        card.style.removeProperty("pointer-events");
-        card.tabIndex=0;
-      });
-      return;
-    }
     root.dataset.rollReady="1";
     const dots=root.querySelector("[data-practice-roll-dots]");
     const count=cards.length;
     let current=clamp(Number(root.dataset.start||0),0,count-1);
-    let target=current, raf=0, snapTimer=0, dragging=false, startX=0, startTarget=0, last=-1;
+    let target=current, raf=0, snapTimer=0, dragging=false, pressed=false, moved=false;
+    let startX=0, startTarget=0, last=-1, hovered=-1, hoverX=0, hoverY=0, suppressClick=false;
 
     if(dots){dots.innerHTML=cards.map((_,i)=>`<button type="button" data-practice-roll-dot="${i}" aria-label="Mục ${i+1}"></button>`).join("");}
 
@@ -40,16 +27,18 @@
       cards.forEach((card,i)=>{
         const d=i-current, a=Math.abs(d), sign=d<0?-1:1;
         const x=d*s;
-        const y=Math.min(a,3)*15;
-        const z=-Math.min(a,4)*165;
-        const scale=Math.max(.52,1-a*.17);
-        const rotate=clamp(-d*18,-48,48);
+        const hover=i===hovered&&a<.62;
+        const y=Math.min(a,3)*15+(hover?-6+hoverY:0);
+        const z=-Math.min(a,4)*165+(hover?28:0);
+        const scale=Math.max(.52,1-a*.17)+(hover?.045:0);
+        const rotate=clamp(-d*18+(hover?hoverX*.18:0),-48,48);
         const opacity=Math.max(.16,1-a*.24);
         card.style.transform=`translate3d(calc(-50% + ${x}px),${y}px,${z}px) rotateY(${rotate}deg) scale(${scale})`;
         card.style.opacity=String(opacity);
         card.style.zIndex=String(Math.round(100-a*12));
         card.style.filter=a<.55?"none":`saturate(${Math.max(.55,1-a*.12)})`;
         card.style.pointerEvents=a<.62?"auto":"none";
+        card.classList.toggle("is-roll-hovered",hover);
       });
       const active=clamp(Math.round(current),0,count-1);
       if(active!==last){
@@ -81,19 +70,44 @@
     root.addEventListener("pointerdown",e=>{
       if(e.button!==undefined&&e.button!==0)return;
       if(e.target.closest("a,button,input,label,textarea,select"))return;
-      dragging=true;startX=e.clientX;startTarget=target;root.classList.add("is-dragging");root.setPointerCapture?.(e.pointerId);
+      pressed=true;dragging=false;moved=false;startX=e.clientX;startTarget=target;
     });
-    root.addEventListener("pointermove",e=>{if(!dragging)return;target=clamp(startTarget-(e.clientX-startX)/step(),0,count-1);kick();});
-    const finish=()=>{if(!dragging)return;dragging=false;root.classList.remove("is-dragging");go(target,true);};
+    root.addEventListener("pointermove",e=>{
+      if(!pressed)return;
+      const dx=e.clientX-startX;
+      if(!dragging&&Math.abs(dx)<7)return;
+      if(!dragging){dragging=true;moved=true;root.classList.add("is-dragging");root.setPointerCapture?.(e.pointerId);}
+      target=clamp(startTarget-dx/step(),0,count-1);kick();
+    });
+    const finish=()=>{
+      if(!pressed)return;
+      pressed=false;
+      if(dragging){dragging=false;root.classList.remove("is-dragging");go(target,true);suppressClick=true;setTimeout(()=>{suppressClick=false;moved=false},0);}
+    };
     root.addEventListener("pointerup",finish);root.addEventListener("pointercancel",finish);
     root.addEventListener("keydown",e=>{if(e.key==="ArrowRight"){e.preventDefault();go(Math.round(target)+1)}else if(e.key==="ArrowLeft"){e.preventDefault();go(Math.round(target)-1)}else if(e.key==="Home"){e.preventDefault();go(0)}else if(e.key==="End"){e.preventDefault();go(count-1)}});
     root.addEventListener("click",e=>{
+      if(suppressClick||moved){e.preventDefault();e.stopPropagation();moved=false;return;}
       const dot=e.target.closest("[data-practice-roll-dot]");if(dot){go(Number(dot.dataset.practiceRollDot));return;}
       const card=e.target.closest("[data-practice-roll-card]");if(!card)return;
       const i=cards.indexOf(card);if(i<0)return;
       const opens=card.matches("[data-topic-open],[data-topic-roll],[data-project],[data-topic-contribute]");
-      if(i!==Math.round(target) && !opens){e.preventDefault();e.stopPropagation();go(i);}
+      if(i!==Math.round(target)&&opens){go(i);return;}
+      if(i!==Math.round(target)){e.preventDefault();e.stopPropagation();go(i);}
     },true);
+    if(window.matchMedia&&window.matchMedia("(hover:hover) and (pointer:fine)").matches){
+      cards.forEach((card,i)=>{
+        card.addEventListener("pointerenter",()=>{hovered=i;hoverX=0;hoverY=0;draw()});
+        card.addEventListener("pointermove",e=>{
+          if(i!==Math.round(current))return;
+          const r=card.getBoundingClientRect();
+          hoverX=((e.clientX-r.left)/Math.max(1,r.width)-.5)*10;
+          hoverY=((e.clientY-r.top)/Math.max(1,r.height)-.5)*3;
+          draw();
+        },{passive:true});
+        card.addEventListener("pointerleave",()=>{hovered=-1;hoverX=0;hoverY=0;draw()});
+      });
+    }
     root._avpPracticeRoll={go,cards,get index(){return Math.round(target)}};
     draw();
   }

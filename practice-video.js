@@ -2291,7 +2291,7 @@ grid.addEventListener("click", async function (e) {
     loadDynamicPracticeLibrary().then(function(changed){if(changed){updateSummary();__pvCurrentTopic=null;render("all","");}});
     const search=document.getElementById("pvSearch");
     if(search){search.addEventListener("input",function(){if(__pvCurrentTopic)render(__pvCurrentTopic,search.value||"");});}
-    // BXH là rail ngang 3 thẻ/khung; không dùng roll 3D để bộ lọc ngày luôn hiện.
+    // BXH giữ rail ngang 3 thẻ; không dùng carousel 3D để bộ lọc ngày luôn hiện.
   }
 
 document.addEventListener("DOMContentLoaded", init);

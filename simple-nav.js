@@ -278,8 +278,7 @@
   } catch (e) {}
 })();
 
-/* Zoom chuyển trang được quản lý duy nhất bởi avp-site-motion.js.
-   Không nạp lại bản V56 cũ vì file đó đã bị loại khỏi source. */
+/* Chuyển trang/zoom do avp-site-motion.js quản lý duy nhất. */
 
 
 
