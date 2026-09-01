@@ -2225,7 +2225,11 @@ grid.addEventListener("click", async function (e) {
     if(filter&&filter!=="all")__pvCurrentTopic=filter;
     grid.innerHTML=__pvCurrentTopic?topicDetailHTML(__pvCurrentTopic,q):topicOverviewHTML();
     bindVotes();bindTopicVotes();
-    grid.querySelectorAll('[data-topic-open]').forEach(card=>card.addEventListener('click',()=>{__pvCurrentTopic=card.getAttribute('data-topic-open');render(__pvCurrentTopic,"");}));
+    grid.querySelectorAll('[data-topic-open]').forEach(card=>card.addEventListener('click',()=>{
+      __pvCurrentTopic=card.getAttribute('data-topic-open');
+      render(__pvCurrentTopic,"");
+      grid.scrollIntoView({behavior:'smooth',block:'start'});
+    }));
     grid.querySelector('[data-topic-contribute]')?.addEventListener('click',()=>{grid.innerHTML=contributionHTML();bindTopicVotes();setTimeout(loadTopicVoteSummary,0);grid.querySelector('[data-topic-back]')?.addEventListener('click',()=>{__pvCurrentTopic=null;render('all','')});});
     grid.querySelector('[data-topic-back]')?.addEventListener('click',()=>{__pvCurrentTopic=null;render('all','')});
     window.AVPPracticeRoll?.initAll(grid);

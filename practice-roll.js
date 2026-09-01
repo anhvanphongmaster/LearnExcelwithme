@@ -7,6 +7,20 @@
     const stage=root.querySelector("[data-practice-roll-stage]")||root;
     const cards=[...stage.querySelectorAll(":scope > [data-practice-roll-card]")];
     if(!cards.length)return;
+    // Desktop ưu tiên thao tác: dùng rail ngang native, không gắn transform/pointer capture.
+    // Mobile mới dùng carousel 3D để giữ trải nghiệm vuốt gọn.
+    if(window.matchMedia && window.matchMedia("(min-width: 901px)").matches){
+      root.dataset.rollReady="desktop";
+      cards.forEach(card=>{
+        card.style.removeProperty("transform");
+        card.style.removeProperty("opacity");
+        card.style.removeProperty("z-index");
+        card.style.removeProperty("filter");
+        card.style.removeProperty("pointer-events");
+        card.tabIndex=0;
+      });
+      return;
+    }
     root.dataset.rollReady="1";
     const dots=root.querySelector("[data-practice-roll-dots]");
     const count=cards.length;

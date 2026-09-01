@@ -278,18 +278,8 @@
   } catch (e) {}
 })();
 
-/* Zoom copy V56 */
-(function () {
-  var page=(location.pathname.split("/").pop()||"").toLowerCase();
-  if(/practice-video|practice-grader/.test(page)) return;
-  try {
-    if (document.querySelector('script[src*="avp-zoom-copy-v56.js"]')) return;
-    var s = document.createElement("script");
-    s.src = "avp-zoom-copy-v56.js?v=20260831-submitfix";
-    s.defer = true;
-    document.head.appendChild(s);
-  } catch (e) {}
-})();
+/* Zoom chuyển trang được quản lý duy nhất bởi avp-site-motion.js.
+   Không nạp lại bản V56 cũ vì file đó đã bị loại khỏi source. */
 
 
 
@@ -666,4 +656,3 @@ document.addEventListener("DOMContentLoaded", function(){
     document.head.appendChild(l);
   }catch(e){}
 })();
-

@@ -121,6 +121,17 @@
       bg.className="avp-depth-bg";
       bg.setAttribute("aria-hidden","true");
       hero.insertBefore(bg,hero.firstChild);
+      if(window.matchMedia("(hover:hover) and (pointer:fine)").matches){
+        hero.addEventListener("pointermove",e=>{
+          const r=hero.getBoundingClientRect();
+          hero.style.setProperty("--avp-px-x",(((e.clientX-r.left)/Math.max(1,r.width)-.5)*18).toFixed(2));
+          hero.style.setProperty("--avp-px-y",(((e.clientY-r.top)/Math.max(1,r.height)-.5)*10).toFixed(2));
+        },{passive:true});
+        hero.addEventListener("pointerleave",()=>{
+          hero.style.setProperty("--avp-px-x","0");
+          hero.style.setProperty("--avp-px-y","0");
+        },{passive:true});
+      }
     });
 
     let ticking=false;

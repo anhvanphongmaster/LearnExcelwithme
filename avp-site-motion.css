@@ -47,7 +47,8 @@ input[type="button"],input[type="submit"]{
   background:
     radial-gradient(ellipse at 20% 0%,rgba(255,255,255,.18),transparent 46%),
     radial-gradient(ellipse at 88% 30%,rgba(33,115,70,.14),transparent 42%);
-  transform:translate3d(0,calc(var(--avp-y,0) * .16px),0);
+  transform:translate3d(calc(var(--avp-px-x,0) * 1px),calc((var(--avp-y,0) * .16px) + (var(--avp-px-y,0) * 1px)),0) scale(1.035);
+  transition:transform .22s var(--avp-motion-ease);
   will-change:transform;
 }
 .avp-hero,
@@ -131,6 +132,9 @@ input[type="button"],input[type="submit"]{
 }
 html.avp-arriving .avp-hero,
 html.avp-arriving .pv-hero,
+html.avp-arriving .pw-hero,
+html.avp-arriving .pyt-hero,
+html.avp-arriving .ph-direct-hero,
 html.avp-arriving .ml-hero,
 html.avp-arriving .pq-hero,
 html.avp-arriving .dashboard-hero{
