@@ -118,6 +118,27 @@
     }
   }
 
+
+  function renderAdminAccess(){
+    // Admin luôn được vào khu chuyên sâu để kiểm tra / quản trị,
+    // không phụ thuộc điểm, số ngày hoạt động hay hồ sơ xét duyệt.
+    setCriterion("basic",LIMITS.basic,LIMITS.basic);
+    setCriterion("intermediate",LIMITS.intermediate,LIMITS.intermediate);
+    setCriterion("advanced",LIMITS.advanced,LIMITS.advanced);
+    setCriterion("days",LIMITS.days,LIMITS.days);
+
+    setStatus(
+      "approved",
+      "Quyền truy cập Admin",
+      "Tài khoản Admin được phép truy cập trực tiếp Lộ trình Excel Chuyên nghiệp để kiểm tra và quản trị nội dung.",
+      "ADMIN ACCESS"
+    );
+
+    $("ptApplyCard").hidden=true;
+    $("ptProgramCard").hidden=false;
+    $("ptActionArea").innerHTML="<p>✓ Bạn đang truy cập bằng quyền Admin. Các điều kiện học viên không áp dụng cho tài khoản này.</p>";
+  }
+
   async function load(){
     const sb=await client();
     if(!sb){
@@ -131,6 +152,15 @@
       $("ptActionArea").innerHTML='<p><a href="auth.html?next=professional-track.html">Đăng nhập để kiểm tra điều kiện →</a></p>';
       return;
     }
+
+    // Admin bypass: luôn được vào khu Professional Track.
+    try{
+      const adminRes=await sb.rpc("is_admin_user");
+      if(!adminRes.error && adminRes.data===true){
+        renderAdminAccess();
+        return;
+      }
+    }catch(_){}
 
     try{await sb.rpc("professional_track_mark_activity_v1")}catch(_){}
 
