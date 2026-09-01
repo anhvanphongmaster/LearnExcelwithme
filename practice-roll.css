@@ -68,9 +68,11 @@ body{color:#173728!important}
 .pg-practice-toolbar{background:#fff!important;border:0!important;padding:0!important}
 .pg-topic-tabs{display:none!important}
 .pg-topic-roll-wrap{margin-bottom:16px}
+.pg-topic-roll-wrap[hidden],.pg-lesson-frame[hidden]{display:none!important}
+.pg-topic-back{margin:0 0 8px!important}
 .pg-topic-roll-card{border:1px solid #dce7e1;border-radius:17px;background:#fbfdfc;padding:20px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer}
 .pg-topic-roll-card h3{margin:9px 0 7px;color:#153e29;font-size:20px}.pg-topic-roll-card p{margin:0;color:#6c7e73;font-size:11px;line-height:1.5}.pg-topic-roll-card small{color:#217346;font-weight:850}
-.pg-lesson-frame{margin-top:12px!important}
+.pg-lesson-frame{margin-top:0!important}
 .pg-lesson-scroll{max-height:none!important;overflow:visible!important}
 .pg-topic-panels{display:block!important}
 .pg-board-scroll{max-height:320px}
