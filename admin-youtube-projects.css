@@ -1,0 +1,36 @@
+.ayt-panel{--ayt-green:#217346;--ayt-line:#dce8e1;--ayt-soft:#f5faf7;color:#264b36}
+.ayt-head,.ayt-builder-head,.ayt-editor-title{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.ayt-head>div:first-child,.ayt-builder-head>div,.ayt-editor-title>div{display:flex;flex-direction:column;gap:4px}
+.ayt-head strong,.ayt-builder-head strong,.ayt-editor-title strong{font-size:15px;color:#245c3b}
+.ayt-head small,.ayt-builder-head span,.ayt-editor-title span{font-size:10px;color:#74877b;font-weight:800}
+.ayt-head-actions{display:flex;gap:8px}
+.ayt-panel button{min-height:38px;border:0;border-radius:10px;padding:0 13px;background:var(--ayt-green);color:#fff;font:800 11px system-ui;cursor:pointer}
+.ayt-panel button.secondary{background:#f3f7f5;color:#476555;border:1px solid #d8e5dd}
+.ayt-panel button.danger{background:#fff5f2;color:#a54631;border:1px solid #efd0c7}
+.ayt-panel button:disabled{opacity:.55;cursor:wait}
+.ayt-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:14px 0}
+.ayt-kpis article{padding:13px;border:1px solid var(--ayt-line);border-radius:12px;background:linear-gradient(180deg,#fff,#f8fcfa)}
+.ayt-kpis small{display:block;color:#788b80;font-size:9px;font-weight:900;text-transform:uppercase}
+.ayt-kpis strong{display:block;margin-top:5px;color:#206a40;font-size:24px}
+.ayt-toolbar{display:grid;grid-template-columns:minmax(180px,1fr) 190px auto;gap:8px;margin-bottom:12px}
+.ayt-toolbar input,.ayt-toolbar select,.ayt-form input,.ayt-form select,.ayt-form textarea,.ayt-item-grid input,.ayt-item-grid select,.ayt-item-grid textarea{width:100%;box-sizing:border-box;border:1px solid #d5e3db;border-radius:10px;background:#fff;color:#294b38;font:600 11px system-ui;outline:none}
+.ayt-toolbar input,.ayt-toolbar select,.ayt-form input,.ayt-form select,.ayt-item-grid input,.ayt-item-grid select{min-height:40px;padding:0 10px}
+.ayt-form textarea,.ayt-item-grid textarea{padding:9px 10px;resize:vertical}
+.ayt-toolbar input:focus,.ayt-form input:focus,.ayt-form select:focus,.ayt-form textarea:focus,.ayt-item-grid input:focus,.ayt-item-grid select:focus,.ayt-item-grid textarea:focus{border-color:#70b68b;box-shadow:0 0 0 3px rgba(33,115,70,.09)}
+.ayt-project-list{display:grid;gap:9px}
+.ayt-project-row{display:grid;grid-template-columns:64px minmax(190px,1fr) minmax(150px,.8fr) auto;gap:12px;align-items:center;padding:12px;border:1px solid var(--ayt-line);border-radius:13px;background:#fff}
+.ayt-project-no{height:48px;border-radius:11px;display:grid;place-items:center;background:#edf7f1;color:#267249;font-size:12px;font-weight:900}
+.ayt-project-copy strong{display:block;color:#24583a;font-size:13px}.ayt-project-copy small{display:block;margin-top:4px;color:#7a8c82;font-size:10px;line-height:1.45}
+.ayt-project-meta{display:flex;flex-wrap:wrap;gap:5px}.ayt-chip{display:inline-flex;padding:5px 8px;border-radius:999px;background:#f0f5f2;color:#5e7769;font-size:9px;font-weight:850}.ayt-chip.live{background:#e7f5ec;color:#246c42}.ayt-chip.draft{background:#fff5df;color:#8b641c}.ayt-chip.hidden,.ayt-chip.archived{background:#f1f1f1;color:#747474}
+.ayt-row-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.ayt-editor{margin-top:15px;padding:15px;border:1px solid #bcd9c7;border-radius:15px;background:#fbfefc;box-shadow:0 12px 35px rgba(24,77,46,.09)}
+.ayt-editor-title{padding-bottom:12px;border-bottom:1px solid #dfebe4}.ayt-editor-title>button{width:38px;padding:0;background:#edf4f0;color:#506c5c;font-size:20px}
+.ayt-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:13px}.ayt-form label,.ayt-item-grid label{display:flex;flex-direction:column;gap:5px;min-width:0}.ayt-form label>span,.ayt-item-grid label>span{color:#627a6c;font-size:9px;font-weight:900;text-transform:uppercase}.ayt-form .wide,.ayt-item-grid .wide{grid-column:1/-1}.ayt-form label.check{flex-direction:row;align-items:center;align-self:end;min-height:40px}.ayt-form label.check input{width:17px;min-height:17px}.ayt-form label.check span{text-transform:none}
+.ayt-builder{margin-top:14px;padding:13px;border:1px solid #dbe8e0;border-radius:13px;background:#fff}.ayt-builder-head{margin-bottom:10px}
+.ayt-builder-list{display:grid;gap:9px}.ayt-builder-empty{padding:16px;border:1px dashed #cdded4;border-radius:11px;text-align:center;color:#84958c;font-size:10px;background:#fafdfb}
+.ayt-item{border:1px solid #dde9e2;border-radius:12px;background:#fbfdfc;overflow:hidden}.ayt-item summary{display:flex;align-items:center;gap:9px;padding:10px 12px;cursor:pointer;list-style:none}.ayt-item summary::-webkit-details-marker{display:none}.ayt-item summary strong{color:#2b5f40;font-size:11px}.ayt-item summary small{margin-left:auto;color:#83938a;font-size:9px}.ayt-item summary:after{content:'⌄';color:#6f8478}.ayt-item[open] summary:after{transform:rotate(180deg)}
+.ayt-item-body{padding:0 11px 11px}.ayt-item-grid{display:grid;grid-template-columns:80px minmax(0,1fr) minmax(0,1fr);gap:9px}.ayt-item-grid .span2{grid-column:span 2}.ayt-item-actions{display:flex;justify-content:flex-end;margin-top:9px}
+.ayt-editor-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px;padding-top:13px;border-top:1px solid #dce8e1}.ayt-editor-actions #aytSave{min-width:180px}
+body.dark-mode .ayt-panel{--ayt-line:#30443a;--ayt-soft:#17241d;color:#c9dbd1}.dark-mode .ayt-kpis article,.dark-mode .ayt-project-row,.dark-mode .ayt-builder,.dark-mode .ayt-item{background:#151f1a;border-color:#30443a}.dark-mode .ayt-editor{background:#121d17;border-color:#3b654d}.dark-mode .ayt-toolbar input,.dark-mode .ayt-toolbar select,.dark-mode .ayt-form input,.dark-mode .ayt-form select,.dark-mode .ayt-form textarea,.dark-mode .ayt-item-grid input,.dark-mode .ayt-item-grid select,.dark-mode .ayt-item-grid textarea{background:#101a14;color:#d9e8df;border-color:#34483d}
+@media(max-width:850px){.ayt-project-row{grid-template-columns:58px 1fr}.ayt-project-meta,.ayt-row-actions{grid-column:2}.ayt-row-actions{justify-content:flex-start}.ayt-item-grid{grid-template-columns:1fr 1fr}.ayt-item-grid .span2{grid-column:1/-1}}
+@media(max-width:620px){.ayt-head{align-items:stretch;flex-direction:column}.ayt-head-actions{display:grid;grid-template-columns:1fr 1fr}.ayt-kpis{grid-template-columns:1fr 1fr}.ayt-toolbar{grid-template-columns:1fr}.ayt-form,.ayt-item-grid{grid-template-columns:1fr}.ayt-form .wide,.ayt-item-grid .wide,.ayt-item-grid .span2{grid-column:1}.ayt-project-row{grid-template-columns:1fr}.ayt-project-meta,.ayt-row-actions{grid-column:1}.ayt-project-no{width:60px}.ayt-editor-actions{flex-direction:column}.ayt-editor-actions button{width:100%}}

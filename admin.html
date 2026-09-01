@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="admin.css?v=20260831-v83-maintenance">
 <link rel="stylesheet" href="admin-professional-track.css?v=20260901-structure1">
+<link rel="stylesheet" href="admin-youtube-projects.css?v=20260901-v1">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="admin-manifest.webmanifest">
 <meta name="theme-color" content="#217346">
@@ -120,6 +121,9 @@ where is_admin = true;</pre>
         </button>
         <button type="button" data-admin-view="practice" role="tab">
           <b>📝 Kho bài tập</b><small>Thêm, sửa, sắp xếp bài</small>
+        </button>
+        <button type="button" data-admin-view="youtube" role="tab">
+          <b>▶️ YouTube Projects</b><small>Project, video, file & tài liệu</small>
         </button>
         <button type="button" data-admin-view="downloads" role="tab">
           <b>📦 Tải xuống</b><small>File & tài nguyên toàn web</small>
@@ -597,6 +601,55 @@ where is_admin = true;</pre>
       <p id="adminPracticeNotice" class="admin-users-notice" hidden></p>
     </section>
 
+    <div class="admin-section-heading admin-view-section" data-admin-section="youtube"><span>▶️ YOUTUBE PROJECTS</span><h2>Quản lý project video dài</h2></div>
+    <section class="admin-panel admin-view-section ayt-panel" data-admin-section="youtube" id="adminYoutubePanel">
+      <div class="ayt-head">
+        <div><strong>Project Library động</strong><small>Tạo project, chia phần, gắn video, file thực hành và Tips & Tricks mà không sửa HTML.</small></div>
+        <div class="ayt-head-actions"><button id="aytReload" type="button" class="secondary">↻ Làm mới</button><button id="aytAddProject" type="button">＋ Project mới</button></div>
+      </div>
+      <div class="ayt-kpis">
+        <article><small>Tổng project</small><strong id="aytKpiProjects">0</strong></article>
+        <article><small>Đang phát hành</small><strong id="aytKpiLive">0</strong></article>
+        <article><small>Tổng số phần</small><strong id="aytKpiParts">0</strong></article>
+        <article><small>Đã gắn video</small><strong id="aytKpiVideos">0</strong></article>
+      </div>
+      <div class="ayt-toolbar">
+        <input id="aytSearch" type="search" placeholder="Tìm project hoặc slug…">
+        <select id="aytStatus"><option value="all">Tất cả trạng thái</option><option value="published">Đang phát hành</option><option value="draft">Bản nháp</option><option value="archived">Đã lưu trữ</option><option value="hidden">Đang ẩn</option></select>
+        <button id="aytSearchButton" type="button">Tìm</button>
+      </div>
+      <div id="aytProjectList" class="ayt-project-list"><div class="admin-users-empty">Chọn YouTube Projects để tải dữ liệu.</div></div>
+
+      <div id="aytEditor" class="ayt-editor" hidden>
+        <div class="ayt-editor-title"><div><span id="aytEditorKicker">PROJECT EDITOR</span><strong id="aytEditorTitle">Thêm project</strong></div><button id="aytClose" type="button" aria-label="Đóng">×</button></div>
+        <input id="aytId" type="hidden">
+        <div class="ayt-form ayt-project-form">
+          <label><span>Slug</span><input id="aytSlug" maxlength="80" placeholder="sales-dashboard"></label>
+          <label><span>Số project</span><input id="aytNumber" type="number" min="1" value="1"></label>
+          <label class="wide"><span>Tên project</span><input id="aytTitle" maxlength="180" placeholder="Sales Dashboard"></label>
+          <label class="wide"><span>Mô tả tại thẻ project</span><textarea id="aytSummary" rows="2" maxlength="500"></textarea></label>
+          <label><span>Nhãn nhỏ</span><input id="aytKicker" maxlength="80" value="PROJECT"></label>
+          <label><span>Ảnh project (không bắt buộc)</span><input id="aytCover" maxlength="1200" placeholder="images/... hoặc https://..."></label>
+          <label><span>Trạng thái</span><select id="aytProjectStatus"><option value="published">Phát hành</option><option value="draft">Bản nháp</option><option value="archived">Lưu trữ</option></select></label>
+          <label><span>Thứ tự</span><input id="aytOrder" type="number" value="0"></label>
+          <label class="check"><input id="aytActive" type="checkbox" checked><span>Hiển thị trên Kho YouTube</span></label>
+        </div>
+
+        <section class="ayt-builder">
+          <div class="ayt-builder-head"><div><span>CÁC PHẦN TRONG PROJECT</span><strong>Video và nội dung từng phần</strong></div><button id="aytAddPart" type="button">＋ Thêm phần</button></div>
+          <div id="aytParts" class="ayt-builder-list"></div>
+        </section>
+
+        <section class="ayt-builder">
+          <div class="ayt-builder-head"><div><span>TÀI NGUYÊN PROJECT</span><strong>File thực hành, Tips & Tricks, công thức</strong></div><button id="aytAddResource" type="button">＋ Thêm tài nguyên</button></div>
+          <div id="aytResources" class="ayt-builder-list"></div>
+        </section>
+
+        <div class="ayt-editor-actions"><button id="aytSave" type="button">Lưu toàn bộ project</button><button id="aytCancel" class="secondary" type="button">Huỷ</button></div>
+      </div>
+      <p id="aytNotice" class="admin-users-notice" hidden></p>
+    </section>
+
     <div class="admin-section-heading admin-view-section" data-admin-section="downloads"><span>📦 TẢI XUỐNG</span><h2>Quản lý toàn bộ file trên website</h2></div>
     <section class="admin-panel admin-download-manager admin-view-section" data-admin-section="downloads">
       <div class="admin-download-head">
@@ -886,6 +939,7 @@ where is_admin = true;</pre>
 <script defer src="admin-community-center.js?v=20260829-moderation1"></script>
 <script defer src="admin-grader.js?v=20260830-v16badge1"></script>
 <script defer src="admin-professional-track.js?v=20260901-structure1"></script>
+<script defer src="admin-youtube-projects.js?v=20260901-v1"></script>
 <script defer src="global-search.js"></script>
 </body>
 </html>
