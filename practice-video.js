@@ -2276,8 +2276,24 @@ grid.addEventListener("click", async function (e) {
         };
       });
       if (mapped.length) {
-        videoPracticeData.splice(0, videoPracticeData.length);
-        mapped.forEach(function(x){ videoPracticeData.push(x); });
+        /* Không thay cả thư viện tĩnh bằng vài bản ghi Admin. Làm vậy sẽ mất
+           nguồn thực hành, chủ đề và toàn bộ cấu trúc roll. Ghép đúng bài theo
+           id; trường rỗng từ Supabase không được ghi đè dữ liệu gốc. */
+        mapped.forEach(function(x){
+          var current = videoPracticeData.find(function(item){ return item.id === x.id; });
+          if (!current) { videoPracticeData.push(x); return; }
+          ["number","icon","title","category","skill","level","badge","sortOrder"].forEach(function(key){
+            if (x[key] !== "" && x[key] !== null && x[key] !== undefined) current[key] = x[key];
+          });
+          if (x.tiktok) current.tiktok = x.tiktok;
+          if (x.sourcePath) {
+            current.sourcePath = x.sourcePath;
+            current.file = x.file;
+            current.folder = x.folder;
+          }
+          if (x.fileUrl) current.fileUrl = x.fileUrl;
+          current.filterTags = [current.category];
+        });
         return true;
       }
     } catch (e) {
