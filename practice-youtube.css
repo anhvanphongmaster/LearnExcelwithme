@@ -76,5 +76,10 @@
 .pyt-file-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 13px;border-radius:11px;font-size:12px;font-weight:850;text-decoration:none!important;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
 .pyt-file-link.raw{color:#80542d;background:#fffaf3;border:1px solid #e5c9aa}
 .pyt-file-link.clean{color:#35664b;background:#f5faf7;border:1px solid #bfd7c8}
+.pyt-file-link.neutral{color:#52675c;background:#f7faf8;border:1px solid #d4e0d9}
 .pyt-file-link:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(34,69,48,.09)}
+.pyt-phase-roll .pyt-card.pyt-group-neutral{background:#fff!important;border-color:#dce7e1!important}
+.pyt-group-neutral>p{background:#f5f8f6;border-left:3px solid #b8c9bf;padding:7px 9px;border-radius:0 9px 9px 0}
+.pyt-project-cover{height:74px;margin:8px 0;border:1px solid rgba(61,91,72,.12);border-radius:10px;overflow:hidden;background:#f4f7f5}
+.pyt-project-cover img{display:block;width:100%;height:100%;object-fit:contain}
 @media(max-width:600px){.pyt-card-media{height:72px}.pyt-file-link{width:100%}}
