@@ -121,7 +121,13 @@
     let value=target.value;if(key==="sort_order")value=Number(value||0);if(key==="is_active")value=value==="true";editing.resources[i][key]=value;
     const sum=box.querySelector("summary strong");if(sum)sum.textContent=editing.resources[i].label||"Tài nguyên chưa đặt tên";
   }
-  function validUrl(value){return !value||/^(https?:\/\/|\.?\/?[\w-]+(?:\/[\w\-./% ()À-ỹ]+)*)$/i.test(value)}
+  function validUrl(value){
+    const s=String(value||"").trim();
+    if(!s)return true;
+    if(/^(javascript|data|vbscript):/i.test(s))return false;
+    if(/^https?:\/\/[^\s<>"']+$/i.test(s))return true;
+    return /^\.?\/?[\wÀ-ỹ()[\] ._%-]+(?:\/[\wÀ-ỹ()[\] ._?&=%#-]+)*$/i.test(s);
+  }
   async function save(){
     if(!editing)return;
     editing={...editing,slug:$("aytSlug").value.trim().toLowerCase().replace(/[^a-z0-9-]+/g,"-").replace(/^-+|-+$/g,""),project_number:Number($("aytNumber").value||0),title:$("aytTitle").value.trim(),summary:$("aytSummary").value.trim(),kicker:$("aytKicker").value.trim()||"PROJECT",cover_image_url:$("aytCover").value.trim(),status:$("aytProjectStatus").value,is_active:$("aytActive").checked,sort_order:Number($("aytOrder").value||0)};
