@@ -1,0 +1,28 @@
+/* Admin Professional Track — no animations/transitions. */
+.apt-tab-title{display:flex;align-items:center;gap:6px}
+.apt-pending-badge{min-width:18px;height:18px;padding:0 5px;display:inline-grid;place-items:center;border-radius:999px;background:#8a5b00;color:#fff;font-size:9px;font-style:normal}
+.apt-panel{border-top:3px solid #217346}
+.apt-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.apt-kpis article{padding:14px;border:1px solid #dce8e1;border-radius:12px;background:#fafcfb}
+.apt-kpis small{display:block;color:#71847a;font-size:9px}
+.apt-kpis strong{display:block;margin-top:5px;color:#174f31;font-size:22px}
+.apt-toolbar{display:flex;gap:8px;margin-bottom:12px}
+.apt-toolbar select,.apt-toolbar button,#adminProfessionalReload{min-height:38px;padding:0 12px;border:1px solid #ccddd3;border-radius:9px;background:#fff;color:#173f2d;font:inherit;font-size:11px;font-weight:850}
+.apt-toolbar button,#adminProfessionalReload{cursor:pointer}
+.apt-list{display:grid;gap:10px}
+.apt-item{padding:15px;border:1px solid #dce8e1;border-radius:14px;background:#fff}
+.apt-item-head{display:flex;justify-content:space-between;gap:12px}
+.apt-person strong{display:block;font-size:13px}
+.apt-person small{display:block;margin-top:3px;color:#7b8b82;font-size:9px}
+.apt-status{align-self:start;padding:5px 8px;border-radius:999px;background:#fff5d8;color:#785700;font-size:8px;font-weight:950}
+.apt-status.approved{background:#e8f7ed;color:#176b3b}
+.apt-status.rejected{background:#fff0ee;color:#963629}
+.apt-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:10px}
+.apt-metrics span{padding:9px;border-radius:9px;background:#f5f8f6;font-size:9px;color:#61766a}
+.apt-metrics b{display:block;margin-top:3px;color:#173f2d;font-size:12px}
+.apt-notes{margin-top:10px;padding:10px;border-radius:9px;background:#fafcfb;color:#61766a;font-size:10px;line-height:1.55}
+.apt-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.apt-actions button{min-height:34px;padding:0 10px;border:1px solid #cfded5;border-radius:8px;background:#fff;color:#254f39;font-size:9px;font-weight:900;cursor:pointer}
+.apt-actions .approve{border-color:#217346;background:#217346;color:#fff}
+.apt-actions .reject{border-color:#e3c0ba;color:#8f3528}
+@media(max-width:700px){.apt-kpis,.apt-metrics{grid-template-columns:repeat(2,1fr)}.apt-item-head{display:grid}}

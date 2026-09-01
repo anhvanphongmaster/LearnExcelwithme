@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="admin.css?v=20260831-v83-maintenance">
+<link rel="stylesheet" href="admin-professional-track.css?v=20260901-structure1">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="admin-manifest.webmanifest">
 <meta name="theme-color" content="#217346">
@@ -141,6 +142,11 @@ where is_admin = true;</pre>
               <button type="button" data-admin-view="grader" role="tab" class="admin-grader-tab">
           <span class="ag-tab-title"><b>🧪 Chấm điểm</b><i id="adminGraderPendingBadge" class="ag-pending-badge" hidden>0</i></span>
           <small>Bài nộp, cấp độ & yêu cầu chấm lại</small>
+        </button>
+
+        <button type="button" data-admin-view="professional" role="tab" class="admin-professional-tab">
+          <span class="apt-tab-title"><b>🎯 Professional Track</b><i id="adminProfessionalPendingBadge" class="apt-pending-badge" hidden>0</i></span>
+          <small>Hồ sơ xét duyệt & quyền truy cập</small>
         </button>
       </div>
 
@@ -815,6 +821,39 @@ where is_admin = true;</pre>
           </tbody>
         </table>
       </div>
+
+    </section>
+
+    <section class="admin-panel admin-view-section apt-panel" data-admin-section="professional" id="adminProfessionalPanel">
+      <div class="admin-panel-head">
+        <div>
+          <span>🎯 PROFESSIONAL TRACK</span>
+          <h2>Xét duyệt Lộ trình Excel Chuyên nghiệp</h2>
+          <p>Kiểm tra điểm, ngày hoạt động, chứng chỉ và cấp quyền truy cập vĩnh viễn cho học viên đủ điều kiện.</p>
+        </div>
+        <button type="button" id="adminProfessionalReload">↻ Làm mới</button>
+      </div>
+
+      <div class="apt-kpis">
+        <article><small>Chờ duyệt</small><strong id="aptPending">0</strong></article>
+        <article><small>Đã duyệt</small><strong id="aptApproved">0</strong></article>
+        <article><small>Cần bổ sung</small><strong id="aptRejected">0</strong></article>
+        <article><small>Tổng hồ sơ</small><strong id="aptTotal">0</strong></article>
+      </div>
+
+      <div class="apt-toolbar">
+        <select id="adminProfessionalStatus">
+          <option value="pending">Đang chờ</option>
+          <option value="">Tất cả</option>
+          <option value="approved">Đã phê duyệt</option>
+          <option value="rejected">Cần bổ sung</option>
+        </select>
+        <button type="button" id="adminProfessionalLoad">Tải hồ sơ</button>
+      </div>
+
+      <div id="adminProfessionalList" class="apt-list">
+        <div class="admin-users-empty">Chọn Professional Track để tải hồ sơ.</div>
+      </div>
     </section>
 </div>
 
@@ -846,6 +885,7 @@ where is_admin = true;</pre>
 <script defer src="theme-unified-v32.js"></script>
 <script defer src="admin-community-center.js?v=20260829-moderation1"></script>
 <script defer src="admin-grader.js?v=20260830-v16badge1"></script>
+<script defer src="admin-professional-track.js?v=20260901-structure1"></script>
 <script defer src="global-search.js"></script>
 </body>
 </html>

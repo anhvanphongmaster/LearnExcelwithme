@@ -681,7 +681,7 @@
       loadAdminMaintenance();
     try{
       const requestedView=new URLSearchParams(location.search).get("view");
-      const validViews=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics","community","reviews","grader"];
+      const validViews=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics","community","reviews","grader","professional"];
       if(requestedView&&validViews.includes(requestedView)){
         setTimeout(()=>setAdminView(requestedView,{scroll:true}),80);
       }
@@ -707,7 +707,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics","community","reviews","grader"];
+    const valid=["overview","users","race","learning","votes","practice","downloads","inbox","engagement","analytics","community","reviews","grader","professional"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
@@ -733,6 +733,7 @@
     if(view==="overview" && client) checkAdminHealth();
     if(view==="reviews" && typeof window.avpLoadSiteReviews==="function") window.avpLoadSiteReviews();
     if(view==="grader") window.dispatchEvent(new CustomEvent("avp:admin-grader-open"));
+    if(view==="professional") window.dispatchEvent(new CustomEvent("avp:admin-professional-open"));
     if(view==="community"){
       window.dispatchEvent(new CustomEvent("avp:admin-community-open"));
     }

@@ -126,6 +126,13 @@
     const client=await getClient();
     if(!client?.auth?.onAuthStateChange) return;
 
+    // Professional Track: ghi nhận tối đa 1 ngày hoạt động cho mỗi tài khoản/ngày.
+    // RPC tự chống trùng; không thay đổi analytics hiện tại.
+    try{
+      const {data:{session}}=await client.auth.getSession();
+      if(session?.user) client.rpc("professional_track_mark_activity_v1").catch(()=>{});
+    }catch(_){}
+
     client.auth.onAuthStateChange((event,session)=>{
       if(event!=="SIGNED_IN" || !session?.user) return;
 

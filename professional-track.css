@@ -1,0 +1,55 @@
+/* Professional Track — structure V1.
+   KHÔNG dùng keyframes, animation, transform hoặc transition. */
+.pt-page{width:min(1120px,calc(100% - 28px));margin:0 auto;padding:24px 0 72px;color:#173f2d;font-family:Arial,sans-serif}
+.pt-back{display:inline-flex;margin:0 0 16px;color:#217346;text-decoration:none;font-size:12px;font-weight:850}
+.pt-hero{padding:30px;border:1px solid #cfe2d6;border-radius:24px;background:#f5fbf7}
+.pt-kicker,.pt-section-kicker{display:block;color:#217346;font-size:10px;font-weight:950;letter-spacing:1px}
+.pt-hero h1{margin:8px 0 10px;font-size:clamp(28px,5vw,46px);line-height:1.15}
+.pt-hero>p{max-width:760px;margin:0;color:#5d7467;line-height:1.65}
+.pt-promise{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.pt-promise span{padding:7px 10px;border:1px solid #d8e7de;border-radius:999px;background:#fff;font-size:10px;font-weight:850}
+.pt-status-card,.pt-apply-card,.pt-program-card,.pt-about{margin-top:18px;padding:24px;border:1px solid #d9e7df;border-radius:20px;background:#fff}
+.pt-status-head,.pt-program-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}
+.pt-status-head h2,.pt-apply-card h2,.pt-program-head h2,.pt-about h2{margin:6px 0 7px;font-size:21px}
+.pt-status-head p,.pt-apply-card p,.pt-program-head p,.pt-about p{margin:0;color:#687c71;font-size:12px;line-height:1.65}
+.pt-status-badge,.pt-approved-pill{flex:0 0 auto;padding:7px 10px;border-radius:999px;background:#edf5f0;color:#356048;font-size:9px;font-weight:950}
+.pt-status-badge.approved,.pt-approved-pill{background:#e7f6ec;color:#176b3b}
+.pt-status-badge.pending{background:#fff7df;color:#7d5d00}
+.pt-status-badge.rejected{background:#fff0ee;color:#983526}
+.pt-requirements{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+.pt-requirements article{padding:15px;border:1px solid #e0ebe4;border-radius:14px;background:#fbfdfb}
+.pt-requirements span,.pt-requirements small{display:block;font-size:9px;color:#72867a}
+.pt-requirements strong{display:block;margin:5px 0;font-size:17px}
+.pt-requirements article.ok{border-color:#bfe0c9;background:#f3fbf6}
+.pt-requirements article.ok small{color:#176b3b;font-weight:850}
+.pt-requirements article.missing{border-color:#eadfc7;background:#fffcf5}
+.pt-action-area{margin-top:18px;padding:14px;border-radius:13px;background:#f5f8f6;font-size:11px;line-height:1.6;color:#50675a}
+.pt-action-area p{margin:0}
+.pt-action-area a{color:#217346;font-weight:900}
+.pt-file-field,.pt-note-field{display:grid;gap:7px;margin-top:16px;font-size:11px;font-weight:900}
+.pt-file-field input,.pt-note-field textarea{width:100%;box-sizing:border-box;border:1px solid #cfded5;border-radius:12px;background:#fff;color:#173f2d;font:inherit}
+.pt-file-field input{padding:10px}
+.pt-note-field textarea{padding:12px;resize:vertical;font-weight:500}
+.pt-file-field small,.pt-note-field small{font-size:9px;color:#7b8d83;font-weight:600}
+.pt-primary-btn{margin-top:16px;min-height:42px;padding:0 16px;border:0;border-radius:11px;background:#217346;color:#fff;font-weight:900;cursor:pointer}
+.pt-primary-btn:disabled{opacity:.55;cursor:not-allowed}
+.pt-domain-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+.pt-domain-grid article{min-height:104px;padding:15px;border:1px solid #e0ebe4;border-radius:14px;background:#fafcfb}
+.pt-domain-grid article>span{display:block;color:#217346;font-size:10px;font-weight:950}
+.pt-domain-grid strong{display:block;margin:10px 0 5px;font-size:15px}
+.pt-domain-grid small{font-size:9px;color:#7a8d82}
+.pt-admin-support{margin-top:12px;padding:16px;border-left:3px solid #217346;background:#f4faf6;border-radius:8px}
+.pt-admin-support strong{font-size:12px}
+.pt-admin-support p{margin:5px 0 0}
+.pt-about{margin-bottom:10px}
+[hidden]{display:none!important}
+@media(max-width:800px){
+  .pt-requirements,.pt-domain-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  .pt-page{width:min(100% - 20px,1120px);padding-top:16px}
+  .pt-hero,.pt-status-card,.pt-apply-card,.pt-program-card,.pt-about{padding:18px;border-radius:17px}
+  .pt-status-head,.pt-program-head{display:grid}
+  .pt-status-badge,.pt-approved-pill{justify-self:start}
+  .pt-requirements,.pt-domain-grid{grid-template-columns:1fr}
+}
