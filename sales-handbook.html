@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Professional Handbook | Learn Excel with Anh Van Phong</title>
+<meta name="theme-color" content="#173f2b">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="avp-core.css">
+<link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="sales-handbook.css?v=20260901-ebook1">
+</head>
+<body class="phb-body">
+
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html">Trang chủ</a>
+    <a href="skill-map.html">Học</a>
+    <a href="practice-video.html">Thực hành</a>
+    <a href="professional-track.html">Professional Track</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="phb-shell">
+  <section class="phb-gate" id="ptGate">
+    <span>PROFESSIONAL HANDBOOK</span>
+    <h1>Đang xác minh quyền truy cập…</h1>
+    <p>Nội dung sách chỉ hiển thị sau khi quyền Professional Track được xác nhận.</p>
+  </section>
+
+  <section id="ptProtectedContent" hidden>
+    <header class="phb-topbar">
+      <div>
+        <a class="phb-back" href="professional-track.html">← Professional Track</a>
+        <div class="phb-title-row">
+          <div>
+            <span class="phb-eyebrow">SALES & COMMERCIAL · PROFESSIONAL HANDBOOK</span>
+            <h1 id="bookTitle">Sales Professional Handbook</h1>
+          </div>
+          <button class="phb-mobile-toc" id="tocToggle" type="button">☰ Mục lục</button>
+        </div>
+      </div>
+      <div class="phb-progress-card">
+        <div>
+          <span>Tiến độ đọc</span>
+          <strong id="readingPercent">0%</strong>
+        </div>
+        <div class="phb-progress"><i id="readingBar"></i></div>
+        <small id="chapterCounter">Chương 1 / 2</small>
+      </div>
+    </header>
+
+    <div class="phb-layout">
+      <aside class="phb-toc" id="tocPanel" aria-label="Mục lục sách">
+        <div class="phb-toc-head">
+          <span>MỤC LỤC</span>
+          <button id="tocClose" type="button" aria-label="Đóng mục lục">×</button>
+        </div>
+        <nav id="chapterList"></nav>
+        <div class="phb-toc-note">
+          <strong>Nguyên tắc của handbook</strong>
+          <p>Chỉ giữ kiến thức giúp hiểu dữ liệu, ra quyết định và hoàn thiện công việc chính xác hơn.</p>
+        </div>
+      </aside>
+
+      <article class="phb-reader">
+        <div class="phb-chapter-meta">
+          <span id="chapterNo">KNOWLEDGE 01</span>
+          <button id="bookmarkBtn" class="phb-bookmark" type="button">☆ Đánh dấu</button>
+        </div>
+
+        <h2 id="chapterTitle"></h2>
+        <p class="phb-summary" id="chapterSummary"></p>
+
+        <div id="chapterContent" class="phb-content"></div>
+
+        <div class="phb-read-actions">
+          <button id="markReadBtn" type="button">✓ Đánh dấu đã đọc</button>
+        </div>
+
+        <footer class="phb-reader-nav">
+          <button id="prevChapter" type="button">← Chương trước</button>
+          <button id="nextChapter" type="button">Chương tiếp →</button>
+        </footer>
+      </article>
+
+      <aside class="phb-side">
+        <section>
+          <span>ĐANG ĐỌC</span>
+          <strong id="sideChapterTitle"></strong>
+          <p id="sideChapterDesc"></p>
+        </section>
+        <section>
+          <span>QUICK GUIDE</span>
+          <p><b>Khái niệm</b> → hiểu đúng</p>
+          <p><b>Ví dụ</b> → nhìn ra logic</p>
+          <p><b>Professional Note</b> → kinh nghiệm thực tế</p>
+          <p><b>Checkpoint</b> → tự kiểm tra</p>
+        </section>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<script defer src="simple-nav.js"></script>
+<script defer src="theme-unified-v32.js"></script>
+<script defer src="global-search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="analytics-tracker.js"></script>
+<script defer src="sales-handbook-data.js?v=20260901-ebook1"></script>
+<script defer src="sales-handbook.js?v=20260901-ebook1"></script>
+<script defer src="professional-reader-gate.js?v=20260901-ebook1"></script>
+<script defer src="avp-core.js"></script>
+</body>
+</html>
