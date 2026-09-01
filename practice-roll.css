@@ -1,0 +1,272 @@
+
+/* AVP finite roll — clean white professional UI */
+.avp-practice-roll{
+  position:relative;
+  height:360px;
+  margin:16px 0 4px;
+  overflow:hidden;
+  perspective:1200px;
+  touch-action:pan-y;
+  outline:none;
+  cursor:grab;
+}
+.avp-practice-roll.lesson-roll{height:440px}
+.avp-practice-roll.is-dragging{cursor:grabbing}
+.avp-practice-roll-stage{
+  position:absolute;
+  inset:0;
+  transform-style:preserve-3d;
+}
+.avp-practice-roll-card{
+  position:absolute;
+  left:50%;
+  top:24px;
+  width:300px;
+  min-height:240px;
+  padding:24px;
+  border:1px solid #dce7e0;
+  border-radius:20px;
+  background:#fff;
+  box-shadow:0 16px 42px rgba(25,64,43,.08);
+  transform-origin:center;
+  will-change:transform,opacity;
+  user-select:none;
+}
+.avp-practice-roll-card.active{
+  border-color:#8fc5a5;
+  box-shadow:0 24px 56px rgba(24,85,50,.15);
+}
+.avp-practice-roll-card .roll-no{
+  display:block;
+  margin-bottom:14px;
+  color:#217346;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:1.2px;
+}
+.avp-practice-roll-card h3{
+  margin:0 0 10px;
+  color:#173f2b;
+  font-size:21px;
+  line-height:1.22;
+}
+.avp-practice-roll-card p{
+  margin:0;
+  color:#708078;
+  font-size:12px;
+  line-height:1.65;
+}
+.avp-practice-roll-card .roll-meta{
+  display:block;
+  margin-top:16px;
+  color:#496654;
+  font-size:10px;
+  font-weight:800;
+}
+.avp-practice-roll-card .roll-action{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:18px;
+}
+.avp-practice-roll-card .roll-action button{
+  border:1px solid #cfe0d6;
+  border-radius:10px;
+  background:#fff;
+  color:#205f3b;
+  padding:9px 11px;
+  font-size:10px;
+  font-weight:900;
+  cursor:pointer;
+}
+.avp-practice-roll-card .roll-action button.primary{
+  background:#217346;
+  border-color:#217346;
+  color:#fff;
+}
+.avp-practice-roll-dots{
+  position:absolute;
+  left:0; right:0; bottom:12px;
+  display:flex;
+  justify-content:center;
+  gap:7px;
+  z-index:120;
+}
+.avp-practice-roll-dots button{
+  width:7px;height:7px;padding:0;border:0;border-radius:50%;
+  background:#c8d6ce;cursor:pointer;
+}
+.avp-practice-roll-dots button.active{
+  width:25px;border-radius:999px;background:#217346;
+}
+
+/* TikTok topic roll */
+.pv-roll-shell{
+  padding:22px 24px;
+  border:1px solid #dce7e0;
+  border-radius:20px;
+  background:#fff;
+}
+.pv-roll-head{
+  display:flex;align-items:end;justify-content:space-between;gap:18px;
+}
+.pv-roll-head span{
+  color:#217346;font-size:10px;font-weight:950;letter-spacing:1.3px;
+}
+.pv-roll-head h2{margin:5px 0 0;color:#173f2b}
+.pv-roll-head small{color:#77877f;font-size:11px}
+.pv-roll-vote{
+  margin-top:16px;padding-top:14px;border-top:1px solid #e6ece8;
+}
+.pv-roll-vote-top{
+  display:flex;justify-content:space-between;gap:10px;align-items:center;
+}
+.pv-roll-vote-top strong{color:#234d35;font-size:11px}
+.pv-roll-vote-top small{color:#718078;font-size:9px}
+.pv-roll-vote-track{
+  height:6px;margin-top:8px;border-radius:999px;background:#edf2ef;overflow:hidden
+}
+.pv-roll-vote-track span{display:block;height:100%;background:#217346;width:0}
+.pv-roll-contribution{background:#fbfdfb}
+.pv-roll-contribution h3{font-size:19px}
+.pv-topic-vote-btn.roll-vote-btn{
+  min-width:82px;
+  border:1px solid #bcd5c5;
+  border-radius:9px;
+  background:#fff;
+  color:#21643d;
+  padding:8px 10px;
+  font-size:9px;
+  font-weight:900;
+}
+.pv-topic-vote-btn.roll-vote-btn.is-voted{background:#edf7f0}
+.pv-topic-vote-btn.roll-vote-btn.is-admin-cancel{border-color:#d8a9a9;color:#934040;background:#fff}
+
+/* TikTok lesson roll */
+.pv-library-view.roll-view{
+  padding:22px 24px;border:1px solid #dce7e0;border-radius:20px;background:#fff;
+}
+.pv-library-view.roll-view .pv-library-head{margin-bottom:4px}
+.avp-practice-roll.lesson-roll .avp-practice-roll-card{
+  width:min(520px,78vw);
+  min-height:350px;
+  top:20px;
+  padding:0;
+  overflow:hidden;
+}
+.avp-practice-roll.lesson-roll .pv-line{
+  box-sizing:border-box;
+  height:100%;
+  min-height:350px;
+  margin:0!important;
+  padding:24px!important;
+  border:0!important;
+  border-radius:20px!important;
+  background:#fff!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+}
+.avp-practice-roll.lesson-roll .pv-main{width:100%!important}
+.avp-practice-roll.lesson-roll .pv-a{
+  width:100%!important;
+  margin-top:20px!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important;
+  align-items:stretch!important;
+}
+.avp-practice-roll.lesson-roll .pv-a a,
+.avp-practice-roll.lesson-roll .pv-a button{
+  min-height:40px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+  white-space:normal!important;
+  text-align:center!important;
+}
+.avp-practice-roll.lesson-roll .pv-i{display:none!important}
+.avp-practice-roll.lesson-roll .pv-main-top{align-items:flex-start!important}
+.avp-practice-roll.lesson-roll .pv-t{font-size:18px!important;line-height:1.35!important}
+
+/* Grader outer/topic and lesson rolls */
+.pg-roll-overview{
+  padding:22px 24px;
+  border:1px solid #dce7e0;
+  border-radius:20px;
+  background:#fff;
+}
+.pg-roll-overview-head span,
+.pg-roll-topic-head span{
+  color:#217346;font-size:10px;font-weight:950;letter-spacing:1.3px;
+}
+.pg-roll-overview-head h2,
+.pg-roll-topic-head h2{margin:5px 0 5px;color:#173f2b}
+.pg-roll-overview-head p,
+.pg-roll-topic-head p{margin:0;color:#718078;font-size:11px;line-height:1.6}
+.pg-roll-topic-card .roll-levels{
+  display:flex;gap:6px;flex-wrap:wrap;margin-top:16px
+}
+.pg-roll-topic-card .roll-levels span{
+  padding:5px 7px;border:1px solid #dce7e0;border-radius:999px;
+  color:#537061;font-size:8px;font-weight:850;background:#f8faf9
+}
+.pg-roll-topic-card.utility{background:#fafcfb}
+.pg-roll-back{
+  border:1px solid #cadbd1;border-radius:9px;background:#fff;color:#285f3e;
+  padding:9px 11px;font-size:10px;font-weight:900;cursor:pointer
+}
+.pg-lesson-roll-wrap{
+  margin-top:12px;padding:20px 22px;border:1px solid #dce7e0;border-radius:20px;background:#fff
+}
+.pg-lesson-roll-wrap .avp-practice-roll-card{
+  width:min(570px,80vw);
+  min-height:370px;
+  top:18px;
+  padding:0;
+  overflow:hidden;
+}
+.pg-lesson-roll-wrap .pg-card{
+  box-sizing:border-box;
+  width:100%!important;
+  height:100%!important;
+  min-height:370px!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:20px!important;
+  box-shadow:none!important;
+  background:#fff!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+.pg-lesson-roll-wrap .pg-card-actions{
+  margin-top:auto!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:8px!important;
+}
+.pg-lesson-roll-wrap .pg-card-actions .pg-card-btn{
+  min-width:0!important;
+  white-space:normal!important;
+  text-align:center!important;
+}
+.pg-outer-only{display:block}
+body.pg-topic-open .pg-outer-only{display:none!important}
+body.pg-topic-open .pg-topic-only{display:block!important}
+.pg-topic-only{display:none}
+
+@media(max-width:700px){
+  .avp-practice-roll{height:330px}
+  .avp-practice-roll.lesson-roll{height:420px}
+  .avp-practice-roll-card{width:235px;min-height:225px;padding:20px}
+  .avp-practice-roll-card h3{font-size:18px}
+  .pv-roll-shell,.pv-library-view.roll-view,.pg-roll-overview,.pg-lesson-roll-wrap{padding:17px 10px}
+  .pv-roll-head{display:block}
+  .pv-roll-head small{display:block;margin-top:6px}
+  .avp-practice-roll.lesson-roll .avp-practice-roll-card,
+  .pg-lesson-roll-wrap .avp-practice-roll-card{width:84vw}
+  .avp-practice-roll.lesson-roll .pv-a,
+  .pg-lesson-roll-wrap .pg-card-actions{grid-template-columns:1fr!important}
+}

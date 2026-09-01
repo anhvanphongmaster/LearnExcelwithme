@@ -3,10 +3,10 @@
 
 const $=id=>document.getElementById(id);
 const qa=s=>Array.from(document.querySelectorAll(s));
-const DIFF_LABEL={basic:"🌱 Cơ bản",intermediate:"📘 Trung cấp",advanced:"🏆 Nâng cao"};
-const TOPICS=[["all","Tất cả"],["clean","🧹 Làm sạch"],["pq","⚙️ Power Query"],["input","⌨️ Nhập liệu"],["formula","🧮 Công thức"],["format","🎨 Định dạng"]];
+const DIFF_LABEL={basic:"Cơ bản",intermediate:"Trung cấp",advanced:"Nâng cao"};
+const TOPICS=[["clean","Làm sạch dữ liệu"],["pq","Power Query"],["input","Nhập liệu"],["formula","Công thức"],["format","Định dạng"]];
 
-let currentTopic="all",currentDifficulty="all",currentRankDifficulty="basic";
+let currentTopic="overview",currentDifficulty="all",currentRankDifficulty="basic";
 let pendingLesson=null,pendingFile=null,pendingAppealLesson=null,xlsxPromise=null;
 let isAdminTester=false;
 const submissionCache=new Map();
@@ -68,27 +68,91 @@ const hasFn=(f,fn)=>new RegExp(`(^|[^A-Z0-9_])${fn}\\s*\\(`,"i").test(String(f||
 const cleanSpace=s=>String(s??"").trim().replace(/\s+/g," ");
 const proper=s=>cleanSpace(s).toLocaleLowerCase("vi-VN").replace(/(^|[\s-])\p{L}/gu,m=>m.toLocaleUpperCase("vi-VN"));
 
+function topicCounts(id){
+  const ls=lessons().filter(l=>l.topic===id);
+  return {
+    total:ls.length,
+    basic:ls.filter(l=>l.difficulty==="basic").length,
+    intermediate:ls.filter(l=>l.difficulty==="intermediate").length,
+    advanced:ls.filter(l=>l.difficulty==="advanced").length
+  };
+}
+
 function renderTopicTabs(){
   const root=$("pgTopicTabs");if(!root)return;
-  root.innerHTML=TOPICS.map(([id,label])=>`<button type="button" class="pg-topic${id===currentTopic?" active":""}" data-topic="${id}">${label}</button>`).join("");
-  root.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>{currentTopic=b.dataset.topic;renderTopicTabs();renderLessons();resetLessonScroll();setTimeout(()=>centerTab(document.querySelector(`[data-topic="${currentTopic}"]`)),30)});
+  const topicCards = TOPICS.map(([id,label],i)=>{
+    const c=topicCounts(id);
+    return `<article class="avp-practice-roll-card pg-roll-topic-card" data-practice-roll-card data-grader-topic="${id}">
+      <span class="roll-no">${String(i+1).padStart(2,"0")}</span>
+      <h3>${esc(label)}</h3>
+      <p>${c.total} bài tự chấm được sắp theo độ khó và cùng dùng hệ thống khóa điểm sau khi nộp.</p>
+      <div class="roll-levels"><span>${c.basic} cơ bản</span><span>${c.intermediate} trung cấp</span><span>${c.advanced} nâng cao</span></div>
+      <div class="roll-action"><button type="button" class="primary" data-grader-topic-open="${id}">Mở chủ đề</button></div>
+    </article>`;
+  }).join("");
+
+  // Sixth navigation card without inventing a fake subject.
+  const allCount=lessons().length;
+  const utility=`<article class="avp-practice-roll-card pg-roll-topic-card utility" data-practice-roll-card data-grader-topic="all">
+    <span class="roll-no">06</span>
+    <h3>Tất cả bài</h3>
+    <p>Mở toàn bộ ${allCount} bài trong một roll duy nhất khi bạn muốn xem xuyên suốt thư viện.</p>
+    <span class="roll-meta">Tổng hợp 5 chủ đề hiện có</span>
+    <div class="roll-action"><button type="button" class="primary" data-grader-topic-open="all">Mở tất cả</button></div>
+  </article>`;
+
+  root.innerHTML=`<div class="avp-practice-roll" data-practice-roll tabindex="0">
+    <div class="avp-practice-roll-stage" data-practice-roll-stage>${topicCards}${utility}</div>
+    <div class="avp-practice-roll-dots" data-practice-roll-dots></div>
+  </div>`;
+
+  root.querySelectorAll("[data-grader-topic-open]").forEach(btn=>{
+    btn.onclick=e=>{
+      e.preventDefault();e.stopPropagation();
+      openTopic(btn.dataset.graderTopicOpen);
+    };
+  });
+  window.AVPPracticeRoll?.initAll(root);
 }
+
 function filteredLessons(){
+  const diffRank={basic:0,intermediate:1,advanced:2};
   return lessons().slice()
-    .sort((a,b)=>(a.topic||"").localeCompare(b.topic||"")||(a.order||0)-(b.order||0))
+    .sort((a,b)=>(diffRank[a.difficulty]??9)-(diffRank[b.difficulty]??9)||(a.order||0)-(b.order||0))
     .filter(l=>currentTopic==="all"||l.topic===currentTopic)
     .filter(l=>currentDifficulty==="all"||l.difficulty===currentDifficulty);
 }
+
+function openTopic(id){
+  currentTopic=id;
+  currentDifficulty="all";
+  document.body.classList.add("pg-topic-open");
+  const label=id==="all"?"Tất cả bài":(TOPICS.find(x=>x[0]===id)?.[1]||"Bài tập");
+  const list=filteredLessons();
+  if($("pgSelectedTopicTitle"))$("pgSelectedTopicTitle").textContent=label;
+  if($("pgSelectedTopicMeta"))$("pgSelectedTopicMeta").textContent=`${list.length} bài · cuộn từ cơ bản đến nâng cao`;
+  renderLessons();
+  try{$("pgTopicLessonArea")?.scrollIntoView({behavior:"smooth",block:"start"})}catch(_){}
+}
+
+function closeTopic(){
+  currentTopic="overview";
+  currentDifficulty="all";
+  document.body.classList.remove("pg-topic-open");
+  renderTopicTabs();
+  try{$("pgTopicOverview")?.scrollIntoView({behavior:"smooth",block:"start"})}catch(_){}
+}
+
 function card(l){
   const st=submissionCache.get(l.key),submitted=!!st?.submitted,locked=submitted&&!isAdminTester,active=!!l.isActive;
   const num=String(Number(l.order)||1).padStart(2,"0");
   const appealStatus=st?.appeal_status||"";
   const status=submitted&&isAdminTester
-    ? `<span class="pg-card-status done">🛠 ADMIN TEST</span>`
+    ? `<span class="pg-card-status done">ADMIN TEST</span>`
     : locked
-    ? `<span class="pg-card-status done">✓ ĐÃ NỘP</span>`
+    ? `<span class="pg-card-status done">ĐÃ NỘP</span>`
     : active
-      ? `<span class="pg-card-status open">● ĐANG MỞ</span>`
+      ? `<span class="pg-card-status open">ĐANG MỞ</span>`
       : `<span class="pg-card-status soon">SẮP MỞ</span>`;
 
   const score=submitted
@@ -100,23 +164,19 @@ function card(l){
   let actions="";
   if(active&&!locked){
     actions=`<div class="pg-card-actions">
-      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải file</button><button class="pg-card-btn review" type="button" data-guide-open="${esc(l.key)}">📖 Hướng dẫn</button>
+      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">TẢI FILE BÀI TẬP</button>
+      <button class="pg-card-btn review" type="button" data-guide-open="${esc(l.key)}">XEM HƯỚNG DẪN</button>
       <label class="pg-card-btn submit pg-file-submit">
-        <span>${isAdminTester&&submitted?"🛠 Nộp test lại":"📤 Nộp bài"}</span>
+        <span>${isAdminTester&&submitted?"NỘP TEST LẠI":"NỘP FILE ĐỂ CHẤM"}</span>
         <input type="file" class="pg-file-input" accept=".xlsx,.xls" data-submit="${esc(l.key)}" aria-label="Nộp file Excel">
       </label>
     </div>`;
   }else if(active&&locked){
-    const appealCopy=appealStatus==="pending"?"⏳ Đang chờ Admin":appealStatus==="approved"?"✓ Đã chấm lại":appealStatus==="rejected"?"✓ Đã phản hồi":"⚑ Báo chấm sai";
+    const appealCopy=appealStatus==="pending"?"Đang chờ Admin":appealStatus==="approved"?"Đã chấm lại":appealStatus==="rejected"?"Đã phản hồi":"Báo chấm sai";
     actions=`<div class="pg-card-actions">
-      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">⬇️ Tải lại file</button>
-      <button class="pg-card-btn review" type="button" data-review="${esc(l.key)}">🤖 Xem đánh giá</button>
-      <button class="pg-card-btn visibility ${st?.is_public?"public":"private"}" type="button" data-visibility="${esc(l.key)}">
-        ${st?.is_public?"🏆 Đang lên BXH":"🔒 Chưa lên BXH"}
-      </button>
-      <button class="pg-card-btn appeal${appealStatus?" has-status":""}" type="button" data-appeal="${esc(l.key)}" ${appealStatus?"disabled":""}>
-        ${appealCopy}
-      </button>
+      <button class="pg-card-btn download" type="button" data-download="${esc(l.key)}">TẢI LẠI FILE</button>
+      <button class="pg-card-btn review" type="button" data-review="${esc(l.key)}">XEM ĐÁNH GIÁ</button>
+      <button class="pg-card-btn appeal${appealStatus?" has-status":""}" type="button" data-appeal="${esc(l.key)}" ${appealStatus?"disabled":""}>${appealCopy}</button>
     </div>`;
   }else{
     actions=`<div class="pg-card-soon-note">Bài này chưa mở để nộp.</div>`;
@@ -125,32 +185,36 @@ function card(l){
   return `<article class="pg-card pg-card-v9 ${locked?"is-done":active?"is-open":"is-soon"}" data-lesson-card="${esc(l.key)}">
     <div class="pg-card-topline">
       <div class="pg-card-index">#${num}</div>
-      <div class="pg-card-badges">
-        <span class="pg-difficulty ${esc(l.difficulty)}">${DIFF_LABEL[l.difficulty]||l.difficulty}</span>
-        ${status}
-      </div>
+      <div class="pg-card-badges"><span class="pg-difficulty ${esc(l.difficulty)}">${DIFF_LABEL[l.difficulty]||l.difficulty}</span>${status}</div>
     </div>
     <div class="pg-card-main">
-      <div class="pg-card-copy">
-        <span class="pg-card-topic">${esc(l.topicLabel||"Bài tập")}</span>
-        <h3>${esc(l.title)}</h3>
-        <p>${esc(l.description||"")}</p>
-      </div>
+      <div class="pg-card-copy"><span class="pg-card-topic">${esc(l.topicLabel||"Bài tập")}</span><h3>${esc(l.title)}</h3><p>${esc(l.description||"")}</p></div>
       ${score}
     </div>
     ${rules?`<div class="pg-card-rules">${rules}</div>`:""}
     ${actions}
-    <div class="pg-card-foot">
-      <span>${locked
-        ? (appealStatus==="pending"?"Yêu cầu chấm lại đang chờ Admin xử lý":appealStatus==="approved"?"Admin đã duyệt và chấm lại":appealStatus==="rejected"?"Admin đã kiểm tra và giữ nguyên điểm":"Bài đã khóa · Có thể báo chấm sai nếu cần")
-        : active?"Tải nhiều lần · Nộp chính thức 1 lần":"Đang chuẩn bị rule chấm"}</span>
-    </div>
+    <div class="pg-card-foot"><span>${locked
+      ? (appealStatus==="pending"?"Yêu cầu chấm lại đang chờ Admin xử lý":appealStatus==="approved"?"Admin đã duyệt và chấm lại":appealStatus==="rejected"?"Admin đã kiểm tra và giữ nguyên điểm":"Bài đã khóa · Có thể báo chấm sai nếu cần")
+      : active?"Tải nhiều lần · Nộp chính thức 1 lần":"Đang chuẩn bị rule chấm"}</span></div>
   </article>`;
 }
+
 function renderLessons(){
   const grid=$("pgLessonGrid");if(!grid)return;
+  if(currentTopic==="overview"){
+    grid.innerHTML="";
+    return;
+  }
+
   const list=filteredLessons();
-  grid.innerHTML=list.length?list.map(card).join(""):`<article class="pg-card pg-coming"><h3>Không có bài phù hợp</h3></article>`;
+  const cards=list.map(l=>`<div class="avp-practice-roll-card" data-practice-roll-card>${card(l)}</div>`).join("");
+  grid.innerHTML=list.length
+    ? `<div class="avp-practice-roll lesson-roll" data-practice-roll tabindex="0">
+         <div class="avp-practice-roll-stage" data-practice-roll-stage>${cards}</div>
+         <div class="avp-practice-roll-dots" data-practice-roll-dots></div>
+       </div>`
+    : `<article class="pg-card pg-coming"><h3>Không có bài phù hợp</h3></article>`;
+
   const active=lessons().filter(x=>x.isActive).length;
   const submitted=[...submissionCache.values()].filter(x=>x?.submitted).length;
   if($("pgEngineSummary"))$("pgEngineSummary").textContent=`${active}/${lessons().length} bài đang mở · ${submitted} bài đã nộp`;
@@ -158,9 +222,7 @@ function renderLessons(){
   grid.querySelectorAll("[data-download]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.download);if(l)downloadLesson(l)});
   grid.querySelectorAll("[data-submit]").forEach(i=>{
     i.onchange=e=>{
-      const f=e.target.files?.[0];
-      const lessonKey=i.dataset.submit;
-      const l=lessons().find(x=>x.key===lessonKey);
+      const f=e.target.files?.[0], lessonKey=i.dataset.submit, l=lessons().find(x=>x.key===lessonKey);
       if(l&&f)onFilePicked(l,f);
       e.target.value="";
     };
@@ -168,24 +230,19 @@ function renderLessons(){
   grid.querySelectorAll(".pg-file-submit").forEach(label=>{
     label.addEventListener("keydown",e=>{
       if((e.key==="Enter"||e.key===" ")&&!e.target.matches("input")){
-        e.preventDefault();
-        label.querySelector('input[type="file"]')?.click();
+        e.preventDefault();label.querySelector('input[type="file"]')?.click();
       }
     });
-    label.setAttribute("tabindex","0");
-    label.setAttribute("role","button");
+    label.setAttribute("tabindex","0");label.setAttribute("role","button");
   });
   grid.querySelectorAll("[data-review]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.review);if(l)showStoredReview(l)});
   grid.querySelectorAll("[data-guide-open]").forEach(b=>b.onclick=()=>window.AVPPracticeGuides?.open(b.dataset.guideOpen));
-  grid.querySelectorAll("[data-visibility]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.visibility);if(l)toggleResultVisibility(l)});
   grid.querySelectorAll("[data-appeal]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.appeal);if(l)openAppeal(l)});
+  window.AVPPracticeRoll?.initAll(grid);
 }
+
 async function loadSubmissionStates(){
-  let u=null;
-  try{
-    u=window.AVPAccess?await window.AVPAccess.getUser():null;
-  }catch(e){u=null}
-  if(!u)return;
+  const u=await requireLogin();if(!u)return;
   const sb=await getClient();if(!sb?.rpc)return;
 
   isAdminTester=await detectAdminTester(sb);
@@ -1127,128 +1184,16 @@ async function loadLeaderboard(){
     const {data,error}=await sb.rpc("practice_grader_leaderboard_v4",{p_difficulty:currentRankDifficulty,p_limit:50});
     if(error)throw error;
     const rows=Array.isArray(data)?data:[];
-    const starMap=await loadStarCounts(sb,rows);
     list.innerHTML=rows.length?rows.map((r,i)=>{
-      const rank=Number(r.rank_no)||(i+1),medal=rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":`${rank}.`;
-      const uid=String(r.user_id||r.id||r.uid||"");
-      const stars=Number(r.star_count||r.stars||starMap[uid]||0);
-      const self=!!r.is_me;
-      return `<li class="pg-board-row${self?" me":""}" data-user-id="${esc(uid)}" data-name="${esc(r.display_name||"Học viên")}">
-        <span class="pg-board-rank">${medal}</span>
-        <span class="pg-board-name">${esc(r.display_name||"Học viên")}${self?" · Bạn":""}</span>
-        <span class="pg-board-score">${Number(r.total_score)||0}<small>đ</small></span>
-        <button type="button" class="pg-star-btn" data-gift-star ${self?"disabled":""} title="${self?"Không tự tặng sao":"Tặng 1 sao"}">★ <b class="pg-star-count">${stars}</b></button>
-        <span class="pg-board-meta">${Number(r.submitted_lessons)||0} bài · TB ${Number(r.avg_score)||0}/100</span>
-      </li>`;
+      const rank=Number(r.rank_no)||(i+1),medal=`${rank}.`;
+      return `<li class="pg-board-row${r.is_me?" me":""}"><span class="pg-board-rank">${medal}</span><span class="pg-board-name">${esc(r.display_name||"Học viên")}${r.is_me?" · Bạn":""}</span><span class="pg-board-score">${Number(r.total_score)||0}<small>đ</small></span><span class="pg-board-meta">${Number(r.submitted_lessons)||0} bài · TB ${Number(r.avg_score)||0}/100</span></li>`;
     }).join(""):'<li class="pg-board-empty">Chưa có thành tích công khai.</li>';
   }catch(e){list.innerHTML='<li class="pg-board-empty">BXH chưa tải được.</li>'}
 }
 
-function starStore(){
-  try{return JSON.parse(localStorage.getItem("avp_pg_stars_v1")||"{}")}catch(e){return {counts:{},given:{}}}
-}
-function saveStarStore(s){
-  localStorage.setItem("avp_pg_stars_v1",JSON.stringify(s));
-}
-function todayKey(){
-  const d=new Date();
-  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
-}
-async function loadStarCounts(sb,rows){
-  const map={};
-  if(!sb)return map;
-  try{
-    let rpc=await sb.rpc("practice_grader_star_counts");
-    if(rpc.error)rpc=await sb.rpc("practice_grader_star_counts",{p_user_ids:null});
-    if(!rpc.error && Array.isArray(rpc.data)){
-      rpc.data.forEach(x=>{
-        const id=String(x.user_id||x.id||"");
-        if(id)map[id]=Number(x.star_count||x.stars||0);
-      });
-    }
-  }catch(e){}
-  try{
-    const {data,error}=await sb.from("practice_grader_stars").select("to_user_id");
-    if(!error && Array.isArray(data)){
-      const c={};
-      data.forEach(x=>{
-        const id=String(x.to_user_id||"");
-        if(id)c[id]=(c[id]||0)+1;
-      });
-      Object.assign(map,c);
-    }
-  }catch(e){}
-  return map;
-}
-async function giftStar(btn){
-  const row=btn.closest(".pg-board-row");
-  if(!row)return;
-  const toId=row.dataset.userId||"";
-  const name=row.dataset.name||"học viên";
-  if(row.classList.contains("me")||btn.disabled){
-    alert("Không thể tự tặng sao cho mình.");
-    return;
-  }
-  const user=await requireLogin();
-  if(!user)return;
-  const fromId=user.id||"";
-  if(fromId&&toId&&fromId===toId){
-    alert("Không thể tự tặng sao cho mình.");
-    return;
-  }
-  const store=starStore();
-  store.given=store.given||{};
-  const stamp=todayKey()+"|"+(toId||name);
-  if(store.given[fromId+"|"+stamp]){
-    alert("Hôm nay bạn đã tặng sao cho "+name+" rồi.");
-    return;
-  }
-  btn.disabled=true;
-  const sb=await getClient();
-  if(!sb){
-    btn.disabled=false;
-    alert("Chưa kết nối được server.");
-    return;
-  }
-  if(!toId){
-    btn.disabled=false;
-    alert("Không gửi thông báo được vì dòng này thiếu ID học viên.");
-    return;
-  }
-  const fromName=user?.user_metadata?.full_name||user?.user_metadata?.name||user?.email||"Một học viên";
-  const title="Bạn vừa được tặng 1 sao";
-  const content=fromName+" đã tặng bạn 1 sao trên bảng xếp hạng bài tập chấm điểm.";
-  const notifKey="star:"+fromId+":"+toId+":"+todayKey();
-  const starIns=await sb.from("practice_grader_stars").insert({from_user_id:fromId,to_user_id:toId});
-  const noteIns=await sb.from("practice_grader_star_notifs").insert({
-    notification_key:notifKey,
-    from_user_id:fromId,
-    to_user_id:toId,
-    title,
-    content,
-    type:"practice_grader_star",
-    kind:"personal"
-  });
-  if(noteIns.error){
-    btn.disabled=false;
-    alert("Tặng sao rồi nhưng chưa gửi được thông báo. Chạy SQL bảng practice_grader_star_notifs trước.\n\n"+String(noteIns.error.message||noteIns.error));
-    return;
-  }
-  store.given[fromId+"|"+stamp]=1;
-  const key=toId||name;
-  store.counts=store.counts||{};
-  store.counts[key]=(Number(store.counts[key])||0)+1;
-  saveStarStore(store);
-  const countEl=btn.querySelector(".pg-star-count");
-  if(countEl)countEl.textContent=String((Number(countEl.textContent)||0)+1);
-  btn.classList.add("is-given");
-  if(window.avpAlert)window.avpAlert("Đã tặng 1 sao cho "+name+".",{title:"Sao",icon:"⭐",tone:"ok"});
-  else alert("Đã tặng 1 sao cho "+name+".");
-}
-
 function bind(){
   renderTopicTabs();
-  qa("[data-pg-difficulty]").forEach(b=>b.onclick=()=>{currentDifficulty=b.dataset.pgDifficulty;qa("[data-pg-difficulty]").forEach(x=>x.classList.toggle("active",x===b));renderLessons();resetLessonScroll();centerTab(b)});
+  $("pgTopicBack")?.addEventListener("click",closeTopic);
   qa("[data-rank-difficulty]").forEach(b=>b.onclick=()=>{currentRankDifficulty=b.dataset.rankDifficulty;qa("[data-rank-difficulty]").forEach(x=>x.classList.toggle("active",x===b));centerTab(b);const box=$("pgBoardScroll");if(box)box.scrollTo({top:0,behavior:"smooth"});loadLeaderboard()});
   $("pgSubmitConfirm")?.addEventListener("click",submitOfficial);
   $("pgSubmitCancel")?.addEventListener("click",closeSubmit);
@@ -1259,16 +1204,15 @@ function bind(){
   $("pgPublishClose")?.addEventListener("click",closePublish);
   qa("[data-pg-publish-close]").forEach(x=>x.onclick=closePublish);
   $("pgBoardRefresh")?.addEventListener("click",loadLeaderboard);
-  $("pgBoardList")?.addEventListener("click",e=>{
-    const btn=e.target.closest("[data-gift-star]");
-    if(btn)giftStar(btn);
-  });
   $("pgResultClose")?.addEventListener("click",()=>{$("pgResult").hidden=true});
   $("pgAppealSend")?.addEventListener("click",sendAppeal);
   $("pgAppealCancel")?.addEventListener("click",closeAppeal);
   $("pgAppealClose")?.addEventListener("click",closeAppeal);
   qa("[data-pg-appeal-close]").forEach(x=>x.onclick=closeAppeal);
-  renderLessons();loadSubmissionStates();loadLeaderboard();
+  loadSubmissionStates();
+  loadLeaderboard();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
 })();
+
+
