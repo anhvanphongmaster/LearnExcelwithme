@@ -62,3 +62,19 @@
 .pyt-chvote-btn:disabled{opacity:.7;cursor:default}
 .pyt-chvote-st{font-size:11px;color:rgba(255,255,255,.9);font-weight:700}
 @media(max-width:640px){.pyt-chvote-btn{width:100%;text-align:center}}
+
+/* Nhóm file/project: màu nhẹ, giữ CTA YouTube đỏ là điểm nhấn chính */
+.pyt-phase-roll .pyt-card.pyt-group-raw{background:#fffdfa!important;border-color:#ead8c4!important}
+.pyt-phase-roll .pyt-card.pyt-group-clean{background:#fbfdfc!important;border-color:#cfe1d7!important}
+.pyt-group-raw>p{background:#fff7ed;border-left:3px solid #dfb27f;padding:7px 9px;border-radius:0 9px 9px 0}
+.pyt-group-clean>p{background:#eff7f2;border-left:3px solid #91b9a3;padding:7px 9px;border-radius:0 9px 9px 0}
+.pyt-group-raw .pyt-num{background:#fff1df;color:#8a5a2b}
+.pyt-group-clean .pyt-num{background:#eaf4ee;color:#356b4c}
+.pyt-card-media{height:82px;margin:8px 0 10px;border-radius:11px;overflow:hidden;border:1px solid rgba(61,91,72,.12);background:#f4f7f5}
+.pyt-card-media img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.76) contrast(.94) brightness(1.03)}
+.pyt-stage-file p{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px 0 0}
+.pyt-file-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:0 13px;border-radius:11px;font-size:12px;font-weight:850;text-decoration:none!important;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.pyt-file-link.raw{color:#80542d;background:#fffaf3;border:1px solid #e5c9aa}
+.pyt-file-link.clean{color:#35664b;background:#f5faf7;border:1px solid #bfd7c8}
+.pyt-file-link:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(34,69,48,.09)}
+@media(max-width:600px){.pyt-card-media{height:72px}.pyt-file-link{width:100%}}
