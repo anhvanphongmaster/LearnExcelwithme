@@ -102,14 +102,14 @@
         if(myToken!==token || closing) return;
         text.textContent+=ch;
 
-        let delay=22;
-        if(/[,.—:;!?]/.test(ch)) delay=100;
-        else if(ch===" ") delay=12;
+        let delay=34;
+        if(/[,.—:;!?]/.test(ch)) delay=150;
+        else if(ch===" ") delay=18;
 
         if(!(await wait(delay,myToken))) return;
       }
 
-      if(!(await wait(idx===lines.length-1?950:700,myToken))) return;
+      if(!(await wait(idx===lines.length-1?1200:950,myToken))) return;
 
       if(idx<lines.length-1){
         text.style.opacity="0";
