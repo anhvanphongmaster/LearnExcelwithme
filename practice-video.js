@@ -1476,7 +1476,7 @@
       return '<a class="pv-download" data-avp-static-href="' +
         escapeHtml(href) + '" href="' + escapeHtml(href) + '"' +
         (remote ? ' target="_blank" rel="noopener noreferrer"' : ' download="' + escapeHtml(f) + '"') +
-        ' title="' + escapeHtml(f) + '">TẢI FILE EXCEL ↓</a>';
+        ' title="' + escapeHtml(f) + '">Tải file</a>';
     }).join("");
   }
 
@@ -2096,7 +2096,7 @@
 
     const ico = '<svg class="pv-tt-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true"><path fill="currentColor" d="M16.5 3c.4 2.4 1.9 4.1 4.2 4.4v2.3c-1.5.1-2.9-.4-4.2-1.3v6.5c0 3.4-2.7 6.1-6.1 6.1S4.3 18.3 4.3 14.9s2.7-6.1 6.1-6.1c.3 0 .6 0 .9.1v2.5c-.3-.1-.6-.2-.9-.2-2 0-3.6 1.6-3.6 3.7s1.6 3.7 3.6 3.7 3.6-1.6 3.6-3.7V3h2.5z"/></svg>';
     const tkBtn = tk
-      ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer" title="Mở video trên TikTok">' + ico + ' XEM VIDEO TIKTOK ↗</a>'
+      ? '<a class="pv-tiktok" href="' + tk + '" target="_blank" rel="noopener noreferrer" title="Xem trên TikTok">' + ico + ' TikTok</a>'
       : '';
     const downloadHref = practiceStaticHref(item, fileName);
     const isRemoteDownload = /^https?:\/\//i.test(downloadHref);
@@ -2106,9 +2106,8 @@
         (isRemoteDownload
           ? ' target="_blank" rel="noopener noreferrer"'
           : ' download="' + escapeHtml(fileName) + '"') +
-        ' title="' + escapeHtml(fileName) + '">TẢI FILE EXCEL ↓</a>'
+        ' title="' + escapeHtml(fileName) + '">Tải file</a>'
       : '';
-    const guideBtn = '<a class="pv-guide-link" href="practice-guides.html?lesson=' + encodeURIComponent(item.id) + '">XEM HƯỚNG DẪN →</a>';
     const tags = (item.filterTags || [item.category]).join(" ");
     const hasVideo = !!tk;
     let voteRowHtml;
@@ -2148,7 +2147,7 @@
           skill +
           voteRowHtml +
         "</div>" +
-        '<div class="pv-a">' + tkBtn + guideBtn + fileBtn + "</div>" +
+        '<div class="pv-a">' + tkBtn + fileBtn + "</div>" +
       "</article>"
     );
   }
@@ -2185,187 +2184,49 @@ grid.addEventListener("click", async function (e) {
     });
   }
 
+  const AVP_TOPIC_META=[
+    {cat:"Làm sạch dữ liệu",poll:"clean_data",icon:"🧹",title:"Làm sạch dữ liệu",desc:"Text, ngày, khoảng trắng, duplicate và dữ liệu lỗi."},
+    {cat:"Power Query",poll:"power_query",icon:"⚙️",title:"Power Query",desc:"Import, transform, append, merge, folder và refresh."},
+    {cat:"Nhập liệu",poll:"data_entry",icon:"⌨️",title:"Nhập liệu",desc:"Validation, dropdown, kiểm soát nhập và biểu mẫu."},
+    {cat:"Công thức",poll:"formula",icon:"ƒx",title:"Công thức",desc:"Lookup, điều kiện, mảng động và KPI."},
+    {cat:"Format",poll:"format",icon:"🎨",title:"Format",desc:"Định dạng, Conditional Formatting, print và bố cục."}
+  ];
+
+  function rollFrame(cards,kind,start){
+    return '<div class="avp-roll-shell"><div class="avp-practice-roll '+(kind==='lesson'?'lesson-roll':'')+'" data-practice-roll data-roll-kind="'+kind+'" data-start="'+(start||0)+'" tabindex="0"><div class="avp-roll-stage" data-practice-roll-stage>'+cards+'</div><div class="avp-roll-dots" data-practice-roll-dots></div></div><p class="avp-roll-hint">Kéo / vuốt · lăn chuột · phím ← →</p></div>';
+  }
+
+  function topicOverviewHTML(){
+    const counts={};videoPracticeData.forEach(x=>counts[x.category]=(counts[x.category]||0)+1);
+    const cards=AVP_TOPIC_META.map((m,i)=>'<article class="roll-topic-card" data-practice-roll-card data-topic-open="'+escapeHtml(m.cat)+'"><span class="rt-num">0'+(i+1)+'</span><div><div class="rt-icon">'+m.icon+'</div><h3>'+escapeHtml(m.title)+'</h3><p>'+escapeHtml(m.desc)+'</p></div><div class="rt-foot"><span>'+Number(counts[m.cat]||0)+' bài</span><b>Mở chủ đề →</b></div></article>').join('')+
+      '<article class="roll-topic-card contribute" data-practice-roll-card data-topic-contribute="1"><span class="rt-num">06</span><div><div class="rt-icon">✨</div><h3>Đóng góp nội dung</h3><p>Vote chủ đề bạn muốn được bổ sung hoặc đề xuất ra thêm chủ đề mới.</p></div><div class="rt-foot"><span>Vote mỗi ngày</span><b>Mở đóng góp →</b></div></article>';
+    return '<div class="pv-roll-home">'+rollFrame(cards,'topic',0)+'</div>';
+  }
+
+  function contributionHTML(){
+    return '<div class="pv-roll-detail"><button class="roll-back" type="button" data-topic-back>← Quay lại 5 chủ đề</button><div class="roll-detail-title"><strong>Đóng góp nội dung</strong><p>Vote nhu cầu học tập. Hệ thống vote hiện tại được giữ nguyên.</p></div><div class="pv-roll-vote-panel">'+topicPollHTML()+'</div></div>';
+  }
+
+  function topicDetailHTML(cat,q){
+    const list=videoPracticeData.filter(x=>x.category===cat).filter(item=>!q||((item.title+' '+(item.skill||'')+' '+(item.level||'')).toLowerCase().includes(q))).sort((a,b)=>(a.number||0)-(b.number||0));
+    if(!list.length)return '<div class="pv-roll-detail"><button class="roll-back" type="button" data-topic-back>← Quay lại 5 chủ đề</button><p class="pv-empty">Không tìm thấy bài phù hợp.</p></div>';
+    const cards=list.map((item,idx)=>{let h=cardHTML(item,idx+1,q);return h.replace('<article ','<article data-practice-roll-card ');}).join('');
+    return '<div class="pv-roll-detail"><button class="roll-back" type="button" data-topic-back>← Quay lại 5 chủ đề</button><div class="avp-roll-head"><div><span>'+escapeHtml(cat.toUpperCase())+'</span><h3>'+list.length+' bài thực hành</h3></div><small>Chọn bài ở giữa để thao tác</small></div>'+rollFrame(cards,'lesson',0)+'</div>';
+  }
+
+  let __pvCurrentTopic=null;
   function render(filter, query) {
-    const grid = document.getElementById("pvGrid");
-    if (!grid) return;
-
-    const q = (query || "").trim().toLowerCase();
-    const f = filter || "all";
-
-    const allItems = videoPracticeData.slice();
-    const categoryMap = {};
-    const categoryOrder = [];
-
-    allItems.forEach(function(item){
-      const g = item.category || "Khác";
-      if(!categoryMap[g]){
-        categoryMap[g] = [];
-        categoryOrder.push(g);
-      }
-      categoryMap[g].push(item);
-    });
-
-    // Search always returns one flat result list across all topics.
-    if(q){
-      const matches = allItems.filter(function(item){
-        const hay = (
-          (item.title || "") + " " +
-          (item.skill || "") + " " +
-          (item.level || "") + " " +
-          (item.category || "")
-        ).toLowerCase();
-        return hay.indexOf(q)!==-1;
-      }).sort(function(a,b){ return (a.number||0)-(b.number||0); });
-
-      if(!matches.length){
-        grid.innerHTML =
-          '<section class="pv-library-view">' +
-            '<div class="pv-library-head">' +
-              '<div><span class="pv-library-kicker">KẾT QUẢ TÌM KIẾM</span><h2>Không tìm thấy bài phù hợp</h2></div>' +
-              '<span class="pv-library-total">0 bài</span>' +
-            '</div>' +
-            '<div class="pv-empty">Thử từ khóa khác hoặc chọn một chủ đề ở phía trên.</div>' +
-          '</section>';
-        return;
-      }
-
-      let html =
-        '<section class="pv-library-view">' +
-          '<div class="pv-library-head">' +
-            '<div><span class="pv-library-kicker">KẾT QUẢ TÌM KIẾM</span><h2>' + matches.length + ' bài phù hợp</h2></div>' +
-            '<span class="pv-library-total">' + matches.length + ' bài</span>' +
-          '</div>' +
-          '<div class="pv-library-scroll"><div class="pv-library-list">';
-
-      matches.forEach(function(item,idx){
-        html += cardHTML(item, idx+1, q);
-      });
-
-      html += '</div></div></section>';
-      grid.innerHTML=html;
-      bindVotes();
-      return;
-    }
-
-    // V1 Roll: outer finite topic carousel.
-    if(f==="all"){
-      const topicDefs = [
-        {id:"clean_data", label:"Làm sạch dữ liệu", category:"Làm sạch dữ liệu"},
-        {id:"power_query", label:"Power Query", category:"Power Query"},
-        {id:"data_entry", label:"Nhập liệu", category:"Nhập liệu"},
-        {id:"formula", label:"Công thức", category:"Công thức"},
-        {id:"format", label:"Định dạng", category:"Format"},
-        {id:"new_topic", label:"Đóng góp thêm", category:null}
-      ];
-
-      let html =
-        '<section class="pv-roll-shell" id="pvTopicPoll" aria-live="polite">' +
-          '<div class="pv-roll-head">' +
-            '<div><span>THƯ VIỆN TIKTOK</span><h2>Chọn chủ đề để mở 20 bài thực hành</h2></div>' +
-            '<small>Cuộn, kéo hoặc vuốt · dừng ở đầu và cuối</small>' +
-          '</div>' +
-          '<div class="avp-practice-roll" data-practice-roll tabindex="0">' +
-            '<div class="avp-practice-roll-stage" data-practice-roll-stage>';
-
-      topicDefs.forEach(function(topic,index){
-        const list = topic.category ? (categoryMap[topic.category] || []) : [];
-        const available = list.filter(function(item){return !!resolvedFile(item)}).length;
-        const videos = list.filter(function(item){return !!tiktokUrl(item)}).length;
-        const voted = hasTopicVoted(topic.id);
-
-        html +=
-          '<article class="avp-practice-roll-card' + (topic.category ? '' : ' pv-roll-contribution') + '" data-practice-roll-card data-topic-id="' + topic.id + '"' +
-          (topic.category ? ' data-open-topic="' + escapeHtml(topic.category) + '"' : '') + '>' +
-            '<span class="roll-no">' + String(index+1).padStart(2,"0") + '</span>' +
-            '<h3>' + escapeHtml(topic.label) + '</h3>' +
-            '<p>' + (topic.category
-              ? (list.length + ' bài được sắp từ cơ bản đến nâng cao. Mở chủ đề để cuộn qua từng bài.')
-              : 'Bình chọn để đề xuất thêm nội dung hoặc một hướng học mới cho kho thực hành.') + '</p>' +
-            '<span class="roll-meta">' + (topic.category ? (list.length + ' bài · ' + available + ' file · ' + videos + ' video') : 'Đề xuất nội dung tiếp theo') + '</span>' +
-            '<div class="pv-roll-vote">' +
-              '<div class="pv-roll-vote-top">' +
-                '<strong data-topic-total="' + topic.id + '">0 lượt</strong>' +
-                '<small data-topic-percent="' + topic.id + '">0%</small>' +
-              '</div>' +
-              '<div class="pv-roll-vote-track"><span data-topic-bar="' + topic.id + '"></span></div>' +
-            '</div>' +
-            '<div class="roll-action">' +
-              (topic.category ? '<button type="button" class="primary" data-open-topic-btn="' + escapeHtml(topic.category) + '">Xem 20 bài</button>' : '<span></span>') +
-              '<div class="pv-topic-vote-control">' +
-                '<button type="button" class="pv-topic-vote-btn roll-vote-btn' + (voted?' is-voted':'') + '" data-topic-vote="' + topic.id + '">' +
-                  (voted?'✓ Đã vote hôm nay':'Vote') +
-                '</button>' +
-                '<small class="pv-topic-vote-status"' + (voted?'':' hidden') + '>' + (voted?'Bạn có thể vote lại vào ngày mai':'') + '</small>' +
-              '</div>' +
-            '</div>' +
-          '</article>';
-      });
-
-      html +=
-            '</div><div class="avp-practice-roll-dots" data-practice-roll-dots></div>' +
-          '</div>' +
-          '<p class="pv-topic-note" id="pvTopicVoteNote">Phần trăm được tính trên tổng số vote của tất cả lựa chọn.</p>' +
-        '</section>';
-
-      grid.innerHTML = html;
-      bindTopicVotes();
-      setTimeout(loadTopicVoteSummary,0);
-      window.AVPPracticeRoll?.initAll(grid);
-
-      grid.querySelectorAll("[data-open-topic-btn]").forEach(function(btn){
-        btn.addEventListener("click",function(e){
-          e.preventDefault();e.stopPropagation();
-          render(btn.getAttribute("data-open-topic-btn")||"all","");
-          try{grid.scrollIntoView({behavior:"smooth",block:"start"})}catch(_){}
-        });
-      });
-      return;
-    }
-
-    // Selected TikTok topic = finite roll of its lessons.
-    let topicItems = allItems.filter(function(item){
-      const cat=String(item.category||"");
-      return cat===f || cat.toLowerCase().indexOf(String(f).toLowerCase())!==-1;
-    }).sort(function(a,b){
-      const rank={"Cơ bản":0,"Trung cấp":1,"Nâng cao":2,"Thực tế":3};
-      return (rank[a.level]??9)-(rank[b.level]??9) || (a.number||0)-(b.number||0);
-    });
-
-    if(!topicItems.length){
-      grid.innerHTML='<p class="pv-empty">Chưa có bài trong chủ đề này.</p>';
-      return;
-    }
-
-    const available=topicItems.filter(function(item){return !!resolvedFile(item)}).length;
-    const videos=topicItems.filter(function(item){return !!tiktokUrl(item)}).length;
-
-    let html =
-      '<section class="pv-library-view roll-view">' +
-        '<div class="pv-library-head">' +
-          '<div><span class="pv-library-kicker">CHỦ ĐỀ</span><h2>' + escapeHtml(String(f).toUpperCase()) + '</h2>' +
-          '<p>' + topicItems.length + ' bài · ' + available + ' file · ' + videos + ' video · từ cơ bản đến nâng cao</p></div>' +
-          '<button type="button" class="pv-library-back" data-library-back>← Chủ đề</button>' +
-        '</div>' +
-        '<div class="avp-practice-roll lesson-roll" data-practice-roll tabindex="0">' +
-          '<div class="avp-practice-roll-stage" data-practice-roll-stage>';
-
-    topicItems.forEach(function(item,idx){
-      html += '<div class="avp-practice-roll-card avp-lesson-card" data-practice-roll-card>' +
-        cardHTML(item,idx+1,"") +
-      '</div>';
-    });
-
-    html +=
-          '</div><div class="avp-practice-roll-dots" data-practice-roll-dots></div>' +
-        '</div>' +
-      '</section>';
-
-    grid.innerHTML=html;
-    const back=grid.querySelector("[data-library-back]");
-    if(back) back.addEventListener("click",function(){render("all","")});
-    bindVotes();
+    const grid=document.getElementById("pvGrid");if(!grid)return;
+    const q=(query||"").trim().toLowerCase();
+    if(filter&&filter!=="all")__pvCurrentTopic=filter;
+    grid.innerHTML=__pvCurrentTopic?topicDetailHTML(__pvCurrentTopic,q):topicOverviewHTML();
+    bindVotes();bindTopicVotes();
+    grid.querySelectorAll('[data-topic-open]').forEach(card=>card.addEventListener('click',()=>{__pvCurrentTopic=card.getAttribute('data-topic-open');render(__pvCurrentTopic,"");}));
+    grid.querySelector('[data-topic-contribute]')?.addEventListener('click',()=>{grid.innerHTML=contributionHTML();bindTopicVotes();setTimeout(loadTopicVoteSummary,0);grid.querySelector('[data-topic-back]')?.addEventListener('click',()=>{__pvCurrentTopic=null;render('all','')});});
+    grid.querySelector('[data-topic-back]')?.addEventListener('click',()=>{__pvCurrentTopic=null;render('all','')});
     window.AVPPracticeRoll?.initAll(grid);
   }
+
 
   async function loadDynamicPracticeLibrary() {
     var sb = null;
@@ -2413,42 +2274,18 @@ grid.addEventListener("click", async function (e) {
 
   function init() {
     updateSummary();
-    setTimeout(function(){ detectPracticeAdmin(false); }, 120);
-    setTimeout(function(){ if (!__pvIsAdmin) detectPracticeAdmin(true); }, 900);
-    setTimeout(function(){ if (!__pvIsAdmin) detectPracticeAdmin(true); }, 2200);
-    setTimeout(loadPublicVoteSummary, 180);
-    setTimeout(initDailyVoteDashboard, 220);
-    render("all", "");
-    bindVotes();
-    bindTopicVotes();
-    loadDynamicPracticeLibrary().then(function(changed){
-      if (changed) { updateSummary(); render("all", ""); }
-    });
-
-    const search = document.getElementById("pvSearch");
-    const filters = document.querySelectorAll(".pv-filter");
-    let currentFilter = "all";
-
-    if (search) {
-      search.addEventListener("input", function () {
-        render(currentFilter, search.value || "");
-      });
-      search.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          render(currentFilter, search.value || "");
-        }
-      });
-    }
-
-    filters.forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        filters.forEach(function (b) { b.classList.remove("active"); });
-        btn.classList.add("active");
-        currentFilter = btn.getAttribute("data-filter") || "all";
-        render(currentFilter, search ? search.value : "");
-      });
-    });
+    setTimeout(function(){ detectPracticeAdmin(false); },120);
+    setTimeout(function(){ if(!__pvIsAdmin)detectPracticeAdmin(true); },900);
+    setTimeout(function(){ if(!__pvIsAdmin)detectPracticeAdmin(true); },2200);
+    setTimeout(loadPublicVoteSummary,180);
+    setTimeout(initDailyVoteDashboard,220);
+    render("all","");bindVotes();bindTopicVotes();
+    loadDynamicPracticeLibrary().then(function(changed){if(changed){updateSummary();__pvCurrentTopic=null;render("all","");}});
+    const search=document.getElementById("pvSearch");
+    if(search){search.addEventListener("input",function(){if(__pvCurrentTopic)render(__pvCurrentTopic,search.value||"");});}
+    // Daily ranking becomes a finite roll once its rows are loaded.
+    const list=document.getElementById("pvDailyList");
+    if(list){list.setAttribute("data-practice-roll-stage","");const old=list.parentElement; if(old){old.classList.add("ranking-roll","avp-practice-roll");old.setAttribute("data-practice-roll","");old.setAttribute("data-roll-kind","ranking");old.setAttribute("tabindex","0");window.AVPPracticeRoll?.watchList(list);}}
   }
 
 document.addEventListener("DOMContentLoaded", init);

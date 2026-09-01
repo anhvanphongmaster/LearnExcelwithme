@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="practice-workspace.css?v=20260831-v104">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#217346">
-<link rel="stylesheet" href="practice-grader.css?v=20260831-v104"><link rel="stylesheet" href="practice-guides.css?v=20260831-v101">
-<link rel="stylesheet" href="practice-roll.css?v=20260901-roll1">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="practice-grader.css?v=20260831-star1">
+<link rel="stylesheet" href="practice-roll.css?v=20260901-rollwhite1"><link rel="stylesheet" href="practice-guides.css?v=20260831-v101">
 </head><body><nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
     <a href="index.html" data-avp-nav="home">Trang chủ</a>
@@ -30,40 +30,65 @@
     <h1>Bài tập tự chấm</h1>
     <p>Khu chấm file Excel tự động: tải đề, làm bài, nộp file và theo dõi kết quả.</p>
   </header>
-  <section class="pw-source-switch" aria-label="Đổi nguồn thực hành">
-  <div class="pw-source-title">
-    <span>NGUỒN THỰC HÀNH</span>
-    <strong>Chuyển nhanh sang khu khác</strong>
-  </div>
-  <div class="pw-source-links">
-    <a href="practice-tiktok.html" data-source="tiktok"><span>TikTok</span><small>Kho bài + file</small></a>
-    <a href="practice-youtube.html" data-source="youtube"><span>YouTube</span><small>Project theo video</small></a>
-    <a href="practice-grader.html" data-source="grader"><span>Tự chấm</span><small>Nộp file & nhận điểm</small></a>
-    <a href="practice-guides.html" data-source="guide"><span>Hướng dẫn</span><small>Gợi ý cách làm</small></a>
-  </div>
-</section>
   <section class="pw-workspace" data-active-source="grader">
-    
-<div class="pw-section-head">
-  <div><span class="pw-eyebrow">THƯ VIỆN BÀI TỰ CHẤM</span><h2>Chọn chủ đề để mở danh sách bài</h2></div>
+<div class="pg-one-shot-note"><strong>AUTO GRADING · ONE SHOT</strong><span>Mỗi bài chỉ được nộp chính thức 1 lần. Hãy kiểm tra kỹ file trước khi xác nhận chấm.</span></div>
+
+<section class="pg-topic-roll-wrap avp-roll-shell"><div class="avp-roll-head"><div><span>5 CHỦ ĐỀ TỰ CHẤM</span><h2>Chọn chủ đề để mở 20 bài</h2></div><small>Vuốt hoặc lăn · không quay vòng</small></div><div class="avp-practice-roll" id="pgTopicRoll" data-practice-roll data-roll-kind="topic" tabindex="0"><div class="avp-roll-stage" id="pgTopicRollStage" data-practice-roll-stage></div><div class="avp-roll-dots" data-practice-roll-dots></div></div><p class="avp-roll-hint">Chủ đề ở giữa là chủ đề đang chọn</p></section>
+<div class="pg-practice-toolbar">
+<div aria-label="Chủ đề bài chấm điểm" class="pg-topic-tabs pg-scroll-tabs" id="pgTopicTabs" role="tablist"></div>
+<div class="pg-engine-filter pg-scroll-tabs" id="pgDifficultyTabs">
+<button class="active" data-pg-difficulty="all" type="button">Tất cả</button>
+<button data-pg-difficulty="basic" type="button">🌱 Cơ bản</button>
+<button data-pg-difficulty="intermediate" type="button">📘 Trung cấp</button>
+<button data-pg-difficulty="advanced" type="button">🏆 Nâng cao</button>
 </div>
-<section class="pw-library-map" aria-label="Cách sử dụng thư viện tự chấm">
-  <div class="pw-library-map-step"><b>1</b><span><strong>Chọn chủ đề</strong><small>Làm sạch, Power Query, Công thức...</small></span></div>
-  <i>→</i>
-  <div class="pw-library-map-step"><b>2</b><span><strong>Chọn bài</strong><small>Xem mô tả và tải file đề.</small></span></div>
-  <i>→</i>
-  <div class="pw-library-map-step"><b>3</b><span><strong>Làm & nộp file</strong><small>Tải đề → làm Excel → nộp để chấm.</small></span></div>
-</section>
-<div class="ph-branch-intro grader">
+<div class="pg-engine-summary" id="pgEngineSummary">Đang tải danh sách bài…</div>
+</div>
+
+<section class="pg-lesson-frame">
+<div class="pg-lesson-frame-head">
 <div>
-<span class="ph-branch-kicker">AUTO GRADING · ONE SHOT</span>
-<h2>Bài tập có chấm điểm</h2>
-<p>Mỗi bài chỉ được nộp chính thức 1 lần. Hãy kiểm tra kỹ file trước khi xác nhận chấm.</p>
+<span>📚 DANH SÁCH BÀI</span>
+<h3>Chọn bài để tải file và nộp</h3>
 </div>
-<span class="ph-lazy-badge">CHẤM TRÊN THIẾT BỊ</span>
+<small>↕ Cuộn trong khung</small>
 </div>
- BXH được đưa lên đầu, cấu trúc cuộn giống khu TikTok 
-<section class="pg-progress-panel pg-outer-only" id="pgProgressPanel">
+<div class="pg-lesson-scroll" id="pgLessonScroll">
+<div class="pg-topic-panels" id="pgLessonGrid">
+<article class="pg-card pg-coming">
+<h3>Đang tải bài tập…</h3>
+<p>Hệ thống đang dựng danh sách bài.</p>
+</article>
+</div>
+</div>
+</section>
+<section aria-live="polite" class="pg-daily-board">
+<div class="pg-daily-head">
+<div>
+<span class="pg-daily-kicker">🏆 XẾP HẠNG BÀI TẬP</span>
+<h2>Thành tích bài tập chấm điểm</h2>
+<p>Chọn cấp độ để xem bảng xếp hạng. Cuộn trong khung để xem thêm học viên.</p>
+</div>
+<span class="pg-daily-live"><i></i> LIVE</span>
+</div>
+<div class="pg-rank-tabs" id="pgRankTabs" role="tablist">
+<button class="active" data-rank-difficulty="basic" type="button">🌱 Cơ bản</button>
+<button data-rank-difficulty="intermediate" type="button">📘 Trung cấp</button>
+<button data-rank-difficulty="advanced" type="button">🏆 Nâng cao</button>
+<button data-rank-difficulty="overall" type="button">⭐ Tổng</button>
+</div>
+<div class="pg-board-scroll" id="pgBoardScroll">
+<ol class="pg-board-list" id="pgBoardList">
+<li class="pg-board-empty">Đang tải bảng xếp hạng…</li>
+</ol>
+</div>
+<div class="pg-board-bottom">
+<span>↕ Cuộn trong khung để xem thêm</span>
+<button class="pg-board-refresh" id="pgBoardRefresh" type="button">↻ Làm mới</button>
+</div>
+</section>
+
+<section class="pg-progress-panel" id="pgProgressPanel">
 <div class="pg-progress-head">
 <div>
 <span>📈 TIẾN ĐỘ CỦA BẠN</span>
@@ -80,61 +105,6 @@
 <article><small>Nâng cao</small><strong id="pgProgressAdvanced">0/0</strong></article>
 </div>
 </section>
-<section aria-live="polite" class="pg-daily-board pg-outer-only">
-<div class="pg-daily-head">
-<div>
-<span class="pg-daily-kicker">XẾP HẠNG BÀI TẬP</span>
-<h2>Thành tích bài tập chấm điểm</h2>
-<p>Chọn cấp độ để xem bảng xếp hạng. Cuộn trong khung để xem thêm học viên.</p>
-</div>
-<span class="pg-daily-live"><i></i> LIVE</span>
-</div>
-<div class="pg-rank-tabs" id="pgRankTabs" role="tablist">
-<button class="active" data-rank-difficulty="basic" type="button">Cơ bản</button>
-<button data-rank-difficulty="intermediate" type="button">Trung cấp</button>
-<button data-rank-difficulty="advanced" type="button">Nâng cao</button>
-<button data-rank-difficulty="overall" type="button">Tổng</button>
-</div>
-<div class="pg-board-scroll" id="pgBoardScroll">
-<ol class="pg-board-list" id="pgBoardList">
-<li class="pg-board-empty">Đang tải bảng xếp hạng…</li>
-</ol>
-</div>
-<div class="pg-board-bottom">
-<span>↕ Cuộn trong khung để xem thêm</span>
-<button class="pg-board-refresh" id="pgBoardRefresh" type="button">↻ Làm mới</button>
-</div>
-</section>
- Thanh lọc giống trang bài tập TikTok 
-<section class="pg-roll-overview pg-outer-only" id="pgTopicOverview">
-  <div class="pg-roll-overview-head">
-    <span>THƯ VIỆN TỰ CHẤM</span>
-    <h2>Chọn chủ đề để mở danh sách bài</h2>
-    <p>Các bài trong từng chủ đề được xếp từ cơ bản đến nâng cao. Roll hữu hạn, không quay vòng.</p>
-  </div>
-  <div id="pgTopicTabs"></div>
-</section>
-
-<section class="pg-topic-only" id="pgTopicLessonArea">
-  <div class="pg-roll-topic-head">
-    <button class="pg-roll-back" id="pgTopicBack" type="button">← Chủ đề</button>
-    <span>CHỦ ĐỀ ĐANG CHỌN</span>
-    <h2 id="pgSelectedTopicTitle">Bài tập</h2>
-    <p id="pgSelectedTopicMeta"></p>
-  </div>
-  <div class="pg-practice-toolbar" hidden>
-    <div class="pg-engine-filter" id="pgDifficultyTabs">
-      <button class="active" data-pg-difficulty="all" type="button">Tất cả</button>
-    </div>
-    <div class="pg-engine-summary" id="pgEngineSummary"></div>
-  </div>
-  <section class="pg-lesson-frame pg-lesson-roll-wrap">
-    <div id="pgLessonScroll">
-      <div class="pg-topic-panels" id="pgLessonGrid"></div>
-    </div>
-  </section>
-</section>
-
 <section class="pg-result-panel" hidden="" id="pgResult">
 <div class="pg-result-head">
 <div>
@@ -218,8 +188,8 @@
 <script defer src="analytics-tracker.js"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="practice-lessons.js?v=20260830-v18full100"></script>
-<script defer src="practice-roll.js?v=20260901-roll1"></script>
-<script defer src="practice-grader.js?v=20260901-roll1"></script>
+<script defer src="practice-roll.js?v=20260901-rollwhite1"></script>
+<script defer src="practice-grader.js?v=20260901-rollwhite1"></script>
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
 <script>

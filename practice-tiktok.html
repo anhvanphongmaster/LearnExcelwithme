@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="practice-workspace.css?v=20260831-v104">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#217346">
+<meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="practice-video.css?v=20260831-v104">
-<link rel="stylesheet" href="practice-roll.css?v=20260901-roll1">
+<link rel="stylesheet" href="practice-roll.css?v=20260901-rollwhite1">
 </head><body><nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
     <a href="index.html" data-avp-nav="home">Trang chủ</a>
@@ -30,41 +30,13 @@
     <h1>TikTok Practice</h1>
     <p>Kho bài ngắn theo chủ đề. Mỗi bài có trạng thái rõ ràng và file thực hành khi đã sẵn sàng.</p>
   </header>
-  <section class="pw-source-switch" aria-label="Đổi nguồn thực hành">
-  <div class="pw-source-title">
-    <span>NGUỒN THỰC HÀNH</span>
-    <strong>Chuyển nhanh sang khu khác</strong>
-  </div>
-  <div class="pw-source-links">
-    <a href="practice-tiktok.html" data-source="tiktok"><span>TikTok</span><small>Kho bài + file</small></a>
-    <a href="practice-youtube.html" data-source="youtube"><span>YouTube</span><small>Project theo video</small></a>
-    <a href="practice-grader.html" data-source="grader"><span>Tự chấm</span><small>Nộp file & nhận điểm</small></a>
-    <a href="practice-guides.html" data-source="guide"><span>Hướng dẫn</span><small>Gợi ý cách làm</small></a>
-  </div>
-</section>
-  <section class="pw-library-map" aria-label="Cách sử dụng thư viện TikTok">
-  <div class="pw-library-map-step"><b>1</b><span><strong>Chọn chủ đề</strong><small>Ví dụ: Làm sạch, Power Query, Công thức...</small></span></div>
-  <i>→</i>
-  <div class="pw-library-map-step"><b>2</b><span><strong>Chọn bài</strong><small>Mỗi chủ đề mở thành một danh sách riêng.</small></span></div>
-  <i>→</i>
-  <div class="pw-library-map-step"><b>3</b><span><strong>Chọn hành động</strong><small>Xem TikTok, xem hướng dẫn hoặc tải file Excel.</small></span></div>
-</section>
 
 <section class="pw-workspace" data-active-source="tiktok">
-    
-<div class="pw-section-head">
-  <div><span class="pw-eyebrow">KHO BÀI TIKTOK</span><h2>Chọn bài → tải file → mở video</h2></div>
-  <div class="pw-flow-hint"><span>1 Chọn bài</span><b>→</b><span>2 Tải file</span><b>→</b><span>3 Làm theo video</span></div>
-</div>
-<div class="pw-callout">
-  <strong>File thực hành được đánh dấu bằng nút xanh “TẢI FILE EXCEL”.</strong>
-  <span>Nếu bài chưa có file, card sẽ hiển thị trạng thái tương ứng thay vì nút tải.</span>
-</div>
 
 <section aria-live="polite" class="pv-daily-votes" id="pvDailyVotes">
 <div class="pv-daily-head">
 <div>
-<span class="pv-daily-kicker">XẾP HẠNG NHU CẦU TRONG NGÀY</span>
+<span class="pv-daily-kicker">🏆 XẾP HẠNG NHU CẦU TRONG NGÀY</span>
 <h2>Bài nào đang được cần hướng dẫn nhất?</h2>
 <p>Mặc định là hôm nay. Chạm vào ngày để xem lại 2 ngày trước.</p>
 </div>
@@ -77,20 +49,7 @@
 </div>
 <p class="pv-daily-scroll-hint" id="pvDailyHint">↕ Cuộn trong khung để xem thêm bài</p>
 </section>
-<div class="pv-toolbar" hidden>
-<div class="pv-search-wrap">
-<span aria-hidden="true">🔎</span>
-<input autocomplete="off" id="pvSearch" placeholder="Tìm bài thực hành..." type="search"/>
-</div>
-<p class="pv-lab-hint" style="margin:8px 0 12px;font-size:13px;color:#5f7268">Muốn luyện theo case dài hơn? <a href="practice-lab.html" style="font-weight:700;color:#145a32">Mở Practice Lab</a>.</p><div class="pv-filters" id="pvFilters">
-<button class="pv-filter active" data-filter="all" type="button">Tất cả</button>
-<button class="pv-filter" data-filter="Làm sạch dữ liệu" type="button">Làm sạch</button>
-<button class="pv-filter" data-filter="Power Query" type="button">Power Query</button>
-<button class="pv-filter" data-filter="Công thức" type="button">Công thức</button>
-<button class="pv-filter" data-filter="Nhập liệu" type="button">Nhập liệu</button>
-<button class="pv-filter" data-filter="Format" type="button">Format</button>
-</div>
-</div>
+<div class="avp-roll-head pv-library-roll-head"><div><span>CHỦ ĐỀ THỰC HÀNH</span><h2>Vuốt hoặc lăn để chọn chủ đề</h2></div><small>5 chủ đề · mỗi chủ đề 20 bài · 1 mục đóng góp</small></div>
 <div class="pv-grid" id="pvGrid"></div>
 
 
@@ -103,8 +62,8 @@
 <script defer src="analytics-tracker.js"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="practice-files-manifest.js?v=20260831-v68-download-full-fix"></script>
-<script defer src="practice-roll.js?v=20260901-roll1"></script>
-<script defer src="practice-video.js?v=20260901-roll1"></script>
+<script defer src="practice-roll.js?v=20260901-rollwhite1"></script>
+<script defer src="practice-video.js?v=20260901-rollwhite1"></script>
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
 <script defer src="download-manager.js?v=20260828-ROLLBACK-STABLE1"></script>
