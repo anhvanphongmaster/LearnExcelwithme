@@ -10,7 +10,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="practice-grader.css?v=20260831-star1">
-<link rel="stylesheet" href="practice-roll.css?v=20260901-rollfix3"><link rel="stylesheet" href="practice-guides.css?v=20260831-v101"><link rel="stylesheet" href="avp-site-motion.css?v=20260901-rollfix3">
+<link rel="stylesheet" href="practice-roll.css?v=20260901-autoflow4"><link rel="stylesheet" href="practice-guides.css?v=20260831-v101"><link rel="stylesheet" href="avp-site-motion.css?v=20260901-rollfix3">
 </head><body><nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
     <a href="index.html" data-avp-nav="home">Trang chủ</a>
@@ -33,7 +33,10 @@
   <section class="pw-workspace" data-active-source="grader">
 <div class="pg-one-shot-note"><strong>AUTO GRADING · ONE SHOT</strong><span>Mỗi bài chỉ được nộp chính thức 1 lần. Hãy kiểm tra kỹ file trước khi xác nhận chấm.</span></div>
 
-<section class="pg-topic-roll-wrap avp-roll-shell"><div class="avp-roll-head"><div><span>5 CHỦ ĐỀ TỰ CHẤM</span><h2>Chọn chủ đề để mở 20 bài</h2></div><small>Vuốt hoặc lăn · không quay vòng</small></div><div class="avp-practice-roll" id="pgTopicRoll" data-practice-roll data-roll-kind="topic" tabindex="0"><div class="avp-roll-stage" id="pgTopicRollStage" data-practice-roll-stage></div><div class="avp-roll-dots" data-practice-roll-dots></div></div><p class="avp-roll-hint">Chủ đề ở giữa là chủ đề đang chọn</p></section>
+<section class="pg-topic-roll-wrap avp-roll-shell" id="pgTopicPicker"><div class="avp-roll-head"><div><span>5 CHỦ ĐỀ TỰ CHẤM</span><h2>Chọn chủ đề để mở 20 bài</h2></div><small>Vuốt hoặc lăn · không quay vòng</small></div><div class="avp-practice-roll" id="pgTopicRoll" data-practice-roll data-roll-kind="topic" tabindex="0"><div class="avp-roll-stage" id="pgTopicRollStage" data-practice-roll-stage></div><div class="avp-roll-dots" data-practice-roll-dots></div></div><p class="avp-roll-hint">Đưa chủ đề vào giữa rồi bấm để mở danh sách bài</p></section>
+
+<section class="pg-lesson-frame" id="pgLessonFrame" hidden>
+<button class="roll-back pg-topic-back" type="button" id="pgTopicBack">← Trở lại chọn chủ đề</button>
 <div class="pg-practice-toolbar">
 <div aria-label="Chủ đề bài chấm điểm" class="pg-topic-tabs pg-scroll-tabs" id="pgTopicTabs" role="tablist"></div>
 <div class="pg-engine-filter pg-scroll-tabs" id="pgDifficultyTabs">
@@ -44,12 +47,10 @@
 </div>
 <div class="pg-engine-summary" id="pgEngineSummary">Đang tải danh sách bài…</div>
 </div>
-
-<section class="pg-lesson-frame">
 <div class="pg-lesson-frame-head">
 <div>
 <span>📚 DANH SÁCH BÀI</span>
-<h3>Chọn bài để tải file và nộp</h3>
+<h3 id="pgLessonTopicTitle">Chọn bài để tải file và nộp</h3>
 </div>
 <small>↕ Cuộn trong khung</small>
 </div>
@@ -189,7 +190,7 @@
 <script defer src="avp-core.js"></script>
 <script defer src="practice-lessons.js?v=20260830-v18full100"></script>
 <script defer src="practice-roll.js?v=20260901-rollfix3"></script>
-<script defer src="practice-grader.js?v=20260901-rollfix3"></script>
+<script defer src="practice-grader.js?v=20260901-autoflow4"></script>
 <script defer src="avp-site-motion.js?v=20260901-rollfix3"></script>
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
