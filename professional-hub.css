@@ -11,3 +11,28 @@
 @keyframes proChainRight{to{transform:translate(34px,70px) rotate(-34deg);opacity:0}}
 
 .pro-roll .pro-card{will-change:transform,opacity}.pro-roll.is-dragging{cursor:grabbing}
+
+/* Domain-specific training roll. Kept separate from future Level/Case UI. */
+.pro-training-section{margin-top:18px}
+.pro-training-roll{height:365px;margin-top:14px}
+.pro-training-card{height:252px;padding:22px 24px}
+.pro-training-card h3{margin:11px 0 9px;font-size:19px;line-height:1.25}
+.pro-training-card p{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;line-height:1.55}
+.pro-training-card>span{left:24px;right:24px;bottom:20px;display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;line-height:1.45;color:#2d6d49;font-weight:850}
+.pro-training-detail{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;margin:0 2px;padding:22px 24px;border:1px solid #dce8e0;border-radius:17px;background:linear-gradient(135deg,#fbfdfb,#f3f8f5);color:#183e2b}
+.pro-training-detail>div>span{font-size:9px;letter-spacing:1.4px;font-weight:950;color:var(--pro)}
+.pro-training-detail h3{margin:7px 0 8px;font-size:20px}
+.pro-training-detail p{margin:0;color:#6d7f74;font-size:12px;line-height:1.65}
+.pro-training-detail dl{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0}
+.pro-training-detail dl>div{padding:13px 14px;border:1px solid #e1ebe5;border-radius:13px;background:rgba(255,255,255,.78)}
+.pro-training-detail dt{margin-bottom:6px;color:#5f7567;font-size:9px;font-weight:950;letter-spacing:.7px;text-transform:uppercase}
+.pro-training-detail dd{margin:0;color:#244d35;font-size:11px;font-weight:750;line-height:1.55}
+.pro-phase-note{margin:14px 4px 0;color:#7b8c82;font-size:10px;line-height:1.6;text-align:center}
+
+@media(max-width:700px){
+  .pro-training-roll{height:345px}
+  .pro-training-card{width:244px;height:242px;padding:20px}
+  .pro-training-card>span{left:20px;right:20px;bottom:17px}
+  .pro-training-detail{grid-template-columns:1fr;gap:16px;padding:19px 17px}
+  .pro-training-detail dl{grid-template-columns:1fr}
+}

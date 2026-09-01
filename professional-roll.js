@@ -41,6 +41,7 @@
           card.tabIndex=on?0:-1;
         });
         root.querySelectorAll('[data-dot]').forEach((d,i)=>d.classList.toggle('active',i===active));
+        root.dispatchEvent(new CustomEvent('avp:professional-roll-change',{detail:{index:active,card:cards[active],id:cards[active]?.dataset.id||''}}));
       }
     }
 
@@ -100,7 +101,14 @@
     },true);
 
     draw();
-    root._avpRoll={go,get index(){return Math.round(target)},cards};
+    root._avpRoll={go,draw,get index(){return Math.round(target)},cards};
+    if('ResizeObserver' in window){
+      const observer=new ResizeObserver(()=>draw());
+      observer.observe(root);
+      root._avpRoll.resizeObserver=observer;
+    }else{
+      window.addEventListener('resize',draw,{passive:true});
+    }
   }
 
   function unlock(levelId){
