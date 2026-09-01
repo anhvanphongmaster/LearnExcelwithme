@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xét điều kiện Professional Track | Learn Excel with Anh Van Phong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="professional-track.css?v=20260901-structure1">
+<link rel="stylesheet" href="professional-intro.css?v=20260901-hardgate3">
+<link rel="stylesheet" href="avp-core.css">
+<link rel="stylesheet" href="global-search.css">
+<meta name="theme-color" content="#217346">
+</head>
+<body>
+
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="pt-page">
+  <a class="pt-back" href="practice-video.html">← Về khu Thực hành</a>
+
+  <section class="pt-hero">
+    <span class="pt-kicker">PROFESSIONAL TRACK</span>
+    <h1>Lộ trình Excel Chuyên nghiệp</h1>
+    <p>Chương trình thực hành chuyên sâu theo nghiệp vụ thực tế, dành cho học viên đã hoàn thành nền tảng và được Admin xác nhận.</p>
+    <div class="pt-promise">
+      <span>Case thực tế</span><span>File thực hành</span><span>Sách hướng dẫn nâng cao</span>
+      <span>Chấm điểm tự động</span><span>Hỗ trợ từ Admin</span>
+    </div>
+  </section>
+
+  <section class="pt-status-card" id="ptStatusCard">
+    <div class="pt-status-head">
+      <div>
+        <span class="pt-section-kicker">ĐIỀU KIỆN THAM GIA</span>
+        <h2 id="ptStatusTitle">Đang kiểm tra hồ sơ của bạn…</h2>
+        <p id="ptStatusText">Hệ thống đang đối chiếu điểm, số ngày hoạt động và trạng thái xét duyệt.</p>
+      </div>
+      <span class="pt-status-badge" id="ptStatusBadge">ĐANG KIỂM TRA</span>
+    </div>
+
+    <div class="pt-requirements" id="ptRequirements">
+      <article data-criterion="basic"><span>Điểm Cơ bản</span><strong id="ptBasic">— / 1.500</strong><small id="ptBasicState">Đang kiểm tra</small></article>
+      <article data-criterion="intermediate"><span>Điểm Trung cấp</span><strong id="ptIntermediate">— / 1.300</strong><small id="ptIntermediateState">Đang kiểm tra</small></article>
+      <article data-criterion="advanced"><span>Điểm Nâng cao</span><strong id="ptAdvanced">— / 1.000</strong><small id="ptAdvancedState">Đang kiểm tra</small></article>
+      <article data-criterion="days"><span>Ngày hoạt động</span><strong id="ptDays">— / 5</strong><small id="ptDaysState">Đang kiểm tra</small></article>
+    </div>
+
+    <div id="ptActionArea" class="pt-action-area">
+      <p>Vui lòng chờ trong giây lát.</p>
+    </div>
+  </section>
+
+  <section class="pt-apply-card" id="ptApplyCard" hidden>
+    <div>
+      <span class="pt-section-kicker">HỒ SƠ XÉT DUYỆT</span>
+      <h2>Nộp chứng chỉ để Admin xác nhận</h2>
+      <p>Hệ thống chỉ mở bước này sau khi bạn đạt đủ điểm và đủ 5 ngày hoạt động. Admin sẽ kiểm tra hồ sơ trước khi cấp quyền.</p>
+    </div>
+    <label class="pt-file-field">
+      <span>Chứng chỉ / xác nhận thành tích</span>
+      <input id="ptCertificateFile" type="file" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg">
+      <small>PDF, PNG hoặc JPG · tối đa 8 MB.</small>
+    </label>
+    <label class="pt-note-field">
+      <span>Ghi chú cho Admin <small>(không bắt buộc)</small></span>
+      <textarea id="ptApplicantNote" rows="4" maxlength="800" placeholder="Ví dụ: Mình đã hoàn thành đủ 3 cấp độ và muốn tham gia luồng Sales trước."></textarea>
+    </label>
+    <button type="button" id="ptSubmitApplication" class="pt-primary-btn">Nộp hồ sơ xét duyệt</button>
+  </section>
+
+
+  <section class="pt-about">
+    <span class="pt-section-kicker">TIÊU CHUẨN CHƯƠNG TRÌNH</span>
+    <h2>Không phải khu học nhanh</h2>
+    <p>Mỗi case sẽ được thiết kế như một nhiệm vụ công việc thực tế: đọc yêu cầu, xử lý file, kiểm tra lỗi, hoàn thiện và nộp kết quả. Quyền tham gia được xét theo năng lực và quá trình hoạt động trên website.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
+  <p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p>
+</footer>
+
+<script defer src="simple-nav.js"></script>
+<script defer src="theme-unified-v32.js"></script>
+<script defer src="global-search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="analytics-tracker.js"></script>
+<script defer src="professional-access.js?v=20260901-hardgate3"></script>
+<script defer src="professional-intro.js?v=20260901-hardgate3"></script>
+<script defer src="avp-core.js"></script>
+</body>
+</html>

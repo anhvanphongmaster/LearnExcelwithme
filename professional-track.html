@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lộ trình Excel Chuyên nghiệp | Learn Excel with Anh Van Phong</title>
+<title>Professional Track | Learn Excel with Anh Van Phong</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
-<link rel="stylesheet" href="professional-track.css?v=20260901-structure1">
-<link rel="stylesheet" href="professional-intro.css?v=20260901-force3">
+<link rel="stylesheet" href="professional-track.css?v=20260901-hardgate3">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="stylesheet" href="global-search.css">
 <meta name="theme-color" content="#217346">
@@ -29,87 +28,59 @@
 </nav>
 
 <main class="pt-page">
-  <a class="pt-back" href="practice-video.html">← Về khu Thực hành</a>
-
-  <section class="pt-hero">
-    <span class="pt-kicker">PROFESSIONAL TRACK</span>
-    <h1>Lộ trình Excel Chuyên nghiệp</h1>
-    <p>Chương trình thực hành chuyên sâu theo nghiệp vụ thực tế, dành cho học viên đã hoàn thành nền tảng và được Admin xác nhận.</p>
-    <div class="pt-promise">
-      <span>Case thực tế</span><span>File thực hành</span><span>Sách hướng dẫn nâng cao</span>
-      <span>Chấm điểm tự động</span><span>Hỗ trợ từ Admin</span>
-    </div>
-  </section>
-
-  <section class="pt-status-card" id="ptStatusCard">
+  <section class="pt-status-card" id="ptGate">
     <div class="pt-status-head">
       <div>
-        <span class="pt-section-kicker">ĐIỀU KIỆN THAM GIA</span>
-        <h2 id="ptStatusTitle">Đang kiểm tra hồ sơ của bạn…</h2>
-        <p id="ptStatusText">Hệ thống đang đối chiếu điểm, số ngày hoạt động và trạng thái xét duyệt.</p>
+        <span class="pt-section-kicker">PROFESSIONAL TRACK</span>
+        <h2>Đang xác minh quyền truy cập…</h2>
+        <p>Nội dung chuyên sâu chưa được hiển thị cho đến khi Supabase xác nhận quyền.</p>
       </div>
-      <span class="pt-status-badge" id="ptStatusBadge">ĐANG KIỂM TRA</span>
-    </div>
-
-    <div class="pt-requirements" id="ptRequirements">
-      <article data-criterion="basic"><span>Điểm Cơ bản</span><strong id="ptBasic">— / 1.500</strong><small id="ptBasicState">Đang kiểm tra</small></article>
-      <article data-criterion="intermediate"><span>Điểm Trung cấp</span><strong id="ptIntermediate">— / 1.300</strong><small id="ptIntermediateState">Đang kiểm tra</small></article>
-      <article data-criterion="advanced"><span>Điểm Nâng cao</span><strong id="ptAdvanced">— / 1.000</strong><small id="ptAdvancedState">Đang kiểm tra</small></article>
-      <article data-criterion="days"><span>Ngày hoạt động</span><strong id="ptDays">— / 5</strong><small id="ptDaysState">Đang kiểm tra</small></article>
-    </div>
-
-    <div id="ptActionArea" class="pt-action-area">
-      <p>Vui lòng chờ trong giây lát.</p>
+      <span class="pt-status-badge">CHECKING</span>
     </div>
   </section>
 
-  <section class="pt-apply-card" id="ptApplyCard" hidden>
-    <div>
-      <span class="pt-section-kicker">HỒ SƠ XÉT DUYỆT</span>
-      <h2>Nộp chứng chỉ để Admin xác nhận</h2>
-      <p>Hệ thống chỉ mở bước này sau khi bạn đạt đủ điểm và đủ 5 ngày hoạt động. Admin sẽ kiểm tra hồ sơ trước khi cấp quyền.</p>
-    </div>
-    <label class="pt-file-field">
-      <span>Chứng chỉ / xác nhận thành tích</span>
-      <input id="ptCertificateFile" type="file" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg">
-      <small>PDF, PNG hoặc JPG · tối đa 8 MB.</small>
-    </label>
-    <label class="pt-note-field">
-      <span>Ghi chú cho Admin <small>(không bắt buộc)</small></span>
-      <textarea id="ptApplicantNote" rows="4" maxlength="800" placeholder="Ví dụ: Mình đã hoàn thành đủ 3 cấp độ và muốn tham gia luồng Sales trước."></textarea>
-    </label>
-    <button type="button" id="ptSubmitApplication" class="pt-primary-btn">Nộp hồ sơ xét duyệt</button>
-  </section>
+  <section id="ptProtectedContent" hidden>
+    <a class="pt-back" href="professional-access.html">← Trạng thái chương trình</a>
 
-  <section class="pt-program-card" id="ptProgramCard" hidden>
-    <div class="pt-program-head">
-      <div>
-        <span class="pt-section-kicker">ĐÃ ĐƯỢC MỞ KHÓA</span>
-        <h2>Không gian thực hành chuyên sâu</h2>
-        <p>Cấu trúc đã sẵn sàng. Nội dung case sẽ được xây dựng lần lượt và chỉ hiển thị khi hoàn thiện.</p>
+    <section class="pt-hero">
+      <span class="pt-kicker">PROFESSIONAL TRACK</span>
+      <h1>Lộ trình Excel Chuyên nghiệp</h1>
+      <p>Không gian thực hành chuyên sâu theo nghiệp vụ thực tế. Nội dung case sẽ được xây dựng lần lượt và chỉ phát hành khi hoàn thiện.</p>
+      <div class="pt-promise">
+        <span>Case thực tế</span>
+        <span>File thực hành</span>
+        <span>Sách hướng dẫn nâng cao</span>
+        <span>Chấm điểm tự động</span>
+        <span>Hỗ trợ từ Admin</span>
       </div>
-      <span class="pt-approved-pill">✓ Admin đã xác nhận</span>
-    </div>
-    <div class="pt-domain-grid">
-      <article><span>01</span><strong>Nhập liệu</strong><small>Case thực tế sẽ được bổ sung</small></article>
-      <article><span>02</span><strong>Sales</strong><small>Case thực tế sẽ được bổ sung</small></article>
-      <article><span>03</span><strong>Nhân sự</strong><small>Case thực tế sẽ được bổ sung</small></article>
-      <article><span>04</span><strong>Kho</strong><small>Case thực tế sẽ được bổ sung</small></article>
-      <article><span>05</span><strong>QC</strong><small>Case thực tế sẽ được bổ sung</small></article>
-      <article><span>06</span><strong>Power Query</strong><small>Case thực tế sẽ được bổ sung</small></article>
-      <article><span>07</span><strong>Dashboard</strong><small>Case thực tế sẽ được bổ sung</small></article>
-      <article><span>08</span><strong>Automation</strong><small>Case thực tế sẽ được bổ sung</small></article>
-    </div>
-    <div class="pt-admin-support">
-      <strong>Hỗ trợ từ Admin</strong>
-      <p>Trong từng case, học viên có thể nhận định hướng về yêu cầu bài, logic xử lý và lỗi kỹ thuật. Hỗ trợ tập trung vào phương pháp, không cung cấp đáp án hoàn chỉnh.</p>
-    </div>
-  </section>
+    </section>
 
-  <section class="pt-about">
-    <span class="pt-section-kicker">TIÊU CHUẨN CHƯƠNG TRÌNH</span>
-    <h2>Không phải khu học nhanh</h2>
-    <p>Mỗi case sẽ được thiết kế như một nhiệm vụ công việc thực tế: đọc yêu cầu, xử lý file, kiểm tra lỗi, hoàn thiện và nộp kết quả. Quyền tham gia được xét theo năng lực và quá trình hoạt động trên website.</p>
+    <section class="pt-program-card">
+      <div class="pt-program-head">
+        <div>
+          <span class="pt-section-kicker">KHU VỰC CHUYÊN SÂU</span>
+          <h2>Cấu trúc chương trình</h2>
+          <p>Hiện mới dựng khung. Nội dung chi tiết sẽ được thiết kế ở giai đoạn tiếp theo.</p>
+        </div>
+        <span class="pt-approved-pill" id="ptAccessRole">✓ ĐÃ XÁC NHẬN</span>
+      </div>
+
+      <div class="pt-domain-grid">
+        <article><span>01</span><strong>Nhập liệu</strong><small>Case thực tế sẽ được bổ sung</small></article>
+        <article><span>02</span><strong>Sales</strong><small>Case thực tế sẽ được bổ sung</small></article>
+        <article><span>03</span><strong>Nhân sự</strong><small>Case thực tế sẽ được bổ sung</small></article>
+        <article><span>04</span><strong>Kho</strong><small>Case thực tế sẽ được bổ sung</small></article>
+        <article><span>05</span><strong>QC</strong><small>Case thực tế sẽ được bổ sung</small></article>
+        <article><span>06</span><strong>Power Query</strong><small>Case thực tế sẽ được bổ sung</small></article>
+        <article><span>07</span><strong>Dashboard</strong><small>Case thực tế sẽ được bổ sung</small></article>
+        <article><span>08</span><strong>Automation</strong><small>Case thực tế sẽ được bổ sung</small></article>
+      </div>
+
+      <div class="pt-admin-support">
+        <strong>Hỗ trợ từ Admin</strong>
+        <p>Học viên trong chương trình có thể nhận định hướng về yêu cầu bài, logic xử lý và lỗi kỹ thuật; không cung cấp đáp án hoàn chỉnh.</p>
+      </div>
+    </section>
   </section>
 </main>
 
@@ -125,8 +96,7 @@
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
-<script defer src="professional-track.js?v=20260901-structure1"></script>
-<script defer src="professional-intro.js?v=20260901-force3"></script>
+<script defer src="professional-track-gate.js?v=20260901-hardgate3"></script>
 <script defer src="avp-core.js"></script>
 </body>
 </html>
