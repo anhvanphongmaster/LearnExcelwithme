@@ -22,16 +22,14 @@
     return window.avpSupabase || null;
   }
   async function waitForSession(client, timeout=8000){
-    const start=Date.now();
-    while(Date.now()-start<timeout){
-      try{
-        const {data}=await client.auth.getSession();
-        if(data?.session?.user) return data.session;
-      }catch(e){}
-      await new Promise(r=>setTimeout(r,150));
-    }
     try{
-      const {data}=await client.auth.getSession();
+      let timer;
+      const {data}=await Promise.race([
+        client.auth.getSession(),
+        new Promise((_,reject)=>{
+          timer=setTimeout(()=>reject(new Error("SESSION_TIMEOUT")),Math.min(timeout,5000));
+        })
+      ]).finally(()=>clearTimeout(timer));
       return data?.session || null;
     }catch(e){ return null; }
   }

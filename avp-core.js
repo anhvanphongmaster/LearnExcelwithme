@@ -31,7 +31,7 @@
 <a class="avp-hub-btn" href="excel-race.html">🏁 Excel Race</a>
 <a class="avp-hub-btn secondary" href="excel.html">📘 Excel cơ bản</a>
 <a class="avp-hub-btn secondary" href="dashboard.html">📊 Tiến độ</a>
-<a class="avp-hub-btn secondary" href="auth.html">👤 Đăng nhập</a>
+<a class="avp-hub-btn secondary" href="auth.html?tab=login">👤 Đăng nhập</a>
 </div></section>
       <section class="avp-hub-section"><h3>Học gần đây</h3>${recent}</section>
       <section class="avp-hub-section"><h3>Đã lưu</h3>${books}</section>
@@ -752,8 +752,13 @@
     previousEdgeCount=count;
   }
 
-  refreshStarUnread().then(syncEdgeBadge);
-  setInterval(function(){refreshStarUnread().then(syncEdgeBadge);},8000);
+  function refreshUnreadWhenVisible(){
+    if(document.visibilityState!=="visible") return;
+    refreshStarUnread().then(syncEdgeBadge);
+  }
+
+  refreshUnreadWhenVisible();
+  const starUnreadTimer=setInterval(refreshUnreadWhenVisible,30000);
 
   syncEdgeBadge();
 
@@ -764,35 +769,16 @@
 
   window.addEventListener('avp:community-unread',syncEdgeBadge);
 
-  const chatBadgeObserver=new MutationObserver(mutations=>{
-    if(mutations.some(m=>{
-      const el=m.target?.nodeType===1?m.target:m.target?.parentElement;
-      return el?.closest?.('#avpChatBadge,#avpChatUnreadBadge,.avp-chat-badge,[data-avp-chat-badge],#avpChatLauncher');
-    })){
-      refreshStarUnread().then(syncEdgeBadge);
-  setInterval(function(){refreshStarUnread().then(syncEdgeBadge);},8000);
-
-  syncEdgeBadge();
-    }
-  });
-
-  if(document.body){
-    chatBadgeObserver.observe(document.body,{
-      childList:true,
-      subtree:true,
-      attributes:true,
-      characterData:true
-    });
-  }
-
-  const edgeBadgeTimer=setInterval(
-    syncEdgeBadge,
-    1200
-  );
+  const edgeBadgeTimer=setInterval(()=>{
+    if(document.visibilityState==="visible") syncEdgeBadge();
+  },3000);
 
   window.addEventListener(
     'pagehide',
-    ()=>clearInterval(edgeBadgeTimer),
+    ()=>{
+      clearInterval(edgeBadgeTimer);
+      clearInterval(starUnreadTimer);
+    },
     {once:true}
   );
 

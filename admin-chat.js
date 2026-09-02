@@ -710,7 +710,7 @@
           <strong>Bạn cần đăng nhập để chat với Admin</strong>
           <p>Sau khi đăng nhập, hộp thư và lịch sử trò chuyện sẽ được đồng bộ theo tài khoản của bạn.</p>
           <div class="avp-guest-chat-actions">
-            <a class="avp-guest-login" href="auth.html?mode=login">Đăng nhập</a>
+            <a class="avp-guest-login" href="auth.html?tab=login">Đăng nhập</a>
             <a class="avp-guest-register" href="auth.html?mode=register">Đăng ký</a>
           </div>
         </div>

@@ -24,29 +24,6 @@
 })();
 
 /* =========================================================
-   V89 — GLOBAL CTA SYSTEM
-   One semantic CTA palette for the whole website.
-   ========================================================= */
-(function loadAvpCtaSystem(){
-  if(document.getElementById("avpCtaSystemCss")) return;
-
-  const link=document.createElement("link");
-  link.id="avpCtaSystemCss";
-  link.rel="stylesheet";
-  link.href="avp-cta-system.css?v=20260831-v93";
-  document.head.appendChild(link);
-
-  if(!document.getElementById("avpCtaSystemJs")){
-    const s=document.createElement("script");
-    s.id="avpCtaSystemJs";
-    s.src="avp-cta-system.js?v=20260831-v93";
-    s.defer=true;
-    document.head.appendChild(s);
-  }
-})();
-
-
-/* =========================================================
    V83 — GLOBAL SITE MAINTENANCE
    State is controlled from Admin > Tổng quan.
    Fail-open: if Supabase/RPC is unavailable, the website is not blocked.

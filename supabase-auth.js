@@ -1,18 +1,4 @@
 
-;(function avpForceAssetRefresh(){
-  try{
-    const KEY="avp_asset_refresh_20260829_5file_final";
-    const params=new URLSearchParams(location.search);
-    if(!params.has("avprefresh") && sessionStorage.getItem(KEY)!=="1"){
-      sessionStorage.setItem(KEY,"1");
-      params.set("avprefresh","20260829");
-      const qs=params.toString();
-      location.replace(location.pathname+(qs?"?"+qs:"")+location.hash);
-    }
-  }catch(e){}
-})();
-
-
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const cfg = window.AVP_SUPABASE_CONFIG || {};
@@ -586,7 +572,7 @@ async function updateAuthNav() {
 
   document.querySelectorAll(".auth-nav-slot").forEach(slot => {
     if (!configured || !user) {
-      slot.innerHTML = `<a href="auth.html" class="auth-nav-button">🔐 Đăng nhập</a>`;
+      slot.innerHTML = `<a href="auth.html?tab=login" class="auth-nav-button">🔐 Đăng nhập</a>`;
       return;
     }
 
@@ -743,7 +729,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 /* ===== AVP WEBSITE REVIEW PROMPT V1 ===== */
 (function(){
-  if(/(?:^|\/)admin\.html(?:$|[?#])/.test(location.pathname+location.search)) return;
+  if(/(?:^|\/)(?:admin|auth)\.html(?:$|[?#])/.test(location.pathname+location.search)) return;
   const KEY_SUB='avp_site_review_submitted_v1';
   const KEY_LAST='avp_site_review_last_prompt_v1';
   const KEY_SESSION='avp_site_review_prompted_session_v1';

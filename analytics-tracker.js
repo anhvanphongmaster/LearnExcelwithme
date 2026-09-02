@@ -1,6 +1,12 @@
 (() => {
+  const BOOT_PAGE=(location.pathname.split("/").filter(Boolean).pop() || "index.html").toLowerCase();
+  if(new Set(["auth.html","admin.html","offline.html"]).has(BOOT_PAGE)) return;
+
   const VISITOR_KEY = "avpAnalyticsVisitorId";
   const MAX_WAIT = 3500;
+  const RPC_TIMEOUT = 5000;
+  const PAGE_VIEW_TTL = 30*60*1000;
+  const recentEvents=new Map();
 
   function getVisitorId(){
     let id=localStorage.getItem(VISITOR_KEY);
@@ -58,8 +64,34 @@
     return allowed;
   }
 
+  function recentlyTracked(signature,ttl=1500){
+    const now=Date.now();
+    const last=Number(recentEvents.get(signature)||0);
+    if(now-last<ttl) return true;
+    recentEvents.set(signature,now);
+    if(recentEvents.size>80){
+      for(const [key,at] of recentEvents){
+        if(now-at>60000) recentEvents.delete(key);
+      }
+    }
+    return false;
+  }
+
+  function shouldTrackPageView(page){
+    try{
+      const key=`avp_page_view_${page}`;
+      const now=Date.now();
+      const last=Number(sessionStorage.getItem(key)||0);
+      if(now-last<PAGE_VIEW_TTL) return false;
+      sessionStorage.setItem(key,String(now));
+    }catch(_){ }
+    return true;
+  }
+
   async function track(eventName, options={}){
     try{
+      const signature=[eventName,options.page||currentPage(),options.tool_name||""].join("|");
+      if(recentlyTracked(signature)) return false;
       const client=await getClient();
       if(!client) return false;
 
@@ -71,7 +103,13 @@
         p_metadata:safeMetadata(options.metadata)
       };
 
-      const {error}=await client.rpc("track_analytics_event",payload);
+      let timer;
+      const {error}=await Promise.race([
+        client.rpc("track_analytics_event",payload),
+        new Promise((_,reject)=>{
+          timer=setTimeout(()=>reject(new Error("ANALYTICS_TIMEOUT")),RPC_TIMEOUT);
+        })
+      ]).finally(()=>clearTimeout(timer));
 
       if(error){
         /*
@@ -117,7 +155,7 @@
   async function start(){
     const page=currentPage();
 
-    track("page_view",{page});
+    if(shouldTrackPageView(page)) track("page_view",{page});
 
     if(page==="excel-mobile.html"){
       track("excel_mobile_open",{page});
@@ -130,7 +168,15 @@
     // RPC tự chống trùng; không thay đổi analytics hiện tại.
     try{
       const {data:{session}}=await client.auth.getSession();
-      if(session?.user) client.rpc("professional_track_mark_activity_v1").catch(()=>{});
+      if(session?.user){
+        const day=new Date().toISOString().slice(0,10);
+        const activityKey=`avp_professional_activity_${session.user.id}_${day}`;
+        if(localStorage.getItem(activityKey)!=="1"){
+          client.rpc("professional_track_mark_activity_v1")
+            .then(({error})=>{if(!error)localStorage.setItem(activityKey,"1")})
+            .catch(()=>{});
+        }
+      }
     }catch(_){}
 
     client.auth.onAuthStateChange((event,session)=>{
