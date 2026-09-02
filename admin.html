@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="admin.css?v=20260831-v83-maintenance">
-<link rel="stylesheet" href="admin-professional-track.css?v=20260901-structure1">
+<link rel="stylesheet" href="admin-professional-track.css?v=20260902-case-system2">
 <link rel="stylesheet" href="admin-youtube-projects.css?v=20260901-v1">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="admin-manifest.webmanifest">
@@ -887,25 +887,70 @@ where is_admin = true;</pre>
         <button type="button" id="adminProfessionalReload">↻ Làm mới</button>
       </div>
 
-      <div class="apt-kpis">
-        <article><small>Chờ duyệt</small><strong id="aptPending">0</strong></article>
-        <article><small>Đã duyệt</small><strong id="aptApproved">0</strong></article>
-        <article><small>Cần bổ sung</small><strong id="aptRejected">0</strong></article>
-        <article><small>Tổng hồ sơ</small><strong id="aptTotal">0</strong></article>
+      <div class="apt-mode-tabs" role="tablist" aria-label="Quản lý Professional Track">
+        <button type="button" class="active" data-apt-mode="applications" role="tab">Hồ sơ mở khóa</button>
+        <button type="button" data-apt-mode="catalog" role="tab">Nội dung & Case</button>
+        <button type="button" data-apt-mode="submissions" role="tab">Bài học viên nộp <em id="aptSubmissionBadge" hidden>0</em></button>
       </div>
 
-      <div class="apt-toolbar">
-        <select id="adminProfessionalStatus">
-          <option value="pending">Đang chờ</option>
-          <option value="">Tất cả</option>
-          <option value="approved">Đã phê duyệt</option>
-          <option value="rejected">Cần bổ sung</option>
-        </select>
-        <button type="button" id="adminProfessionalLoad">Tải hồ sơ</button>
+      <div data-apt-view="applications">
+        <div class="apt-kpis">
+          <article><small>Chờ duyệt</small><strong id="aptPending">0</strong></article>
+          <article><small>Đã duyệt</small><strong id="aptApproved">0</strong></article>
+          <article><small>Cần bổ sung</small><strong id="aptRejected">0</strong></article>
+          <article><small>Tổng hồ sơ</small><strong id="aptTotal">0</strong></article>
+        </div>
+
+        <div class="apt-toolbar">
+          <select id="adminProfessionalStatus">
+            <option value="pending">Đang chờ</option>
+            <option value="">Tất cả</option>
+            <option value="approved">Đã phê duyệt</option>
+            <option value="rejected">Cần bổ sung</option>
+          </select>
+          <button type="button" id="adminProfessionalLoad">Tải hồ sơ</button>
+        </div>
+
+        <div id="adminProfessionalList" class="apt-list">
+          <div class="admin-users-empty">Chọn Professional Track để tải hồ sơ.</div>
+        </div>
       </div>
 
-      <div id="adminProfessionalList" class="apt-list">
-        <div class="admin-users-empty">Chọn Professional Track để tải hồ sơ.</div>
+      <div data-apt-view="catalog" hidden>
+        <form class="apt-case-form" id="aptCaseForm">
+          <div class="apt-section-title"><div><span>CASE BUILDER</span><h3>Phát hành Case theo đúng Lĩnh vực → Nội dung → Level</h3></div><small>Case chưa bật “Phát hành” chỉ là bản nháp và học viên chưa thể nộp.</small></div>
+          <div class="apt-form-grid">
+            <label><span>Lĩnh vực</span><select id="aptCaseDomain" required></select></label>
+            <label><span>Nội dung tập luyện</span><select id="aptCaseModule" required></select></label>
+            <label><span>Level</span><select id="aptCaseLevel" required></select></label>
+            <label><span>Vị trí Case</span><select id="aptCaseIndex" required><option value="1">Case 01</option><option value="2">Case 02</option><option value="3">Case 03</option></select></label>
+            <label class="wide"><span>Tên Case</span><input id="aptCaseTitle" maxlength="140" required placeholder="Ví dụ: Đối soát doanh thu theo cửa hàng"></label>
+            <label class="wide"><span>Mục tiêu</span><textarea id="aptCaseGoal" rows="2" maxlength="800" required></textarea></label>
+            <label class="wide"><span>Yêu cầu thực hiện</span><textarea id="aptCaseTasks" rows="4" maxlength="2000" placeholder="Mỗi yêu cầu một dòng" required></textarea></label>
+            <label><span>Năng lực đánh giá</span><input id="aptCaseSkills" maxlength="500"></label>
+            <label><span>Kết quả bàn giao</span><input id="aptCaseOutput" maxlength="500"></label>
+            <label><span>Thời lượng</span><input id="aptCaseDuration" maxlength="80" placeholder="60–90 phút"></label>
+            <label><span>Điểm tối đa</span><input id="aptCaseMaxScore" type="number" min="10" max="10" value="10" readonly></label>
+            <label class="wide"><span>Link file thực hành</span><input id="aptCaseSourceUrl" maxlength="1000" placeholder="https://... hoặc đường dẫn file trong website"><small>Chấp nhận link HTTPS hoặc đường dẫn tương đối, không ép định dạng Google Drive.</small></label>
+            <label class="wide"><span>Link hướng dẫn</span><input id="aptCaseGuideUrl" maxlength="1000" placeholder="https://youtube.com/... hoặc đường dẫn trang hướng dẫn"></label>
+          </div>
+          <div class="apt-checks">
+            <label><input id="aptCaseSubmission" type="checkbox" checked> Cho phép học viên nộp file</label>
+            <label><input id="aptCasePublished" type="checkbox"> Phát hành Case cho học viên</label>
+          </div>
+          <div class="apt-form-actions"><button type="submit" class="primary" id="aptCaseSave">Lưu Case</button><button type="button" id="aptCaseReset">Tạo / chọn Case khác</button></div>
+        </form>
+        <div class="apt-section-title apt-list-title"><div><span>CATALOG</span><h3>Case đã lưu</h3></div><button type="button" id="aptCatalogReload">↻ Làm mới</button></div>
+        <div id="aptCatalogList" class="apt-list"><div class="admin-users-empty">Mở tab để tải danh sách Case.</div></div>
+      </div>
+
+      <div data-apt-view="submissions" hidden>
+        <div class="apt-section-title"><div><span>SUBMISSIONS</span><h3>Chấm bài Professional Track</h3></div><small>Chọn bài để mở file, nhập điểm và phản hồi.</small></div>
+        <div class="apt-toolbar">
+          <select id="aptSubmissionStatus"><option value="pending">Đang chờ chấm</option><option value="">Tất cả</option><option value="revision">Cần nộp lại</option><option value="graded">Đã chấm</option></select>
+          <button type="button" id="aptSubmissionReload">Tải bài nộp</button>
+        </div>
+        <div id="aptSubmissionList" class="apt-list"><div class="admin-users-empty">Mở tab để tải bài học viên đã nộp.</div></div>
       </div>
     </section>
 </div>
@@ -937,7 +982,7 @@ where is_admin = true;</pre>
 <script defer src="theme-unified-v32.js"></script>
 <script defer src="admin-community-center.js?v=20260829-moderation1"></script>
 <script defer src="admin-grader.js?v=20260830-v16badge1"></script>
-<script defer src="admin-professional-track.js?v=20260901-structure1"></script>
+<script defer src="admin-professional-track.js?v=20260902-case-system2"></script>
 <script defer src="admin-youtube-projects.js?v=20260901-v2"></script>
 <script defer src="global-search.js"></script>
 </body>

@@ -105,18 +105,81 @@
 
   const STAGES=["domains","training","levels","cases"];
   const PROGRESS_KEY="avp_professional_case_progress_v1";
+  const SUBMISSION_BUCKET="professional-track-submissions";
   let selectedDomain="input";
   let activeDomain="input";
   let selectedModule=0;
   let activeModule=0;
   let selectedLevel=0;
+  let remoteReady=false;
+  let adminMode=false;
+  let supabase=null;
+  let activeCases=[];
+  const catalog=new Map();
+  const submissions=new Map();
+
+  async function client(){
+    for(let i=0;i<30;i++){
+      const sb=window.avpSupabase||window.supabaseClient||null;
+      if(sb?.rpc)return sb;
+      await new Promise(resolve=>setTimeout(resolve,100));
+    }
+    return null;
+  }
+
+  function safeHref(value){
+    const raw=String(value||"").trim();
+    if(!raw)return "";
+    try{
+      const url=new URL(raw,location.href);
+      if(url.protocol!=="http:"&&url.protocol!=="https:")return "";
+      return raw;
+    }catch(_){return ""}
+  }
+
+  function caseKey(level,index){
+    return `${activeDomain}-${activeModule+1}-${level.id}-${index+1}`;
+  }
+
+  async function loadRemoteState(){
+    supabase=await client();
+    if(!supabase)return;
+    try{
+      const admin=await supabase.rpc("is_admin_user");
+      adminMode=!admin.error&&admin.data===true;
+    }catch(_){adminMode=false}
+    try{
+      const [catalogResult,progressResult]=await Promise.all([
+        supabase.rpc("professional_track_catalog_v2"),
+        supabase.rpc("professional_track_progress_v2")
+      ]);
+      if(catalogResult.error)throw catalogResult.error;
+      if(progressResult.error)throw progressResult.error;
+      catalog.clear();
+      (Array.isArray(catalogResult.data)?catalogResult.data:[]).forEach(row=>catalog.set(String(row.case_key),row));
+      submissions.clear();
+      (Array.isArray(progressResult.data)?progressResult.data:[]).forEach(row=>submissions.set(String(row.case_key),row));
+      remoteReady=true;
+    }catch(error){
+      remoteReady=false;
+      console.info("[Professional Track] Chạy bằng catalog dự phòng:",error?.message||error);
+    }
+  }
 
   function progress(){
     try{return JSON.parse(localStorage.getItem(PROGRESS_KEY)||"{}")||{}}catch(_){return{}}
   }
 
   function levelUnlocked(index){
+    if(adminMode)return true;
     if(index===0)return true;
+    if(remoteReady){
+      const previous=LEVELS[index-1];
+      const scores=previous.caseTemplates.map((_,caseIndex)=>submissions.get(caseKey(previous,caseIndex)))
+        .filter(row=>row?.status==="graded")
+        .map(row=>Number(row.score)||0);
+      return scores.length===previous.caseTemplates.length&&scores.every(score=>score>=7)&&scores.reduce((sum,score)=>sum+score,0)>=25;
+    }
     const done=progress()?.[activeDomain]?.[String(activeModule)]?.completedLevels||[];
     return done.includes(LEVELS[index-1].id);
   }
@@ -206,19 +269,32 @@
   }
 
   function buildCases(level,module){
-    return level.caseTemplates.map((item,index)=>({
-      ...item,
-      id:`${activeDomain}-${activeModule+1}-${level.id}-${index+1}`,
-      module:module.title,
-      skills:module.skills,
-      output:module.output,
-      duration:level.duration,
-      score:10
-    }));
+    return level.caseTemplates.map((template,index)=>{
+      const id=caseKey(level,index);
+      const row=catalog.get(id)||{};
+      return {
+        ...template,
+        id,
+        title:row.title||template.title,
+        goal:row.goal||template.goal,
+        tasks:Array.isArray(row.tasks)&&row.tasks.length?row.tasks:template.tasks,
+        module:module.title,
+        skills:row.skills||module.skills,
+        output:row.expected_output||module.output,
+        duration:row.duration||level.duration,
+        score:Number(row.max_score)||10,
+        sourceUrl:safeHref(row.source_url),
+        guideUrl:safeHref(row.guide_url),
+        published:row.published===true,
+        submissionEnabled:row.submission_enabled!==false&&row.published===true,
+        submission:submissions.get(id)||null
+      };
+    });
   }
 
   function caseCard(item,index){
-    return `<button class="pro-case-card" type="button" data-case-index="${index}"><span>CASE ${String(index+1).padStart(2,"0")}</span><h3>${esc(item.title)}</h3><p>${esc(item.goal)}</p><div><small>${esc(item.duration)}</small><b>${item.score} điểm</b></div><strong>Xem brief →</strong></button>`;
+    const state=item.submission?.status==="graded"?`Đã chấm ${Number(item.submission.score)||0}/${item.score}`:item.submission?.status==="pending"?"Đang chờ chấm":item.submission?.status==="revision"?"Cần nộp lại":item.published?"Đã phát hành":"Case mẫu";
+    return `<button class="pro-case-card" type="button" data-case-index="${index}"><span>CASE ${String(index+1).padStart(2,"0")}</span><em class="pro-case-state ${esc(item.submission?.status||"")}">${esc(state)}</em><h3>${esc(item.title)}</h3><p>${esc(item.goal)}</p><div><small>${esc(item.duration)}</small><b>${item.score} điểm</b></div><strong>Xem brief →</strong></button>`;
   }
 
   function renderCases(levelIndex){
@@ -226,6 +302,7 @@
     const level=LEVELS[levelIndex];
     const module=DATA[activeDomain].items[activeModule];
     const cases=buildCases(level,module);
+    activeCases=cases;
     $("proCaseLevelLabel").textContent=`${DATA[activeDomain].title.toUpperCase()} · ${level.code}`;
     $("proCaseLevelTitle").textContent=module.title;
     const grid=$("proCaseGrid");
@@ -251,13 +328,54 @@
   function openCase(item){
     const grid=$("proCaseGrid");grid.hidden=true;
     const brief=$("proCaseBrief");
-    brief.innerHTML=`<button type="button" class="pro-case-list-back" data-case-list>← Danh sách 3 Case</button><div class="pro-case-brief-head"><div><span>${esc(item.id.toUpperCase())}</span><h2>${esc(item.title)}</h2><p>${esc(item.goal)}</p></div><div><small>Thời lượng dự kiến</small><strong>${esc(item.duration)}</strong><small>Điểm tối đa</small><strong>${item.score}/10</strong></div></div><div class="pro-case-brief-body"><section><h3>Yêu cầu thực hiện</h3><ol>${item.tasks.map(task=>`<li>${esc(task)}</li>`).join("")}</ol></section><section><h3>Năng lực đánh giá</h3><p>${esc(item.skills)}</p><h3>Kết quả phải bàn giao</h3><p>${esc(item.output)}</p></section></div><div class="pro-case-rubric"><span><b>4 điểm</b> Đúng logic và số liệu</span><span><b>3 điểm</b> Có kiểm tra và đối soát</span><span><b>3 điểm</b> Trình bày, cấu trúc và bàn giao</span></div><p class="pro-case-next">Bước tiếp theo: Admin gắn file nguồn, file hướng dẫn và cơ chế nộp/chấm cho từng Case.</p>`;
+    const submission=item.submission;
+    const status=submission?.status==="graded"?`Đã chấm: ${Number(submission.score)||0}/${item.score} điểm${submission.feedback?` · ${esc(submission.feedback)}`:""}`:submission?.status==="pending"?"Bài đã nộp và đang chờ Admin chấm.":submission?.status==="revision"?`Admin yêu cầu nộp lại${submission.feedback?`: ${esc(submission.feedback)}`:"."}`:"";
+    const actions=item.published?`<div class="pro-case-actions">${item.sourceUrl?`<a href="${esc(item.sourceUrl)}" target="_blank" rel="noopener">↓ Tải file thực hành</a>`:""}${item.guideUrl?`<a class="secondary" href="${esc(item.guideUrl)}" target="_blank" rel="noopener">Xem hướng dẫn</a>`:""}${item.submissionEnabled?`<label class="pro-case-upload"><input type="file" data-pro-case-file accept=".xlsx,.xls,.xlsm,.csv,.zip"><span>${submission?.status==="pending"?"Thay file đã nộp":"Chọn file bài làm"}</span></label><button type="button" data-pro-case-submit>Nộp bài</button>`:""}</div>`:`<p class="pro-case-next">Case đang ở chế độ xem trước. Admin chưa phát hành file nguồn và cổng nộp bài.</p>`;
+    brief.innerHTML=`<button type="button" class="pro-case-list-back" data-case-list>← Danh sách 3 Case</button><div class="pro-case-brief-head"><div><span>${esc(item.id.toUpperCase())}</span><h2>${esc(item.title)}</h2><p>${esc(item.goal)}</p></div><div><small>Thời lượng dự kiến</small><strong>${esc(item.duration)}</strong><small>Điểm tối đa</small><strong>${item.score}/10</strong></div></div><div class="pro-case-brief-body"><section><h3>Yêu cầu thực hiện</h3><ol>${item.tasks.map(task=>`<li>${esc(task)}</li>`).join("")}</ol></section><section><h3>Năng lực đánh giá</h3><p>${esc(item.skills)}</p><h3>Kết quả phải bàn giao</h3><p>${esc(item.output)}</p></section></div><div class="pro-case-rubric"><span><b>4 điểm</b> Đúng logic và số liệu</span><span><b>3 điểm</b> Có kiểm tra và đối soát</span><span><b>3 điểm</b> Trình bày, cấu trúc và bàn giao</span></div>${status?`<p class="pro-case-submission-state ${esc(submission?.status||"")}">${status}</p>`:""}${actions}`;
     brief.hidden=false;
     brief.querySelector("[data-case-list]").addEventListener("click",()=>{brief.hidden=true;grid.hidden=false;scrollStage($("proCaseSection"))});
+    brief.querySelector("[data-pro-case-file]")?.addEventListener("change",event=>{
+      const name=event.target.files?.[0]?.name||"Chọn file bài làm";
+      const label=event.target.closest("label")?.querySelector("span");if(label)label.textContent=name;
+    });
+    brief.querySelector("[data-pro-case-submit]")?.addEventListener("click",()=>submitCase(item,brief));
     scrollStage($("proCaseSection"));
   }
 
-  function boot(){
+  async function submitCase(item,brief){
+    if(!supabase)return alert("Chưa kết nối được hệ thống. Hãy tải lại trang.");
+    const input=brief.querySelector("[data-pro-case-file]");
+    const file=input?.files?.[0];
+    if(!file)return alert("Hãy chọn file bài làm trước khi nộp.");
+    if(file.size>15*1024*1024)return alert("File bài làm không được vượt quá 15 MB.");
+    const ext=(file.name.split(".").pop()||"").toLowerCase();
+    if(!["xlsx","xls","xlsm","csv","zip"].includes(ext))return alert("Chỉ nhận XLSX, XLS, XLSM, CSV hoặc ZIP.");
+    const {data:{user}}=await supabase.auth.getUser();
+    if(!user)return alert("Bạn cần đăng nhập lại trước khi nộp bài.");
+    const button=brief.querySelector("[data-pro-case-submit]");
+    button.disabled=true;button.textContent="Đang nộp…";
+    const cleanName=file.name.normalize("NFKD").replace(/[^a-zA-Z0-9._-]+/g,"-").slice(-90)||`baitap.${ext}`;
+    const path=`${user.id}/${item.id}/${Date.now()}-${cleanName}`;
+    const previousPath=item.submission?.file_path||"";
+    try{
+      const upload=await supabase.storage.from(SUBMISSION_BUCKET).upload(path,file,{upsert:false,contentType:file.type||undefined});
+      if(upload.error)throw upload.error;
+      const saved=await supabase.rpc("professional_track_submit_case_v2",{p_case_key:item.id,p_file_path:path,p_original_name:file.name,p_note:null});
+      if(saved.error){try{await supabase.storage.from(SUBMISSION_BUCKET).remove([path])}catch(_){};throw saved.error}
+      if(previousPath&&previousPath!==path){try{await supabase.storage.from(SUBMISSION_BUCKET).remove([previousPath])}catch(_){}}
+      await loadRemoteState();
+      const refreshed=buildCases(LEVELS[selectedLevel],DATA[activeDomain].items[activeModule]);
+      activeCases=refreshed;
+      renderCases(selectedLevel);
+      openCase(refreshed.find(row=>row.id===item.id)||item);
+    }catch(error){
+      alert("Chưa nộp được bài: "+String(error?.message||error));
+    }finally{
+      if(button.isConnected){button.disabled=false;button.textContent="Nộp bài"}
+    }
+  }
+
+  async function boot(){
     const domains=document.querySelector('[data-roll="domains"]');if(!domains)return;
     selectedDomain=domains.querySelector('[data-roll-card].active')?.dataset.id||"input";
     domains.addEventListener("avp:professional-roll-change",e=>{selectedDomain=e.detail.id||"input"});
@@ -267,8 +385,9 @@
       button.addEventListener("click",()=>showStage(button.dataset.proBack));
     });
     showStage("domains",false);
+    loadRemoteState();
   }
 
   window.AVPProfessionalTrackData={domains:DATA,levels:LEVELS};
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>boot(),{once:true});else boot();
 })();
