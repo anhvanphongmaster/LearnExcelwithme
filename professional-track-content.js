@@ -60,29 +60,215 @@
       {title:"Protected Delivery",focus:"Khóa vùng tính, tách input/output và chuẩn hóa tài liệu bàn giao.",skills:"Protection · Version · Handover",output:"Công cụ tự động an toàn cho người dùng cuối."}
     ]}
   };
-  let activeDomain="input";
+  const LEVELS=[
+    {
+      id:"basic",code:"LEVEL 01",title:"Cơ bản ứng dụng",
+      description:"Nắm đúng grain, dựng cấu trúc và kiểm tra các lỗi nền tảng.",
+      requirement:"Mở sẵn",duration:"45–60 phút / Case",
+      caseTemplates:[
+        {title:"Dựng nền dữ liệu",goal:"Chuyển yêu cầu nghiệp vụ thành một cấu trúc dữ liệu có thể kiểm tra.",tasks:["Xác định grain và khóa định danh","Chuẩn hóa trường bắt buộc và kiểu dữ liệu","Tạo kiểm tra tổng đầu vào"]},
+        {title:"Kiểm tra logic cốt lõi",goal:"Phát hiện lỗi nền và chứng minh kết quả bằng đối soát.",tasks:["Thiết lập quy tắc kiểm tra","Tách bản ghi sai hoặc thiếu","Lập bảng tổng hợp ngoại lệ"]},
+        {title:"Bàn giao mini",goal:"Hoàn thiện một file gọn, rõ và người khác có thể sử dụng lại.",tasks:["Tách vùng nhập và vùng kết quả","Ghi hướng dẫn sử dụng ngắn","Kiểm tra lại đầu ra cuối cùng"]}
+      ]
+    },
+    {
+      id:"intermediate",code:"LEVEL 02",title:"Trung cấp",
+      description:"Kết hợp nhiều điều kiện, nhiều nguồn và kiểm tra chéo trong cùng nhiệm vụ.",
+      requirement:"Hoàn thành Level 01",duration:"60–90 phút / Case",
+      caseTemplates:[
+        {title:"Nhiều điều kiện nghiệp vụ",goal:"Xử lý đồng thời các điều kiện có thứ tự ưu tiên rõ ràng.",tasks:["Lập bảng điều kiện","Xử lý trường hợp chồng chéo","Kiểm tra các trường hợp biên"]},
+        {title:"Đối soát chéo",goal:"So sánh hai nguồn và giải thích toàn bộ chênh lệch.",tasks:["Chuẩn hóa khóa nối","Phân loại chênh lệch","Chốt control total"]},
+        {title:"Báo cáo ngoại lệ",goal:"Biến dữ liệu lỗi thành danh sách hành động có mức ưu tiên.",tasks:["Xác định ngưỡng cảnh báo","Phân nhóm nguyên nhân","Tạo phần tóm tắt quản trị"]}
+      ]
+    },
+    {
+      id:"advanced",code:"LEVEL 03",title:"Nâng cao",
+      description:"Mô hình hóa bài toán phức tạp, kiểm soát trường hợp biên và tối ưu khả năng vận hành.",
+      requirement:"Hoàn thành Level 02",duration:"90–120 phút / Case",
+      caseTemplates:[
+        {title:"Mô hình hóa nghiệp vụ",goal:"Thiết kế mô hình bền vững trước khi viết công thức hoặc dựng báo cáo.",tasks:["Phân tách fact và dimension","Xác định quan hệ và grain","Kiểm chứng logic tổng hợp"]},
+        {title:"Stress test & kiểm soát",goal:"Thử file với dữ liệu xấu, dữ liệu thiếu và khối lượng lớn.",tasks:["Tạo bộ trường hợp kiểm thử","Đo lỗi và thời gian xử lý","Bổ sung cơ chế fail-safe"]},
+        {title:"Tối ưu và tài liệu hóa",goal:"Giảm thao tác thủ công và chuẩn hóa tài liệu bàn giao.",tasks:["Loại bước lặp không cần thiết","Chuẩn hóa refresh workflow","Viết checklist vận hành"]}
+      ]
+    },
+    {
+      id:"professional",code:"PROFESSIONAL",title:"Case thực tế",
+      description:"Nhận brief lớn, tự chọn phương án và bàn giao theo rubric của Admin.",
+      requirement:"Hoàn thành Level 03",duration:"2–4 giờ / Case",
+      caseTemplates:[
+        {title:"Nhận brief thực tế",goal:"Đọc yêu cầu chưa hoàn hảo và chủ động làm rõ phạm vi.",tasks:["Tách yêu cầu bắt buộc","Xác định giả định và rủi ro","Lập kế hoạch thực hiện"]},
+        {title:"Thực thi và kiểm chứng",goal:"Xây sản phẩm hoàn chỉnh có bằng chứng đối soát.",tasks:["Thực hiện giải pháp","Kiểm tra control total","Ghi lại quyết định quan trọng"]},
+        {title:"Bàn giao chuyên nghiệp",goal:"Đóng gói sản phẩm để người nhận tự vận hành và đánh giá.",tasks:["Hoàn thiện giao diện đầu ra","Tạo hướng dẫn và checklist","Nộp file để Admin review"]}
+      ]
+    }
+  ];
 
-  function card(item,i){
-    return `<article class="pro-card pro-training-card" data-roll-card data-id="${esc(activeDomain)}-${i}" data-module-index="${i}"><b>MODULE ${String(i+1).padStart(2,"0")}</b><h3>${esc(item.title)}</h3><p>${esc(item.focus)}</p><span>Kết quả: ${esc(item.output)}</span></article>`;
+  const STAGES=["domains","training","levels","cases"];
+  const PROGRESS_KEY="avp_professional_case_progress_v1";
+  let selectedDomain="input";
+  let activeDomain="input";
+  let selectedModule=0;
+  let activeModule=0;
+  let selectedLevel=0;
+
+  function progress(){
+    try{return JSON.parse(localStorage.getItem(PROGRESS_KEY)||"{}")||{}}catch(_){return{}}
   }
-  function detail(item,index){
-    const host=$("proTrainingDetail");if(!host||!item)return;
-    host.innerHTML=`<div><span>MODULE ${String(index+1).padStart(2,"0")}</span><h3>${esc(item.title)}</h3><p>${esc(item.focus)}</p></div><dl><div><dt>Năng lực rèn luyện</dt><dd>${esc(item.skills)}</dd></div><div><dt>Kết quả đầu ra</dt><dd>${esc(item.output)}</dd></div></dl>`;
+
+  function levelUnlocked(index){
+    if(index===0)return true;
+    const done=progress()?.[activeDomain]?.[String(activeModule)]?.completedLevels||[];
+    return done.includes(LEVELS[index-1].id);
   }
-  function renderDomain(id){
-    const domain=DATA[id]||DATA.input;activeDomain=DATA[id]?id:"input";
-    $("proTrainingTitle").textContent=domain.title;
-    const mount=$("proTrainingRollMount");if(!mount)return;
-    mount.querySelector('[data-roll]')?._avpRoll?.resizeObserver?.disconnect();
-    mount.innerHTML=`<div class="pro-roll pro-training-roll" data-roll="training" data-start="0" tabindex="0"><div class="pro-roll-stage">${domain.items.map(card).join("")}</div><div class="pro-roll-dots" data-roll-dots></div></div>`;
+
+  function scrollStage(stage){
+    const top=Math.max(0,(stage?.getBoundingClientRect().top||0)+window.scrollY-92);
+    window.scrollTo({top,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+  }
+
+  function showStage(name,shouldScroll=true){
+    document.querySelectorAll("[data-pro-stage]").forEach(stage=>{
+      stage.hidden=stage.dataset.proStage!==name;
+      stage.classList.toggle("is-current",stage.dataset.proStage===name);
+    });
+    const index=STAGES.indexOf(name);
+    document.querySelectorAll("[data-path-step]").forEach((step,i)=>{
+      step.classList.toggle("active",i===index);
+      step.classList.toggle("done",i<index);
+    });
+    const titles={
+      domains:["Chọn lĩnh vực bạn muốn luyện","Nội dung, Level và Case chỉ xuất hiện sau khi bạn chủ động chọn tầng trước đó."],
+      training:[DATA[activeDomain]?.title||"Nội dung tập luyện","Chọn đúng nội dung chuyên môn bạn muốn phát triển."],
+      levels:[DATA[activeDomain]?.items?.[activeModule]?.title||"Chọn Level","Đi từ nền tảng ứng dụng đến Case thực tế theo từng cấp độ."],
+      cases:[LEVELS[selectedLevel]?.title||"Chọn Case","Mỗi Case có brief, đầu ra và tiêu chí chấm rõ ràng."]
+    };
+    $("proFlowTitle").textContent=titles[name][0];
+    $("proFlowSubtitle").textContent=titles[name][1];
+    if(shouldScroll)scrollStage(document.querySelector(`[data-pro-stage="${name}"]`));
+  }
+
+  function trainingCard(item,i){
+    return `<article class="pro-card pro-training-card" data-roll-card data-id="${esc(activeDomain)}-${i}" data-module-index="${i}"><b>MODULE ${String(i+1).padStart(2,"0")}</b><h3>${esc(item.title)}</h3><p>${esc(item.focus)}</p><span>Chọn nội dung →</span></article>`;
+  }
+
+  function lockChip(level,index){
+    if(levelUnlocked(index))return `<span class="pro-level-status ready">${index===0?"Mở sẵn":"Đã mở"}</span>`;
+    return `<span class="pro-level-status locked">🔒 ${esc(level.requirement)}</span>`;
+  }
+
+  function levelCard(level,index){
+    const unlocked=levelUnlocked(index);
+    return `<article class="pro-card pro-level-card${unlocked?"":" locked"}" data-roll-card data-id="${esc(level.id)}" data-level-index="${index}"><b>${esc(level.code)}</b><h3>${esc(level.title)}</h3><p>${esc(level.description)}</p>${lockChip(level,index)}<span>${unlocked?"Xem 3 Case →":esc(level.requirement)}</span></article>`;
+  }
+
+  function bindRollChoice(root,onChoose){
+    root.addEventListener("click",e=>{
+      const card=e.target.closest("[data-roll-card]");
+      if(!card||!card.classList.contains("active"))return;
+      onChoose(card);
+    });
+    root.addEventListener("keydown",e=>{
+      if(e.key!=="Enter"&&e.key!==" ")return;
+      const card=root.querySelector("[data-roll-card].active");
+      if(!card)return;
+      e.preventDefault();onChoose(card);
+    });
+  }
+
+  function openDomain(id){
+    activeDomain=DATA[id]?id:"input";
+    selectedModule=0;
+    const domain=DATA[activeDomain];
+    $("proTrainingDomainLabel").textContent=`${domain.title.toUpperCase()} · 5 NỘI DUNG`;
+    $("proTrainingTitle").textContent="Chọn nội dung tập luyện";
+    const mount=$("proTrainingRollMount");
+    mount.innerHTML=`<div class="pro-roll pro-training-roll" data-roll="training" data-start="0" tabindex="0"><div class="pro-roll-stage">${domain.items.map(trainingCard).join("")}</div><div class="pro-roll-dots" data-roll-dots></div></div>`;
     const root=mount.querySelector("[data-roll]");
-    root.addEventListener("avp:professional-roll-change",e=>detail(domain.items[e.detail.index],e.detail.index));
-    window.AVPProfessionalRoll?.init(root);detail(domain.items[0],0);
+    root.addEventListener("avp:professional-roll-change",e=>{selectedModule=e.detail.index});
+    window.AVPProfessionalRoll?.init(root);
+    bindRollChoice(root,card=>openModule(Number(card.dataset.moduleIndex)||0));
+    showStage("training");
   }
+
+  function openModule(index){
+    activeModule=Math.max(0,Math.min(index,DATA[activeDomain].items.length-1));
+    selectedLevel=0;
+    const module=DATA[activeDomain].items[activeModule];
+    $("proLevelModuleTitle").textContent=module.title;
+    const mount=$("proLevelRollMount");
+    mount.innerHTML=`<div class="pro-roll pro-level-roll" data-roll="levels" data-start="0" tabindex="0"><div class="pro-roll-stage">${LEVELS.map(levelCard).join("")}</div><div class="pro-roll-dots" data-roll-dots></div></div>`;
+    const root=mount.querySelector("[data-roll]");
+    root.addEventListener("avp:professional-roll-change",e=>{selectedLevel=e.detail.index});
+    window.AVPProfessionalRoll?.init(root);
+    bindRollChoice(root,card=>openLevel(Number(card.dataset.levelIndex)||0));
+    const notice=$("proFlowNotice");notice.hidden=true;notice.textContent="";
+    showStage("levels");
+  }
+
+  function buildCases(level,module){
+    return level.caseTemplates.map((item,index)=>({
+      ...item,
+      id:`${activeDomain}-${activeModule+1}-${level.id}-${index+1}`,
+      module:module.title,
+      skills:module.skills,
+      output:module.output,
+      duration:level.duration,
+      score:10
+    }));
+  }
+
+  function caseCard(item,index){
+    return `<button class="pro-case-card" type="button" data-case-index="${index}"><span>CASE ${String(index+1).padStart(2,"0")}</span><h3>${esc(item.title)}</h3><p>${esc(item.goal)}</p><div><small>${esc(item.duration)}</small><b>${item.score} điểm</b></div><strong>Xem brief →</strong></button>`;
+  }
+
+  function renderCases(levelIndex){
+    selectedLevel=levelIndex;
+    const level=LEVELS[levelIndex];
+    const module=DATA[activeDomain].items[activeModule];
+    const cases=buildCases(level,module);
+    $("proCaseLevelLabel").textContent=`${DATA[activeDomain].title.toUpperCase()} · ${level.code}`;
+    $("proCaseLevelTitle").textContent=module.title;
+    const grid=$("proCaseGrid");
+    grid.innerHTML=cases.map(caseCard).join("");
+    grid.hidden=false;
+    const brief=$("proCaseBrief");brief.hidden=true;brief.innerHTML="";
+    grid.querySelectorAll("[data-case-index]").forEach(button=>{
+      button.addEventListener("click",()=>openCase(cases[Number(button.dataset.caseIndex)]));
+    });
+  }
+
+  function openLevel(index){
+    if(!levelUnlocked(index)){
+      const notice=$("proFlowNotice");
+      notice.textContent=`${LEVELS[index].title} đang khóa. ${LEVELS[index].requirement} để mở cấp này.`;
+      notice.hidden=false;
+      return;
+    }
+    renderCases(index);
+    showStage("cases");
+  }
+
+  function openCase(item){
+    const grid=$("proCaseGrid");grid.hidden=true;
+    const brief=$("proCaseBrief");
+    brief.innerHTML=`<button type="button" class="pro-case-list-back" data-case-list>← Danh sách 3 Case</button><div class="pro-case-brief-head"><div><span>${esc(item.id.toUpperCase())}</span><h2>${esc(item.title)}</h2><p>${esc(item.goal)}</p></div><div><small>Thời lượng dự kiến</small><strong>${esc(item.duration)}</strong><small>Điểm tối đa</small><strong>${item.score}/10</strong></div></div><div class="pro-case-brief-body"><section><h3>Yêu cầu thực hiện</h3><ol>${item.tasks.map(task=>`<li>${esc(task)}</li>`).join("")}</ol></section><section><h3>Năng lực đánh giá</h3><p>${esc(item.skills)}</p><h3>Kết quả phải bàn giao</h3><p>${esc(item.output)}</p></section></div><div class="pro-case-rubric"><span><b>4 điểm</b> Đúng logic và số liệu</span><span><b>3 điểm</b> Có kiểm tra và đối soát</span><span><b>3 điểm</b> Trình bày, cấu trúc và bàn giao</span></div><p class="pro-case-next">Bước tiếp theo: Admin gắn file nguồn, file hướng dẫn và cơ chế nộp/chấm cho từng Case.</p>`;
+    brief.hidden=false;
+    brief.querySelector("[data-case-list]").addEventListener("click",()=>{brief.hidden=true;grid.hidden=false;scrollStage($("proCaseSection"))});
+    scrollStage($("proCaseSection"));
+  }
+
   function boot(){
     const domains=document.querySelector('[data-roll="domains"]');if(!domains)return;
-    domains.addEventListener("avp:professional-roll-change",e=>renderDomain(e.detail.id||"input"));
-    renderDomain(domains.querySelector('[data-roll-card].active')?.dataset.id||"input");
+    selectedDomain=domains.querySelector('[data-roll-card].active')?.dataset.id||"input";
+    domains.addEventListener("avp:professional-roll-change",e=>{selectedDomain=e.detail.id||"input"});
+    bindRollChoice(domains,card=>openDomain(card.dataset.id||selectedDomain));
+
+    document.querySelectorAll("[data-pro-back]").forEach(button=>{
+      button.addEventListener("click",()=>showStage(button.dataset.proBack));
+    });
+    showStage("domains",false);
   }
+
+  window.AVPProfessionalTrackData={domains:DATA,levels:LEVELS};
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot,{once:true});else boot();
 })();

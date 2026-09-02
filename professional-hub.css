@@ -36,3 +36,78 @@
   .pro-training-detail{grid-template-columns:1fr;gap:16px;padding:19px 17px}
   .pro-training-detail dl{grid-template-columns:1fr}
 }
+
+/* Professional Track flow V2: one decision per screen. */
+.pro-flow-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:28px}
+.pro-flow-hero>div{max-width:820px}
+.pro-access-role{flex:none;margin-top:4px;padding:8px 11px;border:1px solid #d7e8dd;border-radius:999px;background:#f3faf6;color:#217346;font-size:9px;letter-spacing:.7px}
+.pro-flow-path{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0 0;padding:8px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.pro-flow-path span{display:flex;align-items:center;justify-content:center;gap:8px;min-height:42px;border-radius:11px;color:#849188;font-size:10px;font-weight:850}
+.pro-flow-path span b{display:grid;width:22px;height:22px;place-items:center;border:1px solid #dce7e0;border-radius:50%;background:#fff;color:#718078;font-size:9px}
+.pro-flow-path span.active{background:#edf7f1;color:#174b2f}
+.pro-flow-path span.active b{border-color:#217346;background:#217346;color:#fff}
+.pro-flow-path span.done{color:#34724e}
+.pro-flow-path span.done b{border-color:#b8d8c5;background:#e7f4eb;color:#217346}
+.pro-flow-stage[hidden]{display:none!important}
+.pro-flow-stage.is-current{animation:proStageIn .34s cubic-bezier(.2,.75,.25,1) both}
+@keyframes proStageIn{from{opacity:0;transform:translateY(10px) scale(.992)}to{opacity:1;transform:none}}
+.pro-flow-back,.pro-case-list-back{margin-top:16px;padding:9px 13px;border:1px solid #d6e5dc;border-radius:999px;background:#fff;color:#245d3c;font:800 11px/1.2 inherit;cursor:pointer}
+.pro-flow-back:hover,.pro-case-list-back:hover{border-color:#91bca1;background:#f5faf7}
+.pro-level-section{margin-top:10px}
+.pro-level-roll{height:350px;margin-top:14px}
+.pro-level-card{height:240px;padding-bottom:60px}
+.pro-level-card>span.pro-level-status{position:static;display:inline-flex;width:auto;margin-top:13px;padding:6px 9px;border-radius:999px;font-size:9px;font-weight:900;line-height:1}
+.pro-level-status.ready{border:1px solid #cae4d4;background:#edf8f1;color:#217346}
+.pro-level-status.locked{border:1px solid #e1e6e2;background:#f3f5f4;color:#778079}
+.pro-level-card.locked{filter:saturate(.6)}
+.pro-level-card.locked h3,.pro-level-card.locked p{opacity:.62}
+.pro-flow-notice{margin:4px auto 0;max-width:650px;padding:11px 14px;border:1px solid #eadfbd;border-radius:12px;background:#fffaf0;color:#745c22;font-size:11px;text-align:center}
+.pro-case-shell{margin-top:10px;padding:25px;border:1px solid var(--line);border-radius:22px;background:#fff}
+.pro-case-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:20px}
+.pro-case-grid[hidden],.pro-case-brief[hidden]{display:none!important}
+.pro-case-card{display:flex;min-height:250px;flex-direction:column;align-items:flex-start;padding:21px;border:1px solid #dce8e0;border-radius:17px;background:linear-gradient(180deg,#fff,#f8fbf9);color:#173d2a;text-align:left;cursor:pointer;box-shadow:0 12px 28px rgba(23,61,42,.055);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.pro-case-card:hover{transform:translateY(-3px);border-color:#91c2a4;box-shadow:0 18px 34px rgba(23,77,46,.1)}
+.pro-case-card>span{color:#217346;font-size:9px;font-weight:950;letter-spacing:1px}
+.pro-case-card h3{margin:13px 0 8px;font-size:17px;line-height:1.3}
+.pro-case-card p{margin:0;color:#6c7e73;font-size:11px;line-height:1.6}
+.pro-case-card>div{display:flex;width:100%;justify-content:space-between;gap:8px;margin-top:auto;padding-top:18px;color:#75857b;font-size:9px}
+.pro-case-card>div b{color:#285f40}
+.pro-case-card>strong{margin-top:13px;color:#217346;font-size:10px}
+.pro-case-brief{margin-top:18px;padding:22px;border:1px solid #d7e7dd;border-radius:18px;background:linear-gradient(145deg,#fff,#f5f9f6)}
+.pro-case-list-back{margin:0 0 18px}
+.pro-case-brief-head{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:26px;align-items:start}
+.pro-case-brief-head>div:first-child>span{color:#217346;font-size:9px;font-weight:950;letter-spacing:1px}
+.pro-case-brief-head h2{margin:8px 0 7px;color:#173d2a;font-size:24px}
+.pro-case-brief-head p{margin:0;color:#697b70;font-size:12px;line-height:1.65}
+.pro-case-brief-head>div:last-child{display:grid;grid-template-columns:1fr auto;gap:8px 12px;padding:13px;border:1px solid #e1ebe5;border-radius:13px;background:#fff}
+.pro-case-brief-head small{color:#7a8980;font-size:9px}
+.pro-case-brief-head strong{color:#214f35;font-size:10px}
+.pro-case-brief-body{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.pro-case-brief-body section{padding:17px;border:1px solid #e2ebe5;border-radius:14px;background:rgba(255,255,255,.78)}
+.pro-case-brief-body h3{margin:0 0 9px;color:#214d34;font-size:11px}
+.pro-case-brief-body p,.pro-case-brief-body ol{margin:0;color:#67796e;font-size:11px;line-height:1.7}
+.pro-case-brief-body ol{padding-left:18px}
+.pro-case-rubric{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}
+.pro-case-rubric span{padding:12px;border:1px solid #dfeae3;border-radius:12px;background:#fff;color:#65766c;font-size:10px;line-height:1.5}
+.pro-case-rubric b{display:block;margin-bottom:3px;color:#217346}
+.pro-case-next{margin:13px 0 0;padding:11px 13px;border-radius:11px;background:#edf6f0;color:#316547;font-size:10px;text-align:center}
+
+@media(max-width:760px){
+  .pro-flow-hero{display:block}
+  .pro-access-role{display:inline-block;margin-top:10px}
+  .pro-flow-path{gap:4px;padding:5px}
+  .pro-flow-path span{min-height:38px;gap:4px;font-size:8px}
+  .pro-flow-path span b{width:19px;height:19px;font-size:8px}
+  .pro-level-roll{height:330px}
+  .pro-level-card{width:244px;height:230px}
+  .pro-case-shell{padding:18px 12px}
+  .pro-case-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding:2px 2px 10px}
+  .pro-case-card{flex:0 0:min(82vw,300px);min-height:235px;scroll-snap-align:center}
+  .pro-case-brief-head,.pro-case-brief-body{grid-template-columns:1fr}
+  .pro-case-rubric{grid-template-columns:1fr}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .pro-flow-stage.is-current{animation:none}
+  .pro-case-card{transition:none}
+}

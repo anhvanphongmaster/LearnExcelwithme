@@ -1,22 +1,132 @@
-<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Professional Track | Learn Excel with Anh Van Phong</title>
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="simple-nav.css"><link rel="stylesheet" href="auth.css"><link rel="stylesheet" href="avp-core.css"><link rel="stylesheet" href="global-search.css"><link rel="stylesheet" href="professional-hub.css?v=20260901-domain-training1"><meta name="theme-color" content="#217346"></head><body>
-<nav class="top-simple-nav"><div class="top-simple-links"><a href="index.html">Trang chủ</a><a href="skill-map.html">Học</a><a href="practice-video.html">Thực hành</a><a href="tools-center.html">Công cụ</a><button id="avpSearchTrigger" class="top-search-button" type="button">Tìm kiếm</button><span class="auth-nav-slot"></span><button id="themeToggle" class="top-theme-button" type="button">◐</button></div><button class="top-mobile-toggle" type="button">☰</button></nav>
-<main class="pro-page"><section class="pro-gate" id="ptGate"><strong>Đang xác minh quyền truy cập…</strong></section><section id="ptProtectedContent" hidden>
-<a class="pro-back" href="professional-access.html?intro=0">← Thành tích & trạng thái Professional Track</a>
-<header class="pro-hero"><span>PROFESSIONAL TRACK</span><h1>Chọn lĩnh vực bạn muốn luyện</h1><p>Mỗi lĩnh vực mở ra một nhóm nội dung tập luyện riêng. Sau khi cấu trúc nội dung được chốt, từng nội dung mới được phát triển thành Level và Case.</p></header>
-<section class="pro-roll-section"><div class="pro-roll-head"><div><span>CHUYÊN MÔN THEO LĨNH VỰC</span><h2>Vuốt hoặc lăn để chọn lĩnh vực</h2></div><small>Không khóa lĩnh vực · chọn để đổi nội dung bên dưới</small></div>
-<div class="pro-roll" data-roll="domains" tabindex="0"><div class="pro-roll-stage">
-<article class="pro-card" data-roll-card data-id="input"><b>01</b><h3>Nhập liệu & Data Quality</h3><p>Validation · kiểm soát lỗi · audit đầu vào</p><span>Xem nội dung tập luyện ↓</span></article>
-<article class="pro-card" data-roll-card data-id="sales"><b>02</b><h3>Sales & Commercial</h3><p>Revenue · Orders · AOV · Target · Store Performance</p><span>Xem nội dung tập luyện ↓</span></article>
-<article class="pro-card" data-roll-card data-id="hr"><b>03</b><h3>Human Resources</h3><p>Headcount · công · OT · biến động nhân sự</p><span>Xem nội dung tập luyện ↓</span></article>
-<article class="pro-card" data-roll-card data-id="inventory"><b>04</b><h3>Inventory & Warehouse</h3><p>Tồn kho · nhập xuất · aging · reconciliation</p><span>Xem nội dung tập luyện ↓</span></article>
-<article class="pro-card" data-roll-card data-id="qc"><b>05</b><h3>Quality Control</h3><p>Input · NG · defect rate · Pareto · lot · shift</p><span>Xem nội dung tập luyện ↓</span></article>
-<article class="pro-card" data-roll-card data-id="pq"><b>06</b><h3>Power Query Workflow</h3><p>ETL · append · merge · folder · refresh</p><span>Xem nội dung tập luyện ↓</span></article>
-<article class="pro-card" data-roll-card data-id="dashboard"><b>07</b><h3>Reporting & Dashboard</h3><p>KPI · grain · filters · reconciliation</p><span>Xem nội dung tập luyện ↓</span></article>
-<article class="pro-card" data-roll-card data-id="automation"><b>08</b><h3>Automation & Control</h3><p>Quy trình lặp · cảnh báo · kiểm soát</p><span>Xem nội dung tập luyện ↓</span></article>
-</div><div class="pro-roll-dots" data-roll-dots></div></div></section>
-<section class="pro-roll-section pro-training-section" id="proTrainingSection"><div class="pro-roll-head"><div><span>NỘI DUNG TẬP LUYỆN</span><h2 id="proTrainingTitle">Nhập liệu & Data Quality</h2></div><small>Không khóa nội dung · vuốt hoặc lăn để xem</small></div><div id="proTrainingRollMount"></div><article class="pro-training-detail" id="proTrainingDetail" aria-live="polite"></article><p class="pro-phase-note">Giai đoạn này chốt lĩnh vực và nội dung tập luyện. Level, điều kiện mở khóa và Case sẽ được xây ở bước sau.</p></section>
-<section class="pro-system"><span>LEARNING SYSTEM</span><h2>Lĩnh vực → Nội dung tập luyện → Level → Case</h2><p>Mỗi nội dung tập luyện có mục tiêu nghiệp vụ và kết quả đầu ra rõ ràng. Sau khi cấu trúc này được duyệt, từng nội dung mới được chia thành Level và Case chấm điểm.</p></section>
-</section></main>
-<script defer src="simple-nav.js"></script><script defer src="theme-unified-v32.js"></script><script defer src="global-search.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer src="supabase-config.js"></script><script type="module" src="supabase-auth.js"></script><script defer src="analytics-tracker.js"></script><script defer src="professional-roll.js?v=20260901-domain-training1"></script><script defer src="professional-track-content.js?v=20260901-domain-training1"></script><script defer src="professional-track-gate.js?v=20260901-flow1"></script><script defer src="avp-core.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Professional Track | Learn Excel with Anh Van Phong</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="simple-nav.css">
+  <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="avp-core.css">
+  <link rel="stylesheet" href="global-search.css">
+  <link rel="stylesheet" href="professional-hub.css?v=20260902-level-case1">
+  <meta name="theme-color" content="#217346">
+</head>
+<body>
+<nav class="top-simple-nav">
+  <div class="top-simple-links">
+    <a href="index.html">Trang chủ</a>
+    <a href="skill-map.html">Học</a>
+    <a href="practice-video.html">Thực hành</a>
+    <a href="tools-center.html">Công cụ</a>
+    <button id="avpSearchTrigger" class="top-search-button" type="button">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" class="top-theme-button" type="button">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button">☰</button>
+</nav>
+
+<main class="pro-page">
+  <section class="pro-gate" id="ptGate"><strong>Đang xác minh quyền truy cập…</strong></section>
+
+  <section id="ptProtectedContent" hidden>
+    <a class="pro-back" href="professional-access.html?intro=0">← Thành tích & trạng thái Professional Track</a>
+
+    <header class="pro-hero pro-flow-hero">
+      <div>
+        <span>PROFESSIONAL TRACK</span>
+        <h1 id="proFlowTitle">Chọn lĩnh vực bạn muốn luyện</h1>
+        <p id="proFlowSubtitle">Mỗi lĩnh vực có lộ trình riêng. Nội dung, Level và Case chỉ xuất hiện sau khi bạn chủ động chọn tầng trước đó.</p>
+      </div>
+      <strong class="pro-access-role" id="ptAccessRole">ĐÃ XÁC MINH</strong>
+    </header>
+
+    <nav class="pro-flow-path" aria-label="Tiến trình Professional Track">
+      <span class="active" data-path-step="domains"><b>1</b>Lĩnh vực</span>
+      <span data-path-step="training"><b>2</b>Nội dung</span>
+      <span data-path-step="levels"><b>3</b>Level</span>
+      <span data-path-step="cases"><b>4</b>Case</span>
+    </nav>
+
+    <section class="pro-flow-stage" id="proDomainSection" data-pro-stage="domains">
+      <div class="pro-roll-section">
+        <div class="pro-roll-head">
+          <div><span>CHUYÊN MÔN THEO LĨNH VỰC</span><h2>Vuốt hoặc lăn để chọn lĩnh vực</h2></div>
+          <small>Đưa lĩnh vực vào giữa rồi bấm để mở</small>
+        </div>
+        <div class="pro-roll" data-roll="domains" tabindex="0">
+          <div class="pro-roll-stage">
+            <article class="pro-card" data-roll-card data-id="input"><b>01</b><h3>Nhập liệu & Data Quality</h3><p>Validation · kiểm soát lỗi · audit đầu vào</p><span>Chọn lĩnh vực →</span></article>
+            <article class="pro-card" data-roll-card data-id="sales"><b>02</b><h3>Sales & Commercial</h3><p>Revenue · Orders · AOV · Target · Store Performance</p><span>Chọn lĩnh vực →</span></article>
+            <article class="pro-card" data-roll-card data-id="hr"><b>03</b><h3>Human Resources</h3><p>Headcount · công · OT · biến động nhân sự</p><span>Chọn lĩnh vực →</span></article>
+            <article class="pro-card" data-roll-card data-id="inventory"><b>04</b><h3>Inventory & Warehouse</h3><p>Tồn kho · nhập xuất · aging · reconciliation</p><span>Chọn lĩnh vực →</span></article>
+            <article class="pro-card" data-roll-card data-id="qc"><b>05</b><h3>Quality Control</h3><p>Input · NG · defect rate · Pareto · lot · shift</p><span>Chọn lĩnh vực →</span></article>
+            <article class="pro-card" data-roll-card data-id="pq"><b>06</b><h3>Power Query Workflow</h3><p>ETL · append · merge · folder · refresh</p><span>Chọn lĩnh vực →</span></article>
+            <article class="pro-card" data-roll-card data-id="dashboard"><b>07</b><h3>Reporting & Dashboard</h3><p>KPI · grain · filters · reconciliation</p><span>Chọn lĩnh vực →</span></article>
+            <article class="pro-card" data-roll-card data-id="automation"><b>08</b><h3>Automation & Control</h3><p>Quy trình lặp · cảnh báo · kiểm soát</p><span>Chọn lĩnh vực →</span></article>
+          </div>
+          <div class="pro-roll-dots" data-roll-dots></div>
+        </div>
+      </div>
+
+      <section class="pro-system">
+        <span>LEARNING SYSTEM</span>
+        <h2>Lĩnh vực → Nội dung tập luyện → Level → Case</h2>
+        <p>Mỗi màn hình chỉ có một quyết định chính. Chưa chọn lĩnh vực thì nội dung không xuất hiện; chưa chọn nội dung thì Level và Case chưa mở.</p>
+      </section>
+    </section>
+
+    <section class="pro-flow-stage" id="proTrainingSection" data-pro-stage="training" hidden>
+      <button class="pro-flow-back" type="button" data-pro-back="domains">← Chọn lĩnh vực khác</button>
+      <div class="pro-roll-section pro-training-section">
+        <div class="pro-roll-head">
+          <div><span id="proTrainingDomainLabel">NỘI DUNG TẬP LUYỆN</span><h2 id="proTrainingTitle"></h2></div>
+          <small>Đưa nội dung vào giữa rồi bấm để mở Level</small>
+        </div>
+        <div id="proTrainingRollMount"></div>
+      </div>
+    </section>
+
+    <section class="pro-flow-stage" id="proLevelSection" data-pro-stage="levels" hidden>
+      <button class="pro-flow-back" type="button" data-pro-back="training">← Chọn nội dung khác</button>
+      <div class="pro-roll-section pro-level-section">
+        <div class="pro-roll-head">
+          <div><span>4 CẤP ĐỘ</span><h2 id="proLevelModuleTitle"></h2></div>
+          <small>Hoàn thành cấp trước để mở cấp tiếp theo</small>
+        </div>
+        <div id="proLevelRollMount"></div>
+        <p class="pro-flow-notice" id="proFlowNotice" hidden></p>
+      </div>
+      <section class="pro-level-summary">
+        <strong>Tiêu chuẩn mở cấp</strong>
+        <p>Hoàn thành đủ 3 Case của Level hiện tại, tổng điểm tối thiểu 25/30 và không Case nào dưới 7/10.</p>
+      </section>
+    </section>
+
+    <section class="pro-flow-stage" id="proCaseSection" data-pro-stage="cases" hidden>
+      <button class="pro-flow-back" type="button" data-pro-back="levels">← Chọn Level khác</button>
+      <div class="pro-case-shell">
+        <div class="pro-roll-head">
+          <div><span id="proCaseLevelLabel">CASE THEO LEVEL</span><h2 id="proCaseLevelTitle"></h2></div>
+          <small>Chọn một Case để xem brief và tiêu chí chấm</small>
+        </div>
+        <div class="pro-case-grid" id="proCaseGrid"></div>
+        <article class="pro-case-brief" id="proCaseBrief" hidden aria-live="polite"></article>
+      </div>
+    </section>
+  </section>
+</main>
+
+<script defer src="simple-nav.js"></script>
+<script defer src="theme-unified-v32.js"></script>
+<script defer src="global-search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="analytics-tracker.js"></script>
+<script defer src="professional-roll.js?v=20260902-level-case1"></script>
+<script defer src="professional-track-content.js?v=20260902-level-case1"></script>
+<script defer src="professional-track-gate.js?v=20260901-flow1"></script>
+<script defer src="avp-core.js"></script>
+</body>
+</html>
