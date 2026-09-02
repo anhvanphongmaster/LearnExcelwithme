@@ -62,6 +62,17 @@
 .pro-level-card.locked{filter:saturate(.6)}
 .pro-level-card.locked h3,.pro-level-card.locked p{opacity:.62}
 .pro-flow-notice{margin:4px auto 0;max-width:650px;padding:11px 14px;border:1px solid #eadfbd;border-radius:12px;background:#fffaf0;color:#745c22;font-size:11px;text-align:center}
+.pro-module-progress{margin:14px 0 0;padding:15px;border:1px solid #dce8e0;border-radius:15px;background:#f8fbf9}
+.pro-module-progress-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:11px}
+.pro-module-progress-head>div{display:grid;gap:3px}.pro-module-progress-head span{color:#217346;font-size:9px;font-weight:950;letter-spacing:1px}.pro-module-progress-head strong{color:#1b4630;font-size:13px}
+.pro-module-progress-head button{min-height:34px;padding:0 11px;border:1px solid #cadcd1;border-radius:9px;background:#fff;color:#285f40;font:850 9px/1 inherit;cursor:pointer}.pro-module-progress-head button:disabled{cursor:wait;opacity:.65}
+.pro-module-progress-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.pro-module-progress-grid article{position:relative;min-height:112px;padding:12px;border:1px solid #dde8e1;border-radius:12px;background:#fff}.pro-module-progress-grid article.locked{opacity:.58}
+.pro-module-progress-grid article.complete{border-color:#9bc9aa;background:#f0f9f3}
+.pro-module-progress-grid article>div{display:grid;gap:3px;padding-right:35px}.pro-module-progress-grid article>div span{color:#718078;font-size:8px;font-weight:900}.pro-module-progress-grid article>div strong{color:#204b34;font-size:10px;line-height:1.35}
+.pro-module-progress-grid article>b{position:absolute;top:12px;right:11px;color:#217346;font-size:10px}.pro-module-progress-grid article>p{margin:10px 0 12px;color:#6e7e75;font-size:9px;line-height:1.4}
+.pro-module-progress-grid article>i{position:absolute;left:12px;right:12px;bottom:11px;height:4px;overflow:hidden;border-radius:999px;background:#e5ece8}.pro-module-progress-grid article>i span{display:block;height:100%;border-radius:inherit;background:#4dab70}
+.pro-module-progress-empty{grid-column:1/-1;margin:0;padding:13px;border-radius:10px;background:#fff;color:#718078;font-size:10px;text-align:center}
 .pro-case-shell{margin-top:10px;padding:25px;border:1px solid var(--line);border-radius:22px;background:#fff}
 .pro-case-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:20px}
 .pro-case-grid[hidden],.pro-case-brief[hidden]{display:none!important}
@@ -97,6 +108,8 @@
 .pro-case-next{margin:13px 0 0;padding:11px 13px;border-radius:11px;background:#edf6f0;color:#316547;font-size:10px;text-align:center}
 .pro-case-submission-state{margin:13px 0 0;padding:12px 14px;border:1px solid #dce8e0;border-radius:12px;background:#f5faf7;color:#285e40;font-size:11px;font-weight:750;line-height:1.55}
 .pro-case-submission-state.revision{border-color:#ead9b4;background:#fffaf0;color:#765b1f}
+.pro-case-submit-box{margin-top:14px;padding:14px;border:1px solid #e0ebe4;border-radius:14px;background:#fbfdfc}
+.pro-case-note{display:grid;gap:6px}.pro-case-note>span{color:#496655;font-size:9px;font-weight:900}.pro-case-note textarea{width:100%;box-sizing:border-box;padding:10px 11px;border:1px solid #d0dfd6;border-radius:10px;background:#fff;color:#173f2d;font:inherit;font-size:11px;line-height:1.5;resize:vertical;outline:none}.pro-case-note textarea:focus{border-color:#70ad88;box-shadow:0 0 0 3px rgba(33,115,70,.08)}
 .pro-case-actions{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin-top:14px;padding-top:14px;border-top:1px solid #e1ebe5}
 .pro-case-actions>a,.pro-case-actions>button,.pro-case-upload>span{display:inline-flex;min-height:40px;box-sizing:border-box;align-items:center;justify-content:center;padding:0 14px;border:1px solid #217346;border-radius:11px;background:#217346;color:#fff;font:850 11px/1.2 inherit;text-decoration:none;cursor:pointer}
 .pro-case-actions>a.secondary{border-color:#cddfd4;background:#fff;color:#245b3b}
@@ -114,6 +127,8 @@
   .pro-flow-path span b{width:19px;height:19px;font-size:8px}
   .pro-level-roll{height:330px}
   .pro-level-card{width:244px;height:230px}
+  .pro-module-progress-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:7px}
+  .pro-module-progress-grid article{flex:0 0:min(72vw,230px);scroll-snap-align:center}
   .pro-case-shell{padding:18px 12px}
   .pro-case-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding:2px 2px 10px}
   .pro-case-card{flex:0 0:min(82vw,300px);min-height:235px;scroll-snap-align:center}

@@ -13,6 +13,7 @@
   };
   const LEVELS=[{id:"basic",title:"Level 01 · Cơ bản ứng dụng"},{id:"intermediate",title:"Level 02 · Trung cấp"},{id:"advanced",title:"Level 03 · Nâng cao"},{id:"professional",title:"Professional · Case thực tế"}];
   const caseRows=new Map(),submissionRows=new Map();
+  let catalogData=[],submissionData=[];
   let currentMode="applications";
 
   async function client(){
@@ -54,6 +55,8 @@
   function fillDomainOptions(){
     $("aptCaseDomain").innerHTML=Object.entries(DOMAIN_MODULES).map(([id,item])=>`<option value="${esc(id)}">${esc(item.title)}</option>`).join("");
     $("aptCaseLevel").innerHTML=LEVELS.map(item=>`<option value="${esc(item.id)}">${esc(item.title)}</option>`).join("");fillModuleOptions();
+    $("aptCatalogDomainFilter").innerHTML='<option value="">Tất cả lĩnh vực</option>'+Object.entries(DOMAIN_MODULES).map(([id,item])=>`<option value="${esc(id)}">${esc(item.title)}</option>`).join("");
+    $("aptCatalogLevelFilter").innerHTML='<option value="">Tất cả Level</option>'+LEVELS.map(item=>`<option value="${esc(item.id)}">${esc(item.title)}</option>`).join("");
   }
   function fillModuleOptions(selected="1"){
     const domain=DOMAIN_MODULES[$("aptCaseDomain")?.value]||DOMAIN_MODULES.input;
@@ -70,6 +73,15 @@
     $("aptCaseForm").scrollIntoView({behavior:"smooth",block:"start"});
   }
 
+  function copyCase(key){
+    const row=caseRows.get(key);if(!row)return;
+    const used=new Set(catalogData.filter(item=>item.domain_key===row.domain_key&&Number(item.module_index)===Number(row.module_index)&&item.level_id===row.level_id).map(item=>Number(item.case_index)));
+    const target=[1,2,3].find(index=>!used.has(index));
+    if(!target)return alert("Level này đã có đủ 3 Case. Hãy chọn Level hoặc nội dung khác trước khi nhân bản.");
+    editCase(key);$("aptCaseIndex").value=String(target);$("aptCaseTitle").value=`${row.title} — Bản mới`;$("aptCasePublished").checked=false;
+    $("aptCaseTitle").focus();
+  }
+
   async function saveCase(event){
     event.preventDefault();const sb=await client();if(!sb)return alert("Chưa kết nối được hệ thống.");
     const source=$("aptCaseSourceUrl").value.trim(),guide=$("aptCaseGuideUrl").value.trim();if(!validLink(source)||!validLink(guide))return alert("Link không hợp lệ. Chỉ dùng HTTPS, HTTP hoặc đường dẫn file tương đối trong website.");if($("aptCasePublished").checked&&!source)return alert("Case phát hành phải có link file thực hành.");
@@ -80,19 +92,24 @@
     catch(error){alert("Chưa lưu được Case: "+String(error?.message||error))}finally{button.disabled=false;button.textContent="Lưu Case"}
   }
 
+  function renderCatalog(){
+    const box=$("aptCatalogList"),search=String($("aptCatalogSearch")?.value||"").trim().toLowerCase(),domain=$("aptCatalogDomainFilter")?.value||"",level=$("aptCatalogLevelFilter")?.value||"",publish=$("aptCatalogPublishFilter")?.value||"";
+    const rows=catalogData.filter(row=>(!search||`${row.title} ${row.goal} ${row.case_key}`.toLowerCase().includes(search))&&(!domain||row.domain_key===domain)&&(!level||row.level_id===level)&&(!publish||(publish==="published")===Boolean(row.published)));
+    $("aptCatalogCount").textContent=`${rows.length}/${catalogData.length} Case`;
+    box.innerHTML=rows.length?rows.map(row=>`<article class="apt-item apt-case-item"><div class="apt-item-head"><div class="apt-person"><strong>${esc(row.title)}</strong><small>${esc(DOMAIN_MODULES[row.domain_key]?.title||row.domain_key)} · Nội dung ${Number(row.module_index)||0} · ${esc(row.level_id)} · Case ${Number(row.case_index)||0}</small></div><span class="apt-status ${row.published?"approved":""}">${row.published?"Đã phát hành":"Bản nháp"}</span></div><p>${esc(row.goal||"")}</p><div class="apt-link-state"><span>${row.source_url?"✓ Có file thực hành":"— Chưa có file"}</span><span>${row.guide_url?"✓ Có hướng dẫn":"— Chưa có hướng dẫn"}</span><span>${row.submission_enabled?"✓ Cho phép nộp":"— Tắt nộp bài"}</span></div><div class="apt-actions"><button type="button" data-case-edit="${esc(row.case_key)}">Chỉnh sửa Case</button><button type="button" data-case-copy="${esc(row.case_key)}">Nhân bản sang ô trống</button></div></article>`).join(""):'<div class="admin-users-empty">Không có Case phù hợp bộ lọc.</div>';
+  }
+
   async function loadCatalog(sb){
     const box=$("aptCatalogList");box.innerHTML='<div class="admin-users-empty">Đang tải Case…</div>';
-    try{
-      const {data,error}=await sb.rpc("admin_professional_track_case_list_v2");if(error)throw error;const rows=Array.isArray(data)?data:[];caseRows.clear();rows.forEach(row=>caseRows.set(String(row.case_key),row));
-      box.innerHTML=rows.length?rows.map(row=>`<article class="apt-item apt-case-item"><div class="apt-item-head"><div class="apt-person"><strong>${esc(row.title)}</strong><small>${esc(DOMAIN_MODULES[row.domain_key]?.title||row.domain_key)} · Nội dung ${Number(row.module_index)||0} · ${esc(row.level_id)} · Case ${Number(row.case_index)||0}</small></div><span class="apt-status ${row.published?"approved":""}">${row.published?"Đã phát hành":"Bản nháp"}</span></div><p>${esc(row.goal||"")}</p><div class="apt-link-state"><span>${row.source_url?"✓ Có file thực hành":"— Chưa có file"}</span><span>${row.guide_url?"✓ Có hướng dẫn":"— Chưa có hướng dẫn"}</span><span>${row.submission_enabled?"✓ Cho phép nộp":"— Tắt nộp bài"}</span></div><div class="apt-actions"><button type="button" data-case-edit="${esc(row.case_key)}">Chỉnh sửa Case</button></div></article>`).join(""):'<div class="admin-users-empty">Chưa có Case nào được lưu. Tạo Case đầu tiên ở biểu mẫu phía trên.</div>';
-    }catch(error){errorBox(box,error)}
+    try{const {data,error}=await sb.rpc("admin_professional_track_case_list_v2");if(error)throw error;catalogData=Array.isArray(data)?data:[];caseRows.clear();catalogData.forEach(row=>caseRows.set(String(row.case_key),row));renderCatalog()}
+    catch(error){errorBox(box,error)}
   }
 
   async function loadSubmissions(sb){
     const box=$("aptSubmissionList");box.innerHTML='<div class="admin-users-empty">Đang tải bài nộp…</div>';
     try{
-      const status=$("aptSubmissionStatus")?.value||null;const {data,error}=await sb.rpc("admin_professional_track_submissions_v2",{p_status:status,p_limit:300});if(error)throw error;const rows=Array.isArray(data)?data:[];submissionRows.clear();rows.forEach(row=>submissionRows.set(String(row.id),row));
-      box.innerHTML=rows.length?rows.map(row=>`<article class="apt-item apt-submission-item" data-submission="${esc(row.id)}"><div class="apt-item-head"><div class="apt-person"><strong>${esc(row.display_name||"Học viên")}</strong><small>${esc(row.email||"")} · ${fmt(row.submitted_at)}</small></div><span class="apt-status ${row.status==="graded"?"approved":row.status==="revision"?"rejected":""}">${submissionLabel(row.status)}</span></div><div class="apt-submission-case"><b>${esc(row.case_title||row.case_key)}</b><small>${esc(row.case_key)} · ${esc(row.original_name||"File bài làm")}</small></div><div class="apt-grade-grid"><label><span>Điểm</span><input type="number" data-grade-score min="0" max="${Number(row.max_score)||10}" step="0.5" value="${row.score==null?"":Number(row.score)}"></label><label><span>Phản hồi</span><textarea data-grade-feedback rows="2" maxlength="1200">${esc(row.feedback||"")}</textarea></label></div><div class="apt-actions"><button type="button" data-open-submission="${esc(row.id)}">↓ Mở file bài làm</button><button type="button" class="approve" data-grade-action="graded">Lưu điểm</button><button type="button" class="reject" data-grade-action="revision">Yêu cầu nộp lại</button></div></article>`).join(""):'<div class="admin-users-empty">Không có bài nộp phù hợp.</div>';
+      const status=$("aptSubmissionStatus")?.value||null;const {data,error}=await sb.rpc("admin_professional_track_submissions_v2",{p_status:status,p_limit:300});if(error)throw error;submissionData=Array.isArray(data)?data:[];submissionRows.clear();submissionData.forEach(row=>submissionRows.set(String(row.id),row));
+      box.innerHTML=submissionData.length?submissionData.map(row=>`<article class="apt-item apt-submission-item" data-submission="${esc(row.id)}"><div class="apt-item-head"><div class="apt-person"><strong>${esc(row.display_name||"Học viên")}</strong><small>${esc(row.email||"")} · ${fmt(row.submitted_at)} · Lần nộp ${Number(row.attempt_count)||1}</small></div><span class="apt-status ${row.status==="graded"?"approved":row.status==="revision"?"rejected":""}">${submissionLabel(row.status)}</span></div><div class="apt-submission-case"><b>${esc(row.case_title||row.case_key)}</b><small>${esc(row.case_key)} · ${esc(row.original_name||"File bài làm")}</small>${row.note?`<p><strong>Ghi chú học viên:</strong> ${esc(row.note)}</p>`:""}</div><div class="apt-grade-grid"><label><span>Điểm</span><input type="number" data-grade-score min="0" max="${Number(row.max_score)||10}" step="0.5" value="${row.score==null?"":Number(row.score)}"></label><label><span>Phản hồi</span><textarea data-grade-feedback rows="2" maxlength="1200">${esc(row.feedback||"")}</textarea></label></div><div class="apt-actions"><button type="button" data-open-submission="${esc(row.id)}">↓ Mở file bài làm</button><button type="button" class="approve" data-grade-action="graded">Lưu điểm</button><button type="button" class="reject" data-grade-action="revision">Yêu cầu nộp lại</button></div></article>`).join(""):'<div class="admin-users-empty">Không có bài nộp phù hợp.</div>';
     }catch(error){errorBox(box,error)}
   }
 
@@ -101,15 +118,23 @@
   async function reviewApplication(card,status){const sb=await client();if(!sb)return;const note=prompt(status==="approved"?"Ghi chú phê duyệt (có thể để trống):":"Nhập nội dung học viên cần bổ sung:");if(note===null)return;if(status==="rejected"&&!note.trim())return alert("Hãy nhập lý do cần bổ sung.");const {error}=await sb.rpc("admin_professional_track_review_v1",{p_application_id:card.dataset.app,p_status:status,p_admin_note:note.trim()||null});if(error)return alert("Chưa cập nhật được: "+error.message);await loadApplications(sb);await refreshCounts(sb)}
   async function gradeSubmission(card,status){const sb=await client();if(!sb)return;const id=card.dataset.submission,scoreInput=card.querySelector("[data-grade-score]"),feedback=card.querySelector("[data-grade-feedback]").value.trim(),score=status==="graded"?Number(scoreInput.value):null;if(status==="graded"&&(scoreInput.value===""||!Number.isFinite(score)))return alert("Hãy nhập điểm trước khi lưu.");if(status==="revision"&&!feedback)return alert("Hãy nhập lý do cần nộp lại.");const {error}=await sb.rpc("admin_professional_track_grade_v2",{p_submission_id:id,p_status:status,p_score:score,p_feedback:feedback||null});if(error)return alert("Chưa cập nhật được bài nộp: "+error.message);await loadSubmissions(sb);await refreshCounts(sb)}
 
+  function exportSubmissions(){
+    if(!submissionData.length)return alert("Không có dữ liệu bài nộp để xuất.");
+    const quote=value=>{let text=String(value??"");if(/^[=+\-@]/.test(text))text="'"+text;return `"${text.replace(/"/g,'""')}"`};
+    const rows=[["Học viên","Email","Mã Case","Tên Case","Trạng thái","Điểm","Lần nộp","Ngày nộp","Ghi chú","Phản hồi"],...submissionData.map(row=>[row.display_name,row.email,row.case_key,row.case_title,row.status,row.score,row.attempt_count,fmt(row.submitted_at),row.note,row.feedback])];
+    const blob=new Blob(["\ufeff"+rows.map(row=>row.map(quote).join(",")).join("\r\n")],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),link=document.createElement("a");link.href=url;link.download=`professional-submissions-${new Date().toISOString().slice(0,10)}.csv`;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
   async function showMode(mode){currentMode=mode;document.querySelectorAll("[data-apt-view]").forEach(view=>view.hidden=view.dataset.aptView!==mode);document.querySelectorAll("[data-apt-mode]").forEach(button=>button.classList.toggle("active",button.dataset.aptMode===mode));const sb=await client();if(!sb)return;if(mode==="applications")await loadApplications(sb);if(mode==="catalog")await loadCatalog(sb);if(mode==="submissions")await loadSubmissions(sb)}
   async function loadCurrent(){const sb=await client();if(!sb)return;await refreshCounts(sb);await showMode(currentMode)}
 
   function bind(){
     fillDomainOptions();$("aptCaseDomain")?.addEventListener("change",()=>fillModuleOptions());$("aptCaseForm")?.addEventListener("submit",saveCase);$("aptCaseReset")?.addEventListener("click",resetCaseForm);
     document.querySelectorAll("[data-apt-mode]").forEach(button=>button.addEventListener("click",()=>showMode(button.dataset.aptMode)));
-    $("adminProfessionalReload")?.addEventListener("click",loadCurrent);$("adminProfessionalLoad")?.addEventListener("click",loadCurrent);$("adminProfessionalStatus")?.addEventListener("change",loadCurrent);$("aptCatalogReload")?.addEventListener("click",loadCurrent);$("aptSubmissionReload")?.addEventListener("click",loadCurrent);$("aptSubmissionStatus")?.addEventListener("change",loadCurrent);
+    $("adminProfessionalReload")?.addEventListener("click",loadCurrent);$("adminProfessionalLoad")?.addEventListener("click",loadCurrent);$("adminProfessionalStatus")?.addEventListener("change",loadCurrent);$("aptCatalogReload")?.addEventListener("click",loadCurrent);$("aptSubmissionReload")?.addEventListener("click",loadCurrent);$("aptSubmissionStatus")?.addEventListener("change",loadCurrent);$("aptSubmissionExport")?.addEventListener("click",exportSubmissions);
+    ["aptCatalogSearch","aptCatalogDomainFilter","aptCatalogLevelFilter","aptCatalogPublishFilter"].forEach(id=>$(id)?.addEventListener(id==="aptCatalogSearch"?"input":"change",renderCatalog));
     $("adminProfessionalList")?.addEventListener("click",event=>{const cert=event.target.closest("[data-cert]");if(cert)return openCertificate(cert.dataset.cert);const action=event.target.closest("[data-review]");if(action)return reviewApplication(action.closest(".apt-item"),action.dataset.review)});
-    $("aptCatalogList")?.addEventListener("click",event=>{const button=event.target.closest("[data-case-edit]");if(button)editCase(button.dataset.caseEdit)});
+    $("aptCatalogList")?.addEventListener("click",event=>{const edit=event.target.closest("[data-case-edit]");if(edit)return editCase(edit.dataset.caseEdit);const copy=event.target.closest("[data-case-copy]");if(copy)copyCase(copy.dataset.caseCopy)});
     $("aptSubmissionList")?.addEventListener("click",event=>{const open=event.target.closest("[data-open-submission]");if(open)return openSubmission(open.dataset.openSubmission);const action=event.target.closest("[data-grade-action]");if(action)return gradeSubmission(action.closest(".apt-submission-item"),action.dataset.gradeAction)});
   }
   window.addEventListener("avp:admin-professional-open",loadCurrent);if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();

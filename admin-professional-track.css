@@ -53,7 +53,12 @@
 .apt-case-item>p{margin:10px 0;color:#64776c;font-size:10px;line-height:1.55}
 .apt-link-state{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
 .apt-link-state span{padding:6px 8px;border:1px solid #e0e9e3;border-radius:8px;background:#f7faf8;color:#5e7266;font-size:8px;font-weight:800}
+.apt-catalog-filters{display:grid;grid-template-columns:minmax(180px,1.4fr) repeat(3,minmax(120px,.8fr)) auto;gap:7px;align-items:center;margin:0 0 11px;padding:9px;border:1px solid #e0e9e3;border-radius:11px;background:#f8fbf9}
+.apt-catalog-filters input,.apt-catalog-filters select{min-width:0;min-height:36px;padding:0 10px;border:1px solid #cfddd4;border-radius:8px;background:#fff;color:#264f38;font:inherit;font-size:9px;outline:none}.apt-catalog-filters input:focus,.apt-catalog-filters select:focus{border-color:#67a980;box-shadow:0 0 0 3px rgba(33,115,70,.07)}
+.apt-catalog-filters>strong{padding:0 5px;color:#217346;font-size:9px;white-space:nowrap;text-align:right}
 .apt-submission-case{display:grid;gap:4px;margin-top:10px;padding:10px;border-radius:10px;background:#f4f8f5}
 .apt-submission-case b{color:#1c4b32;font-size:11px}.apt-submission-case small{color:#728178;font-size:9px}
+.apt-submission-case p{margin:5px 0 0;padding-top:7px;border-top:1px solid #dde8e1;color:#5c7063;font-size:9px;line-height:1.5}
 .apt-grade-grid{display:grid;grid-template-columns:140px minmax(0,1fr);gap:9px;margin-top:10px}
-@media(max-width:700px){.apt-kpis,.apt-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.apt-form-grid,.apt-grade-grid{grid-template-columns:1fr}.apt-item-head,.apt-section-title{display:grid}.apt-section-title small{text-align:left}.apt-mode-tabs{overflow-x:auto}.apt-mode-tabs button{flex:0 0 auto}.apt-form-grid label,.apt-grade-grid label{grid-column:1/-1}}
+@media(max-width:900px){.apt-catalog-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.apt-catalog-filters>strong{text-align:left}}
+@media(max-width:700px){.apt-kpis,.apt-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.apt-form-grid,.apt-grade-grid,.apt-catalog-filters{grid-template-columns:1fr}.apt-item-head,.apt-section-title{display:grid}.apt-section-title small{text-align:left}.apt-mode-tabs{overflow-x:auto}.apt-mode-tabs button{flex:0 0 auto}.apt-form-grid label,.apt-grade-grid label{grid-column:1/-1}}

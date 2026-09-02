@@ -184,6 +184,30 @@
     return done.includes(LEVELS[index-1].id);
   }
 
+  function levelStats(level){
+    const rows=level.caseTemplates.map((_,caseIndex)=>submissions.get(caseKey(level,caseIndex))).filter(Boolean);
+    const graded=rows.filter(row=>row.status==="graded");
+    const pending=rows.filter(row=>row.status==="pending").length;
+    const revision=rows.filter(row=>row.status==="revision").length;
+    const score=graded.reduce((sum,row)=>sum+(Number(row.score)||0),0);
+    return {submitted:rows.length,graded:graded.length,pending,revision,score,complete:graded.length===3&&graded.every(row=>(Number(row.score)||0)>=7)&&score>=25};
+  }
+
+  function renderModuleProgress(){
+    const title=$("proModuleProgressTitle"),grid=$("proModuleProgressGrid");
+    if(!title||!grid)return;
+    title.textContent=DATA[activeDomain]?.items?.[activeModule]?.title||"Nội dung tập luyện";
+    if(!remoteReady&&!adminMode){
+      grid.innerHTML='<p class="pro-module-progress-empty">Chưa đồng bộ được tiến độ. Bạn vẫn có thể xem cấu trúc bài tập và thử cập nhật lại.</p>';
+      return;
+    }
+    grid.innerHTML=LEVELS.map((level,index)=>{
+      const stat=levelStats(level),unlocked=levelUnlocked(index);
+      const detail=stat.complete?"Đã hoàn thành":stat.revision?`${stat.revision} bài cần nộp lại`:stat.pending?`${stat.pending} bài đang chờ chấm`:`${stat.graded}/3 Case đã đạt`;
+      return `<article class="${stat.complete?"complete":unlocked?"current":"locked"}"><div><span>${esc(level.code)}</span><strong>${esc(level.title)}</strong></div><b>${stat.score}/30</b><p>${esc(detail)}</p><i><span style="width:${Math.min(100,Math.round(stat.graded/3*100))}%"></span></i></article>`;
+    }).join("");
+  }
+
   function scrollStage(stage){
     const top=Math.max(0,(stage?.getBoundingClientRect().top||0)+window.scrollY-92);
     window.scrollTo({top,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
@@ -215,13 +239,16 @@
   }
 
   function lockChip(level,index){
-    if(levelUnlocked(index))return `<span class="pro-level-status ready">${index===0?"Mở sẵn":"Đã mở"}</span>`;
+    const stat=levelStats(level);
+    if(stat.complete)return '<span class="pro-level-status ready">✓ Hoàn thành 3/3</span>';
+    if(levelUnlocked(index))return `<span class="pro-level-status ready">${stat.graded?`${stat.graded}/3 Case đã đạt`:index===0?"Mở sẵn":"Đã mở"}</span>`;
     return `<span class="pro-level-status locked">🔒 ${esc(level.requirement)}</span>`;
   }
 
   function levelCard(level,index){
     const unlocked=levelUnlocked(index);
-    return `<article class="pro-card pro-level-card${unlocked?"":" locked"}" data-roll-card data-id="${esc(level.id)}" data-level-index="${index}"><b>${esc(level.code)}</b><h3>${esc(level.title)}</h3><p>${esc(level.description)}</p>${lockChip(level,index)}<span>${unlocked?"Xem 3 Case →":esc(level.requirement)}</span></article>`;
+    const stat=levelStats(level);
+    return `<article class="pro-card pro-level-card${unlocked?"":" locked"}" data-roll-card data-id="${esc(level.id)}" data-level-index="${index}"><b>${esc(level.code)}</b><h3>${esc(level.title)}</h3><p>${esc(level.description)}</p>${lockChip(level,index)}<span>${unlocked?(stat.submitted?`Tiếp tục · ${stat.submitted}/3 đã nộp →`:"Xem 3 Case →"):esc(level.requirement)}</span></article>`;
   }
 
   function bindRollChoice(root,onChoose){
@@ -238,6 +265,11 @@
     });
   }
 
+  function disposeRoll(mount){
+    const roll=mount?.querySelector?.("[data-roll]");
+    try{roll?._avpRoll?.resizeObserver?.disconnect()}catch(_){}
+  }
+
   function openDomain(id){
     activeDomain=DATA[id]?id:"input";
     selectedModule=0;
@@ -245,6 +277,7 @@
     $("proTrainingDomainLabel").textContent=`${domain.title.toUpperCase()} · 5 NỘI DUNG`;
     $("proTrainingTitle").textContent="Chọn nội dung tập luyện";
     const mount=$("proTrainingRollMount");
+    disposeRoll(mount);
     mount.innerHTML=`<div class="pro-roll pro-training-roll" data-roll="training" data-start="0" tabindex="0"><div class="pro-roll-stage">${domain.items.map(trainingCard).join("")}</div><div class="pro-roll-dots" data-roll-dots></div></div>`;
     const root=mount.querySelector("[data-roll]");
     root.addEventListener("avp:professional-roll-change",e=>{selectedModule=e.detail.index});
@@ -253,19 +286,21 @@
     showStage("training");
   }
 
-  function openModule(index){
+  function openModule(index,shouldScroll=true){
     activeModule=Math.max(0,Math.min(index,DATA[activeDomain].items.length-1));
     selectedLevel=0;
     const module=DATA[activeDomain].items[activeModule];
     $("proLevelModuleTitle").textContent=module.title;
     const mount=$("proLevelRollMount");
+    disposeRoll(mount);
     mount.innerHTML=`<div class="pro-roll pro-level-roll" data-roll="levels" data-start="0" tabindex="0"><div class="pro-roll-stage">${LEVELS.map(levelCard).join("")}</div><div class="pro-roll-dots" data-roll-dots></div></div>`;
     const root=mount.querySelector("[data-roll]");
     root.addEventListener("avp:professional-roll-change",e=>{selectedLevel=e.detail.index});
     window.AVPProfessionalRoll?.init(root);
     bindRollChoice(root,card=>openLevel(Number(card.dataset.levelIndex)||0));
     const notice=$("proFlowNotice");notice.hidden=true;notice.textContent="";
-    showStage("levels");
+    renderModuleProgress();
+    showStage("levels",shouldScroll);
   }
 
   function buildCases(level,module){
@@ -330,7 +365,7 @@
     const brief=$("proCaseBrief");
     const submission=item.submission;
     const status=submission?.status==="graded"?`Đã chấm: ${Number(submission.score)||0}/${item.score} điểm${submission.feedback?` · ${esc(submission.feedback)}`:""}`:submission?.status==="pending"?"Bài đã nộp và đang chờ Admin chấm.":submission?.status==="revision"?`Admin yêu cầu nộp lại${submission.feedback?`: ${esc(submission.feedback)}`:"."}`:"";
-    const actions=item.published?`<div class="pro-case-actions">${item.sourceUrl?`<a href="${esc(item.sourceUrl)}" target="_blank" rel="noopener">↓ Tải file thực hành</a>`:""}${item.guideUrl?`<a class="secondary" href="${esc(item.guideUrl)}" target="_blank" rel="noopener">Xem hướng dẫn</a>`:""}${item.submissionEnabled?`<label class="pro-case-upload"><input type="file" data-pro-case-file accept=".xlsx,.xls,.xlsm,.csv,.zip"><span>${submission?.status==="pending"?"Thay file đã nộp":"Chọn file bài làm"}</span></label><button type="button" data-pro-case-submit>Nộp bài</button>`:""}</div>`:`<p class="pro-case-next">Case đang ở chế độ xem trước. Admin chưa phát hành file nguồn và cổng nộp bài.</p>`;
+    const actions=item.published?`<div class="pro-case-submit-box">${item.submissionEnabled?'<label class="pro-case-note"><span>Ghi chú cho Admin</span><textarea data-pro-case-note rows="2" maxlength="1200" placeholder="Nêu phần cần lưu ý hoặc cách bạn xử lý Case này"></textarea></label>':""}<div class="pro-case-actions">${item.sourceUrl?`<a href="${esc(item.sourceUrl)}" target="_blank" rel="noopener">↓ Tải file thực hành</a>`:""}${item.guideUrl?`<a class="secondary" href="${esc(item.guideUrl)}" target="_blank" rel="noopener">Xem hướng dẫn</a>`:""}${item.submissionEnabled?`<label class="pro-case-upload"><input type="file" data-pro-case-file accept=".xlsx,.xls,.xlsm,.csv,.zip"><span>${submission?.status==="pending"?"Thay file đã nộp":"Chọn file bài làm"}</span></label><button type="button" data-pro-case-submit>Nộp bài</button>`:""}</div></div>`:`<p class="pro-case-next">Case đang ở chế độ xem trước. Admin chưa phát hành file nguồn và cổng nộp bài.</p>`;
     brief.innerHTML=`<button type="button" class="pro-case-list-back" data-case-list>← Danh sách 3 Case</button><div class="pro-case-brief-head"><div><span>${esc(item.id.toUpperCase())}</span><h2>${esc(item.title)}</h2><p>${esc(item.goal)}</p></div><div><small>Thời lượng dự kiến</small><strong>${esc(item.duration)}</strong><small>Điểm tối đa</small><strong>${item.score}/10</strong></div></div><div class="pro-case-brief-body"><section><h3>Yêu cầu thực hiện</h3><ol>${item.tasks.map(task=>`<li>${esc(task)}</li>`).join("")}</ol></section><section><h3>Năng lực đánh giá</h3><p>${esc(item.skills)}</p><h3>Kết quả phải bàn giao</h3><p>${esc(item.output)}</p></section></div><div class="pro-case-rubric"><span><b>4 điểm</b> Đúng logic và số liệu</span><span><b>3 điểm</b> Có kiểm tra và đối soát</span><span><b>3 điểm</b> Trình bày, cấu trúc và bàn giao</span></div>${status?`<p class="pro-case-submission-state ${esc(submission?.status||"")}">${status}</p>`:""}${actions}`;
     brief.hidden=false;
     brief.querySelector("[data-case-list]").addEventListener("click",()=>{brief.hidden=true;grid.hidden=false;scrollStage($("proCaseSection"))});
@@ -357,10 +392,11 @@
     const cleanName=file.name.normalize("NFKD").replace(/[^a-zA-Z0-9._-]+/g,"-").slice(-90)||`baitap.${ext}`;
     const path=`${user.id}/${item.id}/${Date.now()}-${cleanName}`;
     const previousPath=item.submission?.file_path||"";
+    const note=String(brief.querySelector("[data-pro-case-note]")?.value||"").trim();
     try{
       const upload=await supabase.storage.from(SUBMISSION_BUCKET).upload(path,file,{upsert:false,contentType:file.type||undefined});
       if(upload.error)throw upload.error;
-      const saved=await supabase.rpc("professional_track_submit_case_v2",{p_case_key:item.id,p_file_path:path,p_original_name:file.name,p_note:null});
+      const saved=await supabase.rpc("professional_track_submit_case_v2",{p_case_key:item.id,p_file_path:path,p_original_name:file.name,p_note:note||null});
       if(saved.error){try{await supabase.storage.from(SUBMISSION_BUCKET).remove([path])}catch(_){};throw saved.error}
       if(previousPath&&previousPath!==path){try{await supabase.storage.from(SUBMISSION_BUCKET).remove([previousPath])}catch(_){}}
       await loadRemoteState();
@@ -383,6 +419,11 @@
 
     document.querySelectorAll("[data-pro-back]").forEach(button=>{
       button.addEventListener("click",()=>showStage(button.dataset.proBack));
+    });
+    $("proProgressRefresh")?.addEventListener("click",async event=>{
+      const button=event.currentTarget;button.disabled=true;button.textContent="Đang cập nhật…";
+      await loadRemoteState();openModule(activeModule,false);
+      button.disabled=false;button.textContent="↻ Cập nhật";
     });
     showStage("domains",false);
     loadRemoteState();

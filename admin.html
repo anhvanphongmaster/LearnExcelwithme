@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="admin.css?v=20260831-v83-maintenance">
-<link rel="stylesheet" href="admin-professional-track.css?v=20260902-case-system2">
+<link rel="stylesheet" href="admin-professional-track.css?v=20260902-pro-depth3">
 <link rel="stylesheet" href="admin-youtube-projects.css?v=20260901-v1">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="admin-manifest.webmanifest">
@@ -941,6 +941,13 @@ where is_admin = true;</pre>
           <div class="apt-form-actions"><button type="submit" class="primary" id="aptCaseSave">Lưu Case</button><button type="button" id="aptCaseReset">Tạo / chọn Case khác</button></div>
         </form>
         <div class="apt-section-title apt-list-title"><div><span>CATALOG</span><h3>Case đã lưu</h3></div><button type="button" id="aptCatalogReload">↻ Làm mới</button></div>
+        <div class="apt-catalog-filters">
+          <input id="aptCatalogSearch" type="search" placeholder="Tìm theo tên hoặc mã Case">
+          <select id="aptCatalogDomainFilter"><option value="">Tất cả lĩnh vực</option></select>
+          <select id="aptCatalogLevelFilter"><option value="">Tất cả Level</option></select>
+          <select id="aptCatalogPublishFilter"><option value="">Tất cả trạng thái</option><option value="published">Đã phát hành</option><option value="draft">Bản nháp</option></select>
+          <strong id="aptCatalogCount">0 Case</strong>
+        </div>
         <div id="aptCatalogList" class="apt-list"><div class="admin-users-empty">Mở tab để tải danh sách Case.</div></div>
       </div>
 
@@ -949,6 +956,7 @@ where is_admin = true;</pre>
         <div class="apt-toolbar">
           <select id="aptSubmissionStatus"><option value="pending">Đang chờ chấm</option><option value="">Tất cả</option><option value="revision">Cần nộp lại</option><option value="graded">Đã chấm</option></select>
           <button type="button" id="aptSubmissionReload">Tải bài nộp</button>
+          <button type="button" id="aptSubmissionExport">Xuất CSV</button>
         </div>
         <div id="aptSubmissionList" class="apt-list"><div class="admin-users-empty">Mở tab để tải bài học viên đã nộp.</div></div>
       </div>
@@ -982,7 +990,7 @@ where is_admin = true;</pre>
 <script defer src="theme-unified-v32.js"></script>
 <script defer src="admin-community-center.js?v=20260829-moderation1"></script>
 <script defer src="admin-grader.js?v=20260830-v16badge1"></script>
-<script defer src="admin-professional-track.js?v=20260902-case-system2"></script>
+<script defer src="admin-professional-track.js?v=20260902-pro-depth3"></script>
 <script defer src="admin-youtube-projects.js?v=20260901-v2"></script>
 <script defer src="global-search.js"></script>
 </body>
