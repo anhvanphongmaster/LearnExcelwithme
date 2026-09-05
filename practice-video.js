@@ -4,6 +4,10 @@
  * 05–22: 18 video sắp ra (Coming soon cho đến khi zip nằm trong manifest)
  */
 (function () {
+  // Resolve repository assets from this script, including GitHub Pages subpaths.
+  const practiceBaseURL = new URL(".", document.currentScript?.src || location.href);
+  let practiceLibraryLoading = Promise.resolve(false);
+  let practiceLibraryLoaded = false;
   const videoPracticeData = [
     {
         "id": "c2-sum-text",
@@ -1426,6 +1430,10 @@
     return String(name || "").replace(/\.xlsx\.xlsx$/i, ".xlsx").toLowerCase();
   }
   function resolvedFile(item) {
+    if (item && item.fileUrl && !item.sourcePath) {
+      try { return decodeURIComponent(new URL(item.fileUrl, practiceBaseURL).pathname.split("/").pop()) || "practice-file"; }
+      catch (_) { return "practice-file"; }
+    }
     if (item && item.sourcePath) return item.file || String(item.sourcePath).split("/").pop() || "file.xlsx";
     if (!item.file) return "";
     const list = fileList();
@@ -1449,6 +1457,10 @@
   function practiceStaticHref(item, fileName) {
     if (!fileName) return "";
 
+    // Admin's actual file URL takes precedence over the legacy repository path.
+    if (item && item.fileUrl) return String(item.fileUrl).trim();
+    if (item && item.sourcePath) return practiceSourcePath(item.sourcePath);
+
     /* File ZIP Power Query này đang nằm ở ROOT repo, không nằm trong
        downloads/video-practice/. Đây là đường dẫn thực tế của source. */
     if (
@@ -1458,10 +1470,14 @@
       return "PowerQuery-11-Files.zip";
     }
 
-    if (item && item.sourcePath) return item.sourcePath;
-    if (item && item.fileUrl) return item.fileUrl;
-
     return ((item && item.folder) || "downloads/video-practice/") + fileName;
+  }
+
+  function practiceSourcePath(value) {
+    const path = String(value || "").trim();
+    if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(path)) return path;
+    return path.replace(/^\.\//, "").replace(/^downloads\s+\//, "downloads/")
+      .replace(/^(?:downloads\/video-practice\/){2,}/, "downloads/video-practice/");
   }
 
   function downloadBlock(item, fileName) {
@@ -2249,7 +2265,7 @@ grid.addEventListener("click", async function (e) {
       if (res.error || !Array.isArray(res.data) || !res.data.length) return false;
       var rows = res.data.filter(function(r){ return r && r.is_active && r.status === "published"; });
       var mapped = rows.map(function(r){
-        var path = r.source_path || "";
+        var path = practiceSourcePath(r.source_path);
         var slash = path.lastIndexOf("/");
         return {
           id: r.id,
@@ -2272,6 +2288,7 @@ grid.addEventListener("click", async function (e) {
       if (mapped.length) {
         videoPracticeData.splice(0, videoPracticeData.length);
         mapped.forEach(function(x){ videoPracticeData.push(x); });
+        practiceLibraryLoaded = true;
         return true;
       }
     } catch (e) {
@@ -2288,7 +2305,8 @@ grid.addEventListener("click", async function (e) {
     setTimeout(loadPublicVoteSummary,180);
     setTimeout(initDailyVoteDashboard,220);
     render("all","");bindVotes();bindTopicVotes();
-    loadDynamicPracticeLibrary().then(function(changed){if(changed){updateSummary();__pvCurrentTopic=null;render("all","");}});
+    practiceLibraryLoading = loadDynamicPracticeLibrary();
+    practiceLibraryLoading.then(function(changed){if(changed){updateSummary();render(__pvCurrentTopic || "all", document.getElementById("pvSearch")?.value || "");}});
     const search=document.getElementById("pvSearch");
     if(search){search.addEventListener("input",function(){if(__pvCurrentTopic)render(__pvCurrentTopic,search.value||"");});}
     // BXH giữ rail ngang 3 thẻ; không dùng carousel 3D để bộ lọc ngày luôn hiện.
@@ -2307,56 +2325,81 @@ document.addEventListener("DOMContentLoaded", init);
   }
 
   async function avpDownloadPracticeFile(anchor) {
-    const href =
-      anchor.getAttribute("data-avp-static-href") ||
-      anchor.getAttribute("href") ||
-      "";
-    if (!href) return;
-
-    const access = await avpWaitAccessForPracticeDownload();
-    if (access && typeof access.getUser === "function") {
-      const user = await access.getUser(true);
+    if (anchor.dataset.avpDownloading === "1") return;
+    anchor.dataset.avpDownloading = "1";
+    anchor.setAttribute("aria-busy", "true");
+    const oldLabel = anchor.textContent;
+    anchor.textContent = "Đang tải…";
+    let href = "";
+    try {
+      const access = await avpWaitAccessForPracticeDownload();
+      if (!access || typeof access.getUser !== "function") {
+        throw new Error("Chưa kiểm tra được đăng nhập. Vui lòng tải lại trang rồi thử lại.");
+      }
+      const user = await practiceDownloadWait(access.getUser(true));
       if (!user) {
-        access.goLogin("practice-video.html#tiktok");
+        access.goLogin("practice-tiktok.html" + location.search + location.hash);
         return;
       }
-    }
 
-    /* URL ngoài website: sau auth thì mở trực tiếp. */
-    if (/^https?:\/\//i.test(href)) {
-      window.open(href, "_blank", "noopener,noreferrer");
-      return;
-    }
-
-    const absolute = new URL(href, location.href).href;
-
-    try {
-      const response = await fetch(absolute, {
-        method: "GET",
-        credentials: "same-origin",
-        cache: "no-store"
-      });
-
-      if (!response.ok) {
-        throw new Error("HTTP " + response.status + " • " + href);
+      // A click can happen before the Admin catalogue finishes loading.
+      await practiceDownloadWait(practiceLibraryLoading);
+      const id = anchor.closest("article[data-id]")?.getAttribute("data-id");
+      const item = videoPracticeData.find(function(row){ return row.id === id; });
+      if (id && practiceLibraryLoaded && !item) throw new Error("Bài này không còn được công khai.");
+      const filename = item ? resolvedFile(item) : (anchor.getAttribute("download") || anchor.getAttribute("title") || "practice-file");
+      href = item ? practiceStaticHref(item, filename) : (anchor.getAttribute("href") || anchor.getAttribute("data-avp-static-href") || "");
+      const originalHref = anchor.getAttribute("data-avp-static-href");
+      const currentHref = anchor.getAttribute("href");
+      if (!item?.fileUrl && currentHref && currentHref !== originalHref &&
+          (!item || practiceSourcePath(originalHref) === practiceSourcePath(href))) {
+        href = currentHref;
+      }
+      if (!href) throw new Error("Bài này chưa được gắn file thực hành.");
+      const source = item?.sourcePath || (item ? practiceStaticHref({...item, fileUrl:""}, filename) : anchor.getAttribute("data-avp-static-href")) || href;
+      const assets = window.AVPDownloadAssets;
+      const asset = assets ? await practiceDownloadWait(assets.resolve(source, href)) : {href, key:""};
+      href = asset.href;
+      const absolute = new URL(practiceSourcePath(href), practiceBaseURL);
+      if (!/^https?:$/.test(absolute.protocol) || absolute.username || absolute.password) {
+        throw new Error("Link tải file không hợp lệ. Vui lòng kiểm tra lại link trong Admin.");
       }
 
-      const blob = await response.blob();
+      // Native navigation survives Safari's popup restrictions after async auth.
+      if (absolute.origin !== location.origin) {
+        assets?.track(asset.key);
+        location.assign(absolute.href);
+        return;
+      }
+
+      const controller = new AbortController();
+      const timer = setTimeout(function(){ controller.abort(); }, 30000);
+      let response, blob;
+      try {
+        response = await fetch(absolute.href, {method:"GET", credentials:"same-origin", signal:controller.signal});
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        if (/text\/html/i.test(response.headers.get("content-type") || "")) {
+          throw new Error("Máy chủ trả về trang web thay vì file thực hành.");
+        }
+        blob = await response.blob();
+        if (!blob.size) throw new Error("File tải về đang trống.");
+      } finally {
+        clearTimeout(timer);
+      }
+
       const blobUrl = URL.createObjectURL(blob);
       const temp = document.createElement("a");
       temp.href = blobUrl;
-      temp.download =
-        anchor.getAttribute("download") ||
-        anchor.getAttribute("title") ||
-        href.split("/").pop() ||
-        "practice-file";
+      temp.download = filename;
       temp.rel = "noopener";
+      temp.dataset.avpPublicDownload = "1";
       temp.style.display = "none";
 
       /* Không có class pv-download, href là blob: => các guard khác bỏ qua. */
       document.body.appendChild(temp);
       temp.click();
       temp.remove();
+      assets?.track(asset.key);
 
       setTimeout(function(){
         URL.revokeObjectURL(blobUrl);
@@ -2364,10 +2407,23 @@ document.addEventListener("DOMContentLoaded", init);
     } catch (err) {
       console.error("[TikTok Practice download]", err);
       alert(
-        "Không tải được file.\\n\\nĐường dẫn: " + href +
-        "\\nLỗi: " + (err && err.message ? err.message : "Không xác định")
+        "Không tải được file.\n\n" + (err?.name === "AbortError" ? "Kết nối quá lâu. Vui lòng thử lại." : (err?.message || "Không xác định")) +
+        (href ? "\n\nĐường dẫn: " + href : "")
       );
+    } finally {
+      delete anchor.dataset.avpDownloading;
+      anchor.removeAttribute("aria-busy");
+      anchor.textContent = oldLabel;
     }
+  }
+
+  async function practiceDownloadWait(promise) {
+    let timer;
+    try {
+      return await Promise.race([promise, new Promise(function(_, reject){
+        timer = setTimeout(function(){ reject(new Error("Kết nối đang chậm. Vui lòng thử lại sau ít giây.")); }, 12000);
+      })]);
+    } finally { clearTimeout(timer); }
   }
 
   /* Capture-phase và đăng ký từ practice-video.js để chặn trước
