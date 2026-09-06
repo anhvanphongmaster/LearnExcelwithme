@@ -215,22 +215,36 @@
 })();
 
 
-/* Ensure learning hub FAB on pages missing avp-core */
+/* Ensure learning hub FAB only on legacy pages that truly omit avp-core.
+   IMPORTANT: wait until the document is fully parsed. Running this check while
+   simple-nav.js is being parsed can miss a later <script src="avp-core.js"> and
+   load avp-core twice, creating two robots. */
 (function(){
-  try{
-    const page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
-    if(window.self!==window.top) return;
-    if(!document.querySelector('script[src="avp-core.js"],script[src*="/avp-core.js"]')){
-      if(!document.querySelector('link[href="avp-core.css"]')){
+  function ensureAvpCore(){
+    try{
+      if(window.self!==window.top) return;
+      if(document.getElementById("avpEdgeLauncher") || window.__AVP_CORE_BOOTED__) return;
+      if(document.querySelector('script[src="avp-core.js"],script[src*="/avp-core.js"],script[src^="avp-core.js?"]')) return;
+
+      if(!document.querySelector('link[href="avp-core.css"],link[href*="/avp-core.css"],link[href^="avp-core.css?"]')){
         var l=document.createElement("link");
-        l.rel="stylesheet"; l.href="avp-core.css";
+        l.rel="stylesheet";
+        l.href="avp-core.css";
         document.head.appendChild(l);
       }
+
       var s=document.createElement("script");
-      s.src="avp-core.js"; s.defer=true;
-      document.head.appendChild(s);
-    }
-  }catch(e){}
+      s.src="avp-core.js";
+      s.dataset.avpCoreFallback="1";
+      document.body.appendChild(s);
+    }catch(e){}
+  }
+
+  if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",ensureAvpCore,{once:true});
+  }else{
+    ensureAvpCore();
+  }
 })();
 
 /* === AVP site motion (visual only — no data) === */

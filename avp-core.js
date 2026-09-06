@@ -1,4 +1,7 @@
 (() => {
+  // Single-instance guard: avp-core must never mount the global UI twice.
+  if(window.__AVP_CORE_BOOTED__) return;
+  window.__AVP_CORE_BOOTED__=true;
   const KEY_HISTORY='avp_learning_history_v2', KEY_BOOK='avp_bookmarks_v2';
   const AVP_EMBEDDED=(function(){try{return new URLSearchParams(location.search).get('embed')==='1'||window.self!==window.top;}catch(e){return window.self!==window.top;}})();
   if(AVP_EMBEDDED){document.documentElement.classList.add('avp-embedded-frame','avp-embedded-youtube');}
@@ -6,6 +9,50 @@
   const IGNORE=new Set(['auth.html','admin.html','privacy.html','terms.html','disclaimer.html','open-source.html','lienhe.html','gioithieu.html']);
   const page=location.pathname.split('/').pop()||'index.html';
   const title=(document.querySelector('h1')?.textContent||document.title.split('|')[0]||page).trim();
+
+  /* One read-only page context shared by Robot / AI / Admin chat. */
+  const AVP_PAGE_META={
+    'index.html':['Trang chủ','Trang chủ','home'],
+    'skill-map.html':['Khu học','Skill Map','map'],
+    'learning-path.html':['Khu học','Lộ trình học','learning'],
+    'master-learning.html':['Khu học','Master Learning','learning'],
+    'my-learning.html':['Khu học','Học tập của tôi','learning'],
+    'excel.html':['Khu học','Excel cơ bản','learning'],
+    'filtersort.html':['Khu học','Filter & Sort','learning'],
+    'pivottable.html':['Khu học','PivotTable','learning'],
+    'bieudopareto.html':['Khu học','Biểu đồ Pareto','learning'],
+    'baocaoexcel.html':['Khu học','Báo cáo Excel / QC','learning'],
+    'excel-nang-cao.html':['Khu học','Excel nâng cao','learning'],
+    'power-query-course.html':['Khu học','Power Query','learning'],
+    'power-pivot-dax.html':['Khu học','Power Pivot & DAX','learning'],
+    'dashboard-dong.html':['Khu học','Dashboard động','learning'],
+    'solver-whatif.html':['Khu học','What-If & Solver','learning'],
+    'vba-macro.html':['Khu học','VBA / Macro','learning'],
+    'phimtatexcel.html':['Kho tra cứu','Phím tắt Excel','reference'],
+    'congthucexcel.html':['Kho tra cứu','Công thức Excel','reference'],
+    'excel-dictionary.html':['Kho tra cứu','Từ điển Excel','reference'],
+    'excel-handbook.html':['Kho tra cứu','Excel Handbook','reference'],
+    'practice-video.html':['Khu bài tập','Khu bài tập','practice'],
+    'practice-tiktok.html':['Khu bài tập','TikTok Practice','practice'],
+    'practice-youtube.html':['Khu bài tập','YouTube Practice','practice'],
+    'practice-grader.html':['Khu bài tập','Bài tập tự chấm','practice'],
+    'practice-guides.html':['Khu bài tập','Hướng dẫn thực hành','practice'],
+    'practice-lab.html':['Khu bài tập','Practice Lab','practice'],
+    'excel-race.html':['Thử thách','Excel Race','game'],
+    'professional-access.html':['Professional Track','Điều kiện truy cập','professional'],
+    'professional-track.html':['Professional Track','Khu bài tập Professional','professional'],
+    'tools-center.html':['Công cụ',title,'tools'],
+    'formula-finder.html':['Công cụ',title,'tools'],
+    'excel-doctor.html':['Công cụ',title,'tools'],
+    'qc-dashboard.html':['Công cụ',title,'tools'],
+    'excel-mobile.html':['Công cụ',title,'tools']
+  };
+  const avpMeta=AVP_PAGE_META[page]||['Learn Excel',title,'general'];
+  const pageContext=Object.freeze({
+    page,area:avpMeta[0],label:avpMeta[1],kind:avpMeta[2],title,href:location.href
+  });
+  window.AVPPageContext=pageContext;
+  document.documentElement.dataset.avpArea=pageContext.kind;
   const now=Date.now();
   const safe=(k,d=[])=>{try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch{return d}};
   const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
@@ -53,10 +100,12 @@
   launcher.className='avp-edge-launcher is-right is-robot is-walking';
   launcher.id='avpEdgeLauncher';
 
+  const aiActionLabel=pageContext.kind==='learning'?'Hỏi AI về bài này':(pageContext.kind==='practice'?'Hỏi AI về bài tập':'Hỏi AI');
+
   launcher.innerHTML=`
     <div class="avp-edge-menu" id="avpEdgeMenu" hidden>
       <button type="button" class="avp-edge-action" data-edge-action="ai">
-        <span>✨</span><b>Hỏi AI</b>
+        <span>✨</span><b>${aiActionLabel}</b>
       </button>
       <button type="button" class="avp-edge-action" data-edge-action="dictionary">
         <span>📘</span><b>Từ điển Excel</b>
@@ -99,6 +148,8 @@
   const fab=launcher.querySelector('#avpEdgeMain');
   const edgeMenu=launcher.querySelector('#avpEdgeMenu');
   const edgeBadge=launcher.querySelector('#avpEdgeBadge');
+  fab.title=`Trợ lý AVP — ${pageContext.area}: ${pageContext.label}`;
+  fab.setAttribute('aria-label',`Mở trợ lý AVP — ${pageContext.label}`);
 
   /* =========================================================
      MINI PREVIEW V2 — FIXED LAYER
@@ -1107,17 +1158,7 @@
       }
     };
 
-    const LEARNING_PAGES=new Set([
-      'excel.html','phimtatexcel.html','congthucexcel.html','filtersort.html','pivottable.html',
-      'bieudopareto.html','baocaoexcel.html','excel-nang-cao.html','power-query-course.html',
-      'power-pivot-dax.html','dashboard-dong.html','solver-whatif.html','vba-macro.html',
-      'skill-map.html','learning-path.html','master-learning.html','my-learning.html'
-    ]);
-
-    const pageArea=PRACTICE_CONTEXT[page]?.area ||
-      (page==='professional-access.html'?'Điều kiện Professional Track':
-      (page==='professional-track.html'?'Professional Track':
-      (LEARNING_PAGES.has(page)?'Khu học tập':title)));
+    const pageArea=pageContext.label||title;
 
     // One non-interactive context row. It never changes home-page UI.
     if(!isHome){
