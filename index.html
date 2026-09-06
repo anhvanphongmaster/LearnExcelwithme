@@ -772,6 +772,7 @@
     <link rel="stylesheet" href="simple-nav.css">
     <link rel="stylesheet" href="home-effects.css">
 <link rel="stylesheet" href="home-page-motion.css?v=20260831-rootfix">
+<link rel="stylesheet" href="home-code-hub.css?v=20260906-codehub1">
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="manifest.webmanifest">
@@ -1784,7 +1785,7 @@ a.avp-yt-combo.avp-mobile-main-cta{
         </ul>
       </article>
     </div>
-    <div class="home-path-more">
+    <div class="home-path-more home-path-more--codehub">
       <a class="home-more-card home-more-1" id="homeContinueLearn" href="excel.html">
         <span>▶</span>
         <strong id="homeContinueTitle">Tiếp tục học</strong>
@@ -1795,6 +1796,11 @@ a.avp-yt-combo.avp-mobile-main-cta{
         <strong>Skill Map</strong>
         <small>Xem lộ trình và kỹ năng tiếp theo</small>
       </a>
+      <button type="button" class="home-more-card home-codehub-launcher" id="homeCodeHubOpen" aria-haspopup="dialog" aria-controls="avpCodeHubModal">
+        <span class="home-codehub-icon">⌨️</span>
+        <strong>Excel Code Hub</strong>
+        <small>Python · VBA · Power Query, có hướng dẫn &amp; Copy</small>
+      </button>
       <a class="home-more-card home-more-3 home-more-race" href="excel-race.html">
         <span>🏁</span>
         <strong>Excel Race</strong>
@@ -1805,6 +1811,32 @@ a.avp-yt-combo.avp-mobile-main-cta{
 </section>
 
 
+
+
+<div class="avp-codehub-modal" id="avpCodeHubModal" hidden role="dialog" aria-modal="true" aria-labelledby="avpCodeHubTitle">
+  <div class="avp-codehub-backdrop" aria-hidden="true"></div>
+  <section class="avp-codehub-dialog">
+    <header class="avp-codehub-head">
+      <div>
+        <span class="avp-codehub-kicker">⌨ Excel Code Hub</span>
+        <h2 id="avpCodeHubTitle">Code thực dụng cho Excel &amp; Automation</h2>
+        <p>Chọn code → đọc mục đích và cách dùng → copy. Không cần nhớ cú pháp; ưu tiên các tình huống thực tế với file Excel.</p>
+      </div>
+      <button type="button" class="avp-codehub-close" id="avpCodeHubClose" aria-label="Đóng thư viện code">×</button>
+    </header>
+    <div class="avp-codehub-toolbar">
+      <input class="avp-codehub-search" id="avpCodeHubSearch" type="search" placeholder="Tìm: gộp file, audit header, PDF, backup..." autocomplete="off">
+      <div class="avp-codehub-filters" aria-label="Lọc loại code">
+        <button type="button" class="avp-codehub-filter is-active" data-code-filter="all">Tất cả</button>
+        <button type="button" class="avp-codehub-filter" data-code-filter="Python">Python</button>
+        <button type="button" class="avp-codehub-filter" data-code-filter="VBA">VBA</button>
+        <button type="button" class="avp-codehub-filter" data-code-filter="Power Query">Power Query</button>
+      </div>
+      <span class="avp-codehub-count" id="avpCodeHubCount">10/10 code</span>
+    </div>
+    <div class="avp-codehub-list" id="avpCodeHubList"></div>
+  </section>
+</div>
 
 <section class="home-reference home-reference-v114" id="home-books">
   <div class="home-reference-inner home-reference-grid-v114">
@@ -2281,6 +2313,8 @@ document.addEventListener("click", function(e){
 })();
 
 </script>
+
+<script defer src="home-code-hub.js?v=20260906-codehub1"></script>
 
 <script id="avp-motion-inline-boot">
 (function(){

@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260906-avp-rebuild-stable2-double-robot";
+const CACHE = "learnexcel-assets-v20260906-home-codehub1";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -7,7 +7,9 @@ const ASSETS = [
   "./avp-ui-polish-v40.css",
   "./simple-nav.js",
   "./avp-core.js",
-  "./index.html"
+  "./index.html",
+  "./home-code-hub.css",
+  "./home-code-hub.js"
 ];
 
 self.addEventListener("install", event => {

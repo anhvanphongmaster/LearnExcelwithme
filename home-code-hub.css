@@ -1,0 +1,52 @@
+/* Excel Code Hub — homepage-only, no database */
+.home-path-more--codehub{grid-template-columns:repeat(4,minmax(0,1fr));}
+.home-codehub-launcher{
+  appearance:none;-webkit-appearance:none;width:100%;text-align:left;cursor:pointer;font:inherit;
+  background:linear-gradient(145deg,#f0fdfa,#eff6ff)!important;border-color:#99d8cf!important;
+  position:relative;overflow:hidden;
+}
+.home-codehub-launcher::after{
+  content:"CODE";position:absolute;right:12px;top:12px;font-size:9px;font-weight:900;letter-spacing:.12em;
+  color:#0f766e;background:#ccfbf1;border:1px solid #99f6e4;border-radius:999px;padding:3px 7px;
+}
+.home-codehub-launcher strong{color:#0f4f4a!important}
+.home-codehub-launcher small{max-width:88%;line-height:1.35}
+.home-codehub-launcher .home-codehub-icon{font-size:22px;line-height:1}
+@media(max-width:900px){.home-path-more--codehub{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:560px){.home-path-more--codehub{grid-template-columns:1fr;}}
+
+.avp-codehub-modal[hidden]{display:none!important}
+.avp-codehub-modal{position:fixed;inset:0;z-index:10050;display:grid;place-items:center;padding:18px}
+.avp-codehub-backdrop{position:absolute;inset:0;background:rgba(7,18,13,.62);backdrop-filter:blur(4px)}
+.avp-codehub-dialog{position:relative;width:min(1120px,100%);max-height:min(90vh,920px);display:flex;flex-direction:column;
+  background:#f8fbf9;border:1px solid rgba(255,255,255,.55);border-radius:24px;box-shadow:0 30px 90px rgba(0,0,0,.32);overflow:hidden}
+.avp-codehub-head{display:flex;justify-content:space-between;gap:18px;padding:22px 24px 18px;background:#fff;border-bottom:1px solid #dfe9e3}
+.avp-codehub-kicker{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:900;letter-spacing:.12em;color:#0f766e;text-transform:uppercase}
+.avp-codehub-head h2{margin:5px 0 5px;color:#153e2b;font-size:clamp(22px,3vw,30px)}
+.avp-codehub-head p{margin:0;color:#617169;font-size:13px;line-height:1.5;max-width:760px}
+.avp-codehub-close{align-self:flex-start;width:40px;height:40px;border-radius:50%;border:1px solid #d8e5dd;background:#fff;color:#173f2a;font-size:22px;cursor:pointer}
+.avp-codehub-close:hover{background:#eef7f2}
+.avp-codehub-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 24px;background:#fff;border-bottom:1px solid #e5ede8}
+.avp-codehub-search{min-width:220px;flex:1;border:1px solid #cfded5;border-radius:12px;padding:10px 12px;font:inherit;color:#20382a;background:#fff;outline:none}
+.avp-codehub-search:focus{border-color:#56a97b;box-shadow:0 0 0 3px rgba(33,115,70,.1)}
+.avp-codehub-filters{display:flex;gap:7px;flex-wrap:wrap}
+.avp-codehub-filter{border:1px solid #d3e1d9;background:#fff;color:#496257;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:800;cursor:pointer}
+.avp-codehub-filter.is-active{background:#185c37;border-color:#185c37;color:#fff}
+.avp-codehub-count{font-size:12px;color:#6b7c73;font-weight:700}
+.avp-codehub-list{overflow:auto;padding:18px 24px 26px;display:grid;gap:12px;overscroll-behavior:contain}
+.avp-codehub-empty{padding:32px;text-align:center;color:#66756d;background:#fff;border:1px dashed #cadbd1;border-radius:16px}
+.avp-codecard{background:#fff;border:1px solid #dbe7df;border-radius:16px;overflow:hidden;box-shadow:0 5px 18px rgba(20,70,43,.04)}
+.avp-codecard[open]{border-color:#a8cdb7;box-shadow:0 10px 28px rgba(20,70,43,.08)}
+.avp-codecard summary{list-style:none;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:15px 16px;cursor:pointer}
+.avp-codecard summary::-webkit-details-marker{display:none}
+.avp-codecard-no{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:#eef7f2;color:#185c37;font-size:12px;font-weight:900}
+.avp-codecard-title{min-width:0}.avp-codecard-title strong{display:block;color:#183d2a;font-size:15px;line-height:1.35}.avp-codecard-title small{display:block;color:#6a796f;font-size:12px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.avp-codecard-tags{display:flex;gap:6px;align-items:center}.avp-code-tag{font-size:10px;font-weight:900;padding:4px 7px;border-radius:999px;background:#eef4fb;color:#24548a;border:1px solid #d5e2f1}.avp-code-tag.level{background:#fff7ed;color:#9a4b0c;border-color:#fed7aa}
+.avp-codecard-body{border-top:1px solid #edf2ef;padding:16px;display:grid;gap:14px}
+.avp-code-info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.avp-code-info{padding:11px 12px;border:1px solid #e1ebe5;border-radius:12px;background:#f9fcfa}.avp-code-info b{display:block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#217346;margin-bottom:5px}.avp-code-info p{margin:0;color:#53665b;font-size:12.5px;line-height:1.48}
+.avp-code-setup{display:grid;grid-template-columns:1fr 1.35fr;gap:12px}.avp-code-setup-box{border:1px solid #e1ebe5;border-radius:12px;padding:12px;background:#fff}.avp-code-setup-box h4{margin:0 0 7px;color:#214f35;font-size:13px}.avp-code-setup-box ul,.avp-code-setup-box ol{margin:0;padding-left:19px;color:#596a60;font-size:12.5px;line-height:1.55}.avp-code-setup-box li+li{margin-top:3px}
+.avp-code-block{position:relative;background:#111a16;border-radius:13px;overflow:hidden;border:1px solid #253c31}.avp-code-block-head{display:flex;justify-content:space-between;align-items:center;padding:9px 10px 9px 13px;border-bottom:1px solid #294035;color:#a7c7b6;font-size:11px;font-weight:800}.avp-code-copy{border:1px solid #466b58;background:#193126;color:#dff7e9;border-radius:9px;padding:6px 9px;font-size:11px;font-weight:900;cursor:pointer}.avp-code-copy:hover{background:#224635}.avp-code-copy.is-copied{background:#14532d;border-color:#22c55e;color:#dcfce7}
+.avp-code-block pre{margin:0;padding:15px;max-height:340px;overflow:auto;tab-size:4}.avp-code-block code{font:12.5px/1.62 Consolas,"SFMono-Regular",Menlo,monospace;color:#e8f5ed;white-space:pre}
+.avp-codehub-note{font-size:11.5px;color:#718078;padding:0 2px;line-height:1.5}
+body.avp-codehub-lock{overflow:hidden}
+@media(max-width:760px){.avp-codehub-modal{padding:0}.avp-codehub-dialog{width:100%;height:100%;max-height:none;border-radius:0}.avp-codehub-head{padding:17px 16px 13px}.avp-codehub-toolbar{padding:12px 16px}.avp-codehub-list{padding:12px 12px 22px}.avp-code-info-grid,.avp-code-setup{grid-template-columns:1fr}.avp-codecard summary{grid-template-columns:auto minmax(0,1fr)}.avp-codecard-tags{grid-column:2;justify-content:flex-start}.avp-code-block pre{max-height:300px}}
