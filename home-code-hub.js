@@ -506,13 +506,55 @@ in
     }).join("");
   }
 
-  function openHub(){
+  const RETURN_KEY = "avp:codehub:return-after-auth";
+
+  async function currentUser(){
+    const end = Date.now() + 3500;
+    while(Date.now() < end){
+      try{
+        if(window.avpCloudSync?.getUser){
+          const user = await window.avpCloudSync.getUser();
+          if(user) return user;
+          return null;
+        }
+        if(window.avpSupabase?.auth?.getSession){
+          const {data} = await window.avpSupabase.auth.getSession();
+          return data?.session?.user || null;
+        }
+      }catch(_){}
+      await new Promise(resolve => setTimeout(resolve,100));
+    }
+    return null;
+  }
+
+  function goToAuth(){
+    try{ sessionStorage.setItem(RETURN_KEY,"1"); }catch(_){}
+    location.href = "auth.html?mode=login&next=index.html";
+  }
+
+  function showHub(){
     const modal = $("avpCodeHubModal");
     if(!modal) return;
     modal.hidden = false;
     document.body.classList.add("avp-codehub-lock");
     requestAnimationFrame(() => $("avpCodeHubSearch")?.focus({preventScroll:true}));
     if(window.avpAnalytics) window.avpAnalytics.track("code_hub_open",{page:"index.html",tool:"Excel Code Hub"});
+  }
+
+  async function openHub(){
+    const launcher = $("homeCodeHubOpen");
+    if(launcher) launcher.setAttribute("aria-busy","true");
+    try{
+      const user = await currentUser();
+      if(!user){
+        goToAuth();
+        return;
+      }
+      try{ sessionStorage.removeItem(RETURN_KEY); }catch(_){}
+      showHub();
+    } finally {
+      if(launcher) launcher.removeAttribute("aria-busy");
+    }
   }
 
   function closeHub(){
@@ -567,6 +609,18 @@ in
       if(btn) copyCode(btn.dataset.copyId,btn);
     });
     document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!modal.hidden)closeHub();});
+
+    let shouldReturn = false;
+    try{ shouldReturn = sessionStorage.getItem(RETURN_KEY) === "1"; }catch(_){}
+    if(shouldReturn){
+      setTimeout(async()=>{
+        const user = await currentUser();
+        if(user){
+          try{ sessionStorage.removeItem(RETURN_KEY); }catch(_){}
+          showHub();
+        }
+      },250);
+    }
   }
 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init,{once:true});
