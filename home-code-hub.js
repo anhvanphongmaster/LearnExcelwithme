@@ -480,11 +480,12 @@ in
 
     list.innerHTML = rows.map((item) => {
       const idx = SNIPPETS.findIndex(x => x.id === item.id) + 1;
-      return `<details class="avp-codecard" data-id="${esc(item.id)}" ${idx===1 && !query && lang==="all" ? "open" : ""}>
+      return `<details class="avp-codecard" data-id="${esc(item.id)}">
         <summary>
           <span class="avp-codecard-no">${String(idx).padStart(2,"0")}</span>
           <span class="avp-codecard-title"><strong>${esc(item.title)}</strong><small>${esc(item.summary)}</small></span>
           <span class="avp-codecard-tags"><span class="avp-code-tag">${esc(item.lang)}</span><span class="avp-code-tag level">${esc(item.level)}</span></span>
+          <span class="avp-codecard-action" aria-hidden="true"><span class="avp-codecard-action-open">Xem code</span><span class="avp-codecard-action-close">Thu gọn</span></span>
         </summary>
         <div class="avp-codecard-body">
           <div class="avp-code-info-grid">
@@ -504,6 +505,15 @@ in
         </div>
       </details>`;
     }).join("");
+
+    list.querySelectorAll(".avp-codecard").forEach(card => {
+      card.addEventListener("toggle", () => {
+        if(!card.open) return;
+        list.querySelectorAll(".avp-codecard[open]").forEach(other => {
+          if(other !== card) other.open = false;
+        });
+      });
+    });
   }
 
   const RETURN_KEY = "avp:codehub:return-after-auth";

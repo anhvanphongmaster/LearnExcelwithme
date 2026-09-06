@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260906-home-codehub11";
+const CACHE = "learnexcel-assets-v20260906-home-codehub12";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
