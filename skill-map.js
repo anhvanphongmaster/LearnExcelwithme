@@ -4,7 +4,7 @@
   const XPKEY="avp_xp_v2";
   const QKEY="avp_quiz_done_v1";
   const PKEY="avp_lesson_progress_v1";
-  const DAILYKEY_PREFIX="avp_skillmap_daily_v85_";
+  const DAILYKEY_PREFIX="avp_skillmap_daily_v86_";
 
   const stages=[
     {
@@ -14,8 +14,8 @@
       gate:"Mở ngay",
       lessons:[
         ["excel","excel.html","Kiến thức Excel cơ bản"],
-        ["shortcuts","phimtatexcel.html","Phím tắt Excel"],
-        ["formula","congthucexcel.html","Công thức Excel"],
+        ["shortcuts","phimtatexcel.html","Phím tắt Excel","reference"],
+        ["formula","congthucexcel.html","Công thức Excel","reference"],
         ["filter","filtersort.html","Filter & Sort"]
       ]
     },
@@ -88,8 +88,11 @@
       return !!(p[lesson[0]] || q[lesson[1]]);
     }
 
+    function isReference(lesson){ return lesson[3]==="reference"; }
+
     function stageDone(index){
-      return stages[index].lessons.every(done);
+      const required=stages[index].lessons.filter(lesson=>!isReference(lesson));
+      return required.every(done);
     }
 
     function unlocked(index){
@@ -102,11 +105,12 @@
 
     const all=stages.flatMap(stage=>stage.lessons);
     const doneCount=all.filter(done).length;
+    const coreDoneCount=all.filter(lesson=>!isReference(lesson) && done(lesson)).length;
 
     let next=null;
     for(let i=0;i<stages.length;i++){
       if(!unlocked(i)) continue;
-      const lesson=stages[i].lessons.find(item=>!done(item));
+      const lesson=stages[i].lessons.find(item=>item[3]!=="reference" && !done(item));
       if(lesson){
         next={stageIndex:i,stage:stages[i],lesson};
         break;
@@ -122,7 +126,7 @@
             : stages.findIndex((stage,i)=>!stageDone(i))
         )];
 
-    return {q,p,done,stageDone,unlocked,all,doneCount,next,currentStage};
+    return {q,p,done,stageDone,unlocked,all,doneCount,coreDoneCount,next,currentStage,isReference};
   }
 
   function dailyState(s){
@@ -131,13 +135,13 @@
 
     if(typeof saved.baseDone!=="number"){
       saved={
-        baseDone:s.doneCount,
+        baseDone:s.coreDoneCount,
         completed:false
       };
       localStorage.setItem(key,JSON.stringify(saved));
     }
 
-    if(!saved.completed && s.doneCount>saved.baseDone){
+    if(!saved.completed && s.coreDoneCount>saved.baseDone){
       saved.completed=true;
       localStorage.setItem(key,JSON.stringify(saved));
     }
@@ -157,15 +161,15 @@
     if(s.next){
       $("smTodayStage").textContent=s.next.stage.name;
       $("smTodayTitle").textContent=s.next.lesson[2];
-      $("smTodayDesc").textContent="Đây là bài tiếp theo trong chặng hiện tại của bạn.";
+      $("smTodayDesc").textContent="Đây là bài cốt lõi tiếp theo. Phím tắt và Công thức là kho tra cứu, không chặn lộ trình.";
       $("smTodayLink").href=s.next.lesson[1];
 
       $("smMissionTitle").textContent="Hoàn thành "+s.next.lesson[2];
       $("smMissionDesc").textContent="Một nhiệm vụ duy nhất hôm nay: học xong bài tiếp theo trong lộ trình.";
     }else{
       $("smTodayStage").textContent="Skill Map";
-      $("smTodayTitle").textContent="Bạn đã hoàn thành toàn bộ lộ trình";
-      $("smTodayDesc").textContent="Chuyển sang thực hành để duy trì kỹ năng và xử lý các case Excel thực tế.";
+      $("smTodayTitle").textContent="Bạn đã hoàn thành toàn bộ lộ trình cốt lõi";
+      $("smTodayDesc").textContent="Các kho Phím tắt/Công thức vẫn có thể mở bất cứ lúc nào. Tiếp theo hãy chuyển sang thực hành case Excel thực tế.";
       $("smTodayLink").href="practice-video.html";
       $("smTodayLink").textContent="Đi thực hành →";
 
@@ -185,7 +189,8 @@
 
     zones.innerHTML=stages.map((stage,stageIndex)=>{
       const open=s.unlocked(stageIndex);
-      const completedInStage=stage.lessons.filter(s.done).length;
+      const requiredLessons=stage.lessons.filter(lesson=>!s.isReference(lesson));
+      const completedInStage=requiredLessons.filter(s.done).length;
 
       const nodes=stage.lessons.map((lesson,lessonIndex)=>{
         const completed=s.done(lesson);
@@ -194,7 +199,8 @@
           s.next.stageIndex===stageIndex &&
           s.next.lesson[0]===lesson[0]
         );
-        const stateClass=completed?"done":current?"current":open?"open":"locked";
+        const reference=s.isReference(lesson);
+        const stateClass=(reference?"reference ":"")+(completed?"done":current?"current":open?"open":"locked");
         const idx=offset+lessonIndex+1;
 
         return `
@@ -204,10 +210,11 @@
             data-open="${open?"1":"0"}"
             data-stage="${stageIndex}"
           >
-            <span class="sm-node-num">${String(idx).padStart(2,"0")}</span>
+            <span class="sm-node-num">${reference?"REF":String(idx).padStart(2,"0")}</span>
             <strong>${lesson[2]}</strong>
             <small>${
-              completed?"Đã hoàn thành":
+              completed?(reference?"Đã xem kho tra cứu":"Đã hoàn thành"):
+              reference?(open?"Kho tra cứu • không bắt buộc":"Kho tra cứu • chưa mở"):
               current?"Bài nên học tiếp":
               open?"Sẵn sàng học":
               "Chưa mở khóa"
@@ -224,7 +231,7 @@
             <div class="sm-zone-icon">${stage.icon}</div>
             <div>
               <strong>${stage.name}</strong>
-              <small>${completedInStage}/${stage.lessons.length} bài hoàn thành</small>
+              <small>${completedInStage}/${requiredLessons.length} bài cốt lõi hoàn thành</small>
             </div>
           </div>
           ${nodes}

@@ -2,8 +2,8 @@
   const KEY='avp_lesson_progress_v1', QUIZKEY='avp_quiz_done_v1';
   const lessons=[
     {id:'excel',title:'Kiến thức Excel cơ bản',url:'excel.html',level:'basic'},
-    {id:'shortcuts',title:'100 phím tắt Excel',url:'phimtatexcel.html',level:'basic'},
-    {id:'formula',title:'100 công thức Excel',url:'congthucexcel.html',level:'basic'},
+    {id:'shortcuts',title:'100 phím tắt Excel',url:'phimtatexcel.html',level:'basic',kind:'reference'},
+    {id:'formula',title:'100 công thức Excel',url:'congthucexcel.html',level:'basic',kind:'reference'},
     {id:'filter',title:'Filter & Sort',url:'filtersort.html',level:'basic'},
     {id:'pivot',title:'PivotTable',url:'pivottable.html',level:'application'},
     {id:'pareto',title:'Biểu đồ Pareto',url:'bieudopareto.html',level:'application'},
@@ -25,10 +25,11 @@
   function completed(item,p,q){return !!(p[item.id]||q[item.url])}
   function state(){const p=syncFromQuiz(),q=quizzes();return {p,q,done:lessons.filter(x=>completed(x,p,q))}}
   function emit(){window.dispatchEvent(new CustomEvent('avp:progress-changed',{detail:{state:state()}}))}
-  function renderHome(){const host=document.getElementById('learningStatus');if(!host)return;const {p,q,done}=state();const pct=Math.round(done.length/lessons.length*100);const next=lessons.find(x=>!completed(x,p,q));const xp=+(localStorage.getItem('avp_xp_v2')||0);host.innerHTML=`<div class="learn-status-box"><div class="learn-status-head"><div><h2>🎯 Tiếp tục học</h2><p>${done.length}/${lessons.length} bài • ${pct}% hoàn thành • ${xp} XP</p></div><strong>${next?'Bài tiếp theo':'Đã hoàn thành 🎉'}</strong></div><div class="learn-progress-track"><div class="learn-progress-fill" style="width:${pct}%"></div></div><div class="next-lesson"><div><strong>${next?next.title:'Bạn đã hoàn thành toàn bộ lộ trình'}</strong><br><small>${next?'Tiếp tục đúng bài chưa hoàn thành tiếp theo.':'Xem Skill Map và thành tích đã hoàn thành.'}</small></div><a href="${next?next.url:'skill-map.html'}">${next?'Học tiếp →':'Xem Skill Map →'}</a></div><div class="learn-status-quick"><a href="skill-map.html">Skill Map</a><a href="dashboard.html">📊 Dashboard</a><a href="achievements.html">Thành tích</a></div></div>`;
+  function renderHome(){const host=document.getElementById('learningStatus');if(!host)return;const {p,q,done}=state();const pct=Math.round(done.length/lessons.length*100);const next=lessons.find(x=>x.kind!=='reference'&&!completed(x,p,q));const xp=+(localStorage.getItem('avp_xp_v2')||0);host.innerHTML=`<div class="learn-status-box"><div class="learn-status-head"><div><h2>🎯 Tiếp tục học</h2><p>${done.length}/${lessons.length} bài • ${pct}% hoàn thành • ${xp} XP</p></div><strong>${next?'Bài cốt lõi tiếp theo':'Đã hoàn thành lộ trình cốt lõi 🎉'}</strong></div><div class="learn-progress-track"><div class="learn-progress-fill" style="width:${pct}%"></div></div><div class="next-lesson"><div><strong>${next?next.title:'Bạn đã hoàn thành toàn bộ lộ trình'}</strong><br><small>${next?'Tiếp tục đúng bài cốt lõi chưa hoàn thành tiếp theo.':'Phím tắt/Công thức vẫn là kho tra cứu dùng khi cần.'}</small></div><a href="${next?next.url:'skill-map.html'}">${next?'Học tiếp →':'Xem Skill Map →'}</a></div><div class="learn-status-quick"><a href="skill-map.html">Skill Map</a><a href="dashboard.html">📊 Dashboard</a><a href="achievements.html">Thành tích</a></div></div>`;
     document.querySelectorAll('.skill-lessons a[data-lesson-id]').forEach(a=>{const id=a.dataset.lessonId;const item=lessons.find(x=>x.id===id);if(!item)return;a.classList.remove('lesson-done','lesson-next');if(completed(item,p,q)){a.classList.add('lesson-done');const s=a.querySelector('small');if(s)s.textContent='Đã học ✓'}else if(next&&id===next.id){a.classList.add('lesson-next')}})
   }
   function renderLesson(){
+    if(document.body && document.body.dataset.learningV2==='1') return;
     const id=currentId();
     if(!id)return;
     if(document.body.classList.contains('core-topic-page')){
@@ -83,7 +84,7 @@
     const title=document.getElementById('homeContinueTitle');
     const meta=document.getElementById('homeContinueMeta');
     const {p,q}=state();
-    const next=lessons.find(x=>!completed(x,p,q));
+    const next=lessons.find(x=>x.kind!=='reference'&&!completed(x,p,q));
     let last=null;
     try{last=JSON.parse(localStorage.getItem('avp_last_lesson_v1')||'null')}catch(e){}
     if(next){
@@ -93,8 +94,8 @@
       if(meta) meta.textContent='Bài '+i+'/'+lessons.length+(last&&last.title?' • vừa xem: '+last.title:'');
     }else{
       a.href='skill-map.html';
-      if(title) title.textContent='Bạn đã hoàn thành lộ trình';
-      if(meta) meta.textContent='Xem lại Skill Map hoặc chuyển sang thực hành';
+      if(title) title.textContent='Bạn đã hoàn thành lộ trình cốt lõi';
+      if(meta) meta.textContent='Có thể tra cứu Phím tắt/Công thức hoặc chuyển sang thực hành';
     }
   }
 
@@ -180,7 +181,7 @@
     });
   }
   function refresh(){renderHome();renderLesson();renderContinue()}
-  document.addEventListener('DOMContentLoaded',function(){refresh();setupShortcutCompact();setupFormulaCompact();setupLongLesson();});
+  document.addEventListener('DOMContentLoaded',function(){refresh(); if(!(document.body&&document.body.dataset.learningV2==='1')){setupShortcutCompact();setupFormulaCompact();setupLongLesson();}});
   window.addEventListener('avp:course-xp',()=>setTimeout(()=>{syncFromQuiz();refresh();emit()},50));
   window.addEventListener('avp:progress-changed',()=>{renderHome()});
   window.addEventListener('storage',e=>{if([KEY,QUIZKEY].includes(e.key))refresh()});

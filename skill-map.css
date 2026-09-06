@@ -402,3 +402,10 @@ body{
   .sm-mission-card,.sm-focus-card{grid-template-columns:42px minmax(0,1fr)}
   .sm-mission-status,.sm-focus-card>strong{grid-column:2}
 }
+
+/* Learning V2: reference nodes are useful tools, not mandatory lessons */
+.sm-node.reference{border-style:dashed;background:#fbfcfb}
+.sm-node.reference .sm-node-num{font-size:7px;letter-spacing:.03em;background:#eef3f0;color:#61746a}
+.sm-node.reference strong::after{content:"  ·  tra cứu";color:#7d8e84;font-size:8px;font-weight:800}
+.sm-node.reference.current::after{content:none}
+.sm-node.reference:not(.done)::after{content:"TÙY CHỌN";position:absolute;top:7px;right:8px;color:#7b8c82;font-size:7px;font-weight:950}

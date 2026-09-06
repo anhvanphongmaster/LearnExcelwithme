@@ -308,10 +308,11 @@ body.dark-mode .practice-file-card p{color:#abbcb3}
 </style>
 <link href="theme-polish-v33.css" rel="stylesheet"/>
   <link rel="stylesheet" href="learning-flow.css?v=20260831-v88">
+  <link rel="stylesheet" href="learning-experience-v2.css?v=20260906-v2">
 </head>
 
 
-<body>
+<body data-learning-v2="1">
 <div id="scrollProgress"></div>
 
     <!-- MENU -->
@@ -353,409 +354,72 @@ body.dark-mode .practice-file-card p{color:#abbcb3}
     <!-- CONTENT -->
 
    <main>
-
-    <!-- TIẾN ĐỘ HỌC TẬP -->
-    <section class="learning-progress">
-
-        <div class="progress-header">
-            <h2>🎯 Tiến độ học tập</h2>
-
-            <span id="progressText">
-                0/6 chuyên đề
-            </span>
-        </div>
-
-        <div class="progress-bar">
-            <div id="progressFill"></div>
-        </div>
-
-        <p id="progressPercent">
-            Hoàn thành 0%
-        </p>
-
-    </section>
-   <div id="nextLesson" class="next-lesson">
-
-    <span id="nextLessonText">
-        👉 Bài tiếp theo: Phím tắt Excel
-    </span>
-
-    <a
-        id="nextLessonButton"
-        href="phimtatexcel.html"
-        class="next-lesson-btn"
-    >
-        Học bài tiếp theo →
-    </a>
-
-</div>
-<div id="completionMessage">
-    🎉 Chúc mừng! Bạn đã hoàn thành toàn bộ lộ trình Excel cơ bản.
-</div>
-<div class="reset-progress-wrap">
-    <button onclick="datLaiTienDo()" class="reset-progress-btn">
-        🔄 Đặt lại tiến độ
-    </button>
-</div>
-<div class="course-search">
-
-    <input
-        type="text"
-        id="courseSearchInput"
-        placeholder="🔍 Tìm chuyên đề: Pivot, Pareto, Công thức..."
-    >
-
-</div>
-<div class="course-filters">
-
-    <button class="filter-btn active-filter"
-            onclick="locKhoaHoc('all', this)">
-        Tất cả
-    </button>
-
-    <button class="filter-btn"
-            onclick="locKhoaHoc('not-started', this)">
-        Chưa học
-    </button>
-
-    <button class="filter-btn"
-            onclick="locKhoaHoc('learning', this)">
-        🟡 Đang học
-    </button>
-
-    <button class="filter-btn"
-            onclick="locKhoaHoc('completed', this)">
-        ✅ Đã học
-    </button>
-
-</div>
-
-    <h2 class="section-title">
-        📚 Nội dung học Excel
-    </h2>
-
-
-        <div class="course-grid">
-
-
-            <!-- PHÍM TẮT -->
-
-            <div class="course-card">
-                <div class="course-number">01</div>
-
-                <div class="icon">
-                    ⌨️
-                </div>
-
-                <h2>
-                    Phím tắt Excel
-                </h2>
-
-                <p>
-                    Tổng hợp những phím tắt
-                    Excel hữu ích trong công việc.
-                </p>
-<div class="course-status" data-status-for="phim-tat">
-    Chưa học
-</div>
-              <a href="phimtatexcel.html"
-   onclick="batDauHoc('phim-tat')">
-    Xem bài học
-</a>
-<button
-    class="complete-btn"
-    data-course="phim-tat"
-    onclick="danhDauDaHoc(this)"
->
-    ✓ Đánh dấu đã học
-</button>
-            </div>
-
-
-            <!-- CÔNG THỨC -->
-
-            <div class="course-card">
-                <div class="course-number">02</div>
-
-                <div class="icon">
-                    🧮
-                </div>
-
-                <h2>
-                    Công thức Excel
-                </h2>
-
-                <p>
-                    Học các hàm Excel cơ bản
-                    và thường xuyên sử dụng.
-                </p>
-<div class="course-status" data-status-for="cong-thuc">
-    Chưa học
-</div>
-                <a href="congthucexcel.html"
-   onclick="batDauHoc('cong-thuc')">
-    Xem bài học
-</a>
-
-<button
-    class="complete-btn"
-    data-course="cong-thuc"
-    onclick="danhDauDaHoc(this)"
->
-    ✓ Đánh dấu đã học
-</button>
-            </div>
-
-
-            <!-- PIVOT -->
-
-            <div class="course-card">
-                <div class="course-number">03</div>
-
-                <div class="icon">
-                    📊
-                </div>
-
-                <h2>
-                    Pivot Table
-                </h2>
-
-                <p>
-                    Tổng hợp và phân tích
-                    dữ liệu nhanh chóng.
-                </p>
-<div class="course-status" data-status-for="pivot">
-    Chưa học
-</div>
-                <a href="pivottable.html"
-   onclick="batDauHoc('pivot')">
-    Xem bài học
-</a>
- 
-<button
-    class="complete-btn"
-    data-course="pivot"
-    onclick="danhDauDaHoc(this)"
->
-    ✓ Đánh dấu đã học
-</button>
-            </div>
-
-
-            <!-- PARETO -->
-
-            <div class="course-card">
-                <div class="course-number">04</div>
-
-                <div class="icon">
-                    📈
-                </div>
-
-                <h2>
-                    Biểu đồ & Pareto
-                </h2>
-
-                <p>
-                    Trực quan hóa dữ liệu và
-                    phân tích lỗi bằng Pareto.
-                </p>
-<div class="course-status" data-status-for="pareto">
-    Chưa học
-</div>
-              <a href="bieudopareto.html"
-   onclick="batDauHoc('pareto')">
-    Xem bài học
-</a>
-  
-<button
-    class="complete-btn"
-    data-course="pareto"
-    onclick="danhDauDaHoc(this)"
->
-    ✓ Đánh dấu đã học
-</button>
-            </div>
-
-
-            <!-- FILTER -->
-
-            <div class="course-card">
-                <div class="course-number">05</div>
-
-                <div class="icon">
-                    🔍
-                </div>
-
-                <h2>
-                    Filter & Sort
-                </h2>
-
-                <p>
-                    Lọc và sắp xếp dữ liệu
-                    nhanh chóng trong Excel.
-                </p>
-<div class="course-status" data-status-for="filter-sort">
-    Chưa học
-</div>
-               <a href="filtersort.html"
-   onclick="batDauHoc('filter-sort')">
-    Xem bài học
-</a>
-  
-<button
-    class="complete-btn"
-    data-course="filter-sort"
-    onclick="danhDauDaHoc(this)"
->
-    ✓ Đánh dấu đã học
-</button>
-            </div>
-
-
-            <!-- BÁO CÁO -->
-
-            <div class="course-card">
-                <div class="course-number">06</div>
-
-                <div class="icon">
-                    📋
-                </div>
-
-                <h2>
-                    Báo cáo Excel
-                </h2>
-
-                <p>
-                    Học cách xây dựng báo cáo
-                    rõ ràng và chuyên nghiệp.
-                </p>
-<div class="course-status" data-status-for="bao-cao">
-    Chưa học
-</div>
-              <a href="baocaoexcel.html"
-   onclick="batDauHoc('bao-cao')">
-    Xem bài học
-</a>
-<button
-    class="complete-btn"
-    data-course="bao-cao"
-    onclick="danhDauDaHoc(this)"
->
-    ✓ Đánh dấu đã học
-</button>  
-            </div>
-
-
-        </div>
-
-<section class="practice-hub" id="basic-practice-files">
-  <div class="practice-hub-head">
-    <span class="practice-hub-kicker">📥 FILE THỰC HÀNH CƠ BẢN</span>
-    <h2>Học xong → mở Excel làm ngay</h2>
-    <p>Các file được đặt ngay trong khu học cơ bản để bạn học lý thuyết và thực hành tại cùng một nơi.</p>
+<section class="avp-native-lesson" id="excel-lam-quen">
+  <h2>1. Hiểu file Excel trước khi nhập dữ liệu</h2>
+  <p>Nếu mới học Excel, đừng bắt đầu bằng việc nhớ nhiều nút. Trước tiên chỉ cần hiểu bốn khái niệm để biết mình đang thao tác ở đâu.</p>
+  <div class="avp-concept-grid">
+    <div class="avp-concept-card"><strong>Workbook</strong><p>Một file Excel, ví dụ <b>BaoCaoThang8.xlsx</b>. Một Workbook có thể chứa nhiều sheet.</p></div>
+    <div class="avp-concept-card"><strong>Worksheet</strong><p>Một trang tính bên trong Workbook. Có thể tách Data, Report, Danh mục… thành các sheet khác nhau.</p></div>
+    <div class="avp-concept-card"><strong>Cell</strong><p>Một ô như B3 hoặc D10. Tên ô được tạo từ chữ của cột và số của dòng.</p></div>
+    <div class="avp-concept-card"><strong>Range</strong><p>Một vùng nhiều ô, ví dụ A2:D20. Công thức và định dạng thường tác động lên cả vùng này.</p></div>
   </div>
-
-  <div class="practice-subtitle">Theo 6 chuyên đề</div>
-  <div class="practice-file-grid">
-    <article class="practice-file-card"><div class="practice-file-icon">⌨️</div><h3>Thực hành Phím tắt</h3><p>10 tình huống thao tác nhanh để luyện các phím tắt Excel thường dùng.</p><a href="downloads/phim-tat-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
-    <article class="practice-file-card"><div class="practice-file-icon">🧮</div><h3>Công thức Excel cơ bản</h3><p>Luyện SUM, AVERAGE, MAX, MIN và tính Thành tiền trên dữ liệu mẫu.</p><a href="downloads/cong-thuc-co-ban-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
-    <article class="practice-file-card"><div class="practice-file-icon">📊</div><h3>File mẫu Pivot Table</h3><p>Dữ liệu mẫu để luyện tổng hợp NG Qty, Model và Lot No.</p><a href="downloads/pivot-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
-    <article class="practice-file-card"><div class="practice-file-icon">📈</div><h3>File mẫu Pareto</h3><p>Dữ liệu lỗi Scratch, Open, Short... để luyện phân tích Pareto.</p><a href="downloads/pareto-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
-    <article class="practice-file-card"><div class="practice-file-icon">🔍</div><h3>Filter &amp; Sort</h3><p>Lọc Model, Line và sắp xếp NG Rate trên dữ liệu Lot thực tế.</p><a href="downloads/filter-sort-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
-    <article class="practice-file-card"><div class="practice-file-icon">📋</div><h3>File mẫu Báo cáo QC</h3><p>Bảng KPI, NG Rate, Top Defect và Action để luyện báo cáo thực tế.</p><a href="downloads/bao-cao-qc.xlsx" download>⬇ Tải file</a></article>
-  </div>
-
-  <div class="practice-subtitle">Bài luyện bổ trợ</div>
-  <div class="practice-file-grid">
-    <article class="practice-file-card is-extra"><div class="practice-file-icon">🧠</div><h3>IF • COUNTIF • SUMIF</h3><p>Phân loại, đếm điều kiện và tính tổng theo bộ phận.</p><a href="downloads/if-countif-sumif-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
-    <article class="practice-file-card is-extra"><div class="practice-file-icon">🔎</div><h3>VLOOKUP &amp; XLOOKUP</h3><p>Tra cứu thông tin nhân viên từ mã NV với bảng dữ liệu mẫu.</p><a href="downloads/vlookup-xlookup-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
-    <article class="practice-file-card is-extra"><div class="practice-file-icon">✍️</div><h3>Xử lý Text</h3><p>Luyện TRIM, UPPER, LOWER và PROPER trên dữ liệu tên/mã.</p><a href="downloads/xu-ly-text-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
-    <article class="practice-file-card is-extra"><div class="practice-file-icon">📅</div><h3>Ngày &amp; Giờ Excel</h3><p>Luyện DAYS, MONTH, YEAR và NETWORKDAYS.</p><a href="downloads/ngay-gio-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
-    <article class="practice-file-card is-extra"><div class="practice-file-icon">🧾</div><h3>SUMPRODUCT cho QC</h3><p>Luyện SUMPRODUCT, tổng NG và giá trị lỗi trên dữ liệu Lot.</p><a href="downloads/sumproduct-qc-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
-    <article class="practice-file-card is-extra"><div class="practice-file-icon">🎨</div><h3>Conditional Formatting</h3><p>Tô màu NG Rate vượt Spec, Data Bar và Lot bất thường.</p><a href="downloads/conditional-formatting-qc-thuc-hanh.xlsx" download>⬇ Tải file</a></article>
-  </div>
+  <div class="avp-example-box"><b>Ví dụ:</b> khi nói “tính tổng cột Input từ D2 đến D20”, vùng cần tính là <code>D2:D20</code>.</div>
 </section>
 
-<section class="learning-path">
-
-    <h2>🛣️ Lộ trình học đề xuất</h2>
-
-    <div class="path-list">
-
-        <div class="path-item" data-course="phim-tat">
-            <span class="path-number">1</span>
-            <div>
-                <h3>Phím tắt Excel</h3>
-                <p>Làm quen thao tác nhanh trong Excel.</p>
-            </div>
-        </div>
-
-        <div class="path-item" data-course="cong-thuc">
-            <span class="path-number">2</span>
-            <div>
-                <h3>Công thức Excel</h3>
-                <p>Học các hàm cơ bản và thường dùng.</p>
-            </div>
-        </div>
-
-        <div class="path-item" data-course="pivot">
-            <span class="path-number">3</span>
-            <div>
-                <h3>Pivot Table</h3>
-                <p>Tổng hợp và phân tích dữ liệu.</p>
-            </div>
-        </div>
-
-        <div class="path-item" data-course="pareto">
-            <span class="path-number">4</span>
-            <div>
-                <h3>Biểu đồ & Pareto</h3>
-                <p>Trực quan hóa và tìm vấn đề ưu tiên.</p>
-            </div>
-        </div>
-
-        <div class="path-item" data-course="filter-sort">
-            <span class="path-number">5</span>
-            <div>
-                <h3>Filter & Sort</h3>
-                <p>Lọc và sắp xếp dữ liệu hiệu quả.</p>
-            </div>
-        </div>
-
-        <div class="path-item" data-course="bao-cao">
-            <span class="path-number">6</span>
-            <div>
-                <h3>Báo cáo Excel</h3>
-                <p>Tổng hợp kiến thức thành báo cáo thực tế.</p>
-            </div>
-        </div>
-
-    </div>
-
+<section class="avp-native-lesson" id="excel-du-lieu">
+  <h2>2. Nhập dữ liệu đúng kiểu ngay từ đầu</h2>
+  <p>Excel có thể hiển thị mọi thứ giống nhau trên màn hình, nhưng bên trong một ô có thể là số, văn bản hoặc ngày tháng. Sai kiểu dữ liệu là nguyên nhân phổ biến khiến SUM, Filter, Sort và PivotTable cho kết quả sai.</p>
+  <div class="avp-learning-table-wrap"><table class="avp-learning-table">
+    <thead><tr><th>Loại dữ liệu</th><th>Ví dụ đúng</th><th>Dùng để làm gì</th><th>Lỗi hay gặp</th></tr></thead>
+    <tbody>
+      <tr><td>Text</td><td>LOT001, FPC-A</td><td>Mã, tên, ghi chú</td><td>Mã có khoảng trắng thừa ở đầu/cuối</td></tr>
+      <tr><td>Number</td><td>1250</td><td>Tính tổng, trung bình, so sánh</td><td>Số bị lưu thành Text nên SUM không tính</td></tr>
+      <tr><td>Date</td><td>06/09/2026</td><td>Lọc theo ngày, tính khoảng thời gian</td><td>Ngày nhập thành chuỗi ký tự</td></tr>
+      <tr><td>Percentage</td><td>2.5%</td><td>Tỷ lệ NG, tăng trưởng, hoàn thành</td><td>Nhập 2.5 rồi thêm dấu % thủ công</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Quy tắc bảng dữ liệu sạch</h3>
+  <ul><li>Một hàng tiêu đề duy nhất.</li><li>Mỗi cột chỉ nên chứa một loại thông tin.</li><li>Mỗi dòng là một bản ghi hoàn chỉnh.</li><li>Không chèn dòng trống hoặc merge ô giữa vùng dữ liệu.</li></ul>
 </section>
-        <!-- THÔNG TIN -->
 
-        <div class="info">
+<section class="avp-native-lesson" id="excel-cong-thuc">
+  <h2>3. Viết công thức đầu tiên và hiểu tham chiếu ô</h2>
+  <p>Mọi công thức Excel bắt đầu bằng dấu <b>=</b>. Thay vì gõ lại số vào công thức, hãy tham chiếu tới ô để kết quả tự cập nhật khi dữ liệu thay đổi.</p>
+  <div class="avp-example-box">
+    <b>Ví dụ bảng bán hàng:</b><br>
+    Số lượng ở B2, Đơn giá ở C2 → Thành tiền tại D2: <code>=B2*C2</code><br>
+    Tổng Thành tiền từ D2 đến D6: <code>=SUM(D2:D6)</code>
+  </div>
+  <h3>Vì sao không nên gõ số trực tiếp vào công thức?</h3>
+  <p>Nếu bạn viết <code>=10*25000</code>, khi số lượng thay đổi phải sửa công thức. Với <code>=B2*C2</code>, chỉ cần đổi dữ liệu ở B2 hoặc C2 và Excel tự tính lại.</p>
+</section>
 
-            <h2>
-                🎯 Mục tiêu của website
-            </h2>
+<section class="avp-native-lesson" id="excel-tham-chieu">
+  <h2>4. Tương đối và tuyệt đối: phần dễ gây sai khi kéo công thức</h2>
+  <p>Khi kéo công thức xuống, tham chiếu tương đối như B2 sẽ đổi thành B3, B4… Điều đó hữu ích khi tính theo từng dòng. Nếu một ô phải luôn giữ nguyên, cần cố định tham chiếu.</p>
+  <div class="avp-learning-table-wrap"><table class="avp-learning-table">
+    <thead><tr><th>Kiểu</th><th>Ví dụ</th><th>Khi kéo công thức</th><th>Khi dùng</th></tr></thead>
+    <tbody>
+      <tr><td>Tương đối</td><td>B2</td><td>Đổi theo vị trí</td><td>Tính từng dòng</td></tr>
+      <tr><td>Tuyệt đối</td><td>$B$2</td><td>Giữ nguyên</td><td>Tỷ lệ, đơn giá chuẩn, ô tham số</td></tr>
+    </tbody>
+  </table></div>
+  <div class="avp-example-box">Khi đang sửa công thức, chọn tham chiếu cần cố định rồi nhấn <b>F4</b> để Excel thêm dấu <code>$</code>.</div>
+</section>
 
-            <p>
-                Website được xây dựng để tổng hợp kiến thức
-                Excel phục vụ học tập và công việc thực tế.
-            </p>
-
-            <p>
-                Bạn có thể bắt đầu từ phím tắt, công thức,
-                sau đó học Pivot Table, biểu đồ, Filter
-                và cuối cùng là xây dựng báo cáo.
-            </p>
-
-        </div>
-
-
-    </main>
+<section class="avp-native-lesson" id="excel-mini-case">
+  <h2>5. Mini case 10 phút: bảng Lot / Model / Input / NG</h2>
+  <p>Hãy tạo một bảng 5 dòng với bốn cột: <b>Lot, Model, Input, NG</b>. Sau đó thêm cột <b>NG Rate</b> để luyện thao tác nền tảng.</p>
+  <ol>
+    <li>Nhập 5 Lot và Model bất kỳ; Input và NG phải là số.</li>
+    <li>Tại E2 nhập <code>=IFERROR(D2/C2,0)</code>.</li>
+    <li>Định dạng E2 thành Percentage rồi kéo công thức xuống.</li>
+    <li>Ở cuối cột Input dùng <code>=SUM(C2:C6)</code>; làm tương tự với NG.</li>
+    <li>Đổi một giá trị Input và kiểm tra NG Rate có tự cập nhật hay không.</li>
+  </ol>
+  <div class="avp-example-box"><b>Checkpoint:</b> nếu số tổng thay đổi đúng và NG Rate tự cập nhật khi sửa Input/NG, bạn đã sẵn sàng học <b>Filter & Sort</b>.</div>
+</section>
+</main>
 
 
     <!-- FOOTER -->
@@ -789,6 +453,7 @@ body.dark-mode .practice-file-card p{color:#abbcb3}
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>
   <script defer src="learning-flow.js?v=20260831-v88"></script>
+  <script defer src="learning-experience-v2.js?v=20260906-v2"></script>
 </body>
 
 </html>

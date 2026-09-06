@@ -108,8 +108,9 @@
   }
 
   function boot(){
-    buildContext();
     normalizeLegacyLinks();
+    if(document.body&&document.body.dataset.learningV2==='1') return;
+    buildContext();
     buildFooter();
   }
 
