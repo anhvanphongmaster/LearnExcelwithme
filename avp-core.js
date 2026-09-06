@@ -8,10 +8,10 @@
   const title=(document.querySelector('h1')?.textContent||document.title.split('|')[0]||page).trim();
 
   /* =========================================================
-     PAGE CONTEXT V1 — AVP biết người dùng đang ở đâu
+     PAGE CONTEXT V3 — AVP biết người dùng đang ở đâu
      - Khu học: im, chỉ hỗ trợ khi người dùng chủ động / có thông báo.
      - Khu bài tập: báo đúng khu hiện tại + thỉnh thoảng gợi ý khu liên quan.
-     - Trang chủ / Skill Map / Race: có thể sinh động hơn.
+     - Chỉ Trang chủ được tuần tra; các trang khác đứng ở mép phải.
      ========================================================= */
   const LESSON_CONTEXT={
     'excel.html':'Excel cơ bản',
@@ -163,7 +163,7 @@
       suggestions:['Chưa biết học gì trước? Mở Skill Map.','Muốn luyện ngay bằng file? Mở Khu bài tập.']
     };
     if(page==='excel-race.html')return {
-      area:'Thử thách',kind:'game',motion:'patrol',autoTalk:true,label:'Excel Race',
+      area:'Thử thách',kind:'game',motion:'stationary',autoTalk:true,label:'Excel Race',
       intro:'Bạn đang ở Excel Race. Trả lời nhanh nhưng đừng đoán vội.',
       lines:['Giữ streak bằng cách đọc kỹ câu hỏi trước khi chọn.','Race phù hợp để kiểm tra phản xạ sau khi đã học kiến thức.'],
       suggestions:['Gặp phần chưa chắc? Quay lại Skill Map để ôn đúng chủ đề.']
@@ -1002,6 +1002,20 @@
 
     const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 
+    /* Robot drag is owned exclusively by avp-robot.js.
+       Keep only the click-to-open-menu behavior here. */
+    if(root.classList.contains('is-robot')){
+      btn.addEventListener('click',e=>{
+        if(btn.dataset.justDragged==='1' || btn.dataset.justLifted==='1'){
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          return;
+        }
+        setEdgeMenu(edgeMenu.hidden);
+      });
+      return;
+    }
+
     function sideFromX(x,w){
       return (x + w/2) < (window.innerWidth/2) ? 'left' : 'right';
     }
@@ -1081,10 +1095,6 @@
     let grabOffsetY=0;
 
     btn.addEventListener('pointerdown',e=>{
-      if(launcher.classList.contains('is-robot')){
-        window.__avpBotLiftStart={y:e.clientY,x:e.clientX};
-        return;
-      }
       if(e.button!=null && e.button!==0)return;
 
       const r=root.getBoundingClientRect();
@@ -1190,333 +1200,41 @@
      Dữ liệu bookmark cũ vẫn được giữ nguyên trong localStorage. */
 
 
-  (function avpRobotWalk(){
+  /* =========================================================
+     AVP ROBOT CONTROLLER V3
+     Robot behavior is intentionally isolated in avp-robot.js.
+     avp-core owns the launcher/menu only; one controller owns drag,
+     snap, speech and mascot state. This prevents page-specific patches
+     from stacking pointer handlers on the same element.
+     ========================================================= */
+  window.__AVPRobotBridge={
+    launcher,
+    fab,
+    edgeMenu,
+    pageContext,
+    canPatrol:ROBOT_CAN_PATROL,
+    embedded:AVP_EMBEDDED,
+    unreadNow:()=>unreadCountFromChatBadge()+unreadCountFromCommunity()+starUnread,
+    closeMenu:()=>setEdgeMenu(false),
+    positionMenu:positionDockedRobotMenu
+  };
+
+  (function loadAVPRobotController(){
     if(AVP_EMBEDDED)return;
-    const PAD=16;
-    const POS_BOT='avp_bot_walk_x_v1';
-    let x=PAD;
-    let dir=1;
-    try{
-      const savedBot=JSON.parse(localStorage.getItem(POS_BOT)||'null');
-      if(savedBot && typeof savedBot.x==='number'){
-        x=savedBot.x;
-        dir=savedBot.dir===-1?-1:1;
-      }
-    }catch(e){}
-    const SPEED=0.72;
-    let lifting=false;
-    let liftMoved=false;
-    let startY=null,startX=0;
-    let talking=false;
-    let bubbleToken=0;
-
-    const GENERIC_LINES=[
-      'Cần hỏi ngay trong lúc làm? Bấm AVP để mở Hỏi AI hoặc Chat Admin.',
-      'Nếu đang bí, hãy hỏi đúng lỗi hoặc bước bạn đang vướng để nhận câu trả lời sát hơn.',
-      'Làm trực tiếp trên file sẽ nhớ lâu hơn chỉ xem cách làm.',
-      'Không cần học tất cả cùng lúc. Chọn đúng một mục rồi làm đến khi hiểu.',
-      'Nếu cần người hỗ trợ, AVP vẫn giữ Hỏi AI, Từ điển, Cộng đồng và Chat Admin.',
-      'Khi đã hiểu một bước, tự làm lại từ đầu sẽ giúp bạn nhớ chắc hơn.'
-    ];
-
-    const bubble=document.createElement('div');
-    bubble.className='avp-bot-bubble';
-    bubble.id='avpBotBubble';
-    bubble.hidden=true;
-    document.body.appendChild(bubble);
-
-    function unreadNow(){
-      return unreadCountFromChatBadge()+unreadCountFromCommunity()+starUnread;
+    if(!document.querySelector('link[data-avp-robot-style]')){
+      const l=document.createElement('link');
+      l.rel='stylesheet';
+      l.href='avp-robot.css?v=20260906r3';
+      l.dataset.avpRobotStyle='1';
+      document.head.appendChild(l);
     }
-    function restBottom(){
-      return window.innerWidth<=720?84:18;
+    if(!document.querySelector('script[data-avp-robot-controller]')){
+      const s=document.createElement('script');
+      s.src='avp-robot.js?v=20260906r3';
+      s.async=false;
+      s.dataset.avpRobotController='1';
+      document.head.appendChild(s);
     }
-    function placeBubble(){
-      const r=launcher.getBoundingClientRect();
-      const bw=Math.min(252,window.innerWidth-24);
-      let left=r.left+r.width/2-bw/2;
-      left=Math.max(12,Math.min(left,window.innerWidth-bw-12));
-      bubble.style.width=bw+'px';
-      bubble.style.left=left+'px';
-      bubble.style.bottom=(window.innerHeight-r.top+10)+'px';
-    }
-    function hideBubble(){
-      bubbleToken++;
-      talking=false;
-      bubble.classList.remove('show');
-      bubble.hidden=true;
-    }
-    function showLine(text,ms=2900){
-      if(!text || document.visibilityState!=='visible')return Promise.resolve(false);
-      const token=++bubbleToken;
-      talking=true;
-      bubble.textContent=text;
-      bubble.hidden=false;
-      bubble.classList.add('show');
-      placeBubble();
-      return new Promise(res=>setTimeout(()=>{
-        if(token===bubbleToken){
-          bubble.classList.remove('show');
-          bubble.hidden=true;
-          talking=false;
-        }
-        res(true);
-      },ms));
-    }
-    window.AVPBotSay=(text,ms)=>showLine(String(text||''),ms||3000);
-
-    function proAccessMessage(state){
-      if(pageContext.kind!=='professional-access' || !state)return '';
-      const phase=String(state.phase||state.status||'').toLowerCase();
-      if(state.isAdmin || state.canAccess || phase==='approved'){
-        return 'Khu Pro đã được mở cho tài khoản này. Bạn có thể vào Professional Track và bắt đầu luyện case chuyên sâu.';
-      }
-      if(phase==='locked' || phase==='insufficient'){
-        const limits=state.limits||{basic:1500,intermediate:1300,advanced:1000,days:5};
-        const missing=[];
-        if(Number(state.basicScore||0)<Number(limits.basic||1500))missing.push(`Cơ bản ${Number(state.basicScore||0).toLocaleString('vi-VN')}/${Number(limits.basic||1500).toLocaleString('vi-VN')} điểm`);
-        if(Number(state.intermediateScore||0)<Number(limits.intermediate||1300))missing.push(`Trung cấp ${Number(state.intermediateScore||0).toLocaleString('vi-VN')}/${Number(limits.intermediate||1300).toLocaleString('vi-VN')} điểm`);
-        if(Number(state.advancedScore||0)<Number(limits.advanced||1000))missing.push(`Nâng cao ${Number(state.advancedScore||0).toLocaleString('vi-VN')}/${Number(limits.advanced||1000).toLocaleString('vi-VN')} điểm`);
-        if(Number(state.activeDays||0)<Number(limits.days||5))missing.push(`${Number(state.activeDays||0)}/${Number(limits.days||5)} ngày hoạt động`);
-        const detail=missing.length?` Bạn còn thiếu: ${missing.join(', ')}.`:'';
-        return `Bạn chưa đủ điều kiện vào khu Pro.${detail} Hãy tiếp tục làm Bài tập tự chấm để tích điểm; khi đủ điều kiện, hệ thống sẽ mở bước tiếp theo.`;
-      }
-      if(phase==='eligible'){
-        return 'Bạn đã đủ điểm và ngày hoạt động. Bước tiếp theo là nộp chứng chỉ để Admin xác nhận quyền vào khu Pro.';
-      }
-      if(phase==='pending'){
-        return 'Bạn đã đủ điều kiện và đã nộp hồ sơ. Hiện chỉ cần chờ Admin xét duyệt, không cần tích thêm điểm để mở bước này.';
-      }
-      if(phase==='rejected'){
-        return 'Hồ sơ Pro đang cần bổ sung. Hãy xem ghi chú của Admin trên trang này rồi nộp lại đúng phần còn thiếu.';
-      }
-      if(phase==='login'){
-        return 'Bạn cần đăng nhập để hệ thống kiểm tra điểm và điều kiện vào khu Pro.';
-      }
-      return '';
-    }
-    function announceProAccess(state){
-      const msg=proAccessMessage(state);
-      if(!msg || document.visibilityState!=='visible')return;
-      setTimeout(()=>{ if(!launcher.classList.contains('open')) showLine(msg,4600); },350);
-    }
-    window.addEventListener('avp:professional-access-state',e=>announceProAccess(e.detail));
-    if(window.AVPProfessionalAccessState)announceProAccess(window.AVPProfessionalAccessState);
-
-    function pick(list){
-      return list?.length?list[Math.floor(Math.random()*list.length)]:'';
-    }
-    function contextualLine(){
-      const suggestions=pageContext.suggestions||[];
-      const lines=[...(pageContext.lines||[]),...GENERIC_LINES];
-      if(suggestions.length && Math.random()<0.34)return pick(suggestions);
-      return pick(lines)||pageContext.intro;
-    }
-    function nextTalkDelay(){
-      if(pageContext.kind==='game')return 26000+Math.floor(Math.random()*20000);
-      if(pageContext.kind==='home'||pageContext.kind==='map')return 38000+Math.floor(Math.random()*28000);
-      if(pageContext.kind==='practice')return 50000+Math.floor(Math.random()*42000);
-      return 90000;
-    }
-    function canSpeak(){
-      return !launcher.classList.contains('open')&&!lifting&&document.visibilityState==='visible';
-    }
-
-    async function talkLoop(){
-      /* Bài học/kho tra cứu không tự nói: giữ tập trung. */
-      if(!pageContext.autoTalk)return;
-
-      await new Promise(r=>setTimeout(r,pageContext.kind==='practice'?1600:2800));
-      if(canSpeak() && pageContext.intro){
-        await showLine(pageContext.intro,pageContext.kind==='practice'?3300:2800);
-      }
-
-      while(true){
-        await new Promise(r=>setTimeout(r,nextTalkDelay()));
-        if(!canSpeak())continue;
-        const unread=unreadNow();
-        if(unread>0){
-          await showLine(unread>1?`Bạn có ${unread} thông báo mới chưa đọc.`:'Bạn có thông báo mới chưa đọc.',2800);
-          continue;
-        }
-        await showLine(contextualLine(),3000);
-      }
-    }
-
-    const DOCK_KEY='avp_bot_dock_right_y_v1';
-    const DOCK_GAP=6;
-    const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
-
-    function w(){return Math.max(56,fab.offsetWidth||56)}
-    function h(){return Math.max(72,launcher.offsetHeight||72)}
-    function maxX(){return Math.max(PAD,window.innerWidth-w()-PAD)}
-    function persistWalk(){
-      try{localStorage.setItem(POS_BOT,JSON.stringify({x,dir}));}catch(e){}
-    }
-    function savedDockY(){
-      try{
-        const raw=localStorage.getItem(DOCK_KEY);
-        if(raw!==null){
-          const n=Number(raw);
-          if(Number.isFinite(n))return n;
-        }
-      }catch(e){}
-      return Math.round(window.innerHeight*.56);
-    }
-    function persistDock(y){
-      try{localStorage.setItem(DOCK_KEY,String(Math.round(y)));}catch(e){}
-    }
-    function applyPos(px,bottom){
-      launcher.style.left=px+'px';
-      launcher.style.right='auto';
-      launcher.style.top='auto';
-      launcher.style.bottom=bottom+'px';
-    }
-    function applyDock(y,animate=false){
-      const top=clamp(Number(y)||savedDockY(),DOCK_GAP,Math.max(DOCK_GAP,window.innerHeight-h()-DOCK_GAP));
-      if(animate)launcher.classList.add('is-snapping');
-      launcher.classList.add('is-right','is-docked-right','is-stationary');
-      launcher.classList.remove('is-left','is-walking','face-left');
-      launcher.style.top=Math.round(top)+'px';
-      launcher.style.bottom='auto';
-      launcher.style.left=Math.max(DOCK_GAP,window.innerWidth-(launcher.offsetWidth||64)-DOCK_GAP)+'px';
-      launcher.style.right='auto';
-      persistDock(top);
-      if(!edgeMenu.hidden)requestAnimationFrame(positionDockedRobotMenu);
-      if(animate)setTimeout(()=>launcher.classList.remove('is-snapping'),260);
-    }
-
-    function frame(){
-      if(!lifting && ROBOT_CAN_PATROL && launcher.classList.contains('is-walking') && !launcher.classList.contains('open')){
-        x+=dir*SPEED;
-        const mx=maxX();
-        if(x>=mx){x=mx;dir=-1}
-        if(x<=PAD){x=PAD;dir=1}
-        applyPos(x,PAD);
-        launcher.classList.toggle('face-left',dir<0);
-        if(!window.__avpBotSaveT || Date.now()-window.__avpBotSaveT>600){
-          window.__avpBotSaveT=Date.now();
-          persistWalk();
-        }
-      }
-      if(!bubble.hidden)placeBubble();
-      requestAnimationFrame(frame);
-    }
-
-    fab.addEventListener('pointerdown',function(e){
-      if(e.button!=null && e.button!==0)return;
-      lifting=false;
-      liftMoved=false;
-      startY=e.clientY;
-      startX=e.clientX;
-      try{fab.setPointerCapture(e.pointerId)}catch(err){}
-    });
-    fab.addEventListener('pointermove',function(e){
-      if(startY==null)return;
-      const dist=Math.hypot(e.clientX-startX,e.clientY-startY);
-
-      /* Trang chủ giữ hành vi cũ: phải nhấc robot lên mới khóc. */
-      if(ROBOT_CAN_PATROL){
-        const dy=startY-e.clientY;
-        if(dy>18 && dist>18){
-          lifting=true;
-          liftMoved=true;
-          hideBubble();
-          launcher.classList.add('is-lifted','is-crying');
-          launcher.classList.remove('is-walking','is-stationary','is-greeting','open');
-          edgeMenu.hidden=true;
-          const bottom=Math.max(PAD,window.innerHeight-e.clientY-36);
-          applyPos(Math.max(PAD,Math.min(e.clientX-32,maxX())),bottom);
-        }
-        return;
-      }
-
-      /* Mọi trang ngoài trang chủ: kéo tự do, robot khóc trong lúc kéo. */
-      if(dist>6){
-        lifting=true;
-        liftMoved=true;
-        hideBubble();
-        launcher.classList.add('is-lifted','is-crying','is-dragging');
-        launcher.classList.remove('is-walking','is-stationary','is-greeting','open');
-        edgeMenu.hidden=true;
-        const left=clamp(e.clientX-w()/2,DOCK_GAP,Math.max(DOCK_GAP,window.innerWidth-w()-DOCK_GAP));
-        const top=clamp(e.clientY-h()/2,DOCK_GAP,Math.max(DOCK_GAP,window.innerHeight-h()-DOCK_GAP));
-        launcher.style.left=Math.round(left)+'px';
-        launcher.style.right='auto';
-        launcher.style.top=Math.round(top)+'px';
-        launcher.style.bottom='auto';
-      }
-    });
-    function dropLift(){
-      startY=null;
-      if(!liftMoved){
-        lifting=false;
-        return;
-      }
-      fab.dataset.justLifted='1';
-      setTimeout(()=>delete fab.dataset.justLifted,240);
-      launcher.classList.remove('is-lifted','is-crying','is-dragging');
-      lifting=false;
-      liftMoved=false;
-      if(ROBOT_CAN_PATROL){
-        applyPos(x,PAD);
-        if(!launcher.classList.contains('open'))launcher.classList.add('is-walking');
-      }else{
-        /* Luôn hút về bên phải nhưng giữ đúng độ cao người dùng vừa thả. */
-        applyDock(launcher.getBoundingClientRect().top,true);
-      }
-    }
-    fab.addEventListener('pointerup',dropLift);
-    fab.addEventListener('pointercancel',dropLift);
-
-    /* Tin nhắn mới luôn quan trọng hơn lời gợi ý. */
-    window.addEventListener('avp:chat-new-message',e=>{
-      if(!canSpeak())return;
-      const sender=String(e.detail?.sender||'Admin').trim();
-      showLine(`Bạn có tin nhắn mới từ ${sender}. Bấm AVP để xem.`,3200);
-    });
-
-    /* Khi hoàn thành bài, robot mới chủ động xuất hiện trong khu học. */
-    const celebrate=()=>{
-      if(document.visibilityState!=='visible')return;
-      launcher.classList.remove('is-walking','is-stationary');
-      launcher.classList.add('is-greeting');
-      showLine('Đã ghi nhận hoàn thành. Bạn có thể học bài tiếp theo hoặc sang Khu bài tập để luyện lại.',3600)
-        .finally(()=>{
-          launcher.classList.remove('is-greeting');
-          if(ROBOT_CAN_PATROL)launcher.classList.add('is-walking');
-          else launcher.classList.add('is-stationary');
-        });
-    };
-    window.addEventListener('avp:course-xp',celebrate);
-
-    if(ROBOT_CAN_PATROL){
-      launcher.classList.remove('is-docked-right');
-      applyPos(x,PAD);
-    }else{
-      applyDock(savedDockY(),false);
-    }
-    requestAnimationFrame(frame);
-    talkLoop();
-    window.addEventListener('resize',()=>{
-      if(ROBOT_CAN_PATROL){
-        if(x>maxX())x=maxX();
-        applyPos(x,PAD);
-        persistWalk();
-      }else{
-        applyDock(savedDockY(),false);
-        if(!edgeMenu.hidden)requestAnimationFrame(positionDockedRobotMenu);
-      }
-      placeBubble();
-    });
-    window.addEventListener('pagehide',()=>{if(ROBOT_CAN_PATROL)persistWalk();else persistDock(launcher.getBoundingClientRect().top)});
-    document.addEventListener('visibilitychange',()=>{
-      if(document.hidden){
-        hideBubble();
-        if(ROBOT_CAN_PATROL)persistWalk();
-        else persistDock(launcher.getBoundingClientRect().top);
-      }
-    });
   })();
 
   if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));

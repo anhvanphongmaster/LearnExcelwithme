@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260902-stability1";
+const CACHE = "learnexcel-assets-v20260906-avp-robot-v3";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -7,6 +7,8 @@ const ASSETS = [
   "./avp-ui-polish-v40.css",
   "./simple-nav.js",
   "./avp-core.js",
+  "./avp-robot.css",
+  "./avp-robot.js",
   "./index.html"
 ];
 
