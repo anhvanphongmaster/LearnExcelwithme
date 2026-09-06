@@ -6,188 +6,6 @@
   const IGNORE=new Set(['auth.html','admin.html','privacy.html','terms.html','disclaimer.html','open-source.html','lienhe.html','gioithieu.html']);
   const page=location.pathname.split('/').pop()||'index.html';
   const title=(document.querySelector('h1')?.textContent||document.title.split('|')[0]||page).trim();
-
-  /* =========================================================
-     PAGE CONTEXT V3 — AVP biết người dùng đang ở đâu
-     - Khu học: im, chỉ hỗ trợ khi người dùng chủ động / có thông báo.
-     - Khu bài tập: báo đúng khu hiện tại + thỉnh thoảng gợi ý khu liên quan.
-     - Chỉ Trang chủ được tuần tra; các trang khác đứng ở mép phải.
-     ========================================================= */
-  const LESSON_CONTEXT={
-    'excel.html':'Excel cơ bản',
-    'filtersort.html':'Filter & Sort',
-    'pivottable.html':'PivotTable',
-    'bieudopareto.html':'Biểu đồ Pareto',
-    'baocaoexcel.html':'Báo cáo Excel / QC',
-    'excel-nang-cao.html':'Excel nâng cao',
-    'power-query-course.html':'Power Query',
-    'power-pivot-dax.html':'Power Pivot & DAX',
-    'dashboard-dong.html':'Dashboard động',
-    'vba-macro.html':'VBA / Macro',
-    'solver-whatif.html':'What-If & Solver'
-  };
-  const REFERENCE_CONTEXT={
-    'phimtatexcel.html':'Phím tắt Excel',
-    'congthucexcel.html':'Công thức Excel',
-    'excel-dictionary.html':'Từ điển Excel',
-    'excel-handbook.html':'Excel Handbook'
-  };
-  const PRACTICE_CONTEXT={
-    'practice-video.html':{label:'Practice Hub',intro:'Bạn đang ở Khu bài tập. Chọn cách luyện phù hợp với mục tiêu của bạn.',lines:[
-      'TikTok Practice phù hợp khi bạn muốn luyện nhanh theo từng video.',
-      'YouTube Project phù hợp với bài dài, làm theo từng phần của một project.',
-      'Bài tập tự chấm phù hợp khi bạn muốn làm file rồi biết kết quả.',
-      'Nếu chưa biết cách bắt đầu một bài, Hướng dẫn bài tập sẽ gợi ý hướng làm.',
-      'Không cần vào tất cả các khu. Hãy chọn một kiểu luyện phù hợp với mục tiêu hiện tại.',
-      'Muốn kiểm tra kiến thức nhanh thì Race phù hợp hơn một project dài.'
-    ],suggestions:[
-      'Muốn luyện nhanh? Thử TikTok Practice.',
-      'Muốn làm một project dài hơn? Sang YouTube Project.',
-      'Muốn biết bài mình làm đúng chưa? Sang Bài tập tự chấm.',
-      'Muốn kiểm tra phản xạ Excel? Thử Excel Race.',
-      'Thiếu kiến thức nền? Skill Map sẽ chỉ bài nên học trước.'
-    ]},
-    'practice-tiktok.html':{label:'TikTok Practice',intro:'Bạn đang ở Bài tập TikTok. Chọn chủ đề, xem đúng video và tải file của bài.',lines:[
-      'Ở TikTok Practice, mỗi bài đi cùng video đã phát hành.',
-      'Chọn đúng chủ đề trước sẽ giúp bạn tìm bài nhanh hơn.',
-      'Làm lại trên file thực hành sẽ hiệu quả hơn chỉ xem video.',
-      'Nếu bài có file, hãy tải đúng file đi kèm để tránh lệch dữ liệu với video.',
-      'Thử làm lại một lần không nhìn video để biết mình đã nhớ thao tác chưa.',
-      'Bạn có thể bấm AVP để hỏi AI hoặc Chat Admin ngay khi đang vướng một bước.'
-    ],suggestions:[
-      'Muốn bài dài và liền mạch hơn? Sang YouTube Project.',
-      'Muốn hệ thống kiểm tra kết quả? Thử Bài tập tự chấm.',
-      'Bí cách làm một bài? Mở Hướng dẫn bài tập.',
-      'Muốn học lại phần kiến thức trước khi làm? Mở Skill Map.',
-      'Cần tra nhanh một hàm Excel? Mở Từ điển Excel từ AVP.'
-    ]},
-    'practice-youtube.html':{label:'YouTube Project',intro:'Bạn đang ở YouTube Project. Các bài được tổ chức theo project và từng phần.',lines:[
-      'YouTube Project phù hợp để luyện một quy trình Excel dài từ đầu đến cuối.',
-      'Nên làm lần lượt từng phần để dữ liệu và kết quả không bị đứt mạch.',
-      'Hãy giữ file của phần trước nếu project tiếp tục dùng lại dữ liệu.',
-      'Nên hoàn thành phần hiện tại trước khi nhảy sang phần sau của project.',
-      'Nếu kết quả lệch video, kiểm tra lại bước trước thay vì sửa thủ công kết quả cuối.',
-      'Có thể hỏi AI ngay tại đây nếu bạn chưa hiểu mục đích của một bước.'
-    ],suggestions:[
-      'Muốn luyện nhanh một kỹ năng riêng? Sang TikTok Practice.',
-      'Muốn làm bài có chấm kết quả? Thử Bài tập tự chấm.',
-      'Cần ôn lại kiến thức nền? Quay lại Skill Map.',
-      'Muốn kiểm tra nhanh sau khi học? Thử Excel Race.'
-    ]},
-    'practice-grader.html':{label:'Bài tập tự chấm',intro:'Bạn đang ở Bài tập tự chấm. Làm file, nộp bài và nhận kết quả từ hệ thống.',lines:[
-      'Ở khu Tự chấm, hãy đọc đúng yêu cầu trước khi sửa file.',
-      'Nếu bài chưa đạt, xem lại lỗi được báo rồi sửa đúng phần đó.',
-      'Mỗi chủ đề có nhiều mức bài để bạn tăng dần độ khó.',
-      'Nộp đúng file của bài đang làm để hệ thống chấm đúng yêu cầu.',
-      'Nếu chưa đạt, tập trung sửa đúng lỗi được báo thay vì làm lại toàn bộ.',
-      'Khi đã qua bài dễ, hãy tăng dần độ khó thay vì chọn bài ngẫu nhiên.'
-    ],suggestions:[
-      'Chưa biết bắt đầu bài thế nào? Mở Hướng dẫn bài tập.',
-      'Muốn xem cách làm qua video ngắn? Sang TikTok Practice.',
-      'Muốn luyện theo project dài? Sang YouTube Project.',
-      'Thiếu kiến thức của chủ đề này? Quay lại Skill Map để ôn trước.',
-      'Muốn kiểm tra phản xạ thay vì nộp file? Thử Excel Race.'
-    ]},
-    'practice-guides.html':{label:'Hướng dẫn bài tập',intro:'Bạn đang ở Hướng dẫn bài tập. Đây là nơi xem gợi ý trước khi tự làm.',lines:[
-      'Hướng dẫn chỉ nên dùng khi bạn đang bí, đừng xem đáp án quá sớm.',
-      'Đọc gợi ý xong hãy quay lại file và tự làm lại một lần.',
-      'Hướng dẫn là nơi tháo nút thắt, không phải nơi thay thế việc tự làm bài.',
-      'Nếu một gợi ý vẫn chưa đủ rõ, bấm AVP để hỏi AI theo đúng bài đang xem.'
-    ],suggestions:[
-      'Đã hiểu hướng làm? Quay lại Bài tập tự chấm để kiểm tra kết quả.',
-      'Muốn xem thao tác qua video? Sang TikTok Practice.',
-      'Cần học lại kiến thức nền? Mở Skill Map.'
-    ]},
-    'practice-lab.html':{label:'Practice Lab',intro:'Bạn đang ở Practice Lab. Đây là khu luyện theo nhiệm vụ và case thực tế.',lines:[
-      'Practice Lab phù hợp khi bạn muốn ghép nhiều kỹ năng Excel trong cùng một case.',
-      'Hãy đọc mục tiêu của nhiệm vụ trước rồi mới mở file thực hành.',
-      'Một case có thể cần nhiều kỹ năng cùng lúc, vì vậy đừng vội sửa dữ liệu khi chưa hiểu yêu cầu.',
-      'Nếu bị kẹt ở một bước, hãy xác định chính xác kỹ năng đang thiếu rồi mới tra cứu.'
-    ],suggestions:[
-      'Muốn luyện từng kỹ năng ngắn hơn? Mở Khu bài tập.',
-      'Thiếu kiến thức nền? Quay lại Skill Map để học đúng bài.',
-      'Muốn kiểm tra nhanh kiến thức đã học? Thử Excel Race.'
-    ]}
-  };
-
-  function resolvePageContext(){
-    if(PRACTICE_CONTEXT[page]){
-      const p=PRACTICE_CONTEXT[page];
-      return {area:'Khu bài tập',kind:'practice',motion:'stationary',autoTalk:true,...p};
-    }
-    if(LESSON_CONTEXT[page]){
-      return {
-        area:'Khu học',kind:'learning',motion:'stationary',autoTalk:false,label:LESSON_CONTEXT[page],
-        intro:`Bạn đang học: ${LESSON_CONTEXT[page]}.`,
-        lines:[],
-        suggestions:['Khi học xong, bạn có thể sang Khu bài tập để luyện lại bằng file.']
-      };
-    }
-    if(REFERENCE_CONTEXT[page]){
-      return {
-        area:'Kho tra cứu',kind:'reference',motion:'stationary',autoTalk:false,label:REFERENCE_CONTEXT[page],
-        intro:`Bạn đang ở kho tra cứu: ${REFERENCE_CONTEXT[page]}.`,
-        lines:[],suggestions:['Nếu đang học theo lộ trình, quay lại Skill Map để tiếp tục đúng bài.']
-      };
-    }
-    if(page==='professional-access.html')return {
-      area:'Bài tập nâng cao',kind:'professional-access',motion:'stationary',autoTalk:false,label:'Professional Track',
-      intro:'Bạn đang ở khu Bài tập nâng cao (Pro).',
-      lines:[],suggestions:[]
-    };
-    if(page==='professional-track.html')return {
-      area:'Bài tập nâng cao',kind:'professional',motion:'stationary',autoTalk:true,label:'Professional Track',
-      intro:'Bạn đã vào được Professional Track. Chọn đúng lĩnh vực và làm từng case theo thứ tự.',
-      lines:[
-        'Đã mở được khu Pro rồi thì cứ làm từng case một, không cần vội chạy hết lộ trình.',
-        'Case khó là bình thường. Hãy xác định đúng bước đang vướng trước khi hỏi AI hoặc Admin.',
-        'Ưu tiên hiểu cách xử lý và lý do làm, đừng chỉ cố ra đúng kết quả cuối.',
-        'Nếu một case có nhiều bước, hoàn thành từng checkpoint rồi mới chuyển tiếp.',
-        'Bạn đã đạt điều kiện để vào khu này. Giờ tập trung nâng chất lượng bài làm nhé.'
-      ],
-      suggestions:[
-        'Cần hỗ trợ ngay trong case? Bấm AVP để Hỏi AI hoặc Chat Admin.',
-        'Làm xong một case, tự kiểm tra lại file trước khi chuyển sang case tiếp theo.'
-      ]
-    };
-    if(page==='skill-map.html')return {
-      area:'Khu học',kind:'map',motion:'stationary',autoTalk:true,label:'Skill Map',
-      intro:'Bạn đang ở Skill Map. Đây là nơi chọn bài và xem mình nên học gì tiếp theo.',
-      lines:['Nếu chưa biết bắt đầu từ đâu, hãy bắt đầu với Excel cơ bản.','Bài có trạng thái hiện tại là điểm nên học tiếp trước.'],
-      suggestions:['Học xong một bài, sang Khu bài tập để luyện lại sẽ dễ nhớ hơn.']
-    };
-    if(page==='index.html')return {
-      area:'Trang chủ',kind:'home',motion:'patrol',autoTalk:true,label:'Trang chủ',
-      intro:'Chào mừng bạn đến Learn Excel with Anh Văn Phòng.',
-      lines:['Muốn học theo thứ tự? Skill Map sẽ chỉ bài nên bắt đầu.','Muốn thực hành ngay? Khu bài tập có TikTok, YouTube và Tự chấm.'],
-      suggestions:['Chưa biết học gì trước? Mở Skill Map.','Muốn luyện ngay bằng file? Mở Khu bài tập.']
-    };
-    if(page==='excel-race.html')return {
-      area:'Thử thách',kind:'game',motion:'stationary',autoTalk:true,label:'Excel Race',
-      intro:'Bạn đang ở Excel Race. Trả lời nhanh nhưng đừng đoán vội.',
-      lines:['Giữ streak bằng cách đọc kỹ câu hỏi trước khi chọn.','Race phù hợp để kiểm tra phản xạ sau khi đã học kiến thức.'],
-      suggestions:['Gặp phần chưa chắc? Quay lại Skill Map để ôn đúng chủ đề.']
-    };
-    if(page==='playground.html'||page==='baitapexcel.html')return {
-      area:'Thực hành',kind:'practice',motion:'stationary',autoTalk:true,label:title,
-      intro:`Bạn đang ở ${title}.`,lines:['Làm từng bài một và kiểm tra kết quả trước khi chuyển tiếp.'],
-      suggestions:['Muốn thêm dạng bài khác? Mở Khu bài tập.']
-    };
-    if(['tools-center.html','formula-finder.html','excel-doctor.html','qc-dashboard.html','excel-mobile.html'].includes(page))return {
-      area:'Công cụ',kind:'tools',motion:'stationary',autoTalk:false,label:title,
-      intro:`Bạn đang ở Công cụ: ${title}.`,lines:[],suggestions:[]
-    };
-    return {area:'Learn Excel',kind:'general',motion:'stationary',autoTalk:false,label:title,intro:`Bạn đang ở ${title}.`,lines:[],suggestions:[]};
-  }
-
-  const pageContext=resolvePageContext();
-  const ROBOT_CAN_PATROL=pageContext.kind==='home' && pageContext.motion==='patrol';
-  window.AVPPageContext=Object.freeze({
-    page,area:pageContext.area,label:pageContext.label,kind:pageContext.kind,
-    title,href:location.href
-  });
-  document.documentElement.dataset.avpArea=pageContext.kind;
-
   const now=Date.now();
   const safe=(k,d=[])=>{try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d))}catch{return d}};
   const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
@@ -232,19 +50,13 @@
      1 nút duy nhất ở viền: Trung tâm học / Chat Admin / Hỏi AI
      ========================================================= */
   const launcher=document.createElement('div');
-  launcher.className=`avp-edge-launcher is-right is-robot ${ROBOT_CAN_PATROL?'is-walking':'is-stationary'}`;
+  launcher.className='avp-edge-launcher is-right is-robot is-walking';
   launcher.id='avpEdgeLauncher';
-
-  const aiActionLabel=pageContext.kind==='learning'?'Hỏi AI về bài này':(pageContext.kind==='practice'?'Hỏi AI về bài tập':'Hỏi AI');
 
   launcher.innerHTML=`
     <div class="avp-edge-menu" id="avpEdgeMenu" hidden>
-      <div class="avp-edge-context" aria-label="Vị trí hiện tại">
-        <span>${esc(pageContext.area)}</span>
-        <strong>${esc(pageContext.label)}</strong>
-      </div>
       <button type="button" class="avp-edge-action" data-edge-action="ai">
-        <span>✨</span><b>${esc(aiActionLabel)}</b>
+        <span>✨</span><b>Hỏi AI</b>
       </button>
       <button type="button" class="avp-edge-action" data-edge-action="dictionary">
         <span>📘</span><b>Từ điển Excel</b>
@@ -287,8 +99,6 @@
   const fab=launcher.querySelector('#avpEdgeMain');
   const edgeMenu=launcher.querySelector('#avpEdgeMenu');
   const edgeBadge=launcher.querySelector('#avpEdgeBadge');
-  fab.title=`Trợ lý AVP — ${pageContext.area}: ${pageContext.label}`;
-  fab.setAttribute('aria-label',`Mở trợ lý AVP — ${pageContext.label}`);
 
   /* =========================================================
      MINI PREVIEW V2 — FIXED LAYER
@@ -736,20 +546,26 @@
   document.body.appendChild(back);
   const hub=back.querySelector('.avp-hub');
 
-  function positionDockedRobotMenu(){
-    if(!launcher.classList.contains('is-docked-right') || edgeMenu.hidden)return;
+  function positionRobotDockMenu(){
+    if(!launcher.classList.contains('avp-robot-dock') || edgeMenu.hidden)return;
     const r=launcher.getBoundingClientRect();
-    const gap=8;
-    const mh=edgeMenu.offsetHeight||250;
-    const maxTop=Math.max(gap,window.innerHeight-mh-gap);
-    const top=Math.max(gap,Math.min(r.top+r.height/2-mh/2,maxTop));
-    edgeMenu.style.setProperty('position','fixed','important');
-    edgeMenu.style.setProperty('left','auto','important');
-    edgeMenu.style.setProperty('right',Math.max(72,window.innerWidth-r.left+8)+'px','important');
-    edgeMenu.style.setProperty('top',Math.round(top)+'px','important');
-    edgeMenu.style.setProperty('bottom','auto','important');
-    edgeMenu.style.setProperty('transform','none','important');
-    edgeMenu.style.setProperty('align-items','flex-end','important');
+    edgeMenu.style.position='fixed';
+    edgeMenu.style.left='auto';
+    edgeMenu.style.right=Math.max(8,Math.round(window.innerWidth-r.left+8))+'px';
+    edgeMenu.style.bottom='auto';
+    edgeMenu.style.transform='none';
+    const mr=edgeMenu.getBoundingClientRect();
+    const top=Math.max(8,Math.min(window.innerHeight-mr.height-8,r.top+(r.height-mr.height)/2));
+    edgeMenu.style.top=Math.round(top)+'px';
+  }
+
+  function clearRobotDockMenuPosition(){
+    edgeMenu.style.position='';
+    edgeMenu.style.left='';
+    edgeMenu.style.right='';
+    edgeMenu.style.top='';
+    edgeMenu.style.bottom='';
+    edgeMenu.style.transform='';
   }
 
   function setEdgeMenu(open){
@@ -758,20 +574,20 @@
     fab.setAttribute('aria-expanded',open?'true':'false');
     const icon=fab.querySelector('.avp-edge-main-icon');
     if(icon)icon.textContent='AVP';
+
+    const dockMode=launcher.classList.contains('avp-robot-dock');
+    const homeMode=launcher.classList.contains('avp-robot-home');
+
     if(open){
-      launcher.classList.remove('is-walking','is-stationary');
+      launcher.classList.remove('is-walking');
       launcher.classList.add('is-greeting');
       fab.style.transform='none';
-      requestAnimationFrame(positionDockedRobotMenu);
+      if(dockMode)requestAnimationFrame(positionRobotDockMenu);
     }else{
       launcher.classList.remove('is-greeting');
-      if(ROBOT_CAN_PATROL){
-        launcher.classList.add('is-walking');
-        launcher.classList.remove('is-stationary');
-      }else{
-        launcher.classList.remove('is-walking');
-        launcher.classList.add('is-stationary');
-      }
+      if(homeMode)launcher.classList.add('is-walking');
+      else launcher.classList.remove('is-walking');
+      if(!dockMode)clearRobotDockMenuPosition();
     }
 
     if(!open){
@@ -997,24 +813,12 @@
 
   /* Kéo dọc màn hình + snap sát viền trái/phải, nhớ vị trí. */
   (function enableDragEdgeLauncher(root,btn){
+    // Robot uses one dedicated controller below. Do not attach the generic edge drag handlers.
+    if(root.classList.contains('is-robot')) return;
     const POS_KEY='avp_edge_launcher_pos_v5';
     const EDGE_GAP=6;
 
     const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
-
-    /* Robot drag is owned exclusively by avp-robot.js.
-       Keep only the click-to-open-menu behavior here. */
-    if(root.classList.contains('is-robot')){
-      btn.addEventListener('click',e=>{
-        if(btn.dataset.justDragged==='1' || btn.dataset.justLifted==='1'){
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          return;
-        }
-        setEdgeMenu(edgeMenu.hidden);
-      });
-      return;
-    }
 
     function sideFromX(x,w){
       return (x + w/2) < (window.innerWidth/2) ? 'left' : 'right';
@@ -1200,41 +1004,564 @@
      Dữ liệu bookmark cũ vẫn được giữ nguyên trong localStorage. */
 
 
-  /* =========================================================
-     AVP ROBOT CONTROLLER V3
-     Robot behavior is intentionally isolated in avp-robot.js.
-     avp-core owns the launcher/menu only; one controller owns drag,
-     snap, speech and mascot state. This prevents page-specific patches
-     from stacking pointer handlers on the same element.
-     ========================================================= */
-  window.__AVPRobotBridge={
-    launcher,
-    fab,
-    edgeMenu,
-    pageContext,
-    canPatrol:ROBOT_CAN_PATROL,
-    embedded:AVP_EMBEDDED,
-    unreadNow:()=>unreadCountFromChatBadge()+unreadCountFromCommunity()+starUnread,
-    closeMenu:()=>setEdgeMenu(false),
-    positionMenu:positionDockedRobotMenu
-  };
-
-  (function loadAVPRobotController(){
+  (function avpRobotController(){
     if(AVP_EMBEDDED)return;
-    if(!document.querySelector('link[data-avp-robot-style]')){
-      const l=document.createElement('link');
-      l.rel='stylesheet';
-      l.href='avp-robot.css?v=20260906r3';
-      l.dataset.avpRobotStyle='1';
-      document.head.appendChild(l);
+
+    const HOME_PAGE='index.html';
+    const isHome=page===HOME_PAGE;
+    const PAD=16;
+    const DOCK_GAP=8;
+    const DOCK_Y_KEY='avp_robot_dock_y_v1';
+    const HOME_POS_KEY='avp_bot_walk_x_v1';
+    const DRAG_THRESHOLD=5;
+
+    const PRACTICE_CONTEXT={
+      'practice-video.html':{
+        area:'Khu bài tập',
+        enter:[
+          'Bạn đang ở Khu bài tập. Chọn đúng kiểu luyện phù hợp với mục tiêu hôm nay nhé.',
+          'Đây là Khu bài tập. Bạn có thể luyện theo TikTok, YouTube, Tự chấm hoặc Practice Lab.'
+        ],
+        suggest:[
+          'Muốn biết đúng sai ngay? Hãy thử Bài tập tự chấm.',
+          'Muốn xem hướng dẫn ngắn theo video? Khu TikTok Practice phù hợp hơn.',
+          'Muốn học case dài và đầy đủ hơn? Chuyển sang YouTube Practice.',
+          'Muốn tự xử lý một case hoàn chỉnh? Practice Lab đang chờ bạn.',
+          'Muốn kiểm tra phản xạ nhanh? Excel Race là lựa chọn phù hợp.'
+        ]
+      },
+      'practice-tiktok.html':{
+        area:'TikTok Practice',
+        enter:[
+          'Bạn đang ở TikTok Practice — bài ngắn, làm theo từng video.',
+          'Đây là khu TikTok Practice. Chọn chủ đề rồi mở bài thực hành tương ứng.'
+        ],
+        suggest:[
+          'Muốn bài dài và giải thích kỹ hơn? Thử YouTube Practice.',
+          'Làm xong rồi muốn biết mình đúng đến đâu? Sang Bài tập tự chấm nhé.',
+          'Nếu bí cách làm, khu Hướng dẫn thực hành có thể giúp bạn.',
+          'Muốn luyện một case lớn hơn thay vì bài ngắn? Thử Practice Lab.',
+          'Thiếu kiến thức nền ở chủ đề này? Mở Skill Map để quay lại đúng bài học.'
+        ]
+      },
+      'practice-youtube.html':{
+        area:'YouTube Practice',
+        enter:[
+          'Bạn đang ở YouTube Practice — phù hợp với các bài và project dài hơn.',
+          'Đây là khu YouTube Practice. Hãy chọn project rồi làm từng phần theo video.'
+        ],
+        suggest:[
+          'Muốn luyện nhanh một kỹ thuật nhỏ? TikTok Practice sẽ gọn hơn.',
+          'Muốn kiểm tra kết quả ngay sau khi làm? Sang Bài tập tự chấm.',
+          'Nếu muốn tự giải một case hoàn chỉnh, hãy thử Practice Lab.',
+          'Vướng một bước trong project? Bạn có thể hỏi AI hoặc Chat Admin ngay tại robot.'
+        ]
+      },
+      'practice-grader.html':{
+        area:'Bài tập tự chấm',
+        enter:[
+          'Bạn đang ở Bài tập tự chấm. Đây là khu tích điểm và kiểm tra kết quả trực tiếp.',
+          'Đây là Bài tập tự chấm — làm bài, nộp kết quả và xem điểm ngay.'
+        ],
+        suggest:[
+          'Nếu chưa biết cách làm, mở Hướng dẫn thực hành trước khi thử lại.',
+          'Muốn xem một ví dụ ngắn trước? TikTok Practice có thể phù hợp.',
+          'Muốn luyện sâu theo project? Thử YouTube Practice.',
+          'Điểm ở khu này là một phần điều kiện để mở Professional Track.'
+        ]
+      },
+      'practice-guides.html':{
+        area:'Hướng dẫn thực hành',
+        enter:[
+          'Bạn đang ở Hướng dẫn thực hành. Dùng khu này khi cần gỡ một bước đang bí.',
+          'Đây là khu Hướng dẫn thực hành — xem cách làm rồi quay lại bài để tự hoàn thành.'
+        ],
+        suggest:[
+          'Xem xong hướng dẫn, quay lại Bài tập tự chấm để kiểm tra kết quả nhé.',
+          'Muốn xem video ngắn tương ứng? Kiểm tra TikTok Practice.',
+          'Đừng chỉ xem đáp án — hãy quay lại bài và tự làm lại một lần.'
+        ]
+      },
+      'practice-lab.html':{
+        area:'Practice Lab',
+        enter:[
+          'Bạn đang ở Practice Lab — khu luyện case gần với công việc thực tế.',
+          'Đây là Practice Lab. Hãy xử lý bài như một file công việc thật.'
+        ],
+        suggest:[
+          'Nếu case này quá khó, quay lại Skill Map để củng cố phần kiến thức liên quan.',
+          'Muốn luyện nhanh trước khi làm case lớn? Thử Bài tập tự chấm.',
+          'Vướng logic xử lý? Bạn có thể hỏi AI hoặc Chat Admin từ robot.'
+        ]
+      },
+      'excel-race.html':{
+        area:'Excel Race',
+        enter:[
+          'Bạn đang ở Excel Race — khu kiểm tra phản xạ Excel nhanh.',
+          'Đây là Excel Race. Tập trung vào độ chính xác trước, tốc độ sẽ đến sau.'
+        ],
+        suggest:[
+          'Nếu sai nhiều ở một chủ đề, quay lại Skill Map để học đúng phần đó.',
+          'Muốn luyện có điểm và kết quả rõ hơn? Thử Bài tập tự chấm.'
+        ]
+      }
+    };
+
+    const LEARNING_PAGES=new Set([
+      'excel.html','phimtatexcel.html','congthucexcel.html','filtersort.html','pivottable.html',
+      'bieudopareto.html','baocaoexcel.html','excel-nang-cao.html','power-query-course.html',
+      'power-pivot-dax.html','dashboard-dong.html','solver-whatif.html','vba-macro.html',
+      'skill-map.html','learning-path.html','master-learning.html','my-learning.html'
+    ]);
+
+    const pageArea=PRACTICE_CONTEXT[page]?.area ||
+      (page==='professional-access.html'?'Điều kiện Professional Track':
+      (page==='professional-track.html'?'Professional Track':
+      (LEARNING_PAGES.has(page)?'Khu học tập':title)));
+
+    // One non-interactive context row. It never changes home-page UI.
+    if(!isHome){
+      const contextRow=document.createElement('div');
+      contextRow.className='avp-edge-context';
+      contextRow.innerHTML='<small>KHU HIỆN TẠI</small><strong></strong>';
+      contextRow.querySelector('strong').textContent=pageArea;
+      edgeMenu.prepend(contextRow);
     }
-    if(!document.querySelector('script[data-avp-robot-controller]')){
-      const s=document.createElement('script');
-      s.src='avp-robot.js?v=20260906r3';
-      s.async=false;
-      s.dataset.avpRobotController='1';
-      document.head.appendChild(s);
+
+    const bubble=document.createElement('div');
+    bubble.className='avp-bot-bubble';
+    bubble.id='avpBotBubble';
+    bubble.hidden=true;
+    document.body.appendChild(bubble);
+
+    let bubbleTimer=null;
+    let dragging=false;
+    let suppressClickUntil=0;
+    let suggestionTimer=null;
+    let lastLine='';
+
+    function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+    function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+    function botW(){return Math.max(64,launcher.offsetWidth||64);}
+    function botH(){return Math.max(72,launcher.offsetHeight||72);}
+    function maxDockX(){return Math.max(DOCK_GAP,window.innerWidth-botW()-DOCK_GAP);}
+    function maxDockY(){return Math.max(DOCK_GAP,window.innerHeight-botH()-DOCK_GAP);}
+    function unreadNow(){return unreadCountFromChatBadge()+unreadCountFromCommunity()+starUnread;}
+
+    function hideLine(){
+      clearTimeout(bubbleTimer);
+      bubbleTimer=null;
+      bubble.classList.remove('show');
+      bubble.hidden=true;
     }
+
+    function placeBubble(){
+      if(bubble.hidden)return;
+      const r=launcher.getBoundingClientRect();
+      const bw=Math.min(270,Math.max(180,window.innerWidth-96));
+      bubble.style.width=bw+'px';
+
+      if(isHome){
+        let left=r.left+r.width/2-bw/2;
+        left=clamp(left,12,window.innerWidth-bw-12);
+        bubble.classList.remove('dock-side');
+        bubble.style.left=Math.round(left)+'px';
+        bubble.style.right='auto';
+        bubble.style.top='auto';
+        bubble.style.bottom=Math.round(window.innerHeight-r.top+10)+'px';
+      }else{
+        bubble.classList.add('dock-side');
+        const br=bubble.getBoundingClientRect();
+        const bh=br.height||56;
+        const left=Math.max(10,r.left-bw-12);
+        const top=clamp(r.top+(r.height-bh)/2,8,window.innerHeight-bh-8);
+        bubble.style.left=Math.round(left)+'px';
+        bubble.style.right='auto';
+        bubble.style.top=Math.round(top)+'px';
+        bubble.style.bottom='auto';
+      }
+    }
+
+    function showLine(text,ms=4200){
+      if(!text || dragging || launcher.classList.contains('open') || document.visibilityState==='hidden')return;
+      const line=String(text).trim();
+      if(!line)return;
+      lastLine=line;
+      clearTimeout(bubbleTimer);
+      bubble.textContent=line;
+      bubble.hidden=false;
+      bubble.classList.add('show');
+      requestAnimationFrame(placeBubble);
+      bubbleTimer=setTimeout(hideLine,ms);
+    }
+
+    function pick(arr){
+      if(!Array.isArray(arr)||!arr.length)return '';
+      const candidates=arr.filter(x=>x!==lastLine);
+      const pool=candidates.length?candidates:arr;
+      return pool[Math.floor(Math.random()*pool.length)];
+    }
+
+    function schedulePracticeSuggestion(){
+      clearTimeout(suggestionTimer);
+      const ctx=PRACTICE_CONTEXT[page];
+      if(!ctx || !ctx.suggest?.length)return;
+      // Deliberately sparse: useful hints without becoming a distraction.
+      const delay=42000+Math.floor(Math.random()*38000);
+      suggestionTimer=setTimeout(()=>{
+        if(!dragging && !launcher.classList.contains('open') && document.visibilityState==='visible'){
+          const unread=unreadNow();
+          if(unread>0)showLine(unread>1?`Bạn có ${unread} thông báo chưa đọc.`:'Bạn có một thông báo chưa đọc.',3500);
+          else showLine(pick(ctx.suggest),4300);
+        }
+        schedulePracticeSuggestion();
+      },delay);
+    }
+
+    async function waitSupabaseClient(){
+      for(let n=0;n<40;n++){
+        const sb=window.avpSupabase||window.supabaseClient||null;
+        if(sb?.auth && sb?.rpc)return sb;
+        await sleep(100);
+      }
+      return null;
+    }
+
+    async function professionalStatusLine(){
+      const sb=await waitSupabaseClient();
+      if(!sb){
+        showLine('Chưa kết nối được hệ thống để kiểm tra Professional Track. Bạn có thể xem các mốc ngay trên trang.',4600);
+        return;
+      }
+      try{
+        const sess=await sb.auth.getSession();
+        const user=sess?.data?.session?.user||null;
+        if(!user){
+          showLine('Đăng nhập để mình kiểm tra bạn còn thiếu điều kiện nào để vào Professional Track.',4700);
+          return;
+        }
+        try{
+          const admin=await sb.rpc('is_admin_user');
+          if(!admin.error && admin.data===true){
+            showLine('Bạn đang vào Professional Track bằng quyền Admin.',3600);
+            return;
+          }
+        }catch(_){ }
+
+        const res=await sb.rpc('professional_track_access_status_v1');
+        if(res?.error)throw res.error;
+        const s=res?.data||{};
+        if(s.can_access || s.status==='approved'){
+          showLine('Professional Track đã mở. Cứ làm từng case như một công việc thật — cần hỗ trợ thì gọi mình.',5000);
+          return;
+        }
+        if(s.status==='pending'){
+          showLine('Bạn đã đủ điều kiện và đã nộp hồ sơ. Hiện chỉ cần chờ Admin xét duyệt.',4700);
+          return;
+        }
+        if(s.status==='rejected'){
+          showLine('Hồ sơ Professional cần bổ sung. Hãy xem ghi chú của Admin trên trang này trước khi nộp lại.',5000);
+          return;
+        }
+        if(s.eligible){
+          showLine('Bạn đã đủ điểm và đủ ngày hoạt động. Bước tiếp theo là nộp chứng chỉ để Admin xét duyệt.',5000);
+          return;
+        }
+
+        const missing=[];
+        const b=Math.max(0,1500-(Number(s.basic_score)||0));
+        const i=Math.max(0,1300-(Number(s.intermediate_score)||0));
+        const a=Math.max(0,1000-(Number(s.advanced_score)||0));
+        const d=Math.max(0,5-(Number(s.active_days)||0));
+        if(b)missing.push(`Cơ bản ${b.toLocaleString('vi-VN')} điểm`);
+        if(i)missing.push(`Trung cấp ${i.toLocaleString('vi-VN')} điểm`);
+        if(a)missing.push(`Nâng cao ${a.toLocaleString('vi-VN')} điểm`);
+        if(d)missing.push(`${d} ngày hoạt động`);
+        const detail=missing.length?` Bạn còn thiếu: ${missing.join(', ')}.`:'';
+        showLine(`Professional Track chưa mở.${detail} Hãy làm Bài tập tự chấm để tích đủ điểm trước.`,6500);
+      }catch(e){
+        console.debug('[AVP robot professional status]',e);
+        showLine('Chưa kiểm tra được điều kiện Professional lúc này. Bạn có thể xem các mốc ngay trên trang.',4300);
+      }
+    }
+
+    function bindRobotMenuClick(){
+      fab.addEventListener('click',e=>{
+        if(Date.now()<suppressClickUntil || fab.dataset.justLifted==='1'){
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          return;
+        }
+        setEdgeMenu(edgeMenu.hidden);
+        if(launcher.classList.contains('avp-robot-dock'))requestAnimationFrame(positionRobotDockMenu);
+      });
+    }
+
+    function initDockMode(){
+      launcher.classList.add('avp-robot-dock','is-right');
+      launcher.classList.remove('avp-robot-home','is-left','is-walking','face-left');
+
+      let savedY=null;
+      try{savedY=Number(localStorage.getItem(DOCK_Y_KEY));}catch(_){ }
+      if(!Number.isFinite(savedY))savedY=Math.round(window.innerHeight*.60);
+
+      function dockAt(y,animate=false){
+        const top=clamp(Number(y)||Math.round(window.innerHeight*.60),DOCK_GAP,maxDockY());
+        launcher.classList.add('is-right');
+        launcher.classList.remove('is-left');
+        if(animate)launcher.classList.add('is-snapping');
+        launcher.style.right='auto';
+        launcher.style.bottom='auto';
+        launcher.style.top=Math.round(top)+'px';
+        launcher.style.left=Math.round(maxDockX())+'px';
+        try{localStorage.setItem(DOCK_Y_KEY,String(Math.round(top)));}catch(_){ }
+        requestAnimationFrame(()=>{
+          placeBubble();
+          if(!edgeMenu.hidden)positionRobotDockMenu();
+        });
+        if(animate)setTimeout(()=>launcher.classList.remove('is-snapping'),300);
+      }
+
+      dockAt(savedY,false);
+
+      let activePointer=null;
+      let downX=0,downY=0,grabX=0,grabY=0;
+
+      fab.addEventListener('pointerdown',e=>{
+        if(e.button!=null && e.button!==0)return;
+        activePointer=e.pointerId;
+        dragging=false;
+        downX=e.clientX;
+        downY=e.clientY;
+        const r=launcher.getBoundingClientRect();
+        grabX=e.clientX-r.left;
+        grabY=e.clientY-r.top;
+        hideLine();
+        setEdgeMenu(false);
+        try{fab.setPointerCapture(activePointer);}catch(_){ }
+      },{passive:true});
+
+      fab.addEventListener('pointermove',e=>{
+        if(activePointer===null || e.pointerId!==activePointer)return;
+        const dist=Math.hypot(e.clientX-downX,e.clientY-downY);
+        if(!dragging && dist<DRAG_THRESHOLD)return;
+        if(!dragging){
+          dragging=true;
+          launcher.classList.add('is-dragging','is-lifted','is-crying');
+          launcher.classList.remove('is-greeting','is-walking','is-right','is-left');
+          launcher.style.transition='none';
+        }
+        const x=clamp(e.clientX-grabX,DOCK_GAP,window.innerWidth-botW()-DOCK_GAP);
+        const y=clamp(e.clientY-grabY,DOCK_GAP,maxDockY());
+        launcher.style.right='auto';
+        launcher.style.bottom='auto';
+        launcher.style.left=Math.round(x)+'px';
+        launcher.style.top=Math.round(y)+'px';
+        e.preventDefault();
+      },{passive:false});
+
+      function finishDrag(e){
+        if(activePointer===null || (e?.pointerId!=null && e.pointerId!==activePointer))return;
+        try{fab.releasePointerCapture(activePointer);}catch(_){ }
+        activePointer=null;
+        if(!dragging)return;
+
+        const r=launcher.getBoundingClientRect();
+        const y=clamp(r.top,DOCK_GAP,maxDockY());
+        dragging=false;
+        suppressClickUntil=Date.now()+380;
+        launcher.classList.remove('is-dragging','is-lifted','is-crying');
+        launcher.classList.add('is-right','is-snapping');
+        launcher.style.transition='left .28s cubic-bezier(.2,.9,.25,1), top .12s ease';
+        launcher.style.left=Math.round(maxDockX())+'px';
+        launcher.style.top=Math.round(y)+'px';
+        try{localStorage.setItem(DOCK_Y_KEY,String(Math.round(y)));}catch(_){ }
+        setTimeout(()=>{
+          launcher.classList.remove('is-snapping');
+          launcher.style.transition='';
+          if(!edgeMenu.hidden)positionRobotDockMenu();
+        },300);
+      }
+
+      fab.addEventListener('pointerup',finishDrag);
+      fab.addEventListener('pointercancel',finishDrag);
+
+      window.addEventListener('resize',()=>{
+        let y=launcher.getBoundingClientRect().top;
+        try{
+          const sy=Number(localStorage.getItem(DOCK_Y_KEY));
+          if(Number.isFinite(sy))y=sy;
+        }catch(_){ }
+        dockAt(y,false);
+      });
+
+      bindRobotMenuClick();
+
+      const ctx=PRACTICE_CONTEXT[page];
+      if(ctx){
+        setTimeout(()=>showLine(pick(ctx.enter),4300),1300);
+        schedulePracticeSuggestion();
+      }else if(page==='professional-access.html'){
+        setTimeout(professionalStatusLine,1600);
+      }else if(page==='professional-track.html'){
+        setTimeout(()=>showLine('Bạn đã vào Professional Track. Cứ làm từng case chắc chắn — cần hỗ trợ thì gọi mình.',4600),1300);
+      }
+      // Learning pages intentionally remain quiet so the robot does not compete with lesson content.
+
+      window.addEventListener('avp:chat-new-message',e=>{
+        if(dragging || launcher.classList.contains('open'))return;
+        const body=String(e.detail?.body||'').trim();
+        showLine(body?'Bạn vừa có tin nhắn mới từ Admin.':'Bạn vừa có tin nhắn mới từ Admin.',3600);
+      });
+
+      setTimeout(()=>{
+        if(!ctx && page!=='professional-access.html' && page!=='professional-track.html'){
+          const n=unreadNow();
+          if(n>0)showLine(n>1?`Bạn có ${n} thông báo chưa đọc.`:'Bạn có một thông báo chưa đọc.',3500);
+        }
+      },2200);
+    }
+
+    function initHomeMode(){
+      // Preserve the original stable main-page patrol behavior.
+      launcher.classList.add('avp-robot-home','is-walking');
+      launcher.classList.remove('avp-robot-dock');
+      clearRobotDockMenuPosition();
+
+      let x=PAD;
+      const yBottom=PAD;
+      let dir=1;
+      try{
+        const savedBot=JSON.parse(localStorage.getItem(HOME_POS_KEY)||'null');
+        if(savedBot && typeof savedBot.x==='number'){
+          x=savedBot.x;
+          dir=savedBot.dir===-1?-1:1;
+        }
+      }catch(_){ }
+      const SPEED=.9;
+      let lifting=false;
+      let liftMoved=false;
+      let startY=null,startX=0;
+
+      const HELLO=[
+        'Xin chào, học Excel vui vẻ nhé!',
+        'Chào bạn, hôm nay luyện thêm một công thức nha.',
+        'Đi từng bước là tiến bộ rồi.',
+        'Mở Bài tập Excel khi rảnh 5 phút cũng được.',
+        'Bạn làm được — cứ thử một hàm mới.',
+        'Chúc bạn học tập hiệu quả!',
+        'Nhớ lưu file thực hành của mình nhé.',
+        'PivotTable không khó nếu làm chậm.',
+        'VLOOKUP/XLOOKUP: kiên nhẫn là ra.',
+        'Uống nước, rồi làm tiếp một bài nhỏ.',
+        'Chào mừng trở lại Learn Excel!',
+        'Hôm nay chỉ cần đúng hơn hôm qua.'
+      ];
+
+      function homeMaxX(){return Math.max(PAD,window.innerWidth-botW()-PAD);}
+      function persist(){try{localStorage.setItem(HOME_POS_KEY,JSON.stringify({x,dir}));}catch(_){ }}
+      function applyPos(px,bottom){
+        launcher.style.left=px+'px';
+        launcher.style.right='auto';
+        launcher.style.top='auto';
+        launcher.style.bottom=bottom+'px';
+      }
+
+      function frame(){
+        if(!lifting && launcher.classList.contains('is-walking') && !launcher.classList.contains('open')){
+          x+=dir*SPEED;
+          const mx=homeMaxX();
+          if(x>=mx){x=mx;dir=-1;}
+          if(x<=PAD){x=PAD;dir=1;}
+          applyPos(x,PAD);
+          launcher.classList.toggle('face-left',dir<0);
+          if(!window.__avpBotSaveT || Date.now()-window.__avpBotSaveT>400){
+            window.__avpBotSaveT=Date.now();
+            persist();
+          }
+        }
+        placeBubble();
+        requestAnimationFrame(frame);
+      }
+
+      (async function talkLoop(){
+        while(true){
+          if(launcher.classList.contains('open') || lifting){
+            hideLine();
+            await sleep(400);
+            continue;
+          }
+          const unread=unreadNow();
+          showLine(HELLO[Math.floor(Math.random()*HELLO.length)],2200+Math.floor(Math.random()*800));
+          await sleep(2600);
+          if(launcher.classList.contains('open') || lifting)continue;
+          if(unread>0){
+            await sleep(1500);
+            if(launcher.classList.contains('open') || lifting)continue;
+            const n=unreadNow()||unread;
+            showLine(n>1?`Bạn có ${n} tin nhắn mới chưa đọc`:'Bạn có tin nhắn mới chưa đọc',2600);
+            await sleep(2700);
+          }else{
+            await sleep(3000);
+          }
+        }
+      })();
+
+      fab.addEventListener('pointerdown',e=>{
+        if(e.button!=null && e.button!==0)return;
+        lifting=false;
+        liftMoved=false;
+        startY=e.clientY;
+        startX=e.clientX;
+        try{fab.setPointerCapture(e.pointerId);}catch(_){ }
+      });
+
+      fab.addEventListener('pointermove',e=>{
+        if(startY===null)return;
+        const dy=startY-e.clientY;
+        const dist=Math.hypot(e.clientX-startX,e.clientY-startY);
+        if(dy>18 && dist>18){
+          lifting=true;
+          liftMoved=true;
+          launcher.classList.add('is-lifted','is-crying');
+          launcher.classList.remove('is-walking','is-greeting','open');
+          edgeMenu.hidden=true;
+          const bottom=Math.max(PAD,window.innerHeight-e.clientY-36);
+          applyPos(Math.max(PAD,Math.min(e.clientX-32,homeMaxX())),bottom);
+        }
+      });
+
+      function dropLift(){
+        startY=null;
+        if(!liftMoved){lifting=false;return;}
+        fab.dataset.justLifted='1';
+        suppressClickUntil=Date.now()+260;
+        setTimeout(()=>delete fab.dataset.justLifted,220);
+        launcher.classList.remove('is-lifted','is-crying');
+        lifting=false;
+        liftMoved=false;
+        applyPos(x,PAD);
+        if(!launcher.classList.contains('open'))launcher.classList.add('is-walking');
+      }
+      fab.addEventListener('pointerup',dropLift);
+      fab.addEventListener('pointercancel',dropLift);
+      bindRobotMenuClick();
+
+      applyPos(x,yBottom);
+      requestAnimationFrame(frame);
+      window.addEventListener('resize',()=>{if(x>homeMaxX())x=homeMaxX();placeBubble();persist();});
+      window.addEventListener('pagehide',persist);
+      document.addEventListener('visibilitychange',()=>{if(document.hidden)persist();});
+    }
+
+    if(isHome)initHomeMode();
+    else initDockMode();
+
+    window.addEventListener('resize',()=>{
+      placeBubble();
+      if(!edgeMenu.hidden && launcher.classList.contains('avp-robot-dock'))positionRobotDockMenu();
+    });
+    window.addEventListener('pagehide',()=>clearTimeout(suggestionTimer));
   })();
 
   if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
