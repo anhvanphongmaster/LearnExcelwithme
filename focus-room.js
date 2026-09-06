@@ -19,7 +19,7 @@
     },
     clean:{
       title:"Làm sạch dữ liệu",
-      link:"practice-video.html#tiktok",
+      link:"practice-grader.html",
       tasks:[
         ["🧹","Xử lý dữ liệu bẩn","Khoảng trắng, kiểu dữ liệu, trùng lặp"],
         ["🔍","Kiểm tra lỗi còn sót","Soát lại cột quan trọng"],

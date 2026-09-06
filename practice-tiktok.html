@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="practice-workspace.css?v=20260831-v104">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#ffffff">
-<link rel="stylesheet" href="practice-video.css?v=20260831-v104">
+<link rel="stylesheet" href="practice-tiktok.css?v=20260906-catalog1">
 <link rel="stylesheet" href="practice-roll.css?v=20260901-rollfix3">
 <link rel="stylesheet" href="avp-site-motion.css?v=20260901-rollfix3">
 </head><body><nav class="top-simple-nav" aria-label="Điều hướng chính">
@@ -28,33 +28,27 @@
   <div class="pw-backline"><a href="practice-video.html">← Practice Hub</a><span>TikTok Practice</span></div>
   <header class="pw-hero pw-hero-compact">
     <span class="pw-kicker">TIKTOK PRACTICE</span>
-    <h1>TikTok Practice</h1>
-    <p>Kho bài ngắn theo chủ đề. Mỗi bài có trạng thái rõ ràng và file thực hành khi đã sẵn sàng.</p>
+    <h1>Bài tập theo video TikTok</h1>
+    <p>Xem video hướng dẫn trên TikTok và tải file thực hành tương ứng theo từng chủ đề.</p>
   </header>
 
-<section class="pw-workspace" data-active-source="tiktok">
-
-<section aria-live="polite" class="pv-daily-votes" id="pvDailyVotes">
-<div class="pv-daily-head">
-<div>
-<span class="pv-daily-kicker">🏆 XẾP HẠNG NHU CẦU TRONG NGÀY</span>
-<h2>Bài nào đang được cần hướng dẫn nhất?</h2>
-<p>Mặc định là hôm nay. Chạm vào ngày để xem lại 2 ngày trước.</p>
-</div>
-<span class="pv-daily-live"><i></i> LIVE</span>
-</div>
-<div aria-label="Chọn ngày xem vote" class="pv-day-tabs" id="pvDayTabs" role="tablist"></div>
-<div class="pv-day-summary" id="pvDaySummary"></div>
-<div class="pv-daily-scroll" id="pvDailyScroll">
-<div class="pv-daily-list" id="pvDailyList"><div class="pv-daily-empty">Đang tải xếp hạng…</div></div>
-</div>
-<p class="pv-daily-scroll-hint" id="pvDailyHint">↕ Cuộn trong khung để xem thêm bài</p>
-</section>
-<div class="avp-roll-head pv-library-roll-head"><div><span>CHỦ ĐỀ THỰC HÀNH</span><h2>Vuốt hoặc lăn để chọn chủ đề</h2></div><small>5 chủ đề · mỗi chủ đề 20 bài · 1 mục đóng góp</small></div>
-<div class="pv-grid" id="pvGrid"></div>
-
-
+<section class="pw-workspace tt-workspace">
+  <div class="tt-toolbar"><p id="ttNotice" class="tt-notice" role="status" hidden></p><button id="ttReload" type="button">↻ Cập nhật</button></div>
+  <section id="ttTopicStage">
+    <div class="avp-roll-head"><div><span>HỌC THEO VIDEO ĐÃ PHÁT HÀNH</span><h2>Chọn chủ đề</h2></div></div>
+    <div id="ttTopics"></div>
   </section>
+  <section id="ttLessonStage" hidden>
+    <button id="ttBackTopics" class="tt-back" type="button">← Tất cả chủ đề</button>
+    <h2 id="ttTopicTitle" tabindex="-1"></h2><p id="ttTopicDescription"></p>
+    <div class="tt-filters">
+      <label><span>Tìm bài trong chủ đề</span><input id="ttSearch" type="search" placeholder="Nhập tên bài hoặc nội dung…"></label>
+      <label><span>Sắp xếp</span><select id="ttSort"><option value="newest">Mới nhất</option><option value="oldest">Cũ nhất</option><option value="ordered">Theo thứ tự bài</option></select></label>
+      <span id="ttResultCount" aria-live="polite"></span>
+    </div>
+    <div id="ttLessons" class="tt-lessons"></div>
+  </section>
+</section>
 </main>
 <script defer src="simple-nav.js?v=20260901-rollfix3"></script>
 <script defer src="global-search.js"></script>
@@ -62,14 +56,13 @@
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
 <script defer src="avp-core.js"></script>
-<script defer src="practice-files-manifest.js?v=20260831-v68-download-full-fix"></script>
+
 <script defer src="practice-roll.js?v=20260901-rollfix3"></script>
-<script defer src="practice-video.js?v=20260905-tiktok-downloads1"></script>
+<script defer src="tiktok-catalog.js?v=20260906-catalog1"></script>
+<script defer src="practice-video.js?v=20260906-catalog1"></script>
 <script defer src="avp-site-motion.js?v=20260901-rollfix3"></script>
 <script defer src="avp-modal.js"></script>
-<script defer src="avp-secure-download.js?v=20260830-access1"></script>
-<script defer src="download-manager.js?v=20260905-tiktok-downloads1"></script>
-<script>
-document.querySelectorAll('.pw-source-links a').forEach(a=>{if(a.dataset.source==='tiktok')a.classList.add('is-current')});
-</script>
+
+
+
 </body></html>

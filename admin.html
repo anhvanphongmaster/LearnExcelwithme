@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="admin-community-center.css?v=20260829-moderation1">
 <link rel="stylesheet" href="admin-grader.css?v=20260830-v16badge1">
   <link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="admin-tiktok.css?v=20260906-catalog1">
 </head>
 <body>
 
@@ -120,7 +121,7 @@ where is_admin = true;</pre>
           <b>🗳️ Vote</b><small>Nhu cầu học viên</small>
         </button>
         <button type="button" data-admin-view="practice" role="tab">
-          <b>📝 Kho bài tập</b><small>Thêm, sửa, sắp xếp bài</small>
+          <b>📱 TikTok Practice</b><small>Chủ đề, bài, video & file</small>
         </button>
         <button type="button" data-admin-view="youtube" role="tab">
           <b>▶️ YouTube Projects</b><small>Project, video, file & tài liệu</small>
@@ -155,7 +156,7 @@ where is_admin = true;</pre>
       </div>
 
       <div class="admin-quick-links">
-        <a href="practice-video.html">📝 Kho bài tập</a>
+        <a href="practice-tiktok.html">📱 Kho TikTok</a>
         <a href="practice-youtube.html">▶️ Kho YouTube</a>
         <a href="profile.html">👤 Hồ sơ của tôi</a>
         <a href="index.html">🌐 Xem website</a>
@@ -172,7 +173,7 @@ where is_admin = true;</pre>
         <article data-health="analytics"><span>📈 Analytics</span><strong>Đang kiểm tra…</strong><small></small></article>
         <article data-health="users"><span>👥 Người dùng</span><strong>Đang kiểm tra…</strong><small></small></article>
         <article data-health="votes"><span>🗳️ Vote</span><strong>Đang kiểm tra…</strong><small></small></article>
-        <article data-health="practice"><span>📝 Kho bài tập</span><strong>Đang kiểm tra…</strong><small></small></article>
+        <article data-health="practice"><span>📱 TikTok Practice</span><strong>Đang kiểm tra…</strong><small></small></article>
         <article data-health="downloads"><span>📦 Tải xuống</span><strong>Đang kiểm tra…</strong><small></small></article>
         <article data-health="chat"><span>💬 Chat</span><strong>Đang kiểm tra…</strong><small></small></article>
         <article data-health="community"><span>📣 Cộng đồng</span><strong>Đang kiểm tra…</strong><small>Thông báo & chứng nhận</small></article>
@@ -557,48 +558,42 @@ where is_admin = true;</pre>
       </article>
     </section>
 
-    <div class="admin-section-heading admin-view-section" data-admin-section="practice"><span>📝 KHO BÀI TẬP</span><h2>Quản lý bài tập động</h2></div>
-    <section class="admin-panel admin-practice-manager admin-view-section" data-admin-section="practice">
-      <div class="admin-practice-top">
-        <div><strong>100 bài hiện tại + bài thêm sau này</strong><small>Thêm/sửa/ẩn bài tại đây. Trang Bài tập tự đọc Supabase, không phải sửa JS khi thêm bài.</small></div>
-        <button id="adminPracticeAdd" type="button">＋ Thêm bài</button>
-      </div>
-      <div class="admin-users-summary admin-practice-kpis">
-        <article><small>Tổng bài</small><strong id="practiceKpiTotal">0</strong></article>
-        <article><small>Đang hiển thị</small><strong id="practiceKpiLive">0</strong></article>
-        <article><small>Ẩn / nháp</small><strong id="practiceKpiHidden">0</strong></article>
-        <article><small>Chủ đề</small><strong id="practiceKpiCategories">0</strong></article>
-      </div>
-      <div class="admin-practice-toolbar">
-        <input id="adminPracticeSearch" type="search" placeholder="Tìm tên bài hoặc ID…">
-        <select id="adminPracticeCategory"><option value="">Tất cả chủ đề</option></select>
-        <select id="adminPracticeStatus"><option value="all">Tất cả trạng thái</option><option value="published">Đang phát hành</option><option value="draft">Bản nháp</option><option value="archived">Đã lưu trữ</option><option value="hidden">Đang ẩn</option></select>
-        <button id="adminPracticeReload" type="button">↻ Làm mới</button>
-      </div>
-      <div id="adminPracticeEditor" class="admin-practice-editor" hidden>
-        <div class="admin-download-editor-title"><strong id="adminPracticeEditorTitle">Thêm bài</strong><button id="adminPracticeClose" type="button">×</button></div>
-        <input id="practiceEditOriginalId" type="hidden">
-        <div class="admin-practice-form">
-          <label><span>ID bài</span><input id="practiceEditId" maxlength="80" placeholder="vd: clean-21-case"></label>
-          <label><span>STT</span><input id="practiceEditNumber" type="number" min="0" value="1"></label>
-          <label><span>Icon</span><input id="practiceEditIcon" maxlength="12" value="📘"></label>
-          <label><span>Chủ đề</span><input id="practiceEditCategory" list="practiceCategoryList" maxlength="80"><datalist id="practiceCategoryList"><option>Làm sạch dữ liệu</option><option>Power Query</option><option>Nhập liệu</option><option>Công thức</option><option>Format</option></datalist></label>
-          <label class="wide"><span>Tên bài</span><input id="practiceEditTitle" maxlength="180"></label>
-          <label class="wide"><span>Kỹ năng / mô tả ngắn</span><input id="practiceEditSkill" maxlength="320"></label>
-          <label><span>Cấp độ</span><select id="practiceEditLevel"><option>Cơ bản</option><option>Trung cấp</option><option>Nâng cao</option><option>Case thực tế</option></select></label>
-          <label><span>Nhãn</span><select id="practiceEditBadge"><option value="">Không</option><option>Mới</option><option>Hot</option><option>Có video</option><option>Cần cập nhật</option></select></label>
-          <label class="wide"><span>File thực hành từ Kho tải xuống</span><select id="practiceEditDownload"><option value="">— Chưa gắn file —</option></select><small>File upload ở tab Tải xuống sẽ xuất hiện tại đây.</small></label>
-          <label class="wide"><span>Link video TikTok (nếu có)</span><input id="practiceEditVideo" maxlength="1200" placeholder="https://..."></label>
-          <label><span>Trạng thái</span><select id="practiceEditStatus"><option value="published">Phát hành</option><option value="draft">Bản nháp</option><option value="archived">Lưu trữ</option></select></label>
-          <label><span>Thứ tự nội bộ</span><input id="practiceEditOrder" type="number" value="0"></label>
-          <label class="check"><input id="practiceEditActive" type="checkbox" checked><span>Hiển thị trên trang Bài tập</span></label>
+    <div class="admin-section-heading admin-view-section" data-admin-section="practice"><span>📱 TIKTOK PRACTICE</span><h2>Chủ đề và bài theo video TikTok</h2></div>
+    <section class="admin-panel admin-view-section att-panel" data-admin-section="practice" id="adminTikTokPanel">
+      <div class="att-head"><p>Thêm chủ đề, tạo bài và gắn đúng video cùng file thực hành. Bản nháp chỉ hiện trong Admin.</p><div><a href="practice-tiktok.html" target="_blank" rel="noopener">Xem trang TikTok ↗</a><button type="button" id="attReload">↻ Làm mới</button></div></div>
+      <p id="attNotice" class="att-notice" role="status" hidden></p>
+      <div class="att-kpis"><article><small>Chủ đề</small><strong id="attTopicsCount">—</strong></article><article><small>Bài đã phát hành</small><strong id="attLiveCount">—</strong></article><article><small>Bài nháp</small><strong id="attDraftCount">—</strong></article></div>
+      <section id="attTopicsView">
+        <div class="att-section-head"><h3>Chọn chủ đề để quản lý bài</h3><button id="attAddTopic" type="button" class="primary">＋ Thêm chủ đề</button></div>
+        <div id="attTopicList" class="att-topic-list"><p>Chọn TikTok Practice để tải nội dung.</p></div>
+      </section>
+      <section id="attLessonsView" hidden>
+        <button type="button" id="attBackTopics">← Danh sách chủ đề</button>
+        <div class="att-section-head"><div><h3 id="attTopicHeading"></h3><p id="attTopicHint"></p></div><button id="attAddLesson" type="button" class="primary">＋ Thêm bài</button></div>
+        <div class="att-filters"><label><span>Tìm bài</span><input type="search" id="attSearch" placeholder="Tên bài…"></label><label><span>Trạng thái</span><select id="attStatusFilter"><option value="all">Tất cả bài</option><option value="published">Đã phát hành</option><option value="draft">Bản nháp</option></select></label></div>
+        <div id="attLessonList" class="att-lesson-list"></div>
+      </section>
+      <form id="attTopicForm" class="att-editor" hidden>
+        <div class="att-section-head"><h3 id="attTopicFormTitle">Thêm chủ đề</h3><button type="button" data-att-close>Đóng</button></div>
+        <div class="att-form-grid"><label class="wide"><span>Tên chủ đề</span><input id="attTopicTitle" required maxlength="100"></label><label class="wide"><span>Mô tả ngắn</span><textarea id="attTopicDescription" rows="2" maxlength="300"></textarea></label><label><span>Thứ tự</span><input id="attTopicOrder" type="number" min="0" max="9999" step="1" value="0" required></label><label class="att-checkbox"><input id="attTopicActive" type="checkbox" checked><span>Hiển thị khi chủ đề có bài đã phát hành</span></label></div>
+        <div class="att-form-actions"><button type="submit" class="primary">Lưu chủ đề</button><button type="button" data-att-close>Hủy</button></div><p class="att-form-message" role="status" hidden></p>
+      </form>
+      <form id="attLessonForm" class="att-editor" hidden>
+        <div class="att-section-head"><h3 id="attLessonFormTitle">Thêm bài</h3><button type="button" data-att-close>Đóng</button></div>
+        <div class="att-form-grid">
+          <label><span>Chủ đề</span><select id="attLessonTopic" required></select></label>
+          <label><span>Thứ tự trong chủ đề</span><input id="attLessonOrder" type="number" min="0" max="9999" step="1" value="0" required></label>
+          <label class="wide"><span>Tên bài</span><input id="attLessonTitle" maxlength="180" required></label>
+          <label class="wide"><span>Mô tả / nội dung thực hành</span><textarea id="attLessonDescription" rows="3" maxlength="1200"></textarea></label>
+          <label class="wide"><span>Link video TikTok</span><input id="attLessonVideo" maxlength="1200" placeholder="https://www.tiktok.com/@.../video/... hoặc https://vt.tiktok.com/..."><small>Có thể để trống khi lưu nháp; cần có video trước khi phát hành.</small></label>
+          <label><span>Cách gắn file</span><select id="attFileMode"><option value="upload">Tải file lên</option><option value="link">Dùng đường dẫn có sẵn</option></select></label>
+          <label><span>Trạng thái</span><select id="attLessonStatus"><option value="draft">Bản nháp</option><option value="published">Phát hành</option></select></label>
+          <div class="wide att-file-box" id="attUploadGroup"><p id="attCurrentFile"></p><label><span>Chọn file thực hành</span><input id="attFileInput" type="file" accept=".xlsx,.xls,.xlsm,.csv,.zip"><small>Tối đa 20 MB. Giữ nguyên nếu không chọn file thay thế.</small></label><button type="button" id="attClearFile" hidden>Bỏ file đang gắn</button></div>
+          <label class="wide" id="attLinkGroup" hidden><span>Đường dẫn file</span><input id="attFileUrl" maxlength="1600" placeholder="https://... hoặc downloads/ten-file.xlsx"><small>Dùng link tải hoặc chia sẻ file, không dùng link trang chỉnh sửa mã nguồn GitHub.</small></label>
         </div>
-        <div class="admin-download-editor-actions"><button id="adminPracticeSave" type="button">Lưu bài</button><button id="adminPracticeCancel" class="secondary" type="button">Huỷ</button></div>
-      </div>
-      <div class="admin-practice-table-wrap">
-        <table class="admin-practice-table"><thead><tr><th>STT</th><th>Bài học</th><th>Cấp độ</th><th>File</th><th>Vote</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody id="adminPracticeBody"><tr><td colspan="7" class="admin-users-empty">Chuyển sang tab Kho bài tập để tải dữ liệu.</td></tr></tbody></table>
-      </div>
-      <p id="adminPracticeNotice" class="admin-users-notice" hidden></p>
+        <p class="att-publish-note">Phát hành khi đã có video và file. Chủ đề đang ẩn sẽ giữ các bài bên trong ở trạng thái không công khai.</p>
+        <div class="att-form-actions"><button type="submit" class="primary">Lưu bài</button><button type="button" data-att-close>Hủy</button></div><p class="att-form-message" role="status" hidden></p>
+      </form>
     </section>
 
     <div class="admin-section-heading admin-view-section" data-admin-section="youtube"><span>▶️ YOUTUBE PROJECTS</span><h2>Quản lý project video dài</h2></div>
@@ -983,7 +978,7 @@ where is_admin = true;</pre>
 <script defer src="simple-nav.js"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
-<script defer src="admin.js?v=20260831-v83-maintenance"></script>
+<script defer src="admin.js?v=20260906-catalog1"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>
@@ -993,5 +988,7 @@ where is_admin = true;</pre>
 <script defer src="admin-professional-track.js?v=20260902-pro-depth3"></script>
 <script defer src="admin-youtube-projects.js?v=20260901-v2"></script>
 <script defer src="global-search.js"></script>
+<script defer src="tiktok-catalog.js?v=20260906-catalog1"></script>
+<script defer src="admin-tiktok.js?v=20260906-catalog1"></script>
 </body>
 </html>
