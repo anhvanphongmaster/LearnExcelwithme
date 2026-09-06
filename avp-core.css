@@ -1154,7 +1154,7 @@ body > .avp-hub-fab{
 
 /* Menu thành dock gọn, không còn 4 "khối trắng" rời quá lớn. */
 #avpEdgeLauncher .avp-edge-menu{
-  width:164px !important;
+  width:188px !important;
   padding:6px !important;
   gap:3px !important;
 
@@ -1170,6 +1170,27 @@ body > .avp-hub-fab{
     0 2px 8px rgba(0,0,0,.05) !important;
 
   overflow:hidden !important;
+}
+
+#avpEdgeLauncher .avp-edge-context{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:2px !important;
+  padding:8px 9px 9px !important;
+  margin:0 0 3px !important;
+  border-bottom:1px solid rgba(33,115,70,.11) !important;
+  text-align:left !important;
+}
+#avpEdgeLauncher .avp-edge-context span{
+  color:#718178 !important;
+  font:800 9px/1.1 system-ui,sans-serif !important;
+  letter-spacing:.08em !important;
+  text-transform:uppercase !important;
+}
+#avpEdgeLauncher .avp-edge-context strong{
+  color:#1b5f39 !important;
+  font:800 12px/1.25 system-ui,sans-serif !important;
+  overflow-wrap:anywhere !important;
 }
 
 #avpEdgeLauncher .avp-edge-action{
@@ -1233,6 +1254,16 @@ body > .avp-hub-fab{
 body.dark-mode #avpEdgeLauncher .avp-edge-menu{
   background:rgba(21,35,27,.94) !important;
   border-color:rgba(104,159,125,.22) !important;
+}
+
+body.dark-mode #avpEdgeLauncher .avp-edge-context{
+  border-bottom-color:rgba(129,187,151,.16) !important;
+}
+body.dark-mode #avpEdgeLauncher .avp-edge-context span{
+  color:#8fa99a !important;
+}
+body.dark-mode #avpEdgeLauncher .avp-edge-context strong{
+  color:#d8eee0 !important;
 }
 
 body.dark-mode #avpEdgeLauncher .avp-edge-action{
@@ -1671,4 +1702,26 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   #avpEdgeLauncher.is-robot.is-lifted .avp-bot{
     animation-duration:.36s !important;
   }
+}
+
+
+/* AVP contextual assistant — stationary on learning/practice pages */
+#avpEdgeLauncher.is-robot.is-stationary{
+  opacity:.92 !important;
+  transition:opacity .18s ease !important;
+}
+#avpEdgeLauncher.is-robot.is-stationary:hover,
+#avpEdgeLauncher.is-robot.is-stationary.open{
+  opacity:1 !important;
+}
+#avpEdgeLauncher.is-robot.is-stationary .avp-bot-leg-l,
+#avpEdgeLauncher.is-robot.is-stationary .avp-bot-leg-r,
+#avpEdgeLauncher.is-robot.is-stationary .avp-bot-arm-l,
+#avpEdgeLauncher.is-robot.is-stationary .avp-bot-arm-r{
+  animation:none !important;
+  transform:none !important;
+}
+@media (max-width:720px){
+  #avpEdgeLauncher .avp-edge-menu{width:184px !important;}
+  #avpEdgeLauncher .avp-edge-context{padding:7px 8px 8px !important;}
 }

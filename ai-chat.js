@@ -214,6 +214,24 @@
     if($("avpPanelSubtitle")) $("avpPanelSubtitle").textContent=subtitle;
   }
 
+  function currentPageContext(){
+    const c=window.AVPPageContext||null;
+    if(!c?.label)return null;
+    return {
+      area:String(c.area||'Learn Excel').trim(),
+      label:String(c.label||'').trim(),
+      kind:String(c.kind||'general').trim()
+    };
+  }
+
+  function aiContextSubtitle(){
+    const c=currentPageContext();
+    if(!c)return 'AI đang ở chế độ thử nghiệm';
+    if(c.kind==='learning')return `Đang hỗ trợ bài: ${c.label}`;
+    if(c.kind==='practice')return `Đang hỗ trợ: ${c.label}`;
+    return `${c.area}: ${c.label}`;
+  }
+
   async function switchMode(mode){
     activeMode=mode;
 
@@ -228,7 +246,7 @@
     $("avpNotificationMode").hidden=mode!=="notifications";
 
     if(mode==="ai"){
-      setPanelHeader("Hỏi AI Excel","AI đang ở chế độ thử nghiệm");
+      setPanelHeader("Hỏi AI Excel",aiContextSubtitle());
       if(user && client?.rpc) await loadHistory();
       setTimeout(()=>$("avpAiInput")?.focus(),50);
       return;
@@ -2376,10 +2394,16 @@
 
       await loadHistory();
 
+      const pageCtx=currentPageContext();
+      const contextHint=pageCtx
+        ? `Ngữ cảnh hiện tại: người dùng đang ở ${pageCtx.area} — ${pageCtx.label}. Chỉ dùng ngữ cảnh này khi câu hỏi có liên quan; không tự nhắc lại nếu không cần.\n`
+        : '';
+
       const aiPrompt =
         "Trả lời bằng tiếng Việt, ngắn gọn và trực tiếp. " +
         "Không dùng Markdown (#, ##, **, ```, ---), không emoji/icon trang trí. " +
-        "Chỉ dùng xuống dòng khi cần. Với công thức Excel, ghi công thức trực tiếp.\n\n" +
+        "Chỉ dùng xuống dòng khi cần. Với công thức Excel, ghi công thức trực tiếp.\n" +
+        contextHint + "\n" +
         content;
 
       const {data,error}=await client.functions.invoke("ai-chat",{
@@ -2487,11 +2511,13 @@
         return;
       }
 
+      const pageCtx=currentPageContext();
       const body=[
         "🤖 Câu hỏi được chuyển từ AI Excel",
+        pageCtx?`Đang ở: ${pageCtx.area} — ${pageCtx.label}`:'',
         "",
         question
-      ].join("\n");
+      ].filter((line,i)=>i===2||line!=="").join("\n");
 
       const {error}=await client.rpc("avp_chat_send_user_message",{
         p_body:body
