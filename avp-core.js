@@ -130,6 +130,26 @@
         lines:[],suggestions:['Nếu đang học theo lộ trình, quay lại Skill Map để tiếp tục đúng bài.']
       };
     }
+    if(page==='professional-access.html')return {
+      area:'Bài tập nâng cao',kind:'professional-access',motion:'stationary',autoTalk:false,label:'Professional Track',
+      intro:'Bạn đang ở khu Bài tập nâng cao (Pro).',
+      lines:[],suggestions:[]
+    };
+    if(page==='professional-track.html')return {
+      area:'Bài tập nâng cao',kind:'professional',motion:'stationary',autoTalk:true,label:'Professional Track',
+      intro:'Bạn đã vào được Professional Track. Chọn đúng lĩnh vực và làm từng case theo thứ tự.',
+      lines:[
+        'Đã mở được khu Pro rồi thì cứ làm từng case một, không cần vội chạy hết lộ trình.',
+        'Case khó là bình thường. Hãy xác định đúng bước đang vướng trước khi hỏi AI hoặc Admin.',
+        'Ưu tiên hiểu cách xử lý và lý do làm, đừng chỉ cố ra đúng kết quả cuối.',
+        'Nếu một case có nhiều bước, hoàn thành từng checkpoint rồi mới chuyển tiếp.',
+        'Bạn đã đạt điều kiện để vào khu này. Giờ tập trung nâng chất lượng bài làm nhé.'
+      ],
+      suggestions:[
+        'Cần hỗ trợ ngay trong case? Bấm AVP để Hỏi AI hoặc Chat Admin.',
+        'Làm xong một case, tự kiểm tra lại file trước khi chuyển sang case tiếp theo.'
+      ]
+    };
     if(page==='skill-map.html')return {
       area:'Khu học',kind:'map',motion:'stationary',autoTalk:true,label:'Skill Map',
       intro:'Bạn đang ở Skill Map. Đây là nơi chọn bài và xem mình nên học gì tiếp theo.',
@@ -161,7 +181,7 @@
   }
 
   const pageContext=resolvePageContext();
-  const ROBOT_CAN_PATROL=pageContext.motion==='patrol';
+  const ROBOT_CAN_PATROL=pageContext.kind==='home' && pageContext.motion==='patrol';
   window.AVPPageContext=Object.freeze({
     page,area:pageContext.area,label:pageContext.label,kind:pageContext.kind,
     title,href:location.href
@@ -716,6 +736,22 @@
   document.body.appendChild(back);
   const hub=back.querySelector('.avp-hub');
 
+  function positionDockedRobotMenu(){
+    if(!launcher.classList.contains('is-docked-right') || edgeMenu.hidden)return;
+    const r=launcher.getBoundingClientRect();
+    const gap=8;
+    const mh=edgeMenu.offsetHeight||250;
+    const maxTop=Math.max(gap,window.innerHeight-mh-gap);
+    const top=Math.max(gap,Math.min(r.top+r.height/2-mh/2,maxTop));
+    edgeMenu.style.setProperty('position','fixed','important');
+    edgeMenu.style.setProperty('left','auto','important');
+    edgeMenu.style.setProperty('right',Math.max(72,window.innerWidth-r.left+8)+'px','important');
+    edgeMenu.style.setProperty('top',Math.round(top)+'px','important');
+    edgeMenu.style.setProperty('bottom','auto','important');
+    edgeMenu.style.setProperty('transform','none','important');
+    edgeMenu.style.setProperty('align-items','flex-end','important');
+  }
+
   function setEdgeMenu(open){
     edgeMenu.hidden=!open;
     launcher.classList.toggle('open',open);
@@ -726,6 +762,7 @@
       launcher.classList.remove('is-walking','is-stationary');
       launcher.classList.add('is-greeting');
       fab.style.transform='none';
+      requestAnimationFrame(positionDockedRobotMenu);
     }else{
       launcher.classList.remove('is-greeting');
       if(ROBOT_CAN_PATROL){
@@ -1228,6 +1265,44 @@
     }
     window.AVPBotSay=(text,ms)=>showLine(String(text||''),ms||3000);
 
+    function proAccessMessage(state){
+      if(pageContext.kind!=='professional-access' || !state)return '';
+      const phase=String(state.phase||state.status||'').toLowerCase();
+      if(state.isAdmin || state.canAccess || phase==='approved'){
+        return 'Khu Pro đã được mở cho tài khoản này. Bạn có thể vào Professional Track và bắt đầu luyện case chuyên sâu.';
+      }
+      if(phase==='locked' || phase==='insufficient'){
+        const limits=state.limits||{basic:1500,intermediate:1300,advanced:1000,days:5};
+        const missing=[];
+        if(Number(state.basicScore||0)<Number(limits.basic||1500))missing.push(`Cơ bản ${Number(state.basicScore||0).toLocaleString('vi-VN')}/${Number(limits.basic||1500).toLocaleString('vi-VN')} điểm`);
+        if(Number(state.intermediateScore||0)<Number(limits.intermediate||1300))missing.push(`Trung cấp ${Number(state.intermediateScore||0).toLocaleString('vi-VN')}/${Number(limits.intermediate||1300).toLocaleString('vi-VN')} điểm`);
+        if(Number(state.advancedScore||0)<Number(limits.advanced||1000))missing.push(`Nâng cao ${Number(state.advancedScore||0).toLocaleString('vi-VN')}/${Number(limits.advanced||1000).toLocaleString('vi-VN')} điểm`);
+        if(Number(state.activeDays||0)<Number(limits.days||5))missing.push(`${Number(state.activeDays||0)}/${Number(limits.days||5)} ngày hoạt động`);
+        const detail=missing.length?` Bạn còn thiếu: ${missing.join(', ')}.`:'';
+        return `Bạn chưa đủ điều kiện vào khu Pro.${detail} Hãy tiếp tục làm Bài tập tự chấm để tích điểm; khi đủ điều kiện, hệ thống sẽ mở bước tiếp theo.`;
+      }
+      if(phase==='eligible'){
+        return 'Bạn đã đủ điểm và ngày hoạt động. Bước tiếp theo là nộp chứng chỉ để Admin xác nhận quyền vào khu Pro.';
+      }
+      if(phase==='pending'){
+        return 'Bạn đã đủ điều kiện và đã nộp hồ sơ. Hiện chỉ cần chờ Admin xét duyệt, không cần tích thêm điểm để mở bước này.';
+      }
+      if(phase==='rejected'){
+        return 'Hồ sơ Pro đang cần bổ sung. Hãy xem ghi chú của Admin trên trang này rồi nộp lại đúng phần còn thiếu.';
+      }
+      if(phase==='login'){
+        return 'Bạn cần đăng nhập để hệ thống kiểm tra điểm và điều kiện vào khu Pro.';
+      }
+      return '';
+    }
+    function announceProAccess(state){
+      const msg=proAccessMessage(state);
+      if(!msg || document.visibilityState!=='visible')return;
+      setTimeout(()=>{ if(!launcher.classList.contains('open')) showLine(msg,4600); },350);
+    }
+    window.addEventListener('avp:professional-access-state',e=>announceProAccess(e.detail));
+    if(window.AVPProfessionalAccessState)announceProAccess(window.AVPProfessionalAccessState);
+
     function pick(list){
       return list?.length?list[Math.floor(Math.random()*list.length)]:'';
     }
@@ -1268,10 +1343,28 @@
       }
     }
 
+    const DOCK_KEY='avp_bot_dock_right_y_v1';
+    const DOCK_GAP=6;
+    const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+
     function w(){return Math.max(56,fab.offsetWidth||56)}
+    function h(){return Math.max(72,launcher.offsetHeight||72)}
     function maxX(){return Math.max(PAD,window.innerWidth-w()-PAD)}
     function persistWalk(){
       try{localStorage.setItem(POS_BOT,JSON.stringify({x,dir}));}catch(e){}
+    }
+    function savedDockY(){
+      try{
+        const raw=localStorage.getItem(DOCK_KEY);
+        if(raw!==null){
+          const n=Number(raw);
+          if(Number.isFinite(n))return n;
+        }
+      }catch(e){}
+      return Math.round(window.innerHeight*.56);
+    }
+    function persistDock(y){
+      try{localStorage.setItem(DOCK_KEY,String(Math.round(y)));}catch(e){}
     }
     function applyPos(px,bottom){
       launcher.style.left=px+'px';
@@ -1279,12 +1372,18 @@
       launcher.style.top='auto';
       launcher.style.bottom=bottom+'px';
     }
-    function applyRest(){
-      x=maxX();
-      dir=-1;
-      applyPos(x,restBottom());
-      launcher.classList.add('is-stationary');
-      launcher.classList.remove('is-walking','face-left');
+    function applyDock(y,animate=false){
+      const top=clamp(Number(y)||savedDockY(),DOCK_GAP,Math.max(DOCK_GAP,window.innerHeight-h()-DOCK_GAP));
+      if(animate)launcher.classList.add('is-snapping');
+      launcher.classList.add('is-right','is-docked-right','is-stationary');
+      launcher.classList.remove('is-left','is-walking','face-left');
+      launcher.style.top=Math.round(top)+'px';
+      launcher.style.bottom='auto';
+      launcher.style.left=Math.max(DOCK_GAP,window.innerWidth-(launcher.offsetWidth||64)-DOCK_GAP)+'px';
+      launcher.style.right='auto';
+      persistDock(top);
+      if(!edgeMenu.hidden)requestAnimationFrame(positionDockedRobotMenu);
+      if(animate)setTimeout(()=>launcher.classList.remove('is-snapping'),260);
     }
 
     function frame(){
@@ -1314,17 +1413,38 @@
     });
     fab.addEventListener('pointermove',function(e){
       if(startY==null)return;
-      const dy=startY-e.clientY;
       const dist=Math.hypot(e.clientX-startX,e.clientY-startY);
-      if(dy>18 && dist>18){
+
+      /* Trang chủ giữ hành vi cũ: phải nhấc robot lên mới khóc. */
+      if(ROBOT_CAN_PATROL){
+        const dy=startY-e.clientY;
+        if(dy>18 && dist>18){
+          lifting=true;
+          liftMoved=true;
+          hideBubble();
+          launcher.classList.add('is-lifted','is-crying');
+          launcher.classList.remove('is-walking','is-stationary','is-greeting','open');
+          edgeMenu.hidden=true;
+          const bottom=Math.max(PAD,window.innerHeight-e.clientY-36);
+          applyPos(Math.max(PAD,Math.min(e.clientX-32,maxX())),bottom);
+        }
+        return;
+      }
+
+      /* Mọi trang ngoài trang chủ: kéo tự do, robot khóc trong lúc kéo. */
+      if(dist>6){
         lifting=true;
         liftMoved=true;
         hideBubble();
-        launcher.classList.add('is-lifted','is-crying');
+        launcher.classList.add('is-lifted','is-crying','is-dragging');
         launcher.classList.remove('is-walking','is-stationary','is-greeting','open');
         edgeMenu.hidden=true;
-        const bottom=Math.max(PAD,window.innerHeight-e.clientY-36);
-        applyPos(Math.max(PAD,Math.min(e.clientX-32,maxX())),bottom);
+        const left=clamp(e.clientX-w()/2,DOCK_GAP,Math.max(DOCK_GAP,window.innerWidth-w()-DOCK_GAP));
+        const top=clamp(e.clientY-h()/2,DOCK_GAP,Math.max(DOCK_GAP,window.innerHeight-h()-DOCK_GAP));
+        launcher.style.left=Math.round(left)+'px';
+        launcher.style.right='auto';
+        launcher.style.top=Math.round(top)+'px';
+        launcher.style.bottom='auto';
       }
     });
     function dropLift(){
@@ -1334,15 +1454,16 @@
         return;
       }
       fab.dataset.justLifted='1';
-      setTimeout(()=>delete fab.dataset.justLifted,200);
-      launcher.classList.remove('is-lifted','is-crying');
+      setTimeout(()=>delete fab.dataset.justLifted,240);
+      launcher.classList.remove('is-lifted','is-crying','is-dragging');
       lifting=false;
       liftMoved=false;
       if(ROBOT_CAN_PATROL){
         applyPos(x,PAD);
         if(!launcher.classList.contains('open'))launcher.classList.add('is-walking');
       }else{
-        applyRest();
+        /* Luôn hút về bên phải nhưng giữ đúng độ cao người dùng vừa thả. */
+        applyDock(launcher.getBoundingClientRect().top,true);
       }
     }
     fab.addEventListener('pointerup',dropLift);
@@ -1369,17 +1490,32 @@
     };
     window.addEventListener('avp:course-xp',celebrate);
 
-    if(ROBOT_CAN_PATROL)applyPos(x,PAD);else applyRest();
+    if(ROBOT_CAN_PATROL){
+      launcher.classList.remove('is-docked-right');
+      applyPos(x,PAD);
+    }else{
+      applyDock(savedDockY(),false);
+    }
     requestAnimationFrame(frame);
     talkLoop();
     window.addEventListener('resize',()=>{
-      if(ROBOT_CAN_PATROL){if(x>maxX())x=maxX();applyPos(x,PAD)}else applyRest();
+      if(ROBOT_CAN_PATROL){
+        if(x>maxX())x=maxX();
+        applyPos(x,PAD);
+        persistWalk();
+      }else{
+        applyDock(savedDockY(),false);
+        if(!edgeMenu.hidden)requestAnimationFrame(positionDockedRobotMenu);
+      }
       placeBubble();
-      persistWalk();
     });
-    window.addEventListener('pagehide',persistWalk);
+    window.addEventListener('pagehide',()=>{if(ROBOT_CAN_PATROL)persistWalk();else persistDock(launcher.getBoundingClientRect().top)});
     document.addEventListener('visibilitychange',()=>{
-      if(document.hidden){hideBubble();persistWalk()}
+      if(document.hidden){
+        hideBubble();
+        if(ROBOT_CAN_PATROL)persistWalk();
+        else persistDock(launcher.getBoundingClientRect().top);
+      }
     });
   })();
 

@@ -38,6 +38,12 @@
     link.dataset.mode=mode||"learner";
   }
 
+  function publishRobotState(detail){
+    const state={page:'professional-access.html',...(detail||{})};
+    window.AVPProfessionalAccessState=state;
+    window.dispatchEvent(new CustomEvent('avp:professional-access-state',{detail:state}));
+  }
+
   function render(s){
     const basic=Number(s.basic_score)||0;
     const intermediate=Number(s.intermediate_score)||0;
@@ -58,12 +64,14 @@
       action.innerHTML='<p>✓ Bạn đã hoàn tất toàn bộ quy trình xét duyệt. Khu bài tập Professional đã được mở cho tài khoản này.</p>';
       setEnterTrackVisible(true,"learner");
       if($("ptProgramCard"))$("ptProgramCard").hidden=true;
+      publishRobotState({phase:'approved',status:s.status||'approved',canAccess:true,eligible:true});
       return;
     }
 
     if(s.status==="pending"){
       setStatus("pending","Hồ sơ đang được Admin xét duyệt","Bạn đã nộp chứng chỉ. Nội dung chuyên sâu sẽ mở sau khi Admin xác nhận.","ĐANG XÉT DUYỆT");
       action.innerHTML=`<p>Đã nộp: <strong>${s.submitted_at?new Date(s.submitted_at).toLocaleString("vi-VN"):"—"}</strong>. Vui lòng chờ Admin kiểm tra.</p>`;
+      publishRobotState({phase:'pending',status:'pending',canAccess:false,eligible:true});
       return;
     }
 
@@ -71,6 +79,7 @@
       setStatus("rejected","Hồ sơ cần bổ sung","Admin chưa phê duyệt hồ sơ hiện tại. Bạn có thể xem ghi chú và nộp lại khi đã bổ sung.","CẦN BỔ SUNG");
       action.innerHTML=`<p><strong>Ghi chú Admin:</strong> ${escapeHtml(s.admin_note||"Hồ sơ chưa đáp ứng yêu cầu.")}</p>`;
       if(s.eligible)$("ptApplyCard").hidden=false;
+      publishRobotState({phase:'rejected',status:'rejected',canAccess:false,eligible:!!s.eligible});
       return;
     }
 
@@ -78,11 +87,13 @@
       setStatus("","Bạn đã đủ điều kiện sơ bộ","Bạn đã đạt đủ điểm và đủ ngày hoạt động. Bước cuối là nộp chứng chỉ để Admin xác nhận.","ĐỦ ĐIỀU KIỆN");
       action.innerHTML="<p>✓ Tất cả điều kiện tự động đã hoàn thành. Hãy nộp chứng chỉ ở phần bên dưới.</p>";
       $("ptApplyCard").hidden=false;
+      publishRobotState({phase:'eligible',status:s.status||'eligible',canAccess:false,eligible:true,basicScore:basic,intermediateScore:intermediate,advancedScore:advanced,activeDays:days});
       return;
     }
 
     setStatus("","Tiếp tục hoàn thành điều kiện","Bạn cần đạt đủ cả 3 mốc điểm và có ít nhất 5 ngày hoạt động thực tế trên website trước khi nộp hồ sơ.","CHƯA ĐỦ ĐIỀU KIỆN");
     action.innerHTML="<p>Khi đủ 4 điều kiện tự động, nút nộp chứng chỉ sẽ được mở.</p>";
+    publishRobotState({phase:'locked',status:s.status||'locked',canAccess:false,eligible:false,basicScore:basic,intermediateScore:intermediate,advancedScore:advanced,activeDays:days,limits:LIMITS});
   }
 
   function escapeHtml(v){
@@ -148,6 +159,7 @@
     if($("ptProgramCard"))$("ptProgramCard").hidden=false;
     $("ptActionArea").innerHTML="<p>✓ Bạn đang truy cập bằng quyền Admin. Các điều kiện học viên không áp dụng cho tài khoản này.</p>";
     setEnterTrackVisible(true,"admin");
+    publishRobotState({phase:'approved',status:'approved',canAccess:true,eligible:true,isAdmin:true});
   }
 
   async function load(){
@@ -155,6 +167,7 @@
     if(!sb){
       setEnterTrackVisible(false);
       setStatus("rejected","Chưa kết nối được hệ thống","Không tìm thấy Supabase client. Hãy tải lại trang.","LỖI KẾT NỐI");
+      publishRobotState({phase:'error',status:'connection',canAccess:false});
       return;
     }
 
@@ -163,6 +176,7 @@
       setEnterTrackVisible(false);
       setStatus("","Bạn cần đăng nhập","Điều kiện tham gia gắn với tài khoản và kết quả chấm điểm của từng học viên.","YÊU CẦU ĐĂNG NHẬP");
       $("ptActionArea").innerHTML='<p><a href="auth.html?next=professional-access.html">Đăng nhập để kiểm tra điều kiện →</a></p>';
+      publishRobotState({phase:'login',status:'login',canAccess:false});
       return;
     }
 
@@ -190,6 +204,7 @@
     load().catch(e=>{
       console.error(e);
       setStatus("rejected","Chưa kiểm tra được điều kiện",String(e?.message||e),"CHƯA SẴN SÀNG");
+      publishRobotState({phase:'error',status:'error',canAccess:false});
     });
   });
 })();
