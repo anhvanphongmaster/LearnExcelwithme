@@ -409,3 +409,41 @@ body.avp-codehub-lock{overflow:hidden}
   .avp-codecard-action{grid-column:3;grid-row:1;width:80px;min-height:32px}
   .avp-codecard-title small{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 }
+
+/* V1.3 — Code viewer isolation.
+   Global upgrade.css styles inline <code> with a pale background and <pre> with a
+   light border. Reset those rules only inside Excel Code Hub so the viewer is
+   one continuous dark surface with readable light text. */
+.avp-code-block pre{
+  margin:0!important;
+  padding:14px 15px!important;
+  max-height:320px;
+  overflow:auto;
+  tab-size:4;
+  background:#111a16!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+.avp-code-block pre code,
+.avp-code-block code{
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  color:#f2fbf5!important;
+  font:12px/1.6 Consolas,"SFMono-Regular",Menlo,monospace!important;
+  white-space:pre!important;
+  overflow-wrap:normal!important;
+  word-break:normal!important;
+  text-shadow:none!important;
+}
+.avp-code-block pre code *{
+  background:transparent!important;
+  color:inherit!important;
+  border:0!important;
+  box-shadow:none!important;
+}
