@@ -23,6 +23,8 @@
   let walkDir = 1;
   let pointerId = null;
   let pointerStart = null;
+  let grabOffsetX = 0;
+  let grabOffsetY = 0;
   let dragging = false;
   let moved = false;
   let bubbleToken = 0;
@@ -294,9 +296,22 @@
   function beginPointer(e) {
     if (e.button != null && e.button !== 0) return;
     pointerId = e.pointerId;
+    const r = launcher.getBoundingClientRect();
     pointerStart = { x: e.clientX, y: e.clientY };
+    grabOffsetX = e.clientX - r.left;
+    grabOffsetY = e.clientY - r.top;
     dragging = false;
     moved = false;
+
+    // Freeze the current visual position before any drag state is applied.
+    // On non-home pages, docking CSS must not participate while the user is holding the robot.
+    if (!HOME) {
+      launcher.style.left = `${Math.round(r.left)}px`;
+      launcher.style.right = 'auto';
+      launcher.style.top = `${Math.round(r.top)}px`;
+      launcher.style.bottom = 'auto';
+    }
+
     try { fab.setPointerCapture(pointerId); } catch (_) {}
   }
 
@@ -332,12 +347,12 @@
       moved = true;
       hideBubble();
       bridge.closeMenu?.();
-      launcher.classList.add('is-lifted', 'is-crying', 'is-dragging');
-      launcher.classList.remove('is-walking', 'is-stationary', 'is-greeting');
+      launcher.classList.add('is-lifted', 'is-crying', 'is-dragging', 'is-free-drag');
+      launcher.classList.remove('is-docked-right', 'is-right', 'is-left', 'is-walking', 'is-stationary', 'is-greeting');
     }
 
-    const left = clamp(e.clientX - width() / 2, DOCK_GAP, Math.max(DOCK_GAP, window.innerWidth - width() - DOCK_GAP));
-    const top = clamp(e.clientY - height() / 2, DOCK_GAP, Math.max(DOCK_GAP, window.innerHeight - height() - DOCK_GAP));
+    const left = clamp(e.clientX - grabOffsetX, DOCK_GAP, Math.max(DOCK_GAP, window.innerWidth - width() - DOCK_GAP));
+    const top = clamp(e.clientY - grabOffsetY, DOCK_GAP, Math.max(DOCK_GAP, window.innerHeight - height() - DOCK_GAP));
 
     launcher.style.left = `${Math.round(left)}px`;
     launcher.style.right = 'auto';
@@ -368,7 +383,7 @@
       delete fab.dataset.justLifted;
     }, 320);
 
-    launcher.classList.remove('is-lifted', 'is-crying', 'is-dragging');
+    launcher.classList.remove('is-lifted', 'is-crying', 'is-dragging', 'is-free-drag');
     dragging = false;
     moved = false;
 

@@ -1725,37 +1725,3 @@ html.avp-has-robot .avp-edge-mini-preview-v2,
   #avpEdgeLauncher .avp-edge-menu{width:184px !important;}
   #avpEdgeLauncher .avp-edge-context{padding:7px 8px 8px !important;}
 }
-
-/* =========================================================
-   AVP dock-right mode — mọi trang ngoài Trang chủ
-   Robot kéo tự do, thả ra hút về mép phải; menu luôn ở bên trái.
-   ========================================================= */
-#avpEdgeLauncher.is-robot.is-docked-right{
-  right:auto !important;
-  bottom:auto !important;
-  transition:left .22s cubic-bezier(.2,.8,.2,1), top .18s ease !important;
-}
-#avpEdgeLauncher.is-robot.is-docked-right.is-dragging{
-  transition:none !important;
-}
-#avpEdgeLauncher.is-robot.is-docked-right .avp-edge-menu{
-  left:auto !important;
-  bottom:auto !important;
-  transform:none !important;
-  align-items:flex-end !important;
-}
-#avpEdgeLauncher.is-robot.is-docked-right.is-snapping .avp-bot{
-  animation:avpDockSettle .24s ease both;
-}
-@keyframes avpDockSettle{
-  0%{transform:translateX(0) scale(1)}
-  55%{transform:translateX(4px) scale(.97)}
-  100%{transform:translateX(0) scale(1)}
-}
-@media (prefers-reduced-motion:reduce){
-  #avpEdgeLauncher.is-robot.is-docked-right,
-  #avpEdgeLauncher.is-robot.is-docked-right.is-snapping .avp-bot{
-    transition:none !important;
-    animation:none !important;
-  }
-}

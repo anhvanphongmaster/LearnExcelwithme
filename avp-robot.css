@@ -30,6 +30,21 @@
   cursor:grabbing !important;
 }
 
+
+/* While the pointer is down the robot is a true free-floating object.
+   Docking classes are removed by JS, and this state deliberately has
+   no edge positioning or transition so X and Y both follow the finger. */
+#avpEdgeLauncher.is-robot.is-free-drag{
+  right:auto !important;
+  bottom:auto !important;
+  transition:none !important;
+  will-change:left,top;
+}
+
+#avpEdgeLauncher.is-robot.is-free-drag #avpEdgeMenu{
+  display:none !important;
+}
+
 /* Non-home invariant: right dock only. */
 #avpEdgeLauncher.is-robot.is-docked-right{
   right:auto !important;
