@@ -100,8 +100,31 @@
     return raw.trim();
   }
 
+  let lastMiniPreviewKey="";
+  let lastMiniPreviewAt=0;
+
+  function miniPreviewKey(detail){
+    const d=detail||{};
+    return [
+      String(d.message_id||d.id||""),
+      String(d.thread_id||""),
+      String(d.role||""),
+      cleanChatPreviewText(d.body||""),
+      String(d.created_at||"")
+    ].join("|");
+  }
+
   function emitChatMiniPreview(detail){
     try{
+      const key=miniPreviewKey(detail);
+      const now=Date.now();
+
+      // Realtime + unread fallback can observe the same INSERT almost together.
+      // Do not show the same floating preview twice.
+      if(key && key===lastMiniPreviewKey && now-lastMiniPreviewAt<3000)return;
+      lastMiniPreviewKey=key;
+      lastMiniPreviewAt=now;
+
       window.dispatchEvent(
         new CustomEvent("avp:chat-new-message",{detail})
       );
@@ -572,9 +595,34 @@
     return (box.scrollHeight-box.scrollTop-box.clientHeight)<=threshold;
   }
 
+  function collapseDuplicateSystemMessages(list){
+    const out=[];
+
+    for(const m of (Array.isArray(list)?list:[])){
+      const prev=out[out.length-1];
+      const currentSystemish=String(m?.sender_type||"").toLowerCase()==="system" || isAutomaticChatMessage(m);
+      const prevSystemish=prev && (String(prev?.sender_type||"").toLowerCase()==="system" || isAutomaticChatMessage(prev));
+
+      if(prev && currentSystemish && prevSystemish){
+        const a=cleanChatPreviewText(prev.body).replace(/\s+/g," ").trim().toLocaleLowerCase("vi-VN");
+        const b=cleanChatPreviewText(m.body).replace(/\s+/g," ").trim().toLocaleLowerCase("vi-VN");
+        const ta=new Date(prev.created_at||0).getTime();
+        const tb=new Date(m.created_at||0).getTime();
+        const closeInTime=ta && tb ? Math.abs(tb-ta)<=90000 : true;
+
+        // Defensive UI dedupe for legacy/backend duplicate auto/system rows.
+        if(a && a===b && closeInTime)continue;
+      }
+
+      out.push(m);
+    }
+
+    return out;
+  }
+
   async function avpRenderMessages(box,list,adminView=false,opts={}){
     if(!box)return false;
-    const arr=Array.isArray(list)?list:[];
+    const arr=collapseDuplicateSystemMessages(list);
     const sig=avpMessageSignature(arr,adminView);
 
     if(box.dataset.avpMsgSignature===sig)return false;
@@ -824,8 +872,9 @@
 
   let lastKnownUserUnread=-1;
 
-  async function updateUserBadge(){
+  async function updateUserBadge(opts={}){
     try{
+      const suppressPreview=opts?.suppressPreview===true;
       const n=Number(await rpc("avp_chat_my_unread_count"))||0;
       const badge=$("avpChatBadge");
 
@@ -839,6 +888,7 @@
 
       /* Nếu realtime bị miss nhưng unread tăng, vẫn phát sự kiện nổi. */
       if(
+        !suppressPreview &&
         lastKnownUserUnread>=0 &&
         n>lastKnownUserUnread &&
         !chatOpen
@@ -892,6 +942,7 @@
 
             if(!chatOpen){
               emitChatMiniPreview({
+                message_id:String(incoming.id||""),
                 role:"admin",
                 thread_id:String(threadId||incoming.thread_id||""),
                 sender:"Anh Văn Phòng",
@@ -901,7 +952,9 @@
             }
           }
 
-          await updateUserBadge();
+          // Realtime already emitted the preview above. Refresh the unread badge
+          // without allowing the unread fallback to emit the same preview again.
+          await updateUserBadge({suppressPreview:true});
 
           if(!$("avpChatPanel").hidden){
             await loadUserMessages();
@@ -921,7 +974,10 @@
     window.addEventListener("focus",syncReadIfOpen);
     try{
       await ensureThread();
-      await rpc("avp_chat_ensure_daily_greeting");
+      // Do not insert a daily system greeting into message history.
+      // When Admin is idle, that greeting + auto-reply used to look like two
+      // system replies on the user's first interaction. The empty-state copy
+      // already provides the greeting without creating another chat row.
       await updateUserBadge();
       startUserLive();
 
