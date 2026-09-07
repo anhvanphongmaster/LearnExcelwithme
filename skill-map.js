@@ -163,9 +163,21 @@
       $("smTodayTitle").textContent=s.next.lesson[2];
       $("smTodayDesc").textContent="Đây là bài cốt lõi tiếp theo. Phím tắt và Công thức là kho tra cứu, không chặn lộ trình.";
       $("smTodayLink").href=s.next.lesson[1];
+      $("smTodayLink").textContent="Học tiếp →";
 
       $("smMissionTitle").textContent="Hoàn thành "+s.next.lesson[2];
       $("smMissionDesc").textContent="Một nhiệm vụ duy nhất hôm nay: học xong bài tiếp theo trong lộ trình.";
+    }else if(s.coreDoneCount<s.all.filter(lesson=>!s.isReference(lesson)).length){
+      const blocked=stages.find((stage,i)=>!s.stageDone(i));
+      const review=s.all.find(lesson=>s.done(lesson)&&!s.q[lesson[1]]);
+      $("smStage").textContent=blocked?.name||"Đang học";
+      $("smTodayStage").textContent=blocked?.name||"Lộ trình học";
+      $("smTodayTitle").textContent="Chặng tiếp theo chưa mở";
+      $("smTodayDesc").textContent=blocked?.gate||"Hoàn thành điều kiện của chặng trước để học tiếp.";
+      $("smTodayLink").href=review?review[1]:"dashboard.html";
+      $("smTodayLink").textContent=review?"Ôn bài và làm quiz →":"Xem tiến độ →";
+      $("smMissionTitle").textContent="Hoàn thành điều kiện mở chặng";
+      $("smMissionDesc").textContent="Quiz của bài đã học giúp bạn nhận XP để tiếp tục lộ trình.";
     }else{
       $("smTodayStage").textContent="Skill Map";
       $("smTodayTitle").textContent="Bạn đã hoàn thành toàn bộ lộ trình cốt lõi";

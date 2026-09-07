@@ -24,6 +24,8 @@
   const coreRoute=['excel.html','filtersort.html','pivottable.html','bieudopareto.html','baocaoexcel.html','excel-nang-cao.html','power-query-course.html','power-pivot-dax.html','dashboard-dong.html','practice-lab.html','vba-macro.html','solver-whatif.html'];
   const referenceRoute=['phimtatexcel.html','congthucexcel.html'];
   const cfg=pages[PAGE]; if(!cfg)return;
+  // Opt-in in theory HTML only: Practice Lab retains its existing behavior.
+  const refined=document.body?.dataset.learningRefined==='1';
 
   function json(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')??fallback}catch(e){return fallback}}
   function isDone(){const p=json(PROGRESSKEY,{}),q=json(QUIZKEY,{});return !!(p[cfg.id]||q[PAGE])}
@@ -65,6 +67,23 @@
   function aidHtml(){return `<section class="avp-teaching-aid" id="hieu-nhanh"><span>HIỂU NHANH</span><h2>${escapeHtml(cfg.aidTitle)}</h2><div class="avp-teaching-aid-grid"><div class="avp-teaching-aid-card"><h3>Điểm cần hiểu</h3><p>${escapeHtml(cfg.understand)}</p></div><div class="avp-teaching-aid-card"><h3>Ví dụ ngắn</h3><p>${escapeHtml(cfg.example||'Hãy áp dụng trực tiếp trên một bảng dữ liệu nhỏ trước khi chuyển sang dữ liệu thật.')}</p></div><div class="avp-teaching-aid-card warning"><h3>Lỗi người mới hay gặp</h3><ul>${cfg.mistakes.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div></div></section>`}
 
   function ensureTocTargets(main){
+    if(refined){
+      const heads=Array.from(main.querySelectorAll(PAGE==='power-query-course.html'?'.pq-lesson h3,.pq-practice h2,.pq-quiz h2':'h2'))
+        .filter(h=>!h.closest('.avp-learning-legacy-hero,[hidden]'));
+      const used=new Set();
+      return heads.map((h,i)=>{
+        const parent=h.closest('section[id],article[id]');
+        let target=h.id?h:parent&&!used.has(parent.id)?parent:h;
+        let id=target.id;
+        if(!id||used.has(id)){
+          target=h;const base='lx-'+slug(h.textContent||`phan-${i+1}`);id=base;let n=2;
+          while(document.getElementById(id)||used.has(id))id=base+'-'+n++;
+          target.id=id;
+        }
+        used.add(id);h.dataset.lxToc=id;target.setAttribute('tabindex','-1');
+        return {h,id,text:h.textContent.replace(/^[^\p{L}\p{N}]+/u,'').trim()};
+      }).filter(x=>x.text);
+    }
     let heads=[];
     if(PAGE==='power-query-course.html') heads=Array.from(main.querySelectorAll('.pq-lesson h3,.pq-practice h2,.pq-quiz h2'));
     else if(PAGE==='practice-lab.html') heads=Array.from(main.querySelectorAll(':scope > .pl-section > h2'));
@@ -80,6 +99,16 @@
     aside.innerHTML=`<div class="avp-learning-sidebar-head"><strong>Nội dung bài</strong><button class="avp-learning-toc-toggle" type="button" aria-expanded="false">Mở mục lục</button></div><nav class="avp-learning-toc">${items.map(x=>`<a href="#${escapeHtml(x.id)}">${escapeHtml(x.text)}</a>`).join('')}<a href="#hieu-nhanh">Hiểu nhanh & lỗi thường gặp</a>${cfg.quiz?'<a href="#kiem-tra-cuoi-bai">Kiểm tra cuối bài</a>':''}</nav><div class="avp-learning-how"><strong>Nếu chưa biết bắt đầu đâu:</strong><ol><li>Đọc mục tiêu ở đầu trang.</li><li>Đi theo mục lục từ trên xuống.</li><li>Làm kiểm tra ở cuối bài.</li></ol></div>`;
     const btn=aside.querySelector('.avp-learning-toc-toggle');btn.addEventListener('click',()=>{const open=aside.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');btn.textContent=open?'Đóng mục lục':'Mở mục lục'});
     aside.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{if(innerWidth<=920){aside.classList.remove('open');btn.setAttribute('aria-expanded','false');btn.textContent='Mở mục lục'}}));
+    if(refined){
+      const toc=aside.querySelector('nav');toc.id='lx-table-of-contents';toc.setAttribute('aria-label','Mục lục bài học');
+      btn.setAttribute('aria-controls',toc.id);
+      aside.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+        const target=document.getElementById(decodeURIComponent(a.hash.slice(1)));
+        if(target){target.setAttribute('tabindex','-1');target.focus({preventScroll:true});}
+        aside.querySelectorAll('a').forEach(link=>{const on=link===a;link.classList.toggle('active',on);if(on)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current')});
+      }));
+      aside.addEventListener('keydown',e=>{if(e.key==='Escape'&&aside.classList.contains('open')){btn.click();btn.focus()}});
+    }
     return aside;
   }
 
@@ -109,6 +138,21 @@
 
   function buildNav(){
     const nav=document.createElement('nav');nav.className='avp-learning-nav';nav.setAttribute('aria-label','Điều hướng nội dung học');
+    if(refined){
+      const shortNames={'excel.html':'Excel cơ bản','phimtatexcel.html':'Phím tắt Excel','congthucexcel.html':'Công thức Excel','filtersort.html':'Filter & Sort','pivottable.html':'PivotTable','bieudopareto.html':'Biểu đồ Pareto','baocaoexcel.html':'Báo cáo Excel','excel-nang-cao.html':'Excel nâng cao','power-query-course.html':'Power Query','power-pivot-dax.html':'Power Pivot & DAX','dashboard-dong.html':'Dashboard động','practice-lab.html':'Practice Lab','vba-macro.html':'VBA / Macro','solver-whatif.html':'What-If & Solver','dashboard.html':'Tiến độ học tập'};
+      const link=(file,label,cls='side')=>`<a class="${cls}" href="${file}"><small>${label}</small><strong>${escapeHtml(shortNames[file]||'Lộ trình học')}</strong></a>`;
+      const map=link('skill-map.html','DANH SÁCH BÀI','side map');
+      if(cfg.kind==='reference'){
+        const other=referenceRoute.find(file=>file!==PAGE);
+        nav.innerHTML=link('excel.html','ÔN KIẾN THỨC')+map+link(other,'KHO TRA CỨU KHÁC','side next');
+      }else{
+        const i=coreRoute.indexOf(PAGE);
+        const previous=i>0?link(coreRoute[i-1],'← BÀI TRƯỚC'):link('dashboard.html','TIẾN ĐỘ HỌC');
+        const next=i<coreRoute.length-1?link(coreRoute[i+1],'BÀI TIẾP THEO →','side next'):'<a class="side next" href="practice-video.html"><small>BƯỚC TIẾP THEO →</small><strong>Chọn bài thực hành</strong></a>';
+        nav.innerHTML=previous+map+next;
+      }
+      return nav;
+    }
     if(cfg.kind==='reference'){
       const i=referenceRoute.indexOf(PAGE),other=pages[referenceRoute[i===0?1:0]];
       nav.innerHTML=`<a class="side" href="skill-map.html"><small>LỘ TRÌNH</small><strong>← Quay lại Skill Map</strong></a><a class="map" href="skill-map.html">Danh sách học</a><a class="side next" href="${referenceRoute[i===0?1:0]}"><small>KHO TRA CỨU KHÁC</small><strong>${escapeHtml(other.title)} →</strong></a>`;
@@ -120,6 +164,22 @@
   }
 
   function setupObservers(sidebar){
+    if(refined){
+      const links=Array.from(sidebar.querySelectorAll('.avp-learning-toc a'));
+      const select=id=>links.forEach(a=>{const on=decodeURIComponent(a.hash.slice(1))===id;a.classList.toggle('active',on);if(on)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current')});
+      const fromHash=()=>{try{const id=decodeURIComponent(location.hash.slice(1));if(links.some(a=>decodeURIComponent(a.hash.slice(1))===id))select(id)}catch(_){}};
+      if(links.length)select(decodeURIComponent(links[0].hash.slice(1)));fromHash();
+      window.addEventListener('hashchange',fromHash);
+      if('IntersectionObserver'in window){
+        const visible=new Map();
+        const io=new IntersectionObserver(entries=>{
+          entries.forEach(e=>{if(e.isIntersecting)visible.set(e.target.id,e.target);else visible.delete(e.target.id)});
+          const first=Array.from(visible.values()).sort((a,b)=>a.getBoundingClientRect().top-b.getBoundingClientRect().top)[0];if(first)select(first.id);
+        },{rootMargin:'-100px 0px -50% 0px',threshold:0});
+        links.forEach(a=>{const target=document.getElementById(decodeURIComponent(a.hash.slice(1)));if(target)io.observe(target)});
+      }
+      return;
+    }
     if(!('IntersectionObserver'in window))return;const links=Array.from(sidebar.querySelectorAll('.avp-learning-toc a'));const map=new Map(links.map(a=>[decodeURIComponent(a.hash.slice(1)),a]));const targets=Array.from(map.keys()).map(id=>document.getElementById(id)).filter(Boolean);const io=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];if(!visible)return;links.forEach(a=>a.classList.remove('active'));map.get(visible.target.id)?.classList.add('active')},{rootMargin:'-18% 0px -68% 0px',threshold:[0,.1,.5]});targets.forEach(t=>io.observe(t));
   }
 
@@ -135,6 +195,11 @@
     const grid=document.createElement('div');grid.className='avp-learning-grid';
     const content=document.createElement('div');content.className='avp-learning-content';
     const oldParent=main.parentNode;oldParent.insertBefore(host,main);host.appendChild(grid);
+    if(refined){
+      // Keep all learning sections in document order and include them in the TOC.
+      document.querySelectorAll('.lesson-tips-panel').forEach(x=>{if(!main.contains(x))main.appendChild(x)});
+      host.querySelector('.avp-learning-intro-actions a[href="skill-map.html"]')?.remove();
+    }
     const toc=ensureTocTargets(main);const sidebar=makeSidebar(toc);grid.appendChild(sidebar);grid.appendChild(content);content.appendChild(main);
     document.querySelectorAll('.lesson-tips-panel').forEach(x=>{
       if(x.closest('.avp-learning-content'))return;
@@ -143,6 +208,23 @@
     const aid=document.createElement('div');aid.innerHTML=aidHtml();content.appendChild(aid.firstElementChild);
     const quiz=buildQuiz();if(quiz)content.appendChild(quiz);
     content.appendChild(buildNav());fixStart(main);setupObservers(sidebar);syncUiDone();
+    if(refined){
+      // Keep the summary before the existing Power Query quiz, so the quiz ends the lesson.
+      const nativeQuiz=main.querySelector('.pq-quiz');
+      if(nativeQuiz){content.insertBefore(nativeQuiz,content.querySelector('.avp-learning-nav'));const link=sidebar.querySelector('a[href="#pqQuiz"]');if(link)sidebar.querySelector('.avp-learning-toc').appendChild(link);}
+      // All large tables/code scroll within the reading column, not the page.
+      main.querySelectorAll('table').forEach(table=>{
+        if(table.closest('.avp-learning-table-wrap,.lx-table-scroll'))return;
+        const wrap=document.createElement('div');wrap.className='lx-table-scroll';wrap.tabIndex=0;wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Bảng dữ liệu, cuộn ngang để xem đủ cột');table.parentNode.insertBefore(wrap,table);wrap.appendChild(table);
+      });
+      const updateOffset=()=>{const top=document.querySelector('.top-simple-nav');const height=top?.getBoundingClientRect().height||64;host.style.setProperty('--lx-top-offset',`${Math.ceil(height)+16}px`)};
+      updateOffset();if('ResizeObserver'in window){const resize=new ResizeObserver(updateOffset);const top=document.querySelector('.top-simple-nav');if(top)resize.observe(top)}
+      window.addEventListener('storage',e=>{if([XPKEY,QUIZKEY,PROGRESSKEY].includes(e.key)||e.key===null)syncUiDone()});
+      window.addEventListener('avp:progress-changed',syncUiDone);
+      window.addEventListener('avp:course-xp',syncUiDone);
+      // Native initial fragment navigation can precede headings generated by this script.
+      if(location.hash)requestAnimationFrame(()=>{try{const target=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(target&&host.contains(target))target.scrollIntoView({block:'start'})}catch(_){}});
+    }
     setTimeout(restoreHiddenTheory,30);
   }
 

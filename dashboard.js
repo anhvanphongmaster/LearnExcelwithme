@@ -109,7 +109,7 @@
     let nextStage=null;
 
     for(const stage of stages){
-      const lesson=stage.lessons.find(x=>!done(x));
+      const lesson=stage.lessons.find(x=>!["shortcuts","formula"].includes(x[0])&&!done(x));
       if(lesson){
         next=lesson;
         nextStage=stage;
@@ -184,7 +184,7 @@
       setText("continueTitle","Chuyển sang thực hành");
       setText(
         "continueText",
-        "Bạn đã hoàn thành 14 bài chính. Hãy dùng Practice Hub để tiếp tục luyện bằng project và file thực tế."
+        "Bạn đã hoàn thành 12 bài cốt lõi. Phím tắt và Công thức là kho tra cứu tùy chọn. Hãy tiếp tục luyện trong Practice Hub."
       );
       $("continueButton").href="practice-video.html";
       $("continueButton").textContent="Đi thực hành →";

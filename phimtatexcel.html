@@ -25,7 +25,7 @@
 
         /* MENU */
 
-        nav {
+        nav.top-simple-nav {
             background: #185c37;
             padding: 15px 25px;
 
@@ -36,13 +36,13 @@
             flex-wrap: wrap;
         }
 
-        nav a {
+        nav.top-simple-nav a {
             color: white;
             text-decoration: none;
             font-weight: bold;
         }
 
-        nav a:hover {
+        nav.top-simple-nav a:hover {
             color: #b7e4c7;
         }
 
@@ -249,10 +249,11 @@
 <link href="theme-polish-v33.css" rel="stylesheet"/>
   <link rel="stylesheet" href="learning-flow.css?v=20260831-v88">
   <link rel="stylesheet" href="learning-experience-v2.css?v=20260906-v2">
+  <link rel="stylesheet" href="learning-readability.css?v=20260907-r1">
 </head>
 
 
-<body data-learning-v2="1">
+<body data-learning-v2="1" data-learning-refined="1">
 
 <div id="scrollProgress"></div>
     <!-- MENU -->
@@ -405,7 +406,7 @@
     <span class="course-kicker">THỰC CHIẾN</span>
     <h2 class="course-title" style="font-size:22px;margin-top:10px">10 phím tắt nên thuộc trước</h2>
     <p style="color:#65736b;margin:0 0 16px">Nếu mới bắt đầu, hãy luyện 10 phím này đến mức không cần nhìn bàn phím.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">
+    <div class="lx-reference-grid">
       <div class="course-box"><strong>Ctrl + S</strong><br><span style="color:#65736b">Lưu file — thói quen số 1</span></div>
       <div class="course-box"><strong>Ctrl + C / V / X</strong><br><span style="color:#65736b">Copy · Paste · Cut</span></div>
       <div class="course-box"><strong>Ctrl + Z / Y</strong><br><span style="color:#65736b">Hoàn tác · Làm lại</span></div>
@@ -546,7 +547,7 @@
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>
   <script defer src="learning-flow.js?v=20260831-v88"></script>
-  <script defer src="learning-experience-v2.js?v=20260906-v2"></script>
+  <script defer src="learning-experience-v2.js?v=20260907-r1"></script>
 </body>
 
 </html>

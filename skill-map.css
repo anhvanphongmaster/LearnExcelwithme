@@ -409,3 +409,51 @@ body{
 .sm-node.reference strong::after{content:"  ·  tra cứu";color:#7d8e84;font-size:8px;font-weight:800}
 .sm-node.reference.current::after{content:none}
 .sm-node.reference:not(.done)::after{content:"TÙY CHỌN";position:absolute;top:7px;right:8px;color:#7b8c82;font-size:7px;font-weight:950}
+
+/* Readable learning map: equal stage columns and lesson cards. */
+.sm-page{font:1rem/1.65 Arial,"Helvetica Neue",sans-serif;color:#193c2a;}
+.sm-page :is(a,p,strong,small,span){min-width:0;overflow-wrap:break-word;word-break:normal;}
+.sm-page :is(a,button):focus-visible{outline:3px solid #237847;outline-offset:3px;}
+.sm-page .sm-kicker,.sm-page .sm-next-badge{font-size:.8125rem;line-height:1.5;letter-spacing:.04em;}
+.sm-hero{padding:24px;border-radius:18px;gap:24px;grid-template-columns:minmax(0,1fr) minmax(320px,.8fr);box-shadow:none;}
+.sm-hero h1{font-size:clamp(1.875rem,3vw,2.5rem);line-height:1.25;letter-spacing:normal;}
+.sm-hero p{font-size:1rem;color:#eef7f1;}
+.sm-hero-stats{grid-auto-rows:1fr;}
+.sm-hero-stats small{font-size:.875rem;opacity:1;color:#e4f3e9;}
+.sm-hero-stats strong{font-size:1.375rem;white-space:normal;text-overflow:clip;line-height:1.4;}
+.sm-next-card,.sm-map-shell{border-radius:18px;box-shadow:none;}
+.sm-next-main span,.sm-next-main p,.sm-map-head p,.sm-legend{font-size:.875rem;line-height:1.6;color:#52675a;}
+.sm-next-main>a{font-size:.9375rem;line-height:1.5;min-height:44px;display:grid;place-items:center;border-radius:10px;}
+.sm-quick-grid{grid-auto-rows:1fr;}
+.sm-mission-card,.sm-focus-card{grid-template-columns:44px minmax(0,1fr);align-content:start;box-shadow:none;transform:none;}
+.sm-mission-status,.sm-focus-card>strong{grid-column:2;font-size:.875rem;justify-self:start;white-space:normal;}
+.sm-quick-copy h2{font-size:1.125rem;line-height:1.5;}
+.sm-quick-copy p{font-size:.875rem;line-height:1.6;color:#52675a;}
+.sm-map{min-height:0;background:#f6f9f7;}
+.sm-lines{display:none;}
+.sm-zones{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;padding:20px;align-items:stretch;}
+.sm-zone{padding:20px;background:#fff;border:1px solid #d5e3da;border-radius:14px;}
+.sm-zone.locked-zone{opacity:1;}
+.sm-zone-head{min-height:74px;align-items:flex-start;}
+.sm-zone-head>div:last-child{min-width:0;}
+.sm-zone-icon{flex:0 0 38px;}
+.sm-zone-head strong{font-size:1.125rem;line-height:1.5;}
+.sm-zone-head small,.sm-zone-gate{font-size:.875rem;line-height:1.6;color:#52675a;}
+.sm-node{min-height:112px;padding:18px 16px 18px 56px;display:flex;flex-direction:column;justify-content:center;box-shadow:none;}
+.sm-node strong{font-size:1rem;line-height:1.5;}
+.sm-node small{font-size:.875rem;line-height:1.5;color:#52675a;}
+.sm-node-num{left:12px;width:32px;height:32px;margin-top:-16px;font-size:.8125rem;}
+.sm-node:is(.done,.current,.locked)::after,.sm-node.reference:not(.done)::after{content:none;}
+.sm-node.current{border-color:#217346;box-shadow:inset 3px 0 #217346;}
+.sm-node.current .sm-node-num{background:#217346;color:#fff;}
+.sm-legend .current{background:#217346;}
+.sm-node.locked{opacity:1;background:#f4f6f5;color:#52675a;}
+.sm-node.locked .sm-node-num{color:#52675a;}
+.sm-node.reference strong::after{content:none;}
+.sm-node.reference .sm-node-num{font-size:.75rem;}
+.sm-footer-actions{grid-auto-rows:1fr;}
+.sm-footer-actions span{font-size:.8125rem;color:#52675a;}
+.sm-footer-actions strong{font-size:1rem;line-height:1.5;}
+@media(max-width:940px){.sm-hero{grid-template-columns:minmax(0,1fr);}.sm-map-head{display:block;}.sm-legend{justify-content:flex-start;margin-top:12px;}}
+@media(max-width:700px){.sm-page{width:calc(100% - 24px);}.sm-zones{grid-template-columns:minmax(0,1fr);padding:12px;}.sm-quick-grid{grid-template-columns:minmax(0,1fr);}.sm-zone{padding:16px;}.sm-hero{padding:20px;}.sm-next-main{align-items:stretch;flex-direction:column;}.sm-next-main>a{width:100%;}}
+@media(prefers-reduced-motion:reduce){.sm-page *{transition:none!important;scroll-behavior:auto!important;}}
