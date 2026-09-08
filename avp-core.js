@@ -42,6 +42,7 @@
     'professional-access.html':['Professional Track','Điều kiện truy cập','professional'],
     'professional-track.html':['Professional Track','Khu bài tập Professional','professional'],
     'tools-center.html':['Công cụ',title,'tools'],
+    'tools-library.html':['Công cụ','Kho Tool','tools'],
     'formula-finder.html':['Công cụ',title,'tools'],
     'excel-doctor.html':['Công cụ',title,'tools'],
     'qc-dashboard.html':['Công cụ',title,'tools'],

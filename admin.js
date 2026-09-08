@@ -679,7 +679,7 @@
       loadAdminMaintenance();
     try{
       const requestedView=new URLSearchParams(location.search).get("view");
-      const validViews=["overview","users","race","learning","votes","practice","youtube","downloads","inbox","engagement","analytics","community","reviews","grader","professional"];
+      const validViews=["overview","users","race","learning","votes","practice","youtube","downloads","inbox","engagement","analytics","community","reviews","grader","professional","tools"];
       if(requestedView&&validViews.includes(requestedView)){
         setTimeout(()=>setAdminView(requestedView,{scroll:true}),80);
       }
@@ -727,6 +727,7 @@
     if(view==="engagement") loadEngagementOnly();
     if(view==="votes") loadAdminVoteManager();
     if(view==="downloads" && !adminDownloadLoaded) loadAdminDownloads();
+    if(view==="tools") window.dispatchEvent(new CustomEvent("avp:admin-tools-open"));
     if(view==="practice") window.dispatchEvent(new CustomEvent("avp:admin-tiktok-open"));
     if(view==="youtube") window.dispatchEvent(new CustomEvent("avp:admin-youtube-open"));
     if(view==="overview" && client) checkAdminHealth();

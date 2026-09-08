@@ -7,6 +7,7 @@
     {icon:'🔎', title:'VLOOKUP & XLOOKUP', desc:'Tra cứu dữ liệu bằng VLOOKUP và XLOOKUP', url:'congthucexcel.html', type:'Công thức', keys:'vlookup xlookup tra cuu lookup tim kiem'},
     {icon:'🧵', title:'TEXTJOIN', desc:'Ghép nhiều chuỗi văn bản trong Excel', url:'congthucexcel.html', type:'Công thức', keys:'textjoin ghep chuoi noi text'},
     {icon:'⚡', title:'FILTER', desc:'Lọc dữ liệu động bằng hàm FILTER', url:'congthucexcel.html', type:'Công thức', keys:'filter ham loc dynamic array'},
+    {icon:'🧰', title:'Kho Tool', desc:'Tool thực dụng, file ZIP và ý tưởng cộng đồng', url:'tools-library.html', type:'Công cụ', keys:'kho tool utility zip excel automation'},
     {icon:'🧭', title:'Skill Map', desc:'Lộ trình học Excel từ nền tảng đến nâng cao, có bài nên học tiếp', url:'skill-map.html', type:'Lộ trình', keys:'skill map lo trinh hoc excel beginner analyst advanced master hoc tiep'},
     {icon:'🚀', title:'Excel nâng cao thực chiến', desc:'Power Query, Dynamic Array, XLOOKUP, LET, PivotTable và Data Quality', url:'excel-nang-cao.html', type:'Nâng cao', keys:'excel nang cao power query powerquery dynamic array filter unique sort xlookup let data quality master data'},
     {icon:'📐', title:'Power Pivot & DAX', desc:'Data Model, Relationship, Measure và KPI bằng DAX', url:'power-pivot-dax.html', type:'Nâng cao', keys:'power pivot dax data model relationship measure calculate divide kpi'},

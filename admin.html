@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="admin-grader.css?v=20260830-v16badge1">
   <link rel="stylesheet" href="global-search.css">
 <link rel="stylesheet" href="admin-tiktok.css?v=20260906-catalog1">
+<link rel="stylesheet" href="admin-tools.css?v=20260908-v1">
 </head>
 <body>
 
@@ -128,6 +129,9 @@ where is_admin = true;</pre>
         </button>
         <button type="button" data-admin-view="downloads" role="tab">
           <b>📦 Tải xuống</b><small>File & tài nguyên toàn web</small>
+        </button>
+        <button type="button" data-admin-view="tools" role="tab">
+          <b>🧰 Tool</b><small>Kho Tool & ý tưởng ưu tiên</small>
         </button>
         <button type="button" data-admin-view="inbox" role="tab">
           <b>📥 Hộp thư</b><small>Thắc mắc, ý tưởng & file</small>
@@ -245,6 +249,21 @@ where is_admin = true;</pre>
       <div class="admin-maintenance-note" id="adminMaintenanceNotice">
         Thay đổi được lưu trên Supabase và áp dụng cho toàn website. Người đang mở website sẽ tự nhận trạng thái mới trong tối đa khoảng 30 giây.
       </div>
+    </section>
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="tools">
+      <span>🧰 KHO TOOL</span><h2>Tool & nhu cầu người dùng</h2>
+    </div>
+    <section class="admin-panel admin-view-section admin-tools-panel" data-admin-section="tools" id="adminToolsPanel">
+      <div class="admin-panel-head"><div><span>TOOL MANAGER</span><h2>Quản lý Kho Tool</h2><p>Thêm ZIP, nội dung, thứ tự hiển thị và theo dõi ý tưởng nào được nhiều người cùng yêu cầu.</p></div><button type="button" id="atReload">↻ Làm mới</button></div>
+      <div class="at-kpis"><article><small>Tổng Tool</small><strong id="atTotal">0</strong></article><article><small>Đang phát hành</small><strong id="atActive">0</strong></article><article><small>Tổng lượt nhu cầu</small><strong id="atIdeas">0</strong></article></div>
+      <div class="at-layout">
+        <div class="at-box"><h3>Thêm / sửa Tool</h3><p>File tải lên bắt buộc là ZIP (tối đa 50 MB). Hệ thống sẽ hiển thị pass mặc định <b>anhvanphongmaster</b>; ZIP bạn tải lên cần tự đặt đúng pass này nếu muốn bảo vệ file.</p>
+          <form id="atToolForm" class="at-form"><input id="atToolId" type="hidden"><label><span>STT</span><input id="atToolOrder" type="number" min="0" max="9999" required></label><label><span>Tên Tool</span><input id="atToolName" maxlength="120" required></label><label class="wide"><span>Ứng dụng</span><input id="atToolApplication" maxlength="240" placeholder="Ví dụ: Gộp file, kiểm tra dữ liệu, QC..."></label><label class="wide"><span>Mô tả</span><textarea id="atToolDescription" rows="4" maxlength="1200"></textarea></label><label class="wide"><span>File ZIP</span><input id="atToolFile" type="file" accept=".zip,application/zip,application/x-zip-compressed"><small id="atFileCurrent" class="at-file-current">Chưa có file ZIP đang gắn.</small></label><label class="wide at-check"><input id="atToolActive" type="checkbox" checked><span>Hiển thị Tool trên website</span></label><div class="at-actions"><button id="atToolSave" class="primary" type="submit">Lưu Tool</button><button id="atToolReset" type="button">Tạo Tool mới</button></div><div id="atNotice" class="at-notice"></div></form>
+        </div>
+        <div class="at-box"><div class="at-toolbar"><div><h3>Danh sách Tool</h3><p style="margin:2px 0 0;color:#718177;font-size:12px">Sắp theo STT bạn đặt.</p></div></div><div id="atToolList" class="at-list"><div class="at-empty">Mở tab Tool để tải danh sách.</div></div></div>
+      </div>
+      <div class="at-box at-ideas"><h3>Ý tưởng được yêu cầu nhiều nhất</h3><p>Người dùng được gõ ý tưởng tự do. Ý tưởng trùng chính xác tự gom lượt; những người khác có thể bấm “+1 Tôi cũng cần”. Với các ý tưởng gần nghĩa, Admin có thể đổi tên hoặc gộp để cộng dồn nhu cầu rồi đánh dấu ưu tiên / đang làm / đã hoàn thành.</p><div id="atIdeaList"><div class="at-empty">Mở tab Tool để tải ý tưởng.</div></div></div>
     </section>
 
     <div class="admin-section-heading admin-view-section" data-admin-section="community">
@@ -997,5 +1016,6 @@ where is_admin = true;</pre>
 <script defer src="global-search.js"></script>
 <script defer src="tiktok-catalog.js?v=20260906-catalog1"></script>
 <script defer src="admin-tiktok.js?v=20260906-catalog1"></script>
+<script defer src="admin-tools.js?v=20260908-v1"></script>
 </body>
 </html>
