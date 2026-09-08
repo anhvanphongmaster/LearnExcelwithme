@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="admin.css?v=20260831-v83-maintenance">
-<link rel="stylesheet" href="admin-professional-track.css?v=20260908-auto1">
+<link rel="stylesheet" href="admin-professional-track.css?v=20260908-private-student1">
 <link rel="stylesheet" href="admin-youtube-projects.css?v=20260901-v1">
 <link rel="stylesheet" href="avp-core.css">
 <link rel="manifest" href="admin-manifest.webmanifest">
@@ -926,8 +926,8 @@ where is_admin = true;</pre>
             <label><span>Kết quả bàn giao</span><input id="aptCaseOutput" maxlength="500"></label>
             <label><span>Thời lượng</span><input id="aptCaseDuration" maxlength="80" placeholder="60–90 phút"></label>
             <label><span>Điểm tối đa</span><input id="aptCaseMaxScore" type="number" min="10" max="10" value="10" readonly></label>
-            <label class="wide"><span>Link file thực hành</span><input id="aptCaseSourceUrl" maxlength="1000" placeholder="https://... hoặc đường dẫn file trong website"><small>Chấp nhận link HTTPS hoặc đường dẫn tương đối, không ép định dạng Google Drive.</small></label>
-            <label class="wide"><span>Link hướng dẫn</span><input id="aptCaseGuideUrl" maxlength="1000" placeholder="https://youtube.com/... hoặc đường dẫn trang hướng dẫn"></label>
+            <label class="wide apt-private-resource"><span>File bài cho học viên · Private</span><input id="aptCaseSourceFile" type="file" accept=".xlsx,.xls,.xlsm,.csv,.zip"><input id="aptCaseSourceUrl" type="hidden"><small id="aptCaseSourceState">Chưa có file bài cho học viên. File chỉ được cấp link tạm cho tài khoản đã được duyệt Pro.</small><button type="button" class="apt-inline-clear" id="aptCaseSourceClear" hidden>Xóa file hiện tại</button></label>
+            <label class="wide apt-private-resource"><span>Tài liệu hướng dẫn · Private</span><input id="aptCaseGuideFile" type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.xlsm,.csv,.zip"><input id="aptCaseGuideUrl" type="hidden"><small id="aptCaseGuideState">Chưa có tài liệu hướng dẫn private.</small><button type="button" class="apt-inline-clear" id="aptCaseGuideClear" hidden>Xóa hướng dẫn hiện tại</button></label>
             <div class="apt-grader-box">
               <div class="apt-grader-copy"><span>AUTO-GRADER PRO</span><strong>Đáp án ẩn phía server</strong><small>Học viên không nhìn thấy file này. Nếu có đáp án ẩn hợp lệ, hệ thống tự chấm sau khi nộp; chỉ ngoại lệ mới vào hàng chờ Admin.</small></div>
               <label class="apt-grader-upload"><input id="aptCaseReference" type="file" accept=".xlsx,.xlsm"><span>Chọn file đáp án ẩn</span></label>
@@ -992,7 +992,7 @@ where is_admin = true;</pre>
 <script defer src="theme-unified-v32.js"></script>
 <script defer src="admin-community-center.js?v=20260829-moderation1"></script>
 <script defer src="admin-grader.js?v=20260830-v16badge1"></script>
-<script defer src="admin-professional-track.js?v=20260908-auto1"></script>
+<script defer src="admin-professional-track.js?v=20260908-private-student1"></script>
 <script defer src="admin-youtube-projects.js?v=20260901-v2"></script>
 <script defer src="global-search.js"></script>
 <script defer src="tiktok-catalog.js?v=20260906-catalog1"></script>

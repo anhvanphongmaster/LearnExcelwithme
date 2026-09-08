@@ -106,6 +106,7 @@
   const STAGES=["domains","training","levels","cases"];
   const PROGRESS_KEY="avp_professional_case_progress_v1";
   const SUBMISSION_BUCKET="professional-track-submissions";
+  const RESOURCE_BUCKET="professional-track-resources";
   let selectedDomain="input";
   let activeDomain="input";
   let selectedModule=0;
@@ -127,14 +128,27 @@
     return null;
   }
 
-  function safeHref(value){
+  function resourcePath(value){
     const raw=String(value||"").trim();
-    if(!raw)return "";
+    if(!raw||/^https?:\/\//i.test(raw)||raw.startsWith("//")||raw.startsWith("/")||raw.includes(".."))return "";
+    return raw;
+  }
+
+  async function openPrivateResource(path,label){
+    const clean=resourcePath(path);
+    if(!clean)return alert("Tài nguyên này chưa được Admin đưa vào kho Pro riêng tư.");
+    supabase=supabase||await client();
+    if(!supabase)return alert("Chưa kết nối được hệ thống.");
+    const popup=window.open("","_blank");
     try{
-      const url=new URL(raw,location.href);
-      if(url.protocol!=="http:"&&url.protocol!=="https:")return "";
-      return raw;
-    }catch(_){return ""}
+      const {data,error}=await supabase.storage.from(RESOURCE_BUCKET).createSignedUrl(clean,120);
+      if(error)throw error;
+      if(!data?.signedUrl)throw new Error("Không tạo được liên kết tạm thời.");
+      if(popup){popup.opener=null;popup.location.replace(data.signedUrl)}else window.location.href=data.signedUrl;
+    }catch(error){
+      if(popup)popup.close();
+      alert(`Không mở được ${label||"tài nguyên"}: ${String(error?.message||error)}`);
+    }
   }
 
   function caseKey(level,index){
@@ -319,8 +333,8 @@
         output:row.expected_output||module.output,
         duration:row.duration||level.duration,
         score:Number(row.max_score)||10,
-        sourceUrl:safeHref(row.source_url),
-        guideUrl:safeHref(row.guide_url),
+        sourcePath:resourcePath(row.source_url),
+        guidePath:resourcePath(row.guide_url),
         published:row.published===true,
         submissionEnabled:row.submission_enabled!==false&&row.published===true,
         submission:submissions.get(id)||null
@@ -378,7 +392,7 @@
       :submission?.status==="pending"
         ?(isAutoReview(submission.feedback)?`Auto-Grader chưa đủ điều kiện kết luận. Bài đã chuyển sang hàng chờ Admin.${submission.feedback?` ${esc(submission.feedback)}`:""}`:"Bài đã nộp và đang được chấm tự động.")
         :submission?.status==="revision"?`Admin yêu cầu nộp lại${submission.feedback?`: ${esc(submission.feedback)}`:"."}`:"";
-    const actions=item.published?`<div class="pro-case-submit-box">${item.submissionEnabled?'<label class="pro-case-note"><span>Ghi chú cho Admin</span><textarea data-pro-case-note rows="2" maxlength="1200" placeholder="Nêu phần cần lưu ý hoặc cách bạn xử lý Case này"></textarea></label>':""}<div class="pro-case-actions">${item.sourceUrl?`<a href="${esc(item.sourceUrl)}" target="_blank" rel="noopener">↓ Tải file thực hành</a>`:""}${item.guideUrl?`<a class="secondary" href="${esc(item.guideUrl)}" target="_blank" rel="noopener">Xem hướng dẫn</a>`:""}${item.submissionEnabled?`<label class="pro-case-upload"><input type="file" data-pro-case-file accept=".xlsx,.xls,.xlsm,.csv,.zip"><span>${submission?.status==="pending"?"Thay file đã nộp":"Chọn file bài làm"}</span></label><button type="button" data-pro-case-submit>Nộp bài</button>`:""}</div></div>`:`<p class="pro-case-next">Case đang ở chế độ xem trước. Admin chưa phát hành file nguồn và cổng nộp bài.</p>`;
+    const actions=item.published?`<div class="pro-case-submit-box">${item.submissionEnabled?'<label class="pro-case-note"><span>Ghi chú cho Admin</span><textarea data-pro-case-note rows="2" maxlength="1200" placeholder="Nêu phần cần lưu ý hoặc cách bạn xử lý Case này"></textarea></label>':""}<div class="pro-case-actions">${item.sourcePath?`<button type="button" data-pro-resource="source">↓ Tải file thực hành</button>`:""}${item.guidePath?`<button type="button" class="secondary" data-pro-resource="guide">Xem hướng dẫn</button>`:""}${item.submissionEnabled?`<label class="pro-case-upload"><input type="file" data-pro-case-file accept=".xlsx,.xls,.xlsm,.csv,.zip"><span>${submission?.status==="pending"?"Thay file đã nộp":"Chọn file bài làm"}</span></label><button type="button" data-pro-case-submit>Nộp bài</button>`:""}</div></div>`:`<p class="pro-case-next">Case đang ở chế độ xem trước. Admin chưa phát hành file nguồn và cổng nộp bài.</p>`;
     brief.innerHTML=`<button type="button" class="pro-case-list-back" data-case-list>← Danh sách 3 Case</button><div class="pro-case-brief-head"><div><span>${esc(item.id.toUpperCase())}</span><h2>${esc(item.title)}</h2><p>${esc(item.goal)}</p></div><div><small>Thời lượng dự kiến</small><strong>${esc(item.duration)}</strong><small>Điểm tối đa</small><strong>${item.score}/10</strong></div></div><div class="pro-case-brief-body"><section><h3>Yêu cầu thực hiện</h3><ol>${item.tasks.map(task=>`<li>${esc(task)}</li>`).join("")}</ol></section><section><h3>Năng lực đánh giá</h3><p>${esc(item.skills)}</p><h3>Kết quả phải bàn giao</h3><p>${esc(item.output)}</p></section></div><div class="pro-case-rubric"><span><b>AUTO</b> Cấu trúc, công thức và tính toàn vẹn</span><span><b>AUTO</b> Kết quả, số liệu và đối soát theo đáp án ẩn</span><span><b>REVIEW</b> Chỉ ngoại lệ máy chưa thể kết luận mới chuyển Admin</span></div>${status?`<p class="pro-case-submission-state ${esc(submission?.status||"")}">${status}</p>`:""}${actions}`;
     brief.hidden=false;
     brief.querySelector("[data-case-list]").addEventListener("click",()=>{brief.hidden=true;grid.hidden=false;scrollStage($("proCaseSection"))});
@@ -386,6 +400,8 @@
       const name=event.target.files?.[0]?.name||"Chọn file bài làm";
       const label=event.target.closest("label")?.querySelector("span");if(label)label.textContent=name;
     });
+    brief.querySelector('[data-pro-resource="source"]')?.addEventListener("click",()=>openPrivateResource(item.sourcePath,"file thực hành"));
+    brief.querySelector('[data-pro-resource="guide"]')?.addEventListener("click",()=>openPrivateResource(item.guidePath,"hướng dẫn"));
     brief.querySelector("[data-pro-case-submit]")?.addEventListener("click",()=>submitCase(item,brief));
     scrollStage($("proCaseSection"));
   }

@@ -72,3 +72,10 @@
 .apt-auto-note{margin-top:9px;padding:9px 10px;border-radius:9px;background:#eef7f1;color:#285b3d;font-size:9px;line-height:1.5}.apt-auto-note.review{background:#fff7e2;color:#7b5900}
 @media(max-width:900px){.apt-grader-box{grid-template-columns:1fr 1fr}.apt-grader-copy,.apt-grader-state{grid-column:1/-1}.apt-grader-upload,.apt-grader-box>button{width:100%;box-sizing:border-box}}
 @media(max-width:560px){.apt-grader-box{grid-template-columns:1fr}.apt-grader-copy,.apt-grader-state{grid-column:1}.apt-grader-upload,.apt-grader-box>button{grid-column:1}}
+
+/* PRO private learner resources */
+.apt-case-form .apt-private-resource{padding:12px;border:1px solid #d9e9df;border-radius:14px;background:#fbfefc}
+.apt-case-form .apt-private-resource>span{font-weight:800;color:#174c33}
+.apt-case-form .apt-private-resource input[type="file"]{padding:9px;background:#fff;border:1px solid #d5e4da;border-radius:10px}
+.apt-case-form .apt-private-resource small{display:block;margin-top:6px;word-break:break-word;color:#65786d}
+.apt-case-form .apt-inline-clear{margin-top:7px;width:max-content;padding:7px 10px;font-size:12px;border-radius:9px}

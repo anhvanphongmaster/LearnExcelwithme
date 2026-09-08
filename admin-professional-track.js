@@ -13,6 +13,7 @@
   };
   const LEVELS=[{id:"basic",title:"Level 01 · Cơ bản ứng dụng"},{id:"intermediate",title:"Level 02 · Trung cấp"},{id:"advanced",title:"Level 03 · Nâng cao"},{id:"professional",title:"Professional · Case thực tế"}];
   const GRADING_BUCKET="professional-track-grading";
+  const RESOURCE_BUCKET="professional-track-resources";
   const caseRows=new Map(),submissionRows=new Map();
   let catalogData=[],submissionData=[];
   let currentMode="applications";
@@ -34,6 +35,51 @@
   const isAutoReview=value=>String(value||"").startsWith("[AUTO REVIEW]");
   const submissionLabel=(s,feedback)=>s==="graded"?(isAutoFeedback(feedback)?"Auto-Grader":"Đã chấm"):s==="revision"?"Cần nộp lại":isAutoReview(feedback)?"Cần Admin kiểm tra":"Đang xử lý";
   function errorBox(box,error){if(box)box.innerHTML=`<div class="admin-users-empty">Không tải được: ${esc(error?.message||error)}</div>`}
+
+  function privatePath(value){
+    const raw=String(value||"").trim();
+    if(!raw||/^https?:\/\//i.test(raw)||raw.startsWith("//")||raw.startsWith("/")||raw.includes(".."))return "";
+    return raw;
+  }
+  function setResourceState(kind,path){
+    const isSource=kind==="source";
+    const input=$(isSource?"aptCaseSourceUrl":"aptCaseGuideUrl");
+    const state=$(isSource?"aptCaseSourceState":"aptCaseGuideState");
+    const clear=$(isSource?"aptCaseSourceClear":"aptCaseGuideClear");
+    const clean=privatePath(path);
+    if(input)input.value=clean;
+    if(state)state.textContent=clean
+      ?`✓ Đã lưu private: ${clean}`
+      :(isSource?"Chưa có file bài cho học viên. File chỉ được cấp link tạm cho tài khoản đã được duyệt Pro.":"Chưa có tài liệu hướng dẫn private.");
+    if(clear)clear.hidden=!clean;
+  }
+  function clearResource(kind){
+    setResourceState(kind,"");
+    const file=$(kind==="source"?"aptCaseSourceFile":"aptCaseGuideFile");
+    if(file)file.value="";
+  }
+  function extOf(name){return String(name||"").split(".").pop().toLowerCase()}
+  function validateResourceFile(file,kind){
+    if(!file)return null;
+    if(file.size>20*1024*1024)throw new Error("Tài nguyên Pro không được vượt quá 20 MB.");
+    const ext=extOf(file.name);
+    const allowed=kind==="source"?["xlsx","xls","xlsm","csv","zip"]:["pdf","doc","docx","xlsx","xls","xlsm","csv","zip"];
+    if(!allowed.includes(ext))throw new Error(kind==="source"?"File bài cho học viên chỉ nhận XLSX, XLS, XLSM, CSV hoặc ZIP.":"Tài liệu hướng dẫn chỉ nhận PDF, DOC, DOCX, Excel, CSV hoặc ZIP.");
+    return ext;
+  }
+  async function uploadResource(sb,key,kind,file){
+    const ext=validateResourceFile(file,kind);
+    if(!ext)return "";
+    const token=(globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.random().toString(36).slice(2)}`).replace(/[^a-zA-Z0-9-]/g,"");
+    const path=`${key}/${kind}/${token}.${ext}`;
+    const {error}=await sb.storage.from(RESOURCE_BUCKET).upload(path,file,{upsert:false,contentType:file.type||undefined,cacheControl:"3600"});
+    if(error)throw error;
+    return path;
+  }
+  async function removePrivateResource(sb,path){
+    const clean=privatePath(path);if(!clean)return;
+    try{await sb.storage.from(RESOURCE_BUCKET).remove([clean])}catch(_){}
+  }
 
   async function refreshCounts(sb){
     try{
@@ -110,12 +156,13 @@
     $("aptCaseReferenceRemove").disabled=true;
     setReferenceState("— Đã xóa đáp án ẩn. Auto-Grader tạm chưa sẵn sàng cho Case này.","warn");
   }
-  function resetCaseForm(){$("aptCaseForm").reset();fillModuleOptions();$("aptCaseMaxScore").value="10";$("aptCaseSubmission").checked=true;clearReferenceState()}
+  function resetCaseForm(){$("aptCaseForm").reset();fillModuleOptions();$("aptCaseMaxScore").value="10";$("aptCaseSubmission").checked=true;clearResource("source");clearResource("guide");clearReferenceState()}
 
   function editCase(key){
     const row=caseRows.get(key);if(!row)return;
     $("aptCaseDomain").value=row.domain_key;fillModuleOptions(String(row.module_index));$("aptCaseModule").value=String(row.module_index);$("aptCaseLevel").value=row.level_id;$("aptCaseIndex").value=String(row.case_index);
-    $("aptCaseTitle").value=row.title||"";$("aptCaseGoal").value=row.goal||"";$("aptCaseTasks").value=(Array.isArray(row.tasks)?row.tasks:[]).join("\n");$("aptCaseSkills").value=row.skills||"";$("aptCaseOutput").value=row.expected_output||"";$("aptCaseDuration").value=row.duration||"";$("aptCaseMaxScore").value=String(Number(row.max_score)||10);$("aptCaseSourceUrl").value=row.source_url||"";$("aptCaseGuideUrl").value=row.guide_url||"";$("aptCaseSubmission").checked=row.submission_enabled!==false;$("aptCasePublished").checked=row.published===true;
+    $("aptCaseTitle").value=row.title||"";$("aptCaseGoal").value=row.goal||"";$("aptCaseTasks").value=(Array.isArray(row.tasks)?row.tasks:[]).join("\n");$("aptCaseSkills").value=row.skills||"";$("aptCaseOutput").value=row.expected_output||"";$("aptCaseDuration").value=row.duration||"";$("aptCaseMaxScore").value=String(Number(row.max_score)||10);$("aptCaseSubmission").checked=row.submission_enabled!==false;$("aptCasePublished").checked=row.published===true;
+    if($("aptCaseSourceFile"))$("aptCaseSourceFile").value="";if($("aptCaseGuideFile"))$("aptCaseGuideFile").value="";setResourceState("source",row.source_url);setResourceState("guide",row.guide_url);
     if($("aptCaseReference"))$("aptCaseReference").value="";
     setReferenceState("Đang kiểm tra file đáp án ẩn…");
     client().then(sb=>sb&&checkReference(sb,key));
@@ -128,6 +175,7 @@
     const target=[1,2,3].find(index=>!used.has(index));
     if(!target)return alert("Level này đã có đủ 3 Case. Hãy chọn Level hoặc nội dung khác trước khi nhân bản.");
     editCase(key);$("aptCaseIndex").value=String(target);$("aptCaseTitle").value=`${row.title} — Bản mới`;$("aptCasePublished").checked=false;
+    clearResource("source");clearResource("guide");
     clearReferenceState("Case mới chưa có đáp án ẩn. Hãy upload đáp án dành riêng cho vị trí Case này.");
     $("aptCaseTitle").focus();
   }
@@ -135,38 +183,53 @@
   async function saveCase(event){
     event.preventDefault();const sb=await client();if(!sb)return alert("Chưa kết nối được hệ thống.");
     const caseKey=selectedCaseKey();
-    const source=$("aptCaseSourceUrl").value.trim(),guide=$("aptCaseGuideUrl").value.trim();if(!validLink(source)||!validLink(guide))return alert("Link không hợp lệ. Chỉ dùng HTTPS, HTTP hoặc đường dẫn file tương đối trong website.");if($("aptCasePublished").checked&&!source)return alert("Case phát hành phải có link file thực hành.");
     const tasks=$("aptCaseTasks").value.split(/\r?\n/).map(v=>v.trim()).filter(Boolean);if(!tasks.length)return alert("Hãy nhập ít nhất một yêu cầu thực hiện.");
+    const prior=caseRows.get(caseKey)||null;
+    let source=privatePath($("aptCaseSourceUrl")?.value),guide=privatePath($("aptCaseGuideUrl")?.value);
+    if(source&&!source.startsWith(`${caseKey}/source/`))source="";
+    if(guide&&!guide.startsWith(`${caseKey}/guide/`))guide="";
+    const sourceFile=$("aptCaseSourceFile")?.files?.[0]||null,guideFile=$("aptCaseGuideFile")?.files?.[0]||null;
+    try{if(sourceFile)validateResourceFile(sourceFile,"source");if(guideFile)validateResourceFile(guideFile,"guide")}catch(error){return alert(error.message)}
+    if($("aptCasePublished").checked&&!source&&!sourceFile)return alert("Case chỉ được phát hành khi đã có file bài cho học viên trong kho Pro riêng tư.");
+
     const referenceFile=$("aptCaseReference")?.files?.[0]||null;
     const referenceKnown=currentReferenceCaseKey===caseKey&&currentReferenceExists;
     if($("aptCasePublished").checked&&$("aptCaseSubmission").checked&&!referenceFile&&!referenceKnown){
       const go=confirm("Case này chưa xác nhận có đáp án ẩn Auto-Grader. Nếu vẫn phát hành, bài nộp sẽ vào hàng chờ Admin thay vì được tự chấm. Vẫn tiếp tục?");
       if(!go)return;
     }
+
     const button=$("aptCaseSave");button.disabled=true;button.textContent="Đang lưu…";
-    let caseSaved=false;
-    const params={p_case_key:caseKey,p_domain_key:$("aptCaseDomain").value,p_module_index:Number($("aptCaseModule").value),p_level_id:$("aptCaseLevel").value,p_case_index:Number($("aptCaseIndex").value),p_title:$("aptCaseTitle").value.trim(),p_goal:$("aptCaseGoal").value.trim(),p_tasks:tasks,p_skills:$("aptCaseSkills").value.trim()||null,p_expected_output:$("aptCaseOutput").value.trim()||null,p_duration:$("aptCaseDuration").value.trim()||null,p_max_score:Number($("aptCaseMaxScore").value)||10,p_source_url:source||null,p_guide_url:guide||null,p_submission_enabled:$("aptCaseSubmission").checked,p_published:$("aptCasePublished").checked};
+    let uploadedSource="",uploadedGuide="",caseSaved=false;
     try{
+      if(sourceFile){uploadedSource=await uploadResource(sb,caseKey,"source",sourceFile);source=uploadedSource}
+      if(guideFile){uploadedGuide=await uploadResource(sb,caseKey,"guide",guideFile);guide=uploadedGuide}
+      const params={p_case_key:caseKey,p_domain_key:$("aptCaseDomain").value,p_module_index:Number($("aptCaseModule").value),p_level_id:$("aptCaseLevel").value,p_case_index:Number($("aptCaseIndex").value),p_title:$("aptCaseTitle").value.trim(),p_goal:$("aptCaseGoal").value.trim(),p_tasks:tasks,p_skills:$("aptCaseSkills").value.trim()||null,p_expected_output:$("aptCaseOutput").value.trim()||null,p_duration:$("aptCaseDuration").value.trim()||null,p_max_score:Number($("aptCaseMaxScore").value)||10,p_source_url:source||null,p_guide_url:guide||null,p_submission_enabled:$("aptCaseSubmission").checked,p_published:$("aptCasePublished").checked};
       const {data,error}=await sb.rpc("admin_professional_track_case_upsert_v2",params);if(error)throw error;
       caseSaved=true;
       const row=Array.isArray(data)?data[0]:data;
-      if(row){
-        const index=catalogData.findIndex(item=>String(item.case_key)===caseKey);
-        if(index>=0)catalogData[index]=row;else catalogData.unshift(row);
-        caseRows.set(caseKey,row);renderCatalog();
-      }else{await loadCatalog(sb)}
-      if(referenceFile)await uploadReference(sb,caseKey,referenceFile);
-      else if(currentReferenceCaseKey!==caseKey)await checkReference(sb,caseKey);
+      if(row){const index=catalogData.findIndex(item=>String(item.case_key)===caseKey);if(index>=0)catalogData[index]=row;else catalogData.unshift(row);caseRows.set(caseKey,row);renderCatalog()}else await loadCatalog(sb);
+      if(privatePath(prior?.source_url)&&prior.source_url!==source)await removePrivateResource(sb,prior.source_url);
+      if(privatePath(prior?.guide_url)&&prior.guide_url!==guide)await removePrivateResource(sb,prior.guide_url);
+      setResourceState("source",source);setResourceState("guide",guide);
+      if($("aptCaseSourceFile"))$("aptCaseSourceFile").value="";if($("aptCaseGuideFile"))$("aptCaseGuideFile").value="";
+      if(referenceFile)await uploadReference(sb,caseKey,referenceFile);else if(currentReferenceCaseKey!==caseKey)await checkReference(sb,caseKey);
       if($("aptCaseReference"))$("aptCaseReference").value="";
-      alert(params.p_published?(currentReferenceExists?"Đã phát hành Case · Auto-Grader sẵn sàng.":"Đã phát hành Case · chưa có Auto-Grader, bài sẽ vào hàng chờ ngoại lệ."):"Đã lưu Case ở trạng thái bản nháp.");
-    }catch(error){alert((caseSaved?"Case đã lưu nhưng Auto-Grader chưa cập nhật được đáp án ẩn: ":"Chưa lưu được Case: ")+String(error?.message||error))}finally{button.disabled=false;button.textContent="Lưu Case"}
+      alert(params.p_published?"Đã lưu và phát hành Case. File học viên ở kho private; đáp án ẩn tách riêng cho Auto-Grader.":"Đã lưu Case ở trạng thái bản nháp.");
+    }catch(error){
+      if(!caseSaved){
+        if(uploadedSource&&uploadedSource!==privatePath(prior?.source_url))await removePrivateResource(sb,uploadedSource);
+        if(uploadedGuide&&uploadedGuide!==privatePath(prior?.guide_url))await removePrivateResource(sb,uploadedGuide);
+      }
+      alert((caseSaved?"Case đã lưu nhưng tài nguyên/đáp án chưa hoàn tất: ":"Chưa lưu được Case: ")+String(error?.message||error));
+    }finally{button.disabled=false;button.textContent="Lưu Case"}
   }
 
   function renderCatalog(){
     const box=$("aptCatalogList"),search=String($("aptCatalogSearch")?.value||"").trim().toLowerCase(),domain=$("aptCatalogDomainFilter")?.value||"",level=$("aptCatalogLevelFilter")?.value||"",publish=$("aptCatalogPublishFilter")?.value||"";
     const rows=catalogData.filter(row=>(!search||`${row.title} ${row.goal} ${row.case_key}`.toLowerCase().includes(search))&&(!domain||row.domain_key===domain)&&(!level||row.level_id===level)&&(!publish||(publish==="published")===Boolean(row.published)));
     $("aptCatalogCount").textContent=`${rows.length}/${catalogData.length} Case`;
-    box.innerHTML=rows.length?rows.map(row=>`<article class="apt-item apt-case-item"><div class="apt-item-head"><div class="apt-person"><strong>${esc(row.title)}</strong><small>${esc(DOMAIN_MODULES[row.domain_key]?.title||row.domain_key)} · Nội dung ${Number(row.module_index)||0} · ${esc(row.level_id)} · Case ${Number(row.case_index)||0}</small></div><span class="apt-status ${row.published?"approved":""}">${row.published?"Đã phát hành":"Bản nháp"}</span></div><p>${esc(row.goal||"")}</p><div class="apt-link-state"><span>${row.source_url?"✓ Có file thực hành":"— Chưa có file"}</span><span>${row.guide_url?"✓ Có hướng dẫn":"— Chưa có hướng dẫn"}</span><span>${row.submission_enabled?"✓ Cho phép nộp":"— Tắt nộp bài"}</span></div><div class="apt-actions"><button type="button" data-case-edit="${esc(row.case_key)}">Chỉnh sửa Case</button><button type="button" data-case-copy="${esc(row.case_key)}">Nhân bản sang ô trống</button></div></article>`).join(""):'<div class="admin-users-empty">Không có Case phù hợp bộ lọc.</div>';
+    box.innerHTML=rows.length?rows.map(row=>`<article class="apt-item apt-case-item"><div class="apt-item-head"><div class="apt-person"><strong>${esc(row.title)}</strong><small>${esc(DOMAIN_MODULES[row.domain_key]?.title||row.domain_key)} · Nội dung ${Number(row.module_index)||0} · ${esc(row.level_id)} · Case ${Number(row.case_index)||0}</small></div><span class="apt-status ${row.published?"approved":""}">${row.published?"Đã phát hành":"Bản nháp"}</span></div><p>${esc(row.goal||"")}</p><div class="apt-link-state"><span>${privatePath(row.source_url)?"✓ File học viên private":"— Chưa có file học viên"}</span><span>${privatePath(row.guide_url)?"✓ Hướng dẫn private":"— Chưa có hướng dẫn"}</span><span>${row.submission_enabled?"✓ Cho phép nộp":"— Tắt nộp bài"}</span></div><div class="apt-actions"><button type="button" data-case-edit="${esc(row.case_key)}">Chỉnh sửa Case</button><button type="button" data-case-copy="${esc(row.case_key)}">Nhân bản sang ô trống</button></div></article>`).join(""):'<div class="admin-users-empty">Không có Case phù hợp bộ lọc.</div>';
   }
 
   async function loadCatalog(sb){
@@ -205,7 +268,10 @@
   async function loadCurrent(){const sb=await client();if(!sb)return;await refreshCounts(sb);await showMode(currentMode)}
 
   function bind(){
-    fillDomainOptions();$("aptCaseDomain")?.addEventListener("change",()=>{fillModuleOptions();clearReferenceState()});$("aptCaseModule")?.addEventListener("change",()=>clearReferenceState());$("aptCaseLevel")?.addEventListener("change",()=>clearReferenceState());$("aptCaseIndex")?.addEventListener("change",()=>clearReferenceState());$("aptCaseForm")?.addEventListener("submit",saveCase);$("aptCaseReset")?.addEventListener("click",resetCaseForm);
+    fillDomainOptions();const caseSlotChanged=()=>{clearResource("source");clearResource("guide");clearReferenceState()};$("aptCaseDomain")?.addEventListener("change",()=>{fillModuleOptions();caseSlotChanged()});$("aptCaseModule")?.addEventListener("change",caseSlotChanged);$("aptCaseLevel")?.addEventListener("change",caseSlotChanged);$("aptCaseIndex")?.addEventListener("change",caseSlotChanged);$("aptCaseForm")?.addEventListener("submit",saveCase);$("aptCaseReset")?.addEventListener("click",resetCaseForm);
+    $("aptCaseSourceFile")?.addEventListener("change",event=>{const file=event.target.files?.[0];const state=$("aptCaseSourceState");if(file&&state)state.textContent=`Đã chọn ${file.name}. File sẽ được upload private khi lưu Case.`});
+    $("aptCaseGuideFile")?.addEventListener("change",event=>{const file=event.target.files?.[0];const state=$("aptCaseGuideState");if(file&&state)state.textContent=`Đã chọn ${file.name}. Tài liệu sẽ được upload private khi lưu Case.`});
+    $("aptCaseSourceClear")?.addEventListener("click",()=>clearResource("source"));$("aptCaseGuideClear")?.addEventListener("click",()=>clearResource("guide"));
     $("aptCaseReference")?.addEventListener("change",event=>{const file=event.target.files?.[0];if(file)setReferenceState(`Đã chọn ${file.name}. File sẽ được upload khi lưu Case.`,"ready")});
     $("aptCaseReferenceCheck")?.addEventListener("click",async()=>{const sb=await client();if(sb)await checkReference(sb)});
     $("aptCaseReferenceRemove")?.addEventListener("click",removeReference);
