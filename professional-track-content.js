@@ -267,15 +267,28 @@
   }
 
   function bindRollChoice(root,onChoose){
+    // Capture phase is intentional: professional-roll.js also handles clicks in capture
+    // and can stop propagation while centering a side card. This guarantees one click
+    // always selects/opens the requested item instead of appearing unresponsive.
     root.addEventListener("click",e=>{
       const card=e.target.closest("[data-roll-card]");
-      if(!card||!card.classList.contains("active"))return;
+      if(!card||card.classList.contains("locked"))return;
+      const cards=[...root.querySelectorAll("[data-roll-card]")];
+      const index=cards.indexOf(card);
+      if(index<0)return;
+      if(!card.classList.contains("active")){
+        root._avpRoll?.go(index);
+        window.setTimeout(()=>{
+          if(card.isConnected&&!card.classList.contains("locked"))onChoose(card);
+        },230);
+        return;
+      }
       onChoose(card);
-    });
+    },true);
     root.addEventListener("keydown",e=>{
       if(e.key!=="Enter"&&e.key!==" ")return;
       const card=root.querySelector("[data-roll-card].active");
-      if(!card)return;
+      if(!card||card.classList.contains("locked"))return;
       e.preventDefault();onChoose(card);
     });
   }
@@ -470,6 +483,17 @@
       button.disabled=false;button.textContent="↻ Cập nhật";
     });
     showStage("domains",false);
+
+    // Optional safe deep-link. Access control still remains entirely in the hard gate.
+    // The domain is only opened after gate approval, so ?domain=input never bypasses Pro access.
+    const requestedDomain=new URLSearchParams(location.search).get("domain");
+    if(requestedDomain&&DATA[requestedDomain]){
+      try{
+        const gate=window.AVPProfessionalGateReady?await window.AVPProfessionalGateReady:window.AVPProfessionalGateState;
+        if(gate?.allowed===true)openDomain(requestedDomain);
+      }catch(_){/* gate owns denial/redirect */}
+    }
+
     loadRemoteState();
   }
 
