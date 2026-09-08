@@ -171,8 +171,16 @@
       return;
     }
 
-    const {data:{session}}=await sb.auth.getSession();
-    if(!session?.user){
+    const resolver=window.AVPProfessionalAccess;
+    if(!resolver?.resolve){
+      setEnterTrackVisible(false);
+      setStatus("rejected","Chưa kết nối được hệ thống","Bộ kiểm tra quyền truy cập chưa sẵn sàng. Hãy tải lại trang.","LỖI KẾT NỐI");
+      publishRobotState({phase:'error',status:'connection',canAccess:false});
+      return;
+    }
+
+    const access=await resolver.resolve({client:sb,markActivity:true});
+    if(!access.authenticated){
       setEnterTrackVisible(false);
       setStatus("","Bạn cần đăng nhập","Điều kiện tham gia gắn với tài khoản và kết quả chấm điểm của từng học viên.","YÊU CẦU ĐĂNG NHẬP");
       $("ptActionArea").innerHTML='<p><a href="auth.html?next=professional-access.html">Đăng nhập để kiểm tra điều kiện →</a></p>';
@@ -180,21 +188,29 @@
       return;
     }
 
-    // Admin vẫn xem trang thành tích / trạng thái như một hub cố định.
-    // Không redirect thẳng sang Professional Track để tránh làm mất đường quay lại.
-    try{
-      const adminRes=await sb.rpc("is_admin_user");
-      if(!adminRes.error && adminRes.data===true){
-        renderAdminAccess();
-        return;
-      }
-    }catch(_){}
+    // Admin luôn bypass learner gate sau khi đã xác minh bằng RPC hoặc
+    // profiles.is_admin fallback. Không redirect để giữ trang này làm hub.
+    if(access.isAdmin===true && access.canAccess===true){
+      renderAdminAccess();
+      return;
+    }
 
-    try{await sb.rpc("professional_track_mark_activity_v1")}catch(_){}
+    if(!access.ok){
+      const roleIssue=access.reason==="role-check";
+      setEnterTrackVisible(false);
+      setStatus(
+        "rejected",
+        roleIssue?"Chưa xác minh được quyền tài khoản":"Chưa kiểm tra được điều kiện",
+        roleIssue
+          ?"Kết nối xác minh Admin đang lỗi. Hệ thống không hạ tài khoản xuống learner để tránh khóa nhầm. Hãy thử tải lại trang."
+          :"Kết nối tới hệ thống quyền truy cập đang lỗi. Hãy thử tải lại trang.",
+        "LỖI KẾT NỐI"
+      );
+      publishRobotState({phase:'error',status:access.reason||'connection',canAccess:false});
+      return;
+    }
 
-    const {data,error}=await sb.rpc("professional_track_access_status_v1");
-    if(error)throw error;
-    render(data||{});
+    render(access.learnerData||{});
   }
 
   document.addEventListener("DOMContentLoaded",()=>{

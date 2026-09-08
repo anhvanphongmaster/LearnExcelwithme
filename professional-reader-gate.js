@@ -22,26 +22,24 @@
     const sb=await getClient();
     if(!sb){ deny("connection"); return; }
 
-    const {data:{session}}=await sb.auth.getSession();
-    if(!session?.user){
+    const resolver=window.AVPProfessionalAccess;
+    if(!resolver?.resolve){ deny("connection"); return; }
+
+    const access=await resolver.resolve({client:sb});
+    if(!access.authenticated){
       location.replace("auth.html?next=sales-handbook.html");
       return;
     }
 
-    try{
-      const admin=await sb.rpc("is_admin_user");
-      if(!admin.error && admin.data===true){ allow(); return; }
-    }catch(_){}
+    if(access.canAccess===true){ allow(); return; }
 
-    try{
-      const {data,error}=await sb.rpc("professional_track_access_status_v1");
-      if(error) throw error;
-      if(data?.status==="approved" && data?.can_access===true){ allow(); return; }
-      deny(data?.status||"locked");
-    }catch(e){
-      console.warn("[Professional reader gate]",e);
-      deny("locked");
+    if(!access.ok){
+      console.warn("[Professional reader gate]",access.error||access.reason);
+      deny(access.reason||"connection");
+      return;
     }
+
+    deny(access.learnerData?.status||access.reason||"locked");
   }
 
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot,{once:true});

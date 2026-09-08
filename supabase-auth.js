@@ -388,6 +388,29 @@ function emitSyncStatus(status, message = "") {
   window.dispatchEvent(new CustomEvent("avp:cloud-sync-status", { detail }));
 }
 
+function stableProgressJson(value) {
+  const normalize = input => {
+    if (Array.isArray(input)) return input.map(normalize);
+    if (input && typeof input === "object") {
+      return Object.keys(input).sort().reduce((out, key) => {
+        out[key] = normalize(input[key]);
+        return out;
+      }, {});
+    }
+    return input;
+  };
+
+  try {
+    return JSON.stringify(normalize(value ?? {}));
+  } catch {
+    return JSON.stringify(value ?? {});
+  }
+}
+
+function sameProgress(a, b) {
+  return stableProgressJson(a) === stableProgressJson(b);
+}
+
 async function saveProgressObject(user, payload) {
   const { error } = await supabase
     .from("user_progress")
@@ -422,9 +445,15 @@ async function syncProgressToCloud() {
 
       if (error) throw error;
 
-      const merged = mergeProgress(local, cloudRow?.data || {});
+      const cloud = cloudRow?.data || {};
+      const merged = mergeProgress(local, cloud);
       applyProgress(merged);
-      await saveProgressObject(user, merged);
+
+      // Chỉ ghi khi dữ liệu hợp nhất thực sự khác cloud. Tránh một UPDATE
+      // user_progress trên mọi lần mở trang dù người học không thay đổi gì.
+      if (!sameProgress(cloud, merged)) {
+        await saveProgressObject(user, merged);
+      }
 
       emitSyncStatus("synced", "Đã đồng bộ");
       return true;
@@ -463,12 +492,21 @@ async function loadAndMergeProgress() {
     if (error) throw error;
 
     const local = collectLocalProgress();
-    const merged = mergeProgress(local, data?.data || {});
+    const cloud = data?.data || {};
+    const merged = mergeProgress(local, cloud);
+    const localChanged = !sameProgress(local, merged);
+    const cloudChanged = !sameProgress(cloud, merged);
+
     applyProgress(merged);
-    await saveProgressObject(user, merged);
+
+    // Hydrate là thao tác đọc trước. Chỉ upsert khi local có dữ liệu mới hơn
+    // cloud; nếu hai phía đã giống nhau thì không tạo write vô ích.
+    if (cloudChanged) {
+      await saveProgressObject(user, merged);
+    }
 
     emitSyncStatus("synced", "Đã đồng bộ");
-    return true;
+    return { ok: true, localChanged, cloudChanged };
   } catch (error) {
     console.warn("Cloud progress load:", error.message || error);
     emitSyncStatus("error", "Không thể lấy tiến độ");
@@ -694,15 +732,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     await ensureLocalBelongsToUser(user);
     loadAdminChatAssets();
     await loadProfileFromCloud();
-    await loadAndMergeProgress();
+    const hydration = await loadAndMergeProgress();
     await updateAuthNav();
 
     /*
-      Một số trang đã render trước khi module lấy cloud về.
-      Reload đúng 1 lần nếu cloud làm thay đổi localStorage để UI đọc dữ liệu mới.
+      Chỉ reload khi cloud thực sự làm thay đổi tiến độ local. Bản cũ reload
+      mọi route một lần cho user đã đăng nhập, khiến page load và các RPC bị
+      nhân đôi dù dữ liệu không đổi.
     */
     const pageKey = `avpCloudHydrated:${user.id}:${location.pathname}`;
-    if (!sessionStorage.getItem(pageKey)) {
+    if (hydration?.localChanged && !sessionStorage.getItem(pageKey)) {
       sessionStorage.setItem(pageKey, "1");
       setTimeout(() => location.reload(), 60);
       return;

@@ -36,37 +36,36 @@
       return;
     }
 
-    const {data:{session}}=await sb.auth.getSession();
-    if(!session?.user){
+    const resolver=window.AVPProfessionalAccess;
+    if(!resolver?.resolve){
+      deny("connection");
+      return;
+    }
+
+    const access=await resolver.resolve({client:sb});
+    if(!access.authenticated){
       resolveGate({allowed:false});
       location.replace(`auth.html?next=${encodeURIComponent(location.pathname.split("/").pop()||"professional-track.html")}`);
       return;
     }
 
-    // Admin always bypasses learner requirements.
-    try{
-      const adminRes=await sb.rpc("is_admin_user");
-      if(!adminRes.error && adminRes.data===true){
-        allow("✓ ADMIN ACCESS",true);
-        return;
-      }
-    }catch(_){}
-
-    // Normal learner: only approved + can_access=true.
-    try{
-      const {data,error}=await sb.rpc("professional_track_access_status_v1");
-      if(error) throw error;
-
-      if(data?.status==="approved" && data?.can_access===true){
-        allow("✓ ĐÃ ĐƯỢC PHÊ DUYỆT");
-        return;
-      }
-
-      deny(data?.status||"locked");
-    }catch(e){
-      console.warn("[Professional Track gate]",e);
-      deny("locked");
+    if(access.isAdmin===true && access.canAccess===true){
+      allow("✓ ADMIN ACCESS",true);
+      return;
     }
+
+    if(access.ok && access.canAccess===true){
+      allow("✓ ĐÃ ĐƯỢC PHÊ DUYỆT");
+      return;
+    }
+
+    if(!access.ok){
+      console.warn("[Professional Track gate]",access.error||access.reason);
+      deny(access.reason||"connection");
+      return;
+    }
+
+    deny(access.learnerData?.status||access.reason||"locked");
   }
 
   function start(){

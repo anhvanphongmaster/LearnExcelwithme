@@ -924,12 +924,20 @@
     }catch(e){console.warn("AVP mark student read",e)}
   }
   function startUserLive(){
-    clearInterval(pollTimer);pollTimer=setInterval(async()=>{
-      await updateUserBadge();
-      if($("avpChatPanel")&&!$("avpChatPanel").hidden){await loadUserMessages();await markUserRead()}
-    },15000);
+    const startFallbackPoll=()=>{
+      if(pollTimer)return;
+      pollTimer=setInterval(async()=>{
+        if(document.visibilityState!=="visible")return;
+        await updateUserBadge();
+        if($("avpChatPanel")&&!$("avpChatPanel").hidden){await loadUserMessages();await markUserRead()}
+      },60000);
+    };
+
+    clearInterval(pollTimer);pollTimer=null;
     try{
       if(realtimeChannel)client.removeChannel(realtimeChannel);
+      let subscribed=false;
+      const expectedUserId=String(user?.id||"");
       realtimeChannel=client.channel("avp-chat-user-"+user.id).on(
         "postgres_changes",
         {event:"INSERT",schema:"public",table:"admin_chat_messages",filter:`thread_id=eq.${threadId}`},
@@ -961,17 +969,31 @@
             await markUserRead();
           }
         }
-      ).subscribe();
-    }catch{}
+      ).subscribe(status=>{
+        if(status==="SUBSCRIBED"){
+          subscribed=true;
+          clearInterval(pollTimer);pollTimer=null;
+          return;
+        }
+        if(["CHANNEL_ERROR","TIMED_OUT","CLOSED"].includes(status))startFallbackPoll();
+      });
+
+      // Chỉ dùng polling làm fallback khi Realtime thực sự không lên được.
+      setTimeout(()=>{
+        if(String(user?.id||"")===expectedUserId&&!subscribed)startFallbackPoll();
+      },8000);
+    }catch{startFallbackPoll()}
   }
   async function initUser(){
     mountUserUI();
-    const syncReadIfOpen=async()=>{
+    const syncUserState=async()=>{
+      if(document.visibilityState!=="visible")return;
+      await updateUserBadge();
       const panel=$("avpChatPanel");
-      if(panel&&!panel.hidden&&document.visibilityState==="visible"){await loadUserMessages();await markUserRead()}
+      if(panel&&!panel.hidden){await loadUserMessages();await markUserRead()}
     };
-    document.addEventListener("visibilitychange",syncReadIfOpen);
-    window.addEventListener("focus",syncReadIfOpen);
+    document.addEventListener("visibilitychange",syncUserState);
+    window.addEventListener("focus",syncUserState);
     try{
       await ensureThread();
       // Do not insert a daily system greeting into message history.
@@ -991,7 +1013,7 @@
   }
 
   /* ================= ADMIN INBOX ================= */
-  let adminThreads=[],activeThread=null,adminPoll=null;
+  let adminThreads=[],activeThread=null,adminPoll=null,adminRealtime=null;
   function renderAdminThreads(filter=""){
     const root=$("adminChatThreads");if(!root)return;
     const q=filter.trim().toLocaleLowerCase("vi-VN");
@@ -1043,9 +1065,20 @@
     bindFilePicker("admin","adminChatFile","adminChatFilePreview");
     $("adminChatReply")?.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendAdminMessage()}});
     await loadAdminThreads();
-    adminPoll=setInterval(async()=>{await loadAdminThreads();if(activeThread)await openAdminThread(activeThread)},15000);
+    clearInterval(adminPoll);adminPoll=null;
+    const startAdminFallback=()=>{
+      if(adminPoll)return;
+      adminPoll=setInterval(async()=>{
+        if(document.visibilityState!=="visible")return;
+        await loadAdminThreads();
+        if(activeThread)await openAdminThread(activeThread);
+      },60000);
+    };
     try{
-      client.channel("avp-chat-admin-live")
+      if(adminRealtime)await client.removeChannel(adminRealtime);
+      let subscribed=false;
+      const expectedUserId=String(user?.id||"");
+      adminRealtime=client.channel("avp-chat-admin-live")
         .on(
           "postgres_changes",
           {event:"INSERT",schema:"public",table:"admin_chat_messages"},
@@ -1077,8 +1110,18 @@
             if(activeThread)await openAdminThread(activeThread);
           }
         )
-        .subscribe();
-    }catch{}
+        .subscribe(status=>{
+          if(status==="SUBSCRIBED"){
+            subscribed=true;
+            clearInterval(adminPoll);adminPoll=null;
+            return;
+          }
+          if(["CHANNEL_ERROR","TIMED_OUT","CLOSED"].includes(status))startAdminFallback();
+        });
+      setTimeout(()=>{
+        if(String(user?.id||"")===expectedUserId&&!subscribed)startAdminFallback();
+      },8000);
+    }catch{startAdminFallback()}
   }
 
   /* ================= ADMIN FLOATING BUBBLE ================= */
@@ -1205,17 +1248,23 @@
     startAdminPresence();
     mountAdminFloatingUI();
     await loadFloatingAdminThreads();
-    clearInterval(floatPoll);
-    floatPoll=setInterval(async()=>{
-      await loadFloatingAdminThreads();
-      if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden){
-        const rows=await rpc("avp_chat_admin_messages",{p_thread_id:floatActiveThread,p_limit:300}).catch(()=>[]);
-        const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
-        if(box)await avpRenderMessages(box,list,true,{threadId:floatActiveThread});
-      }
-    },15000);
+    clearInterval(floatPoll);floatPoll=null;
+    const startFloatFallback=()=>{
+      if(floatPoll)return;
+      floatPoll=setInterval(async()=>{
+        if(document.visibilityState!=="visible")return;
+        await loadFloatingAdminThreads();
+        if(floatActiveThread&&$("avpAdminFloatPanel")&&!$("avpAdminFloatPanel").hidden){
+          const rows=await rpc("avp_chat_admin_messages",{p_thread_id:floatActiveThread,p_limit:300}).catch(()=>[]);
+          const box=$("avpAdminFloatMessages"),list=Array.isArray(rows)?rows:[];
+          if(box)await avpRenderMessages(box,list,true,{threadId:floatActiveThread});
+        }
+      },60000);
+    };
     try{
-      if(floatRealtime)client.removeChannel(floatRealtime);
+      if(floatRealtime)await client.removeChannel(floatRealtime);
+      let subscribed=false;
+      const expectedUserId=String(user?.id||"");
       floatRealtime=client.channel("avp-chat-admin-floating-"+user.id)
         .on(
           "postgres_changes",
@@ -1257,8 +1306,18 @@
             }
           }
         )
-        .subscribe();
-    }catch{}
+        .subscribe(status=>{
+          if(status==="SUBSCRIBED"){
+            subscribed=true;
+            clearInterval(floatPoll);floatPoll=null;
+            return;
+          }
+          if(["CHANNEL_ERROR","TIMED_OUT","CLOSED"].includes(status))startFloatFallback();
+        });
+      setTimeout(()=>{
+        if(String(user?.id||"")===expectedUserId&&!subscribed)startFloatFallback();
+      },8000);
+    }catch{startFloatFallback()}
   }
 
   async function resetChatRuntime(){
@@ -1269,8 +1328,9 @@
     pollTimer=null;adminPoll=null;floatPoll=null;adminPresenceTimer=null;
     threadId=null;activeThread=null;floatActiveThread=null;
     try{ if(realtimeChannel&&client) await client.removeChannel(realtimeChannel); }catch{}
+    try{ if(adminRealtime&&client) await client.removeChannel(adminRealtime); }catch{}
     try{ if(floatRealtime&&client) await client.removeChannel(floatRealtime); }catch{}
-    realtimeChannel=null;floatRealtime=null;
+    realtimeChannel=null;adminRealtime=null;floatRealtime=null;
     const root=$("avpAdminChatRoot");
     if(root) root.remove();
   }
@@ -1284,12 +1344,9 @@
       return;
     }
 
-    let admin=false;
-    for(let i=0;i<10;i++){
-      admin=await isAdmin();
-      if(admin) break;
-      await sleep(200);
-    }
+    // waitClient() đã khôi phục session; isAdmin() tự có RPC + profiles fallback.
+    // Không lặp role check 10 lần vì mỗi vòng có thể tạo thêm request DB.
+    const admin=await isAdmin();
 
     if(onAdminPage){
       if(admin) await initAdmin();
