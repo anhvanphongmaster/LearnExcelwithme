@@ -104,7 +104,6 @@
   ];
 
   const STAGES=["domains","training","levels","cases"];
-  const PROGRESS_KEY="avp_professional_case_progress_v1";
   const SUBMISSION_BUCKET="professional-track-submissions";
   const RESOURCE_BUCKET="professional-track-resources";
   let selectedDomain="input";
@@ -113,6 +112,10 @@
   let activeModule=0;
   let selectedLevel=0;
   let remoteReady=false;
+  let progressReady=false;
+  let statePromise=null;
+  let stateLoaded=false;
+  let viewVersion=0;
   let adminMode=false;
   let supabase=null;
   let activeCases=[];
@@ -155,47 +158,52 @@
     return `${activeDomain}-${activeModule+1}-${level.id}-${index+1}`;
   }
 
-  async function loadRemoteState(){
-    supabase=await client();
-    if(!supabase)return;
-    try{
-      const admin=await supabase.rpc("is_admin_user");
-      adminMode=!admin.error&&admin.data===true;
-    }catch(_){adminMode=false}
-    try{
-      const [catalogResult,progressResult]=await Promise.all([
+  function loadRemoteState(force=false){
+    if(statePromise)return statePromise;
+    if(stateLoaded&&!force)return Promise.resolve();
+    statePromise=(async()=>{
+      const access=await window.AVPProfessionalGateReady;
+      if(!access?.allowed)return;
+      adminMode=access.isAdmin===true;
+      supabase=await client();
+      if(!supabase)return;
+      // Catalog and progress are independent: an error reading scores must not
+      // discard a successfully loaded, published lesson.
+      const results=await Promise.allSettled([
         supabase.rpc("professional_track_catalog_v2"),
         supabase.rpc("professional_track_progress_v2")
       ]);
-      if(catalogResult.error)throw catalogResult.error;
-      if(progressResult.error)throw progressResult.error;
-      catalog.clear();
-      (Array.isArray(catalogResult.data)?catalogResult.data:[]).forEach(row=>catalog.set(String(row.case_key),row));
-      submissions.clear();
-      (Array.isArray(progressResult.data)?progressResult.data:[]).forEach(row=>submissions.set(String(row.case_key),row));
-      remoteReady=true;
-    }catch(error){
-      remoteReady=false;
-      console.info("[Professional Track] Chạy bằng catalog dự phòng:",error?.message||error);
-    }
-  }
-
-  function progress(){
-    try{return JSON.parse(localStorage.getItem(PROGRESS_KEY)||"{}")||{}}catch(_){return{}}
+      results.forEach((result,index)=>{
+        const response=result.status==="fulfilled"?result.value:null;
+        const error=result.status==="rejected"?result.reason:response?.error;
+        const ok=!error&&Array.isArray(response?.data);
+        if(index===0)remoteReady=ok;else progressReady=ok;
+        const map=index===0?catalog:submissions;
+        map.clear();
+        if(ok)response.data.forEach(row=>map.set(String(row.case_key),row));
+        else console.warn(`[Professional Track ${index===0?"catalog":"progress"}]`,error||"invalid_response");
+      });
+    })().catch(error=>{
+      remoteReady=false;progressReady=false;
+      console.warn("[Professional Track]",error);
+    }).finally(()=>{
+      stateLoaded=true;statePromise=null;
+      refreshLevelState();
+    });
+    return statePromise;
   }
 
   function levelUnlocked(index){
     if(adminMode)return true;
     if(index===0)return true;
-    if(remoteReady){
+    if(progressReady){
       const previous=LEVELS[index-1];
       const scores=previous.caseTemplates.map((_,caseIndex)=>submissions.get(caseKey(previous,caseIndex)))
         .filter(row=>row?.status==="graded")
         .map(row=>Number(row.score)||0);
       return scores.length===previous.caseTemplates.length&&scores.every(score=>score>=7)&&scores.reduce((sum,score)=>sum+score,0)>=25;
     }
-    const done=progress()?.[activeDomain]?.[String(activeModule)]?.completedLevels||[];
-    return done.includes(LEVELS[index-1].id);
+    return false;
   }
 
   function levelStats(level){
@@ -211,8 +219,8 @@
     const title=$("proModuleProgressTitle"),grid=$("proModuleProgressGrid");
     if(!title||!grid)return;
     title.textContent=DATA[activeDomain]?.items?.[activeModule]?.title||"Nội dung tập luyện";
-    if(!remoteReady&&!adminMode){
-      grid.innerHTML='<p class="pro-module-progress-empty">Chưa đồng bộ được tiến độ. Bạn vẫn có thể xem cấu trúc bài tập và thử cập nhật lại.</p>';
+    if(!progressReady){
+      grid.innerHTML='<p class="pro-module-progress-empty">Chưa đồng bộ được tiến độ. Bài đã phát hành vẫn có thể mở ở cấp được phép; bấm Cập nhật để tải lại điểm.</p>';
       return;
     }
     grid.innerHTML=LEVELS.map((level,index)=>{
@@ -228,6 +236,7 @@
   }
 
   function showStage(name,shouldScroll=true){
+    viewVersion++;
     document.querySelectorAll("[data-pro-stage]").forEach(stage=>{
       stage.hidden=stage.dataset.proStage!==name;
       stage.classList.toggle("is-current",stage.dataset.proStage===name);
@@ -265,6 +274,18 @@
     return `<article class="pro-card pro-level-card${unlocked?"":" locked"}" data-roll-card data-id="${esc(level.id)}" data-level-index="${index}"><b>${esc(level.code)}</b><h3>${esc(level.title)}</h3><p>${esc(level.description)}</p>${lockChip(level,index)}<span>${unlocked?(stat.submitted?`Tiếp tục · ${stat.submitted}/3 đã nộp →`:"Xem 3 Case →"):esc(level.requirement)}</span></article>`;
   }
 
+  function refreshLevelState(){
+    document.querySelectorAll('#proLevelRollMount [data-level-index]').forEach(card=>{
+      const index=Number(card.dataset.levelIndex),level=LEVELS[index];
+      const unlocked=levelUnlocked(index),stat=levelStats(level);
+      card.classList.toggle("locked",!unlocked);
+      const chip=card.querySelector('.pro-level-status');
+      if(chip)chip.outerHTML=lockChip(level,index);
+      card.lastElementChild.textContent=unlocked?(stat.submitted?`Tiếp tục · ${stat.submitted}/3 đã nộp →`:"Xem 3 Case →"):level.requirement;
+    });
+    renderModuleProgress();
+  }
+
   function bindRollChoice(root,onChoose){
     root.addEventListener("click",e=>{
       const card=e.target.closest("[data-roll-card]");
@@ -273,6 +294,7 @@
     });
     root.addEventListener("keydown",e=>{
       if(e.key!=="Enter"&&e.key!==" ")return;
+      if(e.target.closest('button,a,input,label,textarea,select'))return;
       const card=root.querySelector("[data-roll-card].active");
       if(!card)return;
       e.preventDefault();onChoose(card);
@@ -371,15 +393,30 @@
     });
   }
 
-  function openLevel(index){
+  async function openLevel(index){
+    selectedLevel=index;
+    const grid=$("proCaseGrid"),brief=$("proCaseBrief");
+    grid.hidden=false;brief.hidden=true;
+    grid.innerHTML='<p class="pro-module-progress-empty" role="status">Đang tải bài đã phát hành…</p>';
+    showStage("cases");
+    const version=viewVersion;
+    await loadRemoteState();
+    if(version!==viewVersion)return;
     if(!levelUnlocked(index)){
       const notice=$("proFlowNotice");
-      notice.textContent=`${LEVELS[index].title} đang khóa. ${LEVELS[index].requirement} để mở cấp này.`;
+      notice.textContent=progressReady?`${LEVELS[index].title} đang khóa. ${LEVELS[index].requirement} để mở cấp này.`:"Chưa tải được tiến độ để xác nhận cấp này. Bấm Cập nhật rồi thử lại.";
       notice.hidden=false;
+      showStage("levels");
+      return;
+    }
+    if(!remoteReady){
+      grid.innerHTML='<div class="pro-module-progress-empty" role="alert"><p>Chưa tải được danh sách bài Pro. Bài đã đăng chưa bị xóa; hãy thử tải lại.</p><button class="pro-flow-back" type="button" data-pro-retry>Thử tải lại bài</button></div>';
+      grid.querySelector('[data-pro-retry]').addEventListener('click',()=>{
+        stateLoaded=false;openLevel(index);
+      });
       return;
     }
     renderCases(index);
-    showStage("cases");
   }
 
   function openCase(item){
@@ -441,7 +478,7 @@
         console.warn("[Professional Auto-Grader]",error);
       }
 
-      await loadRemoteState();
+      await loadRemoteState(true);
       const refreshed=buildCases(LEVELS[selectedLevel],DATA[activeDomain].items[activeModule]);
       activeCases=refreshed;
       renderCases(selectedLevel);
@@ -465,7 +502,7 @@
     });
     $("proProgressRefresh")?.addEventListener("click",async event=>{
       const button=event.currentTarget;button.disabled=true;button.textContent="Đang cập nhật…";
-      await loadRemoteState();openModule(activeModule,false);
+      await loadRemoteState(true);
       button.disabled=false;button.textContent="↻ Cập nhật";
     });
     showStage("domains",false);

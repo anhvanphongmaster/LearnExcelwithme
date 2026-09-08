@@ -12,7 +12,8 @@
     const count=cards.length;
     let current=clamp(Number(root.dataset.start||0),0,count-1);
     let target=current;
-    let raf=0, snapTimer=0, dragging=false, dragStartX=0, dragStartTarget=0, last=-1;
+    let raf=0, snapTimer=0, dragging=false, dragStartX=0, dragStartY=0, dragStartTarget=0, last=-1;
+    let pointerId=null, suppressClick=false;
 
     if(dots)dots.innerHTML=cards.map((_,i)=>`<button type="button" aria-label="Mục ${i+1}" data-dot="${i}"></button>`).join('');
 
@@ -69,18 +70,39 @@
     },{passive:false});
 
     root.addEventListener('pointerdown',e=>{
+      if(pointerId!==null || e.isPrimary===false)return;
       if(e.button!==undefined&&e.button!==0)return;
+      suppressClick=false;
       if(e.target.closest('button,a,input,label,textarea,select'))return;
-      dragging=true;dragStartX=e.clientX;dragStartTarget=target;
-      root.classList.add('is-dragging');root.setPointerCapture?.(e.pointerId);
+      // Capture only a real horizontal drag. Capturing a tap here sends its
+      // click to the roll container instead of the card that opens the lesson.
+      pointerId=e.pointerId;dragging=false;
+      dragStartX=e.clientX;dragStartY=e.clientY;dragStartTarget=target;
     });
     root.addEventListener('pointermove',e=>{
-      if(!dragging)return;
-      target=clamp(dragStartTarget-(e.clientX-dragStartX)/step(),0,count-1);kick();
+      if(e.pointerId!==pointerId)return;
+      const dx=e.clientX-dragStartX,dy=e.clientY-dragStartY;
+      if(!dragging){
+        if(Math.max(Math.abs(dx),Math.abs(dy))<8)return;
+        if(Math.abs(dy)>=Math.abs(dx)){suppressClick=true;pointerId=null;return}
+        dragging=true;suppressClick=true;
+        root.classList.add('is-dragging');
+        try{root.setPointerCapture?.(e.pointerId)}catch(_){}
+      }
+      target=clamp(dragStartTarget-dx/step(),0,count-1);kick();
     });
-    const endDrag=()=>{if(!dragging)return;dragging=false;root.classList.remove('is-dragging');go(target,true)};
+    const endDrag=e=>{
+      if(e.pointerId!==pointerId)return;
+      const moved=dragging;
+      if(e.type==='pointercancel')suppressClick=true;
+      pointerId=null;dragging=false;root.classList.remove('is-dragging');
+      try{if(root.hasPointerCapture?.(e.pointerId))root.releasePointerCapture(e.pointerId)}catch(_){}
+      if(moved)go(target,true);
+    };
     root.addEventListener('pointerup',endDrag);
     root.addEventListener('pointercancel',endDrag);
+    root.addEventListener('lostpointercapture',endDrag);
+    root.addEventListener('pointerleave',e=>{if(!dragging&&e.pointerId===pointerId)pointerId=null});
 
     root.addEventListener('keydown',e=>{
       if(e.key==='ArrowRight'){e.preventDefault();go(Math.round(target)+1)}
@@ -90,6 +112,7 @@
     });
 
     root.addEventListener('click',e=>{
+      if(suppressClick&&e.detail!==0){suppressClick=false;e.preventDefault();e.stopImmediatePropagation();return}
       const dot=e.target.closest('[data-dot]');
       if(dot){go(Number(dot.dataset.dot));return}
       const card=e.target.closest('[data-roll-card]');

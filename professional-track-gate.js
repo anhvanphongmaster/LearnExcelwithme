@@ -2,6 +2,10 @@
 (() => {
   "use strict";
   const $=id=>document.getElementById(id);
+  let resolveGate;
+  // The content loader shares this verified decision instead of checking the
+  // same Admin role again while authentication is still starting up.
+  window.AVPProfessionalGateReady=new Promise(resolve=>{resolveGate=resolve});
 
   async function client(){
     for(let i=0;i<40;i++){
@@ -12,13 +16,15 @@
     return null;
   }
 
-  function allow(role){
+  function allow(role,isAdmin=false){
     $("ptGate").hidden=true;
     $("ptProtectedContent").hidden=false;
     if($("ptAccessRole")) $("ptAccessRole").textContent=role;
+    resolveGate({allowed:true,isAdmin});
   }
 
   function deny(reason){
+    resolveGate({allowed:false});
     const qs=`?intro=0${reason?`&reason=${encodeURIComponent(reason)}`:""}`;
     location.replace(`professional-access.html${qs}`);
   }
@@ -32,6 +38,7 @@
 
     const {data:{session}}=await sb.auth.getSession();
     if(!session?.user){
+      resolveGate({allowed:false});
       location.replace(`auth.html?next=${encodeURIComponent(location.pathname.split("/").pop()||"professional-track.html")}`);
       return;
     }
@@ -40,7 +47,7 @@
     try{
       const adminRes=await sb.rpc("is_admin_user");
       if(!adminRes.error && adminRes.data===true){
-        allow("✓ ADMIN ACCESS");
+        allow("✓ ADMIN ACCESS",true);
         return;
       }
     }catch(_){}
@@ -62,9 +69,15 @@
     }
   }
 
+  function start(){
+    boot().catch(error=>{
+      console.warn("[Professional Track gate]",error);
+      deny("connection");
+    });
+  }
   if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",boot,{once:true});
+    document.addEventListener("DOMContentLoaded",start,{once:true});
   }else{
-    boot();
+    start();
   }
 })();
