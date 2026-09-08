@@ -6,8 +6,9 @@
   function setBreadcrumb(parts){
     const root=$('proBreadcrumb'); if(!root)return;
     const clean=(parts||[]).map(v=>String(v||'').trim()).filter(Boolean);
+    const next=clean.map((part,i)=>`<span${i===clean.length-1?' class="current"':''}>${esc(part)}</span>`).join('<i aria-hidden="true">/</i>');
     root.hidden=clean.length<=1;
-    root.innerHTML=clean.map((part,i)=>`<span${i===clean.length-1?' class="current"':''}>${esc(part)}</span>`).join('<i aria-hidden="true">/</i>');
+    if(root.innerHTML!==next)root.innerHTML=next;
   }
   function activeStage(){
     const el=[...document.querySelectorAll('[data-pro-stage]')].find(x=>!x.hidden);
@@ -32,10 +33,12 @@
   }
   function cleanFeedback(){
     const el=document.querySelector('.pro-case-submission-state'); if(!el)return;
-    el.innerHTML=el.innerHTML
+    const before=el.innerHTML;
+    const after=before
       .replace(/\[AUTO PRO V[12]\]\s*/g,'')
       .replace(/\s*\|\s*/g,' · ')
       .replace(/\[AUTO REVIEW\]\s*/g,'');
+    if(after!==before)el.innerHTML=after;
   }
   function sync(){syncBreadcrumb();cleanFeedback()}
   document.addEventListener('click',()=>setTimeout(sync,0));
