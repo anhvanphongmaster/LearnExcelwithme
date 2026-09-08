@@ -17,19 +17,17 @@
   function syncBreadcrumb(){
     const stage=activeStage();
     if(stage==='domains'){setBreadcrumb(['Professional']);return}
-    const domain=text('proTrainingDomainLabel').replace(/^NỘI DUNG TẬP LUYỆN\s*[·:-]?\s*/i,'')||text('proFlowTitle');
-    const module=text('proLevelModuleTitle');
+    const domain=text('proTrainingDomainLabel').replace(/\s*·\s*5\s+NỘI DUNG\s*$/i,'')||text('proFlowTitle');
+    const module=text('proLevelModuleTitle')||text('proCaseLevelTitle');
     if(stage==='training'){setBreadcrumb(['Professional',domain]);return}
     if(stage==='levels'){setBreadcrumb(['Professional',domain,module]);return}
+    const levelLabel=text('proCaseLevelLabel');
+    const level=(levelLabel.split('·').pop()||'').trim();
     const brief=$('proCaseBrief');
     if(brief&&!brief.hidden){
       const caseLabel=String(brief.querySelector('.pro-case-brief-head span')?.textContent||'').trim();
-      const level=text('proCaseLevelTitle')||text('proCaseLevelLabel');
       setBreadcrumb(['Professional',domain,module,level,caseLabel]);
-    }else{
-      const level=text('proCaseLevelTitle')||text('proCaseLevelLabel');
-      setBreadcrumb(['Professional',domain,module,level]);
-    }
+    }else setBreadcrumb(['Professional',domain,module,level]);
   }
   function cleanFeedback(){
     const el=document.querySelector('.pro-case-submission-state'); if(!el)return;
