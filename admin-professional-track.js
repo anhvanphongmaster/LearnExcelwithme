@@ -19,6 +19,7 @@
   let currentMode="applications";
   let currentReferenceCaseKey="";
   let currentReferenceExists=false;
+  let currentGraderValidated=false;
 
   async function client(){
     for(let i=0;i<30;i++){
@@ -115,25 +116,45 @@
     const box=$("aptCaseGraderState");if(!box)return;box.textContent=text;box.className=`apt-grader-state${state?` ${state}`:""}`;
   }
   function clearReferenceState(text="Chưa kiểm tra Auto-Grader cho Case này."){
-    currentReferenceCaseKey="";currentReferenceExists=false;
+    currentReferenceCaseKey="";currentReferenceExists=false;currentGraderValidated=false;
     if($("aptCaseReference"))$("aptCaseReference").value="";
     if($("aptCaseReferenceRemove"))$("aptCaseReferenceRemove").disabled=true;
     setReferenceState(text);
   }
   async function checkReference(sb,key=selectedCaseKey()){
-    currentReferenceCaseKey=key;currentReferenceExists=false;
-    setReferenceState("Đang kiểm tra file đáp án ẩn…");
+    currentReferenceCaseKey=key;currentReferenceExists=false;currentGraderValidated=false;
+    setReferenceState("Đang kiểm tra Reference và trạng thái Auto-Grader…");
     try{
       const {data,error}=await sb.storage.from(GRADING_BUCKET).list(key,{limit:20});
       if(error)throw error;
-      currentReferenceExists=(Array.isArray(data)?data:[]).some(item=>item.name==="reference.xlsx");
+      const rows=Array.isArray(data)?data:[];
+      const reference=rows.find(item=>item.name==="reference.xlsx")||null;
+      const validation=rows.find(item=>item.name==="validation.json")||null;
+      currentReferenceExists=!!reference;
+      const refTime=reference?.updated_at?new Date(reference.updated_at).getTime():0;
+      const valTime=validation?.updated_at?new Date(validation.updated_at).getTime():0;
+      currentGraderValidated=!!reference&&!!validation&&valTime>=refTime;
       if($("aptCaseReferenceRemove"))$("aptCaseReferenceRemove").disabled=!currentReferenceExists;
-      setReferenceState(currentReferenceExists?"✓ Auto-Grader sẵn sàng: đã có đáp án ẩn cho Case này.":"— Chưa có đáp án ẩn. Nếu học viên nộp, bài sẽ chuyển sang hàng chờ ngoại lệ.",currentReferenceExists?"ready":"warn");
-    }catch(error){
-      if($("aptCaseReferenceRemove"))$("aptCaseReferenceRemove").disabled=true;
-      setReferenceState("Chưa kiểm tra được kho đáp án ẩn: "+String(error?.message||error),"error");
-    }
+      if(!currentReferenceExists)setReferenceState("— Chưa có Reference ẩn. Case có nộp bài chưa thể phát hành.","warn");
+      else if(currentGraderValidated)setReferenceState("✓ Auto-Grader đã PASS bộ test: đúng hoàn toàn / hardcode / công thức sai.","ready");
+      else setReferenceState("⚠ Đã có Reference nhưng chưa PASS test Auto-Grader. Bấm ‘Kiểm tra’ trước khi phát hành.","warn");
+    }catch(error){if($("aptCaseReferenceRemove"))$("aptCaseReferenceRemove").disabled=true;setReferenceState("Chưa kiểm tra được kho đáp án ẩn: "+String(error?.message||error),"error");}
   }
+
+  async function validateReference(sb,key=selectedCaseKey()){
+    await checkReference(sb,key);
+    if(!currentReferenceExists)return alert("Case này chưa có Reference ẩn để test.");
+    const button=$("aptCaseReferenceCheck");if(button){button.disabled=true;button.textContent="Đang test…"}
+    setReferenceState("Đang chạy 3 test bắt buộc: PASS / HARDCODE / WRONG FORMULA…");
+    try{
+      const {data,error}=await sb.functions.invoke("professional-grader",{body:{mode:"validate_reference",case_key:key}});
+      if(error)throw error;if(data?.status!=="validated")throw new Error(data?.reason||"grader_validation_failed");
+      await checkReference(sb,key);
+      alert(`Auto-Grader PASS cho ${key}. Test: đúng ${data.tests?.pass}/10 · hardcode ${data.tests?.hardcode}/10 · formula sai ${data.tests?.wrong_formula}/10.`);
+    }catch(error){currentGraderValidated=false;setReferenceState("Auto-Grader chưa PASS: "+String(error?.message||error)+". Không thể phát hành Case.","error");alert("Auto-Grader chưa đạt điều kiện phát hành. Kiểm tra lại Reference/rubric: "+String(error?.message||error));}
+    finally{if(button){button.disabled=false;button.textContent="Kiểm tra"}}
+  }
+
   async function uploadReference(sb,key,file){
     if(!file)return false;
     if(!/\.(xlsx|xlsm)$/i.test(file.name))throw new Error("Đáp án ẩn chỉ nhận XLSX hoặc XLSM.");
@@ -141,16 +162,17 @@
     const path=`${key}/reference.xlsx`;
     const {error}=await sb.storage.from(GRADING_BUCKET).upload(path,file,{upsert:true,contentType:file.type||"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
     if(error)throw error;
-    currentReferenceCaseKey=key;currentReferenceExists=true;
+    try{await sb.storage.from(GRADING_BUCKET).remove([`${key}/validation.json`])}catch(_){}
+    currentReferenceCaseKey=key;currentReferenceExists=true;currentGraderValidated=false;
     if($("aptCaseReferenceRemove"))$("aptCaseReferenceRemove").disabled=false;
-    setReferenceState("✓ Đã cập nhật đáp án ẩn. Auto-Grader sẽ dùng file này cho lần nộp tiếp theo.","ready");
+    setReferenceState("✓ Đã cập nhật Reference. Cần bấm ‘Kiểm tra’ để chạy 3 test trước khi phát hành.","warn");
     return true;
   }
   async function removeReference(){
     const sb=await client();if(!sb)return alert("Chưa kết nối được hệ thống.");
     const key=selectedCaseKey();
     if(!confirm(`Xóa đáp án ẩn của ${key}? Bài nộp sau đó sẽ chuyển sang hàng chờ Admin cho tới khi có đáp án mới.`))return;
-    const {error}=await sb.storage.from(GRADING_BUCKET).remove([`${key}/reference.xlsx`]);
+    const {error}=await sb.storage.from(GRADING_BUCKET).remove([`${key}/reference.xlsx`,`${key}/validation.json`]);
     if(error)return alert("Chưa xóa được đáp án ẩn: "+error.message);
     currentReferenceCaseKey=key;currentReferenceExists=false;
     $("aptCaseReferenceRemove").disabled=true;
@@ -190,13 +212,17 @@
     if(guide&&!guide.startsWith(`${caseKey}/guide/`))guide="";
     const sourceFile=$("aptCaseSourceFile")?.files?.[0]||null,guideFile=$("aptCaseGuideFile")?.files?.[0]||null;
     try{if(sourceFile)validateResourceFile(sourceFile,"source");if(guideFile)validateResourceFile(guideFile,"guide")}catch(error){return alert(error.message)}
-    if($("aptCasePublished").checked&&!source&&!sourceFile)return alert("Case chỉ được phát hành khi đã có file bài cho học viên trong kho Pro riêng tư.");
+    const publishing=$("aptCasePublished").checked;
+    if(publishing&&!source&&!sourceFile)return alert("Case chỉ được phát hành khi đã có Student file trong kho Pro riêng tư.");
+    if(publishing&&!guide&&!guideFile)return alert("Case chỉ được phát hành khi đã có Guide trong kho Pro riêng tư.");
 
     const referenceFile=$("aptCaseReference")?.files?.[0]||null;
     const referenceKnown=currentReferenceCaseKey===caseKey&&currentReferenceExists;
-    if($("aptCasePublished").checked&&$("aptCaseSubmission").checked&&!referenceFile&&!referenceKnown){
-      const go=confirm("Case này chưa xác nhận có đáp án ẩn Auto-Grader. Nếu vẫn phát hành, bài nộp sẽ vào hàng chờ Admin thay vì được tự chấm. Vẫn tiếp tục?");
-      if(!go)return;
+    const graderReady=currentReferenceCaseKey===caseKey&&currentGraderValidated;
+    if(publishing&&$("aptCaseSubmission").checked){
+      if(referenceFile)return alert("Reference mới phải được lưu ở trạng thái Bản nháp, sau đó bấm ‘Kiểm tra’ để PASS Auto-Grader rồi mới Phát hành.");
+      if(!referenceKnown)return alert("Case có nộp bài chỉ được phát hành khi đã có Reference ẩn.");
+      if(!graderReady)return alert("Case chưa PASS 3 test Auto-Grader. Bấm ‘Kiểm tra’ ở phần Đáp án ẩn trước khi Phát hành.");
     }
 
     const button=$("aptCaseSave");button.disabled=true;button.textContent="Đang lưu…";
@@ -273,7 +299,7 @@
     $("aptCaseGuideFile")?.addEventListener("change",event=>{const file=event.target.files?.[0];const state=$("aptCaseGuideState");if(file&&state)state.textContent=`Đã chọn ${file.name}. Tài liệu sẽ được upload private khi lưu Case.`});
     $("aptCaseSourceClear")?.addEventListener("click",()=>clearResource("source"));$("aptCaseGuideClear")?.addEventListener("click",()=>clearResource("guide"));
     $("aptCaseReference")?.addEventListener("change",event=>{const file=event.target.files?.[0];if(file)setReferenceState(`Đã chọn ${file.name}. File sẽ được upload khi lưu Case.`,"ready")});
-    $("aptCaseReferenceCheck")?.addEventListener("click",async()=>{const sb=await client();if(sb)await checkReference(sb)});
+    $("aptCaseReferenceCheck")?.addEventListener("click",async()=>{const sb=await client();if(sb)await validateReference(sb)});
     $("aptCaseReferenceRemove")?.addEventListener("click",removeReference);
     document.querySelectorAll("[data-apt-mode]").forEach(button=>button.addEventListener("click",()=>showMode(button.dataset.aptMode)));
     $("adminProfessionalReload")?.addEventListener("click",loadCurrent);$("adminProfessionalLoad")?.addEventListener("click",loadCurrent);$("adminProfessionalStatus")?.addEventListener("change",loadCurrent);$("aptCatalogReload")?.addEventListener("click",loadCurrent);$("aptSubmissionReload")?.addEventListener("click",loadCurrent);$("aptSubmissionStatus")?.addEventListener("change",loadCurrent);$("aptSubmissionExport")?.addEventListener("click",exportSubmissions);

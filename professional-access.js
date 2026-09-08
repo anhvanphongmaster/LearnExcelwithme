@@ -59,7 +59,7 @@
     $("ptApplyCard").hidden=true;
     if($("ptProgramCard"))$("ptProgramCard").hidden=true;
 
-    if(s.can_access || s.status==="approved"){
+    if(s.can_access===true && s.status==="approved"){
       setStatus("approved","Bạn đã được mở khóa","Hồ sơ đã được Admin xác nhận. Bạn có thể vào Lộ trình Excel Chuyên nghiệp.","ĐÃ PHÊ DUYỆT");
       action.innerHTML='<p>✓ Bạn đã hoàn tất toàn bộ quy trình xét duyệt. Khu bài tập Professional đã được mở cho tài khoản này.</p>';
       setEnterTrackVisible(true,"learner");
