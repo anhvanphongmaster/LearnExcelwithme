@@ -654,7 +654,7 @@
         const msg=String(error?.message||error||"");
         const details=String(error?.details||error?.hint||"");
         if(/admin access required/i.test(msg))
-          return showDenied("RPC báo admin access required. Login lại bằng doananhtuant02@gmail.com (tab ẩn danh).");
+          return showDenied("RPC báo admin access required. Hãy đăng nhập lại bằng tài khoản Admin rồi thử lại.");
         if(/not authenticated|JWT|invalid claim/i.test(msg))
           return showDenied("Chưa đăng nhập hoặc session hết hạn. Hãy đăng nhập lại trên live.");
         if(/Could not find the function|schema cache|404/i.test(msg))
@@ -894,7 +894,7 @@
     if(!client){showDenied("Supabase chưa được cấu hình hoặc API key chưa hoạt động. Kiểm tra supabase-config.js trên live.");return}
     const session=await waitForSession(client);
     if(!session?.user){
-      showDenied("Bạn chưa đăng nhập trên live. Hãy bấm Đăng nhập, dùng đúng email doananhtuant02@gmail.com, rồi quay lại trang này.");
+      showDenied("Bạn chưa đăng nhập trên live. Hãy bấm Đăng nhập, dùng tài khoản Admin, rồi quay lại trang này.");
       return;
     }
     // Chẩn đoán nhanh quyền admin qua RPC helper (nếu có)

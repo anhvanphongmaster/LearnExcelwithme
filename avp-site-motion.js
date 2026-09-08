@@ -177,7 +177,7 @@
       if(busy)return;
       if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
 
-      /* Trang bài tập giữ nguyên practice-hub.js */
+      /* Giữ nguyên các tương tác nội bộ của Practice Hub. */
       if(e.target.closest(".ph-switch,[data-practice-branch],#phSourceBack"))return;
       if(e.target.closest("form,input,textarea,select,iframe,.avp-edge-launcher,#avpEdgeMenu"))return;
 
@@ -201,7 +201,7 @@
 
       const href=link.href;
 
-      /* Đúng nhịp video / practice-hub: 360 chọn + 260 rời */
+      /* Giữ nhịp chuyển cảnh Practice Hub: 360 chọn + 260 rời. */
       setTimeout(function(){
         if(grid) grid.classList.add("avp-zoom-leaving");
         setTimeout(function(){
