@@ -38,36 +38,6 @@
     link.dataset.mode=mode||"learner";
   }
 
-  function requestedDirectEntry(){
-    return new URLSearchParams(location.search).get("enter")==="1";
-  }
-
-  function enterTrackAfterIntro(){
-    if(!requestedDirectEntry())return;
-    const go=()=>{
-      if(location.pathname.endsWith("professional-access.html")){
-        location.replace("professional-track.html");
-      }
-    };
-    const intro=document.getElementById("ptiIntro");
-    if(!intro){
-      // professional-intro.js is deferred after this script; give it one frame to mount.
-      requestAnimationFrame(()=>requestAnimationFrame(()=>{
-        const mounted=document.getElementById("ptiIntro");
-        if(!mounted){go();return;}
-        const observer=new MutationObserver(()=>{
-          if(!document.getElementById("ptiIntro")){observer.disconnect();go();}
-        });
-        observer.observe(document.body,{childList:true});
-      }));
-      return;
-    }
-    const observer=new MutationObserver(()=>{
-      if(!document.getElementById("ptiIntro")){observer.disconnect();go();}
-    });
-    observer.observe(document.body,{childList:true});
-  }
-
   function publishRobotState(detail){
     const state={page:'professional-access.html',...(detail||{})};
     window.AVPProfessionalAccessState=state;
@@ -95,7 +65,6 @@
       setEnterTrackVisible(true,"learner");
       if($("ptProgramCard"))$("ptProgramCard").hidden=true;
       publishRobotState({phase:'approved',status:s.status||'approved',canAccess:true,eligible:true});
-      enterTrackAfterIntro();
       return;
     }
 
@@ -191,7 +160,6 @@
     $("ptActionArea").innerHTML="<p>✓ Bạn đang truy cập bằng quyền Admin. Các điều kiện học viên không áp dụng cho tài khoản này.</p>";
     setEnterTrackVisible(true,"admin");
     publishRobotState({phase:'approved',status:'approved',canAccess:true,eligible:true,isAdmin:true});
-    enterTrackAfterIntro();
   }
 
   async function load(){
