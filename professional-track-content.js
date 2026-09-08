@@ -93,12 +93,12 @@
     },
     {
       id:"professional",code:"PROFESSIONAL",title:"Case thực tế",
-      description:"Nhận brief lớn, tự chọn phương án và bàn giao theo rubric của Admin.",
+      description:"Nhận brief lớn, tự chọn phương án và bàn giao theo rubric kiểm tra của hệ thống.",
       requirement:"Hoàn thành Level 03",duration:"2–4 giờ / Case",
       caseTemplates:[
         {title:"Nhận brief thực tế",goal:"Đọc yêu cầu chưa hoàn hảo và chủ động làm rõ phạm vi.",tasks:["Tách yêu cầu bắt buộc","Xác định giả định và rủi ro","Lập kế hoạch thực hiện"]},
         {title:"Thực thi và kiểm chứng",goal:"Xây sản phẩm hoàn chỉnh có bằng chứng đối soát.",tasks:["Thực hiện giải pháp","Kiểm tra control total","Ghi lại quyết định quan trọng"]},
-        {title:"Bàn giao chuyên nghiệp",goal:"Đóng gói sản phẩm để người nhận tự vận hành và đánh giá.",tasks:["Hoàn thiện giao diện đầu ra","Tạo hướng dẫn và checklist","Nộp file để Admin review"]}
+        {title:"Bàn giao chuyên nghiệp",goal:"Đóng gói sản phẩm để người nhận tự vận hành và đánh giá.",tasks:["Hoàn thiện giao diện đầu ra","Tạo hướng dẫn và checklist","Nộp file để Auto-Grader kiểm tra; chỉ ngoại lệ mới chuyển Admin"]}
       ]
     }
   ];
@@ -145,8 +145,9 @@
     supabase=await client();
     if(!supabase)return;
     try{
-      const admin=await supabase.rpc("is_admin_user");
-      adminMode=!admin.error&&admin.data===true;
+      const gate=window.AVPProfessionalGateReady?await window.AVPProfessionalGateReady:window.AVPProfessionalGateState;
+      if(gate&&gate.allowed===false)return;
+      adminMode=gate?.isAdmin===true;
     }catch(_){adminMode=false}
     try{
       const [catalogResult,progressResult]=await Promise.all([
@@ -203,7 +204,7 @@
     }
     grid.innerHTML=LEVELS.map((level,index)=>{
       const stat=levelStats(level),unlocked=levelUnlocked(index);
-      const detail=stat.complete?"Đã hoàn thành":stat.revision?`${stat.revision} bài cần nộp lại`:stat.pending?`${stat.pending} bài đang chờ chấm`:`${stat.graded}/3 Case đã đạt`;
+      const detail=stat.complete?"Đã hoàn thành":stat.revision?`${stat.revision} bài cần nộp lại`:stat.pending?`${stat.pending} bài đang xử lý / cần kiểm tra`:`${stat.graded}/3 Case đã đạt`;
       return `<article class="${stat.complete?"complete":unlocked?"current":"locked"}"><div><span>${esc(level.code)}</span><strong>${esc(level.title)}</strong></div><b>${stat.score}/30</b><p>${esc(detail)}</p><i><span style="width:${Math.min(100,Math.round(stat.graded/3*100))}%"></span></i></article>`;
     }).join("");
   }
@@ -327,8 +328,16 @@
     });
   }
 
+  function isAutoFeedback(value){return String(value||"").startsWith("[AUTO PRO ")}
+  function isAutoReview(value){return String(value||"").startsWith("[AUTO REVIEW]")}
+
   function caseCard(item,index){
-    const state=item.submission?.status==="graded"?`Đã chấm ${Number(item.submission.score)||0}/${item.score}`:item.submission?.status==="pending"?"Đang chờ chấm":item.submission?.status==="revision"?"Cần nộp lại":item.published?"Đã phát hành":"Case mẫu";
+    const submission=item.submission;
+    const state=submission?.status==="graded"
+      ?`${isAutoFeedback(submission.feedback)?"Auto-Grader":"Đã chấm"} ${Number(submission.score)||0}/${item.score}`
+      :submission?.status==="pending"
+        ?(isAutoReview(submission.feedback)?"Cần Admin kiểm tra":"Đang chấm tự động")
+        :submission?.status==="revision"?"Cần nộp lại":item.published?"Đã phát hành":"Case mẫu";
     return `<button class="pro-case-card" type="button" data-case-index="${index}"><span>CASE ${String(index+1).padStart(2,"0")}</span><em class="pro-case-state ${esc(item.submission?.status||"")}">${esc(state)}</em><h3>${esc(item.title)}</h3><p>${esc(item.goal)}</p><div><small>${esc(item.duration)}</small><b>${item.score} điểm</b></div><strong>Xem brief →</strong></button>`;
   }
 
@@ -364,9 +373,13 @@
     const grid=$("proCaseGrid");grid.hidden=true;
     const brief=$("proCaseBrief");
     const submission=item.submission;
-    const status=submission?.status==="graded"?`Đã chấm: ${Number(submission.score)||0}/${item.score} điểm${submission.feedback?` · ${esc(submission.feedback)}`:""}`:submission?.status==="pending"?"Bài đã nộp và đang chờ Admin chấm.":submission?.status==="revision"?`Admin yêu cầu nộp lại${submission.feedback?`: ${esc(submission.feedback)}`:"."}`:"";
+    const status=submission?.status==="graded"
+      ?`${isAutoFeedback(submission.feedback)?"Auto-Grader":"Đã chấm"}: ${Number(submission.score)||0}/${item.score} điểm${submission.feedback?` · ${esc(submission.feedback)}`:""}`
+      :submission?.status==="pending"
+        ?(isAutoReview(submission.feedback)?`Auto-Grader chưa đủ điều kiện kết luận. Bài đã chuyển sang hàng chờ Admin.${submission.feedback?` ${esc(submission.feedback)}`:""}`:"Bài đã nộp và đang được chấm tự động.")
+        :submission?.status==="revision"?`Admin yêu cầu nộp lại${submission.feedback?`: ${esc(submission.feedback)}`:"."}`:"";
     const actions=item.published?`<div class="pro-case-submit-box">${item.submissionEnabled?'<label class="pro-case-note"><span>Ghi chú cho Admin</span><textarea data-pro-case-note rows="2" maxlength="1200" placeholder="Nêu phần cần lưu ý hoặc cách bạn xử lý Case này"></textarea></label>':""}<div class="pro-case-actions">${item.sourceUrl?`<a href="${esc(item.sourceUrl)}" target="_blank" rel="noopener">↓ Tải file thực hành</a>`:""}${item.guideUrl?`<a class="secondary" href="${esc(item.guideUrl)}" target="_blank" rel="noopener">Xem hướng dẫn</a>`:""}${item.submissionEnabled?`<label class="pro-case-upload"><input type="file" data-pro-case-file accept=".xlsx,.xls,.xlsm,.csv,.zip"><span>${submission?.status==="pending"?"Thay file đã nộp":"Chọn file bài làm"}</span></label><button type="button" data-pro-case-submit>Nộp bài</button>`:""}</div></div>`:`<p class="pro-case-next">Case đang ở chế độ xem trước. Admin chưa phát hành file nguồn và cổng nộp bài.</p>`;
-    brief.innerHTML=`<button type="button" class="pro-case-list-back" data-case-list>← Danh sách 3 Case</button><div class="pro-case-brief-head"><div><span>${esc(item.id.toUpperCase())}</span><h2>${esc(item.title)}</h2><p>${esc(item.goal)}</p></div><div><small>Thời lượng dự kiến</small><strong>${esc(item.duration)}</strong><small>Điểm tối đa</small><strong>${item.score}/10</strong></div></div><div class="pro-case-brief-body"><section><h3>Yêu cầu thực hiện</h3><ol>${item.tasks.map(task=>`<li>${esc(task)}</li>`).join("")}</ol></section><section><h3>Năng lực đánh giá</h3><p>${esc(item.skills)}</p><h3>Kết quả phải bàn giao</h3><p>${esc(item.output)}</p></section></div><div class="pro-case-rubric"><span><b>4 điểm</b> Đúng logic và số liệu</span><span><b>3 điểm</b> Có kiểm tra và đối soát</span><span><b>3 điểm</b> Trình bày, cấu trúc và bàn giao</span></div>${status?`<p class="pro-case-submission-state ${esc(submission?.status||"")}">${status}</p>`:""}${actions}`;
+    brief.innerHTML=`<button type="button" class="pro-case-list-back" data-case-list>← Danh sách 3 Case</button><div class="pro-case-brief-head"><div><span>${esc(item.id.toUpperCase())}</span><h2>${esc(item.title)}</h2><p>${esc(item.goal)}</p></div><div><small>Thời lượng dự kiến</small><strong>${esc(item.duration)}</strong><small>Điểm tối đa</small><strong>${item.score}/10</strong></div></div><div class="pro-case-brief-body"><section><h3>Yêu cầu thực hiện</h3><ol>${item.tasks.map(task=>`<li>${esc(task)}</li>`).join("")}</ol></section><section><h3>Năng lực đánh giá</h3><p>${esc(item.skills)}</p><h3>Kết quả phải bàn giao</h3><p>${esc(item.output)}</p></section></div><div class="pro-case-rubric"><span><b>AUTO</b> Cấu trúc, công thức và tính toàn vẹn</span><span><b>AUTO</b> Kết quả, số liệu và đối soát theo đáp án ẩn</span><span><b>REVIEW</b> Chỉ ngoại lệ máy chưa thể kết luận mới chuyển Admin</span></div>${status?`<p class="pro-case-submission-state ${esc(submission?.status||"")}">${status}</p>`:""}${actions}`;
     brief.hidden=false;
     brief.querySelector("[data-case-list]").addEventListener("click",()=>{brief.hidden=true;grid.hidden=false;scrollStage($("proCaseSection"))});
     brief.querySelector("[data-pro-case-file]")?.addEventListener("change",event=>{
@@ -399,11 +412,26 @@
       const saved=await supabase.rpc("professional_track_submit_case_v2",{p_case_key:item.id,p_file_path:path,p_original_name:file.name,p_note:note||null});
       if(saved.error){try{await supabase.storage.from(SUBMISSION_BUCKET).remove([path])}catch(_){};throw saved.error}
       if(previousPath&&previousPath!==path){try{await supabase.storage.from(SUBMISSION_BUCKET).remove([previousPath])}catch(_){}}
+
+      button.textContent="Đang chấm tự động…";
+      let autoResult=null;
+      try{
+        const submissionId=Array.isArray(saved.data)?saved.data[0]:saved.data;
+        if(submissionId&&supabase.functions?.invoke){
+          const grading=await supabase.functions.invoke("professional-grader",{body:{submission_id:String(submissionId),case_key:item.id}});
+          if(grading.error)throw grading.error;
+          autoResult=grading.data||null;
+        }
+      }catch(error){
+        console.warn("[Professional Auto-Grader]",error);
+      }
+
       await loadRemoteState();
       const refreshed=buildCases(LEVELS[selectedLevel],DATA[activeDomain].items[activeModule]);
       activeCases=refreshed;
       renderCases(selectedLevel);
       openCase(refreshed.find(row=>row.id===item.id)||item);
+      if(autoResult?.status==="review_required")console.info("[Professional Auto-Grader] Bài cần Admin kiểm tra:",autoResult.reason||"");
     }catch(error){
       alert("Chưa nộp được bài: "+String(error?.message||error));
     }finally{

@@ -62,3 +62,13 @@
 .apt-grade-grid{display:grid;grid-template-columns:140px minmax(0,1fr);gap:9px;margin-top:10px}
 @media(max-width:900px){.apt-catalog-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.apt-catalog-filters>strong{text-align:left}}
 @media(max-width:700px){.apt-kpis,.apt-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.apt-form-grid,.apt-grade-grid,.apt-catalog-filters{grid-template-columns:1fr}.apt-item-head,.apt-section-title{display:grid}.apt-section-title small{text-align:left}.apt-mode-tabs{overflow-x:auto}.apt-mode-tabs button{flex:0 0 auto}.apt-form-grid label,.apt-grade-grid label{grid-column:1/-1}}
+
+/* Pro Auto-Grader V1 — answer file stays in admin-only Storage. */
+.apt-grader-box{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:8px;align-items:center;padding:12px;border:1px solid #cfe1d6;border-radius:12px;background:#f3f8f5}
+.apt-grader-copy{display:grid;gap:3px;min-width:0}.apt-grader-copy>span{color:#217346;font-size:8px;font-weight:950;letter-spacing:.9px}.apt-grader-copy>strong{color:#173f2d;font-size:11px}.apt-grader-copy>small{color:#6d7f75;font-size:8px;line-height:1.45}
+.apt-grader-upload{display:inline-flex!important;align-items:center;justify-content:center;min-height:36px;padding:0 11px;border:1px solid #217346;border-radius:8px;background:#217346;color:#fff!important;font-size:9px!important;font-weight:900;cursor:pointer;white-space:nowrap}.apt-grader-upload input{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none}
+.apt-grader-box>button{min-height:36px;padding:0 10px;border:1px solid #c9dbd0;border-radius:8px;background:#fff;color:#24543a;font:inherit;font-size:9px;font-weight:900;cursor:pointer;white-space:nowrap}.apt-grader-box>button.danger{border-color:#e3c0ba;color:#8f3528}.apt-grader-box>button:disabled{opacity:.45;cursor:not-allowed}
+.apt-grader-state{grid-column:1/-1;padding-top:7px;border-top:1px solid #dce9e1;color:#66796d;font-size:8px;line-height:1.45}.apt-grader-state.ready{color:#176b3b;font-weight:850}.apt-grader-state.warn{color:#8a5b00;font-weight:850}.apt-grader-state.error{color:#963629;font-weight:850}
+.apt-auto-note{margin-top:9px;padding:9px 10px;border-radius:9px;background:#eef7f1;color:#285b3d;font-size:9px;line-height:1.5}.apt-auto-note.review{background:#fff7e2;color:#7b5900}
+@media(max-width:900px){.apt-grader-box{grid-template-columns:1fr 1fr}.apt-grader-copy,.apt-grader-state{grid-column:1/-1}.apt-grader-upload,.apt-grader-box>button{width:100%;box-sizing:border-box}}
+@media(max-width:560px){.apt-grader-box{grid-template-columns:1fr}.apt-grader-copy,.apt-grader-state{grid-column:1}.apt-grader-upload,.apt-grader-box>button{grid-column:1}}

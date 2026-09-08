@@ -12,13 +12,26 @@
     return null;
   }
 
-  function allow(role){
+  let gateResolved=false;
+  let resolveGate;
+  window.AVPProfessionalGateReady=new Promise(resolve=>{resolveGate=resolve});
+
+  function publishGate(state){
+    if(gateResolved)return;
+    gateResolved=true;
+    window.AVPProfessionalGateState=state;
+    resolveGate?.(state);
+  }
+
+  function allow(role,isAdmin=false){
     $("ptGate").hidden=true;
     $("ptProtectedContent").hidden=false;
     if($("ptAccessRole")) $("ptAccessRole").textContent=role;
+    publishGate({allowed:true,isAdmin:Boolean(isAdmin),role});
   }
 
   function deny(reason){
+    publishGate({allowed:false,isAdmin:false,reason:reason||"locked"});
     const qs=`?intro=0${reason?`&reason=${encodeURIComponent(reason)}`:""}`;
     location.replace(`professional-access.html${qs}`);
   }
@@ -40,7 +53,7 @@
     try{
       const adminRes=await sb.rpc("is_admin_user");
       if(!adminRes.error && adminRes.data===true){
-        allow("✓ ADMIN ACCESS");
+        allow("✓ ADMIN ACCESS",true);
         return;
       }
     }catch(_){}
@@ -51,7 +64,7 @@
       if(error) throw error;
 
       if(data?.status==="approved" && data?.can_access===true){
-        allow("✓ ĐÃ ĐƯỢC PHÊ DUYỆT");
+        allow("✓ ĐÃ ĐƯỢC PHÊ DUYỆT",false);
         return;
       }
 
