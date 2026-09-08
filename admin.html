@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="admin-grader.css?v=20260830-v16badge1">
   <link rel="stylesheet" href="global-search.css">
 <link rel="stylesheet" href="admin-tiktok.css?v=20260906-catalog1">
-<link rel="stylesheet" href="admin-tools.css?v=20260908-v1">
+<link rel="stylesheet" href="admin-tools.css?v=20260908-v1-1">
 </head>
 <body>
 
@@ -255,11 +255,11 @@ where is_admin = true;</pre>
       <span>🧰 KHO TOOL</span><h2>Tool & nhu cầu người dùng</h2>
     </div>
     <section class="admin-panel admin-view-section admin-tools-panel" data-admin-section="tools" id="adminToolsPanel">
-      <div class="admin-panel-head"><div><span>TOOL MANAGER</span><h2>Quản lý Kho Tool</h2><p>Thêm ZIP, nội dung, thứ tự hiển thị và theo dõi ý tưởng nào được nhiều người cùng yêu cầu.</p></div><button type="button" id="atReload">↻ Làm mới</button></div>
+      <div class="admin-panel-head"><div><span>TOOL MANAGER</span><h2>Quản lý Kho Tool</h2><p>Thêm ZIP, TikTok hướng dẫn, ngày phát hành, bản nháp/phát hành và theo dõi ý tưởng nào được nhiều người cùng yêu cầu.</p></div><button type="button" id="atReload">↻ Làm mới</button></div>
       <div class="at-kpis"><article><small>Tổng Tool</small><strong id="atTotal">0</strong></article><article><small>Đang phát hành</small><strong id="atActive">0</strong></article><article><small>Tổng lượt nhu cầu</small><strong id="atIdeas">0</strong></article></div>
       <div class="at-layout">
-        <div class="at-box"><h3>Thêm / sửa Tool</h3><p>File tải lên bắt buộc là ZIP (tối đa 50 MB). Hệ thống sẽ hiển thị pass mặc định <b>anhvanphongmaster</b>; ZIP bạn tải lên cần tự đặt đúng pass này nếu muốn bảo vệ file.</p>
-          <form id="atToolForm" class="at-form"><input id="atToolId" type="hidden"><label><span>STT</span><input id="atToolOrder" type="number" min="0" max="9999" required></label><label><span>Tên Tool</span><input id="atToolName" maxlength="120" required></label><label class="wide"><span>Ứng dụng</span><input id="atToolApplication" maxlength="240" placeholder="Ví dụ: Gộp file, kiểm tra dữ liệu, QC..."></label><label class="wide"><span>Mô tả</span><textarea id="atToolDescription" rows="4" maxlength="1200"></textarea></label><label class="wide"><span>File ZIP</span><input id="atToolFile" type="file" accept=".zip,application/zip,application/x-zip-compressed"><small id="atFileCurrent" class="at-file-current">Chưa có file ZIP đang gắn.</small></label><label class="wide at-check"><input id="atToolActive" type="checkbox" checked><span>Hiển thị Tool trên website</span></label><div class="at-actions"><button id="atToolSave" class="primary" type="submit">Lưu Tool</button><button id="atToolReset" type="button">Tạo Tool mới</button></div><div id="atNotice" class="at-notice"></div></form>
+        <div class="at-box"><h3>Thêm / sửa Tool</h3><p>File tải lên bắt buộc là ZIP (tối đa 50 MB). Tool ở <b>Bản nháp</b> chưa hiện ngoài website; khi <b>Phát hành</b> cần có link TikTok hướng dẫn. Hệ thống hiển thị pass mặc định <b>anhvanphongmaster</b>.</p>
+          <form id="atToolForm" class="at-form"><input id="atToolId" type="hidden"><label><span>STT</span><input id="atToolOrder" type="number" min="0" max="9999" required></label><label><span>Tên Tool</span><input id="atToolName" maxlength="120" required></label><label><span>Trạng thái</span><select id="atToolStatus"><option value="draft">Bản nháp</option><option value="published">Phát hành</option></select></label><label><span>Ngày phát hành</span><input id="atToolReleaseDate" type="date"><small>Để trống khi là bản nháp. Khi phát hành mà để trống, hệ thống dùng ngày hiện tại.</small></label><label class="wide"><span>Ứng dụng</span><input id="atToolApplication" maxlength="240" placeholder="Ví dụ: Gộp file, kiểm tra dữ liệu, QC..."></label><label class="wide"><span>Mô tả</span><textarea id="atToolDescription" rows="4" maxlength="1200"></textarea></label><label class="wide"><span>Link TikTok hướng dẫn</span><input id="atToolTikTok" type="url" maxlength="500" placeholder="https://www.tiktok.com/@anhvanphongmaster/video/..."><small>Bắt buộc khi chuyển sang Phát hành.</small></label><label class="wide"><span>File ZIP</span><input id="atToolFile" type="file" accept=".zip,application/zip,application/x-zip-compressed"><small id="atFileCurrent" class="at-file-current">Chưa có file ZIP đang gắn.</small></label><div class="at-actions"><button id="atToolSave" class="primary" type="submit">Lưu Tool</button><button id="atToolReset" type="button">Tạo Tool mới</button></div><div id="atNotice" class="at-notice"></div></form>
         </div>
         <div class="at-box"><div class="at-toolbar"><div><h3>Danh sách Tool</h3><p style="margin:2px 0 0;color:#718177;font-size:12px">Sắp theo STT bạn đặt.</p></div></div><div id="atToolList" class="at-list"><div class="at-empty">Mở tab Tool để tải danh sách.</div></div></div>
       </div>
@@ -1016,6 +1016,6 @@ where is_admin = true;</pre>
 <script defer src="global-search.js"></script>
 <script defer src="tiktok-catalog.js?v=20260906-catalog1"></script>
 <script defer src="admin-tiktok.js?v=20260906-catalog1"></script>
-<script defer src="admin-tools.js?v=20260908-v1"></script>
+<script defer src="admin-tools.js?v=20260908-v1-1"></script>
 </body>
 </html>
