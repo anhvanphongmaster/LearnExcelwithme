@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260908-pro-input-entry-fix2";
+const CACHE = "learnexcel-assets-v20260908-pro-clean-rebuild1";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
