@@ -705,7 +705,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","race","learning","votes","practice","youtube","downloads","inbox","engagement","analytics","community","reviews","grader","professional"];
+    const valid=["overview","users","race","learning","votes","practice","youtube","downloads","tools","inbox","engagement","analytics","community","reviews","grader","professional"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
