@@ -51,3 +51,4 @@
      currentReferenceCaseKey=key;currentReferenceExists=false;
      $("aptCaseReferenceRemove").disabled=true;
 
+
