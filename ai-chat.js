@@ -1675,16 +1675,12 @@
       return;
     }
 
-    let base=0, extra=0;
+    let base=0;
     try{
       const {data,error}=await client.rpc("notification_unread_count");
       if(!error) base=Number(data||0);
     }catch(e){}
-    try{
-      const star=await client.from("practice_grader_star_notifs").select("id").eq("is_read",false);
-      extra=Array.isArray(star.data)?star.data.length:Number(star.count||0);
-    }catch(e){}
-    publishCommunityUnreadCount(base+extra);
+    publishCommunityUnreadCount(base);
   }
 
   async function loadNotifications(){
@@ -1883,7 +1879,6 @@
       }catch(e){}
       (window.__avpNotifications||[]).forEach(n=>{n.is_read=true});
       await loadNotifications();
-      await updateNotificationBadge();
     }catch(e){
       console.warn("Mark all notifications",e);
       alert("Chưa đánh dấu được thông báo.");
@@ -2558,8 +2553,10 @@
     await updateNotificationBadge();
 
     const unreadTimer=setInterval(()=>{
-      updateNotificationBadge();
-    },20000);
+      if(document.visibilityState==="visible"){
+        updateNotificationBadge();
+      }
+    },60000);
 
     const refreshUnread=()=>updateNotificationBadge();
 

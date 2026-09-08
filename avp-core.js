@@ -331,21 +331,6 @@
     return Math.max(0,Number(window.__avpCommunityUnreadCount||0));
   }
 
-  let starUnread=0;
-  async function refreshStarUnread(){
-    try{
-      const sb=window.avpSupabase;
-      if(!sb)return;
-      const sess=await sb.auth.getUser();
-      if(!sess?.data?.user){starUnread=0;return;}
-      const {count,error}=await sb.from("practice_grader_star_notifs")
-        .select("id",{count:"exact",head:true})
-        .eq("is_read",false);
-      if(!error) starUnread=Math.max(0,Number(count||0));
-    }catch(e){}
-  }
-
-
   async function showUnreadReturnPreview(count){
     if(count<=0)return false;
 
@@ -767,7 +752,7 @@
   }
 
   function setCommunityEdgeBadge(count){
-    const n=Math.max(0,Number(count||0)+starUnread);
+    const n=Math.max(0,Number(count||0));
     const action=document.querySelector('.avp-edge-action[data-edge-action="community"]');
     if(!action)return;
 
@@ -801,9 +786,7 @@
     const count=
       unreadCountFromChatBadge()
       +
-      unreadCountFromCommunity()
-      +
-      starUnread;
+      unreadCountFromCommunity();
 
     if(count<=0){
       edgeBadge.hidden=true;
@@ -832,14 +815,6 @@
     previousEdgeCount=count;
   }
 
-  function refreshUnreadWhenVisible(){
-    if(document.visibilityState!=="visible") return;
-    refreshStarUnread().then(syncEdgeBadge);
-  }
-
-  refreshUnreadWhenVisible();
-  const starUnreadTimer=setInterval(refreshUnreadWhenVisible,30000);
-
   syncEdgeBadge();
 
   fab?.addEventListener('click',()=>{
@@ -857,7 +832,6 @@
     'pagehide',
     ()=>{
       clearInterval(edgeBadgeTimer);
-      clearInterval(starUnreadTimer);
     },
     {once:true}
   );
@@ -1187,7 +1161,7 @@
     function botH(){return Math.max(72,launcher.offsetHeight||72);}
     function maxDockX(){return Math.max(DOCK_GAP,window.innerWidth-botW()-DOCK_GAP);}
     function maxDockY(){return Math.max(DOCK_GAP,window.innerHeight-botH()-DOCK_GAP);}
-    function unreadNow(){return unreadCountFromChatBadge()+unreadCountFromCommunity()+starUnread;}
+    function unreadNow(){return unreadCountFromChatBadge()+unreadCountFromCommunity();}
 
     function hideLine(){
       clearTimeout(bubbleTimer);
