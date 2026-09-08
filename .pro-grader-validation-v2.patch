@@ -50,3 +50,4 @@
      if(error)return alert("Chưa xóa được đáp án ẩn: "+error.message);
      currentReferenceCaseKey=key;currentReferenceExists=false;
      $("aptCaseReferenceRemove").disabled=true;
+
