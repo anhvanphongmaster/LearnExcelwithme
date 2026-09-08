@@ -9,8 +9,13 @@
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="global-search.css">
-  <link rel="stylesheet" href="professional-hub.css?v=20260902-pro-depth3">
+  <link rel="stylesheet" href="professional-hub.css?v=20260909-pro-system1">
   <meta name="theme-color" content="#217346">
+  <style>
+    .pro-breadcrumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 2px 0;color:#708077;font-size:11px;font-weight:700}
+    .pro-breadcrumb span.current{color:#1d5f3a;font-weight:900}.pro-breadcrumb i{font-style:normal;color:#a6b2ab}
+    .pro-case-submission-state{white-space:normal;line-height:1.65}
+  </style>
 </head>
 <body>
 <nav class="top-simple-nav">
@@ -30,7 +35,7 @@
   <section class="pro-gate" id="ptGate"><strong>Đang xác minh quyền truy cập…</strong></section>
 
   <section id="ptProtectedContent" hidden>
-    <a class="pro-back" href="professional-access.html?intro=0">← Thành tích & trạng thái Professional Track</a>
+    <a class="pro-back" href="practice-video.html">← Thực hành</a>
 
     <header class="pro-hero pro-flow-hero">
       <div>
@@ -47,6 +52,7 @@
       <span data-path-step="levels"><b>3</b>Level</span>
       <span data-path-step="cases"><b>4</b>Case</span>
     </nav>
+    <nav class="pro-breadcrumb" id="proBreadcrumb" aria-label="Vị trí trong Professional Track" hidden></nav>
 
     <section class="pro-flow-stage" id="proDomainSection" data-pro-stage="domains">
       <div class="pro-roll-section">
@@ -69,11 +75,6 @@
         </div>
       </div>
 
-      <section class="pro-system">
-        <span>LEARNING SYSTEM</span>
-        <h2>Lĩnh vực → Nội dung tập luyện → Level → Case</h2>
-        <p>Mỗi màn hình chỉ có một quyết định chính. Chưa chọn lĩnh vực thì nội dung không xuất hiện; chưa chọn nội dung thì Level và Case chưa mở.</p>
-      </section>
     </section>
 
     <section class="pro-flow-stage" id="proTrainingSection" data-pro-stage="training" hidden>
@@ -131,10 +132,11 @@
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
-<script defer src="professional-access-resolver.js?v=20260908-rolefix1"></script>
+<script defer src="professional-access-resolver.js?v=20260909-pro-system1"></script>
 <script defer src="professional-roll.js?v=20260908-entry-fix1"></script>
-<script defer src="professional-track-gate.js?v=20260908-rolefix1"></script>
-<script defer src="professional-track-content.js?v=20260908-entry-fix1"></script>
+<script defer src="professional-track-gate.js?v=20260909-pro-system1"></script>
+<script defer src="professional-track-content.js?v=20260909-pro-system1"></script>
+<script defer src="professional-track-ux.js?v=20260909-pro-system1"></script>
 <script defer src="avp-core.js"></script>
 </body>
 </html>
