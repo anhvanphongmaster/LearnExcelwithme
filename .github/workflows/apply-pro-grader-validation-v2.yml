@@ -1,8 +1,10 @@
 name: Apply Pro grader validation v2
 on:
   push:
-    branches: [pro-grader-validation-v2]
-    paths: ['.github/workflows/apply-pro-grader-validation-v2.yml']
+    branches:
+      - pro-grader-validation-v2
+    paths:
+      - .github/workflows/apply-pro-grader-validation-v2.yml
 permissions:
   contents: write
 jobs:
@@ -13,8 +15,9 @@ jobs:
         with:
           ref: pro-grader-validation-v2
       - name: Patch Admin Pro validation state
-        shell: python
+        shell: bash
         run: |
+          python - <<'PY'
           from pathlib import Path
           p=Path('admin-professional-track.js')
           s=p.read_text(encoding='utf-8')
@@ -60,6 +63,7 @@ jobs:
           if old4 not in s: raise SystemExit('removeReference target not found')
           s=s.replace(old4,new4,1)
           p.write_text(s,encoding='utf-8')
+          PY
       - name: Syntax check
         run: node --check admin-professional-track.js
       - name: Commit patch and remove workflow
