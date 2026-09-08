@@ -72,9 +72,6 @@ function grade(candidate:XLSX.WorkBook,reference:XLSX.WorkBook,rubric:Rubric,mod
       for(let i=0;i<a.length;i++){
         const actual=formula(a[i].cell?.f),expected=formula(b[i].cell?.f);
         if(!actual){ok=false;break}
-        // When Reference contains formulas, demand exact formula identity.
-        // Older References may contain cached correct values only; in that case
-        // output rules still verify results while this rule verifies formula presence/functions.
         if(expected&&actual!==expected){ok=false;break}
         for(const fn of rule.functions||[])if(!actual.includes(`${String(fn).toUpperCase()}(`)){ok=false;break}
         if(!ok)break;
@@ -100,6 +97,15 @@ function feedback(r:ReturnType<typeof grade>){
 }
 const review=(reason:string)=>`[AUTO REVIEW] Auto-Grader chưa đủ điều kiện kết luận (${String(reason||'grader_uncertain').replace(/[\r\n|]+/g,' ').slice(0,300)}). Admin sẽ chỉ kiểm tra trường hợp ngoại lệ này.`;
 async function workbook(blob:Blob){return XLSX.read(new Uint8Array(await blob.arrayBuffer()),{type:'array',cellFormula:true,cellDates:false,cellNF:true,cellText:false})}
+async function referenceStamp(admin:any,key:string){
+  const {data,error}=await admin.storage.from(GRADING).list(key,{limit:20});
+  if(error)throw error;
+  const row=(Array.isArray(data)?data:[]).find((item:any)=>item.name==='reference.xlsx');
+  if(!row)throw new Error('reference_missing');
+  const stamp=String(row.updated_at||row.created_at||'');
+  if(!stamp)throw new Error('reference_timestamp_missing');
+  return stamp;
+}
 
 Deno.serve(async(req:Request)=>{
   if(req.method==='OPTIONS')return new Response('ok',{headers:H});
@@ -116,13 +122,16 @@ Deno.serve(async(req:Request)=>{
   if(mode==='validate_reference'){
     if(!isAdmin)return reply({error:'admin_required'},403);if(!key)return reply({error:'case_key_required'},400);
     try{
+      const stampBefore=await referenceStamp(admin,key);
       const {data:blob,error:e}=await admin.storage.from(GRADING).download(`${key}/reference.xlsx`);if(e||!blob)throw new Error('reference_missing');if(blob.size>MAX_REFERENCE)throw new Error('reference_too_large');
       const ref=await workbook(blob),rubric=rubricOf(ref,key);
       const p=grade(ref,ref,rubric,'simulate-pass'),h=grade(ref,ref,rubric,'simulate-hardcode'),w=grade(ref,ref,rubric,'simulate-wrong');
       const valid=p.score===10&&h.score<7&&w.score<7;if(!valid)return reply({status:'validation_failed',case_key:key,tests:{pass:p.score,hardcode:h.score,wrong_formula:w.score}},422);
-      const marker={version:VERSION,case_key:key,validated_at:new Date().toISOString(),tests:{pass:p.score,hardcode:h.score,wrong_formula:w.score}};
-      const up=await admin.storage.from(GRADING).upload(`${key}/validation.json`,new Blob([JSON.stringify(marker)],{type:'application/json'}),{upsert:true,contentType:'application/json',cacheControl:'0'});if(up.error)throw up.error;
-      return reply({status:'validated',case_key:key,tests:marker.tests});
+      const stampAfter=await referenceStamp(admin,key);if(stampAfter!==stampBefore)throw new Error('reference_changed_during_validation');
+      const marker={status:'validated',version:VERSION,case_key:key,reference_updated_at:stampAfter,validated_at:new Date().toISOString(),tests:{pass:p.score,hardcode:h.score,wrong_formula:w.score}};
+      const saved=await admin.from('professional_track_cases_v2').update({grader_validation:marker}).eq('case_key',key).select('case_key').maybeSingle();
+      if(saved.error)throw saved.error;if(!saved.data)throw new Error('case_not_saved_as_draft');
+      return reply({status:'validated',case_key:key,validated_at:marker.validated_at,reference_updated_at:stampAfter,tests:marker.tests});
     }catch(e){return reply({status:'validation_failed',case_key:key,reason:err(e)},422)}
   }
 
@@ -133,6 +142,13 @@ Deno.serve(async(req:Request)=>{
   const markReview=async(reason:string)=>{const f=review(reason);await admin.from('professional_track_case_submissions_v2').update({status:'pending',score:null,feedback:f,graded_at:null,reviewed_by:null}).eq('id',s.id).eq('file_path',path);return reply({status:'review_required',reason,case_key:activeKey})};
   if(!supported(name))return await markReview(`unsupported_file_type:${ext(name)||'unknown'}`);
   try{
+    const [{data:caseRow,error:caseError},stamp]=await Promise.all([
+      admin.from('professional_track_cases_v2').select('grader_validation').eq('case_key',activeKey).maybeSingle(),
+      referenceStamp(admin,activeKey)
+    ]);
+    if(caseError||!caseRow)return await markReview('case_missing');
+    const validation:any=caseRow.grader_validation||null;
+    if(validation?.status!=='validated'||String(validation?.reference_updated_at||'')!==stamp)return await markReview('grader_validation_stale');
     const [{data:cb,error:ce},{data:rb,error:re}]=await Promise.all([admin.storage.from(SUBMISSIONS).download(path),admin.storage.from(GRADING).download(`${activeKey}/reference.xlsx`)]);
     if(ce||!cb)return await markReview('submission_file_missing');if(re||!rb)return await markReview('reference_missing');if(cb.size>MAX_SUBMISSION)return await markReview('submission_too_large');if(rb.size>MAX_REFERENCE)return await markReview('reference_too_large');
     const [cand,ref]=await Promise.all([workbook(cb),workbook(rb)]),rubric=rubricOf(ref,activeKey),r=grade(cand,ref,rubric,'normal'),f=feedback(r);
