@@ -394,8 +394,9 @@
   let adminPresenceTimer=null;
   let adminLastInteractionAt=Date.now();
   let adminLastPresencePingAt=0;
+  let adminPresenceListenersBound=false;
   const ADMIN_IDLE_MS=2*60*1000;
-  const ADMIN_PING_MIN_GAP=15000;
+  const ADMIN_PING_MIN_GAP=60000;
 
   function adminPresenceState(){
     const visible=document.visibilityState==="visible";
@@ -437,27 +438,31 @@
   function startAdminPresence(){
     clearInterval(adminPresenceTimer);
 
-    ["pointerdown","touchstart","keydown","mousedown"].forEach(evt=>{
-      window.addEventListener(evt,noteAdminInteraction,{passive:true});
-    });
+    if(!adminPresenceListenersBound){
+      adminPresenceListenersBound=true;
 
-    window.addEventListener("focus",()=>{
-      adminLastInteractionAt=Date.now();
-      publishAdminPresenceState();
-      pingAdminPresence(true);
-    });
+      ["pointerdown","touchstart","keydown","mousedown"].forEach(evt=>{
+        window.addEventListener(evt,noteAdminInteraction,{passive:true});
+      });
 
-    window.addEventListener("blur",publishAdminPresenceState);
-
-    document.addEventListener("visibilitychange",()=>{
-      if(document.visibilityState==="visible"){
+      window.addEventListener("focus",()=>{
         adminLastInteractionAt=Date.now();
         publishAdminPresenceState();
         pingAdminPresence(true);
-      }else{
-        publishAdminPresenceState();
-      }
-    });
+      });
+
+      window.addEventListener("blur",publishAdminPresenceState);
+
+      document.addEventListener("visibilitychange",()=>{
+        if(document.visibilityState==="visible"){
+          adminLastInteractionAt=Date.now();
+          publishAdminPresenceState();
+          pingAdminPresence(true);
+        }else{
+          publishAdminPresenceState();
+        }
+      });
+    }
 
     publishAdminPresenceState();
     pingAdminPresence(true);
@@ -465,7 +470,7 @@
     adminPresenceTimer=setInterval(()=>{
       publishAdminPresenceState();
       pingAdminPresence();
-    },30000);
+    },60000);
   }
 
   async function mountAutoReplySettings(){
