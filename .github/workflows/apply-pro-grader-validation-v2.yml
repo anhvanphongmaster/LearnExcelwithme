@@ -1,0 +1,72 @@
+name: Apply Pro grader validation v2
+on:
+  push:
+    branches: [pro-grader-validation-v2]
+    paths: ['.github/workflows/apply-pro-grader-validation-v2.yml']
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: pro-grader-validation-v2
+      - name: Patch Admin Pro validation state
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('admin-professional-track.js')
+          s=p.read_text(encoding='utf-8')
+          old='''      const validation=rows.find(item=>item.name==="validation.json")||null;
+      currentReferenceExists=!!reference;
+      const refTime=reference?.updated_at?new Date(reference.updated_at).getTime():0;
+      const valTime=validation?.updated_at?new Date(validation.updated_at).getTime():0;
+      currentGraderValidated=!!reference&&!!validation&&valTime>=refTime;
+      if($("aptCaseReferenceRemove"))$("aptCaseReferenceRemove").disabled=!currentReferenceExists;
+      if(!currentReferenceExists)setReferenceState("— Chưa có Reference ẩn. Case có nộp bài chưa thể phát hành.","warn");
+      else if(currentGraderValidated)setReferenceState("✓ Auto-Grader đã PASS bộ test: đúng hoàn toàn / hardcode / công thức sai.","ready");
+      else setReferenceState("⚠ Đã có Reference nhưng chưa PASS test Auto-Grader. Bấm ‘Kiểm tra’ trước khi phát hành.","warn");'''
+          new='''      const caseRow=caseRows.get(key)||{};
+      const validation=caseRow.grader_validation&&typeof caseRow.grader_validation==="object"?caseRow.grader_validation:null;
+      currentReferenceExists=!!reference;
+      const refTime=reference?.updated_at?new Date(reference.updated_at).getTime():reference?.created_at?new Date(reference.created_at).getTime():0;
+      const valRefTime=validation?.reference_updated_at?new Date(validation.reference_updated_at).getTime():0;
+      const tests=validation?.tests||{};
+      currentGraderValidated=!!reference&&validation?.status==="validated"&&refTime>0&&valRefTime===refTime&&Number(tests.pass)===10&&Number(tests.hardcode)<7&&Number(tests.wrong_formula)<7;
+      if($("aptCaseReferenceRemove"))$("aptCaseReferenceRemove").disabled=!currentReferenceExists;
+      if(!currentReferenceExists)setReferenceState("— Chưa có Reference ẩn. Case có nộp bài chưa thể phát hành.","warn");
+      else if(currentGraderValidated)setReferenceState(`✓ Auto-Grader PASS: đúng ${Number(tests.pass)}/10 · hardcode ${Number(tests.hardcode)}/10 · formula sai ${Number(tests.wrong_formula)}/10.`,"ready");
+      else setReferenceState("⚠ Reference chưa có validation hợp lệ hoặc đã được thay sau lần test gần nhất. Bấm ‘Kiểm tra’ trước khi phát hành.","warn");'''
+          if old not in s: raise SystemExit('checkReference target not found')
+          s=s.replace(old,new,1)
+          old2='''      if(error)throw error;if(data?.status!=="validated")throw new Error(data?.reason||"grader_validation_failed");
+      await checkReference(sb,key);
+      alert(`Auto-Grader PASS cho ${key}. Test: đúng ${data.tests?.pass}/10 · hardcode ${data.tests?.hardcode}/10 · formula sai ${data.tests?.wrong_formula}/10.`);'''
+          new2='''      if(error)throw error;if(data?.status!=="validated")throw new Error(data?.reason||"grader_validation_failed");
+      const row=caseRows.get(key)||{};
+      caseRows.set(key,{...row,grader_validation:{status:"validated",version:"AVP_PRO_GRADER_V2",case_key:key,reference_updated_at:data.reference_updated_at,validated_at:data.validated_at,tests:data.tests||{}}});
+      await checkReference(sb,key);
+      alert(`Auto-Grader PASS cho ${key}. Test: đúng ${data.tests?.pass}/10 · hardcode ${data.tests?.hardcode}/10 · formula sai ${data.tests?.wrong_formula}/10.`);'''
+          if old2 not in s: raise SystemExit('validateReference target not found')
+          s=s.replace(old2,new2,1)
+          old3='''    try{await sb.storage.from(GRADING_BUCKET).remove([`${key}/validation.json`])}catch(_){}
+    currentReferenceCaseKey=key;currentReferenceExists=true;currentGraderValidated=false;'''
+          new3='''    currentReferenceCaseKey=key;currentReferenceExists=true;currentGraderValidated=false;'''
+          if old3 not in s: raise SystemExit('uploadReference target not found')
+          s=s.replace(old3,new3,1)
+          old4='''    const {error}=await sb.storage.from(GRADING_BUCKET).remove([`${key}/reference.xlsx`,`${key}/validation.json`]);'''
+          new4='''    const {error}=await sb.storage.from(GRADING_BUCKET).remove([`${key}/reference.xlsx`]);'''
+          if old4 not in s: raise SystemExit('removeReference target not found')
+          s=s.replace(old4,new4,1)
+          p.write_text(s,encoding='utf-8')
+      - name: Syntax check
+        run: node --check admin-professional-track.js
+      - name: Commit patch and remove workflow
+        run: |
+          git config user.name "anhvanphongmaster"
+          git config user.email "anhvanphongmaster@gmail.com"
+          git rm .github/workflows/apply-pro-grader-validation-v2.yml
+          git add admin-professional-track.js
+          git commit -m "Pro: use Case-row grader validation state"
+          git push origin pro-grader-validation-v2
