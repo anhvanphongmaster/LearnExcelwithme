@@ -1,0 +1,27 @@
+name: Apply Pro v2 staging patch
+on:
+  push:
+    branches: [pro-grader-validation-v2]
+    paths: [.pro-grader-validation-v2.patch]
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: pro-grader-validation-v2
+          fetch-depth: 0
+      - name: Apply controlled Professional grader patch
+        run: |
+          git apply --check .pro-grader-validation-v2.patch
+          git apply .pro-grader-validation-v2.patch
+          node --check admin-professional-track.js
+      - name: Commit staged implementation
+        run: |
+          git config user.name "anhvanphongmaster"
+          git config user.email "anhvanphongmaster@gmail.com"
+          git add admin-professional-track.js
+          git commit -m "Pro: use Case-row grader validation state"
+          git push origin pro-grader-validation-v2
