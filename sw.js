@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260908-pro-clean-rebuild1";
+const CACHE = "learnexcel-assets-v20260908-routefix1";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -124,7 +124,7 @@ self.addEventListener("push", event => {
 self.addEventListener("notificationclick", event => {
   event.notification.close();
   if ("clearAppBadge" in self.navigator) self.navigator.clearAppBadge().catch(() => {});
-  const target = new URL(event.notification?.data?.url || "admin.html", self.location.origin).href;
+  const target = new URL(event.notification?.data?.url || "admin.html", self.registration.scope).href;
 
   event.waitUntil(
     clients.matchAll({type:"window",includeUncontrolled:true}).then(list => {
