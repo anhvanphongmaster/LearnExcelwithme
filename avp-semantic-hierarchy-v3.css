@@ -1,0 +1,126 @@
+/* AVP Semantic Hierarchy V3 — soft color, stronger meaning. */
+:root{
+  --avp-hierarchy-danger-bg:#fff2f0;
+  --avp-hierarchy-danger-border:#dfa99f;
+  --avp-hierarchy-danger-text:#833a31;
+  --avp-hierarchy-warn-bg:#fff8e9;
+  --avp-hierarchy-warn-border:#e3c77c;
+  --avp-hierarchy-warn-text:#70561d;
+  --avp-hierarchy-pass-bg:#eff8f2;
+  --avp-hierarchy-pass-border:#bcdcc8;
+  --avp-hierarchy-pass-text:#2a6040;
+  --avp-hierarchy-draft-bg:#f5f2fa;
+  --avp-hierarchy-draft-border:#d4cae4;
+  --avp-hierarchy-draft-text:#5b5270;
+  --avp-back-step-bg:#f1f6fa;
+  --avp-back-step-border:#b8cfdd;
+  --avp-back-step-text:#315c73;
+  --avp-back-root-bg:#eaf5ee;
+  --avp-back-root-border:#8dbb9f;
+  --avp-back-root-text:#155b37;
+}
+
+/* Outcome wins over workflow state. A graded result can still be a FAIL. */
+:is([class*="status"],[class*="state"],[class*="notice"],[class*="message"],[class*="feedback"],[class*="result"],[class*="score"],[role="status"],[role="alert"]).avp-semantic-fail,
+.pro-case-state.avp-semantic-fail,
+.pro-case-submission-state.avp-semantic-fail{
+  background:var(--avp-hierarchy-danger-bg)!important;
+  border-color:var(--avp-hierarchy-danger-border)!important;
+  color:var(--avp-hierarchy-danger-text)!important;
+  box-shadow:0 0 0 2px rgba(182,61,50,.07),0 10px 24px rgba(125,68,60,.08)!important;
+  text-shadow:none!important;
+  animation:avpSemanticFailPulse 1.65s ease-in-out 2;
+}
+:is([class*="status"],[class*="state"],[class*="notice"],[class*="message"],[class*="feedback"],[class*="result"],[class*="score"],[role="status"],[role="alert"]).avp-semantic-warning{
+  background:var(--avp-hierarchy-warn-bg)!important;
+  border-color:var(--avp-hierarchy-warn-border)!important;
+  color:var(--avp-hierarchy-warn-text)!important;
+  box-shadow:0 0 0 2px rgba(138,91,0,.06),0 9px 22px rgba(112,86,29,.07)!important;
+  text-shadow:none!important;
+  animation:avpSemanticWarnPulse 1.65s ease-in-out 2;
+}
+:is([class*="status"],[class*="state"],[class*="notice"],[class*="message"],[class*="feedback"],[class*="result"],[class*="score"],[role="status"],[role="alert"]).avp-semantic-pass{
+  background:var(--avp-hierarchy-pass-bg)!important;
+  border-color:var(--avp-hierarchy-pass-border)!important;
+  color:var(--avp-hierarchy-pass-text)!important;
+  box-shadow:0 8px 20px rgba(42,96,64,.05)!important;
+  text-shadow:none!important;
+}
+:is([class*="status"],[class*="state"],[class*="notice"],[class*="message"],[class*="feedback"],[class*="result"],[class*="score"],[role="status"],[role="alert"]).avp-semantic-draft{
+  background:var(--avp-hierarchy-draft-bg)!important;
+  border-color:var(--avp-hierarchy-draft-border)!important;
+  color:var(--avp-hierarchy-draft-text)!important;
+  box-shadow:0 7px 18px rgba(91,82,112,.05)!important;
+}
+.avp-semantic-fail strong,.avp-semantic-fail b,.avp-semantic-fail em,
+.avp-semantic-warning strong,.avp-semantic-warning b,.avp-semantic-warning em,
+.avp-semantic-pass strong,.avp-semantic-pass b,.avp-semantic-pass em,
+.avp-semantic-draft strong,.avp-semantic-draft b,.avp-semantic-draft em{color:inherit!important}
+
+/* Back one step: clearly visible, but secondary. */
+:is(a,button,[role="button"]).avp-nav-back-step{
+  background:var(--avp-back-step-bg)!important;
+  border:1px solid var(--avp-back-step-border)!important;
+  color:var(--avp-back-step-text)!important;
+  font-weight:850!important;
+  text-decoration:none!important;
+  box-shadow:0 0 0 2px rgba(77,116,145,.06),0 7px 18px rgba(49,92,115,.06)!important;
+  opacity:1!important;
+}
+:is(a,button,[role="button"]).avp-nav-back-step:hover{
+  background:#e8f1f7!important;
+  border-color:#9cbccb!important;
+  color:#264f66!important;
+  transform:translateY(-1px);
+}
+
+/* Back to hub / beginning of a flow: one visual level stronger. */
+:is(a,button,[role="button"]).avp-nav-back-root{
+  background:var(--avp-back-root-bg)!important;
+  border:1px solid var(--avp-back-root-border)!important;
+  color:var(--avp-back-root-text)!important;
+  font-weight:900!important;
+  text-decoration:none!important;
+  box-shadow:0 0 0 2px rgba(33,115,70,.09),0 9px 22px rgba(33,115,70,.08)!important;
+  opacity:1!important;
+}
+:is(a,button,[role="button"]).avp-nav-back-root:hover{
+  background:#dff0e5!important;
+  border-color:#72aa87!important;
+  color:#104f30!important;
+  transform:translateY(-1px);
+}
+:is(a,button,[role="button"]).avp-nav-back-step:focus-visible,
+:is(a,button,[role="button"]).avp-nav-back-root:focus-visible{
+  outline:3px solid rgba(77,116,145,.20)!important;
+  outline-offset:3px!important;
+}
+
+/* Legacy Professional rules had flattened both back levels to the same white button. */
+.pro-back.avp-nav-back-root,
+.pw-backline a.avp-nav-back-root{padding:8px 12px!important;border-radius:10px!important}
+.pro-flow-back.avp-nav-back-step,
+.pro-case-list-back.avp-nav-back-step,
+.roll-back.avp-nav-back-step{border-radius:10px!important}
+
+@keyframes avpSemanticFailPulse{
+  0%,100%{box-shadow:0 0 0 2px rgba(182,61,50,.07),0 10px 24px rgba(125,68,60,.08)}
+  50%{box-shadow:0 0 0 4px rgba(182,61,50,.11),0 12px 27px rgba(125,68,60,.10)}
+}
+@keyframes avpSemanticWarnPulse{
+  0%,100%{box-shadow:0 0 0 2px rgba(138,91,0,.06),0 9px 22px rgba(112,86,29,.07)}
+  50%{box-shadow:0 0 0 4px rgba(138,91,0,.09),0 11px 25px rgba(112,86,29,.09)}
+}
+
+body.dark-mode .avp-semantic-fail{background:#2d1d1b!important;border-color:#79524c!important;color:#f2c8c1!important}
+body.dark-mode .avp-semantic-warning{background:#2b2619!important;border-color:#6f633c!important;color:#ead49c!important}
+body.dark-mode .avp-semantic-pass{background:#18281e!important;border-color:#3c674b!important;color:#bfe0c9!important}
+body.dark-mode .avp-semantic-draft{background:#24202c!important;border-color:#5a516b!important;color:#d4cbe2!important}
+body.dark-mode :is(a,button,[role="button"]).avp-nav-back-step{background:#17252d!important;border-color:#446576!important;color:#c6dce8!important}
+body.dark-mode :is(a,button,[role="button"]).avp-nav-back-root{background:#17281e!important;border-color:#47745a!important;color:#c6e6d0!important}
+
+@media(prefers-reduced-motion:reduce){
+  .avp-semantic-fail,.avp-semantic-warning{animation:none!important}
+  :is(a,button,[role="button"]).avp-nav-back-step:hover,
+  :is(a,button,[role="button"]).avp-nav-back-root:hover{transform:none!important}
+}
