@@ -1,0 +1,80 @@
+/* Professional Track readability V3 — compact, pastel, but never faint. */
+
+/* In-page navigation must never inherit the legacy site navbar surface. */
+.pro-flow-path{
+  position:static!important;
+  top:auto!important;
+  z-index:auto!important;
+  width:auto!important;
+  box-shadow:none!important;
+}
+.pro-flow-path span:not(.active):not(.done){
+  color:#5f7067!important;
+  opacity:1!important;
+}
+
+.pro-breadcrumb{
+  position:static!important;
+  top:auto!important;
+  z-index:auto!important;
+  width:auto!important;
+  margin:12px 2px 0!important;
+  padding:8px 10px!important;
+  justify-content:flex-start!important;
+  background:#f5f7f6!important;
+  border:1px solid #dfe5e1!important;
+  border-radius:10px!important;
+  box-shadow:none!important;
+  color:#5f7067!important;
+}
+.pro-breadcrumb span{color:#5f7067!important;opacity:1!important}
+.pro-breadcrumb span.current{color:#315f46!important;font-weight:900!important}
+.pro-breadcrumb i{color:#7a8981!important;opacity:1!important}
+
+/* The 3D roll keeps depth through scale/rotation, not by hiding the text. */
+.pro-roll .pro-card:not(.active){opacity:.90!important}
+.pro-roll .pro-card.active{opacity:1!important}
+.pro-card p{
+  color:#52645a!important;
+  font-size:12.5px!important;
+  line-height:1.62!important;
+}
+.pro-card>span{
+  color:#315f46!important;
+  font-size:10.5px!important;
+  opacity:1!important;
+}
+.pro-roll-head small{
+  color:#5f7067!important;
+  font-size:11.5px!important;
+  opacity:1!important;
+}
+
+/* Small supporting copy elsewhere in Pro should remain legible. */
+.pro-training-detail p,
+.pro-phase-note,
+.pro-module-progress-grid article>div span,
+.pro-module-progress-grid article>p,
+.pro-module-progress-empty{
+  color:#5f7067!important;
+  opacity:1!important;
+}
+
+body.dark-mode .pro-breadcrumb{
+  background:#202725!important;
+  border-color:#3b4540!important;
+  color:#d0dbd4!important;
+}
+body.dark-mode .pro-breadcrumb span{color:#d0dbd4!important}
+body.dark-mode .pro-breadcrumb span.current{color:#a9dfbd!important}
+body.dark-mode .pro-breadcrumb i{color:#94a39a!important}
+body.dark-mode .pro-flow-path span:not(.active):not(.done),
+body.dark-mode .pro-card p,
+body.dark-mode .pro-roll-head small,
+body.dark-mode .pro-training-detail p,
+body.dark-mode .pro-phase-note,
+body.dark-mode .pro-module-progress-grid article>div span,
+body.dark-mode .pro-module-progress-grid article>p,
+body.dark-mode .pro-module-progress-empty{
+  color:#c8d3cc!important;
+}
