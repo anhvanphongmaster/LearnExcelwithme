@@ -1,0 +1,53 @@
+/* Learning contrast V1 — scoped to Skill Map + Knowledge pages, light mode only. */
+body:not(.dark-mode) .sm-node-copy small,
+body:not(.dark-mode) .sm-zone-head p,
+body:not(.dark-mode) .sm-next-main p,
+body:not(.dark-mode) .sm-quick-copy p,
+body:not(.dark-mode) .sm-map-head p,
+body:not(.dark-mode) .sm-reference-strip p,
+body:not(.dark-mode) .sm-reference-strip p,
+body:not(.dark-mode) .sm-footer-actions span{
+  color:#42564a!important;
+}
+body:not(.dark-mode) .sm-node-copy small{font-weight:600!important}
+body:not(.dark-mode) .sm-node-meta{color:#1c653e!important}
+body:not(.dark-mode) .sm-zone-foot{
+  display:flex!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  align-items:center!important;
+  margin:13px 0 0!important;
+  padding:12px 0 0!important;
+  border:0!important;
+  border-top:1px dashed #bfd3c6!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:inherit!important;
+  text-align:left!important;
+  box-shadow:none!important;
+}
+body:not(.dark-mode) .sm-zone-foot strong{color:#245d3d!important}
+body:not(.dark-mode) .sm-zone-foot span{color:#44584c!important}
+
+body:not(.dark-mode) .kv-breadcrumb,
+body:not(.dark-mode) .kv-outline a,
+body:not(.dark-mode) .kv-intro-box ul,
+body:not(.dark-mode) .kv-prereq>span,
+body:not(.dark-mode) .kv-prereq em,
+body:not(.dark-mode) .kv-body p,
+body:not(.dark-mode) .kv-steps,
+body:not(.dark-mode) .kv-check-head span,
+body:not(.dark-mode) .kv-nav small{
+  color:#3e5246!important;
+}
+body:not(.dark-mode) .kv-body p{color:#344a3d!important}
+body:not(.dark-mode) .kv-intro-box ul,
+body:not(.dark-mode) .kv-steps{color:#3a5043!important}
+body:not(.dark-mode) .kv-q-text{color:#203a2a!important}
+body:not(.dark-mode) .kv-option{color:#354a3e!important}
+body:not(.dark-mode) .kv-why{color:#294c37!important}
+body:not(.dark-mode) .kv-hero-card p{color:#f0f8f3!important}
+
+@media(max-width:500px){
+  body:not(.dark-mode) .sm-zone-foot{align-items:flex-start!important}
+}
