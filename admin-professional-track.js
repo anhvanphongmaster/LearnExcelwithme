@@ -302,7 +302,7 @@
     $("aptCaseSkills").value=String(meta.skills||"").trim();
     $("aptCaseOutput").value=String(meta.expected_output||"").trim();
     $("aptCaseDuration").value=String(meta.duration||"").trim();
-    $("aptCaseScore").value="10";
+    $("aptCaseMaxScore").value="10";
     $("aptCaseSubmission").checked=meta.submission_enabled!==false;
     $("aptCasePublished").checked=false;
     if(!existing){
