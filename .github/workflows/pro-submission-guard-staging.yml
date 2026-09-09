@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -46,8 +48,9 @@ jobs:
 
       - name: Ensure migration is isolated
         run: |
-          git diff --name-only HEAD~2..HEAD
-          changed=$(git diff --name-only HEAD~2..HEAD | grep -v '^.github/workflows/pro-submission-guard-staging.yml$' | grep -v '^supabase-migrations/PROFESSIONAL-SUBMISSION-OBJECT-GUARD-V1.sql$' || true)
+          base=$(git merge-base origin/main HEAD)
+          git diff --name-only "$base"..HEAD
+          changed=$(git diff --name-only "$base"..HEAD | grep -v '^.github/workflows/pro-submission-guard-staging.yml$' | grep -v '^supabase-migrations/PROFESSIONAL-SUBMISSION-OBJECT-GUARD-V1.sql$' || true)
           if [ -n "$changed" ]; then
             echo "Unexpected files changed:"
             echo "$changed"
