@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260909-knowledge2";
+const CACHE = "learnexcel-assets-v20260910-homeknowledge24";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -9,10 +9,13 @@ const ASSETS = [
   "./avp-readability-guard.css",
   "./theme-polish-v33.css",
   "./avp-ui-polish-v40.css",
+  "./avp-global-controls-v1.css",
+  "./avp-home-knowledge-v2.css",
   "./simple-nav.js",
   "./avp-core.js",
   "./avp-ui-system.js",
   "./avp-semantic-hierarchy-v3.js",
+  "./avp-home-knowledge-v2.js",
   "./global-search.js",
   "./index.html",
   "./skill-map.html",
