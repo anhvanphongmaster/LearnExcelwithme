@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260910-proguidancecontrast1";
+const CACHE = "learnexcel-assets-v20260910-launcherunify1";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -16,6 +16,7 @@ const ASSETS = [
   "./simple-nav.js",
   "./avp-core.js",
   "./avp-ui-system.js",
+  "./avp-launcher-unify-v1.js",
   "./avp-semantic-hierarchy-v3.js",
   "./avp-home-knowledge-v2.js",
   "./avp-pro-access-guidance-v1.js",
