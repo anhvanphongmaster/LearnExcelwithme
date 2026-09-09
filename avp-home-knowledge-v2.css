@@ -1,0 +1,81 @@
+/* AVP Home Knowledge V2 — balanced 4-card / 24-lesson learning map. */
+.home-path-grid.avp-home-kv2-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:18px!important;
+  align-items:stretch!important;
+}
+.home-path-grid.avp-home-kv2-grid .avp-home-kv2-card{
+  min-width:0!important;
+  min-height:100%!important;
+  padding:20px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  border-radius:20px!important;
+  box-shadow:0 12px 32px rgba(19,73,45,.07)!important;
+}
+.home-path-grid.avp-home-kv2-grid .avp-home-kv2-green{background:#f2faf5!important;border-color:#c8e4d2!important}
+.home-path-grid.avp-home-kv2-grid .avp-home-kv2-blue{background:#f3f7fd!important;border-color:#cedcf0!important}
+.home-path-grid.avp-home-kv2-grid .avp-home-kv2-purple{background:#f8f4fc!important;border-color:#ddd1ec!important}
+.home-path-grid.avp-home-kv2-grid .avp-home-kv2-sand{background:#fcf8f1!important;border-color:#e9d8b8!important}
+.hp-kv2-head{min-height:118px;margin-bottom:12px}
+.hp-kv2-head>span{display:block!important;margin:0 0 5px!important;color:#217346!important;font-size:12px!important;font-weight:900!important;letter-spacing:.04em!important}
+.hp-kv2-head h3{margin:0 0 7px!important;color:#143f2a!important;font-size:22px!important;line-height:1.2!important}
+.hp-kv2-head p{margin:0!important;color:#61746a!important;font-size:13.5px!important;line-height:1.55!important}
+.home-path-grid.avp-home-kv2-grid ul{display:grid!important;gap:8px!important;margin:0!important;padding:0!important;list-style:none!important;flex:1!important}
+.home-path-grid.avp-home-kv2-grid li{margin:0!important;min-width:0!important}
+.home-path-grid.avp-home-kv2-grid li>a{
+  min-height:58px!important;
+  width:100%!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  grid-template-columns:34px 30px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:9px 12px!important;
+  border:1px solid #dce8e0!important;
+  border-radius:13px!important;
+  background:rgba(255,255,255,.94)!important;
+  color:#243e30!important;
+  text-decoration:none!important;
+  font-size:13.5px!important;
+  font-weight:800!important;
+  line-height:1.25!important;
+  box-shadow:none!important;
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease!important;
+}
+.home-path-grid.avp-home-kv2-grid li>a:hover{
+  transform:translateY(-1px)!important;
+  border-color:#94c2a6!important;
+  box-shadow:0 7px 18px rgba(33,115,70,.08)!important;
+}
+.hp-kv2-num{display:grid!important;place-items:center!important;width:30px!important;height:30px!important;margin:0!important;border-radius:9px!important;background:#eaf5ee!important;color:#1a6740!important;font-size:11px!important;font-weight:900!important}
+.hp-kv2-icon{display:grid!important;place-items:center!important;margin:0!important;font-size:18px!important}
+.hp-kv2-title{display:block!important;margin:0!important;min-width:0!important;color:#243e30!important;font-size:13.5px!important;font-weight:800!important;overflow-wrap:anywhere!important}
+.hp-kv2-more{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  margin-top:14px!important;
+  padding:0!important;
+  background:transparent!important;
+  border:0!important;
+  color:#1d7448!important;
+  text-decoration:none!important;
+  font-size:12px!important;
+  font-weight:900!important;
+}
+body.dark-mode .home-path-grid.avp-home-kv2-grid .avp-home-kv2-card{background:#13231a!important;border-color:#2d4939!important}
+body.dark-mode .hp-kv2-head h3,body.dark-mode .hp-kv2-title{color:#e8f4ec!important}
+body.dark-mode .hp-kv2-head p{color:#a9bcb1!important}
+body.dark-mode .home-path-grid.avp-home-kv2-grid li>a{background:#192a20!important;border-color:#304a3a!important;color:#e8f4ec!important}
+body.dark-mode .hp-kv2-num{background:#224231!important;color:#a8e3bd!important}
+@media(max-width:900px){
+  .home-path-grid.avp-home-kv2-grid{grid-template-columns:1fr!important;gap:14px!important}
+  .hp-kv2-head{min-height:0}
+}
+@media(max-width:560px){
+  .home-path-grid.avp-home-kv2-grid .avp-home-kv2-card{padding:16px!important}
+  .home-path-grid.avp-home-kv2-grid li>a{grid-template-columns:32px 28px minmax(0,1fr)!important;min-height:56px!important;padding:8px 10px!important}
+  .hp-kv2-head h3{font-size:20px!important}
+}
