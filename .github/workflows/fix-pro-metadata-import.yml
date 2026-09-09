@@ -1,0 +1,55 @@
+name: Fix Pro metadata import
+
+on:
+  push:
+    branches:
+      - fix/pro-metadata-import-null
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch importer and validate
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          js_path = Path('admin-professional-track.js')
+          js = js_path.read_text(encoding='utf-8')
+          old = '$("aptCaseScore").value="10";'
+          new = '$("aptCaseMaxScore").value="10";'
+          if old in js:
+              js = js.replace(old, new, 1)
+          assert old not in js, 'stale aptCaseScore selector remains'
+          assert new in js, 'aptCaseMaxScore selector missing'
+          js_path.write_text(js, encoding='utf-8')
+
+          html_path = Path('admin.html')
+          html = html_path.read_text(encoding='utf-8')
+          html = html.replace('admin-professional-track.js?v=20260909-pro-metadata1', 'admin-professional-track.js?v=20260909-pro-metadata2')
+          html_path.write_text(html, encoding='utf-8')
+          PY
+
+          node --check admin-professional-track.js
+          grep -q 'id="aptCaseMaxScore"' admin.html
+          grep -q 'admin-professional-track.js?v=20260909-pro-metadata2' admin.html
+
+      - name: Commit patch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add admin-professional-track.js admin.html
+          if git diff --cached --quiet; then
+            echo "No patch needed."
+            exit 0
+          fi
+          git commit -m "Fix Pro metadata import max-score field"
+          git push origin HEAD:${GITHUB_REF_NAME}
