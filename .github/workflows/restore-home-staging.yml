@@ -1,0 +1,32 @@
+name: Restore Home Staging
+on:
+  push:
+    branches: [fix/restore-home-24-lessons]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: |
+          node --check avp-ui-system.js
+          node --check avp-home-knowledge-v2.js
+          node --check homework.js
+          node --check admin-homework.js
+          node --check practice-youtube-projects.js
+          node --check sw.js
+      - name: Homepage contract
+        run: |
+          grep -q "ensureHomeKnowledgeV2" avp-ui-system.js
+          ! grep -q "ensureHomeFlows" avp-ui-system.js
+          grep -q "Lộ trình 24 bài Excel" avp-home-knowledge-v2.js
+          grep -q "5 luồng học · Bảng xếp hạng" avp-home-knowledge-v2.js
+          test ! -e avp-home-flows-v1.js
+          test ! -e avp-home-flows-v1.css
+      - name: Homework preserved
+        run: |
+          test -s homework.html
+          test -s homework.js
+          test -s admin-homework.js
+          grep -q "homework.html" practice-video.html
+          grep -q "practice-hub-flow-v1.css" practice-video.html
