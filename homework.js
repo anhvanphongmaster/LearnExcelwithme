@@ -98,7 +98,7 @@
       <section class="hw-block hw-next"><h2>7 · Học tiếp</h2>${item.nextUrl?`<p>Đã sẵn sàng chuyển sang nội dung kế tiếp.</p><a href="${esc(item.nextUrl)}">${esc(item.nextLabel||'Học tiếp')} →</a>`:'<p>Chưa gắn bài/video tiếp theo. Bạn có thể quay về YouTube Project để chọn phần khác.</p><a href="practice-youtube.html">Mở YouTube Project →</a>'}</section>`;
     library.hidden=true;if(toolbar)toolbar.hidden=true;detail.hidden=false;
     detail.querySelector('[data-hw-back]')?.addEventListener('click',()=>closeDetail());
-    detail.querySelector('[data-hw-done]')?.addEventListener('click',e=>{
+    detail.querySelector('[data-hw-done]')?.addEventListener('click',()=>{
       const next=getProgress(key)==='done'?'in_progress':'done';setProgress(key,next);openDetail(key,{push:false});
     });
     if(push){history.replaceState(null,'',`homework.html?homework=${encodeURIComponent(key)}`)}
