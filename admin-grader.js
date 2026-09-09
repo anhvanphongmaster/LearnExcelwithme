@@ -169,9 +169,10 @@
     if(response.length<3)return alert("Nhập phản hồi cho học viên.");
     if(approve&&(score<0||score>100||!Number.isFinite(score)))return alert("Điểm chấm lại phải từ 0 đến 100.");
 
-    const ok=confirm(approve
-      ? `Duyệt chấm lại thành ${score}/100 và gửi thông báo cho học viên?`
-      : "Giữ nguyên điểm hệ thống và gửi phản hồi cho học viên?");
+    const message=approve
+      ? `Điểm chấm lại sẽ được cập nhật thành ${score}/100 và gửi thông báo cho học viên.`
+      : "Điểm hệ thống sẽ được giữ nguyên và phản hồi của Admin sẽ được gửi cho học viên.";
+    const ok=await window.avpConfirm(message,{title:approve?"Duyệt kết quả chấm lại?":"Giữ nguyên điểm hệ thống?",tone:approve?"ok":"warn",ok:approve?"Duyệt & gửi":"Giữ điểm & gửi",cancel:"Hủy"});
     if(!ok)return;
 
     const sb=await client();
@@ -269,7 +270,7 @@
     if(!uid||!lesson)return;
 
     const name=tr.querySelector("td strong")?.textContent||"người học";
-    const ok=confirm(`Cho ${name} làm lại bài này?\n\nKết quả hiện tại sẽ bị xóa khỏi hệ thống và tài khoản được nộp lại 1 lần.`);
+    const ok=await window.avpConfirm(`Kết quả hiện tại của ${name} sẽ bị xóa và tài khoản được nộp lại bài này 1 lần.`,{title:"Cho phép làm lại bài?",icon:"↺",tone:"danger",ok:"Cho làm lại",cancel:"Hủy"});
     if(!ok)return;
 
     const sb=await client();

@@ -786,12 +786,12 @@ document.addEventListener(
     "DOMContentLoaded",
     capNhatTienDo
 );
-function datLaiTienDo() {
+async function datLaiTienDo() {
         renderChallengeStats();
 
 
     const confirmReset =
-        confirm("Bạn có chắc muốn đặt lại toàn bộ tiến độ học không?");
+        await window.avpConfirm("Toàn bộ tiến độ học lưu trên thiết bị này sẽ được đặt lại.",{title:"Đặt lại tiến độ?",icon:"↺",tone:"warn",ok:"Đặt lại",cancel:"Hủy"});
 
     if (!confirmReset) return;
 
@@ -2970,12 +2970,10 @@ document.addEventListener(
 
     }
 );
-function xoaToanBoDashboard() {
+async function xoaToanBoDashboard() {
 
     const confirmDelete =
-        confirm(
-            "Bạn có chắc muốn xóa toàn bộ dữ liệu Dashboard không?"
-        );
+        await window.avpConfirm("Toàn bộ dữ liệu Dashboard lưu trên thiết bị này sẽ bị xóa.",{title:"Xóa dữ liệu Dashboard?",icon:"🗑️",tone:"danger",ok:"Xóa dữ liệu",cancel:"Hủy"});
 
     if (!confirmDelete) return;
 

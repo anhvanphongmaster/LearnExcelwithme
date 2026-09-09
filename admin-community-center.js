@@ -601,7 +601,7 @@
 
   async function moderationAction(reportId,action){
     const dangerous=["hide","restrict","suspend"].includes(action);
-    if(dangerous && !confirm("Xác nhận thao tác kiểm duyệt này?"))return;
+    if(dangerous){const ok=await window.avpConfirm("Thao tác kiểm duyệt này sẽ tác động trực tiếp tới nội dung hoặc tài khoản cộng đồng.",{title:"Xác nhận kiểm duyệt?",icon:"🛡️",tone:"danger",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return;}
 
     try{
       await rpc("admin_community_moderation_action",{
@@ -689,9 +689,7 @@
   }
 
   async function setCertificateRevoked(id,revoked){
-    const ok=confirm(revoked
-      ?"Thu hồi chứng nhận này?"
-      :"Khôi phục hiệu lực chứng nhận này?");
+    const ok=await window.avpConfirm(revoked?"Chứng nhận sẽ chuyển sang trạng thái đã thu hồi.":"Chứng nhận sẽ được khôi phục hiệu lực.",{title:revoked?"Thu hồi chứng nhận?":"Khôi phục chứng nhận?",tone:revoked?"danger":"ok",ok:revoked?"Thu hồi":"Khôi phục",cancel:"Hủy"});
     if(!ok)return;
 
     try{

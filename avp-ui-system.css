@@ -1,0 +1,171 @@
+/* AVP UI System V1 — shared dialogs, upload controls and modal shell */
+:root{
+  --avp-ui-accent:#217346;
+  --avp-ui-accent-strong:#145a32;
+  --avp-ui-text:#173f2d;
+  --avp-ui-muted:#62766a;
+  --avp-ui-border:#d4e2d9;
+  --avp-ui-surface:#ffffff;
+  --avp-ui-soft:#f5f9f6;
+  --avp-ui-danger:#b63d32;
+  --avp-ui-warning:#8a5b00;
+  --avp-ui-radius:18px;
+  --avp-ui-shadow:0 24px 70px rgba(16,48,31,.22),0 3px 12px rgba(16,48,31,.08);
+}
+
+/* Native file controls: one readable treatment across learner + admin pages. */
+input[type="file"]{
+  min-height:44px;
+  box-sizing:border-box;
+  border:1px solid var(--avp-ui-border)!important;
+  border-radius:11px!important;
+  background:var(--avp-ui-surface)!important;
+  color:var(--avp-ui-text)!important;
+  font:inherit;
+  font-size:12px;
+  line-height:1.35;
+  cursor:pointer;
+}
+input[type="file"]::file-selector-button{
+  min-height:34px;
+  margin:-1px 10px -1px -1px;
+  padding:0 13px;
+  border:0;
+  border-right:1px solid #105a34;
+  border-radius:10px 0 0 10px;
+  background:var(--avp-ui-accent);
+  color:#fff;
+  font:inherit;
+  font-weight:850;
+  cursor:pointer;
+}
+input[type="file"]::-webkit-file-upload-button{
+  min-height:34px;
+  margin:-1px 10px -1px -1px;
+  padding:0 13px;
+  border:0;
+  border-right:1px solid #105a34;
+  border-radius:10px 0 0 10px;
+  background:var(--avp-ui-accent);
+  color:#fff;
+  font:inherit;
+  font-weight:850;
+  cursor:pointer;
+}
+input[type="file"]:hover::file-selector-button{background:#185f3a}
+input[type="file"]:focus-visible{outline:3px solid rgba(33,115,70,.18);outline-offset:2px;border-color:#70aa86!important}
+input[type="file"]:disabled{background:#eef3f0!important;color:#687970!important;cursor:not-allowed;opacity:1!important}
+input[type="file"]:disabled::file-selector-button{background:#6f8077;color:#fff;cursor:not-allowed}
+
+/* Custom upload labels must not inherit low-contrast label/span rules. */
+.apt-grader-upload{background:var(--avp-ui-accent)!important;border-color:var(--avp-ui-accent)!important;color:#fff!important;opacity:1!important}
+.apt-grader-upload>span{color:#fff!important;font-weight:900!important}
+.apt-grader-upload:hover{background:#185f3a!important;border-color:#185f3a!important}
+.apt-grader-upload:focus-within{outline:3px solid rgba(33,115,70,.2);outline-offset:2px}
+
+/* Shared visual shell for existing custom modals; keeps their feature-specific layout/content. */
+.avp-modal,.avp-ui-modal,.pv-modal,.pg-guide-modal,.pg-publish-modal,.pg-submit-modal,.pg-appeal-modal,.avp-codehub-modal{
+  align-items:center!important;
+  justify-content:center!important;
+}
+.avp-modal-backdrop,.avp-ui-modal-back,[class*="-backdrop"]{
+  background:rgba(7,24,15,.62)!important;
+  backdrop-filter:blur(7px)!important;
+  -webkit-backdrop-filter:blur(7px)!important;
+}
+.avp-modal-card,.avp-ui-modal-card,.pv-modal-card,.pg-guide-card,.avp-codehub-dialog,[class*="-modal-card"]{
+  border-radius:var(--avp-ui-radius)!important;
+  box-shadow:var(--avp-ui-shadow)!important;
+}
+.pv-modal-actions button,.avp-modal-actions button,.avp-ui-actions button,[role="dialog"] button{
+  min-height:40px;
+  border-radius:10px;
+}
+
+/* New global dialog system. */
+.avp-ui-modal[hidden]{display:none!important}
+.avp-ui-modal{
+  position:fixed;
+  inset:0;
+  z-index:2147483000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  isolation:isolate;
+}
+.avp-ui-modal-back{position:absolute;inset:0;background:rgba(7,24,15,.62);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.avp-ui-modal-card{
+  position:relative;
+  z-index:1;
+  width:min(470px,100%);
+  max-height:min(84vh,720px);
+  overflow:auto;
+  box-sizing:border-box;
+  padding:24px 24px 20px;
+  border:1px solid #cfe0d6;
+  border-radius:20px;
+  background:linear-gradient(180deg,#f5fbf7 0,#fff 118px);
+  color:var(--avp-ui-text);
+  box-shadow:var(--avp-ui-shadow);
+  text-align:left;
+  animation:avpUiDialogIn .18s cubic-bezier(.22,1,.36,1);
+}
+@keyframes avpUiDialogIn{from{opacity:0;transform:translateY(10px) scale(.97)}to{opacity:1;transform:none}}
+.avp-ui-modal-head{display:flex;gap:13px;align-items:flex-start;padding-right:28px}
+.avp-ui-icon{flex:0 0 44px;width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:#e7f5ec;border:1px solid #c8e3d2;font-size:22px}
+.avp-ui-heading{min-width:0;flex:1}
+.avp-ui-title{margin:1px 0 4px;color:var(--avp-ui-accent-strong);font-size:18px;line-height:1.25;font-weight:900}
+.avp-ui-subtitle{margin:0;color:#7a8b82;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.avp-ui-body{margin:16px 0 0;color:#445a4d;font-size:14px;line-height:1.6;white-space:pre-line;overflow-wrap:anywhere}
+.avp-ui-prompt-wrap{margin-top:15px}
+.avp-ui-prompt-label{display:block;margin-bottom:6px;color:#496455;font-size:11px;font-weight:850}
+.avp-ui-prompt{
+  width:100%;
+  min-height:44px;
+  box-sizing:border-box;
+  padding:10px 12px;
+  border:1px solid #cbdcd2;
+  border-radius:11px;
+  background:#fff;
+  color:#173f2d;
+  font:inherit;
+  font-size:14px;
+  outline:none;
+}
+.avp-ui-prompt:focus{border-color:#5a9872;box-shadow:0 0 0 3px rgba(33,115,70,.11)}
+.avp-ui-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:20px;padding-top:16px;border-top:1px solid #e3ece6}
+.avp-ui-btn{min-width:100px;min-height:42px;padding:0 16px;border-radius:10px;border:1px solid #cbdcd2;background:#fff;color:#294d38;font:inherit;font-size:13px;font-weight:850;cursor:pointer}
+.avp-ui-btn:hover{background:#f3f7f4}
+.avp-ui-ok{border-color:var(--avp-ui-accent);background:var(--avp-ui-accent);color:#fff}
+.avp-ui-ok:hover{background:#185f3a}
+.avp-ui-modal.tone-danger .avp-ui-ok{border-color:#b53b32;background:#b53b32;color:#fff}
+.avp-ui-modal.tone-danger .avp-ui-icon{background:#fff0ee;border-color:#efc6c1}
+.avp-ui-modal.tone-danger .avp-ui-title{color:#963629}
+.avp-ui-modal.tone-warn .avp-ui-icon{background:#fff7df;border-color:#ecd291}
+.avp-ui-modal.tone-warn .avp-ui-title{color:#795600}
+.avp-ui-modal.tone-info .avp-ui-icon{background:#edf5ff;border-color:#ccdff8}
+.avp-ui-close{position:absolute;right:13px;top:13px;width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:10px;background:transparent;color:#718178;font-size:22px;line-height:1;cursor:pointer}
+.avp-ui-close:hover{background:#eef4f0;color:#294d38}
+body.avp-ui-dialog-open{overflow:hidden!important}
+
+body.dark-mode .avp-ui-modal-card{background:linear-gradient(180deg,#17271e,#111c16 118px);border-color:#355043;color:#dbe9df}
+body.dark-mode .avp-ui-title{color:#bce7ca}
+body.dark-mode .avp-ui-body{color:#c1d1c7}
+body.dark-mode .avp-ui-actions{border-color:#2d4336}
+body.dark-mode .avp-ui-btn{background:#1c2e23;border-color:#3a5545;color:#dbe9df}
+body.dark-mode .avp-ui-prompt{background:#132119;border-color:#395343;color:#e4efe8}
+body.dark-mode input[type="file"]{background:#16241b!important;border-color:#385143!important;color:#d4e2d9!important}
+
+@media(max-width:560px){
+  .avp-ui-modal{padding:12px}
+  .avp-ui-modal-card{padding:20px 16px 16px;border-radius:17px}
+  .avp-ui-actions{display:grid;grid-template-columns:1fr}
+  .avp-ui-btn{width:100%}
+}
+@media(prefers-reduced-motion:reduce){.avp-ui-modal-card{animation:none}}
+
+/* Native dialog elements use the same AVP surface when a feature uses <dialog>. */
+dialog{border:1px solid var(--avp-ui-border);border-radius:var(--avp-ui-radius);background:var(--avp-ui-surface);color:var(--avp-ui-text);box-shadow:var(--avp-ui-shadow);font:inherit}
+dialog::backdrop{background:rgba(7,24,15,.62);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+[role="dialog"]{font-family:inherit}

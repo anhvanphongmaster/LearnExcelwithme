@@ -173,7 +173,7 @@ function mountButton(){
     try{
       const sub=await currentSubscription();
       if(sub&&enabled()){
-        if(confirm("Tắt Web Push trên thiết bị này?"))await unsubscribe();
+        const ok=await window.avpConfirm("Thiết bị này sẽ ngừng nhận thông báo Web Push từ website.",{title:"Tắt Web Push?",tone:"warn",ok:"Tắt thông báo",cancel:"Giữ lại"});if(ok)await unsubscribe();
       }else{
         await subscribe();
       }
