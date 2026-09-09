@@ -1,28 +1,159 @@
-(()=>{'use strict';const $=id=>document.getElementById(id),BUCKET='site-downloads';let tools=[],ideas=[],edit=null,loaded=false,busy=false,mergeSource=null;
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-async function client(){for(let i=0;i<40;i++){const sb=window.avpSupabase||window.supabaseClient;if(sb?.rpc)return sb;await new Promise(r=>setTimeout(r,100))}throw new Error('connection_unavailable')}
-async function rpc(name,args={}){const sb=await client(),res=await sb.rpc(name,args);if(res.error)throw res.error;return res.data}
-function uuid(){return crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random().toString(36).slice(2)}`}
-function safeName(v){return String(v||'tool.zip').normalize('NFKD').replace(/[^a-zA-Z0-9._-]+/g,'-').replace(/-+/g,'-').slice(-110)}
-function size(n){n=Number(n)||0;if(!n)return '0 B';const u=['B','KB','MB','GB'];let i=0;while(n>=1024&&i<3){n/=1024;i++}return `${n>=10?Math.round(n):n.toFixed(1)} ${u[i]}`}
-function dateText(v){const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})/);return m?`${m[3]}/${m[2]}/${m[1]}`:'—'}
-function todayVN(){const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const o=Object.fromEntries(parts.map(x=>[x.type,x.value]));return `${o.year}-${o.month}-${o.day}`}
-function validTikTok(v){try{const u=new URL(String(v||''));return u.protocol==='https:'&&(u.hostname==='tiktok.com'||u.hostname.endsWith('.tiktok.com'))}catch(_){return false}}
-function note(t){$('atNotice').textContent=t||''}
-function syncStatus(){const published=$('atToolStatus').value==='published';$('atToolReleaseDate').required=published;$('atToolTikTok').required=published;if(published&&!$('atToolReleaseDate').value)$('atToolReleaseDate').value=todayVN()}
-function reset(){edit=null;$('atToolForm').reset();$('atToolId').value='';$('atToolOrder').value=(tools.reduce((m,x)=>Math.max(m,Number(x.sort_order)||0),0)+1);$('atToolStatus').value='draft';$('atToolReleaseDate').value='';$('atToolTikTok').value='';$('atFileCurrent').textContent='Chưa có file ZIP đang gắn.';syncStatus();note('');$('atToolName').focus()}
-function render(){ $('atTotal').textContent=tools.length;$('atActive').textContent=tools.filter(x=>x.is_active).length;$('atIdeas').textContent=ideas.reduce((a,x)=>a+Number(x.supporters||0),0);
- $('atToolList').innerHTML=tools.length?tools.map(t=>`<article class="at-row"><span class="num">${String(t.sort_order).padStart(2,'0')}</span><div><div class="at-title-line"><h4>${esc(t.name)}</h4><span class="at-state ${t.is_active?'live':'draft'}">${t.is_active?'Đã phát hành':'Bản nháp'}</span></div><p>${esc(t.application||'')}</p><small>${esc(t.file_name)} · ${size(t.file_size)} · ${Number(t.download_count)||0} lượt tải · Ngày ${dateText(t.release_date)}</small>${t.tiktok_url?`<a class="at-tiktok" href="${esc(t.tiktok_url)}" target="_blank" rel="noopener noreferrer">▶ TikTok hướng dẫn ↗</a>`:''}</div><div class="at-row-actions"><button type="button" data-at-edit="${t.id}">Sửa</button><button type="button" class="danger" data-at-delete="${t.id}">Xóa</button></div></article>`).join(''):'<div class="at-empty">Chưa có Tool. Dùng form bên trái để thêm Tool đầu tiên.</div>';
- $('atIdeaList').innerHTML=ideas.length?ideas.map((x,i)=>{const merging=mergeSource===x.id;let actions='';if(mergeSource){actions=merging?'<button type="button" data-at-merge-cancel>Hủy gộp</button>':`<button class="primary" type="button" data-at-merge-target="${x.id}">Gộp vào đây</button>`}else{actions=`<button type="button" data-at-idea-rename="${x.id}">Đổi tên</button><button type="button" data-at-merge-source="${x.id}">Gộp</button>`}return `<div class="at-idea-row${merging?' is-merge-source':''}"><div class="at-idea-title"><strong>${i+1}. ${esc(x.title)}</strong><small>${merging?'Đang chọn làm ý tưởng nguồn để gộp':''}</small></div><b>${Number(x.supporters)||0} lượt</b><select data-at-idea-status="${x.id}"><option value="open" ${x.status==='open'?'selected':''}>Mới</option><option value="planned" ${x.status==='planned'?'selected':''}>Ưu tiên / lên kế hoạch</option><option value="building" ${x.status==='building'?'selected':''}>Đang làm</option><option value="released" ${x.status==='released'?'selected':''}>Đã phát hành</option><option value="hidden" ${x.status==='hidden'?'selected':''}>Ẩn</option></select><div class="at-idea-actions">${actions}</div></div>`}).join(''):'<div class="at-empty">Chưa có ý tưởng Tool từ người dùng.</div>'}
-async function load(force=false){if(loaded&&!force){render();return}try{note('Đang tải dữ liệu Tool…');[tools,ideas]=await Promise.all([rpc('admin_tools_catalog_v2'),rpc('admin_tool_ideas_v1')]);tools=tools||[];ideas=ideas||[];loaded=true;render();note('')}catch(e){console.error(e);note('Không tải được Tool. Kiểm tra quyền Admin hoặc SQL TOOL-LIBRARY-V1-1.sql.')}}
-function openEdit(id){edit=tools.find(x=>x.id===id);if(!edit)return;$('atToolId').value=edit.id;$('atToolOrder').value=edit.sort_order;$('atToolName').value=edit.name;$('atToolApplication').value=edit.application||'';$('atToolDescription').value=edit.description||'';$('atToolStatus').value=edit.is_active?'published':'draft';$('atToolReleaseDate').value=edit.release_date||'';$('atToolTikTok').value=edit.tiktok_url||'';$('atFileCurrent').innerHTML=`File hiện tại: <b>${esc(edit.file_name)}</b> · ${size(edit.file_size)}`;$('atToolFile').value='';syncStatus();note('Đang sửa Tool. Chỉ chọn ZIP mới nếu muốn thay file.');$('atToolForm').scrollIntoView({behavior:'smooth',block:'start'})}
-async function upload(file,id){if(!file||!file.name.toLowerCase().endsWith('.zip'))throw new Error('Chỉ nhận file ZIP.');if(file.size>50*1024*1024)throw new Error('File ZIP không được vượt quá 50 MB.');const sb=await client();const path=`tools/${id}/${Date.now()}-${safeName(file.name)}`;const res=await sb.storage.from(BUCKET).upload(path,file,{upsert:false,contentType:file.type||'application/zip',cacheControl:'3600'});if(res.error)throw res.error;const pub=sb.storage.from(BUCKET).getPublicUrl(path);return {storage_path:path,file_name:file.name,file_size:file.size,file_url:pub?.data?.publicUrl||''}}
-async function save(e){e.preventDefault();if(busy)return;busy=true;const btn=$('atToolSave');btn.disabled=true;let uploaded=null;try{const id=edit?.id||uuid(),file=$('atToolFile').files?.[0],published=$('atToolStatus').value==='published',tiktok=$('atToolTikTok').value.trim();let meta=edit?{storage_path:edit.storage_path,file_name:edit.file_name,file_size:edit.file_size,file_url:edit.file_url}:null;if(file){uploaded=await upload(file,id);meta=uploaded}if(!meta)throw new Error('Hãy chọn file ZIP.');if(published&&!validTikTok(tiktok))throw new Error('Tool phát hành cần link TikTok hướng dẫn hợp lệ.');const payload={id,sort_order:Number($('atToolOrder').value)||0,name:$('atToolName').value.trim(),application:$('atToolApplication').value.trim(),description:$('atToolDescription').value.trim(),is_active:published,release_date:$('atToolReleaseDate').value||'',tiktok_url:tiktok,source_path:meta.storage_path,...meta};if(!payload.name)throw new Error('Hãy nhập tên Tool.');await rpc('admin_tool_save_v1',{p_tool:payload});if(uploaded&&edit?.storage_path&&edit.storage_path!==uploaded.storage_path){try{(await client()).storage.from(BUCKET).remove([edit.storage_path])}catch(_){}}await load(true);reset();note(published?'Đã phát hành Tool. Kho Tool sẽ nhận dữ liệu mới khi tải lại.':'Đã lưu bản nháp. Tool chưa hiển thị ngoài website.')}catch(err){console.error(err);if(uploaded){try{(await client()).storage.from(BUCKET).remove([uploaded.storage_path])}catch(_){}}const m=String(err?.message||'');note(m.includes('tiktok_required')||m.includes('invalid_tiktok_url')?'Tool phát hành cần link TikTok hướng dẫn hợp lệ.':m||'Chưa lưu được Tool.')}finally{busy=false;btn.disabled=false}}
-async function del(id){const row=tools.find(x=>x.id===id);if(!row)return;const ok=await window.avpConfirm(`Tool “${row.name}” sẽ bị xóa khỏi Kho Tool và file quản lý liên quan sẽ được dọn.`,{title:"Xóa Tool?",icon:"🗑️",tone:"danger",ok:"Xóa Tool",cancel:"Hủy"});if(!ok)return;try{const path=await rpc('admin_tool_delete_v1',{p_id:id});if(path){const sb=await client();await sb.storage.from(BUCKET).remove([path])}await load(true);note('Đã xóa Tool.')}catch(e){note('Chưa xóa được Tool.')}}
-async function status(id,value){try{await rpc('admin_tool_idea_status_v1',{p_id:id,p_status:value});await load(true)}catch(e){note('Chưa cập nhật được trạng thái ý tưởng.')}}
-async function renameIdea(id){const row=ideas.find(x=>x.id===id);if(!row)return;const title=await window.avpPrompt('Nhập tên mới cho ý tưởng Tool.',{title:'Đổi tên ý tưởng',inputLabel:'Tên ý tưởng',defaultValue:row.title,ok:'Lưu tên',cancel:'Hủy'});if(title===null)return;const clean=title.trim();if(clean.length<5||clean.length>140){note('Tên ý tưởng cần từ 5–140 ký tự.');return}try{await rpc('admin_tool_idea_rename_v1',{p_id:id,p_title:clean});await load(true);note('Đã đổi tên ý tưởng.')}catch(e){note(String(e?.message||'').includes('duplicate_idea')?'Đã có một ý tưởng khác cùng tên. Hãy dùng Gộp để cộng dồn lượt.':'Chưa đổi tên được ý tưởng.')}}
-function startMerge(id){mergeSource=id;render();note('Chế độ gộp: chọn “Gộp vào đây” ở ý tưởng bạn muốn giữ lại. Lượt trùng của cùng một người chỉ được tính một lần.')}
-function cancelMerge(){mergeSource=null;render();note('')}
-async function mergeInto(targetId){const source=ideas.find(x=>x.id===mergeSource),target=ideas.find(x=>x.id===targetId);if(!source||!target||source.id===target.id)return;const ok=await window.avpConfirm(`“${source.title}” sẽ được gộp vào “${target.title}”. Ý tưởng nguồn bị xóa và lượt nhu cầu được cộng dồn.`,{title:"Gộp ý tưởng Tool?",tone:"warn",ok:"Gộp ý tưởng",cancel:"Hủy"});if(!ok)return;try{const total=await rpc('admin_tool_idea_merge_v1',{p_source_id:source.id,p_target_id:target.id});mergeSource=null;await load(true);note(`Đã gộp ý tưởng. Chủ đề đích hiện có ${Number(total)||0} lượt nhu cầu.`)}catch(e){note('Chưa gộp được ý tưởng.')}}
-window.addEventListener('avp:admin-tools-open',()=>load());document.addEventListener('click',e=>{const ed=e.target.closest('[data-at-edit]');if(ed)return openEdit(ed.dataset.atEdit);const de=e.target.closest('[data-at-delete]');if(de)return del(de.dataset.atDelete);const rn=e.target.closest('[data-at-idea-rename]');if(rn)return renameIdea(rn.dataset.atIdeaRename);const ms=e.target.closest('[data-at-merge-source]');if(ms)return startMerge(ms.dataset.atMergeSource);const mt=e.target.closest('[data-at-merge-target]');if(mt)return mergeInto(mt.dataset.atMergeTarget);if(e.target.closest('[data-at-merge-cancel]'))return cancelMerge()});document.addEventListener('change',e=>{if(e.target.matches('[data-at-idea-status]'))status(e.target.dataset.atIdeaStatus,e.target.value)});$('atToolStatus')?.addEventListener('change',syncStatus);$('atToolForm')?.addEventListener('submit',save);$('atToolReset')?.addEventListener('click',reset);$('atReload')?.addEventListener('click',()=>load(true));reset();
+(()=>{
+'use strict';
+
+const PANEL_SELECTOR='[data-admin-section="tools"]';
+const CORE_SRC='admin-tools-core.js?v=20260909-panel1';
+
+function ensurePanel(){
+  if(document.querySelector(PANEL_SELECTOR)) return true;
+
+  const analyticsHeading=document.querySelector('.admin-section-heading[data-admin-section="analytics"]');
+  const dashboard=document.getElementById('adminDashboard');
+  const parent=analyticsHeading?.parentElement||dashboard;
+  if(!parent){
+    console.error('[Admin Tool] Không tìm thấy adminDashboard để khôi phục panel Tool.');
+    return false;
+  }
+
+  const template=document.createElement('template');
+  template.innerHTML=`
+    <div class="admin-section-heading admin-view-section" data-admin-section="tools">
+      <span>🧰 KHO TOOL</span>
+      <h2>Quản lý Tool & nhu cầu cộng đồng</h2>
+    </div>
+
+    <section class="admin-panel admin-view-section admin-tools-panel" id="adminToolsPanel" data-admin-section="tools">
+      <div class="admin-panel-head">
+        <div>
+          <span>🧰 TOOL LIBRARY</span>
+          <h2>Phát hành Tool</h2>
+          <p>Tạo bản nháp trước, sau đó gắn ZIP, ngày phát hành và video TikTok hướng dẫn để đưa Tool lên website.</p>
+        </div>
+        <button type="button" id="atReload">↻ Làm mới</button>
+      </div>
+
+      <div class="at-kpis">
+        <article><small>Tổng Tool</small><strong id="atTotal">0</strong></article>
+        <article><small>Đã phát hành</small><strong id="atActive">0</strong></article>
+        <article><small>Lượt cần Tool</small><strong id="atIdeas">0</strong></article>
+      </div>
+
+      <div class="at-layout">
+        <section class="at-box">
+          <h3>Tool editor</h3>
+          <p>Bản nháp không hiện ngoài website. Khi phát hành cần đủ file ZIP, ngày phát hành và link TikTok hướng dẫn.</p>
+
+          <form id="atToolForm" class="at-form">
+            <input id="atToolId" type="hidden">
+
+            <label>
+              <span>Thứ tự</span>
+              <input id="atToolOrder" type="number" min="0" max="9999" step="1" value="0">
+            </label>
+
+            <label>
+              <span>Trạng thái</span>
+              <select id="atToolStatus">
+                <option value="draft">Bản nháp</option>
+                <option value="published">Phát hành</option>
+              </select>
+            </label>
+
+            <label class="wide">
+              <span>Tên Tool</span>
+              <input id="atToolName" type="text" maxlength="120" placeholder="Ví dụ: Tool gộp file Excel" required>
+            </label>
+
+            <label class="wide">
+              <span>Ứng dụng</span>
+              <input id="atToolApplication" type="text" maxlength="240" placeholder="Excel · Power Query · Công việc văn phòng">
+            </label>
+
+            <label class="wide">
+              <span>Mô tả</span>
+              <textarea id="atToolDescription" rows="4" maxlength="1200" placeholder="Tool giải quyết việc gì, phù hợp với ai…"></textarea>
+            </label>
+
+            <label>
+              <span>Ngày phát hành</span>
+              <input id="atToolReleaseDate" type="date">
+              <small>Dùng để hiển thị ngày ra Tool và tính lịch Tool tiếp theo.</small>
+            </label>
+
+            <label>
+              <span>TikTok hướng dẫn</span>
+              <input id="atToolTikTok" type="url" maxlength="1200" placeholder="https://www.tiktok.com/@.../video/...">
+              <small>Được gắn trực tiếp vào thẻ Tool ngoài website.</small>
+            </label>
+
+            <label class="wide">
+              <span>File Tool · ZIP</span>
+              <input id="atToolFile" type="file" accept=".zip,application/zip">
+              <small id="atFileCurrent" class="at-file-current">Chưa có file ZIP đang gắn.</small>
+            </label>
+
+            <div class="at-actions">
+              <button id="atToolSave" type="submit" class="primary">Lưu Tool</button>
+              <button id="atToolReset" type="button">Tạo mới / Hủy sửa</button>
+            </div>
+
+            <p id="atNotice" class="at-notice" role="status"></p>
+          </form>
+        </section>
+
+        <section class="at-box">
+          <div class="at-toolbar">
+            <div>
+              <h3>Danh sách Tool</h3>
+              <p>Quản lý bản nháp, Tool đang phát hành, file và video hướng dẫn.</p>
+            </div>
+          </div>
+          <div id="atToolList" class="at-list">
+            <div class="at-empty">Chuyển sang tab Tool để tải dữ liệu.</div>
+          </div>
+        </section>
+      </div>
+
+      <section class="at-box at-ideas">
+        <div class="at-toolbar">
+          <div>
+            <h3>Ý tưởng cộng đồng</h3>
+            <p>Đổi tên, gộp ý tưởng trùng và cập nhật trạng thái ưu tiên mà không làm mất lượt nhu cầu hợp lệ.</p>
+          </div>
+        </div>
+        <div id="atIdeaList">
+          <div class="at-empty">Chuyển sang tab Tool để tải ý tưởng.</div>
+        </div>
+      </section>
+    </section>`;
+
+  if(analyticsHeading) parent.insertBefore(template.content,analyticsHeading);
+  else parent.appendChild(template.content);
+  return !!document.getElementById('adminToolsPanel');
+}
+
+function loadCore(){
+  if(window.__avpAdminToolsCoreLoading) return;
+  window.__avpAdminToolsCoreLoading=true;
+  const script=document.createElement('script');
+  script.src=CORE_SRC;
+  script.async=false;
+  script.dataset.avpAdminToolsCore='1';
+  script.onload=()=>{
+    window.__avpAdminToolsCoreReady=true;
+    const toolTab=document.querySelector('.admin-view-tabs [data-admin-view="tools"]');
+    const panel=document.getElementById('adminToolsPanel');
+    if(toolTab?.classList.contains('active') && panel && !panel.classList.contains('admin-view-hidden')){
+      window.dispatchEvent(new CustomEvent('avp:admin-tools-open'));
+    }
+  };
+  script.onerror=()=>{
+    window.__avpAdminToolsCoreLoading=false;
+    const notice=document.getElementById('atNotice');
+    if(notice) notice.textContent='Không tải được module quản lý Tool. Hãy tải lại trang.';
+  };
+  document.head.appendChild(script);
+}
+
+if(ensurePanel()) loadCore();
 })();
