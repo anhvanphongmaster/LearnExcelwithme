@@ -60,14 +60,13 @@ if marker not in js:
 '''
     js=js.replace(anchor,block+anchor,1)
 
-    listener_anchor='    $("aptCaseReset")?.addEventListener("click",resetCaseForm);\n'
+    listener_anchor='$("aptCaseReset")?.addEventListener("click",resetCaseForm);'
     assert listener_anchor in js, 'reset listener anchor missing'
-    listener=r'''    $("aptCaseMetadataFile")?.addEventListener("change",async event=>{
+    listener=r'''$("aptCaseMetadataFile")?.addEventListener("change",async event=>{
       const input=event.currentTarget;
       try{await importCaseMetadataFile(input.files?.[0]||null)}catch(error){await window.avpAlert(String(error?.message||error),{title:"Không nạp được metadata",tone:"error",icon:"!"})}
       finally{input.value=""}
-    });
-'''
+    });'''
     js=js.replace(listener_anchor,listener_anchor+listener,1)
     js_path.write_text(js,encoding='utf-8')
 
