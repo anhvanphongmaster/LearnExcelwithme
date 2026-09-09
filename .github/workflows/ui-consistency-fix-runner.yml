@@ -1,0 +1,30 @@
+name: Fix UI consistency runner
+on:
+  push:
+    branches: [ui-consistency-system]
+    paths: ['.github/workflows/ui-consistency-fix-runner.yml']
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('.github/workflows/ui-consistency-apply.yml')
+          s=p.read_text(encoding='utf-8')
+          anchor='          # Main Admin remaining native confirm/prompt fallbacks/calls.\n'
+          insert='          # Main Admin remaining native confirm/prompt fallbacks/calls.\n          change(\'admin.js\',\'$("adminMaintenanceOff")?.addEventListener("click",()=>{\',\'$("adminMaintenanceOff")?.addEventListener("click",async()=>{\')\n'
+          if insert not in s:
+            if anchor not in s: raise SystemExit('admin maintenance anchor missing')
+            s=s.replace(anchor,insert,1)
+          s=s.replace('rm -f .github/workflows/ui-dialog-audit.yml .github/workflows/ui-dialog-sites.yml .github/workflows/ui-consistency-apply.yml','rm -f .github/workflows/ui-dialog-audit.yml .github/workflows/ui-dialog-sites.yml .github/workflows/ui-consistency-apply.yml .github/workflows/ui-consistency-fix-runner.yml')
+          p.write_text(s,encoding='utf-8')
+          PY
+          git config user.name 'anhvanphongmaster'
+          git config user.email 'anhvanphongmaster@gmail.com'
+          git add .github/workflows/ui-consistency-apply.yml
+          git commit -m 'UI staging: fix async maintenance confirmation'
+          git push
