@@ -1,0 +1,50 @@
+name: Pro Runtime Browser Audit Wrapper
+
+on:
+  push:
+    branches: [pro-runtime-browser-audit]
+    paths: ['.github/workflows/pro-runtime-browser-audit-wrapper.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Execute audited browser harness
+        run: |
+          set -euo pipefail
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright-core@1.55.0 >/dev/null
+          export CHROME_PATH="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser)"
+          test -n "$CHROME_PATH"
+
+          python - <<'PY'
+          from pathlib import Path
+
+          src=Path('.github/workflows/pro-runtime-browser-audit.yml').read_text(encoding='utf-8').splitlines()
+
+          def extract(step_name):
+              needle=f'      - name: {step_name}'
+              start=next(i for i,line in enumerate(src) if line==needle)
+              run_i=next(i for i in range(start+1,len(src)) if src[i].startswith('        run: |'))
+              out=[]
+              for line in src[run_i+1:]:
+                  if line.startswith('      - name: ') or line.startswith('      - uses: '):
+                      break
+                  if line.startswith('          '): out.append(line[10:])
+                  elif line.strip(): raise SystemExit(f'unexpected indentation in {step_name}: {line!r}')
+                  else: out.append('')
+              return '\n'.join(out)+'\n'
+
+          Path('/tmp/pro-prepare.sh').write_text(extract('Prepare isolated learner runtime harness'),encoding='utf-8')
+          Path('/tmp/pro-browser.sh').write_text(extract('Run current-source browser automation'),encoding='utf-8')
+          PY
+
+          bash /tmp/pro-prepare.sh
+          ln -sfn "$PWD/node_modules" /tmp/node_modules
+          bash /tmp/pro-browser.sh
