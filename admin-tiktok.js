@@ -6,7 +6,8 @@
   function notice(text){$('attNotice').hidden=!text;$('attNotice').textContent=text||''}
   function formMessage(form,text){const node=form.querySelector('.att-form-message');node.hidden=!text;node.textContent=text||''}
   function hasEditor(){return !$('attTopicForm').hidden||!$('attLessonForm').hidden}
-  function closeEditor(force=false){if(busy&&!force)return false;if(dirty&&!force&&!confirm('Bỏ các thay đổi chưa lưu?'))return false;$('attTopicForm').hidden=true;$('attLessonForm').hidden=true;dirty=false;return true}
+  function closeEditor(force=false){if(busy&&!force)return false;if(dirty&&!force)return false;$('attTopicForm').hidden=true;$('attLessonForm').hidden=true;dirty=false;return true}
+  async function requestCloseEditor(){if(busy)return false;if(dirty){const ok=await window.avpConfirm('Các thay đổi chưa lưu sẽ bị bỏ.',{title:'Bỏ thay đổi chưa lưu?',tone:'warn',ok:'Bỏ thay đổi',cancel:'Tiếp tục sửa'});if(!ok)return false}return closeEditor(true)}
   function topicCard(row){const list=lessons.filter(item=>item.topic_id===row.id),live=list.filter(item=>item.status==='published').length;return `<article class="att-topic-card"><div><span class="att-badge ${row.is_active?'live':''}">${row.is_active?'Đang bật':'Đang ẩn'}</span><h3>${T.esc(row.title)}</h3><p>${T.esc(row.description||'')}</p><small>${list.length} bài · ${live} đã phát hành</small></div><div class="att-row-actions"><button type="button" data-att-open-topic="${T.esc(row.id)}" class="primary">Quản lý bài →</button><button type="button" data-att-edit-topic="${T.esc(row.id)}">Sửa chủ đề</button><button type="button" data-att-delete-topic="${T.esc(row.id)}" class="danger">Xóa</button></div></article>`}
   function render(){
     $('attTopicsCount').textContent=topics.length;$('attLiveCount').textContent=lessons.filter(row=>row.status==='published'&&topics.some(t=>t.id===row.topic_id&&t.is_active)).length;$('attDraftCount').textContent=lessons.filter(row=>row.status==='draft').length;
@@ -25,12 +26,12 @@
     $('attReload').disabled=true;notice('Đang tải chủ đề và bài TikTok…');
     loading=(async()=>{try{const data=await T.rpc('admin_tiktok_catalog_v1');topics=Array.isArray(data?.topics)?data.topics:[];lessons=Array.isArray(data?.lessons)?data.lessons:[];loaded=true;render();notice('');return true}catch(error){loaded=false;notice(T.message(error,true));return false}finally{loading=null;$('attReload').disabled=busy}})();return loading;
   }
-  function openTopic(row){
-    if(!loaded||!closeEditor())return;topicEdit=row||null;$('attTopicForm').reset();$('attTopicFormTitle').textContent=row?'Sửa chủ đề':'Thêm chủ đề';$('attTopicTitle').value=row?.title||'';$('attTopicDescription').value=row?.description||'';$('attTopicOrder').value=row?.sort_order??topics.length;$('attTopicActive').checked=row?row.is_active:true;formMessage($('attTopicForm'),'');$('attTopicForm').hidden=false;$('attTopicTitle').focus();$('attTopicForm').scrollIntoView({block:'start',behavior:'smooth'});
+  async function openTopic(row){
+    if(!loaded||!(await requestCloseEditor()))return;topicEdit=row||null;$('attTopicForm').reset();$('attTopicFormTitle').textContent=row?'Sửa chủ đề':'Thêm chủ đề';$('attTopicTitle').value=row?.title||'';$('attTopicDescription').value=row?.description||'';$('attTopicOrder').value=row?.sort_order??topics.length;$('attTopicActive').checked=row?row.is_active:true;formMessage($('attTopicForm'),'');$('attTopicForm').hidden=false;$('attTopicTitle').focus();$('attTopicForm').scrollIntoView({block:'start',behavior:'smooth'});
   }
   function fileMode(){const mode=$('attFileMode').value;$('attUploadGroup').hidden=mode!=='upload';$('attLinkGroup').hidden=mode!=='link';$('attCurrentFile').textContent=!fileCleared&&lessonEdit?.file_path?`File đang gắn: ${lessonEdit.file_name||'File thực hành'}`:'Chưa có file tải lên.';$('attClearFile').hidden=fileCleared||!lessonEdit?.file_path}
-  function openLesson(row){
-    if(!loaded||!closeEditor())return;lessonEdit=row||{id:T.uuid(),topic_id:selected};fileCleared=false;
+  async function openLesson(row){
+    if(!loaded||!(await requestCloseEditor()))return;lessonEdit=row||{id:T.uuid(),topic_id:selected};fileCleared=false;
     $('attLessonForm').reset();$('attLessonFormTitle').textContent=row?'Sửa bài TikTok':'Thêm bài TikTok';$('attLessonTopic').innerHTML=topics.map(t=>`<option value="${T.esc(t.id)}">${T.esc(t.title)}${t.is_active?'':' (đang ẩn)'}</option>`).join('');$('attLessonTopic').value=lessonEdit.topic_id;
     $('attLessonTitle').value=row?.title||'';$('attLessonDescription').value=row?.description||'';$('attLessonVideo').value=row?.tiktok_url||'';$('attLessonOrder').value=row?.sort_order??lessons.filter(x=>x.topic_id===selected).length;$('attLessonStatus').value=row?.status||'draft';$('attFileMode').value=row?.file_url?'link':'upload';$('attFileUrl').value=row?.file_url||'';fileMode();formMessage($('attLessonForm'),'');$('attLessonForm').hidden=false;$('attLessonTitle').focus();$('attLessonForm').scrollIntoView({block:'start',behavior:'smooth'});
   }
@@ -66,30 +67,30 @@
     },form);
   }
   async function toggleLesson(row){
-    if(!row||busy||!closeEditor())return;const published=row.status!=='published';
+    if(!row||busy||!(await requestCloseEditor()))return;const published=row.status!=='published';
     if(published&&(!T.videoUrl(row.tiktok_url)||(!row.file_path&&!row.file_url))){notice('Hãy sửa bài và gắn đủ video TikTok cùng file thực hành trước khi phát hành.');return}
-    if(!confirm(published?'Phát hành bài TikTok này?':'Đưa bài về nháp và ẩn khỏi trang TikTok?'))return;
+    const ok=await window.avpConfirm(published?'Bài sẽ xuất hiện trên trang TikTok Practice.':'Bài sẽ được đưa về bản nháp và ẩn khỏi trang TikTok Practice.',{title:published?'Phát hành bài TikTok?':'Đưa bài về nháp?',tone:published?'ok':'warn',ok:published?'Phát hành':'Đưa về nháp',cancel:'Hủy'});if(!ok)return;
     await mutate(async()=>{await T.rpc('admin_tiktok_save_lesson_v1',{p_lesson:{...row,status:published?'published':'draft',expected_updated_at:row.updated_at}},false);await load(true);});
   }
   async function deleteItem(kind,row){
-    if(!row||busy||!closeEditor())return;
+    if(!row||busy||!(await requestCloseEditor()))return;
     if(kind==='topic'&&lessons.some(x=>x.topic_id===row.id)){notice('Chủ đề còn bài. Hãy xóa hoặc chuyển các bài sang chủ đề khác trước.');return}
-    if(!confirm(`Xóa ${kind==='topic'?'chủ đề':'bài'} “${row.title}”?`))return;
+    const ok=await window.avpConfirm(`${kind==='topic'?'Chủ đề':'Bài'} “${row.title}” sẽ bị xóa khỏi hệ thống.`,{title:`Xóa ${kind==='topic'?'chủ đề':'bài'}?`,icon:"🗑️",tone:"danger",ok:"Xóa",cancel:"Hủy"});if(!ok)return;
     await mutate(async()=>{const result=await T.rpc('admin_tiktok_delete_v1',{p_kind:kind,p_id:row.id,p_expected_updated_at:row.updated_at},false);if(result?.file_path)await T.removeFile(result.file_path);await load(true);});
   }
   function boot(){
     if(!$('adminTikTokPanel'))return;
-    $('attReload').addEventListener('click',()=>{if(closeEditor())load(true)});
+    $('attReload').addEventListener('click',async()=>{if(await requestCloseEditor())load(true)});
     $('attAddTopic').addEventListener('click',()=>openTopic());$('attAddLesson').addEventListener('click',()=>openLesson());
-    $('attBackTopics').addEventListener('click',()=>{if(closeEditor()){selected='';render()}});
+    $('attBackTopics').addEventListener('click',async()=>{if(await requestCloseEditor()){selected='';render()}});
     $('attTopicForm').addEventListener('submit',saveTopic);$('attLessonForm').addEventListener('submit',saveLesson);
     ['attTopicForm','attLessonForm'].forEach(id=>{$(id).addEventListener('input',()=>dirty=true);$(id).addEventListener('change',()=>dirty=true)});
     $('attFileMode').addEventListener('change',fileMode);$('attClearFile').addEventListener('click',()=>{fileCleared=true;dirty=true;$('attFileInput').value='';fileMode()});
     $('attSearch').addEventListener('input',renderLessons);$('attStatusFilter').addEventListener('change',renderLessons);
-    $('adminTikTokPanel').addEventListener('click',event=>{
+    $('adminTikTokPanel').addEventListener('click',async event=>{
       const b=event.target.closest('button');if(!b||b.disabled||busy)return;
-      if(b.hasAttribute('data-att-close'))return closeEditor();
-      if(b.dataset.attOpenTopic&&closeEditor()){selected=b.dataset.attOpenTopic;$('attSearch').value='';$('attStatusFilter').value='all';render();return}
+      if(b.hasAttribute('data-att-close'))return requestCloseEditor();
+      if(b.dataset.attOpenTopic&&(await requestCloseEditor())){selected=b.dataset.attOpenTopic;$('attSearch').value='';$('attStatusFilter').value='all';render();return}
       if(b.dataset.attEditTopic)return openTopic(topics.find(r=>r.id===b.dataset.attEditTopic));
       if(b.dataset.attDeleteTopic)return deleteItem('topic',topics.find(r=>r.id===b.dataset.attDeleteTopic));
       if(b.dataset.attEditLesson)return openLesson(lessons.find(r=>r.id===b.dataset.attEditLesson));

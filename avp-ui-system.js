@@ -78,7 +78,14 @@
   w.avpDialog=open;
   w.__AVP_NATIVE_ALERT__=nativeAlert;
 
+  function inferredTone(message){
+    const text=String(message??'').toLowerCase();
+    if(/(không|chưa|lỗi|thất bại|không thể|bị chặn|thiếu|sai)/.test(text))return 'danger';
+    if(/(cảnh báo|lưu ý|xác nhận|hết|đã nộp)/.test(text))return 'warn';
+    if(/(đã |thành công|pass|hoàn tất|sẵn sàng|sao chép)/.test(text))return 'ok';
+    return 'info';
+  }
   // Alert has no meaningful return value in this codebase, so it can be safely unified globally.
-  w.alert=function(message){w.avpAlert(String(message??''),{tone:'info'});};
+  w.alert=function(message){const text=String(message??'');w.avpAlert(text,{tone:inferredTone(text)});};
   ensureCss();
 })(window,document);

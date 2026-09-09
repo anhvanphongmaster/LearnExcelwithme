@@ -221,11 +221,8 @@
     }
   }
 
-  function reset(){
-    const ok=confirm(
-      "Đặt lại tiến độ học trên thiết bị này?\n\n"+
-      "Thao tác này xóa tiến độ local của Skill Map và chuỗi học trên trình duyệt hiện tại."
-    );
+  async function reset(){
+    const ok=await window.avpConfirm("Thao tác này xóa tiến độ local của Skill Map và chuỗi học trên trình duyệt hiện tại.",{title:"Đặt lại tiến độ học?",icon:"↺",tone:"warn",ok:"Đặt lại",cancel:"Hủy"});
     if(!ok)return;
 
     [

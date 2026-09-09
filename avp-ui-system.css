@@ -164,3 +164,8 @@ body.dark-mode input[type="file"]{background:#16241b!important;border-color:#385
   .avp-ui-btn{width:100%}
 }
 @media(prefers-reduced-motion:reduce){.avp-ui-modal-card{animation:none}}
+
+/* Native dialog elements use the same AVP surface when a feature uses <dialog>. */
+dialog{border:1px solid var(--avp-ui-border);border-radius:var(--avp-ui-radius);background:var(--avp-ui-surface);color:var(--avp-ui-text);box-shadow:var(--avp-ui-shadow);font:inherit}
+dialog::backdrop{background:rgba(7,24,15,.62);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+[role="dialog"]{font-family:inherit}

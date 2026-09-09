@@ -300,9 +300,9 @@
     $("frSummaryDone").onclick=()=>{$("frSummary").hidden=true};
     $("frSummary").onclick=e=>{if(e.target===$("frSummary"))$("frSummary").hidden=true};
 
-    $("frClearHistory").onclick=()=>{
+    $("frClearHistory").onclick=async()=>{
       if(!history().length) return;
-      if(confirm("Xóa toàn bộ lịch sử Focus Room trên thiết bị này?")){
+      if(await window.avpConfirm("Toàn bộ lịch sử Focus Room trên thiết bị này sẽ bị xóa.",{title:"Xóa lịch sử Focus Room?",icon:"🗑️",tone:"danger",ok:"Xóa lịch sử",cancel:"Hủy"})){
         saveHistory([]);
         renderStats();
         renderHistory();

@@ -324,18 +324,9 @@
     return "";
   }
 
-  function reportReasonPrompt(){
-    const raw=prompt(
-      "Báo cáo nội dung này:\n\n"+
-      "1 - Spam\n"+
-      "2 - Lừa đảo / yêu cầu chuyển tiền\n"+
-      "3 - Link hoặc liên hệ đáng ngờ\n"+
-      "4 - Nội dung nhạy cảm\n"+
-      "5 - Quấy rối / xúc phạm\n"+
-      "6 - Giả mạo\n"+
-      "7 - Khác\n\n"+
-      "Nhập số từ 1 đến 7:"
-    );
+  async function reportReasonPrompt(){
+    const body="Chọn lý do bằng cách nhập số từ 1 đến 7:\n\n1 · Spam\n2 · Lừa đảo / yêu cầu chuyển tiền\n3 · Link hoặc liên hệ đáng ngờ\n4 · Nội dung nhạy cảm\n5 · Quấy rối / xúc phạm\n6 · Giả mạo\n7 · Khác";
+    const raw=await window.avpPrompt(body,{title:"Báo cáo nội dung",icon:"⚑",tone:"warn",inputLabel:"Lý do (1–7)",placeholder:"Ví dụ: 1",ok:"Tiếp tục",cancel:"Hủy"});
     if(!raw)return null;
     const map={
       "1":"spam","2":"scam","3":"suspicious_link","4":"sensitive",
@@ -346,10 +337,10 @@
 
   async function reportCommunityTarget(targetType,targetId){
     if(!(await requireCommunityLogin()))return;
-    const reason=reportReasonPrompt();
+    const reason=await reportReasonPrompt();
     if(!reason)return;
 
-    const detail=prompt("Mô tả thêm (không bắt buộc):") || null;
+    const detail=await window.avpPrompt("Bạn có thể bổ sung ngữ cảnh để Admin xử lý chính xác hơn.",{title:"Mô tả thêm",inputLabel:"Chi tiết (không bắt buộc)",placeholder:"Mô tả ngắn…",ok:"Gửi báo cáo",cancel:"Bỏ qua"});
 
     try{
       const {error}=await client.rpc("community_report_create",{
@@ -1492,7 +1483,7 @@
   }
 
   async function verifyCommunityCertificatePrompt(){
-    const code=prompt("Nhập mã xác minh chứng nhận:");
+    const code=await window.avpPrompt("Nhập mã được in trên chứng nhận để kiểm tra trạng thái.",{title:"Xác minh chứng nhận",icon:"✓",inputLabel:"Mã xác minh",placeholder:"Nhập mã…",ok:"Xác minh",cancel:"Hủy"});
     if(!code)return;
 
     try{

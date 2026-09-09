@@ -154,7 +154,7 @@
 
   async function validateReference(sb,key=selectedCaseKey()){
     await checkReference(sb,key);
-    if(!currentReferenceExists)return alert("Case này chưa có Reference ẩn để test.");
+    if(!currentReferenceExists)return window.avpAlert("Case này chưa có Reference ẩn để test.",{title:"Chưa có Reference",tone:"warn",icon:"!"});
     const button=$("aptCaseReferenceCheck");if(button){button.disabled=true;button.textContent="Đang test…"}
     setReferenceState("Đang chạy 3 test bắt buộc: PASS / HARDCODE / WRONG FORMULA…");
     try{
@@ -163,8 +163,8 @@
       const row=caseRows.get(key)||{};
       caseRows.set(key,{...row,grader_validation:{status:"validated",version:"AVP_PRO_GRADER_V3",case_key:key,reference_updated_at:data.reference_updated_at,validated_at:data.validated_at,tests:data.tests||{}}});
       await checkReference(sb,key);
-      alert(`Auto-Grader PASS cho ${key}. Test: đúng ${data.tests?.pass}/10 · hardcode ${data.tests?.hardcode}/10 · formula sai ${data.tests?.wrong_formula}/10.`);
-    }catch(error){const message=graderFailureText(error);currentGraderValidated=false;setReferenceState("Auto-Grader chưa PASS: "+message+" Không thể phát hành Case.","error");alert("Auto-Grader chưa đạt điều kiện phát hành. "+message);}
+      await window.avpAlert(`Đúng ${data.tests?.pass}/10 · Hardcode ${data.tests?.hardcode}/10 · Formula sai ${data.tests?.wrong_formula}/10.`,{title:`Auto-Grader PASS · ${key}`,icon:"✓",tone:"ok",ok:"Tiếp tục"});
+    }catch(error){const message=graderFailureText(error);currentGraderValidated=false;setReferenceState("Auto-Grader chưa PASS: "+message+" Không thể phát hành Case.","error");await window.avpAlert(message,{title:"Auto-Grader chưa PASS",icon:"!",tone:"danger",ok:"Đã hiểu"});}
     finally{if(button){button.disabled=false;button.textContent="Kiểm tra"}}
   }
 
@@ -183,7 +183,7 @@
   async function removeReference(){
     const sb=await client();if(!sb)return alert("Chưa kết nối được hệ thống.");
     const key=selectedCaseKey();
-    if(!confirm(`Xóa đáp án ẩn của ${key}? Bài nộp sau đó sẽ chuyển sang hàng chờ Admin cho tới khi có đáp án mới.`))return;
+    const confirmed=await window.avpConfirm(`Đáp án ẩn của ${key} sẽ bị xóa. Bài nộp sau đó sẽ chuyển sang hàng chờ Admin cho tới khi có đáp án mới.`,{title:"Xóa đáp án ẩn?",icon:"🗑️",tone:"danger",ok:"Xóa đáp án",cancel:"Hủy"});if(!confirmed)return;
     const {error}=await sb.storage.from(GRADING_BUCKET).remove([`${key}/reference.xlsx`]);
     if(error)return alert("Chưa xóa được đáp án ẩn: "+error.message);
     currentReferenceCaseKey=key;currentReferenceExists=false;
@@ -292,7 +292,7 @@
 
   async function openCertificate(path){if(!path)return alert("Hồ sơ chưa có file chứng chỉ.");const sb=await client();if(!sb)return;const {data,error}=await sb.storage.from("professional-track-certificates").createSignedUrl(path,120);if(error)return alert("Không mở được chứng chỉ: "+error.message);window.open(data.signedUrl,"_blank","noopener")}
   async function openSubmission(id){const row=submissionRows.get(String(id));if(!row)return;const sb=await client();if(!sb)return;const {data,error}=await sb.storage.from("professional-track-submissions").createSignedUrl(row.file_path,300);if(error)return alert("Không mở được file bài làm: "+error.message);window.open(data.signedUrl,"_blank","noopener")}
-  async function reviewApplication(card,status){const sb=await client();if(!sb)return;const note=prompt(status==="approved"?"Ghi chú phê duyệt (có thể để trống):":"Nhập nội dung học viên cần bổ sung:");if(note===null)return;if(status==="rejected"&&!note.trim())return alert("Hãy nhập lý do cần bổ sung.");const {error}=await sb.rpc("admin_professional_track_review_v1",{p_application_id:card.dataset.app,p_status:status,p_admin_note:note.trim()||null});if(error)return alert("Chưa cập nhật được: "+error.message);await loadApplications(sb);await refreshCounts(sb)}
+  async function reviewApplication(card,status){const sb=await client();if(!sb)return;const note=await window.avpPrompt(status==="approved"?"Có thể thêm ghi chú cho học viên (không bắt buộc).":"Nhập nội dung học viên cần bổ sung trước khi gửi lại hồ sơ.",{title:status==="approved"?"Phê duyệt hồ sơ Pro":"Yêu cầu bổ sung hồ sơ",inputLabel:status==="approved"?"Ghi chú Admin":"Nội dung cần bổ sung",ok:status==="approved"?"Phê duyệt":"Gửi yêu cầu",cancel:"Hủy",tone:status==="approved"?"ok":"warn"});if(note===null)return;if(status==="rejected"&&!note.trim())return alert("Hãy nhập lý do cần bổ sung.");const {error}=await sb.rpc("admin_professional_track_review_v1",{p_application_id:card.dataset.app,p_status:status,p_admin_note:note.trim()||null});if(error)return alert("Chưa cập nhật được: "+error.message);await loadApplications(sb);await refreshCounts(sb)}
   async function gradeSubmission(card,status){const sb=await client();if(!sb)return;const id=card.dataset.submission,scoreInput=card.querySelector("[data-grade-score]"),feedback=card.querySelector("[data-grade-feedback]").value.trim(),score=status==="graded"?Number(scoreInput.value):null;if(status==="graded"&&(scoreInput.value===""||!Number.isFinite(score)))return alert("Hãy nhập điểm trước khi lưu.");if(status==="revision"&&!feedback)return alert("Hãy nhập lý do cần nộp lại.");const {error}=await sb.rpc("admin_professional_track_grade_v2",{p_submission_id:id,p_status:status,p_score:score,p_feedback:feedback||null});if(error)return alert("Chưa cập nhật được bài nộp: "+error.message);await loadSubmissions(sb)}
 
   function exportSubmissions(){

@@ -100,7 +100,7 @@
         }catch(e){ toast("Không tải được file"); }
       });
       $("mailDelete")?.addEventListener("click", async()=>{
-        { const okFile = window.avpConfirm ? await window.avpConfirm("Phiếu gửi file này sẽ bị xóa khỏi danh sách admin.", { title: "Xóa phiếu file?", icon: "📎", tone: "danger", ok: "Xóa", cancel: "Hủy" }) : confirm("Xóa phiếu file này?"); if(!okFile) return; }
+        { const okFile = await window.avpConfirm("Phiếu gửi file này sẽ bị xóa khỏi danh sách admin.", { title: "Xóa phiếu file?", icon: "📎", tone: "danger", ok: "Xóa", cancel: "Hủy" }); if(!okFile) return; }
         await rpcSoft("admin_delete_user_file",{p_id:r.id});
         mailData.files=(mailData.files||[]).filter(x=>x.id!==r.id);
         renderMail("files");
@@ -127,7 +127,7 @@
     };
     const del=$("mailDelete");
     if(del) del.onclick=async()=>{
-      { const okMail = window.avpConfirm ? await window.avpConfirm("Xóa thư / góp ý của " + who + "?\nKhông hoàn tác được.", { title: "Xóa thư?", icon: "✉️", tone: "danger", ok: "Xóa", cancel: "Hủy" }) : confirm("Xóa thư này của "+who+"?"); if(!okMail) return; }
+      { const okMail = await window.avpConfirm("Xóa thư / góp ý của " + who + "?\nKhông hoàn tác được.", { title: "Xóa thư?", icon: "✉️", tone: "danger", ok: "Xóa", cancel: "Hủy" }); if(!okMail) return; }
       const itemId=Number(r.id);
       if(mailKind==="saved"){
         if(!itemId){ toast("Thư đã giữ chưa có mã."); return; }
@@ -316,15 +316,15 @@
     const act=btn.dataset.raceAct; btn.disabled=true;
     try{
       if(act==="reset"){
-        if(!confirm(`Reset điểm Race của ${row.player_name}?`))return;
+        {const ok=await window.avpConfirm(`Reset điểm Race của ${row.player_name}?`,{title:"Reset điểm Race?",tone:"warn",icon:"↺",ok:"Reset",cancel:"Hủy"});if(!ok)return;}
         await rpc("admin_race_reset_v4",{p_ranking_id:rid});
         toast("Đã reset điểm Race");
       }else if(act==="delete"){
-        if(!confirm(`Xoá ${row.player_name} khỏi BXH Race? Tài khoản (nếu có) vẫn giữ nguyên.`))return;
+        {const ok=await window.avpConfirm(`Xoá ${row.player_name} khỏi BXH Race? Tài khoản (nếu có) vẫn giữ nguyên.`,{title:"Xóa khỏi BXH Race?",tone:"danger",icon:"!",ok:"Xóa",cancel:"Hủy"});if(!ok)return;}
         await rpc("admin_race_delete_v4",{p_ranking_id:rid});
         toast("Đã xoá khỏi BXH Race");
       }else if(act==="rename"){
-        const name=prompt("Tên mới trên BXH:",row.player_name||""); if(name===null)return;
+        const name=await window.avpPrompt("Nhập tên mới sẽ hiển thị trên BXH.",{title:"Đổi tên trên BXH",inputLabel:"Tên hiển thị",defaultValue:row.player_name||"",ok:"Lưu tên",cancel:"Hủy"}); if(name===null)return;
         const clean=name.trim(); if(clean.length<2){toast("Tên tối thiểu 2 ký tự");return}
         await rpc("admin_race_rename_v4",{p_ranking_id:rid,p_player_name:clean});
         toast(row.is_legacy ? "Đã đổi tên legacy" : "Đã đổi tên tạm thời; lần user vào Race tên sẽ đồng bộ theo Profile");
@@ -407,18 +407,18 @@
       btn.disabled=true;
       if(act==="leaderboard"){
         const hidden=btn.dataset.hidden==="1";
-        if(!confirm(`${hidden?'Hiện':'Ẩn'} ${who} ${hidden?'trên':'khỏi'} BXH?`))return;
+        {const ok=await window.avpConfirm(`${hidden?'Hiện':'Ẩn'} ${who} ${hidden?'trên':'khỏi'} BXH?`,{title:"Cập nhật BXH?",tone:"warn",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return;}
         await rpc("admin_um_set_leaderboard_visibility",{p_user_id:id,p_hidden:!hidden}); ok=true;
       }else if(act==="votes"){
-        if(!confirm(`Reset toàn bộ vote có liên kết tài khoản của ${who}?`))return;
+        {const ok=await window.avpConfirm(`Reset toàn bộ vote có liên kết tài khoản của ${who}?`,{title:"Reset vote?",tone:"warn",ok:"Reset",cancel:"Hủy"});if(!ok)return;}
         const res=await rpc("admin_um_reset_votes",{p_user_id:id}); ok=true;
         toast(`Đã reset vote • Chủ đề: ${res?.topic_deleted??0} • Bài: ${res?.lesson_deleted??0}`);
       }else if(act==="progress"){
-        if(!confirm(`RESET TIẾN ĐỘ của ${who}? XP/BXH cloud sẽ được xóa. Thao tác này không nên dùng nếu không chắc.`))return;
+        {const ok=await window.avpConfirm(`RESET TIẾN ĐỘ của ${who}? XP/BXH cloud sẽ được xóa. Thao tác này không nên dùng nếu không chắc.`,{title:"Reset toàn bộ tiến độ?",tone:"danger",icon:"!",ok:"Reset tiến độ",cancel:"Hủy"});if(!ok)return;}
         await rpc("admin_um_reset_progress",{p_user_id:id}); ok=true;
       }else if(act==="admin"){
         const isAdm=btn.dataset.admin==="1";
-        if(!confirm(`${isAdm?'Bỏ':'Cấp'} quyền Admin cho ${who}?`))return;
+        {const ok=await window.avpConfirm(`${isAdm?'Bỏ':'Cấp'} quyền Admin cho ${who}?`,{title:`${isAdm?'Bỏ':'Cấp'} quyền Admin?`,tone:"danger",icon:"🔐",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return;}
         const res=await rpc("admin_um_set_admin",{p_user_id:id,p_is_admin:!isAdm});
         if(res?.ok===false) throw new Error(res.error||"Không thể đổi quyền Admin"); ok=true;
       }
@@ -604,8 +604,8 @@
     });
     $("adminMaintenanceCountdown")?.addEventListener("change",updateMaintenancePreview);
     $("adminMaintenanceSave")?.addEventListener("click",()=>saveAdminMaintenance(false));
-    $("adminMaintenanceOff")?.addEventListener("click",()=>{
-      if(confirm("Tắt chế độ bảo trì và mở lại website cho mọi người?")){
+    $("adminMaintenanceOff")?.addEventListener("click",async()=>{
+      if(await window.avpConfirm("Tắt chế độ bảo trì và mở lại website cho mọi người?",{title:"Mở lại website?",tone:"warn",ok:"Tắt bảo trì",cancel:"Hủy"})){
         saveAdminMaintenance(true);
       }
     });
@@ -830,7 +830,7 @@
     $("adminVoteHistoryBody")?.addEventListener("click",async e=>{
       const btn=e.target.closest("[data-vote-delete]"); if(!btn)return;
       const tr=btn.closest("tr"), source=tr?.dataset.source, id=Number(tr?.dataset.id||0); if(!source||!id)return;
-      if(!confirm("Xoá vote này khỏi Supabase?"))return;
+      {const ok=await window.avpConfirm("Xoá vote này khỏi Supabase?",{title:"Xóa vote?",tone:"danger",ok:"Xóa",cancel:"Hủy"});if(!ok)return;}
       btn.disabled=true;
       try{
         const res=await rpc("admin_vote_delete_one",{p_source:source,p_vote_id:id});
@@ -884,9 +884,9 @@
     $("adminDownloadNew")?.addEventListener("click",()=>openDownloadEditor(null));$("adminDownloadClose")?.addEventListener("click",closeDownloadEditor);$("adminDownloadCancel")?.addEventListener("click",closeDownloadEditor);$("adminDownloadSave")?.addEventListener("click",saveDownloadEditor);$("adminDownloadReload")?.addEventListener("click",loadAdminDownloads);$("adminDownloadSearch")?.addEventListener("keydown",e=>{if(e.key==="Enter")loadAdminDownloads()});$("adminDownloadCategory")?.addEventListener("change",loadAdminDownloads);$("adminDownloadStatus")?.addEventListener("change",loadAdminDownloads);
     $("adminDownloadBody")?.addEventListener("click",async e=>{const b=e.target.closest("[data-dl-act]");if(!b)return;const id=b.closest("tr")?.dataset.downloadId,row=adminDownloadCache.find(x=>x.id===id);if(!row)return;const act=b.dataset.dlAct;
       if(act==="edit")return openDownloadEditor(row);
-      if(act==="copy"){const link=row.file_url||row.source_path;try{await navigator.clipboard.writeText(link);toast("Đã copy link")}catch(_){prompt("Copy link:",link)}return}
+      if(act==="copy"){const link=row.file_url||row.source_path;try{await navigator.clipboard.writeText(link);toast("Đã copy link")}catch(_){await window.avpPrompt("Trình duyệt không cho copy tự động. Bạn có thể copy link bên dưới.",{title:"Copy link",inputLabel:"Đường dẫn",defaultValue:link,ok:"Đóng",cancel:"Đóng"})}return}
       if(act==="toggle"){b.disabled=true;try{await rpc("admin_download_set_active",{p_id:id,p_active:!row.is_active});toast(row.is_active?"Đã ẩn file":"Đã hiện file");await loadAdminDownloads()}catch(err){toast("Không đổi được trạng thái");b.disabled=false}return}
-      if(act==="delete"){if(!confirm("Xoá tài nguyên khỏi hệ thống quản lý? File vật lý không tự bị xoá."))return;b.disabled=true;try{await rpc("admin_download_delete",{p_id:id});toast("Đã xoá tài nguyên");await loadAdminDownloads()}catch(err){toast("Không xoá được");b.disabled=false}}
+      if(act==="delete"){const ok=await window.avpConfirm("Xoá tài nguyên khỏi hệ thống quản lý? File vật lý không tự bị xoá.",{title:"Xóa tài nguyên?",tone:"danger",ok:"Xóa",cancel:"Hủy"});if(!ok)return;b.disabled=true;try{await rpc("admin_download_delete",{p_id:id});toast("Đã xoá tài nguyên");await loadAdminDownloads()}catch(err){toast("Không xoá được");b.disabled=false}}
     });
   }
 
