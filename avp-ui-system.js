@@ -25,13 +25,13 @@
     const link=d.createElement('link');link.rel='stylesheet';link.href='avp-global-controls-v1.css?v=20260910-controls1';link.dataset.avpGlobalControls='1';d.head.appendChild(link);
   }
   function pageName(){return (location.pathname.split('/').pop()||'index.html').toLowerCase()}
-  function ensureHomeFlows(){
+  function ensureHomeKnowledgeV2(){
     if(pageName()!=='index.html')return;
-    if(!d.querySelector('link[data-avp-home-flows]')){
-      const link=d.createElement('link');link.rel='stylesheet';link.href='avp-home-flows-v1.css?v=20260910-homeflow1';link.dataset.avpHomeFlows='1';d.head.appendChild(link);
+    if(!d.querySelector('link[data-avp-home-knowledge-v2]')){
+      const link=d.createElement('link');link.rel='stylesheet';link.href='avp-home-knowledge-v2.css?v=20260910-homekv3';link.dataset.avpHomeKnowledgeV2='1';d.head.appendChild(link);
     }
-    if(w.__AVP_HOME_FLOWS_V1__||d.querySelector('script[data-avp-home-flows]'))return;
-    const script=d.createElement('script');script.src='avp-home-flows-v1.js?v=20260910-homeflow1';script.defer=true;script.dataset.avpHomeFlows='1';(d.head||d.documentElement).appendChild(script);
+    if(w.__AVP_HOME_KNOWLEDGE_V2__||d.querySelector('script[data-avp-home-knowledge-v2]'))return;
+    const script=d.createElement('script');script.src='avp-home-knowledge-v2.js?v=20260910-homekv3';script.defer=true;script.dataset.avpHomeKnowledgeV2='1';(d.head||d.documentElement).appendChild(script);
   }
   function ensureAdminHomework(){
     if(pageName()!=='admin.html')return;
@@ -72,7 +72,7 @@
   }
   function next(){
     if(active||!queue.length)return;
-    active=true;ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureHomeFlows();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
+    active=true;ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureHomeKnowledgeV2();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
     lastFocus=d.activeElement instanceof HTMLElement?d.activeElement:null;
     root.className='avp-ui-modal tone-'+(opts.tone||'info');
     const type=opts.type||'alert';
@@ -131,5 +131,5 @@
     return 'info';
   }
   w.alert=function(message){const text=String(message??'');w.avpAlert(text,{tone:inferredTone(text)});};
-  ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureHomeFlows();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();
+  ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureHomeKnowledgeV2();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();
 })(window,document);
