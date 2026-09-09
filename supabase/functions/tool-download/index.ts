@@ -66,7 +66,13 @@ Deno.serve(async (req: Request) => {
 
   if (signedError || !signed?.signedUrl) return json({ error: "file_unavailable" }, 404);
 
-  service.rpc("track_download_asset", { p_source_path: tool.source_path || path }).catch(() => {});
+  // Download tracking must never block the file response. Supabase RPC returns a
+  // PromiseLike builder, not an object with a guaranteed `.catch()` method.
+  try {
+    await service.rpc("track_download_asset", { p_source_path: tool.source_path || path });
+  } catch (_) {
+    // Intentionally ignored: a tracking failure must not break a valid download.
+  }
 
   return new Response(null, {
     status: 303,
