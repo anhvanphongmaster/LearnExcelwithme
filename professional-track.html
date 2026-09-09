@@ -16,6 +16,9 @@
     .pro-breadcrumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 2px 0;color:#708077;font-size:11px;font-weight:700}
     .pro-breadcrumb span.current{color:#1d5f3a;font-weight:900}.pro-breadcrumb i{font-style:normal;color:#a6b2ab}
     .pro-case-submission-state{white-space:normal;line-height:1.65}
+    .pro-case-card:disabled{cursor:not-allowed;opacity:.58;filter:saturate(.65);transform:none;box-shadow:none}
+    .pro-case-card:disabled:hover{transform:none;border-color:#dce8e0;box-shadow:none}
+    .pro-case-state.sequence-locked{border-color:#e1e6e2;background:#f3f5f4;color:#778079}
     .pro-domain-resource{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:12px 2px 0;padding:12px 15px;border:1px solid #dce8e0;border-radius:14px;background:#f8fbf9;color:#365b45}
     .pro-domain-resource>div{min-width:0}.pro-domain-resource span{display:block;color:#217346;font-size:9px;font-weight:950;letter-spacing:1px}.pro-domain-resource p{margin:4px 0 0;color:#6f8176;font-size:10px;line-height:1.5}
     .pro-domain-resource a{flex:none;padding:8px 11px;border:1px solid #c9dfd1;border-radius:999px;background:#fff;color:#217346;text-decoration:none;font-size:10px;font-weight:900;white-space:nowrap}
@@ -130,7 +133,7 @@
       <div class="pro-case-shell">
         <div class="pro-roll-head">
           <div><span id="proCaseLevelLabel">CASE THEO LEVEL</span><h2 id="proCaseLevelTitle"></h2></div>
-          <small>Chọn một Case để xem brief và tiêu chí chấm</small>
+          <small>PASS Case trước ≥7/10 để mở Case tiếp theo</small>
         </div>
         <div class="pro-case-grid" id="proCaseGrid"></div>
         <article class="pro-case-brief" id="proCaseBrief" hidden aria-live="polite"></article>
@@ -150,7 +153,7 @@
 <script defer src="professional-roll.js?v=20260909-readability2"></script>
 <script defer src="professional-track-gate.js?v=20260909-pro-system1"></script>
 <script defer src="professional-track-content.js?v=20260909-pro-drafttest1"></script>
-<script defer src="professional-track-ux.js?v=20260909-pro-freezefix1"></script>
+<script defer src="professional-track-ux.js?v=20260909-pro-progressguard2"></script>
 <script defer src="avp-core.js"></script>
 </body>
 </html>
