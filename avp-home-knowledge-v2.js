@@ -83,7 +83,7 @@
 
     const tease=d.querySelector('#avpScrollToPath .avp-tease-title');
     if(tease){
-      tease.innerHTML='<span class="avp-tease-chevs" aria-hidden="true"><span>▾</span><span>▾</span><span>▾</span></span> Lộ trình 24 bài · Bảng xếp hạng';
+      tease.innerHTML='<span class="avp-tease-chevs" aria-hidden="true"><span>▾</span><span>▾</span><span>▾</span></span> 5 luồng học · Bảng xếp hạng';
     }
     return true;
   }
