@@ -1,0 +1,64 @@
+name: Semantic hierarchy staging
+
+on:
+  push:
+    branches:
+      - ui/sitewide-semantic-hierarchy
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Syntax check
+        run: |
+          node --check avp-ui-system.js
+          node --check avp-semantic-hierarchy-v3.js
+          node --check sw.js
+
+      - name: Semantic contract
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const js=fs.readFileSync('avp-semantic-hierarchy-v3.js','utf8');
+          const css=fs.readFileSync('avp-semantic-hierarchy-v3.css','utf8');
+          const ui=fs.readFileSync('avp-ui-system.js','utf8');
+          const sw=fs.readFileSync('sw.js','utf8');
+          const must=[
+            [js,'avp-semantic-fail'],[js,'ratio>=0.7'],[js,'avp-nav-back-root'],[js,'avp-nav-back-step'],
+            [css,'.avp-semantic-fail'],[css,'.avp-semantic-warning'],[css,'.avp-nav-back-root'],[css,'.avp-nav-back-step'],
+            [ui,'avp-semantic-hierarchy-v3.js?v=20260909-sem3'],
+            [sw,'avp-semantic-hierarchy-v3.js'],[sw,'avp-semantic-hierarchy-v3.css']
+          ];
+          const missing=must.filter(([text,needle])=>!text.includes(needle)).map(([,needle])=>needle);
+          if(missing.length) throw new Error('Missing semantic contract: '+missing.join(', '));
+          console.log('Semantic contract PASS');
+          NODE
+
+      - name: Sitewide shared-hook audit
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const path=require('path');
+          const pages=fs.readdirSync('.').filter(f=>f.endsWith('.html'));
+          const relevant=[];
+          const missing=[];
+          for(const file of pages){
+            const html=fs.readFileSync(file,'utf8');
+            const hasSignals=/<button\b|role=["'](?:status|alert)["']|class=["'][^"']*(?:back|status|state|notice|feedback|result|score)/i.test(html);
+            if(!hasSignals) continue;
+            relevant.push(file);
+            if(!/avp-ui-system\.js/i.test(html)) missing.push(file);
+          }
+          console.log(`Relevant interactive/status pages: ${relevant.length}/${pages.length}`);
+          if(missing.length){
+            console.error('Pages missing shared AVP UI hook:');
+            missing.forEach(f=>console.error(' - '+f));
+            process.exit(2);
+          }
+          console.log('Sitewide shared-hook audit PASS');
+          NODE
