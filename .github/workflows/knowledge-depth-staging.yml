@@ -1,0 +1,78 @@
+name: Knowledge Depth Staging
+
+on:
+  push:
+    branches:
+      - knowledge/depth-pack-v1
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Syntax checks
+        run: |
+          node --check knowledge-depth-v1.js
+          node --check sw.js
+
+      - name: Curriculum depth contract
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const vm = require('vm');
+          global.window = global;
+          for (const file of [
+            'knowledge-data-foundation.js',
+            'knowledge-data-skills.js',
+            'knowledge-data-analysis.js',
+            'knowledge-data-advanced.js',
+            'knowledge-depth-v1.js'
+          ]) vm.runInThisContext(fs.readFileSync(file,'utf8'), {filename:file});
+
+          const lessons = global.AVPKnowledgeLessons || [];
+          if (lessons.length !== 24) throw new Error(`Expected 24 lessons, found ${lessons.length}`);
+          const ids = new Set(lessons.map(x=>x.id));
+          if (ids.size !== 24) throw new Error('Duplicate lesson id after depth pack');
+          const zones = ['foundation','skills','analysis','advanced'];
+          for (const zone of zones) {
+            const count = lessons.filter(x=>x.zone===zone).length;
+            if (count !== 6) throw new Error(`${zone} expected 6 lessons, found ${count}`);
+          }
+
+          const byId = new Map(lessons.map(x=>[x.id,x]));
+          const required = {
+            'x20-dynamic-array': ['TEXTSPLIT, TEXTBEFORE và TEXTAFTER: xử lý chuỗi kiểu Excel 365','LAMBDA: đóng gói business rule thành hàm dùng lại'],
+            'a16-charts-pareto': ['Waterfall, Histogram, Scatter và Sparklines dùng khi nào','Accessibility: tương phản, màu mù và không truyền ý nghĩa chỉ bằng màu'],
+            'a18-report-audit-handover': ['Notes, Comments, co-authoring và Version History','External Links, Connections và trust trước khi bàn giao'],
+            'x24-automation-workflow': ['Power Pivot & Data Model: từ bảng phẳng sang Star Schema','Filter Context, CALCULATE và context transition ở mức thực dụng','Workbook Performance: tính toán nào làm Excel chậm','Diagnose file nặng: size, formulas, queries, links và objects']
+          };
+          for (const [id,titles] of Object.entries(required)) {
+            const lesson = byId.get(id);
+            if (!lesson) throw new Error(`Missing lesson ${id}`);
+            for (const title of titles) {
+              const section = lesson.sections.find(s=>s.title===title);
+              if (!section) throw new Error(`${id} missing section: ${title}`);
+              if (!section.questions || section.questions.length < 2) throw new Error(`${id}/${title} needs >=2 questions`);
+            }
+          }
+          console.log('Knowledge depth contract PASS');
+          NODE
+
+      - name: Reader and Skill Map wiring
+        run: |
+          grep -q 'knowledge-depth-v1.css' knowledge.html
+          grep -q 'knowledge-depth-v1.js' knowledge.html
+          grep -q 'knowledge-depth-v1.js' skill-map.html
+          grep -q 'HỌC XONG THÌ ĐI ĐÂU' knowledge-depth-v1.js
+          grep -q 'practice-grader.html' knowledge-depth-v1.js
+          grep -q 'professional-access.html?intro=1' knowledge-depth-v1.js
+          echo 'Knowledge wiring PASS'
+
+      - name: Service worker contract
+        run: |
+          grep -q 'knowledge-depth-v1.css' sw.js
+          grep -q 'knowledge-depth-v1.js' sw.js
+          grep -q 'knowledgedepth1' sw.js
+          echo 'Service worker PASS'
