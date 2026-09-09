@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const FOLLOW='https://www.tiktok.com/@anhvanphongmaster',PASS='anhvanphongmaster',DAY=86400000;
-const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase().trim();
 let tools=[],ideas=[],activeTool=null,timer=null,downloading=false;
 function votedSet(){try{return new Set(JSON.parse(localStorage.getItem('avp_tool_idea_voted_v1')||'[]'))}catch(_){return new Set()}}
