@@ -69,11 +69,15 @@ Deno.serve(async (req: Request) => {
   try {
     await service.rpc("track_download_asset", { p_source_path: tool.source_path || path });
   } catch (_) {
-    // Tracking is best-effort only and must never block the file delivery URL.
+    // Tracking is best-effort only and must never block file delivery.
   }
 
-  return json({
-    download_url: signed.signedUrl,
-    filename: `${safeTitle}.zip`,
+  return new Response(null, {
+    status: 303,
+    headers: {
+      ...cors,
+      "Location": signed.signedUrl,
+      "Cache-Control": "private, no-store, max-age=0",
+    },
   });
 });
