@@ -1,0 +1,68 @@
+name: Apply Nav Roll Hotfix
+
+on:
+  push:
+    branches: [fix-inpage-nav-readability]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: ${{ !contains(github.event.head_commit.message, '[navroll-fix]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix-inpage-nav-readability
+      - name: Scope legacy nav and improve Pro roll readability
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          # 1) The old global nav rules are only meant for the site top navigation.
+          p=Path('style.css'); s=p.read_text(encoding='utf-8'); n=s
+          reps=[
+            ('\nnav {\n    width: 100%;','\n.top-simple-nav {\n    width: 100%;'),
+            ('\nnav a {\n','\n.top-simple-nav a {\n'),
+            ('\nnav a:hover {\n','\n.top-simple-nav a:hover {\n'),
+            ('\nnav a.active {\n','\n.top-simple-nav a.active {\n'),
+            ('    nav {\n        flex-wrap: wrap;','    .top-simple-nav {\n        flex-wrap: wrap;'),
+          ]
+          for old,new in reps:
+              if old not in n: raise SystemExit('Missing expected style.css pattern: '+repr(old))
+              n=n.replace(old,new,1)
+          if n==s: raise SystemExit('style.css unchanged')
+          p.write_text(n,encoding='utf-8')
+
+          # 2) Keep carousel depth but never fade readable Pro text below 55%.
+          p=Path('professional-roll.js'); s=p.read_text(encoding='utf-8')
+          old='card.style.opacity=String(Math.max(.12,1-a*.23));'
+          new='card.style.opacity=String(Math.max(.55,1-a*.16));'
+          if old not in s: raise SystemExit('Missing professional-roll opacity formula')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+
+          # 3) Explicit cache-bust for the changed carousel script wherever referenced.
+          changed=[]
+          oldv='professional-roll.js?v=20260908-entry-fix1'
+          newv='professional-roll.js?v=20260909-readability2'
+          for h in Path('.').glob('*.html'):
+              s=h.read_text(encoding='utf-8'); n=s.replace(oldv,newv)
+              if n!=s:
+                  h.write_text(n,encoding='utf-8'); changed.append(h.name)
+          print('professional-roll refs bumped:',changed)
+          if not changed: raise SystemExit('No professional-roll references bumped')
+
+          # 4) Force a new service-worker cache generation.
+          p=Path('sw.js'); s=p.read_text(encoding='utf-8')
+          old='learnexcel-assets-v20260909-readability2'
+          new='learnexcel-assets-v20260909-readability3'
+          if old not in s: raise SystemExit('Missing expected SW cache key')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+          PY
+          git config user.name 'anhvanphong'
+          git config user.email 'anhvanphongmaster@gmail.com'
+          git add style.css professional-roll.js sw.js -- '*.html'
+          git diff --cached --check
+          git commit -m 'fix: scope in-page nav and keep Pro cards readable [navroll-fix]'
+          git push origin HEAD:fix-inpage-nav-readability
