@@ -14,7 +14,7 @@
   }
   function ensureSemanticCss(){
     if(d.querySelector('link[data-avp-semantic-soft]'))return;
-    const link=d.createElement('link');link.rel='stylesheet';link.href='avp-semantic-soft.css?v=20260909-semsoft1';link.dataset.avpSemanticSoft='1';d.head.appendChild(link);
+    const link=d.createElement('link');link.rel='stylesheet';link.href='avp-semantic-soft.css?v=20260909-semsoft2';link.dataset.avpSemanticSoft='1';d.head.appendChild(link);
   }
   function ensureRoot(){
     let root=d.getElementById('avpUiModal');if(root)return root;
