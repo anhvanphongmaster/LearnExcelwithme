@@ -1,0 +1,983 @@
+### admin-alerts.js:176 [confirm]
+00175:       if(sub&&enabled()){
+00176:         if(confirm("Tắt Web Push trên thiết bị này?"))await unsubscribe();
+00177:       }else{
+
+### admin-alerts.js:181 [alert]
+00180:     }catch(e){
+00181:       alert(e?.message||"Chưa bật được Web Push.");
+00182:       console.warn("Admin Web Push",e);
+
+### admin-chat.js:312 [alert]
+00311:               console.warn("AVP chat download",e);
+00312:               alert("Không tải được file. Lỗi: "+(e?.message||String(e)));
+00313:             }finally{
+
+### admin-chat.js:337 [alert]
+00336:   function bindFilePicker(scope,inputId,previewId){
+00337:     const input=$(inputId);if(!input)return;input.addEventListener("change",()=>{try{pendingFiles[scope]=validateFiles(input.files||[]);previewFiles(scope,previewId)}catch(e){alert(e.message);pendingFiles[scope]=[]}finally{input.value=""}});
+00338:   }
+
+### admin-chat.js:541 [alert]
+00540:         if(st)st.textContent="Không lưu được";
+00541:         alert("Không lưu được Auto-reply. "+(e?.message||""));
+00542:       }finally{if(btn)btn.disabled=false}
+
+### admin-chat.js:799 [file]
+00798:         <div class="avp-chat-compose">
+00799:           <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="avpChatFile" type="file" multiple accept="image/*,.heic,.heif,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
+00800:           <textarea id="avpChatInput" maxlength="3000" rows="1" placeholder="Nhắn cho Admin…"></textarea>
+
+### admin-chat.js:873 [alert]
+00872:       const detail=e?.message||e?.error_description||String(e||"");
+00873:       alert("Chưa gửi được file. "+(detail?"Lỗi: "+detail:"Vui lòng thử lại."));
+00874:       console.warn("AVP send user attachment",e);
+
+### admin-chat.js:1061 [alert]
+01060:       input.value="";pendingFiles.admin=[];previewFiles("admin","adminChatFilePreview");await openAdminThread(activeThread);
+01061:     }catch(e){alert("Không gửi được phản hồi hoặc file.");console.warn(e)}finally{btn.disabled=false;input.focus()}
+01062:   }
+
+### admin-chat.js:1161 [file]
+01160:             <div class="avp-chat-compose avp-admin-float-compose">
+01161:               <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="avpAdminFloatFile" type="file" multiple accept="image/*,.heic,.heif,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
+01162:               <textarea id="avpAdminFloatReply" maxlength="3000" rows="1" placeholder="Phản hồi học viên…" disabled></textarea>
+
+### admin-chat.js:1247 [alert]
+01246:       const detail=e?.message||e?.error_description||String(e||"");
+01247:       alert("Không gửi được file. "+(detail?"Lỗi: "+detail:""));
+01248:       console.warn("AVP floating admin attachment",e);
+
+### admin-community-center.js:297 [alert]
+00296: 
+00297:     if(title.length<3) return alert("Nhập tiêu đề thông báo.");
+00298:     if(content.length<2) return alert("Nhập nội dung thông báo.");
+
+### admin-community-center.js:298 [alert]
+00297:     if(title.length<3) return alert("Nhập tiêu đề thông báo.");
+00298:     if(content.length<2) return alert("Nhập nội dung thông báo.");
+00299:     if(target==="user"&&!selectedUserId) return alert("Chọn học viên nhận thông báo.");
+
+### admin-community-center.js:299 [alert]
+00298:     if(content.length<2) return alert("Nhập nội dung thông báo.");
+00299:     if(target==="user"&&!selectedUserId) return alert("Chọn học viên nhận thông báo.");
+00300: 
+
+### admin-community-center.js:320 [alert]
+00319: 
+00320:       alert(target==="all"?"Đã gửi thông báo cho tất cả học viên.":"Đã gửi thông báo cho học viên.");
+00321:       await loadNotifications();
+
+### admin-community-center.js:324 [alert]
+00323:       console.warn("send notification",e);
+00324:       alert("Chưa gửi được thông báo: "+String(e?.message||e));
+00325:     }finally{
+
+### admin-community-center.js:517 [alert]
+00516:       console.warn("notification pin",e);
+00517:       alert("Chưa cập nhật được trạng thái ghim.");
+00518:     }
+
+### admin-community-center.js:526 [alert]
+00525:     }catch(e){
+00526:       alert("Chưa cập nhật được trạng thái.");
+00527:     }
+
+### admin-community-center.js:604 [confirm]
+00603:     const dangerous=["hide","restrict","suspend"].includes(action);
+00604:     if(dangerous && !confirm("Xác nhận thao tác kiểm duyệt này?"))return;
+00605: 
+
+### admin-community-center.js:615 [alert]
+00614:       console.warn("moderation action",e);
+00615:       alert("Chưa thực hiện được thao tác kiểm duyệt.");
+00616:     }
+
+### admin-community-center.js:676 [alert]
+00675:           await navigator.clipboard.writeText(btn.dataset.copy);
+00676:           alert("Đã sao chép mã xác minh.");
+00677:         }catch{
+
+### admin-community-center.js:678 [alert]
+00677:         }catch{
+00678:           alert("Mã: "+btn.dataset.copy);
+00679:         }
+
+### admin-community-center.js:692 [confirm]
+00691:   async function setCertificateRevoked(id,revoked){
+00692:     const ok=confirm(revoked
+00693:       ?"Thu hồi chứng nhận này?"
+
+### admin-community-center.js:704 [alert]
+00703:     }catch(e){
+00704:       alert("Chưa cập nhật được chứng nhận.");
+00705:     }
+
+### admin-grader.js:72 [alert]
+00071:     }catch(e){
+00072:       alert("Không lưu được: "+(e?.message||e));
+00073:       btn.textContent="Lưu";
+
+### admin-grader.js:153 [alert]
+00152:     const path=card?.dataset.file;
+00153:     if(!path)return alert("Bài nộp này chưa có file lưu trên Storage.");
+00154:     const sb=await client();
+
+### admin-grader.js:160 [alert]
+00159:       window.open(data.signedUrl,"_blank","noopener");
+00160:     }catch(e){alert("Không mở được file: "+(e?.message||e))}
+00161:   }
+
+### admin-grader.js:169 [alert]
+00168:     const response=String(card.querySelector("[data-admin-response]")?.value||"").trim();
+00169:     if(response.length<3)return alert("Nhập phản hồi cho học viên.");
+00170:     if(approve&&(score<0||score>100||!Number.isFinite(score)))return alert("Điểm chấm lại phải từ 0 đến 100.");
+
+### admin-grader.js:170 [alert]
+00169:     if(response.length<3)return alert("Nhập phản hồi cho học viên.");
+00170:     if(approve&&(score<0||score>100||!Number.isFinite(score)))return alert("Điểm chấm lại phải từ 0 đến 100.");
+00171: 
+
+### admin-grader.js:172 [confirm]
+00171: 
+00172:     const ok=confirm(approve
+00173:       ? `Duyệt chấm lại thành ${score}/100 và gửi thông báo cho học viên?`
+
+### admin-grader.js:188 [alert]
+00187:       await Promise.all([loadAppeals(),load(),loadLessonStats()]);
+00188:     }catch(e){alert("Chưa xử lý được: "+(e?.message||e))}
+00189:     finally{btn.disabled=false}
+
+### admin-grader.js:272 [confirm]
+00271:     const name=tr.querySelector("td strong")?.textContent||"người học";
+00272:     const ok=confirm(`Cho ${name} làm lại bài này?\n\nKết quả hiện tại sẽ bị xóa khỏi hệ thống và tài khoản được nộp lại 1 lần.`);
+00273:     if(!ok)return;
+
+### admin-grader.js:287 [alert]
+00286:     }catch(e){
+00287:       alert("Reset chưa thành công: "+(e?.message||e));
+00288:       btn.disabled=false;
+
+### admin-professional-track.js:157 [alert]
+00156:     await checkReference(sb,key);
+00157:     if(!currentReferenceExists)return alert("Case này chưa có Reference ẩn để test.");
+00158:     const button=$("aptCaseReferenceCheck");if(button){button.disabled=true;button.textContent="Đang test…"}
+
+### admin-professional-track.js:166 [alert]
+00165:       await checkReference(sb,key);
+00166:       alert(`Auto-Grader PASS cho ${key}. Test: đúng ${data.tests?.pass}/10 · hardcode ${data.tests?.hardcode}/10 · formula sai ${data.tests?.wrong_formula}/10.`);
+00167:     }catch(error){const message=graderFailureText(error);currentGraderValidated=false;setReferenceState("Auto-Grader chưa PASS: "+message+" Không thể phát hành Case.","error");alert("Auto-Grader chưa đạt điều kiện phát hành. "+message);}
+
+### admin-professional-track.js:167 [alert]
+00166:       alert(`Auto-Grader PASS cho ${key}. Test: đúng ${data.tests?.pass}/10 · hardcode ${data.tests?.hardcode}/10 · formula sai ${data.tests?.wrong_formula}/10.`);
+00167:     }catch(error){const message=graderFailureText(error);currentGraderValidated=false;setReferenceState("Auto-Grader chưa PASS: "+message+" Không thể phát hành Case.","error");alert("Auto-Grader chưa đạt điều kiện phát hành. "+message);}
+00168:     finally{if(button){button.disabled=false;button.textContent="Kiểm tra"}}
+
+### admin-professional-track.js:184 [alert]
+00183:   async function removeReference(){
+00184:     const sb=await client();if(!sb)return alert("Chưa kết nối được hệ thống.");
+00185:     const key=selectedCaseKey();
+
+### admin-professional-track.js:186 [confirm]
+00185:     const key=selectedCaseKey();
+00186:     if(!confirm(`Xóa đáp án ẩn của ${key}? Bài nộp sau đó sẽ chuyển sang hàng chờ Admin cho tới khi có đáp án mới.`))return;
+00187:     const {error}=await sb.storage.from(GRADING_BUCKET).remove([`${key}/reference.xlsx`]);
+
+### admin-professional-track.js:188 [alert]
+00187:     const {error}=await sb.storage.from(GRADING_BUCKET).remove([`${key}/reference.xlsx`]);
+00188:     if(error)return alert("Chưa xóa được đáp án ẩn: "+error.message);
+00189:     currentReferenceCaseKey=key;currentReferenceExists=false;
+
+### admin-professional-track.js:210 [alert]
+00209:     const target=[1,2,3].find(index=>!used.has(index));
+00210:     if(!target)return alert("Level này đã có đủ 3 Case. Hãy chọn Level hoặc nội dung khác trước khi nhân bản.");
+00211:     editCase(key);$("aptCaseIndex").value=String(target);$("aptCaseTitle").value=`${row.title} — Bản mới`;$("aptCasePublished").checked=false;
+
+### admin-professional-track.js:218 [alert]
+00217:   async function saveCase(event){
+00218:     event.preventDefault();const sb=await client();if(!sb)return alert("Chưa kết nối được hệ thống.");
+00219:     const caseKey=selectedCaseKey();
+
+### admin-professional-track.js:220 [alert]
+00219:     const caseKey=selectedCaseKey();
+00220:     const tasks=$("aptCaseTasks").value.split(/\r?\n/).map(v=>v.trim()).filter(Boolean);if(!tasks.length)return alert("Hãy nhập ít nhất một yêu cầu thực hiện.");
+00221:     const prior=caseRows.get(caseKey)||null;
+
+### admin-professional-track.js:226 [alert]
+00225:     const sourceFile=$("aptCaseSourceFile")?.files?.[0]||null,guideFile=$("aptCaseGuideFile")?.files?.[0]||null;
+00226:     try{if(sourceFile)validateResourceFile(sourceFile,"source");if(guideFile)validateResourceFile(guideFile,"guide")}catch(error){return alert(error.message)}
+00227:     const publishing=$("aptCasePublished").checked;
+
+### admin-professional-track.js:228 [alert]
+00227:     const publishing=$("aptCasePublished").checked;
+00228:     if(publishing&&!source&&!sourceFile)return alert("Case chỉ được phát hành khi đã có Student file trong kho Pro riêng tư.");
+00229:     if(publishing&&!guide&&!guideFile)return alert("Case chỉ được phát hành khi đã có Guide trong kho Pro riêng tư.");
+
+### admin-professional-track.js:229 [alert]
+00228:     if(publishing&&!source&&!sourceFile)return alert("Case chỉ được phát hành khi đã có Student file trong kho Pro riêng tư.");
+00229:     if(publishing&&!guide&&!guideFile)return alert("Case chỉ được phát hành khi đã có Guide trong kho Pro riêng tư.");
+00230: 
+
+### admin-professional-track.js:235 [alert]
+00234:     if(publishing&&$("aptCaseSubmission").checked){
+00235:       if(referenceFile)return alert("Reference mới phải được lưu ở trạng thái Bản nháp, sau đó bấm ‘Kiểm tra’ để PASS Auto-Grader rồi mới Phát hành.");
+00236:       if(!referenceKnown)return alert("Case có nộp bài chỉ được phát hành khi đã có Reference ẩn.");
+
+### admin-professional-track.js:236 [alert]
+00235:       if(referenceFile)return alert("Reference mới phải được lưu ở trạng thái Bản nháp, sau đó bấm ‘Kiểm tra’ để PASS Auto-Grader rồi mới Phát hành.");
+00236:       if(!referenceKnown)return alert("Case có nộp bài chỉ được phát hành khi đã có Reference ẩn.");
+00237:       if(!graderReady)return alert("Case chưa PASS 3 test Auto-Grader. Bấm ‘Kiểm tra’ ở phần Đáp án ẩn trước khi Phát hành.");
+
+### admin-professional-track.js:237 [alert]
+00236:       if(!referenceKnown)return alert("Case có nộp bài chỉ được phát hành khi đã có Reference ẩn.");
+00237:       if(!graderReady)return alert("Case chưa PASS 3 test Auto-Grader. Bấm ‘Kiểm tra’ ở phần Đáp án ẩn trước khi Phát hành.");
+00238:     }
+
+### admin-professional-track.js:256 [alert]
+00255:       if($("aptCaseReference"))$("aptCaseReference").value="";
+00256:       alert(params.p_published?"Đã lưu và phát hành Case. File học viên ở kho private; đáp án ẩn tách riêng cho Auto-Grader.":"Đã lưu Case ở trạng thái bản nháp.");
+00257:     }catch(error){
+
+### admin-professional-track.js:262 [alert]
+00261:       }
+00262:       alert((caseSaved?"Case đã lưu nhưng tài nguyên/đáp án chưa hoàn tất: ":"Chưa lưu được Case: ")+String(error?.message||error));
+00263:     }finally{button.disabled=false;button.textContent="Lưu Case"}
+
+### admin-professional-track.js:293 [alert]
+00292: 
+00293:   async function openCertificate(path){if(!path)return alert("Hồ sơ chưa có file chứng chỉ.");const sb=await client();if(!sb)return;const {data,error}=await sb.storage.from("professional-track-certificates").createSignedUrl(path,120);if(error)return alert("Không mở được chứng chỉ: "+error.message);window.open(data.signedUrl,"_blank","noopener")}
+00294:   async function openSubmission(id){const row=submissionRows.get(String(id));if(!row)return;const sb=await client();if(!sb)return;const {data,error}=await sb.storage.from("professional-track-submissions").createSignedUrl(row.file_path,300);if(error)return alert("Không mở được file bài làm: "+error.message);window.open(data.signedUrl,"_blank","noopener")}
+
+### admin-professional-track.js:294 [alert]
+00293:   async function openCertificate(path){if(!path)return alert("Hồ sơ chưa có file chứng chỉ.");const sb=await client();if(!sb)return;const {data,error}=await sb.storage.from("professional-track-certificates").createSignedUrl(path,120);if(error)return alert("Không mở được chứng chỉ: "+error.message);window.open(data.signedUrl,"_blank","noopener")}
+00294:   async function openSubmission(id){const row=submissionRows.get(String(id));if(!row)return;const sb=await client();if(!sb)return;const {data,error}=await sb.storage.from("professional-track-submissions").createSignedUrl(row.file_path,300);if(error)return alert("Không mở được file bài làm: "+error.message);window.open(data.signedUrl,"_blank","noopener")}
+00295:   async function reviewApplication(card,status){const sb=await client();if(!sb)return;const note=prompt(status==="approved"?"Ghi chú phê duyệt (có thể để trống):":"Nhập nội dung học viên cần bổ sung:");if(note===null)return;if(status==="rejected"&&!note.trim())return alert("Hãy nhập lý do cần bổ sung.");const {error}=await sb.rpc("admin_professional_track_review_v1",{p_application_id:card.dataset.app,p_status:status,p_admin_note:note.trim()||null});if(error)return alert("Chưa cập nhật được: "+error.message);await loadApplications(sb);await refreshCounts(sb)}
+
+### admin-professional-track.js:295 [alert,prompt]
+00294:   async function openSubmission(id){const row=submissionRows.get(String(id));if(!row)return;const sb=await client();if(!sb)return;const {data,error}=await sb.storage.from("professional-track-submissions").createSignedUrl(row.file_path,300);if(error)return alert("Không mở được file bài làm: "+error.message);window.open(data.signedUrl,"_blank","noopener")}
+00295:   async function reviewApplication(card,status){const sb=await client();if(!sb)return;const note=prompt(status==="approved"?"Ghi chú phê duyệt (có thể để trống):":"Nhập nội dung học viên cần bổ sung:");if(note===null)return;if(status==="rejected"&&!note.trim())return alert("Hãy nhập lý do cần bổ sung.");const {error}=await sb.rpc("admin_professional_track_review_v1",{p_application_id:card.dataset.app,p_status:status,p_admin_note:note.trim()||null});if(error)return alert("Chưa cập nhật được: "+error.message);await loadApplications(sb);await refreshCounts(sb)}
+00296:   async function gradeSubmission(card,status){const sb=await client();if(!sb)return;const id=card.dataset.submission,scoreInput=card.querySelector("[data-grade-score]"),feedback=card.querySelector("[data-grade-feedback]").value.trim(),score=status==="graded"?Number(scoreInput.value):null;if(status==="graded"&&(scoreInput.value===""||!Number.isFinite(score)))return alert("Hãy nhập điểm trước khi lưu.");if(status==="revision"&&!feedback)return alert("Hãy nhập lý do cần nộp lại.");const {error}=await sb.rpc("admin_professional_track_grade_v2",{p_submission_id:id,p_status:status,p_score:score,p_feedback:feedback||null});if(error)return alert("Chưa cập nhật được bài nộp: "+error.message);await loadSubmissions(sb)}
+
+### admin-professional-track.js:296 [alert]
+00295:   async function reviewApplication(card,status){const sb=await client();if(!sb)return;const note=prompt(status==="approved"?"Ghi chú phê duyệt (có thể để trống):":"Nhập nội dung học viên cần bổ sung:");if(note===null)return;if(status==="rejected"&&!note.trim())return alert("Hãy nhập lý do cần bổ sung.");const {error}=await sb.rpc("admin_professional_track_review_v1",{p_application_id:card.dataset.app,p_status:status,p_admin_note:note.trim()||null});if(error)return alert("Chưa cập nhật được: "+error.message);await loadApplications(sb);await refreshCounts(sb)}
+00296:   async function gradeSubmission(card,status){const sb=await client();if(!sb)return;const id=card.dataset.submission,scoreInput=card.querySelector("[data-grade-score]"),feedback=card.querySelector("[data-grade-feedback]").value.trim(),score=status==="graded"?Number(scoreInput.value):null;if(status==="graded"&&(scoreInput.value===""||!Number.isFinite(score)))return alert("Hãy nhập điểm trước khi lưu.");if(status==="revision"&&!feedback)return alert("Hãy nhập lý do cần nộp lại.");const {error}=await sb.rpc("admin_professional_track_grade_v2",{p_submission_id:id,p_status:status,p_score:score,p_feedback:feedback||null});if(error)return alert("Chưa cập nhật được bài nộp: "+error.message);await loadSubmissions(sb)}
+00297: 
+
+### admin-professional-track.js:299 [alert]
+00298:   function exportSubmissions(){
+00299:     if(!submissionData.length)return alert("Không có dữ liệu bài nộp để xuất.");
+00300:     const quote=value=>{let text=String(value??"");if(/^[=+\-@]/.test(text))text="'"+text;return `"${text.replace(/"/g,'""')}"`};
+
+### admin-tiktok.js:9 [confirm]
+00008:   function hasEditor(){return !$('attTopicForm').hidden||!$('attLessonForm').hidden}
+00009:   function closeEditor(force=false){if(busy&&!force)return false;if(dirty&&!force&&!confirm('Bỏ các thay đổi chưa lưu?'))return false;$('attTopicForm').hidden=true;$('attLessonForm').hidden=true;dirty=false;return true}
+00010:   function topicCard(row){const list=lessons.filter(item=>item.topic_id===row.id),live=list.filter(item=>item.status==='published').length;return `<article class="att-topic-card"><div><span class="att-badge ${row.is_active?'live':''}">${row.is_active?'Đang bật':'Đang ẩn'}</span><h3>${T.esc(row.title)}</h3><p>${T.esc(row.description||'')}</p><small>${list.length} bài · ${live} đã phát hành</small></div><div class="att-row-actions"><button type="button" data-att-open-topic="${T.esc(row.id)}" class="primary">Quản lý bài →</button><button type="button" data-att-edit-topic="${T.esc(row.id)}">Sửa chủ đề</button><button type="button" data-att-delete-topic="${T.esc(row.id)}" class="danger">Xóa</button></div></article>`}
+
+### admin-tiktok.js:71 [confirm]
+00070:     if(published&&(!T.videoUrl(row.tiktok_url)||(!row.file_path&&!row.file_url))){notice('Hãy sửa bài và gắn đủ video TikTok cùng file thực hành trước khi phát hành.');return}
+00071:     if(!confirm(published?'Phát hành bài TikTok này?':'Đưa bài về nháp và ẩn khỏi trang TikTok?'))return;
+00072:     await mutate(async()=>{await T.rpc('admin_tiktok_save_lesson_v1',{p_lesson:{...row,status:published?'published':'draft',expected_updated_at:row.updated_at}},false);await load(true);});
+
+### admin-tiktok.js:77 [confirm]
+00076:     if(kind==='topic'&&lessons.some(x=>x.topic_id===row.id)){notice('Chủ đề còn bài. Hãy xóa hoặc chuyển các bài sang chủ đề khác trước.');return}
+00077:     if(!confirm(`Xóa ${kind==='topic'?'chủ đề':'bài'} “${row.title}”?`))return;
+00078:     await mutate(async()=>{const result=await T.rpc('admin_tiktok_delete_v1',{p_kind:kind,p_id:row.id,p_expected_updated_at:row.updated_at},false);if(result?.file_path)await T.removeFile(result.file_path);await load(true);});
+
+### admin-tools.js:21 [confirm]
+00020: async function save(e){e.preventDefault();if(busy)return;busy=true;const btn=$('atToolSave');btn.disabled=true;let uploaded=null;try{const id=edit?.id||uuid(),file=$('atToolFile').files?.[0],published=$('atToolStatus').value==='published',tiktok=$('atToolTikTok').value.trim();let meta=edit?{storage_path:edit.storage_path,file_name:edit.file_name,file_size:edit.file_size,file_url:edit.file_url}:null;if(file){uploaded=await upload(file,id);meta=uploaded}if(!meta)throw new Error('Hãy chọn file ZIP.');if(published&&!validTikTok(tiktok))throw new Error('Tool phát hành cần link TikTok hướng dẫn hợp lệ.');const payload={id,sort_order:Number($('atToolOrder').value)||0,name:$('atToolName').value.trim(),application:$('atToolApplication').value.trim(),description:$('atToolDescription').value.trim(),is_active:published,release_date:$('atToolReleaseDate').value||'',tiktok_url:tiktok,source_path:meta.storage_path,...meta};if(!payload.name)throw new Error('Hãy nhập tên Tool.');await rpc('admin_tool_save_v1',{p_tool:payload});if(uploaded&&edit?.storage_path&&edit.storage_path!==uploaded.storage_path){try{(await client()).storage.from(BUCKET).remove([edit.storage_path])}catch(_){}}await load(true);reset();note(published?'Đã phát hành Tool. Kho Tool sẽ nhận dữ liệu mới khi tải lại.':'Đã lưu bản nháp. Tool chưa hiển thị ngoài website.')}catch(err){console.error(err);if(uploaded){try{(await client()).storage.from(BUCKET).remove([uploaded.storage_path])}catch(_){}}const m=String(err?.message||'');note(m.includes('tiktok_required')||m.includes('invalid_tiktok_url')?'Tool phát hành cần link TikTok hướng dẫn hợp lệ.':m||'Chưa lưu được Tool.')}finally{busy=false;btn.disabled=false}}
+00021: async function del(id){const row=tools.find(x=>x.id===id);if(!row||!confirm(`Xóa Tool “${row.name}”?`))return;try{const path=await rpc('admin_tool_delete_v1',{p_id:id});if(path){const sb=await client();await sb.storage.from(BUCKET).remove([path])}await load(true);note('Đã xóa Tool.')}catch(e){note('Chưa xóa được Tool.')}}
+00022: async function status(id,value){try{await rpc('admin_tool_idea_status_v1',{p_id:id,p_status:value});await load(true)}catch(e){note('Chưa cập nhật được trạng thái ý tưởng.')}}
+
+### admin-tools.js:23 [prompt]
+00022: async function status(id,value){try{await rpc('admin_tool_idea_status_v1',{p_id:id,p_status:value});await load(true)}catch(e){note('Chưa cập nhật được trạng thái ý tưởng.')}}
+00023: async function renameIdea(id){const row=ideas.find(x=>x.id===id);if(!row)return;const title=prompt('Đổi tên ý tưởng Tool:',row.title);if(title===null)return;const clean=title.trim();if(clean.length<5||clean.length>140){note('Tên ý tưởng cần từ 5–140 ký tự.');return}try{await rpc('admin_tool_idea_rename_v1',{p_id:id,p_title:clean});await load(true);note('Đã đổi tên ý tưởng.')}catch(e){note(String(e?.message||'').includes('duplicate_idea')?'Đã có một ý tưởng khác cùng tên. Hãy dùng Gộp để cộng dồn lượt.':'Chưa đổi tên được ý tưởng.')}}
+00024: function startMerge(id){mergeSource=id;render();note('Chế độ gộp: chọn “Gộp vào đây” ở ý tưởng bạn muốn giữ lại. Lượt trùng của cùng một người chỉ được tính một lần.')}
+
+### admin-tools.js:26 [confirm]
+00025: function cancelMerge(){mergeSource=null;render();note('')}
+00026: async function mergeInto(targetId){const source=ideas.find(x=>x.id===mergeSource),target=ideas.find(x=>x.id===targetId);if(!source||!target||source.id===target.id)return;if(!confirm(`Gộp “${source.title}” vào “${target.title}”? Ý tưởng nguồn sẽ bị xóa và lượt nhu cầu được cộng dồn.`))return;try{const total=await rpc('admin_tool_idea_merge_v1',{p_source_id:source.id,p_target_id:target.id});mergeSource=null;await load(true);note(`Đã gộp ý tưởng. Chủ đề đích hiện có ${Number(total)||0} lượt nhu cầu.`)}catch(e){note('Chưa gộp được ý tưởng.')}}
+00027: window.addEventListener('avp:admin-tools-open',()=>load());document.addEventListener('click',e=>{const ed=e.target.closest('[data-at-edit]');if(ed)return openEdit(ed.dataset.atEdit);const de=e.target.closest('[data-at-delete]');if(de)return del(de.dataset.atDelete);const rn=e.target.closest('[data-at-idea-rename]');if(rn)return renameIdea(rn.dataset.atIdeaRename);const ms=e.target.closest('[data-at-merge-source]');if(ms)return startMerge(ms.dataset.atMergeSource);const mt=e.target.closest('[data-at-merge-target]');if(mt)return mergeInto(mt.dataset.atMergeTarget);if(e.target.closest('[data-at-merge-cancel]'))return cancelMerge()});document.addEventListener('change',e=>{if(e.target.matches('[data-at-idea-status]'))status(e.target.dataset.atIdeaStatus,e.target.value)});$('atToolStatus')?.addEventListener('change',syncStatus);$('atToolForm')?.addEventListener('submit',save);$('atToolReset')?.addEventListener('click',reset);$('atReload')?.addEventListener('click',()=>load(true));reset();
+
+### admin-youtube-projects.js:148 [confirm]
+00147:     $("aytParts")?.addEventListener("input",e=>{if(e.target.dataset.pf)syncPartField(e.target)});$("aytParts")?.addEventListener("change",e=>{if(e.target.dataset.pf)syncPartField(e.target)});$("aytResources")?.addEventListener("input",e=>{if(e.target.dataset.rf)syncResourceField(e.target)});$("aytResources")?.addEventListener("change",e=>{if(e.target.dataset.rf)syncResourceField(e.target)});
+00148:     $("aytParts")?.addEventListener("click",e=>{const b=e.target.closest("[data-ayt-remove-part]");if(!b||!editing)return;if(!confirm("Bỏ phần này khỏi project? Thay đổi chỉ có hiệu lực sau khi bấm Lưu."))return;editing.parts.splice(Number(b.dataset.aytRemovePart),1);renderParts()});
+00149:     $("aytResources")?.addEventListener("click",e=>{const b=e.target.closest("[data-ayt-remove-resource]");if(!b||!editing)return;if(!confirm("Bỏ tài nguyên này khỏi project? Thay đổi chỉ có hiệu lực sau khi bấm Lưu."))return;editing.resources.splice(Number(b.dataset.aytRemoveResource),1);renderResources()});
+
+### admin-youtube-projects.js:149 [confirm]
+00148:     $("aytParts")?.addEventListener("click",e=>{const b=e.target.closest("[data-ayt-remove-part]");if(!b||!editing)return;if(!confirm("Bỏ phần này khỏi project? Thay đổi chỉ có hiệu lực sau khi bấm Lưu."))return;editing.parts.splice(Number(b.dataset.aytRemovePart),1);renderParts()});
+00149:     $("aytResources")?.addEventListener("click",e=>{const b=e.target.closest("[data-ayt-remove-resource]");if(!b||!editing)return;if(!confirm("Bỏ tài nguyên này khỏi project? Thay đổi chỉ có hiệu lực sau khi bấm Lưu."))return;editing.resources.splice(Number(b.dataset.aytRemoveResource),1);renderResources()});
+00150:     $("aytProjectList")?.addEventListener("click",async e=>{const b=e.target.closest("[data-ayt-act]"),row=b&&rows.find(x=>String(x.id)===b.closest("[data-ayt-id]")?.dataset.aytId);if(!b||!row)return;const act=b.dataset.aytAct;if(act==="edit")return openEditor(row);if(act==="toggle"){b.disabled=true;try{await rpc("admin_youtube_project_set_active",{p_id:row.id,p_active:!row.is_active});toast(row.is_active?"Đã ẩn project":"Đã hiện project");await load()}catch(err){toast("Không đổi được trạng thái");b.disabled=false}}if(act==="archive"){if(!confirm("Lưu trữ project này? Project sẽ biến khỏi trang YouTube nhưng dữ liệu vẫn được giữ."))return;b.disabled=true;try{await rpc("admin_youtube_project_archive",{p_id:row.id});toast("Đã lưu trữ project");await load()}catch(err){toast("Không lưu trữ được");b.disabled=false}}});
+
+### admin-youtube-projects.js:150 [confirm]
+00149:     $("aytResources")?.addEventListener("click",e=>{const b=e.target.closest("[data-ayt-remove-resource]");if(!b||!editing)return;if(!confirm("Bỏ tài nguyên này khỏi project? Thay đổi chỉ có hiệu lực sau khi bấm Lưu."))return;editing.resources.splice(Number(b.dataset.aytRemoveResource),1);renderResources()});
+00150:     $("aytProjectList")?.addEventListener("click",async e=>{const b=e.target.closest("[data-ayt-act]"),row=b&&rows.find(x=>String(x.id)===b.closest("[data-ayt-id]")?.dataset.aytId);if(!b||!row)return;const act=b.dataset.aytAct;if(act==="edit")return openEditor(row);if(act==="toggle"){b.disabled=true;try{await rpc("admin_youtube_project_set_active",{p_id:row.id,p_active:!row.is_active});toast(row.is_active?"Đã ẩn project":"Đã hiện project");await load()}catch(err){toast("Không đổi được trạng thái");b.disabled=false}}if(act==="archive"){if(!confirm("Lưu trữ project này? Project sẽ biến khỏi trang YouTube nhưng dữ liệu vẫn được giữ."))return;b.disabled=true;try{await rpc("admin_youtube_project_archive",{p_id:row.id});toast("Đã lưu trữ project");await load()}catch(err){toast("Không lưu trữ được");b.disabled=false}}});
+00151:     window.addEventListener("avp:admin-youtube-open",()=>{if(!loaded)load()});
+
+### admin.js:103 [confirm]
+00102:       $("mailDelete")?.addEventListener("click", async()=>{
+00103:         { const okFile = window.avpConfirm ? await window.avpConfirm("Phiếu gửi file này sẽ bị xóa khỏi danh sách admin.", { title: "Xóa phiếu file?", icon: "📎", tone: "danger", ok: "Xóa", cancel: "Hủy" }) : confirm("Xóa phiếu file này?"); if(!okFile) return; }
+00104:         await rpcSoft("admin_delete_user_file",{p_id:r.id});
+
+### admin.js:130 [confirm]
+00129:     if(del) del.onclick=async()=>{
+00130:       { const okMail = window.avpConfirm ? await window.avpConfirm("Xóa thư / góp ý của " + who + "?\nKhông hoàn tác được.", { title: "Xóa thư?", icon: "✉️", tone: "danger", ok: "Xóa", cancel: "Hủy" }) : confirm("Xóa thư này của "+who+"?"); if(!okMail) return; }
+00131:       const itemId=Number(r.id);
+
+### admin.js:319 [confirm]
+00318:       if(act==="reset"){
+00319:         if(!confirm(`Reset điểm Race của ${row.player_name}?`))return;
+00320:         await rpc("admin_race_reset_v4",{p_ranking_id:rid});
+
+### admin.js:323 [confirm]
+00322:       }else if(act==="delete"){
+00323:         if(!confirm(`Xoá ${row.player_name} khỏi BXH Race? Tài khoản (nếu có) vẫn giữ nguyên.`))return;
+00324:         await rpc("admin_race_delete_v4",{p_ranking_id:rid});
+
+### admin.js:327 [prompt]
+00326:       }else if(act==="rename"){
+00327:         const name=prompt("Tên mới trên BXH:",row.player_name||""); if(name===null)return;
+00328:         const clean=name.trim(); if(clean.length<2){toast("Tên tối thiểu 2 ký tự");return}
+
+### admin.js:410 [confirm]
+00409:         const hidden=btn.dataset.hidden==="1";
+00410:         if(!confirm(`${hidden?'Hiện':'Ẩn'} ${who} ${hidden?'trên':'khỏi'} BXH?`))return;
+00411:         await rpc("admin_um_set_leaderboard_visibility",{p_user_id:id,p_hidden:!hidden}); ok=true;
+
+### admin.js:413 [confirm]
+00412:       }else if(act==="votes"){
+00413:         if(!confirm(`Reset toàn bộ vote có liên kết tài khoản của ${who}?`))return;
+00414:         const res=await rpc("admin_um_reset_votes",{p_user_id:id}); ok=true;
+
+### admin.js:417 [confirm]
+00416:       }else if(act==="progress"){
+00417:         if(!confirm(`RESET TIẾN ĐỘ của ${who}? XP/BXH cloud sẽ được xóa. Thao tác này không nên dùng nếu không chắc.`))return;
+00418:         await rpc("admin_um_reset_progress",{p_user_id:id}); ok=true;
+
+### admin.js:421 [confirm]
+00420:         const isAdm=btn.dataset.admin==="1";
+00421:         if(!confirm(`${isAdm?'Bỏ':'Cấp'} quyền Admin cho ${who}?`))return;
+00422:         const res=await rpc("admin_um_set_admin",{p_user_id:id,p_is_admin:!isAdm});
+
+### admin.js:608 [confirm]
+00607:     $("adminMaintenanceOff")?.addEventListener("click",()=>{
+00608:       if(confirm("Tắt chế độ bảo trì và mở lại website cho mọi người?")){
+00609:         saveAdminMaintenance(true);
+
+### admin.js:833 [confirm]
+00832:       const tr=btn.closest("tr"), source=tr?.dataset.source, id=Number(tr?.dataset.id||0); if(!source||!id)return;
+00833:       if(!confirm("Xoá vote này khỏi Supabase?"))return;
+00834:       btn.disabled=true;
+
+### admin.js:887 [prompt]
+00886:       if(act==="edit")return openDownloadEditor(row);
+00887:       if(act==="copy"){const link=row.file_url||row.source_path;try{await navigator.clipboard.writeText(link);toast("Đã copy link")}catch(_){prompt("Copy link:",link)}return}
+00888:       if(act==="toggle"){b.disabled=true;try{await rpc("admin_download_set_active",{p_id:id,p_active:!row.is_active});toast(row.is_active?"Đã ẩn file":"Đã hiện file");await loadAdminDownloads()}catch(err){toast("Không đổi được trạng thái");b.disabled=false}return}
+
+### admin.js:889 [confirm]
+00888:       if(act==="toggle"){b.disabled=true;try{await rpc("admin_download_set_active",{p_id:id,p_active:!row.is_active});toast(row.is_active?"Đã ẩn file":"Đã hiện file");await loadAdminDownloads()}catch(err){toast("Không đổi được trạng thái");b.disabled=false}return}
+00889:       if(act==="delete"){if(!confirm("Xoá tài nguyên khỏi hệ thống quản lý? File vật lý không tự bị xoá."))return;b.disabled=true;try{await rpc("admin_download_delete",{p_id:id});toast("Đã xoá tài nguyên");await loadAdminDownloads()}catch(err){toast("Không xoá được");b.disabled=false}}
+00890:     });
+
+### ai-chat.js:104 [file]
+00103:           <form id="avpAiForm" class="avp-ai-form">
+00104:             <input id="avpAiImageInput" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" hidden>
+00105:             <button id="avpAiImagePick" class="avp-ai-image-pick" type="button" aria-label="Gửi ảnh" title="Gửi ảnh">📷</button>
+
+### ai-chat.js:328 [prompt]
+00327:   function reportReasonPrompt(){
+00328:     const raw=prompt(
+00329:       "Báo cáo nội dung này:\n\n"+
+
+### ai-chat.js:352 [prompt]
+00351: 
+00352:     const detail=prompt("Mô tả thêm (không bắt buộc):") || null;
+00353: 
+
+### ai-chat.js:362 [alert]
+00361:       if(error)throw error;
+00362:       alert("🚩 Đã gửi báo cáo. Admin sẽ kiểm tra nội dung này.");
+00363:     }catch(e){
+
+### ai-chat.js:365 [alert]
+00364:       const msg=String(e?.message||"");
+00365:       if(msg.includes("SELF_REPORT")) alert("Bạn không thể báo cáo nội dung của chính mình.");
+00366:       else if(msg.includes("ALREADY_REPORTED")) alert("Bạn đã báo cáo nội dung này rồi.");
+
+### ai-chat.js:366 [alert]
+00365:       if(msg.includes("SELF_REPORT")) alert("Bạn không thể báo cáo nội dung của chính mình.");
+00366:       else if(msg.includes("ALREADY_REPORTED")) alert("Bạn đã báo cáo nội dung này rồi.");
+00367:       else alert("Chưa gửi được báo cáo.");
+
+### ai-chat.js:367 [alert]
+00366:       else if(msg.includes("ALREADY_REPORTED")) alert("Bạn đã báo cáo nội dung này rồi.");
+00367:       else alert("Chưa gửi được báo cáo.");
+00368:     }
+
+### ai-chat.js:387 [alert]
+00386:     if(user)return true;
+00387:     alert("Bạn cần đăng nhập để tham gia Cộng đồng Anh Văn Phòng.");
+00388:     return false;
+
+### ai-chat.js:460 [alert]
+00459:       console.warn("Community pin",e);
+00460:       alert("Chưa cập nhật được trạng thái ghim bài.");
+00461:     }
+
+### ai-chat.js:541 [alert]
+00540:     if(!/^image\//i.test(file.type||"")){
+00541:       alert("Chỉ hỗ trợ file ảnh.");
+00542:       return;
+
+### ai-chat.js:545 [alert]
+00544:     if(file.size>8*1024*1024){
+00545:       alert("Ảnh quá lớn. Hãy chọn ảnh dưới 8 MB.");
+00546:       return;
+
+### ai-chat.js:557 [alert]
+00556:       console.warn("Community image",e);
+00557:       alert("Không đọc được ảnh. Hãy thử JPG, PNG hoặc ảnh chụp màn hình.");
+00558:     }
+
+### ai-chat.js:657 [file]
+00656:           <span>📷 Chọn ảnh / ảnh chụp màn hình</span>
+00657:           <input id="avpQuestionImage" type="file" accept="image/*">
+00658:         </label>
+
+### ai-chat.js:689 [alert]
+00688:     if(title.length<4){
+00689:       alert("Tiêu đề câu hỏi hơi ngắn.");
+00690:       return;
+
+### ai-chat.js:693 [alert]
+00692:     if(content.length<2){
+00693:       alert("Hãy nhập nội dung câu hỏi.");
+00694:       return;
+
+### ai-chat.js:720 [alert]
+00719:       console.warn("Create community question",e);
+00720:       alert("Chưa đăng được câu hỏi.");
+00721:     }finally{
+
+### ai-chat.js:744 [alert]
+00743:     if(!q){
+00744:       alert("Không tìm thấy câu hỏi.");
+00745:       return;
+
+### ai-chat.js:844 [file]
+00843:               <span>📷 Thêm ảnh</span>
+00844:               <input id="avpAnswerImage" type="file" accept="image/*">
+00845:             </label>
+
+### ai-chat.js:896 [alert]
+00895:     if(content.length<2 && !communityAnswerImage){
+00896:       alert("Hãy nhập nội dung hoặc thêm ảnh cho câu trả lời.");
+00897:       return;
+
+### ai-chat.js:917 [alert]
+00916:       console.warn("Create answer",e);
+00917:       alert("Chưa gửi được câu trả lời.");
+00918:     }finally{
+
+### ai-chat.js:937 [alert]
+00936:       const msg=String(e?.message||"");
+00937:       alert(msg.includes("SELF_VOTE")?"Bạn không thể vote câu trả lời của chính mình.":"Chưa ghi nhận được lượt vote.");
+00938:     }
+
+### ai-chat.js:955 [alert]
+00954:       const msg=String(e?.message||"");
+00955:       alert(msg.includes("SELF_RATING")?"Bạn không thể tự đánh giá câu trả lời của mình.":"Chưa ghi nhận được đánh giá.");
+00956:     }
+
+### ai-chat.js:976 [alert]
+00975:       console.warn("Accept answer",e);
+00976:       alert("Chưa chọn được câu trả lời này.");
+00977:     }
+
+### ai-chat.js:1208 [alert]
+01207:             await navigator.clipboard.writeText(copy.dataset.certCopy);
+01208:             alert("Đã sao chép mã xác minh.");
+01209:           }catch{
+
+### ai-chat.js:1210 [alert]
+01209:           }catch{
+01210:             alert(`Mã xác minh: ${copy.dataset.certCopy}`);
+01211:           }
+
+### ai-chat.js:1222 [alert]
+01221:     if(!/^image\//i.test(file.type||"")){
+01222:       alert("Chỉ hỗ trợ file ảnh.");
+01223:       return;
+
+### ai-chat.js:1226 [alert]
+01225:     if(file.size>5*1024*1024){
+01226:       alert("Avatar tối đa 5 MB.");
+01227:       return;
+
+### ai-chat.js:1241 [alert]
+01240:     }catch{
+01241:       alert("Không đọc được ảnh.");
+01242:     }
+
+### ai-chat.js:1275 [file]
+01274:               <span>📷 Đổi avatar</span>
+01275:               <input id="avpProfileAvatarInput" type="file" accept="image/*">
+01276:             </label>
+
+### ai-chat.js:1310 [alert]
+01309:         if(msg.includes("PROFILE_CONTACT_NOT_ALLOWED")){
+01310:           alert("Hồ sơ không được chứa link, số điện thoại hoặc thông tin liên hệ/thanh toán.");
+01311:         }else{
+
+### ai-chat.js:1312 [alert]
+01311:         }else{
+01312:           alert("Chưa lưu được hồ sơ.");
+01313:         }
+
+### ai-chat.js:1339 [alert]
+01338:       if(msg.includes("CERTIFICATE_NOT_UNLOCKED")){
+01339:         alert("Bạn chưa đủ điều kiện nhận chứng nhận này.");
+01340:       }else{
+
+### ai-chat.js:1341 [alert]
+01340:       }else{
+01341:         alert("Chưa cấp được chứng nhận. Hãy thử lại.");
+01342:       }
+
+### ai-chat.js:1469 [alert]
+01468:       if(!w){
+01469:         alert("Trình duyệt đang chặn cửa sổ in.");
+01470:         return;
+
+### ai-chat.js:1495 [prompt]
+01494:   async function verifyCommunityCertificatePrompt(){
+01495:     const code=prompt("Nhập mã xác minh chứng nhận:");
+01496:     if(!code)return;
+
+### ai-chat.js:1507 [alert]
+01506:       if(!row){
+01507:         alert("Không tìm thấy chứng nhận với mã này.");
+01508:         return;
+
+### ai-chat.js:1511 [alert]
+01510: 
+01511:       alert(
+01512:         row.is_valid
+
+### ai-chat.js:1518 [alert]
+01517:       console.warn("Verify certificate",e);
+01518:       alert("Không tìm thấy hoặc chưa kiểm tra được mã chứng nhận.");
+01519:     }
+
+### ai-chat.js:1610 [alert]
+01609:     if(!client?.rpc){
+01610:       alert("Cộng đồng chưa kết nối được Supabase.");
+01611:       return;
+
+### ai-chat.js:1884 [alert]
+01883:       console.warn("Mark all notifications",e);
+01884:       alert("Chưa đánh dấu được thông báo.");
+01885:     }
+
+### ai-chat.js:2072 [alert]
+02071:       if(err?.message==="IMAGE_TOO_LARGE"){
+02072:         alert("Ảnh quá lớn. Hãy chọn ảnh dưới 8 MB.");
+02073:       }else{
+
+### ai-chat.js:2074 [alert]
+02073:       }else{
+02074:         alert("Không đọc được ảnh này. Hãy thử ảnh chụp màn hình, JPG hoặc PNG.");
+02075:       }
+
+### ai-chat.js:2339 [alert]
+02338:     if(!client?.rpc){
+02339:       alert("AI Chat chưa kết nối được Supabase. Hãy tải lại trang rồi thử lại.");
+02340:       return;
+
+### ai-chat.js:2345 [alert]
+02344:     if(!user){
+02345:       alert("Bạn cần đăng nhập để dùng AI Chat.");
+02346:       return;
+
+### ai-chat.js:2355 [alert]
+02354:     if(!q.isAdmin && q.left<=0){
+02355:       alert("Bạn đã dùng hết 5 câu AI hôm nay. Ngày mai hệ thống sẽ tự mở lại.");
+02356:       return;
+
+### ai-chat.js:2466 [alert]
+02465: 
+02466:       alert(
+02467:         detail
+
+### ai-chat.js:2481 [alert]
+02480:     if(!client?.rpc){
+02481:       alert("Chat Admin chưa kết nối được Supabase.");
+02482:       return;
+
+### ai-chat.js:2488 [alert]
+02487:     if(!user){
+02488:       alert("Bạn cần đăng nhập để chuyển câu hỏi cho Admin.");
+02489:       return;
+
+### ai-chat.js:2505 [alert]
+02504:       if(!question){
+02505:         alert("Bạn chưa có câu hỏi nào để chuyển cho Admin.");
+02506:         return;
+
+### ai-chat.js:2523 [alert]
+02522: 
+02523:       alert("Đã chuyển câu hỏi cho Admin. Bạn có thể mở Chat với Admin để theo dõi phản hồi.");
+02524:     }catch(e){
+
+### ai-chat.js:2526 [alert]
+02525:       console.warn("AVP AI transfer admin",e);
+02526:       alert("Chưa chuyển được câu hỏi cho Admin. Hãy thử lại sau.");
+02527:     }
+
+### avp-core.js:86 [file]
+00085:       <section class="avp-hub-section"><h3>Đã lưu</h3>${books}</section>
+00086:       <section class="avp-hub-section"><h3>Sao lưu tiến độ</h3><div class="avp-hub-card"><small>Xuất dữ liệu học tập để đổi máy/trình duyệt mà không mất tiến độ.</small><div class="avp-hub-actions"><button class="avp-hub-btn" data-export>Xuất tiến độ</button><label class="avp-hub-btn secondary" style="cursor:pointer">Nhập tiến độ<input data-import type="file" accept="application/json" hidden></label></div></div></section>`;
+00087:   }
+
+### avp-core.js:95 [alert]
+00094:   function exportData(){const data={version:2,exportedAt:new Date().toISOString(),origin:'LearnExcelwithme',storage:{}};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&(/^(avp_|completedCourses|currentCourse|quizBestScore|dashboardLots|theme)/.test(k)))data.storage[k]=localStorage.getItem(k)}const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`learn-excel-progress-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(a.href);toast('Đã xuất tiến độ')}
+00095:   function importData(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||d.origin!=='LearnExcelwithme'||!d.storage)throw 0;Object.entries(d.storage).forEach(([k,v])=>localStorage.setItem(k,v));toast('Đã khôi phục tiến độ');setTimeout(()=>location.reload(),700)}catch{(window.avpAlert?window.avpAlert('File tiến độ không hợp lệ.',{title:"Excel",icon:"📥",tone:"ok"}):alert('File tiến độ không hợp lệ.'))}};r.readAsText(f)}
+00096:   /* =========================================================
+
+### dashboard.js:225 [confirm]
+00224:   function reset(){
+00225:     const ok=confirm(
+00226:       "Đặt lại tiến độ học trên thiết bị này?\n\n"+
+
+### excel-doctor.js:379 [alert]
+00378:   if(typeof XLSX==="undefined"){
+00379:     alert("Chưa tải được bộ đọc Excel. Kiểm tra kết nối mạng rồi thử lại.");
+00380:     return;
+
+### excel-doctor.js:391 [alert]
+00390:     hide();
+00391:     alert("Doctor thực sự không mở được workbook này.\n\nChi tiết: "+String(err?.message||err).slice(0,180));
+00392:     return;
+
+### focus-room.js:305 [confirm]
+00304:       if(!history().length) return;
+00305:       if(confirm("Xóa toàn bộ lịch sử Focus Room trên thiết bị này?")){
+00306:         saveHistory([]);
+
+### playground.js:28 [confirm]
+00027: 
+00028: document.addEventListener("DOMContentLoaded",()=>{pgRender();pgUpdateHeader();document.querySelectorAll(".pg-filter").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".pg-filter").forEach(b=>b.classList.remove("active"));btn.classList.add("active");pgRender(btn.dataset.filter)}));document.getElementById("resetPlayground").addEventListener("click",()=>{if(confirm("Xóa tiến độ 10 bài Excel Playground trên trình duyệt này?")){pgProgress={};pgSave();pgRender(document.querySelector(".pg-filter.active").dataset.filter);pgUpdateHeader()}})});
+
+### practice-grader.js:142 [file]
+00141:         <span>${isAdminTester&&submitted?"🛠 Nộp test lại":"📤 Nộp bài"}</span>
+00142:         <input type="file" class="pg-file-input" accept=".xlsx,.xls" data-submit="${esc(l.key)}" aria-label="Nộp file Excel">
+00143:       </label>
+
+### practice-grader.js:197 [file]
+00196:   scope.querySelectorAll("[data-submit]").forEach(i=>{i.onchange=e=>{const f=e.target.files?.[0],lessonKey=i.dataset.submit,l=lessons().find(x=>x.key===lessonKey);if(l&&f)onFilePicked(l,f);e.target.value="";};});
+00197:   scope.querySelectorAll(".pg-file-submit").forEach(label=>{label.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&!e.target.matches("input")){e.preventDefault();label.querySelector('input[type="file"]')?.click();}});label.setAttribute("tabindex","0");label.setAttribute("role","button");});
+00198:   scope.querySelectorAll("[data-review]").forEach(b=>b.onclick=()=>{const l=lessons().find(x=>x.key===b.dataset.review);if(l)showStoredReview(l)});
+
+### practice-grader.js:626 [alert]
+00625:   try{const {XLSX,wb}=await buildWorkbook(l);XLSX.writeFile(wb,l.fileName||"AVP_Practice.xlsx")}
+00626:   catch(e){alert("Chưa tạo được file bài này: "+(e?.message||e))}
+00627: }
+
+### practice-grader.js:913 [alert]
+00912:   const u=await requireLogin();if(!u)return;
+00913:   if(submissionCache.get(l.key)?.submitted&&!isAdminTester){alert("Bài này đã nộp chính thức.");return}
+00914:   if(!/\.(xlsx|xls)$/i.test(file.name)){alert("Chỉ nhận .xlsx hoặc .xls.");return}
+
+### practice-grader.js:914 [alert]
+00913:   if(submissionCache.get(l.key)?.submitted&&!isAdminTester){alert("Bài này đã nộp chính thức.");return}
+00914:   if(!/\.(xlsx|xls)$/i.test(file.name)){alert("Chỉ nhận .xlsx hoặc .xls.");return}
+00915:   pendingLesson=l;pendingFile=file;
+
+### practice-grader.js:933 [alert]
+00932:     closeSubmit();
+00933:     alert("Không kết nối được Supabase. Bạn có thể chọn bài khác và thử lại.");
+00934:     return;
+
+### practice-grader.js:1014 [alert]
+01013:     if(/ALREADY_SUBMITTED/i.test(msg)){
+01014:       alert("Bài này đã được nộp trước đó. Hệ thống sẽ tải lại trạng thái bài.");
+01015:       await loadSubmissionStates();
+
+### practice-grader.js:1031 [alert]
+01030: 
+01031:       alert(prefix+" Bạn vẫn có thể nộp bài khác.\n\nChi tiết: "+msg);
+01032:     }
+
+### practice-grader.js:1089 [alert]
+01088:   const {error}=await sb.rpc("practice_grader_set_result_visibility",{p_lesson_key:l.key,p_visible:!!v});
+01089:   if(error){alert("Không cập nhật được BXH: "+error.message);return false}
+01090:   const st=submissionCache.get(l.key)||{};
+
+### practice-grader.js:1110 [alert]
+01109:   if(!st?.submitted)return;
+01110:   if(st.appeal_status){alert("Bài này đã có yêu cầu chấm lại hoặc đã được Admin xử lý.");return}
+01111:   pendingAppealLesson=l;
+
+### practice-grader.js:1126 [alert]
+01125:   const reason=String($("pgAppealReason")?.value||"").trim();
+01126:   if(reason.length<10){alert("Bạn hãy mô tả rõ lỗi chấm, tối thiểu 10 ký tự.");return}
+01127:   const btn=$("pgAppealSend");btn.disabled=true;btn.textContent="Đang gửi…";
+
+### practice-grader.js:1138 [alert]
+01137:     closeAppeal();renderLessons();
+01138:     alert("Đã gửi yêu cầu chấm lại. Kết quả xử lý sẽ được gửi qua thông báo cá nhân trong Cộng đồng.");
+01139:   }catch(e){
+
+### practice-grader.js:1140 [alert]
+01139:   }catch(e){
+01140:     alert("Chưa gửi được yêu cầu: "+String(e?.message||e));
+01141:   }finally{btn.disabled=false;btn.textContent="Gửi yêu cầu"}
+
+### practice-grader.js:1211 [alert]
+01210:   if(row.classList.contains("me")||btn.disabled){
+01211:     alert("Không thể tự tặng sao cho mình.");
+01212:     return;
+
+### practice-grader.js:1218 [alert]
+01217:   if(fromId&&toId&&fromId===toId){
+01218:     alert("Không thể tự tặng sao cho mình.");
+01219:     return;
+
+### practice-grader.js:1225 [alert]
+01224:   if(store.given[fromId+"|"+stamp]){
+01225:     alert("Hôm nay bạn đã tặng sao cho "+name+" rồi.");
+01226:     return;
+
+### practice-grader.js:1232 [alert]
+01231:     btn.disabled=false;
+01232:     alert("Chưa kết nối được server.");
+01233:     return;
+
+### practice-grader.js:1237 [alert]
+01236:     btn.disabled=false;
+01237:     alert("Không gửi thông báo được vì dòng này thiếu ID học viên.");
+01238:     return;
+
+### practice-grader.js:1256 [alert]
+01255:     btn.disabled=false;
+01256:     alert("Tặng sao rồi nhưng chưa gửi được thông báo. Chạy SQL bảng practice_grader_star_notifs trước.\n\n"+String(noteIns.error.message||noteIns.error));
+01257:     return;
+
+### practice-grader.js:1268 [alert]
+01267:   if(window.avpAlert)window.avpAlert("Đã tặng 1 sao cho "+name+".",{title:"Sao",icon:"⭐",tone:"ok"});
+01268:   else alert("Đã tặng 1 sao cho "+name+".");
+01269: }
+
+### professional-access.js:106 [alert]
+00105:     const note=String($("ptApplicantNote")?.value||"").trim();
+00106:     if(!file)return alert("Hãy chọn file chứng chỉ hoặc xác nhận thành tích.");
+00107:     if(file.size>8*1024*1024)return alert("File vượt quá 8 MB.");
+
+### professional-access.js:107 [alert]
+00106:     if(!file)return alert("Hãy chọn file chứng chỉ hoặc xác nhận thành tích.");
+00107:     if(file.size>8*1024*1024)return alert("File vượt quá 8 MB.");
+00108:     if(!["application/pdf","image/png","image/jpeg"].includes(file.type)){
+
+### professional-access.js:109 [alert]
+00108:     if(!["application/pdf","image/png","image/jpeg"].includes(file.type)){
+00109:       return alert("Chỉ nhận PDF, PNG, JPG hoặc JPEG.");
+00110:     }
+
+### professional-access.js:113 [alert]
+00112:     const {data:{user}}=await sb.auth.getUser();
+00113:     if(!user)return alert("Bạn cần đăng nhập.");
+00114: 
+
+### professional-access.js:131 [alert]
+00130:       await load();
+00131:       alert("Đã nộp hồ sơ. Admin sẽ kiểm tra và xác nhận quyền truy cập.");
+00132:     }catch(e){
+
+### professional-access.js:136 [alert]
+00135:       }
+00136:       alert("Chưa nộp được hồ sơ: "+String(e?.message||e));
+00137:     }finally{
+
+### professional-track-content.js:142 [alert]
+00141:     const clean=resourcePath(path);
+00142:     if(!clean)return alert("Tài nguyên này chưa được Admin đưa vào kho Pro riêng tư.");
+00143:     supabase=supabase||await client();
+
+### professional-track-content.js:144 [alert]
+00143:     supabase=supabase||await client();
+00144:     if(!supabase)return alert("Chưa kết nối được hệ thống.");
+00145:     const popup=window.open("","_blank");
+
+### professional-track-content.js:153 [alert]
+00152:       if(popup)popup.close();
+00153:       alert(`Không mở được ${label||"tài nguyên"}: ${String(error?.message||error)}`);
+00154:     }
+
+### professional-track-content.js:431 [file]
+00430:         :submission?.status==="revision"?`Admin yêu cầu nộp lại${submission.feedback?`: ${esc(submission.feedback)}`:"."}`:"";
+00431:     const actions=item.published?`<div class="pro-case-submit-box">${item.submissionEnabled?'<label class="pro-case-note"><span>Ghi chú cho Admin</span><textarea data-pro-case-note rows="2" maxlength="1200" placeholder="Nêu phần cần lưu ý hoặc cách bạn xử lý Case này"></textarea></label>':""}<div class="pro-case-actions">${item.sourcePath?`<button type="button" data-pro-resource="source">↓ Tải file thực hành</button>`:""}${item.guidePath?`<button type="button" class="secondary" data-pro-resource="guide">Xem hướng dẫn</button>`:""}${item.submissionEnabled?`<label class="pro-case-upload"><input type="file" data-pro-case-file accept=".xlsx,.xls,.xlsm,.csv,.zip"><span>${submission?.status==="pending"?"Thay file đã nộp":"Chọn file bài làm"}</span></label><button type="button" data-pro-case-submit>Nộp bài</button>`:""}</div></div>`:`<p class="pro-case-next">Case đang ở chế độ xem trước. Admin chưa phát hành file nguồn và cổng nộp bài.</p>`;
+00432:     brief.innerHTML=`<button type="button" class="pro-case-list-back" data-case-list>← Danh sách 3 Case</button><div class="pro-case-brief-head"><div><span>${esc(item.id.toUpperCase())}</span><h2>${esc(item.title)}</h2><p>${esc(item.goal)}</p></div><div><small>Thời lượng dự kiến</small><strong>${esc(item.duration)}</strong><small>Điểm tối đa</small><strong>${item.score}/10</strong></div></div><div class="pro-case-brief-body"><section><h3>Yêu cầu thực hiện</h3><ol>${item.tasks.map(task=>`<li>${esc(task)}</li>`).join("")}</ol></section><section><h3>Năng lực đánh giá</h3><p>${esc(item.skills)}</p><h3>Kết quả phải bàn giao</h3><p>${esc(item.output)}</p></section></div><div class="pro-case-rubric"><span><b>AUTO</b> Cấu trúc, công thức và tính toàn vẹn</span><span><b>AUTO</b> Kết quả, số liệu và đối soát theo đáp án ẩn</span><span><b>REVIEW</b> Chỉ ngoại lệ máy chưa thể kết luận mới chuyển Admin</span></div>${status?`<p class="pro-case-submission-state ${esc(submission?.status||"")}">${status}</p>`:""}${actions}`;
+
+### professional-track-content.js:446 [alert]
+00445:   async function submitCase(item,brief){
+00446:     if(!supabase)return alert("Chưa kết nối được hệ thống. Hãy tải lại trang.");
+00447:     const input=brief.querySelector("[data-pro-case-file]");
+
+### professional-track-content.js:449 [alert]
+00448:     const file=input?.files?.[0];
+00449:     if(!file)return alert("Hãy chọn file bài làm trước khi nộp.");
+00450:     if(file.size>15*1024*1024)return alert("File bài làm không được vượt quá 15 MB.");
+
+### professional-track-content.js:450 [alert]
+00449:     if(!file)return alert("Hãy chọn file bài làm trước khi nộp.");
+00450:     if(file.size>15*1024*1024)return alert("File bài làm không được vượt quá 15 MB.");
+00451:     const ext=(file.name.split(".").pop()||"").toLowerCase();
+
+### professional-track-content.js:452 [alert]
+00451:     const ext=(file.name.split(".").pop()||"").toLowerCase();
+00452:     if(!["xlsx","xls","xlsm","csv","zip"].includes(ext))return alert("Chỉ nhận XLSX, XLS, XLSM, CSV hoặc ZIP.");
+00453:     const {data:{user}}=await supabase.auth.getUser();
+
+### professional-track-content.js:454 [alert]
+00453:     const {data:{user}}=await supabase.auth.getUser();
+00454:     if(!user)return alert("Bạn cần đăng nhập lại trước khi nộp bài.");
+00455:     const button=brief.querySelector("[data-pro-case-submit]");
+
+### professional-track-content.js:488 [alert]
+00487:     }catch(error){
+00488:       alert("Chưa nộp được bài: "+String(error?.message||error));
+00489:     }finally{
+
+### qc-dashboard.js:127 [alert]
+00126:     const rows=load();
+00127:     if(!rows.length){alert("Chưa có dữ liệu để xuất.");return;}
+00128:     const blob=new Blob(["\ufeff"+toCSV(rows)],{type:"text/csv;charset=utf-8"});
+
+### qc-dashboard.js:270 [alert]
+00269:   const rows=filteredRows();
+00270:   if(!rows.length){alert("Không có dữ liệu để xuất.");return;}
+00271:   const spec=parseFloat(q("qcSpec")?.value||"1")||1;
+
+### qc-dashboard.js:406 [alert]
+00405:   }catch(err){
+00406:     alert(err.message||"Không thể đọc file.");
+00407:     el("qcMapArea").style.display="none";
+
+### qc-dashboard.js:435 [alert]
+00434: 
+00435:   if(!rows.length){alert("Không có dòng hợp lệ sau khi map cột.");return}
+00436: 
+
+### qc-dashboard.js:442 [alert]
+00441:   el("qcMapArea").style.display="none";
+00442:   alert(`Đã import ${rows.length} dòng vào Dashboard.`);
+00443:   location.reload();
+
+### qc-dashboard.js:489 [alert]
+00488:   const rows=getRows();
+00489:   if(!rows.length){alert("Chưa có dữ liệu QC để xuất Excel.");return;}
+00490:   if(!window.XLSX){alert("Thư viện Excel chưa tải được. Hãy kiểm tra kết nối Internet.");return;}
+
+### qc-dashboard.js:490 [alert]
+00489:   if(!rows.length){alert("Chưa có dữ liệu QC để xuất Excel.");return;}
+00490:   if(!window.XLSX){alert("Thư viện Excel chưa tải được. Hãy kiểm tra kết nối Internet.");return;}
+00491: 
+
+### script.js:794 [confirm]
+00793:     const confirmReset =
+00794:         confirm("Bạn có chắc muốn đặt lại toàn bộ tiến độ học không?");
+00795: 
+
+### script.js:2573 [alert]
+02572: 
+02573:         alert("Hãy nhập đầy đủ dữ liệu Lot.");
+02574: 
+
+### script.js:2976 [confirm]
+02975:     const confirmDelete =
+02976:         confirm(
+02977:             "Bạn có chắc muốn xóa toàn bộ dữ liệu Dashboard không?"
+
+### script.js:2997 [alert]
+02996: 
+02997:         alert("Chưa có dữ liệu để xuất.");
+02998: 
+
+### skill-map.js:259 [alert]
+00258:         const stageIndex=Number(node.dataset.stage);
+00259:         alert("Chưa mở khóa.\n\n"+stages[stageIndex].gate);
+00260:       });
+
+### supabase-auth.js:880 [alert]
+00879:       // Cho phép thử gửi lại ngay trong popup hiện tại nếu mạng lỗi.
+00880:       alert('Chưa gửi được đánh giá: '+(e?.message||e));
+00881:       btn.disabled=false;btn.textContent='Gửi đánh giá';
+
+### admin.html:262 [file]
+00261:         <div class="at-box"><h3>Thêm / sửa Tool</h3><p>File tải lên bắt buộc là ZIP (tối đa 50 MB). Tool ở <b>Bản nháp</b> chưa hiện ngoài website; khi <b>Phát hành</b> cần có link TikTok hướng dẫn. Hệ thống hiển thị pass mặc định <b>anhvanphongmaster</b>.</p>
+00262:           <form id="atToolForm" class="at-form"><input id="atToolId" type="hidden"><label><span>STT</span><input id="atToolOrder" type="number" min="0" max="9999" required></label><label><span>Tên Tool</span><input id="atToolName" maxlength="120" required></label><label><span>Trạng thái</span><select id="atToolStatus"><option value="draft">Bản nháp</option><option value="published">Phát hành</option></select></label><label><span>Ngày phát hành</span><input id="atToolReleaseDate" type="date"><small>Để trống khi là bản nháp. Khi phát hành mà để trống, hệ thống dùng ngày hiện tại.</small></label><label class="wide"><span>Ứng dụng</span><input id="atToolApplication" maxlength="240" placeholder="Ví dụ: Gộp file, kiểm tra dữ liệu, QC..."></label><label class="wide"><span>Mô tả</span><textarea id="atToolDescription" rows="4" maxlength="1200"></textarea></label><label class="wide"><span>Link TikTok hướng dẫn</span><input id="atToolTikTok" type="url" maxlength="500" placeholder="https://www.tiktok.com/@anhvanphongmaster/video/..."><small>Bắt buộc khi chuyển sang Phát hành.</small></label><label class="wide"><span>File ZIP</span><input id="atToolFile" type="file" accept=".zip,application/zip,application/x-zip-compressed"><small id="atFileCurrent" class="at-file-current">Chưa có file ZIP đang gắn.</small></label><div class="at-actions"><button id="atToolSave" class="primary" type="submit">Lưu Tool</button><button id="atToolReset" type="button">Tạo Tool mới</button></div><div id="atNotice" class="at-notice"></div></form>
+00263:         </div>
+
+### admin.html:465 [file]
+00464:             <div class="admin-chat-compose">
+00465:               <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="adminChatFile" type="file" multiple accept="image/*,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
+00466:               <textarea id="adminChatReply" maxlength="3000" rows="2" placeholder="Phản hồi học viên…"></textarea>
+
+### admin.html:610 [file]
+00609:           <label><span>Trạng thái</span><select id="attLessonStatus"><option value="draft">Bản nháp</option><option value="published">Phát hành</option></select></label>
+00610:           <div class="wide att-file-box" id="attUploadGroup"><p id="attCurrentFile"></p><label><span>Chọn file thực hành</span><input id="attFileInput" type="file" accept=".xlsx,.xls,.xlsm,.csv,.zip"><small>Tối đa 20 MB. Giữ nguyên nếu không chọn file thay thế.</small></label><button type="button" id="attClearFile" hidden>Bỏ file đang gắn</button></div>
+00611:           <label class="wide" id="attLinkGroup" hidden><span>Đường dẫn file</span><input id="attFileUrl" maxlength="1600" placeholder="https://... hoặc downloads/ten-file.xlsx"><small>Dùng link tải hoặc chia sẻ file, không dùng link trang chỉnh sửa mã nguồn GitHub.</small></label>
+
+### admin.html:697 [file]
+00696:           <label class="check"><input id="dlEditFeatured" type="checkbox"><span>Đánh dấu nổi bật</span></label>
+00697:           <label class="wide"><span>Thay / upload file mới</span><input id="dlEditFile" type="file"><small>Upload lên Supabase Storage; không cần đưa file mới lên GitHub.</small></label>
+00698:         </div>
+
+### admin.html:948 [file]
+00947:             <label><span>Điểm tối đa</span><input id="aptCaseMaxScore" type="number" min="10" max="10" value="10" readonly></label>
+00948:             <label class="wide apt-private-resource"><span>File bài cho học viên · Private</span><input id="aptCaseSourceFile" type="file" accept=".xlsx,.xls,.xlsm,.csv,.zip"><input id="aptCaseSourceUrl" type="hidden"><small id="aptCaseSourceState">Chưa có file bài cho học viên. File chỉ được cấp link tạm cho tài khoản đã được duyệt Pro.</small><button type="button" class="apt-inline-clear" id="aptCaseSourceClear" hidden>Xóa file hiện tại</button></label>
+00949:             <label class="wide apt-private-resource"><span>Tài liệu hướng dẫn · Private</span><input id="aptCaseGuideFile" type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.xlsm,.csv,.zip"><input id="aptCaseGuideUrl" type="hidden"><small id="aptCaseGuideState">Chưa có tài liệu hướng dẫn private.</small><button type="button" class="apt-inline-clear" id="aptCaseGuideClear" hidden>Xóa hướng dẫn hiện tại</button></label>
+
+### admin.html:949 [file]
+00948:             <label class="wide apt-private-resource"><span>File bài cho học viên · Private</span><input id="aptCaseSourceFile" type="file" accept=".xlsx,.xls,.xlsm,.csv,.zip"><input id="aptCaseSourceUrl" type="hidden"><small id="aptCaseSourceState">Chưa có file bài cho học viên. File chỉ được cấp link tạm cho tài khoản đã được duyệt Pro.</small><button type="button" class="apt-inline-clear" id="aptCaseSourceClear" hidden>Xóa file hiện tại</button></label>
+00949:             <label class="wide apt-private-resource"><span>Tài liệu hướng dẫn · Private</span><input id="aptCaseGuideFile" type="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.xlsm,.csv,.zip"><input id="aptCaseGuideUrl" type="hidden"><small id="aptCaseGuideState">Chưa có tài liệu hướng dẫn private.</small><button type="button" class="apt-inline-clear" id="aptCaseGuideClear" hidden>Xóa hướng dẫn hiện tại</button></label>
+00950:             <div class="apt-grader-box">
+
+### admin.html:952 [file]
+00951:               <div class="apt-grader-copy"><span>AUTO-GRADER PRO</span><strong>Đáp án ẩn phía server</strong><small>Học viên không nhìn thấy file này. Nếu có đáp án ẩn hợp lệ, hệ thống tự chấm sau khi nộp; chỉ ngoại lệ mới vào hàng chờ Admin.</small></div>
+00952:               <label class="apt-grader-upload"><input id="aptCaseReference" type="file" accept=".xlsx,.xlsm"><span>Chọn file đáp án ẩn</span></label>
+00953:               <button type="button" id="aptCaseReferenceCheck">Kiểm tra</button>
+
+### baitapexcel.html:84 [file]
+00083:     <label class="avp-grader-upload">
+00084:       <input type="file" id="avpGraderFile" accept=".xlsx,.xls" hidden>
+00085:       <span>📤 Nộp file đã làm</span>
+
+### excel-doctor.html:46 [file]
+00045:   <section class="ed-upload-card" id="edDropZone">
+00046:     <input id="edFile" type="file" accept=".xlsx,.xls,.xlsm,.xlsb" hidden>
+00047:     <div class="ed-upload-icon">＋</div>
+
+### excel-mobile.html:61 [file]
+00060:     <label class="mobile-upload-zone" for="mobileExcelFile">
+00061:       <input id="mobileExcelFile" type="file"
+00062:         accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+
+### excel-mobile.html:513 [file]
+00512:         <label class="mobile-multifile-upload" for="mergeFilesInput">
+00513:           <input id="mergeFilesInput" type="file" multiple
+00514:             accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+
+### index.html:1953 [alert]
+01952:     else {
+01953:         alert(
+01954:             "Chưa tìm thấy bài học phù hợp."
+
+### professional-access.html:83 [file]
+00082:       <span>Chứng chỉ / xác nhận thành tích</span>
+00083:       <input id="ptCertificateFile" type="file" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg">
+00084:       <small>PDF, PNG hoặc JPG · tối đa 8 MB.</small>
+
+### qc-dashboard.html:80 [file]
+00079:     <div id="qcDropZone" class="qc-import-drop">
+00080:       <input id="qcFileInput" type="file" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+00081:       <label for="qcFileInput">Chọn file dữ liệu</label>
