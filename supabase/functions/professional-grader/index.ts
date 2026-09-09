@@ -9,7 +9,7 @@ const H = {
 };
 const SUBMISSIONS='professional-track-submissions';
 const GRADING='professional-track-grading';
-const VERSION='AVP_PRO_GRADER_V2';
+const VERSION='AVP_PRO_GRADER_V3';
 const RUBRIC_MARKER='AVP_PRO_GRADER_V1';
 const MAX_SUBMISSION=15*1024*1024;
 const MAX_REFERENCE=20*1024*1024;
@@ -48,6 +48,16 @@ function rubricOf(ref:XLSX.WorkBook,key:string):Rubric{
   if(!Array.isArray(r.rules)||!r.rules.length)throw new Error('rubric_rules_missing');
   const total=r.rules.reduce((s,x)=>s+Math.max(0,Number(x.points)||0),0); if(Math.abs(total-10)>.0001)throw new Error('rubric_points_must_equal_10');
   return r;
+}
+function assertReferenceReady(reference:XLSX.WorkBook,rubric:Rubric){
+  for(const rule of rubric.rules||[]){
+    if(rule.type!=='formula_range')continue;
+    const sheet=String(rule.sheet||''),ws=reference.Sheets[sheet];
+    if(!ws||!rule.range)throw new Error(`reference_rule_invalid:${String(rule.label||rule.type)}`);
+    for(const {address,cell} of rangeCells(ws,rule.range)){
+      if(!formula(cell?.f))throw new Error(`reference_formula_missing:${sheet}!${address}`);
+    }
+  }
 }
 function grade(candidate:XLSX.WorkBook,reference:XLSX.WorkBook,rubric:Rubric,mode:TestMode='normal'){
   const results:RR[]=[];
@@ -93,7 +103,7 @@ function grade(candidate:XLSX.WorkBook,reference:XLSX.WorkBook,rubric:Rubric,mod
 }
 function feedback(r:ReturnType<typeof grade>){
   const cats=r.categories.map((c:any)=>`${c.label}: ${c.pass?'PASS':'FAIL'} ${c.earned}/${c.max}`).join(' | '),failed=r.rules.filter(x=>!x.pass).slice(0,4).map(x=>x.label).join('; ');
-  return `[AUTO PRO V2] ${cats} | Tổng: ${r.score}/${r.max_score}.${failed?` | Cần sửa: ${failed}`:' | Tất cả tiêu chí tự động đều đạt.'}`.slice(0,1200);
+  return `[AUTO PRO V3] ${cats} | Tổng: ${r.score}/${r.max_score}.${failed?` | Cần sửa: ${failed}`:' | Tất cả tiêu chí tự động đều đạt.'}`.slice(0,1200);
 }
 const review=(reason:string)=>`[AUTO REVIEW] Auto-Grader chưa đủ điều kiện kết luận (${String(reason||'grader_uncertain').replace(/[\r\n|]+/g,' ').slice(0,300)}). Admin sẽ chỉ kiểm tra trường hợp ngoại lệ này.`;
 async function workbook(blob:Blob){return XLSX.read(new Uint8Array(await blob.arrayBuffer()),{type:'array',cellFormula:true,cellDates:false,cellNF:true,cellText:false})}
@@ -125,14 +135,15 @@ Deno.serve(async(req:Request)=>{
       const stampBefore=await referenceStamp(admin,key);
       const {data:blob,error:e}=await admin.storage.from(GRADING).download(`${key}/reference.xlsx`);if(e||!blob)throw new Error('reference_missing');if(blob.size>MAX_REFERENCE)throw new Error('reference_too_large');
       const ref=await workbook(blob),rubric=rubricOf(ref,key);
+      assertReferenceReady(ref,rubric);
       const p=grade(ref,ref,rubric,'simulate-pass'),h=grade(ref,ref,rubric,'simulate-hardcode'),w=grade(ref,ref,rubric,'simulate-wrong');
-      const valid=p.score===10&&h.score<7&&w.score<7;if(!valid)return reply({status:'validation_failed',case_key:key,tests:{pass:p.score,hardcode:h.score,wrong_formula:w.score}},422);
+      const valid=p.score===10&&h.score<7&&w.score<7;if(!valid)return reply({status:'validation_failed',case_key:key,tests:{pass:p.score,hardcode:h.score,wrong_formula:w.score}});
       const stampAfter=await referenceStamp(admin,key);if(stampAfter!==stampBefore)throw new Error('reference_changed_during_validation');
       const marker={status:'validated',version:VERSION,case_key:key,reference_updated_at:stampAfter,validated_at:new Date().toISOString(),tests:{pass:p.score,hardcode:h.score,wrong_formula:w.score}};
       const saved=await admin.from('professional_track_cases_v2').update({grader_validation:marker}).eq('case_key',key).select('case_key').maybeSingle();
       if(saved.error)throw saved.error;if(!saved.data)throw new Error('case_not_saved_as_draft');
       return reply({status:'validated',case_key:key,validated_at:marker.validated_at,reference_updated_at:stampAfter,tests:marker.tests});
-    }catch(e){return reply({status:'validation_failed',case_key:key,reason:err(e)},422)}
+    }catch(e){return reply({status:'validation_failed',case_key:key,reason:err(e)})}
   }
 
   const id=String(body.submission_id||'').trim();if(!id)return reply({error:'submission_id_required'},400);
@@ -148,10 +159,12 @@ Deno.serve(async(req:Request)=>{
     ]);
     if(caseError||!caseRow)return await markReview('case_missing');
     const validation:any=caseRow.grader_validation||null;
-    if(validation?.status!=='validated'||String(validation?.reference_updated_at||'')!==stamp)return await markReview('grader_validation_stale');
+    if(validation?.status!=='validated'||validation?.version!==VERSION||String(validation?.reference_updated_at||'')!==stamp)return await markReview('grader_validation_stale');
     const [{data:cb,error:ce},{data:rb,error:re}]=await Promise.all([admin.storage.from(SUBMISSIONS).download(path),admin.storage.from(GRADING).download(`${activeKey}/reference.xlsx`)]);
     if(ce||!cb)return await markReview('submission_file_missing');if(re||!rb)return await markReview('reference_missing');if(cb.size>MAX_SUBMISSION)return await markReview('submission_too_large');if(rb.size>MAX_REFERENCE)return await markReview('reference_too_large');
-    const [cand,ref]=await Promise.all([workbook(cb),workbook(rb)]),rubric=rubricOf(ref,activeKey),r=grade(cand,ref,rubric,'normal'),f=feedback(r);
+    const [cand,ref]=await Promise.all([workbook(cb),workbook(rb)]);
+    const rubric=rubricOf(ref,activeKey);assertReferenceReady(ref,rubric);
+    const r=grade(cand,ref,rubric,'normal'),f=feedback(r);
     const u=await admin.from('professional_track_case_submissions_v2').update({status:'graded',score:r.score,feedback:f,graded_at:new Date().toISOString(),reviewed_by:null}).eq('id',s.id).eq('file_path',path).select('id').maybeSingle();if(u.error||!u.data)throw new Error('submission_changed_during_grading');
     return reply({status:'graded',case_key:activeKey,score:r.score,max_score:r.max_score,pass:r.pass,categories:r.categories});
   }catch(e){return await markReview(err(e))}

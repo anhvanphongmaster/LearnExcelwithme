@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260909-prosystem1";
+const CACHE = "learnexcel-assets-v20260909-prosystem2";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
