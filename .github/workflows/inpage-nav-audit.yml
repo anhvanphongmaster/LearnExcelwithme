@@ -1,0 +1,52 @@
+name: In-page Nav Audit
+
+on:
+  push:
+    branches: [fix-inpage-nav-readability]
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: List nav markup
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          for p in sorted(Path('.').glob('*.html')):
+              s=p.read_text(encoding='utf-8', errors='ignore')
+              tags=re.findall(r'<nav\b[^>]*>',s,re.I)
+              if tags:
+                  print('\n'+p.name)
+                  for t in tags: print(' ',re.sub(r'\s+',' ',t)[:260])
+          PY
+      - name: Browser nav styles
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --silent playwright@1.55.0
+          npx playwright install chromium
+          python3 -m http.server 4173 >/tmp/http.log 2>&1 &
+          PID=$!; trap 'kill $PID || true' EXIT; sleep 1
+          cat > nav-audit.js <<'JS'
+          const {chromium}=require('playwright'),fs=require('fs');
+          (async()=>{
+            const files=fs.readdirSync('.').filter(f=>f.endsWith('.html')).sort();
+            const b=await chromium.launch({headless:true});
+            const c=await b.newContext({serviceWorkers:'block',reducedMotion:'reduce'});
+            await c.route('**/*',r=>r.request().url().startsWith('http://127.0.0.1:4173/')?r.continue():r.abort());
+            const p=await c.newPage();
+            for(const f of files){
+              await p.setViewportSize({width:1366,height:900});
+              try{await p.goto('http://127.0.0.1:4173/'+f,{waitUntil:'domcontentloaded',timeout:7000});await p.waitForTimeout(250)}catch(e){}
+              const rows=await p.evaluate(()=>[...document.querySelectorAll('nav')].map((n,i)=>{const s=getComputedStyle(n),r=n.getBoundingClientRect();return {i,cls:n.className||'',id:n.id||'',hidden:n.hidden,display:s.display,pos:s.position,top:s.top,z:s.zIndex,bg:s.backgroundColor,pad:s.padding,shadow:s.boxShadow,w:Math.round(r.width),h:Math.round(r.height),text:(n.innerText||'').replace(/\s+/g,' ').trim().slice(0,100)}}));
+              if(rows.length){console.log('\nFILE '+f);for(const x of rows) console.log(JSON.stringify(x));}
+            }
+            await b.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node nav-audit.js
