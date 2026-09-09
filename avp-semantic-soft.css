@@ -1,0 +1,118 @@
+/* AVP Semantic Soft V1 — shared visual hierarchy without saturated UI noise */
+:root{
+  --avp-sem-info-bg:#f1f6fb;
+  --avp-sem-info-border:#d5e2ee;
+  --avp-sem-info-text:#35546b;
+  --avp-sem-success-bg:#eff8f2;
+  --avp-sem-success-border:#cfe5d7;
+  --avp-sem-success-text:#2f6244;
+  --avp-sem-warn-bg:#fff8ea;
+  --avp-sem-warn-border:#eddeb8;
+  --avp-sem-warn-text:#6d5724;
+  --avp-sem-danger-bg:#fff2f0;
+  --avp-sem-danger-border:#ebcfc9;
+  --avp-sem-danger-text:#7d443c;
+  --avp-sem-draft-bg:#f5f2fa;
+  --avp-sem-draft-border:#ddd5ea;
+  --avp-sem-draft-text:#5b5270;
+  --avp-sem-neutral-bg:#f5f7f6;
+  --avp-sem-neutral-border:#dfe5e1;
+  --avp-sem-neutral-text:#52625a;
+  --avp-sem-primary:#217346;
+  --avp-sem-primary-hover:#1b663f;
+  --avp-sem-focus:rgba(77,116,145,.20);
+}
+
+/* Reusable semantic surfaces. Existing features can adopt these classes without new CSS. */
+.avp-tone-info,.avp-status-info{background:var(--avp-sem-info-bg)!important;border-color:var(--avp-sem-info-border)!important;color:var(--avp-sem-info-text)!important}
+.avp-tone-success,.avp-status-success{background:var(--avp-sem-success-bg)!important;border-color:var(--avp-sem-success-border)!important;color:var(--avp-sem-success-text)!important}
+.avp-tone-warning,.avp-status-warning{background:var(--avp-sem-warn-bg)!important;border-color:var(--avp-sem-warn-border)!important;color:var(--avp-sem-warn-text)!important}
+.avp-tone-danger,.avp-status-danger{background:var(--avp-sem-danger-bg)!important;border-color:var(--avp-sem-danger-border)!important;color:var(--avp-sem-danger-text)!important}
+.avp-tone-draft,.avp-status-draft{background:var(--avp-sem-draft-bg)!important;border-color:var(--avp-sem-draft-border)!important;color:var(--avp-sem-draft-text)!important}
+.avp-tone-neutral,.avp-status-neutral{background:var(--avp-sem-neutral-bg)!important;border-color:var(--avp-sem-neutral-border)!important;color:var(--avp-sem-neutral-text)!important}
+
+/* Conservative compatibility mapping: only elements already acting as status/message components. */
+:is([class*="status"],[class*="state"],[class*="notice"],[class*="message"],[class*="feedback"]):is(.success,.ok,.complete,.completed,.graded,.approved){background:var(--avp-sem-success-bg)!important;border-color:var(--avp-sem-success-border)!important;color:var(--avp-sem-success-text)!important}
+:is([class*="status"],[class*="state"],[class*="notice"],[class*="message"],[class*="feedback"]):is(.pending,.warning,.warn,.waiting){background:var(--avp-sem-warn-bg)!important;border-color:var(--avp-sem-warn-border)!important;color:var(--avp-sem-warn-text)!important}
+:is([class*="status"],[class*="state"],[class*="notice"],[class*="message"],[class*="feedback"]):is(.error,.danger,.failed,.revision,.rejected){background:var(--avp-sem-danger-bg)!important;border-color:var(--avp-sem-danger-border)!important;color:var(--avp-sem-danger-text)!important}
+:is([class*="status"],[class*="state"],[class*="notice"],[class*="message"],[class*="feedback"]):is(.draft,.preview){background:var(--avp-sem-draft-bg)!important;border-color:var(--avp-sem-draft-border)!important;color:var(--avp-sem-draft-text)!important}
+
+/* Selected/current is informational, not success. This is the key separation from brand green. */
+[role="tab"][aria-selected="true"],button[aria-pressed="true"],[data-roll-card][aria-current="true"]{
+  border-color:var(--avp-sem-info-border)!important;
+  box-shadow:0 0 0 3px rgba(92,130,158,.08),0 14px 30px rgba(53,84,107,.08)!important;
+}
+[data-roll-card][aria-current="true"]{background:linear-gradient(180deg,#fff,var(--avp-sem-info-bg))!important}
+
+/* Shared buttons: only semantic/explicit classes are touched. */
+:is(button,a,[role="button"]):is(.danger,.destructive,.delete,.remove),
+:is([class*="btn"],[class*="button"]):is(.danger,.destructive,.delete,.remove){
+  background:var(--avp-sem-danger-bg)!important;border-color:var(--avp-sem-danger-border)!important;color:var(--avp-sem-danger-text)!important
+}
+:is(button,a,[role="button"]):is(.secondary,.ghost),
+:is([class*="btn"],[class*="button"]):is(.secondary,.ghost){
+  background:#fff!important;border-color:var(--avp-sem-neutral-border)!important;color:var(--avp-sem-neutral-text)!important
+}
+:is(button,a,[role="button"]):focus-visible{outline:3px solid var(--avp-sem-focus)!important;outline-offset:2px}
+
+/* Global dialogs: tone is visible in the surface/icon, while text stays calm and readable. */
+.avp-ui-modal.tone-info .avp-ui-modal-card{background:linear-gradient(180deg,var(--avp-sem-info-bg),#fff 122px)!important;border-color:var(--avp-sem-info-border)!important}
+.avp-ui-modal.tone-info .avp-ui-icon{background:var(--avp-sem-info-bg)!important;border-color:var(--avp-sem-info-border)!important;color:var(--avp-sem-info-text)!important}
+.avp-ui-modal.tone-info .avp-ui-title{color:var(--avp-sem-info-text)!important}
+.avp-ui-modal.tone-ok .avp-ui-modal-card{background:linear-gradient(180deg,var(--avp-sem-success-bg),#fff 122px)!important;border-color:var(--avp-sem-success-border)!important}
+.avp-ui-modal.tone-ok .avp-ui-icon{background:var(--avp-sem-success-bg)!important;border-color:var(--avp-sem-success-border)!important;color:var(--avp-sem-success-text)!important}
+.avp-ui-modal.tone-ok .avp-ui-title{color:var(--avp-sem-success-text)!important}
+.avp-ui-modal.tone-warn .avp-ui-modal-card{background:linear-gradient(180deg,var(--avp-sem-warn-bg),#fff 122px)!important;border-color:var(--avp-sem-warn-border)!important}
+.avp-ui-modal.tone-warn .avp-ui-icon{background:var(--avp-sem-warn-bg)!important;border-color:var(--avp-sem-warn-border)!important;color:var(--avp-sem-warn-text)!important}
+.avp-ui-modal.tone-warn .avp-ui-title{color:var(--avp-sem-warn-text)!important}
+.avp-ui-modal.tone-danger .avp-ui-modal-card{background:linear-gradient(180deg,var(--avp-sem-danger-bg),#fff 122px)!important;border-color:var(--avp-sem-danger-border)!important}
+.avp-ui-modal.tone-danger .avp-ui-icon{background:var(--avp-sem-danger-bg)!important;border-color:var(--avp-sem-danger-border)!important;color:var(--avp-sem-danger-text)!important}
+.avp-ui-modal.tone-danger .avp-ui-title{color:var(--avp-sem-danger-text)!important}
+/* Destructive confirmation should be clear, not saturated red. */
+.avp-ui-modal.tone-danger .avp-ui-ok{background:var(--avp-sem-danger-bg)!important;border-color:#d8aaa2!important;color:var(--avp-sem-danger-text)!important}
+.avp-ui-modal.tone-danger .avp-ui-ok:hover{background:#fbe7e3!important}
+/* Normal primary confirmation keeps the single strong brand action. */
+.avp-ui-modal:not(.tone-danger) .avp-ui-ok{background:var(--avp-sem-primary)!important;border-color:var(--avp-sem-primary)!important;color:#fff!important}
+.avp-ui-modal:not(.tone-danger) .avp-ui-ok:hover{background:var(--avp-sem-primary-hover)!important}
+
+/* Professional Track: distinguish navigation/current state from success and Draft. */
+.pro-flow-path span.active{background:var(--avp-sem-info-bg)!important;color:var(--avp-sem-info-text)!important}
+.pro-flow-path span.active b{background:#e1edf6!important;border-color:#c7d9e7!important;color:#35546b!important}
+.pro-flow-path span.done{color:var(--avp-sem-success-text)!important}
+.pro-flow-path span.done b{background:var(--avp-sem-success-bg)!important;border-color:var(--avp-sem-success-border)!important;color:var(--avp-sem-success-text)!important}
+.pro-card.active{border-color:#bfd4e3!important;background:linear-gradient(180deg,#fff,var(--avp-sem-info-bg))!important;box-shadow:0 20px 42px rgba(53,84,107,.11)!important}
+.pro-level-status.ready{background:var(--avp-sem-info-bg)!important;border-color:var(--avp-sem-info-border)!important;color:var(--avp-sem-info-text)!important}
+.pro-level-status.locked{background:var(--avp-sem-neutral-bg)!important;border-color:var(--avp-sem-neutral-border)!important;color:var(--avp-sem-neutral-text)!important}
+.pro-flow-notice{background:var(--avp-sem-warn-bg)!important;border-color:var(--avp-sem-warn-border)!important;color:var(--avp-sem-warn-text)!important}
+.pro-module-progress-grid article.current{background:var(--avp-sem-info-bg)!important;border-color:var(--avp-sem-info-border)!important}
+.pro-module-progress-grid article.complete{background:var(--avp-sem-success-bg)!important;border-color:var(--avp-sem-success-border)!important}
+.pro-case-state.pending,.pro-case-submission-state.pending{background:var(--avp-sem-warn-bg)!important;border-color:var(--avp-sem-warn-border)!important;color:var(--avp-sem-warn-text)!important}
+.pro-case-state.graded,.pro-case-submission-state.graded{background:var(--avp-sem-success-bg)!important;border-color:var(--avp-sem-success-border)!important;color:var(--avp-sem-success-text)!important}
+.pro-case-state.revision,.pro-case-submission-state.revision{background:var(--avp-sem-danger-bg)!important;border-color:var(--avp-sem-danger-border)!important;color:var(--avp-sem-danger-text)!important}
+.pro-case-submission-state{border-left:4px solid currentColor!important;padding-left:14px!important}
+.pro-case-next:has(>strong){background:var(--avp-sem-draft-bg)!important;border:1px solid var(--avp-sem-draft-border)!important;color:var(--avp-sem-draft-text)!important}
+.pro-case-next:has(>strong) strong{color:var(--avp-sem-draft-text)!important}
+[data-pro-resource]{background:var(--avp-sem-info-bg)!important;border-color:var(--avp-sem-info-border)!important;color:var(--avp-sem-info-text)!important}
+[data-pro-resource]:hover{background:#e8f1f8!important}
+[data-pro-case-submit]{background:var(--avp-sem-primary)!important;border-color:var(--avp-sem-primary)!important;color:#fff!important}
+[data-pro-case-submit]:hover{background:var(--avp-sem-primary-hover)!important}
+.pro-flow-back,.pro-case-list-back{background:#fff!important;border-color:var(--avp-sem-neutral-border)!important;color:var(--avp-sem-neutral-text)!important}
+
+/* Dark mode keeps the same role distinction with muted, non-neon surfaces. */
+body.dark-mode{
+  --avp-sem-info-bg:#1b2730;--avp-sem-info-border:#354958;--avp-sem-info-text:#c2d6e5;
+  --avp-sem-success-bg:#18271e;--avp-sem-success-border:#355142;--avp-sem-success-text:#c0ddc9;
+  --avp-sem-warn-bg:#2c271b;--avp-sem-warn-border:#564a2d;--avp-sem-warn-text:#e1d2a9;
+  --avp-sem-danger-bg:#2e201f;--avp-sem-danger-border:#5a3d39;--avp-sem-danger-text:#e6c2bc;
+  --avp-sem-draft-bg:#252230;--avp-sem-draft-border:#494258;--avp-sem-draft-text:#d0c8df;
+  --avp-sem-neutral-bg:#1e2521;--avp-sem-neutral-border:#39443d;--avp-sem-neutral-text:#c4d0c8;
+}
+body.dark-mode [data-roll-card][aria-current="true"]{background:linear-gradient(180deg,#1d2a22,var(--avp-sem-info-bg))!important}
+body.dark-mode .avp-ui-modal.tone-info .avp-ui-modal-card,
+body.dark-mode .avp-ui-modal.tone-ok .avp-ui-modal-card,
+body.dark-mode .avp-ui-modal.tone-warn .avp-ui-modal-card,
+body.dark-mode .avp-ui-modal.tone-danger .avp-ui-modal-card{background:#162019!important}
+
+@media(prefers-reduced-motion:reduce){
+  [data-roll-card][aria-current="true"]{transition:none!important}
+}

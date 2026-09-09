@@ -12,6 +12,10 @@
     if(d.querySelector('link[data-avp-ui-system]'))return;
     const link=d.createElement('link');link.rel='stylesheet';link.href='avp-ui-system.css?v=20260909-ui1';link.dataset.avpUiSystem='1';d.head.appendChild(link);
   }
+  function ensureSemanticCss(){
+    if(d.querySelector('link[data-avp-semantic-soft]'))return;
+    const link=d.createElement('link');link.rel='stylesheet';link.href='avp-semantic-soft.css?v=20260909-semsoft1';link.dataset.avpSemanticSoft='1';d.head.appendChild(link);
+  }
   function ensureRoot(){
     let root=d.getElementById('avpUiModal');if(root)return root;
     root=d.createElement('div');root.id='avpUiModal';root.className='avp-ui-modal tone-info';root.hidden=true;
@@ -27,7 +31,7 @@
   }
   function next(){
     if(active||!queue.length)return;
-    active=true;ensureCss();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
+    active=true;ensureCss();ensureSemanticCss();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
     lastFocus=d.activeElement instanceof HTMLElement?d.activeElement:null;
     root.className='avp-ui-modal tone-'+(opts.tone||'info');
     const type=opts.type||'alert';
@@ -87,5 +91,5 @@
   }
   // Alert has no meaningful return value in this codebase, so it can be safely unified globally.
   w.alert=function(message){const text=String(message??'');w.avpAlert(text,{tone:inferredTone(text)});};
-  ensureCss();
+  ensureCss();ensureSemanticCss();
 })(window,document);
