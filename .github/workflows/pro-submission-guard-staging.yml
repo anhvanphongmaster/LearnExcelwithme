@@ -1,0 +1,55 @@
+name: Pro submission guard staging
+
+on:
+  push:
+    branches:
+      - fix/pro-submission-object-guard
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate migration contract
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const file='supabase-migrations/PROFESSIONAL-SUBMISSION-OBJECT-GUARD-V1.sql';
+          const sql=fs.readFileSync(file,'utf8');
+          const compact=s=>String(s).replace(/\s+/g,' ').trim().toLowerCase();
+          const c=compact(sql);
+          const must=[
+            'create or replace function public.professional_track_submit_case_v2(',
+            "set search_path to 'public', 'auth', 'storage'",
+            'from storage.objects o',
+            "o.bucket_id = 'professional-track-submissions'",
+            'o.name = p_file_path',
+            "raise exception 'submission_object_missing'",
+            "p_file_path not like auth.uid()::text || '/%'",
+            'and (c.published or is_admin)',
+            'on conflict(user_id,case_key)',
+            'revoke all on function public.professional_track_submit_case_v2(text,text,text,text) from public',
+            'revoke all on function public.professional_track_submit_case_v2(text,text,text,text) from anon',
+            'grant execute on function public.professional_track_submit_case_v2(text,text,text,text) to authenticated',
+            'grant execute on function public.professional_track_submit_case_v2(text,text,text,text) to service_role'
+          ];
+          const missing=must.filter(x=>!c.includes(x));
+          if(missing.length)throw new Error('Migration contract missing: '+missing.join(' | '));
+          const storageGuard=c.indexOf("raise exception 'submission_object_missing'");
+          const insert=c.indexOf('insert into public.professional_track_case_submissions_v2');
+          if(storageGuard<0||insert<0||storageGuard>insert)throw new Error('Storage object guard must run before submission write');
+          console.log('Pro submission object guard contract PASS');
+          NODE
+
+      - name: Ensure migration is isolated
+        run: |
+          git diff --name-only HEAD~2..HEAD
+          changed=$(git diff --name-only HEAD~2..HEAD | grep -v '^.github/workflows/pro-submission-guard-staging.yml$' | grep -v '^supabase-migrations/PROFESSIONAL-SUBMISSION-OBJECT-GUARD-V1.sql$' || true)
+          if [ -n "$changed" ]; then
+            echo "Unexpected files changed:"
+            echo "$changed"
+            exit 2
+          fi
