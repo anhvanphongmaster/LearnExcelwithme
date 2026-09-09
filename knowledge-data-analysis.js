@@ -185,7 +185,7 @@
           why:'Biết nhóm nào lớn chưa đủ; cần hiểu nhóm đóng góp bao nhiêu vào tổng và thay đổi ra sao.',
           body:['Contribution/Mix % = Metric của nhóm / Total Metric. Variance có thể là chênh lệch tuyệt đối hoặc % so kỳ trước/target. Cần ghi rõ base để tránh “tăng 20%” mà không biết so với gì.','Khi total thay đổi, mix có thể giảm dù giá trị nhóm tăng. Vì vậy đọc cả absolute value và mix, không chỉ một trong hai.'],
           questions:[
-            {q:'Store A Revenue 200 trên total 1000 thì contribution?',options:['20%','200%','5%','80%'],answer:0,explain:'200/1000=20%.'},
+            {q:'Store A Revenue 200 trên total 1000 thì contribution?',options:['20%','200%','5%','80%'],answer:0,explain:'Contribution = 200/1000 = 20%, tức Store A đóng góp một phần năm tổng Revenue.'},
             {q:'Giá trị nhóm tăng nhưng mix giảm có thể xảy ra?',options:['Có, nếu total tăng nhanh hơn','Không','Chỉ nếu lỗi công thức','Chỉ khi màu'],answer:0,explain:'Mix là tỷ trọng tương đối; mẫu số thay đổi mạnh có thể làm tỷ trọng giảm.'}
           ]
         },
