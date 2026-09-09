@@ -42,7 +42,8 @@
     while((match=re.exec(text))){
       const earned=Number(match[1].replace(',','.'));
       const max=Number(match[2].replace(',','.'));
-      if(Number.isFinite(earned)&&Number.isFinite(max)&&max>0)return earned/max;
+      // Only treat real score scales as pass/fail. Progress such as 2/3 Case is not a failed score.
+      if(Number.isFinite(earned)&&Number.isFinite(max)&&max>=10)return earned/max;
     }
     return null;
   }
@@ -58,15 +59,17 @@
     const text=cleanText(el);
     if(!text||text.length>2200)return;
 
-    // Explicit failure always wins, including a workflow row whose database status is "graded".
-    if(FAIL_RE.test(text)){setTone(el,'avp-semantic-fail');return}
-
+    const hasFailure=FAIL_RE.test(text);
     const ratio=scoreRatio(text);
     if(ratio!==null){
-      setTone(el,ratio>=0.7?'avp-semantic-pass':'avp-semantic-fail');
+      if(ratio<0.7){setTone(el,'avp-semantic-fail');return}
+      if(hasFailure){setTone(el,'avp-semantic-warning');return}
+      setTone(el,'avp-semantic-pass');
       return;
     }
 
+    // Without a score, explicit failure is still a real failure state.
+    if(hasFailure){setTone(el,'avp-semantic-fail');return}
     if(WARN_RE.test(text)){setTone(el,'avp-semantic-warning');return}
     if(DRAFT_RE.test(text)){setTone(el,'avp-semantic-draft');return}
     if(PASS_RE.test(text)){setTone(el,'avp-semantic-pass');return}
