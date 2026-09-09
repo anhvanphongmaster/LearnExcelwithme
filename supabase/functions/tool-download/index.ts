@@ -66,20 +66,14 @@ Deno.serve(async (req: Request) => {
 
   if (signedError || !signed?.signedUrl) return json({ error: "file_unavailable" }, 404);
 
-  // Download tracking must never block the file response. Supabase RPC returns a
-  // PromiseLike builder, not an object with a guaranteed `.catch()` method.
   try {
     await service.rpc("track_download_asset", { p_source_path: tool.source_path || path });
   } catch (_) {
-    // Intentionally ignored: a tracking failure must not break a valid download.
+    // Tracking is best-effort only and must never block the file delivery URL.
   }
 
-  return new Response(null, {
-    status: 303,
-    headers: {
-      ...cors,
-      "Location": signed.signedUrl,
-      "Cache-Control": "private, no-store, max-age=0",
-    },
+  return json({
+    download_url: signed.signedUrl,
+    filename: `${safeTitle}.zip`,
   });
 });
