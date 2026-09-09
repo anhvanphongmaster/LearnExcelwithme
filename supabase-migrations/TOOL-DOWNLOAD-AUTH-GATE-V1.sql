@@ -55,3 +55,21 @@ $$;
 
 revoke execute on function public.tool_catalog_v2(text) from public;
 grant execute on function public.tool_catalog_v2(text) to anon,authenticated,service_role;
+
+-- Keep ordinary downloads visible to guests, but do not let anonymous clients
+-- query the underlying Kho Tool row to recover its public Storage URL/path.
+drop policy if exists "download assets public read" on public.download_assets;
+drop policy if exists "download assets anon non-tool read" on public.download_assets;
+drop policy if exists "download assets authenticated read" on public.download_assets;
+
+create policy "download assets anon non-tool read"
+on public.download_assets
+for select
+to anon
+using (category is distinct from 'Kho Tool');
+
+create policy "download assets authenticated read"
+on public.download_assets
+for select
+to authenticated
+using (true);
