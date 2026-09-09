@@ -1,0 +1,190 @@
+name: Apply AVP UI consistency
+on:
+  push:
+    branches: [ui-consistency-system]
+    paths: ['.github/workflows/ui-consistency-apply.yml']
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply shared UI system and migrate blocking dialogs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          def change(path, old, new, marker=None, count=1):
+              p=Path(path); s=p.read_text(encoding='utf-8')
+              if old in s:
+                  s=s.replace(old,new,count)
+                  p.write_text(s,encoding='utf-8')
+                  return
+              if marker and marker in s:return
+              raise SystemExit(f'marker missing: {path}: {old[:80]}')
+
+          # Load the same UI runtime synchronously on every page, before page-specific scripts.
+          for p in sorted(Path('.').glob('*.html')):
+              s=p.read_text(encoding='utf-8')
+              if 'avp-ui-system.css' not in s:
+                  s=s.replace('</head>','  <link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui1" data-avp-ui-system>\n</head>',1)
+              if 'avp-ui-system.js' not in s:
+                  m=re.search(r'<body\b[^>]*>',s,re.I)
+                  if not m: raise SystemExit(f'body missing: {p}')
+                  s=s[:m.end()]+"\n<script src=\"avp-ui-system.js?v=20260909-ui1\" data-avp-ui-system></script>"+s[m.end():]
+              p.write_text(s,encoding='utf-8')
+
+          # Improve automatic alert tone while preserving explicit avpAlert tones.
+          p=Path('avp-ui-system.js');s=p.read_text(encoding='utf-8')
+          old="  // Alert has no meaningful return value in this codebase, so it can be safely unified globally.\n  w.alert=function(message){w.avpAlert(String(message??''),{tone:'info'});};"
+          new="""  function inferredTone(message){\n    const text=String(message??'').toLowerCase();\n    if(/(không|chưa|lỗi|thất bại|không thể|bị chặn|thiếu|sai)/.test(text))return 'danger';\n    if(/(cảnh báo|lưu ý|xác nhận|hết|đã nộp)/.test(text))return 'warn';\n    if(/(đã |thành công|pass|hoàn tất|sẵn sàng|sao chép)/.test(text))return 'ok';\n    return 'info';\n  }\n  // Alert has no meaningful return value in this codebase, so it can be safely unified globally.\n  w.alert=function(message){const text=String(message??'');w.avpAlert(text,{tone:inferredTone(text)});};"""
+          if old in s:s=s.replace(old,new,1)
+          elif 'function inferredTone(' not in s:raise SystemExit('alert wrapper marker missing')
+          p.write_text(s,encoding='utf-8')
+
+          # Native dialog shell + consistent modal surface for any remaining feature dialog.
+          p=Path('avp-ui-system.css');s=p.read_text(encoding='utf-8')
+          addon='''\n/* Native dialog elements use the same AVP surface when a feature uses <dialog>. */\ndialog{border:1px solid var(--avp-ui-border);border-radius:var(--avp-ui-radius);background:var(--avp-ui-surface);color:var(--avp-ui-text);box-shadow:var(--avp-ui-shadow);font:inherit}\ndialog::backdrop{background:rgba(7,24,15,.62);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}\n[role="dialog"]{font-family:inherit}\n'''
+          if 'Native dialog elements use the same AVP surface' not in s:s+=addon
+          p.write_text(s,encoding='utf-8')
+
+          # Admin Web Push.
+          change('admin-alerts.js','if(confirm("Tắt Web Push trên thiết bị này?"))await unsubscribe();','const ok=await window.avpConfirm("Thiết bị này sẽ ngừng nhận thông báo Web Push từ website.",{title:"Tắt Web Push?",tone:"warn",ok:"Tắt thông báo",cancel:"Giữ lại"});if(ok)await unsubscribe();')
+
+          # Community moderation/certificates.
+          change('admin-community-center.js','if(dangerous && !confirm("Xác nhận thao tác kiểm duyệt này?"))return;','if(dangerous){const ok=await window.avpConfirm("Thao tác kiểm duyệt này sẽ tác động trực tiếp tới nội dung hoặc tài khoản cộng đồng.",{title:"Xác nhận kiểm duyệt?",icon:"🛡️",tone:"danger",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return;}')
+          change('admin-community-center.js','''    const ok=confirm(revoked\n      ?"Thu hồi chứng nhận này?"\n      :"Khôi phục hiệu lực chứng nhận này?");''','''    const ok=await window.avpConfirm(revoked?"Chứng nhận sẽ chuyển sang trạng thái đã thu hồi.":"Chứng nhận sẽ được khôi phục hiệu lực.",{title:revoked?"Thu hồi chứng nhận?":"Khôi phục chứng nhận?",tone:revoked?"danger":"ok",ok:revoked?"Thu hồi":"Khôi phục",cancel:"Hủy"});''')
+
+          # Practice grader Admin.
+          change('admin-grader.js','''    const ok=confirm(approve\n      ? `Duyệt chấm lại thành ${score}/100 và gửi thông báo cho học viên?`\n      : "Giữ nguyên điểm hệ thống và gửi phản hồi cho học viên?");''','''    const message=approve\n      ? `Điểm chấm lại sẽ được cập nhật thành ${score}/100 và gửi thông báo cho học viên.`\n      : "Điểm hệ thống sẽ được giữ nguyên và phản hồi của Admin sẽ được gửi cho học viên.";\n    const ok=await window.avpConfirm(message,{title:approve?"Duyệt kết quả chấm lại?":"Giữ nguyên điểm hệ thống?",tone:approve?"ok":"warn",ok:approve?"Duyệt & gửi":"Giữ điểm & gửi",cancel:"Hủy"});''')
+          change('admin-grader.js','const ok=confirm(`Cho ${name} làm lại bài này?\\n\\nKết quả hiện tại sẽ bị xóa khỏi hệ thống và tài khoản được nộp lại 1 lần.`);','const ok=await window.avpConfirm(`Kết quả hiện tại của ${name} sẽ bị xóa và tài khoản được nộp lại bài này 1 lần.`,{title:"Cho phép làm lại bài?",icon:"↺",tone:"danger",ok:"Cho làm lại",cancel:"Hủy"});')
+
+          # Professional Track: polished PASS/FAIL + Reference deletion + application note prompt.
+          change('admin-professional-track.js','if(!currentReferenceExists)return alert("Case này chưa có Reference ẩn để test.");','if(!currentReferenceExists)return window.avpAlert("Case này chưa có Reference ẩn để test.",{title:"Chưa có Reference",tone:"warn",icon:"!"});')
+          change('admin-professional-track.js','alert(`Auto-Grader PASS cho ${key}. Test: đúng ${data.tests?.pass}/10 · hardcode ${data.tests?.hardcode}/10 · formula sai ${data.tests?.wrong_formula}/10.`);','await window.avpAlert(`Đúng ${data.tests?.pass}/10 · Hardcode ${data.tests?.hardcode}/10 · Formula sai ${data.tests?.wrong_formula}/10.`,{title:`Auto-Grader PASS · ${key}`,icon:"✓",tone:"ok",ok:"Tiếp tục"});')
+          change('admin-professional-track.js','alert("Auto-Grader chưa đạt điều kiện phát hành. "+message);','await window.avpAlert(message,{title:"Auto-Grader chưa PASS",icon:"!",tone:"danger",ok:"Đã hiểu"});')
+          change('admin-professional-track.js','if(!confirm(`Xóa đáp án ẩn của ${key}? Bài nộp sau đó sẽ chuyển sang hàng chờ Admin cho tới khi có đáp án mới.`))return;','const confirmed=await window.avpConfirm(`Đáp án ẩn của ${key} sẽ bị xóa. Bài nộp sau đó sẽ chuyển sang hàng chờ Admin cho tới khi có đáp án mới.`,{title:"Xóa đáp án ẩn?",icon:"🗑️",tone:"danger",ok:"Xóa đáp án",cancel:"Hủy"});if(!confirmed)return;')
+          change('admin-professional-track.js','const note=prompt(status==="approved"?"Ghi chú phê duyệt (có thể để trống):":"Nhập nội dung học viên cần bổ sung:");','const note=await window.avpPrompt(status==="approved"?"Có thể thêm ghi chú cho học viên (không bắt buộc).":"Nhập nội dung học viên cần bổ sung trước khi gửi lại hồ sơ.",{title:status==="approved"?"Phê duyệt hồ sơ Pro":"Yêu cầu bổ sung hồ sơ",inputLabel:status==="approved"?"Ghi chú Admin":"Nội dung cần bổ sung",ok:status==="approved"?"Phê duyệt":"Gửi yêu cầu",cancel:"Hủy",tone:status==="approved"?"ok":"warn"});')
+
+          # TikTok Admin needs an async dirty-editor gate instead of native confirm.
+          change('admin-tiktok.js',"function closeEditor(force=false){if(busy&&!force)return false;if(dirty&&!force&&!confirm('Bỏ các thay đổi chưa lưu?'))return false;$('attTopicForm').hidden=true;$('attLessonForm').hidden=true;dirty=false;return true}","function closeEditor(force=false){if(busy&&!force)return false;if(dirty&&!force)return false;$('attTopicForm').hidden=true;$('attLessonForm').hidden=true;dirty=false;return true}\n  async function requestCloseEditor(){if(busy)return false;if(dirty){const ok=await window.avpConfirm('Các thay đổi chưa lưu sẽ bị bỏ.',{title:'Bỏ thay đổi chưa lưu?',tone:'warn',ok:'Bỏ thay đổi',cancel:'Tiếp tục sửa'});if(!ok)return false}return closeEditor(true)}")
+          change('admin-tiktok.js','function openTopic(row){\n    if(!loaded||!closeEditor())return;','async function openTopic(row){\n    if(!loaded||!(await requestCloseEditor()))return;')
+          change('admin-tiktok.js','function openLesson(row){\n    if(!loaded||!closeEditor())return;','async function openLesson(row){\n    if(!loaded||!(await requestCloseEditor()))return;')
+          change('admin-tiktok.js','if(!row||busy||!closeEditor())return;const published=row.status!==\'published\';','if(!row||busy||!(await requestCloseEditor()))return;const published=row.status!==\'published\';')
+          change('admin-tiktok.js',"if(!confirm(published?'Phát hành bài TikTok này?':'Đưa bài về nháp và ẩn khỏi trang TikTok?'))return;","const ok=await window.avpConfirm(published?'Bài sẽ xuất hiện trên trang TikTok Practice.':'Bài sẽ được đưa về bản nháp và ẩn khỏi trang TikTok Practice.',{title:published?'Phát hành bài TikTok?':'Đưa bài về nháp?',tone:published?'ok':'warn',ok:published?'Phát hành':'Đưa về nháp',cancel:'Hủy'});if(!ok)return;")
+          change('admin-tiktok.js','if(!row||busy||!closeEditor())return;\n    if(kind===\'topic\'','if(!row||busy||!(await requestCloseEditor()))return;\n    if(kind===\'topic\'')
+          change('admin-tiktok.js','if(!confirm(`Xóa ${kind===\'topic\'?\'chủ đề\':\'bài\'} “${row.title}”?`))return;','const ok=await window.avpConfirm(`${kind===\'topic\'?\'Chủ đề\':\'Bài\'} “${row.title}” sẽ bị xóa khỏi hệ thống.`,{title:`Xóa ${kind===\'topic\'?\'chủ đề\':\'bài\'}?`,icon:"🗑️",tone:"danger",ok:"Xóa",cancel:"Hủy"});if(!ok)return;')
+          change('admin-tiktok.js',"$('attReload').addEventListener('click',()=>{if(closeEditor())load(true)});","$('attReload').addEventListener('click',async()=>{if(await requestCloseEditor())load(true)});")
+          change('admin-tiktok.js',"$('attBackTopics').addEventListener('click',()=>{if(closeEditor()){selected='';render()}});","$('attBackTopics').addEventListener('click',async()=>{if(await requestCloseEditor()){selected='';render()}});")
+          change('admin-tiktok.js',"$('adminTikTokPanel').addEventListener('click',event=>{","$('adminTikTokPanel').addEventListener('click',async event=>{")
+          change('admin-tiktok.js',"if(b.hasAttribute('data-att-close'))return closeEditor();","if(b.hasAttribute('data-att-close'))return requestCloseEditor();")
+          change('admin-tiktok.js',"if(b.dataset.attOpenTopic&&closeEditor()){","if(b.dataset.attOpenTopic&&(await requestCloseEditor())){")
+
+          # Tool Admin.
+          change('admin-tools.js','if(!row||!confirm(`Xóa Tool “${row.name}”?`))return;','if(!row)return;const ok=await window.avpConfirm(`Tool “${row.name}” sẽ bị xóa khỏi Kho Tool và file quản lý liên quan sẽ được dọn.`,{title:"Xóa Tool?",icon:"🗑️",tone:"danger",ok:"Xóa Tool",cancel:"Hủy"});if(!ok)return;')
+          change('admin-tools.js',"const title=prompt('Đổi tên ý tưởng Tool:',row.title);","const title=await window.avpPrompt('Nhập tên mới cho ý tưởng Tool.',{title:'Đổi tên ý tưởng',inputLabel:'Tên ý tưởng',defaultValue:row.title,ok:'Lưu tên',cancel:'Hủy'});")
+          change('admin-tools.js','if(!confirm(`Gộp “${source.title}” vào “${target.title}”? Ý tưởng nguồn sẽ bị xóa và lượt nhu cầu được cộng dồn.`))return;','const ok=await window.avpConfirm(`“${source.title}” sẽ được gộp vào “${target.title}”. Ý tưởng nguồn bị xóa và lượt nhu cầu được cộng dồn.`,{title:"Gộp ý tưởng Tool?",tone:"warn",ok:"Gộp ý tưởng",cancel:"Hủy"});if(!ok)return;')
+
+          # YouTube Project Admin.
+          change('admin-youtube-projects.js','$("aytParts")?.addEventListener("click",e=>{const b=e.target.closest("[data-ayt-remove-part]");if(!b||!editing)return;if(!confirm("Bỏ phần này khỏi project? Thay đổi chỉ có hiệu lực sau khi bấm Lưu."))return;','$("aytParts")?.addEventListener("click",async e=>{const b=e.target.closest("[data-ayt-remove-part]");if(!b||!editing)return;const ok=await window.avpConfirm("Phần này sẽ được bỏ khỏi project sau khi bạn bấm Lưu.",{title:"Bỏ phần khỏi project?",tone:"warn",ok:"Bỏ phần",cancel:"Hủy"});if(!ok)return;')
+          change('admin-youtube-projects.js','$("aytResources")?.addEventListener("click",e=>{const b=e.target.closest("[data-ayt-remove-resource]");if(!b||!editing)return;if(!confirm("Bỏ tài nguyên này khỏi project? Thay đổi chỉ có hiệu lực sau khi bấm Lưu."))return;','$("aytResources")?.addEventListener("click",async e=>{const b=e.target.closest("[data-ayt-remove-resource]");if(!b||!editing)return;const ok=await window.avpConfirm("Tài nguyên này sẽ được bỏ khỏi project sau khi bạn bấm Lưu.",{title:"Bỏ tài nguyên?",tone:"warn",ok:"Bỏ tài nguyên",cancel:"Hủy"});if(!ok)return;')
+          change('admin-youtube-projects.js','if(act==="archive"){if(!confirm("Lưu trữ project này? Project sẽ biến khỏi trang YouTube nhưng dữ liệu vẫn được giữ."))return;','if(act==="archive"){const ok=await window.avpConfirm("Project sẽ ẩn khỏi trang YouTube nhưng dữ liệu vẫn được giữ lại.",{title:"Lưu trữ project?",tone:"warn",ok:"Lưu trữ",cancel:"Hủy"});if(!ok)return;')
+
+          # Main Admin remaining native confirm/prompt fallbacks/calls.
+          replacements={
+          '{ const okFile = window.avpConfirm ? await window.avpConfirm("Phiếu gửi file này sẽ bị xóa khỏi danh sách admin.", { title: "Xóa phiếu file?", icon: "📎", tone: "danger", ok: "Xóa", cancel: "Hủy" }) : confirm("Xóa phiếu file này?"); if(!okFile) return; }':'{ const okFile = await window.avpConfirm("Phiếu gửi file này sẽ bị xóa khỏi danh sách admin.", { title: "Xóa phiếu file?", icon: "📎", tone: "danger", ok: "Xóa", cancel: "Hủy" }); if(!okFile) return; }',
+          '{ const okMail = window.avpConfirm ? await window.avpConfirm("Xóa thư / góp ý của " + who + "?\\nKhông hoàn tác được.", { title: "Xóa thư?", icon: "✉️", tone: "danger", ok: "Xóa", cancel: "Hủy" }) : confirm("Xóa thư này của "+who+"?"); if(!okMail) return; }':'{ const okMail = await window.avpConfirm("Xóa thư / góp ý của " + who + "?\\nKhông hoàn tác được.", { title: "Xóa thư?", icon: "✉️", tone: "danger", ok: "Xóa", cancel: "Hủy" }); if(!okMail) return; }',
+          'if(!confirm(`Reset điểm Race của ${row.player_name}?`))return;':'{const ok=await window.avpConfirm(`Reset điểm Race của ${row.player_name}?`,{title:"Reset điểm Race?",tone:"warn",icon:"↺",ok:"Reset",cancel:"Hủy"});if(!ok)return;}',
+          'if(!confirm(`Xoá ${row.player_name} khỏi BXH Race? Tài khoản (nếu có) vẫn giữ nguyên.`))return;':'{const ok=await window.avpConfirm(`Xoá ${row.player_name} khỏi BXH Race? Tài khoản (nếu có) vẫn giữ nguyên.`,{title:"Xóa khỏi BXH Race?",tone:"danger",icon:"!",ok:"Xóa",cancel:"Hủy"});if(!ok)return;}',
+          'const name=prompt("Tên mới trên BXH:",row.player_name||""); if(name===null)return;':'const name=await window.avpPrompt("Nhập tên mới sẽ hiển thị trên BXH.",{title:"Đổi tên trên BXH",inputLabel:"Tên hiển thị",defaultValue:row.player_name||"",ok:"Lưu tên",cancel:"Hủy"}); if(name===null)return;',
+          'if(!confirm(`${hidden?\'Hiện\':\'Ẩn\'} ${who} ${hidden?\'trên\':\'khỏi\'} BXH?`))return;':'{const ok=await window.avpConfirm(`${hidden?\'Hiện\':\'Ẩn\'} ${who} ${hidden?\'trên\':\'khỏi\'} BXH?`,{title:"Cập nhật BXH?",tone:"warn",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return;}',
+          'if(!confirm(`Reset toàn bộ vote có liên kết tài khoản của ${who}?`))return;':'{const ok=await window.avpConfirm(`Reset toàn bộ vote có liên kết tài khoản của ${who}?`,{title:"Reset vote?",tone:"warn",ok:"Reset",cancel:"Hủy"});if(!ok)return;}',
+          'if(!confirm(`RESET TIẾN ĐỘ của ${who}? XP/BXH cloud sẽ được xóa. Thao tác này không nên dùng nếu không chắc.`))return;':'{const ok=await window.avpConfirm(`RESET TIẾN ĐỘ của ${who}? XP/BXH cloud sẽ được xóa. Thao tác này không nên dùng nếu không chắc.`,{title:"Reset toàn bộ tiến độ?",tone:"danger",icon:"!",ok:"Reset tiến độ",cancel:"Hủy"});if(!ok)return;}',
+          'if(!confirm(`${isAdm?\'Bỏ\':\'Cấp\'} quyền Admin cho ${who}?`))return;':'{const ok=await window.avpConfirm(`${isAdm?\'Bỏ\':\'Cấp\'} quyền Admin cho ${who}?`,{title:`${isAdm?\'Bỏ\':\'Cấp\'} quyền Admin?`,tone:"danger",icon:"🔐",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return;}',
+          'if(confirm("Tắt chế độ bảo trì và mở lại website cho mọi người?")){':'if(await window.avpConfirm("Tắt chế độ bảo trì và mở lại website cho mọi người?",{title:"Mở lại website?",tone:"warn",ok:"Tắt bảo trì",cancel:"Hủy"})){',
+          'if(!confirm("Xoá vote này khỏi Supabase?"))return;':'{const ok=await window.avpConfirm("Xoá vote này khỏi Supabase?",{title:"Xóa vote?",tone:"danger",ok:"Xóa",cancel:"Hủy"});if(!ok)return;}',
+          'catch(_){prompt("Copy link:",link)}':'catch(_){await window.avpPrompt("Trình duyệt không cho copy tự động. Bạn có thể copy link bên dưới.",{title:"Copy link",inputLabel:"Đường dẫn",defaultValue:link,ok:"Đóng",cancel:"Đóng"})}',
+          'if(act==="delete"){if(!confirm("Xoá tài nguyên khỏi hệ thống quản lý? File vật lý không tự bị xoá."))return;':'if(act==="delete"){const ok=await window.avpConfirm("Xoá tài nguyên khỏi hệ thống quản lý? File vật lý không tự bị xoá.",{title:"Xóa tài nguyên?",tone:"danger",ok:"Xóa",cancel:"Hủy"});if(!ok)return;'
+          }
+          p=Path('admin.js');s=p.read_text(encoding='utf-8')
+          for old,new in replacements.items():
+              if old in s:s=s.replace(old,new,1)
+              elif new not in s:raise SystemExit('admin.js marker missing: '+old[:60])
+          p.write_text(s,encoding='utf-8')
+
+          # AI/community prompts.
+          p=Path('ai-chat.js');s=p.read_text(encoding='utf-8')
+          old='''  function reportReasonPrompt(){\n    const raw=prompt(\n      "Báo cáo nội dung này:\\n\\n"+\n      "1 - Spam\\n"+\n      "2 - Lừa đảo / yêu cầu chuyển tiền\\n"+\n      "3 - Link hoặc liên hệ đáng ngờ\\n"+\n      "4 - Nội dung nhạy cảm\\n"+\n      "5 - Quấy rối / xúc phạm\\n"+\n      "6 - Giả mạo\\n"+\n      "7 - Khác\\n\\n"+\n      "Nhập số từ 1 đến 7:"\n    );'''
+          new='''  async function reportReasonPrompt(){\n    const body="Chọn lý do bằng cách nhập số từ 1 đến 7:\\n\\n1 · Spam\\n2 · Lừa đảo / yêu cầu chuyển tiền\\n3 · Link hoặc liên hệ đáng ngờ\\n4 · Nội dung nhạy cảm\\n5 · Quấy rối / xúc phạm\\n6 · Giả mạo\\n7 · Khác";\n    const raw=await window.avpPrompt(body,{title:"Báo cáo nội dung",icon:"⚑",tone:"warn",inputLabel:"Lý do (1–7)",placeholder:"Ví dụ: 1",ok:"Tiếp tục",cancel:"Hủy"});'''
+          if old in s:s=s.replace(old,new,1)
+          elif 'async function reportReasonPrompt()' not in s:raise SystemExit('ai report prompt marker missing')
+          s=s.replace('const reason=reportReasonPrompt();','const reason=await reportReasonPrompt();',1)
+          s=s.replace('const detail=prompt("Mô tả thêm (không bắt buộc):") || null;','const detail=await window.avpPrompt("Bạn có thể bổ sung ngữ cảnh để Admin xử lý chính xác hơn.",{title:"Mô tả thêm",inputLabel:"Chi tiết (không bắt buộc)",placeholder:"Mô tả ngắn…",ok:"Gửi báo cáo",cancel:"Bỏ qua"});',1)
+          s=s.replace('const code=prompt("Nhập mã xác minh chứng nhận:");','const code=await window.avpPrompt("Nhập mã được in trên chứng nhận để kiểm tra trạng thái.",{title:"Xác minh chứng nhận",icon:"✓",inputLabel:"Mã xác minh",placeholder:"Nhập mã…",ok:"Xác minh",cancel:"Hủy"});',1)
+          p.write_text(s,encoding='utf-8')
+
+          # Learner destructive confirmations.
+          change('dashboard.js','''  function reset(){\n    const ok=confirm(\n      "Đặt lại tiến độ học trên thiết bị này?\\n\\n"+\n      "Thao tác này xóa tiến độ local của Skill Map và chuỗi học trên trình duyệt hiện tại."\n    );''','''  async function reset(){\n    const ok=await window.avpConfirm("Thao tác này xóa tiến độ local của Skill Map và chuỗi học trên trình duyệt hiện tại.",{title:"Đặt lại tiến độ học?",icon:"↺",tone:"warn",ok:"Đặt lại",cancel:"Hủy"});''')
+          change('focus-room.js','if(confirm("Xóa toàn bộ lịch sử Focus Room trên thiết bị này?")){','if(await window.avpConfirm("Toàn bộ lịch sử Focus Room trên thiết bị này sẽ bị xóa.",{title:"Xóa lịch sử Focus Room?",icon:"🗑️",tone:"danger",ok:"Xóa lịch sử",cancel:"Hủy"})){')
+          # make the containing click handler async for Focus Room
+          p=Path('focus-room.js');s=p.read_text(encoding='utf-8');s=s.replace("clearHistory?.addEventListener('click', () => {","clearHistory?.addEventListener('click', async () => {",1);p.write_text(s,encoding='utf-8')
+          change('playground.js','document.getElementById("resetPlayground").addEventListener("click",()=>{if(confirm("Xóa tiến độ 10 bài Excel Playground trên trình duyệt này?")){','document.getElementById("resetPlayground").addEventListener("click",async()=>{if(await window.avpConfirm("Tiến độ 10 bài Excel Playground trên trình duyệt này sẽ bị xóa.",{title:"Đặt lại Excel Playground?",icon:"↺",tone:"warn",ok:"Đặt lại",cancel:"Hủy"})){')
+          change('script.js','function datLaiTienDo() {','async function datLaiTienDo() {')
+          change('script.js','''    const confirmReset =\n        confirm("Bạn có chắc muốn đặt lại toàn bộ tiến độ học không?");''','''    const confirmReset =\n        await window.avpConfirm("Toàn bộ tiến độ học lưu trên thiết bị này sẽ được đặt lại.",{title:"Đặt lại tiến độ?",icon:"↺",tone:"warn",ok:"Đặt lại",cancel:"Hủy"});''')
+          change('script.js','function xoaToanBoDashboard() {','async function xoaToanBoDashboard() {')
+          change('script.js','''    const confirmDelete =\n        confirm(\n            "Bạn có chắc muốn xóa toàn bộ dữ liệu Dashboard không?"\n        );''','''    const confirmDelete =\n        await window.avpConfirm("Toàn bộ dữ liệu Dashboard lưu trên thiết bị này sẽ bị xóa.",{title:"Xóa dữ liệu Dashboard?",icon:"🗑️",tone:"danger",ok:"Xóa dữ liệu",cancel:"Hủy"});''')
+
+          # Cache bust + pre-cache shared UI assets.
+          p=Path('sw.js');s=p.read_text(encoding='utf-8')
+          s=s.replace('learnexcel-assets-v20260909-prosystem2','learnexcel-assets-v20260909-ui1',1)
+          if '"./avp-ui-system.css"' not in s:s=s.replace('  "./avp-core.css",','  "./avp-core.css",\n  "./avp-ui-system.css",',1)
+          if '"./avp-ui-system.js"' not in s:s=s.replace('  "./avp-core.js",','  "./avp-core.js",\n  "./avp-ui-system.js",',1)
+          p.write_text(s,encoding='utf-8')
+
+          # Admin Pro cache-bust after JS UI changes.
+          p=Path('admin.html');s=p.read_text(encoding='utf-8');s=s.replace('admin-professional-track.js?v=20260909-pro-system2','admin-professional-track.js?v=20260909-pro-system3-ui1',1);p.write_text(s,encoding='utf-8')
+          PY
+      - name: Static and consistency checks
+        run: |
+          set -e
+          for f in *.js; do node --check "$f" >/dev/null; done
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html=list(Path('.').glob('*.html'))
+          missing=[p.name for p in html if 'avp-ui-system.css' not in p.read_text(encoding='utf-8') or 'avp-ui-system.js' not in p.read_text(encoding='utf-8')]
+          if missing: raise SystemExit('UI loader missing: '+', '.join(missing))
+          native=[]
+          rx=re.compile(r'(?<![\w.])(confirm|prompt)\s*\(')
+          for p in Path('.').glob('*.js'):
+            for i,line in enumerate(p.read_text(encoding='utf-8').splitlines(),1):
+              if rx.search(line): native.append(f'{p}:{i}:{line.strip()}')
+          if native: raise SystemExit('Native blocking dialogs remain:\n'+'\n'.join(native))
+          css=Path('avp-ui-system.css').read_text(encoding='utf-8')
+          for marker in ['input[type="file"]::file-selector-button','.apt-grader-upload>span','dialog::backdrop']:
+            if marker not in css: raise SystemExit('CSS marker missing '+marker)
+          # Local href/src reference sanity for touched HTML.
+          broken=[]
+          for p in html:
+            s=p.read_text(encoding='utf-8')
+            for attr,val in re.findall(r'\b(href|src)=["\']([^"\']+)["\']',s,re.I):
+              v=val.split('?',1)[0].split('#',1)[0]
+              if not v or v.startswith(('http:','https:','mailto:','tel:','data:','blob:','javascript:','//')): continue
+              target=(p.parent/v).resolve()
+              if not target.exists(): broken.append(f'{p.name}: {val}')
+          if broken: raise SystemExit('Broken local refs:\n'+'\n'.join(broken[:50]))
+          print(f'PASS: {len(html)} HTML load shared UI; 0 native confirm/prompt; local refs valid')
+          PY
+      - name: Remove staging-only audit files and workflows
+        run: |
+          rm -f .ui-dialog-audit.txt .ui-confirm-prompt-sites.tsv
+          rm -f .github/workflows/ui-dialog-audit.yml .github/workflows/ui-dialog-sites.yml .github/workflows/ui-consistency-apply.yml
+      - name: Commit final staging patch
+        run: |
+          git config user.name 'anhvanphongmaster'
+          git config user.email 'anhvanphongmaster@gmail.com'
+          git add -A
+          git commit -m 'UI: unify dialogs and file controls across site'
+          git push
