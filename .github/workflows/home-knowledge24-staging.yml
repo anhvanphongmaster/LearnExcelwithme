@@ -66,7 +66,7 @@ jobs:
           print(f'simple-nav.js: {len(simple)}')
           print(f'avp-ui-system.js: {len(ui)}')
           print('simple-nav without avp-ui:', ', '.join(gaps) if gaps else 'none')
-          # This is informational; fail only if the homepage itself misses the shared loader.
+          assert not gaps, f'Back-to-top global white style would miss: {gaps}'
           home=pathlib.Path('index.html').read_text(encoding='utf-8')
           assert 'avp-ui-system.js' in home
           PY
