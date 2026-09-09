@@ -133,20 +133,22 @@ jobs:
           const learner=fs.readFileSync('professional-track-content.js','utf8');
           const admin=fs.readFileSync('admin-professional-track.js','utf8');
           const migrations=fs.readdirSync('supabase-migrations');
+          const compact=t=>String(t).replace(/\s+/g,'');
+          const requireCompact=(txt,needle,label)=>{if(!compact(txt).includes(compact(needle)))throw new Error(`${label}: ${needle}`)};
           const requireText=(txt,needle,label)=>{if(!txt.includes(needle))throw new Error(`${label}: ${needle}`)};
-          requireText(resolver,'learnerData?.status === "approved" && learnerData?.can_access === true','strict learner gate missing');
-          requireText(resolver,'canAccess:true','Admin bypass result missing');
+          requireCompact(resolver,'learnerData?.status === "approved" && learnerData?.can_access === true','strict learner gate missing');
+          requireCompact(resolver,'canAccess: true','Admin bypass result missing');
           requireText(gate,'window.AVPProfessionalGateReady','shared Track gate promise missing');
           requireText(reader,'window.AVPProfessionalAccess.resolve()','reader shared resolver missing');
-          requireText(learner,'scores.every(score=>score>=7)','per-Case unlock threshold missing');
-          requireText(learner,'scores.reduce((sum,score)=>sum+score,0)>=25','Level total threshold missing');
+          requireCompact(learner,'scores.every(score=>score>=7)','per-Case unlock threshold missing');
+          requireCompact(learner,'scores.reduce((sum,score)=>sum+score,0)>=25','Level total threshold missing');
           for(const rpc of ['professional_track_catalog_v2','professional_track_progress_v2','professional_track_submit_case_v2'])requireText(learner,rpc,`learner RPC missing ${rpc}`);
           for(const rpc of ['admin_professional_track_case_upsert_v2','admin_professional_track_case_list_v2','admin_professional_track_submissions_v2','admin_professional_track_grade_v2'])requireText(admin,rpc,`admin RPC missing ${rpc}`);
           requireText(admin,'AVP_PRO_GRADER_V3','grader V3 contract missing');
-          requireText(admin,'if(publishing&&!source&&!sourceFile)','Student file publish guard missing');
-          requireText(admin,'if(publishing&&!guide&&!guideFile)','Guide publish guard missing');
-          requireText(admin,'if(!referenceKnown)','Reference publish guard missing');
-          requireText(admin,'if(!graderReady)','Validated grader publish guard missing');
+          requireCompact(admin,'if(publishing&&!source&&!sourceFile)','Student file publish guard missing');
+          requireCompact(admin,'if(publishing&&!guide&&!guideFile)','Guide publish guard missing');
+          requireCompact(admin,'if(!referenceKnown)','Reference publish guard missing');
+          requireCompact(admin,'if(!graderReady)','Validated grader publish guard missing');
           for(const f of [
             'PROFESSIONAL-ADMIN-DRAFT-TEST-V1.sql',
             'PROFESSIONAL-CERTIFICATE-EVIDENCE-GUARD-V1.sql',
@@ -165,8 +167,9 @@ jobs:
           let prev=-1;
           for(const name of order){const i=html.indexOf(name);if(i<0)throw new Error(`Script missing: ${name}`);if(i<=prev)throw new Error(`Script order invalid at ${name}`);prev=i;}
           const learner=fs.readFileSync('professional-track-content.js','utf8');
-          if(!learner.includes('const RESOURCE_BUCKET="professional-track-resources"'))throw new Error('Private resource bucket missing');
-          if(!learner.includes('createSignedUrl(clean,120)'))throw new Error('Resource signed URL TTL contract missing');
-          if(!learner.includes('raw.startsWith("/")||raw.includes("..")'))throw new Error('Resource path traversal/root guard missing');
+          const compact=t=>String(t).replace(/\s+/g,'');
+          if(!compact(learner).includes(compact('const RESOURCE_BUCKET="professional-track-resources"')))throw new Error('Private resource bucket missing');
+          if(!compact(learner).includes(compact('createSignedUrl(clean,120)')))throw new Error('Resource signed URL TTL contract missing');
+          if(!compact(learner).includes(compact('raw.startsWith("/")||raw.includes("..")')))throw new Error('Resource path traversal/root guard missing');
           console.log('Script/private-resource contract PASS');
           NODE
