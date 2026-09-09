@@ -1,0 +1,72 @@
+name: Pro runtime-equivalent audit
+on:
+  push:
+    branches: [pro-runtime-audit-2]
+    paths: ['.github/workflows/pro-runtime-audit.yml']
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: JS syntax
+        run: |
+          for f in professional-access-resolver.js professional-access.js professional-track-gate.js professional-reader-gate.js professional-track-content.js professional-track-ux.js professional-roll.js professional-intro.js admin-professional-track.js; do
+            node --check "$f"
+          done
+      - name: Pro contract checks
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, sys
+          required = {
+            'professional-track.html': ['professional-track-gate.js?v=20260909-pro-system1','professional-track-content.js?v=20260909-pro-system1','professional-track-ux.js?v=20260909-pro-system1'],
+            'professional-access.html': ['professional-access.js?v=20260909-pro-system1'],
+            'admin.html': ['admin-professional-track.js?v=20260909-pro-system1'],
+            'sw.js': ['learnexcel-assets-v20260909-prosystem1'],
+          }
+          for f,tokens in required.items():
+            s=Path(f).read_text(encoding='utf-8')
+            for token in tokens:
+              if token not in s: raise SystemExit(f'missing {token} in {f}')
+          # No polling in Professional runtime code.
+          for f in Path('.').glob('professional*.js'):
+            s=f.read_text(encoding='utf-8')
+            if 'setInterval(' in s: raise SystemExit(f'polling found in {f}')
+          # No direct public/static Pro resource URLs in learner runtime.
+          s=Path('professional-track-content.js').read_text(encoding='utf-8')
+          if 'professional-track-resources' not in s or 'createSignedUrl' not in s:
+            raise SystemExit('signed resource flow missing')
+          if re.search(r'https?://[^\s"\']+/(?:student|reference)\.(?:xlsx|xlsm)',s,re.I):
+            raise SystemExit('public Pro workbook URL found')
+          # Unlock invariant remains exact.
+          required_unlock=['scores.length===previous.caseTemplates.length','scores.every(score=>score>=7)','scores.reduce((sum,score)=>sum+score,0)>=25']
+          for token in required_unlock:
+            if token not in s: raise SystemExit(f'unlock invariant missing: {token}')
+          print('Pro static contracts PASS')
+          PY
+      - name: Local HTML asset references
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          from urllib.parse import urlsplit
+          pages=['professional-track.html','professional-access.html','sales-handbook.html','admin.html']
+          missing=[]
+          class P(HTMLParser):
+            def handle_starttag(self,tag,attrs):
+              d=dict(attrs)
+              for k in ('href','src'):
+                v=d.get(k,'')
+                if not v or v.startswith(('#','http:','https:','mailto:','tel:','data:','javascript:')): continue
+                path=urlsplit(v).path
+                if not path or path.startswith('/'): continue
+                p=(Path('.')/path).resolve()
+                if not p.exists(): missing.append((page,v))
+          for page in pages:
+            P().feed(Path(page).read_text(encoding='utf-8'))
+          if missing:
+            raise SystemExit('missing local refs: '+repr(missing))
+          print('Pro/Admin local refs PASS')
+          PY
