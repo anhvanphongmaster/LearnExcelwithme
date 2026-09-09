@@ -137,13 +137,13 @@ Deno.serve(async(req:Request)=>{
       const ref=await workbook(blob),rubric=rubricOf(ref,key);
       assertReferenceReady(ref,rubric);
       const p=grade(ref,ref,rubric,'simulate-pass'),h=grade(ref,ref,rubric,'simulate-hardcode'),w=grade(ref,ref,rubric,'simulate-wrong');
-      const valid=p.score===10&&h.score<7&&w.score<7;if(!valid)return reply({status:'validation_failed',case_key:key,tests:{pass:p.score,hardcode:h.score,wrong_formula:w.score}},422);
+      const valid=p.score===10&&h.score<7&&w.score<7;if(!valid)return reply({status:'validation_failed',case_key:key,tests:{pass:p.score,hardcode:h.score,wrong_formula:w.score}});
       const stampAfter=await referenceStamp(admin,key);if(stampAfter!==stampBefore)throw new Error('reference_changed_during_validation');
       const marker={status:'validated',version:VERSION,case_key:key,reference_updated_at:stampAfter,validated_at:new Date().toISOString(),tests:{pass:p.score,hardcode:h.score,wrong_formula:w.score}};
       const saved=await admin.from('professional_track_cases_v2').update({grader_validation:marker}).eq('case_key',key).select('case_key').maybeSingle();
       if(saved.error)throw saved.error;if(!saved.data)throw new Error('case_not_saved_as_draft');
       return reply({status:'validated',case_key:key,validated_at:marker.validated_at,reference_updated_at:stampAfter,tests:marker.tests});
-    }catch(e){return reply({status:'validation_failed',case_key:key,reason:err(e)},422)}
+    }catch(e){return reply({status:'validation_failed',case_key:key,reason:err(e)})}
   }
 
   const id=String(body.submission_id||'').trim();if(!id)return reply({error:'submission_id_required'},400);

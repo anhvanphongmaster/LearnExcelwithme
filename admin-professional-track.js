@@ -143,6 +143,15 @@
     }catch(error){if($("aptCaseReferenceRemove"))$("aptCaseReferenceRemove").disabled=true;setReferenceState("Chưa kiểm tra được kho đáp án ẩn: "+String(error?.message||error),"error");}
   }
 
+  function graderFailureText(value){
+    const raw=String(value?.message||value||"grader_validation_failed");
+    const formula=raw.match(/reference_formula_missing:([^\s]+)/i);
+    if(formula)return `Reference chưa lưu công thức chuẩn tại ${formula[1]}. Hãy thay Reference bằng file có công thức thật rồi kiểm tra lại.`;
+    if(/rubric_/i.test(raw))return `Rubric ẩn của Reference chưa hợp lệ (${raw}).`;
+    if(/reference_(missing|too_large|timestamp_missing)/i.test(raw))return `Reference chưa sẵn sàng (${raw}).`;
+    return raw;
+  }
+
   async function validateReference(sb,key=selectedCaseKey()){
     await checkReference(sb,key);
     if(!currentReferenceExists)return alert("Case này chưa có Reference ẩn để test.");
@@ -150,12 +159,12 @@
     setReferenceState("Đang chạy 3 test bắt buộc: PASS / HARDCODE / WRONG FORMULA…");
     try{
       const {data,error}=await sb.functions.invoke("professional-grader",{body:{mode:"validate_reference",case_key:key}});
-      if(error)throw error;if(data?.status!=="validated")throw new Error(data?.reason||"grader_validation_failed");
+      if(error)throw error;if(data?.status!=="validated")throw new Error(graderFailureText(data?.reason||"grader_validation_failed"));
       const row=caseRows.get(key)||{};
       caseRows.set(key,{...row,grader_validation:{status:"validated",version:"AVP_PRO_GRADER_V3",case_key:key,reference_updated_at:data.reference_updated_at,validated_at:data.validated_at,tests:data.tests||{}}});
       await checkReference(sb,key);
       alert(`Auto-Grader PASS cho ${key}. Test: đúng ${data.tests?.pass}/10 · hardcode ${data.tests?.hardcode}/10 · formula sai ${data.tests?.wrong_formula}/10.`);
-    }catch(error){currentGraderValidated=false;setReferenceState("Auto-Grader chưa PASS: "+String(error?.message||error)+". Không thể phát hành Case.","error");alert("Auto-Grader chưa đạt điều kiện phát hành. Kiểm tra lại Reference/rubric: "+String(error?.message||error));}
+    }catch(error){const message=graderFailureText(error);currentGraderValidated=false;setReferenceState("Auto-Grader chưa PASS: "+message+" Không thể phát hành Case.","error");alert("Auto-Grader chưa đạt điều kiện phát hành. "+message);}
     finally{if(button){button.disabled=false;button.textContent="Kiểm tra"}}
   }
 
