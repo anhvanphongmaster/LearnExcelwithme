@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bài tập về nhà | Learn Excel with Anh Văn Phòng</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="avp-core.css">
+<link rel="stylesheet" href="homework.css?v=20260910-hw1">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui2" data-avp-ui-system>
+</head>
+<body class="hw-body">
+<script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script>
+<nav class="top-simple-nav" aria-label="Điều hướng chính"><div class="top-simple-links"><a href="index.html">Trang chủ</a><a href="skill-map.html">Học</a><a href="practice-video.html">Thực hành</a><a href="tools-center.html">Công cụ</a><button id="avpSearchTrigger" class="top-search-button" type="button">Tìm kiếm</button><span class="auth-nav-slot"></span><button id="themeToggle" class="top-theme-button" type="button">◐</button></div><button class="top-mobile-toggle" type="button">☰</button></nav>
+<main class="hw-page">
+  <p class="hw-back"><a href="practice-video.html">← Practice Hub</a></p>
+  <header class="hw-hero">
+    <div><span>HOMEWORK · THEO VIDEO YOUTUBE</span><h1>Làm ngắn, hiểu sâu, video sau chữa đúng chỗ khó</h1><p>Bài tập về nhà không phải bài thi. Mỗi bài chỉ khoảng 5–15 phút, tập trung vào phần khó hoặc dễ sai của video. Bí thì mở Hint; lời giải đầy đủ chỉ xuất hiện khi video chữa được phát hành.</p></div>
+    <a class="hw-hero-link" href="practice-youtube.html">▶ Xem YouTube Project</a>
+  </header>
+
+  <section class="hw-loop" aria-label="Quy trình học">
+    <strong>HỌC</strong><i>→</i><strong>LÀM</strong><i>→</i><strong>BÍ THÌ XEM HINT</strong><i>→</i><strong>VIDEO SAU CHỮA</strong><i>→</i><strong>HỌC TIẾP</strong>
+  </section>
+
+  <section class="hw-toolbar" aria-label="Lọc bài tập">
+    <label><span>Chủ đề</span><select id="hwTopic"><option value="all">Tất cả chủ đề</option></select></label>
+    <label><span>Trạng thái</span><select id="hwProgress"><option value="all">Tất cả</option><option value="not_started">Chưa làm</option><option value="in_progress">Đang làm</option><option value="done">Đã làm</option></select></label>
+    <label><span>Sắp xếp</span><select id="hwSort"><option value="newest">Mới nhất</option><option value="oldest">Cũ nhất</option></select></label>
+  </section>
+
+  <section id="hwLibrary" class="hw-library" aria-live="polite">
+    <div class="hw-loading">Đang tải bài tập về nhà…</div>
+  </section>
+
+  <section id="hwDetail" class="hw-detail" hidden aria-live="polite"></section>
+</main>
+<script defer src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="analytics-tracker.js"></script>
+<script defer src="simple-nav.js?v=20260901-rollfix3"></script>
+<script defer src="avp-core.js"></script>
+<script defer src="avp-modal.js"></script>
+<script defer src="avp-secure-download.js?v=20260830-access1"></script>
+<script defer src="global-search.js"></script>
+<script defer src="homework.js?v=20260910-hw1"></script>
+</body>
+</html>

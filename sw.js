@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260910-knowledgedepth1";
+const CACHE = "learnexcel-assets-v20260910-homeworkflow1";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -11,17 +11,26 @@ const ASSETS = [
   "./avp-ui-polish-v40.css",
   "./avp-global-controls-v1.css",
   "./avp-home-knowledge-v2.css",
+  "./avp-home-flows-v1.css",
   "./avp-learning-contrast-v1.css",
   "./avp-pro-access-guidance-v1.css",
+  "./homework.css",
+  "./admin-homework.css",
+  "./practice-hub-flow-v1.css",
   "./simple-nav.js",
   "./avp-core.js",
   "./avp-ui-system.js",
   "./avp-launcher-unify-v1.js",
   "./avp-semantic-hierarchy-v3.js",
   "./avp-home-knowledge-v2.js",
+  "./avp-home-flows-v1.js",
   "./avp-pro-access-guidance-v1.js",
+  "./homework.js",
+  "./admin-homework.js",
   "./global-search.js",
   "./index.html",
+  "./practice-video.html",
+  "./homework.html",
   "./skill-map.html",
   "./skill-map.css",
   "./skill-map.js",
@@ -69,7 +78,6 @@ self.addEventListener("fetch", event => {
   const isCodeAsset =
     /\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
 
-  // HTML: always prefer the newest live page, keep cache only for offline fallback.
   if (isHTML) {
     event.respondWith(
       fetch(event.request)
@@ -87,8 +95,6 @@ self.addEventListener("fetch", event => {
     return;
   }
 
-  // JS/CSS/config: network-first prevents old and new versions being mixed
-  // immediately after a GitHub Pages deploy.
   if (isCodeAsset) {
     event.respondWith(
       fetch(event.request)
@@ -103,7 +109,6 @@ self.addEventListener("fetch", event => {
     return;
   }
 
-  // Images/fonts/static media: cache-first is efficient and safe.
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
