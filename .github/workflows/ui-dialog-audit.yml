@@ -1,0 +1,39 @@
+name: UI dialog audit
+on:
+  push:
+    branches: [ui-consistency-system]
+    paths: ['.github/workflows/ui-dialog-audit.yml']
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan dialog and file-input callsites
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          out=[]
+          patterns=[('alert',re.compile(r'(?<![\w.])alert\s*\(')),('confirm',re.compile(r'(?<![\w.])confirm\s*\(')),('prompt',re.compile(r'(?<![\w.])prompt\s*\(')),('file',re.compile(r'type=["\']file["\']',re.I))]
+          for p in sorted(Path('.').glob('*.js'))+sorted(Path('.').glob('*.html')):
+            try:s=p.read_text(encoding='utf-8')
+            except:continue
+            lines=s.splitlines()
+            for i,line in enumerate(lines,1):
+              hits=[name for name,rx in patterns if rx.search(line)]
+              if not hits: continue
+              lo=max(1,i-1); hi=min(len(lines),i+1)
+              out.append(f'### {p}:{i} [{",".join(hits)}]')
+              for n in range(lo,hi+1): out.append(f'{n:05d}: {lines[n-1]}')
+              out.append('')
+          Path('.ui-dialog-audit.txt').write_text('\n'.join(out),encoding='utf-8')
+          PY
+      - name: Commit audit report
+        run: |
+          git config user.name 'anhvanphongmaster'
+          git config user.email 'anhvanphongmaster@gmail.com'
+          git add .ui-dialog-audit.txt
+          git commit -m 'UI staging: audit dialog and file input callsites'
+          git push
