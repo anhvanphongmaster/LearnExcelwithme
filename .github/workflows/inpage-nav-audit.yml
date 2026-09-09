@@ -13,19 +13,19 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: List nav markup
+      - name: Static nav inventory
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
+          seen=[]
           for p in sorted(Path('.').glob('*.html')):
-              s=p.read_text(encoding='utf-8', errors='ignore')
-              tags=re.findall(r'<nav\b[^>]*>',s,re.I)
-              if tags:
-                  print('\n'+p.name)
-                  for t in tags: print(' ',re.sub(r'\s+',' ',t)[:260])
+              for t in re.findall(r'<nav\b[^>]*>',p.read_text(encoding='utf-8',errors='ignore'),re.I):
+                  seen.append((p.name,re.sub(r'\s+',' ',t)[:220]))
+          print('NAV TAGS',len(seen))
+          for row in seen: print(*row)
           PY
-      - name: Browser nav styles
+      - name: Browser regression audit
         run: |
           npm init -y >/dev/null 2>&1
           npm install --silent playwright@1.55.0
@@ -36,17 +36,38 @@ jobs:
           const {chromium}=require('playwright'),fs=require('fs');
           (async()=>{
             const files=fs.readdirSync('.').filter(f=>f.endsWith('.html')).sort();
-            const b=await chromium.launch({headless:true});
-            const c=await b.newContext({serviceWorkers:'block',reducedMotion:'reduce'});
-            await c.route('**/*',r=>r.request().url().startsWith('http://127.0.0.1:4173/')?r.continue():r.abort());
-            const p=await c.newPage();
-            for(const f of files){
-              await p.setViewportSize({width:1366,height:900});
-              try{await p.goto('http://127.0.0.1:4173/'+f,{waitUntil:'domcontentloaded',timeout:7000});await p.waitForTimeout(250)}catch(e){}
-              const rows=await p.evaluate(()=>[...document.querySelectorAll('nav')].map((n,i)=>{const s=getComputedStyle(n),r=n.getBoundingClientRect();return {i,cls:n.className||'',id:n.id||'',hidden:n.hidden,display:s.display,pos:s.position,top:s.top,z:s.zIndex,bg:s.backgroundColor,pad:s.padding,shadow:s.boxShadow,w:Math.round(r.width),h:Math.round(r.height),text:(n.innerText||'').replace(/\s+/g,' ').trim().slice(0,100)}}));
-              if(rows.length){console.log('\nFILE '+f);for(const x of rows) console.log(JSON.stringify(x));}
+            const browser=await chromium.launch({headless:true});
+            const ctx=await browser.newContext({serviceWorkers:'block',reducedMotion:'reduce'});
+            await ctx.route('**/*',r=>r.request().url().startsWith('http://127.0.0.1:4173/')?r.continue():r.abort());
+            const page=await ctx.newPage();
+            const bad=[]; let navCount=0;
+            for(const file of files){
+              await page.setViewportSize({width:1366,height:900});
+              try{await page.goto('http://127.0.0.1:4173/'+file,{waitUntil:'domcontentloaded',timeout:7000});await page.waitForTimeout(180)}catch(e){}
+              const rows=await page.evaluate(()=>[...document.querySelectorAll('nav')].map(n=>{const s=getComputedStyle(n);return {cls:String(n.className||''),id:n.id||'',pos:s.position,bg:s.backgroundColor,shadow:s.boxShadow}}));
+              navCount+=rows.length;
+              for(const n of rows){
+                if(n.cls.split(/\s+/).includes('top-simple-nav')) continue;
+                if(n.pos==='sticky'||n.pos==='fixed'||n.bg==='rgb(24, 92, 55)') bad.push(`${file}: ${n.cls||'#'+n.id} pos=${n.pos} bg=${n.bg}`);
+              }
             }
-            await b.close();
+
+            await page.goto('http://127.0.0.1:4173/professional-track.html',{waitUntil:'domcontentloaded'});
+            await page.evaluate(()=>{const g=document.getElementById('ptGate'),p=document.getElementById('ptProtectedContent'),b=document.getElementById('proBreadcrumb');if(g)g.hidden=true;if(p)p.hidden=false;if(b){b.hidden=false;b.innerHTML='<span>Professional</span><i>/</i><span>NHẬP LIỆU & DATA QUALITY</span><i>/</i><span class="current">LEVEL 01</span>'}});
+            await page.waitForTimeout(700);
+            const pro=await page.evaluate(()=>{
+              const cards=[...document.querySelectorAll('[data-roll="domains"] [data-roll-card]')];
+              const b=document.getElementById('proBreadcrumb'); const bs=b?getComputedStyle(b):null;
+              return {opacities:cards.map(c=>Number(getComputedStyle(c).opacity)),breadcrumb:bs?{pos:bs.position,bg:bs.backgroundColor,color:bs.color,shadow:bs.boxShadow}:null};
+            });
+            const minOpacity=pro.opacities.length?Math.min(...pro.opacities):0;
+            if(minOpacity<.5) bad.push(`professional-track: roll min opacity ${minOpacity.toFixed(2)} < 0.50`);
+            if(pro.breadcrumb&&(pro.breadcrumb.pos==='sticky'||pro.breadcrumb.bg==='rgb(24, 92, 55)')) bad.push(`professional-track: breadcrumb still inherits global nav ${JSON.stringify(pro.breadcrumb)}`);
+
+            await browser.close();
+            console.log(`NAV AUDIT: ${navCount} nav nodes across ${files.length} HTML; proRollMinOpacity=${minOpacity.toFixed(2)}`);
+            if(bad.length){console.error('FAIL '+bad.length);bad.forEach(x=>console.error(x));process.exit(1)}
+            console.log('IN-PAGE NAV + PRO ROLL PASS');
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
           node nav-audit.js
