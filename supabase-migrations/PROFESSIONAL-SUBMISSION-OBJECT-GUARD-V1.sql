@@ -1,3 +1,4 @@
+-- Production migration applied 2026-09-09.
 -- Professional Track submission object guard V1.
 -- Prevent a learner/Admin test submission row from being created or reset when
 -- p_file_path only looks valid but no matching private Storage object exists.
