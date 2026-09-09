@@ -1,0 +1,76 @@
+name: Pro Admin Draft Test Apply
+
+on:
+  push:
+    branches:
+      - pro-admin-draft-test
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: ${{ !contains(github.event.head_commit.message, '[skip pro-draft]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: pro-admin-draft-test
+          fetch-depth: 0
+
+      - name: Apply minimal Draft Admin test patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p=Path('professional-track-content.js')
+          s=p.read_text(encoding='utf-8')
+          reps=[
+            (
+              '        published:row.published===true,\n        submissionEnabled:row.submission_enabled!==false&&row.published===true,\n        submission:submissions.get(id)||null',
+              '        published:row.published===true,\n        adminDraftTest:adminMode&&catalog.has(id)&&row.published!==true,\n        submissionEnabled:row.submission_enabled!==false&&(row.published===true||(adminMode&&catalog.has(id))),\n        submission:submissions.get(id)||null'
+            ),
+            (
+              ':submission?.status==="revision"?"Cần nộp lại":item.published?"Đã phát hành":"Case mẫu";',
+              ':submission?.status==="revision"?"Cần nộp lại":item.published?"Đã phát hành":item.adminDraftTest?"Draft · Admin test":"Case mẫu";'
+            ),
+            (
+              '    const actions=item.published?`<div class="pro-case-submit-box">',
+              '    const actions=(item.published||item.adminDraftTest)?`${item.adminDraftTest?\'<p class="pro-case-next"><strong>ADMIN TEST:</strong> Case đang Draft. Kết quả chỉ dùng kiểm thử trước khi phát hành.</p>\':""}<div class="pro-case-submit-box">'
+            )
+          ]
+          for old,new in reps:
+            count=s.count(old)
+            if count!=1:
+              raise SystemExit(f'Expected exactly 1 match, got {count}: {old[:90]}')
+            s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+
+          h=Path('professional-track.html')
+          hs=h.read_text(encoding='utf-8')
+          old='professional-track-content.js?v=20260909-pro-system1'
+          new='professional-track-content.js?v=20260909-pro-drafttest1'
+          if hs.count(old)!=1:
+            raise SystemExit(f'Expected one content version marker, got {hs.count(old)}')
+          h.write_text(hs.replace(old,new,1),encoding='utf-8')
+          PY
+
+      - name: Validate JavaScript and invariants
+        run: |
+          node --check professional-track-content.js
+          grep -F 'adminDraftTest:adminMode&&catalog.has(id)&&row.published!==true' professional-track-content.js
+          grep -F 'submissionEnabled:row.submission_enabled!==false&&(row.published===true||(adminMode&&catalog.has(id)))' professional-track-content.js
+          grep -F 'ADMIN TEST:' professional-track-content.js
+          grep -F 'professional-track-content.js?v=20260909-pro-drafttest1' professional-track.html
+
+      - name: Commit patched website files
+        run: |
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'anhvanphongmaster'
+          git config user.email 'anhvanphongmaster@gmail.com'
+          git add professional-track-content.js professional-track.html
+          git commit -m 'Pro: allow Admin to test configured Draft Cases [skip pro-draft]'
+          git push origin HEAD:pro-admin-draft-test
