@@ -263,6 +263,57 @@
     }finally{button.disabled=false;button.textContent="Lưu Case"}
   }
 
+  // Pro metadata package import V1 — fills the existing Case Builder only; never auto-publishes.
+  async function importCaseMetadataFile(file){
+    if(!file)return;
+    if(file.size>256*1024)throw new Error("Metadata JSON vượt quá 256 KB.");
+    let meta=null;
+    try{meta=JSON.parse(await file.text())}catch(_){throw new Error("Metadata JSON không hợp lệ.")}
+    if(!meta||typeof meta!=="object"||Array.isArray(meta))throw new Error("Metadata phải là một JSON object.");
+
+    const domainKey=String(meta.domain_key||"").trim();
+    const moduleIndex=Number(meta.module_index);
+    const levelId=String(meta.level_id||"").trim();
+    const caseIndex=Number(meta.case_index);
+    const expectedKey=`${domainKey}-${moduleIndex}-${levelId}-${caseIndex}`;
+    const caseKey=String(meta.case_key||"").trim();
+    const tasks=Array.isArray(meta.tasks)?meta.tasks.map(v=>String(v||"").trim()).filter(Boolean):[];
+    const validLevel=LEVELS.some(level=>level.id===levelId);
+    if(!DOMAIN_MODULES[domainKey])throw new Error("domain_key không thuộc 8 lĩnh vực Pro hiện tại.");
+    if(!Number.isInteger(moduleIndex)||moduleIndex<1||moduleIndex>DOMAIN_MODULES[domainKey].modules.length)throw new Error("module_index không hợp lệ.");
+    if(!validLevel)throw new Error("level_id không hợp lệ.");
+    if(![1,2,3].includes(caseIndex))throw new Error("case_index chỉ nhận 1, 2 hoặc 3.");
+    if(caseKey!==expectedKey)throw new Error(`case_key phải là ${expectedKey}.`);
+    if(!String(meta.title||"").trim())throw new Error("Metadata thiếu title.");
+    if(!String(meta.goal||"").trim())throw new Error("Metadata thiếu goal.");
+    if(!tasks.length)throw new Error("Metadata thiếu tasks.");
+    if(meta.max_score!=null&&Number(meta.max_score)!==10)throw new Error("max_score của Pro phải bằng 10.");
+
+    const existing=caseRows.get(caseKey)||null;
+    if(existing)editCase(caseKey);else resetCaseForm();
+    $("aptCaseDomain").value=domainKey;
+    fillModuleOptions(String(moduleIndex));
+    $("aptCaseModule").value=String(moduleIndex);
+    $("aptCaseLevel").value=levelId;
+    $("aptCaseIndex").value=String(caseIndex);
+    $("aptCaseTitle").value=String(meta.title||"").trim();
+    $("aptCaseGoal").value=String(meta.goal||"").trim();
+    $("aptCaseTasks").value=tasks.join("\n");
+    $("aptCaseSkills").value=String(meta.skills||"").trim();
+    $("aptCaseOutput").value=String(meta.expected_output||"").trim();
+    $("aptCaseDuration").value=String(meta.duration||"").trim();
+    $("aptCaseScore").value="10";
+    $("aptCaseSubmission").checked=meta.submission_enabled!==false;
+    $("aptCasePublished").checked=false;
+    if(!existing){
+      setResourceState("source","");
+      setResourceState("guide","");
+      clearReferenceState(`Đã nạp metadata ${caseKey}. Case vẫn Draft; hãy chọn Student / Guide / Reference thật trước khi lưu/phát hành.`);
+    }
+    $("aptCaseForm").scrollIntoView({behavior:"smooth",block:"start"});
+    await window.avpAlert(`Đã nạp ${caseKey}. Hệ thống luôn giữ “Phát hành” = OFF khi import metadata.`,{title:"Metadata đã nạp",tone:"success",icon:"✓"});
+  }
+
   // Pro content coverage V1 — purely client-side, no extra Supabase queries.
   function graderMetadataReady(row){
     const validation=row?.grader_validation&&typeof row.grader_validation==="object"?row.grader_validation:null;
@@ -403,7 +454,11 @@
   async function loadCurrent(){const sb=await client();if(!sb)return;await refreshCounts(sb);await showMode(currentMode)}
 
   function bind(){
-    fillDomainOptions();const caseSlotChanged=()=>{clearResource("source");clearResource("guide");clearReferenceState()};$("aptCaseDomain")?.addEventListener("change",()=>{fillModuleOptions();caseSlotChanged()});$("aptCaseModule")?.addEventListener("change",caseSlotChanged);$("aptCaseLevel")?.addEventListener("change",caseSlotChanged);$("aptCaseIndex")?.addEventListener("change",caseSlotChanged);$("aptCaseForm")?.addEventListener("submit",saveCase);$("aptCaseReset")?.addEventListener("click",resetCaseForm);
+    fillDomainOptions();const caseSlotChanged=()=>{clearResource("source");clearResource("guide");clearReferenceState()};$("aptCaseDomain")?.addEventListener("change",()=>{fillModuleOptions();caseSlotChanged()});$("aptCaseModule")?.addEventListener("change",caseSlotChanged);$("aptCaseLevel")?.addEventListener("change",caseSlotChanged);$("aptCaseIndex")?.addEventListener("change",caseSlotChanged);$("aptCaseForm")?.addEventListener("submit",saveCase);$("aptCaseReset")?.addEventListener("click",resetCaseForm);$("aptCaseMetadataFile")?.addEventListener("change",async event=>{
+      const input=event.currentTarget;
+      try{await importCaseMetadataFile(input.files?.[0]||null)}catch(error){await window.avpAlert(String(error?.message||error),{title:"Không nạp được metadata",tone:"error",icon:"!"})}
+      finally{input.value=""}
+    });
     $("aptCaseSourceFile")?.addEventListener("change",event=>{const file=event.target.files?.[0];const state=$("aptCaseSourceState");if(file&&state)state.textContent=`Đã chọn ${file.name}. File sẽ được upload private khi lưu Case.`});
     $("aptCaseGuideFile")?.addEventListener("change",event=>{const file=event.target.files?.[0];const state=$("aptCaseGuideState");if(file&&state)state.textContent=`Đã chọn ${file.name}. Tài liệu sẽ được upload private khi lưu Case.`});
     $("aptCaseSourceClear")?.addEventListener("click",()=>clearResource("source"));$("aptCaseGuideClear")?.addEventListener("click",()=>clearResource("guide"));
