@@ -23,7 +23,7 @@
   function ensureSemanticHierarchy(){
     if(w.__AVP_SEMANTIC_HIERARCHY_V3__||d.querySelector('script[data-avp-semantic-hierarchy]'))return;
     const script=d.createElement('script');
-    script.src='avp-semantic-hierarchy-v3.js?v=20260909-sem3';
+    script.src='avp-semantic-hierarchy-v3.js?v=20260909-sem4';
     script.defer=true;
     script.dataset.avpSemanticHierarchy='3';
     (d.head||d.documentElement).appendChild(script);
