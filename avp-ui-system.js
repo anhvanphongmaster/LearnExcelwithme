@@ -44,6 +44,14 @@
     script.dataset.avpSemanticHierarchy='3';
     (d.head||d.documentElement).appendChild(script);
   }
+  function ensureLauncherUnifier(){
+    if(w.__AVP_LAUNCHER_UNIFY_V1__||d.querySelector('script[data-avp-launcher-unify]'))return;
+    const script=d.createElement('script');
+    script.src='avp-launcher-unify-v1.js?v=20260910-launcher1';
+    script.defer=true;
+    script.dataset.avpLauncherUnify='1';
+    (d.head||d.documentElement).appendChild(script);
+  }
   function ensureRoot(){
     let root=d.getElementById('avpUiModal');if(root)return root;
     root=d.createElement('div');root.id='avpUiModal';root.className='avp-ui-modal tone-info';root.hidden=true;
@@ -59,7 +67,7 @@
   }
   function next(){
     if(active||!queue.length)return;
-    active=true;ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureHomeKnowledgeV2();ensureSemanticHierarchy();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
+    active=true;ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureHomeKnowledgeV2();ensureSemanticHierarchy();ensureLauncherUnifier();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
     lastFocus=d.activeElement instanceof HTMLElement?d.activeElement:null;
     root.className='avp-ui-modal tone-'+(opts.tone||'info');
     const type=opts.type||'alert';
@@ -119,5 +127,5 @@
   }
   // Alert has no meaningful return value in this codebase, so it can be safely unified globally.
   w.alert=function(message){const text=String(message??'');w.avpAlert(text,{tone:inferredTone(text)});};
-  ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureHomeKnowledgeV2();ensureSemanticHierarchy();
+  ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureHomeKnowledgeV2();ensureSemanticHierarchy();ensureLauncherUnifier();
 })(window,document);
