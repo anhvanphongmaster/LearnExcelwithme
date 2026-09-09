@@ -1,0 +1,200 @@
+name: Pro Runtime Browser Audit
+
+on:
+  push:
+    branches: [pro-runtime-browser-audit]
+    paths: ['.github/workflows/pro-runtime-browser-audit.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install browser driver only
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright-core@1.55.0 >/dev/null
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          test -n "$CHROME"
+          echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
+
+      - name: Prepare isolated learner runtime harness
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p=Path('professional-track.html')
+          s=p.read_text(encoding='utf-8')
+          remove=[
+            'simple-nav.js','theme-unified-v32.js','global-search.js','supabase-config.js',
+            'supabase-auth.js','analytics-tracker.js','professional-access-resolver.js','avp-core.js'
+          ]
+          for name in remove:
+            s=re.sub(r'\s*<script[^>]+src=["\'][^"\']*'+re.escape(name)+r'[^"\']*["\'][^>]*></script>', '', s, flags=re.I)
+          marker='<script defer src="professional-roll.js?v=20260908-entry-fix1"></script>'
+          if marker not in s:
+            raise SystemExit('professional roll marker missing')
+          s=s.replace(marker,'<script src="runtime-mock.js"></script>\n'+marker,1)
+          p.write_text(s,encoding='utf-8')
+
+          Path('runtime-mock.js').write_text(r'''(()=>{
+            const q=new URLSearchParams(location.search);
+            let submitted=false;
+            const id='11111111-1111-4111-8111-111111111111';
+            const caseRow={
+              case_key:'input-1-basic-1',domain_key:'input',module_index:1,level_id:'basic',case_index:1,
+              title:'Dựng nền dữ liệu',goal:'Từ dữ liệu RAW_INPUT, xây DATA_READY có thể kiểm tra.',
+              tasks:['Đúng 8 cột và đủ 30 bản ghi','Doanh thu bằng công thức','Dùng IF + COUNTIF kiểm tra mã đơn trùng'],
+              skills:'Data Structure · Formula Control · Duplicate Audit · Reconciliation',
+              expected_output:'DATA_READY hoàn chỉnh và không có lỗi Excel.',duration:'45–60 phút / Case',max_score:10,
+              source_url:'input-1-basic-1/source/student.xlsx',guide_url:'input-1-basic-1/guide/guide.pdf',
+              submission_enabled:true,published:true,updated_at:new Date().toISOString()
+            };
+            const row=(key,score)=>({case_key:key,status:'graded',score,feedback:'[AUTO PRO V3] Cấu trúc dữ liệu: PASS | Công thức: PASS | Tính chính xác: PASS | Kiểm soát lỗi: PASS',max_score:10,file_path:id+'/'+key+'/pass.xlsx',submitted_at:new Date().toISOString(),graded_at:new Date().toISOString()});
+            function progress(){
+              if(q.has('unlock')) return [row('input-1-basic-1',9),row('input-1-basic-2',8),row('input-1-basic-3',8)];
+              if(q.has('badunlock')) return [row('input-1-basic-1',10),row('input-1-basic-2',10),row('input-1-basic-3',5)];
+              if(q.has('lowtotal')) return [row('input-1-basic-1',8),row('input-1-basic-2',8),row('input-1-basic-3',8)];
+              return submitted?[row('input-1-basic-1',10)]:[];
+            }
+            const bucket={
+              upload:async()=>({data:{path:'ok'},error:null}),
+              remove:async()=>({data:[],error:null}),
+              createSignedUrl:async()=>({data:{signedUrl:'about:blank'},error:null})
+            };
+            const sb={
+              rpc:async(name,args)=>{
+                if(name==='professional_track_catalog_v2') return {data:[caseRow],error:null};
+                if(name==='professional_track_progress_v2') return {data:progress(),error:null};
+                if(name==='professional_track_submit_case_v2'){submitted=true;return {data:'22222222-2222-4222-8222-222222222222',error:null};}
+                return {data:null,error:null};
+              },
+              auth:{
+                getUser:async()=>({data:{user:{id}},error:null}),
+                getSession:async()=>({data:{session:{user:{id}}},error:null})
+              },
+              storage:{from:()=>bucket},
+              functions:{invoke:async()=>({data:{status:'graded',score:10},error:null})}
+            };
+            window.avpSupabase=window.supabaseClient=sb;
+            window.AVPProfessionalAccess={resolve:async()=>({ok:true,authenticated:true,canAccess:true,isAdmin:q.has('admin'),adminVerified:true,client:sb,user:{id}})};
+          })();''',encoding='utf-8')
+          PY
+
+          printf 'dummy-xlsx-for-front-end-runtime' > /tmp/learner-pass.xlsx
+
+      - name: Run current-source browser automation
+        run: |
+          python -m http.server 4173 --bind 127.0.0.1 >/tmp/pro-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 1
+          cat > /tmp/pro-runtime.mjs <<'JS'
+          import { chromium } from 'playwright-core';
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+
+          const browser=await chromium.launch({executablePath:process.env.CHROME_PATH,headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+          const base='http://127.0.0.1:4173/professional-track.html';
+
+          async function open(query=''){
+            const page=await browser.newPage({viewport:{width:1440,height:1000}});
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            await page.goto(base+query,{waitUntil:'domcontentloaded'});
+            await page.waitForSelector('#ptProtectedContent:not([hidden])',{timeout:10000});
+            await page.waitForSelector('[data-roll="domains"] [data-roll-card].active',{timeout:10000});
+            return {page,errors};
+          }
+
+          async function toLevels(page){
+            await page.locator('[data-roll="domains"] [data-roll-card].active').click();
+            await page.waitForFunction(()=>!document.querySelector('#proTrainingSection')?.hidden);
+            await page.waitForSelector('#proTrainingRollMount [data-roll-card].active');
+            await page.locator('#proTrainingRollMount [data-roll-card].active').click();
+            await page.waitForFunction(()=>!document.querySelector('#proLevelSection')?.hidden);
+            await page.waitForSelector('#proLevelRollMount [data-level-index="1"]');
+          }
+
+          // 1) Real DOM learner flow + submission path on current source.
+          {
+            const {page,errors}=await open('');
+            // Shared dialog is a real centered site modal, not browser alert().
+            await page.evaluate(()=>alert('Đã lưu thành công.'));
+            await page.waitForSelector('.avp-ui-modal:not([hidden])');
+            const center=await page.locator('.avp-ui-modal-card').evaluate(el=>{const r=el.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2,vx:innerWidth/2,vy:innerHeight/2}});
+            assert.ok(Math.abs(center.x-center.vx)<30 && Math.abs(center.y-center.vy)<30,'shared dialog is not centered');
+            await page.locator('.avp-ui-modal:not([hidden]) .avp-ui-ok').click();
+
+            // Exact reported upload contrast rule.
+            const contrast=await page.evaluate(()=>{const l=document.createElement('label');l.className='apt-grader-upload';l.innerHTML='<span>Chọn file đáp án ẩn</span>';document.body.appendChild(l);const a=getComputedStyle(l),b=getComputedStyle(l.querySelector('span'));return {bg:a.backgroundColor,color:b.color}});
+            assert.equal(contrast.bg,'rgb(33, 115, 70)');
+            assert.equal(contrast.color,'rgb(255, 255, 255)');
+
+            await toLevels(page);
+            await page.locator('#proLevelRollMount [data-level-index="0"]').click();
+            await page.waitForFunction(()=>!document.querySelector('#proCaseSection')?.hidden);
+            await page.waitForSelector('#proCaseGrid .pro-case-card');
+            await page.locator('#proCaseGrid .pro-case-card').first().click();
+            await page.waitForFunction(()=>!document.querySelector('#proCaseBrief')?.hidden);
+            const brief=await page.locator('#proCaseBrief').innerText();
+            assert.match(brief,/Dựng nền dữ liệu/);
+            assert.match(brief,/Nộp bài/);
+            await page.locator('[data-pro-case-file]').setInputFiles('/tmp/learner-pass.xlsx');
+            await page.locator('[data-pro-case-submit]').click();
+            await page.waitForFunction(()=>document.querySelector('#proCaseBrief')?.innerText.includes('Auto-Grader: 10/10 điểm'),null,{timeout:10000});
+            const after=await page.locator('#proCaseBrief').innerText();
+            assert.match(after,/Auto-Grader: 10\/10 điểm/);
+            assert.equal(errors.length,0,'page errors: '+errors.join(' | '));
+            await page.close();
+          }
+
+          // 2) Unlock positive: all >=7 and total=25 => Level 02 opens.
+          {
+            const {page,errors}=await open('?unlock=1');
+            await toLevels(page);
+            await page.waitForFunction(()=>!document.querySelector('#proLevelRollMount [data-level-index="1"]')?.classList.contains('locked'));
+            assert.equal(errors.length,0,'positive unlock page errors: '+errors.join(' | '));
+            await page.close();
+          }
+
+          // 3) Total 25 is insufficient when one Case <7.
+          {
+            const {page,errors}=await open('?badunlock=1');
+            await toLevels(page);
+            await page.waitForFunction(()=>document.querySelector('#proLevelRollMount [data-level-index="1"]')?.classList.contains('locked'));
+            assert.equal(errors.length,0,'bad-case unlock page errors: '+errors.join(' | '));
+            await page.close();
+          }
+
+          // 4) All Cases >=7 but total 24 remains locked.
+          {
+            const {page,errors}=await open('?lowtotal=1');
+            await toLevels(page);
+            await page.waitForFunction(()=>document.querySelector('#proLevelRollMount [data-level-index="1"]')?.classList.contains('locked'));
+            assert.equal(errors.length,0,'low-total page errors: '+errors.join(' | '));
+            await page.close();
+          }
+
+          // 5) Frontend Admin bypass unlocks all Levels after verified Admin gate.
+          {
+            const {page,errors}=await open('?admin=1');
+            await toLevels(page);
+            await page.waitForFunction(()=>[...document.querySelectorAll('#proLevelRollMount [data-level-index]')].every(el=>!el.classList.contains('locked')));
+            const role=await page.locator('#ptAccessRole').innerText();
+            assert.match(role,/ADMIN ACCESS/);
+            assert.equal(errors.length,0,'admin bypass page errors: '+errors.join(' | '));
+            await page.close();
+          }
+
+          await browser.close();
+          console.log('PASS: learner flow, submission UI, modal centering, upload contrast, unlock invariants, Admin bypass');
+          JS
+          node /tmp/pro-runtime.mjs
