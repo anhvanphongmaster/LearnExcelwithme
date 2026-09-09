@@ -135,7 +135,7 @@
       const refTime=reference?.updated_at?new Date(reference.updated_at).getTime():reference?.created_at?new Date(reference.created_at).getTime():0;
       const valRefTime=validation?.reference_updated_at?new Date(validation.reference_updated_at).getTime():0;
       const tests=validation?.tests||{};
-      currentGraderValidated=!!reference&&validation?.status==="validated"&&refTime>0&&valRefTime===refTime&&Number(tests.pass)===10&&Number(tests.hardcode)<7&&Number(tests.wrong_formula)<7;
+      currentGraderValidated=!!reference&&validation?.status==="validated"&&validation?.version==="AVP_PRO_GRADER_V3"&&refTime>0&&valRefTime===refTime&&Number(tests.pass)===10&&Number(tests.hardcode)<7&&Number(tests.wrong_formula)<7;
       if($("aptCaseReferenceRemove"))$("aptCaseReferenceRemove").disabled=!currentReferenceExists;
       if(!currentReferenceExists)setReferenceState("— Chưa có Reference ẩn. Case có nộp bài chưa thể phát hành.","warn");
       else if(currentGraderValidated)setReferenceState(`✓ Auto-Grader PASS: đúng ${Number(tests.pass)}/10 · hardcode ${Number(tests.hardcode)}/10 · formula sai ${Number(tests.wrong_formula)}/10.`,"ready");
@@ -152,7 +152,7 @@
       const {data,error}=await sb.functions.invoke("professional-grader",{body:{mode:"validate_reference",case_key:key}});
       if(error)throw error;if(data?.status!=="validated")throw new Error(data?.reason||"grader_validation_failed");
       const row=caseRows.get(key)||{};
-      caseRows.set(key,{...row,grader_validation:{status:"validated",version:"AVP_PRO_GRADER_V2",case_key:key,reference_updated_at:data.reference_updated_at,validated_at:data.validated_at,tests:data.tests||{}}});
+      caseRows.set(key,{...row,grader_validation:{status:"validated",version:"AVP_PRO_GRADER_V3",case_key:key,reference_updated_at:data.reference_updated_at,validated_at:data.validated_at,tests:data.tests||{}}});
       await checkReference(sb,key);
       alert(`Auto-Grader PASS cho ${key}. Test: đúng ${data.tests?.pass}/10 · hardcode ${data.tests?.hardcode}/10 · formula sai ${data.tests?.wrong_formula}/10.`);
     }catch(error){currentGraderValidated=false;setReferenceState("Auto-Grader chưa PASS: "+String(error?.message||error)+". Không thể phát hành Case.","error");alert("Auto-Grader chưa đạt điều kiện phát hành. Kiểm tra lại Reference/rubric: "+String(error?.message||error));}
