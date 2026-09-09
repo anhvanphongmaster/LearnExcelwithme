@@ -1,0 +1,104 @@
+/* AVP Readability Guard V1 — prevents legacy global styles from hiding readable UI */
+
+/* Learning TOC is an in-page navigation component, not the top green navbar. */
+.avp-learning-sidebar .avp-learning-toc{
+  position:static!important;
+  inset:auto!important;
+  top:auto!important;
+  left:auto!important;
+  right:auto!important;
+  z-index:auto!important;
+  width:auto!important;
+  max-width:none!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  justify-content:stretch!important;
+  align-items:stretch!important;
+  gap:3px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.avp-learning-sidebar .avp-learning-toc a{
+  width:100%!important;
+  margin:0!important;
+  padding:8px 9px!important;
+  background:transparent!important;
+  color:#52665b!important;
+  border:0!important;
+  border-left:3px solid transparent!important;
+  border-radius:9px!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+  font-weight:650!important;
+  text-align:left!important;
+  white-space:normal!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+.avp-learning-sidebar .avp-learning-toc a:hover{
+  background:#f1f6fb!important;
+  color:#35546b!important;
+}
+.avp-learning-sidebar .avp-learning-toc a.active{
+  background:#f1f6fb!important;
+  border-left-color:#89abc2!important;
+  color:#35546b!important;
+  font-weight:850!important;
+}
+
+/* Home module row: five equal cards on desktop; titles/meta may wrap without collision. */
+.home-path .home-path-inner .home-path-more.home-path-more--5.home-path-more--codehub{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:14px!important;
+  align-items:stretch!important;
+}
+.home-path .home-path-inner .home-path-more.home-path-more--codehub .home-more-card{
+  min-width:0!important;
+}
+
+/* Floating AVP launcher must remain readable even if a page has broad button rules. */
+#avpEdgeLauncher .avp-edge-main{
+  background:radial-gradient(circle at 35% 28%,#39d98a 0%,#217346 38%,#145a32 100%)!important;
+  color:#fff!important;
+  opacity:1!important;
+  -webkit-text-fill-color:#fff!important;
+}
+#avpEdgeLauncher .avp-edge-main-icon{
+  color:#fff!important;
+  opacity:1!important;
+  -webkit-text-fill-color:#fff!important;
+}
+
+/* Keep semantic messages and controls readable after legacy parent opacity rules. */
+.apt-grader-box,
+.apt-grader-box .apt-grader-state,
+.apt-grader-box .apt-grader-upload,
+.pro-case-submission-state,
+.pro-flow-notice{
+  opacity:1!important;
+}
+
+body.dark-mode .avp-learning-sidebar .avp-learning-toc a{
+  color:#c4d0c8!important;
+}
+body.dark-mode .avp-learning-sidebar .avp-learning-toc a:hover,
+body.dark-mode .avp-learning-sidebar .avp-learning-toc a.active{
+  background:#1b2730!important;
+  color:#c2d6e5!important;
+}
+
+@media(max-width:1080px){
+  .home-path .home-path-inner .home-path-more.home-path-more--5.home-path-more--codehub{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:700px){
+  .home-path .home-path-inner .home-path-more.home-path-more--5.home-path-more--codehub{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:520px){
+  .home-path .home-path-inner .home-path-more.home-path-more--5.home-path-more--codehub{grid-template-columns:1fr!important}
+}

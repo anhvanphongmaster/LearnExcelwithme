@@ -1,9 +1,11 @@
-const CACHE = "learnexcel-assets-v20260909-ui1";
+const CACHE = "learnexcel-assets-v20260909-readability2";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
   "./avp-core.css",
   "./avp-ui-system.css",
+  "./avp-semantic-soft.css",
+  "./avp-readability-guard.css",
   "./theme-polish-v33.css",
   "./avp-ui-polish-v40.css",
   "./simple-nav.js",
@@ -92,8 +94,6 @@ self.addEventListener("fetch", event => {
     })
   );
 });
-
-
 
 self.addEventListener("push", event => {
   let data = {};

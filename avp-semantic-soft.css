@@ -1,4 +1,4 @@
-/* AVP Semantic Soft V1 — shared visual hierarchy without saturated UI noise */
+/* AVP Semantic Soft V2 — shared visual hierarchy + readability guardrails */
 :root{
   --avp-sem-info-bg:#f1f6fb;
   --avp-sem-info-border:#d5e2ee;
@@ -21,6 +21,7 @@
   --avp-sem-primary:#217346;
   --avp-sem-primary-hover:#1b663f;
   --avp-sem-focus:rgba(77,116,145,.20);
+  --avp-sem-muted-readable:#5f7067;
 }
 
 /* Reusable semantic surfaces. Existing features can adopt these classes without new CSS. */
@@ -37,7 +38,7 @@
 :is([class*="status"],[class*="state"],[class*="notice"],[class*="message"],[class*="feedback"]):is(.error,.danger,.failed,.revision,.rejected){background:var(--avp-sem-danger-bg)!important;border-color:var(--avp-sem-danger-border)!important;color:var(--avp-sem-danger-text)!important}
 :is([class*="status"],[class*="state"],[class*="notice"],[class*="message"],[class*="feedback"]):is(.draft,.preview){background:var(--avp-sem-draft-bg)!important;border-color:var(--avp-sem-draft-border)!important;color:var(--avp-sem-draft-text)!important}
 
-/* Selected/current is informational, not success. This is the key separation from brand green. */
+/* Selected/current is informational, not success. */
 [role="tab"][aria-selected="true"],button[aria-pressed="true"],[data-roll-card][aria-current="true"]{
   border-color:var(--avp-sem-info-border)!important;
   box-shadow:0 0 0 3px rgba(92,130,158,.08),0 14px 30px rgba(53,84,107,.08)!important;
@@ -55,7 +56,7 @@
 }
 :is(button,a,[role="button"]):focus-visible{outline:3px solid var(--avp-sem-focus)!important;outline-offset:2px}
 
-/* Global dialogs: tone is visible in the surface/icon, while text stays calm and readable. */
+/* Global dialogs. */
 .avp-ui-modal.tone-info .avp-ui-modal-card{background:linear-gradient(180deg,var(--avp-sem-info-bg),#fff 122px)!important;border-color:var(--avp-sem-info-border)!important}
 .avp-ui-modal.tone-info .avp-ui-icon{background:var(--avp-sem-info-bg)!important;border-color:var(--avp-sem-info-border)!important;color:var(--avp-sem-info-text)!important}
 .avp-ui-modal.tone-info .avp-ui-title{color:var(--avp-sem-info-text)!important}
@@ -68,14 +69,12 @@
 .avp-ui-modal.tone-danger .avp-ui-modal-card{background:linear-gradient(180deg,var(--avp-sem-danger-bg),#fff 122px)!important;border-color:var(--avp-sem-danger-border)!important}
 .avp-ui-modal.tone-danger .avp-ui-icon{background:var(--avp-sem-danger-bg)!important;border-color:var(--avp-sem-danger-border)!important;color:var(--avp-sem-danger-text)!important}
 .avp-ui-modal.tone-danger .avp-ui-title{color:var(--avp-sem-danger-text)!important}
-/* Destructive confirmation should be clear, not saturated red. */
 .avp-ui-modal.tone-danger .avp-ui-ok{background:var(--avp-sem-danger-bg)!important;border-color:#d8aaa2!important;color:var(--avp-sem-danger-text)!important}
 .avp-ui-modal.tone-danger .avp-ui-ok:hover{background:#fbe7e3!important}
-/* Normal primary confirmation keeps the single strong brand action. */
 .avp-ui-modal:not(.tone-danger) .avp-ui-ok{background:var(--avp-sem-primary)!important;border-color:var(--avp-sem-primary)!important;color:#fff!important}
 .avp-ui-modal:not(.tone-danger) .avp-ui-ok:hover{background:var(--avp-sem-primary-hover)!important}
 
-/* Professional Track: distinguish navigation/current state from success and Draft. */
+/* Professional Track hierarchy. */
 .pro-flow-path span.active{background:var(--avp-sem-info-bg)!important;color:var(--avp-sem-info-text)!important}
 .pro-flow-path span.active b{background:#e1edf6!important;border-color:#c7d9e7!important;color:#35546b!important}
 .pro-flow-path span.done{color:var(--avp-sem-success-text)!important}
@@ -98,6 +97,114 @@
 [data-pro-case-submit]:hover{background:var(--avp-sem-primary-hover)!important}
 .pro-flow-back,.pro-case-list-back{background:#fff!important;border-color:var(--avp-sem-neutral-border)!important;color:var(--avp-sem-neutral-text)!important}
 
+/* ===== V2 READABILITY GUARDRAILS ===== */
+/* Disabled must look disabled without becoming unreadable. */
+button:disabled,
+[role="button"][aria-disabled="true"]{
+  opacity:1!important;
+  filter:none!important;
+  cursor:not-allowed!important;
+  background:var(--avp-sem-neutral-bg)!important;
+  border-color:var(--avp-sem-neutral-border)!important;
+  color:var(--avp-sem-neutral-text)!important;
+  box-shadow:none!important;
+  text-shadow:none!important;
+}
+button:disabled *,[role="button"][aria-disabled="true"] *{
+  opacity:1!important;
+  color:inherit!important;
+  -webkit-text-fill-color:currentColor!important;
+}
+input:not([type="checkbox"]):not([type="radio"]):disabled,
+select:disabled,textarea:disabled,input[readonly]{
+  opacity:1!important;
+  -webkit-text-fill-color:var(--avp-sem-neutral-text)!important;
+  color:var(--avp-sem-neutral-text)!important;
+  background:var(--avp-sem-neutral-bg)!important;
+  border-color:var(--avp-sem-neutral-border)!important;
+}
+input::placeholder,textarea::placeholder{opacity:1;color:#78877f}
+
+/* File selection is a secondary action: soft blue, not saturated green. */
+input[type="file"]::file-selector-button,
+input[type="file"]::-webkit-file-upload-button{
+  background:var(--avp-sem-info-bg)!important;
+  border-color:var(--avp-sem-info-border)!important;
+  color:var(--avp-sem-info-text)!important;
+  opacity:1!important;
+}
+input[type="file"]:hover::file-selector-button{background:#e8f1f8!important}
+
+/* Admin Pro grader: specificity beats legacy form span colors. */
+.apt-form-grid .apt-grader-box .apt-grader-upload{
+  background:var(--avp-sem-info-bg)!important;
+  border-color:var(--avp-sem-info-border)!important;
+  color:var(--avp-sem-info-text)!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+.apt-form-grid .apt-grader-box .apt-grader-upload>span{
+  color:var(--avp-sem-info-text)!important;
+  -webkit-text-fill-color:var(--avp-sem-info-text)!important;
+  opacity:1!important;
+}
+.apt-form-grid .apt-grader-box>button:not(.danger):not(:disabled){
+  background:#fff!important;
+  border-color:var(--avp-sem-info-border)!important;
+  color:var(--avp-sem-info-text)!important;
+}
+.apt-form-grid .apt-grader-box>button.danger:not(:disabled){
+  background:var(--avp-sem-danger-bg)!important;
+  border-color:var(--avp-sem-danger-border)!important;
+  color:var(--avp-sem-danger-text)!important;
+}
+.apt-grader-state.ready{background:var(--avp-sem-success-bg)!important;border:1px solid var(--avp-sem-success-border)!important;color:var(--avp-sem-success-text)!important;padding:8px 10px!important;border-radius:9px!important}
+.apt-grader-state.warn{background:var(--avp-sem-warn-bg)!important;border:1px solid var(--avp-sem-warn-border)!important;color:var(--avp-sem-warn-text)!important;padding:8px 10px!important;border-radius:9px!important}
+.apt-grader-state.error{background:var(--avp-sem-danger-bg)!important;border:1px solid var(--avp-sem-danger-border)!important;color:var(--avp-sem-danger-text)!important;padding:8px 10px!important;border-radius:9px!important}
+
+/* Homepage 5-card row: never let dynamic 2-line titles collide with metadata. */
+.home-path .home-path-more.home-path-more--codehub .home-more-card{
+  min-height:158px!important;
+  height:auto!important;
+  grid-template-rows:24px auto auto!important;
+  align-content:start!important;
+  overflow:visible!important;
+}
+.home-path .home-path-more--codehub .home-more-card>strong{
+  display:block!important;
+  min-height:0!important;
+  height:auto!important;
+  line-height:1.35!important;
+  overflow:visible!important;
+  white-space:normal!important;
+  align-self:start!important;
+}
+.home-path .home-path-more--codehub .home-more-card>small{
+  position:static!important;
+  inset:auto!important;
+  transform:none!important;
+  display:block!important;
+  min-height:0!important;
+  height:auto!important;
+  margin:0!important;
+  line-height:1.45!important;
+  overflow:visible!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+  opacity:1!important;
+  color:var(--avp-sem-muted-readable)!important;
+  align-self:start!important;
+}
+.home-path .home-path-more--codehub .home-more-card>span{position:static!important;transform:none!important}
+
+/* Selected cards remain readable even when legacy rules use opacity. */
+.home-more-card,.pro-card,.pro-case-card,.tool-card,.practice-card,.download-card{--avp-readable-muted:var(--avp-sem-muted-readable)}
+.home-more-card>small,.pro-card p,.pro-case-card p{opacity:1!important}
+
+/* High-risk legacy state patterns: keep text visible. */
+:is(.status,.state,.notice,.message,.feedback,[class*="-status"],[class*="-state"]){text-shadow:none!important}
+:is(.status,.state,.notice,.message,.feedback,[class*="-status"],[class*="-state"]) *{text-shadow:none!important}
+
 /* Dark mode keeps the same role distinction with muted, non-neon surfaces. */
 body.dark-mode{
   --avp-sem-info-bg:#1b2730;--avp-sem-info-border:#354958;--avp-sem-info-text:#c2d6e5;
@@ -106,13 +213,18 @@ body.dark-mode{
   --avp-sem-danger-bg:#2e201f;--avp-sem-danger-border:#5a3d39;--avp-sem-danger-text:#e6c2bc;
   --avp-sem-draft-bg:#252230;--avp-sem-draft-border:#494258;--avp-sem-draft-text:#d0c8df;
   --avp-sem-neutral-bg:#1e2521;--avp-sem-neutral-border:#39443d;--avp-sem-neutral-text:#c4d0c8;
+  --avp-sem-muted-readable:#b8c8bf;
 }
 body.dark-mode [data-roll-card][aria-current="true"]{background:linear-gradient(180deg,#1d2a22,var(--avp-sem-info-bg))!important}
 body.dark-mode .avp-ui-modal.tone-info .avp-ui-modal-card,
 body.dark-mode .avp-ui-modal.tone-ok .avp-ui-modal-card,
 body.dark-mode .avp-ui-modal.tone-warn .avp-ui-modal-card,
 body.dark-mode .avp-ui-modal.tone-danger .avp-ui-modal-card{background:#162019!important}
+body.dark-mode input::placeholder,body.dark-mode textarea::placeholder{color:#aebdb5}
 
+@media(max-width:520px){
+  .home-path .home-path-more.home-path-more--codehub .home-more-card{min-height:126px!important}
+}
 @media(prefers-reduced-motion:reduce){
   [data-roll-card][aria-current="true"]{transition:none!important}
 }
