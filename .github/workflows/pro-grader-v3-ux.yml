@@ -1,0 +1,50 @@
+name: Finalize Professional Grader V3 UX
+on:
+  push:
+    branches: [pro-grader-v3]
+    paths: ['.github/workflows/pro-grader-v3-ux.yml']
+permissions:
+  contents: write
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch expected validation failures and Admin message
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('supabase/functions/professional-grader/index.ts'); s=p.read_text(encoding='utf-8')
+          s=s.replace("return reply({status:'validation_failed',case_key:key,tests:{pass:p.score,hardcode:h.score,wrong_formula:w.score}},422);","return reply({status:'validation_failed',case_key:key,tests:{pass:p.score,hardcode:h.score,wrong_formula:w.score}});")
+          s=s.replace("return reply({status:'validation_failed',case_key:key,reason:err(e)},422)","return reply({status:'validation_failed',case_key:key,reason:err(e)})")
+          p.write_text(s,encoding='utf-8')
+
+          p=Path('admin-professional-track.js'); s=p.read_text(encoding='utf-8')
+          anchor='  async function validateReference(sb,key=selectedCaseKey()){\n'
+          helper='''  function graderFailureText(value){\n    const raw=String(value?.message||value||"grader_validation_failed");\n    const formula=raw.match(/reference_formula_missing:([^\\s]+)/i);\n    if(formula)return `Reference chưa lưu công thức chuẩn tại ${formula[1]}. Hãy thay Reference bằng file có công thức thật rồi kiểm tra lại.`;\n    if(/rubric_/i.test(raw))return `Rubric ẩn của Reference chưa hợp lệ (${raw}).`;\n    if(/reference_(missing|too_large|timestamp_missing)/i.test(raw))return `Reference chưa sẵn sàng (${raw}).`;\n    return raw;\n  }\n\n'''
+          if helper.strip() not in s:
+            if anchor not in s: raise SystemExit('validate anchor missing')
+            s=s.replace(anchor,helper+anchor,1)
+          old='if(error)throw error;if(data?.status!=="validated")throw new Error(data?.reason||"grader_validation_failed");'
+          new='if(error)throw error;if(data?.status!=="validated")throw new Error(graderFailureText(data?.reason||"grader_validation_failed"));'
+          if old not in s: raise SystemExit('admin invoke marker missing')
+          s=s.replace(old,new,1)
+          old='}catch(error){currentGraderValidated=false;setReferenceState("Auto-Grader chưa PASS: "+String(error?.message||error)+". Không thể phát hành Case.","error");alert("Auto-Grader chưa đạt điều kiện phát hành. Kiểm tra lại Reference/rubric: "+String(error?.message||error));}'
+          new='}catch(error){const message=graderFailureText(error);currentGraderValidated=false;setReferenceState("Auto-Grader chưa PASS: "+message+" Không thể phát hành Case.","error");alert("Auto-Grader chưa đạt điều kiện phát hành. "+message);}'
+          if old not in s: raise SystemExit('admin catch marker missing')
+          s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Check and compact
+        run: |
+          node --check admin-professional-track.js
+          grep -q 'graderFailureText' admin-professional-track.js
+          grep -q 'reference_formula_missing' supabase/functions/professional-grader/index.ts
+          npx --yes esbuild@0.25.9 supabase/functions/professional-grader/index.ts --bundle --format=esm --platform=neutral --minify --external:npm:* --outfile=.professional-grader-v3.deploy.ts
+      - name: Commit
+        run: |
+          git config user.name 'anhvanphongmaster'
+          git config user.email 'anhvanphongmaster@gmail.com'
+          git add admin-professional-track.js supabase/functions/professional-grader/index.ts .professional-grader-v3.deploy.ts
+          git commit -m 'Pro: make grader validation failures actionable'
+          git push
