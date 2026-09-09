@@ -1,0 +1,170 @@
+name: Professional Track final contract audit
+
+on:
+  push:
+    branches:
+      - audit/pro-final-contract-v1
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Syntax check Professional runtime
+        run: |
+          set -euo pipefail
+          for f in \
+            professional-access-resolver.js \
+            professional-access.js \
+            professional-reader-gate.js \
+            professional-roll.js \
+            professional-track-gate.js \
+            professional-track-content.js \
+            professional-track-ux.js \
+            sales-handbook-data.js \
+            sales-handbook.js \
+            admin-professional-track.js; do
+              echo "check $f"
+              node --check "$f"
+          done
+
+      - name: Validate HTML ID contracts
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          function ids(html){return new Set([...html.matchAll(/\bid\s*=\s*["']([^"']+)["']/gi)].map(m=>m[1]));}
+          function referenced(js){
+            const out=new Set();
+            for(const re of [
+              /\$\(["']([^"']+)["']\)/g,
+              /getElementById\(["']([^"']+)["']\)/g
+            ]) for(const m of js.matchAll(re)) out.add(m[1]);
+            return out;
+          }
+          const contracts=[
+            ['professional-access.html',['professional-access.js']],
+            ['professional-track.html',['professional-track-gate.js','professional-track-content.js','professional-track-ux.js']],
+            ['sales-handbook.html',['sales-handbook.js','professional-reader-gate.js']]
+          ];
+          let fail=0;
+          for(const [htmlFile,jsFiles] of contracts){
+            const html=fs.readFileSync(htmlFile,'utf8'),known=ids(html);
+            const refs=new Set(jsFiles.flatMap(f=>[...referenced(fs.readFileSync(f,'utf8'))]));
+            const missing=[...refs].filter(id=>!known.has(id));
+            console.log(`${htmlFile}: ids=${known.size}, refs=${refs.size}, missing=${missing.length}`);
+            if(missing.length){console.error(' missing:',missing.join(', '));fail++;}
+          }
+          if(fail)process.exit(2);
+          console.log('DOM contract PASS');
+          NODE
+
+      - name: Validate Handbook structure
+        run: |
+          node <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const context={window:{}};vm.createContext(context);
+          vm.runInContext(fs.readFileSync('sales-handbook-data.js','utf8'),context,{filename:'sales-handbook-data.js'});
+          const book=context.window.AVPSalesHandbook;
+          if(!book||!Array.isArray(book.chapters))throw new Error('Handbook export missing');
+          if(book.chapters.length!==10)throw new Error(`Expected 10 chapters, got ${book.chapters.length}`);
+          const ids=new Set();let checkpoints=0;
+          for(const [i,ch] of book.chapters.entries()){
+            if(!ch.id||!ch.no||!ch.title||!ch.summary||!ch.short)throw new Error(`Chapter ${i+1} missing metadata`);
+            if(ids.has(ch.id))throw new Error(`Duplicate chapter id ${ch.id}`);ids.add(ch.id);
+            if(!Array.isArray(ch.sections)||!ch.sections.length)throw new Error(`Chapter ${ch.id} has no sections`);
+            for(const s of ch.sections){
+              if(!s.type||!s.title)throw new Error(`Chapter ${ch.id} has malformed section`);
+              if(s.type==='checkpoint'){
+                checkpoints++;
+                if(!Array.isArray(s.options)||s.options.length<2)throw new Error(`Checkpoint ${ch.id} missing options`);
+                if(!Number.isInteger(s.answer)||s.answer<0||s.answer>=s.options.length)throw new Error(`Checkpoint ${ch.id} invalid answer`);
+                if(!s.question||!s.explain)throw new Error(`Checkpoint ${ch.id} missing question/explain`);
+              }
+              if(s.type==='reveal'&&!s.text)throw new Error(`Reveal ${ch.id} missing text`);
+            }
+          }
+          if(checkpoints<5)throw new Error(`Expected at least 5 checkpoints, got ${checkpoints}`);
+          console.log(`Handbook PASS: chapters=${book.chapters.length}, checkpoints=${checkpoints}`);
+          NODE
+
+      - name: Validate Track/Admin shared curriculum contract
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const learner=fs.readFileSync('professional-track-content.js','utf8');
+          const admin=fs.readFileSync('admin-professional-track.js','utf8');
+          const html=fs.readFileSync('professional-track.html','utf8');
+          const sales=[
+            'Sales Data Model',
+            'Order & Revenue Control',
+            'Sales KPI Analysis',
+            'Target vs Actual',
+            'Traffic, Conversion & Handover'
+          ];
+          for(const title of sales){
+            if(!learner.includes(title))throw new Error(`Learner Sales module missing: ${title}`);
+            if(!admin.includes(title))throw new Error(`Admin Sales module missing: ${title}`);
+          }
+          for(const id of ['input','sales','hr','inventory','qc','pq','dashboard','automation']){
+            if(!learner.includes(`${id}:{title:`))throw new Error(`Learner domain missing: ${id}`);
+            if(!admin.includes(`${id}:{title:`))throw new Error(`Admin domain missing: ${id}`);
+          }
+          for(const level of ['basic','intermediate','advanced','professional']){
+            if(!learner.includes(`id:"${level}"`))throw new Error(`Learner level missing: ${level}`);
+            if(!admin.includes(`id:"${level}"`))throw new Error(`Admin level missing: ${level}`);
+          }
+          if(!html.includes('href="sales-handbook.html"'))throw new Error('Sales Handbook link missing from Track');
+          console.log('Curriculum contract PASS: 8 domains, Sales 5 modules, 4 levels');
+          NODE
+
+      - name: Validate access, unlock and publishing guards
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const resolver=fs.readFileSync('professional-access-resolver.js','utf8');
+          const gate=fs.readFileSync('professional-track-gate.js','utf8');
+          const reader=fs.readFileSync('professional-reader-gate.js','utf8');
+          const learner=fs.readFileSync('professional-track-content.js','utf8');
+          const admin=fs.readFileSync('admin-professional-track.js','utf8');
+          const migrations=fs.readdirSync('supabase-migrations');
+          const requireText=(txt,needle,label)=>{if(!txt.includes(needle))throw new Error(`${label}: ${needle}`)};
+          requireText(resolver,'learnerData?.status === "approved" && learnerData?.can_access === true','strict learner gate missing');
+          requireText(resolver,'canAccess:true','Admin bypass result missing');
+          requireText(gate,'window.AVPProfessionalGateReady','shared Track gate promise missing');
+          requireText(reader,'window.AVPProfessionalAccess.resolve()','reader shared resolver missing');
+          requireText(learner,'scores.every(score=>score>=7)','per-Case unlock threshold missing');
+          requireText(learner,'scores.reduce((sum,score)=>sum+score,0)>=25','Level total threshold missing');
+          for(const rpc of ['professional_track_catalog_v2','professional_track_progress_v2','professional_track_submit_case_v2'])requireText(learner,rpc,`learner RPC missing ${rpc}`);
+          for(const rpc of ['admin_professional_track_case_upsert_v2','admin_professional_track_case_list_v2','admin_professional_track_submissions_v2','admin_professional_track_grade_v2'])requireText(admin,rpc,`admin RPC missing ${rpc}`);
+          requireText(admin,'AVP_PRO_GRADER_V3','grader V3 contract missing');
+          requireText(admin,'if(publishing&&!source&&!sourceFile)','Student file publish guard missing');
+          requireText(admin,'if(publishing&&!guide&&!guideFile)','Guide publish guard missing');
+          requireText(admin,'if(!referenceKnown)','Reference publish guard missing');
+          requireText(admin,'if(!graderReady)','Validated grader publish guard missing');
+          for(const f of [
+            'PROFESSIONAL-ADMIN-DRAFT-TEST-V1.sql',
+            'PROFESSIONAL-CERTIFICATE-EVIDENCE-GUARD-V1.sql',
+            'PROFESSIONAL-GRADER-PUBLISH-GUARD-V3-MS-PRECISION.sql',
+            'PROFESSIONAL-GRADER-VALIDATION-V3-GUARD.sql'
+          ]) if(!migrations.includes(f))throw new Error(`Migration missing: ${f}`);
+          console.log('Access/unlock/publishing contract PASS');
+          NODE
+
+      - name: Validate script order and private resource policy
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('professional-track.html','utf8');
+          const order=['supabase-config.js','supabase-auth.js','professional-access-resolver.js','professional-roll.js','professional-track-gate.js','professional-track-content.js','professional-track-ux.js'];
+          let prev=-1;
+          for(const name of order){const i=html.indexOf(name);if(i<0)throw new Error(`Script missing: ${name}`);if(i<=prev)throw new Error(`Script order invalid at ${name}`);prev=i;}
+          const learner=fs.readFileSync('professional-track-content.js','utf8');
+          if(!learner.includes('const RESOURCE_BUCKET="professional-track-resources"'))throw new Error('Private resource bucket missing');
+          if(!learner.includes('createSignedUrl(clean,120)'))throw new Error('Resource signed URL TTL contract missing');
+          if(!learner.includes('raw.startsWith("/")||raw.includes("..")'))throw new Error('Resource path traversal/root guard missing');
+          console.log('Script/private-resource contract PASS');
+          NODE
