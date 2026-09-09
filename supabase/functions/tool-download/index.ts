@@ -10,7 +10,7 @@ const cors = {
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...cors, "Content-Type": "application/json; charset=utf-8" },
+    headers: { ...cors, "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" },
   });
 }
 
@@ -19,7 +19,8 @@ Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
 
   const auth = req.headers.get("Authorization") || "";
-  if (!auth.toLowerCase().startsWith("bearer ")) return json({ error: "login_required" }, 401);
+  const token = auth.replace(/^Bearer\s+/i, "").trim();
+  if (!token) return json({ error: "login_required" }, 401);
 
   let toolId = "";
   try {
@@ -33,8 +34,11 @@ Deno.serve(async (req: Request) => {
   const service = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-    { auth: { persistSession: false } },
+    { auth: { persistSession: false, autoRefreshToken: false } },
   );
+
+  const { data: authData, error: authError } = await service.auth.getUser(token);
+  if (authError || !authData?.user) return json({ error: "login_required" }, 401);
 
   const { data: tool, error: toolError } = await service
     .from("download_assets")
@@ -50,27 +54,24 @@ Deno.serve(async (req: Request) => {
   const path = String(tool.storage_path || tool.source_path || "").trim();
   if (!path.startsWith("tools/")) return json({ error: "tool_path_invalid" }, 409);
 
-  const { data: file, error: fileError } = await service.storage
-    .from("site-downloads")
-    .download(path);
-  if (fileError || !file) return json({ error: "file_unavailable" }, 404);
-
-  service.rpc("track_download_asset", { p_source_path: tool.source_path || path }).catch(() => {});
-
   const safeTitle = String(tool.title || "tool")
     .normalize("NFKD")
     .replace(/[^a-zA-Z0-9._ -]+/g, "")
     .trim()
     .replace(/\s+/g, "_") || "tool";
 
-  return new Response(file, {
-    status: 200,
-    headers: {
-      ...cors,
-      "Content-Type": file.type || "application/zip",
-      "Content-Disposition": `attachment; filename="${safeTitle}.zip"`,
-      "Cache-Control": "private, no-store, max-age=0",
-      "X-Content-Type-Options": "nosniff",
-    },
+  const { data: signed, error: signedError } = await service.storage
+    .from("site-downloads")
+    .createSignedUrl(path, 60, { download: `${safeTitle}.zip` });
+
+  if (signedError || !signed?.signedUrl) return json({ error: "file_unavailable" }, 404);
+
+  service.rpc("track_download_asset", { p_source_path: tool.source_path || path }).catch(() => {});
+
+  return json({
+    ok: true,
+    url: signed.signedUrl,
+    filename: `${safeTitle}.zip`,
+    expires_in: 60,
   });
 });
