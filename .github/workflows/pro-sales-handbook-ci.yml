@@ -57,3 +57,7 @@ jobs:
           grep -q 'sales-handbook-data.js?v=20260909-salespro2' sales-handbook.html
           grep -q 'professional-reader-gate.js?v=20260909-pro-system1' sales-handbook.html
           grep -q 'professional-readability-v3.css?v=20260909-proread3' sales-handbook.html
+      - name: Discoverability audit
+        run: |
+          echo 'Handbook links found:'
+          grep -R -n --include='*.html' 'href="sales-handbook.html"' . --exclude-dir=.git
