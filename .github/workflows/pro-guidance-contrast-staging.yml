@@ -1,0 +1,55 @@
+name: Pro guidance and learning contrast staging
+on:
+  push:
+    branches: [fix/pro-access-guidance-learning-contrast]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: |
+          node --check avp-pro-access-guidance-v1.js
+          node --check sw.js
+      - name: Professional access guidance contract
+        run: |
+          python - <<'PY'
+          import pathlib
+          js=pathlib.Path('avp-pro-access-guidance-v1.js').read_text(encoding='utf-8')
+          html=pathlib.Path('professional-access.html').read_text(encoding='utf-8')
+          css=pathlib.Path('avp-pro-access-guidance-v1.css').read_text(encoding='utf-8')
+          for token in ['basic: 1500','intermediate: 1300','advanced: 1000','phase !== \'locked\'','practice-grader.html','ptScoreGuidance']:
+              assert token in js, token
+          assert 'avp-pro-access-guidance-v1.css?v=20260910-guidance1' in html
+          assert 'avp-pro-access-guidance-v1.js?v=20260910-guidance1' in html
+          assert 'pt-score-guidance-cta' in css
+          # Admin/approved states must remove learner CTA.
+          assert 'state.canAccess === true' in js
+          assert 'state.isAdmin === true' in js
+          print('Professional access guidance contract PASS')
+          PY
+      - name: Learning contrast contract
+        run: |
+          python - <<'PY'
+          import pathlib
+          css=pathlib.Path('avp-learning-contrast-v1.css').read_text(encoding='utf-8')
+          skill=pathlib.Path('skill-map.html').read_text(encoding='utf-8')
+          knowledge=pathlib.Path('knowledge.html').read_text(encoding='utf-8')
+          for token in ['.sm-node-copy small','.sm-zone-foot','.kv-body p','.kv-option']:
+              assert token in css, token
+          assert 'background:transparent!important' in css
+          assert 'avp-learning-contrast-v1.css?v=20260910-contrast1' in skill
+          assert 'avp-learning-contrast-v1.css?v=20260910-contrast1' in knowledge
+          print('Learning contrast contract PASS')
+          PY
+      - name: Cache contract
+        run: |
+          python - <<'PY'
+          import pathlib
+          sw=pathlib.Path('sw.js').read_text(encoding='utf-8')
+          for token in ['v20260910-proguidancecontrast1','avp-learning-contrast-v1.css','avp-pro-access-guidance-v1.css','avp-pro-access-guidance-v1.js','professional-access.html']:
+              assert token in sw, token
+          print('Cache contract PASS')
+          PY
