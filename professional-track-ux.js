@@ -2,18 +2,26 @@
   'use strict';
   const $=id=>document.getElementById(id);
   const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  let syncQueued=false;
+
   function text(id){return String($(id)?.textContent||'').trim()}
+
   function setBreadcrumb(parts){
     const root=$('proBreadcrumb'); if(!root)return;
     const clean=(parts||[]).map(v=>String(v||'').trim()).filter(Boolean);
     const next=clean.map((part,i)=>`<span${i===clean.length-1?' class="current"':''}>${esc(part)}</span>`).join('<i aria-hidden="true">/</i>');
-    root.hidden=clean.length<=1;
+    const shouldHide=clean.length<=1;
+    // Keep DOM writes idempotent. Re-applying `hidden` to the same element while
+    // observing that attribute can create a MutationObserver feedback loop.
+    if(root.hidden!==shouldHide)root.hidden=shouldHide;
     if(root.innerHTML!==next)root.innerHTML=next;
   }
+
   function activeStage(){
     const el=[...document.querySelectorAll('[data-pro-stage]')].find(x=>!x.hidden);
     return el?.dataset?.proStage||'domains';
   }
+
   function syncBreadcrumb(){
     const stage=activeStage();
     if(stage==='domains'){setBreadcrumb(['Professional']);return}
@@ -29,6 +37,7 @@
       setBreadcrumb(['Professional',domain,module,level,caseLabel]);
     }else setBreadcrumb(['Professional',domain,module,level]);
   }
+
   function cleanFeedback(){
     const el=document.querySelector('.pro-case-submission-state'); if(!el)return;
     const before=el.innerHTML;
@@ -38,11 +47,21 @@
       .replace(/\[AUTO REVIEW\]\s*/g,'');
     if(after!==before)el.innerHTML=after;
   }
+
   function sync(){syncBreadcrumb();cleanFeedback()}
-  document.addEventListener('click',()=>setTimeout(sync,0));
+  function scheduleSync(){
+    if(syncQueued)return;
+    syncQueued=true;
+    queueMicrotask(()=>{
+      syncQueued=false;
+      sync();
+    });
+  }
+
+  document.addEventListener('click',()=>setTimeout(scheduleSync,0));
   document.addEventListener('DOMContentLoaded',()=>{
     sync();
     const root=$('ptProtectedContent')||document.body;
-    new MutationObserver(()=>sync()).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden']});
+    new MutationObserver(scheduleSync).observe(root,{subtree:true,childList:true,attributes:true,attributeFilter:['hidden']});
   });
 })();
