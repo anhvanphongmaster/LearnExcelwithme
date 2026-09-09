@@ -68,10 +68,12 @@ Deno.serve(async (req: Request) => {
 
   service.rpc("track_download_asset", { p_source_path: tool.source_path || path }).catch(() => {});
 
-  return json({
-    ok: true,
-    url: signed.signedUrl,
-    filename: `${safeTitle}.zip`,
-    expires_in: 60,
+  return new Response(null, {
+    status: 303,
+    headers: {
+      ...cors,
+      "Location": signed.signedUrl,
+      "Cache-Control": "private, no-store, max-age=0",
+    },
   });
 });
