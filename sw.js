@@ -1,18 +1,16 @@
-const CACHE = "learnexcel-assets-v20260909-semantic4";
+const CACHE = "learnexcel-assets-v20260909-readability2";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
   "./avp-core.css",
   "./avp-ui-system.css",
   "./avp-semantic-soft.css",
-  "./avp-semantic-hierarchy-v3.css",
   "./avp-readability-guard.css",
   "./theme-polish-v33.css",
   "./avp-ui-polish-v40.css",
   "./simple-nav.js",
   "./avp-core.js",
   "./avp-ui-system.js",
-  "./avp-semantic-hierarchy-v3.js",
   "./index.html",
   "./home-code-hub.css",
   "./home-code-hub.js"
