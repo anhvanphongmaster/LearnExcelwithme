@@ -46,19 +46,21 @@ jobs:
             return out;
           }
           const contracts=[
-            ['professional-access.html',['professional-access.js']],
-            ['professional-track.html',['professional-track-gate.js','professional-track-content.js','professional-track-ux.js']],
-            ['sales-handbook.html',['sales-handbook.js','professional-reader-gate.js']]
+            ['professional-access.html',['professional-access.js'],new Set(['ptProgramCard'])],
+            ['professional-track.html',['professional-track-gate.js','professional-track-content.js','professional-track-ux.js'],new Set()],
+            ['sales-handbook.html',['sales-handbook.js','professional-reader-gate.js'],new Set()]
           ];
           let fail=0;
-          for(const [htmlFile,jsFiles] of contracts){
+          for(const [htmlFile,jsFiles,optional] of contracts){
             const html=fs.readFileSync(htmlFile,'utf8'),known=ids(html);
             const refs=new Set(jsFiles.flatMap(f=>[...referenced(fs.readFileSync(f,'utf8'))]));
-            const missing=[...refs].filter(id=>!known.has(id));
-            console.log(`${htmlFile}: ids=${known.size}, refs=${refs.size}, missing=${missing.length}`);
+            const missing=[...refs].filter(id=>!known.has(id)&&!optional.has(id));
+            console.log(`${htmlFile}: ids=${known.size}, refs=${refs.size}, required-missing=${missing.length}`);
             if(missing.length){console.error(' missing:',missing.join(', '));fail++;}
           }
           if(fail)process.exit(2);
+          const access=fs.readFileSync('professional-access.js','utf8');
+          if(!access.includes('if($("ptProgramCard"))'))throw new Error('ptProgramCard exemption is no longer optional-guarded');
           console.log('DOM contract PASS');
           NODE
 
