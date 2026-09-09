@@ -1,0 +1,29 @@
+name: UI confirm prompt sites
+on:
+  push:
+    branches: [ui-consistency-system]
+    paths: ['.github/workflows/ui-dialog-sites.yml']
+permissions:
+  contents: write
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          out=[]
+          for p in sorted(Path('.').glob('*.js')):
+            s=p.read_text(encoding='utf-8')
+            for i,line in enumerate(s.splitlines(),1):
+              if re.search(r'(?<![\w.])confirm\s*\(',line) or re.search(r'(?<![\w.])prompt\s*\(',line):
+                out.append(f'{p}\t{i}\t{line.strip()}')
+          Path('.ui-confirm-prompt-sites.tsv').write_text('\n'.join(out),encoding='utf-8')
+          PY
+          git config user.name 'anhvanphongmaster'
+          git config user.email 'anhvanphongmaster@gmail.com'
+          git add .ui-confirm-prompt-sites.tsv
+          git commit -m 'UI staging: list native confirm prompt callsites'
+          git push
