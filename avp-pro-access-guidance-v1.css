@@ -1,0 +1,80 @@
+/* Professional Access learner guidance — scoped, no Admin/pro engine changes. */
+.pt-score-guidance{
+  margin-top:14px;
+  padding:16px;
+  border:1px solid #a9ceb8;
+  border-radius:16px;
+  background:linear-gradient(180deg,#fbfefc 0%,#f1f9f4 100%);
+  box-shadow:0 8px 22px rgba(24,85,50,.06);
+  color:#173f2a;
+}
+.pt-score-guidance-copy{min-width:0}
+.pt-score-guidance-kicker{
+  display:block;
+  margin-bottom:5px;
+  color:#217346;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:.08em;
+}
+.pt-score-guidance-copy>strong{
+  display:block;
+  color:#15432a;
+  font-size:16px;
+  line-height:1.4;
+}
+.pt-score-guidance-copy>p{
+  margin:7px 0 10px;
+  color:#43584b;
+  font-size:13px;
+  line-height:1.65;
+}
+.pt-score-gap-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+.pt-score-gap-list span{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  min-height:30px;
+  padding:5px 9px;
+  border:1px solid #d7e5dc;
+  border-radius:999px;
+  background:#fff;
+  color:#3d5145;
+  font-size:11px;
+  line-height:1.3;
+}
+.pt-score-gap-list b{color:#1c6540}
+.pt-score-guidance-cta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  width:100%;
+  box-sizing:border-box;
+  margin-top:13px;
+  padding:13px 15px;
+  border:1px solid #176a3d;
+  border-radius:12px;
+  background:#176a3d;
+  color:#fff!important;
+  text-decoration:none!important;
+  font-size:13px;
+  font-weight:900;
+  box-shadow:0 8px 18px rgba(23,106,61,.14);
+}
+.pt-score-guidance-cta:hover{background:#125b34;border-color:#125b34;transform:translateY(-1px)}
+.pt-score-guidance-cta span{font-size:18px;line-height:1}
+body.dark-mode .pt-score-guidance{background:#17271e;border-color:#355945;color:#e5f2e9}
+body.dark-mode .pt-score-guidance-copy>strong{color:#e7f5eb}
+body.dark-mode .pt-score-guidance-copy>p{color:#bdd0c3}
+body.dark-mode .pt-score-gap-list span{background:#1d3025;border-color:#365343;color:#c5d7cc}
+@media(max-width:640px){
+  .pt-score-guidance{padding:14px}
+  .pt-score-guidance-copy>strong{font-size:15px}
+  .pt-score-gap-list{display:grid;grid-template-columns:1fr}
+  .pt-score-gap-list span{border-radius:10px}
+}

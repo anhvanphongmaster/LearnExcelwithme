@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260910-homeknowledge24";
+const CACHE = "learnexcel-assets-v20260910-proguidancecontrast1";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -11,11 +11,14 @@ const ASSETS = [
   "./avp-ui-polish-v40.css",
   "./avp-global-controls-v1.css",
   "./avp-home-knowledge-v2.css",
+  "./avp-learning-contrast-v1.css",
+  "./avp-pro-access-guidance-v1.css",
   "./simple-nav.js",
   "./avp-core.js",
   "./avp-ui-system.js",
   "./avp-semantic-hierarchy-v3.js",
   "./avp-home-knowledge-v2.js",
+  "./avp-pro-access-guidance-v1.js",
   "./global-search.js",
   "./index.html",
   "./skill-map.html",
@@ -28,6 +31,7 @@ const ASSETS = [
   "./knowledge-data-skills.js",
   "./knowledge-data-analysis.js",
   "./knowledge-data-advanced.js",
+  "./professional-access.html",
   "./home-code-hub.css",
   "./home-code-hub.js"
 ];
