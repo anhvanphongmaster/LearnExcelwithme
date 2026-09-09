@@ -1,0 +1,90 @@
+name: Knowledge V2 staging
+
+on:
+  push:
+    branches:
+      - knowledge/v2-full-curriculum
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: JavaScript syntax
+        run: |
+          node --check knowledge-data-foundation.js
+          node --check knowledge-data-skills.js
+          node --check knowledge-data-analysis.js
+          node --check knowledge-data-advanced.js
+          node --check knowledge-v2.js
+          node --check skill-map.js
+          node --check global-search.js
+          node --check sw.js
+      - name: Curriculum contract
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const vm=require('vm');
+          const ctx={window:{},console};
+          vm.createContext(ctx);
+          for(const f of ['knowledge-data-foundation.js','knowledge-data-skills.js','knowledge-data-analysis.js','knowledge-data-advanced.js']){
+            vm.runInContext(fs.readFileSync(f,'utf8'),ctx,{filename:f});
+          }
+          const lessons=ctx.window.AVPKnowledgeLessons||[];
+          const zones=['foundation','skills','analysis','advanced'];
+          const assert=(ok,msg)=>{if(!ok)throw new Error(msg)};
+          assert(lessons.length===24,`Expected 24 lessons, got ${lessons.length}`);
+          assert(new Set(lessons.map(x=>x.id)).size===24,'Lesson IDs must be unique');
+          assert(new Set(lessons.map(x=>x.order)).size===24,'Lesson orders must be unique');
+          assert(Math.min(...lessons.map(x=>x.order))===1&&Math.max(...lessons.map(x=>x.order))===24,'Orders must span 1..24');
+          for(const zone of zones)assert(lessons.filter(x=>x.zone===zone).length===6,`${zone} must have 6 lessons`);
+          const ids=new Set(lessons.map(x=>x.id));
+          for(const lesson of lessons){
+            assert(lesson.title&&lesson.hook&&lesson.short,`${lesson.id}: missing title/hook/short`);
+            assert(Array.isArray(lesson.outcomes)&&lesson.outcomes.length>=3,`${lesson.id}: outcomes too thin`);
+            assert(Array.isArray(lesson.useCases)&&lesson.useCases.length>=3,`${lesson.id}: useCases too thin`);
+            assert(Array.isArray(lesson.sections)&&lesson.sections.length>=5,`${lesson.id}: need >=5 sections`);
+            for(const prereq of lesson.prerequisites||[])assert(ids.has(prereq),`${lesson.id}: missing prerequisite ${prereq}`);
+            for(const [si,section] of lesson.sections.entries()){
+              assert(section.title&&section.why,`${lesson.id}/${si}: section lacks title/why`);
+              assert(Array.isArray(section.body)&&section.body.length>=2,`${lesson.id}/${si}: body too thin`);
+              assert(Array.isArray(section.questions)&&section.questions.length>=2,`${lesson.id}/${si}: need >=2 questions`);
+              for(const [qi,q] of section.questions.entries()){
+                assert(q.q&&Array.isArray(q.options)&&q.options.length>=2,`${lesson.id}/${si}/${qi}: invalid question`);
+                assert(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length,`${lesson.id}/${si}/${qi}: invalid answer`);
+                assert(typeof q.explain==='string'&&q.explain.length>=20,`${lesson.id}/${si}/${qi}: explanation too thin`);
+              }
+            }
+          }
+          console.log(`PASS: ${lessons.length} lessons, ${lessons.reduce((n,l)=>n+l.sections.length,0)} sections, ${lessons.reduce((n,l)=>n+l.sections.reduce((m,s)=>m+s.questions.length,0),0)} questions`);
+          NODE
+      - name: UX and routing contract
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const assert=(ok,msg)=>{if(!ok)throw new Error(msg)};
+          const reader=fs.readFileSync('knowledge.html','utf8');
+          const mapHtml=fs.readFileSync('skill-map.html','utf8');
+          const mapJs=fs.readFileSync('skill-map.js','utf8');
+          const mapCss=fs.readFileSync('skill-map.css','utf8');
+          const search=fs.readFileSync('global-search.js','utf8');
+          const sw=fs.readFileSync('sw.js','utf8');
+          assert(!/course-engine\.js|learning-experience-v2\.js|data-lx-manual|Đánh dấu đã học|Đánh dấu đã đọc/i.test(reader),'New reader must not load legacy completion UX');
+          assert(!/XPKEY|QKEY|PKEY|unlocked\(|locked-zone|Chưa mở khóa|300 XP/.test(mapJs),'Skill map must not hard-lock or depend on XP');
+          assert(/grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/.test(mapCss),'Desktop map must use equal 2-column layout');
+          assert((mapHtml.match(/knowledge-data-/g)||[]).length===4,'Skill map must load 4 curriculum data files');
+          assert((reader.match(/knowledge-data-/g)||[]).length===4,'Reader must load 4 curriculum data files');
+          const searchIds=[...search.matchAll(/K\('([^']+)'/g)].map(m=>m[1]);
+          assert(searchIds.length===24,`Global search needs 24 knowledge entries, got ${searchIds.length}`);
+          assert(sw.includes('./knowledge.html')&&sw.includes('./knowledge-v2.js')&&sw.includes('./knowledge-data-advanced.js'),'Service worker missing Knowledge V2 assets');
+          console.log('PASS: UX/routing contract');
+          NODE
+      - name: Legacy audit evidence
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const legacy=fs.readFileSync('learning-experience-v2.js','utf8');
+          if(!legacy.includes('Đánh dấu đã học'))throw new Error('Legacy manual completion evidence not found; audit assumption changed');
+          console.log('PASS: legacy manual-completion mechanism confirmed and isolated from Knowledge V2');
+          NODE
