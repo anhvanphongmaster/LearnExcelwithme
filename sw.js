@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260909-semantic4";
+const CACHE = "learnexcel-assets-v20260909-knowledge2";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -13,7 +13,18 @@ const ASSETS = [
   "./avp-core.js",
   "./avp-ui-system.js",
   "./avp-semantic-hierarchy-v3.js",
+  "./global-search.js",
   "./index.html",
+  "./skill-map.html",
+  "./skill-map.css",
+  "./skill-map.js",
+  "./knowledge.html",
+  "./knowledge-v2.css",
+  "./knowledge-v2.js",
+  "./knowledge-data-foundation.js",
+  "./knowledge-data-skills.js",
+  "./knowledge-data-analysis.js",
+  "./knowledge-data-advanced.js",
   "./home-code-hub.css",
   "./home-code-hub.js"
 ];
