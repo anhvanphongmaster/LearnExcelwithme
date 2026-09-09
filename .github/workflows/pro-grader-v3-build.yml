@@ -1,0 +1,75 @@
+name: Build Professional Grader V3
+on:
+  push:
+    branches: [pro-grader-v3]
+    paths: ['.github/workflows/pro-grader-v3-build.yml']
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch V3
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('supabase/functions/professional-grader/index.ts')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace("const VERSION='AVP_PRO_GRADER_V2';","const VERSION='AVP_PRO_GRADER_V3';")
+          s=s.replace('[AUTO PRO V2]','[AUTO PRO V3]')
+          marker="function grade(candidate:XLSX.WorkBook,reference:XLSX.WorkBook,rubric:Rubric,mode:TestMode='normal'){"
+          helper="""function assertReferenceReady(reference:XLSX.WorkBook,rubric:Rubric){\n  for(const rule of rubric.rules||[]){\n    if(rule.type!=='formula_range')continue;\n    const sheet=String(rule.sheet||''),ws=reference.Sheets[sheet];\n    if(!ws||!rule.range)throw new Error(`reference_rule_invalid:${String(rule.label||rule.type)}`);\n    for(const {address,cell} of rangeCells(ws,rule.range)){\n      if(!formula(cell?.f))throw new Error(`reference_formula_missing:${sheet}!${address}`);\n    }\n  }\n}\n"""
+          if helper.strip() not in s:
+            if marker not in s: raise SystemExit('grade marker missing')
+            s=s.replace(marker,helper+marker,1)
+          old="const ref=await workbook(blob),rubric=rubricOf(ref,key);\n      const p=grade(ref,ref,rubric,'simulate-pass')"
+          new="const ref=await workbook(blob),rubric=rubricOf(ref,key);\n      assertReferenceReady(ref,rubric);\n      const p=grade(ref,ref,rubric,'simulate-pass')"
+          if old not in s: raise SystemExit('validate reference marker missing')
+          s=s.replace(old,new,1)
+          old="if(validation?.status!=='validated'||String(validation?.reference_updated_at||'')!==stamp)return await markReview('grader_validation_stale');"
+          new="if(validation?.status!=='validated'||validation?.version!==VERSION||String(validation?.reference_updated_at||'')!==stamp)return await markReview('grader_validation_stale');"
+          if old not in s: raise SystemExit('runtime validation marker missing')
+          s=s.replace(old,new,1)
+          old="const [cand,ref]=await Promise.all([workbook(cb),workbook(rb)]),rubric=rubricOf(ref,activeKey),r=grade(cand,ref,rubric,'normal'),f=feedback(r);"
+          new="const [cand,ref]=await Promise.all([workbook(cb),workbook(rb)]);\n    const rubric=rubricOf(ref,activeKey);assertReferenceReady(ref,rubric);\n    const r=grade(cand,ref,rubric,'normal'),f=feedback(r);"
+          if old not in s: raise SystemExit('normal grading marker missing')
+          s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+
+          p=Path('admin-professional-track.js'); s=p.read_text(encoding='utf-8')
+          old='currentGraderValidated=!!reference&&validation?.status==="validated"&&refTime>0&&valRefTime===refTime&&Number(tests.pass)===10&&Number(tests.hardcode)<7&&Number(tests.wrong_formula)<7;'
+          new='currentGraderValidated=!!reference&&validation?.status==="validated"&&validation?.version==="AVP_PRO_GRADER_V3"&&refTime>0&&valRefTime===refTime&&Number(tests.pass)===10&&Number(tests.hardcode)<7&&Number(tests.wrong_formula)<7;'
+          if old not in s: raise SystemExit('admin validation marker missing')
+          s=s.replace(old,new,1).replace('version:"AVP_PRO_GRADER_V2"','version:"AVP_PRO_GRADER_V3"')
+          p.write_text(s,encoding='utf-8')
+
+          p=Path('admin.html'); s=p.read_text(encoding='utf-8')
+          if 'admin-professional-track.js?v=20260909-pro-system1' not in s: raise SystemExit('admin cache marker missing')
+          s=s.replace('admin-professional-track.js?v=20260909-pro-system1','admin-professional-track.js?v=20260909-pro-system2')
+          p.write_text(s,encoding='utf-8')
+
+          p=Path('sw.js'); s=p.read_text(encoding='utf-8')
+          if 'learnexcel-assets-v20260909-prosystem1' not in s: raise SystemExit('sw cache marker missing')
+          s=s.replace('learnexcel-assets-v20260909-prosystem1','learnexcel-assets-v20260909-prosystem2')
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Static checks
+        run: |
+          node --check admin-professional-track.js
+          grep -q "AVP_PRO_GRADER_V3" supabase/functions/professional-grader/index.ts
+          grep -q "reference_formula_missing" supabase/functions/professional-grader/index.ts
+          grep -q "validation?.version!==VERSION" supabase/functions/professional-grader/index.ts
+          grep -q "AVP_PRO_GRADER_V3" admin-professional-track.js
+          grep -q "admin-professional-track.js?v=20260909-pro-system2" admin.html
+          node --check sw.js
+      - name: Build compact deploy artifact
+        run: |
+          npx --yes esbuild@0.25.9 supabase/functions/professional-grader/index.ts --format=esm --platform=neutral --minify --external:npm:* --outfile=.professional-grader-v3.deploy.ts
+      - name: Commit V3 source
+        run: |
+          git config user.name 'anhvanphongmaster'
+          git config user.email 'anhvanphongmaster@gmail.com'
+          git add supabase/functions/professional-grader/index.ts admin-professional-track.js admin.html sw.js .professional-grader-v3.deploy.ts
+          git commit -m 'Pro: harden grader formula reference validation V3'
+          git push
