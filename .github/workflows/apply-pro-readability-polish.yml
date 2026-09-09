@@ -1,0 +1,74 @@
+name: Apply Pro Readability Polish
+
+on:
+  push:
+    branches: [fix-inpage-nav-readability]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: ${{ !contains(github.event.head_commit.message, '[pro-readable]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix-inpage-nav-readability
+      - name: Keep all Professional Track text legible
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p=Path('professional-roll.js'); s=p.read_text(encoding='utf-8')
+          old='card.style.opacity=String(Math.max(.55,1-a*.16));'
+          new='card.style.opacity=String(Math.max(.90,1-a*.035));'
+          if old not in s: raise SystemExit('Missing interim Pro opacity formula')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+
+          p=Path('professional-hub.css'); s=p.read_text(encoding='utf-8')
+          marker='/* Professional Track readability hardening V3 */'
+          if marker in s: raise SystemExit('Readability block already exists')
+          block=r'''
+
+/* Professional Track readability hardening V3 */
+.pro-flow-path{position:static!important;top:auto!important;z-index:auto!important;box-shadow:none!important}
+.pro-flow-path span:not(.active):not(.done){color:#5f7067!important}
+.pro-roll-head small,
+.pro-card p,
+.pro-training-detail p,
+.pro-phase-note,
+.pro-module-progress-grid article>div span,
+.pro-module-progress-grid article>p,
+.pro-module-progress-empty{color:#5f7067!important}
+.pro-card p{font-size:12.5px;line-height:1.62}
+.pro-card>span{color:#315f46!important;font-size:10.5px}
+.pro-roll-head small{font-size:11.5px}
+.pro-breadcrumb{
+  position:static!important;top:auto!important;z-index:auto!important;width:auto!important;
+  margin:12px 2px 0!important;padding:8px 10px!important;justify-content:flex-start!important;
+  background:#f5f7f6!important;border:1px solid #dfe5e1!important;border-radius:10px!important;
+  box-shadow:none!important;color:#5f7067!important
+}
+.pro-breadcrumb span{color:#5f7067!important;opacity:1!important}
+.pro-breadcrumb span.current{color:#315f46!important}
+.pro-breadcrumb i{color:#7a8981!important;opacity:1!important}
+body.dark-mode .pro-breadcrumb{background:#202725!important;border-color:#3b4540!important;color:#d0dbd4!important}
+body.dark-mode .pro-breadcrumb span{color:#d0dbd4!important}
+body.dark-mode .pro-breadcrumb span.current{color:#a9dfbd!important}
+body.dark-mode .pro-breadcrumb i{color:#94a39a!important}
+'''
+          p.write_text(s+block,encoding='utf-8')
+
+          p=Path('professional-track.html'); s=p.read_text(encoding='utf-8')
+          old='professional-hub.css?v=20260909-pro-system1'
+          new='professional-hub.css?v=20260909-pro-system2'
+          if old not in s: raise SystemExit('Missing Professional Hub cache key')
+          p.write_text(s.replace(old,new,1),encoding='utf-8')
+          PY
+          git config user.name 'anhvanphong'
+          git config user.email 'anhvanphongmaster@gmail.com'
+          git add professional-roll.js professional-hub.css professional-track.html
+          git diff --cached --check
+          git commit -m 'fix: harden Professional Track text readability [pro-readable]'
+          git push origin HEAD:fix-inpage-nav-readability
