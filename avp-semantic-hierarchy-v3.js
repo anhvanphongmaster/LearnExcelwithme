@@ -27,7 +27,7 @@
     if(d.querySelector('link[data-avp-semantic-hierarchy]'))return;
     const link=d.createElement('link');
     link.rel='stylesheet';
-    link.href='avp-semantic-hierarchy-v3.css?v=20260909-sem3';
+    link.href='avp-semantic-hierarchy-v3.css?v=20260909-sem4';
     link.dataset.avpSemanticHierarchy='3';
     (d.head||d.documentElement).appendChild(link);
   }
