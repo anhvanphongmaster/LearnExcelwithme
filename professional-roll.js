@@ -28,7 +28,7 @@
         const d=i-current,a=Math.abs(d),x=d*st,y=Math.min(a,3.5)*11,z=-Math.min(a,4)*120;
         const s=Math.max(.64,1-a*.14),r=clamp(-d*10,-27,27);
         card.style.transform=`translate3d(calc(-50% + ${x}px),${y}px,${z}px) rotateY(${r}deg) scale(${s})`;
-        card.style.opacity=String(Math.max(.12,1-a*.23));
+        card.style.opacity=String(Math.max(.55,1-a*.16));
         card.style.zIndex=String(Math.round(100-a*10));
         card.style.pointerEvents=a<.72?"auto":"none";
       });
