@@ -263,7 +263,104 @@
     }finally{button.disabled=false;button.textContent="Lưu Case"}
   }
 
+  // Pro content coverage V1 — purely client-side, no extra Supabase queries.
+  function graderMetadataReady(row){
+    const validation=row?.grader_validation&&typeof row.grader_validation==="object"?row.grader_validation:null;
+    const tests=validation?.tests||{};
+    return validation?.status==="validated"
+      &&validation?.version==="AVP_PRO_GRADER_V3"
+      &&Number(tests.pass)===10
+      &&Number(tests.hardcode)<7
+      &&Number(tests.wrong_formula)<7;
+  }
+
+  function caseDraftReady(row){
+    return Boolean(privatePath(row?.source_url))
+      &&Boolean(privatePath(row?.guide_url))
+      &&(row?.submission_enabled===false||graderMetadataReady(row));
+  }
+
+  function allCaseSlots(){
+    const slots=[];
+    Object.entries(DOMAIN_MODULES).forEach(([domainKey,domain])=>{
+      domain.modules.forEach((moduleTitle,moduleOffset)=>{
+        LEVELS.forEach(level=>{
+          [1,2,3].forEach(caseIndex=>slots.push({
+            key:`${domainKey}-${moduleOffset+1}-${level.id}-${caseIndex}`,
+            domainKey,
+            domainTitle:domain.title,
+            moduleIndex:moduleOffset+1,
+            moduleTitle,
+            levelId:level.id,
+            levelTitle:level.title,
+            caseIndex
+          }));
+        });
+      });
+    });
+    return slots;
+  }
+
+  function prepareEmptySlot(domainKey,moduleIndex,levelId,caseIndex){
+    resetCaseForm();
+    if(!DOMAIN_MODULES[domainKey])return;
+    $("aptCaseDomain").value=domainKey;
+    fillModuleOptions(String(moduleIndex));
+    $("aptCaseModule").value=String(moduleIndex);
+    $("aptCaseLevel").value=levelId;
+    $("aptCaseIndex").value=String(caseIndex);
+    $("aptCasePublished").checked=false;
+    const key=selectedCaseKey();
+    clearReferenceState(`Ô ${key} đang trống. Hãy nhập brief thật và upload Student / Guide / Reference; hệ thống không tự sinh nội dung.`);
+    $("aptCaseForm").scrollIntoView({behavior:"smooth",block:"start"});
+    $("aptCaseTitle").focus();
+  }
+
+  function ensureCoveragePanel(){
+    let panel=$("aptCoverage");
+    if(panel)return panel;
+    const filters=$("aptCatalogSearch")?.closest(".apt-catalog-filters");
+    if(!filters)return null;
+    filters.insertAdjacentHTML("beforebegin",`<section class="apt-coverage" id="aptCoverage">
+      <div class="apt-coverage-head"><div><span>CONTENT COVERAGE</span><h3>Tiến độ xây thư viện Case Pro</h3></div><small>480 ô chuẩn = 8 lĩnh vực × 5 nội dung × 4 Level × 3 Case. Chỉ theo dõi trạng thái; không tạo Case hoặc file giả.</small></div>
+      <div class="apt-coverage-kpis" id="aptCoverageKpis"></div>
+      <div class="apt-coverage-domains" id="aptCoverageDomains"></div>
+      <div class="apt-coverage-next"><div><span>Ô trống tiếp theo</span><small>Dùng bộ lọc lĩnh vực / Level bên dưới để thu hẹp danh sách.</small></div><div class="apt-empty-slots" id="aptCoverageNext"></div></div>
+    </section>`);
+    panel=$("aptCoverage");
+    panel?.addEventListener("click",event=>{
+      const button=event.target.closest("[data-pro-empty-slot]");
+      if(!button)return;
+      prepareEmptySlot(button.dataset.slotDomain,Number(button.dataset.slotModule),button.dataset.slotLevel,Number(button.dataset.slotCase));
+    });
+    return panel;
+  }
+
+  function renderCoverage(){
+    const panel=ensureCoveragePanel();if(!panel)return;
+    const slots=allCaseSlots(),rowMap=new Map(catalogData.map(row=>[String(row.case_key),row]));
+    const configured=catalogData.length;
+    const published=catalogData.filter(row=>row.published===true).length;
+    const readyDraft=catalogData.filter(row=>row.published!==true&&caseDraftReady(row)).length;
+    const incomplete=catalogData.filter(row=>row.published!==true&&!caseDraftReady(row)).length;
+    const empty=Math.max(0,slots.length-configured);
+    $("aptCoverageKpis").innerHTML=`<article><span>Tổng ô chuẩn</span><strong>${slots.length}</strong><small>Cấu trúc cố định</small></article><article><span>Đã tạo</span><strong>${configured}</strong><small>${empty} ô còn trống</small></article><article><span>Draft đủ cấu hình</span><strong>${readyDraft}</strong><small>Student + Guide + Grader metadata</small></article><article><span>Đã phát hành</span><strong>${published}</strong><small>${incomplete} Draft còn thiếu cấu hình</small></article>`;
+
+    $("aptCoverageDomains").innerHTML=Object.entries(DOMAIN_MODULES).map(([domainKey,domain])=>{
+      const rows=catalogData.filter(row=>row.domain_key===domainKey);
+      const live=rows.filter(row=>row.published===true).length;
+      const ready=rows.filter(row=>row.published!==true&&caseDraftReady(row)).length;
+      return `<article><span>${esc(domain.title)}</span><strong>${rows.length}/60</strong><small>${live} published · ${ready} draft đủ cấu hình</small></article>`;
+    }).join("");
+
+    const domainFilter=$("aptCatalogDomainFilter")?.value||"";
+    const levelFilter=$("aptCatalogLevelFilter")?.value||"";
+    const missing=slots.filter(slot=>!rowMap.has(slot.key)&&(!domainFilter||slot.domainKey===domainFilter)&&(!levelFilter||slot.levelId===levelFilter)).slice(0,6);
+    $("aptCoverageNext").innerHTML=missing.length?missing.map(slot=>`<button type="button" data-pro-empty-slot data-slot-domain="${esc(slot.domainKey)}" data-slot-module="${slot.moduleIndex}" data-slot-level="${esc(slot.levelId)}" data-slot-case="${slot.caseIndex}"><span>${esc(slot.domainTitle)} · Nội dung ${slot.moduleIndex}</span><strong>${esc(slot.levelTitle)} · Case ${String(slot.caseIndex).padStart(2,"0")}</strong><small>${esc(slot.moduleTitle)}</small></button>`).join(""):'<p>Không còn ô trống trong phạm vi bộ lọc hiện tại.</p>';
+  }
+
   function renderCatalog(){
+    renderCoverage();
     const box=$("aptCatalogList"),search=String($("aptCatalogSearch")?.value||"").trim().toLowerCase(),domain=$("aptCatalogDomainFilter")?.value||"",level=$("aptCatalogLevelFilter")?.value||"",publish=$("aptCatalogPublishFilter")?.value||"";
     const rows=catalogData.filter(row=>(!search||`${row.title} ${row.goal} ${row.case_key}`.toLowerCase().includes(search))&&(!domain||row.domain_key===domain)&&(!level||row.level_id===level)&&(!publish||(publish==="published")===Boolean(row.published)));
     $("aptCatalogCount").textContent=`${rows.length}/${catalogData.length} Case`;
