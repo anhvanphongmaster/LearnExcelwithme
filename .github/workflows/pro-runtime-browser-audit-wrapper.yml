@@ -42,7 +42,12 @@ jobs:
               return '\n'.join(out)+'\n'
 
           Path('/tmp/pro-prepare.sh').write_text(extract('Prepare isolated learner runtime harness'),encoding='utf-8')
-          Path('/tmp/pro-browser.sh').write_text(extract('Run current-source browser automation'),encoding='utf-8')
+          browser=extract('Run current-source browser automation')
+          # Roll cards are intentionally animated. Playwright's default click waits for
+          # visual stability, which never arrives while the roller is moving. Force the
+          # click event in the temporary harness only; production source is unchanged.
+          browser=browser.replace('.click();','.click({force:true});')
+          Path('/tmp/pro-browser.sh').write_text(browser,encoding='utf-8')
           PY
 
           bash /tmp/pro-prepare.sh
