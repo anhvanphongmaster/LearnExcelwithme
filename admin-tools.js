@@ -139,6 +139,14 @@ function loadCore(){
   script.src=CORE_SRC;
   script.async=false;
   script.dataset.avpAdminToolsCore='1';
+  script.onload=()=>{
+    window.__avpAdminToolsCoreReady=true;
+    const toolTab=document.querySelector('.admin-view-tabs [data-admin-view="tools"]');
+    const panel=document.getElementById('adminToolsPanel');
+    if(toolTab?.classList.contains('active') && panel && !panel.classList.contains('admin-view-hidden')){
+      window.dispatchEvent(new CustomEvent('avp:admin-tools-open'));
+    }
+  };
   script.onerror=()=>{
     window.__avpAdminToolsCoreLoading=false;
     const notice=document.getElementById('atNotice');
