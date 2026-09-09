@@ -29,7 +29,7 @@ jobs:
           const ui=fs.readFileSync('avp-ui-system.js','utf8');
           const sw=fs.readFileSync('sw.js','utf8');
           const must=[
-            [js,'avp-semantic-fail'],[js,'ratio>=0.7'],[js,'avp-nav-back-root'],[js,'avp-nav-back-step'],
+            [js,'avp-semantic-fail'],[js,'ratio<0.7'],[js,'max>=10'],[js,'avp-nav-back-root'],[js,'avp-nav-back-step'],
             [css,'.avp-semantic-fail'],[css,'.avp-semantic-warning'],[css,'.avp-nav-back-root'],[css,'.avp-nav-back-step'],
             [ui,'avp-semantic-hierarchy-v3.js?v=20260909-sem3'],
             [sw,'avp-semantic-hierarchy-v3.js'],[sw,'avp-semantic-hierarchy-v3.css']
@@ -43,7 +43,6 @@ jobs:
         run: |
           node <<'NODE'
           const fs=require('fs');
-          const path=require('path');
           const pages=fs.readdirSync('.').filter(f=>f.endsWith('.html'));
           const relevant=[];
           const missing=[];
