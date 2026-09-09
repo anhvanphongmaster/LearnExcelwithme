@@ -1,0 +1,73 @@
+name: Apply AVP UI consistency V3
+on:
+  push:
+    branches: [ui-consistency-system]
+    paths: ['.github/workflows/ui-consistency-apply-v3.yml']
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reuse audited codemod
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          src=Path('.github/workflows/ui-consistency-apply.yml').read_text(encoding='utf-8').splitlines()
+          start=next(i for i,x in enumerate(src) if x.strip()=="python - <<'PY'")+1
+          end=next(i for i in range(start,len(src)) if src[i].strip()=='PY')
+          code=[line[10:] if line.startswith('          ') else line for line in src[start:end]]
+          Path('/tmp/apply_avp_ui.py').write_text('\n'.join(code)+'\n',encoding='utf-8')
+          PY
+          python /tmp/apply_avp_ui.py
+      - name: Fix async legacy handlers
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          fixes={
+            'admin.js':[("$(\"adminMaintenanceOff\")?.addEventListener(\"click\",()=>{","$(\"adminMaintenanceOff\")?.addEventListener(\"click\",async()=>{")],
+            'focus-room.js':[("$(\"frClearHistory\").onclick=()=>{","$(\"frClearHistory\").onclick=async()=>{")]
+          }
+          for name,pairs in fixes.items():
+            p=Path(name);s=p.read_text(encoding='utf-8')
+            for old,new in pairs:
+              if old in s:s=s.replace(old,new,1)
+              elif new not in s:raise SystemExit(f'handler marker missing: {name}')
+            p.write_text(s,encoding='utf-8')
+          PY
+      - name: Static and consistency checks
+        run: |
+          set -e
+          for f in *.js; do node --check "$f" >/dev/null; done
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html=list(Path('.').glob('*.html'))
+          missing=[p.name for p in html if 'avp-ui-system.css' not in p.read_text(encoding='utf-8') or 'avp-ui-system.js' not in p.read_text(encoding='utf-8')]
+          if missing: raise SystemExit('UI loader missing: '+', '.join(missing))
+          native=[];rx=re.compile(r'(?<![\w.])(confirm|prompt)\s*\(')
+          for p in Path('.').glob('*.js'):
+            for i,line in enumerate(p.read_text(encoding='utf-8').splitlines(),1):
+              if rx.search(line): native.append(f'{p}:{i}:{line.strip()}')
+          if native: raise SystemExit('Native blocking dialogs remain:\n'+'\n'.join(native))
+          css=Path('avp-ui-system.css').read_text(encoding='utf-8')
+          for marker in ['input[type="file"]::file-selector-button','.apt-grader-upload>span','dialog::backdrop']:
+            if marker not in css: raise SystemExit('CSS marker missing '+marker)
+          broken=[]
+          for p in html:
+            s=p.read_text(encoding='utf-8')
+            for _,val in re.findall(r'\b(href|src)=["\']([^"\']+)["\']',s,re.I):
+              v=val.split('?',1)[0].split('#',1)[0]
+              if not v or v.startswith(('http:','https:','mailto:','tel:','data:','blob:','javascript:','//')): continue
+              if not (p.parent/v).resolve().exists(): broken.append(f'{p.name}: {val}')
+          if broken: raise SystemExit('Broken local refs:\n'+'\n'.join(broken[:50]))
+          print(f'PASS: {len(html)} HTML; JS syntax; 0 native confirm/prompt; local refs valid')
+          PY
+      - name: Commit website patch only
+        run: |
+          git config user.name 'anhvanphongmaster'
+          git config user.email 'anhvanphongmaster@gmail.com'
+          git add -- *.html *.js *.css sw.js
+          git commit -m 'UI: unify dialogs and file controls across site'
+          git push
