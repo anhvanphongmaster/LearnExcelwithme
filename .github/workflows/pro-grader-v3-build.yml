@@ -65,7 +65,7 @@ jobs:
           node --check sw.js
       - name: Build compact deploy artifact
         run: |
-          npx --yes esbuild@0.25.9 supabase/functions/professional-grader/index.ts --format=esm --platform=neutral --minify --external:npm:* --outfile=.professional-grader-v3.deploy.ts
+          npx --yes esbuild@0.25.9 supabase/functions/professional-grader/index.ts --bundle --format=esm --platform=neutral --minify --external:npm:* --outfile=.professional-grader-v3.deploy.ts
       - name: Commit V3 source
         run: |
           git config user.name 'anhvanphongmaster'
