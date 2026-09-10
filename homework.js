@@ -1,7 +1,6 @@
 (()=>{
   'use strict';
   const $=id=>document.getElementById(id);
-  const STORAGE_KEY='avp_homework_progress_v1';
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const safeUrl=v=>{
     const s=String(v||'').trim();
@@ -9,135 +8,120 @@
     if(/^https?:\/\/[^\s<>"']+$/i.test(s))return s;
     return /^\.?\/?[\wÀ-ỹ()[\] ._%-]+(?:\/[\wÀ-ỹ()[\] ._?&=%#-]+)*$/i.test(s)?s:'';
   };
-  const arr=v=>Array.isArray(v)?v:(typeof v==='string'?(()=>{try{const x=JSON.parse(v);return Array.isArray(x)?x:[]}catch{return[]}})():[]);
-  let items=[];
+  let rows=[];
 
   async function waitClient(){
-    for(let i=0;i<50;i++){
+    for(let i=0;i<60;i++){
       const c=window.avpSupabase||window.supabaseClient||window._supabaseClient;
       if(c?.rpc)return c;
       await new Promise(r=>setTimeout(r,100));
     }
     return null;
   }
-  function readProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}catch{return{}}}
-  function getProgress(key){return readProgress()[key]||'not_started'}
-  function setProgress(key,status){const data=readProgress();data[key]=status;localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}
-  const statusLabel=s=>s==='done'?'Đã làm':s==='in_progress'?'Đang làm':'Chưa làm';
-
-  function normalizeHomework(project,part){
-    const hw=part?.homework;
-    if(!hw||hw.enabled!==true||hw.status!=='published')return null;
-    const partNo=Number(part.part_number||0)||1;
-    const key=`${project.slug||project.id}-p${partNo}`;
-    return {
-      key,projectId:project.id,projectSlug:project.slug||'',projectNumber:Number(project.project_number||0),projectTitle:project.title||'YouTube Project',
-      partNo,partTitle:part.title||`Phần ${partNo}`,videoUrl:safeUrl(part.video_url),
-      title:String(hw.title||part.title||`Bài tập P${partNo}`).trim(),topic:String(hw.topic||project.title||'Excel').trim(),duration:Math.max(5,Math.min(60,Number(hw.duration_min||10))),
-      context:String(hw.context||'').trim(),fileUrl:safeUrl(hw.file_url),tasks:arr(hw.tasks).map(x=>String(x||'').trim()).filter(Boolean),trap:String(hw.trap||'').trim(),
-      hint1:String(hw.hint1||'').trim(),hint2:String(hw.hint2||'').trim(),solutionUrl:safeUrl(hw.solution_video_url),nextUrl:safeUrl(hw.next_url),
-      nextLabel:String(hw.next_label||'Học tiếp').trim(),sortOrder:Number(hw.sort_order??part.sort_order??partNo)
-    };
+  function groupRows(){
+    const map=new Map();
+    rows.forEach(row=>{
+      const topic=String(row.topic||'Khác').trim()||'Khác';
+      if(!map.has(topic))map.set(topic,[]);
+      map.get(topic).push(row);
+    });
+    return [...map.entries()].map(([topic,items])=>({
+      topic,
+      items:items.sort((a,b)=>Number(a.order_no||0)-Number(b.order_no||0)),
+      solved:items.filter(x=>safeUrl(x.solution_video_url)).length
+    })).sort((a,b)=>a.topic.localeCompare(b.topic,'vi'));
   }
-
-  function flatten(projects){
-    return (projects||[]).flatMap(project=>arr(project.parts)
-      .filter(part=>part&&part.is_active!==false&&part.status!=='draft'&&part.status!=='archived')
-      .map(part=>normalizeHomework(project,part)).filter(Boolean));
+  function topicCard(group,index){
+    return `<button type="button" class="hw-topic-card tone-${index%5+1}" data-hw-topic="${esc(group.topic)}">
+      <span class="hw-topic-no">CHỦ ĐỀ ${String(index+1).padStart(2,'0')}</span>
+      <strong>${esc(group.topic)}</strong>
+      <p>${group.items.length} bài tập / ${group.solved} video giải bài</p>
+      <b>Mở chủ đề →</b>
+    </button>`;
   }
-
-  function populateTopics(){
-    const select=$('hwTopic');if(!select)return;
-    const topics=[...new Set(items.map(x=>x.topic).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'vi'));
-    select.innerHTML='<option value="all">Tất cả chủ đề</option>'+topics.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
+  function renderTopics(){
+    const host=$('hwTopicList');if(!host)return;
+    const groups=groupRows();
+    if(!groups.length){
+      host.innerHTML='<div class="hw-empty"><strong>Chưa có Homework được phát hành</strong><p>Khi Admin phát hành bài đầu tiên, chủ đề sẽ xuất hiện tại đây.</p></div>';
+      return;
+    }
+    host.innerHTML=groups.map(topicCard).join('');
   }
-
   function action(url,label,cls,{download=false}={}){
-    if(!url)return `<span class="hw-card-action ${cls} is-disabled" aria-disabled="true">${esc(label)}</span>`;
-    return `<a class="hw-card-action ${cls}" href="${esc(url)}" ${download?'download':'target="_blank" rel="noopener"'}>${esc(label)}</a>`;
+    const valid=safeUrl(url);
+    if(!valid)return `<span class="hw-action ${cls} is-disabled" aria-disabled="true">${esc(label)}</span>`;
+    return `<a class="hw-action ${cls}" href="${esc(valid)}" ${download?'download':'target="_blank" rel="noopener"'}>${esc(label)}</a>`;
   }
-
-  function card(item){
-    const progress=getProgress(item.key);
-    const solutionOrNext=item.solutionUrl||item.nextUrl;
-    return `<article class="hw-card" data-hw-key="${esc(item.key)}">
-      <div class="hw-card-top"><span class="hw-topic">${esc(item.topic)}</span><span class="hw-status ${progress}">${statusLabel(progress)}</span></div>
-      <h2><button type="button" class="hw-card-title" data-hw-open="${esc(item.key)}">${esc(item.title)}</button></h2>
-      <p>${esc(item.projectTitle)} · P${item.partNo} · ${esc(item.partTitle)}</p>
-      <div class="hw-card-meta"><span>⏱ ${item.duration} phút</span><span>${solutionOrNext?'✓ Đã có video chữa':'○ Video chữa: chưa có'}</span></div>
-      <button type="button" class="hw-card-detail" data-hw-open="${esc(item.key)}">Nhiệm vụ & Hint →</button>
-      <div class="hw-card-actions" aria-label="Tài nguyên bài tập">
-        ${action(item.videoUrl,'▶ Xem video','is-video')}
-        ${action(item.fileUrl,'⬇ Tải bài','is-download',{download:true})}
-        ${action(solutionOrNext,'▶ Chữa bài & video tiếp theo','is-solution')}
+  function lessonCard(item){
+    const n=String(Number(item.order_no||0)).padStart(2,'0');
+    return `<article class="hw-card" data-practice-roll-card data-homework-id="${esc(item.id)}">
+      <div class="hw-card-head"><span>BÀI ${n}</span><em>${safeUrl(item.solution_video_url)?'Đã có video giải':'Chưa có video giải'}</em></div>
+      <h3>${esc(item.title)}</h3>
+      <div class="hw-card-actions">
+        ${action(item.guide_video_url,'▶ Video hướng dẫn','is-guide')}
+        ${action(item.file_url,'⬇ Tải file bài tập','is-file',{download:true})}
+        ${action(item.solution_video_url,'▶ Video giải bài tập','is-solution')}
+      </div>
+      <div class="hw-card-hints">
+        <button type="button" data-hint="1" data-homework-id="${esc(item.id)}">Hint 1</button>
+        <button type="button" data-hint="2" data-homework-id="${esc(item.id)}">Hint 2</button>
       </div>
     </article>`;
   }
-
-  function renderLibrary(){
-    const host=$('hwLibrary');if(!host)return;
-    const topic=$('hwTopic')?.value||'all',progress=$('hwProgress')?.value||'all',sort=$('hwSort')?.value||'newest';
-    let list=items.filter(x=>(topic==='all'||x.topic===topic)&&(progress==='all'||getProgress(x.key)===progress));
-    list.sort((a,b)=>{
-      const av=a.projectNumber*1000+a.sortOrder,bv=b.projectNumber*1000+b.sortOrder;
-      return sort==='oldest'?av-bv:bv-av;
-    });
-    if(!items.length){
-      host.innerHTML='<div class="hw-empty"><strong>Chưa có bài tập về nhà được phát hành</strong><p>Homework chỉ xuất hiện ở những video thật sự cần luyện thêm phần khó/dễ sai — không ép mọi video đều phải có bài.</p></div>';
-      return;
-    }
-    host.innerHTML=list.length?list.map(card).join(''):'<div class="hw-empty"><strong>Không có bài phù hợp bộ lọc</strong><p>Đổi Chủ đề hoặc Trạng thái để xem các bài khác.</p></div>';
+  function openTopic(topic){
+    const group=groupRows().find(x=>x.topic===topic);if(!group)return;
+    $('hwTopicView').hidden=true;$('hwLessonView').hidden=false;
+    $('hwTopicKicker').textContent='HOMEWORK · '+topic.toUpperCase();
+    $('hwTopicTitle').textContent=topic;
+    $('hwTopicCount').textContent=`${group.items.length} bài tập · ${group.solved} video giải bài`;
+    const stage=$('hwLessonStage');
+    stage.innerHTML=group.items.map(lessonCard).join('');
+    const roll=$('hwLessonRoll');
+    delete roll.dataset.rollReady;
+    roll._avpPracticeRoll=null;
+    requestAnimationFrame(()=>window.AVPPracticeRoll?.init(roll));
+    history.replaceState(null,'',`homework.html?topic=${encodeURIComponent(topic)}`);
+    window.scrollTo({top:0,behavior:'smooth'});
   }
-
-  function openDetail(key,{push=true}={}){
-    const item=items.find(x=>x.key===key);if(!item)return;
-    if(getProgress(key)==='not_started')setProgress(key,'in_progress');
-    const solutionOrNext=item.solutionUrl||item.nextUrl;
-    const detail=$('hwDetail'),library=$('hwLibrary'),toolbar=document.querySelector('.hw-toolbar');if(!detail||!library)return;
-    detail.innerHTML=`
-      <button class="hw-detail-back" type="button" data-hw-back>← Quay lại Kho Homework</button>
-      <header class="hw-detail-head"><span class="eyebrow">HOMEWORK · ${esc(item.topic)}</span><h1>${esc(item.title)}</h1><p>${esc(item.context||`Bài tập ngắn nối từ ${item.projectTitle} · P${item.partNo}. Tập trung làm đúng phần khó trước khi xem lời giải.`)}</p><div class="hw-detail-meta"><span>⏱ ${item.duration} phút</span><span>${esc(item.projectTitle)}</span><span>P${item.partNo}</span></div></header>
-      <section class="hw-block hw-source"><h2>1 · Video ra bài</h2><p>Đây là video hướng dẫn gốc; phần cuối video đưa ra bài tập về nhà này.</p>${item.videoUrl?`<a href="${esc(item.videoUrl)}" target="_blank" rel="noopener">▶ Xem video</a>`:'<p><strong>Video gốc chưa được gắn link.</strong></p>'}</section>
-      <section class="hw-block hw-file"><h2>2 · File thực hành</h2>${item.fileUrl?`<p>Dùng đúng file của bài để kết quả và video chữa khớp nhau.</p><a href="${esc(item.fileUrl)}" download>⬇ Tải bài</a>`:'<p>Bài này chưa có file thực hành.</p>'}</section>
-      <section class="hw-block"><h2>3 · Nhiệm vụ</h2>${item.tasks.length?`<ol>${item.tasks.map(t=>`<li>${esc(t)}</li>`).join('')}</ol>`:'<p>Admin chưa nhập nhiệm vụ cho bài này.</p>'}</section>
-      ${item.trap?`<section class="hw-block hw-trap"><h2>4 · Điểm dễ sai / Cú bẫy</h2><p>${esc(item.trap)}</p></section>`:''}
-      <div class="hw-hints">
-        <details><summary>Hint 1 · Gợi ý nhẹ</summary><p>${esc(item.hint1||'Chưa có Hint 1.')}</p></details>
-        <details><summary>Hint 2 · Gợi ý mạnh hơn</summary><p>${esc(item.hint2||'Chưa có Hint 2.')}</p></details>
-      </div>
-      <section class="hw-block"><div class="hw-progress-box"><div><h2>5 · Trạng thái của bạn</h2><p>Đây chỉ là tiến độ cá nhân, không phải điểm và không dùng để khóa bài khác.</p></div><button type="button" class="hw-progress-btn ${getProgress(key)==='done'?'done':''}" data-hw-done>${getProgress(key)==='done'?'✓ Đã làm xong · bấm để mở lại':'Tôi đã làm xong'}</button></div></section>
-      <section class="hw-block hw-solution ${solutionOrNext?'ready':'pending'}"><h2>6 · Chữa bài & video tiếp theo</h2>${solutionOrNext?`<p>Video tiếp theo bắt đầu bằng phần chữa bài này rồi nối sang nội dung mới.</p><a href="${esc(solutionOrNext)}" target="_blank" rel="noopener">▶ Xem chữa bài & video tiếp theo</a>`:'<p>Chưa phát hành. Khi video kế tiếp lên, nút chữa bài sẽ xuất hiện tại đây và trên card Homework.</p>'}</section>`;
-    library.hidden=true;if(toolbar)toolbar.hidden=true;detail.hidden=false;
-    detail.querySelector('[data-hw-back]')?.addEventListener('click',()=>closeDetail());
-    detail.querySelector('[data-hw-done]')?.addEventListener('click',()=>{
-      const next=getProgress(key)==='done'?'in_progress':'done';setProgress(key,next);openDetail(key,{push:false});
-    });
-    if(push){history.replaceState(null,'',`homework.html?homework=${encodeURIComponent(key)}`)}
-    scrollTo({top:0,behavior:'smooth'});
+  function closeTopic(){
+    $('hwLessonView').hidden=true;$('hwTopicView').hidden=false;
+    history.replaceState(null,'','homework.html');
+    window.scrollTo({top:0,behavior:'smooth'});
   }
-
-  function closeDetail(){
-    const detail=$('hwDetail'),library=$('hwLibrary'),toolbar=document.querySelector('.hw-toolbar');
-    if(detail)detail.hidden=true;if(library)library.hidden=false;if(toolbar)toolbar.hidden=false;
-    history.replaceState(null,'','homework.html');renderLibrary();scrollTo({top:0,behavior:'smooth'});
+  function openHint(item,number){
+    const dialog=$('hwHintDialog');if(!dialog)return;
+    const text=number===1?item.hint1:item.hint2;
+    $('hwHintLabel').textContent=`HINT ${number} · BÀI ${String(Number(item.order_no||0)).padStart(2,'0')}`;
+    $('hwHintTitle').textContent=item.title;
+    $('hwHintText').textContent=String(text||`Bài này chưa có Hint ${number}.`);
+    dialog.classList.toggle('is-hint2',number===2);
+    if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');
   }
-
   function bind(){
-    ['hwTopic','hwProgress','hwSort'].forEach(id=>$(id)?.addEventListener('change',renderLibrary));
-    $('hwLibrary')?.addEventListener('click',e=>{const btn=e.target.closest('[data-hw-open]');if(btn)openDetail(btn.dataset.hwOpen)});
+    $('hwTopicList')?.addEventListener('click',e=>{
+      const btn=e.target.closest('[data-hw-topic]');if(btn)openTopic(btn.dataset.hwTopic);
+    });
+    $('hwTopicBack')?.addEventListener('click',closeTopic);
+    $('hwLessonStage')?.addEventListener('click',e=>{
+      const btn=e.target.closest('[data-hint]');if(!btn)return;
+      const item=rows.find(x=>String(x.id)===String(btn.dataset.homeworkId));
+      if(item)openHint(item,Number(btn.dataset.hint));
+    });
+    $('hwHintDialog')?.addEventListener('click',e=>{if(e.target===$('hwHintDialog'))$('hwHintDialog').close?.()});
   }
-
   async function load(){
     bind();
     try{
-      const c=await waitClient();
-      if(!c)throw new Error('Supabase chưa sẵn sàng');
-      const {data,error}=await c.rpc('youtube_projects_public');if(error)throw error;
-      items=flatten(Array.isArray(data)?data:[]);populateTopics();renderLibrary();
-      const direct=new URLSearchParams(location.search).get('homework');if(direct&&items.some(x=>x.key===direct))openDetail(direct,{push:false});
+      const c=await waitClient();if(!c)throw new Error('Supabase chưa sẵn sàng');
+      const {data,error}=await c.rpc('homework_public_v1');if(error)throw error;
+      rows=(Array.isArray(data)?data:[]).map(x=>({...x,order_no:Number(x.order_no||0)}));
+      renderTopics();
+      const direct=new URLSearchParams(location.search).get('topic');
+      if(direct&&groupRows().some(x=>x.topic===direct))openTopic(direct);
     }catch(error){
-      console.warn('Homework load failed',error);
-      $('hwLibrary').innerHTML='<div class="hw-empty"><strong>Chưa tải được Homework</strong><p>Hệ thống đang không lấy được danh sách bài. Hãy tải lại trang sau.</p></div>';
+      console.warn('Homework standalone load failed',error);
+      $('hwTopicList').innerHTML='<div class="hw-empty"><strong>Chưa tải được Homework</strong><p>Hệ thống đang không lấy được danh sách bài. Hãy tải lại trang sau.</p></div>';
     }
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
