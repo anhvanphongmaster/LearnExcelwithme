@@ -4,7 +4,7 @@
   window.__AVP_ADMIN_HOMEWORK_STANDALONE_V2__=true;
 
   const $=id=>document.getElementById(id);
-  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const rowsByTopic=(a,b)=>String(a.topic||'').localeCompare(String(b.topic||''),'vi')||Number(a.order_no||0)-Number(b.order_no||0);
   let rows=[],editingId=null,loaded=false;
 
