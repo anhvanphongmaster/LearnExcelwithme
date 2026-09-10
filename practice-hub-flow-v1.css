@@ -1,4 +1,64 @@
-/* Practice Hub V1 — five practice routes; Guide is shared, not a sixth route. */
-.ph-flow-grid.ph-flow-grid-v1{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:16px!important;align-items:stretch!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link{grid-column:span 2!important;min-height:240px!important;box-sizing:border-box!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(4){grid-column:2/span 2!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(5){grid-column:4/span 2!important}.ph-shared-guide{margin-top:16px}.ph-shared-guide .ph-flow-link{min-height:0!important;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto!important;align-items:center!important;gap:16px!important;padding:17px 19px!important;background:#fff!important;border:1px solid #d6e5db!important;border-radius:16px!important}.ph-shared-guide .ph-flow-link .icon{margin:0!important}.ph-shared-guide .ph-flow-link p{margin:2px 0 0!important}.ph-shared-guide .ph-flow-link b{white-space:nowrap!important}
-@media(max-width:950px){.ph-flow-grid.ph-flow-grid-v1{grid-template-columns:repeat(2,minmax(0,1fr))!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link,.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(4),.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(5){grid-column:auto!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:last-child{grid-column:1/-1!important}}
-@media(max-width:620px){.ph-flow-grid.ph-flow-grid-v1{grid-template-columns:1fr!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:last-child{grid-column:auto!important}.ph-shared-guide .ph-flow-link{grid-template-columns:auto 1fr!important}.ph-shared-guide .ph-flow-link b{grid-column:1/-1!important}}
+/* Practice Hub V2 — five equal practice routes on desktop; Guide is shared, not a sixth route. */
+.ph-flow-grid.ph-flow-grid-v1{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:12px!important;
+  align-items:stretch!important;
+}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link{
+  grid-column:auto!important;
+  min-width:0!important;
+  min-height:258px!important;
+  box-sizing:border-box!important;
+  padding:18px 15px!important;
+  border-width:1px!important;
+  box-shadow:0 10px 28px rgba(24,68,45,.055)!important;
+}
+/* Five soft characteristic tones. Excel green/white remains the overall system tone. */
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(1){background:#fff5f7!important;border-color:#edcfd6!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(2){background:#fff5f1!important;border-color:#edcdbf!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(3){background:#fff9e9!important;border-color:#e8d69f!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(4){background:#f2f7ff!important;border-color:#cbdaf0!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(5){background:#f0faf4!important;border-color:#c2dec9!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:hover{
+  transform:translateY(-3px)!important;
+  border-color:#83ba99!important;
+  box-shadow:0 15px 34px rgba(22,82,48,.105)!important;
+}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link strong{font-size:17px!important;line-height:1.25!important;color:#173b29!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link p{font-size:10.5px!important;line-height:1.55!important;color:#51685b!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link>span{color:#38614b!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link>b{color:#17663d!important}
+.ph-shared-guide{width:100%;margin-top:14px}
+.ph-shared-guide .ph-flow-link{
+  width:100%!important;
+  min-height:0!important;
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:16px!important;
+  padding:17px 19px!important;
+  background:#fff!important;
+  border:1px solid #d6e5db!important;
+  border-radius:16px!important;
+  box-sizing:border-box!important;
+}
+.ph-shared-guide .ph-flow-link .icon{margin:0!important}
+.ph-shared-guide .ph-flow-link p{margin:2px 0 0!important}
+.ph-shared-guide .ph-flow-link b{white-space:nowrap!important}
+body.dark-mode .ph-flow-grid.ph-flow-grid-v1 .ph-flow-link{background:#17231b!important;border-color:#35493c!important;color:#e8f3ec!important}
+body.dark-mode .ph-flow-grid.ph-flow-grid-v1 .ph-flow-link strong{color:#eef7f1!important}
+body.dark-mode .ph-flow-grid.ph-flow-grid-v1 .ph-flow-link p{color:#b6c6bc!important}
+@media(max-width:1100px){
+  .ph-flow-grid.ph-flow-grid-v1{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .ph-flow-grid.ph-flow-grid-v1 .ph-flow-link{min-height:225px!important}
+}
+@media(max-width:760px){
+  .ph-flow-grid.ph-flow-grid-v1{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:620px){
+  .ph-flow-grid.ph-flow-grid-v1{grid-template-columns:1fr!important}
+  .ph-flow-grid.ph-flow-grid-v1 .ph-flow-link{min-height:0!important}
+  .ph-shared-guide .ph-flow-link{grid-template-columns:auto 1fr!important}
+  .ph-shared-guide .ph-flow-link b{grid-column:1/-1!important}
+}
