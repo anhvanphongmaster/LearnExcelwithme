@@ -1,0 +1,46 @@
+/* Homepage desktop motion restore.
+   Keep the existing JS patrol/drag/menu; restore only visible robot gait when desktop reduced-motion froze limb CSS. */
+@media (min-width:801px){
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-head{
+    animation:avpHomeRobotHeadBob .36s ease-in-out infinite!important;
+    animation-play-state:running!important;
+  }
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-body{
+    animation:avpHomeRobotBodyBob .36s ease-in-out infinite!important;
+    animation-play-state:running!important;
+  }
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-leg-l{
+    animation:avpBotStep .36s linear infinite!important;
+    animation-play-state:running!important;
+  }
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-leg-r{
+    animation:avpBotStep .36s linear infinite reverse!important;
+    animation-play-state:running!important;
+  }
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-arm-l{
+    animation:avpBotStep .36s linear infinite reverse!important;
+    animation-play-state:running!important;
+  }
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-arm-r{
+    animation:avpBotStep .36s linear infinite!important;
+    animation-play-state:running!important;
+  }
+}
+@keyframes avpHomeRobotHeadBob{
+  0%,100%{transform:translate3d(0,0,0) rotateZ(-1deg)}
+  50%{transform:translate3d(0,-2px,3px) rotateZ(1deg)}
+}
+@keyframes avpHomeRobotBodyBob{
+  0%,100%{transform:translate3d(0,0,0) rotateZ(.7deg)}
+  50%{transform:translate3d(0,-1px,2px) rotateZ(-.7deg)}
+}
+/* Intentionally re-enable homepage gait on desktop even if OS reduced-motion is on.
+   The robot still stops when its menu opens because JS removes .is-walking. */
+@media (min-width:801px) and (prefers-reduced-motion:reduce){
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-head{animation:avpHomeRobotHeadBob .36s ease-in-out infinite!important}
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-body{animation:avpHomeRobotBodyBob .36s ease-in-out infinite!important}
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-leg-l{animation:avpBotStep .36s linear infinite!important}
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-leg-r{animation:avpBotStep .36s linear infinite reverse!important}
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-arm-l{animation:avpBotStep .36s linear infinite reverse!important}
+  .avp-edge-launcher.avp-robot-home.is-walking .avp-bot-arm-r{animation:avpBotStep .36s linear infinite!important}
+}
