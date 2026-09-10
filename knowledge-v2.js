@@ -146,7 +146,6 @@
       const active=i===index;
       button.classList.toggle('active',active);
       button.setAttribute('aria-current',active?'true':'false');
-      if(active)button.scrollIntoView({block:'nearest',inline:'nearest'});
     });
     const progress=$('kvSectionProgress');
     if(progress&&currentLesson)progress.textContent=`${index+1} / ${currentLesson.sections.length}`;
