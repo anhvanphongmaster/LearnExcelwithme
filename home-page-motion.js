@@ -24,7 +24,8 @@
     ".learn-board",
     ".pv-panel",
     ".badge-card",
-    ".lab-card"
+    ".lab-card",
+    ".home-platform-module-v1"
   ].join(",");
 
   var BANNER_SEL = [
@@ -35,7 +36,8 @@
     ".avp-hero",
     ".learn-board",
     ".course-panel",
-    ".dash-panel"
+    ".dash-panel",
+    ".lp-hero"
   ].join(",");
 
   function setupRise() {
@@ -45,17 +47,11 @@
       nodes.forEach(function (n) { n.classList.add("avp-motion-rise", "avp-in"); });
       return;
     }
-    var io = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) {
-            en.target.classList.add("avp-in");
-            io.unobserve(en.target);
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: "0px 0px -6% 0px" }
-    );
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("avp-in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.1, rootMargin: "0px 0px -6% 0px" });
     nodes.forEach(function (n, i) {
       if (n.classList.contains("avp-motion-rise")) return;
       n.classList.add("avp-motion-rise");
@@ -72,64 +68,32 @@
       el.__avpPx = true;
       el.classList.add("avp-parallax-layer");
       var tx = 0, ty = 0, mx = 0, my = 0, raf = 0;
-
       function tick() {
-        tx += (mx - tx) * 0.08;
-        ty += (my - ty) * 0.08;
-        el.style.transform =
-          "translate3d(" + tx.toFixed(2) + "px," + ty.toFixed(2) + "px,0)";
-        if (Math.abs(mx - tx) > 0.05 || Math.abs(my - ty) > 0.05) {
-          raf = requestAnimationFrame(tick);
-        } else {
-          raf = 0;
-        }
+        tx += (mx - tx) * 0.08; ty += (my - ty) * 0.08;
+        el.style.transform = "translate3d(" + tx.toFixed(2) + "px," + ty.toFixed(2) + "px,0)";
+        if (Math.abs(mx - tx) > 0.05 || Math.abs(my - ty) > 0.05) raf = requestAnimationFrame(tick); else raf = 0;
       }
-
-      el.addEventListener(
-        "mousemove",
-        function (e) {
-          var r = el.getBoundingClientRect();
-          var px = (e.clientX - r.left) / Math.max(1, r.width) - 0.5;
-          var py = (e.clientY - r.top) / Math.max(1, r.height) - 0.5;
-          mx = px * 10;
-          my = py * 6;
-          if (!raf) raf = requestAnimationFrame(tick);
-        },
-        { passive: true }
-      );
-
-      el.addEventListener(
-        "mouseleave",
-        function () {
-          mx = 0;
-          my = 0;
-          if (!raf) raf = requestAnimationFrame(tick);
-        },
-        { passive: true }
-      );
+      el.addEventListener("mousemove", function (e) {
+        var r = el.getBoundingClientRect();
+        mx = ((e.clientX - r.left) / Math.max(1, r.width) - 0.5) * 10;
+        my = ((e.clientY - r.top) / Math.max(1, r.height) - 0.5) * 6;
+        if (!raf) raf = requestAnimationFrame(tick);
+      }, { passive: true });
+      el.addEventListener("mouseleave", function () { mx = 0; my = 0; if (!raf) raf = requestAnimationFrame(tick); }, { passive: true });
     });
   }
 
-  function boot() {
-    setupRise();
-    setupBannerParallax();
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", boot);
-  } else {
-    boot();
-  }
-  setTimeout(boot, 600);
-  setTimeout(boot, 1800);
+  function boot() { setupRise(); setupBannerParallax(); }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+  setTimeout(boot, 600); setTimeout(boot, 1800);
 })();
 
-/* Learning Platform Session 1 — render 8 equal modules on Home without rewriting legacy page markup. */
+/* Learning Platform — render the 8-module A–Z path on Home without rewriting legacy page markup. */
 (function(){
   if(window.__avpLearningPlatformHomeLoader)return;
   window.__avpLearningPlatformHomeLoader=true;
   var s=document.createElement('script');
-  s.src='learning-platform-home-v1.js?v=20260911-session1';
+  s.src='learning-platform-home-v1.js?v=20260911-platform2';
   s.defer=true;
   document.head.appendChild(s);
 })();
