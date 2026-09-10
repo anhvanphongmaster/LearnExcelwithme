@@ -1,0 +1,41 @@
+name: Practice Flow Staging
+on:
+  push:
+    branches: [fix/home-practice-flow-and-tiktok-roll]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: |
+          node --check avp-home-knowledge-v2.js
+          node --check practice-video.js
+          node --check practice-roll.js
+          node --check sw.js
+      - name: Homepage contract
+        run: |
+          grep -q "5 luồng thực hành trong cùng một khu" avp-home-knowledge-v2.js
+          grep -q "01 TikTok · 02 YouTube · 03 Homework · 04 Tự chấm · 05 Pro" avp-home-knowledge-v2.js
+          grep -q "Lộ trình 24 bài · Bảng xếp hạng" avp-home-knowledge-v2.js
+          grep -q "Lộ trình 24 bài Excel" avp-home-knowledge-v2.js
+      - name: Practice Hub numbering
+        run: |
+          grep -q "01 · TIKTOK PRACTICE" practice-video.html
+          grep -q "02 · YOUTUBE PROJECT" practice-video.html
+          grep -q "03 · HOMEWORK" practice-video.html
+          grep -q "04 · AUTO GRADING" practice-video.html
+          grep -q "05 · PROFESSIONAL TRACK" practice-video.html
+      - name: TikTok roll contract
+        run: |
+          grep -q "data-roll-kind=\"lesson\"" practice-video.js
+          grep -q "data-practice-roll-card" practice-video.js
+          grep -q "Vuốt ngang hoặc dùng phím ← → để chuyển bài" practice-video.js
+          grep -q "tt-lesson-roll" practice-tiktok.css
+          grep -q "practice-video.js?v=20260910-roll2" practice-tiktok.html
+          grep -q "practice-tiktok.css?v=20260910-roll2" practice-tiktok.html
+      - name: Cache contract
+        run: |
+          grep -q "practiceflow2" sw.js
+          grep -q '"./practice-tiktok.html"' sw.js
+          grep -q '"./practice-video.js"' sw.js
