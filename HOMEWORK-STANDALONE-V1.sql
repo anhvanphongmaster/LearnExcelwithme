@@ -86,14 +86,13 @@ begin
     select nullif(btrim(coalesce(h.solution_video_url,'')),'') into v_guide
     from public.homework_lessons_v1 h
     where lower(btrim(h.topic))=lower(v_topic)
-      and h.order_no<p_order_no
+      and h.order_no=p_order_no-1
       and (p_id is null or h.id<>p_id)
-    order by h.order_no desc
     limit 1;
   end if;
 
   if v_status='published' and v_guide is null then
-    raise exception 'Cần link video hướng dẫn trước khi phát hành. Từ bài 2 trở đi hệ thống sẽ tự lấy video giải của bài trước nếu có.';
+    raise exception 'Cần link video hướng dẫn trước khi phát hành. Từ bài 2 trở đi hệ thống chỉ tự lấy video giải của đúng bài liền trước nếu có.';
   end if;
 
   if p_id is null then
