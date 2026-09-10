@@ -33,7 +33,8 @@
 
   function renderGuide(lesson){
     const g=lesson.guide;if(!g)return '';
-    return `<section class="lp-start-here-v2" aria-label="Bắt đầu bài học"><div class="lp-start-head-v2"><span>BẮT ĐẦU Ở ĐÂY</span><strong>${esc(g.task)}</strong></div><div class="lp-start-grid-v2"><article><small>1 · DÙNG GÌ?</small><b>${esc(g.tool)}</b></article><article class="wide"><small>2 · LÀM THEO</small><ol>${(g.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol></article><article><small>3 · LÀM ĐÚNG KHI</small><b>${esc(g.success)}</b></article><article><small>4 · DỄ SAI NHẤT</small><b>${esc(g.mistake)}</b></article></div></section>`;
+    const visual=window.AVPVisualWalkthrough?.html?.(lesson.id)||'';
+    return `<section class="lp-start-here-v2" aria-label="Bắt đầu bài học"><div class="lp-start-head-v2"><span>BẮT ĐẦU Ở ĐÂY</span><strong>${esc(g.task)}</strong></div><div class="lp-start-grid-v2"><article><small>1 · DÙNG GÌ?</small><b>${esc(g.tool)}</b></article><article class="wide"><small>2 · LÀM THEO</small><ol>${(g.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol></article><article><small>3 · LÀM ĐÚNG KHI</small><b>${esc(g.success)}</b></article><article><small>4 · DỄ SAI NHẤT</small><b>${esc(g.mistake)}</b></article></div></section>${visual}`;
   }
 
   function renderIntro(lesson){
