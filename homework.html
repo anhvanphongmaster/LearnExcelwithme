@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Bài tập về nhà | Learn Excel with Anh Văn Phòng</title>
+<title>YouTube Practice | Learn Excel with Anh Văn Phòng</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="global-search.css">
 <link rel="stylesheet" href="avp-core.css">
-<link rel="stylesheet" href="homework.css?v=20260910-hw2">
+<link rel="stylesheet" href="homework.css?v=20260910-standalone2">
 <meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui2" data-avp-ui-system>
 </head>
@@ -19,25 +19,27 @@
 <main class="hw-page">
   <p class="hw-back"><a href="practice-video.html">← Practice Hub</a></p>
   <header class="hw-hero">
-    <div><span>HOMEWORK · THEO VIDEO YOUTUBE</span><h1>Làm ngắn, hiểu sâu, video sau chữa đúng chỗ khó</h1><p>Bài tập về nhà không phải bài thi. Mỗi bài chỉ khoảng 5–15 phút, tập trung vào phần khó hoặc dễ sai của video. Bí thì mở Hint; lời giải đầy đủ chỉ xuất hiện khi video chữa được phát hành.</p></div>
+    <div><span>YOUTUBE PRACTICE · HOMEWORK</span><h1>Luyện lại đúng phần vừa học, theo từng chủ đề</h1><p>Chọn chủ đề trước, sau đó làm lần lượt các bài. Mỗi card tách rõ video hướng dẫn, file thực hành, Hint và video giải bài.</p></div>
+    <div class="hw-hero-stat"><strong id="hwTopicCount">0</strong><span>chủ đề đang mở</span></div>
   </header>
 
-  <section class="hw-loop" aria-label="Quy trình học">
-    <strong>HỌC</strong><i>→</i><strong>LÀM</strong><i>→</i><strong>BÍ THÌ XEM HINT</strong><i>→</i><strong>VIDEO SAU CHỮA</strong><i>→</i><strong>HỌC TIẾP</strong>
+  <section id="hwTopicView" class="hw-topic-view" aria-live="polite">
+    <div class="hw-section-head"><div><span>BƯỚC 1</span><h2>Chọn chủ đề</h2><p>Mỗi dòng cho biết số bài tập và số video giải đã có.</p></div></div>
+    <div id="hwTopicList" class="hw-topic-list"><div class="hw-loading">Đang tải danh sách chủ đề…</div></div>
   </section>
 
-  <section class="hw-toolbar" aria-label="Lọc bài tập">
-    <label><span>Chủ đề</span><select id="hwTopic"><option value="all">Tất cả chủ đề</option></select></label>
-    <label><span>Trạng thái</span><select id="hwProgress"><option value="all">Tất cả</option><option value="not_started">Chưa làm</option><option value="in_progress">Đang làm</option><option value="done">Đã làm</option></select></label>
-    <label><span>Sắp xếp</span><select id="hwSort"><option value="newest">Mới nhất</option><option value="oldest">Cũ nhất</option></select></label>
+  <section id="hwExerciseView" class="hw-exercise-view" hidden aria-live="polite">
+    <button id="hwBackTopics" class="hw-back-topics" type="button">← Danh sách chủ đề</button>
+    <div class="hw-section-head hw-deck-head"><div><span>BƯỚC 2</span><h2 id="hwActiveTopic">Chủ đề</h2><p id="hwExerciseCount"></p></div><div class="hw-scroll-controls" aria-label="Cuộn bài tập"><button id="hwPrev" type="button" aria-label="Bài trước">←</button><button id="hwNext" type="button" aria-label="Bài tiếp theo">→</button></div></div>
+    <div id="hwCardsTrack" class="hw-cards-track"></div>
+    <p class="hw-scroll-note">Kéo ngang hoặc dùng hai nút mũi tên để xem các bài tiếp theo.</p>
   </section>
-
-  <section id="hwLibrary" class="hw-library" aria-live="polite">
-    <div class="hw-loading">Đang tải bài tập về nhà…</div>
-  </section>
-
-  <section id="hwDetail" class="hw-detail" hidden aria-live="polite"></section>
 </main>
+
+<div id="hwHintModal" class="hw-modal" hidden role="dialog" aria-modal="true" aria-labelledby="hwHintTitle">
+  <div class="hw-modal-card"><button id="hwHintClose" class="hw-modal-close" type="button" aria-label="Đóng">×</button><span>GỢI Ý</span><h2 id="hwHintTitle">Hint</h2><p id="hwHintText"></p></div>
+</div>
+
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
@@ -46,6 +48,6 @@
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
 <script defer src="global-search.js"></script>
-<script defer src="homework.js?v=20260910-hw2"></script>
+<script defer src="homework.js?v=20260910-standalone2"></script>
 </body>
 </html>
