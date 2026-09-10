@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260910-badgemotion5";
+const CACHE = "learnexcel-assets-v20260910-practice-homework-motion1";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -13,6 +13,7 @@ const ASSETS = [
   "./avp-home-knowledge-v2.css",
   "./avp-learning-contrast-v1.css",
   "./avp-pro-access-guidance-v1.css",
+  "./home-mini-bounce.css",
   "./homework.css",
   "./admin-homework.css",
   "./practice-hub-flow-v1.css",
