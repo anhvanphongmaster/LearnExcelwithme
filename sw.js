@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260910-knowledge-reader1";
+const CACHE = "learnexcel-assets-v20260910-homework-standalone1";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -35,6 +35,7 @@ const ASSETS = [
   "./practice-video.html",
   "./practice-tiktok.html",
   "./homework.html",
+  "./admin-homework.html",
   "./skill-map.html",
   "./skill-map.css",
   "./skill-map.js",
@@ -80,8 +81,7 @@ self.addEventListener("fetch", event => {
     url.pathname.endsWith(".html") ||
     url.pathname.endsWith("/");
 
-  const isCodeAsset =
-    /\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
+  const isCodeAsset = /\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
 
   if (isHTML) {
     event.respondWith(
@@ -92,10 +92,7 @@ self.addEventListener("fetch", event => {
           }
           return response;
         })
-        .catch(() =>
-          caches.match(event.request)
-            .then(cached => cached || caches.match("./index.html"))
-        )
+        .catch(() => caches.match(event.request).then(cached => cached || caches.match("./index.html")))
     );
     return;
   }
@@ -117,7 +114,6 @@ self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
-
       return fetch(event.request).then(response => {
         if (response && response.ok) {
           caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
@@ -130,11 +126,8 @@ self.addEventListener("fetch", event => {
 
 self.addEventListener("push", event => {
   let data = {};
-  try {
-    data = event.data ? event.data.json() : {};
-  } catch (e) {
-    data = { title: "Anh Văn Phòng", body: event.data ? event.data.text() : "" };
-  }
+  try { data = event.data ? event.data.json() : {}; }
+  catch (e) { data = { title: "Anh Văn Phòng", body: event.data ? event.data.text() : "" }; }
 
   const title = data.title || "Anh Văn Phòng";
   const options = {
@@ -149,9 +142,7 @@ self.addEventListener("push", event => {
 
   event.waitUntil(
     self.registration.showNotification(title, options).then(() => {
-      if ("setAppBadge" in self.navigator) {
-        return self.navigator.setAppBadge().catch(() => {});
-      }
+      if ("setAppBadge" in self.navigator) return self.navigator.setAppBadge().catch(() => {});
     })
   );
 });
@@ -165,9 +156,7 @@ self.addEventListener("notificationclick", event => {
     clients.matchAll({type:"window",includeUncontrolled:true}).then(list => {
       for (const client of list) {
         if ("focus" in client) {
-          try{
-            client.navigate(target);
-          }catch{}
+          try { client.navigate(target); } catch {}
           return client.focus();
         }
       }
