@@ -1,144 +1,22 @@
 (()=>{
   'use strict';
   const $=id=>document.getElementById(id);
-  const STORAGE_KEY='avp_homework_progress_v1';
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const safeUrl=v=>{
-    const s=String(v||'').trim();
-    if(!s||/^(javascript|data|vbscript):/i.test(s))return '';
-    if(/^https?:\/\/[^\s<>"']+$/i.test(s))return s;
-    return /^\.?\/?[\wÀ-ỹ()[\] ._%-]+(?:\/[\wÀ-ỹ()[\] ._?&=%#-]+)*$/i.test(s)?s:'';
-  };
-  const arr=v=>Array.isArray(v)?v:(typeof v==='string'?(()=>{try{const x=JSON.parse(v);return Array.isArray(x)?x:[]}catch{return[]}})():[]);
-  let items=[];
+  const safeUrl=v=>{const s=String(v||'').trim();if(!s||/^(javascript|data|vbscript):/i.test(s))return '';if(/^https?:\/\/[^\s<>"']+$/i.test(s))return s;return /^\.?\/?[\wÀ-ỹ()[\] ._%-]+(?:\/[\wÀ-ỹ()[\] ._?&=%#-]+)*$/i.test(s)?s:''};
+  let items=[],activeTopic='';
 
-  async function waitClient(){
-    for(let i=0;i<50;i++){
-      const c=window.avpSupabase||window.supabaseClient||window._supabaseClient;
-      if(c?.rpc)return c;
-      await new Promise(r=>setTimeout(r,100));
-    }
-    return null;
-  }
-  function readProgress(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}catch{return{}}}
-  function getProgress(key){return readProgress()[key]||'not_started'}
-  function setProgress(key,status){const data=readProgress();data[key]=status;localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}
-  const statusLabel=s=>s==='done'?'Đã làm':s==='in_progress'?'Đang làm':'Chưa làm';
-
-  function normalizeHomework(project,part){
-    const hw=part?.homework;
-    if(!hw||hw.enabled!==true||hw.status!=='published')return null;
-    const partNo=Number(part.part_number||0)||1;
-    const key=`${project.slug||project.id}-p${partNo}`;
-    return {
-      key,projectId:project.id,projectSlug:project.slug||'',projectNumber:Number(project.project_number||0),projectTitle:project.title||'YouTube Project',
-      partNo,partTitle:part.title||`Phần ${partNo}`,videoUrl:safeUrl(part.video_url),
-      title:String(hw.title||part.title||`Bài tập P${partNo}`).trim(),topic:String(hw.topic||project.title||'Excel').trim(),duration:Math.max(5,Math.min(60,Number(hw.duration_min||10))),
-      context:String(hw.context||'').trim(),fileUrl:safeUrl(hw.file_url),tasks:arr(hw.tasks).map(x=>String(x||'').trim()).filter(Boolean),trap:String(hw.trap||'').trim(),
-      hint1:String(hw.hint1||'').trim(),hint2:String(hw.hint2||'').trim(),solutionUrl:safeUrl(hw.solution_video_url),nextUrl:safeUrl(hw.next_url),
-      nextLabel:String(hw.next_label||'Học tiếp').trim(),sortOrder:Number(hw.sort_order??part.sort_order??partNo)
-    };
-  }
-
-  function flatten(projects){
-    return (projects||[]).flatMap(project=>arr(project.parts)
-      .filter(part=>part&&part.is_active!==false&&part.status!=='draft'&&part.status!=='archived')
-      .map(part=>normalizeHomework(project,part)).filter(Boolean));
-  }
-
-  function populateTopics(){
-    const select=$('hwTopic');if(!select)return;
-    const topics=[...new Set(items.map(x=>x.topic).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'vi'));
-    select.innerHTML='<option value="all">Tất cả chủ đề</option>'+topics.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
-  }
-
-  function action(url,label,cls,{download=false}={}){
-    if(!url)return `<span class="hw-card-action ${cls} is-disabled" aria-disabled="true">${esc(label)}</span>`;
-    return `<a class="hw-card-action ${cls}" href="${esc(url)}" ${download?'download':'target="_blank" rel="noopener"'}>${esc(label)}</a>`;
-  }
-
-  function card(item){
-    const progress=getProgress(item.key);
-    const solutionOrNext=item.solutionUrl||item.nextUrl;
-    return `<article class="hw-card" data-hw-key="${esc(item.key)}">
-      <div class="hw-card-top"><span class="hw-topic">${esc(item.topic)}</span><span class="hw-status ${progress}">${statusLabel(progress)}</span></div>
-      <h2><button type="button" class="hw-card-title" data-hw-open="${esc(item.key)}">${esc(item.title)}</button></h2>
-      <p>${esc(item.projectTitle)} · P${item.partNo} · ${esc(item.partTitle)}</p>
-      <div class="hw-card-meta"><span>⏱ ${item.duration} phút</span><span>${solutionOrNext?'✓ Đã có video chữa':'○ Video chữa: chưa có'}</span></div>
-      <button type="button" class="hw-card-detail" data-hw-open="${esc(item.key)}">Nhiệm vụ & Hint →</button>
-      <div class="hw-card-actions" aria-label="Tài nguyên bài tập">
-        ${action(item.videoUrl,'▶ Xem video','is-video')}
-        ${action(item.fileUrl,'⬇ Tải bài','is-download',{download:true})}
-        ${action(solutionOrNext,'▶ Chữa bài & video tiếp theo','is-solution')}
-      </div>
-    </article>`;
-  }
-
-  function renderLibrary(){
-    const host=$('hwLibrary');if(!host)return;
-    const topic=$('hwTopic')?.value||'all',progress=$('hwProgress')?.value||'all',sort=$('hwSort')?.value||'newest';
-    let list=items.filter(x=>(topic==='all'||x.topic===topic)&&(progress==='all'||getProgress(x.key)===progress));
-    list.sort((a,b)=>{
-      const av=a.projectNumber*1000+a.sortOrder,bv=b.projectNumber*1000+b.sortOrder;
-      return sort==='oldest'?av-bv:bv-av;
-    });
-    if(!items.length){
-      host.innerHTML='<div class="hw-empty"><strong>Chưa có bài tập về nhà được phát hành</strong><p>Homework chỉ xuất hiện ở những video thật sự cần luyện thêm phần khó/dễ sai — không ép mọi video đều phải có bài.</p></div>';
-      return;
-    }
-    host.innerHTML=list.length?list.map(card).join(''):'<div class="hw-empty"><strong>Không có bài phù hợp bộ lọc</strong><p>Đổi Chủ đề hoặc Trạng thái để xem các bài khác.</p></div>';
-  }
-
-  function openDetail(key,{push=true}={}){
-    const item=items.find(x=>x.key===key);if(!item)return;
-    if(getProgress(key)==='not_started')setProgress(key,'in_progress');
-    const solutionOrNext=item.solutionUrl||item.nextUrl;
-    const detail=$('hwDetail'),library=$('hwLibrary'),toolbar=document.querySelector('.hw-toolbar');if(!detail||!library)return;
-    detail.innerHTML=`
-      <button class="hw-detail-back" type="button" data-hw-back>← Quay lại Kho Homework</button>
-      <header class="hw-detail-head"><span class="eyebrow">HOMEWORK · ${esc(item.topic)}</span><h1>${esc(item.title)}</h1><p>${esc(item.context||`Bài tập ngắn nối từ ${item.projectTitle} · P${item.partNo}. Tập trung làm đúng phần khó trước khi xem lời giải.`)}</p><div class="hw-detail-meta"><span>⏱ ${item.duration} phút</span><span>${esc(item.projectTitle)}</span><span>P${item.partNo}</span></div></header>
-      <section class="hw-block hw-source"><h2>1 · Video ra bài</h2><p>Đây là video hướng dẫn gốc; phần cuối video đưa ra bài tập về nhà này.</p>${item.videoUrl?`<a href="${esc(item.videoUrl)}" target="_blank" rel="noopener">▶ Xem video</a>`:'<p><strong>Video gốc chưa được gắn link.</strong></p>'}</section>
-      <section class="hw-block hw-file"><h2>2 · File thực hành</h2>${item.fileUrl?`<p>Dùng đúng file của bài để kết quả và video chữa khớp nhau.</p><a href="${esc(item.fileUrl)}" download>⬇ Tải bài</a>`:'<p>Bài này chưa có file thực hành.</p>'}</section>
-      <section class="hw-block"><h2>3 · Nhiệm vụ</h2>${item.tasks.length?`<ol>${item.tasks.map(t=>`<li>${esc(t)}</li>`).join('')}</ol>`:'<p>Admin chưa nhập nhiệm vụ cho bài này.</p>'}</section>
-      ${item.trap?`<section class="hw-block hw-trap"><h2>4 · Điểm dễ sai / Cú bẫy</h2><p>${esc(item.trap)}</p></section>`:''}
-      <div class="hw-hints">
-        <details><summary>Hint 1 · Gợi ý nhẹ</summary><p>${esc(item.hint1||'Chưa có Hint 1.')}</p></details>
-        <details><summary>Hint 2 · Gợi ý mạnh hơn</summary><p>${esc(item.hint2||'Chưa có Hint 2.')}</p></details>
-      </div>
-      <section class="hw-block"><div class="hw-progress-box"><div><h2>5 · Trạng thái của bạn</h2><p>Đây chỉ là tiến độ cá nhân, không phải điểm và không dùng để khóa bài khác.</p></div><button type="button" class="hw-progress-btn ${getProgress(key)==='done'?'done':''}" data-hw-done>${getProgress(key)==='done'?'✓ Đã làm xong · bấm để mở lại':'Tôi đã làm xong'}</button></div></section>
-      <section class="hw-block hw-solution ${solutionOrNext?'ready':'pending'}"><h2>6 · Chữa bài & video tiếp theo</h2>${solutionOrNext?`<p>Video tiếp theo bắt đầu bằng phần chữa bài này rồi nối sang nội dung mới.</p><a href="${esc(solutionOrNext)}" target="_blank" rel="noopener">▶ Xem chữa bài & video tiếp theo</a>`:'<p>Chưa phát hành. Khi video kế tiếp lên, nút chữa bài sẽ xuất hiện tại đây và trên card Homework.</p>'}</section>`;
-    library.hidden=true;if(toolbar)toolbar.hidden=true;detail.hidden=false;
-    detail.querySelector('[data-hw-back]')?.addEventListener('click',()=>closeDetail());
-    detail.querySelector('[data-hw-done]')?.addEventListener('click',()=>{
-      const next=getProgress(key)==='done'?'in_progress':'done';setProgress(key,next);openDetail(key,{push:false});
-    });
-    if(push){history.replaceState(null,'',`homework.html?homework=${encodeURIComponent(key)}`)}
-    scrollTo({top:0,behavior:'smooth'});
-  }
-
-  function closeDetail(){
-    const detail=$('hwDetail'),library=$('hwLibrary'),toolbar=document.querySelector('.hw-toolbar');
-    if(detail)detail.hidden=true;if(library)library.hidden=false;if(toolbar)toolbar.hidden=false;
-    history.replaceState(null,'','homework.html');renderLibrary();scrollTo({top:0,behavior:'smooth'});
-  }
-
-  function bind(){
-    ['hwTopic','hwProgress','hwSort'].forEach(id=>$(id)?.addEventListener('change',renderLibrary));
-    $('hwLibrary')?.addEventListener('click',e=>{const btn=e.target.closest('[data-hw-open]');if(btn)openDetail(btn.dataset.hwOpen)});
-  }
-
-  async function load(){
-    bind();
-    try{
-      const c=await waitClient();
-      if(!c)throw new Error('Supabase chưa sẵn sàng');
-      const {data,error}=await c.rpc('youtube_projects_public');if(error)throw error;
-      items=flatten(Array.isArray(data)?data:[]);populateTopics();renderLibrary();
-      const direct=new URLSearchParams(location.search).get('homework');if(direct&&items.some(x=>x.key===direct))openDetail(direct,{push:false});
-    }catch(error){
-      console.warn('Homework load failed',error);
-      $('hwLibrary').innerHTML='<div class="hw-empty"><strong>Chưa tải được Homework</strong><p>Hệ thống đang không lấy được danh sách bài. Hãy tải lại trang sau.</p></div>';
-    }
-  }
+  async function waitClient(){for(let i=0;i<50;i++){const c=window.avpSupabase||window.supabaseClient||window._supabaseClient;if(c?.rpc)return c;await new Promise(r=>setTimeout(r,100));}return null}
+  function normalize(r){return {id:String(r.id||''),topic:String(r.topic||'Khác').trim(),order:Number(r.order_no||1),title:String(r.title||`Bài ${r.order_no||1}`).trim(),fileUrl:safeUrl(r.file_url),guideUrl:safeUrl(r.guide_video_url),solutionUrl:safeUrl(r.solution_video_url),hint1:String(r.hint1||'').trim(),hint2:String(r.hint2||'').trim()}}
+  function topics(){const m=new Map();items.forEach(x=>{if(!m.has(x.topic))m.set(x.topic,{name:x.topic,total:0,solutions:0,min:x.order});const t=m.get(x.topic);t.total++;t.solutions+=x.solutionUrl?1:0;t.min=Math.min(t.min,x.order)});return [...m.values()].sort((a,b)=>a.min-b.min||a.name.localeCompare(b.name,'vi'))}
+  function renderTopics(){const host=$('hwTopicList');if(!host)return;const list=topics();$('hwTopicCount').textContent=list.length;if(!list.length){host.innerHTML='<div class="hw-empty"><strong>Chưa có Homework được phát hành</strong><p>Khi Admin phát hành bài đầu tiên, chủ đề sẽ xuất hiện tại đây.</p></div>';return}host.innerHTML=list.map((t,i)=>`<button class="hw-topic-row tone-${i%5}" type="button" data-topic="${esc(t.name)}"><span class="hw-topic-index">${String(i+1).padStart(2,'0')}</span><span class="hw-topic-copy"><strong>${esc(t.name)}</strong><small>${t.total} bài tập / ${t.solutions} video giải bài</small></span><span class="hw-topic-arrow">→</span></button>`).join('')}
+  function action(url,label,cls){return url?`<a class="hw-action ${cls}" href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`:`<span class="hw-action ${cls} disabled" aria-disabled="true">${esc(label)}</span>`}
+  function card(x,i){return `<article class="hw-card tone-${i%5}"><div class="hw-card-head"><span>BÀI ${String(x.order).padStart(2,'0')}</span><h2>${esc(x.title)}</h2></div><div class="hw-actions" aria-label="Tài nguyên bài tập">${action(x.guideUrl,'▶ Video hướng dẫn','guide')}${x.fileUrl?`<a class="hw-action file" href="${esc(x.fileUrl)}" download>↓ Tải file bài tập</a>`:'<span class="hw-action file disabled" aria-disabled="true">↓ Chưa có file</span>'}${action(x.solutionUrl,x.solutionUrl?'▶ Video giải bài':'Video giải: sắp có','solution')}</div><div class="hw-hint-row"><button type="button" data-hint="1" data-id="${esc(x.id)}">Hint 1</button><button type="button" data-hint="2" data-id="${esc(x.id)}">Hint 2</button></div></article>`}
+  function renderDeck(topic){activeTopic=topic;const list=items.filter(x=>x.topic===topic).sort((a,b)=>a.order-b.order);$('hwTopicView').hidden=true;$('hwExerciseView').hidden=false;$('hwActiveTopic').textContent=topic;$('hwExerciseCount').textContent=`${list.length} bài tập · ${list.filter(x=>x.solutionUrl).length} video giải`;$('hwCardsTrack').innerHTML=list.map(card).join('');history.replaceState(null,'',`homework.html?topic=${encodeURIComponent(topic)}`);scrollTo({top:0,behavior:'smooth'})}
+  function backTopics(){$('hwExerciseView').hidden=true;$('hwTopicView').hidden=false;activeTopic='';history.replaceState(null,'','homework.html');scrollTo({top:0,behavior:'smooth'})}
+  function showHint(id,n){const item=items.find(x=>x.id===id);if(!item)return;const text=n===2?item.hint2:item.hint1;$('hwHintTitle').textContent=`${item.title} · Hint ${n}`;$('hwHintText').textContent=text||`Bài này chưa có Hint ${n}.`;$('hwHintModal').hidden=false;document.body.classList.add('hw-modal-open');$('hwHintClose').focus()}
+  function closeHint(){$('hwHintModal').hidden=true;document.body.classList.remove('hw-modal-open')}
+  function scrollCards(dir){const track=$('hwCardsTrack');if(!track)return;const card=track.querySelector('.hw-card');const amount=(card?.getBoundingClientRect().width||360)+16;track.scrollBy({left:dir*amount,behavior:'smooth'})}
+  function bind(){$('hwTopicList')?.addEventListener('click',e=>{const b=e.target.closest('[data-topic]');if(b)renderDeck(b.dataset.topic)});$('hwBackTopics')?.addEventListener('click',backTopics);$('hwCardsTrack')?.addEventListener('click',e=>{const b=e.target.closest('[data-hint]');if(b)showHint(b.dataset.id,Number(b.dataset.hint))});$('hwPrev')?.addEventListener('click',()=>scrollCards(-1));$('hwNext')?.addEventListener('click',()=>scrollCards(1));$('hwHintClose')?.addEventListener('click',closeHint);$('hwHintModal')?.addEventListener('click',e=>{if(e.target===$('hwHintModal'))closeHint()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('hwHintModal')?.hidden)closeHint()})}
+  async function load(){bind();try{const c=await waitClient();if(!c)throw new Error('Supabase chưa sẵn sàng');const {data,error}=await c.rpc('homework_public_v1');if(error)throw error;items=(Array.isArray(data)?data:[]).map(normalize);renderTopics();const q=new URLSearchParams(location.search).get('topic');if(q&&items.some(x=>x.topic===q))renderDeck(q)}catch(e){console.warn('Homework load failed',e);$('hwTopicList').innerHTML='<div class="hw-empty"><strong>Chưa tải được Homework</strong><p>Hệ thống chưa lấy được danh sách bài. Hãy thử tải lại trang.</p></div>'}}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load,{once:true});else load();
 })();
