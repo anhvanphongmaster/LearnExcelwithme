@@ -79,3 +79,43 @@ body.dark-mode .hp-kv2-num{background:#224231!important;color:#a8e3bd!important}
   .home-path-grid.avp-home-kv2-grid li>a{grid-template-columns:32px 28px minmax(0,1fr)!important;min-height:56px!important;padding:8px 10px!important}
   .hp-kv2-head h3{font-size:20px!important}
 }
+
+/* Home Practice CTA — all five flow badges move as one ordered 3D sequence. */
+.avp-practice-hub-badges{perspective:220px!important;transform-style:preserve-3d!important}
+.avp-practice-hub-badges .avp-mini-channel{
+  transform-style:preserve-3d!important;
+  transform-origin:50% 82%!important;
+  backface-visibility:hidden!important;
+  will-change:transform,filter!important;
+  animation:avpMiniBounceFive 2.8s cubic-bezier(.22,1.35,.36,1) infinite!important;
+}
+.avp-practice-hub-badges .avp-mini-channel::after{
+  animation:avpMiniFlashFive 2.8s ease-in-out infinite!important;
+}
+.avp-practice-hub-badges .avp-mini-channel-tt{animation-delay:0s!important}
+.avp-practice-hub-badges .avp-mini-channel-yt{animation-delay:.22s!important}
+.avp-practice-hub-badges .avp-mini-channel-hw{background:#b7791f!important;animation-delay:.44s!important}
+.avp-practice-hub-badges .avp-mini-channel-grade{animation-delay:.66s!important}
+.avp-practice-hub-badges .avp-mini-channel-pro{background:#17663d!important;animation-delay:.88s!important}
+.avp-practice-hub-badges .avp-mini-channel-tt::after{animation-delay:0s!important}
+.avp-practice-hub-badges .avp-mini-channel-yt::after{animation-delay:.22s!important}
+.avp-practice-hub-badges .avp-mini-channel-hw::after{animation-delay:.44s!important}
+.avp-practice-hub-badges .avp-mini-channel-grade::after{animation-delay:.66s!important}
+.avp-practice-hub-badges .avp-mini-channel-pro::after{animation-delay:.88s!important}
+@keyframes avpMiniBounceFive{
+  0%,16%,100%{transform:translate3d(0,0,0) rotateX(0) rotateY(0) scale(1);filter:brightness(1)}
+  25%{transform:translate3d(0,-8px,16px) rotateX(18deg) rotateY(-12deg) scale(1.15);filter:brightness(1.08)}
+  34%{transform:translate3d(0,-2px,6px) rotateX(-7deg) rotateY(9deg) scale(1.05)}
+  42%{transform:translate3d(0,-5px,11px) rotateX(10deg) rotateY(-5deg) scale(1.09)}
+  55%{transform:translate3d(0,0,0) rotateX(0) rotateY(0) scale(1)}
+}
+@keyframes avpMiniFlashFive{
+  0%,18%,100%{transform:translateX(-125%) rotate(18deg);opacity:0}
+  25%{opacity:.25}
+  37%{transform:translateX(125%) rotate(18deg);opacity:1}
+  48%{opacity:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .avp-practice-hub-badges .avp-mini-channel,
+  .avp-practice-hub-badges .avp-mini-channel::after{animation:none!important}
+}
