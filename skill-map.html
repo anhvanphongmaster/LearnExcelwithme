@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Học Excel A–Z | Learn Excel with Anh Van Phong</title>
-  <meta name="description" content="Nền tảng học Excel A–Z theo 8 module rõ ràng: nền tảng, công thức, dữ liệu, tra cứu, báo cáo, dashboard, Power Query và automation.">
+  <meta name="description" content="Nền tảng học Excel A–Z theo 8 module và 42 bài rõ ràng: nền tảng, dữ liệu, công thức, báo cáo, dashboard, Power Query, VBA và case thực chiến.">
   <meta name="theme-color" content="#217346">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="global-search.css">
   <link rel="stylesheet" href="theme-polish-v33.css">
   <link rel="stylesheet" href="avp-learning-contrast-v1.css?v=20260910-contrast1">
-  <link rel="stylesheet" href="skill-map-platform-v1.css?v=20260911-session1">
+  <link rel="stylesheet" href="skill-map-platform-v1.css?v=20260911-platform2">
   <link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui2" data-avp-ui-system>
 </head>
 <body>
@@ -36,12 +36,12 @@
     <div>
       <span class="lp-kicker">EXCEL LEARNING PLATFORM</span>
       <h1>Học Excel A–Z, nhưng không học trong mê cung</h1>
-      <p>Mỗi module trả lời một nhóm công việc rõ ràng. Bên trong là danh sách bài theo thứ tự; mở bài xong luôn biết mình đang ở đâu và quay lại danh sách nào.</p>
+      <p>8 module, 42 bài. Mỗi bài bắt đầu bằng việc cần làm, công cụ cần dùng, các bước thao tác và dấu hiệu làm đúng; phần nâng cao nằm sau phần cốt lõi.</p>
     </div>
     <div class="lp-hero-meta">
       <div class="lp-stat"><span>CẤU TRÚC</span><strong id="lpModuleCount">8 module</strong></div>
-      <div class="lp-stat"><span>NỘI DUNG</span><strong id="lpLessonCount">24+ bài</strong></div>
-      <div class="lp-stat"><span>CÁCH HỌC</span><strong>Từ việc cần làm → thao tác</strong></div>
+      <div class="lp-stat"><span>NỘI DUNG</span><strong id="lpLessonCount">42 bài</strong></div>
+      <div class="lp-stat"><span>CÁCH HỌC</span><strong>Việc cần làm → thao tác → kiểm tra</strong></div>
       <div class="lp-stat"><span>ĐIỀU HƯỚNG</span><strong>Luôn biết đường quay lại</strong></div>
     </div>
   </section>
@@ -56,7 +56,7 @@
   <section class="lp-home-view">
     <div class="lp-modules-head"><span class="lp-kicker">8 MODULE · 2 DÒNG × 4 CARD TRÊN DESKTOP</span><h2>Chọn đúng nhóm bạn cần học</h2><p>Không cần nhớ bài số mấy. Chọn theo mục tiêu công việc, sau đó học theo list bên trong.</p></div>
     <div class="lp-module-grid" id="lpModuleGrid"></div>
-    <div class="lp-footnote">Kho công thức, phím tắt và Tool vẫn là khu tra cứu riêng. Chúng không chen vào lộ trình chính để tránh người học bị lẫn giữa “đang học” và “đang tra cứu”.</div>
+    <div class="lp-footnote">Kho công thức, phím tắt và Tool là khu tra cứu riêng. Chúng không chen vào lộ trình chính để tránh lẫn giữa “đang học” và “đang tra cứu”.</div>
   </section>
 
   <section class="lp-module-view">
@@ -66,7 +66,7 @@
       <a class="lp-btn primary" id="lpModuleStart" href="#">Bắt đầu module →</a>
     </header>
     <div class="lp-list" id="lpLessonList"></div>
-    <div class="lp-footnote">Khi mở một bài, nút quay lại sẽ đưa bạn về đúng module này. Vị trí cuộn của danh sách cũng được ghi nhớ trong phiên hiện tại.</div>
+    <div class="lp-footnote">Khi mở một bài, nút quay lại đưa bạn về đúng module này. Vị trí cuộn của danh sách được ghi nhớ trong phiên hiện tại.</div>
   </section>
 </main>
 
@@ -75,13 +75,16 @@
 <script src="knowledge-data-analysis.js?v=20260909-kv2"></script>
 <script src="knowledge-data-advanced.js?v=20260909-kv2"></script>
 <script src="knowledge-depth-v1.js?v=20260910-depth1"></script>
-<script src="learning-platform-catalog-v1.js?v=20260911-session1"></script>
-<script src="skill-map-platform-v1.js?v=20260911-session1"></script>
+<script src="learning-platform-content-v2.js?v=20260911-platform2"></script>
+<script src="learning-platform-guides-v2.js?v=20260911-platform2"></script>
+<script src="learning-platform-catalog-v1.js?v=20260911-platform2"></script>
+<script src="skill-map-platform-v1.js?v=20260911-platform2"></script>
+<script src="learning-platform-progress-v2.js?v=20260911-platform2"></script>
 <script src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="simple-nav.js"></script>
 <script defer src="theme-unified-v32.js"></script>
-<script defer src="global-search.js?v=20260909-kv2"></script>
+<script defer src="global-search.js?v=20260911-platform2"></script>
 <script defer src="avp-core.js"></script>
 </body>
 </html>
