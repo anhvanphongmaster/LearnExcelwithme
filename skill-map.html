@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Kiến thức Excel | Learn Excel with Anh Van Phong</title>
-  <meta name="description" content="Lộ trình 24 bài Excel từ nền tảng đến tự động hóa. Không khóa đường học, nội dung chi tiết và câu hỏi theo từng phần.">
+  <title>Học Excel A–Z | Learn Excel with Anh Van Phong</title>
+  <meta name="description" content="Nền tảng học Excel A–Z theo 8 module rõ ràng: nền tảng, công thức, dữ liệu, tra cứu, báo cáo, dashboard, Power Query và automation.">
+  <meta name="theme-color" content="#217346">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="global-search.css">
-  <link rel="stylesheet" href="skill-map.css?v=20260909-kv2">
-  <link rel="stylesheet" href="avp-learning-contrast-v1.css?v=20260910-contrast1">
-  <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#217346">
   <link rel="stylesheet" href="theme-polish-v33.css">
+  <link rel="stylesheet" href="avp-learning-contrast-v1.css?v=20260910-contrast1">
+  <link rel="stylesheet" href="skill-map-platform-v1.css?v=20260911-session1">
   <link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui2" data-avp-ui-system>
 </head>
 <body>
 <script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script>
-
 <nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
     <a href="index.html" data-avp-nav="home">Trang chủ</a>
@@ -32,72 +31,42 @@
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
 
-<main class="sm-page">
-  <section class="sm-hero">
-    <div class="sm-hero-copy">
-      <span class="sm-kicker">EXCEL KNOWLEDGE V2</span>
-      <h1>Học Excel từ số 0 đến làm việc thực tế</h1>
-      <p>24 bài được xây theo dependency thật: hiểu nền tảng trước, sau đó công thức & dữ liệu, phân tích & báo cáo, cuối cùng mới tới Power Query, VBA và automation. Không có khóa cứng — nếu đã biết phần cơ bản, bạn có thể đi thẳng tới chặng cần học.</p>
+<main class="lp-page" id="lpPage">
+  <section class="lp-hero">
+    <div>
+      <span class="lp-kicker">EXCEL LEARNING PLATFORM</span>
+      <h1>Học Excel A–Z, nhưng không học trong mê cung</h1>
+      <p>Mỗi module trả lời một nhóm công việc rõ ràng. Bên trong là danh sách bài theo thứ tự; mở bài xong luôn biết mình đang ở đâu và quay lại danh sách nào.</p>
     </div>
-    <div class="sm-hero-stats" aria-label="Tổng quan giáo trình">
-      <div><small>Giáo trình</small><strong>24 bài</strong></div>
-      <div><small>Cấu trúc</small><strong>4 chặng × 6 bài</strong></div>
-      <div><small>Điều hướng</small><strong>Không khóa bài</strong></div>
-      <div><small>Kiểm tra</small><strong>Câu hỏi từng phần</strong></div>
-    </div>
-  </section>
-
-  <section class="sm-next-card" id="smToday">
-    <div class="sm-next-badge">HỌC TIẾP / BẮT ĐẦU</div>
-    <div class="sm-next-main">
-      <div>
-        <span id="smTodayStage">Nền tảng Excel</span>
-        <h2 id="smTodayTitle">Bài 01 · Làm quen Excel và cách một file hoạt động</h2>
-        <p id="smTodayDesc">Nếu đây là lần đầu học, bắt đầu từ Bài 01. Nếu đã có nền tảng, chọn trực tiếp một chặng bên dưới.</p>
-      </div>
-      <a id="smTodayLink" href="knowledge.html?lesson=f01-excel-workspace">Mở bài →</a>
+    <div class="lp-hero-meta">
+      <div class="lp-stat"><span>CẤU TRÚC</span><strong id="lpModuleCount">8 module</strong></div>
+      <div class="lp-stat"><span>NỘI DUNG</span><strong id="lpLessonCount">24+ bài</strong></div>
+      <div class="lp-stat"><span>CÁCH HỌC</span><strong>Từ việc cần làm → thao tác</strong></div>
+      <div class="lp-stat"><span>ĐIỀU HƯỚNG</span><strong>Luôn biết đường quay lại</strong></div>
     </div>
   </section>
 
-  <section class="sm-quick-grid">
-    <a class="sm-guide-card sm-guide-start" href="knowledge.html?lesson=f01-excel-workspace">
-      <div class="sm-quick-icon">01</div>
-      <div class="sm-quick-copy"><span class="sm-kicker">MỚI HOÀN TOÀN</span><h2>Bắt đầu từ nền tảng</h2><p>Đi tuần tự để hiểu Workbook, dữ liệu, định dạng, công thức, hàm và cách quản lý bảng.</p></div>
-      <strong>Bắt đầu →</strong>
-    </a>
-    <a class="sm-guide-card" href="#smMap">
-      <div class="sm-quick-icon">↗</div>
-      <div class="sm-quick-copy"><span class="sm-kicker">ĐÃ BIẾT CƠ BẢN</span><h2>Nhảy tới đúng kỹ năng cần học</h2><p>Mọi bài đều mở. Chọn Dữ liệu & Công thức, Phân tích & Báo cáo hoặc Nâng cao & Tự động hóa.</p></div>
-      <strong>Chọn chặng →</strong>
-    </a>
+  <div class="lp-toolbar">
+    <nav class="lp-breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html">Trang chủ</a><span>›</span><a href="skill-map.html">Học Excel</a><span id="lpCrumbSep">›</span><strong id="lpCrumbCurrent">Tất cả module</strong>
+    </nav>
+    <div class="lp-toolbar-actions"><a class="lp-btn" href="practice-video.html">Thực hành</a><a class="lp-btn primary" id="lpResume" href="knowledge.html?lesson=f01-excel-workspace">Bắt đầu học →</a></div>
+  </div>
+
+  <section class="lp-home-view">
+    <div class="lp-modules-head"><span class="lp-kicker">8 MODULE · 2 DÒNG × 4 CARD TRÊN DESKTOP</span><h2>Chọn đúng nhóm bạn cần học</h2><p>Không cần nhớ bài số mấy. Chọn theo mục tiêu công việc, sau đó học theo list bên trong.</p></div>
+    <div class="lp-module-grid" id="lpModuleGrid"></div>
+    <div class="lp-footnote">Kho công thức, phím tắt và Tool vẫn là khu tra cứu riêng. Chúng không chen vào lộ trình chính để tránh người học bị lẫn giữa “đang học” và “đang tra cứu”.</div>
   </section>
 
-  <section class="sm-map-shell">
-    <div class="sm-map-head">
-      <div>
-        <span class="sm-kicker">FOUNDATION → DATA SKILLS → ANALYSIS → ADVANCED</span>
-        <h2>Cây kiến thức Excel</h2>
-        <p>Mỗi chặng có 6 bài cân bằng. Thứ tự là lộ trình đề xuất, không phải rào cản. Phím tắt, Pareto, QC và các nội dung cũ được đặt lại đúng ngữ cảnh bên trong bài.</p>
-      </div>
-      <div class="sm-legend" aria-label="Chú thích nội dung">
-        <span><i class="core"></i>Cốt lõi</span>
-        <span><i class="question"></i>Câu hỏi từng phần</span>
-        <span><i class="open"></i>Luôn mở</span>
-      </div>
-    </div>
-    <div class="sm-map" id="smMap">
-      <div class="sm-zones" id="smZones"></div>
-    </div>
-  </section>
-
-  <section class="sm-reference-strip">
-    <div><span class="sm-kicker">KHO TRA CỨU VẪN GIỮ</span><h2>Không bắt bạn học thuộc mọi thứ</h2><p>Phím tắt và thư viện công thức cũ vẫn tồn tại như kho tra cứu. Trong giáo trình mới, các phím/hàm quan trọng được đưa vào đúng bài học và giải thích theo ngữ cảnh.</p></div>
-    <div class="sm-reference-actions"><a href="phimtatexcel.html">Kho phím tắt →</a><a href="congthucexcel.html">Kho công thức →</a></div>
-  </section>
-
-  <section class="sm-footer-actions">
-    <a href="practice-video.html"><span>SAU KHI HỌC</span><strong>Chuyển sang Thực hành →</strong></a>
-    <a href="professional-access.html?intro=1"><span>ỨNG DỤNG CAO NHẤT</span><strong>Professional Track →</strong></a>
+  <section class="lp-module-view">
+    <div class="lp-back-row"><a class="lp-btn" href="skill-map.html">← Tất cả module</a><a class="lp-btn" href="index.html#ky-nang-excel">← Trang chủ</a></div>
+    <header class="lp-module-header">
+      <div><span class="lp-kicker" id="lpModuleLabel">MODULE</span><h2 id="lpModuleTitle">Module</h2><p id="lpModuleDesc"></p><div class="lp-module-outcome" id="lpModuleOutcome"></div></div>
+      <a class="lp-btn primary" id="lpModuleStart" href="#">Bắt đầu module →</a>
+    </header>
+    <div class="lp-list" id="lpLessonList"></div>
+    <div class="lp-footnote">Khi mở một bài, nút quay lại sẽ đưa bạn về đúng module này. Vị trí cuộn của danh sách cũng được ghi nhớ trong phiên hiện tại.</div>
   </section>
 </main>
 
@@ -106,12 +75,13 @@
 <script src="knowledge-data-analysis.js?v=20260909-kv2"></script>
 <script src="knowledge-data-advanced.js?v=20260909-kv2"></script>
 <script src="knowledge-depth-v1.js?v=20260910-depth1"></script>
+<script src="learning-platform-catalog-v1.js?v=20260911-session1"></script>
+<script src="skill-map-platform-v1.js?v=20260911-session1"></script>
 <script src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="simple-nav.js"></script>
 <script defer src="theme-unified-v32.js"></script>
 <script defer src="global-search.js?v=20260909-kv2"></script>
-<script defer src="skill-map.js?v=20260909-kv2"></script>
 <script defer src="avp-core.js"></script>
 </body>
 </html>
