@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Homework | Learn Excel with Anh Văn Phòng</title>
+<meta name="theme-color" content="#217346">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="avp-core.css">
+<link rel="stylesheet" href="admin-homework.css?v=20260910-standalone1">
+<link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui2" data-avp-ui-system>
+</head>
+<body class="ahw-body">
+<script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script>
+<nav class="top-simple-nav" aria-label="Điều hướng chính"><div class="top-simple-links"><a href="index.html">Trang chủ</a><a href="skill-map.html">Học</a><a href="practice-video.html">Thực hành</a><a href="tools-center.html">Công cụ</a><span class="auth-nav-slot"></span><button id="themeToggle" class="top-theme-button" type="button">◐</button></div><button class="top-mobile-toggle" type="button">☰</button></nav>
+
+<main class="ahw-page" id="adminHomeworkStandalone">
+  <div class="ahw-topbar"><a href="admin.html">← Admin chính</a><a href="homework.html" target="_blank" rel="noopener">Xem trang Homework ↗</a></div>
+  <header class="ahw-hero"><span>ADMIN · HOMEWORK ĐỘC LẬP</span><h1>Quản lý Bài tập về nhà</h1><p>Không phụ thuộc YouTube Project. Từ Bài 02 trở đi, nếu để trống Video hướng dẫn, hệ thống ưu tiên lấy Video giải của bài đứng ngay trước trong cùng chủ đề.</p></header>
+
+  <section class="ahw-layout">
+    <aside class="ahw-list-panel">
+      <div class="ahw-list-head"><div><span>THƯ VIỆN</span><h2>Homework hiện có</h2></div><button type="button" id="ahwNew">＋ Bài mới</button></div>
+      <label class="ahw-filter"><span>Lọc chủ đề</span><select id="ahwTopicFilter"><option value="all">Tất cả chủ đề</option></select></label>
+      <div class="ahw-list" id="ahwList"><p class="ahw-loading">Đang kiểm tra quyền Admin…</p></div>
+    </aside>
+
+    <section class="ahw-editor">
+      <div class="ahw-editor-head"><div><span id="ahwMode">BÀI MỚI</span><h2 id="ahwEditorTitle">Tạo Homework</h2></div><button type="button" id="ahwReload">↻ Tải lại</button></div>
+      <form id="ahwForm" novalidate>
+        <input type="hidden" id="ahwId">
+        <div class="ahw-grid">
+          <label><span>Chủ đề *</span><input id="ahwTopic" list="ahwTopicOptions" maxlength="120" required placeholder="Ví dụ: Power Query"></label>
+          <label><span>STT *</span><input id="ahwOrder" type="number" min="1" step="1" value="1" required></label>
+          <label class="wide"><span>Tên bài *</span><input id="ahwTitle" maxlength="180" required placeholder="Tên bài tập hiển thị trên card"></label>
+          <label class="wide"><span>File bài tập · link / đường dẫn</span><input id="ahwFile" maxlength="1200" placeholder="downloads/...xlsx hoặc https://..."></label>
+          <label class="wide"><span>Link Video hướng dẫn *</span><input id="ahwGuide" maxlength="1200" placeholder="https://youtu.be/..."><small id="ahwGuideNote">Bài 01 phải gắn thủ công trước khi phát hành.</small></label>
+          <label class="wide"><span>Link Video giải bài · có thể gắn sau</span><input id="ahwSolution" maxlength="1200" placeholder="https://youtu.be/..."></label>
+          <label><span>Hint 1</span><textarea id="ahwHint1" rows="5" maxlength="1400" placeholder="Gợi ý nhẹ, không lộ đáp án"></textarea></label>
+          <label><span>Hint 2</span><textarea id="ahwHint2" rows="5" maxlength="1400" placeholder="Gợi ý mạnh hơn"></textarea></label>
+          <label class="wide ahw-status-field"><span>Trạng thái</span><select id="ahwStatus"><option value="draft">Bản nháp</option><option value="published">Phát hành</option></select><small>Chỉ được Phát hành khi đã có Video hướng dẫn. Video giải có thể bổ sung sau.</small></label>
+        </div>
+        <datalist id="ahwTopicOptions"></datalist>
+        <div class="ahw-actions"><button type="submit" id="ahwSave">Lưu Homework</button><button type="button" class="secondary" id="ahwReset">Làm mới form</button><button type="button" class="danger" id="ahwDelete" hidden>Xóa bài</button><p id="ahwMessage" class="ahw-message" role="status"></p></div>
+      </form>
+    </section>
+  </section>
+</main>
+
+<script defer src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="simple-nav.js"></script>
+<script defer src="avp-core.js"></script>
+<script defer src="avp-modal.js"></script>
+<script defer src="admin-homework.js?v=20260910-standalone1"></script>
+</body>
+</html>
