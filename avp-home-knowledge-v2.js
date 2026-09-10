@@ -65,6 +65,16 @@
     </article>`;
   }
 
+  function ensureMotionCss(){
+    let link=d.querySelector('link[data-avp-home-motion-fix]');
+    if(link)return;
+    link=d.createElement('link');
+    link.rel='stylesheet';
+    link.href='home-mini-bounce.css?v=20260910-motion3';
+    link.dataset.avpHomeMotionFix='1';
+    d.head.appendChild(link);
+  }
+
   function syncPracticeCta(){
     const cta=d.querySelector('.avp-practice-hub-cta');
     if(!cta)return;
@@ -112,6 +122,7 @@
   }
 
   function boot(){
+    ensureMotionCss();
     replaceText();
     // A late legacy renderer must not put the 14-lesson cards or old 3-flow CTA back.
     setTimeout(replaceText,250);

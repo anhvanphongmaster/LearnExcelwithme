@@ -1,54 +1,83 @@
-/*! home-mini-bounce.css — desktop + mobile, thắng vá */
-.avp-practice-hub-cta{
-  overflow:visible !important;
-}
-.avp-practice-hub-badges{
-  overflow:visible !important;
-  perspective:200px !important;
-  z-index:8 !important;
-}
+/*! home-mini-bounce.css — Home V3: force ordered badge rhythm + live AVP robot on desktop/mobile. */
+.avp-practice-hub-cta{overflow:visible!important}
+.avp-practice-hub-badges{overflow:visible!important;perspective:240px!important;transform-style:preserve-3d!important;z-index:8!important}
 .avp-mini-channel{
-  position:relative !important;
-  transform-style:preserve-3d !important;
-  transform-origin:50% 80% !important;
-  will-change:transform;
-  overflow:hidden !important;
+  position:relative!important;
+  transform-style:preserve-3d!important;
+  transform-origin:50% 82%!important;
+  backface-visibility:hidden!important;
+  will-change:transform,filter!important;
+  overflow:hidden!important;
 }
 .avp-mini-channel::after{
-  content:"" !important;
-  position:absolute !important;
-  inset:-30% !important;
-  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.0) 40%,rgba(255,255,255,.9) 50%,rgba(255,255,255,0) 60%,transparent 72%) !important;
-  pointer-events:none !important;
+  content:""!important;
+  position:absolute!important;
+  inset:-35%!important;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,0) 40%,rgba(255,255,255,.96) 50%,rgba(255,255,255,0) 60%,transparent 72%)!important;
+  pointer-events:none!important;
 }
-.avp-mini-channel-tt{
-  animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) 0s infinite !important;
+.avp-mini-channel-hw{background:#b7791f!important}
+.avp-mini-channel-pro{background:#17663d!important}
+
+/* One beat, five ordered entries. High specificity intentionally defeats desktop reduced-motion overrides. */
+html body .avp-practice-hub-badges .avp-mini-channel-tt{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) 0s infinite!important}
+html body .avp-practice-hub-badges .avp-mini-channel-yt{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) .34s infinite!important}
+html body .avp-practice-hub-badges .avp-mini-channel-hw{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) .68s infinite!important}
+html body .avp-practice-hub-badges .avp-mini-channel-grade{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) 1.02s infinite!important}
+html body .avp-practice-hub-badges .avp-mini-channel-pro{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) 1.36s infinite!important}
+html body .avp-practice-hub-badges .avp-mini-channel-tt::after{animation:avpMiniFlash5 3.2s ease-in-out 0s infinite!important}
+html body .avp-practice-hub-badges .avp-mini-channel-yt::after{animation:avpMiniFlash5 3.2s ease-in-out .34s infinite!important}
+html body .avp-practice-hub-badges .avp-mini-channel-hw::after{animation:avpMiniFlash5 3.2s ease-in-out .68s infinite!important}
+html body .avp-practice-hub-badges .avp-mini-channel-grade::after{animation:avpMiniFlash5 3.2s ease-in-out 1.02s infinite!important}
+html body .avp-practice-hub-badges .avp-mini-channel-pro::after{animation:avpMiniFlash5 3.2s ease-in-out 1.36s infinite!important}
+
+@keyframes avpMiniBeat5{
+  0%,8%,42%,100%{transform:translate3d(0,0,0) scale(1) rotateX(0) rotateY(0);filter:brightness(1)}
+  14%{transform:translate3d(0,-10px,18px) scale(1.18) rotateX(20deg) rotateY(-13deg);filter:brightness(1.16)}
+  21%{transform:translate3d(0,-2px,7px) scale(1.05) rotateX(-9deg) rotateY(9deg);filter:brightness(1.05)}
+  27%{transform:translate3d(0,-6px,12px) scale(1.10) rotateX(11deg) rotateY(-6deg);filter:brightness(1.10)}
+  35%{transform:translate3d(0,0,0) scale(1) rotateX(0) rotateY(0);filter:brightness(1)}
 }
-.avp-mini-channel-yt{
-  animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) .28s infinite !important;
+@keyframes avpMiniFlash5{
+  0%,10%,100%{transform:translateX(-145%) rotate(18deg);opacity:0}
+  16%{opacity:1}
+  29%{transform:translateX(145%) rotate(18deg);opacity:.35}
+  31%{opacity:0;transform:translateX(145%) rotate(18deg)}
 }
-.avp-mini-channel-grade{
-  animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) .56s infinite !important;
+
+/* Home robot: walking must visibly move its limbs/body even when the desktop OS requests reduced motion. */
+html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-leg-l{animation:avpBotStep .36s linear infinite!important}
+html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-leg-r{animation:avpBotStep .36s linear infinite reverse!important}
+html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-arm-l{animation:avpBotStep .36s linear infinite reverse!important}
+html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-arm-r{animation:avpBotStep .36s linear infinite!important}
+html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-head{animation:avpRobotHeadBob .36s ease-in-out infinite!important}
+html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-body{animation:avpRobotBodyBob .36s ease-in-out infinite!important}
+html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-eye{animation:avpRobotBlink 3.1s ease-in-out infinite!important}
+html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-greeting .avp-bot-arm-r{animation:avpBotWaveHuman .55s ease-in-out infinite!important}
+
+@keyframes avpRobotHeadBob{
+  0%,100%{transform:translate3d(0,0,12px) rotateZ(-2deg)}
+  50%{transform:translate3d(0,-2px,14px) rotateZ(2deg)}
 }
-.avp-mini-channel-tt::after{
-  animation:avpMiniFlash 1.8s ease-in-out 0s infinite !important;
+@keyframes avpRobotBodyBob{
+  0%,100%{transform:translate3d(0,0,8px) rotateZ(1deg)}
+  50%{transform:translate3d(0,1px,10px) rotateZ(-1deg)}
 }
-.avp-mini-channel-yt::after{
-  animation:avpMiniFlash 1.8s ease-in-out .28s infinite !important;
+@keyframes avpRobotBlink{
+  0%,44%,48%,100%{transform:scaleY(1);opacity:1}
+  46%{transform:scaleY(.15);opacity:.7}
 }
-.avp-mini-channel-grade::after{
-  animation:avpMiniFlash 1.8s ease-in-out .56s infinite !important;
-}
-@keyframes avpMiniBounce{
-  0%,16%,100%{transform:translate3d(0,0,0) scale(1) rotateX(0) rotateY(0)}
-  30%{transform:translate3d(0,-8px,12px) scale(1.16) rotateX(18deg) rotateY(-12deg)}
-  44%{transform:translate3d(0,-2px,4px) scale(1.05) rotateX(-8deg) rotateY(8deg)}
-  56%{transform:translate3d(0,-6px,8px) scale(1.1) rotateX(10deg) rotateY(-6deg)}
-  72%{transform:translate3d(0,0,0) scale(1) rotateX(0) rotateY(0)}
-}
-@keyframes avpMiniFlash{
-  0%,20%{transform:translateX(-140%) rotate(18deg);opacity:0}
-  32%{opacity:1}
-  48%{transform:translateX(140%) rotate(18deg);opacity:.25}
-  49%,100%{opacity:0;transform:translateX(140%) rotate(18deg)}
+
+@media(prefers-reduced-motion:reduce){
+  html body .avp-practice-hub-badges .avp-mini-channel-tt{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) 0s infinite!important}
+  html body .avp-practice-hub-badges .avp-mini-channel-yt{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) .34s infinite!important}
+  html body .avp-practice-hub-badges .avp-mini-channel-hw{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) .68s infinite!important}
+  html body .avp-practice-hub-badges .avp-mini-channel-grade{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) 1.02s infinite!important}
+  html body .avp-practice-hub-badges .avp-mini-channel-pro{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) 1.36s infinite!important}
+  html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-leg-l{animation:avpBotStep .36s linear infinite!important}
+  html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-leg-r{animation:avpBotStep .36s linear infinite reverse!important}
+  html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-arm-l{animation:avpBotStep .36s linear infinite reverse!important}
+  html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-arm-r{animation:avpBotStep .36s linear infinite!important}
+  html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-head{animation:avpRobotHeadBob .36s ease-in-out infinite!important}
+  html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-body{animation:avpRobotBodyBob .36s ease-in-out infinite!important}
 }

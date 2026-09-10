@@ -1,4 +1,51 @@
-/* Practice Hub V1 — five practice routes; Guide is shared, not a sixth route. */
-.ph-flow-grid.ph-flow-grid-v1{display:grid!important;grid-template-columns:repeat(6,minmax(0,1fr))!important;gap:16px!important;align-items:stretch!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link{grid-column:span 2!important;min-height:240px!important;box-sizing:border-box!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(4){grid-column:2/span 2!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(5){grid-column:4/span 2!important}.ph-shared-guide{margin-top:16px}.ph-shared-guide .ph-flow-link{min-height:0!important;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto!important;align-items:center!important;gap:16px!important;padding:17px 19px!important;background:#fff!important;border:1px solid #d6e5db!important;border-radius:16px!important}.ph-shared-guide .ph-flow-link .icon{margin:0!important}.ph-shared-guide .ph-flow-link p{margin:2px 0 0!important}.ph-shared-guide .ph-flow-link b{white-space:nowrap!important}
-@media(max-width:950px){.ph-flow-grid.ph-flow-grid-v1{grid-template-columns:repeat(2,minmax(0,1fr))!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link,.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(4),.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(5){grid-column:auto!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:last-child{grid-column:1/-1!important}}
-@media(max-width:620px){.ph-flow-grid.ph-flow-grid-v1{grid-template-columns:1fr!important}.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:last-child{grid-column:auto!important}.ph-shared-guide .ph-flow-link{grid-template-columns:auto 1fr!important}.ph-shared-guide .ph-flow-link b{grid-column:1/-1!important}}
+/* Practice Hub V2 — five equal practice routes on desktop; Guide stays shared/full width. */
+.ph-flow-grid.ph-flow-grid-v1{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:12px!important;
+  align-items:stretch!important;
+}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link,
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(4),
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(5){
+  grid-column:auto!important;
+  min-width:0!important;
+  min-height:252px!important;
+  box-sizing:border-box!important;
+}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(1){background:#f7f5fb!important;border-color:#ddd5eb!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(2){background:#fff3f2!important;border-color:#efcfca!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(3){background:#fff8e9!important;border-color:#ead8ad!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(4){background:#eff7ff!important;border-color:#c9ddef!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:nth-child(5){background:#eef9f1!important;border-color:#c8e2d0!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:hover{filter:brightness(1.015)!important}
+.ph-shared-guide{margin-top:16px}
+.ph-shared-guide .ph-flow-link{
+  min-height:0!important;
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:16px!important;
+  padding:17px 19px!important;
+  background:#fff!important;
+  border:1px solid #d6e5db!important;
+  border-radius:16px!important;
+}
+.ph-shared-guide .ph-flow-link .icon{margin:0!important}
+.ph-shared-guide .ph-flow-link p{margin:2px 0 0!important}
+.ph-shared-guide .ph-flow-link b{white-space:nowrap!important}
+
+@media(max-width:1120px){
+  .ph-flow-grid.ph-flow-grid-v1{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .ph-flow-grid.ph-flow-grid-v1 .ph-flow-link{min-height:230px!important}
+}
+@media(max-width:800px){
+  .ph-flow-grid.ph-flow-grid-v1{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:last-child{grid-column:1/-1!important}
+}
+@media(max-width:620px){
+  .ph-flow-grid.ph-flow-grid-v1{grid-template-columns:1fr!important}
+  .ph-flow-grid.ph-flow-grid-v1 .ph-flow-link:last-child{grid-column:auto!important}
+  .ph-shared-guide .ph-flow-link{grid-template-columns:auto 1fr!important}
+  .ph-shared-guide .ph-flow-link b{grid-column:1/-1!important}
+}
