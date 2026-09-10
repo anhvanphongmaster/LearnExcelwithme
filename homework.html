@@ -4,48 +4,63 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bài tập về nhà | Learn Excel with Anh Văn Phòng</title>
+<meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
 <link rel="stylesheet" href="global-search.css">
 <link rel="stylesheet" href="avp-core.css">
-<link rel="stylesheet" href="homework.css?v=20260910-hw2">
-<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="practice-roll.css?v=20260901-rollfix3">
+<link rel="stylesheet" href="homework.css?v=20260910-standalone1">
 <link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui2" data-avp-ui-system>
 </head>
 <body class="hw-body">
 <script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script>
 <nav class="top-simple-nav" aria-label="Điều hướng chính"><div class="top-simple-links"><a href="index.html">Trang chủ</a><a href="skill-map.html">Học</a><a href="practice-video.html">Thực hành</a><a href="tools-center.html">Công cụ</a><button id="avpSearchTrigger" class="top-search-button" type="button">Tìm kiếm</button><span class="auth-nav-slot"></span><button id="themeToggle" class="top-theme-button" type="button">◐</button></div><button class="top-mobile-toggle" type="button">☰</button></nav>
+
 <main class="hw-page">
   <p class="hw-back"><a href="practice-video.html">← Practice Hub</a></p>
   <header class="hw-hero">
-    <div><span>HOMEWORK · THEO VIDEO YOUTUBE</span><h1>Làm ngắn, hiểu sâu, video sau chữa đúng chỗ khó</h1><p>Bài tập về nhà không phải bài thi. Mỗi bài chỉ khoảng 5–15 phút, tập trung vào phần khó hoặc dễ sai của video. Bí thì mở Hint; lời giải đầy đủ chỉ xuất hiện khi video chữa được phát hành.</p></div>
+    <span>HOMEWORK · LUỒNG ĐỘC LẬP</span>
+    <h1>Bài tập về nhà theo từng chủ đề</h1>
+    <p>Mỗi bài nối trực tiếp từ video hướng dẫn: xem video → tải file → tự làm → mở Hint khi bí → xem video giải khi được phát hành.</p>
   </header>
 
-  <section class="hw-loop" aria-label="Quy trình học">
-    <strong>HỌC</strong><i>→</i><strong>LÀM</strong><i>→</i><strong>BÍ THÌ XEM HINT</strong><i>→</i><strong>VIDEO SAU CHỮA</strong><i>→</i><strong>HỌC TIẾP</strong>
+  <section class="hw-topic-view" id="hwTopicView" aria-live="polite">
+    <div class="hw-section-head"><div><span>CHỦ ĐỀ</span><h2>Chọn chủ đề muốn luyện</h2></div><small>Mỗi chủ đề hiển thị số bài tập và số video giải đã có</small></div>
+    <div class="hw-topic-list" id="hwTopicList"><div class="hw-loading">Đang tải Homework…</div></div>
   </section>
 
-  <section class="hw-toolbar" aria-label="Lọc bài tập">
-    <label><span>Chủ đề</span><select id="hwTopic"><option value="all">Tất cả chủ đề</option></select></label>
-    <label><span>Trạng thái</span><select id="hwProgress"><option value="all">Tất cả</option><option value="not_started">Chưa làm</option><option value="in_progress">Đang làm</option><option value="done">Đã làm</option></select></label>
-    <label><span>Sắp xếp</span><select id="hwSort"><option value="newest">Mới nhất</option><option value="oldest">Cũ nhất</option></select></label>
+  <section class="hw-lesson-view" id="hwLessonView" hidden aria-live="polite">
+    <button type="button" class="hw-topic-back" id="hwTopicBack">← Chọn chủ đề khác</button>
+    <div class="hw-section-head"><div><span id="hwTopicKicker">HOMEWORK</span><h2 id="hwTopicTitle">Chủ đề</h2><p id="hwTopicCount"></p></div><small>Card ở giữa là bài đang chọn</small></div>
+    <div class="avp-roll-shell hw-roll-shell">
+      <div class="avp-practice-roll hw-lesson-roll" id="hwLessonRoll" data-practice-roll data-roll-kind="lesson" tabindex="0">
+        <div class="avp-roll-stage" id="hwLessonStage" data-practice-roll-stage></div>
+        <div class="avp-roll-dots" data-practice-roll-dots></div>
+      </div>
+      <p class="avp-roll-hint">Kéo / vuốt · lăn chuột · phím ← →</p>
+    </div>
   </section>
-
-  <section id="hwLibrary" class="hw-library" aria-live="polite">
-    <div class="hw-loading">Đang tải bài tập về nhà…</div>
-  </section>
-
-  <section id="hwDetail" class="hw-detail" hidden aria-live="polite"></section>
 </main>
+
+<dialog class="hw-hint-dialog" id="hwHintDialog">
+  <form method="dialog" class="hw-hint-card">
+    <button class="hw-hint-close" value="close" aria-label="Đóng">×</button>
+    <span id="hwHintLabel">HINT</span>
+    <h2 id="hwHintTitle">Gợi ý</h2>
+    <p id="hwHintText"></p>
+    <button class="hw-hint-done" value="close">Đã hiểu</button>
+  </form>
+</dialog>
+
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="analytics-tracker.js"></script>
 <script defer src="simple-nav.js?v=20260901-rollfix3"></script>
 <script defer src="avp-core.js"></script>
-<script defer src="avp-modal.js"></script>
-<script defer src="avp-secure-download.js?v=20260830-access1"></script>
 <script defer src="global-search.js"></script>
-<script defer src="homework.js?v=20260910-hw2"></script>
+<script defer src="practice-roll.js?v=20260901-rollfix3"></script>
+<script defer src="homework.js?v=20260910-standalone1"></script>
 </body>
 </html>
