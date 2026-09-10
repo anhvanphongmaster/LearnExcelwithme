@@ -65,7 +65,25 @@
     </article>`;
   }
 
+  function syncPracticeCta(){
+    const cta=d.querySelector('.avp-practice-hub-cta');
+    if(!cta)return;
+    const copy=cta.querySelector('.avp-mobile-main-cta-copy');
+    const smalls=copy?[...copy.querySelectorAll('small')]:[];
+    if(smalls[0])smalls[0].textContent='5 luồng thực hành trong cùng một khu';
+    if(smalls[1]){
+      smalls[1].textContent='01 TikTok · 02 YouTube · 03 Homework · 04 Tự chấm · 05 Pro';
+      smalls[1].style.fontSize='11px';
+      smalls[1].style.lineHeight='1.45';
+    }
+    const badges=cta.querySelector('.avp-practice-hub-badges');
+    if(badges&&badges.children.length!==5){
+      badges.innerHTML='<span class="avp-mini-channel avp-mini-channel-tt">♪</span><span class="avp-mini-channel avp-mini-channel-yt">▶</span><span class="avp-mini-channel" style="background:#b7791f">✎</span><span class="avp-mini-channel avp-mini-channel-grade">✓</span><span class="avp-mini-channel" style="background:#17663d">◆</span>';
+    }
+  }
+
   function replaceText(){
+    syncPracticeCta();
     const section=d.getElementById('ky-nang-excel')||d.querySelector('.home-path');
     if(!section)return false;
 
@@ -83,14 +101,14 @@
 
     const tease=d.querySelector('#avpScrollToPath .avp-tease-title');
     if(tease){
-      tease.innerHTML='<span class="avp-tease-chevs" aria-hidden="true"><span>▾</span><span>▾</span><span>▾</span></span> 5 luồng học · Bảng xếp hạng';
+      tease.innerHTML='<span class="avp-tease-chevs" aria-hidden="true"><span>▾</span><span>▾</span><span>▾</span></span> Lộ trình 24 bài · Bảng xếp hạng';
     }
     return true;
   }
 
   function boot(){
     replaceText();
-    // A late legacy renderer must not put the 14-lesson cards back.
+    // A late legacy renderer must not put the 14-lesson cards or old 3-flow CTA back.
     setTimeout(replaceText,250);
     setTimeout(replaceText,900);
   }
