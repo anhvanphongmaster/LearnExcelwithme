@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260910-practice-homework-motion1";
+const CACHE = "learnexcel-assets-v20260910-knowledge-reader1";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -41,6 +41,7 @@ const ASSETS = [
   "./knowledge.html",
   "./knowledge-v2.css",
   "./knowledge-v2.js",
+  "./knowledge-reader-menu-v1.css",
   "./knowledge-depth-v1.css",
   "./knowledge-depth-v1.js",
   "./knowledge-data-foundation.js",

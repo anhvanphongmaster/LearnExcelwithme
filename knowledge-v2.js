@@ -7,10 +7,14 @@
     analysis:{id:'analysis',number:'03',label:'ANALYSIS',name:'Phân tích & Báo cáo',short:'Table, Pivot, KPI, chart, dashboard và handover.'},
     advanced:{id:'advanced',number:'04',label:'ADVANCED',name:'Nâng cao & Tự động hóa',short:'Formula hiện đại, Power Query, VBA và workflow.'}
   };
+  const ZONE_ORDER=['foundation','skills','analysis','advanced'];
   const LAST_KEY='avp_knowledge_last_v2';
   const lessons=(window.AVPKnowledgeLessons||[]).slice().sort((a,b)=>a.order-b.order);
   const byId=new Map(lessons.map(x=>[x.id,x]));
+  const firstByZone=new Map(ZONE_ORDER.map(zone=>[zone,lessons.find(x=>x.zone===zone)]));
   const $=id=>document.getElementById(id);
+  let currentLesson=null;
+  let currentSectionIndex=0;
 
   function esc(value){
     return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -18,10 +22,35 @@
   function urlFor(id){return `knowledge.html?lesson=${encodeURIComponent(id)}`}
   function requestedId(){return new URLSearchParams(location.search).get('lesson')||lessons[0]?.id||''}
   function kindLabel(kind){return kind==='extension'?'MỞ RỘNG':'CỐT LÕI'}
+  function sectionFromHash(lesson){
+    const match=String(location.hash||'').match(/^#sec-(\d+)$/);
+    if(!match)return 0;
+    return Math.max(0,Math.min((lesson.sections?.length||1)-1,Number(match[1])-1));
+  }
+
+  function renderCourseNav(lesson){
+    const host=$('kvCourseNav');
+    if(!host)return;
+    const idx=lessons.findIndex(x=>x.id===lesson.id);
+    const prev=idx>0?lessons[idx-1]:null;
+    const next=idx<lessons.length-1?lessons[idx+1]:null;
+    const left=prev
+      ? `<a class="kv-course-edge prev" href="${urlFor(prev.id)}"><small>← BÀI TRƯỚC</small><strong>${String(prev.order).padStart(2,'0')} · ${esc(prev.title)}</strong></a>`
+      : `<a class="kv-course-edge prev is-boundary" href="index.html"><small>← TRANG CHỦ</small><strong>Về Trang chủ</strong></a>`;
+    const right=next
+      ? `<a class="kv-course-edge next" href="${urlFor(next.id)}"><small>BÀI TIẾP THEO →</small><strong>${String(next.order).padStart(2,'0')} · ${esc(next.title)}</strong></a>`
+      : `<a class="kv-course-edge next is-boundary" href="practice-video.html"><small>ĐẾN THỰC HÀNH →</small><strong>Chọn 5 luồng thực hành</strong></a>`;
+    const stages=ZONE_ORDER.map(zoneId=>{
+      const zone=ZONES[zoneId];
+      const first=firstByZone.get(zoneId);
+      const href=first?urlFor(first.id):'#';
+      return `<a class="kv-stage-tab ${zoneId===lesson.zone?'active':''}" href="${href}" ${zoneId===lesson.zone?'aria-current="step"':''}><span>${zone.number} · ${esc(zone.label)}</span><strong>${esc(zone.name)}</strong></a>`;
+    }).join('');
+    host.innerHTML=`${left}<div class="kv-stage-tabs" aria-label="4 khối kiến thức">${stages}</div>${right}`;
+  }
 
   function renderHero(lesson){
     const zone=ZONES[lesson.zone];
-    $('kvBreadcrumb').innerHTML=`<a href="skill-map.html">Kiến thức Excel</a><i>/</i><a href="skill-map.html#zone-${esc(zone.id)}">${esc(zone.name)}</a><i>/</i><b>Bài ${String(lesson.order).padStart(2,'0')}</b>`;
     $('kvHero').innerHTML=`
       <div>
         <div class="kv-eyebrow">
@@ -35,7 +64,7 @@
       </div>
       <div class="kv-hero-side">
         <div class="kv-hero-card"><span>BẠN ĐANG HỌC GÌ?</span><strong>${esc(zone.name)}</strong><p>${esc(zone.short)}</p></div>
-        <div class="kv-hero-card"><span>NGUYÊN TẮC HỌC</span><strong>Không khóa đường học</strong><p>Bạn có thể quay lại Skill Map và nhảy tới bất kỳ bài nào phù hợp với trình độ hiện tại.</p></div>
+        <div class="kv-hero-card"><span>CÁCH ĐỌC BÀI</span><strong>Chọn nội dung ở menu bên trái</strong><p>Mỗi lần chỉ hiện một nội dung ở bên phải. Menu được ghim khi cuộn để bạn đổi phần mà không phải kéo qua một trang quá dài.</p></div>
         <div class="kv-hero-card"><span>CÂU HỎI THEO TỪNG PHẦN</span><strong>${lesson.sections.reduce((n,s)=>n+(s.questions?.length||0),0)} câu kiểm tra nhanh</strong><p>Chọn đáp án để xem giải thích ngay. Không có XP, không có nút “đánh dấu đã học”.</p></div>
       </div>`;
   }
@@ -47,7 +76,7 @@
         <section class="kv-intro-box"><h2>Bạn sẽ học</h2><ul>${lesson.outcomes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>
         <section class="kv-intro-box"><h2>Bạn sẽ dùng khi</h2><ul>${lesson.useCases.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></section>
       </div>
-      <div class="kv-prereq"><span>Kiến thức nên biết trước:</span>${prereq.length?prereq.map(x=>`<a href="${urlFor(x.id)}">Bài ${String(x.order).padStart(2,'0')} · ${esc(x.title)}</a>`).join(''):'<em>Không yêu cầu — có thể bắt đầu từ đây.</em>'}</div>`;
+      <div class="kv-prereq"><span>Kiến thức nên biết trước:</span>${prereq.length?prereq.map(x=>`<em class="kv-prereq-item">Bài ${String(x.order).padStart(2,'0')} · ${esc(x.title)}</em>`).join(''):'<em>Không yêu cầu — có thể bắt đầu từ đây.</em>'}</div>`;
   }
 
   function renderQuestion(q,index){
@@ -76,10 +105,8 @@
     </section>`;
   }
 
-  function bindQuestions(lesson){
+  function bindQuestions(lesson,sectionIndex){
     document.querySelectorAll('.kv-question').forEach(card=>{
-      const sectionEl=card.closest('.kv-section');
-      const sectionIndex=Number(sectionEl?.dataset.sectionIndex||0);
       const qIndex=Number(card.dataset.question||0);
       const q=lesson.sections[sectionIndex]?.questions?.[qIndex];
       if(!q)return;
@@ -102,39 +129,53 @@
 
   function renderSidebar(lesson){
     const zone=ZONES[lesson.zone];
-    const zoneOrder=['foundation','skills','analysis','advanced'];
     $('kvSidebar').innerHTML=`
       <span class="kv-side-label">${esc(zone.number)} · ${esc(zone.label)}</span>
       <h2 class="kv-side-title">${esc(lesson.title)}</h2>
-      <nav class="kv-zone-jump" aria-label="Chuyển chặng">${zoneOrder.map(id=>`<a class="${id===lesson.zone?'active':''}" href="skill-map.html#zone-${id}">${ZONES[id].number} · ${esc(ZONES[id].name.replace(' Excel',''))}</a>`).join('')}</nav>
-      <nav class="kv-outline" aria-label="Mục lục bài học">${lesson.sections.map((s,i)=>`<a href="#sec-${i+1}" data-outline="${i}"><span class="kv-outline-num">${String(i+1).padStart(2,'0')}</span><span>${esc(s.title)}</span></a>`).join('')}</nav>
-      <div class="kv-side-progress"><span>Đang ở phần</span><strong id="kvSectionProgress">1 / ${lesson.sections.length}</strong></div>`;
+      <nav class="kv-outline" aria-label="Nội dung bài học">${lesson.sections.map((s,i)=>`<button type="button" data-outline="${i}" aria-current="${i===0?'true':'false'}"><span class="kv-outline-num">${String(i+1).padStart(2,'0')}</span><span>${esc(s.title)}</span></button>`).join('')}</nav>
+      <div class="kv-side-progress"><span>Đang ở nội dung</span><strong id="kvSectionProgress">1 / ${lesson.sections.length}</strong></div>`;
+    $('kvSidebar').addEventListener('click',event=>{
+      const button=event.target.closest('[data-outline]');
+      if(!button)return;
+      activateSection(Number(button.dataset.outline),{scroll:true,updateHash:true});
+    });
   }
 
-  function renderBottomNav(lesson){
-    const idx=lessons.findIndex(x=>x.id===lesson.id);
-    const prev=idx>0?lessons[idx-1]:null;
-    const next=idx<lessons.length-1?lessons[idx+1]:null;
-    $('kvBottomNav').innerHTML=`
-      ${prev?`<a href="${urlFor(prev.id)}"><small>← BÀI TRƯỚC</small><strong>${String(prev.order).padStart(2,'0')} · ${esc(prev.title)}</strong></a>`:'<a href="skill-map.html"><small>← LỘ TRÌNH</small><strong>Xem 24 bài học</strong></a>'}
-      ${next?`<a href="${urlFor(next.id)}"><small>BÀI TIẾP THEO →</small><strong>${String(next.order).padStart(2,'0')} · ${esc(next.title)}</strong></a>`:'<a href="practice-video.html"><small>HOÀN THÀNH KIẾN THỨC →</small><strong>Chuyển sang Thực hành</strong></a>'}`;
+  function setSidebarActive(index){
+    document.querySelectorAll('[data-outline]').forEach((button,i)=>{
+      const active=i===index;
+      button.classList.toggle('active',active);
+      button.setAttribute('aria-current',active?'true':'false');
+    });
+    const progress=$('kvSectionProgress');
+    if(progress&&currentLesson)progress.textContent=`${index+1} / ${currentLesson.sections.length}`;
   }
 
-  function bindSectionObserver(lesson){
-    const outline=[...document.querySelectorAll('[data-outline]')];
-    const sections=[...document.querySelectorAll('.kv-section')];
-    if(!sections.length)return;
-    const setActive=index=>{
-      outline.forEach((a,i)=>a.classList.toggle('active',i===index));
-      const progress=$('kvSectionProgress');if(progress)progress.textContent=`${index+1} / ${lesson.sections.length}`;
-    };
-    setActive(0);
-    if(!('IntersectionObserver'in window))return;
-    const observer=new IntersectionObserver(entries=>{
-      const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top)[0];
-      if(visible)setActive(Number(visible.target.dataset.sectionIndex||0));
-    },{rootMargin:'-18% 0px -68% 0px',threshold:[0,.01]});
-    sections.forEach(s=>observer.observe(s));
+  function updateSectionHash(index){
+    const target=`#sec-${index+1}`;
+    if(location.hash===target)return;
+    history.replaceState(null,'',`${location.pathname}${location.search}${target}`);
+  }
+
+  function scrollContentToTop(){
+    const target=$('kvSections');
+    if(!target)return;
+    const mobile=window.matchMedia&&window.matchMedia('(max-width:820px)').matches;
+    const offset=mobile?132:88;
+    const top=Math.max(0,target.getBoundingClientRect().top+window.pageYOffset-offset);
+    window.scrollTo({top,behavior:'smooth'});
+  }
+
+  function activateSection(index,{scroll=false,updateHash=false}={}){
+    if(!currentLesson)return;
+    const max=Math.max(0,currentLesson.sections.length-1);
+    const next=Math.max(0,Math.min(max,Number(index)||0));
+    currentSectionIndex=next;
+    $('kvSections').innerHTML=renderSection(currentLesson.sections[next],next);
+    setSidebarActive(next);
+    bindQuestions(currentLesson,next);
+    if(updateHash)updateSectionHash(next);
+    if(scroll)requestAnimationFrame(scrollContentToTop);
   }
 
   function renderNotFound(){
@@ -146,16 +187,19 @@
     if(!lessons.length){renderNotFound();return}
     const lesson=byId.get(requestedId());
     if(!lesson){renderNotFound();return}
+    currentLesson=lesson;
+    currentSectionIndex=sectionFromHash(lesson);
     localStorage.setItem(LAST_KEY,lesson.id);
     document.title=`Bài ${String(lesson.order).padStart(2,'0')} · ${lesson.title} | Anh Văn Phòng`;
+    renderCourseNav(lesson);
     renderHero(lesson);
     renderIntro(lesson);
     renderSidebar(lesson);
-    $('kvSections').innerHTML=lesson.sections.map(renderSection).join('');
-    renderBottomNav(lesson);
-    bindQuestions(lesson);
-    bindSectionObserver(lesson);
-    if(location.hash){requestAnimationFrame(()=>document.querySelector(location.hash)?.scrollIntoView({block:'start'}))}
+    activateSection(currentSectionIndex,{scroll:false,updateHash:false});
+    window.addEventListener('hashchange',()=>{
+      const next=sectionFromHash(lesson);
+      if(next!==currentSectionIndex)activateSection(next,{scroll:true,updateHash:false});
+    });
   }
 
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});
