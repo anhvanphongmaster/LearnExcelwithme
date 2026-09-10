@@ -4,7 +4,7 @@
   window.__AVP_ADMIN_HOMEWORK_STANDALONE_V2__=true;
 
   const $=id=>document.getElementById(id);
-  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
   const rowsByTopic=(a,b)=>String(a.topic||'').localeCompare(String(b.topic||''),'vi')||Number(a.order_no||0)-Number(b.order_no||0);
   let rows=[],editingId=null,loaded=false;
 
@@ -23,10 +23,10 @@
 
     const wrap=document.createElement('div');
     wrap.innerHTML=`
-      <div class="admin-section-heading admin-view-section" data-admin-section="homework" hidden>
+      <div class="admin-section-heading admin-view-section admin-view-hidden" data-admin-section="homework" hidden>
         <span>📝 YOUTUBE PRACTICE</span><h2>Homework tách riêng khỏi Project</h2>
       </div>
-      <section class="admin-panel admin-view-section ahw-panel" data-admin-section="homework" id="adminHomeworkStandalonePanel" hidden>
+      <section class="admin-panel admin-view-section ahw-panel admin-view-hidden" data-admin-section="homework" id="adminHomeworkStandalonePanel" hidden>
         <div class="ahw-head">
           <div><span>HOMEWORK · HỆ RIÊNG</span><strong>Quản lý bài tập theo chủ đề</strong><p>Không đọc hoặc ghi <code>youtube_projects.parts</code>. Bài 2 trở đi có thể tự lấy video giải của bài liền trước làm video hướng dẫn.</p></div>
           <div class="ahw-head-actions"><a href="homework.html" target="_blank" rel="noopener">Xem trang học viên ↗</a><button type="button" id="ahwReload">↻ Làm mới</button></div>
@@ -110,12 +110,18 @@
     }catch(err){console.warn(err);msg(err?.message||'Không lưu được Homework.','error')}finally{btn.disabled=false}
   }
   async function removeRow(row){const ok=window.avpConfirm?await window.avpConfirm(`Xóa “${row.title}” khỏi Homework?`,{title:'Xóa Homework?',tone:'danger',ok:'Xóa',cancel:'Hủy'}):confirm(`Xóa “${row.title}”?`);if(!ok)return;try{await rpc('admin_homework_delete_v1',{p_id:row.id});msg('Đã xóa Homework.','ok');await load()}catch(e){msg(e?.message||'Không xóa được Homework.','error')}}
-  function activateView(){document.querySelectorAll('.admin-view-tabs [data-admin-view]').forEach(b=>b.classList.toggle('active',b.dataset.adminView==='homework'));document.querySelectorAll('.admin-view-section').forEach(s=>{s.hidden=s.dataset.adminSection!=='homework'});try{localStorage.setItem('avp_admin_view_v1','homework')}catch{}if(!loaded)load();window.dispatchEvent(new CustomEvent('avp:admin-homework-open'))}
+  function activateView(){
+    document.querySelectorAll('.admin-view-tabs [data-admin-view]').forEach(b=>{const on=b.dataset.adminView==='homework';b.classList.toggle('active',on);b.setAttribute('aria-selected',on?'true':'false')});
+    document.querySelectorAll('[data-admin-section]').forEach(s=>{const show=s.dataset.adminSection==='homework';s.classList.toggle('admin-view-hidden',!show);if(s.dataset.adminSection==='homework')s.hidden=!show});
+    try{localStorage.setItem('avp_admin_view_v1','homework')}catch{}
+    if(!loaded)load();window.dispatchEvent(new CustomEvent('avp:admin-homework-open'))
+  }
   function bind(){
     const tab=document.querySelector('.admin-view-tabs [data-admin-view="homework"]');tab?.addEventListener('click',e=>{e.preventDefault();activateView()});
-    document.querySelectorAll('.admin-view-tabs [data-admin-view]:not([data-admin-view="homework"])').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-admin-section="homework"]').forEach(s=>s.hidden=true)}));
+    document.querySelectorAll('.admin-view-tabs [data-admin-view]:not([data-admin-view="homework"])').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-admin-section="homework"]').forEach(s=>{s.hidden=true;s.classList.add('admin-view-hidden')})}));
     $('ahwReload')?.addEventListener('click',load);$('ahwAdd')?.addEventListener('click',()=>openEditor());$('ahwClose')?.addEventListener('click',closeEditor);$('ahwCancel')?.addEventListener('click',closeEditor);$('ahwEditor')?.addEventListener('submit',save);$('ahwTopicFilter')?.addEventListener('change',render);$('ahwStatusFilter')?.addEventListener('change',render);$('ahwSearch')?.addEventListener('input',render);
-    ['ahwTopic','ahwOrder'].forEach(id=>$(id)?.addEventListener('change',()=>updateChainPreview({fill:true})));
+    $('ahwTopic')?.addEventListener('change',()=>{if(!editingId)$('ahwOrder').value=nextOrder($('ahwTopic').value.trim());updateChainPreview({fill:true})});
+    $('ahwOrder')?.addEventListener('change',()=>updateChainPreview({fill:true}));
     $('ahwFileInput')?.addEventListener('change',()=>{$('ahwFileState').textContent=$('ahwFileInput').files?.[0]?`Sẽ upload: ${$('ahwFileInput').files[0].name}`:($('ahwFileUrl').value?'Đang giữ file hiện tại.':'Chưa gắn file.')});
     $('ahwList')?.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const row=rows.find(r=>String(r.id)===String(b.closest('[data-id]')?.dataset.id));if(!row)return;b.dataset.act==='edit'?openEditor(row):removeRow(row)});
   }
