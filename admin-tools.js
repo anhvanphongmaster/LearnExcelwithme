@@ -1,3 +1,4 @@
+(()=>{if(document.querySelector('script[data-admin-homework-v2]'))return;const s=document.createElement('script');s.src='admin-homework.js?v=20260910-standalone2';s.defer=true;s.dataset.adminHomeworkV2='1';document.head.appendChild(s)})();
 (()=>{'use strict';const $=id=>document.getElementById(id),BUCKET='site-downloads';let tools=[],ideas=[],edit=null,loaded=false,busy=false,mergeSource=null;
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 async function client(){for(let i=0;i<40;i++){const sb=window.avpSupabase||window.supabaseClient;if(sb?.rpc)return sb;await new Promise(r=>setTimeout(r,100))}throw new Error('connection_unavailable')}
