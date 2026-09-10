@@ -64,7 +64,6 @@
     });
   }
 
-  /* Parallax nhẹ theo chuột trên banner trong khung */
   function setupBannerParallax() {
     if (window.matchMedia && window.matchMedia("(hover: none)").matches) return;
     var banners = document.querySelectorAll(BANNER_SEL);
@@ -92,7 +91,7 @@
           var r = el.getBoundingClientRect();
           var px = (e.clientX - r.left) / Math.max(1, r.width) - 0.5;
           var py = (e.clientY - r.top) / Math.max(1, r.height) - 0.5;
-          mx = px * 10; /* rất nhẹ — không vỡ layout */
+          mx = px * 10;
           my = py * 6;
           if (!raf) raf = requestAnimationFrame(tick);
         },
@@ -121,7 +120,16 @@
   } else {
     boot();
   }
-  // nội dung render muộn (practice grid…)
   setTimeout(boot, 600);
   setTimeout(boot, 1800);
+})();
+
+/* Learning Platform Session 1 — render 8 equal modules on Home without rewriting legacy page markup. */
+(function(){
+  if(window.__avpLearningPlatformHomeLoader)return;
+  window.__avpLearningPlatformHomeLoader=true;
+  var s=document.createElement('script');
+  s.src='learning-platform-home-v1.js?v=20260911-session1';
+  s.defer=true;
+  document.head.appendChild(s);
 })();
