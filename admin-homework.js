@@ -17,7 +17,7 @@
     const tabs=document.querySelector('.admin-view-tabs'),dashboard=$('adminDashboard');
     if(!tabs||!dashboard)return false;
     const youtubeTab=tabs.querySelector('[data-admin-view="youtube"]');
-    const tab=document.createElement('button');tab.type='button';tab.dataset.adminView='homework';tab.setAttribute('role','tab');
+    const tab=document.createElement('button');tab.type='button';tab.dataset.adminView='homework';tab.dataset.adminBound='homework-standalone';tab.setAttribute('role','tab');
     tab.innerHTML='<b>📝 YT Practice</b><small>Homework riêng · file & video</small>';
     youtubeTab?.after(tab) || tabs.appendChild(tab);
 
@@ -117,7 +117,7 @@
     if(!loaded)load();window.dispatchEvent(new CustomEvent('avp:admin-homework-open'))
   }
   function bind(){
-    const tab=document.querySelector('.admin-view-tabs [data-admin-view="homework"]');tab?.addEventListener('click',e=>{e.preventDefault();activateView()});
+    const tab=document.querySelector('.admin-view-tabs [data-admin-view="homework"]');tab?.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();activateView()});
     document.querySelectorAll('.admin-view-tabs [data-admin-view]:not([data-admin-view="homework"])').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-admin-section="homework"]').forEach(s=>{s.hidden=true;s.classList.add('admin-view-hidden')})}));
     $('ahwReload')?.addEventListener('click',load);$('ahwAdd')?.addEventListener('click',()=>openEditor());$('ahwClose')?.addEventListener('click',closeEditor);$('ahwCancel')?.addEventListener('click',closeEditor);$('ahwEditor')?.addEventListener('submit',save);$('ahwTopicFilter')?.addEventListener('change',render);$('ahwStatusFilter')?.addEventListener('change',render);$('ahwSearch')?.addEventListener('input',render);
     $('ahwTopic')?.addEventListener('change',()=>{if(!editingId)$('ahwOrder').value=nextOrder($('ahwTopic').value.trim());updateChainPreview({fill:true})});
