@@ -77,8 +77,13 @@
       smalls[1].style.lineHeight='1.45';
     }
     const badges=cta.querySelector('.avp-practice-hub-badges');
-    if(badges&&badges.children.length!==5){
-      badges.innerHTML='<span class="avp-mini-channel avp-mini-channel-tt">♪</span><span class="avp-mini-channel avp-mini-channel-yt">▶</span><span class="avp-mini-channel" style="background:#b7791f">✎</span><span class="avp-mini-channel avp-mini-channel-grade">✓</span><span class="avp-mini-channel" style="background:#17663d">◆</span>';
+    const needsFiveMotion=badges&&(
+      badges.children.length!==5 ||
+      !badges.querySelector('.avp-mini-channel-hw') ||
+      !badges.querySelector('.avp-mini-channel-pro')
+    );
+    if(needsFiveMotion){
+      badges.innerHTML='<span class="avp-mini-channel avp-mini-channel-tt">♪</span><span class="avp-mini-channel avp-mini-channel-yt">▶</span><span class="avp-mini-channel avp-mini-channel-hw">✎</span><span class="avp-mini-channel avp-mini-channel-grade">✓</span><span class="avp-mini-channel avp-mini-channel-pro">◆</span>';
     }
   }
 
