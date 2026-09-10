@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260910-restorehome24";
+const CACHE = "learnexcel-assets-v20260910-practiceflow2";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -16,6 +16,8 @@ const ASSETS = [
   "./homework.css",
   "./admin-homework.css",
   "./practice-hub-flow-v1.css",
+  "./practice-tiktok.css",
+  "./practice-roll.css",
   "./simple-nav.js",
   "./avp-core.js",
   "./avp-ui-system.js",
@@ -25,9 +27,12 @@ const ASSETS = [
   "./avp-pro-access-guidance-v1.js",
   "./homework.js",
   "./admin-homework.js",
+  "./practice-video.js",
+  "./practice-roll.js",
   "./global-search.js",
   "./index.html",
   "./practice-video.html",
+  "./practice-tiktok.html",
   "./homework.html",
   "./skill-map.html",
   "./skill-map.css",
