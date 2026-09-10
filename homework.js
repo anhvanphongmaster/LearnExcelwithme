@@ -52,14 +52,25 @@
     select.innerHTML='<option value="all">Tất cả chủ đề</option>'+topics.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
   }
 
+  function action(url,label,cls,{download=false}={}){
+    if(!url)return `<span class="hw-card-action ${cls} is-disabled" aria-disabled="true">${esc(label)}</span>`;
+    return `<a class="hw-card-action ${cls}" href="${esc(url)}" ${download?'download':'target="_blank" rel="noopener"'}>${esc(label)}</a>`;
+  }
+
   function card(item){
     const progress=getProgress(item.key);
+    const solutionOrNext=item.solutionUrl||item.nextUrl;
     return `<article class="hw-card" data-hw-key="${esc(item.key)}">
       <div class="hw-card-top"><span class="hw-topic">${esc(item.topic)}</span><span class="hw-status ${progress}">${statusLabel(progress)}</span></div>
-      <h2>${esc(item.title)}</h2>
+      <h2><button type="button" class="hw-card-title" data-hw-open="${esc(item.key)}">${esc(item.title)}</button></h2>
       <p>${esc(item.projectTitle)} · P${item.partNo} · ${esc(item.partTitle)}</p>
-      <div class="hw-card-meta"><span>⏱ ${item.duration} phút</span><span>${item.solutionUrl?'✓ Đã có video chữa':'○ Video chữa: chưa có'}</span></div>
-      <button type="button" data-hw-open="${esc(item.key)}">${progress==='done'?'Xem lại bài →':progress==='in_progress'?'Làm tiếp →':'Mở bài tập →'}</button>
+      <div class="hw-card-meta"><span>⏱ ${item.duration} phút</span><span>${solutionOrNext?'✓ Đã có video chữa':'○ Video chữa: chưa có'}</span></div>
+      <button type="button" class="hw-card-detail" data-hw-open="${esc(item.key)}">Nhiệm vụ & Hint →</button>
+      <div class="hw-card-actions" aria-label="Tài nguyên bài tập">
+        ${action(item.videoUrl,'▶ Xem video','is-video')}
+        ${action(item.fileUrl,'⬇ Tải bài','is-download',{download:true})}
+        ${action(solutionOrNext,'▶ Chữa bài & video tiếp theo','is-solution')}
+      </div>
     </article>`;
   }
 
@@ -72,7 +83,7 @@
       return sort==='oldest'?av-bv:bv-av;
     });
     if(!items.length){
-      host.innerHTML='<div class="hw-empty"><strong>Chưa có bài tập về nhà được phát hành</strong><p>Homework chỉ xuất hiện ở những video thật sự cần luyện thêm phần khó/dễ sai — không ép mọi video đều phải có bài.</p><a href="practice-youtube.html">Xem YouTube Project →</a></div>';
+      host.innerHTML='<div class="hw-empty"><strong>Chưa có bài tập về nhà được phát hành</strong><p>Homework chỉ xuất hiện ở những video thật sự cần luyện thêm phần khó/dễ sai — không ép mọi video đều phải có bài.</p></div>';
       return;
     }
     host.innerHTML=list.length?list.map(card).join(''):'<div class="hw-empty"><strong>Không có bài phù hợp bộ lọc</strong><p>Đổi Chủ đề hoặc Trạng thái để xem các bài khác.</p></div>';
@@ -81,12 +92,13 @@
   function openDetail(key,{push=true}={}){
     const item=items.find(x=>x.key===key);if(!item)return;
     if(getProgress(key)==='not_started')setProgress(key,'in_progress');
+    const solutionOrNext=item.solutionUrl||item.nextUrl;
     const detail=$('hwDetail'),library=$('hwLibrary'),toolbar=document.querySelector('.hw-toolbar');if(!detail||!library)return;
     detail.innerHTML=`
       <button class="hw-detail-back" type="button" data-hw-back>← Quay lại Kho Homework</button>
       <header class="hw-detail-head"><span class="eyebrow">HOMEWORK · ${esc(item.topic)}</span><h1>${esc(item.title)}</h1><p>${esc(item.context||`Bài tập ngắn nối từ ${item.projectTitle} · P${item.partNo}. Tập trung làm đúng phần khó trước khi xem lời giải.`)}</p><div class="hw-detail-meta"><span>⏱ ${item.duration} phút</span><span>${esc(item.projectTitle)}</span><span>P${item.partNo}</span></div></header>
-      <section class="hw-block hw-source"><h2>1 · Video gốc</h2><p>Xem hoặc ôn đúng video đã tạo ra bài tập này.</p>${item.videoUrl?`<a href="${esc(item.videoUrl)}" target="_blank" rel="noopener">▶ Xem video YouTube</a>`:'<p><strong>Video gốc chưa được gắn link.</strong></p>'}</section>
-      <section class="hw-block hw-file"><h2>2 · File thực hành</h2>${item.fileUrl?`<p>Dùng đúng file của bài để kết quả và video chữa khớp nhau.</p><a href="${esc(item.fileUrl)}" download>⬇ Tải file thực hành</a>`:'<p>Bài này không cần file riêng hoặc Admin chưa gắn file.</p>'}</section>
+      <section class="hw-block hw-source"><h2>1 · Video ra bài</h2><p>Đây là video hướng dẫn gốc; phần cuối video đưa ra bài tập về nhà này.</p>${item.videoUrl?`<a href="${esc(item.videoUrl)}" target="_blank" rel="noopener">▶ Xem video</a>`:'<p><strong>Video gốc chưa được gắn link.</strong></p>'}</section>
+      <section class="hw-block hw-file"><h2>2 · File thực hành</h2>${item.fileUrl?`<p>Dùng đúng file của bài để kết quả và video chữa khớp nhau.</p><a href="${esc(item.fileUrl)}" download>⬇ Tải bài</a>`:'<p>Bài này chưa có file thực hành.</p>'}</section>
       <section class="hw-block"><h2>3 · Nhiệm vụ</h2>${item.tasks.length?`<ol>${item.tasks.map(t=>`<li>${esc(t)}</li>`).join('')}</ol>`:'<p>Admin chưa nhập nhiệm vụ cho bài này.</p>'}</section>
       ${item.trap?`<section class="hw-block hw-trap"><h2>4 · Điểm dễ sai / Cú bẫy</h2><p>${esc(item.trap)}</p></section>`:''}
       <div class="hw-hints">
@@ -94,8 +106,7 @@
         <details><summary>Hint 2 · Gợi ý mạnh hơn</summary><p>${esc(item.hint2||'Chưa có Hint 2.')}</p></details>
       </div>
       <section class="hw-block"><div class="hw-progress-box"><div><h2>5 · Trạng thái của bạn</h2><p>Đây chỉ là tiến độ cá nhân, không phải điểm và không dùng để khóa bài khác.</p></div><button type="button" class="hw-progress-btn ${getProgress(key)==='done'?'done':''}" data-hw-done>${getProgress(key)==='done'?'✓ Đã làm xong · bấm để mở lại':'Tôi đã làm xong'}</button></div></section>
-      <section class="hw-block hw-solution ${item.solutionUrl?'ready':'pending'}"><h2>6 · Video chữa</h2>${item.solutionUrl?`<p>Video chữa đã phát hành. Chỉ nên xem sau khi bạn đã tự làm hoặc đã thử cả hai Hint.</p><a href="${esc(item.solutionUrl)}" target="_blank" rel="noopener">▶ Xem video chữa</a>`:'<p>Chưa phát hành. Phần khó của bài sẽ được chữa ngắn trong video YouTube kế tiếp rồi nối sang nội dung mới.</p>'}</section>
-      <section class="hw-block hw-next"><h2>7 · Học tiếp</h2>${item.nextUrl?`<p>Đã sẵn sàng chuyển sang nội dung kế tiếp.</p><a href="${esc(item.nextUrl)}">${esc(item.nextLabel||'Học tiếp')} →</a>`:'<p>Chưa gắn bài/video tiếp theo. Bạn có thể quay về YouTube Project để chọn phần khác.</p><a href="practice-youtube.html">Mở YouTube Project →</a>'}</section>`;
+      <section class="hw-block hw-solution ${solutionOrNext?'ready':'pending'}"><h2>6 · Chữa bài & video tiếp theo</h2>${solutionOrNext?`<p>Video tiếp theo bắt đầu bằng phần chữa bài này rồi nối sang nội dung mới.</p><a href="${esc(solutionOrNext)}" target="_blank" rel="noopener">▶ Xem chữa bài & video tiếp theo</a>`:'<p>Chưa phát hành. Khi video kế tiếp lên, nút chữa bài sẽ xuất hiện tại đây và trên card Homework.</p>'}</section>`;
     library.hidden=true;if(toolbar)toolbar.hidden=true;detail.hidden=false;
     detail.querySelector('[data-hw-back]')?.addEventListener('click',()=>closeDetail());
     detail.querySelector('[data-hw-done]')?.addEventListener('click',()=>{
