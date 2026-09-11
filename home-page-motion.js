@@ -104,7 +104,7 @@
     ['08','WORKFLOW & CASE','Workflow & Case thực chiến','Chọn đúng công cụ và nối Input → Transform → Calculate → Report → Validate → Deliver.','workflow-cases',5,'indigo']
   ];
 
-  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]})}
+  function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[ch]})}
   function render(){
     var shell=document.querySelector('.home-path-inner');
     var grid=shell&&shell.querySelector('.home-path-grid');
@@ -152,4 +152,45 @@
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
   setTimeout(render,700);
   setTimeout(render,1800);
+})();
+
+/* Excel Arena — highlight the existing utility card without changing the 5-card grid. */
+(function(){
+  if(window.__avpArenaHomeCard)return;
+  window.__avpArenaHomeCard=true;
+  function renderArena(){
+    var card=document.querySelector('a.home-more-race[href*="excel-race.html"]');
+    if(!card)return false;
+    card.classList.add('avp-arena-home');
+    card.setAttribute('aria-label','Excel Arena — game phản xạ Excel với Học và Rank');
+    var icon=card.querySelector(':scope > span');
+    var title=card.querySelector('strong');
+    var small=card.querySelector('small');
+    if(icon)icon.textContent='⚡';
+    if(title)title.textContent='Excel Arena';
+    if(small)small.textContent='Bạn nhớ Excel đến đâu khi thời gian đang chạy?';
+    if(!card.querySelector('.avp-arena-home-meta')){
+      var meta=document.createElement('span');
+      meta.className='avp-arena-home-meta';
+      meta.textContent='Học · Rank · 14 chủ đề';
+      card.appendChild(meta);
+    }
+    if(!card.querySelector('.avp-arena-home-badge')){
+      var badge=document.createElement('span');
+      badge.className='avp-arena-home-badge';
+      badge.textContent='NEW GAME';
+      card.appendChild(badge);
+    }
+    if(!document.getElementById('avpArenaHomeCardStyle')){
+      var css=document.createElement('style');
+      css.id='avpArenaHomeCardStyle';
+      css.textContent='.home-more-race.avp-arena-home{position:relative!important;border-color:#72ad88!important;background:linear-gradient(145deg,#eff9f2,#fff)!important;overflow:visible!important}.home-more-race.avp-arena-home:hover{border-color:#3f865d!important;background:#e9f6ed!important}.home-more-race.avp-arena-home small{color:#4f6659!important;background:transparent!important;padding:0!important;font-weight:600!important}.avp-arena-home-meta{display:block;margin-top:5px;color:#217346;font-size:10px;font-weight:900}.avp-arena-home-badge{position:absolute;top:8px;right:8px;padding:4px 7px;border-radius:999px;background:#217346;color:#fff;font-size:9px;font-weight:950;letter-spacing:.04em}@media(prefers-reduced-motion:no-preference){.avp-arena-home-badge{animation:avpArenaPulse 2.5s ease-in-out infinite}@keyframes avpArenaPulse{0%,75%,100%{box-shadow:0 0 0 0 rgba(33,115,70,0)}88%{box-shadow:0 0 0 5px rgba(33,115,70,.12)}}}body.dark-mode .home-more-race.avp-arena-home{background:#182b20!important;border-color:#47765a!important}';
+      document.head.appendChild(css);
+    }
+    return true;
+  }
+  function boot(){if(renderArena())return;var n=0,t=setInterval(function(){n++;if(renderArena()||n>20)clearInterval(t)},150)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+  setTimeout(renderArena,800);
+  setTimeout(renderArena,1800);
 })();
