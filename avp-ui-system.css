@@ -169,3 +169,202 @@ body.dark-mode input[type="file"]{background:#16241b!important;border-color:#385
 dialog{border:1px solid var(--avp-ui-border);border-radius:var(--avp-ui-radius);background:var(--avp-ui-surface);color:var(--avp-ui-text);box-shadow:var(--avp-ui-shadow);font:inherit}
 dialog::backdrop{background:rgba(7,24,15,.62);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
 [role="dialog"]{font-family:inherit}
+
+/* =========================================================
+   AVP UI SYSTEM V2 — learner-facing consistency baseline
+   Goal: one visual language across pages without replacing
+   feature-specific components that already have explicit CSS.
+   ========================================================= */
+:root{
+  --avp-ui-border-strong:#c5d8cc;
+  --avp-ui-surface-soft:#f7faf8;
+  --avp-ui-control-radius:10px;
+  --avp-ui-card-radius:14px;
+  --avp-ui-control-height:42px;
+  --avp-ui-body-size:15.5px;
+}
+
+/* Readability baseline. Admin keeps its compact layout. */
+body:not(:has(.admin-page)){
+  font-size:var(--avp-ui-body-size);
+  line-height:1.58;
+}
+
+/* Fallback typography only: any page-specific selector still wins. */
+:where(body:not(:has(.admin-page))) :where(main p,main li,main td,main th){
+  line-height:1.58;
+}
+:where(body:not(:has(.admin-page))) :where(main h1){font-size:clamp(30px,4vw,44px);line-height:1.12}
+:where(body:not(:has(.admin-page))) :where(main h2){font-size:clamp(23px,3vw,30px);line-height:1.2}
+:where(body:not(:has(.admin-page))) :where(main h3){font-size:18px;line-height:1.28}
+:where(body:not(:has(.admin-page))) :where(main small,.meta,.muted,.eyebrow,.kicker){font-size:12.5px;line-height:1.45}
+
+/* Native controls should never look like naked text. */
+:where(body:not(:has(.admin-page))) :where(
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  [role="button"]
+){
+  min-height:var(--avp-ui-control-height);
+  box-sizing:border-box;
+  padding:0 14px;
+  border:1px solid var(--avp-ui-border-strong);
+  border-radius:var(--avp-ui-control-radius);
+  background:var(--avp-ui-surface);
+  color:var(--avp-ui-accent-strong);
+  font:inherit;
+  font-size:14px;
+  font-weight:800;
+  line-height:1.2;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+/* Anchors that are semantically buttons get the same fallback shell. */
+:where(body:not(:has(.admin-page))) :where(
+  a[class*="btn"],
+  a[class*="button"],
+  a[class*="cta"],
+  a[class*="action"],
+  a[role="button"]
+){
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:var(--avp-ui-control-height);
+  box-sizing:border-box;
+  padding:0 14px;
+  border:1px solid var(--avp-ui-border-strong);
+  border-radius:var(--avp-ui-control-radius);
+  background:var(--avp-ui-surface);
+  color:var(--avp-ui-accent-strong);
+  font-size:14px;
+  font-weight:800;
+  line-height:1.2;
+  text-decoration:none;
+}
+
+/* Kill underline specifically on button-like links, even when old page CSS sets it. */
+body:not(:has(.admin-page)) a[class*="btn"],
+body:not(:has(.admin-page)) a[class*="button"],
+body:not(:has(.admin-page)) a[class*="cta"],
+body:not(:has(.admin-page)) a[class*="action"],
+body:not(:has(.admin-page)) a[role="button"]{
+  text-decoration:none!important;
+}
+
+/* Inputs/selects/textareas should have a visible edge and readable type. */
+:where(body:not(:has(.admin-page))) :where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]),
+  select,
+  textarea
+){
+  box-sizing:border-box;
+  min-height:var(--avp-ui-control-height);
+  border:1px solid var(--avp-ui-border-strong);
+  border-radius:var(--avp-ui-control-radius);
+  background:var(--avp-ui-surface);
+  color:var(--avp-ui-text);
+  font:inherit;
+  font-size:14px;
+}
+
+/* Existing cards/panels/boxes keep their custom layout, but receive a visible surface
+   whenever the page forgot to define one. :where() keeps this as a low-specificity fallback. */
+:where(body:not(:has(.admin-page))) :where(
+  .card,
+  [class$="-card"],
+  [class*="-card "],
+  [class$="-panel"],
+  [class*="-panel "],
+  [class$="-box"],
+  [class*="-box "]
+){
+  box-sizing:border-box;
+  border:1px solid var(--avp-ui-border);
+  border-radius:var(--avp-ui-card-radius);
+  background:var(--avp-ui-surface);
+}
+
+/* Details/expanders use the same visual grammar instead of naked rows. */
+:where(body:not(:has(.admin-page))) :where(main details){
+  box-sizing:border-box;
+  border:1px solid var(--avp-ui-border);
+  border-radius:12px;
+  background:var(--avp-ui-surface);
+}
+:where(body:not(:has(.admin-page))) :where(main details>summary){
+  min-height:44px;
+  box-sizing:border-box;
+  padding:10px 13px;
+  color:var(--avp-ui-accent-strong);
+  font-size:14px;
+  font-weight:800;
+  line-height:1.35;
+  cursor:pointer;
+  text-decoration:none;
+}
+
+/* Predictable focus/hover feedback. */
+:where(body:not(:has(.admin-page))) :where(
+  button,
+  [role="button"],
+  a[class*="btn"],
+  a[class*="button"],
+  a[class*="cta"],
+  a[class*="action"],
+  input,
+  select,
+  textarea,
+  summary
+):focus-visible{
+  outline:3px solid rgba(33,115,70,.18);
+  outline-offset:2px;
+}
+
+/* Dark-mode fallbacks for controls/surfaces that do not define their own theme. */
+:where(body.dark-mode:not(:has(.admin-page))) :where(
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  [role="button"],
+  a[class*="btn"],
+  a[class*="button"],
+  a[class*="cta"],
+  a[class*="action"],
+  a[role="button"],
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]),
+  select,
+  textarea,
+  main details,
+  .card,
+  [class$="-card"],
+  [class*="-card "],
+  [class$="-panel"],
+  [class*="-panel "],
+  [class$="-box"],
+  [class*="-box "]
+){
+  border-color:#355043;
+  background:#17231d;
+  color:#dceae1;
+}
+
+@media(max-width:640px){
+  body:not(:has(.admin-page)){font-size:15px}
+  :where(body:not(:has(.admin-page))) :where(
+    button,
+    input[type="button"],
+    input[type="submit"],
+    input[type="reset"],
+    [role="button"],
+    a[class*="btn"],
+    a[class*="button"],
+    a[class*="cta"],
+    a[class*="action"],
+    a[role="button"]
+  ){min-height:44px}
+}
