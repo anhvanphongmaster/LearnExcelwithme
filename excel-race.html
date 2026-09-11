@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>Excel Race | Learn Excel with Anh Van Phong</title>
-  <link rel="stylesheet" href="excel-race.css?v=20260830-racefix4" />
-<link rel="stylesheet" href="avp-core.css" />
-<link rel="stylesheet" href="avp-ui-polish-v40.css?v=20260830-v43final" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <title>Excel Arena | Learn Excel with Anh Van Phong</title>
+  <meta name="description" content="Excel Arena Season 1: game phản xạ Excel với Học, Rank, nhiều chủ đề và hàng nghìn câu hỏi không lặp trong lượt chơi.">
+  <meta name="theme-color" content="#173f2d">
+  <link rel="stylesheet" href="excel-race.css?v=20260912-arena1">
+  <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="global-search.css">
-  <link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui2" data-avp-ui-system>
+  <link rel="stylesheet" href="avp-ui-system.css?v=20260911-ui-consistency1" data-avp-ui-system>
 </head>
 <body>
 <script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script>
@@ -26,122 +27,96 @@
   </div>
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
-  <div class="race-wrap">
-    <header class="race-top">
-      <span class="tag">Luyện Excel · 2000 câu</span>
-    </header>
 
-    <div class="name-row" id="nameRow">
-      <label>Tên trên BXH</label>
-      <input id="playerName" type="text" maxlength="20" readonly autocomplete="off" placeholder="Đăng nhập để lấy tên" />
-      <span id="nameStatus" class="name-status"></span>
-      <p class="name-gate-msg" id="nameGateMsg">Đăng nhập để chơi. Tên lấy từ tài khoản, không cần khóa tên.</p>
+<main class="arena-shell">
+  <header class="arena-hero">
+    <div>
+      <span class="arena-season">EXCEL ARENA · SEASON 1</span>
+      <h1>Nhớ Excel đến đâu<br>khi thời gian đang chạy?</h1>
+      <p>Không trắc nghiệm. Tự nhớ, tự gõ, phản xạ theo tình huống. Gõ đúng tên chuẩn được Perfect; nhớ đúng ý bằng tiếng Việt vẫn được tính đúng.</p>
+    </div>
+    <div class="arena-hero-stats" aria-label="Thông tin game">
+      <div><strong id="bankCount">—</strong><span>câu trong ngân hàng</span></div>
+      <div><strong id="topicCount">—</strong><span>chủ đề</span></div>
+      <div><strong>3</strong><span>mạng trong Rank</span></div>
+    </div>
+  </header>
+
+  <section class="arena-profile" id="arenaProfile">
+    <div><span>Người chơi</span><strong id="playerName">Đang kiểm tra đăng nhập…</strong></div>
+    <p id="loginMessage">Đăng nhập để vào Arena và ghi thành tích Rank.</p>
+  </section>
+
+  <section class="arena-setup" id="arenaSetup">
+    <div class="arena-step">
+      <div class="arena-step-head"><span>01</span><div><h2>Chọn chế độ</h2><p>Học để luyện có nhắc lại câu sai. Rank để tranh BXH Season 1.</p></div></div>
+      <div class="mode-grid">
+        <button type="button" class="mode-card is-selected" data-mode="learn"><strong>Học</strong><span>Sai không mất mạng · câu sai quay lại sau 3–7 lượt · không ghi BXH</span></button>
+        <button type="button" class="mode-card" data-mode="rank"><strong>Rank</strong><span>3 mạng · tốc độ tăng dần · Perfect/Combo · ghi BXH theo chủ đề</span></button>
+      </div>
     </div>
 
-    <button type="button" class="board-jump" id="boardJump">Xem bảng xếp hạng ↓</button>
-
-    <div class="hud">
-      <div><small>Cấp</small><b id="lv">1</b></div>
-      <div><small>Câu</small><b id="pg">0/30</b></div>
-      <div><small>Chuỗi</small><b id="st">0</b></div>
-      <div><small>Kỷ lục</small><b id="best">0</b></div>
-      <div><small>Giờ</small><b id="sec">20</b></div>
-      <div><small>Mạng</small><b id="lives">—</b></div>
+    <div class="arena-step">
+      <div class="arena-step-head"><span>02</span><div><h2>Chọn chủ đề</h2><p>Mỗi chủ đề có nhiều cấp khó. Một khái niệm chỉ xuất hiện một lần trong mỗi vòng, trừ câu sai cần ôn lại ở Học.</p></div></div>
+      <div class="topic-grid" id="topicGrid" aria-label="Chọn chủ đề"></div>
     </div>
-    <div class="timer"><i id="fill"></i></div>
-    <div id="countOverlay" class="count-overlay" hidden>
-      <div class="count-num" id="countNum">3</div>
-      <div class="count-sub">Sẵn sàng…</div>
+
+    <div class="arena-start-row">
+      <button type="button" id="startArena" class="arena-primary">Vào Arena →</button>
+      <span id="setupHint">Đang tải ngân hàng câu hỏi…</span>
     </div>
-    <canvas id="cv" width="900" height="360" aria-label="Đường đua"></canvas>
+  </section>
 
-    <section class="panel">
-      <p class="msg" id="msg">Đăng nhập, bấm Bắt đầu rồi chọn Học để luyện hoặc Rank để ghi kết quả lên bảng xếp hạng.</p>
-      <p class="q" id="q" hidden></p>
-      <div class="ans" id="ans" hidden>
-        <button type="button" id="a1"></button>
-        <button type="button" id="a2"></button>
-      </div>
-      <div class="hint" id="hint" hidden>
-        <span>Ôn thêm:</span>
-        <a id="hintLink" href="practice-video.html">Bài tập theo video</a>
-      </div>
-      <div class="race-go-row">
-        <button type="button" class="go" id="start">Bắt đầu</button>
-        <button type="button" class="stop-race" id="stopRace" hidden>Dừng</button>
-      </div>
-    </section>
-
-    <section class="board" id="board">
-      <div class="board-h">
-        <strong>Bảng xếp hạng</strong>
-        <span style="display:flex;gap:6px;align-items:center">
-        <button type="button" id="resetLocalBest" class="board-ref" title="Xóa kỷ lục trên máy này">Reset máy</button>
-        <button type="button" id="boardRefresh" class="board-ref">Làm mới</button>
-      </span>
-      </div>
-      <ol id="boardList" class="board-list"><li class="muted">Đang tải…</li></ol>
-    </section>
-  </div>
-
-
-  <div id="raceModeChooser" class="race-mode-chooser" hidden>
-    <div class="race-mode-backdrop" data-race-mode-close></div>
-    <div class="race-mode-dialog" role="dialog" aria-modal="true" aria-labelledby="raceModeTitle">
-      <button type="button" class="race-mode-close" id="raceModeClose" aria-label="Đóng">×</button>
-
-      <div class="race-mode-kicker">EXCEL RACE</div>
-      <h2 id="raceModeTitle">Chọn chế độ chơi</h2>
-      <p class="race-mode-lead">Chọn một chế độ để bắt đầu cuộc đua.</p>
-
-      <div class="race-mode-options">
-        <button type="button" class="race-mode-option learn" id="chooseModeHoc">
-          <span class="race-mode-icon">📚</span>
-          <span class="race-mode-copy">
-            <strong>Học</strong>
-            <small>Sai hoặc hết giờ → quay về đầu cấp hiện tại.</small>
-            <em>Không tính vào bảng xếp hạng.</em>
-          </span>
-          <span class="race-mode-arrow">→</span>
-        </button>
-
-        <button type="button" class="race-mode-option rank" id="chooseModeRank">
-          <span class="race-mode-icon">🏆</span>
-          <span class="race-mode-copy">
-            <strong>Rank</strong>
-            <small>Sai → mất 1 mạng và quay về đầu cấp hiện tại.</small>
-            <em>❤️ 3 mạng · Có tính bảng xếp hạng.</em>
-          </span>
-          <span class="race-mode-arrow">→</span>
-        </button>
-      </div>
-
-      <div class="race-mode-note">
-        Rank hết 3 mạng sẽ quay về cấp 1.
-      </div>
+  <section class="arena-game" id="arenaGame" hidden>
+    <div class="arena-toolbar">
+      <button type="button" id="backSetup" class="arena-secondary">← Chọn lại</button>
+      <div class="arena-current"><span id="currentMode">Học</span><strong id="currentTopic">—</strong></div>
+      <button type="button" id="stopArena" class="arena-secondary">Dừng</button>
     </div>
-  </div>
 
-  <div id="avpModal" class="avp-modal" hidden>
-    <div class="avp-modal-backdrop" data-avp-close></div>
-    <div class="avp-modal-card" role="dialog" aria-modal="true" aria-labelledby="avpModalTitle">
-      <div class="avp-modal-icon" id="avpModalIcon">📊</div>
-      <h3 class="avp-modal-title" id="avpModalTitle">Thông báo</h3>
-      <p class="avp-modal-body" id="avpModalBody"></p>
-      <div class="avp-modal-actions">
-        <button type="button" class="avp-modal-btn avp-modal-cancel" id="avpModalCancel" hidden>Hủy</button>
-        <button type="button" class="avp-modal-btn avp-modal-ok" id="avpModalOk">OK</button>
-      </div>
+    <div class="arena-hud" aria-label="Thông tin lượt chơi">
+      <div><span>Cấp</span><strong id="hudLevel">1</strong><small id="hudTitle">Tân binh</small></div>
+      <div><span>Điểm</span><strong id="hudScore">0</strong><small>Season 1</small></div>
+      <div><span>Combo</span><strong id="hudCombo">0</strong><small id="hudPerfect">Perfect 0</small></div>
+      <div><span>Câu</span><strong id="hudQuestion">0</strong><small id="hudPool">—</small></div>
+      <div><span>Mạng</span><strong id="hudLives">∞</strong><small id="hudBest">Best 0</small></div>
     </div>
-  </div>
 
-  <script src="excel-race-questions.js"></script>
-  <script src="supabase-config.js"></script>
-  <script type="module" src="supabase-auth.js"></script>
-  <script defer src="analytics-tracker.js"></script>
-  <script defer src="excel-race.js?v=20260830-rank3lives6"></script>
+    <div class="arena-stage" id="arenaStage">
+      <div class="arena-sky"><span></span><span></span><span></span></div>
+      <div class="arena-goal"><div class="arena-shield">AVP</div><small>Đừng để mục tiêu chạm vùng này</small></div>
+      <div class="arena-lane" id="arenaLane"><div class="arena-target" id="arenaTarget"><span id="targetIcon">⚡</span><strong id="targetLabel">READY</strong></div></div>
+      <div class="arena-timer"><i id="timerFill"></i></div>
+    </div>
+
+    <article class="arena-question">
+      <div class="question-meta"><span id="questionDifficulty">Độ khó 1/5</span><span id="bossBadge" hidden>BOSS ROUND</span></div>
+      <h2 id="questionPrompt">Sẵn sàng?</h2>
+      <p id="answerGuide">Có thể gõ tên chuẩn hoặc cách diễn đạt tiếng Việt bạn nhớ.</p>
+      <form id="answerForm" autocomplete="off">
+        <label for="answerInput">Câu trả lời của bạn</label>
+        <div class="answer-row"><input id="answerInput" type="text" inputmode="text" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="Gõ rồi nhấn Enter…" maxlength="80"><button type="submit" class="arena-primary">Đánh</button></div>
+      </form>
+      <div class="arena-feedback" id="arenaFeedback" aria-live="polite"></div>
+    </article>
+  </section>
+
+  <section class="arena-board" id="arenaBoard">
+    <div class="board-head">
+      <div><span>SEASON 1</span><h2>Bảng xếp hạng</h2></div>
+      <div class="board-actions"><select id="boardTopic" aria-label="Chủ đề bảng xếp hạng"></select><button type="button" id="refreshBoard" class="arena-secondary">Làm mới</button></div>
+    </div>
+    <div class="board-note">BXH Excel Race cũ đã reset. Chỉ thành tích Rank của Excel Arena Season 1 được tính.</div>
+    <ol id="boardList" class="board-list"><li>Đang tải…</li></ol>
+  </section>
+</main>
+
+<script src="excel-arena-questions.js?v=20260912-qbank1"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="excel-arena-engine-v2.js?v=20260912-arena2"></script>
+<script defer src="analytics-tracker.js"></script>
 <script defer src="avp-core.js"></script>
-<script defer src="avp-modal.js"></script>
 <script defer src="global-search.js"></script>
 <script defer src="simple-nav.js"></script>
 </body>

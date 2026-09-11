@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260911-flow4fix1";
+const CACHE = "learnexcel-assets-v20260912-arena2";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -19,6 +19,11 @@ const ASSETS = [
   "./practice-hub-flow-v1.css",
   "./practice-tiktok.css",
   "./practice-roll.css",
+  "./excel-race.html",
+  "./excel-race.css",
+  "./excel-arena-questions.js",
+  "./excel-arena-engine-v2.js",
+  "./home-page-motion.js",
   "./simple-nav.js",
   "./avp-core.js",
   "./avp-ui-system.js",
