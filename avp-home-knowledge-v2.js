@@ -75,40 +75,6 @@
     d.head.appendChild(link);
   }
 
-  function ensureArenaHomeStyle(){
-    if(d.getElementById('avpArenaHomeStyle'))return;
-    const style=d.createElement('style');
-    style.id='avpArenaHomeStyle';
-    style.textContent=`
-      .home-more-race.avp-arena-home{position:relative!important;border:1px solid #83b99a!important;background:linear-gradient(145deg,#f1faf4,#fff)!important;overflow:visible!important}
-      .home-more-race.avp-arena-home:hover{border-color:#4f936a!important;background:#eaf7ef!important}
-      .home-more-race .avp-arena-home-badge{position:absolute;right:10px;top:10px;display:inline-flex;padding:4px 7px;border-radius:999px;background:#217346;color:#fff;font-size:9px;font-weight:900;letter-spacing:.06em;line-height:1}
-      .home-more-race .avp-arena-home-meta{display:block;margin-top:4px;color:#52705f;font-size:10px;font-weight:800}
-      @media(prefers-reduced-motion:no-preference){.home-more-race .avp-arena-home-badge{animation:avpArenaBadgePulse 2.4s ease-in-out infinite}@keyframes avpArenaBadgePulse{0%,80%,100%{box-shadow:0 0 0 0 rgba(33,115,70,0)}90%{box-shadow:0 0 0 5px rgba(33,115,70,.12)}}}
-    `;
-    d.head.appendChild(style);
-  }
-
-  function syncArenaCard(){
-    ensureArenaHomeStyle();
-    const race=d.querySelector('a.home-more-race[href*="excel-race.html"]');
-    if(!race)return;
-    race.classList.add('avp-arena-home');
-    race.setAttribute('aria-label','Excel Arena — Học và Rank theo nhiều chủ đề Excel');
-    const icon=race.querySelector(':scope > span:not(.avp-arena-home-badge):not(.avp-arena-home-meta)');
-    if(icon)icon.textContent='⚡';
-    const title=race.querySelector('strong');
-    if(title)title.textContent='Excel Arena';
-    const small=race.querySelector('small');
-    if(small)small.textContent='Bạn nhớ Excel đến đâu khi thời gian đang chạy?';
-    if(!race.querySelector('.avp-arena-home-meta')){
-      const meta=d.createElement('span');meta.className='avp-arena-home-meta';meta.textContent='Học · Rank · 14 chủ đề';race.appendChild(meta);
-    }
-    if(!race.querySelector('.avp-arena-home-badge')){
-      const badge=d.createElement('span');badge.className='avp-arena-home-badge';badge.textContent='NEW GAME';race.appendChild(badge);
-    }
-  }
-
   function syncPracticeCta(){
     const cta=d.querySelector('.avp-practice-hub-cta');
     if(!cta)return;
@@ -122,7 +88,9 @@
     }
     const badges=cta.querySelector('.avp-practice-hub-badges');
     const needsFiveMotion=badges&&(
-      badges.children.length!==5 || !badges.querySelector('.avp-mini-channel-hw') || !badges.querySelector('.avp-mini-channel-pro')
+      badges.children.length!==5 ||
+      !badges.querySelector('.avp-mini-channel-hw') ||
+      !badges.querySelector('.avp-mini-channel-pro')
     );
     if(needsFiveMotion){
       badges.innerHTML='<span class="avp-mini-channel avp-mini-channel-tt">♪</span><span class="avp-mini-channel avp-mini-channel-yt">▶</span><span class="avp-mini-channel avp-mini-channel-hw">✎</span><span class="avp-mini-channel avp-mini-channel-grade">✓</span><span class="avp-mini-channel avp-mini-channel-pro">◆</span>';
@@ -131,30 +99,36 @@
 
   function replaceText(){
     syncPracticeCta();
-    syncArenaCard();
     const section=d.getElementById('ky-nang-excel')||d.querySelector('.home-path');
     if(!section)return false;
+
     const h2=section.querySelector('.home-path-inner > h2')||section.querySelector('h2');
     if(h2)h2.textContent='Lộ trình 24 bài Excel';
+
     const intro=section.querySelector('.home-path-inner > p');
     if(intro)intro.textContent='4 chặng × 6 bài. Mọi bài đều mở — người mới có thể học tuần tự, người đã có nền tảng có thể vào thẳng phần cần học.';
+
     const grid=section.querySelector('.home-path-grid');
     if(!grid)return false;
     grid.classList.add('avp-home-kv2-grid');
     grid.innerHTML=ZONES.map(card).join('');
     section.dataset.knowledgeVersion='2';
+
     const tease=d.querySelector('#avpScrollToPath .avp-tease-title');
-    if(tease)tease.innerHTML='<span class="avp-tease-chevs" aria-hidden="true"><span>▾</span><span>▾</span><span>▾</span></span> Lộ trình 24 bài · Bảng xếp hạng';
+    if(tease){
+      tease.innerHTML='<span class="avp-tease-chevs" aria-hidden="true"><span>▾</span><span>▾</span><span>▾</span></span> Lộ trình 24 bài · Bảng xếp hạng';
+    }
     return true;
   }
 
   function boot(){
     ensureMotionCss();
-    syncArenaCard();
     replaceText();
+    // A late legacy renderer must not put the 14-lesson cards or old 3-flow CTA back.
     setTimeout(replaceText,250);
     setTimeout(replaceText,900);
   }
+
   if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',boot,{once:true});
   else boot();
 })(window,document);
