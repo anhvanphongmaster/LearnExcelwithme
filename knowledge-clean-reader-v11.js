@@ -5,7 +5,8 @@
 
   const $=(s,r=document)=>r.querySelector(s);
   const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  let syncQueued=false;
 
   function cleanLabel(text){
     return String(text||'').replace(/^\s*\d+[\.\-]?\s*/,'').replace(/\s+/g,' ').trim();
@@ -27,11 +28,13 @@
   function activate(index){
     const item=sourceItems().find(x=>x.index===Number(index));
     item?.source?.click();
+    queueSync();
   }
 
   function compactCourseNav(){
     const nav=$('#kvCourseNav');
-    if(!nav) return;
+    if(!nav || nav.dataset.v11Compacted==='1') return;
+    nav.dataset.v11Compacted='1';
     const prev=$('.kv-course-edge.prev',nav), next=$('.kv-course-edge.next',nav);
     if(prev){
       const strong=$('strong',prev); if(strong){ strong.title=strong.textContent.trim(); strong.textContent='← '+strong.textContent.replace(/^\d+\s*·\s*/,'').trim(); }
@@ -81,8 +84,9 @@
       $('.avp-step-toggle-v11',nav).addEventListener('click',()=>{
         const open=!nav.classList.contains('open');
         nav.classList.toggle('open',open);
-        $('.avp-step-toggle-v11',nav).setAttribute('aria-expanded',open?'true':'false');
-        $('.avp-step-toggle-v11',nav).textContent=open?'Đóng danh sách':'Xem các bước';
+        const toggle=$('.avp-step-toggle-v11',nav);
+        toggle.setAttribute('aria-expanded',open?'true':'false');
+        toggle.textContent=open?'Đóng danh sách':'Xem các bước';
       });
     }
     syncStepNav();
@@ -95,15 +99,22 @@
     if(!items.length) return;
     const activePos=Math.max(0,items.findIndex(x=>x.active));
     const current=items[activePos]||items[0];
-    $('.avp-step-current-v11',nav).innerHTML=`<small>BẠN ĐANG Ở</small><strong>${current.extension?'Học thêm':'Bước '+(activePos+1)+'/'+items.length} · ${esc(current.label)}</strong>`;
+    const currentHtml=`<small>BẠN ĐANG Ở</small><strong>${current.extension?'Học thêm':'Bước '+(activePos+1)+'/'+items.length} · ${esc(current.label)}</strong>`;
+    const currentHost=$('.avp-step-current-v11',nav);
+    if(currentHost.innerHTML!==currentHtml) currentHost.innerHTML=currentHtml;
+
     const list=$('.avp-step-list-v11',nav);
-    list.innerHTML=items.map((x,i)=>`<button type="button" data-v11-step="${x.index}" class="${x.active?'active':''}"><span class="num">${x.extension?'＋':i+1}</span><span>${x.extension?'Học thêm — ':''}${esc(x.label)}</span></button>`).join('');
-    $$('[data-v11-step]',list).forEach(b=>b.addEventListener('click',()=>{
-      activate(Number(b.dataset.v11Step));
-      nav.classList.remove('open');
-      $('.avp-step-toggle-v11',nav).setAttribute('aria-expanded','false');
-      $('.avp-step-toggle-v11',nav).textContent='Xem các bước';
-    }));
+    const listHtml=items.map((x,i)=>`<button type="button" data-v11-step="${x.index}" class="${x.active?'active':''}"><span class="num">${x.extension?'＋':i+1}</span><span>${x.extension?'Học thêm — ':''}${esc(x.label)}</span></button>`).join('');
+    if(list.innerHTML!==listHtml){
+      list.innerHTML=listHtml;
+      $$('[data-v11-step]',list).forEach(b=>b.addEventListener('click',()=>{
+        activate(Number(b.dataset.v11Step));
+        nav.classList.remove('open');
+        const toggle=$('.avp-step-toggle-v11',nav);
+        toggle.setAttribute('aria-expanded','false');
+        toggle.textContent='Xem các bước';
+      }));
+    }
   }
 
   function labelFlow(){
@@ -114,7 +125,18 @@
       const pos=items.findIndex(x=>x.index===target);
       const item=items[pos];
       if(!item) return;
-      btn.textContent=btn.classList.contains('next')?`Tiếp: ${item.label} →`:`← Trước: ${item.label}`;
+      const label=btn.classList.contains('next')?`Tiếp: ${item.label} →`:`← Trước: ${item.label}`;
+      if(btn.textContent!==label) btn.textContent=label;
+    });
+  }
+
+  function queueSync(){
+    if(syncQueued) return;
+    syncQueued=true;
+    requestAnimationFrame(()=>{
+      syncQueued=false;
+      syncStepNav();
+      labelFlow();
     });
   }
 
@@ -128,10 +150,14 @@
   }
 
   function observe(){
-    const sidebar=$('#kvSidebar'), sections=$('#kvSections'), intro=$('#kvIntro');
-    if(sidebar) new MutationObserver(()=>{syncStepNav();labelFlow();}).observe(sidebar,{subtree:true,attributes:true,attributeFilter:['class','aria-current']});
-    if(sections) new MutationObserver(()=>{syncStepNav();labelFlow();}).observe(sections,{subtree:true,childList:true});
-    if(intro) new MutationObserver(()=>buildMore()).observe(intro,{subtree:true,childList:true});
+    const sidebar=$('#kvSidebar');
+    if(sidebar){
+      new MutationObserver(queueSync).observe(sidebar,{subtree:true,attributes:true,attributeFilter:['class','aria-current']});
+    }
+    document.addEventListener('click',e=>{
+      if(e.target.closest('[data-flow-section],[data-outline]')) queueSync();
+    });
+    window.addEventListener('hashchange',queueSync);
   }
 
   const boot=()=>requestAnimationFrame(()=>{enhance();observe()});
