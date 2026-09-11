@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260911-ui-consistency1";
+const CACHE = "learnexcel-assets-v20260911-flow4fix1";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
