@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260911-flow4fix1";
+const CACHE = "learnexcel-assets-v20260912-arena1";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -19,6 +19,10 @@ const ASSETS = [
   "./practice-hub-flow-v1.css",
   "./practice-tiktok.css",
   "./practice-roll.css",
+  "./excel-race.html",
+  "./excel-race.css",
+  "./excel-race.js",
+  "./excel-arena-questions.js",
   "./simple-nav.js",
   "./avp-core.js",
   "./avp-ui-system.js",
@@ -71,57 +75,37 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
-
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
-
-  const isHTML =
-    event.request.mode === "navigate" ||
-    url.pathname.endsWith(".html") ||
-    url.pathname.endsWith("/");
-
-  const isCodeAsset =
-    /\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
-
+  const isHTML = event.request.mode === "navigate" || url.pathname.endsWith(".html") || url.pathname.endsWith("/");
+  const isCodeAsset = /\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
   if (isHTML) {
     event.respondWith(
       fetch(event.request)
         .then(response => {
-          if (response && response.ok) {
-            caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
-          }
+          if (response && response.ok) caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
           return response;
         })
-        .catch(() =>
-          caches.match(event.request)
-            .then(cached => cached || caches.match("./index.html"))
-        )
+        .catch(() => caches.match(event.request).then(cached => cached || caches.match("./index.html")))
     );
     return;
   }
-
   if (isCodeAsset) {
     event.respondWith(
       fetch(event.request)
         .then(response => {
-          if (response && response.ok) {
-            caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
-          }
+          if (response && response.ok) caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
           return response;
         })
         .catch(() => caches.match(event.request))
     );
     return;
   }
-
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
-
       return fetch(event.request).then(response => {
-        if (response && response.ok) {
-          caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
-        }
+        if (response && response.ok) caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
         return response;
       });
     })
@@ -130,12 +114,8 @@ self.addEventListener("fetch", event => {
 
 self.addEventListener("push", event => {
   let data = {};
-  try {
-    data = event.data ? event.data.json() : {};
-  } catch (e) {
-    data = { title: "Anh Văn Phòng", body: event.data ? event.data.text() : "" };
-  }
-
+  try { data = event.data ? event.data.json() : {}; }
+  catch (e) { data = { title: "Anh Văn Phòng", body: event.data ? event.data.text() : "" }; }
   const title = data.title || "Anh Văn Phòng";
   const options = {
     body: data.body || "Có phản hồi mới từ người dùng.",
@@ -146,12 +126,9 @@ self.addEventListener("push", event => {
     data: { url: data.url || "admin.html" },
     vibrate: [120, 70, 120]
   };
-
   event.waitUntil(
     self.registration.showNotification(title, options).then(() => {
-      if ("setAppBadge" in self.navigator) {
-        return self.navigator.setAppBadge().catch(() => {});
-      }
+      if ("setAppBadge" in self.navigator) return self.navigator.setAppBadge().catch(() => {});
     })
   );
 });
@@ -160,14 +137,11 @@ self.addEventListener("notificationclick", event => {
   event.notification.close();
   if ("clearAppBadge" in self.navigator) self.navigator.clearAppBadge().catch(() => {});
   const target = new URL(event.notification?.data?.url || "admin.html", self.registration.scope).href;
-
   event.waitUntil(
     clients.matchAll({type:"window",includeUncontrolled:true}).then(list => {
       for (const client of list) {
         if ("focus" in client) {
-          try{
-            client.navigate(target);
-          }catch{}
+          try { client.navigate(target); } catch {}
           return client.focus();
         }
       }
