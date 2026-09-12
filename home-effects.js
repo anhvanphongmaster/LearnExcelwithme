@@ -1,13 +1,11 @@
-
 (() => {
-  const hero = document.querySelector(".avp-hero");
   const orb = document.getElementById("avpOrb");
   const typing = document.getElementById("avpTyping");
 
-  // Bỏ LED theo chuột / tilt 3D — gây lag trên máy yếu và điện thoại
+  // Bỏ LED theo chuột / tilt 3D — gây lag trên máy yếu và điện thoại.
   if (orb) orb.style.display = "none";
 
-  /* Typing slogans — RAF mượt */
+  /* Typing slogans — chỉ chạy khi đổi ký tự, không giữ một RAF 60fps vô ích. */
   if (typing) {
     const lines = [
       "100+ công thức Excel đang chờ bạn",
@@ -21,29 +19,37 @@
       "Tự động hóa — ít click, nhiều kết quả",
       "Beginner → Master: một lộ trình rõ ràng"
     ];
-    let line = 0, char = 0, deleting = false, last = 0, holdUntil = 0;
-    const TYPE_MS = 36, DEL_MS = 22, HOLD_MS = 2400, GAP_MS = 380;
-    function render(){ typing.textContent = (lines[line]||"").slice(0,char); }
-    function frame(now){
-      requestAnimationFrame(frame);
-      const current = lines[line]||"";
-      if (!current) return;
-      if (holdUntil && now < holdUntil) return;
-      if (holdUntil && now >= holdUntil) holdUntil = 0;
-      if (!deleting){
-        if (now - last < TYPE_MS) return;
-        last = now; char = Math.min(current.length, char+1); render();
-        if (char >= current.length){ deleting = true; holdUntil = now + HOLD_MS; }
+    let line = 0, char = 0, deleting = false, timer = null;
+    const TYPE_MS = 42, DEL_MS = 26, HOLD_MS = 2300, GAP_MS = 360;
+
+    function render(){ typing.textContent = (lines[line] || "").slice(0, char); }
+    function schedule(ms){ clearTimeout(timer); timer = setTimeout(step, ms); }
+    function step(){
+      if (document.hidden) { schedule(500); return; }
+      const current = lines[line] || "";
+      if (!current) { schedule(500); return; }
+      if (!deleting) {
+        char = Math.min(current.length, char + 1);
+        render();
+        if (char >= current.length) {
+          deleting = true;
+          schedule(HOLD_MS);
+        } else schedule(TYPE_MS);
       } else {
-        if (now - last < DEL_MS) return;
-        last = now; char = Math.max(0, char-1); render();
-        if (char <= 0){ deleting = false; line = (line+1)%lines.length; holdUntil = now + GAP_MS; }
+        char = Math.max(0, char - 1);
+        render();
+        if (char <= 0) {
+          deleting = false;
+          line = (line + 1) % lines.length;
+          schedule(GAP_MS);
+        } else schedule(DEL_MS);
       }
     }
     typing.textContent = "";
     clearTimeout(window.__avpTypingTimer);
     if (window.__avpTypingRaf) cancelAnimationFrame(window.__avpTypingRaf);
-    window.__avpTypingTimer = setTimeout(function(){ last = performance.now(); window.__avpTypingRaf = requestAnimationFrame(frame); }, 300);
+    window.__avpTypingTimer = setTimeout(step, 300);
+    window.addEventListener("pagehide", () => clearTimeout(timer), { once:true });
   }
 })();
 
@@ -295,4 +301,179 @@
   }else{
     loadHomePanelUser();
   }
+})();
+
+
+/* ===== HOME AVP ROBOT — COMPOSITOR-SMOOTH PATROL V2 =====
+   The old controller keeps the chat/menu/bubble behavior. This layer only replaces
+   the expensive per-frame `left` walking with one compositor transform animation. */
+(function(){
+  const page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
+  if(page!=="index.html") return;
+  if(window.__avpHomeRobotSmoothV2) return;
+  window.__avpHomeRobotSmoothV2=true;
+
+  const PAD=16;
+  const SPEED=44; // px/s — similar visual speed, much cheaper than layout every frame.
+  let root=null, fab=null, motion=null, direction=1, ready=false;
+
+  const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+
+  function maxX(){
+    if(!root) return PAD;
+    return Math.max(PAD,window.innerWidth-(root.offsetWidth||64)-PAD);
+  }
+
+  function setSide(){
+    if(!root) return;
+    const r=root.getBoundingClientRect();
+    const onLeft=(r.left+r.width/2)<window.innerWidth/2;
+    root.classList.toggle("is-left",onLeft);
+    root.classList.toggle("is-right",!onLeft);
+  }
+
+  function freezeAtCurrent(){
+    if(!root) return PAD;
+    const r=root.getBoundingClientRect();
+    const left=clamp(r.left,PAD,maxX());
+    if(motion){
+      try{motion.cancel();}catch(_){ }
+      motion=null;
+    }
+    root.style.transform="none";
+    root.style.left=Math.round(left)+"px";
+    root.style.right="auto";
+    root.style.top="auto";
+    root.style.bottom=PAD+"px";
+    root.classList.remove("avp-smooth-moving");
+    setSide();
+    return left;
+  }
+
+  function canMove(){
+    return !!root &&
+      !document.hidden &&
+      !root.classList.contains("open") &&
+      !root.classList.contains("is-dragging") &&
+      !root.classList.contains("is-lifted");
+  }
+
+  function patrol(fromLeft,dir){
+    if(!canMove()) return;
+    const start=clamp(Number(fromLeft)||root.getBoundingClientRect().left,PAD,maxX());
+    const target=dir>0?maxX():PAD;
+    const delta=target-start;
+
+    direction=dir>0?1:-1;
+    root.classList.toggle("face-left",direction<0);
+    root.classList.add("avp-smooth-moving");
+    root.style.left=Math.round(start)+"px";
+    root.style.right="auto";
+    root.style.top="auto";
+    root.style.bottom=PAD+"px";
+    root.style.transform="translate3d(0,0,0)";
+    setSide();
+
+    if(Math.abs(delta)<2){
+      direction*=-1;
+      setTimeout(()=>patrol(start,direction),40);
+      return;
+    }
+
+    motion=root.animate(
+      [
+        {transform:"translate3d(0,0,0)"},
+        {transform:`translate3d(${delta}px,0,0)`}
+      ],
+      {
+        duration:Math.max(1800,Math.abs(delta)/SPEED*1000),
+        easing:"linear",
+        fill:"forwards"
+      }
+    );
+
+    motion.onfinish=()=>{
+      if(!root) return;
+      root.style.left=Math.round(target)+"px";
+      root.style.transform="none";
+      try{motion.cancel();}catch(_){ }
+      motion=null;
+      direction*=-1;
+      setSide();
+      patrol(target,direction);
+    };
+  }
+
+  function resume(){
+    if(!ready || !canMove() || motion) return;
+    const left=clamp(root.getBoundingClientRect().left,PAD,maxX());
+    if(left>=maxX()-3) direction=-1;
+    else if(left<=PAD+3) direction=1;
+    patrol(left,direction);
+  }
+
+  function init(){
+    if(ready) return;
+    root=document.getElementById("avpEdgeLauncher");
+    fab=root?.querySelector("#avpEdgeMain");
+    if(!root || !fab){ setTimeout(init,120); return; }
+    ready=true;
+
+    // Stop only the old walking path. Menu/chat/bubble logic stays intact.
+    const r=root.getBoundingClientRect();
+    root.classList.remove("avp-robot-home","is-walking");
+    root.classList.add("avp-robot-home-smooth");
+    root.style.left=Math.round(clamp(r.left,PAD,maxX()))+"px";
+    root.style.right="auto";
+    root.style.top="auto";
+    root.style.bottom=PAD+"px";
+    root.style.transform="none";
+    setSide();
+
+    // Correct menu direction before the original click handler opens it.
+    fab.addEventListener("click",setSide,true);
+
+    // Let the original lift/drag interaction work without fighting the patrol animation.
+    fab.addEventListener("pointerdown",()=>{ freezeAtCurrent(); },true);
+    const afterPointer=()=>setTimeout(()=>{
+      if(!root?.classList.contains("open")){
+        const left=freezeAtCurrent();
+        direction=(left<window.innerWidth/2)?1:-1;
+        resume();
+      }
+    },90);
+    fab.addEventListener("pointerup",afterPointer);
+    fab.addEventListener("pointercancel",afterPointer);
+
+    fab.addEventListener("click",()=>setTimeout(()=>{
+      if(root.classList.contains("open")) freezeAtCurrent();
+      else resume();
+    },0));
+
+    document.addEventListener("visibilitychange",()=>{
+      if(document.hidden) freezeAtCurrent();
+      else setTimeout(resume,80);
+    });
+
+    let resizeTimer=null;
+    window.addEventListener("resize",()=>{
+      clearTimeout(resizeTimer);
+      freezeAtCurrent();
+      resizeTimer=setTimeout(()=>{
+        const left=clamp(root.getBoundingClientRect().left,PAD,maxX());
+        root.style.left=Math.round(left)+"px";
+        resume();
+      },120);
+    });
+
+    window.addEventListener("pagehide",()=>{
+      if(motion){try{motion.cancel();}catch(_){ }}
+      motion=null;
+    },{once:true});
+
+    resume();
+  }
+
+  if(document.readyState==="complete") init();
+  else window.addEventListener("load",()=>setTimeout(init,0),{once:true});
 })();
