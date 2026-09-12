@@ -103,10 +103,10 @@
   const beginner={
     shortcuts:new Set(["CTRL+C","CTRL+V","CTRL+Z","CTRL+SHIFT+L","F4","CTRL+1","ALT+=","ALT+ENTER"]),
     "basic-functions":new Set(["SUM","AVERAGE","MAX","MIN","COUNT","COUNTA","ROUND"]),
-    conditional:new Set(["IF","AND","OR","IFERROR","IFS","SUMIFS"]),
-    lookup:new Set(["XLOOKUP","VLOOKUP","MATCH","FILTER"]),
+    conditional:new Set(["IF","AND","OR","IFERROR"]),
+    lookup:new Set(["XLOOKUP","VLOOKUP","MATCH"]),
     text:new Set(["LEFT","RIGHT","MID","LEN","TRIM","VALUE"]),
-    "date-time":new Set(["TODAY","NOW","DATE","WEEKDAY","EOMONTH"]),
+    "date-time":new Set(["TODAY","NOW","DATE","WEEKDAY"]),
     "dynamic-array":new Set(["FILTER","UNIQUE","SORT","SEQUENCE"]),
     cleaning:new Set(["REMOVE DUPLICATES","TEXT TO COLUMNS","FLASH FILL","DATA VALIDATION","CONDITIONAL FORMATTING"]),
     "excel-table":new Set(["EXCEL TABLE","TOTAL ROW","STRUCTURED REFERENCE","TABLE NAME","CALCULATED COLUMN","BAND ROWS","TABLE EXPANSION"]),
@@ -119,8 +119,8 @@
 
   const mixedMinLevel={
     shortcuts:1,"basic-functions":1,conditional:1,text:1,"date-time":1,cleaning:1,
-    lookup:2,"excel-table":2,pivot:2,
-    dashboard:3,"dynamic-array":3,"power-query":3,
+    lookup:2,"excel-table":2,
+    pivot:3,dashboard:3,"dynamic-array":3,"power-query":3,
     workflow:4,vba:4
   };
 
@@ -158,6 +158,4 @@
     q.prompt=q.scenario;
     q.boss=false;
   });
-
-  B.curriculum=Object.freeze({beginner,mixedMinLevel,version:"arena-curriculum-v7"});
 })();
