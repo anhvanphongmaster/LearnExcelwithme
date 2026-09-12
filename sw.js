@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260912-arena2";
+const CACHE = "learnexcel-assets-v20260912-arena3";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -20,9 +20,9 @@ const ASSETS = [
   "./practice-tiktok.css",
   "./practice-roll.css",
   "./excel-race.html",
-  "./excel-race.css",
+  "./excel-arena-v3.css",
   "./excel-arena-questions.js",
-  "./excel-arena-engine-v2.js",
+  "./excel-arena-engine-v3.js",
   "./home-page-motion.js",
   "./simple-nav.js",
   "./avp-core.js",
@@ -85,8 +85,8 @@ self.addEventListener("fetch", event => {
     url.pathname.endsWith(".html") ||
     url.pathname.endsWith("/");
 
-  const isCodeAsset =
-    /\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
+  const isCodeAsset = /\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
+  const forceFreshHomeMotion = url.pathname.endsWith("/home-page-motion.js");
 
   if (isHTML) {
     event.respondWith(
@@ -101,6 +101,20 @@ self.addEventListener("fetch", event => {
           caches.match(event.request)
             .then(cached => cached || caches.match("./index.html"))
         )
+    );
+    return;
+  }
+
+  if (forceFreshHomeMotion) {
+    event.respondWith(
+      fetch(event.request, { cache: "reload" })
+        .then(response => {
+          if (response && response.ok) {
+            caches.open(CACHE).then(cache => cache.put("./home-page-motion.js", response.clone())).catch(() => {});
+          }
+          return response;
+        })
+        .catch(() => caches.match("./home-page-motion.js").then(cached => cached || caches.match(event.request)))
     );
     return;
   }
