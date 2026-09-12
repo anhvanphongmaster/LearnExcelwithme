@@ -161,14 +161,16 @@
 html body .home-path-more--5 .home-more-race>small{font-size:10px!important;line-height:1.35!important}
 
 /* Smooth Home robot: movement is driven by Web Animations in home-effects.js.
-   Keep transforms compositor-only and leave arm/leg motion lightweight. */
+   Keep transform on the compositor, but do NOT use paint containment because the
+   robot quick-menu intentionally renders outside the 48px launcher box. */
 html body #avpEdgeLauncher.avp-robot-home-smooth{
   position:fixed!important;
   right:auto!important;
   top:auto!important;
   transition:none!important;
   will-change:transform!important;
-  contain:layout paint!important;
+  contain:layout!important;
+  overflow:visible!important;
   backface-visibility:hidden!important;
 }
 html body #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-leg-l{animation:avpBotStep .52s linear infinite!important}
