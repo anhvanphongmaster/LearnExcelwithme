@@ -2,10 +2,8 @@
   const orb = document.getElementById("avpOrb");
   const typing = document.getElementById("avpTyping");
 
-  // Bỏ LED theo chuột / tilt 3D — gây lag trên máy yếu và điện thoại.
   if (orb) orb.style.display = "none";
 
-  /* Typing slogans — chỉ chạy khi đổi ký tự, không giữ một RAF 60fps vô ích. */
   if (typing) {
     const lines = [
       "100+ công thức Excel đang chờ bạn",
@@ -45,6 +43,7 @@
         } else schedule(DEL_MS);
       }
     }
+
     typing.textContent = "";
     clearTimeout(window.__avpTypingTimer);
     if (window.__avpTypingRaf) cancelAnimationFrame(window.__avpTypingRaf);
@@ -52,7 +51,6 @@
     window.addEventListener("pagehide", () => clearTimeout(timer), { once:true });
   }
 })();
-
 
 /* ===== HOME EARNED BADGES ===== */
 (function(){
@@ -75,16 +73,13 @@
     if(!Array.isArray(days) || !days.length) return 0;
     const unique=[...new Set(days)].sort().reverse();
     let streak=1;
-
     for(let i=1;i<unique.length;i++){
       const prev=new Date(unique[i-1]+"T00:00:00");
       const curr=new Date(unique[i]+"T00:00:00");
       const diff=Math.round((prev-curr)/86400000);
-
       if(diff===1) streak++;
       else break;
     }
-
     return streak;
   }
 
@@ -98,20 +93,16 @@
     const challengeScore=Number(challenge.score)||0;
     const activityDays=read("avp_activity_days_v1",[]);
     const streak=getStreak(activityDays);
-
     const roadmap=read("avpLearningPath30",[]);
     const roadmapDone=uniqueCount(roadmap);
     const bonus=Number(localStorage.getItem("avp_bonus_xp_v1")||0)||0;
-
-    const challengeXP=challengeCorrect*5;
-    const roadmapXP=roadmapDone*15;
     const xp=
       Math.min(6,uniqueCount(courses))*20+
       pgDone*10+
       quiz*10+
       bonus+
-      challengeXP+
-      roadmapXP;
+      challengeCorrect*5+
+      roadmapDone*15;
 
     return [
       {icon:"🌱",name:"Bước đầu tiên",ok:uniqueCount(courses)>=1},
@@ -131,10 +122,8 @@
   function renderHomeBadges(){
     const root=document.getElementById(rootId);
     if(!root) return;
-
     const badges=getAllHomeBadges();
     const unlockedCount=badges.filter(b=>b.ok).length;
-
     root.innerHTML=badges.map(b=>`
       <span
         class="home-earned-badge ${b.ok ? "is-unlocked" : "is-locked"}"
@@ -142,12 +131,7 @@
         aria-label="${b.name} - ${b.ok ? "Đã đạt" : "Chưa đạt"}"
       >${b.icon}</span>
     `).join("");
-
-    root.setAttribute(
-      "aria-label",
-      `Đã mở khóa ${unlockedCount}/${badges.length} huy hiệu`
-    );
-
+    root.setAttribute("aria-label",`Đã mở khóa ${unlockedCount}/${badges.length} huy hiệu`);
     root.title=`Đã mở khóa ${unlockedCount}/${badges.length} huy hiệu`;
   }
 
@@ -156,13 +140,11 @@
   }else{
     renderHomeBadges();
   }
-
   window.addEventListener("storage",renderHomeBadges);
   window.addEventListener("avp:cloud-progress-loaded",renderHomeBadges);
   window.addEventListener("avp:challenge-updated",renderHomeBadges);
   window.addEventListener("avp:learning-path-updated",renderHomeBadges);
 })();
-
 
 /* ===== HOME PANEL USER AVATAR ===== */
 (function(){
@@ -193,7 +175,6 @@
       "";
 
     nameEl.textContent=displayName;
-
     if(meta){
       meta.textContent=user
         ? "Tiến độ & huy hiệu của bạn"
@@ -203,7 +184,6 @@
     const loginBtn=document.getElementById("homePanelLoginBtn");
     if(loginBtn){
       loginBtn.hidden=false;
-
       if(user){
         loginBtn.textContent="Đăng xuất";
         loginBtn.href="#";
@@ -213,14 +193,12 @@
           if(loginBtn.dataset.busy==="1") return;
           loginBtn.dataset.busy="1";
           loginBtn.textContent="Đang đăng xuất...";
-
           if(typeof window.avpLogout==="function"){
             await window.avpLogout();
             return;
           }
-
           try{
-            await client?.auth?.signOut({scope:"local"});
+            await window.avpSupabase?.auth?.signOut({scope:"local"});
           }catch{}
           location.href="index.html";
         };
@@ -234,7 +212,6 @@
     }
 
     avatar.innerHTML="";
-
     if(avatarUrl){
       const img=document.createElement("img");
       img.src=avatarUrl;
@@ -259,7 +236,6 @@
     }
 
     const client=window.avpSupabase;
-
     if(!client){
       applyHomePanelUser(null,null);
       return;
@@ -268,28 +244,25 @@
     try{
       const {data}=await client.auth.getSession();
       const user=data?.session?.user || null;
-
       if(!user){
         applyHomePanelUser(null,null);
-        return;
+      }else{
+        let profile=null;
+        try{
+          const result=await client
+            .from("profiles")
+            .select("display_name, avatar_url")
+            .eq("id",user.id)
+            .maybeSingle();
+          profile=result?.data || null;
+        }catch(e){}
+        applyHomePanelUser(user,profile);
       }
-
-      let profile=null;
-      try{
-        const result=await client
-          .from("profiles")
-          .select("display_name, avatar_url")
-          .eq("id",user.id)
-          .maybeSingle();
-
-        profile=result?.data || null;
-      }catch(e){}
-
-      applyHomePanelUser(user,profile);
 
       client.auth.onAuthStateChange(async (_event,session)=>{
         const nextUser=session?.user || null;
         applyHomePanelUser(nextUser,null);
+        try{window.dispatchEvent(new CustomEvent("avp:home-auth-change"));}catch{}
       });
     }catch(e){
       applyHomePanelUser(null,null);
@@ -303,19 +276,20 @@
   }
 })();
 
-
-/* ===== HOME AVP ROBOT — COMPOSITOR-SMOOTH PATROL V2 =====
-   The old controller keeps the chat/menu/bubble behavior. This layer only replaces
-   the expensive per-frame `left` walking with one compositor transform animation. */
+/* ===== HOME AVP ROBOT — COMPOSITOR PATROL V3 + CHAT STABILITY ===== */
 (function(){
   const page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
   if(page!=="index.html") return;
-  if(window.__avpHomeRobotSmoothV2) return;
-  window.__avpHomeRobotSmoothV2=true;
+  if(window.__avpHomeRobotSmoothV3) return;
+  window.__avpHomeRobotSmoothV3=true;
 
   const PAD=16;
-  const SPEED=44; // px/s — similar visual speed, much cheaper than layout every frame.
+  const SPEED=42;
+  const POS_KEY="avp_bot_walk_x_v3";
   let root=null, fab=null, motion=null, direction=1, ready=false;
+  let chatWantedOpen=false;
+  let resumeTimer=null;
+  let chatRestoreTimer=null;
 
   const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 
@@ -324,12 +298,31 @@
     return Math.max(PAD,window.innerWidth-(root.offsetWidth||64)-PAD);
   }
 
+  function getChatPanel(){
+    return [
+      document.getElementById("avpChatPanel"),
+      document.getElementById("avpAdminFloatPanel"),
+      document.getElementById("avpGuestChatPanel")
+    ].find(Boolean) || null;
+  }
+
+  function chatPanelOpen(){
+    const panel=getChatPanel();
+    return !!(panel && !panel.hidden);
+  }
+
   function setSide(){
     if(!root) return;
     const r=root.getBoundingClientRect();
     const onLeft=(r.left+r.width/2)<window.innerWidth/2;
     root.classList.toggle("is-left",onLeft);
     root.classList.toggle("is-right",!onLeft);
+  }
+
+  function saveState(left){
+    try{
+      localStorage.setItem(POS_KEY,JSON.stringify({x:Math.round(left),dir:direction}));
+    }catch{}
   }
 
   function freezeAtCurrent(){
@@ -347,6 +340,7 @@
     root.style.bottom=PAD+"px";
     root.classList.remove("avp-smooth-moving");
     setSide();
+    saveState(left);
     return left;
   }
 
@@ -355,7 +349,8 @@
       !document.hidden &&
       !root.classList.contains("open") &&
       !root.classList.contains("is-dragging") &&
-      !root.classList.contains("is-lifted");
+      !root.classList.contains("is-lifted") &&
+      !chatPanelOpen();
   }
 
   function patrol(fromLeft,dir){
@@ -376,7 +371,16 @@
 
     if(Math.abs(delta)<2){
       direction*=-1;
-      setTimeout(()=>patrol(start,direction),40);
+      clearTimeout(resumeTimer);
+      resumeTimer=setTimeout(()=>patrol(start,direction),80);
+      return;
+    }
+
+    if(!root.animate){
+      root.style.left=Math.round(target)+"px";
+      direction*=-1;
+      clearTimeout(resumeTimer);
+      resumeTimer=setTimeout(()=>patrol(target,direction),120);
       return;
     }
 
@@ -394,22 +398,95 @@
 
     motion.onfinish=()=>{
       if(!root) return;
-      root.style.left=Math.round(target)+"px";
+      const safeTarget=clamp(target,PAD,maxX());
+      root.style.left=Math.round(safeTarget)+"px";
       root.style.transform="none";
       try{motion.cancel();}catch(_){ }
       motion=null;
       direction*=-1;
+      root.classList.remove("avp-smooth-moving");
       setSide();
-      patrol(target,direction);
+      saveState(safeTarget);
+      if(canMove()) patrol(safeTarget,direction);
     };
   }
 
   function resume(){
+    clearTimeout(resumeTimer);
     if(!ready || !canMove() || motion) return;
     const left=clamp(root.getBoundingClientRect().left,PAD,maxX());
+    root.style.left=Math.round(left)+"px";
     if(left>=maxX()-3) direction=-1;
     else if(left<=PAD+3) direction=1;
     patrol(left,direction);
+  }
+
+  function retryRestoreChat(){
+    clearTimeout(chatRestoreTimer);
+    let tries=0;
+    const check=()=>{
+      if(!chatWantedOpen) return;
+      const panel=getChatPanel();
+      if(panel){
+        if(panel.hidden){
+          const bubble=document.getElementById("avpChatBubble");
+          if(bubble) bubble.click();
+        }
+        freezeAtCurrent();
+        return;
+      }
+      tries++;
+      if(tries<18) chatRestoreTimer=setTimeout(check,140);
+    };
+    check();
+  }
+
+  function markChatClosed(){
+    chatWantedOpen=false;
+    clearTimeout(chatRestoreTimer);
+    setTimeout(resume,120);
+  }
+
+  function bindChatStability(){
+    window.addEventListener("avp:surface-open",e=>{
+      const surface=e.detail?.surface;
+      if(surface==="chat"){
+        chatWantedOpen=true;
+        freezeAtCurrent();
+        retryRestoreChat();
+      }else if(surface){
+        chatWantedOpen=false;
+      }
+    });
+
+    window.addEventListener("avp:chat-ready",()=>{
+      if(chatWantedOpen) retryRestoreChat();
+    });
+
+    window.addEventListener("avp:home-auth-change",()=>{
+      if(chatWantedOpen){
+        setTimeout(retryRestoreChat,100);
+        setTimeout(retryRestoreChat,450);
+      }
+    });
+
+    document.addEventListener("click",e=>{
+      if(e.target.closest?.("#avpChatClose,#avpAdminFloatClose,#avpGuestChatClose")){
+        markChatClosed();
+        return;
+      }
+      const action=e.target.closest?.('[data-edge-action="chat"]');
+      if(action){
+        setTimeout(()=>{
+          if(chatPanelOpen()){
+            chatWantedOpen=true;
+            freezeAtCurrent();
+          }else if(!document.getElementById("avpEdgeLauncher")?.classList.contains("open")){
+            markChatClosed();
+          }
+        },80);
+      }
+    },true);
   }
 
   function init(){
@@ -419,24 +496,30 @@
     if(!root || !fab){ setTimeout(init,120); return; }
     ready=true;
 
-    // Stop only the old walking path. Menu/chat/bubble logic stays intact.
     const r=root.getBoundingClientRect();
+    let startLeft=clamp(r.left,PAD,maxX());
+    try{
+      const saved=JSON.parse(localStorage.getItem(POS_KEY)||"null");
+      if(saved && Number.isFinite(saved.x)) startLeft=clamp(saved.x,PAD,maxX());
+      if(saved?.dir===-1) direction=-1;
+    }catch{}
+
     root.classList.remove("avp-robot-home","is-walking");
     root.classList.add("avp-robot-home-smooth");
-    root.style.left=Math.round(clamp(r.left,PAD,maxX()))+"px";
+    root.style.left=Math.round(startLeft)+"px";
     root.style.right="auto";
     root.style.top="auto";
     root.style.bottom=PAD+"px";
     root.style.transform="none";
     setSide();
 
-    // Correct menu direction before the original click handler opens it.
-    fab.addEventListener("click",setSide,true);
+    bindChatStability();
 
-    // Let the original lift/drag interaction work without fighting the patrol animation.
+    fab.addEventListener("click",setSide,true);
     fab.addEventListener("pointerdown",()=>{ freezeAtCurrent(); },true);
+
     const afterPointer=()=>setTimeout(()=>{
-      if(!root?.classList.contains("open")){
+      if(!root?.classList.contains("open") && !chatPanelOpen()){
         const left=freezeAtCurrent();
         direction=(left<window.innerWidth/2)?1:-1;
         resume();
@@ -446,29 +529,37 @@
     fab.addEventListener("pointercancel",afterPointer);
 
     fab.addEventListener("click",()=>setTimeout(()=>{
-      if(root.classList.contains("open")) freezeAtCurrent();
+      if(root.classList.contains("open") || chatPanelOpen()) freezeAtCurrent();
       else resume();
     },0));
 
     document.addEventListener("visibilitychange",()=>{
       if(document.hidden) freezeAtCurrent();
+      else if(chatWantedOpen) retryRestoreChat();
       else setTimeout(resume,80);
+    });
+
+    window.addEventListener("focus",()=>{
+      if(chatWantedOpen) retryRestoreChat();
     });
 
     let resizeTimer=null;
     window.addEventListener("resize",()=>{
       clearTimeout(resizeTimer);
-      freezeAtCurrent();
+      const left=freezeAtCurrent();
       resizeTimer=setTimeout(()=>{
-        const left=clamp(root.getBoundingClientRect().left,PAD,maxX());
-        root.style.left=Math.round(left)+"px";
-        resume();
-      },120);
+        const safe=clamp(left,PAD,maxX());
+        root.style.left=Math.round(safe)+"px";
+        setSide();
+        if(!chatPanelOpen()) resume();
+      },140);
     });
 
     window.addEventListener("pagehide",()=>{
-      if(motion){try{motion.cancel();}catch(_){ }}
-      motion=null;
+      const left=freezeAtCurrent();
+      saveState(left);
+      clearTimeout(resumeTimer);
+      clearTimeout(chatRestoreTimer);
     },{once:true});
 
     resume();
