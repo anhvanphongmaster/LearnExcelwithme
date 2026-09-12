@@ -1,0 +1,203 @@
+/* UX Declutter V1 — reduce visual noise without removing learning content. */
+
+/* =========================================================
+   HOME — one obvious route, fewer competing cards
+   ========================================================= */
+.home-first-v1{
+  padding:12px 16px 2px!important;
+}
+.home-first-inner-v1{
+  max-width:1120px!important;
+  padding:13px 15px!important;
+  border:1px solid #d9e2dd!important;
+  border-radius:15px!important;
+  box-shadow:0 5px 16px rgba(23,70,43,.035)!important;
+}
+.home-first-head-v1{
+  align-items:center!important;
+  gap:14px!important;
+  margin-bottom:8px!important;
+}
+.home-first-kicker-v1{
+  margin-bottom:2px!important;
+  color:#668074!important;
+  font-size:8px!important;
+}
+.home-first-head-v1 h2{
+  font-size:18px!important;
+  line-height:1.2!important;
+}
+.home-first-head-v1 p{
+  display:none!important;
+}
+.home-first-primary-v1{
+  min-height:38px!important;
+  padding:0 14px!important;
+  border:1px solid #b9c8c0!important;
+  border-left:4px solid #4d8a66!important;
+  border-radius:10px!important;
+  background:linear-gradient(180deg,#fff,#f3f5f4)!important;
+  color:#284d37!important;
+  box-shadow:0 3px 9px rgba(30,70,45,.05)!important;
+  font-size:11px!important;
+}
+.home-first-primary-v1:hover{
+  border-color:#8eab99!important;
+  background:#eef3f0!important;
+  color:#173f2a!important;
+}
+.home-first-steps-v1{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:6px!important;
+}
+.home-first-step-v1{
+  display:inline-flex!important;
+  align-items:center!important;
+  width:auto!important;
+  gap:7px!important;
+  padding:5px 9px!important;
+  border-radius:9px!important;
+  background:#f7f9f8!important;
+  border-color:#dce4df!important;
+}
+.home-first-step-v1:nth-child(1){border-color:#cfe1d5!important;background:#f6faf7!important}
+.home-first-step-v1:nth-child(2){border-color:#d5dfeb!important;background:#f7f9fc!important}
+.home-first-step-v1:nth-child(3){border-color:#e0d8e9!important;background:#faf8fc!important}
+.home-first-step-v1>span{
+  width:22px!important;
+  height:22px!important;
+  border-radius:7px!important;
+  font-size:8px!important;
+}
+.home-first-step-v1 strong{
+  font-size:10px!important;
+}
+.home-first-step-v1 small,
+.home-first-foot-v1{
+  display:none!important;
+}
+
+/* The module name is the decision; long descriptions are reference noise here. */
+.home-path-inner>p{
+  display:none!important;
+}
+.home-platform-module-v1{
+  min-height:92px!important;
+  padding:13px!important;
+  box-shadow:none!important;
+}
+.home-platform-copy-v1 em{
+  display:none!important;
+}
+.home-platform-copy-v1 b{
+  margin-top:7px!important;
+  color:#5b7665!important;
+  font-size:8.5px!important;
+}
+.home-path-more--5 .home-more-card{
+  min-height:72px!important;
+  padding:11px 12px!important;
+  box-shadow:none!important;
+}
+.home-path-more--5 .home-more-card small,
+.home-path-more--5 .avp-arena-home-meta{
+  display:none!important;
+}
+.home-path-more--5 .home-more-card strong{
+  font-size:12px!important;
+}
+
+/* Reduce decorative motion on dense learning/navigation areas. */
+.home-platform-module-v1:hover,
+.home-path-more--5 .home-more-card:hover{
+  transform:translateY(-1px)!important;
+  box-shadow:0 5px 14px rgba(23,70,43,.06)!important;
+}
+
+/* =========================================================
+   42-LESSON READER — lesson first, navigation second
+   ========================================================= */
+.kv-reader-page .kv-course-nav{
+  display:none!important;
+}
+.kv-reader-page .kv-hero{
+  margin-top:0!important;
+  padding:11px 14px!important;
+  border-radius:12px!important;
+}
+.kv-reader-page .kv-hero h1{
+  font-size:clamp(23px,2.5vw,31px)!important;
+}
+.kv-reader-page .kv-hero-lead{
+  margin-top:4px!important;
+  font-size:10.5px!important;
+}
+.kv-reader-grid{
+  margin-top:0!important;
+}
+.kv-reader-menu{
+  padding:9px!important;
+}
+.kv-reader-menu .kv-side-title{
+  margin-bottom:5px!important;
+}
+.kv-reader-menu .kv-outline button{
+  min-height:31px!important;
+}
+.kv-active-section .kv-section{
+  padding:14px!important;
+  border-top-width:3px!important;
+}
+.kv-active-section .lp-do-now-v2,
+.kv-active-section .kv-box,
+.kv-active-section .kv-check,
+.kv-intro .lp-start-here-v2,
+.kv-intro .lp-visual-v3,
+.kv-intro .kv-intro-box{
+  box-shadow:none!important;
+}
+
+/* Only the final "next lesson" CTA should become visually primary. */
+.kv-flow-next-lesson-v4{
+  border:1px solid #b8c6bf!important;
+  border-left:4px solid #5f8e72!important;
+  background:linear-gradient(180deg,#fff,#f1f4f2)!important;
+  color:#294b38!important;
+  box-shadow:none!important;
+}
+
+@media(max-width:760px){
+  .home-first-head-v1{
+    flex-direction:column!important;
+    align-items:stretch!important;
+  }
+  .home-first-primary-v1{
+    width:100%!important;
+  }
+  .home-first-steps-v1{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+  .home-first-step-v1{
+    justify-content:center!important;
+    padding:6px!important;
+  }
+  .home-first-step-v1>span{
+    display:none!important;
+  }
+  .home-first-step-v1 strong{
+    text-align:center!important;
+  }
+  .kv-reader-page .kv-hero{
+    padding:10px 11px!important;
+  }
+}
+
+@media(max-width:520px){
+  .home-first-v1{padding-left:9px!important;padding-right:9px!important}
+  .home-first-inner-v1{padding:11px!important}
+  .home-first-head-v1 h2{font-size:16px!important}
+  .home-first-steps-v1{gap:5px!important}
+  .home-platform-module-v1{min-height:78px!important}
+}
