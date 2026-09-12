@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Học hôm nay | Learn Excel with Anh Van Phong</title>
+  <meta name="description" content="Kiểm tra trình độ, nhận lộ trình cá nhân, ôn lỗi sai và làm case Excel thực chiến trong một màn hình.">
+  <meta name="theme-color" content="#f3f6f4">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="simple-nav.css">
+  <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="global-search.css">
+  <link rel="stylesheet" href="avp-core.css">
+  <link rel="stylesheet" href="theme-polish-v33.css">
+  <link rel="stylesheet" href="avp-ui-system.css?v=20260911-ui-consistency1" data-avp-ui-system>
+  <link rel="stylesheet" href="learning-coach-v1.css?v=20260913-coach1">
+</head>
+<body>
+<script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script>
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn" class="is-current" aria-current="page">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="coach-page">
+  <div class="coach-shell">
+    <header class="coach-hero">
+      <div>
+        <span class="coach-kicker">HỌC EXCEL · KHÔNG ĐI LẠC</span>
+        <h1>Hôm nay chỉ cần biết bước tiếp theo.</h1>
+        <p>Web tự gom việc cần học, câu cần luyện và lỗi cần ôn vào một chỗ. Không cần tự chọn giữa hàng chục khu.</p>
+      </div>
+      <a class="coach-guide-link" href="#guide">Cách dùng web</a>
+    </header>
+
+    <section class="coach-focus" id="coachFocus" aria-live="polite">
+      <div class="coach-focus-top">
+        <div>
+          <span class="coach-focus-label">VIỆC QUAN TRỌNG NHẤT</span>
+          <h2 id="coachFocusTitle">Đang chuẩn bị lộ trình…</h2>
+          <p id="coachFocusText">Chỉ hiển thị việc cần làm tiếp theo.</p>
+        </div>
+        <span class="coach-progress-pill" id="coachStatus">—</span>
+      </div>
+      <div id="coachFocusBody"></div>
+    </section>
+
+    <div class="coach-secondary">
+      <details class="coach-drawer" id="diagnosticDrawer">
+        <summary><span>Kiểm tra trình độ 5 phút</span></summary>
+        <div class="coach-drawer-body">
+          <p class="coach-subcopy">16 câu tình huống, mỗi câu kiểm tra một kỹ năng khác nhau. Kết quả dùng để chọn điểm bắt đầu, không phải để xếp hạng.</p>
+          <div id="diagnosticHost"></div>
+        </div>
+      </details>
+
+      <details class="coach-drawer" id="mistakesDrawer">
+        <summary><span>Sổ lỗi cá nhân <b id="mistakeCount">0</b></span></summary>
+        <div class="coach-drawer-body">
+          <p class="coach-subcopy">Các lỗi sai gần đây được gom lại để học lại đúng chỗ thay vì làm thêm câu ngẫu nhiên.</p>
+          <div id="mistakesHost" class="coach-mistakes"></div>
+        </div>
+      </details>
+
+      <details class="coach-drawer" id="casesDrawer">
+        <summary><span>Case thực chiến mini</span></summary>
+        <div class="coach-drawer-body">
+          <p class="coach-subcopy">Không phải bài lý thuyết. Mỗi case có đầu vào, yêu cầu và đầu ra rõ ràng.</p>
+          <div id="casesHost" class="coach-cases"></div>
+        </div>
+      </details>
+
+      <details class="coach-drawer" id="guide">
+        <summary><span>Hướng dẫn sử dụng web học như thế nào?</span></summary>
+        <div class="coach-drawer-body">
+          <div class="coach-guide-grid">
+            <article class="coach-guide-step"><b>01</b><strong>Vào Học hôm nay</strong><p>Đây là điểm bắt đầu. Không cần lướt toàn bộ web để chọn.</p></article>
+            <article class="coach-guide-step"><b>02</b><strong>Làm bài được đề xuất</strong><p>Học đúng bài yếu nhất trước; không học tuần tự máy móc nếu đã biết.</p></article>
+            <article class="coach-guide-step"><b>03</b><strong>Luyện 3 câu</strong><p>Sau bài học, làm bộ luyện ngắn để kiểm tra có dùng được hay chưa.</p></article>
+            <article class="coach-guide-step"><b>04</b><strong>Ôn 1 lỗi cũ</strong><p>Lỗi sai từ bài học/Arena được gom về Sổ lỗi để xử lý dứt điểm.</p></article>
+            <article class="coach-guide-step"><b>05</b><strong>Làm case khi sẵn sàng</strong><p>Case dùng để nối nhiều kỹ năng thành một đầu việc giống công việc thật.</p></article>
+          </div>
+          <div class="coach-rule"><strong>Quy tắc dùng web:</strong> Học = hiểu cách làm · Thực hành = làm lại bằng file · Tra cứu/Công cụ = chỉ mở khi quên hoặc cần hỗ trợ · Arena = luyện phản xạ thêm, không thay thế lộ trình chính.</div>
+        </div>
+      </details>
+    </div>
+  </div>
+</main>
+
+<script src="learning-platform-catalog-v1.js?v=20260913-coach1"></script>
+<script src="learning-coach-core-v1.js?v=20260913-coach1"></script>
+<script src="learning-coach-v1.js?v=20260913-coach1"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="global-search.js"></script>
+<script defer src="simple-nav.js"></script>
+<script defer src="theme-unified-v32.js"></script>
+<script defer src="avp-core.js"></script>
+</body>
+</html>
