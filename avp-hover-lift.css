@@ -2,6 +2,7 @@
 @import url("avp-site-motion.css");
 @import url("home-ux-polish-v1.css?v=20260912-homeux3");
 @import url("ux-declutter-v1.css?v=20260913-ux1");
+@import url("ux-declutter-v2.css?v=20260913-ux2");
 
 /* Home robot bounds guard.
    The smooth patrol computes its right edge from launcher.offsetWidth.
