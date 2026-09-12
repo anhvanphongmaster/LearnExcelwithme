@@ -20,7 +20,7 @@
 <nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
     <a href="index.html" data-avp-nav="home">Trang chủ</a>
-    <a href="skill-map.html" data-avp-nav="learn" class="is-current" aria-current="page">Học</a>
+    <a href="learning-coach.html" data-avp-nav="learn" class="is-current" aria-current="page">Học</a>
     <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
     <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
     <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
@@ -65,7 +65,7 @@
       <details class="coach-drawer" id="mistakesDrawer">
         <summary><span>Sổ lỗi cá nhân <b id="mistakeCount">0</b></span></summary>
         <div class="coach-drawer-body">
-          <p class="coach-subcopy">Các lỗi sai gần đây được gom lại để học lại đúng chỗ thay vì làm thêm câu ngẫu nhiên.</p>
+          <p class="coach-subcopy">Lỗi sai từ bài lý thuyết, Arena, bộ luyện và bài tự chấm được gom về đây để học lại đúng chỗ.</p>
           <div id="mistakesHost" class="coach-mistakes"></div>
         </div>
       </details>
@@ -85,7 +85,7 @@
             <article class="coach-guide-step"><b>01</b><strong>Vào Học hôm nay</strong><p>Đây là điểm bắt đầu. Không cần lướt toàn bộ web để chọn.</p></article>
             <article class="coach-guide-step"><b>02</b><strong>Làm bài được đề xuất</strong><p>Học đúng bài yếu nhất trước; không học tuần tự máy móc nếu đã biết.</p></article>
             <article class="coach-guide-step"><b>03</b><strong>Luyện 3 câu</strong><p>Sau bài học, làm bộ luyện ngắn để kiểm tra có dùng được hay chưa.</p></article>
-            <article class="coach-guide-step"><b>04</b><strong>Ôn 1 lỗi cũ</strong><p>Lỗi sai từ bài học/Arena được gom về Sổ lỗi để xử lý dứt điểm.</p></article>
+            <article class="coach-guide-step"><b>04</b><strong>Ôn 1 lỗi cũ</strong><p>Lỗi sai từ lý thuyết, Arena và bài tự chấm được gom vào Sổ lỗi.</p></article>
             <article class="coach-guide-step"><b>05</b><strong>Làm case khi sẵn sàng</strong><p>Case dùng để nối nhiều kỹ năng thành một đầu việc giống công việc thật.</p></article>
           </div>
           <div class="coach-rule"><strong>Quy tắc dùng web:</strong> Học = hiểu cách làm · Thực hành = làm lại bằng file · Tra cứu/Công cụ = chỉ mở khi quên hoặc cần hỗ trợ · Arena = luyện phản xạ thêm, không thay thế lộ trình chính.</div>
@@ -104,5 +104,6 @@
 <script defer src="simple-nav.js"></script>
 <script defer src="theme-unified-v32.js"></script>
 <script defer src="avp-core.js"></script>
+<script>window.addEventListener('load',()=>{const a=document.querySelector('[data-avp-nav="learn"]');if(a){a.href='learning-coach.html';a.classList.add('is-current');a.setAttribute('aria-current','page')}});</script>
 </body>
 </html>
