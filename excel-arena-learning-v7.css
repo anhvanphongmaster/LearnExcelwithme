@@ -1,0 +1,6 @@
+/* Arena v7: learning-mode clarity */
+body[data-arena-mode="learn"].arena-playing .question-timer{display:none}
+.arena-learn-note{display:block;margin-top:7px;line-height:1.55;font-weight:600}
+.arena-learn-note strong{font-weight:900}
+.arena-feedback.good .arena-learn-note,.arena-feedback.bad .arena-learn-note{color:inherit}
+@media(max-width:720px){.arena-learn-note{font-size:13px;line-height:1.5}}
