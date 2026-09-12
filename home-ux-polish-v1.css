@@ -1,131 +1,173 @@
-/* Home UX Polish V1 — compact first-run guidance, calmer hierarchy, static robot. */
+/* Home UX Polish V2 — compact first-run strip, balanced cards, neutral professional CTAs. */
 
-/* Keep the useful five-flow Practice banner untouched. */
+/* Keep the existing five-flow Practice banner and its 5 badges. */
 
-/* First-run guidance: one compact decision strip, not another large hero. */
+/* New-user guide: one short decision strip, not another oversized card. */
 .home-first-v1{
-  padding:12px 16px 2px!important;
+  padding:8px 16px 0!important;
   background:#f4f7f5!important;
 }
 .home-first-inner-v1{
   max-width:1120px!important;
   margin:0 auto!important;
-  padding:14px 16px!important;
-  border:1px solid #d7e0da!important;
-  border-radius:16px!important;
-  background:linear-gradient(180deg,#ffffff 0%,#fafcfb 100%)!important;
-  box-shadow:0 7px 20px rgba(23,70,43,.045)!important;
+  padding:10px 12px!important;
+  display:grid!important;
+  grid-template-columns:minmax(190px,.8fr) minmax(420px,1.7fr) auto!important;
+  gap:10px!important;
+  align-items:center!important;
+  border:1px solid #d6dfd9!important;
+  border-radius:14px!important;
+  background:linear-gradient(180deg,#fff 0%,#fafcfb 100%)!important;
+  box-shadow:0 5px 16px rgba(23,70,43,.04)!important;
 }
 .home-first-head-v1{
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) auto!important;
-  align-items:center!important;
-  gap:14px!important;
-  margin:0 0 10px!important;
+  display:block!important;
+  margin:0!important;
+  min-width:0!important;
 }
-.home-first-kicker-v1{
-  margin:0 0 3px!important;
-  color:#6a7d71!important;
-  font-size:9px!important;
-  font-weight:900!important;
-  letter-spacing:.11em!important;
-}
+.home-first-kicker-v1{display:none!important}
 .home-first-head-v1 h2{
   margin:0!important;
-  color:#183f2b!important;
+  color:#203d2c!important;
   font-size:0!important;
-  line-height:1.25!important;
+  line-height:1.2!important;
 }
 .home-first-head-v1 h2::after{
-  content:"Bắt đầu: Học → Thực hành → Tra cứu";
-  font-size:19px!important;
+  content:"Bắt đầu đúng chỗ";
+  font-size:17px!important;
   font-weight:900!important;
-  letter-spacing:-.015em!important;
+  letter-spacing:-.01em!important;
 }
 .home-first-head-v1 p{display:none!important}
+.home-first-steps-v1{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;
+  min-width:0!important;
+}
+.home-first-step-v1{
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  min-width:0!important;
+  min-height:36px!important;
+  padding:6px 8px!important;
+  border:1px solid #dde4df!important;
+  border-radius:10px!important;
+  background:#f8faf9!important;
+}
+.home-first-step-v1:nth-child(1){border-color:#cddfd3!important;background:#f6faf7!important}
+.home-first-step-v1:nth-child(2){border-color:#d4ddea!important;background:#f7f9fc!important}
+.home-first-step-v1:nth-child(3){border-color:#e2d9c9!important;background:#fbfaf7!important}
+.home-first-step-v1>span{
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 25px!important;
+  width:25px!important;
+  height:25px!important;
+  border:1px solid #d0dad4!important;
+  border-radius:8px!important;
+  background:#fff!important;
+  color:#315d43!important;
+  font-size:9px!important;
+  font-weight:950!important;
+}
+.home-first-step-v1 strong{
+  display:block!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+  color:#334b3d!important;
+  font-size:11px!important;
+  line-height:1.2!important;
+}
+.home-first-step-v1 small{display:none!important}
+.home-first-foot-v1{display:none!important}
 .home-first-primary-v1{
-  min-height:40px!important;
-  padding:0 15px!important;
-  border:1px solid #aebcb4!important;
-  border-radius:11px!important;
-  background:linear-gradient(180deg,#fff 0%,#f2f5f3 100%)!important;
-  color:#174d31!important;
-  box-shadow:inset 3px 0 0 #2d7b4f,0 3px 9px rgba(30,67,45,.06)!important;
-  font-size:12px!important;
+  min-height:38px!important;
+  padding:0 13px!important;
+  border:1px solid #aebbb4!important;
+  border-radius:10px!important;
+  background:linear-gradient(180deg,#fff 0%,#f1f4f2 100%)!important;
+  color:#214c34!important;
+  box-shadow:inset 3px 0 0 #4d8463,0 3px 8px rgba(30,67,45,.045)!important;
+  font-size:11px!important;
   font-weight:900!important;
   text-decoration:none!important;
   white-space:nowrap!important;
 }
 .home-first-primary-v1:hover{
-  border-color:#7d9e8a!important;
-  background:#eef4f0!important;
-  color:#113f28!important;
+  border-color:#889c90!important;
+  background:#ecefed!important;
+  color:#173f2a!important;
   transform:translateY(-1px)!important;
-  box-shadow:inset 3px 0 0 #217346,0 6px 14px rgba(30,67,45,.09)!important;
+  box-shadow:inset 3px 0 0 #2c7550,0 5px 12px rgba(30,67,45,.07)!important;
 }
-.home-first-steps-v1{
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:7px!important;
-}
-.home-first-step-v1{
-  display:flex!important;
-  align-items:center!important;
-  gap:8px!important;
-  min-height:42px!important;
-  padding:7px 9px!important;
-  border:1px solid #dde4df!important;
-  border-radius:11px!important;
-  background:#f8faf9!important;
-}
-.home-first-step-v1>span{
-  display:grid!important;
-  place-items:center!important;
-  flex:0 0 28px!important;
-  width:28px!important;
-  height:28px!important;
-  border:1px solid #cddbd2!important;
-  border-radius:9px!important;
-  background:#eef4f0!important;
-  color:#246442!important;
-  font-size:10px!important;
-  font-weight:950!important;
-}
-.home-first-step-v1 strong{
-  display:block!important;
-  color:#2d4838!important;
-  font-size:12px!important;
-  line-height:1.2!important;
-}
-.home-first-step-v1 small{display:none!important}
-.home-first-foot-v1{display:none!important}
 
-/* A–Z should read like a useful menu, not a second landing page. */
-.home-path{margin-top:20px!important}
+/* Hero actions: no solid green/white pair. Use two restrained bordered surfaces. */
+html body .avp-mobile-main-cta-wrap{gap:8px!important}
+html body .avp-mobile-main-cta-wrap .avp-mobile-main-cta,
+html body .avp-mobile-main-cta-wrap .avp-practice-hub-cta{
+  min-height:58px!important;
+  border:1px solid #b9c9c0!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(90deg,rgba(54,126,83,.08),transparent 22%),
+    linear-gradient(180deg,#fff 0%,#f2f6f3 100%)!important;
+  color:#213f2d!important;
+  box-shadow:inset 4px 0 0 #4b8462,0 8px 20px rgba(27,63,42,.08)!important;
+}
+html body .avp-mobile-main-cta-wrap .avp-mobile-main-cta strong,
+html body .avp-mobile-main-cta-wrap .avp-practice-hub-cta strong{color:#1c452f!important;text-shadow:none!important}
+html body .avp-mobile-main-cta-wrap .avp-mobile-main-cta small,
+html body .avp-mobile-main-cta-wrap .avp-practice-hub-cta small{color:#66756d!important;text-shadow:none!important}
+html body .avp-mobile-main-cta-wrap .avp-mobile-main-cta-arrow{color:#355f47!important}
+html body .avp-mobile-main-cta-wrap .avp-scroll-tease-btn{
+  min-height:48px!important;
+  padding:9px 14px!important;
+  border:1px solid #d1c9df!important;
+  border-radius:13px!important;
+  background:
+    linear-gradient(90deg,rgba(111,86,148,.07),transparent 24%),
+    linear-gradient(180deg,#fff 0%,#f6f4f8 100%)!important;
+  color:#4e4657!important;
+  box-shadow:inset 4px 0 0 #9a89b0,0 6px 16px rgba(55,45,70,.055)!important;
+}
+html body .avp-mobile-main-cta-wrap .avp-scroll-tease-btn .avp-tease-title,
+html body .avp-mobile-main-cta-wrap .avp-scroll-tease-btn #avpTeasePreview{color:#4e4657!important;text-shadow:none!important}
+html body .avp-mobile-main-cta-wrap .avp-scroll-tease-btn:hover,
+html body .avp-mobile-main-cta-wrap .avp-mobile-main-cta:hover{
+  filter:none!important;
+  transform:translateY(-1px)!important;
+}
+
+/* A–Z: compact and every module card has the same geometry. */
+.home-path{margin-top:16px!important}
 .home-path-inner{
-  padding:21px 20px 19px!important;
-  border-radius:18px!important;
+  padding:18px!important;
+  border-radius:17px!important;
   border-color:#d8e1db!important;
-  box-shadow:0 10px 28px rgba(23,70,43,.055)!important;
+  box-shadow:0 8px 24px rgba(23,70,43,.045)!important;
 }
 .home-path-inner>h2{
-  margin-bottom:12px!important;
-  font-size:24px!important;
+  margin-bottom:10px!important;
+  font-size:22px!important;
   line-height:1.2!important;
 }
 .home-path-inner>h2::after{
   content:"  ·  8 module / 42 bài";
-  color:#7c8981;
-  font-size:11px;
+  color:#7b8880;
+  font-size:10px;
   font-weight:700;
   letter-spacing:0;
   vertical-align:middle;
 }
 .home-path-inner>p{display:none!important}
-.home-platform-grid-v1{gap:9px!important}
+.home-platform-grid-v1{gap:9px!important;grid-auto-rows:1fr!important}
 .home-platform-module-v1{
-  min-height:100px!important;
-  padding:12px!important;
+  min-height:96px!important;
+  height:100%!important;
+  padding:11px!important;
   gap:9px!important;
   border-color:#d9e1dc!important;
   border-radius:13px!important;
@@ -138,54 +180,57 @@
   box-shadow:0 7px 16px rgba(23,70,43,.055)!important;
   transform:translateY(-2px)!important;
 }
-.home-platform-no-v1{
-  width:36px!important;
-  height:36px!important;
-  border-radius:10px!important;
-}
-.home-platform-copy-v1 small{font-size:8px!important}
+.home-platform-no-v1{width:35px!important;height:35px!important;border-radius:10px!important}
+.home-platform-copy-v1 small{font-size:7.5px!important}
 .home-platform-copy-v1 strong{font-size:13px!important;margin-top:2px!important}
 .home-platform-copy-v1 em{display:none!important}
-.home-platform-copy-v1 b{margin-top:8px!important;font-size:9px!important}
+.home-platform-copy-v1 b{margin-top:7px!important;font-size:8.5px!important}
 
-/* Robot: keep it available, but stop the continuous Home patrol/repaint loop visually. */
-html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home{
+/* Utility row: force equal cards; Arena must not grow taller because it is new. */
+.home-path-more--5{align-items:stretch!important;grid-auto-rows:1fr!important}
+.home-path-more--5 .home-more-card{
+  min-height:106px!important;
+  height:100%!important;
+  align-self:stretch!important;
+  box-sizing:border-box!important;
+}
+.home-path-more--5 .home-more-race .avp-arena-home-meta{display:none!important}
+html body .home-path-more--5 .home-more-race>small{font-size:10px!important;line-height:1.35!important}
+
+/* Smooth Home robot: movement is driven by Web Animations in home-effects.js.
+   Keep transforms compositor-only and leave arm/leg motion lightweight. */
+html body #avpEdgeLauncher.avp-robot-home-smooth{
   position:fixed!important;
-  left:auto!important;
+  right:auto!important;
   top:auto!important;
-  right:18px!important;
-  bottom:18px!important;
-  transform:none!important;
   transition:none!important;
-  animation:none!important;
-  will-change:auto!important;
+  will-change:transform!important;
+  contain:layout paint!important;
+  backface-visibility:hidden!important;
 }
-html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-leg-l,
-html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-leg-r,
-html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-arm-l,
-html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-arm-r,
-html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-head,
-html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-body,
-html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-eye{
-  animation:none!important;
-  transform:none!important;
-  will-change:auto!important;
-}
+html body #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-leg-l{animation:avpBotStep .52s linear infinite!important}
+html body #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-leg-r{animation:avpBotStep .52s linear infinite reverse!important}
+html body #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-arm-l{animation:avpBotStep .52s linear infinite reverse!important}
+html body #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-arm-r{animation:avpBotStep .52s linear infinite!important}
+html body #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-head{animation:avpRobotHeadBob .52s ease-in-out infinite!important}
+html body #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-body{animation:avpRobotBodyBob .52s ease-in-out infinite!important}
+html body #avpEdgeLauncher.avp-robot-home-smooth .avp-bot-eye{animation:avpRobotBlink 3.4s ease-in-out infinite!important}
 
-@media(max-width:760px){
-  .home-first-head-v1{grid-template-columns:1fr!important;gap:9px!important}
-  .home-first-primary-v1{width:100%!important;justify-content:center!important}
-  .home-first-steps-v1{grid-template-columns:1fr 1fr 1fr!important}
-  .home-first-step-v1{justify-content:center!important;padding:7px!important}
-  .home-first-step-v1>div{min-width:0!important}
-  .home-first-step-v1 strong{font-size:11px!important}
+@media(max-width:860px){
+  .home-first-inner-v1{grid-template-columns:1fr auto!important}
+  .home-first-steps-v1{grid-column:1/-1!important;grid-row:2!important}
 }
-@media(max-width:520px){
-  .home-first-v1{padding:10px 10px 0!important}
-  .home-first-inner-v1{padding:12px!important}
-  .home-first-head-v1 h2::after{font-size:17px!important}
+@media(max-width:620px){
+  .home-first-v1{padding:8px 10px 0!important}
+  .home-first-inner-v1{grid-template-columns:1fr!important;padding:10px!important}
+  .home-first-primary-v1{width:100%!important;justify-content:center!important}
+  .home-first-steps-v1{grid-column:auto!important;grid-row:auto!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .home-first-step-v1{justify-content:center!important;padding:6px!important}
+  .home-first-step-v1 strong{font-size:10px!important}
+  .home-path-inner{padding:15px 12px!important}
+  .home-path-inner>h2::after{display:block;margin-top:3px}
+}
+@media(max-width:430px){
   .home-first-steps-v1{grid-template-columns:1fr!important}
   .home-first-step-v1{justify-content:flex-start!important}
-  .home-path-inner{padding:17px 13px!important}
-  .home-path-inner>h2::after{display:block;margin-top:4px}
 }
