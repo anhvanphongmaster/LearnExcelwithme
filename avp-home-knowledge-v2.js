@@ -76,28 +76,25 @@
   }
 
   function syncPracticeCta(){
-    const cta=d.querySelector('.avp-mobile-main-cta-wrap .avp-mobile-main-cta');
+    const cta=d.querySelector('.avp-practice-hub-cta');
     if(!cta)return;
-
-    /* Keep the new-user guide below the hero, but never replace the Practice banner itself. */
-    cta.classList.remove('home-start-cta-v1');
-    cta.classList.add('avp-practice-hub-cta');
-    cta.href='practice-video.html';
-    cta.setAttribute('aria-label','Bài tập Excel — 5 luồng thực hành');
-    cta.innerHTML='<span class="avp-practice-hub-badges" aria-hidden="true">'+
-      '<span class="avp-mini-channel avp-mini-channel-tt">♪</span>'+
-      '<span class="avp-mini-channel avp-mini-channel-yt">▶</span>'+
-      '<span class="avp-mini-channel avp-mini-channel-hw">✎</span>'+
-      '<span class="avp-mini-channel avp-mini-channel-grade">✓</span>'+
-      '<span class="avp-mini-channel avp-mini-channel-pro">◆</span>'+
-      '</span>'+
-      '<span class="avp-mobile-main-cta-icon">📚</span>'+
-      '<span class="avp-mobile-main-cta-copy">'+
-        '<strong>Bài tập Excel</strong>'+
-        '<small>5 luồng thực hành trong cùng một khu</small>'+
-        '<small style="opacity:.88;font-size:11px;line-height:1.45;display:block;margin-top:2px">01 TikTok · 02 YouTube · 03 Homework · 04 Tự chấm · 05 Pro</small>'+
-      '</span>'+
-      '<span class="avp-mobile-main-cta-arrow">→</span>';
+    const copy=cta.querySelector('.avp-mobile-main-cta-copy');
+    const smalls=copy?[...copy.querySelectorAll('small')]:[];
+    if(smalls[0])smalls[0].textContent='5 luồng thực hành trong cùng một khu';
+    if(smalls[1]){
+      smalls[1].textContent='01 TikTok · 02 YouTube · 03 Homework · 04 Tự chấm · 05 Pro';
+      smalls[1].style.fontSize='11px';
+      smalls[1].style.lineHeight='1.45';
+    }
+    const badges=cta.querySelector('.avp-practice-hub-badges');
+    const needsFiveMotion=badges&&(
+      badges.children.length!==5 ||
+      !badges.querySelector('.avp-mini-channel-hw') ||
+      !badges.querySelector('.avp-mini-channel-pro')
+    );
+    if(needsFiveMotion){
+      badges.innerHTML='<span class="avp-mini-channel avp-mini-channel-tt">♪</span><span class="avp-mini-channel avp-mini-channel-yt">▶</span><span class="avp-mini-channel avp-mini-channel-hw">✎</span><span class="avp-mini-channel avp-mini-channel-grade">✓</span><span class="avp-mini-channel avp-mini-channel-pro">◆</span>';
+    }
   }
 
   function replaceText(){
@@ -127,12 +124,9 @@
   function boot(){
     ensureMotionCss();
     replaceText();
-    // Home First Run may render after this file; re-assert the original five-flow banner last.
+    // A late legacy renderer must not put the 14-lesson cards or old 3-flow CTA back.
     setTimeout(replaceText,250);
     setTimeout(replaceText,900);
-    setTimeout(syncPracticeCta,1250);
-    setTimeout(syncPracticeCta,2100);
-    setTimeout(syncPracticeCta,2800);
   }
 
   if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',boot,{once:true});
