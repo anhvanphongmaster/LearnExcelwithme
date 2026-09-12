@@ -32,4 +32,23 @@
   syncLessonOrder();
 
   window.AVPLearningPlatform = {modules,byModule,lessonToModule,lessonSequence,sequenceIndex,moduleForLesson,moduleUrl,lessonUrl,displayOrder,syncLessonOrder};
+
+  /* Home: one obvious learning entry instead of asking a new learner to choose a route first. */
+  function wireCoachEntry(){
+    const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+    if(page!==''&&page!=='index.html')return false;
+    const btn=document.getElementById('avpScrollToPath');
+    if(!btn)return false;
+    if(btn.dataset.coachEntry==='1')return true;
+    const clean=btn.cloneNode(true);
+    clean.dataset.coachEntry='1';
+    clean.setAttribute('aria-label','Học hôm nay — kiểm tra trình độ và nhận việc cần làm tiếp theo');
+    clean.innerHTML='<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Học hôm nay · biết ngay nên làm gì →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">Kiểm tra 5 phút · 3 câu luyện · ôn lỗi sai</span>';
+    btn.replaceWith(clean);
+    clean.addEventListener('click',()=>{location.href='learning-coach.html'});
+    return true;
+  }
+  function bootCoachEntry(){if(wireCoachEntry())return;let n=0,t=setInterval(()=>{n++;if(wireCoachEntry()||n>25)clearInterval(t)},160)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootCoachEntry,{once:true});else bootCoachEntry();
+  setTimeout(wireCoachEntry,900);setTimeout(wireCoachEntry,2200);
 })();
