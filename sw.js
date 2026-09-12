@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260912-uxfix2";
+const CACHE = "learnexcel-assets-v20260913-ux3";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -15,6 +15,7 @@ const ASSETS = [
   "./avp-pro-access-guidance-v1.css",
   "./avp-hover-lift.css",
   "./home-ux-polish-v1.css",
+  "./ux-declutter-v2.css",
   "./home-mini-bounce.css",
   "./homework.css",
   "./admin-homework.css",
@@ -63,109 +64,64 @@ const ASSETS = [
 ];
 
 self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE)
-      .then(cache => cache.addAll(ASSETS).catch(() => {}))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS).catch(() => {})).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))
-      .then(() => self.clients.claim())
-  );
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim()));
 });
 
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
-
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
-
-  const isHTML =
-    event.request.mode === "navigate" ||
-    url.pathname.endsWith(".html") ||
-    url.pathname.endsWith("/");
-
+  const isHTML = event.request.mode === "navigate" || url.pathname.endsWith(".html") || url.pathname.endsWith("/");
   const isCodeAsset = /\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
   const forceFresh =
     url.pathname.endsWith("/home-effects.js") ||
     url.pathname.endsWith("/home-page-motion.js") ||
     url.pathname.endsWith("/home-ux-polish-v1.css") ||
     url.pathname.endsWith("/avp-hover-lift.css") ||
+    url.pathname.endsWith("/ux-declutter-v2.css") ||
     url.pathname.endsWith("/home-mini-bounce.css") ||
     url.pathname.endsWith("/knowledge-reader-polish-v1.css") ||
     url.pathname.endsWith("/excel-arena-v4.css") ||
     url.pathname.endsWith("/excel-arena-engine-v4.js");
 
   if (isHTML) {
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          if (response && response.ok) {
-            caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
-          }
-          return response;
-        })
-        .catch(() =>
-          caches.match(event.request)
-            .then(cached => cached || caches.match("./index.html"))
-        )
-    );
+    event.respondWith(fetch(event.request).then(response => {
+      if (response && response.ok) caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
+      return response;
+    }).catch(() => caches.match(event.request).then(cached => cached || caches.match("./index.html"))));
     return;
   }
 
   if (forceFresh) {
-    event.respondWith(
-      fetch(event.request, { cache: "reload" })
-        .then(response => {
-          if (response && response.ok) {
-            caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
+    event.respondWith(fetch(event.request, { cache: "reload" }).then(response => {
+      if (response && response.ok) caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
+      return response;
+    }).catch(() => caches.match(event.request)));
     return;
   }
 
   if (isCodeAsset) {
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          if (response && response.ok) {
-            caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
+    event.respondWith(fetch(event.request).then(response => {
+      if (response && response.ok) caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
+      return response;
+    }).catch(() => caches.match(event.request)));
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
-        if (response && response.ok) {
-          caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
-        }
-        return response;
-      });
-    })
-  );
+  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
+    if (response && response.ok) caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
+    return response;
+  })));
 });
 
 self.addEventListener("push", event => {
   let data = {};
-  try {
-    data = event.data ? event.data.json() : {};
-  } catch (e) {
-    data = { title: "Anh Văn Phòng", body: event.data ? event.data.text() : "" };
-  }
-
+  try { data = event.data ? event.data.json() : {}; }
+  catch (e) { data = { title: "Anh Văn Phòng", body: event.data ? event.data.text() : "" }; }
   const title = data.title || "Anh Văn Phòng";
   const options = {
     body: data.body || "Có phản hồi mới từ người dùng.",
@@ -176,30 +132,22 @@ self.addEventListener("push", event => {
     data: { url: data.url || "admin.html" },
     vibrate: [120, 70, 120]
   };
-
-  event.waitUntil(
-    self.registration.showNotification(title, options).then(() => {
-      if ("setAppBadge" in self.navigator) {
-        return self.navigator.setAppBadge().catch(() => {});
-      }
-    })
-  );
+  event.waitUntil(self.registration.showNotification(title, options).then(() => {
+    if ("setAppBadge" in self.navigator) return self.navigator.setAppBadge().catch(() => {});
+  }));
 });
 
 self.addEventListener("notificationclick", event => {
   event.notification.close();
   if ("clearAppBadge" in self.navigator) self.navigator.clearAppBadge().catch(() => {});
   const target = new URL(event.notification?.data?.url || "admin.html", self.registration.scope).href;
-
-  event.waitUntil(
-    clients.matchAll({type:"window",includeUncontrolled:true}).then(list => {
-      for (const client of list) {
-        if ("focus" in client) {
-          try{ client.navigate(target); }catch{}
-          return client.focus();
-        }
+  event.waitUntil(clients.matchAll({type:"window",includeUncontrolled:true}).then(list => {
+    for (const client of list) {
+      if ("focus" in client) {
+        try{ client.navigate(target); }catch{}
+        return client.focus();
       }
-      if (clients.openWindow) return clients.openWindow(target);
-    })
-  );
+    }
+    if (clients.openWindow) return clients.openWindow(target);
+  }));
 });
