@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="practice-grader.css?v=20260831-star1">
 <link rel="stylesheet" href="practice-roll.css?v=20260901-autoflow4"><link rel="stylesheet" href="practice-guides.css?v=20260831-v101"><link rel="stylesheet" href="avp-site-motion.css?v=20260901-rollfix3">
-<link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui2" data-avp-ui-system>
+  <link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui2" data-avp-ui-system>
 </head><body>
 <script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script><nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
@@ -50,26 +50,138 @@
 <div class="pg-engine-summary" id="pgEngineSummary">Đang tải danh sách bài…</div>
 </div>
 <div class="pg-lesson-frame-head">
-<div><span>📚 DANH SÁCH BÀI</span><h3 id="pgLessonTopicTitle">Chọn bài để tải file và nộp</h3></div><small>↕ Cuộn trong khung</small>
+<div>
+<span>📚 DANH SÁCH BÀI</span>
+<h3 id="pgLessonTopicTitle">Chọn bài để tải file và nộp</h3>
 </div>
-<div class="pg-lesson-scroll" id="pgLessonScroll"><div class="pg-topic-panels" id="pgLessonGrid"><article class="pg-card pg-coming"><h3>Đang tải bài tập…</h3><p>Hệ thống đang dựng danh sách bài.</p></article></div></div>
+<small>↕ Cuộn trong khung</small>
+</div>
+<div class="pg-lesson-scroll" id="pgLessonScroll">
+<div class="pg-topic-panels" id="pgLessonGrid">
+<article class="pg-card pg-coming">
+<h3>Đang tải bài tập…</h3>
+<p>Hệ thống đang dựng danh sách bài.</p>
+</article>
+</div>
+</div>
 </section>
 <section aria-live="polite" class="pg-daily-board">
-<div class="pg-daily-head"><div><span class="pg-daily-kicker">🏆 XẾP HẠNG BÀI TẬP</span><h2>Thành tích bài tập chấm điểm</h2><p>Chọn cấp độ để xem bảng xếp hạng. Cuộn trong khung để xem thêm học viên.</p></div><span class="pg-daily-live"><i></i> LIVE</span></div>
-<div class="pg-rank-tabs" id="pgRankTabs" role="tablist"><button class="active" data-rank-difficulty="basic" type="button">🌱 Cơ bản</button><button data-rank-difficulty="intermediate" type="button">📘 Trung cấp</button><button data-rank-difficulty="advanced" type="button">🏆 Nâng cao</button><button data-rank-difficulty="overall" type="button">⭐ Tổng</button></div>
-<div class="pg-board-scroll" id="pgBoardScroll"><ol class="pg-board-list" id="pgBoardList"><li class="pg-board-empty">Đang tải bảng xếp hạng…</li></ol></div>
-<div class="pg-board-bottom"><span>↕ Cuộn trong khung để xem thêm</span><button class="pg-board-refresh" id="pgBoardRefresh" type="button">↻ Làm mới</button></div>
+<div class="pg-daily-head">
+<div>
+<span class="pg-daily-kicker">🏆 XẾP HẠNG BÀI TẬP</span>
+<h2>Thành tích bài tập chấm điểm</h2>
+<p>Chọn cấp độ để xem bảng xếp hạng. Cuộn trong khung để xem thêm học viên.</p>
+</div>
+<span class="pg-daily-live"><i></i> LIVE</span>
+</div>
+<div class="pg-rank-tabs" id="pgRankTabs" role="tablist">
+<button class="active" data-rank-difficulty="basic" type="button">🌱 Cơ bản</button>
+<button data-rank-difficulty="intermediate" type="button">📘 Trung cấp</button>
+<button data-rank-difficulty="advanced" type="button">🏆 Nâng cao</button>
+<button data-rank-difficulty="overall" type="button">⭐ Tổng</button>
+</div>
+<div class="pg-board-scroll" id="pgBoardScroll">
+<ol class="pg-board-list" id="pgBoardList">
+<li class="pg-board-empty">Đang tải bảng xếp hạng…</li>
+</ol>
+</div>
+<div class="pg-board-bottom">
+<span>↕ Cuộn trong khung để xem thêm</span>
+<button class="pg-board-refresh" id="pgBoardRefresh" type="button">↻ Làm mới</button>
+</div>
 </section>
 
 <section class="pg-progress-panel" id="pgProgressPanel">
-<div class="pg-progress-head"><div><span>📈 TIẾN ĐỘ CỦA BẠN</span><h3>Hồ sơ thực hành</h3></div><strong id="pgProgressPercent">0%</strong></div>
+<div class="pg-progress-head">
+<div>
+<span>📈 TIẾN ĐỘ CỦA BẠN</span>
+<h3>Hồ sơ thực hành</h3>
+</div>
+<strong id="pgProgressPercent">0%</strong>
+</div>
 <div class="pg-progress-track"><i id="pgProgressBar" style="width:0%"></i></div>
-<div class="pg-progress-stats"><article><small>Đã hoàn thành</small><strong id="pgProgressDone">0/0</strong></article><article><small>Điểm trung bình</small><strong id="pgProgressAvg">0</strong></article><article><small>Cơ bản</small><strong id="pgProgressBasic">0/0</strong></article><article><small>Trung cấp</small><strong id="pgProgressIntermediate">0/0</strong></article><article><small>Nâng cao</small><strong id="pgProgressAdvanced">0/0</strong></article></div>
+<div class="pg-progress-stats">
+<article><small>Đã hoàn thành</small><strong id="pgProgressDone">0/0</strong></article>
+<article><small>Điểm trung bình</small><strong id="pgProgressAvg">0</strong></article>
+<article><small>Cơ bản</small><strong id="pgProgressBasic">0/0</strong></article>
+<article><small>Trung cấp</small><strong id="pgProgressIntermediate">0/0</strong></article>
+<article><small>Nâng cao</small><strong id="pgProgressAdvanced">0/0</strong></article>
+</div>
 </section>
-<section class="pg-result-panel" hidden="" id="pgResult"><div class="pg-result-head"><div><span>🤖 ĐÁNH GIÁ TỰ ĐỘNG</span><h3 id="pgResultTitle">Kết quả chấm bài</h3></div><button id="pgResultClose" type="button">Đóng</button></div><div id="pgResultBody"></div></section>
-<div class="pg-submit-modal" hidden="" id="pgSubmitModal"><div class="pg-publish-backdrop" data-pg-submit-close=""></div><div aria-labelledby="pgSubmitTitle" aria-modal="true" class="pg-submit-card" role="dialog"><button aria-label="Đóng" class="pg-publish-close" id="pgSubmitClose" type="button">×</button><div class="pg-submit-icon">⚠️</div><span class="pg-publish-kicker">NỘP BÀI CHÍNH THỨC</span><h3 id="pgSubmitTitle">Mỗi bài chỉ được nộp 1 lần</h3><p>Hãy chắc chắn file đã hoàn thành. Sau khi xác nhận, điểm của bài này sẽ bị khóa và bạn không thể nộp lại.</p><div class="pg-submit-file" id="pgSubmitFileName">Chưa chọn file</div><div class="pg-publish-actions"><button class="pg-publish-btn ghost" id="pgSubmitCancel" type="button">Kiểm tra lại file</button><button class="pg-publish-btn danger" id="pgSubmitConfirm" type="button">Nộp chính thức</button></div></div></div>
-<div class="pg-appeal-modal" hidden="" id="pgAppealModal"><div class="pg-publish-backdrop" data-pg-appeal-close=""></div><div aria-labelledby="pgAppealTitle" aria-modal="true" class="pg-submit-card pg-appeal-card" role="dialog"><button aria-label="Đóng" class="pg-publish-close" id="pgAppealClose" type="button">×</button><div class="pg-submit-icon">⚑</div><span class="pg-publish-kicker">BÁO CÁO CHẤM SAI</span><h3 id="pgAppealTitle">Yêu cầu Admin chấm lại</h3><p id="pgAppealLesson">Bài tập</p><label class="pg-appeal-field"><span>Vì sao bạn cho rằng hệ thống chấm sai?</span><textarea id="pgAppealReason" maxlength="1000" placeholder="Ví dụ: Mình đã dùng đúng công thức IF ở D2:D7 nhưng hệ thống báo thiếu công thức..." rows="5"></textarea></label><label class="pg-appeal-public"><input id="pgAppealKeepPublic" type="checkbox"/><span>Giữ điểm hiện tại trên BXH trong lúc chờ Admin duyệt</span></label><div class="pg-publish-note">Admin có thể xem file bạn đã nộp, giữ nguyên điểm hoặc chấm lại thủ công. Kết quả xử lý sẽ được gửi qua thông báo cá nhân trong Cộng đồng.</div><div class="pg-publish-actions"><button class="pg-publish-btn ghost" id="pgAppealCancel" type="button">Huỷ</button><button class="pg-publish-btn danger" id="pgAppealSend" type="button">Gửi yêu cầu</button></div></div></div>
-<div class="pg-publish-modal" hidden="" id="pgPublishModal"><div class="pg-publish-backdrop" data-pg-publish-close=""></div><div aria-labelledby="pgPublishTitle" aria-modal="true" class="pg-publish-card" role="dialog"><button aria-label="Đóng" class="pg-publish-close" id="pgPublishClose" type="button">×</button><div class="pg-publish-icon">🏆</div><span class="pg-publish-kicker">THÀNH TÍCH CỦA BẠN</span><h3 id="pgPublishTitle">Đưa điểm lên bảng xếp hạng?</h3><p id="pgPublishText">Bạn vừa hoàn thành bài thực hành.</p><div class="pg-publish-score"><strong id="pgPublishScore">0</strong><span>/100</span></div><div class="pg-publish-note">Kết quả đã được khóa cho bài này. Bạn chỉ đang chọn có công khai thành tích lên BXH hay không.</div><div class="pg-publish-actions"><button class="pg-publish-btn ghost" id="pgPublishPrivate" type="button">Giữ riêng tư</button><button class="pg-publish-btn primary" id="pgPublishYes" type="button">🏆 Ghi thành tích</button></div><button class="pg-publish-manage" hidden="" id="pgHideFromBoard" type="button">Ẩn thành tích của tôi khỏi BXH</button></div></div>
+<section class="pg-result-panel" hidden="" id="pgResult">
+<div class="pg-result-head">
+<div>
+<span>🤖 ĐÁNH GIÁ TỰ ĐỘNG</span>
+<h3 id="pgResultTitle">Kết quả chấm bài</h3>
+</div>
+<button id="pgResultClose" type="button">Đóng</button>
+</div>
+<div id="pgResultBody"></div>
+</section>
+<div class="pg-submit-modal" hidden="" id="pgSubmitModal">
+<div class="pg-publish-backdrop" data-pg-submit-close=""></div>
+<div aria-labelledby="pgSubmitTitle" aria-modal="true" class="pg-submit-card" role="dialog">
+<button aria-label="Đóng" class="pg-publish-close" id="pgSubmitClose" type="button">×</button>
+<div class="pg-submit-icon">⚠️</div>
+<span class="pg-publish-kicker">NỘP BÀI CHÍNH THỨC</span>
+<h3 id="pgSubmitTitle">Mỗi bài chỉ được nộp 1 lần</h3>
+<p>Hãy chắc chắn file đã hoàn thành. Sau khi xác nhận, điểm của bài này sẽ bị khóa và bạn không thể nộp lại.</p>
+<div class="pg-submit-file" id="pgSubmitFileName">Chưa chọn file</div>
+<div class="pg-publish-actions">
+<button class="pg-publish-btn ghost" id="pgSubmitCancel" type="button">Kiểm tra lại file</button>
+<button class="pg-publish-btn danger" id="pgSubmitConfirm" type="button">Nộp chính thức</button>
+</div>
+</div>
+</div>
+<div class="pg-appeal-modal" hidden="" id="pgAppealModal">
+<div class="pg-publish-backdrop" data-pg-appeal-close=""></div>
+<div aria-labelledby="pgAppealTitle" aria-modal="true" class="pg-submit-card pg-appeal-card" role="dialog">
+<button aria-label="Đóng" class="pg-publish-close" id="pgAppealClose" type="button">×</button>
+<div class="pg-submit-icon">⚑</div>
+<span class="pg-publish-kicker">BÁO CÁO CHẤM SAI</span>
+<h3 id="pgAppealTitle">Yêu cầu Admin chấm lại</h3>
+<p id="pgAppealLesson">Bài tập</p>
+<label class="pg-appeal-field">
+<span>Vì sao bạn cho rằng hệ thống chấm sai?</span>
+<textarea id="pgAppealReason" maxlength="1000" placeholder="Ví dụ: Mình đã dùng đúng công thức IF ở D2:D7 nhưng hệ thống báo thiếu công thức..." rows="5"></textarea>
+</label>
+<label class="pg-appeal-public">
+<input id="pgAppealKeepPublic" type="checkbox"/>
+<span>Giữ điểm hiện tại trên BXH trong lúc chờ Admin duyệt</span>
+</label>
+<div class="pg-publish-note">
+          Admin có thể xem file bạn đã nộp, giữ nguyên điểm hoặc chấm lại thủ công. Kết quả xử lý sẽ được gửi qua thông báo cá nhân trong Cộng đồng.
+        </div>
+<div class="pg-publish-actions">
+<button class="pg-publish-btn ghost" id="pgAppealCancel" type="button">Huỷ</button>
+<button class="pg-publish-btn danger" id="pgAppealSend" type="button">Gửi yêu cầu</button>
+</div>
+</div>
+</div>
+<div class="pg-publish-modal" hidden="" id="pgPublishModal">
+<div class="pg-publish-backdrop" data-pg-publish-close=""></div>
+<div aria-labelledby="pgPublishTitle" aria-modal="true" class="pg-publish-card" role="dialog">
+<button aria-label="Đóng" class="pg-publish-close" id="pgPublishClose" type="button">×</button>
+<div class="pg-publish-icon">🏆</div>
+<span class="pg-publish-kicker">THÀNH TÍCH CỦA BẠN</span>
+<h3 id="pgPublishTitle">Đưa điểm lên bảng xếp hạng?</h3>
+<p id="pgPublishText">Bạn vừa hoàn thành bài thực hành.</p>
+<div class="pg-publish-score">
+<strong id="pgPublishScore">0</strong>
+<span>/100</span>
+</div>
+<div class="pg-publish-note">
+          Kết quả đã được khóa cho bài này. Bạn chỉ đang chọn có công khai thành tích lên BXH hay không.
+        </div>
+<div class="pg-publish-actions">
+<button class="pg-publish-btn ghost" id="pgPublishPrivate" type="button">Giữ riêng tư</button>
+<button class="pg-publish-btn primary" id="pgPublishYes" type="button">🏆 Ghi thành tích</button>
+</div>
+<button class="pg-publish-manage" hidden="" id="pgHideFromBoard" type="button">Ẩn thành tích của tôi khỏi BXH</button>
+</div>
+</div>
+
+
   </section>
 </main>
 <script defer src="simple-nav.js?v=20260901-rollfix3"></script>
@@ -86,5 +198,7 @@
 <script defer src="avp-site-motion.js?v=20260901-rollfix3"></script>
 <script defer src="avp-modal.js"></script>
 <script defer src="avp-secure-download.js?v=20260830-access1"></script>
-<script>document.querySelectorAll('.pw-source-links a').forEach(a=>{if(a.dataset.source==='grader')a.classList.add('is-current')});</script>
+<script>
+document.querySelectorAll('.pw-source-links a').forEach(a=>{if(a.dataset.source==='grader')a.classList.add('is-current')});
+</script>
 </body></html>
