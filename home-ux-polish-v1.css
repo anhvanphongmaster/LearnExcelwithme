@@ -1,6 +1,6 @@
-/* Home UX Polish V2 — compact first-run strip, balanced cards, neutral professional CTAs. */
+/* Home UX Polish V2 — compact first-run strip, balanced cards, original hero banners preserved. */
 
-/* Keep the existing five-flow Practice banner and its 5 badges. */
+/* Keep the existing five-flow Practice banner and route banner untouched. */
 
 /* New-user guide: one short decision strip, not another oversized card. */
 .home-first-v1{
@@ -102,43 +102,6 @@
   color:#173f2a!important;
   transform:translateY(-1px)!important;
   box-shadow:inset 3px 0 0 #2c7550,0 5px 12px rgba(30,67,45,.07)!important;
-}
-
-/* Hero actions: no solid green/white pair. Use two restrained bordered surfaces. */
-html body .avp-mobile-main-cta-wrap{gap:8px!important}
-html body .avp-mobile-main-cta-wrap .avp-mobile-main-cta,
-html body .avp-mobile-main-cta-wrap .avp-practice-hub-cta{
-  min-height:58px!important;
-  border:1px solid #b9c9c0!important;
-  border-radius:14px!important;
-  background:
-    linear-gradient(90deg,rgba(54,126,83,.08),transparent 22%),
-    linear-gradient(180deg,#fff 0%,#f2f6f3 100%)!important;
-  color:#213f2d!important;
-  box-shadow:inset 4px 0 0 #4b8462,0 8px 20px rgba(27,63,42,.08)!important;
-}
-html body .avp-mobile-main-cta-wrap .avp-mobile-main-cta strong,
-html body .avp-mobile-main-cta-wrap .avp-practice-hub-cta strong{color:#1c452f!important;text-shadow:none!important}
-html body .avp-mobile-main-cta-wrap .avp-mobile-main-cta small,
-html body .avp-mobile-main-cta-wrap .avp-practice-hub-cta small{color:#66756d!important;text-shadow:none!important}
-html body .avp-mobile-main-cta-wrap .avp-mobile-main-cta-arrow{color:#355f47!important}
-html body .avp-mobile-main-cta-wrap .avp-scroll-tease-btn{
-  min-height:48px!important;
-  padding:9px 14px!important;
-  border:1px solid #d1c9df!important;
-  border-radius:13px!important;
-  background:
-    linear-gradient(90deg,rgba(111,86,148,.07),transparent 24%),
-    linear-gradient(180deg,#fff 0%,#f6f4f8 100%)!important;
-  color:#4e4657!important;
-  box-shadow:inset 4px 0 0 #9a89b0,0 6px 16px rgba(55,45,70,.055)!important;
-}
-html body .avp-mobile-main-cta-wrap .avp-scroll-tease-btn .avp-tease-title,
-html body .avp-mobile-main-cta-wrap .avp-scroll-tease-btn #avpTeasePreview{color:#4e4657!important;text-shadow:none!important}
-html body .avp-mobile-main-cta-wrap .avp-scroll-tease-btn:hover,
-html body .avp-mobile-main-cta-wrap .avp-mobile-main-cta:hover{
-  filter:none!important;
-  transform:translateY(-1px)!important;
 }
 
 /* A–Z: compact and every module card has the same geometry. */
