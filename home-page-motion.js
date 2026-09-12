@@ -194,3 +194,83 @@
   setTimeout(renderArena,800);
   setTimeout(renderArena,1800);
 })();
+
+/* Home First Run V1 — one obvious learning path for new users. */
+(function(){
+  'use strict';
+  if(window.__avpHomeFirstRunV1)return;
+  window.__avpHomeFirstRunV1=true;
+
+  var LAST_KEY='avp_knowledge_last_v2';
+  var DONE_KEY='avp_platform_completed_v2';
+
+  function readDone(){
+    try{var raw=JSON.parse(localStorage.getItem(DONE_KEY)||'[]');return new Set(Array.isArray(raw)?raw:[])}catch(_){return new Set()}
+  }
+  function loadCatalog(done){
+    if(window.AVPLearningPlatform){done(window.AVPLearningPlatform);return}
+    var existing=document.querySelector('script[data-avp-home-first-catalog]');
+    if(existing){existing.addEventListener('load',function(){done(window.AVPLearningPlatform)},{once:true});return}
+    var s=document.createElement('script');
+    s.src='learning-platform-catalog-v1.js?v=20260912-home-first1';
+    s.dataset.avpHomeFirstCatalog='1';
+    s.onload=function(){done(window.AVPLearningPlatform)};
+    document.head.appendChild(s);
+  }
+  function target(P){
+    var seq=(P&&P.lessonSequence)||[];
+    if(!seq.length)return{id:'f01-excel-workspace',order:1,resume:false};
+    var done=readDone(),last='';
+    try{last=localStorage.getItem(LAST_KEY)||''}catch(_){}
+    var idx=seq.indexOf(last),id='';
+    if(idx>=0){
+      id=(done.has(last)&&idx<seq.length-1)?seq[idx+1]:last;
+    }
+    if(!id)id=seq.find(function(x){return !done.has(x)})||seq[0];
+    var order=P&&P.displayOrder?P.displayOrder(id):(seq.indexOf(id)+1);
+    return{id:id,order:order,resume:idx>=0||done.size>0};
+  }
+  function ensureStyle(){
+    if(document.getElementById('homeFirstRunV1Style'))return;
+    var s=document.createElement('style');
+    s.id='homeFirstRunV1Style';
+    s.textContent='\
+.home-start-cta-v1{position:relative!important;display:grid!important;grid-template-columns:46px minmax(0,1fr) auto!important;align-items:center!important;gap:12px!important;width:100%!important;box-sizing:border-box!important;padding:15px 16px!important;border:1px solid rgba(170,239,199,.72)!important;border-radius:16px!important;background:linear-gradient(135deg,#f7fff9,#e9f8ef)!important;color:#153d29!important;text-decoration:none!important;box-shadow:0 12px 30px rgba(36,126,76,.18)!important}.home-start-cta-v1:hover{transform:translateY(-2px);border-color:#7fc69a!important;box-shadow:0 16px 34px rgba(36,126,76,.24)!important}.home-start-cta-v1 .avp-mobile-main-cta-icon{display:grid!important;place-items:center!important;width:46px!important;height:46px!important;border-radius:13px!important;background:#217346!important;color:#fff!important;font-size:18px!important}.home-start-cta-v1 .avp-mobile-main-cta-copy{min-width:0!important}.home-start-cta-v1 .avp-mobile-main-cta-copy strong{display:block!important;color:#153d29!important;font-size:16px!important;line-height:1.25!important}.home-start-cta-v1 .avp-mobile-main-cta-copy small{display:block!important;margin-top:3px!important;color:#587064!important;font-size:11px!important;line-height:1.4!important}.home-start-cta-v1 .avp-mobile-main-cta-arrow{color:#217346!important;font-size:22px!important}.home-first-v1{padding:22px 16px 6px;background:#f4f7f5}.home-first-inner-v1{max-width:1120px;margin:0 auto;padding:22px;border:1px solid #d6e4dc;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(23,70,43,.06)}.home-first-head-v1{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:16px}.home-first-kicker-v1{display:block;margin-bottom:5px;color:#217346;font-size:9px;font-weight:950;letter-spacing:.12em}.home-first-head-v1 h2{margin:0;color:#173f2a;font-size:24px;line-height:1.22}.home-first-head-v1 p{max-width:560px;margin:7px 0 0;color:#6d7e74;font-size:13px;line-height:1.55}.home-first-primary-v1{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border:1px solid #217346;border-radius:13px;background:#217346;color:#fff;text-decoration:none;font-size:13px;font-weight:950;box-shadow:0 8px 18px rgba(33,115,70,.16)}.home-first-primary-v1:hover{background:#185c37;border-color:#185c37}.home-first-steps-v1{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.home-first-step-v1{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start;padding:13px;border:1px solid #dce7e0;border-radius:14px;background:#fafcfb}.home-first-step-v1>span{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#edf6f0;color:#217346;font-size:11px;font-weight:950}.home-first-step-v1 strong{display:block;color:#244a35;font-size:12px}.home-first-step-v1 small{display:block;margin-top:3px;color:#75847b;font-size:10px;line-height:1.45}.home-first-foot-v1{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;padding-top:12px;border-top:1px solid #e4ebe6}.home-first-foot-v1 span{color:#748078;font-size:10px}.home-first-foot-v1 a{color:#217346;text-decoration:none;font-size:11px;font-weight:900}.home-first-foot-v1 a:hover{text-decoration:underline}.home-path-inner>.learn-board{margin-top:18px!important}body.dark-mode .home-first-v1{background:#101a14}body.dark-mode .home-first-inner-v1{background:#17251d;border-color:#30473a}body.dark-mode .home-first-head-v1 h2,body.dark-mode .home-first-step-v1 strong{color:#e5f3e9}body.dark-mode .home-first-head-v1 p,body.dark-mode .home-first-step-v1 small,body.dark-mode .home-first-foot-v1 span{color:#a8b8af}body.dark-mode .home-first-step-v1{background:#132018;border-color:#30473a}@media(max-width:760px){.home-first-head-v1{align-items:stretch;flex-direction:column}.home-first-primary-v1{width:100%}.home-first-steps-v1{grid-template-columns:1fr}.home-first-foot-v1{align-items:flex-start;flex-direction:column}.home-start-cta-v1{grid-template-columns:42px minmax(0,1fr) auto!important;padding:13px!important}.home-start-cta-v1 .avp-mobile-main-cta-icon{width:42px!important;height:42px!important}}';
+    document.head.appendChild(s);
+  }
+  function render(P){
+    if(!P)return false;
+    ensureStyle();
+    var t=target(P),url=P.lessonUrl?P.lessonUrl(t.id):('knowledge.html?lesson='+encodeURIComponent(t.id));
+    var order=String(t.order||1).padStart(2,'0');
+    var primaryLabel=t.resume?('Tiếp tục lộ trình · Bài '+order):'Bắt đầu học Excel';
+
+    var heroCta=document.querySelector('.avp-mobile-main-cta-wrap .avp-mobile-main-cta');
+    if(heroCta){
+      heroCta.classList.remove('avp-practice-hub-cta');
+      heroCta.classList.add('home-start-cta-v1');
+      heroCta.href=url;
+      heroCta.setAttribute('aria-label',primaryLabel);
+      heroCta.innerHTML='<span class="avp-mobile-main-cta-icon">▶</span><span class="avp-mobile-main-cta-copy"><strong>'+primaryLabel+'</strong><small>'+(t.resume?'Quay lại đúng lộ trình đang học':'Đi từ Bài 01 · không cần biết trước')+'</small><small>Học → Thực hành → Tra cứu</small></span><span class="avp-mobile-main-cta-arrow">→</span>';
+    }
+
+    var hero=document.querySelector('.avp-hero');
+    if(hero&&!document.getElementById('homeStartHereV1')){
+      var section=document.createElement('section');
+      section.className='home-first-v1';section.id='homeStartHereV1';
+      section.innerHTML='<div class="home-first-inner-v1"><div class="home-first-head-v1"><div><span class="home-first-kicker-v1">DÀNH CHO NGƯỜI MỚI</span><h2>Không biết bắt đầu từ đâu? Đi theo 3 bước này.</h2><p>Web có nhiều khu, nhưng để học từ đầu bạn chỉ cần đi theo một đường: học bài trước, thực hành sau, tra cứu khi cần.</p></div><a class="home-first-primary-v1" href="'+url+'">'+primaryLabel+' →</a></div><div class="home-first-steps-v1"><div class="home-first-step-v1"><span>01</span><div><strong>Học</strong><small>Bắt đầu từ Bài 01 và đi theo thứ tự trong lộ trình Excel A–Z.</small></div></div><div class="home-first-step-v1"><span>02</span><div><strong>Thực hành</strong><small>Sau khi học, làm lại bằng file/bài tập để biến kiến thức thành thao tác.</small></div></div><div class="home-first-step-v1"><span>03</span><div><strong>Tra cứu</strong><small>Khi quên công thức, phím tắt hoặc cần tool thì mới mở kho tra cứu/công cụ.</small></div></div></div><div class="home-first-foot-v1"><span>Arena, Tool và Pro là phần bổ sung — người mới chưa cần vào ngay.</span><span><a href="#ky-nang-excel">Xem lộ trình 42 bài →</a> · <a href="practice-video.html">Khu thực hành →</a></span></div></div>';
+      hero.insertAdjacentElement('afterend',section);
+    }
+
+    var shell=document.querySelector('.home-path-inner'),grid=shell&&shell.querySelector('.home-path-grid'),board=shell&&shell.querySelector('.learn-board');
+    if(shell&&grid&&board&&grid.nextElementSibling!==board)grid.insertAdjacentElement('afterend',board);
+
+    var tease=document.querySelector('#avpScrollTease .avp-tease-title');
+    if(tease){var chev=tease.querySelector('.avp-tease-chevs');tease.innerHTML='';if(chev)tease.appendChild(chev);tease.append(document.createTextNode(' Xem lộ trình đầy đủ · 8 module · 42 bài'))}
+    var preview=document.getElementById('avpTeasePreview');
+    if(preview)preview.textContent='Người mới bắt đầu từ Bài 01 · người đã học có thể chọn module';
+    return true;
+  }
+  function boot(){loadCatalog(function(P){render(P);setTimeout(function(){render(P)},650);setTimeout(function(){render(P)},1800)})}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
+})();
