@@ -1,0 +1,191 @@
+/* Home UX Polish V1 — compact first-run guidance, calmer hierarchy, static robot. */
+
+/* Keep the useful five-flow Practice banner untouched. */
+
+/* First-run guidance: one compact decision strip, not another large hero. */
+.home-first-v1{
+  padding:12px 16px 2px!important;
+  background:#f4f7f5!important;
+}
+.home-first-inner-v1{
+  max-width:1120px!important;
+  margin:0 auto!important;
+  padding:14px 16px!important;
+  border:1px solid #d7e0da!important;
+  border-radius:16px!important;
+  background:linear-gradient(180deg,#ffffff 0%,#fafcfb 100%)!important;
+  box-shadow:0 7px 20px rgba(23,70,43,.045)!important;
+}
+.home-first-head-v1{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:14px!important;
+  margin:0 0 10px!important;
+}
+.home-first-kicker-v1{
+  margin:0 0 3px!important;
+  color:#6a7d71!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  letter-spacing:.11em!important;
+}
+.home-first-head-v1 h2{
+  margin:0!important;
+  color:#183f2b!important;
+  font-size:0!important;
+  line-height:1.25!important;
+}
+.home-first-head-v1 h2::after{
+  content:"Bắt đầu: Học → Thực hành → Tra cứu";
+  font-size:19px!important;
+  font-weight:900!important;
+  letter-spacing:-.015em!important;
+}
+.home-first-head-v1 p{display:none!important}
+.home-first-primary-v1{
+  min-height:40px!important;
+  padding:0 15px!important;
+  border:1px solid #aebcb4!important;
+  border-radius:11px!important;
+  background:linear-gradient(180deg,#fff 0%,#f2f5f3 100%)!important;
+  color:#174d31!important;
+  box-shadow:inset 3px 0 0 #2d7b4f,0 3px 9px rgba(30,67,45,.06)!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  text-decoration:none!important;
+  white-space:nowrap!important;
+}
+.home-first-primary-v1:hover{
+  border-color:#7d9e8a!important;
+  background:#eef4f0!important;
+  color:#113f28!important;
+  transform:translateY(-1px)!important;
+  box-shadow:inset 3px 0 0 #217346,0 6px 14px rgba(30,67,45,.09)!important;
+}
+.home-first-steps-v1{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:7px!important;
+}
+.home-first-step-v1{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  min-height:42px!important;
+  padding:7px 9px!important;
+  border:1px solid #dde4df!important;
+  border-radius:11px!important;
+  background:#f8faf9!important;
+}
+.home-first-step-v1>span{
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 28px!important;
+  width:28px!important;
+  height:28px!important;
+  border:1px solid #cddbd2!important;
+  border-radius:9px!important;
+  background:#eef4f0!important;
+  color:#246442!important;
+  font-size:10px!important;
+  font-weight:950!important;
+}
+.home-first-step-v1 strong{
+  display:block!important;
+  color:#2d4838!important;
+  font-size:12px!important;
+  line-height:1.2!important;
+}
+.home-first-step-v1 small{display:none!important}
+.home-first-foot-v1{display:none!important}
+
+/* A–Z should read like a useful menu, not a second landing page. */
+.home-path{margin-top:20px!important}
+.home-path-inner{
+  padding:21px 20px 19px!important;
+  border-radius:18px!important;
+  border-color:#d8e1db!important;
+  box-shadow:0 10px 28px rgba(23,70,43,.055)!important;
+}
+.home-path-inner>h2{
+  margin-bottom:12px!important;
+  font-size:24px!important;
+  line-height:1.2!important;
+}
+.home-path-inner>h2::after{
+  content:"  ·  8 module / 42 bài";
+  color:#7c8981;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0;
+  vertical-align:middle;
+}
+.home-path-inner>p{display:none!important}
+.home-platform-grid-v1{gap:9px!important}
+.home-platform-module-v1{
+  min-height:100px!important;
+  padding:12px!important;
+  gap:9px!important;
+  border-color:#d9e1dc!important;
+  border-radius:13px!important;
+  background:#fff!important;
+  box-shadow:none!important;
+}
+.home-platform-module-v1:hover{
+  border-color:#a8bcb0!important;
+  background:#fafcfb!important;
+  box-shadow:0 7px 16px rgba(23,70,43,.055)!important;
+  transform:translateY(-2px)!important;
+}
+.home-platform-no-v1{
+  width:36px!important;
+  height:36px!important;
+  border-radius:10px!important;
+}
+.home-platform-copy-v1 small{font-size:8px!important}
+.home-platform-copy-v1 strong{font-size:13px!important;margin-top:2px!important}
+.home-platform-copy-v1 em{display:none!important}
+.home-platform-copy-v1 b{margin-top:8px!important;font-size:9px!important}
+
+/* Robot: keep it available, but stop the continuous Home patrol/repaint loop visually. */
+html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home{
+  position:fixed!important;
+  left:auto!important;
+  top:auto!important;
+  right:18px!important;
+  bottom:18px!important;
+  transform:none!important;
+  transition:none!important;
+  animation:none!important;
+  will-change:auto!important;
+}
+html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-leg-l,
+html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-leg-r,
+html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-arm-l,
+html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-arm-r,
+html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-head,
+html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-body,
+html body #avpEdgeLauncher[id="avpEdgeLauncher"].avp-edge-launcher.avp-robot-home.is-walking .avp-bot-eye{
+  animation:none!important;
+  transform:none!important;
+  will-change:auto!important;
+}
+
+@media(max-width:760px){
+  .home-first-head-v1{grid-template-columns:1fr!important;gap:9px!important}
+  .home-first-primary-v1{width:100%!important;justify-content:center!important}
+  .home-first-steps-v1{grid-template-columns:1fr 1fr 1fr!important}
+  .home-first-step-v1{justify-content:center!important;padding:7px!important}
+  .home-first-step-v1>div{min-width:0!important}
+  .home-first-step-v1 strong{font-size:11px!important}
+}
+@media(max-width:520px){
+  .home-first-v1{padding:10px 10px 0!important}
+  .home-first-inner-v1{padding:12px!important}
+  .home-first-head-v1 h2::after{font-size:17px!important}
+  .home-first-steps-v1{grid-template-columns:1fr!important}
+  .home-first-step-v1{justify-content:flex-start!important}
+  .home-path-inner{padding:17px 13px!important}
+  .home-path-inner>h2::after{display:block;margin-top:4px}
+}
