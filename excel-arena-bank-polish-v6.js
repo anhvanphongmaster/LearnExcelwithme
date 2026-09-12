@@ -85,6 +85,15 @@
     ]
   };
 
+  const difficultyOverrides=new Map([
+    ["conditional|AND",1],["conditional|OR",1],
+    ["lookup|VLOOKUP",1],["lookup|MATCH",1],
+    ["date-time|DATE",1],["date-time|WEEKDAY",1],
+    ["dynamic-array|SORT",1],
+    ["cleaning|FLASH FILL",1],
+    ["excel-table|TOTAL ROW",1],["excel-table|STRUCTURED REFERENCE",1]
+  ]);
+
   const familyFor=c=>{
     const answer=norm(c.answer);
     const topicGroups=groups[c.topic]||[];
@@ -96,7 +105,9 @@
 
   const conceptMap=new Map();
   B.concepts.forEach(c=>{
-    c.difficulty=Math.max(1,Math.min(5,Number(c.difficulty)||1));
+    const key=`${c.topic}|${norm(c.answer)}`;
+    const base=Math.max(1,Math.min(5,Number(c.difficulty)||1));
+    c.difficulty=difficultyOverrides.get(key)||base;
     c.family=familyFor(c);
     conceptMap.set(c.id,c);
   });
