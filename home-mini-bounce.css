@@ -18,8 +18,6 @@
 }
 .avp-mini-channel-hw{background:#b7791f!important}
 .avp-mini-channel-pro{background:#17663d!important}
-
-/* One beat, five ordered entries. High specificity intentionally defeats desktop reduced-motion overrides. */
 html body .avp-practice-hub-badges .avp-mini-channel-tt{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) 0s infinite!important}
 html body .avp-practice-hub-badges .avp-mini-channel-yt{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) .34s infinite!important}
 html body .avp-practice-hub-badges .avp-mini-channel-hw{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) .68s infinite!important}
@@ -30,7 +28,6 @@ html body .avp-practice-hub-badges .avp-mini-channel-yt::after{animation:avpMini
 html body .avp-practice-hub-badges .avp-mini-channel-hw::after{animation:avpMiniFlash5 3.2s ease-in-out .68s infinite!important}
 html body .avp-practice-hub-badges .avp-mini-channel-grade::after{animation:avpMiniFlash5 3.2s ease-in-out 1.02s infinite!important}
 html body .avp-practice-hub-badges .avp-mini-channel-pro::after{animation:avpMiniFlash5 3.2s ease-in-out 1.36s infinite!important}
-
 @keyframes avpMiniBeat5{
   0%,8%,42%,100%{transform:translate3d(0,0,0) scale(1) rotateX(0) rotateY(0);filter:brightness(1)}
   14%{transform:translate3d(0,-10px,18px) scale(1.18) rotateX(20deg) rotateY(-13deg);filter:brightness(1.16)}
@@ -44,8 +41,6 @@ html body .avp-practice-hub-badges .avp-mini-channel-pro::after{animation:avpMin
   29%{transform:translateX(145%) rotate(18deg);opacity:.35}
   31%{opacity:0;transform:translateX(145%) rotate(18deg)}
 }
-
-/* Home robot: walking must visibly move its limbs/body even when the desktop OS requests reduced motion. */
 html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-leg-l{animation:avpBotStep .36s linear infinite!important}
 html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-leg-r{animation:avpBotStep .36s linear infinite reverse!important}
 html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-arm-l{animation:avpBotStep .36s linear infinite reverse!important}
@@ -54,19 +49,42 @@ html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-head{a
 html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-body{animation:avpRobotBodyBob .36s ease-in-out infinite!important}
 html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-eye{animation:avpRobotBlink 3.1s ease-in-out infinite!important}
 html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-greeting .avp-bot-arm-r{animation:avpBotWaveHuman .55s ease-in-out infinite!important}
+@keyframes avpRobotHeadBob{0%,100%{transform:translate3d(0,0,12px) rotateZ(-2deg)}50%{transform:translate3d(0,-2px,14px) rotateZ(2deg)}}
+@keyframes avpRobotBodyBob{0%,100%{transform:translate3d(0,0,8px) rotateZ(1deg)}50%{transform:translate3d(0,1px,10px) rotateZ(-1deg)}}
+@keyframes avpRobotBlink{0%,44%,48%,100%{transform:scaleY(1);opacity:1}46%{transform:scaleY(.15);opacity:.7}}
 
-@keyframes avpRobotHeadBob{
-  0%,100%{transform:translate3d(0,0,12px) rotateZ(-2deg)}
-  50%{transform:translate3d(0,-2px,14px) rotateZ(2deg)}
+/* Excel Arena: static Home highlight. It does not alter the 5-card layout and still works if JS is cached. */
+html body .home-path-more--5 .home-more-race{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  border:1px solid #1f7046!important;
+  background:radial-gradient(circle at 95% 5%,rgba(95,239,156,.22),transparent 32%),linear-gradient(145deg,#092318,#123d29)!important;
+  color:#fff!important;
+  box-shadow:0 10px 26px rgba(12,69,39,.16)!important;
 }
-@keyframes avpRobotBodyBob{
-  0%,100%{transform:translate3d(0,0,8px) rotateZ(1deg)}
-  50%{transform:translate3d(0,1px,10px) rotateZ(-1deg)}
+html body .home-path-more--5 .home-more-race:before{
+  content:"NEW GAME";
+  position:absolute;top:7px;right:7px;z-index:3;
+  padding:4px 7px;border:1px solid rgba(180,255,211,.28);border-radius:999px;
+  background:#38b86f;color:#fff;font-size:8px;font-weight:950;letter-spacing:.08em;
+  box-shadow:0 0 0 0 rgba(56,184,111,.25)
 }
-@keyframes avpRobotBlink{
-  0%,44%,48%,100%{transform:scaleY(1);opacity:1}
-  46%{transform:scaleY(.15);opacity:.7}
+html body .home-path-more--5 .home-more-race:after{
+  content:"Đua top →";
+  display:block;margin-top:7px;color:#91efb7;font-size:9px;font-weight:900;letter-spacing:.02em
 }
+html body .home-path-more--5 .home-more-race>span:first-child{font-size:0!important;color:#9af0bc!important}
+html body .home-path-more--5 .home-more-race>span:first-child:after{content:"⚡";font-size:26px!important}
+html body .home-path-more--5 .home-more-race>strong{font-size:0!important;color:#fff!important}
+html body .home-path-more--5 .home-more-race>strong:after{content:"Excel Arena";font-size:15px!important;line-height:1.25}
+html body .home-path-more--5 .home-more-race>small{font-size:0!important;color:#bed8c8!important;background:transparent!important;padding:0!important}
+html body .home-path-more--5 .home-more-race>small:after{content:"4 đáp án · Học + Rank · 14 chủ đề";font-size:10px!important;line-height:1.4}
+html body .home-path-more--5 .home-more-race .avp-arena-home-meta{color:#8eeab3!important;font-size:9px!important}
+html body .home-path-more--5 .home-more-race .avp-arena-home-badge{display:none!important}
+html body .home-path-more--5 .home-more-race:hover{transform:translateY(-4px)!important;border-color:#61db93!important;box-shadow:0 16px 34px rgba(12,69,39,.24)!important}
+@keyframes avpArenaHomePulse{0%,70%,100%{box-shadow:0 0 0 0 rgba(70,224,132,0)}85%{box-shadow:0 0 0 7px rgba(70,224,132,.13)}}
+@media(prefers-reduced-motion:no-preference){html body .home-path-more--5 .home-more-race:before{animation:avpArenaHomePulse 2.8s ease-in-out infinite}}
 
 @media(prefers-reduced-motion:reduce){
   html body .avp-practice-hub-badges .avp-mini-channel-tt{animation:avpMiniBeat5 3.2s cubic-bezier(.2,1.45,.32,1) 0s infinite!important}
