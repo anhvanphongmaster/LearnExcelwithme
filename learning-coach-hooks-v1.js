@@ -4,6 +4,14 @@
 
   function text(el){return String(el?.textContent||'').trim()}
   function currentLesson(){try{return new URLSearchParams(location.search).get('lesson')||''}catch{return''}}
+  function lessonSkill(id){
+    const moduleId=window.AVPLearningPlatform?.lessonToModule?.get?.(id)||'';
+    return ({
+      'excel-foundation':'foundation','data-cleaning':'cleaning','formula-lookup':'formula',
+      'analysis-reporting':'analysis','dashboard-visual':'dashboard','power-query':'powerquery',
+      'vba-optimization':'vba','workflow-cases':'workflow'
+    })[moduleId]||'foundation';
+  }
 
   document.addEventListener('click',e=>{
     const kv=e.target.closest?.('.kv-option');
@@ -14,15 +22,16 @@
         const options=[...(card?.querySelectorAll('.kv-option')||[])];
         const correct=options.find(x=>x.classList.contains('correct'));
         const feedback=card?.querySelector('.kv-feedback');
+        const lessonId=currentLesson();
         C.logMistake({
           source:'knowledge',
-          skill:'foundation',
-          concept:`lesson-${currentLesson()}-q${card?.dataset.question||'0'}`,
+          skill:lessonSkill(lessonId),
+          concept:`lesson-${lessonId}-q${card?.dataset.question||'0'}`,
           prompt:text(card?.querySelector('.kv-q-text')),
           correct:text(correct),
           chosen:text(kv),
           explain:text(feedback),
-          lessonId:currentLesson(),
+          lessonId,
           url:location.href
         });
       },0);
