@@ -41,6 +41,12 @@
     const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
     if(page!==''&&page!=='index.html')return false;
     let changed=false;
+    const learnLink=document.querySelector('.top-simple-nav [data-avp-nav="learn"]');
+    if(learnLink&&learnLink.getAttribute('href')!=='learning-coach.html'){
+      learnLink.setAttribute('href','learning-coach.html');
+      learnLink.setAttribute('aria-label','Học hôm nay');
+      changed=true;
+    }
     const btn=document.getElementById('avpScrollToPath');
     if(btn&&btn.dataset.coachEntry!=='1'){
       const clean=btn.cloneNode(true);
@@ -58,9 +64,19 @@
       const summary=document.createElement('summary');summary.textContent='Xem toàn bộ 8 module · 42 bài';
       grid.parentNode.insertBefore(details,grid);details.append(summary,grid);changed=true;
     }
+    const details=document.querySelector('.home-route-details-v1');
+    const board=document.querySelector('.home-path-inner>.learn-board, .home-route-details-v1>.learn-board');
+    if(details&&board&&details.contains(board)){
+      details.insertAdjacentElement('afterend',board);
+      changed=true;
+    }
     return changed||!!document.querySelector('[data-coach-entry="1"]');
   }
-  function bootCoachEntry(){let n=0;const run=()=>{n++;wireCoachEntry();if(n>25)clearInterval(t)};run();const t=setInterval(run,160)}
+  function bootCoachEntry(){
+    let n=0,t=0;
+    const run=()=>{n++;wireCoachEntry();if(n>25)clearInterval(t)};
+    run();t=setInterval(run,160);
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootCoachEntry,{once:true});else bootCoachEntry();
   setTimeout(wireCoachEntry,900);setTimeout(wireCoachEntry,2200);
 })();
