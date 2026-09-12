@@ -453,7 +453,8 @@
       if(surface==="chat"){
         chatWantedOpen=true;
         freezeAtCurrent();
-        retryRestoreChat();
+        clearTimeout(chatRestoreTimer);
+        chatRestoreTimer=setTimeout(retryRestoreChat,180);
       }else if(surface){
         chatWantedOpen=false;
       }
@@ -465,8 +466,8 @@
 
     window.addEventListener("avp:home-auth-change",()=>{
       if(chatWantedOpen){
-        setTimeout(retryRestoreChat,100);
-        setTimeout(retryRestoreChat,450);
+        setTimeout(retryRestoreChat,120);
+        setTimeout(retryRestoreChat,500);
       }
     });
 
@@ -484,7 +485,7 @@
           }else if(!document.getElementById("avpEdgeLauncher")?.classList.contains("open")){
             markChatClosed();
           }
-        },80);
+        },240);
       }
     },true);
   }
