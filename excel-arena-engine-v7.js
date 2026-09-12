@@ -26,17 +26,41 @@
   function meta(id){return id==="mixed"?{id:"mixed",icon:"🔥",name:"Tổng hợp Excel",desc:"Tất cả chủ đề"}:B.topics.find(t=>t.id===id)||{id,icon:"⚡",name:id,desc:""}}
   function concepts(topic=S.topic){return topic==="mixed"?(B.concepts||[]):(byTopic.get(topic)||[])}
   function conceptCount(topic=S.topic){return concepts(topic).length}
-  function maxDiff(){return MAX_DIFF[Math.min(S.level-1,MAX_DIFF.length-1)]||5}
   function familyKey(c){return c?.family||`answer:${norm(c?.answer)}`}
-  function level(){const n=S.correct;if(n<5)return 1;if(n<11)return 2;if(n<18)return 3;if(n<26)return 4;if(n<35)return 5;return 6}
-  function eligible(c){if(!c||c.difficulty>maxDiff())return false;if(S.topic!=="mixed")return true;return S.level>=(c.mixedMinLevel||1)}
+
+  function stageForSeq(seq){
+    const n=Math.max(1,Number(seq)||1);
+    if(S.topic==="mixed"){
+      if(n<=8)return 1;
+      if(n<=18)return 2;
+      if(n<=30)return 3;
+      if(n<=44)return 4;
+      if(n<=60)return 5;
+      return 6;
+    }
+    const list=concepts();
+    let acc=0;
+    for(let d=1;d<=5;d++){
+      acc+=list.filter(c=>Number(c.difficulty)===d).length;
+      if(n<=Math.max(1,acc))return d;
+    }
+    return 6;
+  }
+  function level(){return stageForSeq(S.seq)}
+  function selectionLevel(){return stageForSeq(S.seq+1)}
+  function maxDiffForSelection(){return MAX_DIFF[Math.min(selectionLevel()-1,MAX_DIFF.length-1)]||5}
+  function eligible(c){if(!c||c.difficulty>maxDiffForSelection())return false;if(S.topic!=="mixed")return true;return selectionLevel()>=(c.mixedMinLevel||1)}
   function histKey(){return`avp_arena_s1_recent_${S.topic}`}
   function loadHist(){try{const x=JSON.parse(localStorage.getItem(histKey())||"[]");S.persist=Array.isArray(x)?x.filter(id=>conceptById.has(id)).slice(-120):[]}catch{S.persist=[]}}
   function remember(c){if(!c)return;const id=c.id,fam=familyKey(c);S.recent.push(id);if(S.recent.length>24)S.recent.shift();S.recentFamilies.push(fam);if(S.recentFamilies.length>10)S.recentFamilies.shift();S.recentTopics.push(c.topic);if(S.recentTopics.length>6)S.recentTopics.shift();S.persist=S.persist.filter(x=>x!==id);S.persist.push(id);S.persist=S.persist.slice(-120);try{localStorage.setItem(histKey(),JSON.stringify(S.persist))}catch{}}
 
   function chooseConcept(){
     let pool=concepts().filter(c=>eligible(c)&&!S.usedConcept.has(c.id));
-    if(!pool.length){S.cycle++;S.usedConcept.clear();pool=concepts().filter(eligible)}
+    if(!pool.length){
+      const allEligible=concepts().filter(eligible);
+      const exhausted=allEligible.length>0&&allEligible.every(c=>S.usedConcept.has(c.id));
+      if(exhausted){S.cycle++;S.usedConcept.clear();pool=allEligible}
+    }
     if(!pool.length)return null;
     let f=pool.filter(c=>!S.recent.slice(-12).includes(c.id));if(f.length)pool=f;
     const old=new Set(S.persist.slice(-36));f=pool.filter(c=>!old.has(c.id));if(f.length>=2)pool=f;
@@ -45,13 +69,13 @@
     return shuffle(pool)[0]||null;
   }
 
-  function variant(c){const p=(byConcept.get(c.id)||[]).filter(q=>q.__arenaEnabled!==false);if(!p.length)return null;const u=p.filter(q=>!S.used.has(q.id));return shuffle(u.length?u:p)[0]||null}
+  function variant(c){const p=(byConcept.get(c.id)||[]).filter(q=>q.__arenaEnabled!==false);if(!p.length)return null;return p[0]||null}
   function pick(){
     if(S.mode==="learn"){
       const i=S.retry.findIndex(x=>x.due<=S.seq);
-      if(i>=0){const item=S.retry[i],c=conceptById.get(item.id);if(c){const fam=familyKey(c),blocked=new Set(S.recentFamilies.slice(-4));if(!blocked.has(fam)){S.retry.splice(i,1);const q=variant(c);if(q){S.used.add(q.id);remember(c);return{...q,isRetry:true}}}else item.due+=2}}
+      if(i>=0){const item=S.retry[i],c=conceptById.get(item.id);if(c){const fam=familyKey(c),blocked=new Set(S.recentFamilies.slice(-4));if(!blocked.has(fam)){S.retry.splice(i,1);const q=variant(c);if(q){remember(c);return{...q,isRetry:true}}}else item.due+=2}}
     }
-    const c=chooseConcept();if(!c)return null;const q=variant(c);if(!q)return null;const boss=S.seq>0&&(S.seq+1)%10===0;S.usedConcept.add(c.id);S.used.add(q.id);remember(c);return boss?{...q,boss:true}:q;
+    const c=chooseConcept();if(!c)return null;const q=variant(c);if(!q)return null;const boss=S.mode==="rank"&&S.seq>0&&(S.seq+1)%10===0;S.usedConcept.add(c.id);S.used.add(q.id);remember(c);return boss?{...q,boss:true}:q;
   }
 
   function duration(q){if(S.mode==="learn")return 0;const d=Math.max(1,Math.min(5,Number(q.difficulty)||1));return Math.max(10000,20500-(S.level-1)*650-d*700)}
@@ -76,16 +100,17 @@
   function anim(now){if(S.mode!=="rank"||!S.running||S.locked||!S.current||document.hidden)return;const r=Math.max(0,1-(now-S.start)/S.duration);$("timerFill").style.width=`${r*100}%`;if(r<=0)return miss(null,"timeout");S.raf=requestAnimationFrame(anim)}
   function hintText(q){return `Nhóm ${meta(q.topic).name} · mức ${q.difficulty}/5. Đọc tình huống và chọn công cụ phù hợp nhất.`}
   function renderOptions(q){const made=makeOptions(q);S.options=made.opts;S.correctIndex=made.slot;$("answerGrid").innerHTML=S.options.map((a,i)=>`<button type="button" class="answer-option" data-answer-index="${i}"><span class="answer-letter">${LETTERS[i]}</span><span class="answer-copy"><strong>${esc(a)}</strong><small>Đáp án ${LETTERS[i]}</small></span></button>`).join("");qa(".answer-option",$("answerGrid")).forEach(b=>b.addEventListener("click",()=>choose(Number(b.dataset.answerIndex))))}
-  function render(q){if(!q)return end("Không còn nội dung phù hợp ở mức hiện tại.");S.current=q;S.locked=false;S.seq++;S.level=level();S.duration=duration(q);S.start=performance.now();const d=Math.max(1,Math.min(5,Number(q.difficulty)||1));$("questionDifficulty").textContent=`Mức ${d} · ${DIFF_LABELS[d-1]}`;$("questionTopic").textContent=meta(q.topic).name;$("bossBadge").hidden=!q.boss;$("roundBadge").textContent=q.isRetry?"ÔN LẠI":`ROUND ${S.seq}`;$("questionPrompt").textContent=q.prompt;$("questionHint").querySelector("p").textContent=hintText(q);renderOptions(q);fb("",q.isRetry?"↻ Nội dung này đang được ôn lại sau khoảng nghỉ.":q.boss?"⚠ Boss Round · tình huống khó hơn, điểm cao hơn.":S.mode==="learn"?"Chế độ Học không giới hạn thời gian. Chọn đáp án rồi đọc phần Ghi nhớ.":"Chọn đáp án trước khi hết thời gian.");hud();updateRace();$("timerFill").style.width="100%";stopAnim();if(S.mode==="rank")S.raf=requestAnimationFrame(anim)}
+  function render(q){if(!q)return end("Không còn nội dung phù hợp ở mức hiện tại.");S.current=q;S.locked=false;S.seq++;S.level=level();S.duration=duration(q);S.start=performance.now();const d=Math.max(1,Math.min(5,Number(q.difficulty)||1));$("questionDifficulty").textContent=`Mức ${d} · ${DIFF_LABELS[d-1]}`;$("questionTopic").textContent=meta(q.topic).name;$("bossBadge").hidden=!q.boss;$("roundBadge").textContent=q.isRetry?"ÔN LẠI":`ROUND ${S.seq}`;$("questionPrompt").textContent=q.prompt;$("questionHint").querySelector("p").textContent=hintText(q);renderOptions(q);fb("",q.isRetry?"↻ Nội dung này đang được ôn lại sau khoảng nghỉ.":q.boss?"⚠ Boss Round · điểm thưởng cao hơn.":S.mode==="learn"?"Chọn đáp án rồi đọc phần Ghi nhớ trước khi sang câu tiếp theo.":"Chọn đáp án trước khi hết thời gian.");hud();updateRace();$("timerFill").style.width="100%";stopAnim();if(S.mode==="rank")S.raf=requestAnimationFrame(anim)}
   function retry(q){if(S.mode!=="learn"||!q?.conceptId||S.retry.some(x=>x.id===q.conceptId))return;S.retry.push({id:q.conceptId,due:S.seq+7+Math.floor(Math.random()*5)})}
   function later(ms){setTimeout(()=>{if(S.running)render(pick())},ms)}
+  function showLearnNext(){const e=$("arenaFeedback");if(!e)return;const b=document.createElement("button");b.type="button";b.className="arena-learn-next";b.textContent="Tiếp tục →";b.addEventListener("click",()=>{if(S.running)render(pick())},{once:true});e.appendChild(b)}
   function points(q){const tr=S.mode==="rank"?Math.max(0,1-(performance.now()-S.start)/S.duration):.55,base=110*Math.max(1,q.difficulty||1),combo=Math.min(1.85,1+S.combo*.045),boss=q.boss?1.5:1;return Math.round((base+110*tr)*combo*boss)}
   function lockAnswers(selected){qa(".answer-option",$("answerGrid")).forEach((b,i)=>{b.disabled=true;if(i===S.correctIndex)b.classList.add("is-correct");if(selected!==null&&i===selected&&i!==S.correctIndex)b.classList.add("is-wrong")})}
   function flashRace(kind){const tr=$("raceTrack");if(!tr)return;tr.classList.remove("is-boost","is-hit");void tr.offsetWidth;tr.classList.add(kind==="good"?"is-boost":"is-hit");setTimeout(()=>tr.classList.remove("is-boost","is-hit"),500)}
   function choose(index){if(!S.running||S.locked||!S.current)return;if(index===S.correctIndex)correct(index);else miss(index,"wrong")}
   function lesson(q){return `<span class="arena-learn-note"><strong>Ghi nhớ:</strong> ${esc(q.learningNote||`${q.answer} — ${q.meaning}.`)}<br><strong>Dùng khi:</strong> ${esc(q.scenario||q.prompt)}</span>`}
-  function correct(index){S.locked=true;stopAnim();lockAnswers(index);const q=S.current;S.correct++;S.combo++;S.bestCombo=Math.max(S.bestCombo,S.combo);const p=points(q);S.score+=p;flashRace("good");fb("good",`<strong>ĐÚNG · +${p}</strong><br>${lesson(q)}${S.combo>=3?`<br><span>Combo x${S.combo}</span>`:""}`);hud();updateRace();later(S.mode==="learn"?(q.boss?2800:2200):(q.boss?1300:950))}
-  function miss(index,reason){if(S.locked||!S.current)return;S.locked=true;stopAnim();lockAnswers(index);const q=S.current;S.wrong++;S.combo=0;retry(q);if(S.mode==="rank")S.lives--;flashRace("bad");fb("bad",`<strong>${reason==="timeout"?"HẾT GIỜ":"CHƯA ĐÚNG"} · ${esc(q.answer)}</strong><br>${lesson(q)}${S.mode==="learn"?"<br><span>Nội dung này sẽ quay lại sau một khoảng đủ xa.</span>":""}`);hud();updateRace();if(S.mode==="rank"&&S.lives<=0)setTimeout(()=>end("Hết 3 mạng."),1500);else later(S.mode==="learn"?3200:1350)}
+  function correct(index){S.locked=true;stopAnim();lockAnswers(index);const q=S.current;S.correct++;S.combo++;S.bestCombo=Math.max(S.bestCombo,S.combo);const p=points(q);S.score+=p;flashRace("good");fb("good",`<strong>ĐÚNG · +${p}</strong><br>${lesson(q)}${S.combo>=3?`<br><span>Combo x${S.combo}</span>`:""}`);hud();updateRace();if(S.mode==="learn")showLearnNext();else later(q.boss?1300:950)}
+  function miss(index,reason){if(S.locked||!S.current)return;S.locked=true;stopAnim();lockAnswers(index);const q=S.current;S.wrong++;S.combo=0;retry(q);if(S.mode==="rank")S.lives--;flashRace("bad");fb("bad",`<strong>${reason==="timeout"?"HẾT GIỜ":"CHƯA ĐÚNG"} · ${esc(q.answer)}</strong><br>${lesson(q)}${S.mode==="learn"?"<br><span>Nội dung này sẽ được ôn lại sau.</span>":""}`);hud();updateRace();if(S.mode==="rank"&&S.lives<=0)setTimeout(()=>end("Hết 3 mạng."),1500);else if(S.mode==="learn")showLearnNext();else later(1350)}
 
   async function client(timeout=5500){const t=Date.now();while(Date.now()-t<timeout){const c=window.avpSupabase||window.supabaseClient;if(c)return c;await new Promise(r=>setTimeout(r,80))}return window.avpSupabase||window.supabaseClient||null}
   async function session(){const c=await client();if(!c?.auth)return{c:null,u:null};try{const{data}=await c.auth.getSession();return{c,u:data?.session?.user||null}}catch{return{c:null,u:null}}}
@@ -97,7 +122,7 @@
   function saveBest(){try{const k=`avp_arena_s1_best_${S.topic}`,o=Number(localStorage.getItem(k)||0);if(S.score>o)localStorage.setItem(k,String(S.score))}catch{}}
   async function end(reason="Đã dừng lượt chơi."){if(!S.running)return;S.running=false;S.locked=true;stopAnim();saveBest();if(S.mode==="rank")await submit();fb("warn",`<strong>${esc(reason)}</strong> ${S.mode==="rank"?"Rank":"Học"} kết thúc với ${S.score.toLocaleString("vi-VN")} điểm · ${S.correct} câu đúng · combo tốt nhất ${S.bestCombo}.`);$("stopArena").textContent="Đã dừng";$("stopArena").disabled=true;board(S.topic)}
   function reset(){stopAnim();Object.assign(S,{running:true,current:null,retry:[],recent:[],recentFamilies:[],recentTopics:[],seq:0,correct:0,wrong:0,score:0,combo:0,bestCombo:0,lives:3,level:1,cycle:1,locked:false,hiddenAt:0,slotBag:[],lastSlot:-1});S.used=new Set();S.usedConcept=new Set();loadHist();$("stopArena").textContent="Dừng";$("stopArena").disabled=false}
-  async function start(){if(!activeQuestions.length||!B?.concepts?.length)return $("setupHint").textContent="Không tải được ngân hàng câu hỏi.";if(!await identity())return $("setupHint").textContent="Bạn cần đăng nhập trước khi vào Arena.";reset();document.body.classList.add("arena-playing");$("arenaSetup").hidden=true;$("arenaGame").hidden=false;$("currentMode").textContent=S.mode==="rank"?"RANK · 3 MẠNG":"HỌC · KHÔNG GIỚI HẠN THỜI GIAN";$("currentTopic").textContent=meta(S.topic).name;$("boardTopic").value=S.topic;hud();render(pick());fetchRaceRows(S.topic);window.scrollTo({top:0,behavior:"smooth"})}
+  async function start(){if(!activeQuestions.length||!B?.concepts?.length)return $("setupHint").textContent="Không tải được ngân hàng câu hỏi.";if(!await identity())return $("setupHint").textContent="Bạn cần đăng nhập trước khi vào Arena.";reset();document.body.classList.add("arena-playing");$("arenaSetup").hidden=true;$("arenaGame").hidden=false;$("currentMode").textContent=S.mode==="rank"?"RANK · 3 MẠNG":"HỌC";$("currentTopic").textContent=meta(S.topic).name;$("boardTopic").value=S.topic;hud();render(pick());fetchRaceRows(S.topic);window.scrollTo({top:0,behavior:"smooth"})}
   async function setup(){if(S.running)await end("Bạn đã rời lượt chơi.");document.body.classList.remove("arena-playing");$("arenaGame").hidden=true;$("arenaSetup").hidden=false;$("arenaSetup").scrollIntoView({behavior:"smooth",block:"start"})}
   function topics(){const r=$("topicGrid"),cards=[{id:"mixed",icon:"🔥",name:"Tổng hợp Excel",desc:"Đi từ nền tảng rồi mới mở nội dung khó",count:activeQuestions.length,concepts:B.concepts.length},...B.topics.map(t=>({...t,count:activeQuestions.filter(q=>q.topic===t.id).length,concepts:conceptCount(t.id)}))];r.innerHTML=cards.map(t=>`<button type="button" class="topic-card ${t.id==="mixed"?"mixed is-selected":""}" data-topic="${esc(t.id)}"><span class="topic-icon">${esc(t.icon)}</span><strong>${esc(t.name)}</strong><small>${esc(t.desc)}</small><em>${t.concepts} nội dung</em></button>`).join("");qa(".topic-card",r).forEach(b=>b.addEventListener("click",()=>{qa(".topic-card",r).forEach(x=>x.classList.remove("is-selected"));b.classList.add("is-selected");S.topic=b.dataset.topic||"mixed";$("boardTopic").value=S.topic;loadHist();board(S.topic)}))}
   function boardOptions(){const s=$("boardTopic");s.innerHTML=[{id:"mixed",name:"Tổng hợp Excel"},...B.topics].map(t=>`<option value="${esc(t.id)}">${esc(t.name)}</option>`).join("");s.value=S.topic}
