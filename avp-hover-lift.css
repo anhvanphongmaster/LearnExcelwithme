@@ -1,3 +1,22 @@
 /* redirected: use avp-site-motion.css */
 @import url("avp-site-motion.css");
 @import url("home-ux-polish-v1.css?v=20260912-homeux3");
+
+/* Home robot bounds guard.
+   The smooth patrol computes its right edge from launcher.offsetWidth.
+   Keep a 64px safety footprint (same guard used by the original stable patrol)
+   so the visible robot never walks past the viewport edge. */
+html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth{
+  width:64px!important;
+  max-width:64px!important;
+}
+html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth .avp-edge-main{
+  left:0!important;
+  right:auto!important;
+}
+@media(max-width:600px){
+  html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth{
+    width:64px!important;
+    max-width:64px!important;
+  }
+}
