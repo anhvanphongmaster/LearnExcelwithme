@@ -1,0 +1,47 @@
+/* Learning Coach V1 — one clear next action, secondary tools stay collapsed. */
+:root{--coach-bg:#f3f6f4;--coach-card:#fff;--coach-text:#1f2f27;--coach-muted:#6e7c74;--coach-line:#d9e2dd;--coach-green:#2f6f4a;--coach-blue:#557fa3;--coach-purple:#7b6696;--coach-amber:#a47c2f;--coach-red:#b75d50}
+.coach-page{min-height:100vh;background:var(--coach-bg);padding:22px 14px 70px;color:var(--coach-text)}
+.coach-shell{width:min(980px,100%);margin:0 auto}
+.coach-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:8px 2px 18px;border-bottom:1px solid var(--coach-line)}
+.coach-kicker{display:block;margin-bottom:5px;color:#547263;font-size:10px;font-weight:900;letter-spacing:.12em}
+.coach-hero h1{margin:0;font-size:clamp(28px,5vw,44px);line-height:1.05;letter-spacing:-.03em}
+.coach-hero p{max-width:650px;margin:8px 0 0;color:var(--coach-muted);font-size:14px;line-height:1.55}
+.coach-guide-link{flex:0 0 auto;display:inline-flex;align-items:center;min-height:38px;padding:0 12px;border:1px solid #cbd6d0;border-radius:10px;background:#fff;color:#355743;text-decoration:none;font-size:12px;font-weight:800}
+.coach-focus{margin-top:16px;padding:18px;border:1px solid #cad8d0;border-radius:18px;background:linear-gradient(145deg,#fff,#f8faf9);box-shadow:0 10px 28px rgba(31,71,48,.055)}
+.coach-focus-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.coach-focus-label{display:block;color:#5b7566;font-size:9px;font-weight:950;letter-spacing:.1em}
+.coach-focus h2{margin:4px 0 4px;font-size:21px;line-height:1.25}
+.coach-focus p{margin:0;color:var(--coach-muted);font-size:12.5px;line-height:1.55}
+.coach-progress-pill{flex:0 0 auto;padding:7px 10px;border:1px solid #d3ddd7;border-radius:999px;background:#fff;color:#566a5f;font-size:10px;font-weight:850}
+.coach-primary{display:inline-flex;align-items:center;justify-content:center;min-height:42px;margin-top:14px;padding:0 15px;border:1px solid #aebeb5;border-left:4px solid #4e8867;border-radius:11px;background:linear-gradient(180deg,#fff,#f1f4f2);color:#234936;text-decoration:none;font:inherit;font-size:12px;font-weight:900;cursor:pointer;box-shadow:0 4px 10px rgba(25,65,42,.05)}
+.coach-primary:hover{background:#edf2ef;border-color:#90a89a}
+.coach-plan{display:grid;gap:8px;margin-top:14px}
+.coach-plan-step{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 11px;border:1px solid var(--coach-line);border-radius:12px;background:#fff}
+.coach-plan-step>span{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:#eef4f0;color:#35654a;font-size:10px;font-weight:950}
+.coach-plan-step strong{display:block;font-size:12px}.coach-plan-step small{display:block;margin-top:2px;color:var(--coach-muted);font-size:10.5px;line-height:1.4}
+.coach-plan-step a,.coach-plan-step button{border:1px solid #d2dbd6;border-radius:9px;background:#f8faf9;color:#355743;padding:7px 9px;text-decoration:none;font:inherit;font-size:10px;font-weight:850;cursor:pointer;white-space:nowrap}
+.coach-secondary{margin-top:14px;display:grid;gap:9px}
+.coach-drawer{border:1px solid var(--coach-line);border-radius:14px;background:#fff;overflow:hidden}
+.coach-drawer>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;font-size:12px;font-weight:900}
+.coach-drawer>summary::-webkit-details-marker{display:none}
+.coach-drawer>summary::after{content:'+';color:#7e8d85;font-size:18px;font-weight:500}.coach-drawer[open]>summary::after{content:'–'}
+.coach-drawer-body{padding:0 14px 15px;border-top:1px solid #eef2ef}
+.coach-subcopy{margin:11px 0;color:var(--coach-muted);font-size:11.5px;line-height:1.55}
+.coach-quiz-card{max-width:760px;margin:12px auto 0;padding:16px;border:1px solid #d7e0db;border-radius:14px;background:#fbfcfb}
+.coach-quiz-meta{display:flex;justify-content:space-between;gap:10px;color:#728078;font-size:10px;font-weight:800}
+.coach-quiz-card h3{margin:9px 0 12px;font-size:17px;line-height:1.4}
+.coach-options{display:grid;gap:7px}
+.coach-option{width:100%;text-align:left;padding:10px 11px;border:1px solid #d7dfdb;border-radius:10px;background:#fff;color:#30463a;font:inherit;font-size:12px;cursor:pointer}
+.coach-option:hover{border-color:#aebdb5;background:#f7f9f8}.coach-option.is-correct{border-color:#9bc8ae;background:#eff8f2;color:#245f3d}.coach-option.is-wrong{border-color:#dfb1aa;background:#fff2f0;color:#94483e}.coach-option:disabled{cursor:default}
+.coach-feedback{margin-top:10px;padding:9px 10px;border-radius:9px;background:#f1f5f2;color:#4c6055;font-size:11px;line-height:1.5}.coach-feedback.good{background:#eef8f1;color:#2b6442}.coach-feedback.bad{background:#fff2ef;color:#914b40}
+.coach-quiz-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:10px}.coach-quiz-actions button{min-height:36px;padding:0 12px;border:1px solid #cfd9d3;border-radius:9px;background:#fff;color:#365644;font:inherit;font-size:11px;font-weight:850;cursor:pointer}
+.coach-result{display:grid;gap:8px;margin-top:12px}.coach-skill-row{display:grid;grid-template-columns:minmax(130px,1fr) 2fr 72px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #eef2ef}.coach-skill-row:last-child{border-bottom:0}.coach-skill-row strong{font-size:11px}.coach-track{height:7px;border-radius:999px;background:#e9efeb;overflow:hidden}.coach-track i{display:block;height:100%;border-radius:999px;background:#6f9d82}.coach-skill-row b{text-align:right;font-size:10px;color:#607168}
+.coach-mistakes{display:grid;gap:7px}.coach-mistake{padding:11px;border:1px solid #e1e6e3;border-radius:11px;background:#fbfcfb}.coach-mistake-top{display:flex;justify-content:space-between;gap:10px}.coach-mistake strong{font-size:11.5px}.coach-mistake em{font-style:normal;color:#a04d43;font-size:10px;font-weight:850}.coach-mistake p{margin:5px 0;color:#607068;font-size:10.5px;line-height:1.5}.coach-mistake-actions{display:flex;gap:6px;flex-wrap:wrap}.coach-mistake-actions a,.coach-mistake-actions button{border:1px solid #d7dfdb;border-radius:8px;background:#fff;color:#3b5948;padding:6px 8px;text-decoration:none;font:inherit;font-size:10px;font-weight:800;cursor:pointer}.coach-resolved{opacity:.55}
+.coach-cases{display:grid;gap:8px}.coach-case{border:1px solid #dde4e0;border-radius:11px;background:#fbfcfb;overflow:hidden}.coach-case summary{cursor:pointer;padding:11px 12px;font-size:11.5px;font-weight:900}.coach-case-body{padding:0 12px 12px;color:#5d6d65;font-size:10.5px;line-height:1.55}.coach-case-body ul{margin:7px 0;padding-left:18px}.coach-case-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}.coach-case-actions a,.coach-case-actions button{border:1px solid #d4ddd7;border-radius:8px;background:#fff;color:#365743;padding:7px 9px;text-decoration:none;font:inherit;font-size:10px;font-weight:850;cursor:pointer}
+.coach-guide-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin-top:11px}.coach-guide-step{padding:10px;border:1px solid #dde4e0;border-radius:10px;background:#fafbfa}.coach-guide-step b{display:block;color:#426452;font-size:10px}.coach-guide-step strong{display:block;margin-top:4px;font-size:11px}.coach-guide-step p{margin:4px 0 0;color:#75827b;font-size:9.5px;line-height:1.45}.coach-rule{margin-top:10px;padding:10px 11px;border-left:4px solid #7a9a87;border-radius:9px;background:#f3f6f4;color:#566960;font-size:10.5px;line-height:1.5}
+.coach-reset{margin-top:9px;border:0;background:transparent;color:#7b8781;text-decoration:underline;font:inherit;font-size:10px;cursor:pointer}
+body.dark-mode .coach-page{--coach-bg:#101713;--coach-card:#172019;--coach-text:#e2ece6;--coach-muted:#a7b5ad;--coach-line:#314239;background:var(--coach-bg)}
+body.dark-mode .coach-focus,body.dark-mode .coach-drawer,body.dark-mode .coach-plan-step,body.dark-mode .coach-quiz-card,body.dark-mode .coach-option,body.dark-mode .coach-case,body.dark-mode .coach-mistake,body.dark-mode .coach-guide-step{background:#172019;border-color:#314239;color:#e2ece6}
+body.dark-mode .coach-primary,body.dark-mode .coach-guide-link,body.dark-mode .coach-plan-step a,body.dark-mode .coach-plan-step button,body.dark-mode .coach-mistake-actions a,body.dark-mode .coach-mistake-actions button{background:#1d2b23;border-color:#405348;color:#dce9e1}
+@media(max-width:780px){.coach-hero{align-items:flex-start;flex-direction:column}.coach-guide-link{align-self:flex-start}.coach-plan-step{grid-template-columns:28px minmax(0,1fr)}.coach-plan-step>a,.coach-plan-step>button{grid-column:2;justify-self:start}.coach-guide-grid{grid-template-columns:1fr 1fr}.coach-skill-row{grid-template-columns:1fr 1.6fr 56px}}
+@media(max-width:520px){.coach-page{padding:12px 9px 55px}.coach-focus{padding:14px}.coach-focus-top{flex-direction:column}.coach-progress-pill{align-self:flex-start}.coach-guide-grid{grid-template-columns:1fr}.coach-skill-row{grid-template-columns:1fr 58px}.coach-skill-row .coach-track{grid-column:1/-1;grid-row:2}.coach-drawer>summary{padding:12px}.coach-quiz-card{padding:12px}}
