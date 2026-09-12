@@ -1,0 +1,148 @@
+/* Knowledge Reader Overflow Fix V4
+   Containment-only patch: prevents the 42-lesson reader from exceeding the viewport.
+   No reader JS/data/content changes. */
+
+.kv-reader-page,
+.kv-course-nav,
+.kv-reader-page .kv-hero,
+.kv-reader-grid,
+.kv-reader-menu,
+.kv-reader-content,
+.kv-active-section,
+.kv-active-section .kv-section,
+.kv-reader-content .kv-intro,
+.kv-intro .lp-start-here-v2,
+.kv-intro .lp-start-grid-v2,
+.kv-intro .lp-visual-v3,
+.kv-intro .lp-visual-flow-v3,
+.kv-intro .kv-intro-grid,
+.kv-active-section .kv-check,
+.kv-active-section .kv-question,
+.kv-active-section .kv-options{
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+
+.kv-reader-page{
+  width:min(1320px,calc(100vw - 28px))!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  overflow-x:clip!important;
+}
+
+.kv-reader-grid>* ,
+.kv-reader-content>* ,
+.kv-active-section .kv-section>* ,
+.kv-reader-content .kv-intro>*{
+  min-width:0!important;
+  max-width:100%!important;
+}
+
+.kv-reader-page h1,
+.kv-reader-page h2,
+.kv-reader-page h3,
+.kv-reader-page p,
+.kv-reader-page li,
+.kv-reader-page strong,
+.kv-reader-page b,
+.kv-reader-page em,
+.kv-reader-page a,
+.kv-reader-page button,
+.kv-reader-page code{
+  overflow-wrap:anywhere!important;
+  word-break:normal!important;
+}
+
+.kv-reader-page pre,
+.kv-reader-page table,
+.kv-reader-page .kv-formula{
+  max-width:100%!important;
+}
+.kv-reader-page pre,
+.kv-reader-page .kv-formula{
+  overflow-x:auto!important;
+  white-space:pre-wrap!important;
+}
+.kv-reader-page table{
+  display:block!important;
+  overflow-x:auto!important;
+}
+
+.kv-course-nav .kv-course-edge.next{
+  min-width:0!important;
+  max-width:min(310px,100%)!important;
+}
+
+.kv-reader-menu .kv-outline button,
+.kv-outline-extra-toggle-v4{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+}
+
+.kv-intro .lp-start-grid-v2 article,
+.kv-intro .lp-visual-flow-v3 article,
+.kv-intro .kv-intro-box,
+.kv-active-section .lp-do-now-v2,
+.kv-active-section .kv-box,
+.kv-active-section .kv-check,
+.kv-active-section .kv-question,
+.kv-active-section .kv-option{
+  min-width:0!important;
+  max-width:100%!important;
+}
+
+@media(max-width:820px){
+  .kv-reader-page{
+    width:calc(100vw - 18px)!important;
+    max-width:calc(100vw - 18px)!important;
+    margin-left:auto!important;
+    margin-right:auto!important;
+    overflow-x:clip!important;
+  }
+
+  .kv-course-nav,
+  .kv-course-nav .kv-course-edge.next,
+  .kv-reader-grid,
+  .kv-reader-menu,
+  .kv-reader-content,
+  .kv-active-section,
+  .kv-reader-content .kv-intro{
+    width:100%!important;
+    max-width:100%!important;
+  }
+
+  .kv-intro .lp-start-grid-v2,
+  .kv-intro .kv-intro-grid,
+  .kv-active-section .kv-options{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+
+  .kv-intro .lp-visual-flow-v3{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  .kv-intro .lp-visual-flow-v3>i{
+    width:100%!important;
+    height:18px!important;
+    transform:rotate(90deg)!important;
+  }
+
+  .kv-reader-page .kv-hero,
+  .kv-active-section .kv-section,
+  .kv-intro .lp-start-here-v2,
+  .kv-intro .lp-visual-v3,
+  .kv-intro .kv-intro-box{
+    overflow:hidden!important;
+  }
+}
+
+@media(max-width:480px){
+  .kv-reader-page{
+    width:calc(100vw - 12px)!important;
+    max-width:calc(100vw - 12px)!important;
+  }
+  .kv-reader-page .kv-hero{padding:12px!important}
+  .kv-active-section .kv-section{padding:12px!important}
+  .kv-reader-menu{padding:9px!important}
+}
