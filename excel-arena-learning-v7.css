@@ -3,4 +3,6 @@ body[data-arena-mode="learn"].arena-playing .question-timer{display:none}
 .arena-learn-note{display:block;margin-top:7px;line-height:1.55;font-weight:600}
 .arena-learn-note strong{font-weight:900}
 .arena-feedback.good .arena-learn-note,.arena-feedback.bad .arena-learn-note{color:inherit}
-@media(max-width:720px){.arena-learn-note{font-size:13px;line-height:1.5}}
+.arena-learn-next{display:inline-flex;align-items:center;justify-content:center;min-height:40px;margin-top:12px;padding:9px 16px;border:1px solid #b7c8be;border-radius:12px;background:#fff;color:#174c34;font:inherit;font-weight:900;cursor:pointer;box-shadow:0 3px 10px rgba(18,69,46,.08)}
+.arena-learn-next:hover{background:#f4f8f5;border-color:#7faa91}
+@media(max-width:720px){.arena-learn-note{font-size:13px;line-height:1.5}.arena-learn-next{width:100%}}
