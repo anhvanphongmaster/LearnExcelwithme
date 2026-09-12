@@ -195,11 +195,11 @@
   setTimeout(renderArena,1800);
 })();
 
-/* Home First Run V1 — one obvious learning path for new users. */
+/* Home First Run V2 — guide new learners without replacing the existing Practice banner. */
 (function(){
   'use strict';
-  if(window.__avpHomeFirstRunV1)return;
-  window.__avpHomeFirstRunV1=true;
+  if(window.__avpHomeFirstRunV2)return;
+  window.__avpHomeFirstRunV2=true;
 
   var LAST_KEY='avp_knowledge_last_v2';
   var DONE_KEY='avp_platform_completed_v2';
@@ -212,7 +212,7 @@
     var existing=document.querySelector('script[data-avp-home-first-catalog]');
     if(existing){existing.addEventListener('load',function(){done(window.AVPLearningPlatform)},{once:true});return}
     var s=document.createElement('script');
-    s.src='learning-platform-catalog-v1.js?v=20260912-home-first1';
+    s.src='learning-platform-catalog-v1.js?v=20260912-home-first2';
     s.dataset.avpHomeFirstCatalog='1';
     s.onload=function(){done(window.AVPLearningPlatform)};
     document.head.appendChild(s);
@@ -223,36 +223,57 @@
     var done=readDone(),last='';
     try{last=localStorage.getItem(LAST_KEY)||''}catch(_){}
     var idx=seq.indexOf(last),id='';
-    if(idx>=0){
-      id=(done.has(last)&&idx<seq.length-1)?seq[idx+1]:last;
-    }
+    if(idx>=0){id=(done.has(last)&&idx<seq.length-1)?seq[idx+1]:last}
     if(!id)id=seq.find(function(x){return !done.has(x)})||seq[0];
     var order=P&&P.displayOrder?P.displayOrder(id):(seq.indexOf(id)+1);
     return{id:id,order:order,resume:idx>=0||done.size>0};
   }
   function ensureStyle(){
-    if(document.getElementById('homeFirstRunV1Style'))return;
+    if(document.getElementById('homeFirstRunV2Style'))return;
     var s=document.createElement('style');
-    s.id='homeFirstRunV1Style';
+    s.id='homeFirstRunV2Style';
     s.textContent='\
-.home-start-cta-v1{position:relative!important;display:grid!important;grid-template-columns:46px minmax(0,1fr) auto!important;align-items:center!important;gap:12px!important;width:100%!important;box-sizing:border-box!important;padding:15px 16px!important;border:1px solid rgba(170,239,199,.72)!important;border-radius:16px!important;background:linear-gradient(135deg,#f7fff9,#e9f8ef)!important;color:#153d29!important;text-decoration:none!important;box-shadow:0 12px 30px rgba(36,126,76,.18)!important}.home-start-cta-v1:hover{transform:translateY(-2px);border-color:#7fc69a!important;box-shadow:0 16px 34px rgba(36,126,76,.24)!important}.home-start-cta-v1 .avp-mobile-main-cta-icon{display:grid!important;place-items:center!important;width:46px!important;height:46px!important;border-radius:13px!important;background:#217346!important;color:#fff!important;font-size:18px!important}.home-start-cta-v1 .avp-mobile-main-cta-copy{min-width:0!important}.home-start-cta-v1 .avp-mobile-main-cta-copy strong{display:block!important;color:#153d29!important;font-size:16px!important;line-height:1.25!important}.home-start-cta-v1 .avp-mobile-main-cta-copy small{display:block!important;margin-top:3px!important;color:#587064!important;font-size:11px!important;line-height:1.4!important}.home-start-cta-v1 .avp-mobile-main-cta-arrow{color:#217346!important;font-size:22px!important}.home-first-v1{padding:22px 16px 6px;background:#f4f7f5}.home-first-inner-v1{max-width:1120px;margin:0 auto;padding:22px;border:1px solid #d6e4dc;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(23,70,43,.06)}.home-first-head-v1{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:16px}.home-first-kicker-v1{display:block;margin-bottom:5px;color:#217346;font-size:9px;font-weight:950;letter-spacing:.12em}.home-first-head-v1 h2{margin:0;color:#173f2a;font-size:24px;line-height:1.22}.home-first-head-v1 p{max-width:560px;margin:7px 0 0;color:#6d7e74;font-size:13px;line-height:1.55}.home-first-primary-v1{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border:1px solid #217346;border-radius:13px;background:#217346;color:#fff;text-decoration:none;font-size:13px;font-weight:950;box-shadow:0 8px 18px rgba(33,115,70,.16)}.home-first-primary-v1:hover{background:#185c37;border-color:#185c37}.home-first-steps-v1{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.home-first-step-v1{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start;padding:13px;border:1px solid #dce7e0;border-radius:14px;background:#fafcfb}.home-first-step-v1>span{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#edf6f0;color:#217346;font-size:11px;font-weight:950}.home-first-step-v1 strong{display:block;color:#244a35;font-size:12px}.home-first-step-v1 small{display:block;margin-top:3px;color:#75847b;font-size:10px;line-height:1.45}.home-first-foot-v1{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;padding-top:12px;border-top:1px solid #e4ebe6}.home-first-foot-v1 span{color:#748078;font-size:10px}.home-first-foot-v1 a{color:#217346;text-decoration:none;font-size:11px;font-weight:900}.home-first-foot-v1 a:hover{text-decoration:underline}.home-path-inner>.learn-board{margin-top:18px!important}body.dark-mode .home-first-v1{background:#101a14}body.dark-mode .home-first-inner-v1{background:#17251d;border-color:#30473a}body.dark-mode .home-first-head-v1 h2,body.dark-mode .home-first-step-v1 strong{color:#e5f3e9}body.dark-mode .home-first-head-v1 p,body.dark-mode .home-first-step-v1 small,body.dark-mode .home-first-foot-v1 span{color:#a8b8af}body.dark-mode .home-first-step-v1{background:#132018;border-color:#30473a}@media(max-width:760px){.home-first-head-v1{align-items:stretch;flex-direction:column}.home-first-primary-v1{width:100%}.home-first-steps-v1{grid-template-columns:1fr}.home-first-foot-v1{align-items:flex-start;flex-direction:column}.home-start-cta-v1{grid-template-columns:42px minmax(0,1fr) auto!important;padding:13px!important}.home-start-cta-v1 .avp-mobile-main-cta-icon{width:42px!important;height:42px!important}}';
+.home-first-v1{padding:22px 16px 6px;background:#f4f7f5}.home-first-inner-v1{max-width:1120px;margin:0 auto;padding:22px;border:1px solid #d6e4dc;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(23,70,43,.06)}.home-first-head-v1{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:16px}.home-first-kicker-v1{display:block;margin-bottom:5px;color:#217346;font-size:9px;font-weight:950;letter-spacing:.12em}.home-first-head-v1 h2{margin:0;color:#173f2a;font-size:24px;line-height:1.22}.home-first-head-v1 p{max-width:560px;margin:7px 0 0;color:#6d7e74;font-size:13px;line-height:1.55}.home-first-primary-v1{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border:1px solid #217346;border-radius:13px;background:#217346;color:#fff;text-decoration:none;font-size:13px;font-weight:950;box-shadow:0 8px 18px rgba(33,115,70,.16)}.home-first-primary-v1:hover{background:#185c37;border-color:#185c37}.home-first-steps-v1{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.home-first-step-v1{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start;padding:13px;border:1px solid #dce7e0;border-radius:14px;background:#fafcfb}.home-first-step-v1>span{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#edf6f0;color:#217346;font-size:11px;font-weight:950}.home-first-step-v1 strong{display:block;color:#244a35;font-size:12px}.home-first-step-v1 small{display:block;margin-top:3px;color:#75847b;font-size:10px;line-height:1.45}.home-first-foot-v1{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;padding-top:12px;border-top:1px solid #e4ebe6}.home-first-foot-v1 span{color:#748078;font-size:10px}.home-first-foot-v1 a{color:#217346;text-decoration:none;font-size:11px;font-weight:900}.home-first-foot-v1 a:hover{text-decoration:underline}.home-path-inner>.learn-board{margin-top:18px!important}body.dark-mode .home-first-v1{background:#101a14}body.dark-mode .home-first-inner-v1{background:#17251d;border-color:#30473a}body.dark-mode .home-first-head-v1 h2,body.dark-mode .home-first-step-v1 strong{color:#e5f3e9}body.dark-mode .home-first-head-v1 p,body.dark-mode .home-first-step-v1 small,body.dark-mode .home-first-foot-v1 span{color:#a8b8af}body.dark-mode .home-first-step-v1{background:#132018;border-color:#30473a}@media(max-width:760px){.home-first-head-v1{align-items:stretch;flex-direction:column}.home-first-primary-v1{width:100%}.home-first-steps-v1{grid-template-columns:1fr}.home-first-foot-v1{align-items:flex-start;flex-direction:column}}';
     document.head.appendChild(s);
+  }
+  function ensurePracticeBanner(){
+    var cta=document.querySelector('.avp-mobile-main-cta-wrap .avp-mobile-main-cta');
+    if(!cta)return false;
+    cta.classList.remove('home-start-cta-v1');
+    cta.classList.add('avp-practice-hub-cta');
+    cta.href='practice-video.html';
+    cta.setAttribute('aria-label','Bài tập Excel — 5 luồng thực hành');
+    cta.innerHTML='<span class="avp-practice-hub-badges" aria-hidden="true"><span class="avp-mini-channel avp-mini-channel-tt">♪</span><span class="avp-mini-channel avp-mini-channel-yt">▶</span><span class="avp-mini-channel avp-mini-channel-hw">✎</span><span class="avp-mini-channel avp-mini-channel-grade">✓</span><span class="avp-mini-channel avp-mini-channel-pro">◆</span></span><span class="avp-mobile-main-cta-icon">📚</span><span class="avp-mobile-main-cta-copy"><strong>Bài tập Excel</strong><small>5 luồng thực hành trong cùng một khu</small><small style="opacity:.88;font-size:11px;line-height:1.45;display:block;margin-top:2px">01 TikTok · 02 YouTube · 03 Homework · 04 Tự chấm · 05 Pro</small></span><span class="avp-mobile-main-cta-arrow">→</span>';
+    return true;
+  }
+  function ensurePodiumStyle(){
+    if(document.getElementById('homePodiumRestoreV2'))return;
+    var s=document.createElement('style');
+    s.id='homePodiumRestoreV2';
+    s.textContent='\
+#learnBoardList .lb-row.lb-podium-1{background:linear-gradient(90deg,#fff7d6 0%,#fff 58%)!important;border:2px solid #f2b51d!important;box-shadow:0 0 0 3px rgba(242,181,29,.16)!important}#learnBoardList .lb-row.lb-podium-2{background:linear-gradient(90deg,#eef2f6 0%,#fff 58%)!important;border:2px solid #9aa8b7!important;box-shadow:0 0 0 3px rgba(154,168,183,.14)!important}#learnBoardList .lb-row.lb-podium-3{background:linear-gradient(90deg,#fff0df 0%,#fff 58%)!important;border:2px solid #d9904e!important;box-shadow:0 0 0 3px rgba(217,144,78,.14)!important}#learnBoardList .lb-podium-1 .lb-rank,#learnBoardList .lb-podium-2 .lb-rank,#learnBoardList .lb-podium-3 .lb-rank{width:38px!important;height:38px!important;background:transparent!important;border-radius:50%!important;font-size:23px!important}.lb-medal{display:inline-grid!important;place-items:center!important;width:34px!important;height:34px!important;font-size:24px!important;line-height:1!important}.lb-podium-1 .lb-medal{filter:drop-shadow(0 2px 5px rgba(245,158,11,.45))}.lb-podium-2 .lb-medal{filter:drop-shadow(0 2px 4px rgba(100,116,139,.32))}.lb-podium-3 .lb-medal{filter:drop-shadow(0 2px 4px rgba(180,83,9,.30))}';
+    document.head.appendChild(s);
+  }
+  function repairPodium(){
+    ensurePodiumStyle();
+    var rows=document.querySelectorAll('#learnBoardList .lb-row');
+    if(rows.length<1)return false;
+    var medals=['🥇','🥈','🥉'];
+    for(var i=0;i<Math.min(3,rows.length);i++){
+      var row=rows[i],rank=row.querySelector('.lb-rank');
+      row.classList.add('lb-podium-'+(i+1));
+      if(rank)rank.innerHTML='<span class="lb-medal lb-'+(i===0?'gold':i===1?'silver':'bronze')+'" title="Top '+(i+1)+'">'+medals[i]+'</span>';
+    }
+    return true;
   }
   function render(P){
     if(!P)return false;
     ensureStyle();
+    ensurePracticeBanner();
+    repairPodium();
     var t=target(P),url=P.lessonUrl?P.lessonUrl(t.id):('knowledge.html?lesson='+encodeURIComponent(t.id));
     var order=String(t.order||1).padStart(2,'0');
     var primaryLabel=t.resume?('Tiếp tục lộ trình · Bài '+order):'Bắt đầu học Excel';
-
-    var heroCta=document.querySelector('.avp-mobile-main-cta-wrap .avp-mobile-main-cta');
-    if(heroCta){
-      heroCta.classList.remove('avp-practice-hub-cta');
-      heroCta.classList.add('home-start-cta-v1');
-      heroCta.href=url;
-      heroCta.setAttribute('aria-label',primaryLabel);
-      heroCta.innerHTML='<span class="avp-mobile-main-cta-icon">▶</span><span class="avp-mobile-main-cta-copy"><strong>'+primaryLabel+'</strong><small>'+(t.resume?'Quay lại đúng lộ trình đang học':'Đi từ Bài 01 · không cần biết trước')+'</small><small>Học → Thực hành → Tra cứu</small></span><span class="avp-mobile-main-cta-arrow">→</span>';
-    }
 
     var hero=document.querySelector('.avp-hero');
     if(hero&&!document.getElementById('homeStartHereV1')){
@@ -271,6 +292,15 @@
     if(preview)preview.textContent='Người mới bắt đầu từ Bài 01 · người đã học có thể chọn module';
     return true;
   }
-  function boot(){loadCatalog(function(P){render(P);setTimeout(function(){render(P)},650);setTimeout(function(){render(P)},1800)})}
+  function boot(){
+    loadCatalog(function(P){
+      render(P);
+      [250,700,1300,2100,3500,5500].forEach(function(ms){setTimeout(function(){ensurePracticeBanner();repairPodium()},ms)});
+      setTimeout(function(){render(P)},650);
+      setTimeout(function(){render(P)},1800);
+      var btn=document.getElementById('learnBoardRefresh');
+      if(btn&&!btn.dataset.podiumRestoreBound){btn.dataset.podiumRestoreBound='1';btn.addEventListener('click',function(){setTimeout(repairPodium,350);setTimeout(repairPodium,900)})}
+    })
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
