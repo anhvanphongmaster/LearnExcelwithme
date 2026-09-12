@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260912-arena4";
+const CACHE = "learnexcel-assets-v20260912-uxfix2";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -13,6 +13,8 @@ const ASSETS = [
   "./avp-home-knowledge-v2.css",
   "./avp-learning-contrast-v1.css",
   "./avp-pro-access-guidance-v1.css",
+  "./avp-hover-lift.css",
+  "./home-ux-polish-v1.css",
   "./home-mini-bounce.css",
   "./homework.css",
   "./admin-homework.css",
@@ -23,6 +25,7 @@ const ASSETS = [
   "./excel-arena-v4.css",
   "./excel-arena-questions.js",
   "./excel-arena-engine-v4.js",
+  "./home-effects.js",
   "./home-page-motion.js",
   "./simple-nav.js",
   "./avp-core.js",
@@ -47,6 +50,7 @@ const ASSETS = [
   "./knowledge-v2.css",
   "./knowledge-v2.js",
   "./knowledge-reader-menu-v1.css",
+  "./knowledge-reader-polish-v1.css",
   "./knowledge-depth-v1.css",
   "./knowledge-depth-v1.js",
   "./knowledge-data-foundation.js",
@@ -87,8 +91,12 @@ self.addEventListener("fetch", event => {
 
   const isCodeAsset = /\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
   const forceFresh =
+    url.pathname.endsWith("/home-effects.js") ||
     url.pathname.endsWith("/home-page-motion.js") ||
+    url.pathname.endsWith("/home-ux-polish-v1.css") ||
+    url.pathname.endsWith("/avp-hover-lift.css") ||
     url.pathname.endsWith("/home-mini-bounce.css") ||
+    url.pathname.endsWith("/knowledge-reader-polish-v1.css") ||
     url.pathname.endsWith("/excel-arena-v4.css") ||
     url.pathname.endsWith("/excel-arena-engine-v4.js");
 
