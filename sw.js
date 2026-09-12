@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260912-arena3";
+const CACHE = "learnexcel-assets-v20260912-arena4";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -20,9 +20,9 @@ const ASSETS = [
   "./practice-tiktok.css",
   "./practice-roll.css",
   "./excel-race.html",
-  "./excel-arena-v3.css",
+  "./excel-arena-v4.css",
   "./excel-arena-questions.js",
-  "./excel-arena-engine-v3.js",
+  "./excel-arena-engine-v4.js",
   "./home-page-motion.js",
   "./simple-nav.js",
   "./avp-core.js",
@@ -86,7 +86,11 @@ self.addEventListener("fetch", event => {
     url.pathname.endsWith("/");
 
   const isCodeAsset = /\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
-  const forceFreshHomeMotion = url.pathname.endsWith("/home-page-motion.js");
+  const forceFresh =
+    url.pathname.endsWith("/home-page-motion.js") ||
+    url.pathname.endsWith("/home-mini-bounce.css") ||
+    url.pathname.endsWith("/excel-arena-v4.css") ||
+    url.pathname.endsWith("/excel-arena-engine-v4.js");
 
   if (isHTML) {
     event.respondWith(
@@ -105,16 +109,16 @@ self.addEventListener("fetch", event => {
     return;
   }
 
-  if (forceFreshHomeMotion) {
+  if (forceFresh) {
     event.respondWith(
       fetch(event.request, { cache: "reload" })
         .then(response => {
           if (response && response.ok) {
-            caches.open(CACHE).then(cache => cache.put("./home-page-motion.js", response.clone())).catch(() => {});
+            caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
           }
           return response;
         })
-        .catch(() => caches.match("./home-page-motion.js").then(cached => cached || caches.match(event.request)))
+        .catch(() => caches.match(event.request))
     );
     return;
   }
@@ -136,7 +140,6 @@ self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
-
       return fetch(event.request).then(response => {
         if (response && response.ok) {
           caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
@@ -184,9 +187,7 @@ self.addEventListener("notificationclick", event => {
     clients.matchAll({type:"window",includeUncontrolled:true}).then(list => {
       for (const client of list) {
         if ("focus" in client) {
-          try{
-            client.navigate(target);
-          }catch{}
+          try{ client.navigate(target); }catch{}
           return client.focus();
         }
       }

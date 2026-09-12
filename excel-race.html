@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
   <title>Excel Arena | Learn Excel with Anh Van Phong</title>
   <meta name="description" content="Excel Arena Season 1: game 4 đáp án, nhiều chủ đề, nhiều cấp độ, Rank 3 mạng và bảng xếp hạng theo chủ đề.">
-  <meta name="theme-color" content="#08140f">
-  <link rel="stylesheet" href="excel-arena-v3.css?v=20260912-arena3">
+  <meta name="theme-color" content="#07140e">
+  <link rel="stylesheet" href="excel-arena-v4.css?v=20260912-arena4">
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="auth.css">
@@ -32,14 +32,15 @@
   <header class="arena-hero">
     <div class="arena-hero-copy">
       <span class="arena-season">EXCEL ARENA · SEASON 1</span>
-      <h1>Chọn nhanh. Đuổi top.<br>Leo Rank bằng kiến thức Excel.</h1>
-      <p>4 đáp án mỗi câu, vị trí đáp án đúng được đảo cân bằng A/B/C/D. Chọn chủ đề, lên cấp và đuổi những người đang đứng ngay phía trên bạn.</p>
-      <div class="arena-hero-chips"><span>14 chủ đề</span><span>5 độ khó</span><span>Boss Round</span><span>BXH theo chủ đề</span></div>
-    </div>
-    <div class="arena-hero-panel" aria-label="Thông tin Arena">
-      <div><span>Ngân hàng</span><strong id="bankCount">—</strong><small>câu biến thể</small></div>
-      <div><span>Chủ đề</span><strong id="topicCount">—</strong><small>nhóm kiến thức</small></div>
-      <div><span>Rank</span><strong>3 ❤️</strong><small>mạng mỗi lượt</small></div>
+      <h1>Chọn nhanh. Đuổi người phía trên.<br>Leo Rank bằng Excel.</h1>
+      <p>Không gõ tay. Mỗi câu có 4 đáp án, vị trí đúng được đảo cân bằng A/B/C/D. Khi chơi bạn nhìn thấy chính mình và những mốc/người đang đứng phía trên ngay trên đường đua.</p>
+      <div class="arena-hero-chips">
+        <span><strong id="bankCount">—</strong> câu</span>
+        <span><strong id="topicCount">—</strong> chủ đề</span>
+        <span>5 độ khó</span>
+        <span>3 ❤️ Rank</span>
+        <span>Boss Round</span>
+      </div>
     </div>
   </header>
 
@@ -49,16 +50,16 @@
   </section>
 
   <section class="arena-setup" id="arenaSetup">
-    <div class="arena-step compact-step">
-      <div class="arena-step-head"><span>01</span><div><h2>Chọn chế độ</h2><p>Học để luyện và ôn lại câu sai. Rank để đuổi người phía trên và ghi BXH Season 1.</p></div></div>
+    <div class="arena-step">
+      <div class="arena-step-head"><span>01</span><div><h2>Chọn chế độ</h2><p>Học để luyện và gặp lại câu sai sau vài lượt. Rank có 3 mạng và đuổi người phía trên theo điểm Season 1.</p></div></div>
       <div class="mode-grid">
         <button type="button" class="mode-card is-selected" data-mode="learn"><b>HỌC</b><strong>Luyện phản xạ</strong><small>Sai không mất mạng · câu sai quay lại sau 3–7 lượt</small></button>
-        <button type="button" class="mode-card" data-mode="rank"><b>RANK</b><strong>Đuổi top Season 1</strong><small>3 mạng · tốc độ tăng · xem đối thủ ngay trên đường đua</small></button>
+        <button type="button" class="mode-card" data-mode="rank"><b>RANK</b><strong>Đuổi top Season 1</strong><small>3 mạng · tốc độ tăng · hiện đối thủ/mốc ngay trên đường đua</small></button>
       </div>
     </div>
 
     <div class="arena-step">
-      <div class="arena-step-head"><span>02</span><div><h2>Chọn chủ đề</h2><p>Mỗi chủ đề có 5 mức khó. Game tránh lặp khái niệm gần nhau; riêng Học chỉ lặp lại câu bạn vừa sai sau một khoảng nghỉ.</p></div></div>
+      <div class="arena-step-head"><span>02</span><div><h2>Chọn chủ đề</h2><p>14 nhóm kiến thức, 5 độ khó. Game ưu tiên câu chưa gặp và tránh lặp khái niệm gần nhau.</p></div></div>
       <div class="topic-grid" id="topicGrid" aria-label="Chọn chủ đề"></div>
     </div>
 
@@ -71,7 +72,7 @@
   <section class="arena-game" id="arenaGame" hidden>
     <div class="arena-toolbar">
       <button type="button" id="backSetup" class="arena-secondary">← Chọn lại</button>
-      <div class="arena-current"><span id="currentMode">Học</span><strong id="currentTopic">—</strong></div>
+      <div class="arena-current"><span id="currentMode">HỌC</span><strong id="currentTopic">—</strong></div>
       <button type="button" id="stopArena" class="arena-secondary">Dừng</button>
     </div>
 
@@ -89,20 +90,20 @@
         <span id="raceScale">0 → mục tiêu</span>
       </div>
       <div class="race-track" id="raceTrack">
-        <div class="race-grid" aria-hidden="true"></div>
-        <div class="race-checkpoints" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-        <div class="race-finish"><span>🏁</span><small>MỐC ĐUỔI</small></div>
+        <i class="race-lane l1"></i><i class="race-lane l2"></i><i class="race-lane l3"></i><i class="race-lane l4"></i>
+        <i class="race-marker m25" data-label="25%"></i><i class="race-marker m50" data-label="50%"></i><i class="race-marker m75" data-label="75%"></i>
+        <div class="race-finish"><span>MỐC ĐUỔI</span></div>
         <div id="rivalLayer" class="rival-layer"></div>
-        <div class="racer racer-me" id="playerRacer" style="--x:4%">
-          <span class="racer-avatar" id="playerInitial">B</span>
-          <strong>Bạn</strong>
-          <small id="playerRaceScore">0</small>
+        <div class="racer racer-me" id="playerRacer" style="--x:6%;--lane:82%">
+          <div class="racer-core"><span class="racer-avatar" id="playerInitial">B</span></div>
+          <div class="racer-label"><strong id="playerRaceName">Bạn</strong><small id="playerRaceScore">0</small></div>
         </div>
       </div>
       <div class="race-progress"><i id="raceProgress"></i></div>
     </section>
 
     <section class="question-console">
+      <div class="question-timer" aria-label="Thời gian còn lại"><i id="timerFill"></i></div>
       <div class="question-meta">
         <span id="questionDifficulty">Độ khó 1/5</span>
         <span id="questionTopic">Excel</span>
@@ -113,7 +114,6 @@
       <div class="answer-grid" id="answerGrid" aria-label="4 đáp án"></div>
       <div class="question-hint" id="questionHint"><span>💡 Gợi ý</span><p>Chọn chủ đề và bắt đầu để nhận gợi ý.</p></div>
       <div class="arena-feedback" id="arenaFeedback" aria-live="polite"></div>
-      <div class="question-timer" aria-label="Thời gian còn lại"><i id="timerFill"></i></div>
     </section>
   </section>
 
@@ -130,7 +130,7 @@
 <script src="excel-arena-questions.js?v=20260912-qbank1"></script>
 <script src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
-<script defer src="excel-arena-engine-v3.js?v=20260912-arena3"></script>
+<script defer src="excel-arena-engine-v4.js?v=20260912-arena4"></script>
 <script defer src="analytics-tracker.js"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="global-search.js"></script>
