@@ -99,3 +99,50 @@ html body .home-path-more--5 .home-more-race:hover{transform:translateY(-4px)!im
   html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-head{animation:avpRobotHeadBob .36s ease-in-out infinite!important}
   html body #avpEdgeLauncher.avp-edge-launcher.is-robot.is-walking .avp-bot-body{animation:avpRobotBodyBob .36s ease-in-out infinite!important}
 }
+
+/* Home Arena: keep the new game in the same pastel visual family as the existing cards. */
+html body .home-path-more--5 .home-more-race{
+  border-color:#dccfea!important;
+  background:#f4eef8!important;
+  color:#173f2a!important;
+  box-shadow:none!important;
+}
+html body .home-path-more--5 .home-more-race:before{
+  content:"MỚI"!important;
+  top:8px!important;
+  right:8px!important;
+  padding:3px 7px!important;
+  border:1px solid #d7c8e5!important;
+  background:#eee4f5!important;
+  color:#6b4d7d!important;
+  box-shadow:none!important;
+  animation:none!important;
+}
+html body .home-path-more--5 .home-more-race:after{content:""!important;display:none!important}
+html body .home-path-more--5 .home-more-race>span:first-child{
+  font-size:22px!important;
+  color:inherit!important;
+}
+html body .home-path-more--5 .home-more-race>span:first-child:after{content:""!important;display:none!important}
+html body .home-path-more--5 .home-more-race>strong{
+  font-size:0!important;
+  color:#173f2a!important;
+}
+html body .home-path-more--5 .home-more-race>strong:after{
+  content:"Excel Arena"!important;
+  display:inline!important;
+  font-size:15px!important;
+  line-height:1.25!important;
+}
+html body .home-path-more--5 .home-more-race>small{
+  font-size:12px!important;
+  color:#66756d!important;
+  background:transparent!important;
+  padding:0!important;
+  font-weight:400!important;
+}
+html body .home-path-more--5 .home-more-race>small:after{content:""!important;display:none!important}
+html body .home-path-more--5 .home-more-race:hover{
+  border-color:#c7b4da!important;
+  box-shadow:0 10px 24px rgba(74,52,91,.10)!important;
+}
