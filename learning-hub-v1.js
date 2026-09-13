@@ -31,10 +31,21 @@
     if(push) history.pushState(state,'',url.pathname+url.search+url.hash);
     else history.replaceState(state,'',url.pathname+url.search+url.hash);
   }
+  function setTheme(track){
+    if(track){
+      document.documentElement.dataset.avpLearningTrack=track.id;
+      document.documentElement.dataset.avpLearningTone=track.tone||'';
+      detail?.setAttribute('data-track',track.id);
+    }else{
+      delete document.documentElement.dataset.avpLearningTrack;
+      delete document.documentElement.dataset.avpLearningTone;
+      detail?.removeAttribute('data-track');
+    }
+  }
   function flowCard(track){
     return `<button type="button" class="lh-flow-card" data-learning-track="${esc(track.id)}" data-tone="${esc(track.tone)}">
       <span>${esc(track.number)} · ${esc(track.label)}</span><i class="lh-flow-no" aria-hidden="true">${esc(track.number)}</i>
-      <strong>${esc(track.title)}</strong><p>${esc(track.desc)}</p><b>${track.lessonIds.length} bài · Chọn luồng →</b>
+      <strong>${esc(track.title)}</strong><p>${esc(track.desc)}</p><b>${track.lessonIds.length} bài · Mở luồng →</b>
     </button>`;
   }
 
@@ -71,10 +82,10 @@
     if(roll) roll.replaceWith(fresh); else rollHost.prepend(fresh);roll=fresh;bindActiveCardOpen(roll);window.AVPPracticeRoll?.init?.(roll);
   }
   function showSelector(updateHistory=false,scroll=true){
-    currentTrack=null;if(selector)selector.hidden=false;if(detail)detail.hidden=true;if(updateHistory)setUrl('',true);if(scroll)document.querySelector('.lh-hero')?.scrollIntoView({block:'start',behavior:'smooth'});
+    currentTrack=null;setTheme(null);if(selector)selector.hidden=false;if(detail)detail.hidden=true;if(updateHistory)setUrl('',true);if(scroll)document.querySelector('.lh-hero')?.scrollIntoView({block:'start',behavior:'smooth'});
   }
   function showTrack(id,{push=true,scroll=true}={}){
-    const track=byTrack.get(id);if(!track)return;currentTrack=track;if(selector)selector.hidden=true;if(detail)detail.hidden=false;
+    const track=byTrack.get(id);if(!track)return;currentTrack=track;setTheme(track);if(selector)selector.hidden=true;if(detail)detail.hidden=false;
     if(detailLabel)detailLabel.textContent=`${track.number} · ${track.label}`;if(detailTitle)detailTitle.textContent=track.title;if(detailDesc)detailDesc.textContent=track.desc;if(detailCount)detailCount.textContent=`${track.lessonIds.length} bài`;
     mountRoll(track);setUrl(id,push);if(scroll)requestAnimationFrame(()=>detail?.scrollIntoView({block:'start',behavior:'smooth'}));
   }
@@ -83,7 +94,7 @@
     grid.addEventListener('click',e=>{const card=e.target.closest('[data-learning-track]');if(card)showTrack(card.dataset.learningTrack,{push:true,scroll:true})});
     back?.addEventListener('click',()=>showSelector(true,true));
     window.addEventListener('popstate',()=>{const id=requestedTrack();if(id)showTrack(id,{push:false,scroll:false});else showSelector(false,false)});
-    const initial=requestedTrack();if(initial)showTrack(initial,{push:false,scroll:false});else{selector.hidden=false;detail.hidden=true;setUrl('',false)}
+    const initial=requestedTrack();if(initial)showTrack(initial,{push:false,scroll:false});else{setTheme(null);selector.hidden=false;detail.hidden=true;setUrl('',false)}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
