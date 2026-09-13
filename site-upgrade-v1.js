@@ -12,9 +12,17 @@
     const s=document.createElement('script');
     s.src=src;s.defer=true;s.setAttribute('data-'+key,'1');document.head.appendChild(s);
   }
-  loadRuntime('site-runtime-cache-v1.js?v=20260914-cache1','avp-site-cache-v1');
-  loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc2','avp-rpc-dedupe-v1');
-  loadRuntime('site-auth-cache-v1.js?v=20260914-auth1','avp-auth-cache-v1');
+  function loadCss(href,key,onload){
+    const existing=document.querySelector('link[data-'+key+']');
+    if(existing){if(onload)onload(existing);return existing;}
+    const link=document.createElement('link');
+    link.rel='stylesheet';link.href=href;link.setAttribute('data-'+key,'1');
+    if(onload)link.addEventListener('load',()=>onload(link),{once:true});
+    document.head.appendChild(link);return link;
+  }
+  loadRuntime('site-runtime-cache-v1.js?v=20260914-cache2','avp-site-cache-v1');
+  loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc4','avp-rpc-dedupe-v1');
+  loadRuntime('site-auth-cache-v1.js?v=20260914-auth3','avp-auth-cache-v1');
 
   const stable=/^(practice-|professional-|homework|baitapexcel|excel-race)/.test(page);
   const legal=new Set(['terms.html','privacy.html','disclaimer.html','open-source.html']);
@@ -22,7 +30,14 @@
   else if(legal.has(page))html.classList.add('avp-site-legal');
   else html.classList.add('avp-site-shell');
 
-  if(page===''||page==='index.html')html.classList.add('avp-site-home');
+  const isHome=page===''||page==='index.html';
+  if(isHome){
+    html.classList.add('avp-site-home');
+    loadCss('home-ui-owner-v1.css?v=20260914-owner1','avp-home-ui-owner-v1',()=>{
+      document.querySelectorAll('link[href*="theme-polish-v33.css"]').forEach(link=>{link.disabled=true;link.media='not all';});
+      html.classList.add('avp-home-owner-ready');
+    });
+  }
   if(['skill-map.html','knowledge.html','learning-coach.html','learning-path.html','master-learning.html'].includes(page))html.classList.add('avp-site-learn');
   if(['tools-center.html','tools-library.html','formula-finder.html','qc-dashboard.html','playground.html','excel-mobile.html'].includes(page))html.classList.add('avp-site-tools');
 
@@ -37,7 +52,7 @@
   ]);
 
   function section(){
-    if(page===''||page==='index.html'||legal.has(page)||page==='gioithieu.html'||page==='lienhe.html')return 'home';
+    if(isHome||legal.has(page)||page==='gioithieu.html'||page==='lienhe.html')return 'home';
     if(learnPages.has(page))return 'learn';
     if(practicePages.has(page)||page.startsWith('practice-')||page.startsWith('professional-'))return 'practice';
     if(toolsPages.has(page)||page.startsWith('tools-'))return 'tools';
@@ -74,10 +89,6 @@
     });
   }
 
-  function boot(){
-    upgradeNav();
-    improveImages();
-    secureExternalLinks();
-  }
+  function boot(){upgradeNav();improveImages();secureExternalLinks();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
