@@ -13,7 +13,8 @@
     s.src=src;s.defer=true;s.setAttribute('data-'+key,'1');document.head.appendChild(s);
   }
   loadRuntime('site-runtime-cache-v1.js?v=20260914-cache1','avp-site-cache-v1');
-  loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc1','avp-rpc-dedupe-v1');
+  loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc2','avp-rpc-dedupe-v1');
+  loadRuntime('site-auth-cache-v1.js?v=20260914-auth1','avp-auth-cache-v1');
 
   const stable=/^(practice-|professional-|homework|baitapexcel|excel-race)/.test(page);
   const legal=new Set(['terms.html','privacy.html','disclaimer.html','open-source.html']);
