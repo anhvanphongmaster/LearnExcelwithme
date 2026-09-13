@@ -51,8 +51,15 @@ html.avp-motion-enabled{scroll-behavior:auto!important}
   }
 }
 
-/* Keep expensive continuous decoration disabled; robot motion is handled separately. */
-.avp-hero::before,.avp-title::after,.avp-new-pulse,.home-more-new{animation:none!important}
+/* Keep continuous decorative paint disabled. The only continuous Home motion
+   left is the robot patrol and the tiny Arena badge pulse. */
+.avp-hero::before,
+.avp-title span,
+.avp-title::after,
+.avp-mobile-main-cta,
+.avp-scroll-tease-btn::after,
+.avp-new-pulse,
+.home-more-new{animation:none!important}
 .avp-orb{display:none!important}
 
 @media(max-width:900px){
