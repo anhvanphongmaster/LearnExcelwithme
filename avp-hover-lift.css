@@ -1,5 +1,6 @@
-/* redirected: use avp-site-motion.css */
-@import url("avp-site-motion.css");
+/* shared desktop motion + surface system */
+@import url("avp-site-motion.css?v=20260913-v96");
+@import url("desktop-ui-sync-v1.css?v=20260913-sync1");
 @import url("home-ux-polish-v1.css?v=20260912-homeux3");
 @import url("ux-declutter-v1.css?v=20260913-ux1");
 @import url("ux-declutter-v2.css?v=20260913-ux2b");
