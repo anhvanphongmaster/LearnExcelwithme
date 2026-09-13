@@ -42,6 +42,28 @@ html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth .avp-edge-mai
   }
 }
 
+/* The repository still contains an older Home grid that JavaScript replaces
+   with the current 8-module grid. Do not paint that legacy grid during the
+   short boot window. Visibility preserves layout, and a timed fallback makes
+   the old content visible if the renderer ever fails completely. */
+@supports selector(.home-path-inner:has(.home-platform-grid-v1)){
+  .home-path-grid:not(.home-platform-grid-v1),
+  .home-path-inner:has(.home-path-grid:not(.home-platform-grid-v1)) > h2,
+  .home-path-inner:has(.home-path-grid:not(.home-platform-grid-v1)) > p{
+    visibility:hidden;
+    opacity:0;
+    animation:avpHomeLegacyFallback .01s 1.5s forwards;
+  }
+  .home-path-grid.home-platform-grid-v1,
+  .home-path-inner:has(.home-platform-grid-v1) > h2,
+  .home-path-inner:has(.home-platform-grid-v1) > p{
+    visibility:visible!important;
+    opacity:1!important;
+    animation:none!important;
+  }
+  @keyframes avpHomeLegacyFallback{to{visibility:visible;opacity:1}}
+}
+
 @media(max-width:900px){
   html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home,
   html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth{
