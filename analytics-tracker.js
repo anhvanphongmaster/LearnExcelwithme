@@ -2,6 +2,14 @@
   const BOOT_PAGE=(location.pathname.split("/").filter(Boolean).pop() || "index.html").toLowerCase();
   if(new Set(["auth.html","admin.html","offline.html"]).has(BOOT_PAGE)) return;
 
+  function loadRuntime(src,key){
+    if(document.querySelector('script[data-'+key+']'))return;
+    const s=document.createElement('script');
+    s.src=src;s.defer=true;s.setAttribute('data-'+key,'1');document.head.appendChild(s);
+  }
+  loadRuntime('site-runtime-cache-v1.js?v=20260914-cache1','avp-site-cache-v1');
+  loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc2','avp-rpc-dedupe-v1');
+
   const VISITOR_KEY = "avpAnalyticsVisitorId";
   const MAX_WAIT = 3500;
   const RPC_TIMEOUT = 5000;
@@ -158,7 +166,6 @@
     const client=await getClient();
     if(!client?.auth?.onAuthStateChange) return;
 
-    /* Professional activity belongs to the Professional area only. */
     if(page.includes("professional")){
       try{
         const {data:{session}}=await client.auth.getSession();
