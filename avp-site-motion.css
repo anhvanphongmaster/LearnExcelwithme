@@ -1,45 +1,74 @@
-/*! avp-site-motion.css — V95 performance-safe */
-:root{--avp-motion-ease:cubic-bezier(.22,1,.36,1)}
+/*! avp-site-motion.css — V99 stable desktop lift */
+:root{--avp-motion-ease:cubic-bezier(.22,1,.36,1);--avp-motion-shadow:0 10px 24px rgba(18,73,43,.10)}
 @view-transition{navigation:none}
 
 a[href],button,[role="button"],input[type="button"],input[type="submit"]{-webkit-tap-highlight-color:transparent}
-
-/* Content is visible immediately. No scroll/pointer parallax, no forced zoom transition. */
-.avp-motion-rise{opacity:1!important;transform:none!important;transition:none!important}
-.avp-motion-rise.avp-in{opacity:1!important;transform:none!important}
-.avp-depth-bg{display:none!important}
-.avp-parallax-layer{transform:none!important;transition:none!important;will-change:auto!important}
-.avp-motion-enabled .avp-hero-inner,
-.avp-motion-enabled .pv-hero-copy,
-.avp-motion-enabled .ml-hero-copy{transform:none!important;will-change:auto!important}
-
-.avp-zoom-grid.avp-zoom-choosing>*{opacity:1!important;filter:none!important;transform:none!important;pointer-events:auto!important;transition:none!important}
-.avp-zoom-picked,.avp-zoom-grid.avp-zoom-leaving{transform:none!important;box-shadow:inherit!important;animation:none!important;transition:none!important}
-html.avp-arriving main,html.avp-arriving .pw-page,html.avp-arriving .pyt-page,html.avp-arriving .ph-direct-page,
-html.avp-leaving .avp-page,html.avp-leaving .pv-page,html.avp-leaving main,html.avp-leaving .wrap,html.avp-leaving .page-wrap,html.avp-leaving .home-path,html.avp-leaving .avp-hero{animation:none!important;transform:none!important}
 html.avp-motion-enabled{scroll-behavior:auto!important}
 
-/* Keep only light hover feedback. */
-@media(hover:hover) and (pointer:fine){
-  :where(.course-card,.practice-file-card,.summary-card,.level-card,.continue-card,.home-path-card,.home-more-card,.home-cta-card,.pq-lesson,.course-panel,.path-item,.pv-panel,.badge-card,.lab-card,.tool-card,.qc-card,.ref-card,.sm-node,.fr-session-card,.achievement-card,.feature-card,.content-card,.grid-card,article.card,.card,.ph-flow-link){transition:border-color .12s ease,background-color .12s ease!important}
-  :where(.course-card,.practice-file-card,.summary-card,.level-card,.continue-card,.home-path-card,.home-more-card,.home-cta-card,.pq-lesson,.course-panel,.path-item,.pv-panel,.badge-card,.lab-card,.tool-card,.qc-card,.ref-card,.sm-node,.fr-session-card,.achievement-card,.feature-card,.content-card,.grid-card,article.card,.card,.ph-flow-link):hover{transform:none!important;box-shadow:inherit!important}
+/* Never hide content while JavaScript or cache is settling. */
+.avp-motion-rise,.avp-motion-rise.avp-in{opacity:1!important}
+.avp-depth-bg{display:none!important}
+.avp-parallax-layer{will-change:auto!important}
+
+/* Desktop feedback only: transform + shadow, no blur/filter/continuous repaint. */
+@media(min-width:901px){
+  :where(
+    .course-card,.course-box,.practice-file-card,.summary-card,.level-card,
+    .continue-card,.home-path-card,.home-more-card,.home-cta-card,
+    .pq-lesson,.course-panel,.path-item,.pv-panel,.badge-card,.lab-card,
+    .tool-card,.qc-card,.ref-card,.sm-node,.fr-session-card,.achievement-card,
+    .feature-card,.content-card,.grid-card,article.card,.card,.ph-flow-link,
+    .table-box,.table-container,.search-box,.pivot-box,.step,.shortcut-section,
+    .learning-progress,.stat-card,.home-module-card,.home-showcase-card,
+    .lesson-card,.skill-card,.module-card,.project-card,.topic-card,.case-card,
+    .info-card,.kpi-card,.download-card,.formula-card,.quiz-card,.arena-card,
+    .home-book-card,.tool-panel,.info-box,.action-box
+  ){
+    transition:transform .18s var(--avp-motion-ease),box-shadow .18s ease,border-color .18s ease!important;
+  }
+
+  :where(
+    .course-card,.course-box,.practice-file-card,.summary-card,.level-card,
+    .continue-card,.home-path-card,.home-more-card,.home-cta-card,
+    .pq-lesson,.course-panel,.path-item,.pv-panel,.badge-card,.lab-card,
+    .tool-card,.qc-card,.ref-card,.sm-node,.fr-session-card,.achievement-card,
+    .feature-card,.content-card,.grid-card,article.card,.card,.ph-flow-link,
+    .table-box,.table-container,.search-box,.pivot-box,.step,.shortcut-section,
+    .learning-progress,.stat-card,.home-module-card,.home-showcase-card,
+    .lesson-card,.skill-card,.module-card,.project-card,.topic-card,.case-card,
+    .info-card,.kpi-card,.download-card,.formula-card,.quiz-card,.arena-card,
+    .home-book-card,.tool-panel,.info-box,.action-box
+  ):hover{
+    transform:translate3d(0,-3px,0)!important;
+    box-shadow:var(--avp-motion-shadow)!important;
+  }
+
+  :where(.btn,button.btn,a.btn,.filter-btn,.pq-btn,.complete-btn,.next-lesson-btn,.continue-btn,.vote-btn,.go,.mode,.lp-filter,input[type="submit"],button[type="submit"]){
+    transition:transform .16s var(--avp-motion-ease),box-shadow .16s ease!important;
+  }
+  :where(.btn,button.btn,a.btn,.filter-btn,.pq-btn,.complete-btn,.next-lesson-btn,.continue-btn,.vote-btn,.go,.mode,.lp-filter,input[type="submit"],button[type="submit"]):hover{
+    transform:translate3d(0,-1px,0)!important;
+  }
 }
 
-/* Home: stop continuous decorative animation; robot movement itself is intentionally untouched. */
+/* Keep continuous decorative paint disabled. The only continuous Home motion
+   left is the robot patrol and the tiny Arena badge pulse. */
 .avp-hero::before,
 .avp-title span,
 .avp-title::after,
 .avp-mobile-main-cta,
 .avp-scroll-tease-btn::after,
-.avp-arena-home-badge,
 .avp-new-pulse,
 .home-more-new{animation:none!important}
 .avp-orb{display:none!important}
 
-/* Avoid expensive paint effects on weak/mobile GPUs. */
 @media(max-width:900px){
   .avp-hero,.pv-hero,.pw-hero,.pyt-hero,.ph-direct-hero,.ml-hero,.pq-hero,.dashboard-hero{backdrop-filter:none!important;filter:none!important}
+  .avp-motion-rise,.avp-motion-rise.avp-in{transform:none!important;transition:none!important}
   *{scroll-behavior:auto!important}
 }
 
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.avp-motion-rise{opacity:1!important;transform:none!important;transition:none!important;animation:none!important}}
+@media(prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important}
+  .avp-motion-rise,.avp-motion-rise.avp-in{opacity:1!important;transform:none!important;transition:none!important;animation:none!important}
+}

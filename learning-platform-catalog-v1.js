@@ -40,40 +40,83 @@
 
   window.AVPLearningPlatform = {modules,byModule,lessonToModule,lessonSequence,sequenceIndex,moduleForLesson,moduleUrl,lessonUrl,displayOrder,resumeLessonId,resumeUrl,syncLessonOrder};
 
-  function wireHomeOnePath(){
+  function isHome(){
     const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-    if(page!==''&&page!=='index.html')return false;
+    return page===''||page==='index.html';
+  }
+
+  function wireHomeOnePath(){
+    if(!isHome()) return false;
     const hub='learning-coach.html';
     let changed=false;
 
     const learn=document.querySelector('.top-simple-nav [data-avp-nav="learn"]');
-    if(learn&&learn.getAttribute('href')!==hub){learn.href=hub;learn.setAttribute('aria-label','Học Excel hôm nay');changed=true}
+    if(learn&&learn.getAttribute('href')!==hub){
+      learn.href=hub;
+      learn.setAttribute('aria-label','Học Excel hôm nay');
+      changed=true;
+    }
 
     const btn=document.getElementById('avpScrollToPath');
     if(btn&&btn.dataset.onePath!=='coach2'){
       const clean=btn.cloneNode(true);
       clean.dataset.onePath='coach2';
       clean.innerHTML='<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Học hôm nay →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">Web tự chọn bài cần học · luyện ngắn · ôn lỗi</span>';
-      clean.addEventListener('click',()=>{location.href=hub});
-      btn.replaceWith(clean);changed=true;
+      clean.addEventListener('click',e=>{e.preventDefault();location.href=hub;});
+      btn.replaceWith(clean);
+      changed=true;
     }
 
     const cards=[...document.querySelectorAll('.home-platform-module-v1')];
-    if(cards.length){
-      cards.forEach((card,i)=>{
-        const module=modules[i];if(!module)return;
-        card.href=lessonUrl(module.lessons[0]);
-        const foot=card.querySelector('b');if(foot)foot.textContent=`${module.lessons.length} bài · Bắt đầu →`;
-      });
-      changed=true;
-    }
+    cards.forEach((card,i)=>{
+      const module=modules[i];
+      if(!module)return;
+      const href=lessonUrl(module.lessons[0]);
+      if(card.getAttribute('href')!==href){card.href=href;changed=true;}
+      const foot=card.querySelector('b');
+      const label=`${module.lessons.length} bài · Bắt đầu →`;
+      if(foot&&foot.textContent!==label){foot.textContent=label;changed=true;}
+    });
+
     return changed;
   }
 
-  function bootHomeOnePath(){
-    let n=0;const t=setInterval(()=>{n++;wireHomeOnePath();if(n>24)clearInterval(t)},160);
-    wireHomeOnePath();
+  /* Home currently has two legacy horizontal robot loops: avp-core's frame loop
+     and home-effects' compositor patrol. Keep the compositor patrol and prevent
+     the older frame loop from writing left at the same time. */
+  function coordinateHomeRobot(){
+    if(!isHome() || !window.__avpHomeRobotSmoothV3) return;
+    let tries=0;
+    const claim=()=>{
+      const root=document.getElementById('avpEdgeLauncher');
+      if(!root){
+        if(++tries<40) setTimeout(claim,80);
+        return;
+      }
+      if(root.dataset.avpMotionOwner==='smooth-v3') return;
+      root.dataset.avpMotionOwner='smooth-v3';
+
+      let mutating=false;
+      const suppressLegacy=()=>{
+        if(mutating || !root.classList.contains('is-walking')) return;
+        mutating=true;
+        root.classList.remove('is-walking');
+        queueMicrotask(()=>{mutating=false;});
+      };
+      suppressLegacy();
+
+      const observer=new MutationObserver(suppressLegacy);
+      observer.observe(root,{attributes:true,attributeFilter:['class']});
+      window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+    };
+    claim();
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootHomeOnePath,{once:true});else bootHomeOnePath();
-  setTimeout(wireHomeOnePath,900);setTimeout(wireHomeOnePath,2200);
+
+  function boot(){
+    wireHomeOnePath();
+    coordinateHomeRobot();
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true});
+  else boot();
 })();
