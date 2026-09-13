@@ -1,4 +1,4 @@
-const CACHE="learnexcel-assets-v20260913-canonical4";
+const CACHE="learnexcel-assets-v20260913-canonical5";
 const ASSETS=[
   "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css","./home-ux-polish-v1.css",
   "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./home-canonical-v1.js","./home-robot-motion-v4.js","./global-search.js",
@@ -67,15 +67,25 @@ async function canonicalHomeHtml(req){
     /* Only canonical responses get the first-paint hiding guard. */
     text=text.replace('<html lang="vi">','<html lang="vi" class="avp-home-canonical-boot">');
 
-    /* Make even the fallback labels current before parse. */
+    /* Current labels are in the initial HTML response, not written later. */
     text=text.replace("Lộ trình 14 bài · Bảng xếp hạng","Học hôm nay →");
     text=text.replace("Top học viên · <b>đăng nhập</b> để có mặt trên BXH","Web tự chọn bài cần học · luyện ngắn · ôn lỗi");
     text=text.replace("<h2>Lộ trình 14 bài</h2>","<h2>Nền tảng Excel A–Z</h2>");
     text=text.replace("<p>Học theo thứ tự. Mỗi bài có ví dụ và quiz.</p>","<p>8 module · 42 bài. Chọn theo nhóm công việc; bên trong là danh sách bài rõ ràng và luôn có đường quay lại.</p>");
 
+    /* Remove duplicate legacy Home code from the delivered document. The
+       external current implementations remain the only owners. */
+    text=text.replace(/<script id="avp-home-boot">[\s\S]*?<\/script>/,'');
+    text=text.replace(/<script id="avp-llb-inline">[\s\S]*?<\/script>/,'');
+    text=text.replace(/\/\* === site motion === \*\/[\s\S]*?@import url\("avp-site-motion\.css"\);/,'/* site motion: external source only */');
+
+    /* Bust old static query keys in the document itself. */
+    text=text.replace(/home-page-motion\.css\?v=[^"']+/g,'home-page-motion.css?v=20260913-canonical5');
+    text=text.replace(/home-page-motion\.js\?v=[^"']+/g,'home-page-motion.js?v=20260913-canonical5');
+
     if(!text.includes('data-avp-home-canonical')){
       const marker='<script defer src="home-effects.js"></script>';
-      const boot='<script defer src="home-canonical-v1.js?v=20260913-canonical4" data-avp-home-canonical></script>\n';
+      const boot='<script defer src="home-canonical-v1.js?v=20260913-canonical5" data-avp-home-canonical></script>\n';
       if(text.includes(marker)) text=text.replace(marker,boot+marker);
       else text=text.replace('</body>',boot+'</body>');
     }
