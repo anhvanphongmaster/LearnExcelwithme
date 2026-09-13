@@ -1,18 +1,21 @@
-/*! admin-ui-v2-final.css — final compact pass */
+/*! admin-ui-v2-final.css — compact layout + contrast guard */
 @media(min-width:1120px){.admin-view-tabs{grid-template-columns:repeat(6,minmax(0,1fr))!important}.admin-view-tabs [data-admin-view]{min-height:60px!important;padding:9px 10px!important}}
-.admin-view-section :is(button:not(.danger):not(.warn):not(.secondary),.primary,.admin-health-reload,.admin-chat-refresh){background:var(--panel-soft)!important;color:var(--panel-ink)!important;border:1px solid color-mix(in srgb,var(--panel) 32%,#d9e2dd)!important;box-shadow:none!important}
-.admin-view-section :is(button:not(.danger):not(.warn):not(.secondary),.primary,.admin-health-reload,.admin-chat-refresh):hover{background:var(--panel)!important;color:#fff!important;border-color:var(--panel)!important}
-.admin-view-section :is(button.active,button[aria-selected="true"],.primary){background:var(--panel)!important;color:#fff!important;border-color:var(--panel)!important}
-.admin-view-section :is(input,select,textarea){border:1px solid color-mix(in srgb,var(--panel) 20%,#dce5e0)!important;background:#fff!important;color:#30443a!important;border-radius:10px!important}
-.admin-view-section :is(.admin-download-editor,.admin-grader-config,.admin-grader-appeals,.admin-grader-performance,.apt-case-form,.ayt-editor,.admin-tiktok-editor,.atl-editor){border:1px solid color-mix(in srgb,var(--panel) 27%,#dfe6e2)!important;border-radius:14px!important;background:linear-gradient(180deg,var(--panel-soft),#fff 86px)!important;box-shadow:0 6px 18px color-mix(in srgb,var(--panel) 6%,transparent)!important}
-.admin-view-section :is(.admin-users-summary,.admin-race-kpis,.admin-download-kpis,.admin-review-kpis,.admin-grader-kpis,.apt-kpis){gap:8px!important}
-.admin-system-health .admin-health-grid{gap:8px!important}.admin-system-health .admin-health-grid article{border-radius:11px!important;padding:10px!important;background:linear-gradient(145deg,#fff,var(--panel-soft))!important;border-color:color-mix(in srgb,var(--panel) 20%,#dfe6e2)!important}
-.admin-maintenance-preview{border-color:#9fc9ad!important;background:linear-gradient(135deg,#eaf7ef 0,#f7fbf8 100%)!important;color:#183d2b!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)!important}
-.admin-maintenance-preview>span{color:#2b7a50!important;font-weight:900!important}
-.admin-maintenance-preview>strong{color:#164c31!important;font-weight:950!important}
-.admin-maintenance-preview>p{color:#3f5e4d!important;opacity:1!important}
-.admin-maintenance-preview>small{color:#567261!important;opacity:1!important}
-.admin-view-section .admin-mail-tabs button{background:var(--panel-soft)!important;color:var(--panel-ink)!important}.admin-view-section .admin-mail-tabs button.active{background:var(--panel)!important;color:#fff!important}
-.admin-view-section .admin-mail-item:hover,.admin-view-section .admin-mail-item.active{background:var(--panel-soft)!important}
-.admin-view-section :is(.admin-users-notice,.admin-review-notice,.admin-grader-legend,.board-note){border-color:color-mix(in srgb,var(--panel) 25%,#dfe6e2)!important;background:var(--panel-soft)!important;color:var(--panel-ink)!important}
-.admin-view-section :is(code,.admin-download-table code,.admin-review-content code){color:var(--panel-ink)!important}
+
+/* Keep ordinary controls neutral; only selected/primary actions use the panel accent. */
+.admin-view-section button:not(.primary):not(.active):not([aria-selected="true"]):not(.danger):not(.warn){background:#fff!important;color:#30483b!important;border:1px solid #cfdcd5!important;box-shadow:none!important}
+.admin-view-section button:not(.primary):not(.active):not([aria-selected="true"]):not(.danger):not(.warn):hover{border-color:var(--panel)!important;color:var(--panel-ink)!important;background:var(--panel-soft)!important}
+.admin-view-section :is(button.primary,.primary,button.active,button[aria-selected="true"]){background:var(--panel)!important;color:#fff!important;border-color:var(--panel)!important}
+.admin-view-section :is(input,select,textarea){background:#fff!important;color:#2f4439!important;border-color:#d2ddd7!important}
+
+/* Maintenance preview: explicit readable colors, independent from old theme rules. */
+.admin-maintenance-preview{border:1px solid #9fc9ad!important;background:linear-gradient(135deg,#eaf7ef 0,#f8fbf9 100%)!important;color:#183d2b!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9)!important}
+.admin-maintenance-preview>span{color:#27734b!important;font-weight:900!important;opacity:1!important}
+.admin-maintenance-preview>strong{color:#154a30!important;font-weight:950!important;opacity:1!important}
+.admin-maintenance-preview>p{color:#3e5b4c!important;opacity:1!important}
+.admin-maintenance-preview>small{color:#526e5d!important;opacity:1!important}
+
+/* General contrast guard for panel headings/descriptions. */
+.admin-view-section .admin-panel-head h2,.admin-view-section .admin-section-title h2,.admin-view-section .admin-section-title h3{color:var(--panel-ink)!important}
+.admin-view-section .admin-panel-head p,.admin-view-section .admin-section-title p{color:#566b60!important;opacity:1!important}
+
+/* Existing colored feature cards/status blocks are intentionally untouched. */
