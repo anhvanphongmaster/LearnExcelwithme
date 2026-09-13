@@ -4,8 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Học Excel A–Z | Learn Excel with Anh Van Phong</title>
-  <meta name="description" content="Nền tảng học Excel A–Z theo 8 module và 42 bài rõ ràng: nền tảng, dữ liệu, công thức, báo cáo, dashboard, Power Query, VBA và case thực chiến.">
+  <meta name="description" content="42 bài Excel A–Z. Nút Học mở thẳng bài đang học; danh sách chỉ dùng khi muốn tự chọn.">
   <meta name="theme-color" content="#217346">
+  <script>
+  (function(){
+    var p=new URLSearchParams(location.search);
+    if(p.get('browse')==='1')return;
+    var first={'excel-foundation':'f01-excel-workspace','data-cleaning':'d07-sort-filter','formula-lookup':'s07-logic','analysis-reporting':'a13-excel-table','dashboard-visual':'a16-charts-pareto','power-query':'pq28-import-sources','vba-optimization':'x23-macro-vba','workflow-cases':'x24-automation-workflow'};
+    var id='',mod=p.get('module')||'';
+    if(mod&&first[mod])id=first[mod];
+    if(!id){try{id=localStorage.getItem('avp_knowledge_last_v2')||''}catch(e){}}
+    if(!id)id='f01-excel-workspace';
+    location.replace('knowledge.html?lesson='+encodeURIComponent(id));
+  })();
+  </script>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="simple-nav.css">
@@ -18,73 +30,7 @@
 </head>
 <body>
 <script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script>
-<nav class="top-simple-nav" aria-label="Điều hướng chính">
-  <div class="top-simple-links">
-    <a href="index.html" data-avp-nav="home">Trang chủ</a>
-    <a href="skill-map.html" data-avp-nav="learn">Học</a>
-    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
-    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
-    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
-    <span class="auth-nav-slot"></span>
-    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
-  </div>
-  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
-</nav>
-
-<main class="lp-page" id="lpPage">
-  <section class="lp-hero">
-    <div>
-      <span class="lp-kicker">EXCEL LEARNING PLATFORM</span>
-      <h1>Học Excel A–Z, nhưng không học trong mê cung</h1>
-      <p>8 module, 42 bài. Mỗi bài bắt đầu bằng việc cần làm, công cụ cần dùng, các bước thao tác và dấu hiệu làm đúng; phần nâng cao nằm sau phần cốt lõi.</p>
-    </div>
-    <div class="lp-hero-meta">
-      <div class="lp-stat"><span>CẤU TRÚC</span><strong id="lpModuleCount">8 module</strong></div>
-      <div class="lp-stat"><span>NỘI DUNG</span><strong id="lpLessonCount">42 bài</strong></div>
-      <div class="lp-stat"><span>CÁCH HỌC</span><strong>Việc cần làm → thao tác → kiểm tra</strong></div>
-      <div class="lp-stat"><span>ĐIỀU HƯỚNG</span><strong>Luôn biết đường quay lại</strong></div>
-    </div>
-  </section>
-
-  <div class="lp-toolbar">
-    <nav class="lp-breadcrumb" aria-label="Breadcrumb">
-      <a href="index.html">Trang chủ</a><span>›</span><a href="skill-map.html">Học Excel</a><span id="lpCrumbSep">›</span><strong id="lpCrumbCurrent">Tất cả module</strong>
-    </nav>
-    <div class="lp-toolbar-actions"><a class="lp-btn" href="practice-video.html">Thực hành</a><a class="lp-btn primary" id="lpResume" href="knowledge.html?lesson=f01-excel-workspace">Bắt đầu học →</a></div>
-  </div>
-
-  <section class="lp-home-view">
-    <div class="lp-modules-head"><span class="lp-kicker">8 MODULE · 2 DÒNG × 4 CARD TRÊN DESKTOP</span><h2>Chọn đúng nhóm bạn cần học</h2><p>Không cần nhớ bài số mấy. Chọn theo mục tiêu công việc, sau đó học theo list bên trong.</p></div>
-    <div class="lp-module-grid" id="lpModuleGrid"></div>
-    <div class="lp-footnote">Kho công thức, phím tắt và Tool là khu tra cứu riêng. Chúng không chen vào lộ trình chính để tránh lẫn giữa “đang học” và “đang tra cứu”.</div>
-  </section>
-
-  <section class="lp-module-view">
-    <div class="lp-back-row"><a class="lp-btn" href="skill-map.html">← Tất cả module</a><a class="lp-btn" href="index.html#ky-nang-excel">← Trang chủ</a></div>
-    <header class="lp-module-header">
-      <div><span class="lp-kicker" id="lpModuleLabel">MODULE</span><h2 id="lpModuleTitle">Module</h2><p id="lpModuleDesc"></p><div class="lp-module-outcome" id="lpModuleOutcome"></div></div>
-      <a class="lp-btn primary" id="lpModuleStart" href="#">Bắt đầu module →</a>
-    </header>
-    <div class="lp-list" id="lpLessonList"></div>
-    <div class="lp-footnote">Khi mở một bài, nút quay lại đưa bạn về đúng module này. Vị trí cuộn của danh sách được ghi nhớ trong phiên hiện tại.</div>
-  </section>
-</main>
-
-<script src="knowledge-data-foundation.js?v=20260909-kv2"></script>
-<script src="knowledge-data-skills.js?v=20260909-kv2"></script>
-<script src="knowledge-data-analysis.js?v=20260909-kv2"></script>
-<script src="knowledge-data-advanced.js?v=20260909-kv2"></script>
-<script src="knowledge-depth-v1.js?v=20260910-depth1"></script>
-<script src="learning-platform-content-v2.js?v=20260911-platform2"></script>
-<script src="learning-platform-guides-v2.js?v=20260911-platform2"></script>
-<script src="learning-platform-catalog-v1.js?v=20260911-platform2"></script>
-<script src="skill-map-platform-v1.js?v=20260911-platform2"></script>
-<script src="learning-platform-progress-v2.js?v=20260911-platform2"></script>
-<script src="supabase-config.js"></script>
-<script type="module" src="supabase-auth.js"></script>
-<script defer src="simple-nav.js"></script>
-<script defer src="theme-unified-v32.js"></script>
-<script defer src="global-search.js?v=20260911-platform2"></script>
-<script defer src="avp-core.js"></script>
-</body>
-</html>
+<nav class="top-simple-nav" aria-label="Điều hướng chính"><div class="top-simple-links"><a href="index.html" data-avp-nav="home">Trang chủ</a><a href="skill-map.html" data-avp-nav="learn">Học</a><a href="practice-video.html" data-avp-nav="practice">Thực hành</a><a href="tools-center.html" data-avp-nav="tools">Công cụ</a><button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button><span class="auth-nav-slot"></span><button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button></div><button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button></nav>
+<main class="lp-page" id="lpPage"><section class="lp-hero"><div><span class="lp-kicker">DANH SÁCH BÀI</span><h1>42 bài Excel A–Z</h1><p>Trang này chỉ dùng khi bạn muốn tự chọn bài. Bình thường, bấm Học là vào thẳng bài đang học.</p></div><div class="lp-hero-meta"><div class="lp-stat"><span>CẤU TRÚC</span><strong id="lpModuleCount">8 module</strong></div><div class="lp-stat"><span>NỘI DUNG</span><strong id="lpLessonCount">42 bài</strong></div></div></section><div class="lp-toolbar"><nav class="lp-breadcrumb" aria-label="Breadcrumb"><a href="index.html">Trang chủ</a><span>›</span><strong>Danh sách bài</strong></nav><div class="lp-toolbar-actions"><a class="lp-btn primary" id="lpResume" href="knowledge.html?lesson=f01-excel-workspace">Học tiếp →</a></div></div><section class="lp-home-view"><div class="lp-modules-head"><h2>Chọn bài khi bạn thật sự muốn tự chọn</h2></div><div class="lp-module-grid" id="lpModuleGrid"></div></section><section class="lp-module-view" hidden></section></main>
+<script src="knowledge-data-foundation.js?v=20260909-kv2"></script><script src="knowledge-data-skills.js?v=20260909-kv2"></script><script src="knowledge-data-analysis.js?v=20260909-kv2"></script><script src="knowledge-data-advanced.js?v=20260909-kv2"></script><script src="knowledge-depth-v1.js?v=20260910-depth1"></script><script src="learning-platform-content-v2.js?v=20260911-platform2"></script><script src="learning-platform-guides-v2.js?v=20260911-platform2"></script><script src="learning-platform-catalog-v1.js?v=20260913-onepath1"></script><script src="skill-map-platform-v1.js?v=20260913-onepath1"></script><script src="learning-platform-progress-v2.js?v=20260911-platform2"></script><script src="supabase-config.js"></script><script type="module" src="supabase-auth.js"></script><script defer src="simple-nav.js"></script><script defer src="theme-unified-v32.js"></script><script defer src="global-search.js?v=20260911-platform2"></script><script defer src="avp-core.js"></script>
+</body></html>
