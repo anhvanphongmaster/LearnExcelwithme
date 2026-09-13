@@ -1,8 +1,9 @@
-/* AVP Learning Leaderboard owner gate V1
-   Home already owns the leaderboard inline. Other pages fall back to the preserved core. */
+/* AVP Learning Leaderboard owner gate V2
+   Home owns the current leaderboard inline. Other pages fall back to the preserved core. */
 (function(){
   'use strict';
-  if(document.getElementById('avp-llb-inline')) return;
+  var page=(location.pathname.split('/').filter(Boolean).pop()||'index.html').toLowerCase();
+  if(page==='index.html') return;
   if(window.__AVP_LEARNING_LEADERBOARD_CORE_LOADING__) return;
   window.__AVP_LEARNING_LEADERBOARD_CORE_LOADING__=true;
   var s=document.createElement('script');
