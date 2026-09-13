@@ -8,6 +8,15 @@
   let manualHealth=false;
   let coreLoaded=false;
 
+  function ensureAdminUi(){
+    if(document.querySelector('link[data-avp-admin-ui-v2]'))return;
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href='admin-ui-v2.css?v=20260913-adminui2';
+    link.dataset.avpAdminUiV2='1';
+    document.head.appendChild(link);
+  }
+
   function view(){try{return localStorage.getItem('avp_admin_view_v1')||'overview'}catch(_){return 'overview'}}
   function emptyResult(name){
     if(['admin_analytics_trend','admin_analytics_top_tools','admin_analytics_top_pages','admin_learning_funnel','admin_top_completed_lessons','admin_quiz_difficulty','admin_new_user_trend','admin_list_saved_feedback','admin_list_user_files'].includes(name))return [];
@@ -87,6 +96,7 @@
   }
 
   async function boot(){
+    ensureAdminUi();
     bindGuards();
     await waitClient();
     const s=document.createElement('script');
