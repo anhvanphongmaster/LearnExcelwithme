@@ -9,7 +9,7 @@
   let coreLoaded=false;
 
   function ensureAdminUi(){
-    [['admin-ui-v2.css?v=20260913-adminui2','avpAdminUiV2'],['admin-ui-v2-final.css?v=20260913-adminfinal1','avpAdminUiFinal']].forEach(([href,key])=>{
+    [['admin-ui-v2.css?v=20260913-adminui3','avpAdminUiV2'],['admin-ui-v2-final.css?v=20260913-adminfinal2','avpAdminUiFinal']].forEach(([href,key])=>{
       if(document.querySelector('link[data-'+key+']'))return;
       const link=document.createElement('link');
       link.rel='stylesheet';link.href=href;link.setAttribute('data-'+key,'1');document.head.appendChild(link);
