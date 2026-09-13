@@ -1,156 +1,62 @@
-const CACHE="learnexcel-assets-v20260913-canonical6";
-const ASSETS=[
-  "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css","./home-ux-polish-v1.css",
-  "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./home-canonical-v1.js","./home-robot-motion-v4.js","./global-search.js",
-  "./index.html","./skill-map.html","./knowledge.html","./practice-video.html","./excel-race.html","./learning-coach.html",
-  "./learning-platform-catalog-v1.js","./learning-coach-v2.css","./learning-coach-v2.js"
-];
+const RESCUE_VERSION="learnexcel-rescue-20260913-1";
 
 self.addEventListener("install",event=>{
-  event.waitUntil((async()=>{
-    const cache=await caches.open(CACHE);
-    await Promise.allSettled(ASSETS.map(url=>cache.add(new Request(url,{cache:"reload"}))));
-    await self.skipWaiting();
-  })());
+  event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener("activate",event=>{
   event.waitUntil((async()=>{
     const keys=await caches.keys();
-    await Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)));
+    await Promise.all(keys.map(key=>caches.delete(key)));
     await self.clients.claim();
   })());
 });
 
-async function networkFirst(req){
-  const cache=await caches.open(CACHE);
-  try{
-    const res=await fetch(req,{cache:"no-cache"});
-    if(res&&res.ok)cache.put(req,res.clone()).catch(()=>{});
-    return res;
-  }catch(_){
-    const cached=await cache.match(req);
-    if(cached)return cached;
-    if(req.mode==="navigate")return (await cache.match("./index.html"))||Response.error();
-    return Response.error();
-  }
-}
-
-async function cacheFirst(req){
-  const cache=await caches.open(CACHE);
-  const cached=await cache.match(req);
-  if(cached)return cached;
-  try{
-    const res=await fetch(req);
-    if(res&&res.ok)cache.put(req,res.clone()).catch(()=>{});
-    return res;
-  }catch(_){
-    return Response.error();
-  }
-}
-
-function responseFromText(net,text,type){
-  const headers=new Headers(net.headers);
-  headers.set("content-type",type);
-  headers.set("cache-control","no-cache");
-  headers.delete("content-length");
-  return new Response(text,{status:net.status,statusText:net.statusText,headers});
-}
-
-async function canonicalHomeHtml(req){
-  const cache=await caches.open(CACHE);
-  try{
-    const net=await fetch(req,{cache:"no-cache"});
-    if(!net||!net.ok)return net;
-    let text=await net.text();
-
-    text=text.replace('<html lang="vi">','<html lang="vi" class="avp-home-canonical-boot">');
-    text=text.replace("Lộ trình 14 bài · Bảng xếp hạng","Học hôm nay →");
-    text=text.replace("Top học viên · <b>đăng nhập</b> để có mặt trên BXH","Web tự chọn bài cần học · luyện ngắn · ôn lỗi");
-    text=text.replace("<h2>Lộ trình 14 bài</h2>","<h2>Nền tảng Excel A–Z</h2>");
-    text=text.replace("<p>Học theo thứ tự. Mỗi bài có ví dụ và quiz.</p>","<p>8 module · 42 bài. Chọn theo nhóm công việc; bên trong là danh sách bài rõ ràng và luôn có đường quay lại.</p>");
-
-    /* One implementation per feature on Home. */
-    text=text.replace(/<script id="avp-home-boot">[\s\S]*?<\/script>/,'');
-    text=text.replace(/<script id="avp-llb-inline">[\s\S]*?<\/script>/,'');
-    text=text.replace(/<script id="avp-motion-inline-boot">[\s\S]*?<\/script>/,'');
-    text=text.replace(/\/\* === site motion === \*\/[\s\S]*?@import url\("avp-site-motion\.css"\);/,'/* site motion: external source only */');
-
-    text=text.replace(/home-page-motion\.css\?v=[^"']+/g,'home-page-motion.css?v=20260913-canonical6');
-    text=text.replace(/home-page-motion\.js\?v=[^"']+/g,'home-page-motion.js?v=20260913-canonical6');
-
-    if(!text.includes('data-avp-home-canonical')){
-      const marker='<script defer src="home-effects.js"></script>';
-      const boot='<script defer src="home-canonical-v1.js?v=20260913-canonical6" data-avp-home-canonical></script>\n';
-      if(text.includes(marker)) text=text.replace(marker,boot+marker);
-      else text=text.replace('</body>',boot+'</body>');
-    }
-
-    const out=responseFromText(net,text,"text/html; charset=utf-8");
-    cache.put(req,out.clone()).catch(()=>{});
-    return out;
-  }catch(_){
-    return (await cache.match(req))||(await cache.match("./index.html"))||Response.error();
-  }
-}
-
-/* Home motion is visual-only at runtime. Legacy layout renderers are removed. */
-async function canonicalHomeMotion(req){
-  const cache=await caches.open(CACHE);
-  try{
-    const net=await fetch(req,{cache:"no-cache"});
-    if(!net||!net.ok)return net;
-    let text=await net.text();
-    text=text.replace(/\/\* Home A–Z V4 — self-contained renderer[\s\S]*?(?=\/\* Excel Arena)/,'');
-    text=text.replace(/\/\* Excel Arena — highlight[\s\S]*?(?=\/\* Home First Run V2)/,'');
-    text=text.replace(/\s*setTimeout\(boot, 600\);\s*setTimeout\(boot, 1800\);/,'');
-    const out=responseFromText(net,text,"application/javascript; charset=utf-8");
-    cache.put(req,out.clone()).catch(()=>{});
-    return out;
-  }catch(_){
-    return (await cache.match(req))||Response.error();
-  }
-}
-
 self.addEventListener("fetch",event=>{
   const req=event.request;
-  if(req.method!=="GET")return;
+  if(req.method!=="GET") return;
   const url=new URL(req.url);
-  if(url.origin!==self.location.origin)return;
+  if(url.origin!==self.location.origin) return;
 
-  const homeNavigation=req.mode==="navigate" && (url.pathname.endsWith('/')||url.pathname.endsWith('/index.html'));
-  if(homeNavigation){
-    event.respondWith(canonicalHomeHtml(req));
-    return;
-  }
-
-  if(url.pathname.endsWith('/home-page-motion.js')){
-    event.respondWith(canonicalHomeMotion(req));
-    return;
-  }
-
-  const isHTML=req.mode==="navigate"||url.pathname.endsWith(".html")||url.pathname.endsWith("/");
-  const isCode=/\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
-  if(isHTML||isCode){event.respondWith(networkFirst(req));return;}
-  event.respondWith(cacheFirst(req));
+  /* Rescue mode: never rewrite HTML/JS/CSS and never serve stale app cache. */
+  event.respondWith((async()=>{
+    try{
+      return await fetch(req,{cache:"no-store"});
+    }catch(err){
+      if(req.mode==="navigate"){
+        try{return await fetch(new Request("./index.html",{cache:"no-store"}));}catch(_){ }
+      }
+      return Response.error();
+    }
+  })());
 });
 
 self.addEventListener("push",event=>{
   let data={};
   try{data=event.data?event.data.json():{};}catch(e){data={title:"Anh Văn Phòng",body:event.data?event.data.text():""};}
   const title=data.title||"Anh Văn Phòng";
-  const options={body:data.body||"Có phản hồi mới từ người dùng.",icon:data.icon||"icon-192.png",badge:data.badge||"icon-192.png",tag:data.tag||"avp-admin-push",renotify:true,data:{url:data.url||"admin.html"},vibrate:[120,70,120]};
-  event.waitUntil(self.registration.showNotification(title,options).then(()=>{
-    if("setAppBadge" in self.navigator)return self.navigator.setAppBadge().catch(()=>{});
-  }));
+  const options={
+    body:data.body||"Có phản hồi mới từ người dùng.",
+    icon:data.icon||"icon-192.png",
+    badge:data.badge||"icon-192.png",
+    tag:data.tag||"avp-admin-push",
+    renotify:true,
+    data:{url:data.url||"admin.html"},
+    vibrate:[120,70,120]
+  };
+  event.waitUntil(self.registration.showNotification(title,options));
 });
 
 self.addEventListener("notificationclick",event=>{
   event.notification.close();
-  if("clearAppBadge" in self.navigator)self.navigator.clearAppBadge().catch(()=>{});
   const target=new URL(event.notification?.data?.url||"admin.html",self.registration.scope).href;
   event.waitUntil(clients.matchAll({type:"window",includeUncontrolled:true}).then(list=>{
-    for(const client of list){if("focus" in client){try{client.navigate(target);}catch{}return client.focus();}}
-    if(clients.openWindow)return clients.openWindow(target);
+    for(const client of list){
+      if("focus" in client){
+        try{client.navigate(target);}catch(_){ }
+        return client.focus();
+      }
+    }
+    if(clients.openWindow) return clients.openWindow(target);
   }));
 });
