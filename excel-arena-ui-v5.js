@@ -1,5 +1,12 @@
 (()=>{
   "use strict";
+  if(!document.querySelector('link[data-avp-module-themes]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href='module-themes-v2.css?v=20260913-mod2';
+    link.dataset.avpModuleThemes='1';
+    document.head.appendChild(link);
+  }
   const $=id=>document.getElementById(id);
 
   function selectedMode(){
