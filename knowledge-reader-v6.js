@@ -58,10 +58,18 @@
       }
     }
 
+    function extraControl(){
+      if(!extra.length) return '';
+      if(extra.length === 1){
+        const item=extra[0];
+        return `<button type="button" class="kv-reader-section kv-reader-extra-direct" data-reader-section="${item.index}" aria-pressed="false"><span>+</span><b>HỌC THÊM · 1 phần ▾</b></button>`;
+      }
+      return `<details class="kv-reader-extra"><summary>HỌC THÊM <b>${extra.length} phần</b><i aria-hidden="true">▾</i></summary><div class="kv-reader-extra-menu">${extra.map(item => sectionButton(item, 'is-extra')).join('')}</div></details>`;
+    }
+
     function renderToolbar() {
       const done = doneSet().has(id);
-      const extras = extra.length ? `<details class="kv-reader-extra"><summary>HỌC THÊM <b>${extra.length} phần</b><i aria-hidden="true">▾</i></summary><div class="kv-reader-extra-menu">${extra.map(item => sectionButton(item, 'is-extra')).join('')}</div></details>` : '';
-      host.innerHTML = `<a class="kv-reader-back" href="${esc(backUrl)}">← Chọn 1 trong ${lessonCount} bài</a><div class="kv-reader-sections" aria-label="Các mục trong bài">${core.map(item => sectionButton(item)).join('')}${extras}</div><button class="kv-reader-read-toggle ${done ? 'is-done' : ''}" id="kvReaderReadToggle" type="button" data-lesson-id="${esc(id)}" aria-pressed="${done ? 'true' : 'false'}">${done ? '✓ Đã đọc' : 'Đánh dấu đã đọc'}</button>`;
+      host.innerHTML = `<a class="kv-reader-back" href="${esc(backUrl)}">← Chọn 1 trong ${lessonCount} bài</a><div class="kv-reader-sections" aria-label="Các mục trong bài">${core.map(item => sectionButton(item)).join('')}${extraControl()}</div><button class="kv-reader-read-toggle ${done ? 'is-done' : ''}" id="kvReaderReadToggle" type="button" data-lesson-id="${esc(id)}" aria-pressed="${done ? 'true' : 'false'}">${done ? '✓ Đã đọc' : 'Đánh dấu đã đọc'}</button>`;
 
       host.querySelectorAll('[data-reader-section]').forEach(button => {
         button.addEventListener('click', () => {
