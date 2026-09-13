@@ -1,12 +1,13 @@
-/*! AVP Home Knowledge V2 — synchronize homepage learning map with the 24-lesson curriculum. */
+/*! AVP Home Knowledge V3 — compact one-panel 24-lesson learning map. */
 (function(w,d){
   'use strict';
-  if(w.__AVP_HOME_KNOWLEDGE_V2__)return;
+  if(w.__AVP_HOME_KNOWLEDGE_V3__)return;
+  w.__AVP_HOME_KNOWLEDGE_V3__=true;
   w.__AVP_HOME_KNOWLEDGE_V2__=true;
 
   const ZONES=[
     {
-      number:'01',label:'FOUNDATION',name:'Nền tảng Excel',desc:'Từ số 0: hiểu file Excel, dữ liệu, định dạng, công thức, hàm và bảng nguồn.',tone:'green',
+      key:'foundation',number:'01',label:'FOUNDATION',name:'Nền tảng Excel',desc:'Từ số 0: hiểu file Excel, dữ liệu, định dạng, công thức, hàm và bảng nguồn.',tone:'green',
       lessons:[
         ['01','📘','f01-excel-workspace','Làm quen Excel và cách một file hoạt động'],
         ['02','⌨️','f02-data-entry-types','Nhập liệu và kiểu dữ liệu'],
@@ -17,7 +18,7 @@
       ]
     },
     {
-      number:'02',label:'DATA SKILLS',name:'Dữ liệu & Công thức',desc:'Logic, tổng hợp điều kiện, lookup, text, date và kiểm soát dữ liệu.',tone:'blue',
+      key:'skills',number:'02',label:'DATA SKILLS',name:'Dữ liệu & Công thức',desc:'Logic, tổng hợp điều kiện, lookup, text, date và kiểm soát dữ liệu.',tone:'blue',
       lessons:[
         ['07','🔀','s07-logic','Logic IF, AND, OR và xử lý lỗi'],
         ['08','Σ','s08-conditional-aggregation','SUMIFS, COUNTIFS và tổng hợp điều kiện'],
@@ -28,7 +29,7 @@
       ]
     },
     {
-      number:'03',label:'ANALYSIS',name:'Phân tích & Báo cáo',desc:'Table, Pivot, KPI, biểu đồ, dashboard và kiểm tra trước khi bàn giao.',tone:'purple',
+      key:'analysis',number:'03',label:'ANALYSIS',name:'Phân tích & Báo cáo',desc:'Table, Pivot, KPI, biểu đồ, dashboard và kiểm tra trước khi bàn giao.',tone:'purple',
       lessons:[
         ['13','▦','a13-excel-table','Excel Table'],
         ['14','📊','a14-pivottable','PivotTable'],
@@ -39,7 +40,7 @@
       ]
     },
     {
-      number:'04',label:'ADVANCED',name:'Nâng cao & Tự động hóa',desc:'Formula nâng cao, Dynamic Array, Power Query, VBA và workflow tự động hóa.',tone:'sand',
+      key:'advanced',number:'04',label:'ADVANCED',name:'Nâng cao & Tự động hóa',desc:'Formula nâng cao, Dynamic Array, Power Query, VBA và workflow tự động hóa.',tone:'sand',
       lessons:[
         ['19','🧠','x19-advanced-formulas','Công thức nâng cao'],
         ['20','⚡','x20-dynamic-array','Dynamic Array / Microsoft 365'],
@@ -54,15 +55,29 @@
   const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const lessonUrl=id=>`knowledge.html?lesson=${encodeURIComponent(id)}`;
 
-  function card(zone){
+  function tab(zone,index){
+    return `<button class="hp-kv2-tab hp-kv2-tab-${zone.tone}" type="button" role="tab" id="hp-kv2-tab-${zone.key}" aria-controls="hp-kv2-pane-${zone.key}" aria-selected="${index===0?'true':'false'}" tabindex="${index===0?'0':'-1'}" data-zone="${zone.key}"><span>${zone.number}</span><span><small>${esc(zone.label)}</small><strong>${esc(zone.name)}</strong></span></button>`;
+  }
+
+  function pane(zone,index){
     const links=zone.lessons.map(([num,icon,id,title])=>
       `<li><a href="${lessonUrl(id)}"><span class="hp-kv2-num">${num}</span><span class="hp-kv2-icon" aria-hidden="true">${icon}</span><span class="hp-kv2-title">${esc(title)}</span></a></li>`
     ).join('');
-    return `<article class="home-path-card avp-home-kv2-card avp-home-kv2-${zone.tone}">
-      <div class="hp-kv2-head"><span>${zone.number} · ${zone.label}</span><h3>${esc(zone.name)}</h3><p>${esc(zone.desc)}</p></div>
-      <ul>${links}</ul>
-      <a class="hp-kv2-more" href="skill-map.html#zone-${zone.tone==='green'?'foundation':zone.tone==='blue'?'skills':zone.tone==='purple'?'analysis':'advanced'}">6 bài · luôn mở →</a>
-    </article>`;
+    return `<article class="hp-kv2-pane hp-kv2-pane-${zone.tone}" id="hp-kv2-pane-${zone.key}" role="tabpanel" aria-labelledby="hp-kv2-tab-${zone.key}" data-zone="${zone.key}" ${index===0?'':'hidden'}><div class="hp-kv2-head"><div><span>${zone.number} · ${esc(zone.label)}</span><h3>${esc(zone.name)}</h3></div><p>${esc(zone.desc)}</p></div><ul>${links}</ul><a class="hp-kv2-more" href="skill-map.html#zone-${zone.key}">6 bài · luôn mở →</a></article>`;
+  }
+
+  function panel(){
+    return `<section class="avp-home-kv2-panel" aria-label="Lộ trình 24 bài Excel"><div class="hp-kv2-tabs" role="tablist" aria-label="4 chặng học Excel">${ZONES.map(tab).join('')}</div><div class="hp-kv2-panels">${ZONES.map(pane).join('')}</div></section>`;
+  }
+
+  function ensureCss(){
+    let link=d.querySelector('link[data-avp-home-kv2-css]');
+    if(link)return;
+    link=d.createElement('link');
+    link.rel='stylesheet';
+    link.href='avp-home-knowledge-v2.css?v=20260913-panel1';
+    link.dataset.avpHomeKv2Css='1';
+    d.head.appendChild(link);
   }
 
   function ensureMotionCss(){
@@ -97,6 +112,43 @@
     }
   }
 
+  function selectZone(grid,key,focus){
+    const tabs=[...grid.querySelectorAll('.hp-kv2-tab')];
+    const panes=[...grid.querySelectorAll('.hp-kv2-pane')];
+    if(!tabs.some(tab=>tab.dataset.zone===key))return;
+    tabs.forEach(tab=>{
+      const active=tab.dataset.zone===key;
+      tab.setAttribute('aria-selected',active?'true':'false');
+      tab.tabIndex=active?0:-1;
+      if(active&&focus)tab.focus({preventScroll:true});
+    });
+    panes.forEach(pane=>{pane.hidden=pane.dataset.zone!==key;});
+  }
+
+  function bindPanel(grid){
+    if(grid.dataset.kv2TabsBound==='1')return;
+    grid.dataset.kv2TabsBound='1';
+    grid.addEventListener('click',e=>{
+      const tab=e.target.closest('.hp-kv2-tab');
+      if(!tab||!grid.contains(tab))return;
+      selectZone(grid,tab.dataset.zone,false);
+    });
+    grid.addEventListener('keydown',e=>{
+      const tab=e.target.closest('.hp-kv2-tab');
+      if(!tab)return;
+      const tabs=[...grid.querySelectorAll('.hp-kv2-tab')];
+      const current=tabs.indexOf(tab);
+      let next=current;
+      if(e.key==='ArrowRight'||e.key==='ArrowDown')next=(current+1)%tabs.length;
+      else if(e.key==='ArrowLeft'||e.key==='ArrowUp')next=(current-1+tabs.length)%tabs.length;
+      else if(e.key==='Home')next=0;
+      else if(e.key==='End')next=tabs.length-1;
+      else return;
+      e.preventDefault();
+      selectZone(grid,tabs[next].dataset.zone,true);
+    });
+  }
+
   function replaceText(){
     syncPracticeCta();
     const section=d.getElementById('ky-nang-excel')||d.querySelector('.home-path');
@@ -106,27 +158,39 @@
     if(h2)h2.textContent='Lộ trình 24 bài Excel';
 
     const intro=section.querySelector('.home-path-inner > p');
-    if(intro)intro.textContent='4 chặng × 6 bài. Mọi bài đều mở — người mới có thể học tuần tự, người đã có nền tảng có thể vào thẳng phần cần học.';
+    if(intro)intro.textContent='4 chặng × 6 bài. Chọn một chặng để xem bài — gọn hơn nhưng vẫn giữ đủ 24 bài.';
 
     const grid=section.querySelector('.home-path-grid');
     if(!grid)return false;
-    grid.classList.add('avp-home-kv2-grid');
-    grid.innerHTML=ZONES.map(card).join('');
-    section.dataset.knowledgeVersion='2';
+    grid.classList.add('avp-home-kv2-grid','avp-home-kv2-single-panel');
+    if(!grid.querySelector('.avp-home-kv2-panel'))grid.innerHTML=panel();
+    bindPanel(grid);
+    section.dataset.knowledgeVersion='3';
 
     const tease=d.querySelector('#avpScrollToPath .avp-tease-title');
-    if(tease){
-      tease.innerHTML='<span class="avp-tease-chevs" aria-hidden="true"><span>▾</span><span>▾</span><span>▾</span></span> Lộ trình 24 bài · Bảng xếp hạng';
-    }
+    if(tease)tease.innerHTML='<span class="avp-tease-chevs" aria-hidden="true"><span>▾</span><span>▾</span><span>▾</span></span> Lộ trình 24 bài · Bảng xếp hạng';
     return true;
   }
 
+  function guardGrid(){
+    const section=d.getElementById('ky-nang-excel')||d.querySelector('.home-path');
+    const grid=section&&section.querySelector('.home-path-grid');
+    if(!grid||grid.dataset.kv2Guard==='1')return;
+    grid.dataset.kv2Guard='1';
+    let queued=false;
+    const observer=new MutationObserver(()=>{
+      if(queued||grid.querySelector('.avp-home-kv2-panel'))return;
+      queued=true;
+      queueMicrotask(()=>{queued=false;replaceText();});
+    });
+    observer.observe(grid,{childList:true});
+    w.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+  }
+
   function boot(){
+    ensureCss();
     ensureMotionCss();
-    replaceText();
-    // A late legacy renderer must not put the 14-lesson cards or old 3-flow CTA back.
-    setTimeout(replaceText,250);
-    setTimeout(replaceText,900);
+    if(replaceText())guardGrid();
   }
 
   if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',boot,{once:true});
