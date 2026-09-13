@@ -19,7 +19,7 @@
   TRACKS.forEach(t=>t.modules.forEach(id=>moduleTrack.set(id,t.id)));
   const lessons=(window.AVPKnowledgeLessons||[]).slice().sort((a,b)=>(a.order||999)-(b.order||999));
   const byId=new Map(lessons.map(x=>[x.id,x]));
-  const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[ch]));
+  const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const lastId=()=>{try{return localStorage.getItem('avp_knowledge_last_v2')||''}catch(_){return''}};
 
   function trackLessonIds(track){
