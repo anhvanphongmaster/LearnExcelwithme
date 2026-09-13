@@ -1,5 +1,5 @@
 /* shared desktop motion + surface system */
-@import url("avp-site-motion.css?v=20260913-v96");
+@import url("avp-site-motion.css?v=20260913-v97");
 @import url("desktop-ui-sync-v1.css?v=20260913-sync1");
 @import url("home-ux-polish-v1.css?v=20260912-homeux3");
 @import url("ux-declutter-v1.css?v=20260913-ux1");
@@ -18,6 +18,21 @@ html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth{
 html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth .avp-edge-main{
   left:0!important;
   right:auto!important;
+}
+
+/* V98: all five Home utility cards get the same lightweight desktop lift.
+   Specificity intentionally beats the declutter reset that forced transform:none. */
+@media(min-width:901px){
+  html body .home-path-more--5 .home-more-card{
+    transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .18s ease,border-color .18s ease,filter .18s ease!important;
+    will-change:transform;
+  }
+  html body .home-path-more--5 .home-more-card:hover,
+  html body .home-path-more--5 .home-more-card:focus-visible{
+    transform:translate3d(0,-4px,0)!important;
+    box-shadow:0 10px 24px rgba(20,90,50,.10)!important;
+    filter:brightness(1.015)!important;
+  }
 }
 
 @media(max-width:900px){
@@ -41,5 +56,14 @@ html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth .avp-edge-mai
   #avpEdgeLauncher.avp-edge-launcher.is-walking .avp-bot-arm-l,
   #avpEdgeLauncher.avp-edge-launcher.is-walking .avp-bot-arm-r{
     animation-duration:.5s!important;
+  }
+  html body .home-path-more--5 .home-more-card{
+    will-change:auto!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  html body .home-path-more--5 .home-more-card{
+    will-change:auto!important;
   }
 }
