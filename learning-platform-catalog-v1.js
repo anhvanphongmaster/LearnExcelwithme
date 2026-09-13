@@ -43,11 +43,6 @@
   function wireHomeOnePath(){
     const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
     if(page!==''&&page!=='index.html')return false;
-
-    // Canonical Home already contains the final nav, teaser and module links.
-    // Do not mutate it again after first paint.
-    if(document.body?.classList.contains('home-canonical-ready') || window.__AVP_HOME_CANONICAL_V1__) return false;
-
     const hub='learning-coach.html';
     let changed=false;
 
@@ -75,6 +70,10 @@
     return changed;
   }
 
-  function bootHomeOnePath(){ wireHomeOnePath(); }
+  function bootHomeOnePath(){
+    let n=0;const t=setInterval(()=>{n++;wireHomeOnePath();if(n>24)clearInterval(t)},160);
+    wireHomeOnePath();
+  }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootHomeOnePath,{once:true});else bootHomeOnePath();
+  setTimeout(wireHomeOnePath,900);setTimeout(wireHomeOnePath,2200);
 })();

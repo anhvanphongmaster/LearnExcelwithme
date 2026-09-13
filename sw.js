@@ -1,33 +1,59 @@
-const RESCUE_VERSION="learnexcel-rescue-20260913-1";
+const CACHE="learnexcel-assets-v20260913-perf1";
+const ASSETS=[
+  "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css","./home-ux-polish-v1.css",
+  "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./global-search.js",
+  "./index.html","./skill-map.html","./knowledge.html","./practice-video.html","./excel-race.html","./learning-coach.html",
+  "./learning-platform-catalog-v1.js","./learning-coach-v2.css","./learning-coach-v2.js"
+];
 
 self.addEventListener("install",event=>{
-  event.waitUntil(self.skipWaiting());
+  event.waitUntil((async()=>{
+    const cache=await caches.open(CACHE);
+    await Promise.allSettled(ASSETS.map(url=>cache.add(url)));
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener("activate",event=>{
   event.waitUntil((async()=>{
     const keys=await caches.keys();
-    await Promise.all(keys.map(key=>caches.delete(key)));
+    await Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)));
     await self.clients.claim();
   })());
 });
 
+async function fastResponse(event){
+  const req=event.request;
+  const cache=await caches.open(CACHE);
+  const cached=await cache.match(req,{ignoreSearch:true});
+  const refresh=fetch(req,{cache:"no-cache"}).then(res=>{
+    if(res&&res.ok)cache.put(req,res.clone()).catch(()=>{});
+    return res;
+  });
+  if(cached){event.waitUntil(refresh.catch(()=>{}));return cached;}
+  try{return await refresh;}catch(_){
+    if(req.mode==="navigate")return (await cache.match("./index.html"))||Response.error();
+    return Response.error();
+  }
+}
+
 self.addEventListener("fetch",event=>{
   const req=event.request;
-  if(req.method!=="GET") return;
+  if(req.method!=="GET")return;
   const url=new URL(req.url);
-  if(url.origin!==self.location.origin) return;
-
-  /* Rescue mode: never rewrite HTML/JS/CSS and never serve stale app cache. */
+  if(url.origin!==self.location.origin)return;
+  const isHTML=req.mode==="navigate"||url.pathname.endsWith(".html")||url.pathname.endsWith("/");
+  const isCode=/\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
+  if(isHTML||isCode){event.respondWith(fastResponse(event));return;}
   event.respondWith((async()=>{
+    const cache=await caches.open(CACHE);
+    const cached=await cache.match(req,{ignoreSearch:true});
+    if(cached)return cached;
     try{
-      return await fetch(req,{cache:"no-store"});
-    }catch(err){
-      if(req.mode==="navigate"){
-        try{return await fetch(new Request("./index.html",{cache:"no-store"}));}catch(_){ }
-      }
-      return Response.error();
-    }
+      const res=await fetch(req);
+      if(res&&res.ok)cache.put(req,res.clone()).catch(()=>{});
+      return res;
+    }catch(_){return Response.error();}
   })());
 });
 
@@ -44,19 +70,17 @@ self.addEventListener("push",event=>{
     data:{url:data.url||"admin.html"},
     vibrate:[120,70,120]
   };
-  event.waitUntil(self.registration.showNotification(title,options));
+  event.waitUntil(self.registration.showNotification(title,options).then(()=>{
+    if("setAppBadge" in self.navigator)return self.navigator.setAppBadge().catch(()=>{});
+  }));
 });
 
 self.addEventListener("notificationclick",event=>{
   event.notification.close();
+  if("clearAppBadge" in self.navigator)self.navigator.clearAppBadge().catch(()=>{});
   const target=new URL(event.notification?.data?.url||"admin.html",self.registration.scope).href;
   event.waitUntil(clients.matchAll({type:"window",includeUncontrolled:true}).then(list=>{
-    for(const client of list){
-      if("focus" in client){
-        try{client.navigate(target);}catch(_){ }
-        return client.focus();
-      }
-    }
-    if(clients.openWindow) return clients.openWindow(target);
+    for(const client of list){if("focus" in client){try{client.navigate(target);}catch{}return client.focus();}}
+    if(clients.openWindow)return clients.openWindow(target);
   }));
 });
