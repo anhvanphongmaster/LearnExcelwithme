@@ -1,0 +1,13 @@
+/* Home Learning Flows V1 — 4 compact selectors for the 42-lesson hub. */
+.home-path-inner>h2::after{content:"  ·  4 luồng / 42 bài"!important}
+.home-learning-flow-grid-v1{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important;align-items:stretch!important}
+.home-learning-flow-v1{min-height:150px!important;height:100%!important;padding:14px!important;align-items:flex-start!important;background:#fff!important}
+.home-learning-flow-v1 .home-platform-no-v1{flex:0 0 38px!important;width:38px!important;height:38px!important}
+.home-learning-flow-v1 .home-platform-copy-v1{min-width:0!important;height:100%!important;display:flex!important;flex-direction:column!important}
+.home-learning-flow-v1 .home-platform-copy-v1 small{font-size:7.5px!important;line-height:1.2!important}
+.home-learning-flow-v1 .home-platform-copy-v1 strong{font-size:14px!important;line-height:1.25!important;margin-top:3px!important}
+.home-learning-flow-v1 .home-platform-copy-v1 em{display:block!important;margin-top:7px!important;color:#708078!important;font-size:9.5px!important;line-height:1.45!important;font-style:normal!important}
+.home-learning-flow-v1 .home-platform-copy-v1 b{margin-top:auto!important;padding-top:10px!important;font-size:9px!important;color:#1b7045!important}
+.home-learning-flow-v1.tone-green{background:#f4faf6!important;border-color:#cce3d4!important}.home-learning-flow-v1.tone-blue{background:#f3f7fd!important;border-color:#cedcf0!important}.home-learning-flow-v1.tone-purple{background:#f8f4fc!important;border-color:#ddd1ec!important}.home-learning-flow-v1.tone-sand{background:#fcf8f1!important;border-color:#e9d8b8!important}
+@media(max-width:980px){.home-learning-flow-grid-v1{grid-template-columns:repeat(2,minmax(0,1fr))!important}.home-learning-flow-v1{min-height:132px!important}}
+@media(max-width:560px){.home-learning-flow-grid-v1{grid-template-columns:1fr!important}.home-learning-flow-v1{min-height:118px!important}.home-learning-flow-v1 .home-platform-copy-v1 em{font-size:9px!important}}
