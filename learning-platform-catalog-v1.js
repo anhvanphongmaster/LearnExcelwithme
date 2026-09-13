@@ -43,19 +43,18 @@
   function wireHomeOnePath(){
     const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
     if(page!==''&&page!=='index.html')return false;
-    const target=resumeUrl();
+    const hub='learning-coach.html';
     let changed=false;
 
     const learn=document.querySelector('.top-simple-nav [data-avp-nav="learn"]');
-    if(learn&&learn.getAttribute('href')!==target){learn.href=target;learn.setAttribute('aria-label','Học tiếp');changed=true}
+    if(learn&&learn.getAttribute('href')!==hub){learn.href=hub;learn.setAttribute('aria-label','Học Excel hôm nay');changed=true}
 
     const btn=document.getElementById('avpScrollToPath');
-    if(btn&&btn.dataset.onePath!=='1'){
+    if(btn&&btn.dataset.onePath!=='coach2'){
       const clean=btn.cloneNode(true);
-      clean.dataset.onePath='1';
-      const order=String(displayOrder(resumeLessonId())).padStart(2,'0');
-      clean.innerHTML=`<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Học tiếp · Bài ${order} →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">Bấm một lần là vào bài · không qua trang trung gian</span>`;
-      clean.addEventListener('click',()=>{location.href=target});
+      clean.dataset.onePath='coach2';
+      clean.innerHTML='<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Học hôm nay →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">Web tự chọn bài cần học · luyện ngắn · ôn lỗi</span>';
+      clean.addEventListener('click',()=>{location.href=hub});
       btn.replaceWith(clean);changed=true;
     }
 

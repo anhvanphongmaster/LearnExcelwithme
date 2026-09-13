@@ -1,4 +1,4 @@
-const CACHE = "learnexcel-assets-v20260912-uxfix2";
+const CACHE = "learnexcel-assets-v20260913-coach2";
 const ASSETS = [
   "./style.css",
   "./simple-nav.css",
@@ -21,6 +21,10 @@ const ASSETS = [
   "./practice-hub-flow-v1.css",
   "./practice-tiktok.css",
   "./practice-roll.css",
+  "./learning-coach.html",
+  "./learning-coach-core-v1.js",
+  "./learning-coach-v2.css",
+  "./learning-coach-v2.js",
   "./excel-race.html",
   "./excel-arena-v4.css",
   "./excel-arena-questions.js",
@@ -97,6 +101,9 @@ self.addEventListener("fetch", event => {
     url.pathname.endsWith("/avp-hover-lift.css") ||
     url.pathname.endsWith("/home-mini-bounce.css") ||
     url.pathname.endsWith("/knowledge-reader-polish-v1.css") ||
+    url.pathname.endsWith("/learning-coach-v2.css") ||
+    url.pathname.endsWith("/learning-coach-v2.js") ||
+    url.pathname.endsWith("/learning-platform-catalog-v1.js") ||
     url.pathname.endsWith("/excel-arena-v4.css") ||
     url.pathname.endsWith("/excel-arena-engine-v4.js");
 
