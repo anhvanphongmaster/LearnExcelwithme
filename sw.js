@@ -1,7 +1,7 @@
-const CACHE="learnexcel-assets-v20260913-fresh2";
+const CACHE="learnexcel-assets-v20260913-canonical2";
 const ASSETS=[
   "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css","./home-ux-polish-v1.css",
-  "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./global-search.js",
+  "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./home-canonical-v1.js","./home-robot-motion-v4.js","./global-search.js",
   "./index.html","./skill-map.html","./knowledge.html","./practice-video.html","./excel-race.html","./learning-coach.html",
   "./learning-platform-catalog-v1.js","./learning-coach-v2.css","./learning-coach-v2.js"
 ];
@@ -49,17 +49,45 @@ async function cacheFirst(req){
   }
 }
 
+/* Home motion used to contain two layout renderers that rewrote the old Home
+   after first paint. Strip only those marked blocks at delivery time so the
+   file keeps its remaining visual/onboarding behavior without owning layout. */
+async function canonicalHomeMotion(req){
+  const cache=await caches.open(CACHE);
+  try{
+    const net=await fetch(req,{cache:"no-cache"});
+    if(!net||!net.ok)return net;
+    let text=await net.text();
+    text=text.replace(/\/\* Home A–Z V4 — self-contained renderer[\s\S]*?(?=\/\* Excel Arena)/,'');
+    text=text.replace(/\/\* Excel Arena — highlight[\s\S]*?(?=\/\* Home First Run V2)/,'');
+    text=text.replace(/\s*setTimeout\(boot, 600\);\s*setTimeout\(boot, 1800\);/,'');
+    const out=new Response(text,{
+      status:net.status,
+      statusText:net.statusText,
+      headers:{"content-type":"application/javascript; charset=utf-8","cache-control":"no-cache"}
+    });
+    cache.put(req,out.clone()).catch(()=>{});
+    return out;
+  }catch(_){
+    return (await cache.match(req))||Response.error();
+  }
+}
+
 self.addEventListener("fetch",event=>{
   const req=event.request;
   if(req.method!=="GET")return;
   const url=new URL(req.url);
   if(url.origin!==self.location.origin)return;
 
+  if(url.pathname.endsWith('/home-page-motion.js')){
+    event.respondWith(canonicalHomeMotion(req));
+    return;
+  }
+
   const isHTML=req.mode==="navigate"||url.pathname.endsWith(".html")||url.pathname.endsWith("/");
   const isCode=/\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
 
-  /* HTML + code must prefer the current deploy. Do not ignore query strings:
-     ?v=... is a real cache-busting key and must stay effective. */
+  /* HTML + code prefer the current deploy. Query strings stay part of the cache key. */
   if(isHTML||isCode){
     event.respondWith(networkFirst(req));
     return;
