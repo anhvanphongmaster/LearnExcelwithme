@@ -29,6 +29,17 @@
     if(d.querySelector('link[data-avp-global-controls]'))return;
     const link=d.createElement('link');link.rel='stylesheet';link.href='avp-global-controls-v1.css?v=20260910-controls1';link.dataset.avpGlobalControls='1';d.head.appendChild(link);
   }
+  function ensureRouteIdentityCss(){
+    const p=pageName();
+    const practiceRoutes=new Set(['practice-tiktok.html','practice-youtube.html','homework.html','practice-grader.html','professional-access.html']);
+    let href='';
+    if(p==='practice-video.html')href='practice-hub-theme-v1.css?v=20260913-hub2';
+    else if(practiceRoutes.has(p))href='practice-route-themes-v1.css?v=20260913-route2';
+    if(!href||d.querySelector('link[data-avp-route-identity]'))return;
+    const link=d.createElement('link');
+    link.rel='stylesheet';link.href=href;link.dataset.avpRouteIdentity='1';
+    d.head.appendChild(link);
+  }
   function ensureSiteUiPolish(){
     const p=pageName();
     if(p==='admin.html'||p==='auth.html'||isStablePracticePage())return;
@@ -103,7 +114,7 @@
   }
   function next(){
     if(active||!queue.length)return;
-    active=true;ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureSiteUiPolish();scopeInstallPromptToHome();ensureHomeKnowledgeV2();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
+    active=true;ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureRouteIdentityCss();ensureSiteUiPolish();scopeInstallPromptToHome();ensureHomeKnowledgeV2();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
     lastFocus=d.activeElement instanceof HTMLElement?d.activeElement:null;
     root.className='avp-ui-modal tone-'+(opts.tone||'info');
     const type=opts.type||'alert';
@@ -162,5 +173,5 @@
     return 'info';
   }
   w.alert=function(message){const text=String(message??'');w.avpAlert(text,{tone:inferredTone(text)});};
-  ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureSiteUiPolish();scopeInstallPromptToHome();ensureHomeKnowledgeV2();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();
+  ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureRouteIdentityCss();ensureSiteUiPolish();scopeInstallPromptToHome();ensureHomeKnowledgeV2();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();
 })(window,document);
