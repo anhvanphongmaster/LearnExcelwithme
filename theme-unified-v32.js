@@ -2,6 +2,20 @@
   // Giao diện tối đã tắt — luôn light mode
   try { localStorage.setItem("theme", "light"); } catch(e) {}
   document.documentElement.classList.remove("dark-mode");
+
+  function loadCss(href,key){
+    if(document.querySelector('link[data-'+key+']'))return;
+    var link=document.createElement('link');
+    link.rel='stylesheet';
+    link.href=href;
+    link.setAttribute('data-'+key,'1');
+    document.head.appendChild(link);
+  }
+  loadCss('module-themes-v2.css?v=20260913-mod2','avp-module-themes-v2');
+  if((location.pathname.split('/').pop()||'').toLowerCase()==='admin.html'){
+    loadCss('admin-ui-v2.css?v=20260913-adminui2','avp-admin-ui-v2');
+  }
+
   function forceLight(){
     document.body && document.body.classList.remove("dark-mode");
     document.querySelectorAll("#themeToggle, .top-theme-button").forEach(function(b){
