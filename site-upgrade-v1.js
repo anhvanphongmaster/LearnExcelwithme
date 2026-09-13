@@ -27,7 +27,7 @@
     document.head.appendChild(link);return link;
   }
   loadRuntime('site-runtime-cache-v1.js?v=20260914-cache2','avp-site-cache-v1');
-  loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc4','avp-rpc-dedupe-v1');
+  loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc5','avp-rpc-dedupe-v1');
   loadRuntime('site-auth-cache-v1.js?v=20260914-auth3','avp-auth-cache-v1');
 
   const stable=/^(practice-|professional-|homework|baitapexcel|excel-race)/.test(page);
