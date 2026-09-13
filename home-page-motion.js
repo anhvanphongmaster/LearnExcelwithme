@@ -50,6 +50,7 @@
     clean.className='home-choice-card-v104';
     clean.dataset.kind=kind;
     clean.dataset.homeHubV104='1';
+    if(kind==='learn')clean.dataset.learningHub='fourflows1';
     clean.setAttribute('aria-label',kind==='learn'?'Học theo lộ trình — 4 luồng, 42 bài':'Thực hành kỹ năng — 5 luồng thực hành');
     clean.innerHTML=choiceMarkup(kind);
     if(clean.tagName==='A')clean.setAttribute('href',href);
@@ -145,7 +146,7 @@
 
   function repairPodium(){var rows=document.querySelectorAll('#learnBoardList .lb-row');if(!rows.length)return;var medals=['🥇','🥈','🥉'];for(var i=0;i<Math.min(3,rows.length);i++){var row=rows[i];var rank=row.querySelector('.lb-rank');row.classList.add('lb-podium-'+(i+1));if(rank)rank.innerHTML='<span class="lb-medal lb-'+(i===0?'gold':i===1?'silver':'bronze')+'" title="Top '+(i+1)+'">'+medals[i]+'</span>';}}
   function observeBoard(){var list=document.getElementById('learnBoardList');if(!list||list.dataset.podiumObserver==='1')return;list.dataset.podiumObserver='1';var raf=0;var observer=new MutationObserver(function(){if(raf)return;raf=requestAnimationFrame(function(){raf=0;repairPodium();});});observer.observe(list,{childList:true});window.addEventListener('pagehide',function(){observer.disconnect();},{once:true});}
-  function loadCatalog(){if(window.AVPLearningPlatform){renderFirstRun(window.AVPLearningPlatform);return;}var existing=document.querySelector('script[data-avp-home-first-catalog]');if(existing){existing.addEventListener('load',function(){renderFirstRun(window.AVPLearningPlatform);},{once:true});return;}var s=document.createElement('script');s.src='learning-platform-catalog-v1.js?v=20260913-fourflows1';s.dataset.avpHomeFirstCatalog='1';s.onload=function(){renderFirstRun(window.AVPLearningPlatform);};document.head.appendChild(s);}
+  function loadCatalog(){if(window.AVPLearningPlatform){renderFirstRun(window.AVPLearningPlatform);return;}var existing=document.querySelector('script[data-avp-home-first-catalog]');if(existing){existing.addEventListener('load',function(){renderFirstRun(window.AVPLearningPlatform);},{once:true});return;}var s=document.createElement('script');s.src='learning-platform-catalog-v1.js?v=20260913-fourflows2';s.dataset.avpHomeFirstCatalog='1';s.onload=function(){renderFirstRun(window.AVPLearningPlatform);};document.head.appendChild(s);}
 
   function boot(){
     ensureAssets();
