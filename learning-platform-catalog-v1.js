@@ -19,9 +19,16 @@
   const sequenceIndex=new Map(lessonSequence.map((id,i)=>[id,i+1]));
 
   const moduleForLesson = id => byModule.get(lessonToModule.get(id)) || null;
-  const moduleUrl = id => `skill-map.html?module=${encodeURIComponent(id)}`;
+  const moduleUrl = id => `skill-map.html?browse=1&module=${encodeURIComponent(id)}`;
   const lessonUrl = id => `knowledge.html?lesson=${encodeURIComponent(id)}`;
   const displayOrder = id => sequenceIndex.get(id) || 999;
+  const resumeLessonId = () => {
+    try{
+      const last=localStorage.getItem('avp_knowledge_last_v2');
+      return sequenceIndex.has(last)?last:lessonSequence[0];
+    }catch(_){return lessonSequence[0]}
+  };
+  const resumeUrl = () => lessonUrl(resumeLessonId());
 
   const syncLessonOrder=()=>{
     (window.AVPKnowledgeLessons||[]).forEach(lesson=>{
@@ -31,52 +38,43 @@
   };
   syncLessonOrder();
 
-  window.AVPLearningPlatform = {modules,byModule,lessonToModule,lessonSequence,sequenceIndex,moduleForLesson,moduleUrl,lessonUrl,displayOrder,syncLessonOrder};
+  window.AVPLearningPlatform = {modules,byModule,lessonToModule,lessonSequence,sequenceIndex,moduleForLesson,moduleUrl,lessonUrl,displayOrder,resumeLessonId,resumeUrl,syncLessonOrder};
 
-  function ensureHomeCoachStyle(){
-    if(document.getElementById('homeCoachEntryStyle'))return;
-    const s=document.createElement('style');s.id='homeCoachEntryStyle';s.textContent='.home-route-details-v1{margin:8px 0 0;border:1px solid #dce4df;border-radius:12px;background:#fff;overflow:hidden}.home-route-details-v1>summary{cursor:pointer;list-style:none;padding:11px 13px;color:#476252;font-size:11px;font-weight:900}.home-route-details-v1>summary::-webkit-details-marker{display:none}.home-route-details-v1>summary::after{content:" +";float:right;color:#89958e}.home-route-details-v1[open]>summary::after{content:" –"}.home-route-details-v1>.home-platform-grid-v1{padding:0 10px 10px!important}.home-path-inner>h2{margin-bottom:8px!important}.home-path-inner>h2::after{content:" · chỉ mở khi muốn tự chọn";font-size:10px;font-weight:600;color:#87938c}@media(max-width:560px){.home-route-details-v1>.home-platform-grid-v1{padding:0 7px 8px!important}}';document.head.appendChild(s);
-  }
-  function wireCoachEntry(){
+  function wireHomeOnePath(){
     const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
     if(page!==''&&page!=='index.html')return false;
+    const target=resumeUrl();
     let changed=false;
-    const learnLink=document.querySelector('.top-simple-nav [data-avp-nav="learn"]');
-    if(learnLink&&learnLink.getAttribute('href')!=='learning-coach.html'){
-      learnLink.setAttribute('href','learning-coach.html');
-      learnLink.setAttribute('aria-label','Học hôm nay');
-      changed=true;
-    }
+
+    const learn=document.querySelector('.top-simple-nav [data-avp-nav="learn"]');
+    if(learn&&learn.getAttribute('href')!==target){learn.href=target;learn.setAttribute('aria-label','Học tiếp');changed=true}
+
     const btn=document.getElementById('avpScrollToPath');
-    if(btn&&btn.dataset.coachEntry!=='1'){
+    if(btn&&btn.dataset.onePath!=='1'){
       const clean=btn.cloneNode(true);
-      clean.dataset.coachEntry='1';
-      clean.setAttribute('aria-label','Học hôm nay — kiểm tra trình độ và nhận việc cần làm tiếp theo');
-      clean.innerHTML='<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Học hôm nay · biết ngay nên làm gì →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">Kiểm tra 5 phút · 3 câu luyện · ôn lỗi sai</span>';
-      btn.replaceWith(clean);
-      clean.addEventListener('click',()=>{location.href='learning-coach.html'});
+      clean.dataset.onePath='1';
+      const order=String(displayOrder(resumeLessonId())).padStart(2,'0');
+      clean.innerHTML=`<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Học tiếp · Bài ${order} →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">Bấm một lần là vào bài · không qua trang trung gian</span>`;
+      clean.addEventListener('click',()=>{location.href=target});
+      btn.replaceWith(clean);changed=true;
+    }
+
+    const cards=[...document.querySelectorAll('.home-platform-module-v1')];
+    if(cards.length){
+      cards.forEach((card,i)=>{
+        const module=modules[i];if(!module)return;
+        card.href=lessonUrl(module.lessons[0]);
+        const foot=card.querySelector('b');if(foot)foot.textContent=`${module.lessons.length} bài · Bắt đầu →`;
+      });
       changed=true;
     }
-    const grid=document.querySelector('.home-platform-grid-v1');
-    if(grid&&!grid.closest('.home-route-details-v1')){
-      ensureHomeCoachStyle();
-      const details=document.createElement('details');details.className='home-route-details-v1';
-      const summary=document.createElement('summary');summary.textContent='Xem toàn bộ 8 module · 42 bài';
-      grid.parentNode.insertBefore(details,grid);details.append(summary,grid);changed=true;
-    }
-    const details=document.querySelector('.home-route-details-v1');
-    const board=document.querySelector('.home-path-inner>.learn-board, .home-route-details-v1>.learn-board');
-    if(details&&board&&details.contains(board)){
-      details.insertAdjacentElement('afterend',board);
-      changed=true;
-    }
-    return changed||!!document.querySelector('[data-coach-entry="1"]');
+    return changed;
   }
-  function bootCoachEntry(){
-    let n=0,t=0;
-    const run=()=>{n++;wireCoachEntry();if(n>25)clearInterval(t)};
-    run();t=setInterval(run,160);
+
+  function bootHomeOnePath(){
+    let n=0;const t=setInterval(()=>{n++;wireHomeOnePath();if(n>24)clearInterval(t)},160);
+    wireHomeOnePath();
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootCoachEntry,{once:true});else bootCoachEntry();
-  setTimeout(wireCoachEntry,900);setTimeout(wireCoachEntry,2200);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bootHomeOnePath,{once:true});else bootHomeOnePath();
+  setTimeout(wireHomeOnePath,900);setTimeout(wireHomeOnePath,2200);
 })();
