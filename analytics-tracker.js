@@ -112,9 +112,6 @@
       ]).finally(()=>clearTimeout(timer));
 
       if(error){
-        /*
-          Do not break the website if analytics SQL is not installed yet.
-        */
         console.debug("Analytics unavailable:",error.message);
         return false;
       }
@@ -131,8 +128,6 @@
     visitorId:getVisitorId()
   };
 
-  // Track important user clicks across the whole site.
-  // Practice-video has its own tracking, so skip those classes to avoid double counts.
   document.addEventListener("click", function(e){
     const link=e.target.closest?.("a[href]");
     if(!link) return;
@@ -146,7 +141,6 @@
 
     if(link.classList.contains("pv-tiktok")) return;
     if(link.classList.contains("pyt-yt") || /(?:youtube\.com|youtu\.be|tiktok\.com)/i.test(href)){
-      // Book cards already emit book_click themselves.
       if(link.classList.contains("home-book-card")) return;
       track("video_click",{page:currentPage(),tool_name:label,metadata:{href:href.slice(0,120)}});
     }
@@ -164,20 +158,21 @@
     const client=await getClient();
     if(!client?.auth?.onAuthStateChange) return;
 
-    // Professional Track: ghi nhận tối đa 1 ngày hoạt động cho mỗi tài khoản/ngày.
-    // RPC tự chống trùng; không thay đổi analytics hiện tại.
-    try{
-      const {data:{session}}=await client.auth.getSession();
-      if(session?.user){
-        const day=new Date().toISOString().slice(0,10);
-        const activityKey=`avp_professional_activity_${session.user.id}_${day}`;
-        if(localStorage.getItem(activityKey)!=="1"){
-          client.rpc("professional_track_mark_activity_v1")
-            .then(({error})=>{if(!error)localStorage.setItem(activityKey,"1")})
-            .catch(()=>{});
+    /* Professional activity belongs to the Professional area only. */
+    if(page.includes("professional")){
+      try{
+        const {data:{session}}=await client.auth.getSession();
+        if(session?.user){
+          const day=new Date().toISOString().slice(0,10);
+          const activityKey=`avp_professional_activity_${session.user.id}_${day}`;
+          if(localStorage.getItem(activityKey)!=="1"){
+            client.rpc("professional_track_mark_activity_v1")
+              .then(({error})=>{if(!error)localStorage.setItem(activityKey,"1")})
+              .catch(()=>{});
+          }
         }
-      }
-    }catch(_){}
+      }catch(_){}
+    }
 
     client.auth.onAuthStateChange((event,session)=>{
       if(event!=="SIGNED_IN" || !session?.user) return;
@@ -185,10 +180,6 @@
       const tokenKey=`avp_login_tracked_${session.user.id}`;
       const now=Date.now();
       const last=Number(sessionStorage.getItem(tokenKey)||0);
-
-      /*
-        Prevent duplicate SIGNED_IN events in the same page lifecycle.
-      */
       if(now-last < 5000) return;
       sessionStorage.setItem(tokenKey,String(now));
 
