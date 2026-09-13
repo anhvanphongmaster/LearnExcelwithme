@@ -1,8 +1,8 @@
-const CACHE="learnexcel-assets-v20260914-site2";
+const CACHE="learnexcel-assets-v20260914-site3";
 const ASSETS=[
   "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css","./home-ux-polish-v1.css",
   "./site-upgrade-v1.css","./home-ui-owner-v1.css","./module-themes-v2.css","./upgrade.css",
-  "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./global-search.js",
+  "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./home-page-motion-core-v108.js","./global-search.js",
   "./site-upgrade-v1.js","./site-runtime-cache-v1.js","./site-rpc-dedupe-v1.js","./site-auth-cache-v1.js","./site-supabase-read-cache-v1.js","./theme-unified-v32.js","./analytics-tracker.js",
   "./index.html","./skill-map.html","./knowledge.html","./practice-video.html","./excel-race.html","./learning-coach.html","./tools-center.html","./tools-library.html",
   "./learning-platform-catalog-v1.js","./learning-coach-v2.css","./learning-coach-v2.js"
@@ -32,9 +32,6 @@ async function networkFirst(req){
       cache.put(req,res.clone()).catch(()=>{});
       return res;
     }
-
-    /* GitHub Pages can briefly return 404/5xx while a deployment is switching.
-       Prefer the last known-good exact response instead of flashing a broken page. */
     const cached=await cache.match(req);
     if(cached) return cached;
     return res;
@@ -62,14 +59,9 @@ self.addEventListener("fetch",event=>{
   if(req.method!=="GET") return;
   const url=new URL(req.url);
   if(url.origin!==self.location.origin) return;
-
   const isHTML=req.mode==="navigate"||url.pathname.endsWith(".html")||url.pathname.endsWith("/");
   const isCode=/\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
-
-  /* HTML/JS/CSS stay network-first so deploys appear quickly. Cache is only a
-     last-known-good fallback for offline/transient deployment failures. */
   if(isHTML||isCode){event.respondWith(networkFirst(req));return;}
-
   event.respondWith(cacheFirst(req));
 });
 
