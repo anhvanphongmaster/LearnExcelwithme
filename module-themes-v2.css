@@ -1,76 +1,50 @@
-/*! module-themes-v2.css — Code Hub teal / Arena purple / Tool amber */
-/* HOME: make the three module cards read as three distinct products. */
-.home-extra-card-v2.tone-code{border-color:#77cfc2!important;background:linear-gradient(145deg,#eafbf7 0,#f6fffc 55%,#e7f6f2 100%)!important;box-shadow:0 10px 25px rgba(24,132,119,.10)!important}
-.home-extra-card-v2.tone-code .home-more-icon{background:linear-gradient(145deg,#147f76,#2ba493)!important;color:#fff!important;box-shadow:0 8px 18px rgba(20,127,118,.22)!important}
-.home-extra-card-v2.tone-code :is(small,strong,b){color:#116b64!important}
-.home-extra-card-v2.tone-arena{border-color:#cca6e5!important;background:linear-gradient(145deg,#f7effd 0,#fff9fd 58%,#f1e8fb 100%)!important;box-shadow:0 10px 25px rgba(126,67,165,.10)!important}
-.home-extra-card-v2.tone-arena .home-more-icon{background:linear-gradient(145deg,#7c3ea4,#a659bd)!important;color:#fff!important;box-shadow:0 8px 18px rgba(124,62,164,.24)!important}
-.home-extra-card-v2.tone-arena :is(small,strong,b){color:#773a98!important}
-.home-extra-card-v2.tone-tools{border-color:#e9ba73!important;background:linear-gradient(145deg,#fff7e9 0,#fffdf8 58%,#fff0d8 100%)!important;box-shadow:0 10px 25px rgba(183,108,18,.10)!important}
-.home-extra-card-v2.tone-tools .home-more-icon{background:linear-gradient(145deg,#ae6613,#d58a27)!important;color:#fff!important;box-shadow:0 8px 18px rgba(174,102,19,.22)!important}
-.home-extra-card-v2.tone-tools :is(small,strong,b){color:#8a500d!important}
+/*! module-themes-v2.css — internal module identity only.
+    IMPORTANT: does not recolor Home launcher cards. */
 
-/* CODE HUB — teal from launcher to modal content. */
-.avp-codehub-modal{--hub:#168579;--hub-dark:#0f655d;--hub-soft:#eaf8f5;--hub-line:#acdcd4}
-.avp-codehub-dialog{border:1px solid var(--hub-line)!important;background:linear-gradient(180deg,var(--hub-soft) 0,#fff 150px)!important;box-shadow:0 28px 80px rgba(12,87,79,.22)!important}
-.avp-codehub-head{background:linear-gradient(135deg,#0e5f58,#168579 56%,#229b8d)!important;color:#fff!important;border-bottom:0!important;padding:22px!important}
-.avp-codehub-head :is(h2,p,.avp-codehub-kicker){color:#fff!important}
-.avp-codehub-head p{opacity:.82!important}
-.avp-codehub-close{background:rgba(255,255,255,.14)!important;color:#fff!important;border-color:rgba(255,255,255,.22)!important}
-.avp-codehub-toolbar{background:#f1fbf8!important;border-bottom:1px solid #cce8e2!important}
-.avp-codehub-search{border-color:#b9ddd6!important;background:#fff!important;color:#173d38!important}
+/* =========================
+   CODE HUB — teal identity
+   Only shell/header/title/primary action. Existing inner cards keep their own colors.
+   ========================= */
+.avp-codehub-modal{--hub:#168579;--hub-dark:#0f655d;--hub-soft:#eef9f7;--hub-line:#a9d9d1}
+.avp-codehub-dialog{border:1px solid var(--hub-line)!important;box-shadow:0 26px 72px rgba(12,87,79,.18)!important}
+.avp-codehub-head{background:linear-gradient(135deg,#0f645c,#168579 62%,#23998d)!important;color:#fff!important;border-bottom:0!important}
+.avp-codehub-head :is(h1,h2,h3,p,.avp-codehub-kicker){color:#fff!important}
+.avp-codehub-head p{opacity:.88!important}
+.avp-codehub-close{background:rgba(255,255,255,.14)!important;color:#fff!important;border-color:rgba(255,255,255,.24)!important}
+.avp-codehub-toolbar{border-bottom-color:#c9e7e1!important}
 .avp-codehub-search:focus{border-color:var(--hub)!important;box-shadow:0 0 0 3px rgba(22,133,121,.12)!important}
-.avp-codehub-filter{border-color:#b8dcd5!important;background:#fff!important;color:#29665f!important}
-.avp-codehub-filter.is-active{background:var(--hub)!important;border-color:var(--hub)!important;color:#fff!important}
-.avp-codehub-count{color:var(--hub-dark)!important}
-.avp-codecard{border:1px solid #d2e8e3!important;background:#fff!important;box-shadow:0 5px 16px rgba(20,100,90,.05)!important}
-.avp-codecard[open]{border-color:#91cfc5!important;box-shadow:0 10px 28px rgba(19,115,104,.10)!important}
-.avp-codecard summary:hover{background:#f0faf7!important}
-.avp-codecard-no,.avp-code-tag{background:#e4f5f1!important;color:#146c63!important;border-color:#b9ddd6!important}
-.avp-code-tag.level{background:#f2f8f7!important;color:#4a716c!important}
-.avp-codecard-title strong,.avp-code-info b,.avp-code-setup-box h4{color:#145e57!important}
-.avp-code-copy{background:var(--hub)!important;border-color:var(--hub)!important;color:#fff!important}
-.avp-code-copy:hover{background:var(--hub-dark)!important}
-.avp-code-block{border-color:#244b47!important;background:#102421!important}
-.avp-code-block-head{background:#17332f!important;border-bottom-color:#2f5752!important;color:#d9f3ee!important}
-.avp-codehub-note{background:#edf8f5!important;border-color:#c6e6df!important;color:#3e6963!important}
+.avp-codehub-filter.is-active,.avp-code-copy{background:var(--hub)!important;border-color:var(--hub)!important;color:#fff!important}
+.avp-codehub-count,.avp-codecard-title strong,.avp-code-info b,.avp-code-setup-box h4{color:var(--hub-dark)!important}
 
-/* EXCEL ARENA — purple product identity, while gameplay status colors stay meaningful. */
-body:has(.arena-shell){--arena-purple:#7445a5;--arena-purple2:#9a63c8;--arena-purple-soft:#f5effb;--arena-purple-line:#d5bce8;background:linear-gradient(180deg,#f5f0fa,#faf8fc 520px)!important}
-.arena-hero{border-color:#5e3888!important;background:radial-gradient(circle at 88% 15%,rgba(201,145,237,.20),transparent 27%),radial-gradient(circle at 4% 100%,rgba(104,68,145,.30),transparent 34%),linear-gradient(135deg,#241332,#412258 60%,#2e173e)!important;box-shadow:0 18px 55px rgba(75,42,105,.18)!important}
-.arena-season{border-color:rgba(228,198,247,.38)!important;background:rgba(155,92,199,.18)!important;color:#ead7f8!important}
-.arena-hero-chips span{background:rgba(255,255,255,.07)!important;border-color:rgba(255,255,255,.14)!important;color:#f0e7f6!important}
-.arena-hero-chips strong{color:#e1bdf5!important}
-.arena-profile,.arena-setup,.arena-board{border-color:var(--arena-purple-line)!important;box-shadow:0 9px 26px rgba(108,67,145,.07)!important}
-.arena-step-head>span{background:#f0e5f8!important;color:#6a3d93!important}
-.arena-step-head h2,.arena-profile strong,.board-head h2{color:#4d2f68!important}
-.mode-card.is-selected,.topic-card.is-selected{border-color:#9b70ba!important;background:#f5eefb!important;box-shadow:0 0 0 2px rgba(116,69,165,.09)!important}
-.topic-card:hover{border-color:#b99bd0!important}
-.arena-primary{border-color:#684093!important;background:linear-gradient(135deg,#6b3d98,#8d58b8)!important;color:#fff!important;box-shadow:0 8px 18px rgba(107,61,152,.20)!important}
-.arena-primary:hover{background:#5d3487!important}
-.arena-secondary{border-color:#d1bee0!important;color:#68498a!important;background:#fff!important}
-.arena-game{border-color:#563276!important;box-shadow:0 22px 70px rgba(60,33,82,.23)!important}
-.arena-toolbar{background:#21132c!important;border-bottom-color:#4d3261!important}
-.arena-toolbar .arena-secondary{border-color:#66487a!important;background:#332141!important;color:#f3e8fa!important}
-.arena-hud{background:#503461!important}
-.arena-hud>div{background:#2a1936!important}
-.race-stage{background:radial-gradient(circle at 18% 0,rgba(166,104,207,.14),transparent 33%),linear-gradient(180deg,#22122e,#170e20)!important}
-.race-kicker{color:#c991ea!important}
-.race-track{border-color:#64447a!important;background:linear-gradient(180deg,#301b3e,#24152f 35%,#180e21 100%)!important}
-.race-progress{background:#34213f!important}.race-progress i{background:linear-gradient(90deg,#7045a1,#b56dd2,#f0c96c)!important}
-.question-console{background:linear-gradient(180deg,#291734,#1d1027)!important}.question-meta span{border-color:#654579!important;background:#382247!important;color:#cbb5d9!important}
-.answer-option{border-color:#574064!important;background:linear-gradient(145deg,#32203d,#24172d)!important}.answer-option:hover:not(:disabled){border-color:#9a72b2!important;background:#3a2647!important}
+/* =========================
+   EXCEL ARENA — purple identity
+   Preserve topic/mode/question status colors; tint outer shell only.
+   ========================= */
+body:has(.arena-shell){--arena-module:#7445a5;--arena-module-dark:#57327d;--arena-module-soft:#f6f0fb;--arena-module-line:#d3bce4;background:linear-gradient(180deg,#f7f3fa 0,#faf9fb 520px)!important}
+.arena-hero{border-color:#8054a8!important;background:radial-gradient(circle at 88% 12%,rgba(179,124,214,.18),transparent 29%),linear-gradient(145deg,#ffffff,#f4edf9)!important;color:#3f2853!important;box-shadow:0 12px 34px rgba(93,57,122,.09)!important}
+.arena-hero h1{color:#4f2e6b!important}.arena-hero p{color:#6f5c7b!important}
+.arena-season{border-color:#d0b6e1!important;background:#f3eafb!important;color:#67408a!important}
+.arena-hero-chips span{border-color:#dfd0e8!important;background:#fff!important;color:#685a70!important}.arena-hero-chips strong{color:#7445a5!important}
+.arena-profile,.arena-setup,.arena-board{border-color:var(--arena-module-line)!important}
+.arena-step-head>span{background:#f2e9f8!important;color:#704397!important;border-color:#d7c1e5!important}
+.arena-step-head h2,.arena-profile strong,.board-head h2{color:#56366f!important}
+.arena-start-row .arena-primary{border-color:#7445a5!important;background:linear-gradient(135deg,#7445a5,#9361bc)!important;color:#fff!important;box-shadow:0 8px 20px rgba(116,69,165,.18)!important}
+.arena-start-row .arena-primary:hover{background:#653b91!important;border-color:#653b91!important}
+.arena-start-row .arena-secondary{border-color:#d2c0df!important;color:#684687!important;background:#fff!important}
+/* Gameplay panels intentionally keep existing success/warn/error/topic colors. */
 
-/* KHO TOOL — amber/orange all the way through. */
-body:has(.tl-page){--tl-green:#b86c16;--tl-dark:#68400f;--tl-muted:#746553;--tl-line:#ead4b5;--tl-soft:#fff8ed;--tl-shadow:0 18px 48px rgba(145,88,18,.10);background:linear-gradient(180deg,#fffaf2,#fbf9f5 520px)!important}
-.tl-hero{border-color:#e6c491!important;background:linear-gradient(135deg,#fff3df,#fff 56%,#fff7ec)!important;box-shadow:var(--tl-shadow)!important}
-.tl-kicker{background:#ffebc8!important;color:#8d520c!important}.tl-hero h1{color:#71420c!important}.tl-hero p{color:#766553!important}
-.tl-hero-stat{background:linear-gradient(145deg,#9e5b0d,#c97b1e)!important}.tl-cadence-copy strong{background:#9e5b0d!important}.tl-cadence-copy span{color:#79644d!important}
-.tl-next-card{border-color:#e7c99d!important;background:#fffaf1!important}.tl-next-card small{color:#a56010!important}.tl-next-card>strong,.tl-next-card time{color:#74450d!important}
-.tl-search,.tl-sort-wrap select{border-color:#e6d2b3!important}.tl-search:focus,.tl-sort-wrap select:focus{border-color:#c27b28!important;box-shadow:0 0 0 4px rgba(184,108,22,.10)!important}
-.tl-count{color:#795e3e!important}.tl-card{border-color:#ead7ba!important;box-shadow:0 8px 24px rgba(135,82,17,.055)!important}.tl-card:hover{border-color:#d9ad70!important;box-shadow:0 14px 30px rgba(135,82,17,.10)!important}
-.tl-order{background:#fff0d8!important;color:#995b12!important}.tl-card h2{color:#70430f!important}.tl-app{color:#a35f0e!important}.tl-card p{color:#756654!important}.tl-download{background:linear-gradient(135deg,#a9600d,#cb7d20)!important;box-shadow:0 8px 18px rgba(170,97,13,.20)!important}.tl-download:hover{background:#91520b!important}
-.tl-ideas{border-color:#ead3b0!important;background:linear-gradient(180deg,#fffaf2,#fff)!important}.tl-ideas h2{color:#72440f!important}.tl-idea-form input{border-color:#e6d2b2!important}.tl-idea-form input:focus{border-color:#c37a22!important;box-shadow:0 0 0 3px rgba(184,108,22,.10)!important}.tl-idea-form button{background:#9e5b0d!important}.tl-idea{border-color:#eedcc0!important}.tl-idea strong{color:#704b20!important}.tl-support{border-color:#e2bc83!important;background:#fff6e8!important;color:#92550e!important}
-.tl-modal-top{background:linear-gradient(135deg,#8f510a,#bd7119 62%,#d18a31)!important}.tl-yes,.tl-skip{background:#a75f0c!important}.tl-check{background:#fff0d7!important;color:#a45f0f!important}.tl-passbox{border-color:#d9ac6a!important;background:#fff9ef!important}.tl-countdown strong{color:#a75f0c!important}
-
-@media(max-width:700px){.home-extra-card-v2.tone-code,.home-extra-card-v2.tone-arena,.home-extra-card-v2.tone-tools{box-shadow:none!important}}
+/* =========================
+   KHO TOOL — amber identity
+   Outer shell/header/title/buttons only; tool cards and idea status colors stay intact.
+   ========================= */
+body:has(.tl-page){--tl-module:#b66a16;--tl-module-dark:#7c470d;--tl-module-soft:#fff7eb;--tl-module-line:#e8c995;background:linear-gradient(180deg,#fffaf3 0,#fbf9f6 520px)!important}
+.tl-hero{border-color:var(--tl-module-line)!important;background:linear-gradient(135deg,#fff5e6,#fff 58%,#fff9f1)!important;box-shadow:0 18px 48px rgba(145,88,18,.09)!important}
+.tl-kicker{background:#ffebc8!important;color:#8d520c!important}.tl-hero h1{color:#74440d!important}.tl-hero p{color:#746554!important}
+.tl-hero-stat{background:linear-gradient(145deg,#9f5b0c,#c77a1d)!important;color:#fff!important}
+.tl-cadence-copy strong{background:#a25d0c!important;color:#fff!important}
+.tl-next-card{border-color:#e6c89b!important}.tl-next-card small{color:#a55f0f!important}.tl-next-card>strong,.tl-next-card time{color:#74450d!important}
+.tl-search:focus,.tl-sort-wrap select:focus{border-color:#bd7826!important;box-shadow:0 0 0 4px rgba(182,106,22,.10)!important}
+.tl-download,.tl-idea-form button{background:#b66a16!important;color:#fff!important}.tl-download:hover,.tl-idea-form button:hover{background:#95550f!important}
+.tl-modal-top{background:linear-gradient(135deg,#8f510a,#bc7018 62%,#cf8730)!important;color:#fff!important}
+.tl-modal-top :is(h1,h2,h3,p,span){color:#fff!important}
+/* Inner tool/idea/status cards keep their pre-existing colors. */
