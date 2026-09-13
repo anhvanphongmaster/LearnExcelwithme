@@ -52,7 +52,10 @@
       });
       const extraActive = extra.some(item => item.index === index);
       const details = host.querySelector('.kv-reader-extra');
-      if (details && extraActive) details.open = true;
+      if (details) {
+        details.classList.toggle('has-active', extraActive);
+        if (extraActive) details.open = true;
+      }
     }
 
     function renderToolbar() {
