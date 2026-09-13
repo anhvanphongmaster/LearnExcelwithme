@@ -1,772 +1,126 @@
 (() => {
   "use strict";
+  if(window.__AVP_ADMIN_COMMUNITY_CENTER_V2__)return;
+  window.__AVP_ADMIN_COMMUNITY_CENTER_V2__=true;
 
-  if (window.__AVP_ADMIN_COMMUNITY_CENTER_V1__) return;
-  window.__AVP_ADMIN_COMMUNITY_CENTER_V1__ = true;
-
-  const $ = id => document.getElementById(id);
-  const esc = s => String(s ?? "").replace(/[&<>"']/g, m => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[m]));
-
-  let client = null;
-  let users = [];
-  let selectedUserId = null;
-  let selectedNotificationId = null;
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+  let client=null,mounted=false,activeTab="send",selectedUserId=null,selectedNotificationId=null,certRows=[];
 
   async function waitClient(){
-    for(let i=0;i<100;i++){
-      if(window.avpSupabase){
-        client=window.avpSupabase;
-        return true;
-      }
+    if(client?.rpc)return client;
+    for(let i=0;i<60;i++){
+      const c=window.avpSupabase||window.supabaseClient||null;
+      if(c?.rpc){client=c;return c}
       await new Promise(r=>setTimeout(r,100));
     }
-    return false;
+    return null;
   }
-
-  async function rpc(name,args={}){
-    const {data,error}=await client.rpc(name,args);
-    if(error) throw error;
-    return data;
-  }
-
-  async function isAdmin(){
-    try{
-      const {data:sessionData}=await client.auth.getSession();
-      const currentUser=sessionData?.session?.user;
-      if(!currentUser) return false;
-
-      try{
-        const {data,error}=await client.rpc("is_admin_user");
-        if(!error && data===true) return true;
-      }catch{}
-
-      try{
-        const {data,error}=await client
-          .from("profiles")
-          .select("is_admin")
-          .eq("id",currentUser.id)
-          .maybeSingle();
-        if(!error && data?.is_admin===true) return true;
-      }catch{}
-
-      return false;
-    }catch{
-      return false;
-    }
-  }
-
-  function fmt(v){
-    if(!v) return "—";
-    try{return new Date(v).toLocaleString("vi-VN")}catch{return String(v)}
-  }
-
-  function catLabel(v){
-    return ({
-      system:"Hệ thống",
-      minigame:"Mini game",
-      event:"Sự kiện",
-      update:"Cập nhật",
-      important:"Quan trọng"
-    })[v] || v || "Hệ thống";
-  }
+  async function rpc(name,args={}){const c=await waitClient();if(!c)throw new Error("Supabase chưa sẵn sàng");const {data,error}=await c.rpc(name,args);if(error)throw error;return data}
+  const fmt=v=>{if(!v)return"—";try{return new Date(v).toLocaleString("vi-VN")}catch{return String(v)}};
+  const catLabel=v=>({system:"Hệ thống",minigame:"Mini game",event:"Sự kiện",update:"Cập nhật",important:"Quan trọng"})[v]||v||"Hệ thống";
 
   function mount(){
-    if($("avpAdminCommunityCenter")) return;
-    const dashboard=$("adminDashboard");
-    if(!dashboard) return;
-
-    const staticHost=$("avpAdminCommunityHost");
-    const host=staticHost || dashboard;
-
-    const section=document.createElement("section");
-    section.id="avpAdminCommunityCenter";
-    section.className="admin-panel avp-acc-panel";
+    if(mounted||$("avpAdminCommunityCenter")){mounted=true;return true}
+    const host=$("avpAdminCommunityHost")||$("adminDashboard");if(!host)return false;
+    const section=document.createElement("section");section.id="avpAdminCommunityCenter";section.className="admin-panel avp-acc-panel";
     section.innerHTML=`
-      <div class="admin-panel-head">
-        <div>
-          <span>📣 CỘNG ĐỒNG & THÔNG BÁO</span>
-          <h2>Trung tâm quản trị học viên</h2>
-        </div>
-        <button id="avpAccRefresh" type="button" class="avp-acc-secondary">↻ Làm mới</button>
-      </div>
-
+      <div class="admin-panel-head"><div><span>📣 CỘNG ĐỒNG & THÔNG BÁO</span><h2>Trung tâm quản trị học viên</h2><p>Chỉ tải dữ liệu của mục bạn đang mở để giảm tải Supabase.</p></div><button id="avpAccRefresh" type="button" class="avp-acc-secondary">↻ Làm mới</button></div>
       <div class="avp-acc-tabs">
         <button type="button" class="active" data-acc-tab="send">📢 Gửi thông báo</button>
         <button type="button" data-acc-tab="history">📚 Lịch sử</button>
         <button type="button" data-acc-tab="certs">🏅 Chứng nhận</button>
         <button type="button" data-acc-tab="moderation">🛡️ Kiểm duyệt</button>
       </div>
-
       <div id="avpAccSendTab" class="avp-acc-tab">
         <div class="avp-acc-compose">
-          <div class="avp-acc-field avp-acc-wide">
-            <label>Tiêu đề</label>
-            <input id="avpAccTitle" maxlength="180" placeholder="Ví dụ: Mini game Excel cuối tuần">
-          </div>
-
-          <div class="avp-acc-field">
-            <label>Loại thông báo</label>
-            <select id="avpAccCategory">
-              <option value="system">Hệ thống</option>
-              <option value="minigame">Mini game</option>
-              <option value="event">Sự kiện</option>
-              <option value="update">Cập nhật</option>
-              <option value="important">Quan trọng</option>
-            </select>
-          </div>
-
-          <div class="avp-acc-field">
-            <label>Người nhận</label>
-            <select id="avpAccTarget">
-              <option value="all">Tất cả học viên</option>
-              <option value="user">Một học viên cụ thể</option>
-            </select>
-          </div>
-
-          <div id="avpAccUserPicker" class="avp-acc-user-picker avp-acc-wide" hidden>
-            <label>Tìm học viên</label>
-            <input id="avpAccUserSearch" type="search" placeholder="Nhập tên hoặc email...">
-            <div id="avpAccUserResults" class="avp-acc-user-results"></div>
-            <div id="avpAccSelectedUser" class="avp-acc-selected-user" hidden></div>
-          </div>
-
-          <div class="avp-acc-field avp-acc-wide">
-            <label>Nội dung</label>
-            <textarea id="avpAccContent" maxlength="5000" rows="5" placeholder="Nội dung thông báo học viên sẽ nhìn thấy..."></textarea>
-          </div>
-
-          <label class="avp-acc-check">
-            <input id="avpAccPinned" type="checkbox">
-            <span>📌 Ghim thông báo lên đầu</span>
-          </label>
-
+          <div class="avp-acc-field avp-acc-wide"><label>Tiêu đề</label><input id="avpAccTitle" maxlength="180" placeholder="Ví dụ: Mini game Excel cuối tuần"></div>
+          <div class="avp-acc-field"><label>Loại thông báo</label><select id="avpAccCategory"><option value="system">Hệ thống</option><option value="minigame">Mini game</option><option value="event">Sự kiện</option><option value="update">Cập nhật</option><option value="important">Quan trọng</option></select></div>
+          <div class="avp-acc-field"><label>Người nhận</label><select id="avpAccTarget"><option value="all">Tất cả học viên</option><option value="user">Một học viên cụ thể</option></select></div>
+          <div id="avpAccUserPicker" class="avp-acc-user-picker avp-acc-wide" hidden><label>Tìm học viên</label><input id="avpAccUserSearch" type="search" placeholder="Nhập tên hoặc email..."><div id="avpAccUserResults" class="avp-acc-user-results"></div><div id="avpAccSelectedUser" class="avp-acc-selected-user" hidden></div></div>
+          <div class="avp-acc-field avp-acc-wide"><label>Nội dung</label><textarea id="avpAccContent" maxlength="5000" rows="5" placeholder="Nội dung thông báo học viên sẽ nhìn thấy..."></textarea></div>
+          <label class="avp-acc-check"><input id="avpAccPinned" type="checkbox"><span>📌 Ghim thông báo lên đầu</span></label>
           <button id="avpAccSend" type="button" class="avp-acc-primary">Gửi thông báo</button>
         </div>
       </div>
-
       <div id="avpAccHistoryTab" class="avp-acc-tab" hidden>
-        <div class="avp-acc-split">
-          <div>
-            <div class="avp-acc-subhead">
-              <h3>Thông báo đã phát</h3>
-              <span>Bấm một thông báo để xem người đã đọc.</span>
-            </div>
-            <div id="avpAccNotificationList" class="avp-acc-list"></div>
-          </div>
-
-          <div>
-            <div class="avp-acc-subhead">
-              <h3>Trạng thái người nhận</h3>
-              <span id="avpAccAudienceHint">Chưa chọn thông báo.</span>
-            </div>
-            <div id="avpAccAudience" class="avp-acc-audience">
-              <p class="admin-empty">Chọn một thông báo ở cột bên trái.</p>
-            </div>
-          </div>
-        </div>
+        <div class="avp-acc-split"><div><div class="avp-acc-subhead"><h3>Thông báo đã phát</h3><span>Danh sách chỉ tải 1 RPC; chi tiết đã đọc chỉ tải khi bấm xem.</span></div><div id="avpAccNotificationList" class="avp-acc-list"><p class="admin-empty">Mở Lịch sử để tải dữ liệu.</p></div></div><div><div class="avp-acc-subhead"><h3>Trạng thái người nhận</h3><span id="avpAccAudienceHint">Chưa chọn thông báo.</span></div><div id="avpAccAudience" class="avp-acc-audience"><p class="admin-empty">Chọn một thông báo ở cột bên trái.</p></div></div></div>
       </div>
+      <div id="avpAccCertsTab" class="avp-acc-tab" hidden><div class="avp-acc-subhead"><div><h3>Chứng nhận cộng đồng</h3><span>Xem mã xác minh và thu hồi / khôi phục chứng nhận.</span></div><input id="avpAccCertSearch" type="search" placeholder="Tìm tên, email hoặc mã xác minh..."></div><div id="avpAccCertList" class="avp-acc-cert-list"><p class="admin-empty">Mở Chứng nhận để tải dữ liệu.</p></div></div>
+      <div id="avpAccModerationTab" class="avp-acc-tab" hidden><div class="avp-acc-subhead"><div><h3>🛡️ Hàng chờ kiểm duyệt</h3><span>Report từ học viên và cảnh báo tự động.</span></div><select id="avpModerationStatus"><option value="open">Chờ xử lý</option><option value="all">Tất cả</option><option value="resolved">Đã xử lý</option></select></div><div id="avpModerationList" class="avp-moderation-list"><p class="admin-empty">Mở Kiểm duyệt để tải dữ liệu.</p></div></div>`;
+    if($("avpAdminCommunityHost")){host.innerHTML="";host.appendChild(section)}else host.appendChild(section);
+    mounted=true;bind();return true;
+  }
 
-      <div id="avpAccCertsTab" class="avp-acc-tab" hidden>
-        <div class="avp-acc-subhead">
-          <div>
-            <h3>Chứng nhận cộng đồng</h3>
-            <span>Xem mã xác minh và thu hồi / khôi phục chứng nhận.</span>
-          </div>
-          <input id="avpAccCertSearch" type="search" placeholder="Tìm tên, email hoặc mã xác minh...">
-        </div>
-        <div id="avpAccCertList" class="avp-acc-cert-list"></div>
-      </div>
-
-      <div id="avpAccModerationTab" class="avp-acc-tab" hidden>
-        <div class="avp-acc-subhead">
-          <div>
-            <h3>🛡️ Hàng chờ kiểm duyệt</h3>
-            <span>Report từ học viên + cảnh báo tự động về lừa đảo/link đáng ngờ.</span>
-          </div>
-          <select id="avpModerationStatus">
-            <option value="open">Chờ xử lý</option>
-            <option value="all">Tất cả</option>
-            <option value="resolved">Đã xử lý</option>
-          </select>
-        </div>
-        <div id="avpModerationList" class="avp-moderation-list"></div>
-      </div>
-    `;
-
-    if(staticHost){
-      staticHost.innerHTML="";
-      staticHost.appendChild(section);
-    }else{
-      const firstPanel=host.querySelector(".admin-panel");
-      if(firstPanel) host.insertBefore(section,firstPanel);
-      else host.appendChild(section);
-    }
-
-    bind();
+  async function openTab(tab){
+    activeTab=tab;
+    document.querySelectorAll("[data-acc-tab]").forEach(b=>b.classList.toggle("active",b.dataset.accTab===tab));
+    [["send","avpAccSendTab"],["history","avpAccHistoryTab"],["certs","avpAccCertsTab"],["moderation","avpAccModerationTab"]].forEach(([name,id])=>{$(id).hidden=name!==tab});
+    if(tab==="history")await loadNotifications();
+    if(tab==="certs")await loadCertificates();
+    if(tab==="moderation")await loadModeration();
   }
 
   function bind(){
-    document.querySelectorAll("[data-acc-tab]").forEach(btn=>{
-      btn.onclick=async()=>{
-        document.querySelectorAll("[data-acc-tab]").forEach(b=>b.classList.toggle("active",b===btn));
-        const tab=btn.dataset.accTab;
-        $("avpAccSendTab").hidden=tab!=="send";
-        $("avpAccHistoryTab").hidden=tab!=="history";
-        $("avpAccCertsTab").hidden=tab!=="certs";
-        $("avpAccModerationTab").hidden=tab!=="moderation";
-        if(tab==="history") await loadNotifications();
-        if(tab==="certs") await loadCertificates();
-        if(tab==="moderation") await loadModeration();
-      };
-    });
-
-    $("avpAccTarget").onchange=()=>{
-      const isUser=$("avpAccTarget").value==="user";
-      $("avpAccUserPicker").hidden=!isUser;
-      if(!isUser){
-        selectedUserId=null;
-        $("avpAccSelectedUser").hidden=true;
-      }else{
-        searchUsers();
-      }
-    };
-
-    let timer=null;
-    $("avpAccUserSearch").oninput=()=>{
-      clearTimeout(timer);
-      timer=setTimeout(searchUsers,250);
-    };
-
-    $("avpAccSend").onclick=sendNotification;
-    $("avpModerationStatus").onchange=loadModeration;
-    $("avpAccRefresh").onclick=async()=>{
-      await loadNotifications();
-      await loadCertificates();
-    };
-
-    let certTimer=null;
-    $("avpAccCertSearch").oninput=()=>{
-      clearTimeout(certTimer);
-      certTimer=setTimeout(renderCertificates,180);
-    };
+    document.querySelectorAll("[data-acc-tab]").forEach(btn=>btn.addEventListener("click",()=>openTab(btn.dataset.accTab)));
+    $("avpAccTarget").addEventListener("change",()=>{const on=$("avpAccTarget").value==="user";$("avpAccUserPicker").hidden=!on;if(!on){selectedUserId=null;$("avpAccSelectedUser").hidden=true}else searchUsers()});
+    let timer=0;$("avpAccUserSearch").addEventListener("input",()=>{clearTimeout(timer);timer=setTimeout(searchUsers,300)});
+    let certTimer=0;$("avpAccCertSearch").addEventListener("input",()=>{clearTimeout(certTimer);certTimer=setTimeout(renderCertificates,180)});
+    $("avpAccSend").addEventListener("click",sendNotification);$("avpModerationStatus").addEventListener("change",loadModeration);
+    $("avpAccRefresh").addEventListener("click",()=>openTab(activeTab));
   }
 
   async function searchUsers(){
-    const q=String($("avpAccUserSearch")?.value||"").trim();
-    try{
-      users=await rpc("admin_notification_user_search",{p_search:q||null,p_limit:60});
-      renderUsers(Array.isArray(users)?users:[]);
-    }catch(e){
-      console.warn("notification user search",e);
-      $("avpAccUserResults").innerHTML='<p class="admin-empty">Không tải được học viên.</p>';
-    }
+    if($("avpAccTarget")?.value!=="user")return;
+    const box=$("avpAccUserResults"),q=String($("avpAccUserSearch")?.value||"").trim();box.innerHTML='<p class="admin-empty">Đang tải...</p>';
+    try{const rows=await rpc("admin_notification_user_search",{p_search:q||null,p_limit:30});renderUsers(Array.isArray(rows)?rows:[])}catch(e){box.innerHTML='<p class="admin-empty">Không tải được học viên.</p>'}
   }
-
   function renderUsers(rows){
-    const box=$("avpAccUserResults");
-    if(!rows.length){
-      box.innerHTML='<p class="admin-empty">Không tìm thấy học viên.</p>';
-      return;
-    }
-    box.innerHTML=rows.map(r=>`
-      <button type="button" data-user-id="${esc(r.user_id)}">
-        <strong>${esc(r.display_name||"Học viên")}</strong>
-        <small>${esc(r.email||"")}</small>
-      </button>
-    `).join("");
-
-    box.querySelectorAll("[data-user-id]").forEach(btn=>{
-      btn.onclick=()=>{
-        selectedUserId=btn.dataset.userId;
-        const row=rows.find(x=>String(x.user_id)===String(selectedUserId));
-        const sel=$("avpAccSelectedUser");
-        sel.hidden=false;
-        sel.innerHTML=`Đang gửi cho: <strong>${esc(row?.display_name||"Học viên")}</strong> <small>${esc(row?.email||"")}</small>`;
-      };
-    });
+    const box=$("avpAccUserResults");if(!rows.length){box.innerHTML='<p class="admin-empty">Không tìm thấy học viên.</p>';return}
+    box.innerHTML=rows.map(r=>`<button type="button" data-user-id="${esc(r.user_id)}"><strong>${esc(r.display_name||"Học viên")}</strong><small>${esc(r.email||"")}</small></button>`).join("");
+    box.querySelectorAll("[data-user-id]").forEach(btn=>btn.onclick=()=>{selectedUserId=btn.dataset.userId;const row=rows.find(x=>String(x.user_id)===String(selectedUserId)),sel=$("avpAccSelectedUser");sel.hidden=false;sel.innerHTML=`Đang gửi cho: <strong>${esc(row?.display_name||"Học viên")}</strong> <small>${esc(row?.email||"")}</small>`});
   }
 
   async function sendNotification(){
-    const title=String($("avpAccTitle")?.value||"").trim();
-    const content=String($("avpAccContent")?.value||"").trim();
-    const category=$("avpAccCategory")?.value||"system";
-    const target=$("avpAccTarget")?.value||"all";
-
-    if(title.length<3) return alert("Nhập tiêu đề thông báo.");
-    if(content.length<2) return alert("Nhập nội dung thông báo.");
-    if(target==="user"&&!selectedUserId) return alert("Chọn học viên nhận thông báo.");
-
-    const btn=$("avpAccSend");
-    btn.disabled=true;
-
-    try{
-      await rpc("admin_system_notification_create",{
-        p_title:title,
-        p_content:content,
-        p_category:category,
-        p_target_type:target,
-        p_target_user_id:target==="user"?selectedUserId:null,
-        p_starts_at:new Date().toISOString(),
-        p_expires_at:null,
-        p_is_pinned:Boolean($("avpAccPinned")?.checked)
-      });
-
-      $("avpAccTitle").value="";
-      $("avpAccContent").value="";
-      $("avpAccPinned").checked=false;
-
-      alert(target==="all"?"Đã gửi thông báo cho tất cả học viên.":"Đã gửi thông báo cho học viên.");
-      await loadNotifications();
-    }catch(e){
-      console.warn("send notification",e);
-      alert("Chưa gửi được thông báo: "+String(e?.message||e));
-    }finally{
-      btn.disabled=false;
-    }
+    const title=String($("avpAccTitle")?.value||"").trim(),content=String($("avpAccContent")?.value||"").trim(),category=$("avpAccCategory")?.value||"system",target=$("avpAccTarget")?.value||"all";
+    if(title.length<3)return alert("Nhập tiêu đề thông báo.");if(content.length<2)return alert("Nhập nội dung thông báo.");if(target==="user"&&!selectedUserId)return alert("Chọn học viên nhận thông báo.");
+    const btn=$("avpAccSend");btn.disabled=true;
+    try{await rpc("admin_system_notification_create",{p_title:title,p_content:content,p_category:category,p_target_type:target,p_target_user_id:target==="user"?selectedUserId:null,p_starts_at:new Date().toISOString(),p_expires_at:null,p_is_pinned:Boolean($("avpAccPinned")?.checked)});$("avpAccTitle").value="";$("avpAccContent").value="";$("avpAccPinned").checked=false;alert(target==="all"?"Đã gửi thông báo cho tất cả học viên.":"Đã gửi thông báo cho học viên.")}catch(e){alert("Chưa gửi được thông báo: "+String(e?.message||e))}finally{btn.disabled=false}
   }
 
   async function loadNotifications(){
-    const box=$("avpAccNotificationList");
-    if(!box)return;
-    box.innerHTML='<p class="admin-empty">Đang tải...</p>';
-
+    const box=$("avpAccNotificationList");if(!box)return;box.innerHTML='<p class="admin-empty">Đang tải...</p>';
     try{
-      const rows=await rpc("admin_system_notification_list",{p_limit:150});
-      const data=Array.isArray(rows)?rows:[];
-
-      if(!data.length){
-        box.innerHTML='<p class="admin-empty">Chưa có thông báo hệ thống.</p>';
-        return;
-      }
-
-      const enriched=await Promise.all(
-        data.map(async n=>{
-          try{
-            const stats=await rpc("admin_system_notification_stats",{
-              p_notification_id:n.id
-            });
-            const s=Array.isArray(stats)?stats[0]:stats;
-            return {...n,__stats:s||{}};
-          }catch(e){
-            console.warn("notification stats",n.id,e);
-            return {...n,__stats:{}};
-          }
-        })
-      );
-
-      box.innerHTML=enriched.map(n=>{
-        const s=n.__stats||{};
-        const total=Number(s.total_recipients||0);
-        const read=Number(s.read_count ?? n.read_count ?? 0);
-        const unread=Number(
-          s.unread_count ??
-          Math.max(0,total-read)
-        );
-        const rate=total>0
-          ? Math.round((read/total)*1000)/10
-          : 0;
-
-        return `
-          <article class="avp-acc-notification ${n.is_active?"":"inactive"} ${String(n.id)===String(selectedNotificationId)?"active":""}" data-notification="${esc(n.id)}">
-            <div class="avp-acc-notification-head">
-              <strong>${esc(n.title)}</strong>
-              <span>${esc(catLabel(n.category))}</span>
-            </div>
-
-            <p>${esc(n.content)}</p>
-
-            <div class="avp-notification-read-dashboard">
-              <div class="avp-notification-read-numbers">
-                <span>👥 ${total} người nhận</span>
-                <span>👀 ${read} đã đọc</span>
-                <span>⏳ ${unread} chưa đọc</span>
-                <b>${rate}%</b>
-              </div>
-
-              <div class="avp-notification-read-progress" aria-label="${rate}% đã đọc">
-                <span style="width:${Math.max(0,Math.min(100,rate))}%"></span>
-              </div>
-            </div>
-
-            <small>${fmt(n.created_at)} · ${n.target_type==="all"?"Tất cả học viên":"Một học viên"}</small>
-
-            <div class="avp-acc-notification-actions">
-              <button type="button" data-view="${esc(n.id)}">👁 Xem người đã đọc</button>
-              <button type="button" data-pin-notification="${esc(n.id)}" data-pinned="${n.is_pinned?"1":"0"}">${n.is_pinned?"📍 Bỏ ghim":"📌 Ghim"}</button>
-              <button type="button" data-toggle="${esc(n.id)}" data-active="${n.is_active?"1":"0"}">${n.is_active?"Tắt":"Bật lại"}</button>
-            </div>
-          </article>
-        `;
-      }).join("");
-
-      box.querySelectorAll("[data-view]").forEach(btn=>{
-        btn.onclick=e=>{
-          e.stopPropagation();
-          showAudience(btn.dataset.view);
-        };
-      });
-
-      box.querySelectorAll("[data-pin-notification]").forEach(btn=>{
-        btn.onclick=async e=>{
-          e.stopPropagation();
-          await toggleNotificationPinned(
-            btn.dataset.pinNotification,
-            btn.dataset.pinned!=="1"
-          );
-        };
-      });
-
-      box.querySelectorAll("[data-toggle]").forEach(btn=>{
-        btn.onclick=async e=>{
-          e.stopPropagation();
-          await toggleNotification(
-            btn.dataset.toggle,
-            btn.dataset.active!=="1"
-          );
-        };
-      });
-
-      box.querySelectorAll("[data-notification]").forEach(item=>{
-        item.onclick=()=>showAudience(item.dataset.notification);
-      });
-    }catch(e){
-      console.warn("load notifications",e);
-      box.innerHTML='<p class="admin-empty">Không tải được lịch sử thông báo.</p>';
-    }
+      const rows=await rpc("admin_system_notification_list",{p_limit:100}),data=Array.isArray(rows)?rows:[];
+      if(!data.length){box.innerHTML='<p class="admin-empty">Chưa có thông báo hệ thống.</p>';return}
+      box.innerHTML=data.map(n=>`<article class="avp-acc-notification ${n.is_active?"":"inactive"} ${String(n.id)===String(selectedNotificationId)?"active":""}" data-notification="${esc(n.id)}"><div class="avp-acc-notification-head"><strong>${esc(n.title)}</strong><span>${esc(catLabel(n.category))}</span></div><p>${esc(n.content)}</p><small>${fmt(n.created_at)} · ${n.target_type==="all"?"Tất cả học viên":"Một học viên"}</small><div class="avp-acc-notification-actions"><button type="button" data-view="${esc(n.id)}">👁 Xem đã đọc</button><button type="button" data-pin="${esc(n.id)}" data-pinned="${n.is_pinned?"1":"0"}">${n.is_pinned?"📍 Bỏ ghim":"📌 Ghim"}</button><button type="button" data-toggle="${esc(n.id)}" data-active="${n.is_active?"1":"0"}">${n.is_active?"Tắt":"Bật lại"}</button></div></article>`).join("");
+      box.querySelectorAll("[data-view]").forEach(b=>b.onclick=e=>{e.stopPropagation();showAudience(b.dataset.view)});
+      box.querySelectorAll("[data-pin]").forEach(b=>b.onclick=async e=>{e.stopPropagation();await rpc("admin_system_notification_set_pinned",{p_id:b.dataset.pin,p_pinned:b.dataset.pinned!=="1"});await loadNotifications()});
+      box.querySelectorAll("[data-toggle]").forEach(b=>b.onclick=async e=>{e.stopPropagation();await rpc("admin_system_notification_set_active",{p_id:b.dataset.toggle,p_active:b.dataset.active!=="1"});await loadNotifications()});
+      box.querySelectorAll("[data-notification]").forEach(item=>item.onclick=()=>showAudience(item.dataset.notification));
+    }catch(e){box.innerHTML='<p class="admin-empty">Không tải được lịch sử thông báo.</p>'}
   }
 
   async function showAudience(id){
-    selectedNotificationId=id;
-    const box=$("avpAccAudience");
-    box.innerHTML='<p class="admin-empty">Đang tải...</p>';
-
-    try{
-      const [audience,stats]=await Promise.all([
-        rpc("admin_system_notification_audience_v2",{p_notification_id:id}),
-        rpc("admin_system_notification_stats",{p_notification_id:id})
-      ]);
-
-      const rows=Array.isArray(audience)?audience:[];
-      const s=Array.isArray(stats)?stats[0]:stats;
-
-      const total=Number(s?.total_recipients||0);
-      const readCount=Number(s?.read_count||0);
-      const unreadCount=Number(s?.unread_count||0);
-      const rate=total>0?Math.round((readCount/total)*1000)/10:0;
-
-      $("avpAccAudienceHint").textContent=
-        `${total} người nhận · ${readCount} đã đọc · ${unreadCount} chưa đọc · ${rate}%`;
-
-      renderAudience(rows);
-      await loadNotifications();
-    }catch(e){
-      console.warn("audience",e);
-      box.innerHTML='<p class="admin-empty">Không tải được trạng thái đã đọc.</p>';
-    }
+    selectedNotificationId=id;const box=$("avpAccAudience");box.innerHTML='<p class="admin-empty">Đang tải...</p>';
+    try{const [audience,stats]=await Promise.all([rpc("admin_system_notification_audience_v2",{p_notification_id:id}),rpc("admin_system_notification_stats",{p_notification_id:id})]);const rows=Array.isArray(audience)?audience:[],s=Array.isArray(stats)?stats[0]:stats,total=Number(s?.total_recipients||rows.length),readCount=Number(s?.read_count||0),unreadCount=Number(s?.unread_count??Math.max(0,total-readCount)),rate=total?Math.round(readCount/total*1000)/10:0;$("avpAccAudienceHint").textContent=`${total} người nhận · ${readCount} đã đọc · ${unreadCount} chưa đọc · ${rate}%`;renderAudience(rows)}catch(e){box.innerHTML='<p class="admin-empty">Không tải được trạng thái đã đọc.</p>'}
   }
-
   function renderAudience(rows){
-    const read=rows.filter(x=>x.is_read);
-    const unread=rows.filter(x=>!x.is_read);
-    const box=$("avpAccAudience");
-
-    box.innerHTML=`
-      <div class="avp-acc-audience-summary">
-        <button type="button" class="active" data-af="all">Tất cả ${rows.length}</button>
-        <button type="button" data-af="read">Đã đọc ${read.length}</button>
-        <button type="button" data-af="unread">Chưa đọc ${unread.length}</button>
-      </div>
-      <div id="avpAccAudienceRows"></div>
-    `;
-
-    const render=filter=>{
-      const list=filter==="read"?read:filter==="unread"?unread:rows;
-      $("avpAccAudienceRows").innerHTML=list.map(r=>`
-        <div class="avp-acc-audience-row ${r.is_read?"read":"unread"}">
-          <i></i>
-          <div>
-            <strong>${esc(r.display_name||"Học viên")}</strong>
-            <small>${esc(r.email||"")}</small>
-          </div>
-          <div>
-            <b>${r.is_read?"Đã đọc":"Chưa đọc"}</b>
-            <small>${r.is_read?fmt(r.read_at):"—"}</small>
-          </div>
-        </div>
-      `).join("") || '<p class="admin-empty">Không có học viên.</p>';
-    };
-
-    render("all");
-
-    box.querySelectorAll("[data-af]").forEach(btn=>{
-      btn.onclick=()=>{
-        box.querySelectorAll("[data-af]").forEach(b=>b.classList.toggle("active",b===btn));
-        render(btn.dataset.af);
-      };
-    });
+    const read=rows.filter(x=>x.is_read),unread=rows.filter(x=>!x.is_read),box=$("avpAccAudience");
+    box.innerHTML=`<div class="avp-acc-audience-summary"><button type="button" class="active" data-af="all">Tất cả ${rows.length}</button><button type="button" data-af="read">Đã đọc ${read.length}</button><button type="button" data-af="unread">Chưa đọc ${unread.length}</button></div><div id="avpAccAudienceRows"></div>`;
+    const render=filter=>{const list=filter==="read"?read:filter==="unread"?unread:rows;$("avpAccAudienceRows").innerHTML=list.map(r=>`<div class="avp-acc-audience-row ${r.is_read?"read":"unread"}"><i></i><div><strong>${esc(r.display_name||"Học viên")}</strong><small>${esc(r.email||"")}</small></div><div><b>${r.is_read?"Đã đọc":"Chưa đọc"}</b><small>${r.is_read?fmt(r.read_at):"—"}</small></div></div>`).join("")||'<p class="admin-empty">Không có học viên.</p>'};render("all");box.querySelectorAll("[data-af]").forEach(btn=>btn.onclick=()=>{box.querySelectorAll("[data-af]").forEach(b=>b.classList.toggle("active",b===btn));render(btn.dataset.af)})
   }
 
-  async function toggleNotificationPinned(id,pinned){
-    try{
-      await rpc("admin_system_notification_set_pinned",{p_id:id,p_pinned:pinned});
-      await loadNotifications();
-    }catch(e){
-      console.warn("notification pin",e);
-      alert("Chưa cập nhật được trạng thái ghim.");
-    }
-  }
+  async function loadModeration(){const box=$("avpModerationList");if(!box)return;box.innerHTML='<p class="admin-empty">Đang tải...</p>';try{const rows=await rpc("admin_community_moderation_queue",{p_status:$("avpModerationStatus")?.value||"open",p_limit:100});renderModeration(Array.isArray(rows)?rows:[])}catch(e){box.innerHTML='<p class="admin-empty">Chưa tải được kiểm duyệt.</p>'}}
+  const reason=v=>({spam:"Spam",scam:"Lừa đảo",suspicious_link:"Link/liên hệ đáng ngờ",sensitive:"Nội dung nhạy cảm",harassment:"Quấy rối/xúc phạm",impersonation:"Giả mạo",auto_risk:"Hệ thống phát hiện rủi ro",other:"Khác"})[v]||v||"Báo cáo";
+  function renderModeration(rows){const box=$("avpModerationList");if(!rows.length){box.innerHTML='<p class="admin-empty">Không có report phù hợp.</p>';return}box.innerHTML=rows.map(r=>`<article class="avp-mod-card ${r.status==="open"?"open":"closed"}"><div class="avp-mod-head"><div><strong>${esc(reason(r.reason))}</strong><span>${esc(r.target_type)} · ${fmt(r.created_at)}</span></div><b>${r.auto_flag?"🤖 Tự động":"🚩 Người dùng báo cáo"}</b></div><div class="avp-mod-user"><strong>${esc(r.target_display_name||"Học viên")}</strong><small>${esc(r.target_email||"")}</small></div><p>${esc(r.content_preview||r.detail||"Không có nội dung xem trước.")}</p><div class="avp-mod-actions">${r.status==="open"?`<button data-mod-action="dismiss" data-report="${esc(r.id)}">Bỏ qua</button>${r.target_type!=="profile"?`<button data-mod-action="hide" data-report="${esc(r.id)}">Ẩn nội dung</button>`:""}<button data-mod-action="warn" data-report="${esc(r.id)}">Cảnh cáo</button><button data-mod-action="restrict" data-report="${esc(r.id)}">Hạn chế</button><button data-mod-action="suspend" data-report="${esc(r.id)}" class="danger">Khoá Cộng đồng</button>`:`<button data-mod-action="reopen" data-report="${esc(r.id)}">Mở lại report</button>`}</div></article>`).join("");box.querySelectorAll("[data-mod-action]").forEach(btn=>btn.onclick=()=>moderationAction(btn.dataset.report,btn.dataset.modAction))}
+  async function moderationAction(id,action){if(["hide","restrict","suspend"].includes(action)){const ok=await window.avpConfirm("Thao tác này tác động trực tiếp tới nội dung hoặc tài khoản cộng đồng.",{title:"Xác nhận kiểm duyệt?",tone:"danger",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return}try{await rpc("admin_community_moderation_action",{p_report_id:id,p_action:action,p_note:null});await loadModeration()}catch(e){alert("Chưa thực hiện được thao tác kiểm duyệt.")}}
 
-  async function toggleNotification(id,active){
-    try{
-      await rpc("admin_system_notification_set_active",{p_id:id,p_active:active});
-      await loadNotifications();
-    }catch(e){
-      alert("Chưa cập nhật được trạng thái.");
-    }
-  }
+  async function loadCertificates(){const box=$("avpAccCertList");if(!box)return;box.innerHTML='<p class="admin-empty">Đang tải...</p>';try{const rows=await rpc("admin_community_certificate_list",{p_limit:150});certRows=Array.isArray(rows)?rows:[];renderCertificates()}catch(e){box.innerHTML='<p class="admin-empty">Chưa tải được chứng nhận.</p>'}}
+  function renderCertificates(){const box=$("avpAccCertList");if(!box)return;const q=String($("avpAccCertSearch")?.value||"").trim().toLowerCase(),rows=certRows.filter(r=>!q||[r.display_name,r.email,r.verification_code,r.title].some(v=>String(v||"").toLowerCase().includes(q)));if(!rows.length){box.innerHTML='<p class="admin-empty">Không có chứng nhận phù hợp.</p>';return}box.innerHTML=rows.map(r=>`<article class="avp-acc-cert ${r.revoked_at?"revoked":""}"><div><strong>${esc(r.display_name||"Học viên")}</strong><small>${esc(r.email||"")}</small></div><div><b>${esc(r.title)}</b><small>Mã: ${esc(r.verification_code)} · ${fmt(r.issued_at)}</small></div><div class="avp-acc-cert-actions"><button type="button" data-copy="${esc(r.verification_code)}">📋 Mã</button><button type="button" data-revoke="${esc(r.id)}" data-is-revoked="${r.revoked_at?"1":"0"}">${r.revoked_at?"Khôi phục":"Thu hồi"}</button></div></article>`).join("");box.querySelectorAll("[data-copy]").forEach(b=>b.onclick=async()=>{try{await navigator.clipboard.writeText(b.dataset.copy);alert("Đã sao chép mã xác minh.")}catch{alert("Mã: "+b.dataset.copy)}});box.querySelectorAll("[data-revoke]").forEach(b=>b.onclick=()=>setCertificateRevoked(b.dataset.revoke,b.dataset.isRevoked!=="1"))}
+  async function setCertificateRevoked(id,revoked){const ok=await window.avpConfirm(revoked?"Chứng nhận sẽ chuyển sang trạng thái đã thu hồi.":"Chứng nhận sẽ được khôi phục hiệu lực.",{title:revoked?"Thu hồi chứng nhận?":"Khôi phục chứng nhận?",tone:revoked?"danger":"ok",ok:revoked?"Thu hồi":"Khôi phục",cancel:"Hủy"});if(!ok)return;try{await rpc("admin_community_certificate_set_revoked",{p_certificate_id:id,p_revoked:revoked});await loadCertificates()}catch(e){alert("Chưa cập nhật được chứng nhận.")}}
 
-
-  async function loadModeration(){
-    const box=$("avpModerationList");
-    if(!box)return;
-    box.innerHTML='<p class="admin-empty">Đang tải hàng chờ kiểm duyệt...</p>';
-
-    try{
-      const status=$("avpModerationStatus")?.value||"open";
-      const rows=await rpc("admin_community_moderation_queue",{
-        p_status:status,
-        p_limit:200
-      });
-      renderModeration(Array.isArray(rows)?rows:[]);
-    }catch(e){
-      console.warn("moderation queue",e);
-      box.innerHTML='<p class="admin-empty">Chưa tải được kiểm duyệt. Hãy chạy SQL PROFILE + MODERATION V1.</p>';
-    }
-  }
-
-  function moderationReasonLabel(v){
-    return ({
-      spam:"Spam",
-      scam:"Lừa đảo",
-      suspicious_link:"Link/liên hệ đáng ngờ",
-      sensitive:"Nội dung nhạy cảm",
-      harassment:"Quấy rối/xúc phạm",
-      impersonation:"Giả mạo",
-      auto_risk:"Hệ thống phát hiện rủi ro",
-      other:"Khác"
-    })[v]||v||"Báo cáo";
-  }
-
-  function renderModeration(rows){
-    const box=$("avpModerationList");
-    if(!rows.length){
-      box.innerHTML='<p class="admin-empty">Không có report phù hợp.</p>';
-      return;
-    }
-
-    box.innerHTML=rows.map(r=>`
-      <article class="avp-mod-card ${r.status==="open"?"open":"closed"}">
-        <div class="avp-mod-head">
-          <div>
-            <strong>${esc(moderationReasonLabel(r.reason))}</strong>
-            <span>${esc(r.target_type)} · ${fmt(r.created_at)}</span>
-          </div>
-          <b>${r.auto_flag?"🤖 Tự động":"🚩 Người dùng báo cáo"}</b>
-        </div>
-        <div class="avp-mod-user">
-          <strong>${esc(r.target_display_name||"Học viên")}</strong>
-          <small>${esc(r.target_email||"")}</small>
-          ${r.community_status&&r.community_status!=="active"?`<em>${esc(r.community_status)}</em>`:""}
-        </div>
-        <p>${esc(r.content_preview||r.detail||"Không có nội dung xem trước.")}</p>
-        ${r.detail?`<small class="avp-mod-detail">Ghi chú: ${esc(r.detail)}</small>`:""}
-        <div class="avp-mod-actions">
-          ${r.status==="open"?`
-            <button data-mod-action="dismiss" data-report="${esc(r.id)}">Bỏ qua</button>
-            ${r.target_type!=="profile"?`<button data-mod-action="hide" data-report="${esc(r.id)}">Ẩn nội dung</button>`:""}
-            <button data-mod-action="warn" data-report="${esc(r.id)}">⚠️ Cảnh cáo</button>
-            <button data-mod-action="restrict" data-report="${esc(r.id)}">Hạn chế</button>
-            <button data-mod-action="suspend" data-report="${esc(r.id)}" class="danger">Khoá Cộng đồng</button>
-          `:`<button data-mod-action="reopen" data-report="${esc(r.id)}">Mở lại report</button>`}
-        </div>
-      </article>
-    `).join("");
-
-    box.querySelectorAll("[data-mod-action]").forEach(btn=>{
-      btn.onclick=()=>moderationAction(btn.dataset.report,btn.dataset.modAction);
-    });
-  }
-
-  async function moderationAction(reportId,action){
-    const dangerous=["hide","restrict","suspend"].includes(action);
-    if(dangerous){const ok=await window.avpConfirm("Thao tác kiểm duyệt này sẽ tác động trực tiếp tới nội dung hoặc tài khoản cộng đồng.",{title:"Xác nhận kiểm duyệt?",icon:"🛡️",tone:"danger",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return;}
-
-    try{
-      await rpc("admin_community_moderation_action",{
-        p_report_id:reportId,
-        p_action:action,
-        p_note:null
-      });
-      await loadModeration();
-    }catch(e){
-      console.warn("moderation action",e);
-      alert("Chưa thực hiện được thao tác kiểm duyệt.");
-    }
-  }
-
-  let certRows=[];
-
-  async function loadCertificates(){
-    const box=$("avpAccCertList");
-    if(!box)return;
-    box.innerHTML='<p class="admin-empty">Đang tải...</p>';
-
-    try{
-      const rows=await rpc("admin_community_certificate_list",{p_limit:300});
-      certRows=Array.isArray(rows)?rows:[];
-      renderCertificates();
-    }catch(e){
-      console.warn("cert list",e);
-      box.innerHTML='<p class="admin-empty">Chưa tải được chứng nhận. Nếu chưa chạy SQL V2 chứng nhận, mục này sẽ chưa hoạt động.</p>';
-    }
-  }
-
-  function renderCertificates(){
-    const box=$("avpAccCertList");
-    if(!box)return;
-
-    const q=String($("avpAccCertSearch")?.value||"").trim().toLowerCase();
-    const rows=certRows.filter(r=>{
-      if(!q)return true;
-      return [
-        r.display_name,r.email,r.verification_code,r.title
-      ].some(v=>String(v||"").toLowerCase().includes(q));
-    });
-
-    if(!rows.length){
-      box.innerHTML='<p class="admin-empty">Không có chứng nhận phù hợp.</p>';
-      return;
-    }
-
-    box.innerHTML=rows.map(r=>`
-      <article class="avp-acc-cert ${r.revoked_at?"revoked":""}">
-        <div>
-          <strong>${esc(r.display_name||"Học viên")}</strong>
-          <small>${esc(r.email||"")}</small>
-        </div>
-        <div>
-          <b>${esc(r.title)}</b>
-          <small>Mã: ${esc(r.verification_code)} · ${fmt(r.issued_at)}</small>
-        </div>
-        <div class="avp-acc-cert-actions">
-          <button type="button" data-copy="${esc(r.verification_code)}">📋 Mã</button>
-          <button type="button" data-revoke="${esc(r.id)}" data-is-revoked="${r.revoked_at?"1":"0"}">
-            ${r.revoked_at?"Khôi phục":"Thu hồi"}
-          </button>
-        </div>
-      </article>
-    `).join("");
-
-    box.querySelectorAll("[data-copy]").forEach(btn=>{
-      btn.onclick=async()=>{
-        try{
-          await navigator.clipboard.writeText(btn.dataset.copy);
-          alert("Đã sao chép mã xác minh.");
-        }catch{
-          alert("Mã: "+btn.dataset.copy);
-        }
-      };
-    });
-
-    box.querySelectorAll("[data-revoke]").forEach(btn=>{
-      btn.onclick=()=>setCertificateRevoked(
-        btn.dataset.revoke,
-        btn.dataset.isRevoked!=="1"
-      );
-    });
-  }
-
-  async function setCertificateRevoked(id,revoked){
-    const ok=await window.avpConfirm(revoked?"Chứng nhận sẽ chuyển sang trạng thái đã thu hồi.":"Chứng nhận sẽ được khôi phục hiệu lực.",{title:revoked?"Thu hồi chứng nhận?":"Khôi phục chứng nhận?",tone:revoked?"danger":"ok",ok:revoked?"Thu hồi":"Khôi phục",cancel:"Hủy"});
-    if(!ok)return;
-
-    try{
-      await rpc("admin_community_certificate_set_revoked",{
-        p_certificate_id:id,
-        p_revoked:revoked
-      });
-      await loadCertificates();
-    }catch(e){
-      alert("Chưa cập nhật được chứng nhận.");
-    }
-  }
-
-
-  function setCommunityHealth(ok,title,detail){
-    const card=document.querySelector('[data-health="community"]');
-    if(!card)return;
-    const strong=card.querySelector("strong");
-    const small=card.querySelector("small");
-    if(strong)strong.textContent=title || (ok?"Hoạt động":"Cần kiểm tra");
-    if(small)small.textContent=detail || "";
-    card.classList.toggle("ok",Boolean(ok));
-    card.classList.toggle("bad",!ok);
-  }
-
-  async function checkCommunityHealth(){
-    try{
-      const tests=await Promise.allSettled([
-        client.rpc("admin_system_notification_list",{p_limit:1}),
-        client.rpc("admin_notification_user_search",{p_search:null,p_limit:1})
-      ]);
-
-      const errors=tests
-        .filter(x=>x.status==="rejected" || x.value?.error)
-        .map(x=>x.reason?.message || x.value?.error?.message || "RPC lỗi");
-
-      if(errors.length){
-        setCommunityHealth(false,"Cần kiểm tra",errors[0]);
-        return;
-      }
-
-      setCommunityHealth(true,"Hoạt động","Thông báo & cộng đồng sẵn sàng");
-    }catch(e){
-      setCommunityHealth(false,"Cần kiểm tra",String(e?.message||e));
-    }
-  }
-
-  async function init(){
-    if(!(await waitClient()))return;
-
-    let admin=false;
-    for(let i=0;i<20;i++){
-      admin=await isAdmin();
-      if(admin) break;
-      await new Promise(r=>setTimeout(r,250));
-    }
-    if(!admin)return;
-
-    mount();
-    await checkCommunityHealth();
-    await searchUsers();
-    await loadNotifications();
-  }
-
-  window.addEventListener("avp:admin-community-open",async()=>{
-    if(!client)return;
-    try{
-      await checkCommunityHealth?.();
-      await loadNotifications?.();
-    }catch(e){
-      console.warn("community refresh",e);
-    }
-  });
-
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",init,{once:true});
-  }else{
-    init();
-  }
+  async function openCommunity(){if(!mount())return;await waitClient();if(activeTab!=="send")await openTab(activeTab)}
+  window.addEventListener("avp:admin-community-open",openCommunity);
+  try{if(localStorage.getItem("avp_admin_view_v1")==="community")setTimeout(()=>window.dispatchEvent(new CustomEvent("avp:admin-community-open")),80)}catch(e){}
 })();

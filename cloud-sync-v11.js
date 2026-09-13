@@ -1,4 +1,5 @@
 (function(){
+ if((location.pathname.split('/').pop()||'').toLowerCase()==='admin.html')return;
  const LAST='avp_cloud_last_sync_v11';
  function fmt(ts){if(!ts)return 'Chưa đồng bộ';const d=new Date(+ts);return d.toLocaleString('vi-VN',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'});}
  function ensureChip(){if(document.getElementById('v11CloudChip'))return;const el=document.createElement('div');el.id='v11CloudChip';el.className='v11-cloud-chip';el.dataset.state='guest';el.innerHTML='<i class="v11-dot"></i><span>☁️ Đăng nhập để đồng bộ tiến độ</span>';document.body.appendChild(el);}
