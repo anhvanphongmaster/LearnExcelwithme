@@ -1,7 +1,8 @@
-/*! home-page-motion.js — V107 premium Home hubs */
+/*! home-page-motion.js — V108 premium Home hubs */
 (function(){
   'use strict';
-  if(window.__avpHomeMotionV107)return;
+  if(window.__avpHomeMotionV108)return;
+  window.__avpHomeMotionV108=true;
   window.__avpHomeMotionV107=true;
   window.__avpHomeMotionV106=true;
   window.__avpHomeMotionV105=true;
@@ -10,19 +11,29 @@
   window.__avpHomeMotionV102=true;
   window.__avpSiteMotion=true;
 
+  document.documentElement.classList.add('avp-site-upgrade','avp-site-home');
+
   var LAST_KEY='avp_knowledge_last_v2';
   var DONE_KEY='avp_platform_completed_v2';
 
   function ensureAssets(){
-    if(!document.querySelector('link[data-home-final-v107]')){
+    if(!document.querySelector('link[data-home-final-v108]')){
       var link=document.createElement('link');
-      link.rel='stylesheet';link.href='home-final-ui-v104.css?v=20260913-4';link.dataset.homeFinalV107='1';
+      link.rel='stylesheet';link.href='home-final-ui-v104.css?v=20260914-5';link.dataset.homeFinalV108='1';
       document.head.appendChild(link);
     }
     if(!document.querySelector('script[data-home-copy-v104]')){
       var script=document.createElement('script');
       script.src='home-copy-v104.js?v=20260913-1';script.dataset.homeCopyV104='1';
       document.head.appendChild(script);
+    }
+    if(!document.querySelector('link[data-avp-site-upgrade-v1]')){
+      var globalCss=document.createElement('link');
+      globalCss.rel='stylesheet';globalCss.href='site-upgrade-v1.css?v=20260914-site1';globalCss.dataset.avpSiteUpgradeV1='1';document.head.appendChild(globalCss);
+    }
+    if(!document.querySelector('script[data-avp-site-upgrade-v1]')){
+      var globalJs=document.createElement('script');
+      globalJs.src='site-upgrade-v1.js?v=20260914-site1';globalJs.defer=true;globalJs.dataset.avpSiteUpgradeV1='1';document.head.appendChild(globalJs);
     }
   }
 
@@ -49,7 +60,8 @@
   function configureChoice(node,kind,href){
     if(!node)return null;
     var clean=node.cloneNode(false);
-    if(node.id)clean.id=node.id;
+    if(kind==='learn')clean.id='avpLearnHubCardV108';
+    else if(node.id)clean.id=node.id;
     clean.className='home-choice-card-v104';
     clean.dataset.kind=kind;
     clean.dataset.homeHubV104='1';
@@ -63,7 +75,7 @@
   }
 
   function renderHeroChoices(){
-    var oldLearn=document.getElementById('avpScrollToPath');
+    var oldLearn=document.getElementById('avpScrollToPath')||document.getElementById('avpLearnHubCardV108');
     var oldPractice=document.querySelector('.avp-mobile-main-cta-wrap .avp-mobile-main-cta');
     if(!oldLearn||!oldPractice)return false;
     if(oldLearn.closest('.home-choice-stack-v104'))return true;
@@ -110,7 +122,7 @@
       '<button type="button" class="home-more-card home-extra-card-v2 tone-code home-codehub-launcher" id="homeCodeHubOpen" aria-haspopup="dialog" aria-controls="avpCodeHubModal"><span class="home-more-icon">⌘</span><div><small>CODE & AUTOMATION</small><strong>Excel Code Hub</strong><em>Python · VBA · Power Query</em><b>Mở Code Hub →</b></div></button>'+
       '<a class="home-more-card home-extra-card-v2 tone-arena home-more-race" href="excel-race.html"><span class="home-more-icon">⚡</span><div><small>GAME & PHẢN XẠ</small><strong>Excel Arena</strong><em>Đấu kỹ năng theo thời gian</em><b>Vào Arena →</b></div></a>'+
       '<a class="home-more-card home-extra-card-v2 tone-tools home-more-tools" href="tools-library.html"><span class="home-more-icon">▣</span><div><small>TOOL & TEMPLATE</small><strong>Kho Tool</strong><em>Tool thực dụng · tải ZIP · ý tưởng cộng đồng</em><b>Mở Kho Tool →</b></div></a>';
-    more.dataset.extrasVersion='107';
+    more.dataset.extrasVersion='108';
     return true;
   }
 
@@ -137,7 +149,6 @@
     var seq=(P&&P.lessonSequence)||[];if(!seq.length)return{id:'f01-excel-workspace',order:1,resume:false};var done=readDone();var last='';try{last=localStorage.getItem(LAST_KEY)||'';}catch(_){ }
     var idx=seq.indexOf(last);var id='';if(idx>=0)id=(done.has(last)&&idx<seq.length-1)?seq[idx+1]:last;if(!id)id=seq.find(function(x){return !done.has(x);})||seq[0];var order=P&&P.displayOrder?P.displayOrder(id):(seq.indexOf(id)+1);return{id:id,order:order,resume:idx>=0||done.size>0};
   }
-
   function renderFirstRun(P){
     var hero=document.querySelector('.avp-hero');if(!hero)return false;var section=document.getElementById('homeStartHereV1');
     if(!section){
@@ -146,7 +157,6 @@
     }
     if(P){var t=target(P);var primary=section.querySelector('.home-first-primary-v1');if(primary){if(t.resume){primary.href=P.lessonUrl?P.lessonUrl(t.id):('knowledge.html?lesson='+encodeURIComponent(t.id));primary.textContent='Tiếp tục · Bài '+String(t.order||1).padStart(2,'0')+' →';}else{primary.href='skill-map.html?entry=learn&track=foundation-data';primary.textContent='Chọn luồng học →';}}}return true;
   }
-
   function repairPodium(){var rows=document.querySelectorAll('#learnBoardList .lb-row');if(!rows.length)return;var medals=['🥇','🥈','🥉'];for(var i=0;i<Math.min(3,rows.length);i++){var row=rows[i];var rank=row.querySelector('.lb-rank');row.classList.add('lb-podium-'+(i+1));if(rank)rank.innerHTML='<span class="lb-medal lb-'+(i===0?'gold':i===1?'silver':'bronze')+'" title="Top '+(i+1)+'">'+medals[i]+'</span>';}}
   function observeBoard(){var list=document.getElementById('learnBoardList');if(!list||list.dataset.podiumObserver==='1')return;list.dataset.podiumObserver='1';var raf=0;var observer=new MutationObserver(function(){if(raf)return;raf=requestAnimationFrame(function(){raf=0;repairPodium();});});observer.observe(list,{childList:true});window.addEventListener('pagehide',function(){observer.disconnect();},{once:true});}
   function loadCatalog(){if(window.AVPLearningPlatform){renderFirstRun(window.AVPLearningPlatform);return;}var existing=document.querySelector('script[data-avp-home-first-catalog]');if(existing){existing.addEventListener('load',function(){renderFirstRun(window.AVPLearningPlatform);},{once:true});return;}var s=document.createElement('script');s.src='learning-platform-catalog-v1.js?v=20260913-fourflows3';s.dataset.avpHomeFirstCatalog='1';s.onload=function(){renderFirstRun(window.AVPLearningPlatform);};document.head.appendChild(s);}
