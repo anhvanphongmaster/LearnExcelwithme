@@ -7,7 +7,8 @@ const active=new Map();
 const memory=new Map();
 const READS=new Set([
  'list_learning_leaderboard','is_admin_user','avp_is_admin','avp_chat_is_admin',
- 'avp_chat_get_or_create_thread','avp_chat_my_unread_count'
+ 'avp_chat_get_or_create_thread','avp_chat_my_unread_count',
+ 'notification_unread_count','site_maintenance_public_v83','site_review_status_v2'
 ]);
 const WRITES=new Set(['upsert_learning_leaderboard']);
 const SESSION_TTL={
@@ -16,6 +17,9 @@ const SESSION_TTL={
  'avp_chat_is_admin':120000,
  'avp_chat_get_or_create_thread':600000,
  'avp_chat_my_unread_count':5000,
+ 'notification_unread_count':10000,
+ 'site_maintenance_public_v83':90000,
+ 'site_review_status_v2':1800000,
  'list_learning_leaderboard':10000
 };
 const INVALIDATE_AFTER_WRITE={
@@ -30,12 +34,13 @@ function sessionKey(name,args){
  return 'avp_rpc_cache_v2:'+uid+':'+name+':'+argsKey(args);
 }
 function readSession(name,args){
- const ttl=SESSION_TTL[name];if(!ttl)return null;
+ const ttl=SESSION_TTL[name];if(!ttl)return {hit:false,result:null};
  try{
   const row=JSON.parse(sessionStorage.getItem(sessionKey(name,args))||'null');
-  if(!row||Date.now()-Number(row.at||0)>=ttl)return null;
-  return row.result||null;
- }catch(_){return null}
+  if(!row||Date.now()-Number(row.at||0)>=ttl)return {hit:false,result:null};
+  if(!Object.prototype.hasOwnProperty.call(row,'result'))return {hit:false,result:null};
+  return {hit:true,result:row.result};
+ }catch(_){return {hit:false,result:null}}
 }
 function writeSession(name,args,result){
  if(!SESSION_TTL[name])return;
@@ -80,7 +85,10 @@ function wrap(client){
   if(hit&&t-hit.at<memTtl(name))return Promise.resolve(hit.result);
 
   const stored=readSession(name,args);
-  if(stored){memory.set(k,{at:t,result:stored});return Promise.resolve(stored)}
+  if(stored.hit){
+    memory.set(k,{at:t,result:stored.result});
+    return Promise.resolve(stored.result);
+  }
   if(active.has(k))return active.get(k);
 
   const p=Promise.resolve(raw(name,args)).then(result=>{
