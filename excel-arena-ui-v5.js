@@ -3,7 +3,7 @@
   if(!document.querySelector('link[data-avp-module-themes]')){
     const link=document.createElement('link');
     link.rel='stylesheet';
-    link.href='module-themes-v2.css?v=20260913-mod2';
+    link.href='module-themes-v2.css?v=20260913-mod3';
     link.dataset.avpModuleThemes='1';
     document.head.appendChild(link);
   }
