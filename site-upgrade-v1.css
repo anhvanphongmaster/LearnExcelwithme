@@ -13,6 +13,18 @@ html.avp-site-shell:not(.avp-site-home):not(.avp-site-legal) :is(.page-header,.l
 html.avp-site-shell :is(.main-shell,.tools-page,.qc-page,.lp-page,.lh-page){width:min(1180px,calc(100% - 28px));margin-left:auto!important;margin-right:auto!important}
 html.avp-site-shell :is(.course-card,.featured-card,.home-contact){border-color:var(--avp-u-line)}
 
+/* Legacy lesson headers: cache-busted here so old pages cannot stay on the dark/giant header. */
+html.avp-site-shell body[data-learning-v2]>.page-header,
+html.avp-site-shell body[data-learning-v2]>header:not(.top-simple-nav){position:relative!important;overflow:hidden!important;width:min(1180px,calc(100% - 28px))!important;margin:18px auto 8px!important;padding:30px 32px!important;background:linear-gradient(135deg,#eef8f2 0%,#fff 72%)!important;color:#173d2b!important;border:1px solid #cfe0d6!important;border-left:5px solid #217346!important;border-radius:22px!important;box-shadow:0 12px 34px rgba(27,66,45,.07)!important;text-align:left!important}
+html.avp-site-shell body[data-learning-v2]>.page-header::after,
+html.avp-site-shell body[data-learning-v2]>header:not(.top-simple-nav)::after{content:""!important;position:absolute!important;inset:auto -70px -90px auto!important;width:220px!important;height:220px!important;border-radius:50%!important;background:rgba(33,115,70,.08)!important;pointer-events:none!important}
+html.avp-site-shell body[data-learning-v2]>.page-header>*,
+html.avp-site-shell body[data-learning-v2]>header:not(.top-simple-nav)>*{position:relative!important;z-index:1!important}
+html.avp-site-shell body[data-learning-v2]>.page-header h1,
+html.avp-site-shell body[data-learning-v2]>header:not(.top-simple-nav) h1{margin:0 0 9px!important;color:#174d31!important;font-size:clamp(32px,4.2vw,48px)!important;line-height:1.05!important;letter-spacing:-1.4px!important;font-weight:900!important;text-shadow:none!important;text-align:left!important}
+html.avp-site-shell body[data-learning-v2]>.page-header p,
+html.avp-site-shell body[data-learning-v2]>header:not(.top-simple-nav) p{margin:0!important;color:#5d7166!important;font-size:16px!important;line-height:1.7!important;max-width:780px!important;text-align:left!important}
+
 /* Learning Hub polish: preserve flow colors, improve spacing and hierarchy. */
 html.avp-site-learn .lh-page{margin-top:18px!important;margin-bottom:60px!important}
 html.avp-site-learn .lh-hero{padding:24px!important}
@@ -65,11 +77,14 @@ html.avp-site-stable body{background:#f7faf8}
   html.avp-site-upgrade .top-simple-links{width:100%;padding-top:8px}
   html.avp-site-upgrade .top-simple-links>a,html.avp-site-upgrade .top-search-button{width:100%;justify-content:flex-start!important}
   html.avp-site-shell :is(.main-shell,.tools-page,.qc-page,.lp-page,.lh-page){width:min(100% - 18px,1180px)}
+  html.avp-site-shell body[data-learning-v2]>.page-header,html.avp-site-shell body[data-learning-v2]>header:not(.top-simple-nav){width:min(100% - 18px,1180px)!important;padding:22px 20px!important;margin-top:10px!important}
   html.avp-site-learn .lh-hero{padding:18px!important}
   html.avp-site-tools .tools-tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
   html.avp-site-tools .tools-tab{width:100%!important}
 }
 @media(max-width:620px){
+  html.avp-site-shell body[data-learning-v2]>.page-header h1,html.avp-site-shell body[data-learning-v2]>header:not(.top-simple-nav) h1{font-size:32px!important}
+  html.avp-site-shell body[data-learning-v2]>.page-header p,html.avp-site-shell body[data-learning-v2]>header:not(.top-simple-nav) p{font-size:14px!important}
   html.avp-site-home .home-extra-card-v2>div{min-height:0!important}
   html.avp-site-home .home-extra-card-v2{grid-template-columns:48px minmax(0,1fr)!important}
   html.avp-site-tools .tools-tabs{grid-template-columns:1fr!important}
