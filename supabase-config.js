@@ -11,7 +11,7 @@ window.AVP_SUPABASE_CONFIG = {
   var items=[
     ['site-supabase-read-cache-v1.js?v=20260914-read1','avp-supabase-read-cache-v1'],
     ['site-auth-cache-v1.js?v=20260914-auth3','avp-auth-cache-v1'],
-    ['site-rpc-dedupe-v1.js?v=20260914-rpc4','avp-rpc-dedupe-v1'],
+    ['site-rpc-dedupe-v1.js?v=20260914-rpc6','avp-rpc-dedupe-v1'],
     ['site-runtime-cache-v1.js?v=20260914-cache2','avp-site-cache-v1'],
     ['admin-chat.js?v=20260914-lazy1','avp-admin-chat']
   ];
