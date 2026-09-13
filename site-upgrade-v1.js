@@ -7,6 +7,14 @@
   const html=document.documentElement;
   html.classList.add('avp-site-upgrade');
 
+  function loadRuntime(src,key){
+    if(document.querySelector('script[data-'+key+']'))return;
+    const s=document.createElement('script');
+    s.src=src;s.defer=true;s.setAttribute('data-'+key,'1');document.head.appendChild(s);
+  }
+  loadRuntime('site-runtime-cache-v1.js?v=20260914-cache1','avp-site-cache-v1');
+  loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc1','avp-rpc-dedupe-v1');
+
   const stable=/^(practice-|professional-|homework|baitapexcel|excel-race)/.test(page);
   const legal=new Set(['terms.html','privacy.html','disclaimer.html','open-source.html']);
   if(stable)html.classList.add('avp-site-stable');
