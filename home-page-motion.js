@@ -1,7 +1,8 @@
-/*! home-page-motion.js — V105 premium Home hubs */
+/*! home-page-motion.js — V106 premium Home hubs */
 (function(){
   'use strict';
-  if(window.__avpHomeMotionV105)return;
+  if(window.__avpHomeMotionV106)return;
+  window.__avpHomeMotionV106=true;
   window.__avpHomeMotionV105=true;
   window.__avpHomeMotionV104=true;
   window.__avpHomeMotionV103=true;
@@ -12,9 +13,9 @@
   var DONE_KEY='avp_platform_completed_v2';
 
   function ensureAssets(){
-    if(!document.querySelector('link[data-home-final-v105]')){
+    if(!document.querySelector('link[data-home-final-v106]')){
       var link=document.createElement('link');
-      link.rel='stylesheet';link.href='home-final-ui-v104.css?v=20260913-2';link.dataset.homeFinalV105='1';
+      link.rel='stylesheet';link.href='home-final-ui-v104.css?v=20260913-3';link.dataset.homeFinalV106='1';
       document.head.appendChild(link);
     }
     if(!document.querySelector('script[data-home-copy-v104]')){
