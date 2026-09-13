@@ -4,21 +4,42 @@
 @import url("ux-declutter-v1.css?v=20260913-ux1");
 @import url("ux-declutter-v2.css?v=20260913-ux2b");
 
-/* Home robot bounds guard.
-   The smooth patrol computes its right edge from launcher.offsetWidth.
-   Keep a 64px safety footprint (same guard used by the original stable patrol)
-   so the visible robot never walks past the viewport edge. */
+/* Home robot bounds guard. */
+html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home,
 html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth{
   width:64px!important;
   max-width:64px!important;
+  contain:layout style;
+  will-change:left;
+  transform:translateZ(0);
+  backface-visibility:hidden;
 }
 html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth .avp-edge-main{
   left:0!important;
   right:auto!important;
 }
-@media(max-width:600px){
+
+/* Reduce paint cost without stopping the robot patrol. */
+@media(max-width:900px){
+  html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home,
   html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth{
     width:64px!important;
     max-width:64px!important;
+  }
+  #avpEdgeLauncher .avp-bot{
+    filter:none!important;
+    perspective:none!important;
+  }
+  #avpEdgeLauncher .avp-bot-head,
+  #avpEdgeLauncher .avp-bot-body,
+  #avpEdgeLauncher .avp-bot-arm,
+  #avpEdgeLauncher .avp-bot-leg{
+    box-shadow:none!important;
+  }
+  #avpEdgeLauncher.avp-edge-launcher.is-walking .avp-bot-leg-l,
+  #avpEdgeLauncher.avp-edge-launcher.is-walking .avp-bot-leg-r,
+  #avpEdgeLauncher.avp-edge-launcher.is-walking .avp-bot-arm-l,
+  #avpEdgeLauncher.avp-edge-launcher.is-walking .avp-bot-arm-r{
+    animation-duration:.5s!important;
   }
 }
