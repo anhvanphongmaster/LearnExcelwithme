@@ -1,4 +1,4 @@
-const CACHE="learnexcel-assets-v20260913-stable2";
+const CACHE="learnexcel-assets-v20260913-stable3";
 const ASSETS=[
   "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css","./home-ux-polish-v1.css",
   "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./global-search.js",
@@ -36,21 +36,6 @@ async function networkFirst(req){
   }
 }
 
-async function staleWhileRevalidate(event){
-  const req=event.request;
-  const cache=await caches.open(CACHE);
-  const cached=await cache.match(req);
-  const refresh=fetch(req,{cache:"no-cache"}).then(res=>{
-    if(res&&res.ok) cache.put(req,res.clone()).catch(()=>{});
-    return res;
-  });
-  if(cached){
-    event.waitUntil(refresh.catch(()=>{}));
-    return cached;
-  }
-  try{return await refresh;}catch(_){return Response.error();}
-}
-
 async function cacheFirst(req){
   const cache=await caches.open(CACHE);
   const cached=await cache.match(req);
@@ -71,11 +56,9 @@ self.addEventListener("fetch",event=>{
   const isHTML=req.mode==="navigate"||url.pathname.endsWith(".html")||url.pathname.endsWith("/");
   const isCode=/\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
 
-  /* HTML must never come from a stale first response. */
-  if(isHTML){event.respondWith(networkFirst(req));return;}
-
-  /* JS/CSS remain fast, but query strings are real cache keys. */
-  if(isCode){event.respondWith(staleWhileRevalidate(event));return;}
+  /* Never serve a stale HTML/JS/CSS version first. Query strings remain part
+     of the cache key, and network failure still has an exact cached fallback. */
+  if(isHTML||isCode){event.respondWith(networkFirst(req));return;}
 
   event.respondWith(cacheFirst(req));
 });
