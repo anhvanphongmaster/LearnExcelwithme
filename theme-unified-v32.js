@@ -11,10 +11,10 @@
     link.setAttribute('data-'+key,'1');
     document.head.appendChild(link);
   }
-  loadCss('module-themes-v2.css?v=20260913-mod2','avp-module-themes-v2');
+  loadCss('module-themes-v2.css?v=20260913-mod3','avp-module-themes-v2');
   if((location.pathname.split('/').pop()||'').toLowerCase()==='admin.html'){
-    loadCss('admin-ui-v2.css?v=20260913-adminui2','avp-admin-ui-v2');
-    loadCss('admin-ui-v2-final.css?v=20260913-adminfinal1','avp-admin-ui-v2-final');
+    loadCss('admin-ui-v2.css?v=20260913-adminui3','avp-admin-ui-v2');
+    loadCss('admin-ui-v2-final.css?v=20260913-adminfinal2','avp-admin-ui-v2-final');
   }
 
   function forceLight(){
