@@ -8,7 +8,7 @@ const memory=new Map();
 const READS=new Set([
  'list_learning_leaderboard','is_admin_user','avp_is_admin','avp_chat_is_admin',
  'avp_chat_get_or_create_thread','avp_chat_my_unread_count',
- 'notification_unread_count','site_maintenance_public_v83','site_review_status_v2'
+ 'notification_unread_count','site_review_status_v2'
 ]);
 const WRITES=new Set(['upsert_learning_leaderboard']);
 const SESSION_TTL={
@@ -18,7 +18,6 @@ const SESSION_TTL={
  'avp_chat_get_or_create_thread':600000,
  'avp_chat_my_unread_count':5000,
  'notification_unread_count':10000,
- 'site_maintenance_public_v83':90000,
  'site_review_status_v2':1800000,
  'list_learning_leaderboard':10000
 };
