@@ -1,1 +1,102 @@
-<!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Đang mở bài học…</title><meta name="robots" content="noindex"><script>(function(){var id='';try{id=localStorage.getItem('avp_knowledge_last_v2')||''}catch(e){}if(!id)id='f01-excel-workspace';location.replace('knowledge.html?lesson='+encodeURIComponent(id));})();</script></head><body><p>Đang mở bài học… <a href="knowledge.html?lesson=f01-excel-workspace">Mở bài 01</a></p></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Học Excel hôm nay | Anh Văn Phòng</title>
+  <meta name="description" content="Học Excel theo một luồng rõ ràng: kiểm tra trình độ, học đúng bài, luyện ngắn, ôn lỗi và làm case thực chiến.">
+  <meta name="theme-color" content="#f5f7f6">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="simple-nav.css">
+  <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="global-search.css">
+  <link rel="stylesheet" href="avp-core.css">
+  <link rel="stylesheet" href="avp-ui-system.css?v=20260911-ui-consistency1" data-avp-ui-system>
+  <link rel="stylesheet" href="learning-coach-v2.css?v=20260913-coach2">
+</head>
+<body>
+<script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script>
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="learning-coach.html" data-avp-nav="learn" class="is-current" aria-current="page">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="lc-page">
+  <div class="lc-shell">
+    <header class="lc-head">
+      <div>
+        <span class="lc-kicker">HỌC EXCEL</span>
+        <h1>Hôm nay chỉ cần làm đúng việc tiếp theo.</h1>
+        <p>Web tự gợi ý bài cần học, cho bạn luyện ngắn và giữ lại những lỗi cần ôn. Không cần đi tìm giữa hàng chục khu.</p>
+      </div>
+      <a class="lc-browse" href="skill-map.html?browse=1">Tự chọn trong 42 bài →</a>
+    </header>
+
+    <nav class="lc-tabs" aria-label="Khu học tập">
+      <button type="button" class="lc-tab is-active" data-panel="today">Hôm nay</button>
+      <button type="button" class="lc-tab" data-panel="diagnostic">Kiểm tra trình độ</button>
+      <button type="button" class="lc-tab" data-panel="mistakes">Sổ lỗi <b id="mistakeBadge">0</b></button>
+      <button type="button" class="lc-tab" data-panel="cases">Case thực chiến</button>
+    </nav>
+
+    <section class="lc-panel is-active" id="panel-today" aria-label="Học hôm nay">
+      <div id="todayHost"></div>
+    </section>
+
+    <section class="lc-panel" id="panel-diagnostic" aria-label="Kiểm tra trình độ">
+      <div class="lc-panel-card">
+        <h2>Kiểm tra trình độ</h2>
+        <p>16 câu ngắn theo 8 nhóm kỹ năng. Kết quả chỉ dùng để chọn điểm bắt đầu phù hợp.</p>
+        <div id="diagnosticHost"></div>
+      </div>
+    </section>
+
+    <section class="lc-panel" id="panel-mistakes" aria-label="Sổ lỗi">
+      <div class="lc-panel-card">
+        <h2>Sổ lỗi cá nhân</h2>
+        <p>Những chỗ bạn làm sai được gom lại ở đây để học lại đúng phần, không phải tìm lại từ đầu.</p>
+        <div id="mistakesHost"></div>
+      </div>
+    </section>
+
+    <section class="lc-panel" id="panel-cases" aria-label="Case thực chiến">
+      <div class="lc-panel-card">
+        <h2>Case thực chiến</h2>
+        <p>Mỗi lần chỉ chọn một case. Có file, yêu cầu rõ và bài liên quan để quay lại khi bí.</p>
+        <div id="casesHost"></div>
+      </div>
+    </section>
+
+    <section class="lc-guide" aria-label="Cách dùng website để học Excel">
+      <h2>Cách dùng web để học</h2>
+      <div class="lc-guide-grid">
+        <article><b>01</b><strong>Vào Học</strong><p>Nếu chưa có hồ sơ, làm kiểm tra trình độ một lần.</p></article>
+        <article><b>02</b><strong>Làm 3 việc hôm nay</strong><p>Học đúng bài → luyện 3 câu → ôn một lỗi cũ.</p></article>
+        <article><b>03</b><strong>Thực hành bằng file</strong><p>Sau bài học, dùng khu Thực hành hoặc chọn một Case thực chiến.</p></article>
+        <article><b>04</b><strong>Sai đâu ôn đó</strong><p>Sai ở bài học, Arena hay bài chấm sẽ tự quay về Sổ lỗi.</p></article>
+      </div>
+      <div class="lc-rule"><strong>Quy tắc đơn giản:</strong> Học là luồng chính. Thực hành dùng sau khi học. Công cụ chỉ mở khi cần tra cứu. Arena dùng để luyện phản xạ. Danh sách 42 bài chỉ dành cho lúc bạn muốn tự chọn.</div>
+    </section>
+  </div>
+</main>
+
+<script src="learning-platform-catalog-v1.js?v=20260913-onepath2"></script>
+<script src="learning-coach-core-v1.js?v=20260913-coach1"></script>
+<script src="learning-coach-v2.js?v=20260913-coach2"></script>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="simple-nav.js"></script>
+<script defer src="theme-unified-v32.js"></script>
+<script defer src="global-search.js?v=20260911-platform2"></script>
+<script defer src="avp-core.js"></script>
+</body>
+</html>
