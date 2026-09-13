@@ -7,6 +7,14 @@
     const s=document.createElement('script');
     s.src=src;s.defer=true;s.setAttribute('data-'+key,'1');document.head.appendChild(s);
   }
+  function loadStyle(href,key){
+    if(document.querySelector('link[data-'+key+']'))return;
+    const l=document.createElement('link');
+    l.rel='stylesheet';l.href=href;l.setAttribute('data-'+key,'1');document.head.appendChild(l);
+  }
+
+  loadStyle('site-upgrade-v1.css?v=20260914-site2','avp-site-upgrade-v1');
+  loadRuntime('site-upgrade-v1.js?v=20260914-site3','avp-site-upgrade-v1');
   loadRuntime('site-runtime-cache-v1.js?v=20260914-cache1','avp-site-cache-v1');
   loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc2','avp-rpc-dedupe-v1');
   loadRuntime('site-auth-cache-v1.js?v=20260914-auth1','avp-auth-cache-v1');
@@ -20,13 +28,8 @@
   function getVisitorId(){
     let id=localStorage.getItem(VISITOR_KEY);
     if(id) return id;
-
-    try{
-      id=crypto.randomUUID();
-    }catch{
-      id=`v_${Date.now()}_${Math.random().toString(36).slice(2,12)}`;
-    }
-
+    try{id=crypto.randomUUID();}
+    catch{id=`v_${Date.now()}_${Math.random().toString(36).slice(2,12)}`;}
     localStorage.setItem(VISITOR_KEY,id);
     return id;
   }
@@ -39,13 +42,11 @@
 
   async function getClient(){
     const start=Date.now();
-
     while(Date.now()-start < MAX_WAIT){
       if(window.avpSupabase) return window.avpSupabase;
       if(window.AVP_SUPABASE_CONFIGURED === false) return null;
       await new Promise(resolve=>setTimeout(resolve,80));
     }
-
     return window.avpSupabase || null;
   }
 
@@ -56,18 +57,11 @@
 
   function safeMetadata(metadata){
     if(!metadata || typeof metadata!=="object") return {};
-
     const allowed={};
     for(const [key,value] of Object.entries(metadata)){
       if(!/^[a-zA-Z0-9_.-]{1,40}$/.test(key)) continue;
-
-      if(
-        typeof value==="string" ||
-        typeof value==="number" ||
-        typeof value==="boolean" ||
-        value===null
-      ){
-        allowed[key]=typeof value==="string" ? value.slice(0, key==='message'?500:120) : value;
+      if(typeof value==="string" || typeof value==="number" || typeof value==="boolean" || value===null){
+        allowed[key]=typeof value==="string" ? value.slice(0,key==='message'?500:120) : value;
       }
     }
     return allowed;
@@ -79,9 +73,7 @@
     if(now-last<ttl) return true;
     recentEvents.set(signature,now);
     if(recentEvents.size>80){
-      for(const [key,at] of recentEvents){
-        if(now-at>60000) recentEvents.delete(key);
-      }
+      for(const [key,at] of recentEvents){if(now-at>60000) recentEvents.delete(key);}
     }
     return false;
   }
@@ -103,7 +95,6 @@
       if(recentlyTracked(signature)) return false;
       const client=await getClient();
       if(!client) return false;
-
       const payload={
         p_event_name:cleanText(eventName,64),
         p_page:cleanText(options.page || currentPage(),180),
@@ -111,43 +102,26 @@
         p_visitor_id:getVisitorId(),
         p_metadata:safeMetadata(options.metadata)
       };
-
       let timer;
       const {error}=await Promise.race([
         client.rpc("track_analytics_event",payload),
-        new Promise((_,reject)=>{
-          timer=setTimeout(()=>reject(new Error("ANALYTICS_TIMEOUT")),RPC_TIMEOUT);
-        })
+        new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error("ANALYTICS_TIMEOUT")),RPC_TIMEOUT);})
       ]).finally(()=>clearTimeout(timer));
-
-      if(error){
-        console.debug("Analytics unavailable:",error.message);
-        return false;
-      }
-
+      if(error){console.debug("Analytics unavailable:",error.message);return false;}
       return true;
-    }catch(error){
-      console.debug("Analytics tracking failed:",error);
-      return false;
-    }
+    }catch(error){console.debug("Analytics tracking failed:",error);return false;}
   }
 
-  window.avpAnalytics={
-    track,
-    visitorId:getVisitorId()
-  };
+  window.avpAnalytics={track,visitorId:getVisitorId()};
 
   document.addEventListener("click", function(e){
     const link=e.target.closest?.("a[href]");
     if(!link) return;
     const href=String(link.getAttribute("href")||"");
     const label=cleanText(link.getAttribute("download") || link.textContent || href,80);
-
     if((link.hasAttribute("download") || /(^|\/)downloads\//i.test(href)) && !link.classList.contains("pv-download")){
-      track("file_download_click",{page:currentPage(),tool_name:label,metadata:{href:href.slice(0,120)}});
-      return;
+      track("file_download_click",{page:currentPage(),tool_name:label,metadata:{href:href.slice(0,120)}});return;
     }
-
     if(link.classList.contains("pv-tiktok")) return;
     if(link.classList.contains("pyt-yt") || /(?:youtube\.com|youtu\.be|tiktok\.com)/i.test(href)){
       if(link.classList.contains("home-book-card")) return;
@@ -157,12 +131,8 @@
 
   async function start(){
     const page=currentPage();
-
     if(shouldTrackPageView(page)) track("page_view",{page});
-
-    if(page==="excel-mobile.html"){
-      track("excel_mobile_open",{page});
-    }
+    if(page==="excel-mobile.html") track("excel_mobile_open",{page});
 
     const client=await getClient();
     if(!client?.auth?.onAuthStateChange) return;
@@ -184,23 +154,15 @@
 
     client.auth.onAuthStateChange((event,session)=>{
       if(event!=="SIGNED_IN" || !session?.user) return;
-
       const tokenKey=`avp_login_tracked_${session.user.id}`;
       const now=Date.now();
       const last=Number(sessionStorage.getItem(tokenKey)||0);
       if(now-last < 5000) return;
       sessionStorage.setItem(tokenKey,String(now));
-
-      track("login",{
-        page,
-        metadata:{provider:session.user.app_metadata?.provider || "email"}
-      });
+      track("login",{page,metadata:{provider:session.user.app_metadata?.provider || "email"}});
     });
   }
 
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",start,{once:true});
-  }else{
-    start();
-  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start,{once:true});
+  else start();
 })();
