@@ -3,11 +3,10 @@
    Legacy learning pages only. Practice/Pro pages use their own shells.
    ========================================================= */
 :root{
-  --avp-green:#217346; --avp-green-dark:#123f2a; --avp-green-deep:#071810;
-  --avp-mint:#79efb2; --avp-bg:#f4f8f5; --avp-card:#ffffff;
-  --avp-text:#18231d; --avp-muted:#65736b; --avp-border:#dfe9e3;
-  --avp-shadow:0 12px 36px rgba(17,70,43,.09);
-  --avp-radius:18px;
+  --avp-green:#217346;--avp-green-dark:#123f2a;--avp-green-deep:#071810;
+  --avp-mint:#79efb2;--avp-bg:#f4f8f5;--avp-card:#ffffff;
+  --avp-text:#18231d;--avp-muted:#65736b;--avp-border:#dfe9e3;
+  --avp-shadow:0 12px 36px rgba(17,70,43,.09);--avp-radius:18px;
 }
 html{scroll-behavior:smooth}
 body{background:linear-gradient(180deg,#f7faf8 0%,#f2f7f4 100%)!important;color:var(--avp-text)!important;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important}
@@ -21,12 +20,17 @@ nav a:hover{color:#17613a!important;background:#eef6f1!important;transform:trans
 nav a.active,nav a.is-current,nav a[aria-current="page"]{background:#eaf6ef!important;color:#155a37!important;border:1px solid #c3ddcc!important;box-shadow:none!important}
 #themeToggle{display:none!important}
 
-/* Compact light page header for old lessons. */
-.page-header{position:relative;overflow:hidden;width:min(1180px,calc(100% - 28px));margin:18px auto 8px!important;padding:30px 32px!important;background:linear-gradient(135deg,#eef8f2 0%,#fff 72%)!important;color:#173d2b!important;border:1px solid #cfe0d6!important;border-left:5px solid #217346!important;border-radius:22px!important;box-shadow:0 12px 34px rgba(27,66,45,.07)!important;text-align:left!important}
-.page-header::after{content:"";position:absolute;inset:auto -70px -90px auto;width:220px;height:220px;border-radius:50%;background:rgba(33,115,70,.08);pointer-events:none}
-.page-header>*{position:relative;z-index:1}
-.page-header h1{margin:0 0 9px!important;color:#174d31!important;font-size:clamp(32px,4.2vw,48px)!important;line-height:1.05!important;letter-spacing:-1.4px!important;font-weight:900!important;text-shadow:none!important}
-.page-header p{margin:0!important;color:#5d7166!important;font-size:16px!important;line-height:1.7!important;max-width:780px!important}
+/* Compact light header for every legacy lesson structure. */
+.page-header,
+body[data-learning-v2] > header:not(.top-simple-nav){position:relative;overflow:hidden;width:min(1180px,calc(100% - 28px));margin:18px auto 8px!important;padding:30px 32px!important;background:linear-gradient(135deg,#eef8f2 0%,#fff 72%)!important;color:#173d2b!important;border:1px solid #cfe0d6!important;border-left:5px solid #217346!important;border-radius:22px!important;box-shadow:0 12px 34px rgba(27,66,45,.07)!important;text-align:left!important}
+.page-header::after,
+body[data-learning-v2] > header:not(.top-simple-nav)::after{content:"";position:absolute;inset:auto -70px -90px auto;width:220px;height:220px;border-radius:50%;background:rgba(33,115,70,.08);pointer-events:none}
+.page-header>*,
+body[data-learning-v2] > header:not(.top-simple-nav)>*{position:relative;z-index:1}
+.page-header h1,
+body[data-learning-v2] > header:not(.top-simple-nav) h1{margin:0 0 9px!important;color:#174d31!important;font-size:clamp(32px,4.2vw,48px)!important;line-height:1.05!important;letter-spacing:-1.4px!important;font-weight:900!important;text-shadow:none!important;text-align:left!important}
+.page-header p,
+body[data-learning-v2] > header:not(.top-simple-nav) p{margin:0!important;color:#5d7166!important;font-size:16px!important;line-height:1.7!important;max-width:780px!important;text-align:left!important}
 
 /* Main layout */
 main{width:min(1120px,calc(100% - 32px))!important;max-width:1120px!important;margin-left:auto!important;margin-right:auto!important}
@@ -34,9 +38,7 @@ section{scroll-margin-top:88px}
 h2,.section-title{letter-spacing:-.6px}
 
 /* Shared cards and panels */
-.course-card,.featured-card,.latest-card,.download-card,.exercise-card,.box,.pivot-box,.action-box,.contact-item,.formula-finder-box,.daily-formula,.daily-challenge,.learning-path,.mini-dashboard,.dashboard-kpi,.dashboard-chart,.dashboard-top-ng,.qc-alert-box,.formula-builder,.formula-tester,.card{
-  border:1px solid var(--avp-border)!important;border-radius:var(--avp-radius)!important;box-shadow:0 8px 24px rgba(17,70,43,.065)!important;background:#fff!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease!important
-}
+.course-card,.featured-card,.latest-card,.download-card,.exercise-card,.box,.pivot-box,.action-box,.contact-item,.formula-finder-box,.daily-formula,.daily-challenge,.learning-path,.mini-dashboard,.dashboard-kpi,.dashboard-chart,.dashboard-top-ng,.qc-alert-box,.formula-builder,.formula-tester,.card{border:1px solid var(--avp-border)!important;border-radius:var(--avp-radius)!important;box-shadow:0 8px 24px rgba(17,70,43,.065)!important;background:#fff!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease!important}
 .course-card:hover,.featured-card:hover,.latest-card:hover,.download-card:hover,.exercise-card:hover,.contact-item:hover,.card:hover{transform:translateY(-3px)!important;box-shadow:0 14px 32px rgba(17,70,43,.11)!important;border-color:#bfddcc!important}
 
 /* Buttons / inputs */
@@ -61,11 +63,11 @@ footer p:first-child{font-weight:800;color:#fff}
  nav{justify-content:flex-start!important;overflow-x:auto!important;scrollbar-width:none!important;padding:9px 12px!important}
  nav::-webkit-scrollbar{display:none}
  nav a{font-size:13px!important;padding:9px 10px!important}
- .page-header{width:min(100% - 18px,1180px);padding:22px 20px!important;margin-top:10px!important}
+ .page-header,body[data-learning-v2] > header:not(.top-simple-nav){width:min(100% - 18px,1180px);padding:22px 20px!important;margin-top:10px!important}
  main{width:min(100% - 24px,1120px)!important}
 }
 @media(max-width:560px){
- .page-header h1{font-size:32px!important}
- .page-header p{font-size:14px!important}
+ .page-header h1,body[data-learning-v2] > header:not(.top-simple-nav) h1{font-size:32px!important}
+ .page-header p,body[data-learning-v2] > header:not(.top-simple-nav) p{font-size:14px!important}
  footer{margin-top:45px!important}
 }
