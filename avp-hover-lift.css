@@ -1,22 +1,45 @@
-/* redirected: use avp-site-motion.css */
-@import url("avp-site-motion.css");
+/* shared desktop motion + surface system */
+@import url("avp-site-motion.css?v=20260913-v99");
 @import url("home-ux-polish-v1.css?v=20260912-homeux3");
 @import url("ux-declutter-v1.css?v=20260913-ux1");
 @import url("ux-declutter-v2.css?v=20260913-ux2b");
 
-/* Home robot bounds + cheaper paint. Robot still patrols normally. */
+/* Home robot: compositor patrol owns horizontal motion. */
 html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home,
 html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth{
   width:64px!important;
   max-width:64px!important;
   contain:layout style;
-  will-change:left;
-  transform:translateZ(0);
+  will-change:auto;
   backface-visibility:hidden;
+}
+html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth.avp-smooth-moving{
+  will-change:transform;
 }
 html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth .avp-edge-main{
   left:0!important;
   right:auto!important;
+}
+
+/* Smooth patrol keeps the walk animation without re-enabling avp-core's
+   legacy is-walking position loop. */
+#avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving.face-left .avp-bot{transform:scaleX(-1)}
+#avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-leg-l{animation:avpBotStep .36s linear infinite}
+#avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-leg-r{animation:avpBotStep .36s linear infinite reverse}
+#avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-arm-l{animation:avpBotStep .36s linear infinite reverse}
+#avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-arm-r{animation:avpBotStep .36s linear infinite}
+
+/* ux-declutter resets transform with !important. This final rule intentionally
+   wins so every Home utility card, not only Arena, gets the same light lift. */
+@media(min-width:901px){
+  html body .home-path-more--5 .home-more-card{
+    transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .18s ease,border-color .18s ease!important;
+  }
+  html body .home-path-more--5 .home-more-card:hover,
+  html body .home-path-more--5 .home-more-card:focus-visible{
+    transform:translate3d(0,-3px,0)!important;
+    box-shadow:0 10px 24px rgba(20,90,50,.10)!important;
+  }
 }
 
 @media(max-width:900px){
@@ -24,6 +47,7 @@ html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth .avp-edge-mai
   html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth{
     width:64px!important;
     max-width:64px!important;
+    will-change:auto!important;
   }
   #avpEdgeLauncher .avp-bot{
     filter:none!important;
@@ -35,10 +59,19 @@ html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home-smooth .avp-edge-mai
   #avpEdgeLauncher .avp-bot-leg{
     box-shadow:none!important;
   }
-  #avpEdgeLauncher.avp-edge-launcher.is-walking .avp-bot-leg-l,
-  #avpEdgeLauncher.avp-edge-launcher.is-walking .avp-bot-leg-r,
-  #avpEdgeLauncher.avp-edge-launcher.is-walking .avp-bot-arm-l,
-  #avpEdgeLauncher.avp-edge-launcher.is-walking .avp-bot-arm-r{
+  #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-leg-l,
+  #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-leg-r,
+  #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-arm-l,
+  #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-arm-r{
     animation-duration:.5s!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-leg-l,
+  #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-leg-r,
+  #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-arm-l,
+  #avpEdgeLauncher.avp-robot-home-smooth.avp-smooth-moving .avp-bot-arm-r{
+    animation:none!important;
   }
 }
