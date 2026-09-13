@@ -1,0 +1,4 @@
+/*! practice-hub-theme-v1.css — blue identity from Home Practice card */
+.ph-direct-hero{border-color:#bfd8eb!important;border-left:5px solid #2f72aa!important;background:linear-gradient(135deg,#eef6fd,#fff 82%)!important;box-shadow:0 10px 26px rgba(47,114,170,.10)!important}
+.ph-direct-hero>span{color:#2f72aa!important}.ph-direct-hero h1{color:#245781!important}.ph-direct-hero p{color:#5d6963!important}
+@media(max-width:700px){.ph-direct-hero{border-left-width:4px!important;box-shadow:none!important}}
