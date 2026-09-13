@@ -1,84 +1,40 @@
-/* AVP Home Knowledge V2 — balanced 4-card / 24-lesson learning map. */
+/* AVP Home Knowledge V3 — compact 4-flow selector for 42 lessons. */
 .home-path-grid.avp-home-kv2-grid{
   display:grid!important;
-  grid-template-columns:repeat(2,minmax(0,1fr))!important;
-  gap:18px!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:12px!important;
   align-items:stretch!important;
 }
 .home-path-grid.avp-home-kv2-grid .avp-home-kv2-card{
   min-width:0!important;
-  min-height:100%!important;
-  padding:20px!important;
+  min-height:205px!important;
+  padding:17px!important;
   display:flex!important;
   flex-direction:column!important;
-  border-radius:20px!important;
-  box-shadow:0 12px 32px rgba(19,73,45,.07)!important;
+  border:1px solid #dce8e0!important;
+  border-radius:18px!important;
+  box-shadow:0 8px 22px rgba(19,73,45,.055)!important;
+  text-decoration:none!important;
+  color:#243e30!important;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease!important;
 }
+.home-path-grid.avp-home-kv2-grid .avp-home-kv2-card:hover{transform:translateY(-3px)!important;border-color:#92c4a6!important;box-shadow:0 14px 30px rgba(19,73,45,.10)!important}
 .home-path-grid.avp-home-kv2-grid .avp-home-kv2-green{background:#f2faf5!important;border-color:#c8e4d2!important}
 .home-path-grid.avp-home-kv2-grid .avp-home-kv2-blue{background:#f3f7fd!important;border-color:#cedcf0!important}
 .home-path-grid.avp-home-kv2-grid .avp-home-kv2-purple{background:#f8f4fc!important;border-color:#ddd1ec!important}
 .home-path-grid.avp-home-kv2-grid .avp-home-kv2-sand{background:#fcf8f1!important;border-color:#e9d8b8!important}
-.hp-kv2-head{min-height:118px;margin-bottom:12px}
-.hp-kv2-head>span{display:block!important;margin:0 0 5px!important;color:#217346!important;font-size:12px!important;font-weight:900!important;letter-spacing:.04em!important}
-.hp-kv2-head h3{margin:0 0 7px!important;color:#143f2a!important;font-size:22px!important;line-height:1.2!important}
-.hp-kv2-head p{margin:0!important;color:#61746a!important;font-size:13.5px!important;line-height:1.55!important}
-.home-path-grid.avp-home-kv2-grid ul{display:grid!important;gap:8px!important;margin:0!important;padding:0!important;list-style:none!important;flex:1!important}
-.home-path-grid.avp-home-kv2-grid li{margin:0!important;min-width:0!important}
-.home-path-grid.avp-home-kv2-grid li>a{
-  min-height:58px!important;
-  width:100%!important;
-  box-sizing:border-box!important;
-  display:grid!important;
-  grid-template-columns:34px 30px minmax(0,1fr)!important;
-  align-items:center!important;
-  gap:8px!important;
-  padding:9px 12px!important;
-  border:1px solid #dce8e0!important;
-  border-radius:13px!important;
-  background:rgba(255,255,255,.94)!important;
-  color:#243e30!important;
-  text-decoration:none!important;
-  font-size:13.5px!important;
-  font-weight:800!important;
-  line-height:1.25!important;
-  box-shadow:none!important;
-  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease!important;
-}
-.home-path-grid.avp-home-kv2-grid li>a:hover{
-  transform:translateY(-1px)!important;
-  border-color:#94c2a6!important;
-  box-shadow:0 7px 18px rgba(33,115,70,.08)!important;
-}
-.hp-kv2-num{display:grid!important;place-items:center!important;width:30px!important;height:30px!important;margin:0!important;border-radius:9px!important;background:#eaf5ee!important;color:#1a6740!important;font-size:11px!important;font-weight:900!important}
-.hp-kv2-icon{display:grid!important;place-items:center!important;margin:0!important;font-size:18px!important}
-.hp-kv2-title{display:block!important;margin:0!important;min-width:0!important;color:#243e30!important;font-size:13.5px!important;font-weight:800!important;overflow-wrap:anywhere!important}
-.hp-kv2-more{
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:flex-start!important;
-  margin-top:14px!important;
-  padding:0!important;
-  background:transparent!important;
-  border:0!important;
-  color:#1d7448!important;
-  text-decoration:none!important;
-  font-size:12px!important;
-  font-weight:900!important;
-}
-body.dark-mode .home-path-grid.avp-home-kv2-grid .avp-home-kv2-card{background:#13231a!important;border-color:#2d4939!important}
-body.dark-mode .hp-kv2-head h3,body.dark-mode .hp-kv2-title{color:#e8f4ec!important}
-body.dark-mode .hp-kv2-head p{color:#a9bcb1!important}
-body.dark-mode .home-path-grid.avp-home-kv2-grid li>a{background:#192a20!important;border-color:#304a3a!important;color:#e8f4ec!important}
-body.dark-mode .hp-kv2-num{background:#224231!important;color:#a8e3bd!important}
-@media(max-width:900px){
-  .home-path-grid.avp-home-kv2-grid{grid-template-columns:1fr!important;gap:14px!important}
-  .hp-kv2-head{min-height:0}
-}
-@media(max-width:560px){
-  .home-path-grid.avp-home-kv2-grid .avp-home-kv2-card{padding:16px!important}
-  .home-path-grid.avp-home-kv2-grid li>a{grid-template-columns:32px 28px minmax(0,1fr)!important;min-height:56px!important;padding:8px 10px!important}
-  .hp-kv2-head h3{font-size:20px!important}
-}
+.hp-kv2-cardtop{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important}
+.hp-kv2-label{display:block!important;color:#217346!important;font-size:9px!important;font-weight:950!important;letter-spacing:.055em!important;line-height:1.25!important}
+.hp-kv2-flowicon{display:grid!important;place-items:center!important;width:36px!important;height:36px!important;flex:0 0 36px!important;border-radius:11px!important;background:rgba(255,255,255,.86)!important;border:1px solid rgba(33,115,70,.11)!important;color:#1b6740!important;font-size:15px!important;font-style:normal!important;font-weight:950!important}
+.hp-kv2-head{min-height:0!important;margin:14px 0 0!important}
+.hp-kv2-head h3{margin:0 0 7px!important;color:#143f2a!important;font-size:18px!important;line-height:1.18!important}
+.hp-kv2-head p{margin:0!important;color:#61746a!important;font-size:11px!important;line-height:1.5!important}
+.hp-kv2-more{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;margin-top:auto!important;padding-top:14px!important;border-top:1px solid rgba(35,101,62,.10)!important;color:#1d7448!important;font-size:10px!important;font-weight:850!important}
+.hp-kv2-more b{font-size:10px!important;color:#17663d!important}
+body.dark-mode .home-path-grid.avp-home-kv2-grid .avp-home-kv2-card{background:#13231a!important;border-color:#2d4939!important;color:#e8f4ec!important}
+body.dark-mode .hp-kv2-head h3{color:#e8f4ec!important}body.dark-mode .hp-kv2-head p{color:#a9bcb1!important}.dark-mode .hp-kv2-flowicon{background:#1b3023!important;border-color:#31503d!important;color:#a8e3bd!important}
+@media(max-width:1080px){.home-path-grid.avp-home-kv2-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.home-path-grid.avp-home-kv2-grid .avp-home-kv2-card{min-height:185px!important}}
+@media(max-width:620px){.home-path-grid.avp-home-kv2-grid{grid-template-columns:1fr!important;gap:10px!important}.home-path-grid.avp-home-kv2-grid .avp-home-kv2-card{min-height:160px!important;padding:15px!important}.hp-kv2-head{margin-top:10px!important}.hp-kv2-head h3{font-size:17px!important}}
 
 /* Home Practice CTA — all five flow badges move as one ordered 3D sequence. */
 .avp-practice-hub-badges{perspective:220px!important;transform-style:preserve-3d!important}
@@ -89,9 +45,7 @@ body.dark-mode .hp-kv2-num{background:#224231!important;color:#a8e3bd!important}
   will-change:transform,filter!important;
   animation:avpMiniBounceFive 2.8s cubic-bezier(.22,1.35,.36,1) infinite!important;
 }
-.avp-practice-hub-badges .avp-mini-channel::after{
-  animation:avpMiniFlashFive 2.8s ease-in-out infinite!important;
-}
+.avp-practice-hub-badges .avp-mini-channel::after{animation:avpMiniFlashFive 2.8s ease-in-out infinite!important}
 .avp-practice-hub-badges .avp-mini-channel-tt{animation-delay:0s!important}
 .avp-practice-hub-badges .avp-mini-channel-yt{animation-delay:.22s!important}
 .avp-practice-hub-badges .avp-mini-channel-hw{background:#b7791f!important;animation-delay:.44s!important}
@@ -102,20 +56,6 @@ body.dark-mode .hp-kv2-num{background:#224231!important;color:#a8e3bd!important}
 .avp-practice-hub-badges .avp-mini-channel-hw::after{animation-delay:.44s!important}
 .avp-practice-hub-badges .avp-mini-channel-grade::after{animation-delay:.66s!important}
 .avp-practice-hub-badges .avp-mini-channel-pro::after{animation-delay:.88s!important}
-@keyframes avpMiniBounceFive{
-  0%,16%,100%{transform:translate3d(0,0,0) rotateX(0) rotateY(0) scale(1);filter:brightness(1)}
-  25%{transform:translate3d(0,-8px,16px) rotateX(18deg) rotateY(-12deg) scale(1.15);filter:brightness(1.08)}
-  34%{transform:translate3d(0,-2px,6px) rotateX(-7deg) rotateY(9deg) scale(1.05)}
-  42%{transform:translate3d(0,-5px,11px) rotateX(10deg) rotateY(-5deg) scale(1.09)}
-  55%{transform:translate3d(0,0,0) rotateX(0) rotateY(0) scale(1)}
-}
-@keyframes avpMiniFlashFive{
-  0%,18%,100%{transform:translateX(-125%) rotate(18deg);opacity:0}
-  25%{opacity:.25}
-  37%{transform:translateX(125%) rotate(18deg);opacity:1}
-  48%{opacity:0}
-}
-@media(prefers-reduced-motion:reduce){
-  .avp-practice-hub-badges .avp-mini-channel,
-  .avp-practice-hub-badges .avp-mini-channel::after{animation:none!important}
-}
+@keyframes avpMiniBounceFive{0%,16%,100%{transform:translate3d(0,0,0) rotateX(0) rotateY(0) scale(1);filter:brightness(1)}25%{transform:translate3d(0,-8px,16px) rotateX(18deg) rotateY(-12deg) scale(1.15);filter:brightness(1.08)}34%{transform:translate3d(0,-2px,6px) rotateX(-7deg) rotateY(9deg) scale(1.05)}42%{transform:translate3d(0,-5px,11px) rotateX(10deg) rotateY(-5deg) scale(1.09)}55%{transform:translate3d(0,0,0) rotateX(0) rotateY(0) scale(1)}}
+@keyframes avpMiniFlashFive{0%,18%,100%{transform:translateX(-125%) rotate(18deg);opacity:0}25%{opacity:.25}37%{transform:translateX(125%) rotate(18deg);opacity:1}48%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.home-path-grid.avp-home-kv2-grid .avp-home-kv2-card{transition:none!important}.home-path-grid.avp-home-kv2-grid .avp-home-kv2-card:hover{transform:none!important}.avp-practice-hub-badges .avp-mini-channel,.avp-practice-hub-badges .avp-mini-channel::after{animation:none!important}}
