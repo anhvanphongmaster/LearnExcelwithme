@@ -17,5 +17,4 @@
     document.head.appendChild(s);
   }
   window.addEventListener('avp:admin-grader-open',()=>{if(!loaded)loadCore()});
-  try{if(localStorage.getItem('avp_admin_view_v1')==='grader')setTimeout(loadCore,120)}catch(e){}
 })();
