@@ -6,6 +6,7 @@
   <title>Học Excel theo 4 luồng | Learn Excel with Anh Van Phong</title>
   <meta name="description" content="42 bài Excel được chia thành 4 luồng học rõ ràng. Chọn luồng rồi cuộn qua từng bài theo đúng mục tiêu.">
   <meta name="theme-color" content="#ffffff">
+  <script>document.documentElement.dataset.avpEntryTheme=(new URLSearchParams(location.search).get('entry')==='skillmap'?'skillmap':'learn');</script>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="simple-nav.css">
@@ -14,6 +15,7 @@
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="practice-roll.css?v=20260913-learning1">
   <link rel="stylesheet" href="learning-hub-v1.css?v=20260913-learning1">
+  <link rel="stylesheet" href="learning-entry-theme-v1.css?v=20260913-entry1">
   <link rel="stylesheet" href="avp-ui-system.css?v=20260911-ui-consistency1" data-avp-ui-system>
 </head>
 <body>
@@ -21,7 +23,7 @@
 <nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
     <a href="index.html" data-avp-nav="home">Trang chủ</a>
-    <a href="skill-map.html" data-avp-nav="learn" class="is-current" aria-current="page">Học</a>
+    <a href="skill-map.html?entry=learn" data-avp-nav="learn" class="is-current" aria-current="page">Học</a>
     <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
     <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
     <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
