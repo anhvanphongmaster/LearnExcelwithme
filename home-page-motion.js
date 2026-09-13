@@ -1,19 +1,15 @@
-/*! home-page-motion.js — V101 deterministic Home boot */
+/*! home-page-motion.js — V102 four-flow Home learning entry */
 (function(){
   'use strict';
-  if(window.__avpHomeMotionV101)return;
-  window.__avpHomeMotionV101=true;
+  if(window.__avpHomeMotionV102)return;
+  window.__avpHomeMotionV102=true;
   window.__avpSiteMotion=true;
 
-  var modules=[
-    ['01','FOUNDATION','Nền tảng Excel','Hiểu file, nhập liệu, định dạng, công thức và cấu trúc bảng trước khi đi sâu.','f01-excel-workspace',6,'green'],
-    ['02','DATA CONTROL','Dữ liệu & Làm sạch','Lọc, tìm, chuẩn hóa text, chặn nhập sai và kiểm soát duplicate/blank/error.','d07-sort-filter',5,'teal'],
-    ['03','FORMULA & LOOKUP','Công thức & Tra cứu','Logic, tổng hợp điều kiện, lookup, ngày tháng, công thức nâng cao và Dynamic Array.','s07-logic',6,'blue'],
-    ['04','ANALYSIS','Phân tích & Báo cáo','Excel Table, PivotTable, KPI, đối chiếu số và bàn giao báo cáo.','a13-excel-table',5,'purple'],
-    ['05','VISUAL REPORT','Dashboard & Trực quan hóa','Chart đúng mục đích, KPI card, Slicer/Timeline và dashboard tương tác dễ dùng.','a16-charts-pareto',5,'rose'],
-    ['06','POWER QUERY','Power Query','Kết nối nguồn, làm sạch, schema/type, Append/Merge, nhiều file và Refresh bền vững.','pq28-import-sources',6,'sand'],
-    ['07','AUTOMATION CODE','Macro / VBA & Tối ưu file','Record Macro, object model, If/Loop, xử lý lỗi, bảo mật và giảm lag workbook.','x23-macro-vba',4,'orange'],
-    ['08','WORKFLOW & CASE','Workflow & Case thực chiến','Chọn đúng công cụ và nối Input → Transform → Calculate → Report → Validate → Deliver.','x24-automation-workflow',5,'indigo']
+  var tracks=[
+    ['01','FOUNDATION + DATA','Nền tảng & Dữ liệu','Hiểu Excel, nhập liệu, cấu trúc bảng, lọc và làm sạch dữ liệu.','foundation-data',11,'green'],
+    ['02','FORMULA + ANALYSIS','Công thức & Phân tích','Logic, lookup, tổng hợp điều kiện, Table, Pivot, KPI và kiểm tra số.','formula-analysis',11,'blue'],
+    ['03','DASHBOARD + POWER QUERY','Dashboard & Power Query','Biểu đồ, dashboard tương tác và quy trình làm sạch/Refresh bằng Power Query.','dashboard-power-query',11,'purple'],
+    ['04','AUTOMATION + CASE','Tự động hóa & Case','Macro/VBA, tối ưu file, chọn công cụ và case end-to-end thực chiến.','automation-cases',9,'sand']
   ];
 
   var LAST_KEY='avp_knowledge_last_v2';
@@ -35,17 +31,17 @@
 
   function wirePrimaryCta(){
     var btn=document.getElementById('avpScrollToPath');
-    if(btn&&btn.dataset.onePath!=='coach2'){
+    if(btn&&btn.dataset.learningHub!=='fourflows1'){
       var clean=btn.cloneNode(true);
-      clean.dataset.onePath='coach2';
-      clean.innerHTML='<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Học hôm nay →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">Web tự chọn bài cần học · luyện ngắn · ôn lỗi</span>';
-      clean.addEventListener('click',function(e){e.preventDefault();location.href='learning-coach.html';});
+      clean.dataset.learningHub='fourflows1';
+      clean.innerHTML='<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Chọn luồng học →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">4 luồng · 42 bài · chọn mục tiêu rồi cuộn qua từng bài</span>';
+      clean.addEventListener('click',function(e){e.preventDefault();location.href='skill-map.html';});
       btn.replaceWith(clean);
     }
     var learn=document.querySelector('.top-simple-nav [data-avp-nav="learn"]');
     if(learn){
-      learn.href='learning-coach.html';
-      learn.setAttribute('aria-label','Học Excel hôm nay');
+      learn.href='skill-map.html';
+      learn.setAttribute('aria-label','Chọn luồng học Excel');
     }
   }
 
@@ -56,16 +52,16 @@
 
     var title=shell.querySelector(':scope > h2');
     var desc=shell.querySelector(':scope > p');
-    if(title)title.textContent='Nền tảng Excel A–Z';
-    if(desc)desc.textContent='8 module · 42 bài. Chọn theo nhóm công việc; bên trong là danh sách bài rõ ràng và luôn có đường quay lại.';
+    if(title)title.textContent='Chọn luồng học Excel';
+    if(desc)desc.textContent='4 luồng · 42 bài. Chọn mục tiêu trước, sau đó cuộn qua từng bài trong cùng một giao diện.';
 
-    grid.className='home-path-grid home-platform-grid-v1';
-    grid.innerHTML=modules.map(function(m){
-      return '<a class="home-platform-module-v1 tone-'+esc(m[6])+'" href="knowledge.html?lesson='+encodeURIComponent(m[4])+'">'+
-        '<span class="home-platform-no-v1">'+esc(m[0])+'</span>'+
-        '<span class="home-platform-copy-v1"><small>'+esc(m[1])+'</small><strong>'+esc(m[2])+'</strong><em>'+esc(m[3])+'</em><b>'+m[5]+' bài · Bắt đầu →</b></span></a>';
+    grid.className='home-path-grid home-platform-grid-v1 home-learning-flow-grid-v1';
+    grid.innerHTML=tracks.map(function(t){
+      return '<a class="home-platform-module-v1 home-learning-flow-v1 tone-'+esc(t[6])+'" href="skill-map.html?track='+encodeURIComponent(t[4])+'">'+
+        '<span class="home-platform-no-v1">'+esc(t[0])+'</span>'+
+        '<span class="home-platform-copy-v1"><small>'+esc(t[1])+'</small><strong>'+esc(t[2])+'</strong><em>'+esc(t[3])+'</em><b>'+t[5]+' bài · Mở luồng →</b></span></a>';
     }).join('');
-    grid.dataset.avpHomeAz='v101';
+    grid.dataset.avpHomeAz='v102-fourflows';
 
     var more=shell.querySelector('.home-path-more');
     if(more)more.style.marginTop='18px';
@@ -103,8 +99,8 @@
   function ensurePracticeBanner(){
     var cta=document.querySelector('.avp-mobile-main-cta-wrap .avp-mobile-main-cta');
     if(!cta)return false;
-    if(cta.dataset.practiceHubV101==='1')return true;
-    cta.dataset.practiceHubV101='1';
+    if(cta.dataset.practiceHubV102==='1')return true;
+    cta.dataset.practiceHubV102='1';
     cta.classList.remove('home-start-cta-v1');
     cta.classList.add('avp-practice-hub-cta');
     cta.href='practice-video.html';
@@ -143,7 +139,7 @@
       section=document.createElement('section');
       section.className='home-first-v1';
       section.id='homeStartHereV1';
-      section.innerHTML='<div class="home-first-inner-v1"><div class="home-first-head-v1"><div><span class="home-first-kicker-v1">DÀNH CHO NGƯỜI MỚI</span><h2>Không biết bắt đầu từ đâu? Đi theo 3 bước này.</h2><p>Web có nhiều khu, nhưng để học từ đầu bạn chỉ cần đi theo một đường: học bài trước, thực hành sau, tra cứu khi cần.</p></div><a class="home-first-primary-v1" href="knowledge.html?lesson=f01-excel-workspace">Bắt đầu học Excel →</a></div><div class="home-first-steps-v1"><div class="home-first-step-v1"><span>01</span><div><strong>Học</strong><small>Bắt đầu từ Bài 01 và đi theo thứ tự trong lộ trình Excel A–Z.</small></div></div><div class="home-first-step-v1"><span>02</span><div><strong>Thực hành</strong><small>Sau khi học, làm lại bằng file/bài tập để biến kiến thức thành thao tác.</small></div></div><div class="home-first-step-v1"><span>03</span><div><strong>Tra cứu</strong><small>Khi quên công thức, phím tắt hoặc cần tool thì mới mở kho tra cứu/công cụ.</small></div></div></div><div class="home-first-foot-v1"><span>Arena, Tool và Pro là phần bổ sung — người mới chưa cần vào ngay.</span><span><a href="#ky-nang-excel">Xem lộ trình 42 bài →</a> · <a href="practice-video.html">Khu thực hành →</a></span></div></div>';
+      section.innerHTML='<div class="home-first-inner-v1"><div class="home-first-head-v1"><span class="home-first-kicker-v1">DÀNH CHO NGƯỜI MỚI</span><h2>Bắt đầu đúng chỗ</h2><p>Chọn luồng học trước, học bài, rồi sang Thực hành bằng file.</p></div><div class="home-first-steps-v1"><div class="home-first-step-v1"><span>01</span><div><strong>Chọn luồng</strong><small>Chọn một trong 4 luồng theo mục tiêu.</small></div></div><div class="home-first-step-v1"><span>02</span><div><strong>Học bài</strong><small>Cuộn card và mở đúng bài cần học.</small></div></div><div class="home-first-step-v1"><span>03</span><div><strong>Thực hành</strong><small>Sau khi học, làm lại bằng file/case.</small></div></div></div><a class="home-first-primary-v1" href="skill-map.html?track=foundation-data">Chọn luồng học →</a><div class="home-first-foot-v1"><span>Học = 4 luồng / 42 bài. Thực hành = 5 luồng file/case.</span></div></div>';
       hero.insertAdjacentElement('afterend',section);
     }
 
@@ -151,8 +147,13 @@
       var t=target(P);
       var primary=section.querySelector('.home-first-primary-v1');
       if(primary){
-        primary.href=P.lessonUrl?P.lessonUrl(t.id):('knowledge.html?lesson='+encodeURIComponent(t.id));
-        primary.textContent=(t.resume?('Tiếp tục lộ trình · Bài '+String(t.order||1).padStart(2,'0')):'Bắt đầu học Excel')+' →';
+        if(t.resume){
+          primary.href=P.lessonUrl?P.lessonUrl(t.id):('knowledge.html?lesson='+encodeURIComponent(t.id));
+          primary.textContent='Tiếp tục · Bài '+String(t.order||1).padStart(2,'0')+' →';
+        }else{
+          primary.href='skill-map.html?track=foundation-data';
+          primary.textContent='Chọn luồng học →';
+        }
       }
     }
     return true;
@@ -191,7 +192,7 @@
       return;
     }
     var s=document.createElement('script');
-    s.src='learning-platform-catalog-v1.js?v=20260913-stable101';
+    s.src='learning-platform-catalog-v1.js?v=20260913-fourflows1';
     s.dataset.avpHomeFirstCatalog='1';
     s.onload=function(){renderFirstRun(window.AVPLearningPlatform);};
     document.head.appendChild(s);
