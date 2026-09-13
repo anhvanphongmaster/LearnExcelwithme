@@ -1,6 +1,9 @@
 (() => {
 "use strict";
 
+const PAGE=(location.pathname.split("/").pop()||"").toLowerCase();
+if(PAGE!=="admin.html") return;
+
 const STORE="avp_admin_web_push_v46";
 const VAPID_PUBLIC_KEY="BFxmt13_QrywtqzR4quLrMHefc9LbrMuodSThZslO9Qb-b3LksiS3XzniutjGl99Ce3Vn8fqPtf7SymsFlVJp4c";
 
