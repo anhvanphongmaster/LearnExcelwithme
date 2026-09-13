@@ -21,7 +21,7 @@
     document.querySelectorAll('link[href*="personal-dashboard.css"],link[href*="cloud-sync-v11.css"]').forEach(function(x){x.disabled=true;x.media='not all';});
   }else if(page!=='auth.html'){
     loadCss('site-upgrade-v1.css?v=20260914-site1','avp-site-upgrade-v1');
-    loadJs('site-upgrade-v1.js?v=20260914-site1','avp-site-upgrade-v1');
+    loadJs('site-upgrade-v1.js?v=20260914-site2','avp-site-upgrade-v1');
   }
 
   function forceLight(){
