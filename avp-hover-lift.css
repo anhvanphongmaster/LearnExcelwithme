@@ -1,9 +1,9 @@
 /* shared desktop motion + surface system */
 @import url("avp-site-motion.css?v=20260913-v99");
 @import url("home-ux-polish-v1.css?v=20260912-homeux3");
-@import url("home-learning-flows-v1.css?v=20260913-fourflows1");
 @import url("ux-declutter-v1.css?v=20260913-ux1");
 @import url("ux-declutter-v2.css?v=20260913-ux2b");
+@import url("home-learning-flows-v1.css?v=20260913-fourflows1");
 
 /* Home robot: compositor patrol owns horizontal motion. */
 html body #avpEdgeLauncher.avp-edge-launcher.avp-robot-home,
