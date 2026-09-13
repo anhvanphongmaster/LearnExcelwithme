@@ -1,0 +1,20 @@
+/*! learning-entry-theme-v1.css — same Skill Map page, identity follows the Home entry card */
+html{--lh-entry:#217346;--lh-entry-dark:#185c37;--lh-entry-soft:#edf8f1;--lh-entry-line:#b8d9c4;--lh-entry-glow:rgba(33,115,70,.10)}
+html[data-avp-entry-theme="skillmap"]{--lh-entry:#2f78ad;--lh-entry-dark:#245b87;--lh-entry-soft:#eef6fd;--lh-entry-line:#bfd8eb;--lh-entry-glow:rgba(47,120,173,.10)}
+
+.lh-hero{
+  border-color:var(--lh-entry-line)!important;
+  border-left:5px solid var(--lh-entry)!important;
+  background:linear-gradient(135deg,var(--lh-entry-soft),#fff 82%)!important;
+  box-shadow:0 9px 24px var(--lh-entry-glow)!important;
+}
+.lh-hero .lh-kicker{color:var(--lh-entry)!important}
+.lh-hero h1{color:var(--lh-entry-dark)!important}
+.lh-hero-meta span{border-color:var(--lh-entry-line)!important;color:var(--lh-entry-dark)!important;background:#fff!important}
+.lh-selector>.lh-section-head .lh-kicker,.lh-selector>.lh-section-head h2{color:var(--lh-entry-dark)!important}
+.lh-coach-bar{border-color:var(--lh-entry-line)!important;border-left:4px solid var(--lh-entry)!important}
+.lh-coach-mark{background:var(--lh-entry-soft)!important;color:var(--lh-entry-dark)!important}
+.lh-coach-bar>b{color:var(--lh-entry-dark)!important}
+
+/* Once a learning flow is chosen, learning-hub-v1.css owns that flow's own palette. */
+@media(max-width:700px){.lh-hero{border-left-width:4px!important;box-shadow:none!important}}
