@@ -1,0 +1,56 @@
+/*! AVP Site Upgrade V1 — shared shell without repainting stable feature internals */
+:root{--avp-u-green:#217346;--avp-u-green-dark:#185c37;--avp-u-text:#203a2d;--avp-u-muted:#66786e;--avp-u-line:#d7e3dc;--avp-u-bg:#f4f8f5;--avp-u-white:#fff}
+html.avp-site-upgrade body{background:linear-gradient(180deg,#f7faf8 0,#f2f7f4 100%);color:var(--avp-u-text);overflow-x:hidden}
+html.avp-site-upgrade .top-simple-nav{padding:10px 18px!important;background:rgba(255,255,255,.94)!important;border-bottom:1px solid #dbe6df!important;box-shadow:0 6px 24px rgba(24,67,44,.07)!important;backdrop-filter:blur(16px)!important;-webkit-backdrop-filter:blur(16px)!important}
+html.avp-site-upgrade .top-simple-links{width:min(1120px,100%);margin:0 auto!important;justify-content:center;gap:6px!important}
+html.avp-site-upgrade .top-simple-links>a,html.avp-site-upgrade .top-search-button{min-height:40px!important;padding:0 13px!important;border-radius:11px!important;color:#4b6155!important;font-weight:800!important;transition:background .16s ease,border-color .16s ease,color .16s ease,transform .16s ease!important}
+html.avp-site-upgrade .top-simple-links>a:hover,html.avp-site-upgrade .top-search-button:hover{background:#f0f6f2!important;color:#1b6640!important;transform:translateY(-1px)}
+html.avp-site-upgrade .top-simple-links>a.is-current,html.avp-site-upgrade .top-simple-links>a[aria-current="page"]{background:#eaf6ef!important;border:1px solid #bfdaca!important;color:#17643d!important;box-shadow:inset 0 1px 0 #fff,0 4px 12px rgba(33,115,70,.08)!important}
+html.avp-site-upgrade :is(a,button,input,select,textarea):focus-visible{outline:3px solid rgba(33,115,70,.20)!important;outline-offset:2px!important}
+
+/* Shared shell only. Stable Practice/Arena/Pro pages keep their native layouts. */
+html.avp-site-shell:not(.avp-site-home):not(.avp-site-legal) :is(.page-header,.lh-hero,.tools-hero,.tool-hero,.qc-hero,.lp-hero){border:1px solid var(--avp-u-line);border-radius:22px;box-shadow:0 12px 34px rgba(27,66,45,.07)}
+html.avp-site-shell :is(.main-shell,.tools-page,.qc-page,.lp-page,.lh-page){width:min(1180px,calc(100% - 28px));margin-left:auto!important;margin-right:auto!important}
+html.avp-site-shell :is(.admin-panel,.course-card,.featured-card,.home-contact):not(.admin-panel){border-color:var(--avp-u-line)}
+
+/* Learning Hub polish: preserve flow colors, improve spacing and hierarchy. */
+html.avp-site-learn .lh-page{margin-top:18px!important;margin-bottom:60px!important}
+html.avp-site-learn .lh-hero{padding:24px!important}
+html.avp-site-learn .lh-selector,html.avp-site-learn .lh-detail{border:1px solid #d8e5de;border-radius:20px;background:#fff;box-shadow:0 8px 26px rgba(25,64,43,.055)}
+html.avp-site-learn .lh-section-head{gap:18px}
+html.avp-site-learn .lh-coach-bar{border-radius:14px!important}
+
+/* Home refinement: keep module palettes, improve alignment and readability. */
+html.avp-site-home .home-extra-panel-v104{border-color:#cfded5!important;box-shadow:0 12px 34px rgba(28,65,44,.08)!important}
+html.avp-site-home .home-extra-panel-v104 .home-path-more--extras{align-items:stretch!important}
+html.avp-site-home .home-extra-card-v2{display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;align-items:start!important;gap:12px!important}
+html.avp-site-home .home-extra-card-v2>div{display:flex!important;flex-direction:column!important;min-height:118px!important}
+html.avp-site-home .home-extra-card-v2 b{margin-top:auto!important;width:max-content!important;max-width:100%!important}
+html.avp-site-home .home-extra-card-v2 em{color:#5f7067!important}
+html.avp-site-home .home-choice-card-v104{outline:1px solid rgba(255,255,255,.05)}
+html.avp-site-home .home-reference-v114,html.avp-site-home .learn-board{scroll-margin-top:88px}
+
+/* Tool hub shell: accent only, no recolor of individual tool cards. */
+html.avp-site-tools :is(.tools-page,.tool-page,.qc-page){margin-top:18px!important;margin-bottom:58px!important}
+html.avp-site-tools :is(.tools-hero,.tool-hero,.page-header){border-left:5px solid #b96e16}
+
+/* Footer consistency. */
+html.avp-site-upgrade .site-footer{margin-top:42px!important;border-top:1px solid rgba(255,255,255,.08)}
+html.avp-site-upgrade .site-footer a{border-radius:7px;padding:4px 6px}
+html.avp-site-upgrade .site-footer a:hover{background:rgba(255,255,255,.08)}
+
+/* Stable pages receive only nav/focus polish. */
+html.avp-site-stable body{background:#f7faf8}
+
+@media(max-width:900px){
+  html.avp-site-upgrade body{padding-top:66px}
+  html.avp-site-upgrade .top-simple-nav{padding:9px 12px!important}
+  html.avp-site-upgrade .top-simple-links{width:100%;padding-top:8px}
+  html.avp-site-upgrade .top-simple-links>a,html.avp-site-upgrade .top-search-button{width:100%;justify-content:flex-start!important}
+  html.avp-site-shell :is(.main-shell,.tools-page,.qc-page,.lp-page,.lh-page){width:min(100% - 18px,1180px)}
+  html.avp-site-learn .lh-hero{padding:18px!important}
+}
+@media(max-width:620px){
+  html.avp-site-home .home-extra-card-v2>div{min-height:0!important}
+  html.avp-site-home .home-extra-card-v2{grid-template-columns:48px minmax(0,1fr)!important}
+}
