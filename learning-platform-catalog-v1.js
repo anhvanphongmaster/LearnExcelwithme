@@ -19,7 +19,7 @@
   const sequenceIndex=new Map(lessonSequence.map((id,i)=>[id,i+1]));
 
   const moduleForLesson = id => byModule.get(lessonToModule.get(id)) || null;
-  const moduleUrl = id => `skill-map.html?browse=1&module=${encodeURIComponent(id)}`;
+  const moduleUrl = id => `skill-map.html?module=${encodeURIComponent(id)}`;
   const lessonUrl = id => `knowledge.html?lesson=${encodeURIComponent(id)}`;
   const displayOrder = id => sequenceIndex.get(id) || 999;
   const resumeLessonId = () => {
@@ -45,45 +45,32 @@
     return page===''||page==='index.html';
   }
 
-  function wireHomeOnePath(){
+  function wireHomeLearningHub(){
     if(!isHome()) return false;
-    const hub='learning-coach.html';
+    const hub='skill-map.html';
     let changed=false;
 
     const learn=document.querySelector('.top-simple-nav [data-avp-nav="learn"]');
     if(learn&&learn.getAttribute('href')!==hub){
       learn.href=hub;
-      learn.setAttribute('aria-label','Học Excel hôm nay');
+      learn.setAttribute('aria-label','Chọn luồng học Excel');
       changed=true;
     }
 
     const btn=document.getElementById('avpScrollToPath');
-    if(btn&&btn.dataset.onePath!=='coach2'){
+    if(btn&&btn.dataset.learningHub!=='fourflows1'){
       const clean=btn.cloneNode(true);
-      clean.dataset.onePath='coach2';
-      clean.innerHTML='<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Học hôm nay →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">Web tự chọn bài cần học · luyện ngắn · ôn lỗi</span>';
+      clean.dataset.learningHub='fourflows1';
+      clean.innerHTML='<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Chọn luồng học →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">4 luồng · 42 bài · chọn mục tiêu rồi cuộn qua từng bài</span>';
       clean.addEventListener('click',e=>{e.preventDefault();location.href=hub;});
       btn.replaceWith(clean);
       changed=true;
     }
-
-    const cards=[...document.querySelectorAll('.home-platform-module-v1')];
-    cards.forEach((card,i)=>{
-      const module=modules[i];
-      if(!module)return;
-      const href=lessonUrl(module.lessons[0]);
-      if(card.getAttribute('href')!==href){card.href=href;changed=true;}
-      const foot=card.querySelector('b');
-      const label=`${module.lessons.length} bài · Bắt đầu →`;
-      if(foot&&foot.textContent!==label){foot.textContent=label;changed=true;}
-    });
-
     return changed;
   }
 
-  /* Home currently has two legacy horizontal robot loops: avp-core's frame loop
-     and home-effects' compositor patrol. Keep the compositor patrol and prevent
-     the older frame loop from writing left at the same time. */
+  /* Home has two historical robot motion owners. Keep the compositor patrol and
+     suppress the older frame loop so they never fight over the same position. */
   function coordinateHomeRobot(){
     if(!isHome() || !window.__avpHomeRobotSmoothV3) return;
     let tries=0;
@@ -113,7 +100,7 @@
   }
 
   function boot(){
-    wireHomeOnePath();
+    wireHomeLearningHub();
     coordinateHomeRobot();
   }
 
