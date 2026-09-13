@@ -1,7 +1,8 @@
-/*! home-page-motion.js — V104 final Home hierarchy */
+/*! home-page-motion.js — V105 premium Home hubs */
 (function(){
   'use strict';
-  if(window.__avpHomeMotionV104)return;
+  if(window.__avpHomeMotionV105)return;
+  window.__avpHomeMotionV105=true;
   window.__avpHomeMotionV104=true;
   window.__avpHomeMotionV103=true;
   window.__avpHomeMotionV102=true;
@@ -11,9 +12,9 @@
   var DONE_KEY='avp_platform_completed_v2';
 
   function ensureAssets(){
-    if(!document.querySelector('link[data-home-final-v104]')){
+    if(!document.querySelector('link[data-home-final-v105]')){
       var link=document.createElement('link');
-      link.rel='stylesheet';link.href='home-final-ui-v104.css?v=20260913-1';link.dataset.homeFinalV104='1';
+      link.rel='stylesheet';link.href='home-final-ui-v104.css?v=20260913-2';link.dataset.homeFinalV105='1';
       document.head.appendChild(link);
     }
     if(!document.querySelector('script[data-home-copy-v104]')){
@@ -146,7 +147,7 @@
 
   function repairPodium(){var rows=document.querySelectorAll('#learnBoardList .lb-row');if(!rows.length)return;var medals=['🥇','🥈','🥉'];for(var i=0;i<Math.min(3,rows.length);i++){var row=rows[i];var rank=row.querySelector('.lb-rank');row.classList.add('lb-podium-'+(i+1));if(rank)rank.innerHTML='<span class="lb-medal lb-'+(i===0?'gold':i===1?'silver':'bronze')+'" title="Top '+(i+1)+'">'+medals[i]+'</span>';}}
   function observeBoard(){var list=document.getElementById('learnBoardList');if(!list||list.dataset.podiumObserver==='1')return;list.dataset.podiumObserver='1';var raf=0;var observer=new MutationObserver(function(){if(raf)return;raf=requestAnimationFrame(function(){raf=0;repairPodium();});});observer.observe(list,{childList:true});window.addEventListener('pagehide',function(){observer.disconnect();},{once:true});}
-  function loadCatalog(){if(window.AVPLearningPlatform){renderFirstRun(window.AVPLearningPlatform);return;}var existing=document.querySelector('script[data-avp-home-first-catalog]');if(existing){existing.addEventListener('load',function(){renderFirstRun(window.AVPLearningPlatform);},{once:true});return;}var s=document.createElement('script');s.src='learning-platform-catalog-v1.js?v=20260913-fourflows2';s.dataset.avpHomeFirstCatalog='1';s.onload=function(){renderFirstRun(window.AVPLearningPlatform);};document.head.appendChild(s);}
+  function loadCatalog(){if(window.AVPLearningPlatform){renderFirstRun(window.AVPLearningPlatform);return;}var existing=document.querySelector('script[data-avp-home-first-catalog]');if(existing){existing.addEventListener('load',function(){renderFirstRun(window.AVPLearningPlatform);},{once:true});return;}var s=document.createElement('script');s.src='learning-platform-catalog-v1.js?v=20260913-fourflows3';s.dataset.avpHomeFirstCatalog='1';s.onload=function(){renderFirstRun(window.AVPLearningPlatform);};document.head.appendChild(s);}
 
   function boot(){
     ensureAssets();
