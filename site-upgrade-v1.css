@@ -11,7 +11,7 @@ html.avp-site-upgrade :is(a,button,input,select,textarea):focus-visible{outline:
 /* Shared shell only. Stable Practice/Arena/Pro pages keep their native layouts. */
 html.avp-site-shell:not(.avp-site-home):not(.avp-site-legal) :is(.page-header,.lh-hero,.tools-hero,.tool-hero,.qc-hero,.lp-hero){border:1px solid var(--avp-u-line);border-radius:22px;box-shadow:0 12px 34px rgba(27,66,45,.07)}
 html.avp-site-shell :is(.main-shell,.tools-page,.qc-page,.lp-page,.lh-page){width:min(1180px,calc(100% - 28px));margin-left:auto!important;margin-right:auto!important}
-html.avp-site-shell :is(.admin-panel,.course-card,.featured-card,.home-contact):not(.admin-panel){border-color:var(--avp-u-line)}
+html.avp-site-shell :is(.course-card,.featured-card,.home-contact){border-color:var(--avp-u-line)}
 
 /* Learning Hub polish: preserve flow colors, improve spacing and hierarchy. */
 html.avp-site-learn .lh-page{margin-top:18px!important;margin-bottom:60px!important}
@@ -30,9 +30,26 @@ html.avp-site-home .home-extra-card-v2 em{color:#5f7067!important}
 html.avp-site-home .home-choice-card-v104{outline:1px solid rgba(255,255,255,.05)}
 html.avp-site-home .home-reference-v114,html.avp-site-home .learn-board{scroll-margin-top:88px}
 
-/* Tool hub shell: accent only, no recolor of individual tool cards. */
+/* Tools Center: amber identity, compact modern shell, logic untouched. */
 html.avp-site-tools :is(.tools-page,.tool-page,.qc-page){margin-top:18px!important;margin-bottom:58px!important}
-html.avp-site-tools :is(.tools-hero,.tool-hero,.page-header){border-left:5px solid #b96e16}
+html.avp-site-tools :is(.tools-hero,.tool-hero,.page-header){border-left:5px solid #b96e16!important}
+html.avp-site-tools .tools-hero{padding:24px!important;background:linear-gradient(135deg,#fff9f0 0,#fff 72%)!important;color:#3f321f!important}
+html.avp-site-tools .tools-hero .avp-eyebrow{color:#94601c!important;border-color:#e6c18e!important;background:#fff4e2!important}
+html.avp-site-tools .tools-hero h1{color:#6e4515!important}
+html.avp-site-tools .tools-hero p{color:#655d52!important}
+html.avp-site-tools .tools-tabs{display:flex!important;gap:7px!important;flex-wrap:wrap!important;margin:14px 0!important;padding:7px!important;border:1px solid #e4d8c8!important;border-radius:15px!important;background:#fff!important;box-shadow:0 6px 18px rgba(87,58,20,.05)!important}
+html.avp-site-tools .tools-tab{min-height:38px!important;padding:0 13px!important;border:1px solid transparent!important;border-radius:10px!important;background:#fff!important;color:#695a47!important;font-weight:850!important;box-shadow:none!important}
+html.avp-site-tools .tools-tab:hover{background:#fff8ee!important;border-color:#e7c99f!important;color:#8b5716!important}
+html.avp-site-tools .tools-tab.active{background:#b96e16!important;border-color:#b96e16!important;color:#fff!important}
+html.avp-site-tools .tool-panel{margin-top:12px!important}
+html.avp-site-tools .tool-card{border:1px solid #e5dccf!important;border-top:3px solid #c9822d!important;border-radius:16px!important;background:#fff!important;box-shadow:0 8px 24px rgba(83,58,26,.055)!important}
+html.avp-site-tools .tool-card h2{color:#76501f!important}
+html.avp-site-tools .tool-field :is(input,select,textarea){border-color:#ddd3c6!important;background:#fff!important;color:#3e3932!important}
+html.avp-site-tools .tool-field :is(input,select,textarea):focus{border-color:#b96e16!important;box-shadow:0 0 0 3px rgba(185,110,22,.12)!important}
+html.avp-site-tools .tool-btn{background:#b96e16!important;border-color:#b96e16!important;color:#fff!important;box-shadow:none!important}
+html.avp-site-tools .tool-btn:hover{background:#98580f!important;transform:translateY(-1px)}
+html.avp-site-tools .tool-result{border-color:#eadfce!important;background:#fffaf3!important;color:#55493a!important}
+html.avp-site-tools .tools-note{border:1px solid #e3d7c6!important;border-left:4px solid #b96e16!important;border-radius:13px!important;background:#fffaf3!important;color:#5d5143!important}
 
 /* Footer consistency. */
 html.avp-site-upgrade .site-footer{margin-top:42px!important;border-top:1px solid rgba(255,255,255,.08)}
@@ -49,8 +66,11 @@ html.avp-site-stable body{background:#f7faf8}
   html.avp-site-upgrade .top-simple-links>a,html.avp-site-upgrade .top-search-button{width:100%;justify-content:flex-start!important}
   html.avp-site-shell :is(.main-shell,.tools-page,.qc-page,.lp-page,.lh-page){width:min(100% - 18px,1180px)}
   html.avp-site-learn .lh-hero{padding:18px!important}
+  html.avp-site-tools .tools-tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  html.avp-site-tools .tools-tab{width:100%!important}
 }
 @media(max-width:620px){
   html.avp-site-home .home-extra-card-v2>div{min-height:0!important}
   html.avp-site-home .home-extra-card-v2{grid-template-columns:48px minmax(0,1fr)!important}
+  html.avp-site-tools .tools-tabs{grid-template-columns:1fr!important}
 }
