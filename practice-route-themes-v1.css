@@ -1,0 +1,73 @@
+/*! practice-route-themes-v1.css — route identity only; inner lesson/topic/status colors stay untouched */
+
+/* Match the five cards in Practice Hub. */
+body:has(#ttTopicStage){--route-accent:#75549f;--route-dark:#543b75;--route-soft:#f7f5fb;--route-line:#ddd5eb;--route-glow:rgba(117,84,159,.10)}
+body:has(#youtubeProjectLibrary){--route-accent:#c8524a;--route-dark:#963a35;--route-soft:#fff3f2;--route-line:#efcfca;--route-glow:rgba(200,82,74,.10)}
+body:has(#hwTopicView){--route-accent:#aa741e;--route-dark:#775013;--route-soft:#fff8e9;--route-line:#ead8ad;--route-glow:rgba(170,116,30,.10)}
+body:has(#pgTopicPicker){--route-accent:#3978ad;--route-dark:#285a86;--route-soft:#eff7ff;--route-line:#c9ddef;--route-glow:rgba(57,120,173,.10)}
+body:has(#ptStatusCard){--route-accent:#2f7b4d;--route-dark:#205b37;--route-soft:#eef9f1;--route-line:#c8e2d0;--route-glow:rgba(47,123,77,.10)}
+
+/* Outer hero/header only. Do not recolor topic cards, lesson cards or status colors. */
+:where(body:has(#ttTopicStage),body:has(#youtubeProjectLibrary),body:has(#hwTopicView),body:has(#pgTopicPicker),body:has(#ptStatusCard))
+:is(.pw-hero,.pyt-hero,.hw-hero,.pt-hero){
+  border-color:var(--route-line)!important;
+  border-left:5px solid var(--route-accent)!important;
+  background:linear-gradient(135deg,var(--route-soft) 0,#fff 78%)!important;
+  color:var(--route-dark)!important;
+  box-shadow:0 12px 30px var(--route-glow)!important;
+}
+:where(body:has(#ttTopicStage),body:has(#youtubeProjectLibrary),body:has(#hwTopicView),body:has(#pgTopicPicker),body:has(#ptStatusCard))
+:is(.pw-hero,.pyt-hero,.hw-hero,.pt-hero) :is(h1,h2,h3){color:var(--route-dark)!important}
+:where(body:has(#ttTopicStage),body:has(#youtubeProjectLibrary),body:has(#hwTopicView),body:has(#pgTopicPicker),body:has(#ptStatusCard))
+:is(.pw-kicker,.pyt-kicker,.hw-hero>div>span,.pt-kicker){color:var(--route-accent)!important}
+:where(body:has(#ttTopicStage),body:has(#youtubeProjectLibrary),body:has(#hwTopicView),body:has(#pgTopicPicker),body:has(#ptStatusCard))
+:is(.pw-hero,.pyt-hero,.hw-hero,.pt-hero) p{color:#5d6963!important}
+
+/* Back links and section headings keep the same identity. */
+body:has(#ttTopicStage) .pw-backline a,
+body:has(#pgTopicPicker) .pw-backline a,
+body:has(#youtubeProjectLibrary) .pyt-back a,
+body:has(#hwTopicView) .hw-back a,
+body:has(#ptStatusCard) .pt-back{color:var(--route-dark)!important}
+
+body:has(#ttTopicStage) :is(.avp-roll-head h2,#ttTopicTitle),
+body:has(#pgTopicPicker) :is(.avp-roll-head h2,.pg-lesson-frame-head h3,.pg-daily-head h2),
+body:has(#youtubeProjectLibrary) :is(.avp-roll-head h2,.pyt-project-detail>h2),
+body:has(#hwTopicView) .hw-section-head h2,
+body:has(#ptStatusCard) :is(.pt-status-head h2,.pt-apply-card h2,.pt-about h2){color:var(--route-dark)!important}
+
+/* Main shells: border only, so existing child colors remain intact. */
+body:has(#ttTopicStage) .pw-workspace,
+body:has(#pgTopicPicker) .pw-workspace,
+body:has(#youtubeProjectLibrary) #youtubeProjectLibrary,
+body:has(#hwTopicView) :is(.hw-topic-view,.hw-exercise-view),
+body:has(#ptStatusCard) :is(.pt-status-card,.pt-apply-card,.pt-about){border-color:var(--route-line)!important}
+
+/* Primary/wayfinding controls only. */
+body:has(#ttTopicStage) :is(#ttReload,#ttBackTopics),
+body:has(#pgTopicPicker) :is(.pg-topic-back,#pgBoardRefresh),
+body:has(#hwTopicView) .hw-back-topics,
+body:has(#ptStatusCard) :is(.pt-primary-btn,.pt-enter-track){
+  border-color:var(--route-accent)!important;
+  background:var(--route-accent)!important;
+  color:#fff!important;
+}
+body:has(#ttTopicStage) :is(#ttReload,#ttBackTopics):hover,
+body:has(#pgTopicPicker) :is(.pg-topic-back,#pgBoardRefresh):hover,
+body:has(#ptStatusCard) :is(.pt-primary-btn,.pt-enter-track):hover{filter:brightness(.94)!important}
+
+/* YouTube keeps native red video buttons; only project-level controls get the route red. */
+body:has(#youtubeProjectLibrary) .pyt-chvote-btn{border-color:color-mix(in srgb,var(--route-accent) 34%,#fff)!important;color:var(--route-dark)!important;background:#fff!important}
+body:has(#youtubeProjectLibrary) .pyt-chvote-btn.is-on{background:var(--route-accent)!important;border-color:var(--route-accent)!important;color:#fff!important}
+
+/* Homework topic/exercise cards already have their own per-topic palette: leave them untouched. */
+body:has(#hwTopicView) .hw-hero-stat{border-color:var(--route-line)!important;background:#fffdf8!important}
+body:has(#hwTopicView) .hw-hero-stat strong{color:var(--route-dark)!important}
+
+/* Professional criteria/state cards keep success/warn colors. */
+body:has(#ptStatusCard) .pt-section-kicker{color:var(--route-accent)!important}
+
+@media(max-width:700px){
+  :where(body:has(#ttTopicStage),body:has(#youtubeProjectLibrary),body:has(#hwTopicView),body:has(#pgTopicPicker),body:has(#ptStatusCard))
+  :is(.pw-hero,.pyt-hero,.hw-hero,.pt-hero){border-left-width:4px!important;box-shadow:none!important}
+}
