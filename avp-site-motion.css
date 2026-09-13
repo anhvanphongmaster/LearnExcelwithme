@@ -1,204 +1,45 @@
-/*! avp-site-motion.css — V94 parallax + zoom, no layout rewrite */
-:root{
-  --avp-motion-ease:cubic-bezier(.22,1,.36,1);
-  --avp-y:0;
-}
+/*! avp-site-motion.css — V95 performance-safe */
+:root{--avp-motion-ease:cubic-bezier(.22,1,.36,1)}
+@view-transition{navigation:none}
 
-/* Tắt View Transition tự chế — trang bài tập không dùng cái này.
-   Zoom đi theo đúng nhịp practice-hub: 360ms chọn + 260ms rời. */
-@view-transition{
-  navigation:none;
-}
+a[href],button,[role="button"],input[type="button"],input[type="submit"]{-webkit-tap-highlight-color:transparent}
 
-.avp-pressing{
-  animation:avpTapV93 .17s var(--avp-motion-ease)!important;
-}
-@keyframes avpTapV93{
-  0%{transform:scale(1)}
-  45%{transform:scale(.975)}
-  100%{transform:scale(1)}
-}
-
-a[href],button,[role="button"],
-input[type="button"],input[type="submit"]{
-  -webkit-tap-highlight-color:transparent;
-}
-
-.avp-motion-rise{
-  opacity:0;
-  transform:translateY(10px);
-  transition:
-    opacity .34s var(--avp-motion-ease) var(--avp-rise-delay,0s),
-    transform .34s var(--avp-motion-ease) var(--avp-rise-delay,0s);
-}
-.avp-motion-rise.avp-in{
-  opacity:1;
-  transform:none;
-}
-
-/* Depth layer — absolute, không đẩy layout, không bắt chuột */
-.avp-depth-bg{
-  position:absolute !important;
-  inset:-28% -12% auto -12% !important;
-  height:78% !important;
-  pointer-events:none !important;
-  z-index:0 !important;
-  border-radius:inherit;
-  background:
-    radial-gradient(ellipse at 20% 0%,rgba(255,255,255,.18),transparent 46%),
-    radial-gradient(ellipse at 88% 30%,rgba(33,115,70,.14),transparent 42%);
-  transform:translate3d(calc(var(--avp-px-x,0) * 1px),calc((var(--avp-y,0) * .16px) + (var(--avp-px-y,0) * 1px)),0) scale(1.035);
-  transition:transform .22s var(--avp-motion-ease);
-  will-change:transform;
-}
-.avp-hero,
-.pv-hero,
-.pw-hero,
-.pyt-hero,
-.ph-direct-hero,
-.ml-hero,
-.pq-hero,
-.dashboard-hero{
-  position:relative;
-}
-.avp-hero > *:not(.avp-depth-bg),
-.pv-hero > *:not(.avp-depth-bg),
-.pw-hero > *:not(.avp-depth-bg),
-.pyt-hero > *:not(.avp-depth-bg),
-.ph-direct-hero > *:not(.avp-depth-bg),
-.ml-hero > *:not(.avp-depth-bg),
-.pq-hero > *:not(.avp-depth-bg),
-.dashboard-hero > *:not(.avp-depth-bg){
-  position:relative;
-  z-index:1;
-}
-
-/* Scroll parallax nhẹ cho tiêu đề section — không đụng card/bảng */
+/* Content is visible immediately. No scroll/pointer parallax, no forced zoom transition. */
+.avp-motion-rise{opacity:1!important;transform:none!important;transition:none!important}
+.avp-motion-rise.avp-in{opacity:1!important;transform:none!important}
+.avp-depth-bg{display:none!important}
+.avp-parallax-layer{transform:none!important;transition:none!important;will-change:auto!important}
 .avp-motion-enabled .avp-hero-inner,
 .avp-motion-enabled .pv-hero-copy,
-.avp-motion-enabled .ml-hero-copy{
-  transform:translate3d(0,calc(var(--avp-y,0) * .04px),0);
-  will-change:transform;
-}
+.avp-motion-enabled .ml-hero-copy{transform:none!important;will-change:auto!important}
 
+.avp-zoom-grid.avp-zoom-choosing>*{opacity:1!important;filter:none!important;transform:none!important;pointer-events:auto!important;transition:none!important}
+.avp-zoom-picked,.avp-zoom-grid.avp-zoom-leaving{transform:none!important;box-shadow:inherit!important;animation:none!important;transition:none!important}
+html.avp-arriving main,html.avp-arriving .pw-page,html.avp-arriving .pyt-page,html.avp-arriving .ph-direct-page,
+html.avp-leaving .avp-page,html.avp-leaving .pv-page,html.avp-leaving main,html.avp-leaving .wrap,html.avp-leaving .page-wrap,html.avp-leaving .home-path,html.avp-leaving .avp-hero{animation:none!important;transform:none!important}
+html.avp-motion-enabled{scroll-behavior:auto!important}
+
+/* Keep only light hover feedback. */
 @media(hover:hover) and (pointer:fine){
-  :where(
-    .course-card,.practice-file-card,.summary-card,.level-card,
-    .continue-card,.home-path-card,.home-more-card,.home-cta-card,
-    .dash-panel,.pq-lesson,.course-panel,.path-item,.learn-board,
-    .pv-panel,.badge-card,.lab-card,.tool-card,.qc-card,.ref-card,
-    .sm-node,.sm-zone,.fr-session-card,.achievement-card,
-    .feature-card,.content-card,.grid-card,article.card,.card,.ph-flow-link
-  ){
-    transition:
-      transform .20s var(--avp-motion-ease),
-      box-shadow .20s ease,
-      border-color .20s ease!important;
-  }
-
-  :where(
-    .course-card,.practice-file-card,.summary-card,.level-card,
-    .continue-card,.home-path-card,.home-more-card,.home-cta-card,
-    .pq-lesson,.course-panel,.path-item,.pv-panel,.badge-card,
-    .lab-card,.tool-card,.qc-card,.ref-card,.sm-node,
-    .fr-session-card,.achievement-card,.feature-card,.content-card,
-    .grid-card,article.card,.card,.ph-flow-link
-  ):hover{
-    transform:translateY(-3px);
-    box-shadow:0 12px 28px rgba(18,73,43,.09)!important;
-  }
+  :where(.course-card,.practice-file-card,.summary-card,.level-card,.continue-card,.home-path-card,.home-more-card,.home-cta-card,.pq-lesson,.course-panel,.path-item,.pv-panel,.badge-card,.lab-card,.tool-card,.qc-card,.ref-card,.sm-node,.fr-session-card,.achievement-card,.feature-card,.content-card,.grid-card,article.card,.card,.ph-flow-link){transition:border-color .12s ease,background-color .12s ease!important}
+  :where(.course-card,.practice-file-card,.summary-card,.level-card,.continue-card,.home-path-card,.home-more-card,.home-cta-card,.pq-lesson,.course-panel,.path-item,.pv-panel,.badge-card,.lab-card,.tool-card,.qc-card,.ref-card,.sm-node,.fr-session-card,.achievement-card,.feature-card,.content-card,.grid-card,article.card,.card,.ph-flow-link):hover{transform:none!important;box-shadow:inherit!important}
 }
 
-/* Zoom in-flow — đúng số V56 clip 4 luồng */
-.avp-zoom-grid.avp-zoom-choosing > :not(.avp-zoom-picked){
-  opacity:.22 !important;
-  filter:saturate(.55) !important;
-  transform:scale(.94) !important;
-  pointer-events:none;
-  transition:transform .34s cubic-bezier(.18,.82,.24,1),opacity .26s ease,filter .26s ease !important;
-}
-.avp-zoom-picked{
-  z-index:3 !important;
-  transform:translateY(-8px) scale(1.11) !important;
-  box-shadow:0 26px 60px rgba(19,88,48,.24) !important;
-  transition:transform .34s cubic-bezier(.18,.82,.24,1),box-shadow .34s ease !important;
-}
-.avp-zoom-grid.avp-zoom-leaving{
-  animation:phChooserLeaveV56 .28s ease both;
-}
-@keyframes phChooserLeaveV56{
-  from{opacity:1;transform:scale(1)}
-  to{opacity:0;transform:scale(1.025)}
-}
-html.avp-arriving main,
-html.avp-arriving .pw-page,
-html.avp-arriving .pyt-page,
-html.avp-arriving .ph-direct-page{
-  animation:phHeaderOpenV56 .48s cubic-bezier(.16,.84,.24,1) both;
-  transform-origin:top center;
-}
-@keyframes phHeaderOpenV56{
-  0%{opacity:0;transform:translateY(-10px) scale(.94)}
-  55%{opacity:1;transform:translateY(1px) scale(1.025)}
-  100%{opacity:1;transform:none}
+/* Home: stop continuous decorative animation; robot movement itself is intentionally untouched. */
+.avp-hero::before,
+.avp-title span,
+.avp-title::after,
+.avp-mobile-main-cta,
+.avp-scroll-tease-btn::after,
+.avp-arena-home-badge,
+.avp-new-pulse,
+.home-more-new{animation:none!important}
+.avp-orb{display:none!important}
+
+/* Avoid expensive paint effects on weak/mobile GPUs. */
+@media(max-width:900px){
+  .avp-hero,.pv-hero,.pw-hero,.pyt-hero,.ph-direct-hero,.ml-hero,.pq-hero,.dashboard-hero{backdrop-filter:none!important;filter:none!important}
+  *{scroll-behavior:auto!important}
 }
 
-/* Fallback khi không có View Transition: fade/scale vùng nội dung, giữ nav */
-html.avp-leaving .avp-page,
-html.avp-leaving .pv-page,
-html.avp-leaving main,
-html.avp-leaving .wrap,
-html.avp-leaving .page-wrap,
-html.avp-leaving .home-path,
-html.avp-leaving .avp-hero{
-  animation:avpLeaveFallback .2s ease both;
-  transform-origin:50% 30%;
-}
-@keyframes avpLeaveFallback{
-  from{opacity:1;transform:scale(1)}
-  to{opacity:.2;transform:scale(1.03)}
-}
-
-html.avp-motion-enabled{scroll-behavior:smooth}
-
-@media(prefers-reduced-motion:reduce){
-  @view-transition{navigation:none}
-  html{scroll-behavior:auto!important}
-  .avp-motion-rise,
-  .avp-depth-bg,
-  .avp-motion-enabled .avp-hero-inner,
-  .avp-motion-enabled .pv-hero-copy,
-  .avp-motion-enabled .ml-hero-copy,
-  .avp-zoom-picked,
-  .avp-zoom-grid.avp-zoom-choosing > :not(.avp-zoom-picked){
-    opacity:1!important;
-    transform:none!important;
-    filter:none!important;
-    transition:none!important;
-    animation:none!important;
-  }
-  .avp-pressing,
-  html.avp-leaving .avp-page,
-  html.avp-leaving .pv-page,
-  html.avp-leaving main,
-  html.avp-leaving .wrap,
-  html.avp-leaving .page-wrap,
-  html.avp-leaving .home-path,
-  html.avp-leaving .avp-hero{
-    animation:none!important;
-  }
-  ::view-transition-old(root),
-  ::view-transition-new(root){
-    animation:none!important;
-  }
-}
-
-@media(max-width:700px){
-  /* Mobile: parallax yếu hơn, không scale lớn */
-  .avp-depth-bg{
-    transform:translate3d(0,calc(var(--avp-y,0) * .08px),0);
-  }
-  .avp-zoom-picked{
-    transform:translateY(-4px) scale(1.04) !important;
-  }
-}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.avp-motion-rise{opacity:1!important;transform:none!important;transition:none!important;animation:none!important}}

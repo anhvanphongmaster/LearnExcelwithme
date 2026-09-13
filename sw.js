@@ -1,212 +1,86 @@
-const CACHE = "learnexcel-assets-v20260913-coach2";
-const ASSETS = [
-  "./style.css",
-  "./simple-nav.css",
-  "./avp-core.css",
-  "./avp-ui-system.css",
-  "./avp-semantic-soft.css",
-  "./avp-semantic-hierarchy-v3.css",
-  "./avp-readability-guard.css",
-  "./theme-polish-v33.css",
-  "./avp-ui-polish-v40.css",
-  "./avp-global-controls-v1.css",
-  "./avp-home-knowledge-v2.css",
-  "./avp-learning-contrast-v1.css",
-  "./avp-pro-access-guidance-v1.css",
-  "./avp-hover-lift.css",
-  "./home-ux-polish-v1.css",
-  "./home-mini-bounce.css",
-  "./homework.css",
-  "./admin-homework.css",
-  "./practice-hub-flow-v1.css",
-  "./practice-tiktok.css",
-  "./practice-roll.css",
-  "./learning-coach.html",
-  "./learning-coach-core-v1.js",
-  "./learning-coach-v2.css",
-  "./learning-coach-v2.js",
-  "./excel-race.html",
-  "./excel-arena-v4.css",
-  "./excel-arena-questions.js",
-  "./excel-arena-engine-v4.js",
-  "./home-effects.js",
-  "./home-page-motion.js",
-  "./simple-nav.js",
-  "./avp-core.js",
-  "./avp-ui-system.js",
-  "./avp-launcher-unify-v1.js",
-  "./avp-semantic-hierarchy-v3.js",
-  "./avp-home-knowledge-v2.js",
-  "./avp-pro-access-guidance-v1.js",
-  "./homework.js",
-  "./admin-homework.js",
-  "./practice-video.js",
-  "./practice-roll.js",
-  "./global-search.js",
-  "./index.html",
-  "./practice-video.html",
-  "./practice-tiktok.html",
-  "./homework.html",
-  "./skill-map.html",
-  "./skill-map.css",
-  "./skill-map.js",
-  "./knowledge.html",
-  "./knowledge-v2.css",
-  "./knowledge-v2.js",
-  "./knowledge-reader-menu-v1.css",
-  "./knowledge-reader-polish-v1.css",
-  "./knowledge-depth-v1.css",
-  "./knowledge-depth-v1.js",
-  "./knowledge-data-foundation.js",
-  "./knowledge-data-skills.js",
-  "./knowledge-data-analysis.js",
-  "./knowledge-data-advanced.js",
-  "./professional-access.html",
-  "./home-code-hub.css",
-  "./home-code-hub.js"
+const CACHE="learnexcel-assets-v20260913-perf1";
+const ASSETS=[
+  "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css","./home-ux-polish-v1.css",
+  "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./global-search.js",
+  "./index.html","./skill-map.html","./knowledge.html","./practice-video.html","./excel-race.html","./learning-coach.html",
+  "./learning-platform-catalog-v1.js","./learning-coach-v2.css","./learning-coach-v2.js"
 ];
 
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE)
-      .then(cache => cache.addAll(ASSETS).catch(() => {}))
-      .then(() => self.skipWaiting())
-  );
+self.addEventListener("install",event=>{
+  event.waitUntil((async()=>{
+    const cache=await caches.open(CACHE);
+    await Promise.allSettled(ASSETS.map(url=>cache.add(url)));
+    await self.skipWaiting();
+  })());
 });
 
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))
-      .then(() => self.clients.claim())
-  );
+self.addEventListener("activate",event=>{
+  event.waitUntil((async()=>{
+    const keys=await caches.keys();
+    await Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)));
+    await self.clients.claim();
+  })());
 });
 
-self.addEventListener("fetch", event => {
-  if (event.request.method !== "GET") return;
-
-  const url = new URL(event.request.url);
-  if (url.origin !== self.location.origin) return;
-
-  const isHTML =
-    event.request.mode === "navigate" ||
-    url.pathname.endsWith(".html") ||
-    url.pathname.endsWith("/");
-
-  const isCodeAsset = /\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
-  const forceFresh =
-    url.pathname.endsWith("/home-effects.js") ||
-    url.pathname.endsWith("/home-page-motion.js") ||
-    url.pathname.endsWith("/home-ux-polish-v1.css") ||
-    url.pathname.endsWith("/avp-hover-lift.css") ||
-    url.pathname.endsWith("/home-mini-bounce.css") ||
-    url.pathname.endsWith("/knowledge-reader-polish-v1.css") ||
-    url.pathname.endsWith("/learning-coach-v2.css") ||
-    url.pathname.endsWith("/learning-coach-v2.js") ||
-    url.pathname.endsWith("/learning-platform-catalog-v1.js") ||
-    url.pathname.endsWith("/excel-arena-v4.css") ||
-    url.pathname.endsWith("/excel-arena-engine-v4.js");
-
-  if (isHTML) {
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          if (response && response.ok) {
-            caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
-          }
-          return response;
-        })
-        .catch(() =>
-          caches.match(event.request)
-            .then(cached => cached || caches.match("./index.html"))
-        )
-    );
-    return;
+async function fastResponse(event){
+  const req=event.request;
+  const cache=await caches.open(CACHE);
+  const cached=await cache.match(req,{ignoreSearch:true});
+  const refresh=fetch(req,{cache:"no-cache"}).then(res=>{
+    if(res&&res.ok)cache.put(req,res.clone()).catch(()=>{});
+    return res;
+  });
+  if(cached){event.waitUntil(refresh.catch(()=>{}));return cached;}
+  try{return await refresh;}catch(_){
+    if(req.mode==="navigate")return (await cache.match("./index.html"))||Response.error();
+    return Response.error();
   }
+}
 
-  if (forceFresh) {
-    event.respondWith(
-      fetch(event.request, { cache: "reload" })
-        .then(response => {
-          if (response && response.ok) {
-            caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
-    return;
-  }
-
-  if (isCodeAsset) {
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          if (response && response.ok) {
-            caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
-    return;
-  }
-
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
-        if (response && response.ok) {
-          caches.open(CACHE).then(cache => cache.put(event.request, response.clone())).catch(() => {});
-        }
-        return response;
-      });
-    })
-  );
+self.addEventListener("fetch",event=>{
+  const req=event.request;
+  if(req.method!=="GET")return;
+  const url=new URL(req.url);
+  if(url.origin!==self.location.origin)return;
+  const isHTML=req.mode==="navigate"||url.pathname.endsWith(".html")||url.pathname.endsWith("/");
+  const isCode=/\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
+  if(isHTML||isCode){event.respondWith(fastResponse(event));return;}
+  event.respondWith((async()=>{
+    const cache=await caches.open(CACHE);
+    const cached=await cache.match(req,{ignoreSearch:true});
+    if(cached)return cached;
+    try{
+      const res=await fetch(req);
+      if(res&&res.ok)cache.put(req,res.clone()).catch(()=>{});
+      return res;
+    }catch(_){return Response.error();}
+  })());
 });
 
-self.addEventListener("push", event => {
-  let data = {};
-  try {
-    data = event.data ? event.data.json() : {};
-  } catch (e) {
-    data = { title: "Anh Văn Phòng", body: event.data ? event.data.text() : "" };
-  }
-
-  const title = data.title || "Anh Văn Phòng";
-  const options = {
-    body: data.body || "Có phản hồi mới từ người dùng.",
-    icon: data.icon || "icon-192.png",
-    badge: data.badge || "icon-192.png",
-    tag: data.tag || "avp-admin-push",
-    renotify: true,
-    data: { url: data.url || "admin.html" },
-    vibrate: [120, 70, 120]
+self.addEventListener("push",event=>{
+  let data={};
+  try{data=event.data?event.data.json():{};}catch(e){data={title:"Anh Văn Phòng",body:event.data?event.data.text():""};}
+  const title=data.title||"Anh Văn Phòng";
+  const options={
+    body:data.body||"Có phản hồi mới từ người dùng.",
+    icon:data.icon||"icon-192.png",
+    badge:data.badge||"icon-192.png",
+    tag:data.tag||"avp-admin-push",
+    renotify:true,
+    data:{url:data.url||"admin.html"},
+    vibrate:[120,70,120]
   };
-
-  event.waitUntil(
-    self.registration.showNotification(title, options).then(() => {
-      if ("setAppBadge" in self.navigator) {
-        return self.navigator.setAppBadge().catch(() => {});
-      }
-    })
-  );
+  event.waitUntil(self.registration.showNotification(title,options).then(()=>{
+    if("setAppBadge" in self.navigator)return self.navigator.setAppBadge().catch(()=>{});
+  }));
 });
 
-self.addEventListener("notificationclick", event => {
+self.addEventListener("notificationclick",event=>{
   event.notification.close();
-  if ("clearAppBadge" in self.navigator) self.navigator.clearAppBadge().catch(() => {});
-  const target = new URL(event.notification?.data?.url || "admin.html", self.registration.scope).href;
-
-  event.waitUntil(
-    clients.matchAll({type:"window",includeUncontrolled:true}).then(list => {
-      for (const client of list) {
-        if ("focus" in client) {
-          try{ client.navigate(target); }catch{}
-          return client.focus();
-        }
-      }
-      if (clients.openWindow) return clients.openWindow(target);
-    })
-  );
+  if("clearAppBadge" in self.navigator)self.navigator.clearAppBadge().catch(()=>{});
+  const target=new URL(event.notification?.data?.url||"admin.html",self.registration.scope).href;
+  event.waitUntil(clients.matchAll({type:"window",includeUncontrolled:true}).then(list=>{
+    for(const client of list){if("focus" in client){try{client.navigate(target);}catch{}return client.focus();}}
+    if(clients.openWindow)return clients.openWindow(target);
+  }));
 });
