@@ -9,6 +9,7 @@ window.AVP_SUPABASE_CONFIG = {
 (function(){
   if(typeof document==='undefined')return;
   var items=[
+    ['site-supabase-read-cache-v1.js?v=20260914-read1','avp-supabase-read-cache-v1'],
     ['site-auth-cache-v1.js?v=20260914-auth3','avp-auth-cache-v1'],
     ['site-rpc-dedupe-v1.js?v=20260914-rpc4','avp-rpc-dedupe-v1'],
     ['site-runtime-cache-v1.js?v=20260914-cache2','avp-site-cache-v1'],
