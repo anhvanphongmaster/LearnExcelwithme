@@ -1,4 +1,4 @@
-const CACHE="learnexcel-assets-v20260913-canonical3";
+const CACHE="learnexcel-assets-v20260913-canonical4";
 const ASSETS=[
   "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css","./home-ux-polish-v1.css",
   "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./home-canonical-v1.js","./home-robot-motion-v4.js","./global-search.js",
@@ -57,15 +57,15 @@ function responseFromText(net,text,type){
   return new Response(text,{status:net.status,statusText:net.statusText,headers});
 }
 
-/* The repository still contains old Home fallback markup. For navigation we
-   inject the canonical controller before Home motion executes. CSS keeps the
-   fallback invisible until that controller commits the final DOM. */
 async function canonicalHomeHtml(req){
   const cache=await caches.open(CACHE);
   try{
     const net=await fetch(req,{cache:"no-cache"});
     if(!net||!net.ok)return net;
     let text=await net.text();
+
+    /* Only canonical responses get the first-paint hiding guard. */
+    text=text.replace('<html lang="vi">','<html lang="vi" class="avp-home-canonical-boot">');
 
     /* Make even the fallback labels current before parse. */
     text=text.replace("Lộ trình 14 bài · Bảng xếp hạng","Học hôm nay →");
@@ -75,7 +75,7 @@ async function canonicalHomeHtml(req){
 
     if(!text.includes('data-avp-home-canonical')){
       const marker='<script defer src="home-effects.js"></script>';
-      const boot='<script defer src="home-canonical-v1.js?v=20260913-canonical3" data-avp-home-canonical></script>\n';
+      const boot='<script defer src="home-canonical-v1.js?v=20260913-canonical4" data-avp-home-canonical></script>\n';
       if(text.includes(marker)) text=text.replace(marker,boot+marker);
       else text=text.replace('</body>',boot+'</body>');
     }
