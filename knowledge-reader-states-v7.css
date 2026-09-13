@@ -1,0 +1,139 @@
+/* Knowledge Reader States V7 — static color states, no running glow */
+html[data-avp-reader="6"] .kv-reader-page .kv-course-nav{
+  border-color:#d7e1db!important;
+  background:#fff!important;
+  box-shadow:0 8px 22px rgba(27,52,38,.09)!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+/* Back button: neutral, slightly raised, never competes with lesson states. */
+html[data-avp-reader="6"] .kv-reader-back{
+  border:1px solid #c7d1cb!important;
+  background:linear-gradient(180deg,#fff,#f1f4f2)!important;
+  color:#34483d!important;
+  box-shadow:0 4px 12px rgba(31,52,41,.09)!important;
+  text-shadow:none!important;
+}
+html[data-avp-reader="6"] .kv-reader-back:hover{
+  transform:none!important;
+  filter:none!important;
+  border-color:#aebbb4!important;
+  background:#edf1ef!important;
+  box-shadow:0 6px 15px rgba(31,52,41,.12)!important;
+}
+
+/* Each section keeps a distinct static palette. */
+html[data-avp-reader="6"] .kv-reader-sections>.kv-reader-section:nth-child(1){--rs-fill:#2f7d4d;--rs-border:#79b991;--rs-soft:#edf7f0;--rs-ink:#245f3b}
+html[data-avp-reader="6"] .kv-reader-sections>.kv-reader-section:nth-child(2){--rs-fill:#3f6fa8;--rs-border:#95b7da;--rs-soft:#eef4fb;--rs-ink:#315783}
+html[data-avp-reader="6"] .kv-reader-sections>.kv-reader-section:nth-child(3){--rs-fill:#7654a1;--rs-border:#baa4d5;--rs-soft:#f4f0f9;--rs-ink:#594078}
+html[data-avp-reader="6"] .kv-reader-sections>.kv-reader-section:nth-child(4){--rs-fill:#a56a25;--rs-border:#d7b27f;--rs-soft:#fbf4e9;--rs-ink:#79501e}
+html[data-avp-reader="6"] .kv-reader-sections>.kv-reader-section:nth-child(5){--rs-fill:#9a536c;--rs-border:#d3a6b6;--rs-soft:#faf0f4;--rs-ink:#713d50}
+html[data-avp-reader="6"] .kv-reader-sections>.kv-reader-section:nth-child(6){--rs-fill:#287b78;--rs-border:#94c9c5;--rs-soft:#edf8f7;--rs-ink:#1f5d5a}
+
+html[data-avp-reader="6"] .kv-reader-section{
+  border-color:var(--rs-border,#9ec7ae)!important;
+  background:var(--rs-soft,#f1f7f3)!important;
+  color:var(--rs-ink,#285b3b)!important;
+  box-shadow:0 3px 9px rgba(32,54,42,.07)!important;
+  transition:border-color .16s ease,background-color .16s ease,color .16s ease,box-shadow .16s ease!important;
+}
+html[data-avp-reader="6"] .kv-reader-section>span{
+  border:1px solid var(--rs-border,#9ec7ae)!important;
+  background:#fff!important;
+  color:var(--rs-ink,#285b3b)!important;
+  box-shadow:none!important;
+}
+html[data-avp-reader="6"] .kv-reader-section:hover{
+  transform:none!important;
+  filter:none!important;
+  border-color:var(--rs-fill,#2f7d4d)!important;
+  background:var(--rs-soft,#f1f7f3)!important;
+  box-shadow:0 5px 13px rgba(31,54,41,.11)!important;
+}
+html[data-avp-reader="6"] .kv-reader-section.is-active{
+  border-color:var(--rs-fill,#2f7d4d)!important;
+  background:var(--rs-fill,#2f7d4d)!important;
+  color:#fff!important;
+  box-shadow:0 6px 15px rgba(31,54,41,.14)!important;
+}
+html[data-avp-reader="6"] .kv-reader-section.is-active>span{
+  border-color:rgba(255,255,255,.32)!important;
+  background:rgba(255,255,255,.18)!important;
+  color:#fff!important;
+}
+html[data-avp-reader="6"] .kv-reader-section.is-active>b{color:#fff!important}
+
+/* Học thêm: stable purple family. */
+html[data-avp-reader="6"] .kv-reader-extra-direct,
+html[data-avp-reader="6"] .kv-reader-section.is-extra{
+  --rs-fill:#7654a1!important;
+  --rs-border:#baa4d5!important;
+  --rs-soft:#f4f0f9!important;
+  --rs-ink:#594078!important;
+}
+html[data-avp-reader="6"] .kv-reader-extra>summary{
+  border-color:#baa4d5!important;
+  background:#f4f0f9!important;
+  color:#594078!important;
+  box-shadow:0 3px 9px rgba(68,48,87,.07)!important;
+}
+html[data-avp-reader="6"] .kv-reader-extra[open]>summary,
+html[data-avp-reader="6"] .kv-reader-extra.has-active>summary{
+  border-color:#7654a1!important;
+  background:#7654a1!important;
+  color:#fff!important;
+}
+html[data-avp-reader="6"] .kv-reader-extra[open]>summary b,
+html[data-avp-reader="6"] .kv-reader-extra.has-active>summary b{color:#fff!important}
+
+/* Completion: yellow while pending, green after completed. */
+html[data-avp-reader="6"] .kv-reader-read-toggle{
+  border:1px solid #d3a62f!important;
+  background:#fff8dc!important;
+  color:#6b4d05!important;
+  box-shadow:0 4px 12px rgba(119,84,9,.11)!important;
+  text-shadow:none!important;
+}
+html[data-avp-reader="6"] .kv-reader-read-toggle:hover{
+  transform:none!important;
+  filter:none!important;
+  border-color:#b98c1f!important;
+  background:#fff2c4!important;
+  box-shadow:0 6px 15px rgba(119,84,9,.15)!important;
+}
+html[data-avp-reader="6"] .kv-reader-read-toggle.is-done{
+  border-color:#2b7548!important;
+  background:#2f7d4d!important;
+  color:#fff!important;
+  box-shadow:0 5px 14px rgba(34,104,62,.16)!important;
+}
+html[data-avp-reader="6"] .kv-reader-read-toggle.is-done:hover{
+  border-color:#245f3b!important;
+  background:#286d43!important;
+}
+
+/* Remove running glow/sweep from Reader toolbar on every breakpoint. */
+html[data-avp-reader="6"] .kv-reader-section::before,
+html[data-avp-reader="6"] .kv-reader-section::after,
+html[data-avp-reader="6"] .kv-reader-read-toggle::before,
+html[data-avp-reader="6"] .kv-reader-read-toggle::after,
+html[data-avp-reader="6"] .kv-reader-back::before,
+html[data-avp-reader="6"] .kv-reader-back::after{
+  content:none!important;
+  display:none!important;
+  animation:none!important;
+}
+html[data-avp-reader="6"] .kv-course-nav,
+html[data-avp-reader="6"] .kv-course-nav *{
+  animation:none!important;
+}
+
+@media(max-width:900px){
+  html[data-avp-reader="6"] .kv-reader-back,
+  html[data-avp-reader="6"] .kv-reader-read-toggle,
+  html[data-avp-reader="6"] .kv-reader-section,
+  html[data-avp-reader="6"] .kv-reader-extra>summary{
+    box-shadow:0 3px 9px rgba(31,54,41,.08)!important;
+  }
+}
