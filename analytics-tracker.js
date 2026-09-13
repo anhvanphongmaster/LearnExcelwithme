@@ -14,16 +14,18 @@
   }
 
   loadStyle('site-upgrade-v1.css?v=20260914-site2','avp-site-upgrade-v1');
-  loadRuntime('site-upgrade-v1.js?v=20260914-site3','avp-site-upgrade-v1');
-  loadRuntime('site-runtime-cache-v1.js?v=20260914-cache1','avp-site-cache-v1');
-  loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc2','avp-rpc-dedupe-v1');
-  loadRuntime('site-auth-cache-v1.js?v=20260914-auth1','avp-auth-cache-v1');
+  loadRuntime('site-upgrade-v1.js?v=20260914-site4','avp-site-upgrade-v1');
+  loadRuntime('site-runtime-cache-v1.js?v=20260914-cache2','avp-site-cache-v1');
+  loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc6','avp-rpc-dedupe-v1');
+  loadRuntime('site-auth-cache-v1.js?v=20260914-auth3','avp-auth-cache-v1');
 
   const VISITOR_KEY = "avpAnalyticsVisitorId";
   const MAX_WAIT = 3500;
   const RPC_TIMEOUT = 5000;
   const PAGE_VIEW_TTL = 30*60*1000;
+  const LOGIN_TRACK_TTL = 30*60*1000;
   const recentEvents=new Map();
+  let lastAuthUserId=null;
 
   function getVisitorId(){
     let id=localStorage.getItem(VISITOR_KEY);
@@ -153,12 +155,21 @@
     }
 
     client.auth.onAuthStateChange((event,session)=>{
+      if(event==="SIGNED_OUT"){
+        if(lastAuthUserId){
+          try{sessionStorage.removeItem(`avp_login_tracked_${lastAuthUserId}`)}catch(_){ }
+        }
+        lastAuthUserId=null;
+        return;
+      }
       if(event!=="SIGNED_IN" || !session?.user) return;
-      const tokenKey=`avp_login_tracked_${session.user.id}`;
+      lastAuthUserId=String(session.user.id);
+      const tokenKey=`avp_login_tracked_${lastAuthUserId}`;
       const now=Date.now();
-      const last=Number(sessionStorage.getItem(tokenKey)||0);
-      if(now-last < 5000) return;
-      sessionStorage.setItem(tokenKey,String(now));
+      let last=0;
+      try{last=Number(sessionStorage.getItem(tokenKey)||0)}catch(_){ }
+      if(now-last < LOGIN_TRACK_TTL) return;
+      try{sessionStorage.setItem(tokenKey,String(now))}catch(_){ }
       track("login",{page,metadata:{provider:session.user.app_metadata?.provider || "email"}});
     });
   }
