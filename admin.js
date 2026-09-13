@@ -9,12 +9,11 @@
   let coreLoaded=false;
 
   function ensureAdminUi(){
-    if(document.querySelector('link[data-avp-admin-ui-v2]'))return;
-    const link=document.createElement('link');
-    link.rel='stylesheet';
-    link.href='admin-ui-v2.css?v=20260913-adminui2';
-    link.dataset.avpAdminUiV2='1';
-    document.head.appendChild(link);
+    [['admin-ui-v2.css?v=20260913-adminui2','avpAdminUiV2'],['admin-ui-v2-final.css?v=20260913-adminfinal1','avpAdminUiFinal']].forEach(([href,key])=>{
+      if(document.querySelector('link[data-'+key+']'))return;
+      const link=document.createElement('link');
+      link.rel='stylesheet';link.href=href;link.setAttribute('data-'+key,'1');document.head.appendChild(link);
+    });
   }
 
   function view(){try{return localStorage.getItem('avp_admin_view_v1')||'overview'}catch(_){return 'overview'}}
