@@ -59,9 +59,11 @@
 
     const btn=document.getElementById('avpScrollToPath');
     if(btn&&btn.dataset.onePath!=='coach2'){
-      btn.dataset.onePath='coach2';
-      btn.innerHTML='<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Học hôm nay →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">Web tự chọn bài cần học · luyện ngắn · ôn lỗi</span>';
-      btn.addEventListener('click',e=>{e.preventDefault();location.href=hub;},{once:false});
+      const clean=btn.cloneNode(true);
+      clean.dataset.onePath='coach2';
+      clean.innerHTML='<span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">Học hôm nay →</span><span class="avp-tease-preview" style="display:block;margin-top:4px;opacity:.78;font-size:11px">Web tự chọn bài cần học · luyện ngắn · ôn lỗi</span>';
+      clean.addEventListener('click',e=>{e.preventDefault();location.href=hub;});
+      btn.replaceWith(clean);
       changed=true;
     }
 
