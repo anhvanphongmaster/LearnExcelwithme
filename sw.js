@@ -1,4 +1,4 @@
-const CACHE="learnexcel-assets-v20260913-perf1";
+const CACHE="learnexcel-assets-v20260913-fresh2";
 const ASSETS=[
   "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css","./home-ux-polish-v1.css",
   "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./global-search.js",
@@ -9,7 +9,7 @@ const ASSETS=[
 self.addEventListener("install",event=>{
   event.waitUntil((async()=>{
     const cache=await caches.open(CACHE);
-    await Promise.allSettled(ASSETS.map(url=>cache.add(url)));
+    await Promise.allSettled(ASSETS.map(url=>cache.add(new Request(url,{cache:"reload"}))));
     await self.skipWaiting();
   })());
 });
@@ -22,17 +22,29 @@ self.addEventListener("activate",event=>{
   })());
 });
 
-async function fastResponse(event){
-  const req=event.request;
+async function networkFirst(req){
   const cache=await caches.open(CACHE);
-  const cached=await cache.match(req,{ignoreSearch:true});
-  const refresh=fetch(req,{cache:"no-cache"}).then(res=>{
+  try{
+    const res=await fetch(req,{cache:"no-cache"});
     if(res&&res.ok)cache.put(req,res.clone()).catch(()=>{});
     return res;
-  });
-  if(cached){event.waitUntil(refresh.catch(()=>{}));return cached;}
-  try{return await refresh;}catch(_){
+  }catch(_){
+    const cached=await cache.match(req);
+    if(cached)return cached;
     if(req.mode==="navigate")return (await cache.match("./index.html"))||Response.error();
+    return Response.error();
+  }
+}
+
+async function cacheFirst(req){
+  const cache=await caches.open(CACHE);
+  const cached=await cache.match(req);
+  if(cached)return cached;
+  try{
+    const res=await fetch(req);
+    if(res&&res.ok)cache.put(req,res.clone()).catch(()=>{});
+    return res;
+  }catch(_){
     return Response.error();
   }
 }
@@ -42,19 +54,18 @@ self.addEventListener("fetch",event=>{
   if(req.method!=="GET")return;
   const url=new URL(req.url);
   if(url.origin!==self.location.origin)return;
+
   const isHTML=req.mode==="navigate"||url.pathname.endsWith(".html")||url.pathname.endsWith("/");
   const isCode=/\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
-  if(isHTML||isCode){event.respondWith(fastResponse(event));return;}
-  event.respondWith((async()=>{
-    const cache=await caches.open(CACHE);
-    const cached=await cache.match(req,{ignoreSearch:true});
-    if(cached)return cached;
-    try{
-      const res=await fetch(req);
-      if(res&&res.ok)cache.put(req,res.clone()).catch(()=>{});
-      return res;
-    }catch(_){return Response.error();}
-  })());
+
+  /* HTML + code must prefer the current deploy. Do not ignore query strings:
+     ?v=... is a real cache-busting key and must stay effective. */
+  if(isHTML||isCode){
+    event.respondWith(networkFirst(req));
+    return;
+  }
+
+  event.respondWith(cacheFirst(req));
 });
 
 self.addEventListener("push",event=>{
