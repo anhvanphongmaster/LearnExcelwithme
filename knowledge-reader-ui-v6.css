@@ -1,0 +1,284 @@
+/* Knowledge Reader V6 — section-only toolbar, centered reader, clear hierarchy */
+html[data-avp-reader="6"]{
+  --km:#4e725e;
+  --km-dark:#2d4f3d;
+  --km-soft:#eaf4ee;
+  --km-softer:#f6faf7;
+  --km-line:#bed4c5;
+  --km-glow:#83c99f;
+}
+html[data-avp-reader="6"][data-avp-module-tone="green"]{--km:#4e7c5f;--km-dark:#28523a;--km-soft:#eaf5ee;--km-softer:#f6fbf8;--km-line:#bdd9c7;--km-glow:#78d49a}
+html[data-avp-reader="6"][data-avp-module-tone="teal"]{--km:#3f7d79;--km-dark:#285652;--km-soft:#e8f5f3;--km-softer:#f5fbfa;--km-line:#bbdcd8;--km-glow:#68d4ca}
+html[data-avp-reader="6"][data-avp-module-tone="blue"]{--km:#5578aa;--km-dark:#334f7d;--km-soft:#edf3fb;--km-softer:#f7f9fd;--km-line:#c7d6eb;--km-glow:#7fb0f1}
+html[data-avp-reader="6"][data-avp-module-tone="purple"]{--km:#7c64a2;--km-dark:#563f79;--km-soft:#f2eef8;--km-softer:#faf8fc;--km-line:#d7cce7;--km-glow:#b296e0}
+html[data-avp-reader="6"][data-avp-module-tone="rose"]{--km:#a7637b;--km-dark:#744257;--km-soft:#f9eef2;--km-softer:#fdf8fa;--km-line:#e7cdd6;--km-glow:#e69ab5}
+html[data-avp-reader="6"][data-avp-module-tone="sand"]{--km:#927041;--km-dark:#644a28;--km-soft:#faf3e7;--km-softer:#fdfaf5;--km-line:#e4d2b5;--km-glow:#e2b86f}
+html[data-avp-reader="6"][data-avp-module-tone="orange"]{--km:#a9663e;--km-dark:#744126;--km-soft:#fbefe7;--km-softer:#fdf8f4;--km-line:#e7cbb9;--km-glow:#ec9d6a}
+html[data-avp-reader="6"][data-avp-module-tone="indigo"]{--km:#646aa2;--km-dark:#41477a;--km-soft:#eff0f9;--km-softer:#f8f8fc;--km-line:#d0d2e8;--km-glow:#9ba3ea}
+
+html[data-avp-reader="6"] .kv-reader-page{
+  width:min(1260px,calc(100% - 32px))!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+html[data-avp-reader="6"] .kv-reader-page .kv-course-nav,
+html[data-avp-reader="6"] .kv-reader-page .kv-hero,
+html[data-avp-reader="6"] .kv-reader-page .kv-reader-grid{
+  width:min(1180px,100%)!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+/* Toolbar: back | sections in this lesson | read state */
+html[data-avp-reader="6"] .kv-reader-page .kv-course-nav{
+  position:sticky!important;
+  top:58px!important;
+  z-index:45!important;
+  display:grid!important;
+  grid-template-columns:minmax(152px,190px) minmax(0,1fr) minmax(150px,184px)!important;
+  align-items:stretch!important;
+  gap:10px!important;
+  padding:10px!important;
+  margin-top:8px!important;
+  margin-bottom:12px!important;
+  border:1px solid var(--km-line)!important;
+  border-radius:16px!important;
+  background:rgba(250,252,251,.965)!important;
+  box-shadow:0 10px 30px rgba(30,54,41,.09)!important;
+  backdrop-filter:blur(12px)!important;
+}
+html[data-avp-reader="6"] .kv-course-edge,
+html[data-avp-reader="6"] .kv-stage-tabs,
+html[data-avp-reader="6"] .kv-reader-lessons{display:none!important}
+
+html[data-avp-reader="6"] .kv-reader-back,
+html[data-avp-reader="6"] .kv-reader-read-toggle{
+  min-height:52px!important;
+  border-radius:12px!important;
+  font-size:10.5px!important;
+  font-weight:950!important;
+  line-height:1.25!important;
+  letter-spacing:.01em!important;
+}
+html[data-avp-reader="6"] .kv-reader-back{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:8px 12px!important;
+  border:1px solid var(--km-dark)!important;
+  background:linear-gradient(135deg,var(--km-dark),var(--km))!important;
+  color:#fff!important;
+  text-decoration:none!important;
+  box-shadow:0 7px 18px rgba(34,62,45,.16)!important;
+}
+html[data-avp-reader="6"] .kv-reader-back:hover{
+  transform:translateY(-2px)!important;
+  filter:brightness(1.06)!important;
+  box-shadow:0 10px 23px rgba(34,62,45,.22)!important;
+}
+
+html[data-avp-reader="6"] .kv-reader-sections{
+  min-width:0;
+  display:flex;
+  align-items:stretch;
+  justify-content:center;
+  gap:7px;
+  overflow-x:auto;
+  overflow-y:visible;
+  padding:0 2px 4px;
+  scrollbar-width:thin;
+}
+html[data-avp-reader="6"] .kv-reader-section{
+  position:relative;
+  isolation:isolate;
+  flex:0 1 190px;
+  min-width:128px!important;
+  min-height:52px!important;
+  display:grid!important;
+  grid-template-columns:27px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:7px!important;
+  padding:7px 9px!important;
+  border:1px solid var(--km-line)!important;
+  border-radius:11px!important;
+  background:var(--km-softer)!important;
+  color:#46564d!important;
+  box-shadow:0 3px 9px rgba(30,54,41,.045)!important;
+  cursor:pointer!important;
+  text-align:left!important;
+}
+html[data-avp-reader="6"] .kv-reader-section>span{
+  display:grid;
+  place-items:center;
+  width:27px;
+  height:27px;
+  border-radius:8px;
+  background:var(--km-soft);
+  color:var(--km-dark);
+  font-size:9px;
+  font-weight:950;
+}
+html[data-avp-reader="6"] .kv-reader-section>b{
+  min-width:0;
+  color:inherit;
+  font-size:9.5px;
+  line-height:1.28;
+  font-weight:900;
+}
+html[data-avp-reader="6"] .kv-reader-section:hover{
+  transform:translateY(-2px)!important;
+  border-color:var(--km)!important;
+  background:var(--km-soft)!important;
+  color:var(--km-dark)!important;
+}
+html[data-avp-reader="6"] .kv-reader-section.is-active{
+  border-color:var(--km)!important;
+  background:linear-gradient(145deg,var(--km),var(--km-dark))!important;
+  color:#fff!important;
+  box-shadow:0 9px 24px rgba(39,68,50,.2)!important;
+}
+html[data-avp-reader="6"] .kv-reader-section.is-active>span{
+  background:rgba(255,255,255,.18)!important;
+  color:#fff!important;
+}
+
+html[data-avp-reader="6"] .kv-reader-extra{
+  position:relative;
+  flex:0 0 auto;
+  min-width:140px;
+  border:0!important;
+  background:transparent!important;
+}
+html[data-avp-reader="6"] .kv-reader-extra>summary{
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  padding:7px 11px;
+  list-style:none;
+  border:1px solid #d9cce7;
+  border-radius:11px;
+  background:#f8f3fb;
+  color:#6a527e;
+  font-size:9.5px;
+  font-weight:950;
+  cursor:pointer;
+  box-sizing:border-box;
+}
+html[data-avp-reader="6"] .kv-reader-extra>summary::-webkit-details-marker{display:none}
+html[data-avp-reader="6"] .kv-reader-extra>summary b{font-size:9px;color:#866b9c}
+html[data-avp-reader="6"] .kv-reader-extra[open]>summary{border-color:#9d80b6;background:#f1e8f7;color:#513b66}
+html[data-avp-reader="6"] .kv-reader-extra-menu{
+  position:absolute;
+  z-index:60;
+  top:calc(100% + 7px);
+  right:0;
+  width:min(360px,74vw);
+  padding:8px;
+  border:1px solid #d9cce7;
+  border-radius:13px;
+  background:#fff;
+  box-shadow:0 14px 34px rgba(55,37,67,.16);
+}
+html[data-avp-reader="6"] .kv-reader-extra-menu .kv-reader-section{width:100%!important;max-width:none!important;margin:0 0 6px!important}
+html[data-avp-reader="6"] .kv-reader-extra-menu .kv-reader-section:last-child{margin-bottom:0!important}
+
+html[data-avp-reader="6"] .kv-reader-read-toggle{
+  position:relative!important;
+  isolation:isolate!important;
+  min-width:0!important;
+  padding:8px 12px!important;
+  border:1px solid var(--km)!important;
+  background:linear-gradient(135deg,var(--km),var(--km-dark))!important;
+  color:#fff!important;
+  box-shadow:0 8px 20px rgba(38,65,48,.19)!important;
+  cursor:pointer!important;
+}
+html[data-avp-reader="6"] .kv-reader-read-toggle::before,
+html[data-avp-reader="6"] .kv-reader-section.is-active::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  z-index:-1;
+  border-radius:inherit;
+  background:linear-gradient(90deg,var(--km),var(--km-glow),#fff,var(--km-glow),var(--km));
+  background-size:240% 100%;
+  animation:kvReaderEdgeRun 3s linear infinite;
+  opacity:.82;
+}
+html[data-avp-reader="6"] .kv-reader-read-toggle.is-done{
+  background:linear-gradient(135deg,#263c31,#395846)!important;
+  border-color:#263c31!important;
+}
+html[data-avp-reader="6"] .kv-reader-read-toggle:hover{transform:translateY(-2px)!important;filter:brightness(1.07)!important}
+@keyframes kvReaderEdgeRun{from{background-position:0 50%}to{background-position:240% 50%}}
+
+/* Reader body: no left sidebar. Everything shares one centered content width. */
+html[data-avp-reader="6"] .kv-reader-grid{
+  display:block!important;
+  grid-template-columns:none!important;
+}
+html[data-avp-reader="6"] .kv-reader-menu{display:none!important}
+html[data-avp-reader="6"] .kv-reader-content{
+  width:min(1180px,100%)!important;
+  max-width:none!important;
+  margin:0 auto!important;
+  padding:0!important;
+}
+html[data-avp-reader="6"] .kv-reader-page .kv-hero{
+  padding:18px 20px!important;
+  margin-bottom:12px!important;
+  border:1px solid var(--km-line)!important;
+  border-left:5px solid var(--km)!important;
+  background:linear-gradient(135deg,var(--km-soft) 0%,#fff 72%)!important;
+  box-shadow:0 8px 22px rgba(30,54,41,.055)!important;
+}
+html[data-avp-reader="6"] .kv-reader-page .kv-hero h1{font-size:clamp(27px,2.8vw,38px)!important;color:#1d3025!important}
+html[data-avp-reader="6"] .kv-reader-page .kv-chip:first-child{background:var(--km)!important;border-color:var(--km)!important;color:#fff!important}
+html[data-avp-reader="6"] .kv-active-section .kv-section{
+  width:100%!important;
+  padding:20px!important;
+  border:1px solid var(--km-line)!important;
+  border-top:5px solid var(--km)!important;
+  border-radius:16px!important;
+  background:#fff!important;
+  box-shadow:0 9px 26px rgba(31,55,42,.06)!important;
+}
+html[data-avp-reader="6"] .kv-active-section .kv-section-num{background:var(--km-soft)!important;border-color:var(--km-line)!important;color:var(--km-dark)!important}
+html[data-avp-reader="6"] .kv-active-section .kv-section h2{color:#20362a!important}
+html[data-avp-reader="6"] .kv-reader-content .kv-intro{width:100%!important}
+
+/* Stronger content hierarchy — purpose colors remain visible instead of everything being white/green. */
+html[data-avp-reader="6"] .lp-do-now-v2{background:#f2f7fd!important;border-color:#bfd3e8!important;border-top-color:#5e8eb8!important}
+html[data-avp-reader="6"] .kv-example{background:#faf6fd!important;border-color:#d8c9e7!important;border-top-color:#8a6cac!important}
+html[data-avp-reader="6"] .kv-tip{background:#fff8e9!important;border-color:#ead7a9!important;border-top-color:#c59532!important}
+html[data-avp-reader="6"] .kv-warning{background:#fff3f0!important;border-color:#ecc8c0!important;border-top-color:#cc6858!important}
+html[data-avp-reader="6"] .kv-check{background:#f1faf5!important;border-color:#bfdcca!important;border-top-color:#5d9875!important}
+html[data-avp-reader="6"] .kv-intro-box:first-child{background:#f4f8fd!important;border-color:#c8d7e8!important}
+html[data-avp-reader="6"] .kv-intro-box:last-child{background:#faf6fc!important;border-color:#ddd0e7!important}
+
+/* Do not offer another lesson from inside the reader. */
+html[data-avp-reader="6"] .kv-flow-next-lesson-v4{display:none!important}
+
+@media(max-width:900px){
+  html[data-avp-reader="6"] .kv-reader-page{width:min(100% - 18px,760px)!important}
+  html[data-avp-reader="6"] .kv-reader-page .kv-course-nav{
+    position:relative!important;
+    top:auto!important;
+    grid-template-columns:1fr 1fr!important;
+    grid-template-areas:"back read" "sections sections"!important;
+    padding:8px!important;
+  }
+  html[data-avp-reader="6"] .kv-reader-back{grid-area:back}
+  html[data-avp-reader="6"] .kv-reader-read-toggle{grid-area:read}
+  html[data-avp-reader="6"] .kv-reader-sections{grid-area:sections;justify-content:flex-start}
+  html[data-avp-reader="6"] .kv-reader-section{flex:0 0 min(230px,70vw)}
+  html[data-avp-reader="6"] .kv-reader-extra{flex:0 0 auto}
+  html[data-avp-reader="6"] .kv-reader-page .kv-hero{padding:15px!important}
+  html[data-avp-reader="6"] .kv-active-section .kv-section{padding:15px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-avp-reader="6"] .kv-reader-read-toggle::before,
+  html[data-avp-reader="6"] .kv-reader-section.is-active::before{animation:none!important}
+}
