@@ -3,29 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Học Excel A–Z | Learn Excel with Anh Van Phong</title>
-  <meta name="description" content="42 bài Excel A–Z. Luồng Học chính tự gợi ý bài; danh sách này chỉ dùng khi muốn tự chọn.">
-  <meta name="theme-color" content="#217346">
-  <script>
-  (function(){
-    var p=new URLSearchParams(location.search);
-    if(p.get('browse')==='1')return;
-    location.replace('learning-coach.html');
-  })();
-  </script>
+  <title>Học Excel theo 4 luồng | Learn Excel with Anh Van Phong</title>
+  <meta name="description" content="42 bài Excel được chia thành 4 luồng học rõ ràng. Chọn luồng rồi cuộn qua từng bài theo đúng mục tiêu.">
+  <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="auth.css">
   <link rel="stylesheet" href="global-search.css">
-  <link rel="stylesheet" href="theme-polish-v33.css">
-  <link rel="stylesheet" href="avp-learning-contrast-v1.css?v=20260910-contrast1">
-  <link rel="stylesheet" href="skill-map-platform-v1.css?v=20260911-platform2">
-  <link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui2" data-avp-ui-system>
+  <link rel="stylesheet" href="avp-core.css">
+  <link rel="stylesheet" href="practice-roll.css?v=20260913-learning1">
+  <link rel="stylesheet" href="learning-hub-v1.css?v=20260913-learning1">
+  <link rel="stylesheet" href="avp-ui-system.css?v=20260911-ui-consistency1" data-avp-ui-system>
 </head>
 <body>
 <script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script>
-<nav class="top-simple-nav" aria-label="Điều hướng chính"><div class="top-simple-links"><a href="index.html" data-avp-nav="home">Trang chủ</a><a href="learning-coach.html" data-avp-nav="learn">Học</a><a href="practice-video.html" data-avp-nav="practice">Thực hành</a><a href="tools-center.html" data-avp-nav="tools">Công cụ</a><button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button><span class="auth-nav-slot"></span><button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button></div><button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button></nav>
-<main class="lp-page" id="lpPage"><section class="lp-hero"><div><span class="lp-kicker">TỰ CHỌN BÀI</span><h1>42 bài Excel A–Z</h1><p>Chỉ dùng trang này khi bạn muốn tự chọn. Nếu không, quay về Học để web đưa việc tiếp theo.</p></div><div class="lp-hero-meta"><div class="lp-stat"><span>CẤU TRÚC</span><strong id="lpModuleCount">8 module</strong></div><div class="lp-stat"><span>NỘI DUNG</span><strong id="lpLessonCount">42 bài</strong></div></div></section><div class="lp-toolbar"><nav class="lp-breadcrumb" aria-label="Breadcrumb"><a href="learning-coach.html">Học</a><span>›</span><strong>Tự chọn bài</strong></nav><div class="lp-toolbar-actions"><a class="lp-btn primary" href="learning-coach.html">← Về Học hôm nay</a></div></div><section class="lp-home-view"><div class="lp-modules-head"><h2>Chọn module</h2></div><div class="lp-module-grid" id="lpModuleGrid"></div></section><section class="lp-module-view" hidden></section></main>
-<script src="knowledge-data-foundation.js?v=20260909-kv2"></script><script src="knowledge-data-skills.js?v=20260909-kv2"></script><script src="knowledge-data-analysis.js?v=20260909-kv2"></script><script src="knowledge-data-advanced.js?v=20260909-kv2"></script><script src="knowledge-depth-v1.js?v=20260910-depth1"></script><script src="learning-platform-content-v2.js?v=20260911-platform2"></script><script src="learning-platform-guides-v2.js?v=20260911-platform2"></script><script src="learning-platform-catalog-v1.js?v=20260913-coach2"></script><script src="skill-map-platform-v1.js?v=20260913-coach2"></script><script src="learning-platform-progress-v2.js?v=20260911-platform2"></script><script src="supabase-config.js"></script><script type="module" src="supabase-auth.js"></script><script defer src="simple-nav.js"></script><script defer src="theme-unified-v32.js"></script><script defer src="global-search.js?v=20260911-platform2"></script><script defer src="avp-core.js"></script>
-</body></html>
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn" class="is-current" aria-current="page">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+<main class="lh-page">
+  <header class="lh-hero">
+    <div>
+      <span class="lh-kicker">LEARNING HUB · 42 BÀI</span>
+      <h1>Chọn đúng luồng học Excel</h1>
+      <p>Không xổ toàn bộ bài ra cùng lúc. Chọn một trong 4 luồng theo mục tiêu, sau đó cuộn qua từng bài giống cách dùng các khu Thực hành.</p>
+    </div>
+    <div class="lh-hero-meta" aria-label="Thông tin lộ trình">
+      <span>4 luồng học</span><span>42 bài</span><span>8 module gốc</span>
+    </div>
+  </header>
+
+  <section class="lh-selector" id="learningSelector" aria-label="Chọn luồng học">
+    <div class="lh-section-head"><div><span class="lh-kicker">CHỌN LUỒNG</span><h2>Học theo mục tiêu</h2></div><p>Mỗi bài vẫn giữ nguyên nội dung và tiến độ hiện tại.</p></div>
+    <div class="lh-flow-grid" id="learningFlowGrid"></div>
+
+    <a class="lh-coach-bar" href="learning-coach.html">
+      <span class="lh-coach-mark">→</span>
+      <span><strong>Không biết nên học bài nào?</strong><small>Mở Học hôm nay để web gợi ý bài tiếp theo, kiểm tra trình độ và ôn lại lỗi cũ.</small></span>
+      <b>Mở Học hôm nay →</b>
+    </a>
+  </section>
+
+  <section class="lh-detail" id="learningDetail" hidden aria-label="Danh sách bài trong luồng">
+    <button class="lh-back" id="learningBack" type="button">← Tất cả luồng học</button>
+    <div class="lh-detail-head">
+      <div><span class="lh-detail-kicker" id="learningDetailLabel"></span><h2 id="learningDetailTitle"></h2><p id="learningDetailDesc"></p></div>
+      <span class="lh-detail-count" id="learningDetailCount"></span>
+    </div>
+    <div class="avp-roll-shell lh-roll-shell">
+      <div class="avp-practice-roll lesson-roll lh-lesson-roll" id="learningLessonRoll" data-practice-roll data-roll-kind="lesson" tabindex="0" aria-label="Cuộn danh sách bài học">
+        <div class="avp-roll-stage" id="learningLessonStage" data-practice-roll-stage></div>
+        <div class="avp-roll-dots" id="learningLessonDots" data-practice-roll-dots></div>
+      </div>
+      <p class="lh-roll-hint">Kéo / vuốt · lăn chuột · phím ← → · bấm card giữa để mở bài</p>
+    </div>
+  </section>
+</main>
+
+<script src="knowledge-data-foundation.js?v=20260909-kv2"></script>
+<script src="knowledge-data-skills.js?v=20260909-kv2"></script>
+<script src="knowledge-data-analysis.js?v=20260909-kv2"></script>
+<script src="knowledge-data-advanced.js?v=20260909-kv2"></script>
+<script src="knowledge-depth-v1.js?v=20260910-depth1"></script>
+<script src="learning-platform-content-v2.js?v=20260911-platform2"></script>
+<script src="learning-platform-guides-v2.js?v=20260911-platform2"></script>
+<script src="learning-platform-catalog-v1.js?v=20260913-fourflows1"></script>
+<script defer src="learning-hub-v1.js?v=20260913-learning1"></script>
+<script defer src="practice-roll.js?v=20260913-learning1"></script>
+<script defer src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script defer src="simple-nav.js"></script>
+<script defer src="theme-unified-v32.js"></script>
+<script defer src="global-search.js?v=20260911-platform2"></script>
+<script defer src="avp-core.js"></script>
+</body>
+</html>
