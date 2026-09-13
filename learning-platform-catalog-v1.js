@@ -58,6 +58,11 @@
     }
 
     const btn=document.getElementById('avpScrollToPath');
+    /* V104 owns the Home learning card. Never replace its markup with the legacy teaser. */
+    if(btn && (btn.dataset.homeHubV104==='1' || btn.classList.contains('home-choice-card-v104'))){
+      btn.dataset.learningHub='fourflows1';
+      return changed;
+    }
     if(btn&&btn.dataset.learningHub!=='fourflows1'){
       const clean=btn.cloneNode(true);
       clean.dataset.learningHub='fourflows1';
