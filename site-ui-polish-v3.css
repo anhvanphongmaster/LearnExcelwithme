@@ -1,0 +1,46 @@
+/* AVP Site UI Polish V3 — shared learner-facing hierarchy outside stable Practice pages. */
+html.avp-site-ui{
+  --avp-font:"Segoe UI",Inter,system-ui,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --avp-ink:#23352b;--avp-heading:#182a20;--avp-muted:#6f7d75;--avp-line:#d9e1dc;--avp-line-strong:#c6d1ca;
+  --avp-surface:#fff;--avp-surface-2:#f6f8f7;--avp-surface-3:#eef3f0;--avp-accent:#355f49;--avp-accent-soft:#edf5f0;
+  --avp-radius-sm:10px;--avp-radius-md:14px;--avp-radius-lg:18px;--avp-shadow-sm:0 4px 14px rgba(27,49,37,.05);--avp-shadow-md:0 12px 30px rgba(27,49,37,.08)
+}
+html.avp-site-ui body,html.avp-site-ui button,html.avp-site-ui input,html.avp-site-ui select,html.avp-site-ui textarea{font-family:var(--avp-font)!important;font-kerning:normal;text-rendering:optimizeLegibility}
+html.avp-site-ui body{color:var(--avp-ink)}
+html.avp-site-ui main :where(h1,h2,h3,h4){color:var(--avp-heading);letter-spacing:-.015em;text-wrap:balance}
+html.avp-site-ui main :where(p,li,td,th,label,small){overflow-wrap:anywhere}html.avp-site-ui main :where(p,li){line-height:1.58}
+
+/* Old standalone lessons used one large solid-green header. Give them a quieter first level. */
+html.avp-site-ui body>header:not([class*="hero"]):not(.site-header){background:linear-gradient(135deg,#edf5f0,#f8faf9)!important;color:#20382b!important;border-bottom:1px solid #d8e2dc!important;padding:34px 20px!important;box-shadow:none!important}
+html.avp-site-ui body>header:not([class*="hero"]):not(.site-header) :where(h1,h2,h3){color:#1d3929!important;margin-top:0}
+html.avp-site-ui body>header:not([class*="hero"]):not(.site-header) p{color:#67786e!important;margin-bottom:0}
+
+/* Neutral controls: selected/primary states may still use feature-specific colors. */
+html.avp-site-ui main :where(button:not(.avp-hub-fab):not(.avp-edge-main):not(.top-mobile-toggle),input[type="button"],input[type="submit"],input[type="reset"],a[class*="btn"],a[class*="button"],a[class*="action"],.back a){min-height:40px;box-sizing:border-box;border-radius:10px;border:1px solid var(--avp-line-strong);background:linear-gradient(180deg,#fff,#f3f5f4);color:#2a4134;font-weight:800;line-height:1.2;text-decoration:none!important;box-shadow:0 2px 7px rgba(27,49,37,.035)}
+html.avp-site-ui main :where(button:not(.avp-hub-fab):not(.avp-edge-main):not(.top-mobile-toggle),a[class*="btn"],a[class*="button"],a[class*="action"],.back a):hover{border-color:#aebbb4;background:#edf1ef;color:#1f3328;transform:translateY(-1px)}
+html.avp-site-ui main :where(.primary,.btn-primary,.primary-btn,[data-tone="primary"]){border-color:#324f40!important;background:#324f40!important;color:#fff!important;box-shadow:0 6px 16px rgba(31,58,43,.14)!important}
+html.avp-site-ui main :where(.secondary,.btn-secondary,.secondary-btn){border-color:#d0d8d3!important;background:#f6f8f7!important;color:#35493e!important}
+html.avp-site-ui main :where(.download-btn,[class*="download"],[class*="tai-file"],a[download]){text-decoration:none!important}
+html.avp-site-ui main :where(button,a[class*="btn"],a[class*="button"],a[class*="action"],.back a):focus-visible{outline:3px solid rgba(71,112,89,.16)!important;outline-offset:2px!important}
+
+html.avp-site-ui main :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]),select,textarea){border-color:var(--avp-line-strong)!important;border-radius:10px!important;background:#fff!important;color:var(--avp-ink)!important;font-size:14px!important}
+html.avp-site-ui main :where(.card,[class$="-card"],[class*="-card "],[class$="-panel"],[class*="-panel "]){border-color:var(--avp-line)}
+html.avp-site-ui main :where(.card,[class$="-card"],[class*="-card "]):not([class*="hero"]){box-shadow:var(--avp-shadow-sm)}
+html.avp-site-ui main :where(.eyebrow,.kicker,[class*="-kicker"],[class*="-eyebrow"]){color:#687970;font-weight:900;letter-spacing:.07em}
+html.avp-site-ui main :where(.muted,[class*="-muted"],[class*="-meta"],small){color:var(--avp-muted)}
+
+/* More legible grouping on older lesson pages. */
+html.avp-site-ui main :where(.step,.report-note,.course-box,.pivot-box){border-color:#d5dfd9!important;box-shadow:none!important}
+html.avp-site-ui main .step{background:#f5f8f6!important;border-left-color:#789788!important}
+html.avp-site-ui main :where(table th){font-family:var(--avp-font)!important}
+
+html.avp-site-ui :where(.top-simple-nav,.kv-sidebar,.course-sidebar,.sidebar,.side-nav) :where(a,button,span,strong){min-width:0;max-width:100%;overflow-wrap:anywhere}
+html.avp-site-ui :where(.top-simple-nav,.kv-sidebar,.course-sidebar,.sidebar,.side-nav) :where(a,button){white-space:normal}
+html.avp-site-ui img,html.avp-site-ui svg{max-width:100%}
+html.avp-no-install-banner .avp-install-banner{display:none!important}
+
+html.avp-site-ui body.dark-mode{--avp-ink:#dce7e0;--avp-heading:#eef5f0;--avp-muted:#a2b1a8;--avp-line:#33483b;--avp-line-strong:#415849;--avp-surface:#17231c;--avp-surface-2:#1c2a22;--avp-surface-3:#23342a}
+html.avp-site-ui body.dark-mode main :where(button,a[class*="btn"],a[class*="button"],a[class*="action"],.back a){background:#1c2a22;border-color:#405548;color:#dce7e0}
+html.avp-site-ui body.dark-mode>header:not([class*="hero"]):not(.site-header){background:#17231c!important;border-color:#34463b!important;color:#e2ece5!important}
+
+@media(max-width:700px){html.avp-site-ui main :where(h1){font-size:clamp(26px,8vw,34px)}html.avp-site-ui main :where(h2){font-size:clamp(21px,6vw,27px)}html.avp-site-ui main :where(button,a[class*="btn"],a[class*="button"],a[class*="action"],.back a){min-height:42px}}

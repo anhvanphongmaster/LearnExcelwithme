@@ -8,6 +8,11 @@
   const queue=[];
   let active=false,lastFocus=null;
 
+  function pageName(){return (location.pathname.split('/').pop()||'index.html').toLowerCase()}
+  function isStablePracticePage(){
+    const p=pageName();
+    return /^(practice-|professional-|homework|baitapexcel|excel-race)/.test(p);
+  }
   function ensureCss(){
     if(d.querySelector('link[data-avp-ui-system]'))return;
     const link=d.createElement('link');link.rel='stylesheet';link.href='avp-ui-system.css?v=20260909-ui1';link.dataset.avpUiSystem='1';d.head.appendChild(link);
@@ -24,7 +29,33 @@
     if(d.querySelector('link[data-avp-global-controls]'))return;
     const link=d.createElement('link');link.rel='stylesheet';link.href='avp-global-controls-v1.css?v=20260910-controls1';link.dataset.avpGlobalControls='1';d.head.appendChild(link);
   }
-  function pageName(){return (location.pathname.split('/').pop()||'index.html').toLowerCase()}
+  function ensureSiteUiPolish(){
+    const p=pageName();
+    if(p==='admin.html'||p==='auth.html'||isStablePracticePage())return;
+    d.documentElement.classList.add('avp-site-ui');
+    if(d.querySelector('link[data-avp-site-ui-polish]'))return;
+    const link=d.createElement('link');
+    link.rel='stylesheet';
+    link.href='site-ui-polish-v3.css?v=20260913-ui3';
+    link.dataset.avpSiteUiPolish='3';
+    d.head.appendChild(link);
+  }
+  function scopeInstallPromptToHome(){
+    if(pageName()==='index.html')return;
+    d.documentElement.classList.add('avp-no-install-banner');
+    const remove=()=>d.querySelectorAll('.avp-install-banner').forEach(el=>el.remove());
+    remove();
+    if(w.__AVP_INSTALL_SCOPE_OBSERVER__)return;
+    w.__AVP_INSTALL_SCOPE_OBSERVER__=true;
+    const start=()=>{
+      if(!d.body)return;
+      const observer=new MutationObserver(remove);
+      observer.observe(d.body,{childList:true,subtree:false});
+      w.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+      remove();
+    };
+    if(d.body)start();else d.addEventListener('DOMContentLoaded',start,{once:true});
+  }
   function ensureHomeKnowledgeV2(){
     if(pageName()!=='index.html')return;
     if(!d.querySelector('link[data-avp-home-knowledge-v2]')){
@@ -72,7 +103,7 @@
   }
   function next(){
     if(active||!queue.length)return;
-    active=true;ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureHomeKnowledgeV2();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
+    active=true;ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureSiteUiPolish();scopeInstallPromptToHome();ensureHomeKnowledgeV2();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
     lastFocus=d.activeElement instanceof HTMLElement?d.activeElement:null;
     root.className='avp-ui-modal tone-'+(opts.tone||'info');
     const type=opts.type||'alert';
@@ -131,5 +162,5 @@
     return 'info';
   }
   w.alert=function(message){const text=String(message??'');w.avpAlert(text,{tone:inferredTone(text)});};
-  ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureHomeKnowledgeV2();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();
+  ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureSiteUiPolish();scopeInstallPromptToHome();ensureHomeKnowledgeV2();ensureAdminHomework();ensureSemanticHierarchy();ensureLauncherUnifier();
 })(window,document);
