@@ -19,7 +19,7 @@
   TRACKS.forEach(t=>t.modules.forEach(id=>moduleTrack.set(id,t.id)));
   const lessons=(window.AVPKnowledgeLessons||[]).slice().sort((a,b)=>(a.order||999)-(b.order||999));
   const byId=new Map(lessons.map(x=>[x.id,x]));
-  const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[ch]));
   const lastId=()=>{try{return localStorage.getItem('avp_knowledge_last_v2')||''}catch(_){return''}};
 
   function trackLessonIds(track){
@@ -35,8 +35,7 @@
     const params=new URLSearchParams(location.search);
     const direct=params.get('track');
     if(direct&&byTrack.has(direct)) return direct;
-    const legacy=params.get('module');
-    return moduleTrack.get(legacy)||'';
+    return moduleTrack.get(params.get('module'))||'';
   }
   function setUrl(trackId,push){
     const url=new URL(location.href);
@@ -44,20 +43,21 @@
     url.searchParams.delete('module');
     if(trackId) url.searchParams.set('track',trackId); else url.searchParams.delete('track');
     const state={avpLearningTrack:trackId||''};
-    (push?history.pushState:history.replaceState).call(history,state,'',url.pathname+url.search+url.hash);
+    if(push) history.pushState(state,'',url.pathname+url.search+url.hash);
+    else history.replaceState(state,'',url.pathname+url.search+url.hash);
   }
 
   function flowCard(track){
-    const count=track.lessonIds.length;
     return `<button type="button" class="lh-flow-card" data-learning-track="${esc(track.id)}" data-tone="${esc(track.tone)}">
       <span>${esc(track.number)} · ${esc(track.label)}</span>
       <i class="lh-flow-no" aria-hidden="true">${esc(track.number)}</i>
       <strong>${esc(track.title)}</strong>
       <p>${esc(track.desc)}</p>
-      <b>${count} bài · Chọn luồng →</b>
+      <b>${track.lessonIds.length} bài · Chọn luồng →</b>
     </button>`;
   }
 
+  let currentTrack=null;
   function lessonCard(id,index){
     const lesson=byId.get(id)||{id,title:id,short:'Mở bài học để xem nội dung chi tiết.',duration:'',version:''};
     const globalOrder=P.displayOrder(id);
@@ -79,23 +79,48 @@
   const detailTitle=document.getElementById('learningDetailTitle');
   const detailDesc=document.getElementById('learningDetailDesc');
   const detailCount=document.getElementById('learningDetailCount');
-  const stage=document.getElementById('learningLessonStage');
-  const dots=document.getElementById('learningLessonDots');
-  const roll=document.getElementById('learningLessonRoll');
+  const rollHost=document.querySelector('.lh-roll-shell');
   const back=document.getElementById('learningBack');
-  let currentTrack=null;
+  let roll=document.getElementById('learningLessonRoll');
 
-  function showSelector(updateHistory=false){
+  function bindActiveCardOpen(root){
+    root.addEventListener('click',e=>{
+      if(e.target.closest('a,button,input,label,textarea,select')) return;
+      const card=e.target.closest('[data-learning-url]');
+      if(card?.classList.contains('is-roll-active')) location.href=card.dataset.learningUrl;
+    });
+  }
+
+  function mountRoll(track){
+    if(!rollHost) return;
+    const fresh=document.createElement('div');
+    fresh.className='avp-practice-roll lesson-roll lh-lesson-roll';
+    fresh.id='learningLessonRoll';
+    fresh.dataset.practiceRoll='';
+    fresh.dataset.rollKind='lesson';
+    fresh.tabIndex=0;
+    fresh.setAttribute('aria-label','Cuộn danh sách bài học');
+    const last=lastId();
+    fresh.dataset.start=String(Math.max(0,track.lessonIds.indexOf(last)));
+    fresh.innerHTML=`<div class="avp-roll-stage" id="learningLessonStage" data-practice-roll-stage>${track.lessonIds.map(lessonCard).join('')}</div><div class="avp-roll-dots" id="learningLessonDots" data-practice-roll-dots></div>`;
+    if(roll) roll.replaceWith(fresh);
+    else rollHost.prepend(fresh);
+    roll=fresh;
+    bindActiveCardOpen(roll);
+    window.AVPPracticeRoll?.init?.(roll);
+  }
+
+  function showSelector(updateHistory=false,scroll=true){
     currentTrack=null;
     if(selector) selector.hidden=false;
     if(detail) detail.hidden=true;
     if(updateHistory) setUrl('',true);
-    document.querySelector('.lh-hero')?.scrollIntoView({block:'start',behavior:'smooth'});
+    if(scroll) document.querySelector('.lh-hero')?.scrollIntoView({block:'start',behavior:'smooth'});
   }
 
   function showTrack(id,{push=true,scroll=true}={}){
     const track=byTrack.get(id);
-    if(!track||!stage||!roll) return;
+    if(!track) return;
     currentTrack=track;
     if(selector) selector.hidden=true;
     if(detail) detail.hidden=false;
@@ -103,16 +128,8 @@
     if(detailTitle) detailTitle.textContent=track.title;
     if(detailDesc) detailDesc.textContent=track.desc;
     if(detailCount) detailCount.textContent=`${track.lessonIds.length} bài`;
-    stage.innerHTML=track.lessonIds.map(lessonCard).join('');
-    if(dots) dots.innerHTML='';
-
-    const last=lastId();
-    const start=Math.max(0,track.lessonIds.indexOf(last));
-    delete roll.dataset.rollReady;
-    roll.dataset.start=String(start);
-    roll._avpPracticeRoll=null;
-    if(window.AVPPracticeRoll?.init) window.AVPPracticeRoll.init(roll);
-    if(push) setUrl(id,true); else setUrl(id,false);
+    mountRoll(track);
+    setUrl(id,push);
     if(scroll) requestAnimationFrame(()=>detail?.scrollIntoView({block:'start',behavior:'smooth'}));
   }
 
@@ -123,15 +140,10 @@
       const card=e.target.closest('[data-learning-track]');
       if(card) showTrack(card.dataset.learningTrack,{push:true,scroll:true});
     });
-    back?.addEventListener('click',()=>showSelector(true));
-    roll?.addEventListener('click',e=>{
-      if(e.target.closest('a,button,input,label,textarea,select')) return;
-      const card=e.target.closest('[data-learning-url]');
-      if(card?.classList.contains('is-roll-active')) location.href=card.dataset.learningUrl;
-    });
+    back?.addEventListener('click',()=>showSelector(true,true));
     window.addEventListener('popstate',()=>{
       const id=requestedTrack();
-      if(id) showTrack(id,{push:false,scroll:false}); else showSelector(false);
+      if(id) showTrack(id,{push:false,scroll:false}); else showSelector(false,false);
     });
 
     const initial=requestedTrack();
