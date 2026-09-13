@@ -14,7 +14,13 @@
   }
   function loadCss(href,key,onload){
     const existing=document.querySelector('link[data-'+key+']');
-    if(existing){if(onload)onload(existing);return existing;}
+    if(existing){
+      if(onload){
+        if(existing.sheet)onload(existing);
+        else existing.addEventListener('load',()=>onload(existing),{once:true});
+      }
+      return existing;
+    }
     const link=document.createElement('link');
     link.rel='stylesheet';link.href=href;link.setAttribute('data-'+key,'1');
     if(onload)link.addEventListener('load',()=>onload(link),{once:true});
@@ -33,7 +39,7 @@
   const isHome=page===''||page==='index.html';
   if(isHome){
     html.classList.add('avp-site-home');
-    loadCss('home-ui-owner-v1.css?v=20260914-owner1','avp-home-ui-owner-v1',()=>{
+    loadCss('home-ui-owner-v1.css?v=20260914-owner2','avp-home-ui-owner-v1',()=>{
       document.querySelectorAll('link[href*="theme-polish-v33.css"]').forEach(link=>{link.disabled=true;link.media='not all';});
       html.classList.add('avp-home-owner-ready');
     });
