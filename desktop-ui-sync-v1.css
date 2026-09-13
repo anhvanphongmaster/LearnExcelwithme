@@ -1,0 +1,50 @@
+/*! desktop-ui-sync-v1.css — shared desktop surfaces, no layout rewrite */
+@media(min-width:901px){
+  :root{
+    --avp-surface:#fff;
+    --avp-border:rgba(24,92,55,.12);
+    --avp-shadow:0 8px 24px rgba(18,73,43,.07);
+    --avp-shadow-hover:0 14px 32px rgba(18,73,43,.10);
+    --avp-radius:16px;
+    --avp-green:#217346;
+    --avp-green-dark:#185c37;
+  }
+
+  /* Common cards share the same visual weight while preserving each page's layout. */
+  :where(
+    .course-card,.practice-file-card,.summary-card,.level-card,
+    .continue-card,.home-path-card,.home-more-card,.home-cta-card,
+    .pq-lesson,.course-panel,.path-item,.pv-panel,.badge-card,
+    .lab-card,.tool-card,.qc-card,.ref-card,.sm-node,.fr-session-card,
+    .achievement-card,.feature-card,.content-card,.grid-card,article.card
+  ){
+    border-radius:var(--avp-radius);
+    border-color:var(--avp-border);
+  }
+
+  /* Shared button feel; colors remain page-owned. */
+  :where(a,button,[role="button"]){
+    text-underline-offset:2px;
+  }
+  :where(button,.btn,.avp-btn,.primary-btn,.secondary-btn,.action-btn,.download-btn){
+    border-radius:10px;
+  }
+
+  /* Prevent mixed typography/spacing in common headings without forcing sizes. */
+  :where(main,section,.wrap,.page-wrap,.avp-page,.pv-page) :where(h1,h2,h3){
+    text-wrap:balance;
+  }
+  :where(main,section,.wrap,.page-wrap,.avp-page,.pv-page) :where(p,li){
+    text-wrap:pretty;
+  }
+
+  /* Tables/panels: same clipping behavior, avoids square child backgrounds leaking through rounded shells. */
+  :where(.table-wrap,.table-wrapper,.panel,.dash-panel,.course-panel,.learn-board){
+    border-radius:var(--avp-radius);
+  }
+
+  /* Keep content aligned on wide monitors without changing page-specific widths. */
+  :where(.avp-page,.pv-page,.pw-page,.pyt-page,.ph-direct-page,.ml-page,.pq-page,.dashboard-page){
+    overflow-x:clip;
+  }
+}
