@@ -77,7 +77,7 @@
     var stack=document.createElement('div');stack.className='home-choice-stack-v104';stack.setAttribute('aria-label','Chọn cách học Excel');
     if(insertion)host.insertBefore(stack,insertion);else host.insertBefore(stack,oldPractice);
 
-    var learn=configureChoice(oldLearn,'learn','skill-map.html');
+    var learn=configureChoice(oldLearn,'learn','skill-map.html?entry=learn');
     var practice=configureChoice(oldPractice,'practice','practice-video.html');
     stack.appendChild(learn);stack.appendChild(practice);
 
@@ -85,7 +85,7 @@
     if(learnParent&&learnParent!==stack&&learnParent!==practiceWrap&&!learnParent.children.length)learnParent.remove();
 
     var navLearn=document.querySelector('.top-simple-nav [data-avp-nav="learn"]');
-    if(navLearn){navLearn.href='skill-map.html';navLearn.setAttribute('aria-label','Học theo lộ trình Excel');}
+    if(navLearn){navLearn.href='skill-map.html?entry=learn';navLearn.setAttribute('aria-label','Học theo lộ trình Excel');}
     return true;
   }
 
@@ -106,7 +106,7 @@
     more.className='home-path-more home-path-more--extras';
     more.innerHTML=''+
       '<div class="home-more-card home-extra-card-v2 tone-master is-restoring" aria-disabled="true" role="status"><span class="home-more-icon">◆</span><div><small>LỘ TRÌNH NÂNG CAO</small><strong>Excel Master</strong><em>Hệ nội dung chuyên sâu</em><b>Sắp cập nhật</b></div></div>'+
-      '<a class="home-more-card home-extra-card-v2 tone-skill" href="skill-map.html"><span class="home-more-icon">◈</span><div><small>BẢN ĐỒ KỸ NĂNG</small><strong>Skill Map</strong><em>Xem luồng và vị trí đang học</em><b>Mở bản đồ →</b></div></a>'+
+      '<a class="home-more-card home-extra-card-v2 tone-skill" href="skill-map.html?entry=skillmap"><span class="home-more-icon">◈</span><div><small>BẢN ĐỒ KỸ NĂNG</small><strong>Skill Map</strong><em>Xem luồng và vị trí đang học</em><b>Mở bản đồ →</b></div></a>'+
       '<button type="button" class="home-more-card home-extra-card-v2 tone-code home-codehub-launcher" id="homeCodeHubOpen" aria-haspopup="dialog" aria-controls="avpCodeHubModal"><span class="home-more-icon">⌘</span><div><small>CODE & AUTOMATION</small><strong>Excel Code Hub</strong><em>Python · VBA · Power Query</em><b>Mở Code Hub →</b></div></button>'+
       '<a class="home-more-card home-extra-card-v2 tone-arena home-more-race" href="excel-race.html"><span class="home-more-icon">⚡</span><div><small>GAME & PHẢN XẠ</small><strong>Excel Arena</strong><em>Đấu kỹ năng theo thời gian</em><b>Vào Arena →</b></div></a>'+
       '<a class="home-more-card home-extra-card-v2 tone-tools home-more-tools" href="tools-library.html"><span class="home-more-icon">▣</span><div><small>TOOL & TEMPLATE</small><strong>Kho Tool</strong><em>Tool thực dụng · tải ZIP · ý tưởng cộng đồng</em><b>Mở Kho Tool →</b></div></a>';
@@ -142,9 +142,9 @@
     var hero=document.querySelector('.avp-hero');if(!hero)return false;var section=document.getElementById('homeStartHereV1');
     if(!section){
       section=document.createElement('section');section.className='home-first-v1';section.id='homeStartHereV1';
-      section.innerHTML='<div class="home-first-inner-v1"><div class="home-first-head-v1"><span class="home-first-kicker-v1">DÀNH CHO NGƯỜI MỚI</span><h2>Bắt đầu đúng chỗ</h2><p>Chọn luồng học, học bài rồi thực hành lại bằng file.</p></div><div class="home-first-steps-v1"><div class="home-first-step-v1"><span>01</span><div><strong>Chọn luồng</strong><small>Chọn mục tiêu phù hợp.</small></div></div><div class="home-first-step-v1"><span>02</span><div><strong>Học bài</strong><small>Nắm nội dung theo lộ trình.</small></div></div><div class="home-first-step-v1"><span>03</span><div><strong>Thực hành</strong><small>Làm lại bằng file và case.</small></div></div></div><a class="home-first-primary-v1" href="skill-map.html?track=foundation-data">Chọn luồng học →</a><div class="home-first-foot-v1"><span>4 luồng học · 5 luồng thực hành.</span></div></div>';hero.insertAdjacentElement('afterend',section);
+      section.innerHTML='<div class="home-first-inner-v1"><div class="home-first-head-v1"><span class="home-first-kicker-v1">DÀNH CHO NGƯỜI MỚI</span><h2>Bắt đầu đúng chỗ</h2><p>Chọn luồng học, học bài rồi thực hành lại bằng file.</p></div><div class="home-first-steps-v1"><div class="home-first-step-v1"><span>01</span><div><strong>Chọn luồng</strong><small>Chọn mục tiêu phù hợp.</small></div></div><div class="home-first-step-v1"><span>02</span><div><strong>Học bài</strong><small>Nắm nội dung theo lộ trình.</small></div></div><div class="home-first-step-v1"><span>03</span><div><strong>Thực hành</strong><small>Làm lại bằng file và case.</small></div></div></div><a class="home-first-primary-v1" href="skill-map.html?entry=learn&track=foundation-data">Chọn luồng học →</a><div class="home-first-foot-v1"><span>4 luồng học · 5 luồng thực hành.</span></div></div>';hero.insertAdjacentElement('afterend',section);
     }
-    if(P){var t=target(P);var primary=section.querySelector('.home-first-primary-v1');if(primary){if(t.resume){primary.href=P.lessonUrl?P.lessonUrl(t.id):('knowledge.html?lesson='+encodeURIComponent(t.id));primary.textContent='Tiếp tục · Bài '+String(t.order||1).padStart(2,'0')+' →';}else{primary.href='skill-map.html?track=foundation-data';primary.textContent='Chọn luồng học →';}}}return true;
+    if(P){var t=target(P);var primary=section.querySelector('.home-first-primary-v1');if(primary){if(t.resume){primary.href=P.lessonUrl?P.lessonUrl(t.id):('knowledge.html?lesson='+encodeURIComponent(t.id));primary.textContent='Tiếp tục · Bài '+String(t.order||1).padStart(2,'0')+' →';}else{primary.href='skill-map.html?entry=learn&track=foundation-data';primary.textContent='Chọn luồng học →';}}}return true;
   }
 
   function repairPodium(){var rows=document.querySelectorAll('#learnBoardList .lb-row');if(!rows.length)return;var medals=['🥇','🥈','🥉'];for(var i=0;i<Math.min(3,rows.length);i++){var row=rows[i];var rank=row.querySelector('.lb-rank');row.classList.add('lb-podium-'+(i+1));if(rank)rank.innerHTML='<span class="lb-medal lb-'+(i===0?'gold':i===1?'silver':'bronze')+'" title="Top '+(i+1)+'">'+medals[i]+'</span>';}}
