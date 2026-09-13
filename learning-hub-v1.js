@@ -12,7 +12,7 @@
   const byTrack=new Map(TRACKS.map(t=>[t.id,t]));
   const lessons=(window.AVPKnowledgeLessons||[]).slice().sort((a,b)=>(a.order||999)-(b.order||999));
   const byId=new Map(lessons.map(x=>[x.id,x]));
-  const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[ch]));
+  const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const lastId=()=>{try{return localStorage.getItem('avp_knowledge_last_v2')||''}catch(_){return''}};
 
   function moduleLabel(id){return P.moduleForLesson(id)?.title||'Excel'}
