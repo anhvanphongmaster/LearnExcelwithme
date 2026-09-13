@@ -2,6 +2,7 @@
 'use strict';
 if(window.__AVP_RPC_DEDUPE_V1__)return;
 window.__AVP_RPC_DEDUPE_V1__=1;
+
 const active=new Map();
 const memory=new Map();
 const READS=new Set([
@@ -17,6 +18,10 @@ const SESSION_TTL={
  'avp_chat_my_unread_count':5000,
  'list_learning_leaderboard':10000
 };
+const INVALIDATE_AFTER_WRITE={
+ 'upsert_learning_leaderboard':['list_learning_leaderboard']
+};
+
 function argsKey(args){try{return JSON.stringify(args||{})}catch(_){return ''}}
 function key(name,args){return name+'|'+argsKey(args)}
 function memTtl(name){return SESSION_TTL[name]||1800}
@@ -36,23 +41,52 @@ function writeSession(name,args,result){
  if(!SESSION_TTL[name])return;
  try{sessionStorage.setItem(sessionKey(name,args),JSON.stringify({at:Date.now(),result}))}catch(_){ }
 }
+function clearRead(name){
+ const prefix=name+'|';
+ for(const k of memory.keys())if(k.startsWith(prefix))memory.delete(k);
+ try{
+  const marker=':'+name+':';
+  for(let i=sessionStorage.length-1;i>=0;i--){
+   const k=sessionStorage.key(i);
+   if(k&&k.startsWith('avp_rpc_cache_v2:')&&k.includes(marker))sessionStorage.removeItem(k);
+  }
+ }catch(_){ }
+}
+function invalidateAfterWrite(name){
+ const targets=INVALIDATE_AFTER_WRITE[name]||[];
+ targets.forEach(clearRead);
+}
 function wrap(client){
  if(!client||typeof client.rpc!=='function'||client.__avpRpcDedupeV1)return false;
  const raw=client.rpc.bind(client);client.__avpRpcDedupeV1=true;
  client.rpc=function(name,args){
-  const tracked=READS.has(name)||WRITES.has(name);
-  if(!tracked)return raw(name,args);
-  const k=key(name,args),t=Date.now(),hit=memory.get(k);
-  if(hit&&t-hit.at<(WRITES.has(name)?2500:memTtl(name)))return Promise.resolve(hit.result);
-  if(READS.has(name)){
-   const stored=readSession(name,args);
-   if(stored){memory.set(k,{at:t,result:stored});return Promise.resolve(stored)}
+  const isRead=READS.has(name),isWrite=WRITES.has(name);
+  if(!isRead&&!isWrite)return raw(name,args);
+
+  const k=key(name,args),t=Date.now();
+
+  /* Writes are only coalesced while the same request is in flight. A completed
+     mutation must never be replayed from cache. */
+  if(isWrite){
+   if(active.has(k))return active.get(k);
+   const p=Promise.resolve(raw(name,args)).then(result=>{
+    if(result&&!result.error)invalidateAfterWrite(name);
+    return result;
+   }).finally(()=>active.delete(k));
+   active.set(k,p);return p;
   }
+
+  const hit=memory.get(k);
+  if(hit&&t-hit.at<memTtl(name))return Promise.resolve(hit.result);
+
+  const stored=readSession(name,args);
+  if(stored){memory.set(k,{at:t,result:stored});return Promise.resolve(stored)}
   if(active.has(k))return active.get(k);
+
   const p=Promise.resolve(raw(name,args)).then(result=>{
     if(result&&!result.error){
       memory.set(k,{at:Date.now(),result});
-      if(READS.has(name))writeSession(name,args,result);
+      writeSession(name,args,result);
     }
     return result;
   }).finally(()=>active.delete(k));
@@ -60,5 +94,16 @@ function wrap(client){
  };
  return true;
 }
-(async()=>{for(let i=0;i<120;i++){const a=window.avpSupabase||window.supabaseClient;if(a){wrap(a);return}await new Promise(r=>setTimeout(r,100))}})();
+
+window.avpRpcCache={
+ invalidate:function(...names){names.flat().filter(Boolean).forEach(clearRead)}
+};
+
+(async()=>{
+ for(let i=0;i<120;i++){
+  const a=window.avpSupabase||window.supabaseClient;
+  if(a){wrap(a);return}
+  await new Promise(r=>setTimeout(r,100));
+ }
+})();
 })();
