@@ -31,36 +31,49 @@
 
     const title=shell.querySelector(':scope > h2');
     const desc=shell.querySelector(':scope > p');
-    if(title) title.textContent='Nền tảng Excel A–Z';
-    if(desc) desc.textContent='8 module · 42 bài. Chọn theo nhóm công việc; bên trong là danh sách bài rõ ràng và luôn có đường quay lại.';
+    if(title?.textContent!=='Nền tảng Excel A–Z') title.textContent='Nền tảng Excel A–Z';
+    const descText='8 module · 42 bài. Chọn theo nhóm công việc; bên trong là danh sách bài rõ ràng và luôn có đường quay lại.';
+    if(desc?.textContent!==descText) desc.textContent=descText;
 
-    grid.className='home-path-grid home-platform-grid-v1';
-    if(grid.querySelectorAll('.home-platform-module-v1').length!==8 || grid.dataset.canonicalHome!=='1'){
-      grid.innerHTML=gridHTML();
-    }
+    if(!grid.classList.contains('home-platform-grid-v1')) grid.classList.add('home-platform-grid-v1');
+    if(grid.querySelectorAll('.home-platform-module-v1').length!==8 || grid.dataset.canonicalHome!=='1') grid.innerHTML=gridHTML();
     grid.dataset.canonicalHome='1';
 
     const learn=document.querySelector('.top-simple-nav [data-avp-nav="learn"]');
-    if(learn){ learn.href='learning-coach.html'; learn.setAttribute('aria-label','Học Excel hôm nay'); }
+    if(learn){
+      if(learn.getAttribute('href')!=='learning-coach.html') learn.href='learning-coach.html';
+      learn.setAttribute('aria-label','Học Excel hôm nay');
+    }
 
     const teaser=document.getElementById('avpScrollToPath');
     if(teaser){
       teaser.dataset.onePath='coach2';
       const t=teaser.querySelector('.avp-tease-title');
       const p=document.getElementById('avpTeasePreview');
-      if(t) t.textContent='Học hôm nay →';
-      if(p) p.textContent='Web tự chọn bài cần học · luyện ngắn · ôn lỗi';
+      if(t?.textContent!=='Học hôm nay →') t.textContent='Học hôm nay →';
+      const preview='Web tự chọn bài cần học · luyện ngắn · ôn lỗi';
+      if(p?.textContent!==preview) p.textContent=preview;
+      if(teaser.dataset.canonicalNav!=='1'){
+        teaser.dataset.canonicalNav='1';
+        teaser.addEventListener('click',e=>{
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          location.href='learning-coach.html';
+        },true);
+      }
     }
 
     const arena=document.querySelector('a.home-more-race[href*="excel-race.html"]');
     if(arena){
       arena.classList.add('avp-arena-home');
+      arena.setAttribute('aria-label','Excel Arena — game phản xạ Excel với Học và Rank');
       const icon=arena.querySelector(':scope > span');
       const titleEl=arena.querySelector('strong');
       const small=arena.querySelector('small');
-      if(icon) icon.textContent='⚡';
-      if(titleEl) titleEl.textContent='Excel Arena';
-      if(small) small.textContent='Bạn nhớ Excel đến đâu khi thời gian đang chạy?';
+      if(icon && icon.textContent!=='⚡') icon.textContent='⚡';
+      if(titleEl?.textContent!=='Excel Arena') titleEl.textContent='Excel Arena';
+      const arenaText='Bạn nhớ Excel đến đâu khi thời gian đang chạy?';
+      if(small?.textContent!==arenaText) small.textContent=arenaText;
       if(!arena.querySelector('.avp-arena-home-meta')){
         const meta=document.createElement('span'); meta.className='avp-arena-home-meta'; meta.textContent='Học · Rank · 14 chủ đề'; arena.appendChild(meta);
       }
@@ -70,29 +83,17 @@
     }
 
     const more=shell.querySelector('.home-path-more');
-    if(more) more.style.marginTop='18px';
+    if(more && more.style.marginTop!=='18px') more.style.marginTop='18px';
     document.body.classList.add('home-canonical-ready');
     return true;
   }
 
+  /* Disable the two legacy Home layout owners before home-page-motion.js runs. */
   window.__avpHomeAZV4=true;
   window.__avpArenaHomeCard=true;
 
   function boot(){
-    if(!render()){
-      requestAnimationFrame(boot);
-      return;
-    }
-    const shell=document.querySelector('.home-path-inner');
-    if(!shell || typeof MutationObserver==='undefined') return;
-    let queued=false;
-    const observer=new MutationObserver(()=>{
-      if(queued) return;
-      queued=true;
-      queueMicrotask(()=>{ queued=false; render(); });
-    });
-    observer.observe(shell,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','href']});
-    setTimeout(()=>{ render(); observer.disconnect(); },2400);
+    if(!render()) requestAnimationFrame(boot);
   }
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true});
