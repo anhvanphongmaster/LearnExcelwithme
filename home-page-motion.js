@@ -1,7 +1,8 @@
-/*! home-page-motion.js — V106 premium Home hubs */
+/*! home-page-motion.js — V107 premium Home hubs */
 (function(){
   'use strict';
-  if(window.__avpHomeMotionV106)return;
+  if(window.__avpHomeMotionV107)return;
+  window.__avpHomeMotionV107=true;
   window.__avpHomeMotionV106=true;
   window.__avpHomeMotionV105=true;
   window.__avpHomeMotionV104=true;
@@ -13,9 +14,9 @@
   var DONE_KEY='avp_platform_completed_v2';
 
   function ensureAssets(){
-    if(!document.querySelector('link[data-home-final-v106]')){
+    if(!document.querySelector('link[data-home-final-v107]')){
       var link=document.createElement('link');
-      link.rel='stylesheet';link.href='home-final-ui-v104.css?v=20260913-3';link.dataset.homeFinalV106='1';
+      link.rel='stylesheet';link.href='home-final-ui-v104.css?v=20260913-4';link.dataset.homeFinalV107='1';
       document.head.appendChild(link);
     }
     if(!document.querySelector('script[data-home-copy-v104]')){
@@ -106,10 +107,10 @@
     more.innerHTML=''+
       '<div class="home-more-card home-extra-card-v2 tone-master is-restoring" aria-disabled="true" role="status"><span class="home-more-icon">◆</span><div><small>LỘ TRÌNH NÂNG CAO</small><strong>Excel Master</strong><em>Hệ nội dung chuyên sâu</em><b>Sắp cập nhật</b></div></div>'+
       '<a class="home-more-card home-extra-card-v2 tone-skill" href="skill-map.html"><span class="home-more-icon">◈</span><div><small>BẢN ĐỒ KỸ NĂNG</small><strong>Skill Map</strong><em>Xem luồng và vị trí đang học</em><b>Mở bản đồ →</b></div></a>'+
-      '<a class="home-more-card home-extra-card-v2 tone-code" href="excel-code-hub.html"><span class="home-more-icon">⌘</span><div><small>CODE & AUTOMATION</small><strong>Excel Code Hub</strong><em>Python · VBA · Power Query</em><b>Mở Code Hub →</b></div></a>'+
+      '<button type="button" class="home-more-card home-extra-card-v2 tone-code home-codehub-launcher" id="homeCodeHubOpen" aria-haspopup="dialog" aria-controls="avpCodeHubModal"><span class="home-more-icon">⌘</span><div><small>CODE & AUTOMATION</small><strong>Excel Code Hub</strong><em>Python · VBA · Power Query</em><b>Mở Code Hub →</b></div></button>'+
       '<a class="home-more-card home-extra-card-v2 tone-arena home-more-race" href="excel-race.html"><span class="home-more-icon">⚡</span><div><small>GAME & PHẢN XẠ</small><strong>Excel Arena</strong><em>Đấu kỹ năng theo thời gian</em><b>Vào Arena →</b></div></a>'+
-      '<a class="home-more-card home-extra-card-v2 tone-tools" href="tools-center.html"><span class="home-more-icon">▣</span><div><small>TOOL & TEMPLATE</small><strong>Kho Tool</strong><em>Tiện ích, template và checklist</em><b>Mở Kho Tool →</b></div></a>';
-    more.dataset.extrasVersion='104';
+      '<a class="home-more-card home-extra-card-v2 tone-tools home-more-tools" href="tools-library.html"><span class="home-more-icon">▣</span><div><small>TOOL & TEMPLATE</small><strong>Kho Tool</strong><em>Tool thực dụng · tải ZIP · ý tưởng cộng đồng</em><b>Mở Kho Tool →</b></div></a>';
+    more.dataset.extrasVersion='107';
     return true;
   }
 
