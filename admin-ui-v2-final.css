@@ -1,0 +1,14 @@
+/*! admin-ui-v2-final.css — final compact pass */
+@media(min-width:1120px){.admin-view-tabs{grid-template-columns:repeat(6,minmax(0,1fr))!important}.admin-view-tabs [data-admin-view]{min-height:60px!important;padding:9px 10px!important}}
+.admin-view-section :is(button:not(.danger):not(.warn):not(.secondary),.primary,.admin-health-reload,.admin-chat-refresh){background:var(--panel-soft)!important;color:var(--panel-ink)!important;border:1px solid color-mix(in srgb,var(--panel) 32%,#d9e2dd)!important;box-shadow:none!important}
+.admin-view-section :is(button:not(.danger):not(.warn):not(.secondary),.primary,.admin-health-reload,.admin-chat-refresh):hover{background:var(--panel)!important;color:#fff!important;border-color:var(--panel)!important}
+.admin-view-section :is(button.active,button[aria-selected="true"],.primary){background:var(--panel)!important;color:#fff!important;border-color:var(--panel)!important}
+.admin-view-section :is(input,select,textarea){border:1px solid color-mix(in srgb,var(--panel) 20%,#dce5e0)!important;background:#fff!important;color:#30443a!important;border-radius:10px!important}
+.admin-view-section :is(.admin-download-editor,.admin-grader-config,.admin-grader-appeals,.admin-grader-performance,.apt-case-form,.ayt-editor,.admin-tiktok-editor,.atl-editor){border:1px solid color-mix(in srgb,var(--panel) 27%,#dfe6e2)!important;border-radius:14px!important;background:linear-gradient(180deg,var(--panel-soft),#fff 86px)!important;box-shadow:0 6px 18px color-mix(in srgb,var(--panel) 6%,transparent)!important}
+.admin-view-section :is(.admin-users-summary,.admin-race-kpis,.admin-download-kpis,.admin-review-kpis,.admin-grader-kpis,.apt-kpis){gap:8px!important}
+.admin-system-health .admin-health-grid{gap:8px!important}.admin-system-health .admin-health-grid article{border-radius:11px!important;padding:10px!important;background:linear-gradient(145deg,#fff,var(--panel-soft))!important;border-color:color-mix(in srgb,var(--panel) 20%,#dfe6e2)!important}
+.admin-maintenance-preview{border-color:color-mix(in srgb,var(--panel) 25%,#dfe6e2)!important;background:var(--panel-soft)!important}
+.admin-view-section .admin-mail-tabs button{background:var(--panel-soft)!important;color:var(--panel-ink)!important}.admin-view-section .admin-mail-tabs button.active{background:var(--panel)!important;color:#fff!important}
+.admin-view-section .admin-mail-item:hover,.admin-view-section .admin-mail-item.active{background:var(--panel-soft)!important}
+.admin-view-section :is(.admin-users-notice,.admin-review-notice,.admin-grader-legend,.board-note){border-color:color-mix(in srgb,var(--panel) 25%,#dfe6e2)!important;background:var(--panel-soft)!important;color:var(--panel-ink)!important}
+.admin-view-section :is(code,.admin-download-table code,.admin-review-content code){color:var(--panel-ink)!important}
