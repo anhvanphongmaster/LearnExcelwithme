@@ -1,3 +1,45 @@
+/* Home-only robot motion bootstrap.
+   avp-core.js and home-effects.js both contain legacy patrol loops; freeze those
+   before window.load, then hand horizontal motion to home-robot-motion-v4.js. */
+(function(){
+  const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+  if(page!=='index.html') return;
+  if(window.__AVP_HOME_ROBOT_V4_BOOT__) return;
+  window.__AVP_HOME_ROBOT_V4_BOOT__=true;
+
+  let tries=0;
+  function boot(){
+    const root=document.getElementById('avpEdgeLauncher');
+    if(!root){
+      if(++tries<80) setTimeout(boot,40);
+      return;
+    }
+
+    if(!root.__avpNativeAnimate && typeof root.animate==='function'){
+      root.__avpNativeAnimate=root.animate.bind(root);
+    }
+    root.animate=function(){
+      return {cancel(){},play(){},pause(){},reverse(){},finish(){},onfinish:null,oncancel:null,playState:'idle'};
+    };
+    try{root.getAnimations?.().forEach(a=>a.cancel());}catch(_){ }
+    root.classList.remove('is-walking');
+
+    if(document.querySelector('script[data-avp-home-robot-v4]')) return;
+    const script=document.createElement('script');
+    script.src='home-robot-motion-v4.js?v=20260913-v4';
+    script.async=false;
+    script.dataset.avpHomeRobotV4='1';
+    script.onerror=()=>{
+      if(root.__avpNativeAnimate) root.animate=root.__avpNativeAnimate;
+      root.classList.remove('avp-patrol-v4-active');
+      root.classList.add('is-walking');
+      console.warn('[AVP] home robot V4 failed to load; restored legacy patrol.');
+    };
+    document.head.appendChild(script);
+  }
+  boot();
+})();
+
 (function(){
   const KEY='avp_lesson_progress_v1', QUIZKEY='avp_quiz_done_v1';
   const lessons=[
