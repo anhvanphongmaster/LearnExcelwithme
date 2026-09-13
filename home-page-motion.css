@@ -141,21 +141,15 @@
 }
 
 /* ===== HOME CANONICAL FIRST PAINT =====
-   Legacy Home markup is kept only as a no-JS fallback. It is never shown before
-   home-canonical-v1.js establishes the final DOM, so reload has no old→new flash. */
-body:not(.home-canonical-ready) #avpScrollTease,
-body:not(.home-canonical-ready) .home-path-inner > h2,
-body:not(.home-canonical-ready) .home-path-inner > p,
-body:not(.home-canonical-ready) .home-path-grid,
-body:not(.home-canonical-ready) .home-more-race{
+   Only responses explicitly marked by the canonical service worker hide the
+   fallback. This avoids a blank transition while an older worker is retiring. */
+html.avp-home-canonical-boot body:not(.home-canonical-ready) #avpScrollTease,
+html.avp-home-canonical-boot body:not(.home-canonical-ready) .home-path{
   visibility:hidden !important;
   opacity:0 !important;
 }
-body.home-canonical-ready #avpScrollTease,
-body.home-canonical-ready .home-path-inner > h2,
-body.home-canonical-ready .home-path-inner > p,
-body.home-canonical-ready .home-path-grid,
-body.home-canonical-ready .home-more-race{
+html.avp-home-canonical-boot body.home-canonical-ready #avpScrollTease,
+html.avp-home-canonical-boot body.home-canonical-ready .home-path{
   visibility:visible !important;
   opacity:1 !important;
 }
