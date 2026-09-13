@@ -1,3 +1,4 @@
+@import url("practice-route-themes-v1.css?v=20260913-route1");
 /*! avp-site-motion.css — V99 stable desktop lift */
 :root{--avp-motion-ease:cubic-bezier(.22,1,.36,1);--avp-motion-shadow:0 10px 24px rgba(18,73,43,.10)}
 @view-transition{navigation:none}
