@@ -14,8 +14,8 @@
   <link rel="stylesheet" href="global-search.css">
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="practice-roll.css?v=20260913-learning1">
-  <link rel="stylesheet" href="learning-hub-v1.css?v=20260914-daily2">
-  <link rel="stylesheet" href="learning-today-card.css?v=20260914-daily2">
+  <link rel="stylesheet" href="learning-hub-v1.css?v=20260914-daily4">
+  <link rel="stylesheet" href="learning-today-card.css?v=20260914-daily4">
   <link rel="stylesheet" href="learning-entry-theme-v1.css?v=20260913-entry1">
   <link rel="stylesheet" href="avp-ui-system.css?v=20260911-ui-consistency1" data-avp-ui-system>
 </head>
@@ -33,7 +33,6 @@
   </div>
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
-
 <main class="lh-page">
   <header class="lh-hero">
     <div>
@@ -45,21 +44,18 @@
       <span>4 luồng học</span><span>42 bài</span><span>8 module gốc</span>
     </div>
   </header>
-
   <section class="lh-selector" id="learningSelector" aria-label="Chọn luồng học">
     <div class="lh-section-head"><div><span class="lh-kicker">CHỌN LUỒNG</span><h2>Học theo mục tiêu</h2></div><p>Mỗi bài vẫn giữ nguyên nội dung và tiến độ hiện tại.</p></div>
     <div class="lh-flow-grid" id="learningFlowGrid"></div>
-
     <a class="lh-coach-bar is-today" id="lhTodayCard" href="learning-coach.html">
       <span class="lh-coach-mark">Hôm nay</span>
       <span>
-        <strong id="lhTodayTitle">Mỗi ngày một bài riêng của bạn</strong>
-        <small id="lhTodayMeta">Web chọn bài khác mỗi ngày, không lặp lại cho đến khi xong 42 bài.</small>
+        <strong id="lhTodayTitle">Hôm nay: 4 bài mở rộng ngoài 42 bài</strong>
+        <small id="lhTodayMeta">1 cơ bản · 1 trung cấp · 1 nâng cao · 1 case. Câu hỏi và file đi theo gói.</small>
       </span>
-      <span class="lh-coach-cta" id="lhTodayCta">Mở bài hôm nay →</span>
+      <span class="lh-coach-cta" id="lhTodayCta">Mở gói hôm nay →</span>
     </a>
   </section>
-
   <section class="lh-detail" id="learningDetail" hidden aria-label="Danh sách bài trong luồng">
     <button class="lh-back" id="learningBack" type="button">← Tất cả luồng học</button>
     <div class="lh-detail-head">
@@ -75,7 +71,6 @@
     </div>
   </section>
 </main>
-
 <script src="knowledge-data-foundation.js?v=20260909-kv2"></script>
 <script src="knowledge-data-skills.js?v=20260909-kv2"></script>
 <script src="knowledge-data-analysis.js?v=20260909-kv2"></script>
@@ -85,8 +80,12 @@
 <script src="learning-platform-guides-v2.js?v=20260911-platform2"></script>
 <script src="learning-platform-catalog-v1.js?v=20260913-fourflows1"></script>
 <script src="learning-tracks-v1.js?v=20260913-tracks1"></script>
-<script src="learning-coach-core-v1.js?v=20260914-daily2"></script>
-<script defer src="learning-hub-v1.js?v=20260914-daily2"></script>
+<script src="learning-coach-core-v1.js?v=20260914-daily4"></script>
+<script src="daily-expand-data-1.js?v=20260914-daily4"></script>
+<script src="daily-expand-data-2.js?v=20260914-daily4"></script>
+<script src="daily-expand-catalog-v1.js?v=20260914-daily4"></script>
+<script src="daily-expand-ui-v1.js?v=20260914-daily4"></script>
+<script defer src="learning-hub-v1.js?v=20260914-daily4"></script>
 <script defer src="practice-roll.js?v=20260913-learning1"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
