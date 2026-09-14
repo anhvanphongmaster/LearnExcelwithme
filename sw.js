@@ -1,11 +1,9 @@
-const CACHE="learnexcel-assets-v20260914-site3";
+const CACHE="learnexcel-assets-v20260914-fouc4";
 const ASSETS=[
-  "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css","./home-ux-polish-v1.css",
-  "./site-upgrade-v1.css","./home-ui-owner-v1.css","./module-themes-v2.css","./upgrade.css",
+  "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css",
+  "./site-upgrade-v1.css","./home-ui-owner-v1.css","./upgrade.css",
   "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./home-page-motion-core-v108.js","./global-search.js",
-  "./site-upgrade-v1.js","./site-runtime-cache-v1.js","./site-rpc-dedupe-v1.js","./site-auth-cache-v1.js","./site-supabase-read-cache-v1.js","./theme-unified-v32.js","./analytics-tracker.js",
-  "./index.html","./skill-map.html","./knowledge.html","./practice-video.html","./excel-race.html","./learning-coach.html","./tools-center.html","./tools-library.html",
-  "./learning-platform-catalog-v1.js","./learning-coach-v2.css","./learning-coach-v2.js"
+  "./site-upgrade-v1.js","./site-runtime-cache-v1.js","./site-rpc-dedupe-v1.js","./site-auth-cache-v1.js","./site-supabase-read-cache-v1.js","./analytics-tracker.js"
 ];
 
 self.addEventListener("install",event=>{
@@ -27,7 +25,7 @@ self.addEventListener("activate",event=>{
 async function networkFirst(req){
   const cache=await caches.open(CACHE);
   try{
-    const res=await fetch(req,{cache:"no-cache"});
+    const res=await fetch(req,{cache:"no-store"});
     if(res&&res.ok){
       cache.put(req,res.clone()).catch(()=>{});
       return res;
@@ -38,7 +36,7 @@ async function networkFirst(req){
   }catch(_){
     const cached=await cache.match(req);
     if(cached) return cached;
-    if(req.mode==="navigate") return (await cache.match("./index.html"))||Response.error();
+    if(req.mode==="navigate") return Response.error();
     return Response.error();
   }
 }
