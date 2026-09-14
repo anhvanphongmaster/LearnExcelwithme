@@ -8,17 +8,13 @@ window.AVP_SUPABASE_CONFIG = {
   var page=(location.pathname.split('/').pop()||'').toLowerCase();
   var items=[];
 
-  /*
-   * Admin Chat must be available on every normal page.
-   * Use the proven lazy loader on normal pages: it mounts the guest bubble
-   * after Supabase is ready and opens admin-chat-core on click.
-   * admin.html keeps its existing admin chat + push notifications.
-   */
+  /* Admin Chat is a site-wide entry point on every normal page. */
   if(page==='admin.html'){
     items.push(['admin-chat.js?v=20260914-lazy1','avp-admin-chat']);
     items.push(['admin-alerts.js?v=20260914-push2','avp-admin-alerts']);
   }else{
-    items.push(['admin-chat.js?v=20260915-globalfix1','avp-admin-chat']);
+    /* V3 uses a unique loader flag so stale V1/V2 service-worker code cannot suppress it. */
+    items.push(['admin-chat-v3.js?v=20260915-v3','avp-admin-chat-v3']);
   }
 
   items.forEach(function(item){
