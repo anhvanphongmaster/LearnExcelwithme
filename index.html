@@ -1,31 +1,62 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="avp-site-upgrade avp-site-home">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Learn Excel with Anh Van Phong</title>
 <meta name="robots" content="index,follow">
-<style>html,body{margin:0;background:#071810;color:#e8f5ec;font-family:Arial,sans-serif}#avpRestore{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}#avpRestore p{opacity:.8}</style>
+<link rel="stylesheet" href="home-ui-owner-v1.css?v=20260914-owner3" data-avp-home-ui-owner-v1>
+<link rel="stylesheet" href="site-upgrade-v1.css?v=20260914-site1">
+<style>html,body{margin:0;background:#071810;color:#e8f5ec;font-family:Arial,sans-serif}#avpRestore{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}#avpRestore p{opacity:.75;font-size:14px}</style>
+<script>
+(function(){
+  var KEEP='learnexcel-assets-v20260914-fouc4';
+  try{
+    if('caches' in window){
+      caches.keys().then(function(keys){
+        keys.forEach(function(k){ if(k.indexOf('learnexcel-assets-')===0 && k!==KEEP) caches.delete(k); });
+      });
+    }
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.getRegistrations().then(function(regs){
+        regs.forEach(function(r){ try{ r.update(); }catch(e){} });
+      });
+    }
+  }catch(e){}
+})();
+</script>
 </head>
 <body>
-<div id="avpRestore"><p>Đang tải trang chủ…</p></div>
+<div id="avpRestore"><p>Learn Excel with Anh Van Phong</p></div>
 <script>
 (function(){
   var urls=[
     'https://cdn.jsdelivr.net/gh/anhvanphongmaster/LearnExcelwithme@194140a1ccda8a748b7673bee585b3c25228590b/index.html',
     'https://raw.githubusercontent.com/anhvanphongmaster/LearnExcelwithme/194140a1ccda8a748b7673bee585b3c25228590b/index.html'
   ];
+  function patch(html){
+    html=html.replace('<html lang="vi">','<html lang="vi" class="avp-site-upgrade avp-site-home">');
+    html=html.replace('<link href="theme-polish-v33.css" rel="stylesheet"/>','');
+    html=html.replace('<link href="theme-polish-v33.css" rel="stylesheet">','');
+    html=html.replace('<link rel="stylesheet" href="style.css">',
+      '<link rel="stylesheet" href="style.css">\n<link rel="stylesheet" href="home-ui-owner-v1.css?v=20260914-owner3" data-avp-home-ui-owner-v1>\n<link rel="stylesheet" href="site-upgrade-v1.css?v=20260914-site1">');
+    html=html.replace(/home-page-motion\.css\?v=[^"']+/g,'home-page-motion.css?v=20260914-fouc2');
+    html=html.replace(/home-page-motion\.js\?v=[^"']+/g,'home-page-motion.js?v=20260914-fouc2');
+    html=html.replace('avp-ui-system.js?v=20260909-ui2','avp-ui-system.js?v=20260914-ui3');
+    return html;
+  }
   function paint(html){
     document.open();
-    document.write(html);
+    document.write(patch(html));
     document.close();
   }
   function next(i){
     if(i>=urls.length){
-      document.getElementById('avpRestore').innerHTML='<p>Không tải được trang chủ. Thử tải lại.</p>';
+      var el=document.getElementById('avpRestore');
+      if(el) el.innerHTML='<p>Không tải được trang chủ. Thử tải lại.</p>';
       return;
     }
-    fetch(urls[i],{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.text()}).then(paint).catch(function(){next(i+1)});
+    fetch(urls[i],{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.text();}).then(paint).catch(function(){next(i+1);});
   }
   next(0);
 })();
