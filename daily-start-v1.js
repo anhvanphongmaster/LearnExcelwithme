@@ -3,7 +3,7 @@
   const C = window.AVPLearningCoach;
   if (!C) return;
   const KEY = 'avp_coach_daily_start_v1';
-  const GLOBAL = () => (window.AVPDailyExpand && window.AVPDailyExpand.startDate) || '2026-09-14';
+  const GLOBAL = () => (window.AVPDailyExpand && window.AVPDailyExpand.globalStartDate) || (window.AVPDailyExpand && window.AVPDailyExpand.startDate) || '2026-09-14';
 
   function readMap() {
     try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; }
@@ -39,5 +39,15 @@
     writeMap(map);
     return start;
   }
-  window.AVPDailyStart = { getDailyStartDate, isSignedIn, vnDate, KEY };
+  function apply() {
+    const E = window.AVPDailyExpand;
+    if (!E) return getDailyStartDate();
+    if (!E.globalStartDate) E.globalStartDate = E.startDate || '2026-09-14';
+    E.startDate = getDailyStartDate();
+    return E.startDate;
+  }
+  apply();
+  [400, 1200, 2500].forEach(ms => setTimeout(apply, ms));
+  window.addEventListener('storage', apply);
+  window.AVPDailyStart = { getDailyStartDate, isSignedIn, vnDate, apply, KEY };
 })();
