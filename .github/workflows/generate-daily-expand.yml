@@ -1,10 +1,11 @@
-name: Generate daily expand workbooks
+name: Generate daily lesson workbooks
 
 on:
   workflow_dispatch:
   push:
     paths:
       - '.github/workflows/generate-daily-expand.yml'
+      - 'scripts/build_daily_xlsx.py'
 
 permissions:
   contents: write
@@ -17,178 +18,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Build unique workbooks
+      - name: Build workbooks from catalog data
         run: |
           pip install openpyxl
-          python - <<'PY'
-          from datetime import date, timedelta
-          from pathlib import Path
-          from openpyxl import Workbook
-          from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-          from openpyxl.utils import get_column_letter
-          OUT=Path('downloads'); OUT.mkdir(exist_ok=True)
-          G,G2,Y,L,INK='217346','1F5536','FFF3CD','C5D0DE','1A1A1A'
-          thin=Border(*(Side(style='thin',color=L) for _ in range(4)))
-          fa=lambda **k: Font(name='Arial',**k)
-          fl=lambda h: PatternFill('solid',fgColor=h)
-          def bar(ws,t,s,n=7):
-              ws.merge_cells(start_row=1,start_column=1,end_row=1,end_column=n)
-              ws.merge_cells(start_row=2,start_column=1,end_row=2,end_column=n)
-              a,b=ws.cell(1,1,t),ws.cell(2,1,s)
-              a.font,b.font=fa(size=16,color='FFFFFF',bold=True),fa(size=10,color='FFFFFF')
-              a.fill,b.fill=fl(G),fl(G2)
-              for c in range(1,n+1):
-                  ws.cell(1,c).fill=fl(G); ws.cell(2,c).fill=fl(G2)
-              ws.row_dimensions[1].height=24; ws.row_dimensions[2].height=18
-          def heads(ws,r,hs):
-              for i,h in enumerate(hs,1):
-                  c=ws.cell(r,i,h); c.font=fa(size=11,color='FFFFFF',bold=True); c.fill=fl(G); c.border=thin
-          def yell(ws,r,c,v=''):
-              x=ws.cell(r,c,v); x.fill=fl(Y); x.border=thin; x.font=fa(size=11,color='0000FF'); return x
-          def put(ws,r,c,v):
-              x=ws.cell(r,c,v); x.font=fa(size=11,color=INK); x.border=thin; return x
-          def wset(ws,ws_):
-              for i,w in enumerate(ws_,1):
-                  ws.column_dimensions[get_column_letter(i)].width=w
-          PACKS={
-          'daily-co-ban.xlsx':('Co ban',[('db01',8,'Co dinh hang tieu de','Chon o duoi tieu de roi Freeze.','Ghi o da chon.'),
-          ('db02',8,'Vung in mot trang','Set Print Area dung bang.','Ghi vung in.'),
-          ('db03',8,'Paste Special Values','Dan gia tri sang cot Moc.','F2 cot Moc khong con =.'),
-          ('db04',8,'Flash Fill ho ten','Ctrl+E tach Ho/Ten.','Dien 2 cot vang.'),
-          ('db05',8,'Fill Weekdays','Keo fill handle 20 ngay.','20 ngay lam viec.'),
-          ('db06',8,'Custom format trieu','Format #,##0," trieu".','SUM DoanhThu.'),
-          ('db07',8,'Go To Special blank','F5 Special Blanks.','Dem blank (=4).'),
-          ('db08',8,'Status bar SUM','Boi SoLuong, doc status bar.','Ghi so SUM.'),
-          ('db09',8,'An cot phu','Hide cot DonGia, khong xoa.','Ghi DA AN.'),
-          ('db10',8,'Named range ThueSuat','Name Box dat ThueSuat.','Gia*(1+ThueSuat).'),
-          ('db11',8,'Wrap thay Merge','Unmerge + Wrap Text.','Ghi DA BO MERGE.'),
-          ('db12',8,'Note o tong','New Note nguon + ngay cat.','Ghi noi dung Note.'),
-          ('db13',8,'Hyperlink noi bo','Link toi 00_HuongDan!A1.','Tao link o vang.'),
-          ('db14',8,'Split cua so','View Split de thay A va KPI.','Ghi DA SPLIT.'),
-          ('db15',8,'Linked Picture','Dan anh KPI xuong bia.','Ghi DA DAN.'),
-          ('db16',8,'Quick Analysis','Data Bars cot SoLuong.','Ghi DA BAT.')]),
-          'daily-trung-cap.xlsx':('Trung cap',[('di01',12,'INDEX MATCH','Lay DonGia theo MaSP.','Dien cot vang.'),
-          ('di02',12,'COUNTIF HN-*','Dem ma bat dau HN-.','Ghi so dem.'),
-          ('di03',12,'TEXTJOIN','Ghep loi, bo trong.','Dien GhiChu.'),
-          ('di04',12,'CF ca dong NG','Cong thuc =$G14="NG".','Ghi cong thuc CF.'),
-          ('di05',12,'Dropdown danh muc','Data Validation List.','Chon lai 3 dong.'),
-          ('di06',12,'UNIQUE giu nguon','Khong Remove Duplicates.','Liet ke unique.'),
-          ('di07',12,'Sort 3 muc','CuaHang -> Ngay -> MaDon.','Ghi DA SORT.'),
-          ('di08',12,'SUBTOTAL Filter','SUBTOTAL(9) khac SUM.','Viet SUBTOTAL.'),
-          ('di09',12,'Goal Seek','Lai=0 doi san luong.','Ghi 50.'),
-          ('di10',12,'Protect sheet','Unlock input, khoa cong thuc.','Ghi DA KHOA.'),
-          ('di11',12,'Group quy','Group 3 thang.','Ghi DA GROUP.'),
-          ('di12',12,'Advanced Filter','Copy HCM01+NG.','Dan KetQua.'),
-          ('di13',12,'Evaluate #N/A','Xem buoc gay.','Ghi buoc gay.'),
-          ('di14',12,'Go circular','HH=DT*10%, tach o.','Viet cong thuc dung.'),
-          ('di15',12,'Table cot tinh','[@SoLuong]*[@DonGia].','Ghi structured ref.'),
-          ('di16',12,'EOMONTH','=EOMONTH(Ngay,0).','Dien CuoiThang.')]),
-          'daily-nang-cao.xlsx':('Nang cao',[('da01',15,'LET','Hoa hong bang LET.','Viet LET.'),
-          ('da02',15,'LAMBDA','Name Manager 1 cho sua.','Goi ham.'),
-          ('da03',15,'FILTER UNIQUE','Cua hang OK khong trung.','Spill o vang.'),
-          ('da04',15,'XLOOKUP 2 cot','Ten + gia mot lan.','Spill 2 o.'),
-          ('da05',15,'SUMPRODUCT','DT HN01 thang 9.','Ghi so.'),
-          ('da06',15,'Unpivot','Thang cot -> dong.','Phac 4 dong.'),
-          ('da07',15,'PQ Custom Col','Date.EndOfMonth([Ngay]).','Ghi cong thuc M.'),
-          ('da08',15,'Pivot Field','HoaHong=DT*0.03.','Ghi field.'),
-          ('da09',15,'Watch Window','Add Watch o tong.','Ghi DA WATCH.'),
-          ('da10',15,'Solver 2 bien','Gio may <=40.','Ghi SL va lai.'),
-          ('da11',15,'ScreenUpdating','Bat lai trong CleanFail.','Ghi dong True.'),
-          ('da12',15,'Ten Table','SUM(DoanhThu) theo Table.','Viet SUM ten.'),
-          ('da13',15,'MAP TRIM','Lam sach khoang trang.','Dien cot sach.'),
-          ('da14',15,'Quan he 2 bang','Don[MaSP]->SP[MaSP].','Ghi cap khoa.'),
-          ('da15',15,'On Error','MsgBox tieng Viet.','Viet cau thong bao.'),
-          ('da16',15,'Folder PQ loc','Chi POS_2026-09.','Ghi dieu kien.')]),
-          'daily-case.xlsx':('Case',[('dc01',20,'Chot DT tuan','Khoa 07-13/09, unique don.','2 so: DT va so don.'),
-          ('dc02',20,'Doi chieu cong no','Hoa don vs thanh toan.','MaHD con thieu.'),
-          ('dc03',20,'Lech ton kho','So - kiem ke.','5 ma lech lon.'),
-          ('dc04',20,'Luong phong KD','Gio x don gia + PC - BH.','Quy KD.'),
-          ('dc05',20,'ROI 3 kenh','(DT gan - chi)/chi.','ROI 3 kenh.'),
-          ('dc06',20,'Headcount 31/08','Vao <= cuoi ky.','HC theo phong.'),
-          ('dc07',20,'Ty le loi','Cong mau so, dung TB %.','% nha may.'),
-          ('dc08',20,'Dong tien 4 tuan','Du cuoi keo tuan sau.','DuDau/DuCuoi.'),
-          ('dc09',20,'Gia hieu luc','Ngay don trong Tu-Den.','Gia moi don.'),
-          ('dc10',20,'Xep hang T9','RANK tong thang 9.','Hang 5 CH.'),
-          ('dc11',20,'Bia 3 so','DT, don, %NG + refresh.','Dien bia.'),
-          ('dc12',20,'Diem vendor','Trong so o tham so.','Diem + loai.')]),
-          }
-          def sales(n=10,blank=(),seed=0):
-              st=['HN01','HN02','HCM01','DN01']; rows=[]
-              for i in range(n):
-                  q,p=5+i%9,150000+(i%4)*80000
-                  ma='' if i in blank else f'DH{5400+seed+i}'
-                  rows.append([ma,date(2026,9,1)+timedelta(days=i%20),st[i%4],q,p,q*p,'NG' if i%6==0 else 'OK'])
-              return rows
-          def fill_common(ws,code):
-              rows=sales(12 if code!='db01' else 36, blank={2,5,9,14} if code=='db07' else (), seed=abs(hash(code))%80)
-              heads(ws,13,['MaDon','Ngay','CuaHang','SoLuong','DonGia','DoanhThu','TrangThai'])
-              for i,row in enumerate(rows):
-                  for c,v in enumerate(row,1):
-                      x=put(ws,14+i,c,v)
-                      if c==2: x.number_format='DD/MM/YYYY'
-                      if c in (5,6): x.number_format='#,##0'
-              put(ws,14+len(rows)+2,1,'Ket qua / tich xong'); yell(ws,14+len(rows)+2,2)
-              return rows
-          for fname,(level,lessons) in PACKS.items():
-              wb=Workbook(); hd=wb.active; hd.title='00_HuongDan'
-              bar(hd,f'Goi bai mo rong moi ngay — {level}','Khong nam trong 42 bai chinh · Chi mo dung sheet web chi hom nay',6)
-              wset(hd,[12,36,8,40,36,16])
-              hd['A4']='Cach dung'; hd['A4'].font=fa(size=12,color=G,bold=True)
-              hd['A5']='1. Web Hoc hom nay giao 1 bai/cap/ngay. Mo dung ma sheet.'
-              hd['A6']='2. O vang = lam bai. Khong sua cot nguon tru khi de bai yeu cau.'
-              hd['A7']='3. PASS khi xong khoi Viec can lam. Font Arial + xanh #217346.'
-              heads(hd,9,['Sheet','Bai','Phut','Cach lam','Viec tren file'])
-              for i,(code,mins,title,how,task) in enumerate(lessons):
-                  r=10+i
-                  c=put(hd,r,1,code); c.hyperlink=f'#{code}!A1'; c.font=fa(size=11,color='0563C1',underline='single',bold=True)
-                  put(hd,r,2,title); put(hd,r,3,mins); put(hd,r,4,how); put(hd,r,5,task)
-              hd.freeze_panes='A10'; hd.sheet_properties.tabColor=G
-              for code,mins,title,how,task in lessons:
-                  ws=wb.create_sheet(code)
-                  bar(ws,f'{code}  ·  {title}',f'{mins} phut  ·  {how}')
-                  wset(ws,[16,16,14,12,14,14,16,24])
-                  ws['A4']='Cach lam'; ws['A4'].font=fa(size=12,color=G,bold=True)
-                  ws.merge_cells('A5:G5'); ws['A5']=how
-                  ws['A7']='Viec can lam'; ws['A7'].font=fa(size=12,color=G,bold=True)
-                  ws.merge_cells('A8:G8'); ws['A8']=task; ws['A8'].fill=fl(Y); ws['A8'].font=fa(size=11,bold=True)
-                  ws['A9']='O vang = lam bai.'; ws.sheet_properties.tabColor=G; ws.freeze_panes='A13'
-                  if code=='db04':
-                      heads(ws,13,['HoTen','Ho','Ten'])
-                      for i,n in enumerate(['Nguyen Van An','Tran Thi Binh','Le Minh Chau','Pham Quoc Dung','Hoang Thi Em','Vu Anh Phong']):
-                          put(ws,14+i,1,n); yell(ws,14+i,2); yell(ws,14+i,3)
-                  elif code=='db03':
-                      heads(ws,13,['MaDon','SL','Gia','ThanhTien','Moc'])
-                      for i,row in enumerate(sales(8,seed=3)):
-                          put(ws,14+i,1,row[0]); put(ws,14+i,2,row[3]); put(ws,14+i,3,row[4]); put(ws,14+i,4,f'=B{14+i}*C{14+i}'); yell(ws,14+i,5)
-                  elif code=='dc02':
-                      heads(ws,13,['MaHD','PhaiThu']); heads(ws,13,['MaHD','DaThu'][:0])
-                      for i,(m,v) in enumerate([('HD01',12000000),('HD02',5500000),('HD03',8200000),('HD04',3000000),('HD05',6700000)]):
-                          put(ws,14+i,1,m); put(ws,14+i,2,v)
-                      put(ws,13,4,'MaHD'); put(ws,13,5,'DaThu'); ws['D13'].fill=fl(G); ws['E13'].fill=fl(G); ws['D13'].font=fa(color='FFFFFF',bold=True); ws['E13'].font=fa(color='FFFFFF',bold=True)
-                      for i,(m,v) in enumerate([('HD01',12000000),('HD02',2000000),('HD04',3000000),('HD05',1000000)]):
-                          put(ws,14+i,4,m); put(ws,14+i,5,v)
-                      put(ws,21,1,'MaHD thieu'); yell(ws,22,1); yell(ws,22,2); yell(ws,23,1); yell(ws,23,2)
-                  elif code=='dc03':
-                      heads(ws,13,['MaSP','SoSach','KiemKe','Lech'])
-                      for i,row in enumerate([('EX-BASIC',120,118),('PQ-KIT',18,25),('DASH-PACK',9,6),('VBA-LAB',30,21),('TIP-01',50,47)]):
-                          put(ws,14+i,1,row[0]); put(ws,14+i,2,row[1]); put(ws,14+i,3,row[2]); yell(ws,14+i,4)
-                  elif code=='di01':
-                      heads(ws,13,['MaSP','Ten','Gia'])
-                      for i,row in enumerate([('EX-BASIC','Excel Basic',150000),('EX-PRO','Excel Pro',280000),('PQ-KIT','PQ Kit',420000)]):
-                          put(ws,14+i,1,row[0]); put(ws,14+i,2,row[1]); put(ws,14+i,3,row[2])
-                      heads(ws,18,['MaDon','MaSP','SL','DonGia'])
-                      for i,row in enumerate([('DH01','EX-PRO',3),('DH02','PQ-KIT',2),('DH03','EX-BASIC',5)]):
-                          put(ws,19+i,1,row[0]); put(ws,19+i,2,row[1]); put(ws,19+i,3,row[2]); yell(ws,19+i,4)
-                  else:
-                      fill_common(ws,code)
-                  ws.sheet_view.showGridLines=False
-              wb.active=0; wb.save(OUT/fname); print('wrote',fname)
-          PY
-      - name: Commit
+          python scripts/build_daily_xlsx.py
+      - name: Commit files
         run: |
           git config user.name anhvanphong
           git config user.email anhvanphongmaster@gmail.com
-          git add downloads/daily-co-ban.xlsx downloads/daily-trung-cap.xlsx downloads/daily-nang-cao.xlsx downloads/daily-case.xlsx
+          mkdir -p downloads/daily
+          git add downloads/daily/*.xlsx || true
           git diff --cached --quiet && echo none && exit 0
-          git commit -m "Rebuild daily workbooks: unique sheets + HuongDan"
+          git commit -m "Sinh file thuc hanh tung bai Hoc hom nay"
           git push
