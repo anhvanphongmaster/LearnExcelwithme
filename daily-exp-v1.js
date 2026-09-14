@@ -3,15 +3,12 @@
   const C = window.AVPLearningCoach;
   if (!C) return;
   const KEY = 'avp_coach_exp_v2';
-  const RULES = { lesson: 10, quizCorrect: 5, quizWrong: 1, selfPer10: 1 };
-  const esc = v => String(v ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const RULES = { lesson: 10, quizCorrect: 5, quizWrong: 0, selfPer10: 1 };
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, ch => ({'&':'&','<':'<','>':'>','"':'"',"'":'&#39;'}[ch]));
   function vnDate() {
     if (window.AVPDailyStart && window.AVPDailyStart.vnDate) return window.AVPDailyStart.vnDate();
-    try {
-      return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
-    } catch (_) {
-      return C.localDate ? C.localDate() : new Date().toISOString().slice(0, 10);
-    }
+    try { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()); }
+    catch (_) { return C.localDate ? C.localDate() : new Date().toISOString().slice(0, 10); }
   }
   function load() {
     try { return JSON.parse(localStorage.getItem(KEY) || 'null') || { total: 0, days: {} }; }
@@ -31,20 +28,20 @@
     Object.keys(state.days).forEach(d => {
       const row = state.days[d];
       const lessonSum = Object.values(row.lessons || {}).reduce((a, b) => a + Number(b || 0), 0);
-      row.total = Math.max(0, lessonSum + Number(row.quiz || 0) - Number(row.penalty || 0));
+      row.total = Math.max(0, lessonSum + Number(row.quiz || 0));
       sum += row.total;
     });
     state.total = sum;
     return state;
   }
-  function awardLesson(id) {
+  function awardLesson(id, ok) {
     const date = vnDate();
     const state = load();
     const row = dayRec(state, date);
-    if (row.lessons[id]) return { added: 0, total: state.total, today: row.total };
-    row.lessons[id] = RULES.lesson;
+    if (Object.prototype.hasOwnProperty.call(row.lessons, id)) return { added: 0, total: state.total, today: row.total, locked: true };
+    row.lessons[id] = ok ? RULES.lesson : 0;
     recount(state); save(state);
-    return { added: RULES.lesson, total: state.total, today: row.total };
+    return { added: ok ? RULES.lesson : 0, total: state.total, today: row.total, locked: false };
   }
   function settleQuiz(date) {
     const state = load();
@@ -53,10 +50,8 @@
     const daily = (C.getDaily() || {})[date] || {};
     const answers = Array.isArray(daily.quizAnswers) ? daily.quizAnswers : [];
     if (!daily.quizLocked && answers.length < 8) return row;
-    const correct = answers.filter(x => x && x.ok).length;
-    const wrong = answers.filter(x => x && x.ok === false).length;
-    row.quiz = correct * RULES.quizCorrect;
-    row.penalty = wrong * RULES.quizWrong;
+    row.quiz = answers.filter(x => x && x.ok).length * RULES.quizCorrect;
+    row.penalty = 0;
     row.quizSettled = true;
     recount(state); save(state);
     return row;
@@ -64,59 +59,87 @@
   function snapshot() {
     const state = load();
     const date = vnDate();
-    const row = state.days[date] || { lessons: {}, quiz: 0, penalty: 0, total: 0 };
-    const lessonN = Object.keys(row.lessons || {}).length;
-    return { total: state.total || 0, today: row.total || 0, lessonN, lessonPts: lessonN * RULES.lesson, quiz: row.quiz || 0, penalty: row.penalty || 0 };
+    const row = state.days[date] || { lessons: {}, quiz: 0, total: 0 };
+    const pts = Object.values(row.lessons || {}).reduce((a, b) => a + Number(b || 0), 0);
+    return { total: state.total || 0, today: row.total || 0, lessonPts: pts, quiz: row.quiz || 0 };
   }
-  function confirmOf(id) { return (window.AVPDailyConfirm || {})[id] || null; }
-  function closeGate() { document.getElementById('dxExpGate')?.remove(); }
-  function openGate(id, btn) {
+  function todayMaps() {
+    const daily = (C.getDaily() || {})[vnDate()] || {};
+    return { done: daily.itemDone || {}, tried: daily.itemTried || {} };
+  }
+  function markTried(id, ok) {
+    const date = vnDate();
+    const daily = C.getDaily()[date] || {};
+    const tried = Object.assign({}, daily.itemTried || {}, { [id]: true });
+    const done = Object.assign({}, daily.itemDone || {});
+    if (ok) done[id] = true;
+    C.markDaily(date, { itemTried: tried, itemDone: done });
+  }
+  function closeGate() {
+    document.getElementById('dxExpModal')?.remove();
+    document.body.classList.remove('dx-modal-open');
+  }
+  function openGate(id) {
+    const maps = todayMaps();
+    if (maps.tried[id] || maps.done[id]) return;
     closeGate();
-    const q = confirmOf(id);
-    const card = btn.closest('article') || btn.parentElement;
-    const box = document.createElement('div');
-    box.id = 'dxExpGate';
-    box.className = 'lc-quiz';
-    box.style.marginTop = '10px';
+    const q = (window.AVPDailyConfirm || {})[id];
+    const lesson = (window.AVPDailyExpand && window.AVPDailyExpand.byId && window.AVPDailyExpand.byId[id]) || {};
+    const wrap = document.createElement('div');
+    wrap.id = 'dxExpModal';
+    wrap.className = 'dx-modal-back';
+    wrap.setAttribute('role', 'dialog');
+    wrap.setAttribute('aria-modal', 'true');
     if (!q) {
-      box.innerHTML = '<div class="lc-feedback bad">Chưa có câu xác nhận cho bài này.</div>';
-      card.appendChild(box);
+      wrap.innerHTML = '<div class="dx-modal"><div class="dx-modal-head">Chưa có câu xác nhận</div><div class="dx-modal-body"><button type="button" class="lc-btn solid" data-dx-back>Quay lại 5 bài</button></div></div>';
+      document.body.appendChild(wrap);
+      wrap.querySelector('[data-dx-back]').onclick = closeGate;
       return;
     }
-    const lesson = (window.AVPDailyExpand && window.AVPDailyExpand.byId && window.AVPDailyExpand.byId[id]) || {};
-    box.innerHTML = '<div class="lc-quiz-meta"><span>Xác nhận đã làm</span><span>Đúng thì nhận ' + RULES.lesson + ' điểm</span></div>' +
-      '<h3>' + esc(q.q) + '</h3>' +
-      '<p style="margin:0 0 8px;color:inherit;opacity:.85">Câu này bám đúng bài «' + esc(lesson.title || id) + '». Trả lời sai có thể chọn lại.</p>' +
-      '<div class="lc-options">' + q.o.map((x, idx) => '<button class="lc-option" data-exp-qi="' + idx + '" type="button">' + String.fromCharCode(65 + idx) + '. ' + esc(x) + '</button>').join('') +
-      '</div><div id="dxExpFb"></div>';
-    card.appendChild(box);
-    box.querySelectorAll('[data-exp-qi]').forEach(b => b.addEventListener('click', () => {
-      const sel = Number(b.dataset.expQi);
+    wrap.innerHTML = '<div class="dx-modal"><div class="dx-modal-head"><span>Xác nhận đã làm</span><b>' + esc(lesson.title || id) + '</b></div><div class="dx-modal-body"><h3>' + esc(q.q) + '</h3><p class="dx-modal-hint">Chọn một đáp án rồi bấm Xác nhận. Chỉ được chọn một lần.</p><div class="lc-options">' + q.o.map((x, idx) => '<button class="lc-option" data-exp-qi="' + idx + '" type="button">' + String.fromCharCode(65 + idx) + '. ' + esc(x) + '</button>').join('') + '</div><div class="dx-modal-actions"><button type="button" class="lc-btn solid" id="dxExpOk" disabled>Xác nhận</button></div><div id="dxExpFb"></div></div></div>';
+    document.body.appendChild(wrap);
+    document.body.classList.add('dx-modal-open');
+    let sel = null;
+    wrap.querySelectorAll('[data-exp-qi]').forEach(b => b.addEventListener('click', () => {
+      if (wrap.dataset.locked) return;
+      sel = Number(b.dataset.expQi);
+      wrap.querySelectorAll('[data-exp-qi]').forEach(x => x.classList.toggle('is-pick', x === b));
+      const okBtn = document.getElementById('dxExpOk');
+      if (okBtn) okBtn.disabled = false;
+    }));
+    document.getElementById('dxExpOk').addEventListener('click', () => {
+      if (sel == null || wrap.dataset.locked) return;
+      wrap.dataset.locked = '1';
       const ok = sel === q.a;
-      box.querySelectorAll('[data-exp-qi]').forEach((x, idx) => {
+      wrap.querySelectorAll('[data-exp-qi]').forEach((x, idx) => {
+        x.disabled = true;
         x.classList.toggle('good', idx === q.a);
         x.classList.toggle('bad', idx === sel && !ok);
       });
-      const fb = box.querySelector('#dxExpFb');
-      if (!ok) {
-        if (fb) fb.innerHTML = '<div class="lc-feedback bad"><strong>Chưa đúng.</strong> ' + esc(q.e) + ' Chọn lại để hoàn thành bài.</div>';
-        return;
-      }
-      box.querySelectorAll('[data-exp-qi]').forEach(x => { x.disabled = true; });
-      const date = vnDate();
-      const map = Object.assign({}, ((C.getDaily()[date] || {}).itemDone || {}));
-      map[id] = true;
-      C.markDaily(date, { itemDone: map });
-      const got = awardLesson(id);
-      if (fb) fb.innerHTML = '<div class="lc-feedback good"><strong>Đã hoàn thành bài.</strong> ' + esc(q.e) + ' Nhận ' + got.added + ' điểm. Hôm nay ' + got.today + ' · Tổng ' + got.total + '.</div>';
-      btn.disabled = true;
-      btn.textContent = 'Đã xong';
-      paintHud();
-      setTimeout(() => {
+      markTried(id, ok);
+      const got = awardLesson(id, ok);
+      const fb = document.getElementById('dxExpFb');
+      const review = q.e || 'Xem lại hướng dẫn và sheet LamBai của bài này.';
+      fb.innerHTML = ok
+        ? '<div class="lc-feedback good"><strong>Đúng.</strong> ' + esc(review) + ' Nhận ' + got.added + ' điểm.</div>'
+        : '<div class="lc-feedback bad"><strong>Chưa đúng · 0 điểm.</strong> Cần kiểm tra lại: ' + esc(review) + '</div>';
+      const actions = wrap.querySelector('.dx-modal-actions');
+      actions.innerHTML = '<button type="button" class="lc-btn solid" data-dx-back>Quay lại 5 bài</button>';
+      actions.querySelector('[data-dx-back]').addEventListener('click', () => {
         closeGate();
         if (window.AVPDailyExpandUI && window.AVPDailyExpandUI.renderToday) window.AVPDailyExpandUI.renderToday();
-      }, 900);
-    }));
+        lockButtons(); paintHud();
+      });
+    });
+    wrap.addEventListener('click', ev => { if (ev.target === wrap && !wrap.dataset.locked) closeGate(); });
+  }
+  function lockButtons() {
+    const maps = todayMaps();
+    document.querySelectorAll('[data-dx-done]').forEach(btn => {
+      const id = btn.dataset.dxDone;
+      if (maps.done[id]) { btn.disabled = true; btn.textContent = 'Đã xong'; }
+      else if (maps.tried[id]) { btn.disabled = true; btn.textContent = 'Đã xác nhận'; }
+    });
   }
   function paintHud() {
     const host = document.getElementById('todayHost');
@@ -126,11 +149,11 @@
     if (!hud) {
       hud = document.createElement('p');
       hud.id = 'dxExpHud';
-      hud.style.margin = '8px 0 0';
       const hero = host.querySelector('.dx-hero-body div') || host.querySelector('.dx-hero') || host;
       hero.appendChild(hud);
     }
-    hud.textContent = 'Hôm nay ' + snap.today + ' điểm (bài ' + snap.lessonPts + ' · hỏi nhanh ' + snap.quiz + (snap.penalty ? ' · trừ ' + snap.penalty : '') + '). Tổng ' + snap.total + '. Hoàn thành bài hoặc trả lời đúng để nhận điểm.';
+    hud.textContent = 'Hôm nay ' + snap.today + ' điểm (bài ' + snap.lessonPts + ' · hỏi nhanh ' + snap.quiz + '). Tổng ' + snap.total + '. Đúng mới được điểm, sai = 0.';
+    lockButtons();
   }
   function bind() {
     document.addEventListener('click', ev => {
@@ -138,16 +161,18 @@
       if (!btn || btn.disabled) return;
       ev.preventDefault();
       ev.stopImmediatePropagation();
-      openGate(btn.dataset.dxDone, btn);
+      const maps = todayMaps();
+      if (maps.tried[btn.dataset.dxDone] || maps.done[btn.dataset.dxDone]) return;
+      openGate(btn.dataset.dxDone);
     }, true);
-    const watchQuiz = () => {
+    const tick = () => {
       const date = vnDate();
       const daily = (C.getDaily() || {})[date] || {};
       if (daily.quizLocked) settleQuiz(date);
       paintHud();
     };
-    [600, 1600, 3200].forEach(ms => setTimeout(watchQuiz, ms));
-    setInterval(watchQuiz, 2500);
+    [400, 1200, 2400].forEach(ms => setTimeout(tick, ms));
+    setInterval(tick, 2500);
     window.addEventListener('avp:exp-changed', paintHud);
   }
   window.AVPDailyExp = { RULES, awardLesson, settleQuiz, snapshot, paintHud };
