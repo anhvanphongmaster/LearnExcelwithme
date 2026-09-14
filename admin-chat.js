@@ -3,6 +3,16 @@
   'use strict';
   if(window.__AVP_CHAT_LOADER_V1__)return;
   window.__AVP_CHAT_LOADER_V1__=1;
+
+  // Chat CSS must not depend on the Supabase auth module.
+  if(!document.querySelector('link[data-avp-admin-chat-css]')){
+    var css=document.createElement('link');
+    css.rel='stylesheet';
+    css.href='admin-chat.css?v=20260915-chatcss2';
+    css.dataset.avpAdminChatCss='1';
+    document.head.appendChild(css);
+  }
+
   var loading=false,loaded=false,openAfterLoad=false;
   var page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
 
@@ -53,8 +63,6 @@
     if(page==='admin.html'){loadCore(false);return;}
 
     // The entry point must not depend on Supabase/auth/module loading.
-    // Render it first; authentication is only needed to decide whether the
-    // heavy core should be preloaded for a signed-in user.
     mountGuestLite();
 
     var c=await waitClient();
