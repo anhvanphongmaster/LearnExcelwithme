@@ -1,0 +1,67 @@
+name: Generate daily expand workbooks
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/generate-daily-expand.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build 4 daily workbooks
+        run: |
+          pip install openpyxl
+          python - <<'PY'
+          from pathlib import Path
+          from openpyxl import Workbook
+          from openpyxl.styles import Font, PatternFill, Border, Side
+          OUT=Path('downloads'); OUT.mkdir(exist_ok=True)
+          NAVY,LINE='1E3A5F','C5D0DE'
+          thin=Border(left=Side(style='thin',color=LINE),right=Side(style='thin',color=LINE),top=Side(style='thin',color=LINE),bottom=Side(style='thin',color=LINE))
+          packs={
+            'daily-co-ban.xlsx':[('db01','Freeze'),('db02','PrintArea'),('db03','PasteSpecial'),('db04','FlashFill'),('db05','FillSeries'),('db06','CustomFormat'),('db07','GoToSpecial'),('db08','StatusBar'),('db09','HideGroup'),('db10','NamedRange'),('db11','Wrap'),('db12','Notes'),('db13','Hyperlink'),('db14','Split'),('db15','Camera'),('db16','QuickAnalysis')],
+            'daily-trung-cap.xlsx':[('di01','IndexMatch'),('di02','Wildcard'),('di03','TextJoin'),('di04','CFFormula'),('di05','DVList'),('di06','Unique'),('di07','CustomSort'),('di08','Subtotal'),('di09','GoalSeek'),('di10','Protect'),('di11','Group'),('di12','AdvFilter'),('di13','Evaluate'),('di14','Circular'),('di15','TableCalc'),('di16','EOMonth')],
+            'daily-nang-cao.xlsx':[('da01','LET'),('da02','LAMBDA'),('da03','FilterUnique'),('da04','XLookupArr'),('da05','SumProduct'),('da06','Unpivot'),('da07','PQCol'),('da08','PivotField'),('da09','Watch'),('da10','Solver'),('da11','ScreenUpd'),('da12','DynName'),('da13','MAP'),('da14','Model'),('da15','OnError'),('da16','FolderPQ')],
+            'daily-case.xlsx':[('dc01','WeekClose'),('dc02','ARMatch'),('dc03','StockGap'),('dc04','Payroll'),('dc05','ROI'),('dc06','Headcount'),('dc07','Defect'),('dc08','Cash13'),('dc09','Price'),('dc10','Rank'),('dc11','MonthPack'),('dc12','Vendor')],
+          }
+          stores=['HN01','HN02','HCM01','DN01']
+          def fill_src(ws):
+              headers=['MaDon','Ngay','CuaHang','SoLuong','DonGia','DoanhThu','TrangThai']
+              for c,h in enumerate(headers,1):
+                  cell=ws.cell(4,c,h); cell.font=Font(bold=True,color='FFFFFF',name='Arial'); cell.fill=PatternFill('solid',fgColor=NAVY); cell.border=thin
+              for i in range(16):
+                  q=5+i%9; p=150000+(i%4)*80000
+                  vals=[f'DH{5001+i}', f'2026-09-{(i%28)+1:02d}', stores[i%4], q, p, q*p, 'NG' if i%6==0 else 'OK']
+                  for c,v in enumerate(vals,1):
+                      ws.cell(5+i,c,v).border=thin
+          for fname,sheets in packs.items():
+              wb=Workbook(); hd=wb.active; hd.title='00_HuongDan'
+              hd['A1']='Goi bai mo rong hang ngay — khong nam trong 42 bai'
+              hd['A1'].font=Font(name='Arial',bold=True,size=16,color='FFFFFF'); hd['A1'].fill=PatternFill('solid',fgColor=NAVY)
+              hd['A2']='Mo dung sheet ma bai hom nay chi. O vang = lam bai.'
+              for code,title in sheets:
+                  ws=wb.create_sheet(code)
+                  ws['A1']=f'{code} — {title}'; ws['A1'].font=Font(name='Arial',bold=True,size=14,color='FFFFFF'); ws['A1'].fill=PatternFill('solid',fgColor=NAVY)
+                  ws['A2']='Lam dung viec ghi tren web. PASS khi xong muc o vang.'
+                  fill_src(ws)
+                  ws['A22']='LamBai'; ws['B22']=''; ws['B22'].fill=PatternFill('solid',fgColor='FFF3CD')
+                  ws['A23']='Viet ket qua / tich xong tai day'
+              wb.save(OUT/fname); print('wrote',fname)
+          PY
+      - name: Commit
+        run: |
+          git config user.name anhvanphong
+          git config user.email anhvanphongmaster@gmail.com
+          git add downloads/daily-co-ban.xlsx downloads/daily-trung-cap.xlsx downloads/daily-nang-cao.xlsx downloads/daily-case.xlsx
+          git diff --cached --quiet && echo none && exit 0
+          git commit -m "Add 4 daily-expand practice workbooks"
+          git push
