@@ -5,8 +5,6 @@ on:
   push:
     paths:
       - '.github/workflows/generate-daily-expand.yml'
-      - 'scripts/daily-b64/**'
-      - 'scripts/decode_daily_b64.py'
 
 permissions:
   contents: write
@@ -19,13 +17,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Decode 4 daily workbooks
-        run: python scripts/decode_daily_b64.py
-      - name: Commit workbooks
+      - name: Build unique daily workbooks
+        run: |
+          pip install openpyxl
+          python scripts/gen_daily.py
+      - name: Commit
         run: |
           git config user.name anhvanphong
           git config user.email anhvanphongmaster@gmail.com
           git add downloads/daily-co-ban.xlsx downloads/daily-trung-cap.xlsx downloads/daily-nang-cao.xlsx downloads/daily-case.xlsx
           git diff --cached --quiet && echo none && exit 0
-          git commit -m "Rebuild 4 daily-expand workbooks (unique sheets, real guide)"
+          git commit -m "Rebuild daily-expand workbooks: unique sheets + HuongDan"
           git push
