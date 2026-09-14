@@ -15,6 +15,10 @@ window.AVP_SUPABASE_CONFIG = {
     ['site-runtime-cache-v1.js?v=20260914-cache2','avp-site-cache-v1'],
     ['admin-chat.js?v=20260914-lazy1','avp-admin-chat']
   ];
+  var page=(location.pathname.split('/').pop()||'').toLowerCase();
+  if(page==='admin.html'){
+    items.push(['admin-alerts.js?v=20260914-push2','avp-admin-alerts']);
+  }
   items.forEach(function(item){
     if(document.querySelector('script[data-'+item[1]+']'))return;
     var s=document.createElement('script');
