@@ -1,4 +1,4 @@
-/*! home-page-motion.js — V108 premium Home hubs */
+/*! Home-page-motion-core V108 — quick learn home */
 (function(){
   'use strict';
   if(window.__avpHomeMotionV108)return;
@@ -24,7 +24,7 @@
     }
     if(!document.querySelector('script[data-home-copy-v104]')){
       var script=document.createElement('script');
-      script.src='home-copy-v104.js?v=20260913-1';script.dataset.homeCopyV104='1';
+      script.src='home-copy-v104.js?v=20260915-quick2';script.dataset.homeCopyV104='1';
       document.head.appendChild(script);
     }
     if(!document.querySelector('link[data-avp-site-upgrade-v1]')){
