@@ -15,9 +15,9 @@
   }
   function viDate(d) { const [y, m, day] = String(d).split('-'); return day + '/' + m + '/' + y; }
   function packIndex(dateStr) {
-    const start = (E && E.startDate) || '2026-09-14';
+    const start = (window.AVPDailyStart && window.AVPDailyStart.getDailyStartDate && window.AVPDailyStart.getDailyStartDate()) || (E && E.startDate) || '2026-09-14';
     const n = Number(E && E.cycleDays) || 3;
-    const [ys, ms, ds] = start.split('-').map(Number);
+    const [ys, ms, ds] = String(start).split('-').map(Number);
     const [y, m, d] = String(dateStr).split('-').map(Number);
     let i = Math.floor((Date.UTC(y, m - 1, d) - Date.UTC(ys, ms - 1, ds)) / 86400000) % n;
     return i < 0 ? i + n : i;
@@ -96,12 +96,11 @@
   function renderToday() {
     const host = $('todayHost'); if (!host) return;
     if (!catalogOk()) { host.innerHTML = '<div class="lc-empty">Gói hôm nay chưa tải xong. Tải lại trang rồi thử nữa.</div>'; return; }
-    const { date, idx, items } = pickToday();
+    const { date, items } = pickToday();
     const daily = (C.getDaily()[date] || {});
     const doneMap = daily.itemDone || {};
     const doneN = items.filter(x => doneMap[x.id]).length;
-    const cycle = Number(E.cycleDays) || 3;
-    host.innerHTML = '<article class="dx-hero"><div class="dx-ribbon"><span>Gói chung · ' + esc(viDate(date)) + '</span><b>Ngày ' + (idx + 1) + '/' + cycle + ' · cùng bài cho mọi người</b></div><div class="dx-hero-body"><div><span class="lc-label">HỌC MỖI NGÀY</span><h2>Năm bài mới trong ngày</h2><p>2 bài cơ bản, 1 trung cấp, 1 nâng cao, 1 case. Đổi bài lúc 00:00. Gói hiện tại gồm ' + cycle + ' ngày.</p></div><span class="lc-pill strong">' + doneN + '/5 bài</span></div></article><div class="dx-grid dx-grid-5">' + items.map(it => card(it, !!doneMap[it.id])).join('') + '</div><section class="lc-focus" style="margin-top:12px"><div class="lc-focus-head"><div><span class="lc-label">HỎI NHANH HÔM NAY</span><h2>8 câu — đúng 5 bài vừa giao</h2><p>Mỗi câu chỉ chọn một lần. Sai thì vào Sổ lỗi, không làm lại trong ngày.</p></div></div><div id="dxQuizHost"></div><div class="lc-secondary-links"><button type="button" id="dxStartQuiz">' + (daily.quizLocked ? 'Đã nộp bài hỏi nhanh' : 'Làm 8 câu hôm nay') + '</button><a href="skill-map.html">Lộ trình 42 bài vẫn ở khu Học</a></div></section>';
+    host.innerHTML = '<article class="dx-hero"><div class="dx-ribbon"><span>Gói hôm nay · ' + esc(viDate(date)) + '</span><b>5 bài mới</b></div><div class="dx-hero-body"><div><span class="lc-label">HỌC MỖI NGÀY</span><h2>Năm bài mới trong ngày</h2><p>2 bài cơ bản, 1 trung cấp, 1 nâng cao, 1 case. Đổi bài lúc 00:00.</p></div><span class="lc-pill strong">' + doneN + '/5 bài</span></div></article><div class="dx-grid dx-grid-5">' + items.map(it => card(it, !!doneMap[it.id])).join('') + '</div><section class="lc-focus" style="margin-top:12px"><div class="lc-focus-head"><div><span class="lc-label">HỎI NHANH HÔM NAY</span><h2>8 câu — đúng 5 bài vừa giao</h2><p>Mỗi câu chỉ chọn một lần. Sai thì vào Sổ lỗi, không làm lại trong ngày.</p></div></div><div id="dxQuizHost"></div><div class="lc-secondary-links"><button type="button" id="dxStartQuiz">' + (daily.quizLocked ? 'Đã nộp bài hỏi nhanh' : 'Làm 8 câu hôm nay') + '</button><a href="skill-map.html">Lộ trình 42 bài vẫn ở khu Học</a></div></section>';
     bindDone(host, renderToday);
     $('dxStartQuiz')?.addEventListener('click', () => startQuiz(items, 'dxQuizHost'));
     if (daily.quizLocked) startQuiz(items, 'dxQuizHost');
@@ -121,10 +120,9 @@
   function fillOuter() {
     const title = $('lhTodayTitle'); const meta = $('lhTodayMeta'); const cta = $('lhTodayCta'); const cardEl = $('lhTodayCard');
     if (!title || !meta || !catalogOk()) return false;
-    const { date, idx, items } = pickToday(); if (!items.length) return false;
-    const cycle = Number(E.cycleDays) || 3;
-    title.textContent = 'Hôm nay: 5 bài mới — cùng gói cho mọi người';
-    meta.textContent = 'Ngày ' + (idx + 1) + '/' + cycle + ' · ' + viDate(date) + ' · ' + items.map(x => (LEVEL_NAME[x.level] || '') + ': ' + x.title).join(' · ');
+    const { date, items } = pickToday(); if (!items.length) return false;
+    title.textContent = 'Hôm nay: 5 bài mới';
+    meta.textContent = viDate(date) + ' · ' + items.map(x => (LEVEL_NAME[x.level] || '') + ': ' + x.title).join(' · ');
     if (cta) cta.textContent = 'Mở gói hôm nay →';
     if (cardEl) { cardEl.href = 'learning-coach.html'; cardEl.setAttribute('aria-label', 'Gói học hôm nay'); }
     return true;
