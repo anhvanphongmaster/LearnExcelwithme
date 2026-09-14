@@ -1,4 +1,4 @@
-/*! Home copy V104 — stable typing, local caret */
+/*! Home copy V104 — stable typing, transform caret */
 (function(){
   'use strict';
   if(window.__avpHomeCopyV104)return;
@@ -13,27 +13,46 @@
   old.replaceWith(typing);
 
   /*
-   * Keep one fixed slot to stop the hero from re-centering while characters change.
-   * The caret lives inside the slot, immediately after the typed text, so it follows
-   * the actual text instead of sitting at the far edge of the reserved width.
+   * The typed text changes width every character. Keep the hero slot fixed and
+   * animate only the text content. The caret is positioned from the measured
+   * text width, so it always stays immediately after the last character.
    */
+  var frame=document.createElement('span');
+  frame.className='avp-typing-frame';
   var text=document.createElement('span');
   text.className='avp-typing-text';
   var cursor=document.createElement('span');
   cursor.className='avp-cursor';
   cursor.setAttribute('aria-hidden','true');
-  typing.appendChild(text);
-  typing.appendChild(cursor);
 
-  typing.style.display='inline-flex';
-  typing.style.alignItems='baseline';
-  typing.style.justifyContent='flex-start';
-  typing.style.width='36ch';
+  frame.appendChild(text);
+  frame.appendChild(cursor);
+  typing.appendChild(frame);
+
+  typing.style.display='block';
+  typing.style.width='100%';
   typing.style.maxWidth='100%';
-  typing.style.minHeight='1.25em';
-  typing.style.whiteSpace='nowrap';
+  typing.style.height='1.35em';
   typing.style.overflow='hidden';
   typing.style.contain='layout paint';
+  typing.style.whiteSpace='nowrap';
+
+  frame.style.position='relative';
+  frame.style.display='inline-block';
+  frame.style.height='1.35em';
+  frame.style.lineHeight='1.35';
+  frame.style.whiteSpace='nowrap';
+  frame.style.maxWidth='100%';
+
+  text.style.display='inline-block';
+  text.style.whiteSpace='nowrap';
+
+  cursor.style.display='inline-block';
+  cursor.style.position='absolute';
+  cursor.style.left='0';
+  cursor.style.top='0.08em';
+  cursor.style.marginLeft='0';
+  cursor.style.transform='translateX(0)';
 
   var lines=[
     'Học đúng lộ trình, không lan man',
@@ -52,6 +71,7 @@
 
   function render(){
     text.textContent=lines[line].slice(0,char);
+    cursor.style.transform='translateX('+text.offsetWidth+'px)';
   }
 
   function next(ms){
