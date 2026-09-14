@@ -101,6 +101,11 @@
     return true;
   }
 
+  function homeTodayVN(){
+    try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
+    catch(_){return new Date().toISOString().slice(0,10)}
+  }
+
   function renderExtras(shell){
     var more=shell&&shell.querySelector('.home-path-more');
     if(!more)return false;
@@ -115,10 +120,11 @@
     panel.appendChild(head);
     panel.appendChild(more);
 
+    var quickDate=homeTodayVN();
     more.className='home-path-more home-path-more--extras';
     more.innerHTML=''+
       '<a class="home-more-card home-extra-card-v2 tone-master is-restoring" href="excel-mobile.html" aria-label="Excel Master — mở nội dung chuyên sâu"><span class="home-more-icon">◆</span><div><small>LỘ TRÌNH NÂNG CAO</small><strong>Excel Master</strong><em>Hệ nội dung chuyên sâu</em><b>Sắp cập nhật</b></div></a>'+
-      '<a class="home-more-card home-extra-card-v2 tone-skill" href="skill-map.html?entry=skillmap"><span class="home-more-icon">◈</span><div><small>BẢN ĐỒ KỸ NĂNG</small><strong>Skill Map</strong><em>Xem luồng và vị trí đang học</em><b>Mở bản đồ →</b></div></a>'+
+      '<a class="home-more-card home-extra-card-v2 tone-skill" href="quick-learn.html?d='+encodeURIComponent(quickDate)+'" aria-label="Học nhanh 2 đến 3 phút — bài học hôm nay"><span class="home-more-icon">⏱</span><div><small>HỌC NHANH 2–3 PHÚT</small><strong>Học nhanh hôm nay</strong><em>Mỗi ngày một kỹ năng nhỏ, dùng được ngay</em><b>Học ngay →</b></div></a>'+
       '<button type="button" class="home-more-card home-extra-card-v2 tone-code home-codehub-launcher" id="homeCodeHubOpen" aria-haspopup="dialog" aria-controls="avpCodeHubModal"><span class="home-more-icon">⌘</span><div><small>CODE & AUTOMATION</small><strong>Excel Code Hub</strong><em>Python · VBA · Power Query</em><b>Mở Code Hub →</b></div></button>'+
       '<a class="home-more-card home-extra-card-v2 tone-arena home-more-race" href="excel-race.html"><span class="home-more-icon">⚡</span><div><small>GAME & PHẢN XẠ</small><strong>Excel Arena</strong><em>Đấu kỹ năng theo thời gian</em><b>Vào Arena →</b></div></a>'+
       '<a class="home-more-card home-extra-card-v2 tone-tools home-more-tools" href="tools-library.html"><span class="home-more-icon">▣</span><div><small>TOOL & TEMPLATE</small><strong>Kho Tool</strong><em>Tool thực dụng · tải ZIP · ý tưởng cộng đồng</em><b>Mở Kho Tool →</b></div></a>';
