@@ -93,19 +93,22 @@
   function fillTodayCard(){
     const title=document.getElementById('lhTodayTitle');
     const meta=document.getElementById('lhTodayMeta');
+    const cta=document.getElementById('lhTodayCta');
     const card=document.getElementById('lhTodayCard');
     const C=window.AVPLearningCoach;
-    if(!title||!meta||!C?.todayLesson) return;
+    if(!title||!meta||!C?.todayLesson) return false;
     const today=C.todayLesson();
     const live=byId.get(today.lessonId);
-    const name=live?.title || today.title;
+    const name=live?.title || today.title || today.lessonId;
     const order=String(today.order||1).padStart(2,'0');
     title.textContent=`Bài hôm nay: ${order}. ${name}`;
-    meta.textContent=`${today.moduleTitle||'Excel'} · ngày ${today.uniqueDays}/${today.total} · mỗi người một lịch, không lặp trong 42 bài.`;
+    meta.textContent=`${today.moduleTitle||'Excel'} · ngày ${today.uniqueDays}/${today.total} · không lặp trong 42 bài.`;
+    if(cta) cta.textContent='Mở bài hôm nay →';
     if(card){
       card.href='learning-coach.html';
       card.setAttribute('aria-label',`Bài hôm nay: ${name}`);
     }
+    return true;
   }
 
   function boot(){
@@ -114,7 +117,10 @@
     back?.addEventListener('click',()=>showSelector(true,true));
     window.addEventListener('popstate',()=>{const id=requestedTrack();if(id)showTrack(id,{push:false,scroll:false});else showSelector(false,false)});
     const initial=requestedTrack();if(initial)showTrack(initial,{push:false,scroll:false});else{setTheme(null);selector.hidden=false;detail.hidden=true;setUrl('',false)}
-    fillTodayCard();
+    if(!fillTodayCard()){
+      let n=0;
+      const t=setInterval(()=>{n+=1;if(fillTodayCard()||n>20)clearInterval(t)},120);
+    }
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
