@@ -22,7 +22,7 @@
     return {};
   }
   function isHealthCall(name,args){
-    if(manualHealth||view()!=='overview')return false;
+    if(manualHealth)return false;
     args=args||{};
     return (name==='admin_analytics_summary'&&Number(args.p_days)===1)
       ||(name==='admin_um_list_users'&&Number(args.p_limit)===1)
