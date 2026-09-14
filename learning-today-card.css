@@ -1,0 +1,18 @@
+.lh-coach-bar.is-today{
+  margin-top:16px;
+  border:1px solid #9fc9ae;
+  border-left:6px solid #1f5536;
+  background:linear-gradient(135deg,#edf7f0,#fff 72%);
+  box-shadow:0 10px 24px rgba(22,82,48,.08);
+}
+.lh-coach-bar.is-today .lh-coach-mark{
+  min-width:64px;height:38px;padding:0 10px;width:auto;
+  background:#1f5536;color:#fff;font-size:11px;letter-spacing:.04em;text-transform:uppercase;
+}
+.lh-coach-bar.is-today strong{font-size:16px;color:#153e29;line-height:1.25}
+.lh-coach-bar.is-today small{color:#3d5748;font-size:13px;line-height:1.45}
+.lh-coach-bar.is-today b{
+  display:inline-flex;align-items:center;min-height:36px;padding:0 12px;
+  border-radius:9px;background:#1f5536;color:#fff;
+}
+.lh-coach-bar.is-today:hover{border-color:#1f5536;box-shadow:0 14px 28px rgba(22,82,48,.12)}

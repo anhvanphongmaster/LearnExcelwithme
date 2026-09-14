@@ -89,12 +89,32 @@
     if(detailLabel)detailLabel.textContent=`${track.number} · ${track.label}`;if(detailTitle)detailTitle.textContent=track.title;if(detailDesc)detailDesc.textContent=track.desc;if(detailCount)detailCount.textContent=`${track.lessonIds.length} bài`;
     mountRoll(track);setUrl(id,push);if(scroll)requestAnimationFrame(()=>detail?.scrollIntoView({block:'start',behavior:'smooth'}));
   }
+
+  function fillTodayCard(){
+    const title=document.getElementById('lhTodayTitle');
+    const meta=document.getElementById('lhTodayMeta');
+    const card=document.getElementById('lhTodayCard');
+    const C=window.AVPLearningCoach;
+    if(!title||!meta||!C?.todayLesson) return;
+    const today=C.todayLesson();
+    const live=byId.get(today.lessonId);
+    const name=live?.title || today.title;
+    const order=String(today.order||1).padStart(2,'0');
+    title.textContent=`Bài hôm nay: ${order}. ${name}`;
+    meta.textContent=`${today.moduleTitle||'Excel'} · ngày ${today.uniqueDays}/${today.total} · mỗi người một lịch, không lặp trong 42 bài.`;
+    if(card){
+      card.href='learning-coach.html';
+      card.setAttribute('aria-label',`Bài hôm nay: ${name}`);
+    }
+  }
+
   function boot(){
     if(!grid||!selector||!detail)return;grid.innerHTML=TRACKS.map(flowCard).join('');
     grid.addEventListener('click',e=>{const card=e.target.closest('[data-learning-track]');if(card)showTrack(card.dataset.learningTrack,{push:true,scroll:true})});
     back?.addEventListener('click',()=>showSelector(true,true));
     window.addEventListener('popstate',()=>{const id=requestedTrack();if(id)showTrack(id,{push:false,scroll:false});else showSelector(false,false)});
     const initial=requestedTrack();if(initial)showTrack(initial,{push:false,scroll:false});else{setTheme(null);selector.hidden=false;detail.hidden=true;setUrl('',false)}
+    fillTodayCard();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
