@@ -43,7 +43,7 @@
     html=html.replace(/home-page-motion\.css\?v=[^"']+/g,'home-page-motion.css?v=20260914-fouc2');
     html=html.replace(/home-page-motion\.js\?v=[^"']+/g,'home-page-motion.js?v=20260914-fouc2');
     html=html.replace('avp-ui-system.js?v=20260909-ui2','avp-ui-system.js?v=20260914-ui3');
-    html=html.replace('<script>document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("homeXpValue");if(e)e.textContent=localStorage.getItem("avp_xp_v2")||"0"})<\/script>','<script defer src="learning-leaderboard-core-v1.js?v=20260914-xp17"><\/script>');
+    html=html.replace('homeXpValue");if(e)e.textContent=localStorage.getItem("avp_xp_v2")||"0"}','homeXpValue");if(e)e.textContent=String((parseInt(localStorage.getItem("avp_xp_self_v1")||"0",10)||0)+(function(){try{return Number((JSON.parse(localStorage.getItem("avp_coach_exp_v2")||"{}")||{}).total)||0;}catch(e){return 0;}})())}');
     html=html.replace('async function init() {\n    if (!$("learnBoard")) return;','async function init() {\n    return;');
     html=html.replace('function getXp() {\n    const n = parseInt(localStorage.getItem(XP_KEY) || "0", 10);\n    return isNaN(n) ? 0 : n;\n  }',
       'function getXp() {\n    var self=parseInt(localStorage.getItem("avp_xp_self_v1")||"0",10)||0;\n    var daily=0;try{daily=Number((JSON.parse(localStorage.getItem("avp_coach_exp_v2")||"{}")||{}).total)||0;}catch(e){}\n    return self+daily;\n  }');
