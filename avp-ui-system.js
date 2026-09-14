@@ -6,9 +6,18 @@
 
   (function stripHomeLegacyTheme(){
     var page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-    if(page!==''&&page!=='index.html')return;
-    d.documentElement.classList.add('avp-site-upgrade','avp-site-home');
-    d.querySelectorAll('link[href*="theme-polish-v33.css"]').forEach(function(link){link.remove();});
+    var isHome=page===''||page==='index.html';
+    if(isHome){
+      d.documentElement.classList.add('avp-site-upgrade','avp-site-home');
+      d.querySelectorAll('link[href*="theme-polish-v33.css"]').forEach(function(link){link.remove();});
+      return;
+    }
+    if(d.querySelector('link[data-avp-theme-polish-legacy]'))return;
+    var link=d.createElement('link');
+    link.rel='stylesheet';
+    link.href='theme-polish-v33-legacy.css?v=20260914-legacy1';
+    link.dataset.avpThemePolishLegacy='1';
+    d.head.appendChild(link);
   })();
 
   const nativeAlert=w.alert?.bind(w);
