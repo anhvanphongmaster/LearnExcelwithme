@@ -1,0 +1,96 @@
+/* Lesson practice files — reuse reader tokens, never invent a second palette */
+html[data-avp-reader="6"] .avp-lesson-files{
+  margin: 14px 0 4px;
+  padding: 16px 18px 14px;
+  border: 1px solid var(--km-line, #9fc9ae);
+  border-left: 5px solid var(--km, #367a50);
+  border-radius: 14px;
+  background: var(--km-tab, #edf8f1);
+  color: #1d3025;
+  font-family: inherit;
+}
+html[data-avp-reader="6"] .avp-lesson-files-head{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+html[data-avp-reader="6"] .avp-lesson-files-head span{
+  font-size: 11px;
+  letter-spacing: .08em;
+  font-weight: 800;
+  color: var(--km-dark, #1f5536);
+}
+html[data-avp-reader="6"] .avp-lesson-files-head strong{
+  font-size: 16px;
+  color: #1d3025;
+}
+html[data-avp-reader="6"] .avp-lesson-files-note{
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #3d4f44;
+}
+html[data-avp-reader="6"] .avp-lesson-files-list{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+}
+html[data-avp-reader="6"] .avp-lesson-file{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 1px solid var(--km-line, #9fc9ae);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--km-dark, #1f5536);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+html[data-avp-reader="6"] .avp-lesson-file:hover{
+  border-color: var(--km, #367a50);
+  background: var(--km-soft, #e0f2e6);
+}
+html[data-avp-reader="6"] .avp-lesson-file i{
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  background: var(--km, #367a50);
+  color: #fff;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 800;
+}
+html[data-avp-reader="6"] .avp-lesson-files.is-empty{
+  background: #fcf5e9;
+  border-color: #dfc397;
+  border-left-color: #946526;
+}
+html[data-avp-reader="6"] .avp-lesson-files.is-empty .avp-lesson-files-head span{
+  color: #694619;
+}
+html[data-avp-reader="6"] .avp-lesson-files-alt{
+  display: inline-flex;
+  margin-top: 4px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #dfc397;
+  color: #694619;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+html[data-avp-reader="6"] .avp-lesson-files-alt:hover{
+  background: #f6ead6;
+}
+@media (max-width: 720px){
+  html[data-avp-reader="6"] .avp-lesson-files-head{flex-direction:column;align-items:flex-start;gap:2px}
+}
