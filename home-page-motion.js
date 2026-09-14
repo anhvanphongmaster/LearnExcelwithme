@@ -16,7 +16,7 @@
   function loadCore(){
     if(document.querySelector('script[data-avp-home-motion-core]'))return;
     var s=document.createElement('script');
-    s.src='home-page-motion-core-v108.js?v=20260914-core1';
+    s.src='home-page-motion-core-v108.js?v=20260915-quick1';
     s.defer=true;
     s.dataset.avpHomeMotionCore='1';
     document.head.appendChild(s);
