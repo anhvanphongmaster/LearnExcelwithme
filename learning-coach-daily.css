@@ -1,0 +1,23 @@
+.lc-page{--lc-text:#173226;--lc-muted:#4d5f55;color:#173226}
+.lc-head h1,.lc-focus h2,.lc-today-copy h2,.lc-panel-card>h2{color:#173226}
+.lc-head p,.lc-focus p,.lc-today-copy p,.lc-panel-card>p{color:#4d5f55;font-size:15px;line-height:1.55}
+.lc-kicker,.lc-label{color:#1d4a32;font-size:11px;font-weight:800;letter-spacing:.1em}
+.lc-tab{font-size:13px;color:#3f5348;min-height:44px}
+.lc-tab.is-active{background:#e7f1eb;color:#1d4a32}
+.lc-today-card{margin-bottom:12px;border:1px solid #b7cfc2;border-left:6px solid #2f6b4a;border-radius:18px;background:linear-gradient(145deg,#fff,#eef6f1);box-shadow:0 10px 26px rgba(23,50,38,.07);overflow:hidden}
+.lc-today-ribbon{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 18px;background:#1d4a32;color:#f4fbf6;font-size:12px;font-weight:700}
+.lc-today-ribbon b{padding:4px 10px;border-radius:999px;background:#2f6b4a;color:#fff;font-size:12px;font-weight:800}
+.lc-today-body{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:18px 18px 8px}
+.lc-today-copy h2{margin:6px 0 8px;font-size:clamp(22px,3vw,30px);line-height:1.22;font-weight:800}
+.lc-today-side{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.lc-today-actions{display:flex;gap:8px;flex-wrap:wrap;padding:6px 18px 18px}
+.lc-pill{padding:6px 10px;border:1px solid #c3d2c9;border-radius:999px;background:#fff;color:#355445;font-size:12px;font-weight:700}
+.lc-pill.strong{background:#2f6b4a;border-color:#2f6b4a;color:#fff}
+.lc-btn.solid{background:#1d4a32;border-color:#1d4a32;color:#fff}
+.lc-btn,.lc-step a,.lc-step button{min-height:40px;font-size:13px;font-weight:700;color:#1d4a32}
+.lc-step strong{font-size:14px;color:#173226}
+.lc-step small{font-size:13px;color:#4d5f55}
+.lc-guide strong{font-size:14px;color:#173226}
+.lc-guide p,.lc-rule{font-size:13.5px;color:#355445;line-height:1.5}
+.lc-result-card{padding:18px;border:1px solid #c9d6ce;border-radius:16px;background:#fff}
+@media(max-width:760px){.lc-today-body{flex-direction:column}.lc-today-side{flex-direction:row;align-items:flex-start}}
