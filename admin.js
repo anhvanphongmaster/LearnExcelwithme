@@ -106,3 +106,4 @@
   }
   boot();
 })();
+// deploy trigger: manual health-check fix already present above
