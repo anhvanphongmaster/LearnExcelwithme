@@ -4,7 +4,10 @@
   window.__AVP_LESSON_RESOURCES_V1__ = true;
 
   const FILES = {
-    'f01-excel-workspace': [{ href: 'downloads/phim-tat-thuc-hanh.xlsx', label: 'Phim tat' }],
+    'f01-excel-workspace': [
+      { href: 'downloads/workbook-3-lop-thuc-hanh.xlsx', label: 'Workbook 3 lop' },
+      { href: 'downloads/phim-tat-thuc-hanh.xlsx', label: 'Phim tat' }
+    ],
     'f02-data-entry-types': [
       { href: 'downloads/video-practice/input_01_dropdown.xlsx', label: 'Dropdown' },
       { href: 'downloads/video-practice/input_03_number_range.xlsx', label: 'Gioi han so' },
@@ -22,7 +25,7 @@
       { href: 'downloads/video-practice/fx_01_sum_average.xlsx', label: 'SUM / AVERAGE' },
       { href: 'downloads/video-practice/fx_02_count.xlsx', label: 'COUNT' }
     ],
-    'f06-data-table-structure': [{ href: 'downloads/filter-sort-thuc-hanh.xlsx', label: 'Sort & Filter' }],
+    'f06-data-table-structure': [{ href: 'downloads/cau-truc-bang-nguon-thuc-hanh.xlsx', label: 'Cau truc bang nguon' }],
     'd07-sort-filter': [
       { href: 'downloads/filter-sort-thuc-hanh.xlsx', label: 'Sort & Filter' },
       { href: 'downloads/video-practice/08_dan_dong_loc.xlsx', label: 'Dan vao dong loc' }
