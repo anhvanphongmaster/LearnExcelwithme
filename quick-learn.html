@@ -76,7 +76,7 @@
     try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
     catch(_){return new Date().toISOString().slice(0,10)}
   }
-  function validDate(s){return /^\\d{4}-\\d{2}-\\d{2}$/.test(s||'')?s:null}
+  function validDate(s){return /^\d{4}-\d{2}-\d{2}$/.test(s||'')?s:null}
   function indexFor(date){
     const parts=date.split('-').map(Number);const base=[2026,9,14];
     const a=Date.UTC(parts[0],parts[1]-1,parts[2]);const b=Date.UTC(base[0],base[1]-1,base[2]);
@@ -85,7 +85,6 @@
   function render(){
     const params=new URLSearchParams(location.search);const date=validDate(params.get('d'))||todayVN();const item=lessons[indexFor(date)];
     const el=document.getElementById('quickLesson');
-    const nextIndex=(indexFor(date)+1)%lessons.length;
     const nextDate=(function(){const p=date.split('-').map(Number);const d=new Date(Date.UTC(p[0],p[1]-1,p[2]+1));return d.toISOString().slice(0,10)})();
     el.innerHTML='<div class="ql-meta"><span class="ql-pill">'+item.tag+'</span><span class="ql-pill">2–3 PHÚT</span><span class="ql-pill">'+date+'</span></div>'+
       '<h2>'+item.title+'</h2><p class="ql-outcome">'+item.outcome+'</p>'+
