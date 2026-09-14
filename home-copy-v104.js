@@ -10,7 +10,18 @@
   typing.className=old.className;
   old.replaceWith(typing);
 
-  var lines=['Học đúng lộ trình','Thực hành trên file thật','Tự động hóa công việc'];
+  /* Keep the typing slot stable so changing line length never reflows the hero. */
+  var lines=[
+    'Học đúng lộ trình, không lan man',
+    'Thực hành trên file thật, tự làm',
+    'Tự động hóa công việc, làm nhanh hơn'
+  ];
+  typing.style.display='inline-block';
+  typing.style.whiteSpace='nowrap';
+  typing.style.minWidth='36ch';
+  typing.style.minHeight='1.25em';
+  typing.style.contain='layout paint';
+
   var line=0,char=0,deleting=false,timer=0;
   var TYPE=48,DEL=28,HOLD=1900,GAP=300;
   function render(){typing.textContent=lines[line].slice(0,char)}
@@ -23,7 +34,11 @@
       if(char===current.length){deleting=true;next(HOLD)}else next(TYPE);
     }else{
       char=Math.max(0,char-1);render();
-      if(char===0){deleting=false;line=(line+1)%lines.length;next(GAP)}else next(DEL);
+      if(char===0){
+        deleting=false;
+        line=(line+1)%lines.length;
+        next(GAP);
+      }else next(DEL);
     }
   }
   typing.textContent='';next(120);
