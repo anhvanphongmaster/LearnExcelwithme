@@ -91,22 +91,20 @@
   }
 
   function fillTodayCard(){
+    if(window.AVPDailyExpandUI&&window.AVPDailyExpandUI.fillOuter){
+      return !!window.AVPDailyExpandUI.fillOuter();
+    }
     const title=document.getElementById('lhTodayTitle');
     const meta=document.getElementById('lhTodayMeta');
     const cta=document.getElementById('lhTodayCta');
     const card=document.getElementById('lhTodayCard');
-    const C=window.AVPLearningCoach;
-    if(!title||!meta||!C?.todayLesson) return false;
-    const today=C.todayLesson();
-    const live=byId.get(today.lessonId);
-    const name=live?.title || today.title || today.lessonId;
-    const order=String(today.order||1).padStart(2,'0');
-    title.textContent=`Bài hôm nay: ${order}. ${name}`;
-    meta.textContent=`${today.moduleTitle||'Excel'} · ngày ${today.uniqueDays}/${today.total} · không lặp trong 42 bài.`;
-    if(cta) cta.textContent='Mở bài hôm nay →';
+    if(!title||!meta) return false;
+    title.textContent='Hôm nay: 5 bài mới';
+    meta.textContent='2 cơ bản · 1 trung cấp · 1 nâng cao · 1 case. Đổi lúc 00:00.';
+    if(cta) cta.textContent='Mở gói hôm nay →';
     if(card){
       card.href='learning-coach.html';
-      card.setAttribute('aria-label',`Bài hôm nay: ${name}`);
+      card.setAttribute('aria-label','Gói học hôm nay');
     }
     return true;
   }
