@@ -5,13 +5,21 @@ window.AVP_SUPABASE_CONFIG = {
 
 (function(){
   if(typeof document==='undefined')return;
-  var items=[
-    ['admin-chat.js?v=20260914-lazy1','avp-admin-chat']
-  ];
   var page=(location.pathname.split('/').pop()||'').toLowerCase();
+  var items=[];
+
+  /*
+   * Normal pages use ONE global chat loader only.
+   * The old admin-chat.js loader mounted a separate lazy chat layer and
+   * could race/overlap with the global Admin Chat runtime.
+   */
   if(page==='admin.html'){
+    items.push(['admin-chat.js?v=20260914-lazy1','avp-admin-chat']);
     items.push(['admin-alerts.js?v=20260914-push2','avp-admin-alerts']);
+  }else{
+    items.push(['global-chat-loader-v1.js?v=20260914-chatglobal1','avp-global-chat-loader']);
   }
+
   items.forEach(function(item){
     if(document.querySelector('script[data-'+item[1]+']'))return;
     var s=document.createElement('script');
