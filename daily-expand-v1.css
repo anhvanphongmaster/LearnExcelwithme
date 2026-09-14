@@ -5,6 +5,8 @@
 .dx-hero-body h2{margin:6px 0 8px;color:#0f2438;font-size:clamp(22px,3vw,30px);line-height:1.2}
 .dx-hero-body p{margin:0;color:#3d4f63;font-size:15px;line-height:1.55}
 .dx-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.dx-grid-5{grid-template-columns:repeat(2,minmax(0,1fr))}
+.dx-grid-5 .dx-card:last-child{grid-column:1 / -1}
 .dx-card{padding:16px;border:1px solid #c5d0de;border-radius:16px;background:#fff;display:flex;flex-direction:column;min-height:100%}
 .dx-card[data-level="basic"]{border-top:4px solid #2f6b4a}
 .dx-card[data-level="intermediate"]{border-top:4px solid #2b5278}
@@ -18,4 +20,4 @@
 .dx-tasks{margin:10px 0 0}
 .dx-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:12px}
 .dx-actions .lc-btn.solid{background:#1e3a5f !important;border-color:#1e3a5f !important;color:#fff !important}
-@media(max-width:760px){.dx-grid{grid-template-columns:1fr}.dx-hero-body{flex-direction:column}}
+@media(max-width:760px){.dx-grid,.dx-grid-5{grid-template-columns:1fr}.dx-grid-5 .dx-card:last-child{grid-column:auto}.dx-hero-body{flex-direction:column}}
