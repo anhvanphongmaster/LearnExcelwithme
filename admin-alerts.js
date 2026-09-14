@@ -5,6 +5,9 @@ const PAGE=(location.pathname.split("/").pop()||"").toLowerCase();
 if(PAGE!=="admin.html") return;
 
 const STORE="avp_admin_web_push_v46";
+const PUSH_SYNC_SIG="avp_admin_push_sig_v1";
+const PUSH_SYNC_AT="avp_admin_push_sync_at_v1";
+const PUSH_REFRESH_MS=7*24*60*60*1000;
 const VAPID_PUBLIC_KEY="BFxmt13_QrywtqzR4quLrMHefc9LbrMuodSThZslO9Qb-b3LksiS3XzniutjGl99Ce3Vn8fqPtf7SymsFlVJp4c";
 
 let client=null;
@@ -84,6 +87,36 @@ function deviceLabel(){
   if(/macintosh|mac os/i.test(ua))return "Mac";
   return navigator.platform||"Thiết bị";
 }
+function pushSyncSignature(sub){
+  const s=subscriptionJson(sub);
+  return JSON.stringify([
+    s.endpoint||"",
+    s.p256dh||"",
+    s.auth||"",
+    navigator.userAgent||"",
+    deviceLabel()
+  ]);
+}
+function clearPushSyncCache(){
+  try{
+    localStorage.removeItem(PUSH_SYNC_SIG);
+    localStorage.removeItem(PUSH_SYNC_AT);
+  }catch{}
+}
+function markPushSynced(sub){
+  try{
+    localStorage.setItem(PUSH_SYNC_SIG,pushSyncSignature(sub));
+    localStorage.setItem(PUSH_SYNC_AT,String(Date.now()));
+  }catch{}
+}
+function pushNeedsRefresh(sub){
+  try{
+    const sig=localStorage.getItem(PUSH_SYNC_SIG)||"";
+    const at=Number(localStorage.getItem(PUSH_SYNC_AT)||0);
+    if(sig!==pushSyncSignature(sub))return true;
+    return !Number.isFinite(at)||at<=0||Date.now()-at>=PUSH_REFRESH_MS;
+  }catch{return true}
+}
 async function saveSubscription(sub){
   const s=subscriptionJson(sub);
   if(!s.endpoint||!s.p256dh||!s.auth)throw new Error("PUSH_KEYS_MISSING");
@@ -94,6 +127,7 @@ async function saveSubscription(sub){
     p_user_agent:navigator.userAgent||"",
     p_device_label:deviceLabel()
   });
+  markPushSynced(sub);
 }
 async function subscribe(){
   const state=supportState();
@@ -143,6 +177,7 @@ async function unsubscribe(){
     try{await sub.unsubscribe()}catch{}
   }
   setEnabled(false);
+  clearPushSyncCache();
 }
 function statusText(sub){
   const state=supportState();
@@ -194,7 +229,8 @@ function mountButton(){
 async function restoreSubscription(){
   if(!enabled())return;
   const sub=await currentSubscription();
-  if(!sub)return;
+  if(!sub){clearPushSyncCache();return;}
+  if(!pushNeedsRefresh(sub))return;
   try{await saveSubscription(sub)}catch(e){console.warn("Refresh push subscription",e)}
 }
 async function init(){
