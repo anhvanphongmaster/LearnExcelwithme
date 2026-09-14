@@ -20,4 +20,15 @@
 .dx-tasks{margin:10px 0 0}
 .dx-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:12px}
 .dx-actions .lc-btn.solid{background:#1e3a5f !important;border-color:#1e3a5f !important;color:#fff !important}
+.dx-modal-back{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(15,36,56,.55)}
+.dx-modal{width:min(560px,100%);background:#fff;border:1px solid #c5d0de;border-radius:18px;box-shadow:0 18px 40px rgba(15,36,56,.22);overflow:hidden}
+.dx-modal-head{display:flex;flex-direction:column;gap:4px;padding:14px 18px;background:#1e3a5f;color:#f4f7fb}
+.dx-modal-head span{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.dx-modal-head b{font-size:16px;font-weight:700}
+.dx-modal-body{padding:16px 18px 18px}
+.dx-modal-body h3{margin:0 0 8px;color:#0f2438;font-size:18px;line-height:1.35}
+.dx-modal-hint{margin:0 0 12px;color:#3d4f63;font-size:14px}
+.dx-modal .lc-option.is-pick{outline:2px solid #1e3a5f}
+.dx-modal-actions{display:flex;gap:8px;margin-top:14px}
+body.dx-modal-open{overflow:hidden}
 @media(max-width:760px){.dx-grid,.dx-grid-5{grid-template-columns:1fr}.dx-grid-5 .dx-card:last-child{grid-column:auto}.dx-hero-body{flex-direction:column}}
