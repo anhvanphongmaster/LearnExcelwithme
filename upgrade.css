@@ -11,16 +11,12 @@
 html{scroll-behavior:smooth}
 body{background:linear-gradient(180deg,#f7faf8 0%,#f2f7f4 100%)!important;color:var(--avp-text)!important;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important}
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 10% 10%,rgba(33,115,70,.06),transparent 25%),radial-gradient(circle at 90% 40%,rgba(121,239,178,.07),transparent 24%)}
-
-/* Legacy nav fallback. simple-nav.css may refine this further. */
 nav{min-height:62px!important;padding:10px max(18px,calc((100vw - 1220px)/2))!important;justify-content:center!important;gap:7px!important;background:#fff!important;border-bottom:1px solid #dce7e0!important;box-shadow:0 5px 22px rgba(24,67,44,.07)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 nav::before{content:none!important;display:none!important}
 nav a{padding:9px 12px!important;border-radius:10px!important;color:#4d6256!important;font-size:14px!important;font-weight:800!important;transition:.18s ease!important}
 nav a:hover{color:#17613a!important;background:#eef6f1!important;transform:translateY(-1px)}
 nav a.active,nav a.is-current,nav a[aria-current="page"]{background:#eaf6ef!important;color:#155a37!important;border:1px solid #c3ddcc!important;box-shadow:none!important}
 #themeToggle{display:none!important}
-
-/* Compact light header for every legacy lesson structure. */
 .page-header,
 body[data-learning-v2] > header:not(.top-simple-nav){position:relative;overflow:hidden;width:min(1180px,calc(100% - 28px));margin:18px auto 8px!important;padding:30px 32px!important;background:linear-gradient(135deg,#eef8f2 0%,#fff 72%)!important;color:#173d2b!important;border:1px solid #cfe0d6!important;border-left:5px solid #217346!important;border-radius:22px!important;box-shadow:0 12px 34px rgba(27,66,45,.07)!important;text-align:left!important}
 .page-header::after,
@@ -31,17 +27,11 @@ body[data-learning-v2] > header:not(.top-simple-nav)>*{position:relative;z-index
 body[data-learning-v2] > header:not(.top-simple-nav) h1{margin:0 0 9px!important;color:#174d31!important;font-size:clamp(32px,4.2vw,48px)!important;line-height:1.05!important;letter-spacing:-1.4px!important;font-weight:900!important;text-shadow:none!important;text-align:left!important}
 .page-header p,
 body[data-learning-v2] > header:not(.top-simple-nav) p{margin:0!important;color:#5d7166!important;font-size:16px!important;line-height:1.7!important;max-width:780px!important;text-align:left!important}
-
-/* Main layout */
 main{width:min(1120px,calc(100% - 32px))!important;max-width:1120px!important;margin-left:auto!important;margin-right:auto!important}
 section{scroll-margin-top:88px}
 h2,.section-title{letter-spacing:-.6px}
-
-/* Shared cards and panels */
 .course-card,.featured-card,.latest-card,.download-card,.exercise-card,.box,.pivot-box,.action-box,.contact-item,.formula-finder-box,.daily-formula,.daily-challenge,.learning-path,.mini-dashboard,.dashboard-kpi,.dashboard-chart,.dashboard-top-ng,.qc-alert-box,.formula-builder,.formula-tester,.card{border:1px solid var(--avp-border)!important;border-radius:var(--avp-radius)!important;box-shadow:0 8px 24px rgba(17,70,43,.065)!important;background:#fff!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease!important}
 .course-card:hover,.featured-card:hover,.latest-card:hover,.download-card:hover,.exercise-card:hover,.contact-item:hover,.card:hover{transform:translateY(-3px)!important;box-shadow:0 14px 32px rgba(17,70,43,.11)!important;border-color:#bfddcc!important}
-
-/* Buttons / inputs */
 button,.hero-button,.download-btn,.next-lesson-btn,.complete-btn,.reset-progress-btn,.reset-quiz-btn,.export-dashboard-btn,.clear-dashboard-btn{border-radius:11px!important;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease!important}
 button:hover,.hero-button:hover,.download-btn:hover,.next-lesson-btn:hover,.complete-btn:hover{transform:translateY(-1px)}
 input,select,textarea{border-radius:11px!important;border:1px solid #cfddd5!important;outline:none!important;transition:border-color .2s ease,box-shadow .2s ease!important}
@@ -50,14 +40,52 @@ code{border-radius:8px;background:#eaf5ee;color:#155a37;padding:3px 7px}
 pre{border-radius:14px!important;border:1px solid #dce8e0!important;box-shadow:0 8px 24px rgba(17,70,43,.06)}
 table{border-collapse:separate!important;border-spacing:0!important;overflow:hidden;border-radius:14px!important;box-shadow:0 8px 24px rgba(17,70,43,.06)}
 th{background:#185c37!important;color:#fff!important}
-
-/* Footer */
 footer{margin-top:70px!important;padding:38px 20px!important;background:linear-gradient(135deg,#071810,#123f2a)!important;color:#dcece3!important;border-top:1px solid rgba(255,255,255,.08)}
 footer p:first-child{font-weight:800;color:#fff}
 #backToTop{background:linear-gradient(135deg,#217346,#185c37)!important;border:1px solid rgba(255,255,255,.22)!important;box-shadow:0 10px 26px rgba(13,67,39,.28)!important}
-
 .avp-reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
 .avp-reveal.avp-visible{opacity:1;transform:none}
+
+/* ===== EXCEL MASTER / MOBILE MASTER — INDIGO CENTER THEME ===== */
+body:has(.mobile-excel-page){
+  background:#f5f6ff!important;
+  color:#20253a!important;
+}
+body:has(.mobile-excel-page)::before{
+  background:radial-gradient(circle at 10% 8%,rgba(70,88,165,.08),transparent 25%),radial-gradient(circle at 90% 40%,rgba(184,192,234,.12),transparent 26%);
+}
+body:has(.mobile-excel-page) .mobile-excel-page{
+  background:radial-gradient(circle at 15% 4%,rgba(70,88,165,.08),transparent 22%),#f5f6ff!important;
+}
+body:has(.mobile-excel-page) .mobile-excel-hero{
+  background:radial-gradient(circle at 84% 20%,rgba(184,192,234,.18),transparent 28%),linear-gradient(135deg,#2f3e79,#4658a5)!important;
+}
+body:has(.mobile-excel-page) .mobile-excel-kicker{border-color:rgba(231,234,251,.38);color:#e7eafb}
+body:has(.mobile-excel-page) .mobile-excel-hero p{color:#eef0ff}
+body:has(.mobile-excel-page) .mobile-excel-hero-badges span{background:rgba(255,255,255,.10);color:#f4f5ff}
+body:has(.mobile-excel-page) .mobile-step-number{background:#4658a5!important}
+body:has(.mobile-excel-page) .mobile-excel-step h2{color:#2f3e79!important}
+body:has(.mobile-excel-page) .mobile-upload-zone{border-color:#b8c0ea;color:#2f3e79}
+body:has(.mobile-excel-page) .mobile-upload-zone:hover{border-color:#4658a5;background:#f1f2ff}
+body:has(.mobile-excel-page) .mobile-file-info{background:#e7eafb;color:#2f3e79}
+body:has(.mobile-excel-page) .mobile-tool-category.active,
+body:has(.mobile-excel-page) .mobile-tool-category:hover{background:#e7eafb!important;border-color:#b8c0ea!important;color:#2f3e79!important}
+body:has(.mobile-excel-page) .mobile-tool:hover,
+body:has(.mobile-excel-page) .mobile-tool.active{border-color:#8e99d1;background:#f0f1ff;box-shadow:0 8px 18px rgba(47,62,121,.10)}
+body:has(.mobile-excel-page) .mobile-tool-settings{border-color:#d9ddf0}
+body:has(.mobile-excel-page) .tool-settings-panel h3{color:#2f3e79}
+body:has(.mobile-excel-page) .mobile-btn.primary,
+body:has(.mobile-excel-page) .mobile-btn.process,
+body:has(.mobile-excel-page) .mobile-btn.download{background:#4658a5!important}
+body:has(.mobile-excel-page) .mobile-btn.share{border-color:#4658a5;color:#2f3e79}
+body:has(.mobile-excel-page) .mobile-btn.share:hover{background:#f0f1ff}
+body:has(.mobile-excel-page) #mobilePreviewTable th{background:#2f3e79!important}
+body:has(.mobile-excel-page) .mobile-history-card h3,
+body:has(.mobile-excel-page) .mobile-download-card h3{color:#2f3e79}
+body:has(.mobile-excel-page) .mobile-privacy-note{border-color:#c3c8e7;background:radial-gradient(circle at 100% 0%,rgba(70,88,165,.10),transparent 34%),#eef0fb;color:#39456f}
+body:has(.mobile-excel-page) .mobile-privacy-icon{background:#e0e3f6}
+body:has(.mobile-excel-page) .mobile-privacy-copy strong{color:#2f3e79}
+body:has(.mobile-excel-page) .mobile-privacy-copy p{color:#606b8a}
 
 @media(max-width:900px){
  nav{justify-content:flex-start!important;overflow-x:auto!important;scrollbar-width:none!important;padding:9px 12px!important}
