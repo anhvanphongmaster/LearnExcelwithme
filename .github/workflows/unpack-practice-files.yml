@@ -1,40 +1,116 @@
 name: Unpack practice files
 
 on:
+  workflow_dispatch:
   push:
     paths:
-      - 'scripts/practice-pack/**'
       - '.github/workflows/unpack-practice-files.yml'
-  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  unpack:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Decode zip and extract into downloads/
+          python-version: '3.12'
+      - name: Install openpyxl and build workbooks
         run: |
-          set -euo pipefail
-          test -d scripts/practice-pack
-          cat scripts/practice-pack/part-* > /tmp/pack.b64
-          base64 -d /tmp/pack.b64 > /tmp/pack.zip
-          mkdir -p downloads
-          unzip -o /tmp/pack.zip -d downloads
-          ls -la downloads | sed -n '1,30p'
-      - name: Commit workbooks
+          pip install openpyxl
+          python - <<'PY'
+          from pathlib import Path
+          from openpyxl import Workbook
+          from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+          from openpyxl.utils import get_column_letter
+          from openpyxl.worksheet.table import Table
+          OUT = Path('downloads'); OUT.mkdir(exist_ok=True)
+          G, GD, GOLD, LINE, INK = '217346', '1F5536', 'FFF3CD', 'C9D7CE', '1D3025'
+          thin = Border(left=Side(style='thin', color=LINE), right=Side(style='thin', color=LINE), top=Side(style='thin', color=LINE), bottom=Side(style='thin', color=LINE))
+          ft = Font(name='Arial', bold=True, size=16, color='FFFFFF')
+          fw = Font(name='Arial', bold=True, size=10, color='FFFFFF')
+          fn = Font(name='Arial', size=10, color=INK)
+          fg = PatternFill('solid', fgColor=G)
+          fgd = PatternFill('solid', fgColor=GD)
+          fgold = PatternFill('solid', fgColor=GOLD)
+          STORES=['HN01','HN02','HCM01','HCM02','DN01']
+          PRODUCTS=['EX-BASIC','EX-PRO','PQ-KIT','DASH-PACK']
+          def props(ws):
+              ws.sheet_view.showGridLines=False
+              ws.page_setup.orientation='landscape'
+          def banner(ws,t,s,cols=8):
+              ws.merge_cells(start_row=1,start_column=1,end_row=1,end_column=cols)
+              ws.merge_cells(start_row=2,start_column=1,end_row=2,end_column=cols)
+              ws['A1'],ws['A2']=t,s
+              ws['A1'].font,ws['A1'].fill=ft,fg
+              ws['A2'].font=Font(name='Arial',italic=True,size=10,color='FFFFFF'); ws['A2'].fill=fgd
+              for c in range(1,cols+1):
+                  ws.cell(1,c).fill=fg; ws.cell(2,c).fill=fgd
+          def hdr(ws,r,n):
+              for c in range(1,n+1):
+                  cell=ws.cell(r,c); cell.font,cell.fill,cell.border=fw,fg,thin
+          def rows(n=20):
+              out=[]; d=1
+              for i in range(n):
+                  q=6+(i*3)%22; p=[150000,280000,420000,610000][i%4]
+                  m='2026-08' if i<n//2 else '2026-09'
+                  out.append((f'DH{4001+i}', f'{m}-{d:02d}', STORES[i%5], PRODUCTS[i%4], q, p, q*p, 'NG' if i%8==0 else 'OK', m))
+                  d=1+(d%28)
+              return out
+          def add_src(wb,name='01_DuLieu',n=20):
+              ws=wb.create_sheet(name); props(ws); banner(ws,'Nguon','Khong sua.',9)
+              hs=['MaDon','Ngay','CuaHang','SanPham','SoLuong','DonGia','DoanhThu','TrangThai','Thang']
+              for c,h in enumerate(hs,1): ws.cell(4,c,h)
+              hdr(ws,4,9)
+              for i,row in enumerate(rows(n)):
+                  r=5+i
+                  for c,v in enumerate(row,1):
+                      ws.cell(r,c,v).border=thin; ws.cell(r,c).font=fn
+                  ws.cell(r,6).number_format=ws.cell(r,7).number_format='#,##0'
+              return ws
+          def book(title,sub):
+              wb=Workbook(); ws=wb.active; ws.title='00_HuongDan'; props(ws); banner(ws,title,sub)
+              ws['A4']='Lam theo sheet thuc hanh. PASS khi hoan thanh muc tren file.'; ws['A4'].font=fn
+              return wb
+          specs=[
+            ('chon-cong-cu-thuc-hanh.xlsx','Chon dung cong cu','c39'),
+            ('ban-giao-bao-cao-thuc-hanh.xlsx','Ban giao bao cao','a18'),
+            ('pq-refresh-staging-thuc-hanh.xlsx','PQ Staging','pq33'),
+            ('workflow-tu-dong-thuc-hanh.xlsx','Workflow','x24'),
+            ('workbook-3-lop-thuc-hanh.xlsx','Workbook 3 lop','f01'),
+            ('cau-truc-bang-nguon-thuc-hanh.xlsx','Cau truc bang nguon','f06'),
+            ('excel-table-thuc-hanh.xlsx','Excel Table','a13'),
+            ('find-replace-thuc-hanh.xlsx','Find Replace','d08'),
+            ('reconciliation-thuc-hanh.xlsx','Reconciliation','a19'),
+            ('kpi-cards-thuc-hanh.xlsx','KPI Cards','v23'),
+            ('slicer-timeline-thuc-hanh.xlsx','Slicer Timeline','v24'),
+            ('vba-macro-thuc-hanh.xlsm','Macro ChayBaoCao','x23'),
+            ('vba-object-model-thuc-hanh.xlsm','Object Model GhiKPI','vb35'),
+            ('vba-control-flow-thuc-hanh.xlsm','If Loop LocDonNG','vb36'),
+            ('vba-performance-security-thuc-hanh.xlsm','Performance XuLyNhanh','vb37'),
+          ]
+          for name,title,lesson in specs:
+              wb=book(title,lesson); add_src(wb)
+              lab=wb.create_sheet('LamBai'); props(lab); banner(lab,'Lam bai','O vang = dien.',4)
+              lab['A4']='Hoan thanh theo huong dan bai '+lesson; lab['B4']=''; lab['B4'].fill=fgold
+              if name.startswith('cau-truc'):
+                  t=wb.create_sheet('03_BangNguon'); props(t); banner(t,'Table BangDon','Ctrl+T',6)
+                  for c,h in enumerate(['MaDon','CuaHang','SanPham','SoLuong','DonGia','DoanhThu'],1): t.cell(4,c,h)
+                  hdr(t,4,6)
+                  t['A5']='DH5101'; t['B5']='HN01'; t['C5']='EX-BASIC'; t['D5']=8; t['E5']=150000; t['F5']='=D5*E5'
+                  t.add_table(Table(displayName='BangDon', ref='A4:F5'))
+              if name.endswith('.xlsm'):
+                  code=wb.create_sheet('VBA_CODE'); props(code); banner(code,'VBA','Copy vao module.',6)
+                  code['A4']='Sub Demo()\n    MsgBox "'+title+'"\nEnd Sub'
+              wb.save(OUT/name); print('wrote', name)
+          PY
+      - name: Commit downloads
         run: |
-          set -euo pipefail
-          git config user.name "anhvanphong"
-          git config user.email "anhvanphongmaster@gmail.com"
-          git add downloads/*.xlsx downloads/*.xlsm || true
-          if git diff --cached --quiet; then
-            echo "No new workbooks to commit"
-            exit 0
-          fi
+          git config user.name anhvanphong
+          git config user.email anhvanphongmaster@gmail.com
+          git add downloads/*.xlsx downloads/*.xlsm
+          git diff --cached --quiet && echo none && exit 0
           git commit -m "Add 15 practice workbooks to downloads/"
           git push
