@@ -39,8 +39,8 @@
   const isHome=page===''||page==='index.html';
   if(isHome){
     html.classList.add('avp-site-home');
+    document.querySelectorAll('link[href*="theme-polish-v33.css"]').forEach(link=>link.remove());
     loadCss('home-ui-owner-v1.css?v=20260914-owner2','avp-home-ui-owner-v1',()=>{
-      document.querySelectorAll('link[href*="theme-polish-v33.css"]').forEach(link=>{link.disabled=true;link.media='not all';});
       html.classList.add('avp-home-owner-ready');
     });
   }
