@@ -8,8 +8,8 @@
   });
   const lessons = [
     L('b01-freeze','basic',8,'Cố định hàng tiêu đề khi cuộn','Cuộn bảng vẫn thấy tiêu đề cột.',
-      ['Chọn ô ngay dưới hàng tiêu đề (thường là A2).','View → Freeze Panes → Freeze Panes.','Cuộn xuống: hàng 1 đứng yên.'],
-      [Q('Muốn cố định hàng 1, chọn ô nào trước?',['A1','A2','Cả cột A','Ô bất kỳ'],1,'Chọn A2 thì hàng phía trên bị khóa.'),
+      ['Chọn ô A5 (ngay dưới hàng tiêu đề ở dòng 4).','View → Freeze Panes → Freeze Panes.','Cuộn xuống: hàng 4 đứng yên.'],
+      [Q('Muốn cố định hàng tiêu đề ở dòng 4, chọn ô nào trước?',['A4','A5','Cả cột A','Ô bất kỳ'],1,'Chọn A5 thì hàng phía trên bị khóa.'),
        Q('Gỡ cố định cửa sổ ở đâu?',['Data','View → Freeze Panes → Unfreeze Panes','Insert','Formulas'],1,'Cùng nhóm Freeze Panes.')],
       ['Cố định hàng tiêu đề rồi ghi ĐÃ CỐ ĐỊNH vào ô vàng.']),
     L('b13-hyperlink','basic',8,'Tạo liên kết tới sheet hướng dẫn','Bấm một cái về đúng chỗ đọc cách làm.',
@@ -23,7 +23,7 @@
        Q('Hơn VLOOKUP ở điểm nào?',['Luôn nhanh hơn','Cột trả về không cần nằm bên phải khóa','Không cần khóa','Tự loại trùng'],1,'Lấy trái hoặc phải đều được.')],
       ['Lấy Đơn giá theo Mã SP bằng INDEX/MATCH vào cột vàng.']),
     L('n01-let','advanced',15,'LET đặt biến trong công thức','Công thức đọc được, mỗi cụm chỉ tính một lần.',
-      ['=LET(ty_le,B1, doanh,C2, doanh*ty_le).','Đặt tên biến rõ nghĩa.','Tránh lặp cùng một hàm nhiều lần.'],
+      ['=LET(ty_le,B5, doanh,C5, doanh*ty_le) cho dòng dữ liệu đầu tiên.','Đặt tên biến rõ nghĩa.','Tránh lặp cùng một hàm nhiều lần.'],
       [Q('LET giúp gì?',['In đẹp','Đặt biến trung gian trong công thức','Tạo sheet','Ghi macro'],1,'Biến nội bộ.'),
        Q('Nên dùng LET khi nào?',['Một cụm bị lặp nhiều lần','Ô trống','In','Freeze'],0,'Tránh tính lại và dễ đọc.')],
       ['Viết lại hoa hồng bằng LET ở ô vàng.']),
