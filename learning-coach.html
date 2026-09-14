@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Học Excel hôm nay | Anh Văn Phòng</title>
-  <meta name="description" content="Mỗi ngày cùng một gói 5 bài mới cho mọi người: 2 cơ bản, 1 trung cấp, 1 nâng cao, 1 case. 8 câu hỏi và file đúng gói hôm nay.">
-  <meta name="theme-color" content="#f3f6f4">
-  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="description" content="Mỗi ngày cùng một gói 5 bài mới cho mọi người. 8 câu hỏi và file đúng gói hôm nay.">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="simple-nav.css">
   <link rel="stylesheet" href="auth.css">
@@ -27,7 +25,7 @@
     <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
     <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
     <span class="auth-nav-slot"></span>
-    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện">◐</button>
   </div>
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
@@ -47,40 +45,15 @@
       <button type="button" class="lc-tab" data-panel="mistakes">Sổ lỗi <b id="mistakeBadge">0</b></button>
       <button type="button" class="lc-tab" data-panel="cases">Case hôm nay</button>
     </nav>
-    <section class="lc-panel is-active" id="panel-today" aria-label="Học hôm nay"><div id="todayHost"></div></section>
-    <section class="lc-panel" id="panel-diagnostic" aria-label="Hỏi nhanh hôm nay">
-      <div class="lc-panel-card">
-        <h2>8 câu của đúng gói hôm nay</h2>
-        <p>Không còn bài hỏi trình độ lệch nội dung. Mỗi câu chỉ chọn một lần trong ngày.</p>
-        <div id="diagnosticHost"></div>
-      </div>
-    </section>
-    <section class="lc-panel" id="panel-mistakes" aria-label="Sổ lỗi">
-      <div class="lc-panel-card">
-        <h2>Sổ lỗi cá nhân</h2>
-        <p>Câu sai hôm nay nằm đây theo đúng bài.</p>
-        <div id="mistakesHost"></div>
-      </div>
-    </section>
-    <section class="lc-panel" id="panel-cases" aria-label="Case hôm nay">
-      <div class="lc-panel-card">
-        <h2>Case trong gói hôm nay</h2>
-        <p>Một case, một file, việc cần làm ghi rõ trên sheet hướng dẫn.</p>
-        <div id="casesHost"></div>
-      </div>
-    </section>
-    <section class="lc-guide" aria-label="Cách dùng">
-      <h2>Cách dùng</h2>
-      <div class="lc-guide-grid">
-        <article><b>01</b><strong>Làm 5 bài hôm nay</strong><p>Cùng gói với mọi người. Đổi lúc 00:00.</p></article>
-        <article><b>02</b><strong>Mỗi bài một file</strong><p>Mở sheet hướng dẫn trước, làm ở sheet làm bài.</p></article>
-        <article><b>03</b><strong>Trả lời 8 câu</strong><p>Đúng nội dung ngày. Sai không làm lại trong ngày.</p></article>
-        <article><b>04</b><strong>42 bài vẫn ở Học</strong><p>Muốn học theo luồng thì vào 4 luồng.</p></article>
-      </div>
-    </section>
+    <section class="lc-panel is-active" id="panel-today"><div id="todayHost"></div></section>
+    <section class="lc-panel" id="panel-diagnostic"><div class="lc-panel-card"><h2>8 câu của đúng gói hôm nay</h2><p>Mỗi câu chỉ chọn một lần trong ngày.</p><div id="diagnosticHost"></div></div></section>
+    <section class="lc-panel" id="panel-mistakes"><div class="lc-panel-card"><h2>Sổ lỗi cá nhân</h2><div id="mistakesHost"></div></div></section>
+    <section class="lc-panel" id="panel-cases"><div class="lc-panel-card"><h2>Case trong gói hôm nay</h2><div id="casesHost"></div></div></section>
   </div>
 </main>
 <script src="learning-coach-core-v1.js?v=20260914-daily12"></script>
+<script src="daily-expand-data-1.js?v=20260914-daily12"></script>
+<script src="daily-expand-data-2.js?v=20260914-daily12"></script>
 <script src="daily-expand-catalog-v1.js?v=20260914-daily12"></script>
 <script src="learning-coach-v2.js?v=20260914-daily12"></script>
 <script src="daily-expand-ui-v1.js?v=20260914-daily12"></script>
