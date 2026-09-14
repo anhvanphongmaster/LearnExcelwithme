@@ -1,6 +1,6 @@
 window.AVP_SUPABASE_CONFIG = {
   url: "https://itnnbyhlpfredaqyhlpr.supabase.co",
-  publishableKey: "sb_publishable_MiK_gkzfQUWPn3_-TYZESg_FxuWYTV5"
+  publishableKey: "sb_publishable_MiK_gkzfQUwPn3_-TYZESg_FxuWYTV5"
 };
 
 (function(){
@@ -11,7 +11,7 @@ window.AVP_SUPABASE_CONFIG = {
   /*
    * Admin Chat must be available on every normal page.
    * Use the proven lazy loader on normal pages: it mounts the guest bubble
-   * immediately after Supabase is ready and opens admin-chat-core on click.
+   * after Supabase is ready and opens admin-chat-core on click.
    * admin.html keeps its existing admin chat + push notifications.
    */
   if(page==='admin.html'){
@@ -26,7 +26,7 @@ window.AVP_SUPABASE_CONFIG = {
     var s=document.createElement('script');
     s.src=item[0];
     s.async=false;
-    s.setAttribute('data-'+item[1]+'','1');
+    s.setAttribute('data-'+item[1],'1');
     document.head.appendChild(s);
   });
 })();
