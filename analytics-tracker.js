@@ -119,6 +119,11 @@
   document.addEventListener("click", function(e){
     const link=e.target.closest?.("a[href]");
     if(!link) return;
+
+    // Authenticated downloads are replayed through a temporary anchor by AVPAccess.
+    // That synthetic click is an implementation detail, not a second user action.
+    if(link.dataset.avpPublicDownload==="1" || link.dataset.avpAnalyticsIgnore==="1") return;
+
     const href=String(link.getAttribute("href")||"");
     const label=cleanText(link.getAttribute("download") || link.textContent || href,80);
     if((link.hasAttribute("download") || /(^|\/)downloads\//i.test(href)) && !link.classList.contains("pv-download")){
