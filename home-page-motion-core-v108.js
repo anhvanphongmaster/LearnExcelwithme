@@ -117,7 +117,7 @@
 
     more.className='home-path-more home-path-more--extras';
     more.innerHTML=''+
-      '<div class="home-more-card home-extra-card-v2 tone-master is-restoring" aria-disabled="true" role="status"><span class="home-more-icon">◆</span><div><small>LỘ TRÌNH NÂNG CAO</small><strong>Excel Master</strong><em>Hệ nội dung chuyên sâu</em><b>Sắp cập nhật</b></div></div>'+
+      '<a class="home-more-card home-extra-card-v2 tone-master is-restoring" href="master-learning.html" aria-label="Excel Master — mở nội dung chuyên sâu"><span class="home-more-icon">◆</span><div><small>LỘ TRÌNH NÂNG CAO</small><strong>Excel Master</strong><em>Hệ nội dung chuyên sâu</em><b>Mở Excel Master →</b></div></a>'+
       '<a class="home-more-card home-extra-card-v2 tone-skill" href="skill-map.html?entry=skillmap"><span class="home-more-icon">◈</span><div><small>BẢN ĐỒ KỸ NĂNG</small><strong>Skill Map</strong><em>Xem luồng và vị trí đang học</em><b>Mở bản đồ →</b></div></a>'+
       '<button type="button" class="home-more-card home-extra-card-v2 tone-code home-codehub-launcher" id="homeCodeHubOpen" aria-haspopup="dialog" aria-controls="avpCodeHubModal"><span class="home-more-icon">⌘</span><div><small>CODE & AUTOMATION</small><strong>Excel Code Hub</strong><em>Python · VBA · Power Query</em><b>Mở Code Hub →</b></div></button>'+
       '<a class="home-more-card home-extra-card-v2 tone-arena home-more-race" href="excel-race.html"><span class="home-more-icon">⚡</span><div><small>GAME & PHẢN XẠ</small><strong>Excel Arena</strong><em>Đấu kỹ năng theo thời gian</em><b>Vào Arena →</b></div></a>'+
