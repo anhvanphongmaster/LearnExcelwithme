@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Học Excel hôm nay | Anh Văn Phòng</title>
-  <meta name="description" content="Gợi ý bài tiếp theo, kiểm tra trình độ, ôn lỗi và luyện case trong lộ trình Excel 42 bài.">
-  <meta name="theme-color" content="#f5f7f6">
+  <meta name="description" content="Mỗi người một bài Excel riêng mỗi ngày, không lặp lại trong 42 bài. Luyện ngắn và ôn đúng lỗi còn sai.">
+  <meta name="theme-color" content="#f3f6f4">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="simple-nav.css">
@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="global-search.css">
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="avp-ui-system.css?v=20260911-ui-consistency1" data-avp-ui-system>
-  <link rel="stylesheet" href="learning-coach-v2.css?v=20260913-coach2">
+  <link rel="stylesheet" href="learning-coach-v2.css?v=20260914-daily1">
 </head>
 <body>
 <script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script>
@@ -34,9 +34,9 @@
   <div class="lc-shell">
     <header class="lc-head">
       <div>
-        <span class="lc-kicker">HỌC HÔM NAY · TRỢ LÝ HỌC</span>
-        <h1>Không biết học gì tiếp? Web chọn giúp.</h1>
-        <p>Đây là công cụ phụ của khu Học: gợi ý bài tiếp theo, luyện ngắn và giữ lại những lỗi cần ôn.</p>
+        <span class="lc-kicker">HỌC HÔM NAY · MỖI NGÀY MỘT BÀI</span>
+        <h1>Hôm nay học bài riêng của bạn.</h1>
+        <p>Web chọn 1 bài khác nhau cho từng người, mỗi ngày đổi mới và không lặp trong 42 bài. Luyện 3 câu, ôn đúng chỗ đang sai.</p>
       </div>
       <a class="lc-browse" href="skill-map.html">← Về 4 luồng · 42 bài</a>
     </header>
@@ -55,7 +55,7 @@
     <section class="lc-panel" id="panel-diagnostic" aria-label="Kiểm tra trình độ">
       <div class="lc-panel-card">
         <h2>Kiểm tra trình độ</h2>
-        <p>16 câu ngắn theo 8 nhóm kỹ năng. Kết quả chỉ dùng để chọn điểm bắt đầu phù hợp.</p>
+        <p>16 câu ngắn theo 8 nhóm kỹ năng. Không chặn bài hôm nay — chỉ để web ưu tiên nhóm bạn còn yếu ở những ngày sau.</p>
         <div id="diagnosticHost"></div>
       </div>
     </section>
@@ -79,19 +79,19 @@
     <section class="lc-guide" aria-label="Cách dùng website để học Excel">
       <h2>Cách dùng web để học</h2>
       <div class="lc-guide-grid">
-        <article><b>01</b><strong>Chọn luồng</strong><p>Vào Học và chọn một trong 4 luồng theo mục tiêu.</p></article>
-        <article><b>02</b><strong>Mở bài từ card cuộn</strong><p>Cuộn trong luồng và học bài phù hợp với trình độ hiện tại.</p></article>
-        <article><b>03</b><strong>Thực hành bằng file</strong><p>Sau bài học, dùng khu Thực hành để làm case/file thật.</p></article>
-        <article><b>04</b><strong>Sai đâu ôn đó</strong><p>Nếu chưa biết tiếp theo làm gì, quay lại Học hôm nay hoặc Sổ lỗi.</p></article>
+        <article><b>01</b><strong>Mở bài hôm nay</strong><p>Mỗi ngày một bài riêng, không lặp cho đến khi xong 42 bài.</p></article>
+        <article><b>02</b><strong>Luyện 3 câu</strong><p>Câu ngắn ngay dưới bài. Sai thì tự vào Sổ lỗi.</p></article>
+        <article><b>03</b><strong>Làm file nếu có</strong><p>Sau bài học, dùng khu Thực hành để làm trên file thật.</p></article>
+        <article><b>04</b><strong>Sai đâu ôn đó</strong><p>Quay lại Sổ lỗi hoặc Case khi muốn luyện thêm, không cần tìm bài mới.</p></article>
       </div>
-      <div class="lc-rule"><strong>Cấu trúc mới:</strong> Học = 4 luồng / 42 bài. Học hôm nay = trợ lý chọn bài và ôn lỗi. Thực hành = 5 luồng file/case độc lập.</div>
+      <div class="lc-rule"><strong>Quy tắc:</strong> Học hôm nay = 1 bài / ngày / người. 4 luồng vẫn dùng khi muốn tự chọn. Thực hành là nơi làm file.</div>
     </section>
   </div>
 </main>
 
 <script src="learning-platform-catalog-v1.js?v=20260913-fourflows1"></script>
-<script src="learning-coach-core-v1.js?v=20260913-coach1"></script>
-<script src="learning-coach-v2.js?v=20260913-coach2"></script>
+<script src="learning-coach-core-v1.js?v=20260914-daily1"></script>
+<script src="learning-coach-v2.js?v=20260914-daily1"></script>
 <script src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="simple-nav.js"></script>
