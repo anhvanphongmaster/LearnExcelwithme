@@ -1,4 +1,4 @@
-/* AVP Chat Loader V1 — keep Admin/logged-in notifications, defer heavy guest runtime. */
+/* AVP Chat Loader V2 — render the Chat Admin entry immediately on every normal page. */
 (function(){
   'use strict';
   if(window.__AVP_CHAT_LOADER_V1__)return;
@@ -12,19 +12,24 @@
     (function tick(){
       var b=document.getElementById('avpChatBubble');
       if(b){try{b.click()}catch(_){ }return;}
-      if(++tries<30)setTimeout(tick,80);
+      if(++tries<40)setTimeout(tick,80);
     })();
   }
   function loadCore(open){
     if(open)openAfterLoad=true;
     if(loaded){if(openAfterLoad){openAfterLoad=false;openRealChat()}return;}
     if(loading)return;
-    loading=true;removeLite();
+    loading=true;
     var s=document.createElement('script');
-    s.src='admin-chat-core-v1.js?v=20260914-chatcore1';
+    s.src='admin-chat-core-v1.js?v=20260915-chatcore2';
     s.defer=true;s.dataset.avpChatCore='1';
-    s.onload=function(){loading=false;loaded=true;if(openAfterLoad){openAfterLoad=false;openRealChat()}};
-    s.onerror=function(){loading=false};
+    s.onload=function(){
+      loading=false;
+      loaded=true;
+      removeLite();
+      if(openAfterLoad){openAfterLoad=false;openRealChat();}
+    };
+    s.onerror=function(){loading=false;};
     document.head.appendChild(s);
   }
   function mountGuestLite(){
@@ -46,13 +51,19 @@
   }
   async function boot(){
     if(page==='admin.html'){loadCore(false);return;}
+
+    // The entry point must not depend on Supabase/auth/module loading.
+    // Render it first; authentication is only needed to decide whether the
+    // heavy core should be preloaded for a signed-in user.
+    mountGuestLite();
+
     var c=await waitClient();
     var user=null;
     try{var res=await c?.auth?.getSession?.();user=res?.data?.session?.user||null}catch(_){ }
     if(user){
       var run=function(){loadCore(false)};
       if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:2200});else setTimeout(run,1200);
-    }else mountGuestLite();
+    }
   }
   window.addEventListener('avp:surface-open',function(e){if(e.detail?.surface==='chat')loadCore(true)});
   document.addEventListener('click',function(e){if(e.target?.closest?.('[data-edge-action="chat"]'))loadCore(true)},true);
