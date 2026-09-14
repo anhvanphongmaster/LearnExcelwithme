@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Kiến thức Excel | Learn Excel with Anh Van Phong</title>
-  <meta name="description" content="Nền tảng học Excel A–Z theo 8 module, 42 bài.">
+  <meta name="description" content="Nền tảng học Excel A–Z theo 8 module, 42 bài: từ việc cần làm đến thao tác, kiểm tra kết quả và ứng dụng thực tế.">
   <meta name="theme-color" content="#217346">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
@@ -32,29 +32,31 @@
 </head>
 <body>
 <script src="avp-ui-system.js?v=20260913-ui3" data-avp-ui-system></script>
-<nav class="top-simple-nav" aria-label="Dieu huong chinh">
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
-    <a href="index.html" data-avp-nav="home">Trang chu</a>
-    <a href="skill-map.html" data-avp-nav="learn">Hoc</a>
-    <a href="practice-video.html" data-avp-nav="practice">Thuc hanh</a>
-    <a href="tools-center.html" data-avp-nav="tools">Cong cu</a>
-    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tim kiem">Tim kiem</button>
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
     <span class="auth-nav-slot"></span>
-    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Doi giao dien" title="Doi giao dien">&#9680;</button>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
   </div>
-  <button class="top-mobile-toggle" type="button" aria-label="Mo menu">&#9776;</button>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
+
 <main class="kv-page kv-reader-page" id="kvPage">
-  <nav class="kv-course-nav" id="kvCourseNav" aria-label="Dieu huong bai hoc"></nav>
+  <nav class="kv-course-nav" id="kvCourseNav" aria-label="Điều hướng bài học"></nav>
   <header class="kv-hero" id="kvHero"></header>
   <div class="kv-grid kv-reader-grid">
-    <aside class="kv-sidebar kv-reader-menu" id="kvSidebar" aria-label="Menu noi dung bai hoc"></aside>
+    <aside class="kv-sidebar kv-reader-menu" id="kvSidebar" aria-label="Menu nội dung bài học"></aside>
     <div class="kv-content kv-reader-content">
       <section class="kv-intro" id="kvIntro"></section>
       <div id="kvSections" class="kv-active-section"></div>
     </div>
   </div>
 </main>
+
 <script src="knowledge-data-foundation.js?v=20260909-kv2"></script>
 <script src="knowledge-data-skills.js?v=20260909-kv2"></script>
 <script src="knowledge-data-analysis.js?v=20260909-kv2"></script>
