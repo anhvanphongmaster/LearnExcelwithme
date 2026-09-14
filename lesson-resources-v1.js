@@ -4,11 +4,11 @@
   window.__AVP_LESSON_RESOURCES_V1__ = true;
 
   const FILES = {
-    'f01-excel-workspace': [{ href: 'downloads/phim-tat-thuc-hanh.xlsx', label: 'Phim tat — file thuc hanh' }],
+    'f01-excel-workspace': [{ href: 'downloads/phim-tat-thuc-hanh.xlsx', label: 'Phim tat' }],
     'f02-data-entry-types': [
-      { href: 'downloads/video-practice/input_01_dropdown.xlsx', label: 'Dropdown nhap lieu' },
+      { href: 'downloads/video-practice/input_01_dropdown.xlsx', label: 'Dropdown' },
       { href: 'downloads/video-practice/input_03_number_range.xlsx', label: 'Gioi han so' },
-      { href: 'downloads/video-practice/input_04_date_validation.xlsx', label: 'Nhap ngay hop le' },
+      { href: 'downloads/video-practice/input_04_date_validation.xlsx', label: 'Nhap ngay' },
       { href: 'downloads/video-practice/input_11_flash_fill.xlsx', label: 'Flash Fill' }
     ],
     'f03-formatting-display': [
@@ -31,7 +31,7 @@
     's10-text': [
       { href: 'downloads/xu-ly-text-thuc-hanh.xlsx', label: 'Xu ly van ban' },
       { href: 'downloads/video-practice/20_TEXTBEFORE.xlsx', label: 'TEXTBEFORE' },
-      { href: 'downloads/video-practice/fx_08_text_basic.xlsx', label: 'Ham text co ban' },
+      { href: 'downloads/video-practice/fx_08_text_basic.xlsx', label: 'Ham text' },
       { href: 'downloads/video-practice/fx_10_textjoin.xlsx', label: 'TEXTJOIN' }
     ],
     'd09-data-validation': [
@@ -41,14 +41,14 @@
       { href: 'downloads/video-practice/input_14_dropdown_3level.xlsx', label: 'Dropdown 3 tang' }
     ],
     's12-clean-control': [
-      { href: 'downloads/video-practice/09_so_nhin_nhu_so_SUM_0.xlsx', label: 'So nhin nhu so — SUM = 0' },
+      { href: 'downloads/video-practice/09_so_nhin_nhu_so_SUM_0.xlsx', label: 'SUM = 0' },
       { href: 'downloads/video-practice/11_CHAR160.xlsx', label: 'CHAR 160' },
-      { href: 'downloads/video-practice/25_xoa_trung_nhieu_cot.xlsx', label: 'Xoa trung nhieu cot' },
+      { href: 'downloads/video-practice/25_xoa_trung_nhieu_cot.xlsx', label: 'Xoa trung' },
       { href: 'downloads/video-practice/21_Fill_Down.xlsx', label: 'Fill Down' }
     ],
     's07-logic': [
       { href: 'downloads/video-practice/27_if_ifs.xlsx', label: 'IF / IFS' },
-      { href: 'downloads/video-practice/fx_03_if_basic.xlsx', label: 'IF co ban' },
+      { href: 'downloads/video-practice/fx_03_if_basic.xlsx', label: 'IF' },
       { href: 'downloads/video-practice/fx_07_iferror.xlsx', label: 'IFERROR' }
     ],
     's08-conditional-aggregation': [
@@ -81,7 +81,7 @@
       { href: 'downloads/practice-lab/PivotTable-Practice.xlsx', label: 'Lab PivotTable' }
     ],
     'a15-kpi-analysis': [{ href: 'downloads/video-practice/fx_19_sales_kpi.xlsx', label: 'Sales KPI' }],
-    'a18-report-audit-handover': [{ href: 'downloads/bao-cao-qc.xlsx', label: 'Bao cao QC' }],
+    'a18-report-audit-handover': [{ href: 'downloads/ban-giao-bao-cao-thuc-hanh.xlsx', label: 'Checklist ban giao' }],
     'a19-reconciliation': [{ href: 'downloads/reconciliation-thuc-hanh.xlsx', label: 'Reconciliation' }],
     'a16-charts-pareto': [
       { href: 'downloads/pareto-thuc-hanh.xlsx', label: 'Pareto' },
@@ -89,8 +89,7 @@
     ],
     'a17-dashboard': [
       { href: 'downloads/video-practice/22_dashboard_thang.xlsx', label: 'Dashboard thang' },
-      { href: 'downloads/practice-lab/Dashboard-Practice.xlsx', label: 'Lab Dashboard' },
-      { href: 'downloads/youtube-practice/Kien_Thuc_Tip_Trick_Pivot_Dashboard.xlsx', label: 'Tip Pivot / Dashboard' }
+      { href: 'downloads/practice-lab/Dashboard-Practice.xlsx', label: 'Lab Dashboard' }
     ],
     'v23-kpi-cards': [{ href: 'downloads/kpi-cards-thuc-hanh.xlsx', label: 'KPI Cards' }],
     'v24-slicer-timeline': [{ href: 'downloads/slicer-timeline-thuc-hanh.xlsx', label: 'Slicer & Timeline' }],
@@ -123,15 +122,13 @@
       { href: 'downloads/video-practice/pq_09_merge_exact.xlsx', label: 'Merge' },
       { href: 'downloads/video-practice/18_PQ_10_sheet.xlsx', label: '10 sheet' }
     ],
-    'pq33-refresh-performance': [
-      { href: 'downloads/video-practice/pq_17_error_audit.xlsx', label: 'Error audit' },
-      { href: 'downloads/video-practice/pq_18_parameters.xlsx', label: 'Parameters' }
-    ],
+    'pq33-refresh-performance': [{ href: 'downloads/pq-refresh-staging-thuc-hanh.xlsx', label: 'PQ Staging' }],
     'x23-macro-vba': [{ href: 'downloads/vba-macro-thuc-hanh.xlsm', label: 'Macro ChayBaoCao' }],
     'vb35-object-model': [{ href: 'downloads/vba-object-model-thuc-hanh.xlsm', label: 'Object Model GhiKPI' }],
     'vb36-control-flow': [{ href: 'downloads/vba-control-flow-thuc-hanh.xlsm', label: 'If Loop LocDonNG' }],
     'vb37-performance-security': [{ href: 'downloads/vba-performance-security-thuc-hanh.xlsm', label: 'Performance XuLyNhanh' }],
-    'x24-automation-workflow': [{ href: 'downloads/video-practice/fx_20_full_case.xlsx', label: 'Case cong thuc tong hop' }],
+    'x24-automation-workflow': [{ href: 'downloads/workflow-tu-dong-thuc-hanh.xlsx', label: 'Workflow' }],
+    'c39-tool-selection': [{ href: 'downloads/chon-cong-cu-thuc-hanh.xlsx', label: 'Chon dung cong cu' }],
     'c40-sales-case': [
       { href: 'downloads/youtube-practice/Du_An_Sales_Du_Lieu_Tho.xlsx', label: 'Sales tho' },
       { href: 'downloads/youtube-practice/Du_An_Sales_Sach.xlsx', label: 'Sales sach' },
@@ -150,9 +147,7 @@
     ]
   };
 
-  const EMPTY_NOTE = {
-    'c39-tool-selection': 'Bai chon cong cu — chua co bo 4 cach giai cung mot du lieu. Dung case Sales/QC o hai bai ke tiep.'
-  };
+  const EMPTY_NOTE = {};
 
   const esc = value => String(value ?? '').replace(/[&<>"']/g, ch => ({
     '&': '&', '<': '<', '>': '>', '"': '"', "'": '&#39;'
@@ -167,12 +162,12 @@
       return `<aside class="avp-lesson-files is-empty" data-avp-lesson-files data-lesson="${esc(id)}">
         <div class="avp-lesson-files-head"><span>FILE THUC HANH</span><strong>Chua co file rieng</strong></div>
         <p class="avp-lesson-files-note">${esc(note)}</p>
-        <a class="avp-lesson-files-alt" href="practice-video.html">Mo khu thuc hanh →</a>
+        <a class="avp-lesson-files-alt" href="practice-video.html">Mo khu thuc hanh</a>
       </aside>`;
     }
     return `<aside class="avp-lesson-files" data-avp-lesson-files data-lesson="${esc(id)}">
       <div class="avp-lesson-files-head"><span>FILE THUC HANH</span><strong>${files.length} file cho bai nay</strong></div>
-      <p class="avp-lesson-files-note">Tai file, lam theo muc Lam ngay trong tung phan.</p>
+      <p class="avp-lesson-files-note">Tai file, lam theo muc Lam ngay.</p>
       <div class="avp-lesson-files-list">${files.map(file =>
         `<a class="avp-lesson-file" href="${esc(file.href)}" download><i>XLS</i><span>${esc(file.label)}</span></a>`).join('')}</div>
     </aside>`;
