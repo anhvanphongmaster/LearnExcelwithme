@@ -1,0 +1,40 @@
+name: Unpack practice files
+
+on:
+  push:
+    paths:
+      - 'scripts/practice-pack/**'
+      - '.github/workflows/unpack-practice-files.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Decode zip and extract into downloads/
+        run: |
+          set -euo pipefail
+          test -d scripts/practice-pack
+          cat scripts/practice-pack/part-* > /tmp/pack.b64
+          base64 -d /tmp/pack.b64 > /tmp/pack.zip
+          mkdir -p downloads
+          unzip -o /tmp/pack.zip -d downloads
+          ls -la downloads | sed -n '1,30p'
+      - name: Commit workbooks
+        run: |
+          set -euo pipefail
+          git config user.name "anhvanphong"
+          git config user.email "anhvanphongmaster@gmail.com"
+          git add downloads/*.xlsx downloads/*.xlsm || true
+          if git diff --cached --quiet; then
+            echo "No new workbooks to commit"
+            exit 0
+          fi
+          git commit -m "Add 15 practice workbooks to downloads/"
+          git push
