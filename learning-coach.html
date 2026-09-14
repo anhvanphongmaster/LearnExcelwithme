@@ -13,9 +13,9 @@
   <link rel="stylesheet" href="global-search.css">
   <link rel="stylesheet" href="avp-core.css">
   <link rel="stylesheet" href="avp-ui-system.css?v=20260911-ui-consistency1" data-avp-ui-system>
-  <link rel="stylesheet" href="learning-coach-v2.css?v=20260914-daily3">
-  <link rel="stylesheet" href="learning-coach-daily.css?v=20260914-daily3">
-  <link rel="stylesheet" href="daily-expand-v1.css?v=20260914-daily3">
+  <link rel="stylesheet" href="learning-coach-v2.css?v=20260914-daily4">
+  <link rel="stylesheet" href="learning-coach-daily.css?v=20260914-daily4">
+  <link rel="stylesheet" href="daily-expand-v1.css?v=20260914-daily4">
 </head>
 <body>
 <script src="avp-ui-system.js?v=20260909-ui2" data-avp-ui-system></script>
@@ -31,37 +31,30 @@
   </div>
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
-
 <main class="lc-page">
   <div class="lc-shell">
     <header class="lc-head">
       <div>
         <span class="lc-kicker">HỌC HÔM NAY · GÓI MỞ RỘNG 60 BÀI</span>
         <h1>Hôm nay: 4 bài mới, ngoài 42 bài.</h1>
-        <p>Mỗi ngày web chọn 1 bài cơ bản, 1 trung cấp, 1 nâng cao và 1 case từ kho 60 bài độc lập. Câu hỏi và file đúng gói đó. Lộ trình 42 bài vẫn ở khu Học.</p>
+        <p>Mỗi ngày web chọn 1 bài cơ bản, 1 trung cấp, 1 nâng cao và 1 case từ kho 60 bài độc lập. Câu hỏi và file đúng gói đó — không còn bộ 16 câu trình độ. Lộ trình 42 bài vẫn ở khu Học.</p>
       </div>
       <a class="lc-browse" href="skill-map.html">← 4 luồng · 42 bài</a>
     </header>
-
     <nav class="lc-tabs" aria-label="Khu học tập">
       <button type="button" class="lc-tab is-active" data-panel="today">Hôm nay</button>
       <button type="button" class="lc-tab" data-panel="diagnostic">Hỏi nhanh</button>
       <button type="button" class="lc-tab" data-panel="mistakes">Sổ lỗi <b id="mistakeBadge">0</b></button>
       <button type="button" class="lc-tab" data-panel="cases">Case hôm nay</button>
     </nav>
-
-    <section class="lc-panel is-active" id="panel-today" aria-label="Học hôm nay">
-      <div id="todayHost"></div>
-    </section>
-
+    <section class="lc-panel is-active" id="panel-today" aria-label="Học hôm nay"><div id="todayHost"></div></section>
     <section class="lc-panel" id="panel-diagnostic" aria-label="Hỏi nhanh hôm nay">
       <div class="lc-panel-card">
-        <h2>8 câu của đúng gói hôm nay</h2>
-        <p>Không dùng bộ 16 câu của lộ trình 42 bài. Mỗi bài trong gói có 2 câu.</p>
+        <h2>Câu hỏi của đúng gói hôm nay</h2>
+        <p>Không còn bộ 16 câu trình độ. Mỗi câu gắn một trong 4 bài được chọn hôm nay.</p>
         <div id="diagnosticHost"></div>
       </div>
     </section>
-
     <section class="lc-panel" id="panel-mistakes" aria-label="Sổ lỗi">
       <div class="lc-panel-card">
         <h2>Sổ lỗi cá nhân</h2>
@@ -69,7 +62,6 @@
         <div id="mistakesHost"></div>
       </div>
     </section>
-
     <section class="lc-panel" id="panel-cases" aria-label="Case hôm nay">
       <div class="lc-panel-card">
         <h2>Case trong gói hôm nay</h2>
@@ -77,25 +69,23 @@
         <div id="casesHost"></div>
       </div>
     </section>
-
     <section class="lc-guide" aria-label="Cách dùng">
       <h2>Cách dùng</h2>
       <div class="lc-guide-grid">
         <article><b>01</b><strong>Làm 4 bài hôm nay</strong><p>Cơ bản – trung – nâng – case. Độc lập với 42 bài.</p></article>
         <article><b>02</b><strong>Mở đúng sheet trên file</strong><p>4 file theo mức. Sheet trùng mã bài.</p></article>
-        <article><b>03</b><strong>Trả lời 8 câu</strong><p>Hỏi nhanh đi kèm đúng 4 bài.</p></article>
+        <article><b>03</b><strong>Trả lời câu hỏi gói</strong><p>Hỏi nhanh chỉ hỏi 4 bài vừa học.</p></article>
         <article><b>04</b><strong>42 bài vẫn ở Học</strong><p>Muốn học theo luồng thì vào 4 luồng.</p></article>
       </div>
     </section>
   </div>
 </main>
-
-<script src="learning-coach-core-v1.js?v=20260914-daily3"></script>
-<script src="daily-expand-data-1.js?v=20260914-daily3"></script>
-<script src="daily-expand-data-2.js?v=20260914-daily3"></script>
-<script src="daily-expand-catalog-v1.js?v=20260914-daily3"></script>
-<script src="learning-coach-v2.js?v=20260914-daily3"></script>
-<script src="daily-expand-ui-v1.js?v=20260914-daily3"></script>
+<script src="learning-coach-core-v1.js?v=20260914-daily4"></script>
+<script src="daily-expand-data-1.js?v=20260914-daily4"></script>
+<script src="daily-expand-data-2.js?v=20260914-daily4"></script>
+<script src="daily-expand-catalog-v1.js?v=20260914-daily4"></script>
+<script src="learning-coach-v2.js?v=20260914-daily4"></script>
+<script src="daily-expand-ui-v1.js?v=20260914-daily4"></script>
 <script src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
 <script defer src="simple-nav.js"></script>
