@@ -1,18 +1,37 @@
 .lh-coach-bar.is-today{
   margin-top:16px;
-  border:1px solid #9fc9ae;
-  border-left:6px solid #1f5536;
-  background:linear-gradient(135deg,#edf7f0,#fff 72%);
-  box-shadow:0 10px 24px rgba(22,82,48,.08);
+  border:1px solid #c5d0de !important;
+  border-left:6px solid #1e3a5f !important;
+  background:linear-gradient(135deg,#eef3f8,#ffffff 68%) !important;
+  box-shadow:0 10px 24px rgba(15,36,56,.08);
+  color:#0f2438 !important;
 }
 .lh-coach-bar.is-today .lh-coach-mark{
-  min-width:64px;height:38px;padding:0 10px;width:auto;
-  background:#1f5536;color:#fff;font-size:11px;letter-spacing:.04em;text-transform:uppercase;
+  min-width:72px;height:38px;padding:0 10px;width:auto;
+  background:#1e3a5f !important;color:#ffffff !important;
+  font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
 }
-.lh-coach-bar.is-today strong{font-size:16px;color:#153e29;line-height:1.25}
-.lh-coach-bar.is-today small{color:#3d5748;font-size:13px;line-height:1.45}
+.lh-coach-bar.is-today strong,
+.lh-coach-bar.is-today #lhTodayTitle{
+  font-size:16px !important;color:#0f2438 !important;line-height:1.3 !important;font-weight:800 !important;
+}
+.lh-coach-bar.is-today small,
+.lh-coach-bar.is-today #lhTodayMeta{
+  color:#3d4f63 !important;font-size:13px !important;line-height:1.45 !important;
+}
+.lh-coach-bar.is-today .lh-coach-cta,
 .lh-coach-bar.is-today b{
-  display:inline-flex;align-items:center;min-height:36px;padding:0 12px;
-  border-radius:9px;background:#1f5536;color:#fff;
+  display:inline-flex !important;align-items:center;justify-content:center;
+  min-height:38px;padding:0 14px;border-radius:9px;
+  background:#1e3a5f !important;color:#ffffff !important;
+  font-size:13px !important;font-weight:800 !important;letter-spacing:0 !important;
+  white-space:nowrap;
 }
-.lh-coach-bar.is-today:hover{border-color:#1f5536;box-shadow:0 14px 28px rgba(22,82,48,.12)}
+.lh-coach-bar.is-today:hover{
+  border-color:#1e3a5f !important;
+  box-shadow:0 14px 28px rgba(15,36,56,.12);
+}
+.lh-coach-bar.is-today:hover .lh-coach-cta,
+.lh-coach-bar.is-today:hover b{
+  background:#16314f !important;color:#ffffff !important;
+}
