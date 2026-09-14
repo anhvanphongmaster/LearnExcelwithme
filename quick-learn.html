@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi" class="avp-site-upgrade">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Học nhanh 2–3 phút · Learn Excel with Anh Van Phong</title>
+<meta name="description" content="Mỗi ngày một mẹo Excel nhỏ, học trong 2–3 phút và áp dụng ngay vào công việc.">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="site-upgrade-v1.css?v=20260914-site1">
+<style>
+  body{background:#f4f7f5;color:#173f2a}
+  .ql-wrap{max-width:920px;margin:0 auto;padding:34px 18px 70px}
+  .ql-head{margin:0 0 18px;padding:20px 22px;border:1px solid #d6e4dc;border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(23,70,43,.06)}
+  .ql-kicker{display:block;color:#2e78a1;font-size:10px;font-weight:950;letter-spacing:.12em}
+  .ql-head h1{margin:6px 0 7px;color:#173f2a;font-size:clamp(27px,4vw,38px);line-height:1.1}
+  .ql-head p{margin:0;color:#64756c;font-size:13px;line-height:1.65}
+  .ql-card{border:1px solid #a9cfdf;border-top:4px solid #2e78a1;border-radius:20px;background:linear-gradient(145deg,#e2f1f8,#fff 72%);box-shadow:0 12px 30px rgba(33,83,110,.09);padding:24px}
+  .ql-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .ql-pill{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#fff;border:1px solid #c8dce6;color:#2e6583;font-size:10px;font-weight:900}
+  .ql-card h2{margin:0;color:#1c5677;font-size:25px;line-height:1.2}
+  .ql-outcome{margin:9px 0 20px;color:#566c63;font-size:13px;line-height:1.65}
+  .ql-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+  .ql-panel{padding:16px;border:1px solid #d8e5e0;border-radius:15px;background:rgba(255,255,255,.78)}
+  .ql-panel h3{margin:0 0 9px;color:#234c37;font-size:13px}
+  .ql-panel ol,.ql-panel ul{margin:0;padding-left:20px;color:#566b62;font-size:12px;line-height:1.75}
+  .ql-code{display:block;margin-top:10px;padding:11px 12px;border-radius:10px;background:#173f2a;color:#fff;font:600 12px/1.5 Consolas,monospace;overflow:auto}
+  .ql-task{margin-top:14px;padding:14px 16px;border-radius:14px;background:#fff7e9;border:1px solid #eed9ad;color:#704b12;font-size:12px;line-height:1.6}
+  .ql-task strong{display:block;margin-bottom:3px;color:#704b12}
+  .ql-foot{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:16px}
+  .ql-back{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border:1px solid #cbdcd2;border-radius:10px;background:#fff;color:#24543a;text-decoration:none;font-size:12px;font-weight:900}
+  .ql-next{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 15px;border-radius:10px;background:#2e78a1;color:#fff;text-decoration:none;font-size:12px;font-weight:900}
+  @media(max-width:700px){.ql-wrap{padding:22px 12px 50px}.ql-card{padding:18px}.ql-grid{grid-template-columns:1fr}.ql-foot{align-items:stretch;flex-direction:column}.ql-back,.ql-next{width:100%}}
+</style>
+<script src="supabase-config.js"></script>
+<script defer src="simple-nav.js"></script>
+<script defer src="theme-unified-v32.js"></script>
+</head>
+<body>
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+</nav>
+
+<main class="ql-wrap">
+  <header class="ql-head">
+    <span class="ql-kicker">HỌC NHANH MỖI NGÀY</span>
+    <h1>2–3 phút, một kỹ năng dùng được ngay</h1>
+    <p>Không cần học cả bài dài. Mỗi ngày chọn một mẹo Excel nhỏ, xem ví dụ, làm thử ngay trên file của bạn rồi quay lại công việc.</p>
+  </header>
+
+  <article class="ql-card" id="quickLesson" aria-live="polite"></article>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  const lessons=[
+    {tag:'NHẬP LIỆU',title:'Flash Fill: tách dữ liệu cực nhanh',outcome:'Khi Excel nhận ra mẫu bạn đang làm, Flash Fill có thể điền phần còn lại mà không cần công thức.',steps:['Tạo một cột mẫu từ dữ liệu gốc, ví dụ lấy Họ từ Họ và tên.','Nhập đúng một dòng mẫu.','Chọn ô kế tiếp và nhấn Ctrl+E để Excel nhận mẫu.'],code:'Ctrl + E',task:'Thử với một cột Họ và tên: nhập đúng 1 kết quả mẫu, sau đó dùng Ctrl+E và kiểm tra các dòng còn lại.'},
+    {tag:'DÁN DỮ LIỆU',title:'Dán chỉ giá trị trong vài phím',outcome:'Giữ kết quả nhưng bỏ công thức phía sau — rất hữu ích khi chốt số hoặc bàn giao dữ liệu.',steps:['Copy vùng cần giữ kết quả.','Nhấn Ctrl+Alt+V để mở Paste Special.','Nhấn V rồi Enter để chỉ dán Values.'],code:'Ctrl+C → Ctrl+Alt+V → V → Enter',task:'Copy một cột có công thức trong file của bạn, dán sang cột mới bằng Values rồi bấm F2 để kiểm tra không còn dấu =.'},
+    {tag:'TỔNG HỢP',title:'SUMIFS theo một ngày mà không lệch giờ',outcome:'Nếu cột ngày có cả giờ, dùng khoảng >= ngày và < ngày kế tiếp sẽ an toàn hơn so với so sánh bằng.',steps:['Giả sử ngày cần tính nằm ở A2.','Tổng doanh thu theo cột Ngày và cột Doanh thu.','Dùng ngày kế tiếp làm mốc kết thúc mở.'],code:'=SUMIFS(DoanhThu,Ngay,">="&A2,Ngay,"<"&A2+1)',task:'Lấy một ngày có dữ liệu giờ trong file của bạn và thử công thức trên. Đổi A2 sang ngày khác để kiểm tra kết quả.'},
+    {tag:'TRA CỨU',title:'XLOOKUP: tra cứu gọn hơn VLOOKUP',outcome:'Chỉ cần khóa tìm, cột trả về và giá trị khi không tìm thấy; cột trả về không bắt buộc nằm bên phải.',steps:['Đặt mã cần tìm ở A2.','Chọn cột Mã làm vùng tìm.','Chọn cột cần lấy làm vùng trả về.'],code:'=XLOOKUP(A2,Mã,Giá,"Không tìm thấy")',task:'Chọn một mã sản phẩm trong file và dùng XLOOKUP để lấy tên hoặc đơn giá. Thử một mã không tồn tại để xem thông báo.'},
+    {tag:'KIỂM SOÁT LỖI',title:'IFERROR: biến lỗi thành kết quả có nghĩa',outcome:'Bọc công thức có thể lỗi để người dùng thấy trạng thái rõ ràng thay vì một dải #N/A hoặc #DIV/0!.',steps:['Viết công thức gốc trước.','Bọc toàn bộ công thức bằng IFERROR.','Đặt thông báo phù hợp với nghiệp vụ.'],code:'=IFERROR(XLOOKUP(A2,Mã,Giá),"Không tìm thấy")',task:'Tìm một công thức tra cứu đang có thể trả #N/A và thay phần lỗi bằng “Không tìm thấy”.'},
+    {tag:'LÀM SẠCH',title:'TRIM: xử lý khoảng trắng thừa',outcome:'TRIM loại khoảng trắng thừa giữa các từ và khoảng trắng đầu/cuối, giúp khóa tra cứu sạch hơn.',steps:['Tạo cột phụ bên cạnh dữ liệu gốc.','Dùng TRIM cho ô đầu tiên.','Kéo xuống và dùng kết quả sạch làm khóa khi cần.'],code:'=TRIM(A2)',task:'Tìm một cột tên hoặc mã có khoảng trắng bất thường, dùng TRIM và kiểm tra lại bằng XLOOKUP hoặc COUNTIF.'},
+    {tag:'CẤU TRÚC BẢNG',title:'Ctrl+T: biến vùng dữ liệu thành Table',outcome:'Table giúp vùng dữ liệu tự mở rộng và công thức dễ đọc hơn khi làm báo cáo hoặc Power Query.',steps:['Đặt con trỏ vào vùng dữ liệu.','Nhấn Ctrl+T.','Kiểm tra “My table has headers” rồi Enter.'],code:'Ctrl + T',task:'Biến một bảng dữ liệu đang dùng thường xuyên thành Table. Thêm một dòng mới và kiểm tra vùng bảng có tự mở rộng.'}
+  ];
+
+  function todayVN(){
+    try{return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Ho_Chi_Minh',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());}
+    catch(_){return new Date().toISOString().slice(0,10)}
+  }
+  function validDate(s){return /^\\d{4}-\\d{2}-\\d{2}$/.test(s||'')?s:null}
+  function indexFor(date){
+    const parts=date.split('-').map(Number);const base=[2026,9,14];
+    const a=Date.UTC(parts[0],parts[1]-1,parts[2]);const b=Date.UTC(base[0],base[1]-1,base[2]);
+    return ((Math.floor((a-b)/86400000)%lessons.length)+lessons.length)%lessons.length;
+  }
+  function render(){
+    const params=new URLSearchParams(location.search);const date=validDate(params.get('d'))||todayVN();const item=lessons[indexFor(date)];
+    const el=document.getElementById('quickLesson');
+    const nextIndex=(indexFor(date)+1)%lessons.length;
+    const nextDate=(function(){const p=date.split('-').map(Number);const d=new Date(Date.UTC(p[0],p[1]-1,p[2]+1));return d.toISOString().slice(0,10)})();
+    el.innerHTML='<div class="ql-meta"><span class="ql-pill">'+item.tag+'</span><span class="ql-pill">2–3 PHÚT</span><span class="ql-pill">'+date+'</span></div>'+
+      '<h2>'+item.title+'</h2><p class="ql-outcome">'+item.outcome+'</p>'+
+      '<div class="ql-grid"><section class="ql-panel"><h3>Làm nhanh</h3><ol>'+item.steps.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ol><code class="ql-code">'+item.code+'</code></section>'+ 
+      '<section class="ql-panel"><h3>Thử ngay</h3><p style="margin:0;color:#566b62;font-size:12px;line-height:1.7">'+item.task+'</p></section></div>'+ 
+      '<div class="ql-task"><strong>Mục tiêu hôm nay</strong>Hiểu một thao tác nhỏ và dùng được ngay trong file thật. Không cần học thêm phần nào khác.</div>'+ 
+      '<div class="ql-foot"><a class="ql-back" href="index.html">← Về trang chủ</a><a class="ql-next" href="quick-learn.html?d='+nextDate+'">Bài tiếp theo →</a></div>';
+  }
+  render();
+})();
+</script>
+</body>
+</html>
