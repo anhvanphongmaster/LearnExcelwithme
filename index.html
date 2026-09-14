@@ -41,7 +41,7 @@
     html=html.replace('<link rel="stylesheet" href="style.css">',
       '<link rel="stylesheet" href="style.css">\n<link rel="stylesheet" href="home-ui-owner-v1.css?v=20260914-owner3" data-avp-home-ui-owner-v1>\n<link rel="stylesheet" href="site-upgrade-v1.css?v=20260914-site1">');
     html=html.replace(/home-page-motion\.css\?v=[^"']+/g,'home-page-motion.css?v=20260914-fouc2');
-    html=html.replace(/home-page-motion\.js\?v=[^"']+/g,'home-page-motion.js?v=20260914-fouc2');
+    html=html.replace(/home-page-motion\.js\?v=[^"']+/g,'home-page-motion.js?v=20260915-quick1');
     html=html.replace('avp-ui-system.js?v=20260909-ui2','avp-ui-system.js?v=20260914-ui3');
     html=html.replace('homeXpValue");if(e)e.textContent=localStorage.getItem("avp_xp_v2")||"0"}','homeXpValue");if(e)e.textContent=String((parseInt(localStorage.getItem("avp_xp_self_v1")||"0",10)||0)+(function(){try{return Number((JSON.parse(localStorage.getItem("avp_coach_exp_v2")||"{}")||{}).total)||0;}catch(e){return 0;}})())}');
     html=html.replace('async function init() {\n    if (!$("learnBoard")) return;','async function init() {\n    return;');
