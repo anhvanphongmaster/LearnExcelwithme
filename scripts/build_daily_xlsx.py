@@ -8,6 +8,8 @@ OUT = Path("downloads/daily")
 GREEN = "217346"
 NAVY = "1E3A5F"
 YELLOW = "FFF2CC"
+TABLE_HEADER_ROW = 4
+DATA_START_ROW = TABLE_HEADER_ROW + 1
 thin = Border(
     left=Side(style="thin", color="D0D0D0"),
     right=Side(style="thin", color="D0D0D0"),
@@ -23,7 +25,7 @@ yellow = PatternFill("solid", fgColor=YELLOW)
 
 LESSONS = [
     ("b01-freeze", "Cơ bản", "Cố định hàng tiêu đề khi cuộn",
-     ["Chọn ô A2 (ngay dưới hàng tiêu đề).", "View → Freeze Panes → Freeze Panes.", "Cuộn xuống: hàng 1 đứng yên.", "Ghi ĐÃ CỐ ĐỊNH vào ô vàng."],
+     ["Chọn ô A5 (ngay dưới hàng tiêu đề ở dòng 4).", "View → Freeze Panes → Freeze Panes.", "Cuộn xuống: hàng 4 đứng yên.", "Ghi ĐÃ CỐ ĐỊNH vào ô vàng."],
      ["Mã", "Sản phẩm", "Số lượng"],
      [(f"SP{i:02d}", f"Hàng {i}", 10 + i) for i in range(1, 25)]),
     ("b13-hyperlink", "Cơ bản", "Tạo liên kết tới sheet hướng dẫn",
@@ -35,7 +37,7 @@ LESSONS = [
      ["Mã SP", "Tên", "Đơn giá"],
      [("SP01", "Bút", 5000), ("SP02", "Vở", 12000), ("SP03", "Thước", 8000), ("SP04", "Tẩy", 3000)]),
     ("n01-let", "Nâng cao", "LET đặt biến trong công thức",
-     ["Dùng =LET(ty_le,B2, doanh,C2, doanh*ty_le).", "Đặt tên biến rõ nghĩa.", "Viết lại hoa hồng ở ô vàng."],
+     ["Dùng =LET(ty_le,B5, doanh,C5, doanh*ty_le) cho dòng dữ liệu đầu tiên.", "Đặt tên biến rõ nghĩa.", "Viết lại hoa hồng ở ô vàng."],
      ["NV", "Tỷ lệ", "Doanh thu"],
      [("An", 0.03, 20000000), ("Bình", 0.04, 15000000), ("Chi", 0.03, 18000000)]),
     ("c01-week-close", "Case", "Chốt doanh thu một tuần",
@@ -66,7 +68,7 @@ LESSONS = [
     ("b03-paste-values", "Cơ bản", "Dán chỉ giá trị, bỏ công thức",
      ["Copy cột có công thức.", "Paste Special → Values sang cột Mốc.", "F2 một ô: không còn dấu =."],
      ["SL", "Đơn giá", "Thành tiền"],
-     [(2, 5000, "=A2*B2"), (3, 12000, "=A3*B3"), (1, 8000, "=A4*B4")]),
+     [(2, 5000, "=A5*B5"), (3, 12000, "=A6*B6"), (1, 8000, "=A7*B7")]),
     ("b15-linked-picture", "Cơ bản", "Dán ảnh liên kết lên tờ bìa",
      ["Copy vùng chỉ số.", "Home → Paste → Linked Picture.", "Kéo ảnh xuống vùng bìa.", "Ghi ĐÃ DÁN."],
      ["KPI", "Số"],
@@ -108,13 +110,13 @@ def write_lab(ws, headers, rows, task):
     style_header(ws, len(headers) + 1)
     ws["A2"] = "Làm bài tại đây. Ô vàng là chỗ ghi kết quả."
     ws["A2"].font = body
-    start = 4
+    start = TABLE_HEADER_ROW
     for c, h in enumerate(headers, start=1):
         cell = ws.cell(start, c, h)
         cell.fill = head_fill
         cell.font = head_font
         cell.border = thin
-    for r, row in enumerate(rows, start=start + 1):
+    for r, row in enumerate(rows, start=DATA_START_ROW):
         for c, val in enumerate(row, start=1):
             cell = ws.cell(r, c, val)
             cell.font = body
