@@ -63,13 +63,15 @@
 (function(){
   'use strict';
   const lessons=[
-    {tag:'NHẬP LIỆU',title:'Flash Fill: tách dữ liệu cực nhanh',outcome:'Khi Excel nhận ra mẫu bạn đang làm, Flash Fill có thể điền phần còn lại mà không cần công thức.',steps:['Tạo một cột mẫu từ dữ liệu gốc, ví dụ lấy Họ từ Họ và tên.','Nhập đúng một dòng mẫu.','Chọn ô kế tiếp và nhấn Ctrl+E để Excel nhận mẫu.'],code:'Ctrl + E',task:'Thử với một cột Họ và tên: nhập đúng 1 kết quả mẫu, sau đó dùng Ctrl+E và kiểm tra các dòng còn lại.'},
-    {tag:'DÁN DỮ LIỆU',title:'Dán chỉ giá trị trong vài phím',outcome:'Giữ kết quả nhưng bỏ công thức phía sau — rất hữu ích khi chốt số hoặc bàn giao dữ liệu.',steps:['Copy vùng cần giữ kết quả.','Nhấn Ctrl+Alt+V để mở Paste Special.','Nhấn V rồi Enter để chỉ dán Values.'],code:'Ctrl+C → Ctrl+Alt+V → V → Enter',task:'Copy một cột có công thức trong file của bạn, dán sang cột mới bằng Values rồi bấm F2 để kiểm tra không còn dấu =.'},
-    {tag:'TỔNG HỢP',title:'SUMIFS theo một ngày mà không lệch giờ',outcome:'Nếu cột ngày có cả giờ, dùng khoảng >= ngày và < ngày kế tiếp sẽ an toàn hơn so với so sánh bằng.',steps:['Giả sử ngày cần tính nằm ở A2.','Tổng doanh thu theo cột Ngày và cột Doanh thu.','Dùng ngày kế tiếp làm mốc kết thúc mở.'],code:'=SUMIFS(DoanhThu,Ngay,">="&A2,Ngay,"<"&A2+1)',task:'Lấy một ngày có dữ liệu giờ trong file của bạn và thử công thức trên. Đổi A2 sang ngày khác để kiểm tra kết quả.'},
-    {tag:'TRA CỨU',title:'XLOOKUP: tra cứu gọn hơn VLOOKUP',outcome:'Chỉ cần khóa tìm, cột trả về và giá trị khi không tìm thấy; cột trả về không bắt buộc nằm bên phải.',steps:['Đặt mã cần tìm ở A2.','Chọn cột Mã làm vùng tìm.','Chọn cột cần lấy làm vùng trả về.'],code:'=XLOOKUP(A2,Mã,Giá,"Không tìm thấy")',task:'Chọn một mã sản phẩm trong file và dùng XLOOKUP để lấy tên hoặc đơn giá. Thử một mã không tồn tại để xem thông báo.'},
-    {tag:'KIỂM SOÁT LỖI',title:'IFERROR: biến lỗi thành kết quả có nghĩa',outcome:'Bọc công thức có thể lỗi để người dùng thấy trạng thái rõ ràng thay vì một dải #N/A hoặc #DIV/0!.',steps:['Viết công thức gốc trước.','Bọc toàn bộ công thức bằng IFERROR.','Đặt thông báo phù hợp với nghiệp vụ.'],code:'=IFERROR(XLOOKUP(A2,Mã,Giá),"Không tìm thấy")',task:'Tìm một công thức tra cứu đang có thể trả #N/A và thay phần lỗi bằng “Không tìm thấy”.'},
-    {tag:'LÀM SẠCH',title:'TRIM: xử lý khoảng trắng thừa',outcome:'TRIM loại khoảng trắng thừa giữa các từ và khoảng trắng đầu/cuối, giúp khóa tra cứu sạch hơn.',steps:['Tạo cột phụ bên cạnh dữ liệu gốc.','Dùng TRIM cho ô đầu tiên.','Kéo xuống và dùng kết quả sạch làm khóa khi cần.'],code:'=TRIM(A2)',task:'Tìm một cột tên hoặc mã có khoảng trắng bất thường, dùng TRIM và kiểm tra lại bằng XLOOKUP hoặc COUNTIF.'},
-    {tag:'CẤU TRÚC BẢNG',title:'Ctrl+T: biến vùng dữ liệu thành Table',outcome:'Table giúp vùng dữ liệu tự mở rộng và công thức dễ đọc hơn khi làm báo cáo hoặc Power Query.',steps:['Đặt con trỏ vào vùng dữ liệu.','Nhấn Ctrl+T.','Kiểm tra “My table has headers” rồi Enter.'],code:'Ctrl + T',task:'Biến một bảng dữ liệu đang dùng thường xuyên thành Table. Thêm một dòng mới và kiểm tra vùng bảng có tự mở rộng.'}
+    {date:'2026-09-14',tag:'NHẬP LIỆU',title:'Flash Fill: tách dữ liệu cực nhanh',outcome:'Khi Excel nhận ra mẫu bạn đang làm, Flash Fill có thể điền phần còn lại mà không cần công thức.',steps:['Tạo một cột mẫu từ dữ liệu gốc, ví dụ lấy Họ từ Họ và tên.','Nhập đúng một dòng mẫu.','Chọn ô kế tiếp và nhấn Ctrl+E để Excel nhận mẫu.'],code:'Ctrl + E',task:'Thử với một cột Họ và tên: nhập đúng 1 kết quả mẫu, sau đó dùng Ctrl+E và kiểm tra các dòng còn lại.'},
+    {date:'2026-09-15',tag:'DÁN DỮ LIỆU',title:'Dán chỉ giá trị trong vài phím',outcome:'Giữ kết quả nhưng bỏ công thức phía sau — rất hữu ích khi chốt số hoặc bàn giao dữ liệu.',steps:['Copy vùng cần giữ kết quả.','Nhấn Ctrl+Alt+V để mở Paste Special.','Nhấn V rồi Enter để chỉ dán Values.'],code:'Ctrl+C → Ctrl+Alt+V → V → Enter',task:'Copy một cột có công thức trong file của bạn, dán sang cột mới bằng Values rồi bấm F2 để kiểm tra không còn dấu =.'},
+    {date:'2026-09-16',tag:'TỔNG HỢP',title:'SUMIFS theo một ngày mà không lệch giờ',outcome:'Nếu cột ngày có cả giờ, dùng khoảng >= ngày và < ngày kế tiếp sẽ an toàn hơn so với so sánh bằng.',steps:['Giả sử ngày cần tính nằm ở A2.','Tổng doanh thu theo cột Ngày và cột Doanh thu.','Dùng ngày kế tiếp làm mốc kết thúc mở.'],code:'=SUMIFS(DoanhThu,Ngay,">="&A2,Ngay,"<"&A2+1)',task:'Lấy một ngày có dữ liệu giờ trong file của bạn và thử công thức trên. Đổi A2 sang ngày khác để kiểm tra kết quả.'},
+    {date:'2026-09-17',tag:'TRA CỨU',title:'XLOOKUP: tra cứu gọn hơn VLOOKUP',outcome:'Chỉ cần khóa tìm, cột trả về và giá trị khi không tìm thấy; cột trả về không bắt buộc nằm bên phải.',steps:['Đặt mã cần tìm ở A2.','Chọn cột Mã làm vùng tìm.','Chọn cột cần lấy làm vùng trả về.'],code:'=XLOOKUP(A2,Mã,Giá,"Không tìm thấy")',task:'Chọn một mã sản phẩm trong file và dùng XLOOKUP để lấy tên hoặc đơn giá. Thử một mã không tồn tại để xem thông báo.'},
+    {date:'2026-09-18',tag:'KIỂM SOÁT LỖI',title:'IFERROR: biến lỗi thành kết quả có nghĩa',outcome:'Bọc công thức có thể lỗi để người dùng thấy trạng thái rõ ràng thay vì một dải #N/A hoặc #DIV/0!.',steps:['Viết công thức gốc trước.','Bọc toàn bộ công thức bằng IFERROR.','Đặt thông báo phù hợp với nghiệp vụ.'],code:'=IFERROR(XLOOKUP(A2,Mã,Giá),"Không tìm thấy")',task:'Tìm một công thức tra cứu đang có thể trả #N/A và thay phần lỗi bằng “Không tìm thấy”.'},
+    {date:'2026-09-19',tag:'LÀM SẠCH',title:'TRIM: xử lý khoảng trắng thừa',outcome:'TRIM loại khoảng trắng thừa giữa các từ và khoảng trắng đầu/cuối, giúp khóa tra cứu sạch hơn.',steps:['Tạo cột phụ bên cạnh dữ liệu gốc.','Dùng TRIM cho ô đầu tiên.','Kéo xuống và dùng kết quả sạch làm khóa khi cần.'],code:'=TRIM(A2)',task:'Tìm một cột tên hoặc mã có khoảng trắng bất thường, dùng TRIM và kiểm tra lại bằng XLOOKUP hoặc COUNTIF.'},
+    {date:'2026-09-20',tag:'CẤU TRÚC BẢNG',title:'Ctrl+T: biến vùng dữ liệu thành Table',outcome:'Table giúp vùng dữ liệu tự mở rộng và công thức dễ đọc hơn khi làm báo cáo hoặc Power Query.',steps:['Đặt con trỏ vào vùng dữ liệu.','Nhấn Ctrl+T.','Kiểm tra “My table has headers” rồi Enter.'],code:'Ctrl + T',task:'Biến một bảng dữ liệu đang dùng thường xuyên thành Table. Thêm một dòng mới và kiểm tra vùng bảng có tự mở rộng.'},
+    {date:'2026-09-21',tag:'LỌC DỮ LIỆU',title:'Lọc nhanh theo giá trị đang chọn',outcome:'Không cần mở menu Filter nhiều lần: chọn một ô trong vùng dữ liệu rồi dùng phím tắt để lọc theo giá trị đó.',steps:['Đặt con trỏ vào ô chứa giá trị muốn lọc.','Nhấn Alt+D+F+F nếu AutoFilter chưa bật.','Mở bộ lọc cột và giữ lại giá trị đang cần kiểm tra.'],code:'Alt + D + F + F',task:'Trong một bảng dữ liệu thật, lọc riêng một mã cửa hàng hoặc trạng thái NG để kiểm tra nhanh số dòng còn lại.'},
+    {date:'2026-09-22',tag:'KIỂM TRA',title:'COUNTIF: đếm một điều kiện trong vài giây',outcome:'COUNTIF phù hợp để kiểm tra nhanh số lần xuất hiện của một mã, trạng thái hoặc lỗi.',steps:['Chọn vùng cần kiểm tra.','Đặt điều kiện cần đếm ở ô riêng hoặc nhập trực tiếp.','Đọc kết quả và dùng nó để kiểm tra dữ liệu.'],code:'=COUNTIF(A:A,"NG")',task:'Đếm số dòng có trạng thái NG trong file của bạn. Sau đó đổi điều kiện sang OK và so sánh.'}
   ];
 
   function todayVN(){
@@ -77,20 +79,25 @@
     catch(_){return new Date().toISOString().slice(0,10)}
   }
   function validDate(s){return /^\d{4}-\d{2}-\d{2}$/.test(s||'')?s:null}
-  function indexFor(date){
-    const parts=date.split('-').map(Number);const base=[2026,9,14];
-    const a=Date.UTC(parts[0],parts[1]-1,parts[2]);const b=Date.UTC(base[0],base[1]-1,base[2]);
-    return ((Math.floor((a-b)/86400000)%lessons.length)+lessons.length)%lessons.length;
+  function findLesson(date){
+    const exact=lessons.find(function(item){return item.date===date});
+    if(exact)return exact;
+    const future=lessons.find(function(item){return item.date>date});
+    return future||lessons[lessons.length-1];
+  }
+  function nextLessonDate(date){
+    const future=lessons.filter(function(item){return item.date>date});
+    return future.length?future[0].date:date;
   }
   function render(){
-    const params=new URLSearchParams(location.search);const date=validDate(params.get('d'))||todayVN();const item=lessons[indexFor(date)];
+    const params=new URLSearchParams(location.search);const date=validDate(params.get('d'))||todayVN();const item=findLesson(date);
     const el=document.getElementById('quickLesson');
-    const nextDate=(function(){const p=date.split('-').map(Number);const d=new Date(Date.UTC(p[0],p[1]-1,p[2]+1));return d.toISOString().slice(0,10)})();
-    el.innerHTML='<div class="ql-meta"><span class="ql-pill">'+item.tag+'</span><span class="ql-pill">2–3 PHÚT</span><span class="ql-pill">'+date+'</span></div>'+
-      '<h2>'+item.title+'</h2><p class="ql-outcome">'+item.outcome+'</p>'+
-      '<div class="ql-grid"><section class="ql-panel"><h3>Làm nhanh</h3><ol>'+item.steps.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ol><code class="ql-code">'+item.code+'</code></section>'+ 
-      '<section class="ql-panel"><h3>Thử ngay</h3><p style="margin:0;color:#566b62;font-size:12px;line-height:1.7">'+item.task+'</p></section></div>'+ 
-      '<div class="ql-task"><strong>Mục tiêu hôm nay</strong>Hiểu một thao tác nhỏ và dùng được ngay trong file thật. Không cần học thêm phần nào khác.</div>'+ 
+    const nextDate=nextLessonDate(item.date);
+    el.innerHTML='<div class="ql-meta"><span class="ql-pill">'+item.tag+'</span><span class="ql-pill">2–3 PHÚT</span><span class="ql-pill">'+item.date+'</span></div>'+\
+      '<h2>'+item.title+'</h2><p class="ql-outcome">'+item.outcome+'</p>'+\
+      '<div class="ql-grid"><section class="ql-panel"><h3>Làm nhanh</h3><ol>'+item.steps.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ol><code class="ql-code">'+item.code+'</code></section>'+ \
+      '<section class="ql-panel"><h3>Thử ngay</h3><p style="margin:0;color:#566b62;font-size:12px;line-height:1.7">'+item.task+'</p></section></div>'+ \
+      '<div class="ql-task"><strong>Mục tiêu hôm nay</strong>Hiểu một thao tác nhỏ và dùng được ngay trong file thật. Không cần học thêm phần nào khác.</div>'+ \
       '<div class="ql-foot"><a class="ql-back" href="index.html">← Về trang chủ</a><a class="ql-next" href="quick-learn.html?d='+nextDate+'">Bài tiếp theo →</a></div>';
   }
   render();
