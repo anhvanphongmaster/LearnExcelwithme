@@ -1036,9 +1036,25 @@
     const tab=document.querySelector('[data-admin-view="inbox"]');
     if(tab){let pill=tab.querySelector(".admin-chat-unread-pill");if(!pill){pill=document.createElement("span");pill.className="admin-chat-unread-pill";tab.querySelector("b")?.appendChild(pill)}pill.hidden=n<=0;pill.textContent=n>99?"99+":String(n)}
   }
+  let adminThreadsInFlight=null;
   async function loadAdminThreads(){
-    try{const rows=await rpc("avp_chat_admin_threads");adminThreads=Array.isArray(rows)?rows:[];setAdminBadge();renderAdminThreads($("adminChatSearch")?.value||"");if(activeThread&&!adminThreads.some(t=>t.thread_id===activeThread))activeThread=null}
-    catch(e){const r=$("adminChatThreads");if(r)r.innerHTML='<div class="admin-chat-empty">Chưa tải được Chat. Hãy chạy admin-chat-setup.sql.</div>';console.warn(e)}
+    if(adminThreadsInFlight)return adminThreadsInFlight;
+    adminThreadsInFlight=(async()=>{
+      try{
+        const rows=await rpc("avp_chat_admin_threads");
+        adminThreads=Array.isArray(rows)?rows:[];
+        setAdminBadge();
+        renderAdminThreads($("adminChatSearch")?.value||"");
+        if(activeThread&&!adminThreads.some(t=>t.thread_id===activeThread))activeThread=null;
+        return true;
+      }catch(e){
+        const r=$("adminChatThreads");
+        if(r)r.innerHTML='<div class="admin-chat-empty">Chưa tải được Chat. Hãy chạy admin-chat-setup.sql.</div>';
+        console.warn(e);
+        return false;
+      }finally{adminThreadsInFlight=null}
+    })();
+    return adminThreadsInFlight;
   }
   async function openAdminThread(id){
     activeThread=id;renderAdminThreads($("adminChatSearch")?.value||"");
@@ -1200,19 +1216,26 @@
     root.querySelectorAll("[data-float-thread]").forEach(btn=>btn.addEventListener("click",()=>openFloatingAdminThread(btn.dataset.floatThread)));
   }
 
+  let floatThreadsInFlight=null;
   async function loadFloatingAdminThreads(){
-    try{
-      const rows=await rpc("avp_chat_admin_threads");
-      floatThreads=Array.isArray(rows)?rows:[];
-      setFloatingAdminBadge();
-      renderFloatingAdminThreads($("avpAdminFloatSearch")?.value||"");
-      if(floatActiveThread&&!floatThreads.some(t=>t.thread_id===floatActiveThread))floatActiveThread=null;
-    }catch(e){
-      const root=$("avpAdminFloatThreads");if(root)root.innerHTML='<div class="avp-chat-empty">Không tải được hộp thư Admin.</div>';
-      console.warn("AVP floating admin threads",e);
-    }
+    if(floatThreadsInFlight)return floatThreadsInFlight;
+    floatThreadsInFlight=(async()=>{
+      try{
+        const rows=await rpc("avp_chat_admin_threads");
+        floatThreads=Array.isArray(rows)?rows:[];
+        setFloatingAdminBadge();
+        renderFloatingAdminThreads($("avpAdminFloatSearch")?.value||"");
+        if(floatActiveThread&&!floatThreads.some(t=>t.thread_id===floatActiveThread))floatActiveThread=null;
+        return true;
+      }catch(e){
+        const root=$("avpAdminFloatThreads");
+        if(root)root.innerHTML='<div class="avp-chat-empty">Không tải được hộp thư Admin.</div>';
+        console.warn("AVP floating admin threads",e);
+        return false;
+      }finally{floatThreadsInFlight=null}
+    })();
+    return floatThreadsInFlight;
   }
-
   async function openFloatingAdminThread(id){
     floatActiveThread=id;
     renderFloatingAdminThreads($("avpAdminFloatSearch")?.value||"");
