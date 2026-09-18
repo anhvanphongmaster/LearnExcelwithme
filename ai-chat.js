@@ -1651,29 +1651,42 @@
     }catch{}
   }
 
+  let notificationBadgeInFlight=null;
+  let notificationBadgeAt=0;
+  const NOTIFICATION_BADGE_TTL=15000;
+
   async function updateNotificationBadge(){
-    client=client||getClient();
+    if(notificationBadgeInFlight)return notificationBadgeInFlight;
+    if(Date.now()-notificationBadgeAt<NOTIFICATION_BADGE_TTL)return true;
 
-    if(!client?.rpc){
-      publishCommunityUnreadCount(0);
-      return;
-    }
+    notificationBadgeInFlight=(async()=>{
+      client=client||getClient();
 
-    await currentUser();
+      if(!client?.rpc){
+        publishCommunityUnreadCount(0);
+        return false;
+      }
 
-    if(!user){
-      publishCommunityUnreadCount(0);
-      return;
-    }
+      await currentUser();
 
-    let base=0;
-    try{
-      const {data,error}=await client.rpc("notification_unread_count");
-      if(!error) base=Number(data||0);
-    }catch(e){}
-    publishCommunityUnreadCount(base);
+      if(!user){
+        publishCommunityUnreadCount(0);
+        return false;
+      }
+
+      let base=0;
+      try{
+        const {data,error}=await client.rpc("notification_unread_count");
+        if(!error) base=Number(data||0);
+      }catch(e){}
+      publishCommunityUnreadCount(base);
+      notificationBadgeAt=Date.now();
+      return true;
+    })();
+
+    try{return await notificationBadgeInFlight}
+    finally{notificationBadgeInFlight=null}
   }
-
   async function loadNotifications(){
     client=client||getClient();
 
