@@ -877,47 +877,50 @@
 
   let lastKnownUserUnread=-1;
 
+  let userUnreadInFlight=null;
+  let userUnreadAt=0;
+  const USER_UNREAD_TTL=15000;
+
   async function updateUserBadge(opts={}){
-    try{
-      const suppressPreview=opts?.suppressPreview===true;
-      const n=Number(await rpc("avp_chat_my_unread_count"))||0;
-      const badge=$("avpChatBadge");
+    if(userUnreadInFlight)return userUnreadInFlight;
+    if(Date.now()-userUnreadAt<USER_UNREAD_TTL)return true;
+    userUnreadInFlight=(async()=>{
+      try{
+        const suppressPreview=opts?.suppressPreview===true;
+        const n=Number(await rpc("avp_chat_my_unread_count"))||0;
+        const badge=$("avpChatBadge");
 
-      if(badge){
-        badge.hidden=n<=0;
-        badge.textContent=n>99?"99+":String(n);
-      }
+        if(badge){
+          badge.hidden=n<=0;
+          badge.textContent=n>99?"99+":String(n);
+        }
 
-      const panel=$("avpChatPanel");
-      const chatOpen=!!(panel && !panel.hidden);
+        const panel=$("avpChatPanel");
+        const chatOpen=!!(panel && !panel.hidden);
 
-      /* Nếu realtime bị miss nhưng unread tăng, vẫn phát sự kiện nổi. */
-      if(
-        !suppressPreview &&
-        lastKnownUserUnread>=0 &&
-        n>lastKnownUserUnread &&
-        !chatOpen
-      ){
-        try{
-          const detail=await getLatestUnreadPreview();
-          if(detail?.body){
-            emitChatMiniPreview(detail);
-          }else{
-            emitChatMiniPreview({
+        if(
+          !suppressPreview &&
+          lastKnownUserUnread>=0 &&
+          n>lastKnownUserUnread &&
+          !chatOpen
+        ){
+          try{
+            const detail=await getLatestUnreadPreview();
+            if(detail?.body) emitChatMiniPreview(detail);
+            else emitChatMiniPreview({
               role:"admin",
               sender:"Anh Văn Phòng",
-              body:n===1
-                ?"Bạn có 1 tin nhắn mới."
-                :`Bạn có ${n} tin nhắn mới.`
+              body:n===1?"Bạn có 1 tin nhắn mới.":`Bạn có ${n} tin nhắn mới.`
             });
-          }
-        }catch(e){
-          console.warn("AVP unread fallback preview",e);
+          }catch(e){console.warn("AVP unread fallback preview",e)}
         }
-      }
 
-      lastKnownUserUnread=n;
-    }catch{}
+        lastKnownUserUnread=n;
+        userUnreadAt=Date.now();
+        return true;
+      }catch{return false}
+    })();
+    try{return await userUnreadInFlight}finally{userUnreadInFlight=null}
   }
   async function markUserRead(){
     try{
