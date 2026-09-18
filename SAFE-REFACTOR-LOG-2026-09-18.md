@@ -35,3 +35,5 @@ Additional verified changes:
 - sw.js: removed the stale site-rpc-dedupe-v1.js entry from the service-worker precache list. The script is no longer loaded by active frontend loaders and contains no dedupe logic. This prevents the obsolete asset from being prefetched/cached; no runtime feature or DB behavior changes.
 
 - home-page-motion.css: aligned its home-ui-owner cache-buster from owner2 to owner3, matching the active homepage loader. This removes a duplicate URL/cache key for the same CSS asset; no CSS rules or behavior changed.
+
+- index.html: replaced the runtime fetch/patch of pinned commit 194140a1... with the exact patched HTML produced by the existing loader logic. This removes the homepage's dependency on jsDelivr/raw GitHub at runtime while preserving the same patch transformations; no Supabase/data logic changed.
