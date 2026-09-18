@@ -16,7 +16,6 @@
   loadStyle('site-upgrade-v1.css?v=20260914-site2','avp-site-upgrade-v1');
   loadRuntime('site-upgrade-v1.js?v=20260914-site4','avp-site-upgrade-v1');
   loadRuntime('site-runtime-cache-v1.js?v=20260914-cache2','avp-site-cache-v1');
-  loadRuntime('site-rpc-dedupe-v1.js?v=20260914-rpc6','avp-rpc-dedupe-v1');
   loadRuntime('site-auth-cache-v1.js?v=20260914-auth3','avp-auth-cache-v1');
 
   const VISITOR_KEY = "avpAnalyticsVisitorId";
