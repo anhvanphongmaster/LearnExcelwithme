@@ -37,3 +37,5 @@ Additional verified changes:
 - home-page-motion.css: aligned its home-ui-owner cache-buster from owner2 to owner3, matching the active homepage loader. This removes a duplicate URL/cache key for the same CSS asset; no CSS rules or behavior changed.
 
 - index.html: replaced the runtime fetch/patch of pinned commit 194140a1... with the exact patched HTML produced by the existing loader logic. This removes the homepage's dependency on jsDelivr/raw GitHub at runtime while preserving the same patch transformations; no Supabase/data logic changed.
+
+- Final static verification: all 7 modified JavaScript files parse successfully; index.html no longer contains document.write(), fetch(), or the pinned external homepage URL. No Supabase table/function/data changes detected on this branch.
