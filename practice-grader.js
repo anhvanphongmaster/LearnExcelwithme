@@ -1189,17 +1189,9 @@ async function loadStarCounts(sb,rows){
       });
     }
   }catch(e){}
-  try{
-    const {data,error}=await sb.from("practice_grader_stars").select("to_user_id");
-    if(!error && Array.isArray(data)){
-      const c={};
-      data.forEach(x=>{
-        const id=String(x.to_user_id||"");
-        if(id)c[id]=(c[id]||0)+1;
-      });
-      Object.assign(map,c);
-    }
-  }catch(e){}
+  // Do not fetch the entire stars table after the aggregate RPC.
+  // The RPC already provides the counts needed by the leaderboard; the old
+  // fallback caused an unnecessary full-table read on every leaderboard load.
   return map;
 }
 async function giftStar(btn){
