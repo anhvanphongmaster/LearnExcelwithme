@@ -25,3 +25,5 @@ Do not merge to main until runtime verification is complete.
 Additional verified changes:
 - cloud-sync-v11.js: added single-flight + 15s cooldown around automatic/manual progress sync requests. This prevents repeated reconnect events from starting duplicate sync work; the underlying sync engine and user_progress data are unchanged. Rollback: revert the commit.
 - analytics-tracker.js: increased page-view client dedupe TTL from 30 minutes to 60 minutes. This reduces repeated page_view INSERT/RPC writes while retaining page-view tracking; no analytics rows are deleted. Rollback: restore 30-minute TTL.
+
+- ai-chat.js: added single-flight + 15s TTL for notification unread-count refreshes. Focus, visibility, auth, and periodic refreshes can converge on one RPC instead of issuing duplicates. No notification data is changed.
