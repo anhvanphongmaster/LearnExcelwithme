@@ -1189,9 +1189,19 @@ async function loadStarCounts(sb,rows){
       });
     }
   }catch(e){}
-  // Do not fetch the entire stars table after the aggregate RPC.
-  // The RPC already provides the counts needed by the leaderboard; the old
-  // fallback caused an unnecessary full-table read on every leaderboard load.
+  // Keep the direct-table read only as an RPC-error fallback.
+  // This preserves resilience without doing a full-table read after a successful aggregate RPC.
+  if(!Object.keys(map).length){
+    try{
+      const {data,error}=await sb.from("practice_grader_stars").select("to_user_id");
+      if(!error && Array.isArray(data)){
+        data.forEach(x=>{
+          const id=String(x.to_user_id||"");
+          if(id)map[id]=(map[id]||0)+1;
+        });
+      }
+    }catch(e){}
+  }
   return map;
 }
 async function giftStar(btn){
