@@ -144,26 +144,5 @@
     ]
   });
 
-  replace('x22-power-query-multi-source',{
-    hook:'Bạn có 12 file tháng trong một folder hoặc hai bảng cần ghép theo mã. Bài này tập trung vào ba thao tác dễ nhầm nhất: Append, Merge và Combine Folder — cùng cách kiểm tra để không nhân dòng.',
-    outcomes:['Phân biệt Append với Merge','Kiểm tra schema trước khi Append','Merge theo key và nhận ra nguy cơ nhân dòng','Combine Folder bền vững khi thêm file mới'],
-    useCases:['Gộp file tháng','Nối Sales với Master cửa hàng','Ghép nhiều sheet/file cùng cấu trúc','Tạo nguồn tổng chỉ cần Refresh'],
-    sections:[
-      sec('1. Chọn đúng: Append hay Merge','Sai lựa chọn từ đầu sẽ tạo cấu trúc dữ liệu sai.',[
-        'Nếu muốn chồng Jan + Feb + Mar xuống dưới nhau → Append.','Nếu muốn thêm cột Tên cửa hàng vào Sales theo Store_Code → Merge.','Viết ra kết quả mong muốn trước khi bấm nút.'
-      ],['Append tăng số dòng; Merge thường tăng số cột, nhưng có thể tăng dòng nếu key phía lookup không duy nhất.'],{title:'Nhớ nhanh',text:'Append = xếp dọc. Merge = nối ngang theo key.'},null,'core',[q('Jan và Feb cùng schema cần gộp thành một bảng năm dùng gì?',['Append','Merge','Group By','Transpose'],0,'Các bảng cùng schema cần xếp dòng xuống dưới nên dùng Append.')]),
-      sec('2. Append không làm lệch cột','Power Query ghép theo tên cột, không phải vị trí mắt nhìn.',[
-        'So sánh tên cột giữa các nguồn.','Chuẩn hóa khác biệt như Revenue vs DoanhThu trước Append.','Append queries.','Kiểm tra số dòng output = tổng số dòng các input sau filter hợp lệ.'
-      ],['Cột chỉ có ở một nguồn sẽ tạo null ở các nguồn còn lại. Đây là tín hiệu schema chưa đồng nhất hoặc thay đổi nghiệp vụ.'],{title:'Control',text:'Rows_Out = Rows_Jan + Rows_Feb + Rows_Mar (sau cùng rule filter).'},'Đừng xóa cột “lạ” ngay; trước tiên xác định nó xuất hiện do schema drift hay dữ liệu hợp lệ.','core'),
-      sec('3. Merge mà không nhân dòng','Đây là lỗi nguy hiểm nhất khi nối bảng Master.',[
-        'Kiểm tra key ở bảng bên phải có duy nhất không.','Merge theo đúng cột key và đúng kiểu dữ liệu.','Xem số match/unmatch.','Expand chỉ cột cần dùng.','So sánh số dòng trước và sau Merge.'
-      ],['Nếu bảng Master có 2 dòng cho một Store_Code, mỗi dòng Sales tương ứng có thể nở thành 2 dòng sau Expand.','Vì vậy uniqueness check phải làm trước Merge, không phải sau khi báo cáo đã tăng gấp đôi.'],{title:'PASS khi',text:'Nếu kỳ vọng many-to-one: Rows_AfterMerge = Rows_BeforeMerge và key unmatched được giải thích.'},'Rows tăng bất ngờ sau Merge = dừng lại kiểm tra duplicate key.','core'),
-      sec('4. Combine Folder có kiểm soát','Mục tiêu là thêm file mới rồi Refresh, không chỉnh query.',[
-        'Đưa các file cùng schema vào một folder nguồn riêng.','Data → Get Data → From Folder.','Lọc bỏ file tạm/~$, file archive hoặc file khác schema.','Combine & Transform.','Kiểm tra query mẫu (Transform Sample File) và output.','Thêm một file mới rồi Refresh để test.'
-      ],['Folder phải sạch về loại file và schema. Một file backup khác cấu trúc có thể làm query lỗi hoặc thêm dữ liệu sai.'],{title:'PASS khi',text:'Thêm file tháng mới cùng schema → Refresh → số dòng tăng đúng bằng số dòng file mới.'},null,'core'),
-      sec('5. Học thêm: staging và Reference','Dùng khi query bắt đầu nhiều nguồn/nhiều output.',[
-        'Giữ query nguồn/staging ở Connection Only khi không cần load ra sheet.','Dùng Reference để tạo nhánh xử lý tiếp.','Chỉ load output cuối thật sự cần.'
-      ],['Cách này giúp kiến trúc rõ và giảm các bảng trung gian không cần thiết trên workbook.'],{title:'Mẫu kiến trúc',text:'SRC_Folder → STG_Sales → CLEAN_Sales → OUT_Report.'},null,'extension')
-    ]
-  });
+
 })();
