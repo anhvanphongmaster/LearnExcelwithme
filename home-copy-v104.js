@@ -38,21 +38,20 @@
   typing.style.whiteSpace='nowrap';
 
   frame.style.position='relative';
-  frame.style.display='inline-block';
+  frame.style.display='block';
   frame.style.height='1.35em';
   frame.style.lineHeight='1.35';
   frame.style.whiteSpace='nowrap';
   frame.style.maxWidth='100%';
+  frame.style.textAlign='left';
 
   text.style.display='inline-block';
   text.style.whiteSpace='nowrap';
 
   cursor.style.display='inline-block';
-  cursor.style.position='absolute';
-  cursor.style.left='0';
-  cursor.style.top='0.08em';
-  cursor.style.marginLeft='0';
-  cursor.style.transform='translateX(0)';
+  cursor.style.position='static';
+  cursor.style.marginLeft='3px';
+  cursor.style.transform='none';
 
   var lines=[
     'Học đúng lộ trình, không lan man',
@@ -71,7 +70,7 @@
 
   function render(){
     text.textContent=lines[line].slice(0,char);
-    cursor.style.transform='translateX('+text.offsetWidth+'px)';
+
   }
 
   function next(ms){
