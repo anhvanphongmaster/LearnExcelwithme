@@ -4,52 +4,8 @@
 
   if (orb) orb.style.display = "none";
 
-  if (typing) {
-    const lines = [
-      "100+ công thức Excel đang chờ bạn",
-      "Excel • Office • Productivity",
-      "Học nhanh hơn. Làm việc thông minh hơn.",
-      "Từ dữ liệu thô → báo cáo chuyên nghiệp",
-      "Thực hành theo video • File mẫu sẵn",
-      "Power Query • Pivot • Dashboard",
-      "Làm sạch dữ liệu trong vài bước",
-      "Đua top học viên trên Excel Race",
-      "Tự động hóa — ít click, nhiều kết quả",
-      "Beginner → Master: một lộ trình rõ ràng"
-    ];
-    let line = 0, char = 0, deleting = false, timer = null;
-    const TYPE_MS = 42, DEL_MS = 26, HOLD_MS = 2300, GAP_MS = 360;
+  /* Typing is owned by home-copy-v104.js. Keep this file focused on non-typing home effects. */
 
-    function render(){ typing.textContent = (lines[line] || "").slice(0, char); }
-    function schedule(ms){ clearTimeout(timer); timer = setTimeout(step, ms); }
-    function step(){
-      if (document.hidden) { schedule(500); return; }
-      const current = lines[line] || "";
-      if (!current) { schedule(500); return; }
-      if (!deleting) {
-        char = Math.min(current.length, char + 1);
-        render();
-        if (char >= current.length) {
-          deleting = true;
-          schedule(HOLD_MS);
-        } else schedule(TYPE_MS);
-      } else {
-        char = Math.max(0, char - 1);
-        render();
-        if (char <= 0) {
-          deleting = false;
-          line = (line + 1) % lines.length;
-          schedule(GAP_MS);
-        } else schedule(DEL_MS);
-      }
-    }
-
-    typing.textContent = "";
-    clearTimeout(window.__avpTypingTimer);
-    if (window.__avpTypingRaf) cancelAnimationFrame(window.__avpTypingRaf);
-    window.__avpTypingTimer = setTimeout(step, 300);
-    window.addEventListener("pagehide", () => clearTimeout(timer), { once:true });
-  }
 })();
 
 /* ===== HOME EARNED BADGES ===== */
