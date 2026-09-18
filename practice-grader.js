@@ -1178,11 +1178,13 @@ function todayKey(){
 }
 async function loadStarCounts(sb,rows){
   const map={};
+  let rpcSucceeded=false;
   if(!sb)return map;
   try{
     let rpc=await sb.rpc("practice_grader_star_counts");
     if(rpc.error)rpc=await sb.rpc("practice_grader_star_counts",{p_user_ids:null});
     if(!rpc.error && Array.isArray(rpc.data)){
+      rpcSucceeded=true;
       rpc.data.forEach(x=>{
         const id=String(x.user_id||x.id||"");
         if(id)map[id]=Number(x.star_count||x.stars||0);
@@ -1191,7 +1193,7 @@ async function loadStarCounts(sb,rows){
   }catch(e){}
   // Keep the direct-table read only as an RPC-error fallback.
   // This preserves resilience without doing a full-table read after a successful aggregate RPC.
-  if(!Object.keys(map).length){
+  if(!rpcSucceeded){
     try{
       const {data,error}=await sb.from("practice_grader_stars").select("to_user_id");
       if(!error && Array.isArray(data)){
