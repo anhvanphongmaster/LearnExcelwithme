@@ -33,3 +33,5 @@ Additional verified changes:
 - admin-chat-core-v1.js: added single-flight protection to latest unread chat preview loading. Simultaneous badge/preview triggers now share one preview request; no caching or data mutation added.
 
 - sw.js: removed the stale site-rpc-dedupe-v1.js entry from the service-worker precache list. The script is no longer loaded by active frontend loaders and contains no dedupe logic. This prevents the obsolete asset from being prefetched/cached; no runtime feature or DB behavior changes.
+
+- home-page-motion.css: aligned its home-ui-owner cache-buster from owner2 to owner3, matching the active homepage loader. This removes a duplicate URL/cache key for the same CSS asset; no CSS rules or behavior changed.
