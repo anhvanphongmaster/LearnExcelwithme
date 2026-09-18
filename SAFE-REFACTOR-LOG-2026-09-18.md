@@ -31,3 +31,5 @@ Additional verified changes:
 - admin-chat-core-v1.js: added single-flight guards to admin thread-list loaders (main admin inbox and floating admin inbox). Concurrent realtime/poll/manual refreshes now share one RPC; sequential refresh behavior is unchanged.
 
 - admin-chat-core-v1.js: added single-flight protection to latest unread chat preview loading. Simultaneous badge/preview triggers now share one preview request; no caching or data mutation added.
+
+- sw.js: removed the stale site-rpc-dedupe-v1.js entry from the service-worker precache list. The script is no longer loaded by active frontend loaders and contains no dedupe logic. This prevents the obsolete asset from being prefetched/cached; no runtime feature or DB behavior changes.
