@@ -29,3 +29,5 @@ Additional verified changes:
 - ai-chat.js: added single-flight + 15s TTL for notification unread-count refreshes. Focus, visibility, auth, and periodic refreshes can converge on one RPC instead of issuing duplicates. No notification data is changed.
 
 - admin-chat-core-v1.js: added single-flight guards to admin thread-list loaders (main admin inbox and floating admin inbox). Concurrent realtime/poll/manual refreshes now share one RPC; sequential refresh behavior is unchanged.
+
+- admin-chat-core-v1.js: added single-flight protection to latest unread chat preview loading. Simultaneous badge/preview triggers now share one preview request; no caching or data mutation added.
