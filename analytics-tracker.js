@@ -21,7 +21,7 @@
   const VISITOR_KEY = "avpAnalyticsVisitorId";
   const MAX_WAIT = 3500;
   const RPC_TIMEOUT = 5000;
-  const PAGE_VIEW_TTL = 30*60*1000;
+  const PAGE_VIEW_TTL = 60*60*1000;
   const LOGIN_TRACK_TTL = 30*60*1000;
   const recentEvents=new Map();
   let lastAuthUserId=null;
