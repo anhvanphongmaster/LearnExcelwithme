@@ -47,7 +47,65 @@
     'c42-end-to-end-case':['Nhiều file nguồn rời + yêu cầu báo cáo','Ingest → clean → model → calculate → visualize → validate → handover','Một workflow hoàn chỉnh có refresh, control, hướng dẫn và bản final']
   };
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const imagePath=id=>{const n=Object.keys(V).indexOf(id)+1;return `lesson-walkthrough/bai-${String(n).padStart(2,'0')}-${id}.svg`};
-  function html(id){const v=V[id];if(!v)return '';return `<section class="lp-visual-v3" aria-label="Minh họa thao tác"><div class="lp-visual-title-v3"><span>MINH HỌA THAO TÁC · EXCEL 2021+</span><strong>Ảnh thao tác trực tiếp theo đúng nội dung bài</strong></div><img class="lp-visual-image-v3" src="${imagePath(id)}" alt="Minh họa thao tác Excel 2021+" loading="lazy"><div class="lp-visual-flow-v3"><article><small>ĐẦU VÀO</small><b>${esc(v[0])}</b></article><i aria-hidden="true">→</i><article class="action"><small>BẠN LÀM</small><b>${esc(v[1])}</b></article><i aria-hidden="true">→</i><article class="result"><small>PHẢI THẤY</small><b>${esc(v[2])}</b></article></div><p>Đối chiếu lần lượt Đầu vào → Bạn làm → Phải thấy khi thực hành.</p></section>`}
+  const clickMap={
+'f01-excel-workspace':['Mở sheet Data','Bấm ô B3','Name Box hiển thị B3'],
+'f02-data-entry-types':['Chọn cột Mã','Home → Number Format → Text','Nhập 00125 và kéo ngày/SL'],
+'f03-formatting-display':['Chọn ô Revenue','Home → Number → Currency','Chọn % và Date trong Format Cells'],
+'f04-formulas-references':['Chọn D2','Gõ công thức vào Formula Bar','Kéo fill handle xuống'],
+'f05-core-functions':['Chọn ô tổng','Formulas → AutoSum','Chọn vùng và Enter'],
+'f06-data-table-structure':['Bôi đen vùng nguồn','Data → Remove Blank Rows','Giữ một header và một dòng = một record'],
+'d07-sort-filter':['Chọn vùng dữ liệu','Data → Filter','Revenue ▼ → Number Filters → Greater Than'],
+'d08-find-replace':['Ctrl+F → Find All','Kiểm tra 37 kết quả','Ctrl+H → Replace All trong đúng phạm vi'],
+'s10-text':['Chọn cột Raw Code','Formulas → Insert Function','TRIM/CLEAN/SUBSTITUTE rồi Enter'],
+'d09-data-validation':['Chọn cột Store','Data → Data Validation','Allow: List → Source: HN01,HN02,HCM01'],
+'s12-clean-control':['Ctrl+F tìm SO001','Data → Remove Duplicates','Lọc N/A và kiểm tra tổng trước/sau'],
+'s07-logic':['Chọn C2','Gõ =IF(A2>=B2,"Đạt","Chưa đạt")','Kéo công thức xuống'],
+'s08-conditional-aggregation':['Chọn ô kết quả','Formulas → AutoSum → SUMIFS','Chọn Store và khoảng ngày làm criteria'],
+'s09-lookup':['Chọn ô Tên','Gõ XLOOKUP với mã NV','Enter → kiểm tra NV002 và mã thiếu'],
+'s11-date-time':['Chọn cột Date','Formulas → Date & Time','Dùng MONTH/EOMONTH để nhóm tháng'],
+'x19-advanced-formulas':['Chọn ô công thức dài','Formulas → Evaluate Formula','Đổi phần lặp thành tên bằng LET'],
+'x20-dynamic-array':['Chọn ô đầu danh sách','Gõ =SORT(UNIQUE(A2:A500))','Enter → vùng spill tự mở rộng'],
+'a13-excel-table':['Bôi đen A1:D500','Ctrl+T','Tick My table has headers → đặt tên tblSales'],
+'a14-pivottable':['Chọn bảng Sales','Insert → PivotTable','Rows: Store · Values: Revenue'],
+'a15-kpi-analysis':['Chọn vùng KPI','Tạo AOV = Revenue/Orders','Tạo CR = Orders/Traffic và Target %'],
+'a18-report-audit-handover':['Data → Refresh All','Kiểm tra totals và formula/link','File → Save As bản Final'],
+'a19-reconciliation':['Ghi row count + Revenue nguồn','So với bảng báo cáo','Lọc exception và kiểm tra Delta'],
+'a16-charts-pareto':['Sort Qty giảm dần','Insert → Combo Chart','Cột Qty + đường Cum.%'],
+'a17-dashboard':['Đặt KPI Cards trên cùng','Insert Chart cho trend/breakdown','Đặt filter/slicer bên phải'],
+'v23-kpi-cards':['Chọn vùng KPI','Insert → Shapes → Card','Hiển thị Actual, Variance, Status'],
+'v24-slicer-timeline':['Chọn PivotTable','Insert → Slicer → Store','Insert → Timeline → Date'],
+'v25-dashboard-interaction':['Chọn Slicer','Report Connections → tick các Pivot','Thêm Reset/Guide và khóa vùng layout'],
+'pq28-import-sources':['Data → Get Data','Chọn From Workbook / Text-CSV / Folder','Transform Data → mở Power Query Editor'],
+'x21-power-query-basics':['Get Data → From Text/CSV','Promote Headers → Data Type','Trim/Clean → Close & Load'],
+'pq30-transform-clean':['Chọn cột Store','Transform → Format → Trim/Clean','Replace Values / Fill / Remove Rows'],
+'pq31-schema-types':['Chọn Date và Revenue','Transform → Data Type','Filter Errors → kiểm tra Error rows'],
+'x22-power-query-multi-source':['Data → Get Data → From Folder','Combine & Transform','Merge Queries bằng key'],
+'pq33-refresh-performance':['Chọn query staging','Choose Columns + Filter Rows sớm','Right-click query → Enable Load theo nhu cầu'],
+'x23-macro-vba':['Developer → Record Macro','Thực hiện chuỗi format','Stop Recording → chạy macro trên bản copy'],
+'vb35-object-model':['Alt+F11 mở VBE','Insert → Module','Gõ ThisWorkbook.Worksheets("Data").Range("A2")'],
+'vb36-control-flow':['Alt+F11 → Module','Viết For/If và xử lý lỗi','F8 chạy từng dòng để kiểm tra'],
+'vb37-performance-security':['Mở Procedure','Tắt ScreenUpdating trước vòng lặp','Bật lại trong nhánh thoát an toàn'],
+'x24-automation-workflow':['Vẽ Input → Transform → Calculate','Đặt checkpoint Validate','Report → Deliver và lưu bản final'],
+'c39-tool-selection':['Đọc loại bài toán','Chọn Formula/Pivot/PQ/VBA','Kiểm tra tool có phù hợp grain không'],
+'c40-sales-case':['Get Data sales + target + store','Merge/Clean → KPI → Pivot','Reconcile dashboard với source'],
+'c41-qc-case':['Import QC log','Chuẩn defect → Pivot','Insert Pareto và lọc exception'],
+'c42-end-to-end-case':['Ingest tất cả nguồn','Clean → Model → Calculate → Report','Validate → Refresh → Handover']
+  };
+  const esc2=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function screen(id,idx){
+    const v=V[id], s=clickMap[id]||['Chọn vùng dữ liệu','Thực hiện thao tác','Kiểm tra kết quả'];
+    const pq=id.startsWith('pq')||id.startsWith('x21')||id.startsWith('x22'), vba=id.startsWith('vb')||id==='x23-macro-vba';
+    const tab=pq?'Power Query Editor':vba?'Visual Basic for Applications':'Microsoft Excel 2021+';
+    const menu=pq?'Home   Transform   Add Column   View':vba?'File   Edit   View   Insert   Debug   Run':'File   Home   Insert   Page Layout   Formulas   Data   Review   View';
+    const label=idx===0?s[0]:idx===1?s[1]:s[2];
+    const accent=pq?'#217346':vba?'#5b4636':'#217346';
+    const target=idx===0?'A1:D500':idx===1?'B3':'C2';
+    const cursorX=idx===0?260:idx===1?700:1040, cursorY=idx===0?365:idx===1?150:455;
+    return '<div class="avp-shot" style="--accent:'+accent+'"><div class="avp-appbar"><b>'+tab+'</b><span>LearnExcelwithme · Bài '+(Object.keys(V).indexOf(id)+1)+'/42</span></div><div class="avp-menu">'+menu+'</div><div class="avp-ribbon"><span>Clipboard</span><span>Font</span><span>Number</span><span>Sort & Filter</span><span>Data Tools</span><span>Queries</span></div><div class="avp-name"><span>'+target+'</span><b>fx</b><em>'+esc2(label)+'</em></div><div class="avp-sheet"><div class="avp-grid"><div class="avp-head">A</div><div class="avp-head">B</div><div class="avp-head">C</div><div class="avp-head">D</div><div>HN001</div><div>HN01</div><div>12500000</div><div>OK</div><div>HN002</div><div>HN02</div><div>9800000</div><div>OK</div><div>HCM003</div><div>HCM01</div><div>15400000</div><div>Check</div><div>HN004</div><div>HN01</div><div>10200000</div><div>OK</div></div><div class="avp-side"><b>'+esc2(s[0])+'</b><div>'+esc2(v[0])+'</div><hr><b>'+esc2(s[1])+'</b><div>'+esc2(v[1])+'</div><hr><b>Kết quả</b><div>'+esc2(v[2])+'</div></div></div><div class="avp-click" style="left:'+cursorX+'px;top:'+cursorY+'px"><i>'+ (idx+1) +'</i><span>CLICK</span></div><div class="avp-bottom"><b>BƯỚC '+(idx+1)+'</b><span>'+esc2(label)+'</span></div></div>';
+  }
+  function html(id){
+    const v=V[id];if(!v)return '';
+    return '<section class="lp-visual-v3" aria-label="Ảnh thao tác Excel 2021+"><div class="lp-visual-title-v3"><span>THAO TÁC TRỰC TIẾP · EXCEL 2021+</span><strong>'+esc2(v[1])+'</strong></div><div class="avp-shots">'+screen(id,0)+screen(id,1)+screen(id,2)+'</div><div class="lp-visual-check"><b>Phải thấy:</b> '+esc2(v[2])+'</div></section>';
+  }
   window.AVPVisualWalkthrough={html,items:V};
 })();
