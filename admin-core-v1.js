@@ -29,8 +29,15 @@
           timer=setTimeout(()=>reject(new Error("SESSION_TIMEOUT")),Math.min(timeout,5000));
         })
       ]).finally(()=>clearTimeout(timer));
-      return data?.session || null;
-    }catch(e){ return null; }
+      if(data?.session) return data.session;
+    }catch(e){}
+    // Session có thể chưa được hydrate kịp sau khi redirect từ trang đăng nhập.
+    // Refresh một lần trước khi kết luận user chưa đăng nhập.
+    try{
+      const {data,error}=await client.auth.refreshSession();
+      if(!error && data?.session) return data.session;
+    }catch(e){}
+    return null;
   }
   function toast(text){const el=$("adminToast");if(!el)return;el.textContent=text;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1800)}
   function showDenied(message="Không có quyền Admin."){ $("adminGate").hidden=true;$("adminDashboard").hidden=true;$("adminDenied").hidden=false;const p=$("adminDeniedMsg")||$("adminDenied").querySelector("p");if(p&&message)p.textContent=message; }
@@ -782,8 +789,24 @@
       if(admErr){
         console.warn("is_admin_user rpc:", admErr);
       }else if(isAdm===false){
-        showDenied("Session đã login nhưng is_admin_user() = false. Hãy đăng xuất/đăng nhập lại. Nếu vẫn sai, chạy lại SQL set is_admin = true.");
-        return;
+        // Token/profile quyền admin có thể vừa được refresh sau khi redirect.
+        // Refresh session và kiểm tra quyền lại một lần trước khi chặn.
+        try{
+          const refreshed=await client.auth.refreshSession();
+          if(!refreshed.error && refreshed.data?.session){
+            const retry=await client.rpc("is_admin_user");
+            if(retry.error || retry.data!==true){
+              showDenied("Tài khoản đã đăng nhập nhưng chưa được nhận quyền Admin. Kiểm tra is_admin = true trong profiles.");
+              return;
+            }
+          }else{
+            showDenied("Session đã login nhưng chưa xác thực được quyền Admin. Hãy tải lại trang.");
+            return;
+          }
+        }catch(e){
+          showDenied("Session đã login nhưng chưa xác thực được quyền Admin. Hãy tải lại trang.");
+          return;
+        }
       }
     }catch(e){ console.warn(e); }
     bindMailTabs();
