@@ -130,11 +130,7 @@ where is_admin = true;</pre>
         </button>
         <button type="button" data-admin-view="tools" role="tab">
           <b>🧰 Tool</b><small>Kho Tool & ý tưởng ưu tiên</small>
-        </button>
-        <button type="button" data-admin-view="inbox" role="tab">
-          <b>📥 Hộp thư</b><small>Thắc mắc, ý tưởng & file</small>
-        </button>
-        <button type="button" data-admin-view="engagement" role="tab">
+        </button><button type="button" data-admin-view="engagement" role="tab">
           <b>🖱️ Tương tác</b><small>Tải file, video & bộ sách</small>
         </button>
         <button type="button" data-admin-view="analytics" role="tab">
@@ -440,38 +436,7 @@ where is_admin = true;</pre>
         <div class="admin-panel-head"><div><span>🆕 USERS</span><h2>Tài khoản mới theo ngày</h2></div></div>
         <div id="newUserTrend" class="admin-user-trend"></div>
       </article>
-    </section>
-
-<div class="admin-section-heading admin-view-section" data-admin-section="inbox"><span>📥 HỘP THƯ</span><h2>Phản hồi cần xử lý</h2></div>
-<section class="admin-grid admin-view-section" id="adminInboxSection" data-admin-section="inbox">
-      <article class="admin-panel" id="adminChatInbox" style="grid-column:1/-1">
-        <div class="admin-chat-toolbar">
-          <div><strong>💬 Chat học viên <span class="admin-chat-unread-pill" id="adminChatUnread" hidden>0</span></strong><small>Nhận và phản hồi tin nhắn của người đã đăng nhập</small></div>
-          <button type="button" class="admin-chat-refresh" id="adminChatRefresh">↻ Làm mới</button>
-        </div>
-        <div class="admin-chat-shell">
-          <aside class="admin-chat-threads">
-            <div class="admin-chat-search"><input id="adminChatSearch" type="search" placeholder="Tìm tên hoặc email…" autocomplete="off"></div>
-            <div id="adminChatThreads"><div class="admin-chat-empty">Đang tải cuộc trò chuyện…</div></div>
-          </aside>
-          <section class="admin-chat-conversation">
-            <header class="admin-chat-conv-head"><strong id="adminChatPerson">Chọn một học viên</strong><small id="adminChatEmail">Mở cuộc trò chuyện bên trái để phản hồi.</small></header>
-            <div class="admin-chat-messages" id="adminChatMessages"><div class="admin-chat-empty">💬 Chưa chọn cuộc trò chuyện.</div></div>
-            <div class="avp-chat-file-preview" id="adminChatFilePreview" hidden></div>
-            <div class="admin-chat-compose">
-              <label class="avp-chat-attach" title="Gửi ảnh hoặc file">📎<input id="adminChatFile" type="file" multiple accept="image/*,.pdf,.xlsx,.xls,.csv,.doc,.docx,.ppt,.pptx,.txt,.zip"></label>
-              <textarea id="adminChatReply" maxlength="3000" rows="2" placeholder="Phản hồi học viên…"></textarea>
-              <button type="button" id="adminChatReplyBtn">Gửi</button>
-            </div>
-          </section>
-        </div>
-      </article>
-
-
-    </section>
-
-
-<div class="admin-section-heading admin-view-section" data-admin-section="engagement"><span>🖱️ TƯƠNG TÁC</span><h2>Click tải file, xem video & bộ sách</h2></div>
+    </section><div class="admin-section-heading admin-view-section" data-admin-section="engagement"><span>🖱️ TƯƠNG TÁC</span><h2>Click tải file, xem video & bộ sách</h2></div>
 <section class="admin-grid admin-view-section" data-admin-section="engagement">
       <article class="admin-panel" style="grid-column:1/-1">
         <div class="admin-panel-head">
