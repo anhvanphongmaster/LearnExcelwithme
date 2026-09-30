@@ -35,7 +35,7 @@
     const v=view();
     if(['admin_analytics_trend','admin_analytics_top_tools','admin_analytics_top_pages','admin_feature_usage_summary'].includes(name))return v!=='analytics';
     if(['admin_learning_funnel','admin_top_completed_lessons','admin_quiz_difficulty','admin_new_user_trend'].includes(name))return v!=='learning';
-    if(['admin_engagement_summary_v2','admin_list_saved_feedback','admin_list_user_files'].includes(name))return v!=='engagement';
+    if(['admin_engagement_summary_v2','admin_list_saved_feedback'].includes(name))return v!=='engagement';
     return false;
   }
   const CACHEABLE=new Set([
