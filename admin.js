@@ -98,7 +98,7 @@
     bindGuards();
     await waitClient();
     const s=document.createElement('script');
-    s.src='admin-core-v1.js?v=20260913-perf1';s.defer=true;
+    s.src='admin-core-v1.js?v=20260930-adminfix2';s.defer=true;
     s.onload=()=>{coreLoaded=true;setTimeout(resetHealthUi,350);setTimeout(resetHealthUi,1200)};
     s.onerror=()=>console.error('[Admin] Không tải được admin-core-v1.js');
     document.head.appendChild(s);
