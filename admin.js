@@ -39,7 +39,7 @@
     return false;
   }
   const CACHEABLE=new Set([
-    'admin_analytics_summary','admin_analytics_trend','admin_analytics_top_tools','admin_analytics_top_pages','admin_learning_summary','admin_learning_funnel','admin_top_completed_lessons','admin_quiz_difficulty','admin_new_user_trend','admin_engagement_summary_v2','admin_feature_usage_summary','admin_um_list_users','admin_tiktok_summary_v1','admin_download_summary','avp_chat_admin_threads','admin_system_notification_list','admin_list_saved_feedback','admin_list_user_files'
+    'admin_analytics_summary','admin_analytics_trend','admin_analytics_top_tools','admin_analytics_top_pages','admin_learning_summary','admin_learning_funnel','admin_top_completed_lessons','admin_quiz_difficulty','admin_new_user_trend','admin_engagement_summary_v2','admin_feature_usage_summary','admin_um_list_users','admin_tiktok_summary_v1','admin_download_summary','avp_chat_admin_threads','admin_system_notification_list','admin_list_saved_feedback'
   ]);
 
   function resetHealthUi(){
