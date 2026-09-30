@@ -127,48 +127,6 @@ body.dark-mode .admin-denied-help summary{color:#8be1ac}
 .admin-mail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
 .admin-mail-del{min-height:38px;padding:0 14px;border:0;border-radius:10px;background:#c0392b;color:#fff;font-weight:700;cursor:pointer;}
 
-/* Practice votes */
-.pvote-panel{margin-top:16px}
-.pvote-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
-.pvote-stat{background:#f3faf6;border:1px solid #d7ebe0;border-radius:12px;padding:12px 14px}
-.pvote-stat span{display:block;font-size:12px;color:#5f7268;font-weight:600;margin-bottom:4px}
-.pvote-stat strong{font-size:22px;color:#145a32;line-height:1.1}
-.pvote-list{display:flex;flex-direction:column;gap:8px}
-.pvote-row{display:grid;grid-template-columns:40px 1fr 56px;gap:10px;align-items:center;background:#fff;border:1px solid #e6efe9;border-radius:12px;padding:12px}
-.pvote-rank{width:40px;height:40px;border-radius:10px;background:#e8f5ec;color:#145a32;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
-.pvote-title{font-weight:700;color:#173f2a;font-size:14px;line-height:1.35}
-.pvote-num{color:#217346;font-weight:800;margin-right:4px}
-.pvote-meta{margin-top:5px}
-.pvote-tag{display:inline-block;font-size:11px;font-weight:800;border-radius:999px;padding:3px 9px}
-.pvote-tag-need{background:#fff4e0;color:#9a6700}
-.pvote-tag-more{background:#e8f1ff;color:#1a5276}
-.pvote-bar{margin-top:8px;height:7px;background:#eef3f0;border-radius:999px;overflow:hidden}
-.pvote-bar span{display:block;height:100%;background:linear-gradient(90deg,#1b6b45,#2a9a63);border-radius:999px}
-.pvote-count{text-align:right}
-.pvote-count strong{display:block;font-size:20px;color:#145a32;line-height:1.1}
-.pvote-count small{color:#7a8b80;font-size:11px}
-.pvote-empty{color:#7a8b80;font-size:14px;padding:8px 0}
-.pvote-note{color:#7a8b80;font-size:12.5px;margin:12px 0 0}
-@media(max-width:720px){
-  .pvote-summary{grid-template-columns:1fr 1fr}
-  .pvote-row{grid-template-columns:32px 1fr 48px;gap:8px;padding:10px}
-}
-
-.pvote-scroll{max-height:calc(3 * 88px);overflow-y:auto;padding-right:4px;border:1px solid #d7ebe0;border-radius:14px;background:#f7fbf8}
-.pvote-scroll .pvote-list{gap:8px;padding:8px}
-.pvote-row-top{box-shadow:0 0 0 1px #b7e0c6}
-.pvote-row-top .pvote-rank{background:#145a32;color:#fff}
-.pvote-more{margin:8px 0 0;text-align:center;font-size:12px;font-weight:700;color:#217346}
-
-/* ===== Practice vote monthly dashboard V2 ===== */
-.pvote-monthbar{display:flex;align-items:center;justify-content:center;gap:12px;margin:4px 0 14px;padding:9px;border-radius:14px;background:#f5faf7;border:1px solid #dcebe2}
-.pvote-monthbar button{width:38px;height:38px;border-radius:11px;border:1px solid #cfe2d7;background:#fff;color:#17623b;font-size:18px;font-weight:900;cursor:pointer;transition:.18s ease}
-.pvote-monthbar button:hover:not(:disabled){transform:translateY(-1px);background:#eaf7ef;border-color:#a9d4ba}
-.pvote-monthbar button:disabled{opacity:.35;cursor:not-allowed}
-.pvote-monthbar div{text-align:center;min-width:155px}.pvote-monthbar small{display:block;color:#7b8d83;font-size:10px;font-weight:700}.pvote-monthbar strong{display:block;margin-top:2px;color:#154e31;font-size:14px}
-.pvote-panel .pvote-scroll{scrollbar-width:thin;scrollbar-color:#66b987 #e6efe9}.pvote-panel .pvote-scroll::-webkit-scrollbar{width:7px}.pvote-panel .pvote-scroll::-webkit-scrollbar-track{background:#e8f1eb;border-radius:999px}.pvote-panel .pvote-scroll::-webkit-scrollbar-thumb{background:linear-gradient(#217346,#56b57d);border-radius:999px}
-@media(max-width:600px){.pvote-monthbar{gap:8px}.pvote-monthbar div{min-width:130px}.pvote-monthbar button{width:36px;height:36px}}
-
 /* ===== ADMIN PANEL ORGANIZER — 2026-08-28 ===== */
 .admin-command-center{padding:18px;margin:0 0 18px;border:1px solid #d9e8df;border-radius:20px;background:linear-gradient(135deg,#f8fcfa 0%,#eef8f2 100%);box-shadow:0 10px 30px rgba(30,104,64,.07)}
 .admin-command-title{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:15px}
