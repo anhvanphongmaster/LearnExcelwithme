@@ -119,11 +119,7 @@ where is_admin = true;</pre>
         </button>
         <button type="button" data-admin-view="learning" role="tab">
           <b>🎓 Học tập</b><small>Tiến độ, bài học & quiz</small>
-        </button>
-        <button type="button" data-admin-view="votes" role="tab">
-          <b>🗳️ Vote</b><small>Nhu cầu học viên</small>
-        </button>
-        <button type="button" data-admin-view="practice" role="tab">
+        </button><button type="button" data-admin-view="practice" role="tab">
           <b>📱 TikTok Practice</b><small>Chủ đề, bài, video & file</small>
         </button>
         <button type="button" data-admin-view="youtube" role="tab">
@@ -178,7 +174,6 @@ where is_admin = true;</pre>
       <div class="admin-health-grid" id="adminHealthGrid">
         <article data-health="analytics"><span>📈 Analytics</span><strong>Đang kiểm tra…</strong><small></small></article>
         <article data-health="users"><span>👥 Người dùng</span><strong>Đang kiểm tra…</strong><small></small></article>
-        <article data-health="votes"><span>🗳️ Vote</span><strong>Đang kiểm tra…</strong><small></small></article>
         <article data-health="practice"><span>📱 TikTok Practice</span><strong>Đang kiểm tra…</strong><small></small></article>
         <article data-health="downloads"><span>📦 Tải xuống</span><strong>Đang kiểm tra…</strong><small></small></article>
         <article data-health="chat"><span>💬 Chat</span><strong>Đang kiểm tra…</strong><small></small></article>
@@ -493,7 +488,6 @@ where is_admin = true;</pre>
           <button type="button" class="active" data-mail="questions" id="mailTabQ">Thắc mắc</button>
           <button type="button" data-mail="ideas" id="mailTabI">Ý tưởng</button>
           <button type="button" data-mail="saved" id="mailTabS">Đã giữ</button>
-          <button type="button" data-mail="files" id="mailTabF">File gửi lên</button>
         </div>
         <div class="admin-mail">
           <div id="engMailList" class="admin-mail-list"></div>
@@ -503,83 +497,7 @@ where is_admin = true;</pre>
       </article>
 </section>
 
-<div class="admin-section-heading admin-view-section" data-admin-section="votes"><span>🗳️ VOTE</span><h2>Trung tâm quản lý nhu cầu học viên</h2></div>
-<section class="admin-panel admin-vote-manager admin-view-section" id="adminVoteManager" data-admin-section="votes">
-  <div class="admin-panel-head admin-vote-head">
-    <div>
-      <span>🧭 VOTE CENTER</span>
-      <h2>3 hệ thống vote — tách riêng, dễ kiểm tra</h2>
-      <p>Vote chủ đề, yêu cầu hướng dẫn bài tập và định hướng YouTube/TikTok không còn trộn chung.</p>
-    </div>
-    <button id="adminVoteReload" class="admin-vote-refresh" type="button">↻ Làm mới</button>
-  </div>
-
-  <div class="admin-vote-periods" role="tablist" aria-label="Khoảng thời gian vote">
-    <button type="button" class="active" data-vote-period="today">Hôm nay</button>
-    <button type="button" data-vote-period="7d">7 ngày</button>
-    <button type="button" data-vote-period="all">Tổng</button>
-  </div>
-
-  <div class="admin-vote-kpis">
-    <article><small>Tổng vote</small><strong id="voteKpiTotal">—</strong><em id="voteKpiPeriod">Hôm nay</em></article>
-    <article><small>Vote chủ đề</small><strong id="voteKpiTopics">—</strong><em>Chủ đề tiếp theo</em></article>
-    <article><small>Cần hướng dẫn</small><strong id="voteKpiLessons">—</strong><em>Bài tập Excel</em></article>
-    <article><small>Vote YouTube/TikTok</small><strong id="voteKpiChannel">—</strong><em>Định hướng nội dung</em></article>
-  </div>
-
-  <div class="admin-vote-grid">
-    <article class="admin-vote-card">
-      <div class="admin-vote-card-head"><div><span>📚 CHỦ ĐỀ TIẾP THEO</span><h3>Học viên muốn học gì?</h3></div><b id="voteTopicTotal">0</b></div>
-      <div id="voteTopicRanking" class="admin-vote-ranking"><div class="pvote-empty">Đang tải…</div></div>
-    </article>
-
-    <article class="admin-vote-card">
-      <div class="admin-vote-card-head"><div><span>🙋 CẦN HƯỚNG DẪN</span><h3>Bài nào đang cần video nhất?</h3></div><b id="voteLessonTotal">0</b></div>
-      <div id="voteLessonRanking" class="admin-vote-ranking"><div class="pvote-empty">Đang tải…</div></div>
-    </article>
-
-    <article class="admin-vote-card">
-      <div class="admin-vote-card-head"><div><span>🎬 YOUTUBE / TIKTOK</span><h3>Định hướng nội dung</h3></div><b id="voteChannelTotal">0</b></div>
-      <div class="admin-channel-split">
-        <div><span>▶️ YouTube</span><strong id="voteYoutubeCount">0</strong></div>
-        <div><span>📱 TikTok</span><strong id="voteTiktokCount">0</strong></div>
-      </div>
-      <div class="admin-channel-track"><i id="voteYoutubeTrack"></i></div>
-      <p id="voteChannelWinner" class="admin-vote-winner">Chưa có vote.</p>
-    </article>
-  </div>
-
-  <div class="admin-vote-history-head">
-    <div><span>🕘 LỊCH SỬ VOTE</span><h3>Kiểm tra và xoá vote cụ thể</h3><p>Chỉ Admin mới thấy và xoá được. Xoá một dòng sẽ cập nhật dashboard ngay.</p></div>
-    <select id="adminVoteHistoryFilter" aria-label="Lọc loại vote">
-      <option value="all">Tất cả</option>
-      <option value="topic">Vote chủ đề</option>
-      <option value="lesson">Cần hướng dẫn</option>
-      <option value="channel">YouTube / TikTok</option>
-    </select>
-  </div>
-  <div class="admin-vote-history-wrap">
-    <table class="admin-vote-history">
-      <thead><tr><th>Thời gian</th><th>Loại</th><th>Nội dung</th><th>Người vote</th><th></th></tr></thead>
-      <tbody id="adminVoteHistoryBody"><tr><td colspan="5" class="admin-users-empty">Đang tải lịch sử vote…</td></tr></tbody>
-    </table>
-  </div>
-  <p id="adminVoteNotice" class="pvote-note">Chạy <code>ADMIN-VOTE-MANAGEMENT-V1.sql</code> một lần trong Supabase để bật đầy đủ khu này.</p>
-</section>
-
-    <section class="admin-two-column admin-learning-grid admin-view-section" id="adminLearningDetail" data-admin-section="learning">
-      <article class="admin-panel">
-        <div class="admin-panel-head"><div><span>✅ LEARNING</span><h2>Bài hoàn thành nhiều nhất</h2></div></div>
-        <div id="topCompletedLessons" class="admin-ranking"></div>
-      </article>
-      <article class="admin-panel">
-        <div class="admin-panel-head"><div><span>🧩 QUIZ</span><h2>Quiz khó nhất</h2></div></div>
-        <div id="quizDifficulty" class="admin-quiz-list"></div>
-        <p class="admin-panel-footnote">Dữ liệu độ khó quiz bắt đầu tích lũy từ V15.</p>
-      </article>
-    </section>
-
-    <div class="admin-section-heading admin-view-section" data-admin-section="practice"><span>📱 TIKTOK PRACTICE</span><h2>Chủ đề và bài theo video TikTok</h2></div>
+<div class="admin-section-heading admin-view-section" data-admin-section="practice"><span>📱 TIKTOK PRACTICE</span><h2>Chủ đề và bài theo video TikTok</h2></div>
     <section class="admin-panel admin-view-section att-panel" data-admin-section="practice" id="adminTikTokPanel">
       <div class="att-head"><p>Thêm chủ đề, tạo bài và gắn đúng video cùng file thực hành. Bản nháp chỉ hiện trong Admin.</p><div><a href="practice-tiktok.html" target="_blank" rel="noopener">Xem trang TikTok ↗</a><button type="button" id="attReload">↻ Làm mới</button></div></div>
       <p id="attNotice" class="att-notice" role="status" hidden></p>
