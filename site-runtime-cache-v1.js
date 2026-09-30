@@ -2,7 +2,8 @@
 'use strict';
 if(window.__AVP_SITE_CACHE_V1__)return;
 window.__AVP_SITE_CACHE_V1__=1;
-const STORE='avp_site_state_cache_v1';
+const STORE='avp_site_state_cache_v2';
+try{localStorage.removeItem('avp_site_state_cache_v1')}catch(_){}
 function read(){try{return JSON.parse(localStorage.getItem(STORE)||'null')}catch(_){return null}}
 function write(result){try{localStorage.setItem(STORE,JSON.stringify({at:Date.now(),result:result}))}catch(_){}}
 function ttl(result){const d=result&&result.data;const r=Array.isArray(d)?d[0]:d;return r&&r.enabled?15000:90000}
