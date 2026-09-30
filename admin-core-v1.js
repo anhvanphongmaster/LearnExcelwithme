@@ -3,7 +3,6 @@
   const nf=new Intl.NumberFormat("vi-VN");
   let client=null;
   let currentDays=30;
-  let currentVoteMonth=null;
 
   const lessonNames={
     "excel.html":"Excel cơ bản","phimtatexcel.html":"100 phím tắt","congthucexcel.html":"100 công thức","filtersort.html":"Filter & Sort",
@@ -71,7 +70,7 @@
     const max=Math.max(1,...rows.map(r=>num(r.new_users)));
     root.innerHTML=rows.map(r=>{const dt=new Date(`${r.day}T00:00:00`),label=`${dt.getDate()}/${dt.getMonth()+1}`,h=Math.max(2,num(r.new_users)/max*145);return `<div class="admin-user-day" title="${r.day}: ${n(r.new_users)} tài khoản mới"><span class="admin-user-bar" style="height:${h}px"></span><span class="admin-user-label">${label}</span></div>`}).join("");
   }
-  let mailData={questions:[], ideas:[], saved:[], files:[]};
+  let mailData={questions:[], ideas:[], saved:[]};
   let mailKind='questions';
   function preview(text){
     const s=String(text||"").replace(/\s+/g," ").trim();
@@ -83,31 +82,6 @@
     const who=String(r.name||"Ẩn danh").replace(/[<>]/g,"");
     const when=r.at ? new Date(r.at).toLocaleString("vi-VN") : "";
     const msg=String(r.message||"").replace(/[<>]/g,"");
-    if(mailKind==="files"){
-      const contact=[r.email,r.zalo].filter(Boolean).join(" · ");
-      $("engMailRead").innerHTML=`<h4>${who}</h4><small>${when}</small>
-        <p><b>Liên hệ:</b> ${String(contact||"—").replace(/[<>]/g,"")}</p>
-        <p>${String(r.note||r.file||"").replace(/[<>]/g,"")}</p>
-        <div class="admin-mail-actions">
-          <button type="button" class="admin-mail-keep" id="mailDownload">Tải file</button>
-          <button type="button" class="admin-mail-del" id="mailDelete">Xóa phiếu này</button>
-        </div>`;
-      $("mailDownload")?.addEventListener("click", async()=>{
-        try{
-          const {data,error}=await client.storage.from("practice-uploads").createSignedUrl(r.path, 3600);
-          if(error||!data?.signedUrl){ toast("Không tạo được link tải."); return; }
-          location.href=data.signedUrl;
-        }catch(e){ toast("Không tải được file"); }
-      });
-      $("mailDelete")?.addEventListener("click", async()=>{
-        { const okFile = await window.avpConfirm("Phiếu gửi file này sẽ bị xóa khỏi danh sách admin.", { title: "Xóa phiếu file?", icon: "📎", tone: "danger", ok: "Xóa", cancel: "Hủy" }); if(!okFile) return; }
-        await rpcSoft("admin_delete_user_file",{p_id:r.id});
-        mailData.files=(mailData.files||[]).filter(x=>x.id!==r.id);
-        renderMail("files");
-        toast("Đã xóa phiếu");
-      });
-      return;
-    }
     const extra = mailKind==="saved"
       ? `<button type="button" class="admin-mail-del" id="mailDelete">Xóa thư này</button>`
       : `<button type="button" class="admin-mail-keep" id="mailKeep">Giữ lại</button>
@@ -199,13 +173,10 @@
     mailData.ideas=s.ideas||[];
     const saved=await rpcSoft("admin_list_saved_feedback");
     mailData.saved=(!saved||saved.__error)?[]:saved;
-    const files=await rpcSoft("admin_list_user_files");
-    mailData.files=Array.isArray(files)?files:(!files||files.__error?[]:files);
     const q=$("mailTabQ"), i=$("mailTabI");
     if(q) q.textContent="Thắc mắc ("+mailData.questions.length+")";
     if(i) i.textContent="Ý tưởng ("+mailData.ideas.length+")";
     const sv=$("mailTabS"); if(sv) sv.textContent="Đã giữ ("+(mailData.saved||[]).length+")";
-    const ff=$("mailTabF"); if(ff) ff.textContent="File gửi lên ("+(mailData.files||[]).length+")";
     bindMailTabs();
     renderMail(mailKind||"questions");
     if(hint) hint.textContent="Chỉ hiện 50 thư mới nhất mỗi loại.";
@@ -373,13 +344,12 @@
       const s=progressStats(r), hidden=!!r.exclude_from_leaderboard, adm=!!r.is_admin;
       return `<tr data-user-id="${r.user_id}">
         <td><div class="admin-user-identity"><strong>${escapeHtml(r.display_name||"Học viên")}${adm?' <span class="admin-user-badge admin-badge-admin">ADMIN</span>':''}</strong><small>${escapeHtml(r.email||"")}</small><em>Đăng ký ${fmtDate(r.created_at)}</em></div></td>
-        <td><div class="admin-user-progress"><b>${n(s.xp)} XP</b><small>${n(s.completed)} bài hoàn thành • ${n(r.topic_vote_count||0)} vote chủ đề</small></div></td>
+        <td><div class="admin-user-progress"><b>${n(s.xp)} XP</b><small>${n(s.completed)} bài hoàn thành • </small></div></td>
         <td><div class="admin-user-progress"><b>🔥 ${n(r.current_streak||0)} ngày</b><small>Tốt nhất ${n(r.best_streak||0)} • Tổng ${n(r.total_days||0)} ngày</small></div></td>
         <td><span class="admin-user-badge ${hidden||adm?'admin-badge-hidden':'admin-badge-visible'}">${adm?'Admin':hidden?'Đang ẩn':'Đang hiện'}</span></td>
         <td><small>${fmtDate(r.last_sign_in_at)}</small></td>
         <td><div class="admin-user-actions">
           <button type="button" data-act="leaderboard" data-hidden="${hidden?'1':'0'}" ${adm?'disabled':''}>${hidden?'Hiện BXH':'Ẩn BXH'}</button>
-          <button type="button" data-act="votes">Reset vote</button>
           <button type="button" data-act="progress" class="danger">Reset tiến độ</button>
           <button type="button" data-act="admin" data-admin="${adm?'1':'0'}" class="${adm?'warn':''}">${adm?'Bỏ Admin':'Cấp Admin'}</button>
         </div></td>
@@ -409,10 +379,6 @@
         const hidden=btn.dataset.hidden==="1";
         {const ok=await window.avpConfirm(`${hidden?'Hiện':'Ẩn'} ${who} ${hidden?'trên':'khỏi'} BXH?`,{title:"Cập nhật BXH?",tone:"warn",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return;}
         await rpc("admin_um_set_leaderboard_visibility",{p_user_id:id,p_hidden:!hidden}); ok=true;
-      }else if(act==="votes"){
-        {const ok=await window.avpConfirm(`Reset toàn bộ vote có liên kết tài khoản của ${who}?`,{title:"Reset vote?",tone:"warn",ok:"Reset",cancel:"Hủy"});if(!ok)return;}
-        const res=await rpc("admin_um_reset_votes",{p_user_id:id}); ok=true;
-        toast(`Đã reset vote • Chủ đề: ${res?.topic_deleted??0} • Bài: ${res?.lesson_deleted??0}`);
       }else if(act==="progress"){
         {const ok=await window.avpConfirm(`RESET TIẾN ĐỘ của ${who}? XP/BXH cloud sẽ được xóa. Thao tác này không nên dùng nếu không chắc.`,{title:"Reset toàn bộ tiến độ?",tone:"danger",icon:"!",ok:"Reset tiến độ",cancel:"Hủy"});if(!ok)return;}
         await rpc("admin_um_reset_progress",{p_user_id:id}); ok=true;
@@ -679,7 +645,7 @@
       loadAdminMaintenance();
     try{
       const requestedView=new URLSearchParams(location.search).get("view");
-      const validViews=["overview","users","race","learning","votes","practice","youtube","downloads","inbox","engagement","analytics","community","reviews","grader","professional","tools"];
+      const validViews=["overview","users","race","learning","practice","youtube","downloads","inbox","engagement","analytics","community","reviews","grader","professional","tools"];
       if(requestedView&&validViews.includes(requestedView)){
         setTimeout(()=>setAdminView(requestedView,{scroll:true}),80);
       }
@@ -705,7 +671,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","race","learning","votes","practice","youtube","downloads","tools","inbox","engagement","analytics","community","reviews","grader","professional"];
+    const valid=["overview","users","race","learning","practice","youtube","downloads","tools","inbox","engagement","analytics","community","reviews","grader","professional"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
@@ -725,7 +691,6 @@
     if(view==="users" && !adminUsersCache.length) loadAdminUsers();
     if(view==="race") loadAdminRace();
     if(view==="engagement") loadEngagementOnly();
-    if(view==="votes") loadAdminVoteManager();
     if(view==="downloads" && !adminDownloadLoaded) loadAdminDownloads();
     if(view==="tools") window.dispatchEvent(new CustomEvent("avp:admin-tools-open"));
     if(view==="practice") window.dispatchEvent(new CustomEvent("avp:admin-tiktok-open"));
@@ -753,92 +718,6 @@
     setAdminView(saved);
   }
 
-
-  let adminVotePeriod="today";
-  function votePeriodLabel(v){return v==="today"?"Hôm nay":v==="7d"?"7 ngày":"Tổng"}
-  function voteTypeLabel(row){
-    if(row.source==="topic") return "Chủ đề";
-    if(row.vote_type==="focus_youtube") return "YouTube";
-    if(row.vote_type==="focus_tiktok") return "TikTok";
-    if(row.vote_type==="need_more_guide") return "Hướng dẫn thêm";
-    return "Cần hướng dẫn";
-  }
-  function renderVoteRanking(rootId, rows, kind){
-    const root=$(rootId); if(!root)return;
-    const list=Array.isArray(rows)?rows:[];
-    if(!list.length){root.innerHTML='<div class="pvote-empty">Chưa có vote trong khoảng này.</div>';return}
-    const max=Math.max(1,...list.map(r=>num(r.votes)));
-    root.innerHTML=list.map((r,i)=>{
-      const v=num(r.votes), pct=Math.max(6,Math.round(v/max*100));
-      const title=kind==="topic"?(r.topic_title||r.topic_id):(r.lesson_title||r.lesson_id);
-      const meta=kind==="topic"?"Chủ đề tiếp theo":(r.vote_type==="need_more_guide"?"Cần hướng dẫn thêm":"Cần hướng dẫn");
-      return `<div class="admin-vote-rank-row"><div class="admin-vote-rank-no">${i+1}</div><div class="admin-vote-rank-main"><strong>${escapeHtml(title||"(không tên)")}</strong><small>${escapeHtml(meta)}</small><div class="admin-vote-rank-track"><i style="width:${pct}%"></i></div></div><b>${n(v)}</b></div>`;
-    }).join("");
-  }
-  function renderVoteHistory(rows){
-    const body=$("adminVoteHistoryBody"); if(!body)return;
-    const filter=$("adminVoteHistoryFilter")?.value||"all";
-    let list=Array.isArray(rows)?rows:[];
-    if(filter!=="all") list=list.filter(r=>r.source===filter || (filter==="channel"&&r.source==="lesson"&&(r.vote_type==="focus_youtube"||r.vote_type==="focus_tiktok")));
-    if(!list.length){body.innerHTML='<tr><td colspan="5" class="admin-users-empty">Không có vote phù hợp.</td></tr>';return}
-    body.innerHTML=list.map(r=>`<tr data-source="${escapeHtml(r.source)}" data-id="${escapeHtml(r.vote_id)}"><td><small>${fmtDate(r.created_at)}</small></td><td><span class="admin-vote-pill">${escapeHtml(voteTypeLabel(r))}</span></td><td><strong>${escapeHtml(r.title||r.item_id||"—")}</strong></td><td><small>${escapeHtml(r.actor||"Ẩn danh")}</small></td><td><button type="button" class="admin-vote-delete" data-vote-delete="1">Xoá</button></td></tr>`).join("");
-  }
-  let adminVoteHistoryCache=[];
-  async function loadAdminVoteManager(){
-    const notice=$("adminVoteNotice");
-    try{
-      const [summary,topics,lessons,channels,history]=await Promise.all([
-        rpc("admin_vote_summary",{p_period:adminVotePeriod}),
-        rpc("admin_vote_topic_rankings",{p_period:adminVotePeriod,p_limit:10}),
-        rpc("admin_vote_lesson_rankings",{p_period:adminVotePeriod,p_limit:10}),
-        rpc("admin_vote_channel_summary",{p_period:adminVotePeriod}),
-        rpc("admin_vote_history",{p_period:adminVotePeriod,p_limit:100})
-      ]);
-      if(notice)notice.textContent=`Đang xem ${votePeriodLabel(adminVotePeriod).toLowerCase()}. Xoá vote sẽ cập nhật ngay dữ liệu Supabase.`;
-      $("voteKpiTotal").textContent=n(summary?.total_votes);
-      $("voteKpiTopics").textContent=n(summary?.topic_votes);
-      $("voteKpiLessons").textContent=n(summary?.lesson_votes);
-      $("voteKpiChannel").textContent=n(summary?.channel_votes);
-      $("voteKpiPeriod").textContent=votePeriodLabel(adminVotePeriod);
-      $("voteTopicTotal").textContent=n(summary?.topic_votes);
-      $("voteLessonTotal").textContent=n(summary?.lesson_votes);
-      $("voteChannelTotal").textContent=n(summary?.channel_votes);
-      renderVoteRanking("voteTopicRanking",topics,"topic");
-      renderVoteRanking("voteLessonRanking",lessons,"lesson");
-      const yt=num(channels?.youtube_votes), tt=num(channels?.tiktok_votes), total=yt+tt, pct=total?Math.round(yt/total*100):0;
-      $("voteYoutubeCount").textContent=n(yt); $("voteTiktokCount").textContent=n(tt);
-      $("voteYoutubeTrack").style.width=pct+"%";
-      $("voteChannelWinner").textContent=!total?"Chưa có vote.":yt===tt?`Đang hòa ${yt} – ${tt}`:yt>tt?`YouTube đang dẫn ${yt} – ${tt}`:`TikTok đang dẫn ${tt} – ${yt}`;
-      adminVoteHistoryCache=Array.isArray(history)?history:[]; renderVoteHistory(adminVoteHistoryCache);
-    }catch(e){
-      console.warn("vote manager",e);
-      if(notice)notice.innerHTML='Chưa dùng được Vote Center. Hãy chạy <code>ADMIN-VOTE-MANAGEMENT-V1.sql</code> trong Supabase rồi tải lại.';
-      ["voteTopicRanking","voteLessonRanking"].forEach(id=>{if($(id))$(id).innerHTML='<div class="pvote-empty">Thiếu RPC quản lý vote.</div>'});
-    }
-  }
-  function bindVoteManager(){
-    document.querySelectorAll("[data-vote-period]").forEach(btn=>{
-      if(btn.dataset.bound)return; btn.dataset.bound="1";
-      btn.addEventListener("click",()=>{
-        adminVotePeriod=btn.dataset.votePeriod||"today";
-        document.querySelectorAll("[data-vote-period]").forEach(x=>x.classList.toggle("active",x===btn));
-        loadAdminVoteManager();
-      });
-    });
-    $("adminVoteReload")?.addEventListener("click",()=>{loadAdminVoteManager();toast("Đang làm mới vote...")});
-    $("adminVoteHistoryFilter")?.addEventListener("change",()=>renderVoteHistory(adminVoteHistoryCache));
-    $("adminVoteHistoryBody")?.addEventListener("click",async e=>{
-      const btn=e.target.closest("[data-vote-delete]"); if(!btn)return;
-      const tr=btn.closest("tr"), source=tr?.dataset.source, id=Number(tr?.dataset.id||0); if(!source||!id)return;
-      {const ok=await window.avpConfirm("Xoá vote này khỏi Supabase?",{title:"Xóa vote?",tone:"danger",ok:"Xóa",cancel:"Hủy"});if(!ok)return;}
-      btn.disabled=true;
-      try{
-        const res=await rpc("admin_vote_delete_one",{p_source:source,p_vote_id:id});
-        if(res?.ok===false) throw new Error(res.error||"delete_failed");
-        toast("Đã xoá vote"); await loadAdminVoteManager();
-      }catch(err){toast("Không xoá được vote");btn.disabled=false}
-    });
-  }
 
   // ================= DOWNLOAD MANAGEMENT =================
   let adminDownloadCache=[];
@@ -911,7 +790,6 @@
     bindMailTabs();
     bindAdminViews();
     bindUserManagement();
-    bindVoteManager();
     bindDownloadManagement();
     bindRaceAdmin();
     $("adminHealthReload")?.addEventListener("click",()=>{checkAdminHealth();toast("Đang kiểm tra các module...")});
