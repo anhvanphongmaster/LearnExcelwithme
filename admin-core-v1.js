@@ -644,7 +644,7 @@
       loadAdminMaintenance();
     try{
       const requestedView=new URLSearchParams(location.search).get("view");
-      const validViews=["overview","users","race","learning","practice","youtube","downloads","inbox","engagement","analytics","community","reviews","grader","professional","tools"];
+      const validViews=["overview","users","race","learning","practice","youtube","downloads" ,"engagement","analytics","community","reviews","grader","professional","tools"];
       if(requestedView&&validViews.includes(requestedView)){
         setTimeout(()=>setAdminView(requestedView,{scroll:true}),80);
       }
@@ -670,7 +670,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","race","learning","practice","youtube","downloads","tools","inbox","engagement","analytics","community","reviews","grader","professional"];
+    const valid=["overview","users","race","learning","practice","youtube","downloads" ,"tools","engagement","analytics","community","reviews","grader","professional"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
