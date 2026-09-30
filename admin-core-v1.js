@@ -420,7 +420,6 @@
     const checks=[
       ["analytics","admin_analytics_summary",{p_days:1}],
       ["users","admin_um_list_users",{p_search:"",p_limit:1,p_offset:0}],
-      ["votes","admin_vote_summary",{p_period:"today"}],
       ["practice","admin_tiktok_summary_v1",{}],
       ["downloads","admin_download_summary",{}],
       ["chat","avp_chat_admin_threads",{}],
