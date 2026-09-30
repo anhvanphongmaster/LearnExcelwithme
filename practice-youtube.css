@@ -54,14 +54,7 @@
 }
 
 .pyt-hero{position:relative}
-.pyt-chvote{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 10px}
-.pyt-chvote-lab{width:100%;font-size:11px;font-weight:800;letter-spacing:.02em;color:rgba(255,255,255,.88)}
-.pyt-chvote-btn{border:0;border-radius:999px;padding:6px 10px;font-size:11.5px;font-weight:800;cursor:pointer;background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.35)}
-.pyt-chvote-btn:hover{background:rgba(255,255,255,.28)}
-.pyt-chvote-btn.is-on{background:#fff;color:#0f5132}
-.pyt-chvote-btn:disabled{opacity:.7;cursor:default}
-.pyt-chvote-st{font-size:11px;color:rgba(255,255,255,.9);font-weight:700}
-@media(max-width:640px){.pyt-chvote-btn{width:100%;text-align:center}}
+
 
 /* Nhóm file/project: màu nhẹ, giữ CTA YouTube đỏ là điểm nhấn chính */
 .pyt-phase-roll .pyt-card.pyt-group-raw{background:#fffdfa!important;border-color:#ead8c4!important}
