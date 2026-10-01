@@ -787,26 +787,34 @@
       showDenied("Bạn chưa đăng nhập trên live. Hãy bấm Đăng nhập, dùng tài khoản Admin, rồi quay lại trang này.");
       return;
     }
-    // Xác thực quyền trực tiếp từ profile của chính session hiện tại.
-    // Không phụ thuộc RPC is_admin_user để tránh lỗi nhận diện quyền sau redirect.
+    // Xác thực quyền bằng RPC SECURITY DEFINER trước; fallback về profile của chính user.
     try{
-      const {data:profile,error:profileErr}=await client
-        .from("profiles")
-        .select("is_admin")
-        .eq("id",session.user.id)
-        .maybeSingle();
+      let isAdmin=null;
+      try{
+        const {data,error}=await client.rpc("is_admin_user");
+        if(!error) isAdmin=data===true;
+      }catch(e){ console.warn("ADMIN RPC CHECK",e); }
 
-      if(profileErr){
-        console.error("ADMIN PROFILE CHECK",profileErr);
-        showDenied("Không đọc được quyền Admin từ hồ sơ tài khoản: "+(profileErr.message||"lỗi Supabase"));
-        return;
+      if(isAdmin===null){
+        const {data:profile,error:profileErr}=await client
+          .from("profiles")
+          .select("is_admin")
+          .eq("id",session.user.id)
+          .maybeSingle();
+        if(profileErr){
+          console.error("ADMIN PROFILE CHECK",profileErr);
+          showDenied("Không đọc được quyền Admin: "+(profileErr.message||"lỗi Supabase"));
+          return;
+        }
+        isAdmin=profile?.is_admin===true;
       }
-      if(profile?.is_admin!==true){
+
+      if(!isAdmin){
         showDenied("Tài khoản đã đăng nhập nhưng chưa được cấp quyền Admin.");
         return;
       }
     }catch(e){
-      console.error("ADMIN PROFILE CHECK",e);
+      console.error("ADMIN ACCESS CHECK",e);
       showDenied("Không xác thực được quyền Admin: "+(e?.message||e));
       return;
     }
