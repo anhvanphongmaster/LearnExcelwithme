@@ -164,8 +164,6 @@
   }
   
   
-  // Legacy monthly vote dashboard removed: superseded by Vote Management V1.
-
   async function renderEngagement(s){
     const hint=$("engHint");
     if(!s||s.__error){
@@ -443,7 +441,7 @@
       if(r.ok){setHealth(key,"ok","RPC sẵn sàng");return;}
       const msg=String(r.error?.message||r.error||"");
       const missing=/Could not find the function|schema cache|does not exist|404/i.test(msg);
-      setHealth(key,missing?"bad":"warn",missing?(key==="votes"?"Chưa cài đúng Vote SQL / RPC":"Thiếu SQL / RPC"):msg.slice(0,90));
+      setHealth(key,missing?"bad":"warn",missing?"Thiếu SQL / RPC":msg.slice(0,90));
     }));
   }
 
