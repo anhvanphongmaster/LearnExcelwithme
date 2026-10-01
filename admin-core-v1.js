@@ -198,7 +198,11 @@
     if(hint) hint.textContent="Chỉ hiện 50 thư mới nhất mỗi loại.";
   }
   function renderQuizDifficulty(rows){
-    const root=$("quizDifficulty");if(!rows?.length){root.innerHTML='<p class="admin-empty">Chưa có lượt làm quiz sau khi cập nhật V15.</p>';return}
+    const root=$("quizDifficulty");
+    // Module này có thể không tồn tại trong một số phiên bản admin.html.
+    // Không được để thiếu container làm sập toàn bộ Dashboard.
+    if(!root)return;
+    if(!rows?.length){root.innerHTML='<p class="admin-empty">Chưa có lượt làm quiz sau khi cập nhật V15.</p>';return}
     root.innerHTML=rows.map(r=>{const rate=num(r.pass_rate),hard=rate<60;return `<div class="admin-quiz-row"><div><div class="admin-quiz-title">${labelLesson(r.lesson)}</div><div class="admin-quiz-meta">${n(r.attempts)} lượt làm • ${n(r.passes)} lượt đạt</div></div><span class="admin-pass-rate ${hard?'hard':''}">${rate.toFixed(1)}% đạt</span></div>`}).join("");
   }
   async function rpc(name,args){
