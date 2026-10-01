@@ -4,18 +4,18 @@
   if(window.__AVP_DAILY_HEADER_BADGE_V1__) return;
   window.__AVP_DAILY_HEADER_BADGE_V1__=true;
 
-  /* Global Admin Chat: this file is already injected site-wide by the Service Worker. */
-  function loadGlobalAdminChat(){
-    if(window.__AVP_GLOBAL_CHAT_LOADER_V1__||window.__AVP_ADMIN_CHAT_LOADED__) return;
-    if(document.querySelector('script[data-avp-admin-chat-core]')) return;
+  /* Admin Chat owner: use the current loader; never revive the removed global-chat loader. */
+  function loadAdminChat(){
+    if(window.__AVP_ADMIN_CHAT_LOADED__) return;
+    if(document.querySelector('script[data-avp-admin-chat]')) return;
     var s=document.createElement('script');
-    s.src='global-chat-loader-v1.js?v=20260914-chatglobal1';
+    s.src='admin-chat.js?v=20260830-v45presence';
     s.defer=true;
-    s.dataset.avpGlobalChatLoader='1';
-    s.onerror=function(){console.warn('[AVP chat] Không tải được global-chat-loader-v1.js');};
+    s.dataset.avpAdminChat='1';
+    s.onerror=function(){console.warn('[AVP chat] Không tải được admin-chat.js');};
     (document.head||document.documentElement).appendChild(s);
   }
-  loadGlobalAdminChat();
+  loadAdminChat();
 
   var PACKS=[
     ['b01-freeze','b13-hyperlink','t01-index-match','n01-let','c01-week-close'],
