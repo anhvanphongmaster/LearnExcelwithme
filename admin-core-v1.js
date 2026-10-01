@@ -789,32 +789,29 @@
       showDenied("Bạn chưa đăng nhập trên live. Hãy bấm Đăng nhập, dùng tài khoản Admin, rồi quay lại trang này.");
       return;
     }
-    // Chẩn đoán nhanh quyền admin qua RPC helper (nếu có)
+    // Xác thực quyền trực tiếp từ profile của chính session hiện tại.
+    // Không phụ thuộc RPC is_admin_user để tránh lỗi nhận diện quyền sau redirect.
     try{
-      const {data:isAdm, error:admErr}=await client.rpc("is_admin_user");
-      if(admErr){
-        console.warn("is_admin_user rpc:", admErr);
-      }else if(isAdm===false){
-        // Token/profile quyền admin có thể vừa được refresh sau khi redirect.
-        // Refresh session và kiểm tra quyền lại một lần trước khi chặn.
-        try{
-          const refreshed=await client.auth.refreshSession();
-          if(!refreshed.error && refreshed.data?.session){
-            const retry=await client.rpc("is_admin_user");
-            if(retry.error || retry.data!==true){
-              showDenied("Tài khoản đã đăng nhập nhưng chưa được nhận quyền Admin. Kiểm tra is_admin = true trong profiles.");
-              return;
-            }
-          }else{
-            showDenied("Session đã login nhưng chưa xác thực được quyền Admin. Hãy tải lại trang.");
-            return;
-          }
-        }catch(e){
-          showDenied("Session đã login nhưng chưa xác thực được quyền Admin. Hãy tải lại trang.");
-          return;
-        }
+      const {data:profile,error:profileErr}=await client
+        .from("profiles")
+        .select("is_admin")
+        .eq("id",session.user.id)
+        .maybeSingle();
+
+      if(profileErr){
+        console.error("ADMIN PROFILE CHECK",profileErr);
+        showDenied("Không đọc được quyền Admin từ hồ sơ tài khoản: "+(profileErr.message||"lỗi Supabase"));
+        return;
       }
-    }catch(e){ console.warn(e); }
+      if(profile?.is_admin!==true){
+        showDenied("Tài khoản đã đăng nhập nhưng chưa được cấp quyền Admin.");
+        return;
+      }
+    }catch(e){
+      console.error("ADMIN PROFILE CHECK",e);
+      showDenied("Không xác thực được quyền Admin: "+(e?.message||e));
+      return;
+    }
     bindMailTabs();
     bindAdminViews();
     bindUserManagement();
