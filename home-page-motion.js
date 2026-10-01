@@ -8,7 +8,7 @@
     if(document.querySelector('link[data-avp-home-ui-owner-v1]'))return;
     var link=document.createElement('link');
     link.rel='stylesheet';
-    link.href='home-ui-owner-v1.css?v=20260914-owner2';
+    link.href='home-ui-owner-v1.css?v=20260914-owner3';
     link.dataset.avpHomeUiOwnerV1='1';
     document.head.appendChild(link);
   }
