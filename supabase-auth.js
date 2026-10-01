@@ -1,6 +1,8 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const AVP_IS_ADMIN_PAGE = /(?:^|\/)admin\.html(?:$|[?#])/.test(location.pathname + location.search);
+
 const cfg = window.AVP_SUPABASE_CONFIG || {};
 const configured = Boolean(
   cfg.url &&
@@ -420,6 +422,7 @@ async function saveProgressObject(user, payload) {
 }
 
 async function syncProgressToCloud() {
+  if (AVP_IS_ADMIN_PAGE) return false;
   if (!supabase || applyingCloud) return false;
 
   if (syncInFlight) return syncInFlight;
@@ -472,6 +475,7 @@ function scheduleProgressSync(delay = 700) {
 }
 
 async function loadAndMergeProgress() {
+  if (AVP_IS_ADMIN_PAGE) return false;
   if (!supabase) return false;
   const user = await getUser();
   if (!user) return false;
@@ -511,6 +515,7 @@ async function loadAndMergeProgress() {
 }
 
 async function syncProfileToCloud(profile) {
+  if (AVP_IS_ADMIN_PAGE) return false;
   if (!supabase) return false;
   const user = await getUser();
   if (!user) return false;
@@ -669,6 +674,7 @@ Storage.prototype.setItem = function(key, value) {
   nativeSetItem.call(this, key, value);
 
   if (
+    !AVP_IS_ADMIN_PAGE &&
     this === localStorage &&
     !applyingCloud &&
     (PROGRESS_KEYS.includes(String(key)) || String(key) === PROFILE_KEY)
@@ -691,6 +697,7 @@ Storage.prototype.removeItem = function(key) {
   nativeRemoveItem.call(this, key);
 
   if (
+    !AVP_IS_ADMIN_PAGE &&
     this === localStorage &&
     !applyingCloud &&
     PROGRESS_KEYS.includes(String(key))
@@ -713,11 +720,9 @@ window.avpCloudSync = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const isAdminPage = /(?:^|\/)admin\.html(?:$|[?#])/.test(location.pathname + location.search);
-
   // Admin must only consume the existing Supabase session. Do not run
   // profile/progress hydration, reloads, syncs, or auth-nav profile queries here.
-  if (isAdminPage) {
+  if (AVP_IS_ADMIN_PAGE) {
     supabase?.auth?.onAuthStateChange(() => {});
     return;
   }
