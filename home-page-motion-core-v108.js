@@ -27,14 +27,6 @@
       script.src='home-copy-v104.js?v=20260915-quick2';script.dataset.homeCopyV104='1';
       document.head.appendChild(script);
     }
-    if(!document.querySelector('link[data-avp-site-upgrade-v1]')){
-      var globalCss=document.createElement('link');
-      globalCss.rel='stylesheet';globalCss.href='site-upgrade-v1.css?v=20260914-site1';globalCss.dataset.avpSiteUpgradeV1='1';document.head.appendChild(globalCss);
-    }
-    if(!document.querySelector('script[data-avp-site-upgrade-v1]')){
-      var globalJs=document.createElement('script');
-      globalJs.src='site-upgrade-v1.js?v=20260914-site1';globalJs.defer=true;globalJs.dataset.avpSiteUpgradeV1='1';document.head.appendChild(globalJs);
-    }
   }
 
   function markMotion(){
