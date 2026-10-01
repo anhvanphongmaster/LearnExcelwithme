@@ -6,7 +6,6 @@
   const READ_CACHE_MS=1800;
   const cache=new Map();
   let manualHealth=false;
-  let coreLoaded=false;
 
   function ensureAdminUi(){
     [['admin-ui-v2.css?v=20260913-adminui3','avpAdminUiV2'],['admin-ui-v2-final.css?v=20260913-adminfinal2','avpAdminUiFinal']].forEach(([href,key])=>{
@@ -99,10 +98,9 @@
     await waitClient();
     const s=document.createElement('script');
     s.src='admin-core-v1.js?v=20261001-authfix8';s.defer=true;
-    s.onload=()=>{coreLoaded=true;setTimeout(resetHealthUi,350);setTimeout(resetHealthUi,1200)};
+    s.onload=()=>{setTimeout(resetHealthUi,350);setTimeout(resetHealthUi,1200)};
     s.onerror=()=>console.error('[Admin] Không tải được admin-core-v1.js');
     document.head.appendChild(s);
   }
   boot();
 })();
-// deploy trigger: manual health-check fix already present above
