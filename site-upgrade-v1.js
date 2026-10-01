@@ -39,7 +39,7 @@
   if(isHome){
     html.classList.add('avp-site-home');
     document.querySelectorAll('link[href*="theme-polish-v33.css"]').forEach(link=>link.remove());
-    loadCss('home-ui-owner-v1.css?v=20260914-owner2','avp-home-ui-owner-v1',()=>{
+    loadCss('home-ui-owner-v1.css?v=20260914-owner3','avp-home-ui-owner-v1',()=>{
       html.classList.add('avp-home-owner-ready');
     });
   }
