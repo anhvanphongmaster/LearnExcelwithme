@@ -1,9 +1,4 @@
 (() => {
-  // Chặn mọi lần nạp Admin core trùng nhau trong cùng một trang.
-  // Một lần init duy nhất để tránh chạy access-check/RPC hai lần.
-  if(window.__AVP_ADMIN_CORE_BOOT_V1__) return;
-  window.__AVP_ADMIN_CORE_BOOT_V1__=true;
-
   const $=id=>document.getElementById(id);
   const nf=new Intl.NumberFormat("vi-VN");
   let client=null;
@@ -841,8 +836,6 @@
   $("adminRefresh")?.addEventListener("click",()=>{loadDashboard();toast("Đang làm mới dữ liệu...")});
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
 
-  // ===== WEBSITE REVIEWS V2 - dùng trực tiếp client Admin hiện tại =====
-  let adminReviewsLoaded=false;
 
   function reviewEsc(s){
     return String(s??"").replace(
@@ -952,7 +945,6 @@
         : '<tr><td colspan="5">Chưa có đánh giá nào.</td></tr>';
 
       if(notice)notice.hidden=true;
-      adminReviewsLoaded=true;
 
     }catch(e){
       console.error("ADMIN REVIEWS ERROR",e);
