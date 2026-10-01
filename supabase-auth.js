@@ -38,11 +38,6 @@ function loadAdminChatAssets() {
     script.dataset.avpAdminChat = '1';
     document.head.appendChild(script);
   }
-}
-
-// Chat phải xuất hiện cả khi chưa đăng nhập.
-// Nạp module ngay; admin-chat.js sẽ tự chuyển Khách / User / Admin theo session.
-
   if (!document.querySelector('link[data-avp-admin-alerts]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -57,9 +52,10 @@ function loadAdminChatAssets() {
     script.setAttribute('data-avp-admin-alerts', '1');
     document.head.appendChild(script);
   }
+}
 
-loadAdminChatAssets();
-
+// Admin không cần chat/alerts loader trong auth bootstrap.
+// Các module Admin tự khởi tạo theo trang; auth bootstrap chỉ quản lý session.
 const PROFILE_KEY = "avpUserProfile";
 
 /*
