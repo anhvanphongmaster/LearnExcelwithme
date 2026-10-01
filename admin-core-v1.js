@@ -20,22 +20,28 @@
     }
     return window.avpSupabase || null;
   }
-  async function waitForSession(client, timeout=8000){
-    try{
-      let timer;
-      const {data}=await Promise.race([
-        client.auth.getSession(),
-        new Promise((_,reject)=>{
-          timer=setTimeout(()=>reject(new Error("SESSION_TIMEOUT")),Math.min(timeout,5000));
-        })
-      ]).finally(()=>clearTimeout(timer));
-      if(data?.session) return data.session;
-    }catch(e){}
-    // Session có thể chưa được hydrate kịp sau khi redirect từ trang đăng nhập.
-    // Refresh một lần trước khi kết luận user chưa đăng nhập.
+  async function waitForSession(client, timeout=10000){
+    // Sau khi auth.html redirect sang admin.html, Supabase có thể mất vài trăm ms
+    // để hydrate session từ localStorage. Không được kết luận "logout" ở lần đọc đầu.
+    const deadline=Date.now()+timeout;
+    while(Date.now()<deadline){
+      try{
+        const {data}=await client.auth.getSession();
+        if(data?.session?.user) return data.session;
+      }catch(e){}
+      await new Promise(r=>setTimeout(r,150));
+    }
+
+    // Chỉ refresh sau khi đã chờ hydrate. Nếu refresh thành công thì dùng session mới.
     try{
       const {data,error}=await client.auth.refreshSession();
-      if(!error && data?.session) return data.session;
+      if(!error && data?.session?.user) return data.session;
+    }catch(e){}
+
+    // Một lần cuối: session có thể vừa được ghi bởi auth state listener.
+    try{
+      const {data}=await client.auth.getSession();
+      if(data?.session?.user) return data.session;
     }catch(e){}
     return null;
   }
