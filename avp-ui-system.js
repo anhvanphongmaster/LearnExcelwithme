@@ -30,8 +30,8 @@
     return /^(practice-|professional-|homework|baitapexcel|excel-race)/.test(p);
   }
   function ensureCss(){
-    if(d.querySelector('link[data-avp-ui-system]'))return;
-    const link=d.createElement('link');link.rel='stylesheet';link.href='avp-ui-system.css?v=20260909-ui1';link.dataset.avpUiSystem='1';d.head.appendChild(link);
+    if(d.querySelector('link[data-avp-ui-system],link[href*="avp-ui-system.css"]'))return;
+    const link=d.createElement('link');link.rel='stylesheet';link.href='avp-ui-system.css?v=20261001-ui2';link.dataset.avpUiSystem='1';d.head.appendChild(link);
   }
   function ensureSemanticCss(){
     if(d.querySelector('link[data-avp-semantic-soft]'))return;
