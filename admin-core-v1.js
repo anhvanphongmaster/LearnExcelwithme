@@ -787,15 +787,15 @@
       showDenied("Bạn chưa đăng nhập trên live. Hãy bấm Đăng nhập, dùng tài khoản Admin, rồi quay lại trang này.");
       return;
     }
-    // Xác thực quyền bằng RPC SECURITY DEFINER trước; fallback về profile của chính user.
+    // Kiểm tra RPC trước; nếu RPC trả false/lỗi, xác nhận lại bằng profile của chính user.
     try{
-      let isAdmin=null;
+      let isAdmin=false;
       try{
         const {data,error}=await client.rpc("is_admin_user");
         if(!error) isAdmin=data===true;
       }catch(e){ console.warn("ADMIN RPC CHECK",e); }
 
-      if(isAdmin===null){
+      if(!isAdmin){
         const {data:profile,error:profileErr}=await client
           .from("profiles")
           .select("is_admin")
