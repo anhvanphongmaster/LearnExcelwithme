@@ -717,6 +717,8 @@ window.avpCloudSync = {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const isAdminPage = /(?:^|\/)admin\.html(?:$|[?#])/.test(location.pathname + location.search);
+
   await updateAuthNav();
 
   document.addEventListener("click", () => {
@@ -730,8 +732,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (user) {
     await ensureLocalBelongsToUser(user);
-    loadAdminChatAssets();
-    await loadProfileFromCloud();
+
+    // Admin uses the same Supabase client but must not run cloud hydration/reload.
+    // Those user-progress requests are unrelated to Admin and can race its init.
+    if (!isAdminPage) {
+      loadAdminChatAssets();
+      await loadProfileFromCloud();
     const hydration = await loadAndMergeProgress();
     await updateAuthNav();
 
@@ -745,6 +751,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       sessionStorage.setItem(pageKey, "1");
       setTimeout(() => location.reload(), 60);
       return;
+      }
     }
   }
 
@@ -752,17 +759,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (event === "SIGNED_IN") {
       const signedUser = await getUser();
       if (signedUser) await ensureLocalBelongsToUser(signedUser);
-      loadAdminChatAssets();
-      await loadProfileFromCloud();
-      await loadAndMergeProgress();
+      if (!isAdminPage) {
+        loadAdminChatAssets();
+        await loadProfileFromCloud();
+        await loadAndMergeProgress();
+      }
     }
     await updateAuthNav();
   });
 
-  window.addEventListener("beforeunload", () => {
-    // Best-effort only; the normal debounce handles almost all saves.
-    if (configured && !applyingCloud) scheduleProgressSync(0);
-  });
+  if (!isAdminPage) {
+    window.addEventListener("beforeunload", () => {
+      // Best-effort only; the normal debounce handles almost all saves.
+      if (configured && !applyingCloud) scheduleProgressSync(0);
+    });
+  }
 });
 
 
