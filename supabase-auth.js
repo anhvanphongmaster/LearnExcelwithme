@@ -719,6 +719,13 @@ window.avpCloudSync = {
 document.addEventListener("DOMContentLoaded", async () => {
   const isAdminPage = /(?:^|\/)admin\.html(?:$|[?#])/.test(location.pathname + location.search);
 
+  // Admin must only consume the existing Supabase session. Do not run
+  // profile/progress hydration, reloads, syncs, or auth-nav profile queries here.
+  if (isAdminPage) {
+    supabase?.auth?.onAuthStateChange(() => {});
+    return;
+  }
+
   await updateAuthNav();
 
   document.addEventListener("click", () => {
@@ -732,26 +739,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (user) {
     await ensureLocalBelongsToUser(user);
-
-    // Admin uses the same Supabase client but must not run cloud hydration/reload.
-    // Those user-progress requests are unrelated to Admin and can race its init.
-    if (!isAdminPage) {
-      loadAdminChatAssets();
-      await loadProfileFromCloud();
+    loadAdminChatAssets();
+    await loadProfileFromCloud();
     const hydration = await loadAndMergeProgress();
     await updateAuthNav();
 
-    /*
-      Chỉ reload khi cloud thực sự làm thay đổi tiến độ local. Bản cũ reload
-      mọi route một lần cho user đã đăng nhập, khiến page load và các RPC bị
-      nhân đôi dù dữ liệu không đổi.
-    */
     const pageKey = `avpCloudHydrated:${user.id}:${location.pathname}`;
     if (hydration?.localChanged && !sessionStorage.getItem(pageKey)) {
       sessionStorage.setItem(pageKey, "1");
       setTimeout(() => location.reload(), 60);
       return;
-      }
     }
   }
 
@@ -759,23 +756,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (event === "SIGNED_IN") {
       const signedUser = await getUser();
       if (signedUser) await ensureLocalBelongsToUser(signedUser);
-      if (!isAdminPage) {
-        loadAdminChatAssets();
-        await loadProfileFromCloud();
-        await loadAndMergeProgress();
-      }
+      loadAdminChatAssets();
+      await loadProfileFromCloud();
+      await loadAndMergeProgress();
     }
     await updateAuthNav();
   });
 
-  if (!isAdminPage) {
-    window.addEventListener("beforeunload", () => {
-      // Best-effort only; the normal debounce handles almost all saves.
-      if (configured && !applyingCloud) scheduleProgressSync(0);
-    });
-  }
+  window.addEventListener("beforeunload", () => {
+    if (configured && !applyingCloud) scheduleProgressSync(0);
+  });
 });
-
 
 /* ===== AVP WEBSITE REVIEW PROMPT V2 - ONE TIME ONLY ===== */
 (function(){
