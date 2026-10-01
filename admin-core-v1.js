@@ -684,8 +684,10 @@
       if(!newUsers?.__error) renderNewUsers(newUsers||[]);
       if(!featureUsage?.__error) renderFeatureUsage(featureUsage||{});
     }catch(error){
-      console.error(error);
-      showDenied(`Không tải được Analytics: ${error?.message||error}`);
+      // Đã qua bước xác thực Admin và dashboard đã được mở.
+      // Lỗi render/module phía sau không được biến thành "mất quyền" rồi ẩn toàn bộ Admin.
+      console.error("[Admin dashboard render]",error);
+      toast("Một module Admin gặp lỗi, nhưng quyền truy cập vẫn giữ nguyên.");
     }finally{$("adminRefresh").disabled=false}
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
