@@ -891,7 +891,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Kiểm tra Supabase ngay trước khi hiện để chặn người đã từng đánh giá
     // trên thiết bị/domain khác khi tài khoản vẫn là cùng một user.
     const serverHas=await hasServerReview();
-    statusChecked=true;
     if(serverHas===true||localDone())return;
 
     shown=true;
@@ -943,7 +942,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Kiểm tra trước để người đã đánh giá cũ không phải chờ đến phút thứ 3-5 mới bị phát hiện.
     const serverHas=await hasServerReview();
-    statusChecked=true;
     if(serverHas===true||localDone())return;
 
     if(activeMs>=threshold){
