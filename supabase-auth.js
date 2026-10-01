@@ -782,7 +782,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const MIN_MS=3*60*1000, MAX_MS=5*60*1000;
 
   let activeMs=Math.max(0,Number(localStorage.getItem(KEY_ACTIVE)||0));
-  let lastTick=Date.now(),timer=null,shown=false,statusChecked=false;
+  let lastTick=Date.now(),timer=null,shown=false;
 
   function safeGet(store,key){try{return store.getItem(key)}catch(_){return null}}
   function safeSet(store,key,value){try{store.setItem(key,value)}catch(_){}}
