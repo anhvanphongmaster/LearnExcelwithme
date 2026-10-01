@@ -144,7 +144,16 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(error){ msg("loginMessage",friendlyAuthError(error)); return; }
       if(!data || !data.session){ msg("loginMessage","Đăng nhập chưa tạo được phiên. Tắt Confirm email rồi thử lại."); return; }
       msg("loginMessage","✓ Đăng nhập thành công. Đang chuyển trang...",true);
-      setTimeout(goAfterAuth, 250);
+      // Xác nhận session đã được persist trước khi rời trang đăng nhập.
+      try{
+        const deadline=Date.now()+3000;
+        while(Date.now()<deadline){
+          const {data:check}=await supabase.auth.getSession();
+          if(check?.session?.user) break;
+          await new Promise(r=>setTimeout(r,100));
+        }
+      }catch(_){}
+      setTimeout(goAfterAuth, 100);
     }catch(error){
       msg("loginMessage",friendlyAuthError(error));
     }finally{
