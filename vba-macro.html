@@ -2,7 +2,7 @@
 body{margin:0;font-family:Arial,sans-serif;background:#f5f8f6;color:#1c2821}.hero{background:linear-gradient(135deg,#185c37,#217346);color:#fff;padding:64px 20px 50px;text-align:center}.hero span{display:inline-block;padding:7px 11px;border:1px solid #ffffff50;background:#ffffff18;border-radius:999px;font-weight:800}.hero h1{font-size:clamp(34px,6vw,56px);margin:15px auto 10px}.hero p{max-width:800px;margin:auto;line-height:1.7;color:#eef8f2;font-size:18px}.wrap{max-width:1080px;margin:auto;padding:32px 20px 80px}.lesson-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.lesson{background:#fff;border:1px solid #dce8e1;border-radius:18px;padding:24px;box-shadow:0 8px 24px #0000000b}.num{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:#e7f4ec;color:#185c37;font-weight:900}.lesson h2{color:#185c37;margin:14px 0 8px}.lesson p,.lesson li{line-height:1.7;color:#526159}.lesson ul{padding-left:20px}.code{background:#132019;color:#d8f5e3;padding:14px;border-radius:12px;overflow:auto;font:14px/1.6 Consolas,monospace}.task{margin-top:25px;padding:20px;border-radius:16px;background:#fff9e7;border:1px solid #ead68b}.nav-next{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:28px}.nav-next a{padding:11px 14px;border-radius:11px;background:#217346;color:#fff;text-decoration:none;font-weight:800}body.dark-mode{background:#101511;color:#e8f1eb}body.dark-mode .lesson{background:#182019;border-color:#304237}body.dark-mode .lesson p,body.dark-mode .lesson li{color:#b8c8be}@media(max-width:760px){.lesson-grid{grid-template-columns:1fr}.wrap{padding:24px 14px 70px}.lesson{padding:19px}}
 </style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#217346"><link rel="stylesheet" href="course-engine.css">
 <link rel="stylesheet" href="gamification-v8.css">
-<link rel="stylesheet" href="gamification-v9.css">
+
 <link rel="stylesheet" href="personal-dashboard.css">
 <link rel="stylesheet" href="cloud-sync-v11.css">
 <link href="theme-unified-v32.css" rel="stylesheet"/>
@@ -31,8 +31,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#f5f8f6;color:#1c2821}.her
     Worksheets("Dashboard").Activate
 End Sub</div></article><article class="lesson"><div class="num">03</div><h2>Macro thực dụng đầu tiên</h2><p>Tạo macro Refresh All, cập nhật Pivot, ghi thời gian refresh và lưu workbook.</p><ul><li>ThisWorkbook.RefreshAll</li><li>Application.CalculateFull</li><li>Lưu bản backup trước khi thử</li></ul></article><article class="lesson"><div class="num">04</div><h2>Bài thực chiến</h2><p>Tạo nút “Cập nhật báo cáo” để Refresh Power Query/Pivot và đưa người dùng về sheet Dashboard.</p><ul><li>Không hard-code đường dẫn nếu không cần</li><li>Thêm xử lý lỗi cơ bản</li><li>Test trên bản copy trước</li></ul></article></section><div class="task"><strong>🎯 Mục tiêu hoàn thành:</strong> Bạn không cần nhớ mọi nút. Hãy làm được một bài thực tế hoàn chỉnh, sau đó ghi nhận hoàn thành ở cuối bài.</div></main>
 <script defer src="script.js"></script><script defer src="global-search.js"></script><script defer src="simple-nav.js"></script><script defer src="avp-core.js"></script><script defer src="learning-progress.js"></script><script defer src="analytics-tracker.js"></script><script defer src="course-engine.js"></script>
-<script defer src="gamification-v8.js"></script>
-<script defer src="gamification-v9.js"></script>
+
+
 <script defer src="personal-dashboard.js"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js"></script>
