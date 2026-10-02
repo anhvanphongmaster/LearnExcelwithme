@@ -114,7 +114,7 @@
   }
   function next(){
     if(active||!queue.length)return;
-    active=true;ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureRouteIdentityCss();ensureSiteUiPolish();scopeInstallPromptToHome();ensureHomeKnowledgeV2();ensureSemanticHierarchy();ensureLauncherUnifier();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
+    active=true;ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureRouteIdentityCss();ensureSiteUiPolish();scopeInstallPromptToHome();ensureSemanticHierarchy();ensureLauncherUnifier();const task=queue.shift(),opts=task.opts||{},root=ensureRoot();
     lastFocus=d.activeElement instanceof HTMLElement?d.activeElement:null;
     root.className='avp-ui-modal tone-'+(opts.tone||'info');
     const type=opts.type||'alert';
@@ -173,5 +173,5 @@
     return 'info';
   }
   w.alert=function(message){const text=String(message??'');w.avpAlert(text,{tone:inferredTone(text)});};
-  ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureRouteIdentityCss();ensureSiteUiPolish();scopeInstallPromptToHome();ensureHomeKnowledgeV2();ensureSemanticHierarchy();ensureLauncherUnifier();
+  ensureCss();ensureSemanticCss();ensureReadabilityCss();ensureGlobalControlsCss();ensureRouteIdentityCss();ensureSiteUiPolish();scopeInstallPromptToHome();ensureSemanticHierarchy();ensureLauncherUnifier();
 })(window,document);
