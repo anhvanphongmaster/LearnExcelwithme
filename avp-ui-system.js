@@ -83,14 +83,6 @@
     };
     if(d.body)start();else d.addEventListener('DOMContentLoaded',start,{once:true});
   }
-  function ensureHomeKnowledgeV2(){
-    if(pageName()!=='index.html')return;
-    if(!d.querySelector('link[data-avp-home-knowledge-v2]')){
-      const link=d.createElement('link');link.rel='stylesheet';link.href='avp-home-knowledge-v2.css?v=20260910-homekv3';link.dataset.avpHomeKnowledgeV2='1';d.head.appendChild(link);
-    }
-    if(w.__AVP_HOME_KNOWLEDGE_V2__||d.querySelector('script[data-avp-home-knowledge-v2]'))return;
-    const script=d.createElement('script');script.src='avp-home-knowledge-v2.js?v=20260910-homekv3';script.defer=true;script.dataset.avpHomeKnowledgeV2='1';(d.head||d.documentElement).appendChild(script);
-  }
   function ensureSemanticHierarchy(){
     if(w.__AVP_SEMANTIC_HIERARCHY_V3__||d.querySelector('script[data-avp-semantic-hierarchy]'))return;
     const script=d.createElement('script');
