@@ -599,18 +599,11 @@
     const set=(id,v)=>{const el=$(id);if(el)el.textContent=n(v);};
     set("fuDictionaryOpen",s.dictionary_opens);
     set("fuDictionarySearch",s.dictionary_searches);
-    set("fuDoctorOpen",s.doctor_opens);
-    set("fuDoctorScans",s.doctor_scans);
-    set("fuDoctorCompleted",s.doctor_scan_completed);
-    set("fuDoctorIssues",s.doctor_issues_found);
-    set("fuDoctorToDictionary",s.doctor_to_dictionary);
 
     const dv=$("fuDictionaryVisitors");
     if(dv) dv.textContent=`${n(s.dictionary_unique_visitors)} người dùng`;
     const dd=$("fuDictionaryDetails");
     if(dd) dd.textContent=`${n(s.dictionary_detail_opens)} mục đã mở`;
-    const docv=$("fuDoctorVisitors");
-    if(docv) docv.textContent=`${n(s.doctor_unique_visitors)} người dùng`;
 
     renderRanking("fuTopSearches",s.top_searches||[],"label","uses");
     renderRanking("fuTopDetails",s.top_details||[],"label","uses");
