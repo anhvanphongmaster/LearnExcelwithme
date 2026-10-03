@@ -674,8 +674,8 @@
         renderFeatureUsage(featureUsage||{});
       } else {
         console.warn("admin_feature_usage_summary failed:", featureUsage.__error);
-        ["fuDictionaryOpen","fuDictionarySearch","fuDoctorOpen","fuDoctorScans","fuDoctorCompleted","fuDoctorIssues","fuDoctorToDictionary"].forEach(id=>{const el=$(id);if(el)el.textContent="Lỗi tải";});
-        ["fuDictionaryVisitors","fuDictionaryDetails","fuDoctorVisitors"].forEach(id=>{const el=$(id);if(el)el.textContent="Không tải được dữ liệu";});
+        ["fuDictionaryOpen","fuDictionarySearch"].forEach(id=>{const el=$(id);if(el)el.textContent="Lỗi tải";});
+        ["fuDictionaryVisitors","fuDictionaryDetails"].forEach(id=>{const el=$(id);if(el)el.textContent="Không tải được dữ liệu";});
         ["fuTopSearches","fuTopDetails"].forEach(id=>{const el=$(id);if(el)el.innerHTML='<p class="admin-empty">Không tải được dữ liệu. Mở Console để xem lỗi RPC.</p>';});
       }
     }catch(error){
