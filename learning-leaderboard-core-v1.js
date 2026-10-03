@@ -222,7 +222,7 @@
       return;
     }
     if (!rows.length) { list.innerHTML = '<li class="lb-muted">Chưa có xếp hạng.</li>'; return; }
-    rows = rows.filter(function (r) { return String(r.display_name || "").trim().toLowerCase() !== "tuan"; }).slice(0, 30);
+    rows = rows.slice(0, 30);
     list.classList.add("lb-clip3");
     list.innerHTML = rows.map(function (r, i) {
       const st = Number(r.current_streak) || 0;
