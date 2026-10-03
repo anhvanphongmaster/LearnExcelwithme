@@ -92,7 +92,8 @@
   function openMail(list, idx){
     const r=list[idx]; if(!r) return;
     document.querySelectorAll(".admin-mail-item").forEach((el,i)=>el.classList.toggle("active", i===idx));
-    const who=escapeHtml(r.name||"Ẩn danh");
+    const rawWho=String(r.name||"Ẩn danh");
+    const who=escapeHtml(rawWho);
     const when=r.at ? new Date(r.at).toLocaleString("vi-VN") : "";
     const msg=escapeHtml(r.message||"");
     const extra = mailKind==="saved"
@@ -104,7 +105,7 @@
     if(keep) keep.onclick=async()=>{
       keep.disabled=true; keep.textContent="Đang lưu...";
       try{
-        await rpc("admin_save_feedback",{p_kind:mailKind==="ideas"?"idea":"question", p_name:who, p_message:r.message||"", p_at:r.at||null});
+        await rpc("admin_save_feedback",{p_kind:mailKind==="ideas"?"idea":"question", p_name:rawWho, p_message:r.message||"", p_at:r.at||null});
         toast("Đã giữ lại");
         mailData.saved = await rpcSoft("admin_list_saved_feedback") || [];
         if(mailData.saved.__error) mailData.saved=[];
@@ -114,7 +115,7 @@
     };
     const del=$("mailDelete");
     if(del) del.onclick=async()=>{
-      { const okMail = await window.avpConfirm("Xóa thư / góp ý của " + who + "?\nKhông hoàn tác được.", { title: "Xóa thư?", icon: "✉️", tone: "danger", ok: "Xóa", cancel: "Hủy" }); if(!okMail) return; }
+      { const okMail = await window.avpConfirm("Xóa thư / góp ý của " + rawWho + "?\nKhông hoàn tác được.", { title: "Xóa thư?", icon: "✉️", tone: "danger", ok: "Xóa", cancel: "Hủy" }); if(!okMail) return; }
       const itemId=Number(r.id);
       if(mailKind==="saved"){
         if(!itemId){ toast("Thư đã giữ chưa có mã."); return; }
