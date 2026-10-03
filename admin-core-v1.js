@@ -92,9 +92,9 @@
   function openMail(list, idx){
     const r=list[idx]; if(!r) return;
     document.querySelectorAll(".admin-mail-item").forEach((el,i)=>el.classList.toggle("active", i===idx));
-    const who=String(r.name||"Ẩn danh").replace(/[<>]/g,"");
+    const who=escapeHtml(r.name||"Ẩn danh");
     const when=r.at ? new Date(r.at).toLocaleString("vi-VN") : "";
-    const msg=String(r.message||"").replace(/[<>]/g,"");
+    const msg=escapeHtml(r.message||"");
     const extra = mailKind==="saved"
       ? `<button type="button" class="admin-mail-del" id="mailDelete">Xóa thư này</button>`
       : `<button type="button" class="admin-mail-keep" id="mailKeep">Giữ lại</button>
@@ -156,7 +156,7 @@
       read.innerHTML="<p>Chưa có thư.</p>";
       return;
     }
-    box.innerHTML=list.map((r,i)=>`<button type="button" class="admin-mail-item" data-i="${i}"><b>${String(r.name||"Ẩn danh").replace(/[<>]/g,"")}</b><small>${r.at?new Date(r.at).toLocaleString("vi-VN"):""}</small><em>${preview(r.message||r.file||r.note)}</em></button>`).join("");
+    box.innerHTML=list.map((r,i)=>`<button type="button" class="admin-mail-item" data-i="${i}"><b>${escapeHtml(r.name||"Ẩn danh")}</b><small>${r.at?new Date(r.at).toLocaleString("vi-VN"):""}</small><em>${escapeHtml(preview(r.message||r.file||r.note))}</em></button>`).join("");
     box.querySelectorAll(".admin-mail-item").forEach(btn=>{
       btn.onclick=()=>openMail(list, Number(btn.dataset.i));
     });
