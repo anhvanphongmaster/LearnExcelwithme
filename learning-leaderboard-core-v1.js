@@ -211,8 +211,12 @@
     let rows = [];
     try {
       const { data, error } = await sb.rpc("list_learning_leaderboard");
-      if (!error && Array.isArray(data)) rows = data;
-      if (!rows.length || rows.length < 31) {
+      if (!error && Array.isArray(data)) {
+        // A successful RPC is the canonical, policy-aware result even when
+        // fewer than 31 users qualify. Do not replace it with a raw table read.
+        rows = data;
+      } else {
+        // Use the legacy table query only when the canonical RPC is unavailable.
         const res = await sb.from("learning_leaderboard").select("display_name,current_streak,best_streak,total_days,xp").order("current_streak", { ascending: false }).order("xp", { ascending: false }).limit(31);
         if (res.error) { list.innerHTML = '<li class="lb-muted">Chưa có dữ liệu xếp hạng.</li>'; return; }
         rows = res.data || [];
