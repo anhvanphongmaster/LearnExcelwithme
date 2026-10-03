@@ -218,7 +218,7 @@
 
   async function loadCore() {
     const script = document.createElement('script');
-    script.src = 'admin-core-v1.js?v=20261001-admincore1';
+    script.src = 'admin-core-v1.js?v=20261003-analytics-fix4';
     script.defer = true;
 
     script.onload = () => {
