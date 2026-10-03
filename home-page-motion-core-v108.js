@@ -24,7 +24,7 @@
     }
     if(!document.querySelector('script[data-home-copy-v104]')){
       var script=document.createElement('script');
-      script.src='home-copy-v104.js?v=20260915-quick2';script.dataset.homeCopyV104='1';
+      script.src='home-copy-v104.js?v=20261003-inline-caret1';script.dataset.homeCopyV104='1';
       document.head.appendChild(script);
     }
   }
