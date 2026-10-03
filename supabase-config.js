@@ -13,8 +13,8 @@ window.AVP_SUPABASE_CONFIG = {
     items.push(['admin-chat.js?v=20260914-lazy1','avp-admin-chat']);
     items.push(['admin-alerts.js?v=20260914-push2','avp-admin-alerts']);
   }else{
-    /* V3 uses a unique loader flag so stale V1/V2 service-worker code cannot suppress it. */
-    items.push(['admin-chat-v3.js?v=20260915-v3','avp-admin-chat-v3']);
+    /* Use the checked-in site-wide chat loader; admin-chat-v3.js is not present in this repository. */
+    items.push(['admin-chat.js?v=20261004-loader-integrity1','avp-admin-chat']);
   }
 
   items.forEach(function(item){
