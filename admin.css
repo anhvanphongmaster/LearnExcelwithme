@@ -30,7 +30,7 @@
 .admin-day-bars{height:190px;width:100%;display:flex;align-items:flex-end;justify-content:center;gap:2px}
 .admin-bar{width:6px;min-height:1px;border-radius:4px 4px 0 0;background:#217346}
 .admin-bar.visitors{background:#77bd91}.admin-bar.tools{background:#c4a455}
-.admin-legend-views{color:#217346}.admin-legend-visitors{color:#77bd91}.admin-legend-tools{color:#c4a455}
+.admin-legend .admin-legend-views{color:#217346!important}.admin-legend .admin-legend-visitors{color:#77bd91!important}.admin-legend .admin-legend-tools{color:#c4a455!important}
 #topPages .admin-rank-row{grid-template-columns:minmax(0,1fr) minmax(70px,2fr) auto}
 #topPages .admin-rank-label{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.35;min-width:0}
 .admin-day-label{position:absolute;bottom:-20px;color:#87978f;font-size:8px;white-space:nowrap;transform:rotate(-35deg);transform-origin:center}
