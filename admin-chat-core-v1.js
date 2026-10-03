@@ -231,9 +231,18 @@
   const sizeText=(n)=>{n=Number(n)||0;if(n<1024)return n+" B";if(n<1024*1024)return (n/1024).toFixed(1)+" KB";return (n/1024/1024).toFixed(1)+" MB"};
   const isImageFile=(f)=>String(f?.type||"").startsWith("image/")||["jpg","jpeg","png","webp","gif","heic","heif"].includes(extOf(f?.name));
   function validateFiles(files){
-    const arr=[...files].slice(0,MAX_FILES_PER_SEND);
-    const bad=arr.find(f=>f.size>MAX_FILE_BYTES||!ALLOWED_EXT.has(extOf(f.name)));
-    if(bad) throw new Error(`File ${bad.name} không được hỗ trợ hoặc lớn hơn 20 MB.`);
+    const arr=Array.from(files||[]);
+    if(arr.length>MAX_FILES_PER_SEND){
+      throw new Error(`Mỗi lần chỉ được gửi tối đa ${MAX_FILES_PER_SEND} tệp. Bạn đã chọn ${arr.length} tệp; hãy chọn lại.`);
+    }
+    const tooLarge=arr.find(f=>Number(f?.size)>MAX_FILE_BYTES);
+    if(tooLarge){
+      throw new Error(`Tệp ${tooLarge.name||"không tên"} vượt quá giới hạn 20 MB.`);
+    }
+    const unsupported=arr.find(f=>!ALLOWED_EXT.has(extOf(f?.name)));
+    if(unsupported){
+      throw new Error(`Định dạng tệp ${unsupported.name||"không tên"} chưa được hỗ trợ.`);
+    }
     return arr;
   }
   function makeAttachmentBody(meta,caption=""){return ATTACH_PREFIX+JSON.stringify(meta)+"\n"+String(caption||"").trim()}
