@@ -1179,27 +1179,31 @@ function todayKey(){
 async function loadStarCounts(sb,rows){
   const map={};
   if(!sb)return map;
+  let rpcLoaded=false;
   try{
     let rpc=await sb.rpc("practice_grader_star_counts");
     if(rpc.error)rpc=await sb.rpc("practice_grader_star_counts",{p_user_ids:null});
     if(!rpc.error && Array.isArray(rpc.data)){
+      rpcLoaded=true;
       rpc.data.forEach(x=>{
         const id=String(x.user_id||x.id||"");
         if(id)map[id]=Number(x.star_count||x.stars||0);
       });
     }
   }catch(e){}
-  try{
-    const {data,error}=await sb.from("practice_grader_stars").select("to_user_id");
-    if(!error && Array.isArray(data)){
-      const c={};
-      data.forEach(x=>{
-        const id=String(x.to_user_id||"");
-        if(id)c[id]=(c[id]||0)+1;
-      });
-      Object.assign(map,c);
-    }
-  }catch(e){}
+  // The RPC is canonical. Query the table only when the RPC is unavailable;
+  // otherwise RLS-filtered table rows could overwrite complete RPC totals.
+  if(!rpcLoaded){
+    try{
+      const {data,error}=await sb.from("practice_grader_stars").select("to_user_id");
+      if(!error && Array.isArray(data)){
+        data.forEach(x=>{
+          const id=String(x.to_user_id||"");
+          if(id)map[id]=(map[id]||0)+1;
+        });
+      }
+    }catch(e){}
+  }
   return map;
 }
 async function giftStar(btn){
