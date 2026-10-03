@@ -8,9 +8,8 @@
   if(!old)return;
 
   /*
-   * The typed text changes width every character. Keep the hero slot fixed and
-   * animate only the text content. The caret is positioned from the measured
-   * text width, so it always stays immediately after the last character.
+   * Keep the caret in normal inline flow after the text. Avoid measuring layout
+   * on every tick, which can force synchronous layout and cause typing stutter.
    */
   var typing=old.cloneNode(false);
   typing.id='avpTyping';
@@ -48,11 +47,12 @@
   text.style.whiteSpace='nowrap';
 
   cursor.style.display='inline-block';
-  cursor.style.position='absolute';
-  cursor.style.left='0';
-  cursor.style.top='0.08em';
-  cursor.style.marginLeft='0';
-  cursor.style.transform='translateX(0)';
+  cursor.style.position='relative';
+  cursor.style.left='auto';
+  cursor.style.top='auto';
+  cursor.style.marginLeft='3px';
+  cursor.style.transform='none';
+  cursor.style.verticalAlign='-2px';
 
   var lines=[
     'Học đúng lộ trình, không lan man',
@@ -71,7 +71,6 @@
 
   function render(){
     text.textContent=lines[line].slice(0,char);
-    cursor.style.transform='translateX('+text.offsetWidth+'px)';
   }
 
   function next(ms){
