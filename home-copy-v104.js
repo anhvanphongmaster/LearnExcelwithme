@@ -28,9 +28,14 @@
   frame.appendChild(cursor);
   typing.appendChild(frame);
 
+  /*
+   * Reserve a fixed-width typing slot. The parent tagline is full-width and
+   * centered, so its width no longer changes as each character is added.
+   */
   typing.style.display='block';
-  typing.style.width='100%';
+  typing.style.width='36ch';
   typing.style.maxWidth='100%';
+  typing.style.flex='0 1 36ch';
   typing.style.height='1.35em';
   typing.style.overflow='hidden';
   typing.style.contain='layout paint';
