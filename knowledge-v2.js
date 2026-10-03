@@ -18,6 +18,7 @@
   const moduleFor=lesson=>P?.moduleForLesson?.(lesson.id)||null;
   const trackFor=lesson=>T?.forLesson?.(lesson.id)||null;
   const doneSet=()=>{try{return new Set(JSON.parse(localStorage.getItem(DONE_KEY)||'[]'))}catch{return new Set()}};
+  const safeStorageSet=(name,key,value)=>{try{window[name].setItem(key,value)}catch{}};
   const kindLabel=kind=>kind==='extension'?'HỌC THÊM':'CỐT LÕI';
   const sectionFromHash=lesson=>{const m=String(location.hash||'').match(/^#sec-(\d+)$/);if(!m)return 0;return Math.max(0,Math.min((lesson.sections?.length||1)-1,Number(m[1])-1))};
 
@@ -80,12 +81,12 @@
   }
   function updateSectionHash(index){const target=`#sec-${index+1}`;if(location.hash!==target)history.replaceState(null,'',`${location.pathname}${location.search}${target}`)}
   function scrollContentToTop(){const t=$('kvSections');if(!t)return;const mobile=window.matchMedia&&window.matchMedia('(max-width:820px)').matches;window.scrollTo({top:Math.max(0,t.getBoundingClientRect().top+window.pageYOffset-(mobile?132:88)),behavior:'smooth'})}
-  function activateSection(index,{scroll=false,updateHash=false}={}){if(!currentLesson)return;const next=Math.max(0,Math.min(currentLesson.sections.length-1,Number(index)||0));currentSectionIndex=next;$('kvSections').innerHTML=renderSection(currentLesson.sections[next],next);setSidebarActive(next);bindQuestions(currentLesson,next);try{localStorage.setItem(SECTION_KEY,JSON.stringify({lesson:currentLesson.id,section:next}))}catch{}if(updateHash)updateSectionHash(next);if(scroll)requestAnimationFrame(scrollContentToTop)}
+  function activateSection(index,{scroll=false,updateHash=false}={}){if(!currentLesson)return;const next=Math.max(0,Math.min(currentLesson.sections.length-1,Number(index)||0));currentSectionIndex=next;$('kvSections').innerHTML=renderSection(currentLesson.sections[next],next);setSidebarActive(next);bindQuestions(currentLesson,next);safeStorageSet('localStorage',SECTION_KEY,JSON.stringify({lesson:currentLesson.id,section:next}))if(updateHash)updateSectionHash(next);if(scroll)requestAnimationFrame(scrollContentToTop)}
 
   function renderNotFound(){const page=$('kvPage');page.innerHTML=`<section class="kv-not-found"><h1>Không tìm thấy bài học</h1><p>Bài này không còn trong lộ trình Excel A–Z hiện tại.</p><a href="skill-map.html">Về Học Excel →</a></section>`}
   function boot(){
-    if(!lessons.length){renderNotFound();return}const lesson=byId.get(requestedId());if(!lesson){renderNotFound();return}currentLesson=lesson;currentSectionIndex=sectionFromHash(lesson);localStorage.setItem(LAST_KEY,lesson.id);
-    const module=moduleFor(lesson),track=trackFor(lesson);if(module)sessionStorage.setItem('avp_learning_module_return',module.id);if(track)document.documentElement.dataset.avpLearningTrack=track.id;if(module)document.documentElement.dataset.avpModuleTone=module.tone||'';
+    if(!lessons.length){renderNotFound();return}const lesson=byId.get(requestedId());if(!lesson){renderNotFound();return}currentLesson=lesson;currentSectionIndex=sectionFromHash(lesson);safeStorageSet('localStorage',LAST_KEY,lesson.id);
+    const module=moduleFor(lesson),track=trackFor(lesson);if(module)safeStorageSet('sessionStorage','avp_learning_module_return',module.id);if(track)document.documentElement.dataset.avpLearningTrack=track.id;if(module)document.documentElement.dataset.avpModuleTone=module.tone||'';
     document.title=`Bài ${String(lesson.order).padStart(2,'0')} · ${lesson.title} | Anh Văn Phòng`;renderCourseNav(lesson);renderHero(lesson);renderIntro(lesson);renderSidebar(lesson);activateSection(currentSectionIndex,{scroll:false,updateHash:false});window.addEventListener('hashchange',()=>{const next=sectionFromHash(lesson);if(next!==currentSectionIndex)activateSection(next,{scroll:true,updateHash:false})});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
