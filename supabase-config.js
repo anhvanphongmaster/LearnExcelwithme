@@ -10,7 +10,7 @@ window.AVP_SUPABASE_CONFIG = {
 
   /* Admin Chat is a site-wide entry point on every normal page. */
   if(page==='admin.html'){
-    items.push(['admin-chat.js?v=20260914-lazy1','avp-admin-chat']);
+    items.push(['admin-chat.js?v=20261004-loader-integrity1','avp-admin-chat']);
     items.push(['admin-alerts.js?v=20260914-push2','avp-admin-alerts']);
   }else{
     /* Use the checked-in site-wide chat loader; admin-chat-v3.js is not present in this repository. */
