@@ -677,7 +677,14 @@
       if(!difficulty?.__error) renderQuizDifficulty(difficulty||[]);
       if(!engagement?.__error) await renderEngagement(engagement||{});
       if(!newUsers?.__error) renderNewUsers(newUsers||[]);
-      if(!featureUsage?.__error) renderFeatureUsage(featureUsage||{});
+      if(!featureUsage?.__error) {
+        renderFeatureUsage(featureUsage||{});
+      } else {
+        console.warn("admin_feature_usage_summary failed:", featureUsage.__error);
+        ["fuDictionaryOpen","fuDictionarySearch","fuDoctorOpen","fuDoctorScans","fuDoctorCompleted","fuDoctorIssues","fuDoctorToDictionary"].forEach(id=>{const el=$(id);if(el)el.textContent="Lỗi tải";});
+        ["fuDictionaryVisitors","fuDictionaryDetails","fuDoctorVisitors"].forEach(id=>{const el=$(id);if(el)el.textContent="Không tải được dữ liệu";});
+        ["fuTopSearches","fuTopDetails"].forEach(id=>{const el=$(id);if(el)el.innerHTML='<p class="admin-empty">Không tải được dữ liệu. Mở Console để xem lỗi RPC.</p>';});
+      }
     }catch(error){
       // Đã qua bước xác thực Admin và dashboard đã được mở.
       // Lỗi render/module phía sau không được biến thành "mất quyền" rồi ẩn toàn bộ Admin.
