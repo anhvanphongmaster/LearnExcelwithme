@@ -779,6 +779,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const KEY_BROWSER='avp_site_review_browser_id_v1';
   const KEY_ACTIVE='avp_site_review_active_ms_v3';
   const KEY_THRESHOLD='avp_site_review_threshold_ms_v3';
+  const KEY_LAST_PROMPT='avp_site_review_last_prompt_at_v1';
+  const PROMPT_COOLDOWN_MS=7*24*60*60*1000;
   const MIN_MS=3*60*1000, MAX_MS=5*60*1000;
 
   let activeMs=Math.max(0,Number(localStorage.getItem(KEY_ACTIVE)||0));
@@ -798,7 +800,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function localDone(){
-    return safeGet(localStorage,KEY_SUB)==='1' || safeGet(localStorage,KEY_PROMPTED)==='1';
+    // Chỉ đánh dấu hoàn tất khi đã gửi đánh giá; đóng lời mời không đồng nghĩa đã đánh giá.
+    return safeGet(localStorage,KEY_SUB)==='1';
+  }
+
+  function inPromptCooldown(){
+    const last=Number(safeGet(localStorage,KEY_LAST_PROMPT)||0);
+    return last>0 && Date.now()-last<PROMPT_COOLDOWN_MS;
   }
 
   function markSubmitted(){
@@ -809,8 +817,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function markPrompted(){
-    // Một trình duyệt chỉ tự động thấy lời mời đánh giá đúng 1 lần.
-    safeSet(localStorage,KEY_PROMPTED,'1');
+    // Nếu chưa gửi đánh giá, chỉ nhắc lại sau 7 ngày để tránh làm phiền.
+    safeSet(localStorage,KEY_PROMPTED,'1'); // giữ tương thích với phiên bản cũ
+    safeSet(localStorage,KEY_LAST_PROMPT,String(Date.now()));
     safeSet(localStorage,KEY_ACTIVE,'0');
     safeRemove(localStorage,KEY_THRESHOLD);
   }
@@ -886,7 +895,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function showPrompt(){
-    if(shown||localDone())return;
+    if(shown||localDone()||inPromptCooldown())return;
 
     // Kiểm tra Supabase ngay trước khi hiện để chặn người đã từng đánh giá
     // trên thiết bị/domain khác khi tài khoản vẫn là cùng một user.
@@ -899,7 +908,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const wrap=document.createElement('div');
     wrap.className='avp-review-backdrop';
     wrap.id='avpReviewBackdrop';
-    wrap.innerHTML=`<div class="avp-review-card" role="dialog" aria-modal="true" aria-labelledby="avpReviewTitle"><h3 id="avpReviewTitle">Bạn thấy website của Anh Văn Phòng thế nào?</h3><p>Nếu tiện, bạn có thể đánh giá một lần để mình biết phần nào hữu ích và phần nào cần cải thiện.</p><div class="avp-review-stars" aria-label="Chọn số sao">${[1,2,3,4,5].map(i=>`<button type="button" class="avp-review-star" data-star="${i}" aria-label="${i} sao">★</button>`).join('')}</div><textarea id="avpReviewContent" maxlength="1000" placeholder="Bạn có góp ý gì cho website không? (không bắt buộc)"></textarea><div class="avp-review-actions"><button type="button" class="avp-review-later">Đóng</button><button type="button" class="avp-review-send" disabled>Gửi đánh giá</button></div><div class="avp-review-note">Website chỉ tự động hỏi bạn một lần.</div></div>`;
+    wrap.innerHTML=`<div class="avp-review-card" role="dialog" aria-modal="true" aria-labelledby="avpReviewTitle"><h3 id="avpReviewTitle">Bạn thấy website của Anh Văn Phòng thế nào?</h3><p>Nếu tiện, bạn có thể đánh giá một lần để mình biết phần nào hữu ích và phần nào cần cải thiện.</p><div class="avp-review-stars" aria-label="Chọn số sao">${[1,2,3,4,5].map(i=>`<button type="button" class="avp-review-star" data-star="${i}" aria-label="${i} sao">★</button>`).join('')}</div><textarea id="avpReviewContent" maxlength="1000" placeholder="Bạn có góp ý gì cho website không? (không bắt buộc)"></textarea><div class="avp-review-actions"><button type="button" class="avp-review-later">Đóng</button><button type="button" class="avp-review-send" disabled>Gửi đánh giá</button></div><div class="avp-review-note">Nếu chưa đánh giá, lời mời sẽ xuất hiện lại sau 7 ngày.</div></div>`;
     document.body.appendChild(wrap);
     let rating=0;
     const stars=[...wrap.querySelectorAll('[data-star]')],send=wrap.querySelector('.avp-review-send');
@@ -938,7 +947,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   async function boot(){
-    if(localDone())return;
+    if(localDone()||inPromptCooldown())return;
 
     // Kiểm tra trước để người đã đánh giá cũ không phải chờ đến phút thứ 3-5 mới bị phát hiện.
     const serverHas=await hasServerReview();
