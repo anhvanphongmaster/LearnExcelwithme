@@ -67,21 +67,21 @@
   function renderTrend(rows){
     const root=$("trendChart");if(!rows?.length){root.innerHTML='<p class="admin-empty">Chưa có dữ liệu.</p>';return}
     const max=Math.max(1,...rows.flatMap(r=>[num(r.page_views),num(r.unique_visitors),num(r.tool_runs)]));
-    root.innerHTML=rows.map(r=>{const date=new Date(`${r.day}T00:00:00`),label=`${date.getDate()}/${date.getMonth()+1}`;const h1=Math.max(1,num(r.page_views)/max*180),h2=Math.max(1,num(r.unique_visitors)/max*180),h3=Math.max(1,num(r.tool_runs)/max*180);return `<div class="admin-day" title="${r.day}: ${r.page_views} views, ${r.unique_visitors} visitors, ${r.tool_runs} tool runs"><div class="admin-day-bars"><span class="admin-bar" style="height:${h1}px"></span><span class="admin-bar visitors" style="height:${h2}px"></span><span class="admin-bar tools" style="height:${h3}px"></span></div><span class="admin-day-label">${label}</span></div>`}).join("");
+    root.innerHTML=rows.map(r=>{const date=new Date(`${r.day}T00:00:00`),label=`${date.getDate()}/${date.getMonth()+1}`;const h1=Math.max(1,num(r.page_views)/max*180),h2=Math.max(1,num(r.unique_visitors)/max*180),h3=Math.max(1,num(r.tool_runs)/max*180);return `<div class="admin-day" title="${escapeHtml(r.day)}: ${n(r.page_views)} views, ${n(r.unique_visitors)} visitors, ${n(r.tool_runs)} tool runs"><div class="admin-day-bars"><span class="admin-bar" style="height:${h1}px"></span><span class="admin-bar visitors" style="height:${h2}px"></span><span class="admin-bar tools" style="height:${h3}px"></span></div><span class="admin-day-label">${label}</span></div>`}).join("");
   }
   function renderRanking(id,rows,labelKey,valueKey,formatter=x=>x){
     const root=$(id);if(!rows?.length){root.innerHTML='<p class="admin-empty">Chưa có dữ liệu.</p>';return}
     const max=Math.max(1,...rows.map(r=>num(r[valueKey])));
-    root.innerHTML=rows.map((r,i)=>{const val=num(r[valueKey]),pct=Math.max(2,val/max*100),label=String(formatter(r[labelKey])||"(không xác định)");return `<div class="admin-rank-row"><span class="admin-rank-label" title="${label.replaceAll('"','&quot;')}" aria-label="${label.replaceAll('"','&quot;')}">${i+1}. ${label}</span><span class="admin-rank-track"><span class="admin-rank-fill" style="width:${pct}%"></span></span><span class="admin-rank-value">${n(val)}</span></div>`}).join("");
+    root.innerHTML=rows.map((r,i)=>{const val=num(r[valueKey]),pct=Math.max(2,val/max*100),label=String(formatter(r[labelKey])||"(không xác định)");return `<div class="admin-rank-row"><span class="admin-rank-label" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${i+1}. ${escapeHtml(label)}</span><span class="admin-rank-track"><span class="admin-rank-fill" style="width:${pct}%"></span></span><span class="admin-rank-value">${n(val)}</span></div>`}).join("");
   }
   function renderFunnel(rows){
     const root=$("learningFunnel");if(!rows?.length){root.innerHTML='<p class="admin-empty">Chưa có dữ liệu tiến độ Cloud.</p>';return}
-    root.innerHTML=rows.map(r=>`<div class="admin-funnel-row"><span class="admin-funnel-name">${r.stage}</span><span class="admin-funnel-track"><span class="admin-funnel-fill" style="width:${Math.max(1,num(r.completion_pct))}%"></span></span><span class="admin-funnel-val">${n(r.completed_users)} • ${num(r.completion_pct).toFixed(1)}%</span></div>`).join("");
+    root.innerHTML=rows.map(r=>`<div class="admin-funnel-row"><span class="admin-funnel-name">${escapeHtml(r.stage)}</span><span class="admin-funnel-track"><span class="admin-funnel-fill" style="width:${Math.max(1,num(r.completion_pct))}%"></span></span><span class="admin-funnel-val">${n(r.completed_users)} • ${num(r.completion_pct).toFixed(1)}%</span></div>`).join("");
   }
   function renderNewUsers(rows){
     const root=$("newUserTrend");if(!rows?.length){root.innerHTML='<p class="admin-empty">Chưa có dữ liệu.</p>';return}
     const max=Math.max(1,...rows.map(r=>num(r.new_users)));
-    root.innerHTML=rows.map(r=>{const dt=new Date(`${r.day}T00:00:00`),label=`${dt.getDate()}/${dt.getMonth()+1}`,h=Math.max(2,num(r.new_users)/max*145);return `<div class="admin-user-day" title="${r.day}: ${n(r.new_users)} tài khoản mới"><span class="admin-user-bar" style="height:${h}px"></span><span class="admin-user-label">${label}</span></div>`}).join("");
+    root.innerHTML=rows.map(r=>{const dt=new Date(`${r.day}T00:00:00`),label=`${dt.getDate()}/${dt.getMonth()+1}`,h=Math.max(2,num(r.new_users)/max*145);return `<div class="admin-user-day" title="${escapeHtml(r.day)}: ${n(r.new_users)} tài khoản mới"><span class="admin-user-bar" style="height:${h}px"></span><span class="admin-user-label">${label}</span></div>`}).join("");
   }
   let mailData={questions:[], ideas:[], saved:[]};
   let mailKind='questions';
@@ -198,7 +198,7 @@
     // Không được để thiếu container làm sập toàn bộ Dashboard.
     if(!root)return;
     if(!rows?.length){root.innerHTML='<p class="admin-empty">Chưa có lượt làm quiz sau khi cập nhật V15.</p>';return}
-    root.innerHTML=rows.map(r=>{const rate=num(r.pass_rate),hard=rate<60;return `<div class="admin-quiz-row"><div><div class="admin-quiz-title">${labelLesson(r.lesson)}</div><div class="admin-quiz-meta">${n(r.attempts)} lượt làm • ${n(r.passes)} lượt đạt</div></div><span class="admin-pass-rate ${hard?'hard':''}">${rate.toFixed(1)}% đạt</span></div>`}).join("");
+    root.innerHTML=rows.map(r=>{const rate=num(r.pass_rate),hard=rate<60;return `<div class="admin-quiz-row"><div><div class="admin-quiz-title">${escapeHtml(labelLesson(r.lesson))}</div><div class="admin-quiz-meta">${n(r.attempts)} lượt làm • ${n(r.passes)} lượt đạt</div></div><span class="admin-pass-rate ${hard?'hard':''}">${rate.toFixed(1)}% đạt</span></div>`}).join("");
   }
   async function rpc(name,args){
     const {data,error}=await client.rpc(name,args||{});
