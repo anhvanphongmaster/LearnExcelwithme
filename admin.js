@@ -77,8 +77,6 @@
   }
 
   function isHealthRequest(name, args) {
-    if (manualHealth) return false;
-
     const a = args || {};
     return (
       (name === 'admin_analytics_summary' && Number(a.p_days) === 1) ||
@@ -120,7 +118,14 @@
     client.rpc = (name, args) => {
       const params = args || {};
 
-      if (isHealthRequest(name, params) || isDeferred(name)) {
+      // Health probes must reach Supabase. Returning a synthetic empty result here
+      // falsely marked broken RPCs as healthy and also swallowed real requests that
+      // happened to use the same arguments (for example a one-day report).
+      if (isHealthRequest(name, params)) {
+        return rpc(name, args);
+      }
+
+      if (isDeferred(name)) {
         return Promise.resolve({
           data: emptyRpcResult(name),
           error: null
