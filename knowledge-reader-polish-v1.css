@@ -127,16 +127,13 @@
 .kv-reader-page .kv-hero h1{
   max-width:980px!important;
   color:#173f2a!important;
-  font-size:clamp(27px,3vw,38px)!important;
-  line-height:1.08!important;
+  font-size:clamp(27px,3vw,38px)!important;;
   letter-spacing:-.025em!important;
 }
-.kv-reader-page .kv-hero-lead{
-  max-width:980px!important;
+.kv-reader-page .kv-hero-lead{;
   margin-top:7px!important;
   color:#68786f!important;
-  font-size:12.5px!important;
-  line-height:1.5!important;
+  font-size:12.5px!important;;
 }
 
 /* Reader: content gets priority; sidebar behaves like a list, not a stack of CTA buttons. */
@@ -158,23 +155,17 @@
 .kv-reader-menu .lp-side-help-v2,
 .kv-reader-menu .kv-sidebar-helper,
 .kv-reader-menu .lp-back-module-v2{display:none!important}
-.kv-reader-menu .kv-outline{gap:3px!important}
+.kv-reader-menu .kv-outline{}
 .kv-reader-menu .kv-outline button{
   grid-template-columns:23px minmax(0,1fr)!important;
   gap:7px!important;
   min-height:36px!important;
-  padding:6px 7px!important;
-  border:1px solid transparent!important;
-  border-radius:8px!important;
-  background:transparent!important;
+  padding:6px 7px!important;;;;
   color:#5d6d64!important;
   font-size:10.5px!important;
-  line-height:1.3!important;
-  box-shadow:none!important;
+  line-height:1.3!important;;
 }
-.kv-reader-menu .kv-outline button:hover{
-  transform:none!important;
-  border-color:#e0e5e2!important;
+.kv-reader-menu .kv-outline button:hover{;;
   background:#f7f8f7!important;
   color:#314c3b!important;
 }
@@ -221,8 +212,8 @@
   flex-direction:column!important;
   gap:10px!important;
 }
-.kv-active-section{order:1!important}
-.kv-reader-content .kv-intro{order:2!important}
+.kv-active-section{}
+.kv-reader-content .kv-intro{}
 
 /* Main lesson section is the strongest card. */
 .kv-active-section .kv-section{
@@ -289,13 +280,11 @@
 .kv-intro .lp-start-head-v2 strong{font-size:13px!important;line-height:1.4!important;color:#284936!important}
 .kv-intro .lp-start-grid-v2{gap:6px!important}
 .kv-intro .lp-start-grid-v2 article{
-  padding:8px 9px!important;
-  border-radius:9px!important;
-  background:#fff!important;
+  padding:8px 9px!important;;;
 }
 .kv-intro .lp-start-grid-v2 article:nth-child(1){border-color:#c9dbcf!important;background:#f9fbf9!important}
-.kv-intro .lp-start-grid-v2 article:nth-child(2){border-color:#cbd9e8!important;background:#f8faff!important}
-.kv-intro .lp-start-grid-v2 article:nth-child(3){border-color:#c6ddd7!important;background:#f7fbfa!important}
+.kv-intro .lp-start-grid-v2 article:nth-child(2){border-color:#cbd9e8!important;}
+.kv-intro .lp-start-grid-v2 article:nth-child(3){border-color:#c6ddd7!important;}
 .kv-intro .lp-start-grid-v2 article:nth-child(4){border-color:#ead0ca!important;background:#fff9f7!important}
 .kv-intro .lp-start-grid-v2 small{margin-bottom:3px!important;font-size:7.5px!important;color:#7b8880!important}
 .kv-intro .lp-start-grid-v2 b,
@@ -317,8 +306,7 @@
 .kv-intro .lp-visual-flow-v3{gap:6px!important;grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr) 20px minmax(0,1fr)!important}
 .kv-intro .lp-visual-flow-v3 article{
   padding:9px!important;
-  border-color:#d6dfe5!important;
-  border-radius:9px!important;
+  border-color:#d6dfe5!important;;
   background:#fff!important;
 }
 .kv-intro .lp-visual-flow-v3 article.action{border-color:#b9cfbf!important;background:#f7faf8!important}
@@ -334,8 +322,8 @@
 }
 .kv-intro .kv-intro-box:nth-child(1){border-color:#d7cce8!important;background:#fbf9fd!important;box-shadow:inset 3px 0 0 #a28dbb!important}
 .kv-intro .kv-intro-box:nth-child(2){border-color:#e4d4ba!important;background:#fdfbf7!important;box-shadow:inset 3px 0 0 #b69769!important}
-.kv-intro .kv-intro-box h2{margin-bottom:5px!important;font-size:12px!important;color:#43564b!important}
-.kv-intro .kv-intro-box ul{font-size:10.5px!important;line-height:1.5!important;color:#66736b!important}
+.kv-intro .kv-intro-box h2{margin-bottom:5px!important;;color:#43564b!important}
+.kv-intro .kv-intro-box ul{;line-height:1.5!important;color:#66736b!important}
 .kv-intro .kv-prereq{
   margin-top:0!important;
   padding:7px 3px 0!important;
