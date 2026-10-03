@@ -31,7 +31,7 @@
     if(loading)return;
     loading=true;
     var s=document.createElement('script');
-    s.src='admin-chat-core-v1.js?v=20260915-chatcore2';
+    s.src='admin-chat-core-v1.js?v=20261004-attachment-validation1';
     s.defer=true;s.dataset.avpChatCore='1';
     s.onload=function(){
       loading=false;
