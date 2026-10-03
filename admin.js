@@ -234,7 +234,7 @@
 
   async function loadCore() {
     const script = document.createElement('script');
-    script.src = 'admin-core-v1.js?v=20261003-analytics-fix5';
+    script.src = 'admin-core-v1.js?v=20261004-remove-doctor1';
     script.defer = true;
 
     script.onload = () => {
