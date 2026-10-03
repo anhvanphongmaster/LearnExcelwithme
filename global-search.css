@@ -30,7 +30,7 @@
     display: none;
     align-items: flex-start;
     justify-content: center;
-    padding: min(12vh, 110px) 18px 24px;
+    padding: 12px 18px;
     background: rgba(3, 11, 7, .70);
     backdrop-filter: blur(9px);
 }
