@@ -95,4 +95,3 @@ html[data-avp-reader="6"] .kv-flow-next-lesson-v4{display:none!important}
   html[data-avp-reader="6"] .kv-reader-back{grid-area:back}html[data-avp-reader="6"] .kv-reader-read-toggle{grid-area:read}html[data-avp-reader="6"] .kv-reader-sections{grid-area:sections;justify-content:flex-start}
   html[data-avp-reader="6"] .kv-reader-section{flex:0 0 min(230px,70vw)}html[data-avp-reader="6"] .kv-reader-extra{flex:0 0 auto}html[data-avp-reader="6"] .kv-reader-page .kv-hero{padding:15px!important}html[data-avp-reader="6"] .kv-active-section .kv-section{padding:15px!important}
 }
-@media(prefers-reduced-motion:reduce){html[data-avp-reader="6"] .kv-reader-read-toggle::before,html[data-avp-reader="6"] .kv-reader-section.is-active::before{animation:none!important}}
