@@ -19,7 +19,10 @@
     loadCss('admin-ui-v2-final.css?v=20260914-adminfinal4','avp-admin-ui-v2-final');
     loadJs('admin-groups-v1.js?v=20261001-groups1','avp-admin-groups-v1');
   }else if(page!=='auth.html'){
-    loadCss('site-upgrade-v1.css?v=20260914-site2','avp-site-upgrade-v1');
+    // theme-polish-v33.css already imports site-upgrade-v1.css on pages that use it.
+    // Avoid applying that stylesheet twice through a second dynamic <link>.
+    var hasPolishCss=!!document.querySelector('link[href*="theme-polish-v33.css"]');
+    if(!hasPolishCss)loadCss('site-upgrade-v1.css?v=20260914-site2','avp-site-upgrade-v1');
     loadJs('site-upgrade-v1.js?v=20260914-site4','avp-site-upgrade-v1');
   }
 
