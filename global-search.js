@@ -62,7 +62,7 @@
 
   const normalize=(s='')=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
   const recent=()=>{try{return JSON.parse(localStorage.getItem('avpSearchRecent')||'[]')}catch{return[]}};
-  const saveRecent=q=>{q=q.trim();if(!q)return;localStorage.setItem('avpSearchRecent',JSON.stringify([q,...recent().filter(x=>normalize(x)!==normalize(q))].slice(0,5)))};
+  const saveRecent=q=>{q=q.trim();if(!q)return;try{localStorage.setItem('avpSearchRecent',JSON.stringify([q,...recent().filter(x=>normalize(x)!==normalize(q))].slice(0,5)))}catch(e){/* Search navigation must work even when browser storage is blocked or full. */}};
   function score(item,q){if(!q)return 1;const t=normalize(item.title),k=normalize(item.keys||''),d=normalize(item.desc||''),parts=q.split(' ').filter(Boolean);let s=0;for(const p of parts){if(t===p)s+=30;else if(t.startsWith(p))s+=18;else if(t.includes(p))s+=12;if(k.includes(p))s+=7;if(d.includes(p))s+=3}if(t.includes(q))s+=18;if(k.includes(q))s+=10;return s}
 
   const nav=document.querySelector('nav.top-simple-nav')||document.querySelector('nav');
