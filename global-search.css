@@ -160,3 +160,16 @@ body:not(.dark-mode) .avp-spotlight.avp-force-light {
     .avp-spotlight-backdrop { padding-top: 68px; }
     .avp-spotlight { border-radius: 16px; }
 }
+
+
+/* Respect users who request reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+    .avp-search-trigger,
+    .avp-spotlight-backdrop.open {
+        animation: none !important;
+        transition: none !important;
+    }
+    .avp-search-trigger:hover {
+        transform: none;
+    }
+}
