@@ -145,7 +145,23 @@
         return cached.promise;
       }
 
-      const promise = rpc(name, args);
+      // Do not cache failed RPC responses: a transient auth/network/schema error
+      // must not poison manual refreshes for the full 30-minute cache window.
+      let promise;
+      promise = rpc(name, args).then(
+        result => {
+          if (result?.error) {
+            const current = rpcCache.get(key);
+            if (current?.promise === promise) rpcCache.delete(key);
+          }
+          return result;
+        },
+        error => {
+          const current = rpcCache.get(key);
+          if (current?.promise === promise) rpcCache.delete(key);
+          throw error;
+        }
+      );
       rpcCache.set(key, { createdAt: now, promise });
 
       setTimeout(() => {
@@ -218,7 +234,7 @@
 
   async function loadCore() {
     const script = document.createElement('script');
-    script.src = 'admin-core-v1.js?v=20261003-analytics-fix4';
+    script.src = 'admin-core-v1.js?v=20261003-analytics-fix5';
     script.defer = true;
 
     script.onload = () => {
