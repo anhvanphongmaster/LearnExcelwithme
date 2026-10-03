@@ -81,7 +81,7 @@
   }
   function updateSectionHash(index){const target=`#sec-${index+1}`;if(location.hash!==target)history.replaceState(null,'',`${location.pathname}${location.search}${target}`)}
   function scrollContentToTop(){const t=$('kvSections');if(!t)return;const mobile=window.matchMedia&&window.matchMedia('(max-width:820px)').matches;window.scrollTo({top:Math.max(0,t.getBoundingClientRect().top+window.pageYOffset-(mobile?132:88)),behavior:'smooth'})}
-  function activateSection(index,{scroll=false,updateHash=false}={}){if(!currentLesson)return;const next=Math.max(0,Math.min(currentLesson.sections.length-1,Number(index)||0));currentSectionIndex=next;$('kvSections').innerHTML=renderSection(currentLesson.sections[next],next);setSidebarActive(next);bindQuestions(currentLesson,next);safeStorageSet('localStorage',SECTION_KEY,JSON.stringify({lesson:currentLesson.id,section:next}))if(updateHash)updateSectionHash(next);if(scroll)requestAnimationFrame(scrollContentToTop)}
+  function activateSection(index,{scroll=false,updateHash=false}={}){if(!currentLesson)return;const next=Math.max(0,Math.min(currentLesson.sections.length-1,Number(index)||0));currentSectionIndex=next;$('kvSections').innerHTML=renderSection(currentLesson.sections[next],next);setSidebarActive(next);bindQuestions(currentLesson,next);safeStorageSet('localStorage',SECTION_KEY,JSON.stringify({lesson:currentLesson.id,section:next}));if(updateHash)updateSectionHash(next);if(scroll)requestAnimationFrame(scrollContentToTop)}
 
   function renderNotFound(){const page=$('kvPage');page.innerHTML=`<section class="kv-not-found"><h1>Không tìm thấy bài học</h1><p>Bài này không còn trong lộ trình Excel A–Z hiện tại.</p><a href="skill-map.html">Về Học Excel →</a></section>`}
   function boot(){
