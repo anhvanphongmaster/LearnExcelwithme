@@ -73,13 +73,21 @@
     text.textContent=lines[line].slice(0,char);
   }
 
+  var pendingDelay=120;
+
   function next(ms){
-    clearTimeout(timer);
-    timer=setTimeout(step,ms);
+    pendingDelay=ms;
+    if(timer){
+      clearTimeout(timer);
+      timer=0;
+    }
+    if(document.hidden)return;
+    timer=setTimeout(step,pendingDelay);
   }
 
   function step(){
-    if(document.hidden){next(500);return;}
+    timer=0;
+    if(document.hidden)return;
 
     var current=lines[line];
     if(!deleting){
@@ -104,7 +112,23 @@
     }
   }
 
+  function resume(){
+    if(!document.hidden && !timer)next(pendingDelay);
+  }
+
+  function pause(){
+    if(timer){
+      clearTimeout(timer);
+      timer=0;
+    }
+  }
+
   render();
   next(120);
-  window.addEventListener('pagehide',function(){clearTimeout(timer);},{once:true});
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden)pause();
+    else resume();
+  });
+  window.addEventListener('pagehide',pause);
+  window.addEventListener('pageshow',resume);
 })();
