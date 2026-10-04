@@ -3,8 +3,9 @@
   if(window.__AVP_PLATFORM_PROGRESS_V2__)return;
   window.__AVP_PLATFORM_PROGRESS_V2__=true;
   const KEY='avp_platform_completed_v2';
-  const read=()=>{try{return new Set(JSON.parse(localStorage.getItem(KEY)||'[]'))}catch{return new Set()}};
-  const write=set=>{localStorage.setItem(KEY,JSON.stringify([...set]));window.dispatchEvent(new CustomEvent('avp:platform-progress',{detail:{completed:[...set]}}))};
+  let volatileCompleted=null;
+  const read=()=>{if(volatileCompleted!==null)return new Set(volatileCompleted);try{return new Set(JSON.parse(localStorage.getItem(KEY)||'[]'))}catch{return new Set()}};
+  const write=set=>{const next=new Set(set);try{localStorage.setItem(KEY,JSON.stringify([...next]));volatileCompleted=null}catch{volatileCompleted=next}window.dispatchEvent(new CustomEvent('avp:platform-progress',{detail:{completed:[...next]}}))};
   const isDone=id=>read().has(id);
   const toggle=id=>{const s=read();s.has(id)?s.delete(id):s.add(id);write(s);return s.has(id)};
   const P=window.AVPLearningPlatform;
