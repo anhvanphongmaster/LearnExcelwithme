@@ -111,6 +111,9 @@ where is_admin = true;</pre>
         <button type="button" data-admin-view="users" role="tab">
           <b>👥 Người dùng</b><small>Tài khoản, BXH & tiến độ</small>
         </button>
+        <button type="button" data-admin-view="retention" role="tab">
+          <b>↩️ Người dùng quay lại</b><small>Giữ chân sau đăng ký</small>
+        </button>
         <button type="button" data-admin-view="race" role="tab">
           <b>🏁 Excel Race</b><small>BXH, reset & xoá tên</small>
         </button>
@@ -653,6 +656,41 @@ where is_admin = true;</pre>
 
     
     
+
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="retention"><span>↩️ GIỮ CHÂN NGƯỜI DÙNG</span><h2>Người dùng quay lại</h2></div>
+    <section class="admin-panel admin-view-section admin-retention-panel" id="adminRetentionSection" data-admin-section="retention">
+      <div class="admin-panel-head admin-retention-head">
+        <div>
+          <span>📊 RETENTION COHORT</span>
+          <h2>Người đăng ký có quay lại không?</h2>
+          <p>D1: hoạt động 24–48 giờ; D7: ngày 7–8; D30: ngày 30–31 sau đăng ký.</p>
+        </div>
+        <div class="admin-retention-controls">
+          <label for="retentionDays">Cohort đăng ký</label>
+          <select id="retentionDays">
+            <option value="90" selected>90 ngày</option>
+            <option value="180">180 ngày</option>
+            <option value="365">365 ngày</option>
+          </select>
+          <button type="button" id="retentionRefresh">↻ Tải lại</button>
+        </div>
+      </div>
+      <div class="admin-retention-kpis">
+        <article><small>Đăng ký trong kỳ</small><strong id="retentionRegistered">—</strong><em id="retentionCoverage">Đang tải…</em></article>
+        <article><small>Quay lại D1</small><strong id="retentionD1">—</strong><em id="retentionD1Meta">Đang tải…</em></article>
+        <article><small>Quay lại D7</small><strong id="retentionD7">—</strong><em id="retentionD7Meta">Đang tải…</em></article>
+        <article><small>Quay lại D30</small><strong id="retentionD30">—</strong><em id="retentionD30Meta">Đang tải…</em></article>
+      </div>
+      <p class="admin-retention-note" id="retentionNote">Đang tải dữ liệu…</p>
+      <div class="admin-retention-table-wrap">
+        <table class="admin-retention-table">
+          <thead><tr><th>Tài khoản</th><th>Ngày đăng ký</th><th>Hoạt động gần nhất</th><th>D1</th><th>D7</th><th>D30</th></tr></thead>
+          <tbody id="retentionUsersBody"><tr><td colspan="6" class="admin-users-empty">Chuyển sang tab này để tải dữ liệu.</td></tr></tbody>
+        </table>
+      </div>
+      <p id="retentionNotice" class="admin-users-notice" hidden></p>
+    </section>
 
     <section class="admin-privacy-note admin-view-section" id="adminPrivacySection" data-admin-section="overview">
       <strong>🔒 Analytics tối giản dữ liệu</strong>
