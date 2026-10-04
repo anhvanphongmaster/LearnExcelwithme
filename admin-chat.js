@@ -41,8 +41,13 @@
     s.onload=function(){
       loading=false;
       loaded=!!window.__AVP_ADMIN_CHAT_LOADED__;
-      removeLite();
-      if(openAfterLoad){openAfterLoad=false;openRealChat();}
+      if(loaded){
+        removeLite();
+        if(openAfterLoad){openAfterLoad=false;openRealChat();}
+      }else{
+        // Keep the entry point available if the core script loaded but failed during initialization.
+        openAfterLoad=false;
+      }
     };
     s.onerror=function(){loading=false;};
     document.head.appendChild(s);
