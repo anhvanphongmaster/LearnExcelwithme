@@ -21,6 +21,7 @@
     reviews: '⭐ Đánh giá',
     votes: '🗳️ Vote',
     engagement: '🖱️ Tương tác',
+    retention: '↩️ Người dùng quay lại',
     analytics: '📈 Analytics'
   };
 
@@ -31,7 +32,7 @@
     ['content', '▶', 'Nội dung thực hành', ['practice', 'youtube', 'homework']],
     ['resources', '🧰', 'Tài nguyên', ['downloads', 'tools']],
     ['community', '💬', 'Cộng đồng', ['inbox', 'community', 'reviews']],
-    ['insights', '📈', 'Phân tích', ['votes', 'engagement', 'analytics']]
+    ['insights', '📈', 'Phân tích', ['votes', 'engagement', 'retention', 'analytics']]
   ];
 
   function buildGroupGrid(source) {
