@@ -243,7 +243,7 @@
 
   async function loadCore() {
     const script = document.createElement('script');
-    script.src = 'admin-core-v1.js?v=20261004-retention-sort1';
+    script.src = 'admin-core-v1.js?v=20261004-retention-return-sort1';
     script.defer = true;
 
     script.onload = () => {
