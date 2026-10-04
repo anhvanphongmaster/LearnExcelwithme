@@ -14,7 +14,7 @@ window.AVP_SUPABASE_CONFIG = {
     items.push(['admin-alerts.js?v=20260914-push2','avp-admin-alerts']);
   }else{
     /* Use the checked-in site-wide chat loader; admin-chat-v3.js is not present in this repository. */
-    items.push(['admin-chat.js?v=20261004-chat-reopen-fix3','avp-admin-chat']);
+    items.push(['admin-chat.js?v=20261004-chat-reopen-fix5','avp-admin-chat']);
   }
 
   items.forEach(function(item){
