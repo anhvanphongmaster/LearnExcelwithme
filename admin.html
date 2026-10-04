@@ -403,7 +403,7 @@ where is_admin = true;</pre>
       <div class="admin-users-toolbar">
         <div>
           <strong>Danh sách tài khoản</strong>
-          <small>Xem tiến độ, BXH và quyền Admin. Các thao tác nhạy cảm đều yêu cầu xác nhận.</small>
+          <small>Xem tiến độ hiện tại, bản lưu BXH cũ và quyền Admin. Các thao tác nhạy cảm đều yêu cầu xác nhận.</small>
         </div>
         <div class="admin-users-tools">
           <input id="adminUserSearch" type="search" placeholder="Tìm tên hoặc email…" autocomplete="off">
@@ -417,10 +417,10 @@ where is_admin = true;</pre>
         <article><small>Ẩn khỏi BXH</small><strong id="adminUsersHidden">0</strong></article>
         <article><small>Có XP</small><strong id="adminUsersWithXp">0</strong></article>
       </div>
-      <div id="adminUsersNotice" class="admin-users-notice">Chạy file <code>ADMIN-USER-MANAGEMENT.sql</code> một lần trong Supabase trước khi dùng khu này.</div>
+      <div id="adminUsersNotice" class="admin-users-notice">Bản lưu BXH cũ chỉ là số liệu lịch sử; hoạt động quay lại được xem trong mục “Người dùng quay lại”.</div>
       <div class="admin-users-table-wrap">
         <table class="admin-users-table">
-          <thead><tr><th>Học viên</th><th>Tiến độ</th><th>Streak</th><th>BXH</th><th>Đăng nhập gần nhất</th><th>Thao tác</th></tr></thead>
+          <thead><tr><th>Học viên</th><th>Tiến độ</th><th>BXH cũ</th><th>BXH</th><th>Đăng nhập gần nhất</th><th>Thao tác</th></tr></thead>
           <tbody id="adminUsersBody"><tr><td colspan="6" class="admin-users-empty">Chuyển sang tab Người dùng để tải danh sách.</td></tr></tbody>
         </table>
       </div>
@@ -920,7 +920,7 @@ where is_admin = true;</pre>
 <script defer src="simple-nav.js"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js?v=20261001-authclean1"></script>
-<script defer src="admin.js?v=20261004-retention-return-sort1"></script>
+<script defer src="admin.js?v=20261004-retention-rpcfix1"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>
