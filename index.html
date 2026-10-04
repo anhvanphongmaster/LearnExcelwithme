@@ -986,7 +986,6 @@ a.avp-yt-combo.avp-mobile-main-cta{
 </style>
 
 
-<link rel="stylesheet" href="learning-leaderboard.css" />
 <link rel="stylesheet" href="avp-hover-lift.css" />
 <style id="avp-home-full-css">
 .avp-hero{position:relative;isolation:isolate;overflow:hidden;--px:0}
@@ -1019,8 +1018,6 @@ a.avp-yt-combo.avp-mobile-main-cta{
 .home-path-more--5 .home-more-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(20,90,50,.1)}
 .home-path-more--5 .home-more-race small{color:#1d4ed8!important;font-weight:800;background:#dbeafe;border-radius:6px;padding:2px 6px}
 .home-more-new{position:absolute;top:8px;right:8px;background:#ff2d55;color:#fff;font-size:9px;font-weight:900;padding:2px 6px;border-radius:999px}
-.learn-board--hi{margin:16px 0 28px;padding:16px;border-radius:16px;border:2px solid #22c55e;
-  background:linear-gradient(180deg,#ecfdf5,#fff 60%);box-shadow:0 0 0 4px rgba(34,197,94,.12),0 10px 28px rgba(33,115,70,.1)}
 .home-path-card{transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s ease}
 .home-path-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(20,90,50,.12)}
 .avp-rise{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
@@ -1063,190 +1060,11 @@ a.avp-yt-combo.avp-mobile-main-cta{
 </style>
 
 <style id="avp-locked-inline-css">
-/* === learning leaderboard === */
-
-/* Learning leaderboard on home path */
-.learn-board{
-  margin-top: 18px;
-  padding: 16px 16px 14px;
-  border-radius: 16px;
-  border: 1px solid #d5e8dc;
-  background: linear-gradient(180deg, #f7fbf8 0%, #fff 100%);
-  box-shadow: 0 4px 16px rgba(33,115,70,.06);
-}
-.learn-board-h{
-  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
-  margin-bottom: 10px;
-}
-.learn-board-h h3{
-  margin:0;font-size:16px;font-weight:900;color:#145a32;
-}
-.learn-board-h p{
-  margin:4px 0 0;font-size:12.5px;color:#5f7268;line-height:1.4;
-}
-.learn-board-ref{
-  flex-shrink:0;border:1px solid #c5ddd0;background:#fff;color:#145a32;
-  border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800;cursor:pointer;
-}
-.learn-board-ref:hover{background:#eef7f1}
-.learn-board-note{
-  margin:0 0 10px;font-size:12.5px;color:#3d4f47;line-height:1.45;
-  padding:8px 10px;border-radius:10px;background:#eef7f1;
-}
-.learn-board-note a{color:#0f766e;font-weight:800}
-.learn-board-list{
-  list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;
-}
-.lb-row{
-  display:grid;
-  grid-template-columns:36px minmax(0,1fr) auto;
-  gap:8px;align-items:center;
-  padding:8px 10px;border-radius:10px;border:1px solid #e5eee9;background:#fff;
-}
-.lb-rank{
-  width:28px;height:28px;border-radius:8px;background:#e8f5ec;color:#145a32;
-  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;
-}
-.lb-name{font-weight:800;font-size:13.5px;color:#173f2a;min-width:0;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lb-meta{font-size:12px;color:#5f7268;white-space:nowrap}
-.lb-badge{font-style:normal;font-weight:800;color:#b45309;background:#fff7ed;
-  border-radius:999px;padding:1px 6px;margin-left:4px;font-size:11px}
-.lb-muted{padding:10px;color:#6a7c72;font-size:13px}
 @media(max-width:640px){
-  .lb-row{grid-template-columns:32px minmax(0,1fr);grid-template-rows:auto auto}
-  .lb-meta{grid-column:2;white-space:normal}
-}
-
-.learn-board-note[hidden]{display:none!important}
-.learn-board-h p{display:none!important}
-
-
-/* Highlight learning leaderboard */
-.learn-board--hi,
-.learn-board{
-  margin-top: 18px !important;
-  padding: 16px 16px 14px !important;
-  border-radius: 16px !important;
-  border: 2px solid #22c55e !important;
-  background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 55%) !important;
-  box-shadow:
-    0 0 0 4px rgba(34,197,94,.12),
-    0 10px 28px rgba(33,115,70,.12) !important;
-}
-.learn-board-h h3{
-  color: #145a32 !important;
-  font-size: 17px !important;
-  font-weight: 900 !important;
-}
-.learn-board-desc{
-  display: block !important;
-  margin: 4px 0 0 !important;
-  font-size: 12.5px !important;
-  color: #3f6b52 !important;
-  line-height: 1.4 !important;
-}
-.learn-board-desc strong{ color:#15803d; }
-.learn-board-ref{
-  border: 1px solid #86efac !important;
-  background: #fff !important;
-  color: #145a32 !important;
-  font-weight: 800 !important;
-  box-shadow: 0 2px 8px rgba(34,197,94,.15);
-}
-.learn-board-note{
-  display: block !important;
-  margin: 0 0 10px !important;
-  padding: 8px 12px !important;
-  border-radius: 10px !important;
-  background: #dcfce7 !important;
-  border: 1px solid #86efac !important;
-  color: #145a32 !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-}
-.learn-board-note[hidden]{ display:none !important; }
-.learn-board-note--guest{
-  background: #fff7ed !important;
-  border-color: #fdba74 !important;
-  color: #9a3412 !important;
-}
-.learn-board-note--guest a{
-  color: #c2410c !important;
-  font-weight: 900 !important;
-  text-decoration: underline;
-}
-.lb-row{
-  border-color: #bbf7d0 !important;
-  background: #fff !important;
-}
-.lb-rank{
-  background: #bbf7d0 !important;
-  color: #145a32 !important;
-}
-
-
-/* Spacing + always-visible CTA */
-.learn-board,
-.learn-board--hi{
-  margin-top: 20px !important;
-  margin-bottom: 28px !important;
-  padding: 16px 16px 16px !important;
-  border: 2px solid #22c55e !important;
-  border-radius: 16px !important;
-  background: linear-gradient(180deg, #ecfdf5 0%, #fff 60%) !important;
-  box-shadow: 0 0 0 4px rgba(34,197,94,.12), 0 10px 28px rgba(33,115,70,.12) !important;
 }
 .home-path-grid{
   margin-top: 8px !important;
 }
-.learn-board-desc{
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  margin: 6px 0 0 !important;
-  font-size: 13px !important;
-  line-height: 1.45 !important;
-  color: #3f6b52 !important;
-  max-width: 52ch;
-}
-.learn-board-desc strong{ color:#15803d; font-weight:900; }
-.learn-board-note{
-  display: block !important;
-  visibility: visible !important;
-  margin: 12px 0 12px !important;
-  padding: 10px 12px !important;
-  border-radius: 10px !important;
-  font-size: 13.5px !important;
-  font-weight: 700 !important;
-  line-height: 1.4 !important;
-}
-.learn-board-note[hidden]{ display:none !important; }
-.learn-board-note--guest{
-  background: #fff7ed !important;
-  border: 1px solid #fdba74 !important;
-  color: #9a3412 !important;
-}
-.learn-board-note--guest a{
-  color: #c2410c !important;
-  font-weight: 900 !important;
-  text-decoration: underline !important;
-}
-
-.learn-board{ margin-bottom: 28px !important; }
-.learn-board--hi{
-  border: 2px solid #22c55e !important;
-  background: linear-gradient(180deg,#ecfdf5,#fff 60%) !important;
-  box-shadow: 0 0 0 4px rgba(34,197,94,.12), 0 10px 28px rgba(33,115,70,.1) !important;
-  border-radius: 16px !important;
-  padding: 16px !important;
-}
-.learn-board-desc{ display:block !important; margin:6px 0 0; font-size:13px; color:#3f6b52; }
-.learn-board-note--guest{
-  background:#fff7ed !important; border:1px solid #fdba74 !important; color:#9a3412 !important;
-  padding:10px 12px; border-radius:10px; font-weight:700;
-}
-.learn-board-note--guest a{ color:#c2410c; font-weight:900; }
 
 /* === site motion === */
 /*! avp-site-motion.css — hiệu ứng nổi + parallax nhẹ toàn site (chỉ visual) */
@@ -1268,7 +1086,6 @@ a.avp-yt-combo.avp-mobile-main-cta{
   .home-path-card,
   .home-more-card,
   .home-book-card,
-  .learn-board,
   .pv-hero,
   .ml-hero,
   .pq-hero,
@@ -1337,7 +1154,6 @@ a.avp-yt-combo.avp-mobile-main-cta{
   .pq-hero:hover,
   .dashboard-hero:hover,
   .dash-panel:hover,
-  .learn-board:hover,
   .lesson-tips-panel:hover{
     transform: translateY(-4px);
     box-shadow: 0 16px 36px rgba(15,42,28,.14) !important;
@@ -1402,17 +1218,6 @@ a.avp-yt-combo.avp-mobile-main-cta{
 
 
 <style id="avp-board-force">
-#learnBoard, .learn-board--hi{
-  display:block !important;
-  visibility:visible !important;
-  opacity:1 !important;
-  margin: 16px 0 28px !important;
-  padding: 16px !important;
-  border-radius: 16px !important;
-  border: 2px solid #22c55e !important;
-  background: linear-gradient(180deg,#ecfdf5,#fff 55%) !important;
-  box-shadow: 0 0 0 4px rgba(34,197,94,.12), 0 10px 28px rgba(33,115,70,.1) !important;
-}
 .home-path-more--5{
   display:grid !important;
   grid-template-columns:repeat(5,minmax(0,1fr)) !important;
@@ -1739,18 +1544,6 @@ a.avp-yt-combo.avp-mobile-main-cta{
     <h2>Lộ trình 14 bài</h2>
     <p>Học theo thứ tự. Mỗi bài có ví dụ và quiz.</p>
 
-    <div class="learn-board learn-board--hi" id="learnBoard">
-      <div class="learn-board-h" style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
-        <div>
-          <h3 style="margin:0;color:#145a32">🏆 Bảng xếp hạng học tập</h3>
-          <p class="learn-board-desc" style="margin:6px 0 0;font-size:13px;color:#3f6b52">Chuỗi ngày học liên tiếp. <strong>Đăng ký / đăng nhập</strong> mới được xuất hiện trên BXH.</p>
-        </div>
-        <button type="button" class="learn-board-ref" id="learnBoardRefresh" style="border:1px solid #86efac;background:#fff;color:#145a32;font-weight:800;border-radius:999px;padding:8px 12px;cursor:pointer">Làm mới</button>
-      </div>
-      <p class="learn-board-note learn-board-note--guest" id="learnBoardNote" style="margin:12px 0;padding:10px 12px;border-radius:10px;background:#fff7ed;border:1px solid #fdba74;color:#9a3412;font-weight:700">👤 <a href="auth.html" style="color:#c2410c;font-weight:900">Đăng ký / Đăng nhập</a> để xuất hiện trên bảng xếp hạng.</p>
-      <ol class="learn-board-list" id="learnBoardList" style="margin:0;padding-left:20px"><li class="lb-muted">Đang tải…</li></ol>
-    </div>
-
     <div class="home-path-grid">
       <article class="home-path-card home-path-card--1">
         <span>01 · Beginner</span>
@@ -2011,9 +1804,7 @@ document.addEventListener("click", function(e){
   window.avpAnalytics.track("book_click", {page:"index.html", tool:title});
 });
 </script>
-  <script defer src="learning-leaderboard.js?v=20261004-streak-recovery1"></script>
-
-<script id="avp-home-boot">
+  <script id="avp-home-boot">
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function ease(t){ return 1 - Math.pow(1 - t, 5); }
@@ -2045,7 +1836,7 @@ document.addEventListener("click", function(e){
         if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
       });
     }, { threshold: 0.12 });
-    document.querySelectorAll('.home-path-card, .home-more-card, .learn-board, .home-book-card').forEach(function(n,i){
+    document.querySelectorAll('.home-path-card, .home-more-card, .home-book-card').forEach(function(n,i){
       n.classList.add('avp-rise');
       n.style.transitionDelay = Math.min(i * 0.05, 0.35) + 's';
       io.observe(n);
@@ -2058,273 +1849,7 @@ document.addEventListener("click", function(e){
 })();
 </script>
 
-<script id="avp-llb-inline">
-/**
- * Learning leaderboard — streak đăng nhập (chỉ user đã login, ẩn admin)
- */
-(function () {
-  const VISIT_KEY = "avp_visit_days_v1";
-  const XP_KEY = "avp_xp_v2";
 
-  function $(id) { return document.getElementById(id); }
-
-  function todayStr() {
-    const d = new Date();
-    const z = (n) => String(n).padStart(2, "0");
-    // local date YYYY-MM-DD
-    return d.getFullYear() + "-" + z(d.getMonth() + 1) + "-" + z(d.getDate());
-  }
-
-  function getVisits() {
-    try {
-      const v = JSON.parse(localStorage.getItem(VISIT_KEY) || "[]");
-      return Array.isArray(v) ? v : [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  function trackToday() {
-    const t = todayStr();
-    let v = getVisits();
-    if (!v.includes(t)) {
-      v.push(t);
-      v = v.slice(-120);
-      try { localStorage.setItem(VISIT_KEY, JSON.stringify(v)); } catch (e) {}
-    }
-    return v;
-  }
-
-  function calcStreak(days) {
-    const set = new Set(days);
-    let n = 0;
-    const d = new Date();
-    for (;;) {
-      const s = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
-      if (set.has(s)) {
-        n++;
-        d.setDate(d.getDate() - 1);
-      } else break;
-    }
-    return n;
-  }
-
-  function getXp() {
-    var self=parseInt(localStorage.getItem("avp_xp_self_v1")||"0",10)||0;
-    var daily=0;try{daily=Number((JSON.parse(localStorage.getItem("avp_coach_exp_v2")||"{}")||{}).total)||0;}catch(e){}
-    return self+daily;
-  }
-
-  function badge(streak) {
-    if (streak >= 30) return "🔥 30 ngày";
-    if (streak >= 7) return "⚡ 7 ngày";
-    if (streak >= 3) return "✨ 3 ngày";
-    return "";
-  }
-
-  function escapeHtml(s) {
-    return String(s || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
-
-  async function waitSupabase(ms) {
-    const t0 = Date.now();
-    while (Date.now() - t0 < (ms || 4000)) {
-      if (window.avpSupabase) return window.avpSupabase;
-      if (window.AVP_SUPABASE_CONFIGURED === false) return null;
-      await new Promise((r) => setTimeout(r, 80));
-    }
-    return window.avpSupabase || null;
-  }
-
-  async function getUser() {
-    if (window.avpCloudSync && window.avpCloudSync.getUser) {
-      try { return await window.avpCloudSync.getUser(); } catch (e) {}
-    }
-    const sb = await waitSupabase(2000);
-    if (!sb) return null;
-    try {
-      const { data } = await sb.auth.getUser();
-      return data && data.user ? data.user : null;
-    } catch (e) {
-      return null;
-    }
-  }
-
-  async function isAdmin(sb) {
-    try {
-      const { data, error } = await sb.rpc("is_admin_user");
-      if (!error && data === true) return true;
-    } catch (e) {}
-    return false;
-  }
-
-  async function displayName(sb, user) {
-    try {
-      if (window.avpCloudSync && window.avpCloudSync.getProfile) {
-        const p = await window.avpCloudSync.getProfile(user);
-        if (p && (p.display_name || p.name)) return p.display_name || p.name;
-      }
-      const { data } = await sb.from("profiles").select("display_name,name").eq("id", user.id).maybeSingle();
-      if (data && (data.display_name || data.name)) return data.display_name || data.name;
-    } catch (e) {}
-    const email = user.email || "";
-    if (email) return email.split("@")[0];
-    return "Học viên";
-  }
-
-  async function pushScore(sb, user) {
-    if (await isAdmin(sb)) return; // admin không vào BXH
-
-    const visits = trackToday();
-    const streak = calcStreak(visits);
-    const totalDays = visits.length;
-    const xp = getXp();
-    const name = await displayName(sb, user);
-
-    const row = {
-      user_id: user.id,
-      display_name: String(name).slice(0, 40),
-      current_streak: streak,
-      best_streak: streak, // server can max() on upsert via RPC; client sends current
-      total_days: totalDays,
-      xp: xp,
-      updated_at: new Date().toISOString()
-    };
-
-    // Prefer RPC (handles best_streak max + admin skip)
-    try {
-      const { error } = await sb.rpc("upsert_learning_leaderboard", {
-        p_display_name: row.display_name,
-        p_current_streak: row.current_streak,
-        p_total_days: row.total_days,
-        p_xp: row.xp
-      });
-      if (!error) return;
-      console.warn("[learn-board] rpc", error.message || error);
-    } catch (e) {
-      console.warn("[learn-board] rpc missing?", e);
-    }
-
-    // Fallback direct upsert
-    try {
-      const { data: old } = await sb
-        .from("learning_leaderboard")
-        .select("best_streak")
-        .eq("user_id", user.id)
-        .maybeSingle();
-      row.best_streak = Math.max(Number(old && old.best_streak) || 0, streak);
-      const { error } = await sb.from("learning_leaderboard").upsert(row, { onConflict: "user_id" });
-      if (error) console.warn("[learn-board] upsert", error.message || error);
-    } catch (e) {
-      console.warn("[learn-board] upsert fail", e);
-    }
-  }
-
-  async function loadBoard() {
-    const list = $("learnBoardList");
-    const note = $("learnBoardNote");
-    if (!list) return;
-
-    const sb = await waitSupabase(4000);
-    if (!sb) {
-      list.innerHTML = '<li class="lb-muted">Chưa có xếp hạng.</li>';
-      return;
-    }
-
-    let rows = [];
-    try {
-      const { data, error } = await sb.rpc("list_learning_leaderboard");
-      if (!error && Array.isArray(data)) rows = data;
-      else {
-        const res = await sb
-          .from("learning_leaderboard")
-          .select("display_name,current_streak,best_streak,total_days,xp")
-          .order("current_streak", { ascending: false })
-          .order("xp", { ascending: false })
-          .limit(15);
-        if (res.error) {
-          list.innerHTML = '<li class="lb-muted">Chưa có dữ liệu xếp hạng.</li>';
-          return;
-        }
-        rows = res.data || [];
-      }
-    } catch (e) {
-      list.innerHTML = '<li class="lb-muted">Chưa có xếp hạng.</li>';
-      return;
-    }
-
-    if (!rows.length) {
-      list.innerHTML = '<li class="lb-muted">Chưa có xếp hạng.</li>';
-      return;
-    }
-
-    list.innerHTML = rows.map(function (r, i) {
-      const st = Number(r.current_streak) || 0;
-      const b = badge(st);
-      return (
-        '<li class="lb-row">' +
-          '<span class="lb-rank">' + (i + 1) + "</span>" +
-          '<span class="lb-name">' + escapeHtml(r.display_name) + "</span>" +
-          '<span class="lb-meta">🔥 ' + st + " ngày" +
-            (b ? ' <em class="lb-badge">' + b + "</em>" : "") +
-            " · XP " + (Number(r.xp) || 0) +
-          "</span>" +
-        "</li>"
-      );
-    }).join("");
-  }
-
-  async function renderGate() {
-    const note = $("learnBoardNote");
-    if (!note) return;
-    const user = await getUser();
-    if (!user) {
-      note.hidden = false;
-      note.className = "learn-board-note learn-board-note--guest";
-      note.innerHTML = "👤 <a href=\"auth.html\">Đăng ký / Đăng nhập</a> để xuất hiện trên bảng xếp hạng.";
-      return;
-    }
-    const sb = await waitSupabase(2500);
-    if (sb && (await isAdmin(sb))) {
-      note.hidden = false;
-      note.className = "learn-board-note";
-      note.textContent = "Tài khoản admin không xếp hạng học viên.";
-      return;
-    }
-    const streak = calcStreak(trackToday());
-    note.hidden = false;
-    note.className = "learn-board-note";
-    note.textContent = "Chuỗi của bạn: " + streak + " ngày";
-  }
-
-  async function init() {
-    trackToday();
-    await renderGate();
-    await loadBoard();
-
-    const user = await getUser();
-    if (user) {
-      const sb = await waitSupabase(3000);
-      if (sb) await pushScore(sb, user);
-      await loadBoard();
-    }
-
-    const btn = $("learnBoardRefresh");
-    if (btn) btn.addEventListener("click", function () { loadBoard(); renderGate(); });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-})();
-
-</script>
 
 <script defer src="home-code-hub.js?v=20260906-codehub13"></script>
 
@@ -2332,7 +1857,7 @@ document.addEventListener("click", function(e){
 (function(){
   if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   function rise(){
-    var sel='.home-path-card,.home-more-card,.learn-board,.home-book-card,.course-card,.pyt-card';
+    var sel='.home-path-card,.home-more-card,.home-book-card,.course-card,.pyt-card';
     var nodes=document.querySelectorAll(sel);
     if(!nodes.length||!window.IntersectionObserver)return;
     var io=new IntersectionObserver(function(es){
