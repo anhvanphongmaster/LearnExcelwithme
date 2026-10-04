@@ -41,6 +41,9 @@
     engagement: new Set([
       'admin_engagement_summary_v2',
       'admin_list_saved_feedback'
+    ]),
+    retention: new Set([
+      'admin_user_retention_summary'
     ])
   };
 
@@ -91,7 +94,8 @@
     return (
       (DEFERRED_RPCS.analytics.has(name) && view !== 'analytics') ||
       (DEFERRED_RPCS.learning.has(name) && view !== 'learning') ||
-      (DEFERRED_RPCS.engagement.has(name) && view !== 'engagement')
+      (DEFERRED_RPCS.engagement.has(name) && view !== 'engagement') ||
+      (DEFERRED_RPCS.retention.has(name) && view !== 'retention')
     );
   }
 

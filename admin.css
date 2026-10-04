@@ -557,3 +557,31 @@ body.dark-mode .admin-download-editor{background:#142119;border-color:#2d4737}bo
 @media(max-width:560px){
   .admin-feature-usage-kpis{grid-template-columns:1fr}
 }
+
+
+.admin-retention-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.admin-retention-kpis article{padding:16px;border:1px solid #dce7e1;border-radius:14px;background:linear-gradient(180deg,#fff,#f8fcfa)}
+.admin-retention-kpis small{display:block;color:#72877b;font-size:9px;font-weight:900;text-transform:uppercase}
+.admin-retention-kpis strong{display:block;color:#1e6840;font-size:24px;margin:7px 0 3px}
+.admin-retention-kpis em{display:block;color:#8a9991;font-size:9px;font-style:normal;line-height:1.45}
+.admin-retention-controls{display:flex;align-items:end;gap:8px;flex-wrap:wrap}
+.admin-retention-controls label{font-size:10px;font-weight:800;color:#72877b}
+.admin-retention-controls select,.admin-retention-controls button{min-height:38px;padding:0 11px;border:1px solid #d5e4db;border-radius:9px;background:#f8fbf9;color:#285d40;font:inherit;font-size:11px;font-weight:800;cursor:pointer}
+.admin-retention-note{margin:0 0 12px;color:#718278;font-size:10px;line-height:1.55}
+.admin-retention-table-wrap{overflow:auto;border:1px solid #e1ebe5;border-radius:12px}
+.admin-retention-table{width:100%;min-width:760px;border-collapse:collapse;text-align:left}
+.admin-retention-table th,.admin-retention-table td{padding:10px 12px;border-bottom:1px solid #edf2ef;font-size:10px;white-space:nowrap}
+.admin-retention-table th{background:#f6faf7;color:#718278;font-size:9px;text-transform:uppercase}
+.admin-retention-table td{color:#536b5f}
+.retention-user{display:flex;flex-direction:column;gap:3px;max-width:220px}
+.retention-user strong{overflow:hidden;text-overflow:ellipsis;color:#315d43}
+.retention-user small{overflow:hidden;text-overflow:ellipsis;color:#829188}
+.retention-status{display:inline-flex;padding:4px 7px;border-radius:999px;font-size:9px;font-weight:800}
+.retention-status.returned{background:#e6f6ec;color:#17613a}
+.retention-status.absent{background:#fff0ec;color:#9c432e}
+.retention-status.pending{background:#f0f3f1;color:#718278}
+body.dark-mode .admin-retention-kpis article{background:#151f1a;border-color:#2d3d35}
+body.dark-mode .admin-retention-kpis strong{color:#96dbaf}
+body.dark-mode .admin-retention-table th{background:#1a2921}
+@media(max-width:900px){.admin-retention-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.admin-retention-head{align-items:stretch;flex-direction:column}.admin-retention-controls{align-items:center}}
