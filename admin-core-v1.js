@@ -341,7 +341,7 @@
   }
   function progressStats(row){
     const d=row?.progress_data&&typeof row.progress_data==="object"?row.progress_data:{};
-    const xp=Math.max(Number(row?.leaderboard_xp)||0,Number(d.xp)||0,Number(d.totalXP)||0,Number(d.total_xp)||0);
+    const xp=Math.max(Number(d.xp)||0,Number(d.totalXP)||0,Number(d.total_xp)||0);
     let completed=0;
     const candidates=[d.completedLessons,d.completed_lessons,d.completed,d.lessonsCompleted];
     for(const v of candidates){if(Array.isArray(v)){completed=Math.max(completed,v.length)}else if(v&&typeof v==="object"){completed=Math.max(completed,Object.keys(v).filter(k=>v[k]).length)}else if(Number.isFinite(Number(v))){completed=Math.max(completed,Number(v))}}
@@ -357,11 +357,11 @@
     const notice=$("adminUsersNotice"); if(notice) notice.hidden=true;
     if(!adminUsersCache.length){body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Không tìm thấy tài khoản phù hợp.</td></tr>';return}
     body.innerHTML=adminUsersCache.map(r=>{
-      const s=progressStats(r), hidden=!!r.exclude_from_leaderboard, adm=!!r.is_admin;
+      const s=progressStats(r), legacy=r.legacy_leaderboard, hidden=!!r.exclude_from_leaderboard, adm=!!r.is_admin;
       return `<tr data-user-id="${r.user_id}">
         <td><div class="admin-user-identity"><strong>${escapeHtml(r.display_name||"Học viên")}${adm?' <span class="admin-user-badge admin-badge-admin">ADMIN</span>':''}</strong><small>${escapeHtml(r.email||"")}</small><em>Đăng ký ${fmtDate(r.created_at)}</em></div></td>
         <td><div class="admin-user-progress"><b>${n(s.xp)} XP</b><small>${n(s.completed)} bài hoàn thành • </small></div></td>
-        <td><div class="admin-user-progress"><b>🔥 ${n(r.current_streak||0)} ngày</b><small>Tốt nhất ${n(r.best_streak||0)} • Tổng ${n(r.total_days||0)} ngày</small></div></td>
+        <td><div class="admin-user-progress"><b>${legacy?`${n(legacy.xp)} XP`:"—"}</b><small>${legacy?`Streak ${n(legacy.current_streak)} ngày · lưu ${fmtDate(legacy.archived_at)}`:"Không có dữ liệu BXH cũ"}</small></div></td>
         <td><span class="admin-user-badge ${hidden||adm?'admin-badge-hidden':'admin-badge-visible'}">${adm?'Admin':hidden?'Đang ẩn':'Đang hiện'}</span></td>
         <td><small>${fmtDate(r.last_sign_in_at)}</small></td>
         <td><div class="admin-user-actions">
@@ -378,7 +378,7 @@
     if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Đang tải danh sách tài khoản…</td></tr>';
     const data=await rpcSoft("admin_um_list_users",{p_search:q,p_limit:200,p_offset:0});
     if(data?.__error){
-      if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Chưa dùng được Quản lý người dùng. Hãy chạy ADMIN-USER-MANAGEMENT.sql trong Supabase.</td></tr>';
+      if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Không tải được danh sách tài khoản. Kiểm tra RPC Quản lý người dùng trong Supabase.</td></tr>';
       const notice=$("adminUsersNotice"); if(notice){notice.hidden=false;notice.textContent="Supabase chưa có RPC Quản lý người dùng hoặc schema chưa reload."}
       return;
     }
@@ -396,7 +396,7 @@
         {const ok=await window.avpConfirm(`${hidden?'Hiện':'Ẩn'} ${who} ${hidden?'trên':'khỏi'} BXH?`,{title:"Cập nhật BXH?",tone:"warn",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return;}
         await rpc("admin_um_set_leaderboard_visibility",{p_user_id:id,p_hidden:!hidden}); ok=true;
       }else if(act==="progress"){
-        {const ok=await window.avpConfirm(`RESET TIẾN ĐỘ của ${who}? XP/BXH cloud sẽ được xóa. Thao tác này không nên dùng nếu không chắc.`,{title:"Reset toàn bộ tiến độ?",tone:"danger",icon:"!",ok:"Reset tiến độ",cancel:"Hủy"});if(!ok)return;}
+        {const ok=await window.avpConfirm(`RESET TIẾN ĐỘ hiện tại của ${who}? Bản lưu BXH cũ được giữ nguyên.`,{title:"Reset toàn bộ tiến độ?",tone:"danger",icon:"!",ok:"Reset tiến độ",cancel:"Hủy"});if(!ok)return;}
         await rpc("admin_um_reset_progress",{p_user_id:id}); ok=true;
       }else if(act==="admin"){
         const isAdm=btn.dataset.admin==="1";
