@@ -17,7 +17,7 @@
   const requestedId=()=>new URLSearchParams(location.search).get('lesson')||lessons[0]?.id||'';
   const moduleFor=lesson=>P?.moduleForLesson?.(lesson.id)||null;
   const trackFor=lesson=>T?.forLesson?.(lesson.id)||null;
-  const doneSet=()=>{try{return new Set(JSON.parse(localStorage.getItem(DONE_KEY)||'[]'))}catch{return new Set()}};
+  const doneSet=()=>{try{const shared=window.AVPPlatformProgress?.read?.();if(shared instanceof Set)return new Set(shared);return new Set(JSON.parse(localStorage.getItem(DONE_KEY)||'[]'))}catch{return new Set()}};
   const safeStorageSet=(name,key,value)=>{try{window[name].setItem(key,value)}catch{}};
   const kindLabel=kind=>kind==='extension'?'HỌC THÊM':'CỐT LÕI';
   const sectionFromHash=lesson=>{const m=String(location.hash||'').match(/^#sec-(\d+)$/);if(!m)return 0;return Math.max(0,Math.min((lesson.sections?.length||1)-1,Number(m[1])-1))};
