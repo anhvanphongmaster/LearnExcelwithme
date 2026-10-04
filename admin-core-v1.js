@@ -630,11 +630,11 @@
     const note=$("retentionNote");
     if(note){
       const since=data.tracking_since?fmtDate(data.tracking_since):"chưa có";
-      note.textContent=`Dữ liệu page view bắt đầu từ ${since}. Chỉ tính lượt xem trang khi người dùng đã đăng nhập; 100 tài khoản có nhiều ngày hoạt động nhất, xếp giảm dần.`;
+      note.textContent=`Dữ liệu page view bắt đầu từ ${since}. Chỉ tính lượt xem trang khi người dùng đã đăng nhập; 100 tài khoản có nhiều ngày quay lại nhất, xếp giảm dần.`;
     }
     const body=$("retentionUsersBody");if(!body)return;
     const rows=(Array.isArray(data.users)?data.users:[]).slice().sort((a,b)=>{
-      const byDays=(Number(b.active_days)||0)-(Number(a.active_days)||0);
+      const byDays=(Number(b.return_days)||0)-(Number(a.return_days)||0);
       if(byDays)return byDays;
       const byLast=(Date.parse(b.last_activity_at)||0)-(Date.parse(a.last_activity_at)||0);
       if(byLast)return byLast;
@@ -645,7 +645,7 @@
       <td><div class="retention-user"><strong>${escapeHtml(u.display_name||u.email||"Học viên")}</strong><small>${escapeHtml(u.email||"")}</small></div></td>
       <td><small>${fmtDate(u.created_at)}</small></td>
       <td><small>${u.last_activity_at?fmtDate(u.last_activity_at):"Chưa hoạt động lại"}</small></td>
-      <td><strong>${n(u.active_days||0)}</strong><small> ngày</small></td>
+      <td><strong>${n(u.return_days||0)}</strong><small> ngày</small></td>
       <td>${retentionBadge(u.d1_returned,"D1")}</td>
       <td>${retentionBadge(u.d7_returned,"D7")}</td>
       <td>${retentionBadge(u.d30_returned,"D30")}</td>
