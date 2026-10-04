@@ -845,6 +845,7 @@
       $("avpChatInput")?.focus();
     }
   }
+  window.addEventListener("avp:admin-chat-open",()=>{togglePanel(true)});
   async function ensureThread(){
     if(threadId)return threadId;
     threadId=await rpc("avp_chat_get_or_create_thread");
