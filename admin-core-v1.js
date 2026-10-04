@@ -648,12 +648,13 @@
       ]);
 
       $("adminGate").hidden=true;$("adminDenied").hidden=true;$("adminDashboard").hidden=false;
+      bindUserRetentionControls();
       bindAdminViews();
       bindAdminMaintenance();
       loadAdminMaintenance();
     try{
       const requestedView=new URLSearchParams(location.search).get("view");
-      const validViews=["overview","users","race","learning","practice","youtube","downloads" ,"engagement","analytics","community","reviews","grader","professional","tools"];
+      const validViews=["overview","users","race","learning","practice","youtube","downloads" ,"engagement","analytics","community","reviews","grader","professional","tools","retention"];
       if(requestedView&&validViews.includes(requestedView)){
         setTimeout(()=>setAdminView(requestedView,{scroll:true}),80);
       }
@@ -688,7 +689,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","race","learning","practice","youtube","downloads" ,"tools","engagement","analytics","community","reviews","grader","professional"];
+    const valid=["overview","users","race","learning","practice","youtube","downloads" ,"tools","engagement","analytics","community","reviews","grader","professional","retention"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
@@ -706,6 +707,7 @@
     });
     try{localStorage.setItem(ADMIN_VIEW_KEY,view)}catch(e){}
     if(view==="users" && !adminUsersCache.length) loadAdminUsers();
+    if(view==="retention") loadUserRetention();
     if(view==="race") loadAdminRace();
     if(view==="engagement") loadEngagementOnly();
     if(view==="downloads" && !adminDownloadLoaded) loadAdminDownloads();
