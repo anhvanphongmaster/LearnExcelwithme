@@ -630,15 +630,22 @@
     const note=$("retentionNote");
     if(note){
       const since=data.tracking_since?fmtDate(data.tracking_since):"chưa có";
-      note.textContent=`Dữ liệu page view bắt đầu từ ${since}. Chỉ tính lượt xem trang khi người dùng đã đăng nhập; tài khoản mới nhất 100 người được liệt kê bên dưới.`;
+      note.textContent=`Dữ liệu page view bắt đầu từ ${since}. Chỉ tính lượt xem trang khi người dùng đã đăng nhập; 100 tài khoản có nhiều ngày hoạt động nhất, xếp giảm dần.`;
     }
     const body=$("retentionUsersBody");if(!body)return;
-    const rows=Array.isArray(data.users)?data.users:[];
-    if(!rows.length){body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Chưa có tài khoản trong khoảng thời gian này.</td></tr>';return}
+    const rows=(Array.isArray(data.users)?data.users:[]).slice().sort((a,b)=>{
+      const byDays=(Number(b.active_days)||0)-(Number(a.active_days)||0);
+      if(byDays)return byDays;
+      const byLast=(Date.parse(b.last_activity_at)||0)-(Date.parse(a.last_activity_at)||0);
+      if(byLast)return byLast;
+      return (Date.parse(b.created_at)||0)-(Date.parse(a.created_at)||0);
+    });
+    if(!rows.length){body.innerHTML='<tr><td colspan="7" class="admin-users-empty">Chưa có tài khoản trong khoảng thời gian này.</td></tr>';return}
     body.innerHTML=rows.map(u=>`<tr>
       <td><div class="retention-user"><strong>${escapeHtml(u.display_name||u.email||"Học viên")}</strong><small>${escapeHtml(u.email||"")}</small></div></td>
       <td><small>${fmtDate(u.created_at)}</small></td>
       <td><small>${u.last_activity_at?fmtDate(u.last_activity_at):"Chưa hoạt động lại"}</small></td>
+      <td><strong>${n(u.active_days||0)}</strong><small> ngày</small></td>
       <td>${retentionBadge(u.d1_returned,"D1")}</td>
       <td>${retentionBadge(u.d7_returned,"D7")}</td>
       <td>${retentionBadge(u.d30_returned,"D30")}</td>
@@ -646,12 +653,12 @@
   }
   async function loadUserRetention(){
     const body=$("retentionUsersBody"),notice=$("retentionNotice");
-    if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Đang tải dữ liệu quay lại…</td></tr>';
+    if(body)body.innerHTML='<tr><td colspan="7" class="admin-users-empty">Đang tải dữ liệu quay lại…</td></tr>';
     if(notice)notice.hidden=true;
     const days=Number($("retentionDays")?.value||90);
     const data=await rpcSoft("admin_user_retention_summary",{p_days:days});
     if(data?.__error){
-      if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Chưa tải được dữ liệu retention. Kiểm tra migration admin_user_retention_summary trong Supabase.</td></tr>';
+      if(body)body.innerHTML='<tr><td colspan="7" class="admin-users-empty">Chưa tải được dữ liệu retention. Kiểm tra migration admin_user_retention_summary trong Supabase.</td></tr>';
       if(notice){notice.hidden=false;notice.textContent="RPC retention chưa được cài hoặc tài khoản chưa có quyền Admin."}
       return;
     }
