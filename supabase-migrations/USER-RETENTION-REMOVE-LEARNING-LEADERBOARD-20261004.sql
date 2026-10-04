@@ -1,6 +1,6 @@
 -- User retention dashboard and removal of the homepage learning streak board.
 -- Apply after deploying the matching website branch.
--- This drops 200 existing learning_leaderboard rows in the current production snapshot.
+-- The current learning_leaderboard summary is archived before the live table is dropped; its counters do not encode date-level D1/D7/D30 activity.
 -- Excel Arena/Race rankings, profile visibility controls, reviews, analytics, and Admin Chat are unchanged.
 
 -- Preserve the current summary snapshot for reference before removing the live table.
