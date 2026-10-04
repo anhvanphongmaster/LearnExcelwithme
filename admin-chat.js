@@ -36,7 +36,7 @@
     if(loading)return;
     loading=true;
     var s=document.createElement('script');
-    s.src='admin-chat-core-v1.js?v=20261004-chat-open-idempotent1';
+    s.src='admin-chat-core-v1.js?v=20261004-chat-reopen-fix2';
     s.defer=true;s.dataset.avpChatCore='1';
     s.onload=function(){
       loading=false;
@@ -83,7 +83,7 @@
       if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:2200});else setTimeout(run,1200);
     }
   }
-  window.addEventListener('avp:surface-open',function(e){if(e.detail?.surface==='chat'){syncCoreState();if(loaded)window.dispatchEvent(new CustomEvent('avp:admin-chat-open'));else loadCore(true)}});
+  window.addEventListener('avp:surface-open',function(e){if(e.detail?.surface==='chat'&&e.detail?.source!=='bubble'){syncCoreState();if(loaded)window.dispatchEvent(new CustomEvent('avp:admin-chat-open'));else loadCore(true)}});
   document.addEventListener('click',function(e){if(e.target?.closest?.('[data-edge-action="chat"]'))loadCore(true)},true);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
