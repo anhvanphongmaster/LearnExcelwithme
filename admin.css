@@ -585,3 +585,24 @@ body.dark-mode .admin-retention-kpis strong{color:#96dbaf}
 body.dark-mode .admin-retention-table th{background:#1a2921}
 @media(max-width:900px){.admin-retention-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.admin-retention-head{align-items:stretch;flex-direction:column}.admin-retention-controls{align-items:center}}
+
+/* Retention dashboard overview */
+.retention-dashboard{margin:0 0 16px;padding:16px;border:1px solid #dce9e1;border-radius:15px;background:linear-gradient(145deg,#fbfefc,#f4faf6)}
+.retention-dashboard-title{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px}
+.retention-dashboard-title span{font-size:10px;font-weight:900;letter-spacing:.08em;color:#28784e}
+.retention-dashboard-title h3{margin:5px 0 0;color:#245c3d;font-size:18px}
+.retention-dashboard-title>small{color:#7a8e82;font-size:10px}
+.retention-bars{display:grid;gap:14px}
+.retention-bar-row{display:grid;grid-template-columns:minmax(150px,220px) minmax(100px,1fr) 55px;align-items:center;gap:12px}
+.retention-bar-row>div:first-child{display:flex;flex-direction:column;gap:3px}
+.retention-bar-row strong{font-size:12px;color:#285d40}
+.retention-bar-row span{font-size:10px;color:#7c8d83}
+.retention-bar-row>b{text-align:right;font-size:12px;color:#245c3d}
+.retention-bar-track{height:12px;border-radius:999px;background:#e5eee8;overflow:hidden}
+.retention-bar-track i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#2b8053,#82c69a);transition:width .25s ease}
+.retention-insight{margin-top:16px;padding:11px 13px;border-radius:10px;background:#edf7f0;color:#38634a;font-size:11px;line-height:1.6}
+body.dark-mode .retention-dashboard{background:#151f1a;border-color:#2d3d35}
+body.dark-mode .retention-dashboard-title h3,body.dark-mode .retention-bar-row strong,body.dark-mode .retention-bar-row>b{color:#96dbaf}
+body.dark-mode .retention-bar-track{background:#293a30}
+body.dark-mode .retention-insight{background:#1b3024;color:#b5ddc0}
+@media(max-width:600px){.retention-dashboard-title{align-items:flex-start;flex-direction:column}.retention-bar-row{grid-template-columns:1fr 45px;gap:7px}.retention-bar-row .retention-bar-track{grid-column:1/-1;grid-row:2}.retention-bar-row>b{grid-column:2;grid-row:1}}

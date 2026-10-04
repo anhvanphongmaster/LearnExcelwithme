@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
-<link rel="stylesheet" href="admin.css?v=20261003-analytics-fix3">
+<link rel="stylesheet" href="admin.css?v=20261004-retention-dashboard1">
 <link rel="stylesheet" href="admin-professional-track.css?v=20260909-pro-metadata1">
 <link rel="stylesheet" href="admin-youtube-projects.css?v=20260901-v1">
 <link rel="stylesheet" href="avp-core.css">
@@ -682,6 +682,15 @@ where is_admin = true;</pre>
         <article><small>Quay lại D7</small><strong id="retentionD7">—</strong><em id="retentionD7Meta">Đang tải…</em></article>
         <article><small>Quay lại D30</small><strong id="retentionD30">—</strong><em id="retentionD30Meta">Đang tải…</em></article>
       </div>
+      <section class="retention-dashboard" aria-label="Dashboard tổng quan giữ chân">
+        <div class="retention-dashboard-title"><div><span>📊 DASHBOARD TỔNG QUAN</span><h3>Diễn biến quay lại sau đăng ký</h3></div><small>Chỉ tính nhóm đã đủ thời gian quan sát</small></div>
+        <div class="retention-bars">
+          <div class="retention-bar-row"><div><strong>D1</strong><span>Quay lại sau 24–48 giờ</span></div><div class="retention-bar-track"><i id="retentionD1Bar"></i></div><b id="retentionD1Pct">—</b></div>
+          <div class="retention-bar-row"><div><strong>D7</strong><span>Quay lại ngày 7–8</span></div><div class="retention-bar-track"><i id="retentionD7Bar"></i></div><b id="retentionD7Pct">—</b></div>
+          <div class="retention-bar-row"><div><strong>D30</strong><span>Quay lại ngày 30–31</span></div><div class="retention-bar-track"><i id="retentionD30Bar"></i></div><b id="retentionD30Pct">—</b></div>
+        </div>
+        <div class="retention-insight" id="retentionInsight" aria-live="polite">Đang tổng hợp dữ liệu…</div>
+      </section>
       <p class="admin-retention-note" id="retentionNote">Đang tải dữ liệu…</p>
       <div class="admin-retention-table-wrap">
         <table class="admin-retention-table">
@@ -920,7 +929,7 @@ where is_admin = true;</pre>
 <script defer src="simple-nav.js"></script>
 <script defer src="supabase-config.js"></script>
 <script type="module" src="supabase-auth.js?v=20261001-authclean1"></script>
-<script defer src="admin.js?v=20261004-retention-rpcfix1"></script>
+<script defer src="admin.js?v=20261004-retention-dashboard1"></script>
 <script defer src="avp-core.js"></script>
 <script defer src="personal-dashboard.js"></script>
 <script defer src="cloud-sync-v11.js"></script>

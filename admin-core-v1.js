@@ -619,6 +619,10 @@
     const value=$("retention"+key),meta=$("retention"+key+"Meta");
     if(value)value.textContent=eligible?(`${n(returned)} / ${n(eligible)}`):"—";
     if(meta)meta.textContent=eligible?(`${Number(rate||0).toLocaleString("vi-VN",{maximumFractionDigits:1})}% trong nhóm đủ thời gian`):"Chưa có nhóm đủ thời gian đo";
+    const bar=$(`retention${key}Bar`),pct=$(`retention${key}Pct`);
+    const numeric=eligible?Math.max(0,Math.min(100,Number(rate)||0)):0;
+    if(bar)bar.style.width=numeric+"%";
+    if(pct)pct.textContent=eligible?(numeric.toLocaleString("vi-VN",{maximumFractionDigits:1})+"%"):"—";
   }
   function renderUserRetention(data){
     const registered=$("retentionRegistered"),coverage=$("retentionCoverage");
@@ -630,7 +634,22 @@
     const note=$("retentionNote");
     if(note){
       const since=data.tracking_since?fmtDate(data.tracking_since):"chưa có";
-      note.textContent=`Dữ liệu page view bắt đầu từ ${since}. Chỉ tính lượt xem trang khi người dùng đã đăng nhập; 100 tài khoản có nhiều ngày quay lại nhất, xếp giảm dần.`;
+      note.textContent=`Dữ liệu page view bắt đầu từ ${since}. Chỉ tính lượt xem trang khi người dùng đã đăng nhập; bảng bên dưới hiển thị tối đa 100 tài khoản có nhiều ngày quay lại nhất.`;
+    }
+    const insight=$("retentionInsight");
+    if(insight){
+      const metrics=[
+        {label:"D1",rate:Number(data.d1_rate),eligible:Number(data.d1_eligible)||0,returned:Number(data.d1_returned)||0},
+        {label:"D7",rate:Number(data.d7_rate),eligible:Number(data.d7_eligible)||0,returned:Number(data.d7_returned)||0},
+        {label:"D30",rate:Number(data.d30_rate),eligible:Number(data.d30_eligible)||0,returned:Number(data.d30_returned)||0}
+      ].filter(x=>x.eligible>0&&Number.isFinite(x.rate));
+      if(!metrics.length){
+        insight.textContent="Chưa có đủ dữ liệu để kết luận tỷ lệ giữ chân. Hãy kiểm tra lại sau khi có thêm người dùng đủ thời gian quan sát.";
+      }else{
+        const best=metrics.reduce((a,b)=>a.rate>=b.rate?a:b);
+        const lowest=metrics.reduce((a,b)=>a.rate<=b.rate?a:b);
+        insight.textContent=`Tỷ lệ cao nhất hiện ghi nhận ở ${best.label} (${best.rate.toLocaleString("vi-VN",{maximumFractionDigits:1})}%). Thấp nhất là ${lowest.label} (${lowest.rate.toLocaleString("vi-VN",{maximumFractionDigits:1})}%). Đây là tín hiệu để theo dõi; không suy ra nguyên nhân nếu chưa phân tích hành vi chi tiết.`;
+      }
     }
     const body=$("retentionUsersBody");if(!body)return;
     const rows=(Array.isArray(data.users)?data.users:[]).slice().sort((a,b)=>{
