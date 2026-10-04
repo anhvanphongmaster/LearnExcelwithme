@@ -65,17 +65,7 @@
     'Tự động hóa công việc, làm nhanh hơn'
   ];
 
-  /* Respect system reduced-motion preference: keep the message readable without animating it. */
-  var reduceMotion=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduceMotion){
-    text.textContent=lines[0];
-    cursor.style.display='none';
-    typing.style.width='auto';
-    typing.style.flex='0 1 auto';
-    typing.style.height='auto';
-    typing.style.overflow='visible';
-    return;
-  }
+  /* Keep the rotating tagline active on desktop and mobile. */
 
   var line=0;
   var char=0;
