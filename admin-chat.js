@@ -13,8 +13,13 @@
     document.head.appendChild(css);
   }
 
-  var loading=false,loaded=false,openAfterLoad=false;
+  var loading=false,loaded=!!window.__AVP_ADMIN_CHAT_LOADED__,openAfterLoad=false;
   var page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+
+  // Avoid leaving the temporary bubble in the DOM after the full chat has mounted.
+  function syncCoreState(){
+    if(window.__AVP_ADMIN_CHAT_LOADED__){loaded=true;removeLite();}
+  }
 
   function removeLite(){document.getElementById('avpChatLazyRoot')?.remove();}
   function openRealChat(){
@@ -31,11 +36,11 @@
     if(loading)return;
     loading=true;
     var s=document.createElement('script');
-    s.src='admin-chat-core-v1.js?v=20261004-attachment-validation1';
+    s.src='admin-chat-core-v1.js?v=20261004-chat-crosspage-fix1';
     s.defer=true;s.dataset.avpChatCore='1';
     s.onload=function(){
       loading=false;
-      loaded=true;
+      loaded=!!window.__AVP_ADMIN_CHAT_LOADED__;
       removeLite();
       if(openAfterLoad){openAfterLoad=false;openRealChat();}
     };
@@ -73,7 +78,7 @@
       if('requestIdleCallback' in window)requestIdleCallback(run,{timeout:2200});else setTimeout(run,1200);
     }
   }
-  window.addEventListener('avp:surface-open',function(e){if(e.detail?.surface==='chat')loadCore(true)});
+  window.addEventListener('avp:surface-open',function(e){if(e.detail?.surface==='chat'){syncCoreState();loadCore(true)}});
   document.addEventListener('click',function(e){if(e.target?.closest?.('[data-edge-action="chat"]'))loadCore(true)},true);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
