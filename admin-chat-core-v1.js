@@ -14,7 +14,7 @@
 
   document.addEventListener('click',e=>{
     if(e.target?.closest?.('#avpChatBubble')){
-      window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
+      window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat',source:'bubble'}}));
     }
   },true);
 
@@ -845,7 +845,7 @@
       $("avpChatInput")?.focus();
     }
   }
-  window.addEventListener("avp:admin-chat-open",()=>{togglePanel(true)});
+  window.addEventListener("avp:admin-chat-open",()=>{if($("avpChatPanel"))togglePanel(true);else if($("avpGuestChatPanel"))$("avpGuestChatPanel").hidden=false;});
   async function ensureThread(){
     if(threadId)return threadId;
     threadId=await rpc("avp_chat_get_or_create_thread");
