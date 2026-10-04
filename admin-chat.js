@@ -25,6 +25,7 @@
   function openRealChat(){
     var tries=0;
     (function tick(){
+      if(window.__AVP_ADMIN_CHAT_LOADED__){window.dispatchEvent(new CustomEvent('avp:admin-chat-open'));return;}
       var b=document.getElementById('avpChatBubble');
       if(b){try{b.click()}catch(_){ }return;}
       if(++tries<40)setTimeout(tick,80);
@@ -36,7 +37,7 @@
     if(loading)return;
     loading=true;
     var s=document.createElement('script');
-    s.src='admin-chat-core-v1.js?v=20261004-chat-reopen-fix2';
+    s.src='admin-chat-core-v1.js?v=20261004-chat-reopen-fix6';
     s.defer=true;s.dataset.avpChatCore='1';
     s.onload=function(){
       loading=false;
