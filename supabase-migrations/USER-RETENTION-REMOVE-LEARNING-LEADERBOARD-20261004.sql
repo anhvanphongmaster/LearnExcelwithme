@@ -3,6 +3,16 @@
 -- This drops 200 existing learning_leaderboard rows in the current production snapshot.
 -- Excel Arena/Race rankings, profile visibility controls, reviews, analytics, and Admin Chat are unchanged.
 
+-- Preserve the current summary snapshot for reference before removing the live table.
+-- These fields do not contain date-level activity, so they cannot be used to infer D1/D7/D30.
+create table public.learning_leaderboard_legacy_archive_20261004 as
+select *, now() as archived_at
+from public.learning_leaderboard;
+alter table public.learning_leaderboard_legacy_archive_20261004 enable row level security;
+revoke all on table public.learning_leaderboard_legacy_archive_20261004 from public, anon, authenticated;
+comment on table public.learning_leaderboard_legacy_archive_20261004 is
+  'Private snapshot of learning_leaderboard captured before its removal; legacy streak summary cannot determine D1/D7/D30 activity windows.';
+
 drop function if exists public.list_learning_leaderboard();
 drop function if exists public.upsert_learning_leaderboard(text, integer, integer, integer);
 drop table if exists public.learning_leaderboard;
