@@ -610,6 +610,59 @@
     renderRanking("fuTopDetails",s.top_details||[],"label","uses");
   }
 
+
+  function retentionBadge(value,period){
+    if(value===null||typeof value==="undefined") return '<span class="retention-status pending">Chưa đủ '+period+'</span>';
+    return value?'<span class="retention-status returned">Đã quay lại</span>':'<span class="retention-status absent">Chưa thấy</span>';
+  }
+  function renderRetentionRate(key,returned,eligible,rate){
+    const value=$("retention"+key),meta=$("retention"+key+"Meta");
+    if(value)value.textContent=eligible?(`${n(returned)} / ${n(eligible)}`):"—";
+    if(meta)meta.textContent=eligible?(`${Number(rate||0).toLocaleString("vi-VN",{maximumFractionDigits:1})}% trong nhóm đủ thời gian`):"Chưa có nhóm đủ thời gian đo";
+  }
+  function renderUserRetention(data){
+    const registered=$("retentionRegistered"),coverage=$("retentionCoverage");
+    if(registered)registered.textContent=n(data.registered_users||0);
+    if(coverage)coverage.textContent=`Cohort đăng ký ${n(data.days||90)} ngày`;
+    renderRetentionRate("D1",data.d1_returned,data.d1_eligible,data.d1_rate);
+    renderRetentionRate("D7",data.d7_returned,data.d7_eligible,data.d7_rate);
+    renderRetentionRate("D30",data.d30_returned,data.d30_eligible,data.d30_rate);
+    const note=$("retentionNote");
+    if(note){
+      const since=data.tracking_since?fmtDate(data.tracking_since):"chưa có";
+      note.textContent=`Dữ liệu page view bắt đầu từ ${since}. Chỉ tính lượt xem trang khi người dùng đã đăng nhập; tài khoản mới nhất 100 người được liệt kê bên dưới.`;
+    }
+    const body=$("retentionUsersBody");if(!body)return;
+    const rows=Array.isArray(data.users)?data.users:[];
+    if(!rows.length){body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Chưa có tài khoản trong khoảng thời gian này.</td></tr>';return}
+    body.innerHTML=rows.map(u=>`<tr>
+      <td><div class="retention-user"><strong>${escapeHtml(u.display_name||u.email||"Học viên")}</strong><small>${escapeHtml(u.email||"")}</small></div></td>
+      <td><small>${fmtDate(u.created_at)}</small></td>
+      <td><small>${u.last_activity_at?fmtDate(u.last_activity_at):"Chưa hoạt động lại"}</small></td>
+      <td>${retentionBadge(u.d1_returned,"D1")}</td>
+      <td>${retentionBadge(u.d7_returned,"D7")}</td>
+      <td>${retentionBadge(u.d30_returned,"D30")}</td>
+    </tr>`).join("");
+  }
+  async function loadUserRetention(){
+    const body=$("retentionUsersBody"),notice=$("retentionNotice");
+    if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Đang tải dữ liệu quay lại…</td></tr>';
+    if(notice)notice.hidden=true;
+    const days=Number($("retentionDays")?.value||90);
+    const data=await rpcSoft("admin_user_retention_summary",{p_days:days});
+    if(data?.__error){
+      if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Chưa tải được dữ liệu retention. Kiểm tra migration admin_user_retention_summary trong Supabase.</td></tr>';
+      if(notice){notice.hidden=false;notice.textContent="RPC retention chưa được cài hoặc tài khoản chưa có quyền Admin."}
+      return;
+    }
+    renderUserRetention(data||{});
+  }
+  function bindUserRetentionControls(){
+    const button=$("retentionRefresh"),select=$("retentionDays");
+    if(button&&!button.dataset.bound){button.dataset.bound="1";button.addEventListener("click",loadUserRetention)}
+    if(select&&!select.dataset.bound){select.dataset.bound="1";select.addEventListener("change",loadUserRetention)}
+  }
+
   async function loadDashboard(){
     try{
       $("adminRefresh").disabled=true;
