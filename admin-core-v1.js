@@ -733,7 +733,7 @@
       loadAdminMaintenance();
     try{
       const requestedView=new URLSearchParams(location.search).get("view");
-      const validViews=["overview","users","race","learning","practice","youtube","downloads" ,"engagement","analytics","community","reviews","grader","professional","tools","retention"];
+      const validViews=["overview","users","race","learning","practice","content","youtube","downloads" ,"engagement","analytics","community","reviews","grader","professional","tools","retention"];
       if(requestedView&&validViews.includes(requestedView)){
         setTimeout(()=>setAdminView(requestedView,{scroll:true}),80);
       }
@@ -768,7 +768,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","race","learning","practice","youtube","downloads" ,"tools","engagement","analytics","community","reviews","grader","professional","retention"];
+    const valid=["overview","users","race","learning","practice","content","youtube","downloads" ,"tools","engagement","analytics","community","reviews","grader","professional","retention"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
@@ -792,6 +792,7 @@
     if(view==="downloads" && !adminDownloadLoaded) loadAdminDownloads();
     if(view==="tools") window.dispatchEvent(new CustomEvent("avp:admin-tools-open"));
     if(view==="practice") window.dispatchEvent(new CustomEvent("avp:admin-tiktok-open"));
+    if(view==="content") window.dispatchEvent(new CustomEvent("avp:admin-content-open"));
     if(view==="youtube") window.dispatchEvent(new CustomEvent("avp:admin-youtube-open"));
     if(view==="overview" && client) checkAdminHealth();
     if(view==="reviews" && typeof window.avpLoadSiteReviews==="function") window.avpLoadSiteReviews();
