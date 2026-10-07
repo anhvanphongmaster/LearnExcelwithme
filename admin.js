@@ -197,6 +197,29 @@
     return null;
   }
 
+  function ensureContentOSFallback(){
+    const host=document.querySelector(".admin-command-center");
+    if(!host)return;
+    const tabs=host.querySelector(".admin-view-tabs");
+    if(tabs&&!tabs.querySelector('[data-admin-view="content"]')){
+      const b=document.createElement("button");
+      b.type="button";b.dataset.adminView="content";b.setAttribute("role","tab");
+      b.innerHTML="<b>🎬 Content OS</b><small>Ý tưởng, video, audit & PASS</small>";
+      const practice=tabs.querySelector('[data-admin-view="practice"]');
+      if(practice)practice.insertAdjacentElement("afterend",b);else tabs.appendChild(b);
+    }
+    if(!document.getElementById("avpContentPanel")){
+      const wrap=document.createElement("div");
+      wrap.innerHTML=`<div class="admin-section-heading admin-view-section" data-admin-section="content"><span>🎬 AVP CONTENT OS</span><h2>Nhà máy sản xuất nội dung</h2></div><section class="admin-panel admin-view-section avpc-panel" data-admin-section="content" id="avpContentPanel"><div class="avpc-head"><div><span>CONTENT OS V1</span><h2>Ý tưởng → Video → Audit → PASS</h2><p>Quản lý nội dung trước khi xuất bản.</p></div><div><button type="button" id="avpcReload">↻ Làm mới</button> <button type="button" id="avpcNew">＋ Video mới</button></div></div><div class="avpc-kpis"><article><small>Ý tưởng</small><strong id="avpcIdea">0</strong></article><article><small>Đang làm</small><strong id="avpcWorking">0</strong></article><article><small>Chờ Audit</small><strong id="avpcAudit">0</strong></article><article><small>PASS</small><strong id="avpcPass">0</strong></article></div><div class="avpc-toolbar"><input id="avpcSearch" type="search" placeholder="Tìm title, case, ngành…"><select id="avpcStatus"><option value="">Tất cả trạng thái</option><option value="idea">Ý tưởng</option><option value="selected">Đã chọn</option><option value="draft">Đang làm</option><option value="audit">Chờ Audit</option><option value="need_fix">Cần sửa</option><option value="pass">PASS</option></select></div><div id="avpcList" class="avpc-list"></div><form id="avpcEditor" class="avpc-editor" hidden><h3 id="avpcEditorTitle">Video mới</h3><div class="avpc-grid"><label>Mã content<input id="avpcCode"></label><label>Trạng thái<select id="avpcEditStatus"><option value="idea">Ý tưởng</option><option value="selected">Đã chọn</option><option value="draft">Đang làm</option><option value="audit">Chờ Audit</option><option value="need_fix">Cần sửa</option><option value="pass">PASS</option></select></label><label class="wide">Tên video<input id="avpcTitle" required></label><label>Ngành / bối cảnh<input id="avpcIndustry"></label><label>Excel skill<input id="avpcSkills"></label><label class="wide">Case<input id="avpcCaseTitle"></label><label class="wide">Mô tả case<textarea id="avpcCaseDescription"></textarea></label><label class="wide">Hook<textarea id="avpcHook"></textarea></label><label class="wide">Voice script<textarea id="avpcScript" rows="8"></textarea></label><label class="wide">Excel logic<textarea id="avpcExcelLogic"></textarea></label><label>Practice file<input id="avpcFileName"></label><label>TikTok URL<input id="avpcTikTok"></label></div><div><button type="submit">Lưu content</button> <button type="button" id="avpcAudit">PASS</button> <button type="button" id="avpcDelete">Xóa</button> <button type="button" id="avpcClose">Đóng</button></div><div id="avpcNotice" hidden></div></form></section>`;
+      const heading=wrap.firstElementChild, panel=heading.nextElementSibling;
+      host.insertAdjacentElement("afterend",heading);
+      heading.insertAdjacentElement("afterend",panel);
+    }
+    if(!document.querySelector('script[data-avp-content-os]')){
+      const sc=document.createElement("script");sc.src="admin-content-os.js?v=20261008-v3";sc.dataset.avpContentOs="1";document.body.appendChild(sc);
+    }
+  }
+
   function ensureAdminStyles() {
     const styles = [
       ['admin-ui-v2.css?v=20260913-adminui3', 'avpAdminUiV2'],
