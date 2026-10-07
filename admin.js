@@ -260,6 +260,7 @@
 
   async function boot() {
     ensureAdminStyles();
+    ensureContentOSFallback();
     bindAdminGuards();
     await waitForSupabase();
     await loadCore();
