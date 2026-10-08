@@ -12,6 +12,7 @@
     grader: '🧪 Chấm điểm',
     professional: '🎯 Professional Track',
     practice: '📱 TikTok Practice',
+    content: '🎬 Content OS',
     youtube: '▶️ YouTube Projects',
     homework: '📝 YT Practice',
     downloads: '📦 Tải xuống',
@@ -29,7 +30,7 @@
     ['overview', '📊', 'Tổng quan', ['overview']],
     ['people', '👥', 'Người dùng & Race', ['users', 'race']],
     ['learning', '🎓', 'Học tập & Chấm', ['learning', 'grader', 'professional']],
-    ['content', '▶', 'Nội dung thực hành', ['practice', 'youtube', 'homework']],
+    ['content', '▶', 'Nội dung thực hành', ['practice', 'content', 'youtube', 'homework']],
     ['resources', '🧰', 'Tài nguyên', ['downloads', 'tools']],
     ['community', '💬', 'Cộng đồng', ['inbox', 'community', 'reviews']],
     ['insights', '📈', 'Phân tích', ['votes', 'engagement', 'retention', 'analytics']]
