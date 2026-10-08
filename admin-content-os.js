@@ -34,17 +34,30 @@ Quy tắc bắt buộc:
 - Script ngắn, thực dụng, nhất quán 100 phần trăm với case và Excel logic.
 - Practice file name phải là tên file xlsx hợp lý, không cần tạo file thật.
 
-Chỉ trả về JSON hợp lệ, không Markdown, theo đúng cấu trúc:
-{"title":"","industry":"","excel_skills":[""],"case_title":"","case_description":"","hook":"","script":"","excel_logic":"","practice_file_name":""}`;
+Không giải thích. Trả về đúng 9 block theo format marker, không Markdown:
+[TITLE]Tên video[/TITLE]
+[INDUSTRY]Ngành/bối cảnh[/INDUSTRY]
+[SKILLS]skill 1, skill 2[/SKILLS]
+[CASE_TITLE]Tên case[/CASE_TITLE]
+[CASE_DESCRIPTION]Mô tả case[/CASE_DESCRIPTION]
+[HOOK]Hook[/HOOK]
+[SCRIPT]Voice script[/SCRIPT]
+[EXCEL_LOGIC]Excel logic và công thức[/EXCEL_LOGIC]
+[PRACTICE_FILE]ten-file.xlsx[/PRACTICE_FILE]
+Không thêm chữ trước [TITLE] hoặc sau [/PRACTICE_FILE].`;
   const {data,error}=await client.functions.invoke("ai-chat",{body:{session_id:sessionId,message:prompt,content:prompt,question:prompt,request_id:requestId}});
   if(error)throw error;
   const raw=String(data?.answer||data?.content||data?.message||data?.response||"").trim();
-  const cleaned=raw.replace(/^```(?:json)?\s*/i,"").replace(/\s*```$/i,"").trim();
-  const start=cleaned.indexOf("{");
-  const end=cleaned.lastIndexOf("}");
-  if(start<0||end<=start)throw new Error("AI không trả về JSON hợp lệ.");
-  const jsonText=cleaned.slice(start,end+1);
-  const out=JSON.parse(jsonText);
+  const cleaned=raw.replace(/^\`\`\`(?:json)?\s*/i,"").replace(/\s*\`\`\`$/i,"").trim();
+  let out=null;
+  const startJson=cleaned.indexOf("{");
+  const endJson=cleaned.lastIndexOf("}");
+  if(startJson>=0&&endJson>startJson){try{out=JSON.parse(cleaned.slice(startJson,endJson+1));}catch{}}
+  if(!out){
+    const get=(name)=>{const m=cleaned.match(new RegExp("\\["+name+"\\]([\\s\\S]*?)\\[\\/"+name+"\\]","i"));return m?m[1].trim():"";};
+    out={title:get("TITLE"),industry:get("INDUSTRY"),excel_skills:get("SKILLS").split(",").map(x=>x.trim()).filter(Boolean),case_title:get("CASE_TITLE"),case_description:get("CASE_DESCRIPTION"),hook:get("HOOK"),script:get("SCRIPT"),excel_logic:get("EXCEL_LOGIC"),practice_file_name:get("PRACTICE_FILE")};
+  }
+  if(!out.title&&!out.script&&!out.hook)throw new Error("AI không trả về nội dung theo format Content OS.");
   $("avpcCode").value=$("avpcCode").value.trim()||makeCode();
   $("avpcTitle").value=out.title||$("avpcTitle").value;
   $("avpcIndustry").value=out.industry||industry;
