@@ -36,7 +36,11 @@ Chỉ trả về JSON hợp lệ, không Markdown, theo đúng cấu trúc:
   const {data,error}=await client.functions.invoke("content-generator",{body:{prompt,request_id:requestId}});
   if(error)throw error;
   const raw=String(data?.answer||data?.content||data?.message||data?.response||"").trim();
-  const jsonText=raw.replace(/^```(?:json)?\s*/i,"").replace(/\s*```$/i,"");
+  const cleaned=raw.replace(/^```(?:json)?\s*/i,"").replace(/\s*```$/i,"").trim();
+  const start=cleaned.indexOf("{");
+  const end=cleaned.lastIndexOf("}");
+  if(start<0||end<=start)throw new Error("AI không trả về JSON hợp lệ.");
+  const jsonText=cleaned.slice(start,end+1);
   const out=JSON.parse(jsonText);
   $("avpcCode").value=$("avpcCode").value.trim()||makeCode();
   $("avpcTitle").value=out.title||$("avpcTitle").value;
