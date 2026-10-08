@@ -11,7 +11,7 @@ function makeCode(){const d=new Date();return "AVP-TK-"+d.toISOString().slice(0,
 async function generate(){
  if(!client)client=await getClient();
  const industry=$("avpcIndustry").value.trim(),skills=$("avpcSkills").value.trim(),caseTitle=$("avpcCaseTitle").value.trim(),caseDescription=$("avpcCaseDescription").value.trim();
- if(!caseTitle&&!caseDescription){notice("Nhập Case hoặc Mô tả case trước để AI tạo content.");return}
+ if(!caseTitle&&!caseDescription){notice("Chưa có Case. Nhập tình huống thực tế rồi bấm AI tạo content.");$("avpcCaseTitle")?.focus();return}
  const btn=$("avpcAiGenerate");if(btn)btn.disabled=true;notice("AI đang dựng Hook, Voice script và Excel logic…");
  try{
   const {data:session,error:sessionErr}=await client.rpc("avp_ai_get_or_create_session");if(sessionErr)throw sessionErr;
