@@ -14,7 +14,6 @@ async function generate(){
  if(!caseTitle&&!caseDescription){notice("Chưa có Case. Nhập tình huống thực tế rồi bấm AI tạo content.");$("avpcCaseTitle")?.focus();return}
  const btn=$("avpcAiGenerate");if(btn)btn.disabled=true;notice("AI đang dựng Hook, Voice script và Excel logic…");
  try{
-  const {data:session,error:sessionErr}=await client.rpc("avp_ai_get_or_create_session");if(sessionErr)throw sessionErr;
   const requestId=crypto?.randomUUID?.()||String(Date.now());
   const prompt=`Bạn là Content Engine của Anh Văn Phòng. Hãy tạo một video TikTok Excel thực chiến từ dữ liệu đầu vào sau.
 Ngành/bối cảnh: ${industry||"chưa xác định"}
@@ -34,7 +33,7 @@ Quy tắc bắt buộc:
 
 Chỉ trả về JSON hợp lệ, không Markdown, theo đúng cấu trúc:
 {"title":"","industry":"","excel_skills":[""],"case_title":"","case_description":"","hook":"","script":"","excel_logic":"","practice_file_name":""}`;
-  const {data,error}=await client.functions.invoke("ai-chat",{body:{session_id:session,message:prompt,content:prompt,question:prompt,request_id:requestId}});
+  const {data,error}=await client.functions.invoke("content-generator",{body:{prompt,request_id:requestId}});
   if(error)throw error;
   const raw=String(data?.answer||data?.content||data?.message||data?.response||"").trim();
   const jsonText=raw.replace(/^```(?:json)?\s*/i,"").replace(/\s*```$/i,"");
