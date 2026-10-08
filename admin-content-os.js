@@ -50,7 +50,7 @@ Chỉ trả về JSON hợp lệ, không Markdown, theo đúng cấu trúc:
   $("avpcFileName").value=out.practice_file_name||"";
   $("avpcEditStatus").value="draft";
   notice("AI đã tạo nội dung. Kiểm tra lại rồi mới Lưu content.",true);
- }catch(err){console.error("Content OS AI",err);notice("AI chưa tạo được content: "+(err?.message||"lỗi không xác định"));}
+ }catch(err){console.error("Content OS AI",err);let detail="";try{const response=err?.context;if(response&&typeof response.json==="function"){const payload=await response.json();detail=payload?.provider_message||payload?.error||"";if(payload?.provider_status)detail="Mã "+payload.provider_status+": "+detail}}catch{}notice("AI chưa tạo được content"+(detail?": "+detail:": "+(err?.message||"lỗi không xác định")));}
  finally{if(btn)btn.disabled=false}
 }
 async function save(e){e.preventDefault();const p={id:current?.id||"",content_code:$("avpcCode").value.trim()||makeCode(),title:$("avpcTitle").value.trim(),status:$("avpcEditStatus").value,priority:"normal",channel:"tiktok",industry:$("avpcIndustry").value.trim(),excel_skills:$("avpcSkills").value.split(",").map(x=>x.trim()).filter(Boolean),case_title:$("avpcCaseTitle").value.trim(),case_description:$("avpcCaseDescription").value,hook:$("avpcHook").value,script:$("avpcScript").value,excel_logic:$("avpcExcelLogic").value,practice_file_name:$("avpcFileName").value.trim(),tiktok_url:$("avpcTikTok").value.trim()||null};const r=await client.rpc("avp_content_save_v1",{p_content:p});if(r.error){notice(r.error.message);return}notice("Đã lưu content.",true);$("avpcEditor").hidden=true;await load()}
