@@ -126,7 +126,54 @@
     @media(max-width:900px){.ai-case-grid{grid-template-columns:1fr}.ai-case{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}.ai-case-top{border-right:1px solid var(--ai-line);border-bottom:0}.ai-quickstart-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:650px){.ai-page{width:calc(100% - 22px);margin-top:12px}.ai-hero{grid-template-columns:1fr;padding:24px 20px}.ai-hero-art{display:none}.ai-quickstart{padding:15px}.ai-quickstart-head{display:block}.ai-quickstart-head p{margin-top:6px}.ai-quickstart-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-quickstart-btn{min-height:100px;display:flex;align-items:flex-start}.ai-outcomes,.ai-module-grid,.ai-practice,.ai-safety-grid,.ai-tools-grid{grid-template-columns:1fr}.ai-case{display:block}.ai-case-top{border-right:0;border-bottom:1px solid var(--ai-line)}.ai-section-head h2{font-size:22px}.ai-section-head p{font-size:13px}.ai-module{padding:14px}.ai-next{align-items:flex-start;flex-direction:column}}
 
-  </style>
+   
+  .ai-workspace{max-width:1120px;margin-top:18px}
+  .ai-workspace-hero{padding:30px 34px;border-radius:22px;grid-template-columns:minmax(0,1fr) 220px;gap:20px}
+  .ai-workspace-hero h1{font-size:clamp(30px,4vw,46px);margin:12px 0}
+  .ai-workspace-hero p{max-width:650px;font-size:15px}
+  .ai-workspace-hero .ai-hero-art{min-height:150px}.ai-workspace-hero .ai-orbit{width:185px}.ai-workspace-hero .ai-orbit-core{width:76px;height:76px;font-size:25px}
+  .ai-workspace-cases{margin-top:26px}
+  .ai-workspace-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:13px}
+  .ai-workspace-head h2{font-size:25px;letter-spacing:-.03em;margin:6px 0 0}
+  .ai-workspace-head p{max-width:430px;margin:0;color:var(--ai-muted);font-size:13px;line-height:1.6}
+  .ai-workspace-filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}
+  .ai-workspace-filters button{padding:8px 13px;border:1px solid var(--ai-line);border-radius:999px;background:#fff;color:#53617a;font-weight:800;font-size:12px;cursor:pointer}
+  .ai-workspace-filters button[aria-pressed="true"]{background:#263f9e;color:#fff;border-color:#263f9e}
+  .ai-workspace-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
+  .ai-work-card{min-width:0;background:#fff;border:1px solid var(--ai-line);border-radius:17px;overflow:hidden;box-shadow:0 7px 24px #17243b07}
+  .ai-work-card[hidden]{display:none!important}
+  .ai-work-card-top{padding:17px 17px 14px;min-height:155px;background:linear-gradient(150deg,#fff,#f7f8fc);border-bottom:1px solid var(--ai-line)}
+  .ai-work-tag{font-size:10px;font-weight:900;letter-spacing:.09em;color:#4359ca}
+  .ai-work-card h3{font-size:17px;line-height:1.35;margin:9px 0 7px;letter-spacing:-.02em}
+  .ai-work-card-top p{font-size:12px;line-height:1.6;color:var(--ai-muted);margin:0}
+  .ai-work-card-body{padding:13px 17px 16px}
+  .ai-work-result{display:grid;gap:4px}.ai-work-result strong{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#4359ca}.ai-work-result span{font-size:12px;line-height:1.55;color:var(--ai-ink)}
+  .ai-work-card details{margin-top:13px;padding-top:11px;border-top:1px solid var(--ai-line)}
+  .ai-work-card summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer;font-size:12px;font-weight:850;color:#3654cc}
+  .ai-work-card summary::-webkit-details-marker{display:none}.ai-work-card summary:after{content:"＋";font-size:17px}.ai-work-card details[open] summary:after{content:"−"}
+  .ai-work-detail{padding-top:12px}.ai-work-detail>strong{display:block;margin:12px 0 6px;font-size:12px}.ai-work-detail>strong:first-child{margin-top:0}
+  .ai-work-detail pre{font-size:11px;line-height:1.6;padding:10px;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f7fb;border:1px solid #e4e9f2;border-radius:9px;color:#2c3955}
+  .ai-work-detail ol{padding-left:18px;margin:7px 0 12px}.ai-work-detail li{font-size:12px;line-height:1.6;color:var(--ai-muted);margin:4px 0}
+  .ai-work-copy{width:100%;margin-top:9px;min-height:36px;border:1px solid #dce3ff;background:#edf1ff;color:#334db9;border-radius:10px;font-size:12px;font-weight:850;cursor:pointer}
+  .ai-work-detail .ai-lesson-copy-status{display:block;margin:6px 0 0}
+  .ai-work-check{margin-top:12px;padding:10px;border-radius:10px;background:#edf8f2;color:#255a42;font-size:11px;line-height:1.6}
+  .ai-workspace-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding:13px 16px;background:#f0f3ff;border-radius:12px;color:#53617e;font-size:12px}
+  .ai-workspace-footer button{border:0;background:transparent;color:#304bc2;font-size:12px;font-weight:900;cursor:pointer;white-space:nowrap}
+  .ai-builder-compact{margin-top:18px;padding:20px;border:1px solid var(--ai-line);border-radius:17px;background:#fff}
+  .ai-builder-compact[hidden]{display:none!important}
+  .ai-builder-compact .ai-practice{grid-template-columns:1fr 1fr}
+  .ai-workspace-safety{margin-top:18px;padding:12px 15px;border-left:3px solid #7183d8;background:#f0f3ff;border-radius:0 10px 10px 0;color:#4d5b79;font-size:12px;line-height:1.6}
+  body.dark-mode .ai-work-card,body.dark-mode .ai-builder-compact{background:#172033;border-color:#2d3a53}
+  body.dark-mode .ai-work-card-top{background:linear-gradient(150deg,#172033,#1d2940);border-color:#2d3a53}
+  body.dark-mode .ai-work-card h3,body.dark-mode .ai-work-result span,body.dark-mode .ai-work-detail>strong{color:#eaf0ff}
+  body.dark-mode .ai-work-card-top p,body.dark-mode .ai-work-detail li{color:#b4c0d5}
+  body.dark-mode .ai-work-detail pre{background:#101827;border-color:#303d54;color:#dce5f7}
+  body.dark-mode .ai-workspace-filters button{background:#172033;color:#c5d0e6;border-color:#2d3a53}
+  body.dark-mode .ai-workspace-filters button[aria-pressed="true"]{background:#4058cb;color:#fff}
+  body.dark-mode .ai-workspace-footer,body.dark-mode .ai-workspace-safety{background:#202d4b;color:#d0dcf5}
+  @media(max-width:900px){.ai-workspace-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-work-card-top{min-height:145px}}
+  @media(max-width:620px){.ai-workspace{width:calc(100% - 22px);margin-top:12px}.ai-workspace-hero{grid-template-columns:1fr;padding:24px 20px}.ai-workspace-hero .ai-hero-art{display:none}.ai-workspace-head{display:block}.ai-workspace-head p{margin-top:7px}.ai-workspace-grid{grid-template-columns:1fr}.ai-work-card-top{min-height:unset}.ai-workspace-footer{align-items:flex-start;flex-direction:column}.ai-builder-compact .ai-practice{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <script src="avp-ui-system.js?v=20261002-ui1" data-avp-ui-system></script>
@@ -143,176 +190,100 @@
   </div>
   <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
 </nav>
-<main class="ai-page">
-  <section class="ai-hero" aria-labelledby="aiHeroTitle">
+<main class="ai-page ai-workspace">
+  <section class="ai-hero ai-workspace-hero" aria-labelledby="aiHeroTitle">
     <div>
-      <span class="ai-kicker">LEARNEXCELWITHME · AI SKILLS</span>
-      <h1 id="aiHeroTitle">Dùng AI để giải quyết<br>việc thật, không đoán mò.</h1>
-      <p>Thực hành trên các ca Excel, Power Query, KPI và báo cáo. Tìm nguyên nhân, thử phương án, đối chiếu số liệu và nghiệm thu kết quả trước khi đưa vào công việc.</p>
-      <div class="ai-actions">
-        <a class="ai-btn ai-btn-primary" href="#aiPracticalLab">Vào phòng thực chiến <span aria-hidden="true">→</span></a>
-        <a class="ai-btn ai-btn-ghost" href="#aiPromptPractice">Thử tạo prompt</a>
-      </div>
+      <span class="ai-kicker">LEARNEXCELWITHME · AI WORKSPACE</span>
+      <h1 id="aiHeroTitle">AI làm cùng bạn.<br>Bạn kiểm soát kết quả.</h1>
+      <p>Chọn một việc đang cần xử lý. Học qua tình huống có dữ liệu, đầu ra cụ thể và cách làm từng bước — không học prompt chung chung.</p>
     </div>
-    <div class="ai-hero-art" aria-hidden="true">
-      <div class="ai-orbit"><div class="ai-orbit-core">AI</div><span class="ai-orbit-tag one">Nêu mục tiêu</span><span class="ai-orbit-tag two">Đưa bối cảnh</span><span class="ai-orbit-tag three">Kiểm chứng</span></div>
-    </div>
-  </section>
-  <section class="ai-quickstart" aria-labelledby="aiQuickstartTitle">
-    <div class="ai-quickstart-head">
-      <div><span class="ai-eyebrow">BẮT ĐẦU TỪ VIỆC CẦN LÀM</span><h2 id="aiQuickstartTitle">Bạn muốn AI giúp việc gì?</h2></div>
-      <p>Chọn một tình huống. Trang sẽ chuẩn bị sẵn khung prompt để bạn bổ sung bối cảnh rồi dùng trên công cụ AI.</p>
-    </div>
-    <div class="ai-quickstart-grid">
-      <button class="ai-quickstart-btn" type="button" data-ai-quick-task="Soạn một email công việc" data-ai-quick-output="Email ngắn, chuyên nghiệp" data-ai-quick-context="Tôi cần viết email cho [người nhận] về [nội dung]. Mục tiêu của email là [mục tiêu].">
-        <span class="ai-quickstart-icon" aria-hidden="true">✉</span><strong>Viết email công việc</strong><span>Rõ ý, đúng giọng văn, không tự thêm cam kết.</span>
-      </button>
-      <button class="ai-quickstart-btn" type="button" data-ai-quick-task="Giải thích hoặc sửa công thức Excel" data-ai-quick-output="Giải thích từng bước, kèm ví dụ" data-ai-quick-context="Phiên bản Excel: [phiên bản]. Cột dữ liệu: [tên cột]. Công thức hiện tại: [công thức]. Kết quả mong muốn: [kết quả]. Trường hợp đang sai: [ví dụ dữ liệu giả lập].">
-        <span class="ai-quickstart-icon" aria-hidden="true">ƒx</span><strong>Sửa công thức Excel</strong><span>Cung cấp công thức, dữ liệu mẫu và kết quả mong muốn.</span>
-      </button>
-      <button class="ai-quickstart-btn" type="button" data-ai-quick-task="Phân tích dữ liệu Excel" data-ai-quick-output="Bảng có cột rõ ràng" data-ai-quick-context="Mục tiêu phân tích: [câu hỏi cần trả lời]. Các cột dữ liệu: [tên cột và ý nghĩa]. Dữ liệu mẫu đã ẩn thông tin nhạy cảm: [dán dữ liệu mẫu].">
-        <span class="ai-quickstart-icon" aria-hidden="true">▦</span><strong>Phân tích dữ liệu</strong><span>Xác định câu hỏi, dữ liệu đầu vào và cách kiểm tra kết luận.</span>
-      </button>
-      <button class="ai-quickstart-btn" type="button" data-ai-quick-task="Viết báo cáo" data-ai-quick-output="Báo cáo có tiêu đề và kết luận" data-ai-quick-context="Đối tượng đọc báo cáo: [người đọc]. Kỳ báo cáo: [thời gian]. Dữ kiện đã xác minh: [liệt kê dữ kiện]. Vấn đề cần nêu: [vấn đề].">
-        <span class="ai-quickstart-icon" aria-hidden="true">▤</span><strong>Làm báo cáo</strong><span>Chuyển dữ kiện đã xác minh thành báo cáo có cấu trúc.</span>
-      </button>
-    </div>
+    <div class="ai-hero-art" aria-hidden="true"><div class="ai-orbit"><div class="ai-orbit-core">AI</div><span class="ai-orbit-tag one">Làm việc</span><span class="ai-orbit-tag two">Có đầu ra</span><span class="ai-orbit-tag three">Có kiểm chứng</span></div></div>
   </section>
 
+  <section class="ai-workspace-cases" aria-labelledby="aiCasesTitle">
+    <div class="ai-workspace-head">
+      <div><span class="ai-eyebrow">CASE THỰC HÀNH</span><h2 id="aiCasesTitle">Hôm nay bạn cần làm gì?</h2></div>
+      <p>Mỗi case là một đầu việc khác nhau. Mở case để xem dữ liệu mẫu, các bước xử lý và tiêu chí đầu ra.</p>
+    </div>
+    <div class="ai-workspace-filters" role="group" aria-label="Lọc tình huống">
+      <button type="button" data-ai-case-filter="all" aria-pressed="true">Tất cả</button>
+      <button type="button" data-ai-case-filter="office" aria-pressed="false">Văn phòng</button>
+      <button type="button" data-ai-case-filter="data" aria-pressed="false">Excel & dữ liệu</button>
+      <button type="button" data-ai-case-filter="content" aria-pressed="false">Nội dung</button>
+      <button type="button" data-ai-case-filter="workflow" aria-pressed="false">Quy trình</button>
+    </div>
+    <div class="ai-workspace-grid">
+      <article class="ai-work-card" data-ai-category="office">
+        <div class="ai-work-card-top"><span class="ai-work-tag">VĂN PHÒNG · 10 PHÚT</span><h3>Biến ghi chú rời rạc thành email báo cáo</h3><p>Không phải “viết email hay hơn” — cần chuyển đúng dữ kiện thành email sếp đọc là nắm được tình hình và việc cần quyết.</p></div>
+        <div class="ai-work-card-body"><div class="ai-work-result"><strong>Đầu ra cần có</strong><span>Email ngắn gồm tình hình, vướng mắc, việc cần quyết định và bước tiếp theo.</span></div><details><summary>Xem case và cách làm</summary><div class="ai-work-detail"><strong>Đầu vào mẫu</strong><pre class="ai-case-data">Đơn hàng: 120 bộ
+Đã hoàn thành: 96 bộ
+Còn thiếu: 24 bộ
+Nguyên nhân: máy dừng 40 phút
+Dự kiến hoàn thành: 16:00
+Cần quản lý xác nhận tăng ca</pre><strong>Các bước</strong><ol><li>Yêu cầu AI chỉ dùng dữ kiện đã cung cấp.</li><li>Tách tình hình hiện tại khỏi đề xuất cần quản lý quyết định.</li><li>Đối chiếu lại số lượng, thời gian và nội dung xin xác nhận.</li></ol><strong>Prompt làm việc</strong><pre class="ai-case-data">Từ ghi chú dưới đây, soạn email cập nhật tiến độ cho quản lý. Tối đa 120 từ. Chia thành: tình hình, nguyên nhân/vướng mắc, thời gian dự kiến và quyết định cần xác nhận. Không tự thêm lý do, cam kết hoặc số liệu. Nếu có điểm mâu thuẫn, hỏi lại trước khi viết.</pre><button type="button" class="ai-work-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><div class="ai-work-check"><strong>Đạt khi:</strong> số lượng không đổi, yêu cầu quản lý xác nhận rõ ràng, không có dữ kiện tự bịa.</div></div></details></div>
+      </article>
 
-  <section class="ai-section" id="aiPracticalLab" aria-labelledby="aiLabTitle">
-    <div class="ai-section-head"><div><span class="ai-eyebrow">CASE-BASED LEARNING · PHÒNG THỰC CHIẾN</span><h2 id="aiLabTitle">Không học prompt suông. Giải quyết một ca việc thật.</h2></div><p>Mỗi case có dữ liệu đầu vào, cách điều tra, điểm cần kiểm chứng và tiêu chí nghiệm thu. AI chỉ hỗ trợ quá trình; người học phải tự xác minh kết quả.</p></div>
-    <div class="ai-lab-intro"><div><h3>Quy trình thực chiến áp dụng cho mọi case</h3><p>01. Xác định lỗi hoặc quyết định cần đưa ra → 02. Chuẩn hóa dữ liệu và tiêu chí đúng → 03. Dùng AI để lập giả thuyết, không đoán mò → 04. Kiểm thử từng giả thuyết → 05. Ghi lại nguyên nhân, cách sửa và bằng chứng.</p></div><span class="ai-lab-label">THỰC HÀNH CÓ KIỂM CHỨNG</span></div>
-    <div class="ai-case-grid">
-      <article class="ai-case">
-        <div class="ai-case-top"><span class="ai-case-number">CASE 01 · KPI / EXCEL</span><h3>Tỷ lệ trên dashboard không khớp số gốc</h3><p>Báo cáo hiển thị tỷ lệ lỗi khác với phép tính thủ công. Không sửa công thức ngay: phải xác định đúng mẫu số, phạm vi lọc và định nghĩa KPI trước.</p></div>
-        <div class="ai-case-body">
-          <div class="ai-case-block"><strong>Dữ liệu đầu vào</strong><div class="ai-case-data">Ca ngày: 7 lỗi / 150 lượt
-Ca đêm: 3 lỗi / 150 lượt
-Bộ lọc đang chọn: chỉ ca ngày
-Dashboard hiển thị: 1,33%</div></div>
-          <div class="ai-case-block"><strong>Nhiệm vụ của người học</strong><ol><li>Tính lại tỷ lệ theo phạm vi ca ngày.</li><li>Kiểm tra dashboard có dùng nhầm tổng hai ca, số ngày hay vùng dữ liệu khác không.</li><li>Đề xuất cách kiểm tra để con số tự khớp khi đổi bộ lọc.</li></ol></div>
-          <div class="ai-case-block"><strong>Tiêu chí nghiệm thu</strong><div class="ai-case-check">Ca ngày: 7 ÷ 150 = 4,67%. Hai ca: 10 ÷ 300 = 3,33%. Kết quả phải đổi theo đúng ca được chọn và không đếm thêm ca bị loại bởi bộ lọc.</div></div>
-          <details><summary>Mở hướng dẫn điều tra và prompt hỗ trợ</summary><div class="ai-case-detail"><div class="ai-case-block"><strong>Điều tra theo thứ tự</strong><ol><li>Xác nhận tử số và mẫu số của KPI.</li><li>Kiểm tra bộ lọc ca, ngày và nguồn dữ liệu của từng thành phần KPI.</li><li>Tính thủ công bằng một tập dữ liệu nhỏ.</li><li>Đối chiếu công thức hoặc PivotTable; chỉ sửa sau khi xác định nguyên nhân.</li></ol></div><div class="ai-case-block"><strong>Yêu cầu AI hỗ trợ chẩn đoán</strong><div class="ai-case-data">Phân tích tình huống KPI dưới đây. Trước tiên hãy tính kết quả kỳ vọng, ghi rõ tử số/mẫu số và phạm vi lọc. Sau đó liệt kê các nguyên nhân có thể khiến dashboard khác kết quả thủ công, xếp theo thứ tự kiểm tra. Với mỗi nguyên nhân, nêu bằng chứng cần xem; chưa được kết luận khi chưa có bằng chứng. Cuối cùng đề xuất bộ test cho ca ngày, ca đêm và cả hai ca.</div><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span></div><div class="ai-case-block"><strong>Lỗi người mới thường mắc</strong><p>Sửa mẫu số cho ra con số mong muốn mà không kiểm tra bộ lọc, hoặc so sánh hai KPI có định nghĩa khác nhau.</p></div></div></details>
-        </div>
+      <article class="ai-work-card" data-ai-category="data">
+        <div class="ai-work-card-top"><span class="ai-work-tag">EXCEL · 15 PHÚT</span><h3>Sửa công thức trả về sai kết quả</h3><p>Đừng yêu cầu AI “viết công thức”. Hãy đưa trường hợp sai để nó tìm nguyên nhân và tạo test kiểm chứng.</p></div>
+        <div class="ai-work-card-body"><div class="ai-work-result"><strong>Đầu ra cần có</strong><span>Công thức tương thích phiên bản Excel, giải thích nguyên nhân và bộ test trước/sau.</span></div><details><summary>Xem case và cách làm</summary><div class="ai-work-detail"><strong>Đầu vào mẫu</strong><pre class="ai-case-data">Cột A: Ngày
+Cột B: Ca
+Cột C: Số lỗi
+Cần tính tổng lỗi trong một ngày và một ca.
+Lỗi thường gặp: ô ngày có cả phần giờ.</pre><strong>Các bước</strong><ol><li>Chốt điều kiện lọc và cấu trúc dữ liệu.</li><li>Yêu cầu AI giải thích vì sao so sánh ngày chính xác có thể bỏ sót giờ.</li><li>Thử ngày có nhiều giờ, ngày không có dữ liệu và ca khác.</li></ol><strong>Prompt làm việc</strong><pre>Tôi dùng Excel. Dữ liệu có cột ngày giờ ở A, ca ở B, số lỗi ở C. Tôi cần tổng số lỗi theo một ngày và một ca. Hãy đề xuất công thức phù hợp, giải thích từng điều kiện và tạo ba ca kiểm thử gồm ngày có phần giờ, ngày không có dữ liệu và ca không được chọn. Nếu cần biết phiên bản Excel hoặc dấu phân cách công thức, hãy hỏi tôi.</pre><button type="button" class="ai-work-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><div class="ai-work-check"><strong>Đạt khi:</strong> công thức đúng với ngày có phần giờ và không cộng nhầm ca khác.</div></div></details></div>
       </article>
-      <article class="ai-case">
-        <div class="ai-case-top"><span class="ai-case-number">CASE 02 · POWER QUERY</span><h3>Refresh dữ liệu thì truy vấn báo lỗi cột</h3><p>Truy vấn từng chạy bình thường nhưng tháng mới bị lỗi sau bước đổi tên hoặc xóa cột. Mục tiêu là tìm đúng Applied Step gây lỗi, không viết lại toàn bộ truy vấn.</p></div>
-        <div class="ai-case-body">
-          <div class="ai-case-block"><strong>Tình huống đầu vào</strong><div class="ai-case-data">Bảng tháng trước: Mã hàng | Ngày | Số lượng
-Bảng tháng này: Mã hàng | Ngày bán | Số lượng
-Applied Steps:
-1. Source
-2. Promoted Headers
-3. Changed Type
-4. Renamed Columns
-5. Removed Columns
-Lỗi: không tìm thấy cột "Ngày"</div></div>
-          <div class="ai-case-block"><strong>Nhiệm vụ của người học</strong><ol><li>Xác định tên cột thực tế ở từng bước.</li><li>Tìm bước đầu tiên tham chiếu tên cột không còn tồn tại.</li><li>Chọn cách sửa ít ảnh hưởng nhất và kiểm tra các bước sau.</li></ol></div>
-          <div class="ai-case-block"><strong>Tiêu chí nghiệm thu</strong><div class="ai-case-check">Chỉ rõ nguyên nhân bằng tên bước và tên cột. Sau khi sửa, truy vấn refresh được, số dòng không giảm bất thường và các kiểu dữ liệu vẫn đúng.</div></div>
-          <details><summary>Mở hướng dẫn điều tra và prompt hỗ trợ</summary><div class="ai-case-detail"><div class="ai-case-block"><strong>Điều tra theo thứ tự</strong><ol><li>Mở từng Applied Step và xác nhận tên cột hiện có.</li><li>Khoanh vùng bước đầu tiên phát sinh lỗi, không chỉ nhìn bước cuối.</li><li>Kiểm tra bước đổi tên, đổi kiểu dữ liệu và xóa cột có phụ thuộc tên cũ không.</li><li>Sửa tên tham chiếu hoặc chuẩn hóa tên cột nguồn; refresh lại và so sánh số dòng.</li></ol></div><div class="ai-case-block"><strong>Yêu cầu AI hỗ trợ chẩn đoán</strong><div class="ai-case-data">Hãy phân tích lỗi Power Query theo chuỗi Applied Steps tôi cung cấp. Xác định bước đầu tiên có khả năng tham chiếu cột không tồn tại; giải thích bằng tên cột trước/sau từng bước. Đưa ra tối đa hai phương án sửa, nêu rủi ro và cách kiểm tra số dòng, kiểu dữ liệu sau khi sửa. Hướng dẫn bằng giao diện Power Query trước; không tự viết M Code khi chưa có đủ thông tin.</div><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span></div><div class="ai-case-block"><strong>Lỗi người mới thường mắc</strong><p>Sửa bước cuối cùng đang đỏ mà không tìm bước đầu tiên sai; đổi tên cột nhưng quên những bước phía sau vẫn gọi tên cũ.</p></div></div></details>
-        </div>
+
+      <article class="ai-work-card" data-ai-category="data">
+        <div class="ai-work-card-top"><span class="ai-work-tag">PHÂN TÍCH KINH DOANH · 20 PHÚT</span><h3>Tìm lý do doanh số giảm theo cửa hàng</h3><p>Đi từ bảng số liệu đến phát hiện có thể hành động, không để AI bịa nguyên nhân khi dữ liệu chưa đủ.</p></div>
+        <div class="ai-work-card-body"><div class="ai-work-result"><strong>Đầu ra cần có</strong><span>Bảng chênh lệch, các phát hiện có bằng chứng và danh sách câu hỏi cần kiểm tra.</span></div><details><summary>Xem case và cách làm</summary><div class="ai-work-detail"><strong>Dữ liệu mẫu</strong><pre class="ai-case-data">Cửa hàng A: kỳ trước 100 triệu, kỳ này 82 triệu
+Cửa hàng B: kỳ trước 75 triệu, kỳ này 78 triệu
+Cửa hàng C: kỳ trước 120 triệu, kỳ này 96 triệu
+Chưa có dữ liệu traffic, tồn kho hoặc giảm giá.</pre><strong>Các bước</strong><ol><li>Tính chênh lệch tuyệt đối và phần trăm từng cửa hàng.</li><li>Xếp mức giảm theo độ lớn; phân biệt phát hiện với giả thuyết.</li><li>Ghi rõ cần bổ sung dữ liệu nào trước khi kết luận nguyên nhân.</li></ol><strong>Prompt làm việc</strong><pre>Phân tích bảng doanh số này. Tính chênh lệch tiền và phần trăm từng cửa hàng, xếp theo mức giảm. Chỉ nêu điều số liệu chứng minh được. Không suy đoán nguyên nhân từ traffic, tồn kho hoặc giảm giá vì chưa có dữ liệu đó. Cuối cùng, đề xuất tối đa 5 trường dữ liệu cần lấy thêm để điều tra nguyên nhân.</pre><button type="button" class="ai-work-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><div class="ai-work-check"><strong>Đạt khi:</strong> phần trăm tính đúng, phát hiện tách biệt với giả thuyết và có bước tiếp theo rõ ràng.</div></div></details></div>
       </article>
-      <article class="ai-case">
-        <div class="ai-case-top"><span class="ai-case-number">CASE 03 · BÁO CÁO THÁNG</span><h3>Phân bổ Target còn thiếu cho các ngày còn lại</h3><p>Doanh số đầu tháng lệch kế hoạch. Cần cập nhật Target còn lại theo trọng số ngày thường và cuối tuần, nhưng vẫn giữ nguyên tổng mục tiêu tháng.</p></div>
-        <div class="ai-case-body">
-          <div class="ai-case-block"><strong>Dữ liệu đầu vào</strong><div class="ai-case-data">Target tháng: 300.000.000
-Đã bán: 110.000.000
-Còn 10 ngày: 6 ngày thường,
-4 ngày cuối tuần
-Trọng số: ngày thường = 1
-Cuối tuần = 1,5</div></div>
-          <div class="ai-case-block"><strong>Nhiệm vụ của người học</strong><ol><li>Tính phần Target còn phải đạt.</li><li>Phân bổ theo trọng số thay vì chia đều cho 10 ngày.</li><li>Kiểm tra tổng phân bổ có khớp Target còn lại hay không.</li></ol></div>
-          <div class="ai-case-block"><strong>Tiêu chí nghiệm thu</strong><div class="ai-case-check">Target còn lại là 190.000.000. Tổng trọng số là 12; mỗi đơn vị trọng số tương đương khoảng 15.833.333,33. Ngày cuối tuần nhận 1,5 lần Target ngày thường; tổng sau làm tròn phải được cân chỉnh để không lệch mục tiêu.</div></div>
-          <details><summary>Mở hướng dẫn điều tra và prompt hỗ trợ</summary><div class="ai-case-detail"><div class="ai-case-block"><strong>Quy trình tính và kiểm tra</strong><ol><li>Tính Target tháng trừ doanh số đã ghi nhận.</li><li>Tính tổng trọng số của các ngày còn lại.</li><li>Chia Target còn lại theo tỷ trọng từng ngày.</li><li>Đối chiếu tổng phân bổ; xử lý sai số làm tròn ở ngày cuối cùng theo quy tắc đã thống nhất.</li><li>Thử trường hợp doanh số vượt kế hoạch hoặc không còn ngày nào.</li></ol></div><div class="ai-case-block"><strong>Yêu cầu AI hỗ trợ mô hình</strong><div class="ai-case-data">Xây dựng phương pháp phân bổ Target còn lại cho từng ngày dựa trên trọng số ngày thường và cuối tuần. Trình bày công thức từng bước, bảng kết quả mẫu và phép kiểm tra tổng. Nêu rõ cách xử lý làm tròn, doanh số đã vượt Target và trường hợp không còn ngày phân bổ. Không chỉ đưa công thức cuối; hãy giải thích giả định và cho bộ test để tôi tự đối chiếu.</div><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span></div><div class="ai-case-block"><strong>Lỗi người mới thường mắc</strong><p>Phân bổ đều mỗi ngày, bỏ qua trọng số; hoặc làm tròn từng ngày khiến tổng Target bị lệch.</p></div></div></details>
-        </div>
+
+      <article class="ai-work-card" data-ai-category="content">
+        <div class="ai-work-card-top"><span class="ai-work-tag">SÁNG TẠO NỘI DUNG · 25 PHÚT</span><h3>Viết kịch bản video hướng dẫn có thể quay được</h3><p>Không dừng ở dàn ý. Kịch bản phải có thao tác thật, lời thoại tự nhiên và kết quả người xem nhìn thấy.</p></div>
+        <div class="ai-work-card-body"><div class="ai-work-result"><strong>Đầu ra cần có</strong><span>Kịch bản 60–90 giây gồm hook, thao tác trên màn hình, lời thoại và kết quả kiểm chứng.</span></div><details><summary>Xem case và cách làm</summary><div class="ai-work-detail"><strong>Brief mẫu</strong><pre class="ai-case-data">Chủ đề: lọc nhanh dữ liệu Excel
+Người xem: nhân viên văn phòng mới
+Nỗi đau: lọc dữ liệu xong quên xóa bộ lọc
+Thời lượng: 60–90 giây
+Yêu cầu: thao tác thật, không mẹo vô nghĩa</pre><strong>Các bước</strong><ol><li>Chốt một vấn đề duy nhất của người xem.</li><li>Viết hook gắn với hậu quả thực tế.</li><li>Khớp từng câu thoại với thao tác trên màn hình.</li><li>Loại bỏ câu nói không có minh họa hoặc giá trị thực hành.</li></ol><strong>Prompt làm việc</strong><pre>Viết kịch bản video hướng dẫn Excel 60–90 giây cho nhân viên văn phòng mới. Vấn đề: lọc dữ liệu xong quên xóa bộ lọc. Chia thành thời gian, hình ảnh/thao tác màn hình và lời thoại. Mỗi câu hướng dẫn phải khớp một thao tác có thể quay và kiểm tra. Không bịa tính năng, không thêm mẹo ngoài chủ đề. Kết thúc bằng một bài kiểm tra ngắn để người xem tự làm.</pre><button type="button" class="ai-work-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><div class="ai-work-check"><strong>Đạt khi:</strong> quay được theo kịch bản, lời thoại khớp thao tác và người xem tự thực hiện lại được.</div></div></details></div>
+      </article>
+
+      <article class="ai-work-card" data-ai-category="office">
+        <div class="ai-work-card-top"><span class="ai-work-tag">HỌP & THEO DÕI VIỆC · 15 PHÚT</span><h3>Chuyển biên bản họp thành danh sách hành động</h3><p>Tách quyết định đã chốt khỏi ý kiến thảo luận, rồi đưa đầu việc vào bảng có người phụ trách và hạn hoàn thành.</p></div>
+        <div class="ai-work-card-body"><div class="ai-work-result"><strong>Đầu ra cần có</strong><span>Bảng đầu việc, người phụ trách, hạn, trạng thái và mục cần xác nhận.</span></div><details><summary>Xem case và cách làm</summary><div class="ai-work-detail"><strong>Ghi chú mẫu</strong><pre class="ai-case-data">- Kiểm tra lại tồn kho trước thứ Sáu.
+- Lan đề xuất thử cách đóng gói mới.
+- Chưa thống nhất ai phê duyệt.
+- Họp lại vào thứ Hai.</pre><strong>Các bước</strong><ol><li>Phân loại quyết định, đề xuất và đầu việc.</li><li>Không tự gán người phụ trách hoặc thời hạn nếu ghi chú không nêu.</li><li>Đánh dấu thông tin cần xác nhận trước khi đưa vào theo dõi.</li></ol><strong>Prompt làm việc</strong><pre>Chuyển ghi chú họp thành bảng gồm loại mục, nội dung, người phụ trách, thời hạn và trạng thái. Phân biệt quyết định đã chốt với đề xuất chưa được duyệt. Chỗ thiếu người hoặc thời hạn ghi “Cần xác nhận”, không tự điền. Thêm danh sách câu hỏi cần chốt trước cuộc họp tiếp theo.</pre><button type="button" class="ai-work-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><div class="ai-work-check"><strong>Đạt khi:</strong> không biến đề xuất thành quyết định và không tự tạo người phụ trách.</div></div></details></div>
+      </article>
+
+      <article class="ai-work-card" data-ai-category="workflow">
+        <div class="ai-work-card-top"><span class="ai-work-tag">TỐI ƯU CÔNG VIỆC · 30 PHÚT</span><h3>Chuẩn hóa quy trình báo cáo lặp lại mỗi tuần</h3><p>Xác định bước nào có thể dùng AI hỗ trợ, dữ liệu đầu vào, điểm cần người duyệt và cách tránh lỗi lặp.</p></div>
+        <div class="ai-work-card-body"><div class="ai-work-result"><strong>Đầu ra cần có</strong><span>Sơ đồ quy trình, checklist đầu vào và điểm kiểm soát trước khi gửi báo cáo.</span></div><details><summary>Xem case và cách làm</summary><div class="ai-work-detail"><strong>Tình huống mẫu</strong><pre class="ai-case-data">Mỗi thứ Hai:
+1. Nhận file từ 4 nhóm
+2. Gộp dữ liệu
+3. Kiểm tra thiếu/trùng
+4. Tạo báo cáo
+5. Gửi quản lý
+Lỗi thường gặp: file thiếu cột hoặc sai kỳ báo cáo.</pre><strong>Các bước</strong><ol><li>Vẽ quy trình hiện tại và xác định điểm thường lỗi.</li><li>Phân chia việc con người làm, AI hỗ trợ và bước cần phê duyệt.</li><li>Thiết kế checklist đầu vào và điều kiện dừng khi dữ liệu lỗi.</li></ol><strong>Prompt làm việc</strong><pre>Thiết kế lại quy trình báo cáo tuần từ các bước trên. Tạo bảng gồm: bước, đầu vào, người/AI thực hiện, đầu ra, lỗi có thể xảy ra và điều kiện kiểm tra. Nếu thiếu cột hoặc sai kỳ, quy trình phải dừng và báo lỗi thay vì tạo báo cáo có vẻ hợp lệ. Không giả định có API hoặc quyền truy cập hệ thống.</pre><button type="button" class="ai-work-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><div class="ai-work-check"><strong>Đạt khi:</strong> quy trình có điều kiện dừng, người chịu trách nhiệm và checklist trước khi gửi.</div></div></details></div>
       </article>
     </div>
-    <div class="ai-lab-rule"><strong>Chuẩn học của khu này:</strong> prompt chỉ là công cụ hỗ trợ. Hoàn thành một case khi bạn giải thích được nguyên nhân, tự kiểm tra kết quả và nêu được bằng chứng cho thấy cách xử lý đúng.</div>
+    <div class="ai-workspace-footer"><span>Học qua case → tự làm → đối chiếu tiêu chí → mới áp dụng vào công việc.</span><button type="button" id="aiOpenPromptBuilder">Tạo brief cho việc khác <span aria-hidden="true">↗</span></button></div>
   </section>
 
-  <section class="ai-section" aria-labelledby="aiOutcomesTitle">
-    <div class="ai-section-head"><div><span class="ai-eyebrow">HỌC ĐỂ LÀM ĐƯỢC</span><h2 id="aiOutcomesTitle">Sau phần này, bạn có thể</h2></div><p>Không cần biết lập trình hay tích hợp API. Bạn thực hành trực tiếp trên công cụ AI mình đang dùng.</p></div>
-    <div class="ai-outcomes">
-      <article class="ai-outcome"><div class="ai-icon" aria-hidden="true">⌘</div><h3>Giao việc rõ ràng</h3><p>Biến yêu cầu chung chung thành nhiệm vụ có mục tiêu, bối cảnh, giới hạn và định dạng đầu ra.</p></article>
-      <article class="ai-outcome"><div class="ai-icon" aria-hidden="true">▤</div><h3>Ứng dụng vào công việc</h3><p>Dùng AI hỗ trợ email, báo cáo, kế hoạch, công thức Excel và phân tích dữ liệu.</p></article>
-      <article class="ai-outcome"><div class="ai-icon" aria-hidden="true">✓</div><h3>Kiểm tra trước khi dùng</h3><p>Nhận biết câu trả lời thiếu căn cứ, thử nghiệm kết quả và tránh đưa dữ liệu nhạy cảm lên AI.</p></article>
-    </div>
-  </section>
-  <section class="ai-section" aria-labelledby="aiToolsTitle">
-    <div class="ai-section-head"><div><span class="ai-eyebrow">CÔNG CỤ THỰC HÀNH</span><h2 id="aiToolsTitle">Học ở đây, thực hành trên AI</h2></div><p>LearnExcelwithme hướng dẫn cách sử dụng. Bạn mở công cụ AI riêng, thử prompt rồi quay lại đối chiếu kết quả với bài học.</p></div>
-    <div class="ai-tools-grid">
-      <article class="ai-tool-card"><div class="ai-tool-mark ai-tool-chatgpt" aria-hidden="true">GPT</div><div class="ai-tool-copy"><h3>ChatGPT</h3><p>Thực hành viết prompt, soạn nội dung, giải thích công thức và phân tích dữ liệu mẫu.</p><a class="ai-btn ai-tool-link" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">Mở ChatGPT <span aria-hidden="true">↗</span></a></div></article>
-      <article class="ai-tool-card"><div class="ai-tool-mark ai-tool-gemini" aria-hidden="true">✦</div><div class="ai-tool-copy"><h3>Gemini</h3><p>Thử cùng một yêu cầu trên công cụ khác để so sánh câu trả lời và cách trình bày.</p><a class="ai-btn ai-tool-link" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">Mở Gemini <span aria-hidden="true">↗</span></a></div></article>
-    </div>
-    <p class="ai-tools-note"><strong>Lưu ý:</strong> Đây là liên kết mở công cụ bên ngoài, không phải đăng nhập tích hợp. Không nhập mật khẩu, dữ liệu cá nhân hoặc dữ liệu nội bộ của công ty. Hãy dùng dữ liệu giả lập khi thực hành.</p>
-  </section>
-  <section class="ai-section" id="aiLearningPath" aria-labelledby="aiPathTitle">
-    <div class="ai-section-head"><div><span class="ai-eyebrow">LỘ TRÌNH HỌC</span><h2 id="aiPathTitle">Học theo thứ tự dễ áp dụng</h2></div><p>Bắt đầu từ cách giao việc, sau đó luyện trên tình huống công việc. Mở từng chặng để xem cách làm, prompt mẫu và bài tập có thể thực hành ngay.</p></div>
-    <div class="ai-path-filters" role="group" aria-label="Lọc nhóm kỹ năng">
-      <button class="ai-path-filter" type="button" data-ai-path-filter="all" aria-pressed="true">Tất cả</button>
-      <button class="ai-path-filter" type="button" data-ai-path-filter="foundation" aria-pressed="false">Nền tảng</button>
-      <button class="ai-path-filter" type="button" data-ai-path-filter="office" aria-pressed="false">Văn phòng</button>
-      <button class="ai-path-filter" type="button" data-ai-path-filter="data" aria-pressed="false">Excel & dữ liệu</button>
-      <button class="ai-path-filter" type="button" data-ai-path-filter="advanced" aria-pressed="false">Nâng cao</button>
-    </div>
-    <div class="ai-module-grid">
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">01</div><div><small>CHẶNG 01 · NỀN TẢNG</small><h3>Hiểu AI và đặt yêu cầu</h3><p>Biết khi nào nên dùng AI, cung cấp bối cảnh và nói rõ kết quả cần nhận.</p><div class="ai-module-meta"><span class="ai-chip">Cho người mới</span><span class="ai-chip">15 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Cách thực hiện</strong><ol><li>Nêu một nhiệm vụ cụ thể, không chỉ nói “giúp tôi làm việc”.</li><li>Cho biết ai sẽ dùng kết quả và thông tin nào đã có.</li><li>Nói rõ định dạng, độ dài và điều không được tự suy đoán.</li><li>Yêu cầu AI hỏi lại nếu thiếu dữ kiện quan trọng.</li></ol><strong>Prompt thực hành</strong><pre>Hãy giúp tôi [nhiệm vụ]. Bối cảnh là [bối cảnh]. Người đọc/người dùng là [đối tượng]. Tôi cần kết quả ở dạng [định dạng]. Nếu thiếu dữ liệu quan trọng, hãy hỏi lại; không tự tạo thông tin.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Viết lại câu “Làm báo cáo giúp tôi” thành một yêu cầu có bối cảnh, đầu ra và giới hạn rõ ràng.</p></div></details></div></article>
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">02</div><div><small>CHẶNG 02 · PROMPT</small><h3>Viết prompt có cấu trúc</h3><p>Dùng khung yêu cầu có thể tái sử dụng cho nhiều công việc.</p><div class="ai-module-meta"><span class="ai-chip">Có mẫu sao chép</span><span class="ai-chip">20 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Khung prompt gồm 6 phần</strong><ol><li><b>Vai trò:</b> AI cần hỗ trợ dưới góc nhìn nào.</li><li><b>Nhiệm vụ:</b> cần hoàn thành việc gì.</li><li><b>Bối cảnh:</b> tình huống và đối tượng sử dụng.</li><li><b>Đầu vào:</b> dữ liệu, ví dụ hoặc nội dung nguồn.</li><li><b>Đầu ra:</b> bảng, email, danh sách bước hay báo cáo.</li><li><b>Tiêu chí:</b> điều kiện đúng, giới hạn và cách xử lý thông tin thiếu.</li></ol><strong>Prompt mẫu</strong><pre>Vai trò: Bạn là trợ lý văn phòng.
-Nhiệm vụ: [việc cần làm]
-Bối cảnh: [tình huống]
-Dữ liệu đầu vào: [dữ liệu đã ẩn thông tin nhạy cảm]
-Đầu ra: [định dạng cụ thể]
-Tiêu chí: Không bịa dữ liệu; chỉ rõ giả định; hỏi lại nếu thiếu thông tin.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Dùng cùng một nhiệm vụ, tạo hai prompt: một prompt ngắn và một prompt đủ sáu phần. So sánh độ hữu ích của kết quả.</p></div></details></div></article>
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">03</div><div><small>CHẶNG 03 · VĂN PHÒNG</small><h3>AI giải quyết việc hằng ngày</h3><p>Soạn email, tóm tắt tài liệu, lập kế hoạch và xây dựng báo cáo từ dữ liệu đã cung cấp.</p><div class="ai-module-meta"><span class="ai-chip">Tình huống thực tế</span><span class="ai-chip">20 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Quy trình làm việc</strong><ol><li>Đưa nội dung gốc hoặc gạch đầu dòng đã xác minh.</li><li>Nêu người nhận, mục đích và giọng văn mong muốn.</li><li>Yêu cầu AI giữ nguyên sự kiện, con số và tên riêng.</li><li>Đọc lại, sửa chi tiết và đối chiếu với nguồn trước khi gửi.</li></ol><strong>Prompt mẫu</strong><pre>Chuyển các gạch đầu dòng dưới đây thành email cập nhật tiến độ cho quản lý. Giọng văn chuyên nghiệp, ngắn gọn; chia thành tình hình hiện tại, vấn đề còn tồn tại và bước tiếp theo. Chỉ sử dụng thông tin tôi cung cấp. Đánh dấu [CẦN BỔ SUNG] tại chỗ thiếu dữ liệu.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Soạn một email báo cáo tiến độ từ ba dữ kiện giả lập. Kiểm tra xem AI có thêm số liệu hoặc cam kết mà bạn chưa cung cấp hay không.</p></div></details></div></article>
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">04</div><div><small>CHẶNG 04 · EXCEL & DỮ LIỆU</small><h3>AI hỗ trợ Excel</h3><p>Mô tả cấu trúc bảng, giải thích công thức, gỡ lỗi và chọn cách xử lý dữ liệu.</p><div class="ai-module-meta"><span class="ai-chip">Excel</span><span class="ai-chip">Power Query</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Để AI hỗ trợ đúng, hãy cung cấp</strong><ol><li>Phiên bản Excel và ngôn ngữ công thức đang dùng.</li><li>Tên cột, vài dòng dữ liệu giả lập và kết quả mong muốn.</li><li>Công thức hiện tại, lỗi nhận được và trường hợp đang sai.</li><li>Yêu cầu giải thích từng phần và nêu cách kiểm tra bằng dữ liệu mẫu.</li></ol><strong>Prompt mẫu</strong><pre>Tôi dùng [phiên bản Excel]. Các cột gồm [tên cột và ý nghĩa]. Tôi muốn [kết quả]. Công thức hiện tại là [công thức], nhưng kết quả sai ở trường hợp [ví dụ]. Hãy tìm nguyên nhân, đề xuất công thức tương thích, giải thích từng phần và đưa ra hai trường hợp kiểm thử. Không giả định tên cột hoặc dữ liệu tôi chưa cung cấp.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Dùng dữ liệu giả lập để yêu cầu AI tạo công thức đếm theo ngày. Kiểm tra cả ngày có dữ liệu, ngày không có dữ liệu và ô trống.</p></div></details></div></article>
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">05</div><div><small>CHẶNG 05 · KIỂM CHỨNG</small><h3>Đánh giá câu trả lời của AI</h3><p>Kiểm tra dữ kiện, thử trường hợp biên và phân biệt điều đã biết với điều AI suy đoán.</p><div class="ai-module-meta"><span class="ai-chip">Chống sai sót</span><span class="ai-chip">15 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Danh sách kiểm tra</strong><ol><li>Con số và kết luận có đối chiếu được với dữ liệu nguồn không?</li><li>Có giả định nào chưa được nêu ra không?</li><li>Công thức hoặc quy trình có hoạt động với dữ liệu trống, trùng lặp và ngoại lệ không?</li><li>Nếu là thông tin quan trọng, đã kiểm tra bằng nguồn đáng tin cậy chưa?</li><li>Kết quả có làm lộ thông tin nội bộ hoặc dữ liệu cá nhân không?</li></ol><strong>Prompt kiểm tra</strong><pre>Hãy rà soát câu trả lời trên như một người kiểm tra chất lượng. Liệt kê từng khẳng định, dữ kiện hỗ trợ, giả định, điểm chưa chắc chắn và cách kiểm thử. Không tự xác nhận rằng kết quả đúng nếu chưa có bằng chứng.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Cho AI một công thức có lỗi trong dữ liệu giả lập. Yêu cầu AI chỉ ra cách kiểm chứng, rồi tự chạy thử trước khi chấp nhận.</p></div></details></div></article>
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">06</div><div><small>CHẶNG 06 · THỰC CHIẾN</small><h3>Hoàn thành một nhiệm vụ</h3><p>Đi từ yêu cầu ban đầu đến sản phẩm hoàn chỉnh qua các vòng phản hồi và kiểm tra.</p><div class="ai-module-meta"><span class="ai-chip">Bài tập tổng hợp</span><span class="ai-chip">30 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Quy trình thực chiến</strong><ol><li>Chọn một việc nhỏ có kết quả đầu ra rõ ràng.</li><li>Gửi yêu cầu ban đầu và xem kết quả nháp.</li><li>So sánh kết quả với tiêu chí đã đặt ra; nêu rõ phần chưa đạt.</li><li>Yêu cầu sửa đúng các điểm chưa đạt, không làm lại những phần đã đúng.</li><li>Kiểm tra cuối cùng bằng dữ liệu hoặc nguồn gốc; lưu lại prompt đã hiệu quả.</li></ol><strong>Prompt phản hồi</strong><pre>Đối chiếu kết quả vừa tạo với các tiêu chí sau: [tiêu chí]. Hãy chia thành phần đã đạt, phần chưa đạt và thông tin còn thiếu. Chỉ sửa những phần chưa đạt; giữ nguyên dữ kiện đúng. Sau khi sửa, liệt kê những điểm tôi cần kiểm tra thủ công.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Hoàn thành một báo cáo ngắn từ dữ liệu giả lập. Lưu prompt đầu tiên, prompt chỉnh sửa và danh sách kiểm tra cuối cùng.</p></div></details></div></article>
-
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">07</div><div><small>CHẶNG 07 · NGHIÊN CỨU</small><h3>Tìm thông tin và kiểm tra nguồn</h3><p>Biến câu hỏi mơ hồ thành câu hỏi nghiên cứu; phân biệt dữ kiện, nhận định và điều chưa xác minh.</p><div class="ai-module-meta"><span class="ai-chip">Tìm hiểu vấn đề</span><span class="ai-chip">20 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Cách thực hiện</strong><ol><li>Nêu câu hỏi cần trả lời, phạm vi thời gian và khu vực liên quan.</li><li>Yêu cầu AI đưa ra từ khóa tìm kiếm và loại nguồn cần ưu tiên.</li><li>Mở nguồn gốc để xác minh ngày đăng, tác giả và bằng chứng.</li><li>Ghi riêng dữ kiện đã xác minh, ý kiến và điểm chưa có nguồn.</li></ol><strong>Prompt thực hành</strong><pre>Tôi cần nghiên cứu [câu hỏi] trong phạm vi [phạm vi]. Hãy chia câu hỏi thành các ý nhỏ, đề xuất từ khóa tìm kiếm và loại nguồn đáng tin cậy cần kiểm tra. Với mỗi kết luận, hãy nêu nguồn cần đối chiếu và điều gì có thể khiến kết luận sai. Không bịa đường dẫn, trích dẫn hoặc số liệu; đánh dấu rõ nội dung chưa xác minh.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Chọn một câu hỏi công việc. Kiểm tra ít nhất hai nguồn độc lập và sửa lại kết luận nếu nguồn không khớp.</p></div></details></div></article>
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">08</div><div><small>CHẶNG 08 · HỌP & THUYẾT TRÌNH</small><h3>Chuẩn bị cuộc họp và slide</h3><p>Tạo agenda, tóm tắt biên bản, xác định quyết định và chuyển nội dung thành dàn ý thuyết trình.</p><div class="ai-module-meta"><span class="ai-chip">Công sở</span><span class="ai-chip">20 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Quy trình</strong><ol><li>Cung cấp mục tiêu cuộc họp và các dữ kiện đã xác nhận.</li><li>Yêu cầu tách vấn đề, quyết định, người phụ trách và thời hạn.</li><li>Đánh dấu phần chưa được thống nhất thay vì tự biến thành quyết định.</li><li>Với slide, mỗi trang chỉ nên có một thông điệp chính và bằng chứng hỗ trợ.</li></ol><strong>Prompt thực hành</strong><pre>Dựa trên ghi chú cuộc họp dưới đây, hãy tạo biên bản gồm: chủ đề, dữ kiện được nêu, quyết định đã xác nhận, việc cần làm, người phụ trách và thời hạn. Nếu thiếu người phụ trách hoặc thời hạn, ghi [CHƯA XÁC NHẬN], không tự điền. Sau đó đề xuất dàn ý 5 slide để báo cáo kết quả.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Dùng ghi chú họp giả lập để tạo biên bản. Đối chiếu từng quyết định và đầu việc với ghi chú gốc.</p></div></details></div></article>
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">09</div><div><small>CHẶNG 09 · PHÂN TÍCH KPI</small><h3>Đọc số liệu và tìm nguyên nhân</h3><p>Yêu cầu AI phân tích xu hướng, so sánh mục tiêu và đưa ra giả thuyết có thể kiểm tra.</p><div class="ai-module-meta"><span class="ai-chip">KPI / báo cáo</span><span class="ai-chip">25 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Không nhảy thẳng từ số liệu đến kết luận</strong><ol><li>Xác định định nghĩa KPI, kỳ đo, đơn vị và nguồn dữ liệu.</li><li>Kiểm tra dữ liệu thiếu, trùng, khác đơn vị hoặc khác cách tính.</li><li>Yêu cầu mô tả điều quan sát được trước khi giải thích nguyên nhân.</li><li>Biến mỗi giả thuyết thành phép kiểm tra hoặc dữ liệu cần bổ sung.</li></ol><strong>Prompt thực hành</strong><pre>Phân tích bảng KPI giả lập này. Trước tiên hãy kiểm tra định nghĩa chỉ số, kỳ so sánh, dữ liệu thiếu và tính nhất quán của phép tính. Sau đó trình bày: điều quan sát được, mức chênh lệch so với mục tiêu, các giả thuyết nguyên nhân và cách kiểm tra từng giả thuyết. Không khẳng định quan hệ nhân quả nếu dữ liệu chưa chứng minh.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Cho AI bảng KPI giả lập có doanh số, mục tiêu và tỷ lệ đạt. Tự tính lại tỷ lệ rồi đánh giá xem kết luận của AI có bám sát số liệu không.</p></div></details></div></article>
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">10</div><div><small>CHẶNG 10 · POWER QUERY</small><h3>Làm sạch và chuẩn hóa dữ liệu</h3><p>Dùng AI để lên phương án xử lý dữ liệu, giải thích các bước Power Query và hỗ trợ chẩn đoán lỗi.</p><div class="ai-module-meta"><span class="ai-chip">Excel nâng cao</span><span class="ai-chip">25 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Cách làm an toàn</strong><ol><li>Mô tả cấu trúc nguồn, tên cột, kiểu dữ liệu và kết quả cần đạt.</li><li>Nêu các vấn đề cụ thể: khoảng trắng, ngày sai kiểu, mã không đồng nhất hoặc dòng trùng.</li><li>Yêu cầu hướng dẫn bằng giao diện trước nếu bạn chưa học M Code.</li><li>Thử trên bản sao dữ liệu nhỏ, kiểm tra số dòng và đối chiếu trước/sau.</li></ol><strong>Prompt thực hành</strong><pre>Tôi dùng Excel và Power Query giao diện. Nguồn dữ liệu có các cột [tên cột], hiện gặp vấn đề [mô tả]. Hãy đề xuất các bước xử lý theo thứ tự bằng giao diện Power Query, nêu kết quả mong đợi sau mỗi bước và cách kiểm tra số dòng, kiểu dữ liệu, dòng trùng. Chưa viết M Code trừ khi tôi yêu cầu.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Tạo bảng mẫu có khoảng trắng thừa và cột ngày chưa đúng kiểu. Làm sạch bằng giao diện, rồi kiểm tra số dòng và kiểu dữ liệu sau khi xử lý.</p></div></details></div></article>
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">11</div><div><small>CHẶNG 11 · NỘI DUNG</small><h3>Lên ý tưởng và tạo nội dung</h3><p>Xây dựng dàn ý, kịch bản, hướng dẫn hoặc tài liệu học từ thông tin có thật mà bạn cung cấp.</p><div class="ai-module-meta"><span class="ai-chip">Viết & sáng tạo</span><span class="ai-chip">20 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Cách giữ nội dung có ích</strong><ol><li>Xác định người xem, vấn đề họ gặp và kết quả họ cần.</li><li>Cung cấp dữ kiện, ví dụ và giới hạn nội dung.</li><li>Yêu cầu cấu trúc có mở đầu, diễn giải, ví dụ và bước áp dụng.</li><li>Kiểm tra lời khuyên, con số và ví dụ trước khi xuất bản.</li></ol><strong>Prompt thực hành</strong><pre>Tạo dàn ý nội dung hướng dẫn về [chủ đề] cho [đối tượng]. Người xem đang gặp vấn đề [vấn đề]. Mục tiêu là giúp họ làm được [kết quả]. Dùng ví dụ thực tế từ dữ kiện tôi cung cấp, tránh lời khuyên chung chung. Đánh dấu những chỗ cần tôi bổ sung ví dụ hoặc xác minh thông tin.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Tạo hai dàn ý cho cùng một chủ đề: một bản dành cho người mới và một bản dành cho người đã có kinh nghiệm. Kiểm tra xem mỗi bản có hướng dẫn hành động cụ thể không.</p></div></details></div></article>
-      <article class="ai-module"><div class="ai-icon" aria-hidden="true">12</div><div><small>CHẶNG 12 · QUY TRÌNH</small><h3>Xây dựng quy trình AI có thể lặp lại</h3><p>Biến một nhiệm vụ lặp đi lặp lại thành quy trình có đầu vào, bước xử lý, điểm kiểm tra và đầu ra rõ ràng.</p><div class="ai-module-meta"><span class="ai-chip">Tối ưu công việc</span><span class="ai-chip">30 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Thiết kế quy trình</strong><ol><li>Ghi lại đầu vào, các bước hiện đang làm và đầu ra cuối cùng.</li><li>Phân loại bước nào AI có thể hỗ trợ, bước nào cần con người quyết định.</li><li>Xác định điểm kiểm tra trước khi chuyển kết quả sang bước tiếp theo.</li><li>Thử với vài trường hợp bình thường và ngoại lệ trước khi dùng thường xuyên.</li></ol><strong>Prompt thực hành</strong><pre>Hãy giúp tôi thiết kế quy trình cho công việc lặp lại [mô tả]. Đầu vào là [đầu vào], đầu ra cần có là [đầu ra], tần suất [tần suất]. Lập bảng gồm: bước, người/AI thực hiện, dữ liệu cần, kết quả, rủi ro và cách kiểm tra. Không giả định có tích hợp API hoặc tự động truy cập hệ thống. Đánh dấu rõ các bước cần con người phê duyệt.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Chọn một công việc lặp lại hằng tuần. Vẽ quy trình hiện tại, xác định hai bước AI có thể hỗ trợ và thêm điểm kiểm tra trước khi sử dụng kết quả.</p></div></details></div></article>
-    </div>  </section>
-  <section class="ai-section" id="aiPromptPractice" aria-labelledby="aiPromptTitle">
-    <div class="ai-section-head"><div><span class="ai-eyebrow">THỬ NGAY TRÊN TRANG</span><h2 id="aiPromptTitle">Tạo prompt theo công việc</h2></div><p>Điền thông tin để tạo một yêu cầu rõ ràng hơn. Sau đó sao chép prompt và dán vào ChatGPT, Gemini hoặc công cụ AI bạn đang dùng.</p></div>
+  <section class="ai-builder-compact" id="aiPromptPractice" aria-labelledby="aiPromptTitle" hidden>
+    <div class="ai-workspace-head"><div><span class="ai-eyebrow">WORK BRIEF BUILDER</span><h2 id="aiPromptTitle">Mô tả việc cần làm</h2></div><p>Biến nhiệm vụ cụ thể thành brief rõ ràng để dùng với công cụ AI bạn chọn.</p></div>
     <div class="ai-practice">
       <div class="ai-prompt-card">
-        <h3>Thông tin đầu vào</h3><p>Chỉ nhập dữ liệu mẫu; không đưa thông tin bí mật của công ty hoặc khách hàng.</p>
-        <div class="ai-field"><label for="aiTaskType">Bạn cần AI hỗ trợ việc gì?</label><select id="aiTaskType"><option value="Soạn một email công việc">Soạn email công việc</option><option value="Tóm tắt tài liệu">Tóm tắt tài liệu</option><option value="Phân tích dữ liệu Excel">Phân tích dữ liệu Excel</option><option value="Giải thích hoặc sửa công thức Excel">Giải thích / sửa công thức Excel</option><option value="Lập kế hoạch thực hiện công việc">Lập kế hoạch công việc</option><option value="Viết báo cáo">Viết báo cáo</option></select></div>
-        <div class="ai-field"><label for="aiContext">Bối cảnh và dữ liệu liên quan</label><textarea id="aiContext" placeholder="Ví dụ: Tôi cần gửi quản lý email báo cáo tiến độ hoàn thành đơn hàng tuần này."></textarea></div>
-        <div class="ai-field"><label for="aiOutput">Bạn muốn nhận kết quả dưới dạng nào?</label><select id="aiOutput"><option>Email ngắn, chuyên nghiệp</option><option>Bảng có cột rõ ràng</option><option>Các bước thực hiện</option><option>Giải thích từng bước, kèm ví dụ</option><option>Báo cáo có tiêu đề và kết luận</option></select></div>
-        <div class="ai-field"><label for="aiConstraints">Điều kiện hoặc giới hạn (không bắt buộc)</label><input id="aiConstraints" placeholder="Ví dụ: ngắn gọn, không tự suy đoán số liệu"></div>
+        <div class="ai-field"><label for="aiTaskType">Nhiệm vụ</label><select id="aiTaskType"><option value="Soạn một email công việc">Soạn email công việc</option><option value="Tóm tắt tài liệu">Tóm tắt tài liệu</option><option value="Phân tích dữ liệu Excel">Phân tích dữ liệu</option><option value="Giải thích hoặc sửa công thức Excel">Sửa công thức Excel</option><option value="Lập kế hoạch thực hiện công việc">Thiết kế quy trình</option><option value="Viết báo cáo">Viết báo cáo</option><option value="Viết kịch bản video hướng dẫn">Viết kịch bản nội dung</option></select></div>
+        <div class="ai-field"><label for="aiContext">Tình huống, dữ liệu và vấn đề</label><textarea id="aiContext" placeholder="Nêu đầu vào thực tế, lỗi đang gặp và điều bạn cần giải quyết."></textarea></div>
+        <div class="ai-field"><label for="aiOutput">Đầu ra mong muốn</label><select id="aiOutput"><option>Email ngắn, chuyên nghiệp</option><option>Bảng có cột rõ ràng</option><option>Các bước thực hiện</option><option>Giải thích từng bước, kèm ví dụ</option><option>Báo cáo có tiêu đề và kết luận</option><option>Kịch bản gồm lời thoại và thao tác</option></select></div>
+        <div class="ai-field"><label for="aiConstraints">Tiêu chí / giới hạn</label><input id="aiConstraints" placeholder="Ví dụ: không tự suy đoán, phải kiểm tra bằng dữ liệu mẫu"></div>
       </div>
-      <div class="ai-prompt-card">
-        <h3>Prompt được tạo</h3><p>Đọc lại, thay thông tin mẫu và kiểm tra dữ liệu trước khi sử dụng.</p>
-        <div class="ai-generated" id="aiGeneratedPrompt" aria-live="polite">Hãy hỗ trợ tôi thực hiện nhiệm vụ: Soạn một email công việc.
-
-Bối cảnh:
-[Hãy nhập bối cảnh và dữ liệu liên quan]
-
-Đầu ra mong muốn: Email ngắn, chuyên nghiệp.
-
-Nếu thiếu thông tin quan trọng, hãy hỏi lại trước khi kết luận. Không tự bịa dữ liệu. Nêu rõ những điểm cần tôi kiểm tra.</div>
-        <button class="ai-btn ai-copy" type="button" id="aiCopyPrompt">Sao chép prompt</button>
-        <p class="ai-note" id="aiCopyStatus" role="status">Trang này chỉ tạo prompt tại trình duyệt, không gửi dữ liệu của bạn đến API AI.</p>
-      </div>
+      <div class="ai-prompt-card"><h3>Brief tạo được</h3><div class="ai-generated" id="aiGeneratedPrompt" aria-live="polite">Hãy hỗ trợ tôi thực hiện nhiệm vụ: Soạn một email công việc.</div><button class="ai-btn ai-copy" type="button" id="aiCopyPrompt">Sao chép brief</button><p class="ai-note" id="aiCopyStatus" role="status">Chỉ tạo nội dung tại trình duyệt; không gửi dữ liệu đến API AI.</p></div>
     </div>
   </section>
-  <section class="ai-section" aria-labelledby="aiSafetyTitle">
-    <div class="ai-section-head"><div><span class="ai-eyebrow">NGUYÊN TẮC BẮT BUỘC</span><h2 id="aiSafetyTitle">Dùng AI có kiểm soát</h2></div></div>
-    <div class="ai-safety-grid">
-      <article class="ai-safety"><strong>Không tin ngay câu trả lời</strong><p>Đối chiếu dữ kiện, thử công thức và xác minh các kết luận quan trọng trước khi dùng.</p></article>
-      <article class="ai-safety"><strong>Không đưa dữ liệu nhạy cảm</strong><p>Ẩn tên, mã nhân viên, thông tin khách hàng, dữ liệu nội bộ và thông tin đăng nhập.</p></article>
-      <article class="ai-safety"><strong>Chịu trách nhiệm về kết quả</strong><p>AI là công cụ hỗ trợ; người dùng cần rà soát và quyết định có áp dụng kết quả hay không.</p></article>
-    </div>
-  </section>
-  <section class="ai-section ai-next" aria-label="Bước tiếp theo">
-    <div><h3>Bắt đầu từ một nhiệm vụ thật</h3><p>Chọn công việc nhỏ, mô tả rõ yêu cầu, thử prompt rồi kiểm tra kết quả trước khi áp dụng.</p></div>
-    <a class="ai-btn" href="#aiPromptPractice">Thử tạo prompt →</a>
-  </section>
+  <section class="ai-workspace-safety"><strong>Quy tắc sử dụng:</strong> ẩn dữ liệu cá nhân/nội bộ trước khi đưa vào AI; kiểm tra số liệu, công thức và kết luận bằng nguồn gốc; không coi nội dung AI tạo ra là dữ kiện đã xác minh.</section>
 </main>
 <script defer src="simple-nav.js"></script>
 <script type="module" src="supabase-auth.js"></script>
@@ -321,19 +292,21 @@ Nếu thiếu thông tin quan trọng, hãy hỏi lại trước khi kết luậ
 <script defer src="avp-core.js"></script>
 <script>
 (function(){
-  const categoryByModule=['foundation','foundation','office','data','advanced','advanced','advanced','office','data','data','office','advanced'];
-  const grid=document.querySelector('.ai-module-grid');
-  const filterButtons=document.querySelectorAll('[data-ai-path-filter]');
-  if(grid){
-    const modules=Array.from(grid.querySelectorAll('.ai-module'));
-    modules.forEach((module,index)=>module.dataset.aiCategory=categoryByModule[index]||'advanced');
-    filterButtons.forEach(button=>button.addEventListener('click',function(){
-      const chosen=button.dataset.aiPathFilter;
-      filterButtons.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
-      modules.forEach(module=>{module.hidden=chosen!=='all'&&module.dataset.aiCategory!==chosen;});
-    }));
-  }
-})();
+  const cards=Array.from(document.querySelectorAll('.ai-work-card'));
+  const buttons=document.querySelectorAll('[data-ai-case-filter]');
+  buttons.forEach(button=>button.addEventListener('click',function(){
+    const category=button.dataset.aiCaseFilter;
+    buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+    cards.forEach(card=>card.hidden=category!=='all'&&card.dataset.aiCategory!==category);
+  }));
+  const builder=document.getElementById('aiPromptPractice');
+  const openBuilder=document.getElementById('aiOpenPromptBuilder');
+  if(openBuilder&&builder)openBuilder.addEventListener('click',function(){
+    builder.hidden=!builder.hidden;
+    openBuilder.textContent=builder.hidden?'Tạo brief cho việc khác ↗':'Ẩn trình tạo brief ↑';
+    if(!builder.hidden)builder.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+})();;
 (function(){
   const task=document.getElementById('aiTaskType');
   const context=document.getElementById('aiContext');
