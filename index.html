@@ -1562,6 +1562,15 @@ a.avp-yt-combo.avp-mobile-main-cta{
 .avp-demo-bar{display:block;width:100%;height:var(--bar);min-height:5px;border-radius:5px 5px 2px 2px;background:linear-gradient(90deg,#1c9a60,#83f5b3 48%,#31b878);box-shadow:5px 0 0 #12613f,0 8px 15px rgba(0,0,0,.18);transform:rotateX(5deg);transform-origin:bottom;transition:height .6s cubic-bezier(.22,1,.36,1)}
 .avp-demo-axis{display:flex;justify-content:space-around;gap:4px;margin-top:6px;color:#9fc4af;font-size:8px}
 .avp-demo-axis span{flex:1;text-align:center;white-space:nowrap}
+.avp-demo-chart.type-ranking{height:142px;display:flex;flex-direction:column;justify-content:center;gap:7px;overflow:hidden;padding:7px 3px 3px;background:none;border:0;perspective:none}
+.avp-demo-rank-item{display:grid;grid-template-columns:minmax(0,1.1fr) auto;gap:3px 9px;align-items:center;min-width:0}
+.avp-demo-rank-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#dff7e8;font-size:9px;font-weight:700}
+.avp-demo-rank-count{color:#fff;font-size:9px;font-variant-numeric:tabular-nums}
+.avp-demo-rank-track{grid-column:1/-1;height:5px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.10)}
+.avp-demo-rank-track i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#239b61,#9af4bd);box-shadow:0 0 10px rgba(100,239,163,.18);animation:avpRankIn .7s both}
+.avp-demo-empty{color:#a9cdb8;font-size:10px;text-align:center}
+@keyframes avpRankIn{from{width:0;opacity:.4}to{opacity:1}}
+
 .avp-demo-chart.type-donut{display:flex;align-items:center;justify-content:center;background:none;border:0;padding:0}
 .avp-demo-donut-wrap{display:flex;align-items:center;justify-content:center;gap:18px;width:100%;height:100%}
 .avp-demo-donut{width:104px;height:104px;flex:0 0 104px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#8bc9ff 0 var(--pct),#79e7a8 var(--pct) 100%);position:relative;box-shadow:0 8px 20px rgba(0,0,0,.2)}
@@ -2069,43 +2078,67 @@ document.addEventListener("click", function(e){
  const root=document.getElementById('avpHeroDemoDashboard');if(!root||root.dataset.ready==='1')return;root.dataset.ready='1';
  const $=id=>document.getElementById(id),set=(id,v)=>{if($(id))$(id).textContent=v},fmt=v=>Number(v||0).toLocaleString('vi-VN');
  const views=[
-  {key:'page_views',title:'Lượt xem theo ngày',type:'line',meta:'7 ngày',m1:'Lượt xem',m2:'Người truy cập'},
-  {key:'unique_visitors',title:'Người truy cập theo ngày',type:'area',meta:'7 ngày',m1:'Người truy cập',m2:'Lượt xem'},
-  {key:'tool_runs',title:'Mức sử dụng công cụ',type:'bar',meta:'7 ngày',m1:'Lượt sử dụng',m2:'Lượt xem'},
-  {key:'share',title:'Cơ cấu hoạt động',type:'donut',meta:'7 ngày',m1:'Lượt xem',m2:'Lượt sử dụng'}
+  {key:'page_views',title:'Xu hướng lượt xem',type:'line',meta:'7 ngày',m1:'Lượt xem',m2:'Người truy cập'},
+  {key:'unique_visitors',title:'Xu hướng người truy cập',type:'area',meta:'7 ngày',m1:'Người truy cập',m2:'Lượt tương tác'},
+  {key:'feature_usage',title:'Tính năng được dùng nhiều',type:'bar',meta:'Xếp hạng · 7 ngày',m1:'Lượt tương tác',m2:'Tính năng nổi bật'},
+  {key:'activity_mix',title:'Cơ cấu tương tác',type:'donut',meta:'7 ngày',m1:'Lượt tương tác',m2:'Lượt xem'}
  ];
- let rows=[],summary={},idx=0,timer=null;
+ let rows=[],features=[],summary={},idx=0,timer=null;
  const val=(r,k)=>Number(r?.[k]||0);
  const label=r=>{const d=new Date(r.day||r.date);return Number.isNaN(d.getTime())?String(r.day||r.date||''):d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})};
  function svgEl(tag,attrs={}){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,String(v)));return e}
  function render(n){
-  const v=views[n%views.length];set('avpDemoTitle',v.title);set('avpDemoStatus','LIVE DATA');
+  const v=views[n%views.length],interactions=features.reduce((a,r)=>a+val(r,'uses'),0),top=features[0];
+  set('avpDemoTitle',v.title);set('avpDemoStatus','LIVE DATA');
   set('avpDemoMetric1Label',v.m1);set('avpDemoMetric2Label',v.m2);
-  set('avpDemoMetric1',fmt(v.key==='unique_visitors'?summary.unique_visitors:summary.page_views));
-  set('avpDemoMetric2',fmt(v.key==='tool_runs'?summary.tool_runs:summary.unique_visitors));
-  set('avpDemoMetric1Note','Tổng trong 7 ngày');set('avpDemoMetric2Note','Dữ liệu ghi nhận');
+  set('avpDemoMetric1',fmt(v.key==='unique_visitors'?summary.unique_visitors:v.key==='feature_usage'||v.key==='activity_mix'?interactions:summary.page_views));
+  set('avpDemoMetric2',fmt(v.key==='page_views'?summary.unique_visitors:v.key==='unique_visitors'?interactions:v.key==='feature_usage'?(top?.uses||0):summary.page_views));
+  set('avpDemoMetric1Note','Tổng trong 7 ngày');set('avpDemoMetric2Note',v.key==='feature_usage'?(top?.feature||'Chưa có tương tác'):'Dữ liệu ghi nhận');
   set('avpDemoChartTitle',v.title);set('avpDemoChartMeta',v.meta);
   const chart=$('avpDemoChart'),axis=$('avpDemoAxis');chart.replaceChildren();axis.replaceChildren();chart.className='avp-demo-chart type-'+v.type;
-  const vals=rows.map(r=>val(r,v.key==='share'?'page_views':v.key)),max=Math.max(1,...vals),W=440,H=145,L=18,R=18,T=26,B=12;
   if(v.type==='line'||v.type==='area'){
+   const vals=rows.map(r=>val(r,v.key)),max=Math.max(1,...vals),W=440,H=145,L=18,R=18,T=26,B=12;
    const pts=vals.map((x,i)=>[L+i*(W-L-R)/Math.max(1,vals.length-1),T+(H-T-B)*(1-x/max)]);
    const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' ');
-   if(v.type==='area'){const area=d+' L '+pts[pts.length-1][0]+' '+(H-B)+' L '+pts[0][0]+' '+(H-B)+' Z';chart.append(svgEl('svg',{viewBox:'0 0 440 145',preserveAspectRatio:'none',class:'avp-demo-svg'}));const svg=chart.firstChild;svg.append(svgEl('defs'));const defs=svg.firstChild;const grad=svgEl('linearGradient',{id:'avpAreaGrad',x1:'0',y1:'0',x2:'0',y2:'1'});grad.append(svgEl('stop',{offset:'0%','stop-color':'#6ee7a4','stop-opacity':'.48'}),svgEl('stop',{offset:'100%','stop-color':'#6ee7a4','stop-opacity':'0.02'}));defs.append(grad);svg.append(svgEl('path',{d:area,fill:'url(#avpAreaGrad)'}),svgEl('path',{d,fill:'none',stroke:'#8bf0b4','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round'}));pts.forEach((p,i)=>{svg.append(svgEl('circle',{cx:p[0],cy:p[1],r:3.5,fill:'#effff5',stroke:'#2dbb76','stroke-width':'2'}));const t=svgEl('text',{x:p[0],y:Math.max(12,p[1]-9),'text-anchor':'middle',class:'avp-demo-svg-label'});t.textContent=fmt(vals[i]);svg.append(t)})}
-   else{chart.append(svgEl('svg',{viewBox:'0 0 440 145',preserveAspectRatio:'none',class:'avp-demo-svg'}));const svg=chart.firstChild;svg.append(svgEl('path',{d,fill:'none',stroke:'#70e5a2','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round'}));pts.forEach((p,i)=>{svg.append(svgEl('circle',{cx:p[0],cy:p[1],r:3.5,fill:'#effff5',stroke:'#2dbb76','stroke-width':'2'}));const t=svgEl('text',{x:p[0],y:Math.max(12,p[1]-9),'text-anchor':'middle',class:'avp-demo-svg-label'});t.textContent=fmt(vals[i]);svg.append(t)})}
+   const svg=svgEl('svg',{viewBox:'0 0 440 145',preserveAspectRatio:'none',class:'avp-demo-svg'});
+   if(v.type==='area'){
+    const defs=svgEl('defs'),grad=svgEl('linearGradient',{id:'avpAreaGrad',x1:'0',y1:'0',x2:'0',y2:'1'});
+    grad.append(svgEl('stop',{offset:'0%','stop-color':'#6ee7a4','stop-opacity':'.48'}),svgEl('stop',{offset:'100%','stop-color':'#6ee7a4','stop-opacity':'0.02'}));defs.append(grad);svg.append(defs);
+    svg.append(svgEl('path',{d:d+' L '+pts[pts.length-1][0]+' '+(H-B)+' L '+pts[0][0]+' '+(H-B)+' Z',fill:'url(#avpAreaGrad)'}));
+   }
+   svg.append(svgEl('path',{d,fill:'none',stroke:'#8bf0b4','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round'}));
+   pts.forEach((p,i)=>{svg.append(svgEl('circle',{cx:p[0],cy:p[1],r:3.5,fill:'#effff5',stroke:'#2dbb76','stroke-width':'2'}));const t=svgEl('text',{x:p[0],y:Math.max(12,p[1]-9),'text-anchor':'middle',class:'avp-demo-svg-label'});t.textContent=fmt(vals[i]);svg.append(t)});
+   chart.append(svg);rows.forEach(r=>{const tick=document.createElement('span');tick.textContent=label(r);axis.append(tick)});
   }else if(v.type==='bar'){
-   chart.classList.add('type-bar');rows.forEach((r,i)=>{const item=document.createElement('span');item.className='avp-demo-bar-item';const lab=document.createElement('b');lab.className='avp-demo-data-label';lab.textContent=fmt(vals[i]);const bar=document.createElement('i');bar.className='avp-demo-bar';bar.style.setProperty('--bar',Math.max(4,vals[i]/max*78)+'%');item.append(lab,bar);chart.append(item)})
+   chart.classList.add('type-ranking');
+   const list=features.slice(0,6),max=Math.max(1,...list.map(r=>val(r,'uses')));
+   list.forEach((r,i)=>{const item=document.createElement('div');item.className='avp-demo-rank-item';const name=document.createElement('span');name.className='avp-demo-rank-name';name.textContent=r.feature;const count=document.createElement('b');count.className='avp-demo-rank-count';count.textContent=fmt(r.uses);const track=document.createElement('div');track.className='avp-demo-rank-track';const fill=document.createElement('i');fill.style.width=Math.max(2,val(r,'uses')/max*100)+'%';fill.style.animationDelay=(i*70)+'ms';track.append(fill);item.append(name,count,track);chart.append(item)});
+   if(!list.length){const empty=document.createElement('span');empty.className='avp-demo-empty';empty.textContent='Chưa ghi nhận tương tác trong kỳ';chart.append(empty)}
+   axis.textContent='Xếp hạng theo lượt tương tác thực tế';
   }else{
-   const total=rows.reduce((a,r)=>a+val(r,'page_views')+val(r,'tool_runs'),0),tools=rows.reduce((a,r)=>a+val(r,'tool_runs'),0),views=total-tools,pct=total?tools/total*100:0;
-   chart.classList.add('type-donut');const wrap=document.createElement('div');wrap.className='avp-demo-donut-wrap';const donut=document.createElement('div');donut.className='avp-demo-donut';donut.style.setProperty('--pct',pct+'%');const center=document.createElement('strong');center.textContent=Math.round(pct)+'%';donut.append(center);const legend=document.createElement('div');legend.className='avp-demo-legend';[[ 'Lượt xem',views,'#79e7a8'],['Sử dụng công cụ',tools,'#8bc9ff']].forEach(([name,num,color])=>{const line=document.createElement('div');line.className='avp-demo-legend-row';const dot=document.createElement('i');dot.style.background=color;const text=document.createElement('span');text.textContent=name;const value=document.createElement('b');value.textContent=fmt(num);line.append(dot,text,value);legend.append(line)});wrap.append(donut,legend);chart.append(wrap)
+   const groups={};features.forEach(r=>{groups[r.category]=(groups[r.category]||0)+val(r,'uses')});
+   const entries=Object.entries(groups),total=entries.reduce((a,x)=>a+x[1],0),first=entries[0]?.[1]||0,pct=total?first/total*100:0;
+   chart.classList.add('type-donut');const wrap=document.createElement('div');wrap.className='avp-demo-donut-wrap';const donut=document.createElement('div');donut.className='avp-demo-donut';donut.style.setProperty('--pct',pct+'%');const center=document.createElement('strong');center.textContent=total?Math.round(pct)+'%':'—';donut.append(center);const legend=document.createElement('div');legend.className='avp-demo-legend';
+   entries.forEach(([name,num],i)=>{const line=document.createElement('div');line.className='avp-demo-legend-row';const dot=document.createElement('i');dot.style.background=i?'#8bc9ff':'#79e7a8';const text=document.createElement('span');text.textContent=name;const value=document.createElement('b');value.textContent=fmt(num);line.append(dot,text,value);legend.append(line)});
+   if(!entries.length){const empty=document.createElement('span');empty.className='avp-demo-empty';empty.textContent='Chưa có dữ liệu tương tác';legend.append(empty)}
+   wrap.append(donut,legend);chart.append(wrap);axis.textContent='Tỷ trọng các nhóm tương tác được ghi nhận';
   }
-  if(v.type!=='donut'){rows.forEach(r=>{const tick=document.createElement('span');tick.textContent=label(r);axis.append(tick)})}else{axis.textContent='Tỷ trọng lượt xem và sử dụng công cụ'}
   set('avpDemoFoot','Số liệu tổng hợp từ hoạt động website');
  }
  async function load(){
   const deadline=Date.now()+6000;while(Date.now()<deadline&&!window.avpSupabase)await new Promise(r=>setTimeout(r,150));
   if(!window.avpSupabase?.rpc){set('avpDemoStatus','CHƯA KẾT NỐI');set('avpDemoFoot','Chưa kết nối được dữ liệu thống kê');return}
-  try{const [trend,sum]=await Promise.all([window.avpSupabase.rpc('public_home_analytics_trend',{p_days:7}),window.avpSupabase.rpc('public_home_analytics_summary',{p_days:7})]);if(trend.error||sum.error)throw trend.error||sum.error;rows=Array.isArray(trend.data)?trend.data:[];summary=Array.isArray(sum.data)?sum.data[0]||{}:sum.data||{};if(!rows.length)throw Error('No trend data');render(idx);timer=setInterval(()=>{idx=(idx+1)%views.length;render(idx)},5000)}
-  catch(e){set('avpDemoStatus','KHÔNG KHẢ DỤNG');set('avpDemoMetric1','—');set('avpDemoMetric2','—');set('avpDemoChartTitle','Chưa có dữ liệu');set('avpDemoFoot','Không thể tải thống kê website');console.warn('[AVP analytics]',e)}
+  try{
+   const [trend,sum,usage]=await Promise.all([
+    window.avpSupabase.rpc('public_home_analytics_trend',{p_days:7}),
+    window.avpSupabase.rpc('public_home_analytics_summary',{p_days:7}),
+    window.avpSupabase.rpc('public_home_feature_usage',{p_days:7})
+   ]);
+   if(trend.error||sum.error||usage.error)throw trend.error||sum.error||usage.error;
+   rows=Array.isArray(trend.data)?trend.data:[];summary=Array.isArray(sum.data)?sum.data[0]||{}:sum.data||{};features=Array.isArray(usage.data)?usage.data:[];
+   if(!rows.length)throw Error('No trend data');
+   render(idx);timer=setInterval(()=>{idx=(idx+1)%views.length;render(idx)},5000);
+  }catch(e){set('avpDemoStatus','KHÔNG KHẢ DỤNG');set('avpDemoMetric1','—');set('avpDemoMetric2','—');set('avpDemoChartTitle','Chưa có dữ liệu');set('avpDemoFoot','Không thể tải thống kê website');console.warn('[AVP analytics]',e)}
  }
  load();
 })();
