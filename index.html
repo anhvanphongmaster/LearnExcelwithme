@@ -2496,6 +2496,34 @@ document.addEventListener("click", function(e){
 })();
 </script>
 
+
+<script id="avp-redesign-single-track-controller">
+(function(){
+ const pairs=[
+  ['avpOpenExcelFoundation','avpExcelFoundationTrack','avpExcelFoundationButtonText'],
+  ['avpOpenFormulaTrack','avpFormulaTrack','avpFormulaTrackButtonText'],
+  ['avpOpenPowerQueryTrack','avpPowerQueryTrack','avpPowerQueryTrackButtonText'],
+  ['avpOpenReportTrack','avpReportTrack','avpReportTrackButtonText'],
+  ['avpOpenAutomationTrack','avpAutomationTrack','avpAutomationTrackButtonText'],
+  ['avpOpenCasesTrack','avpCasesTrack','avpCasesTrackButtonText']
+ ];
+ document.addEventListener('click',function(event){
+  const clicked=event.target.closest('button[id^="avpOpen"]');
+  if(!clicked||!pairs.some(pair=>pair[0]===clicked.id))return;
+  pairs.forEach(function(pair){
+   if(pair[0]===clicked.id)return;
+   const button=document.getElementById(pair[0]);
+   const panel=document.getElementById(pair[1]);
+   const label=document.getElementById(pair[2]);
+   if(button)button.setAttribute('aria-expanded','false');
+   if(panel)panel.hidden=true;
+   if(label)label.textContent='Xem cấu trúc lộ trình';
+   if(button){const mark=button.querySelector('b');if(mark)mark.textContent='＋';}
+  });
+ },true);
+})();
+</script>
+
 </body>
 
 </html> 
