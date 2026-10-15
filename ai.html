@@ -319,7 +319,7 @@ Nếu thiếu thông tin quan trọng, hãy hỏi lại trước khi kết luậ
   document.querySelectorAll('[data-ai-copy-lesson]').forEach(function(button){
     button.addEventListener('click',async function(){
       const pre=button.previousElementSibling, status=button.nextElementSibling;
-      if(!pre||pre.tagName!=='PRE')return;
+      if(!pre||!(pre.tagName==='PRE'||pre.classList.contains('ai-case-data')))return;
       try{
         if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(pre.innerText);}
         else{const area=document.createElement('textarea');area.value=pre.innerText;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();const ok=document.execCommand('copy');area.remove();if(!ok)throw new Error('copy failed');}
