@@ -1502,6 +1502,14 @@ a.avp-yt-combo.avp-mobile-main-cta{
  .avp-mobile-main-cta-wrap{margin-top:22px!important}
 }
 @media(max-width:420px){.avp-hero{padding-left:18px!important;padding-right:18px!important}.avp-title{font-size:45px!important}.avp-brand-vietnamese{font-size:19px!important}}
+
+.avp-tagline-static{width:100%;max-width:720px!important;min-height:1.6em;white-space:nowrap;overflow:hidden;text-overflow:clip}
+#avpTyping{display:inline}
+.avp-typing-caret{display:inline-block;width:2px;height:1em;margin-left:4px;vertical-align:-.12em;background:#7ef0b2;animation:avpTypingBlink .85s steps(2,start) infinite}
+@keyframes avpTypingBlink{to{visibility:hidden}}
+@media(max-width:800px){.avp-tagline-static{font-size:clamp(14px,3.5vw,18px)!important;letter-spacing:-.02em;min-height:1.6em}}
+@media(max-width:380px){.avp-tagline-static{font-size:13px!important}}
+@media(prefers-reduced-motion:reduce){.avp-typing-caret{animation:none}}
 </style>
 
 </head>
@@ -1547,8 +1555,8 @@ a.avp-yt-combo.avp-mobile-main-cta{
                     <span>AVP 4.0 <span class="avp-brand-vietnamese">ANH VĂN PHÒNG</span></span>
                 </h1>
 
-                <div class="avp-tagline avp-tagline-static">
-                    Học đúng trọng tâm. Thực hành trên dữ liệu thật.
+                <div class="avp-tagline avp-tagline-static" aria-live="polite">
+                    <span id="avpTyping">Học đúng trọng tâm. Thực hành trên dữ liệu thật.</span><span class="avp-typing-caret" aria-hidden="true"></span>
                 </div>
 
                 <p class="avp-desc">Làm chủ công cụ. Nâng tầm công việc.<span class="avp-domain-line">Excel · Data · Reporting · Automation · AI</span></p>
@@ -1938,6 +1946,38 @@ document.addEventListener("click", function(e){
 
 
 
+
+
+<script id="avp40-typing-slogans">
+(function(){
+ const el=document.getElementById('avpTyping');
+ if(!el)return;
+ const lines=[
+  'Học đúng trọng tâm. Thực hành trên dữ liệu thật.',
+  'Biến dữ liệu thành quyết định.',
+  'Làm chủ Excel. Tối ưu mọi quy trình.',
+  'Từ thao tác đến tư duy dữ liệu.',
+  'Học để làm được. Làm để tiến xa.',
+  'Làm chủ công cụ. Nâng tầm công việc.'
+ ];
+ if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=lines[0];return;}
+ let line=0,pos=lines[0].length,deleting=true,wait=1200;
+ function tick(){
+  const text=lines[line];
+  if(wait>0){wait-=40;setTimeout(tick,40);return;}
+  if(deleting){
+   pos=Math.max(0,pos-1);el.textContent=text.slice(0,pos);
+   if(pos===0){deleting=false;line=(line+1)%lines.length;}
+   setTimeout(tick,deleting?28:220);
+  }else{
+   const next=lines[line];pos=Math.min(next.length,pos+1);el.textContent=next.slice(0,pos);
+   if(pos===next.length){deleting=true;wait=1700;}
+   setTimeout(tick,deleting?40:42);
+  }
+ }
+ setTimeout(tick,1200);
+})();
+</script>
 
 </body>
 
