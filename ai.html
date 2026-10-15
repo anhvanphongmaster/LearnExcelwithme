@@ -49,7 +49,20 @@
     .ai-lesson-copy{margin-top:9px;min-height:36px;padding:0 12px;background:#eef2ff;color:#3449a5;border:1px solid #dfe5ff;font-size:12px}.ai-lesson-copy-status{display:inline-block;margin-left:8px;font-size:12px;color:#16845b}
     @media(max-width:760px){.ai-page{width:min(100% - 24px,600px);margin-top:16px}.ai-hero{grid-template-columns:1fr;padding:28px 23px;border-radius:22px}.ai-hero-art{min-height:190px}.ai-orbit{width:205px}.ai-orbit-core{width:82px;height:82px;border-radius:22px}.ai-outcomes,.ai-module-grid,.ai-practice,.ai-safety-grid,.ai-tools-grid{grid-template-columns:1fr}.ai-tool-card{padding:18px}.ai-section{margin-top:34px}.ai-section-head{display:block}.ai-section-head p{margin-top:8px}.ai-next{align-items:flex-start;flex-direction:column}.ai-module{padding:18px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-  </style>
+  
+    .ai-quickstart{margin-top:28px;padding:24px;border:1px solid var(--ai-line);border-radius:24px;background:linear-gradient(135deg,#fff 0%,#f0f4ff 100%)}
+    .ai-quickstart-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:16px}
+    .ai-quickstart-head h2{margin:7px 0 0;font-size:clamp(22px,3vw,30px);letter-spacing:-.03em}
+    .ai-quickstart-head p{max-width:420px;margin:0;color:var(--ai-muted);line-height:1.65;font-size:14px}
+    .ai-quickstart-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .ai-quickstart-btn{display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-height:142px;padding:17px;border:1px solid #e1e7f4;border-radius:17px;background:#fff;color:var(--ai-ink);text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+    .ai-quickstart-btn:hover{transform:translateY(-3px);border-color:#9aabff;box-shadow:0 12px 28px #273c7b12}
+    .ai-quickstart-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:#edf1ff;color:#3e55d8;font-size:18px;font-weight:800}
+    .ai-quickstart-btn strong{font-size:15px;line-height:1.35}
+    .ai-quickstart-btn span:last-child{font-size:12px;color:var(--ai-muted);line-height:1.45}
+    @media(max-width:900px){.ai-quickstart-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:560px){.ai-quickstart{padding:17px}.ai-quickstart-head{display:block}.ai-quickstart-head p{margin-top:8px}.ai-quickstart-grid{grid-template-columns:1fr}.ai-quickstart-btn{min-height:unset;display:grid;grid-template-columns:36px minmax(0,1fr);align-items:center;column-gap:12px}.ai-quickstart-btn .ai-quickstart-icon{grid-row:span 2}.ai-quickstart-btn span:last-child{grid-column:2}}
+</style>
 </head>
 <body>
 <script src="avp-ui-system.js?v=20261002-ui1" data-avp-ui-system></script>
@@ -69,7 +82,28 @@
 <main class="ai-page">
   <section class="ai-hero" aria-labelledby="aiHeroTitle">
     <div>
-      <span class="ai-kicker">LEARNEXCELWITHME · AI SKILLS</span>
+      <span class="ai-kicker">LEARNEXCELWITHME
+  <section class="ai-quickstart" aria-labelledby="aiQuickstartTitle">
+    <div class="ai-quickstart-head">
+      <div><span class="ai-eyebrow">BẮT ĐẦU TỪ VIỆC CẦN LÀM</span><h2 id="aiQuickstartTitle">Bạn muốn AI giúp việc gì?</h2></div>
+      <p>Chọn một tình huống. Trang sẽ chuẩn bị sẵn khung prompt để bạn bổ sung bối cảnh rồi dùng trên công cụ AI.</p>
+    </div>
+    <div class="ai-quickstart-grid">
+      <button class="ai-quickstart-btn" type="button" data-ai-quick-task="Soạn một email công việc" data-ai-quick-output="Email ngắn, chuyên nghiệp" data-ai-quick-context="Tôi cần viết email cho [người nhận] về [nội dung]. Mục tiêu của email là [mục tiêu].">
+        <span class="ai-quickstart-icon" aria-hidden="true">✉</span><strong>Viết email công việc</strong><span>Rõ ý, đúng giọng văn, không tự thêm cam kết.</span>
+      </button>
+      <button class="ai-quickstart-btn" type="button" data-ai-quick-task="Giải thích hoặc sửa công thức Excel" data-ai-quick-output="Giải thích từng bước, kèm ví dụ" data-ai-quick-context="Phiên bản Excel: [phiên bản]. Cột dữ liệu: [tên cột]. Công thức hiện tại: [công thức]. Kết quả mong muốn: [kết quả]. Trường hợp đang sai: [ví dụ dữ liệu giả lập].">
+        <span class="ai-quickstart-icon" aria-hidden="true">ƒx</span><strong>Sửa công thức Excel</strong><span>Cung cấp công thức, dữ liệu mẫu và kết quả mong muốn.</span>
+      </button>
+      <button class="ai-quickstart-btn" type="button" data-ai-quick-task="Phân tích dữ liệu Excel" data-ai-quick-output="Bảng có cột rõ ràng" data-ai-quick-context="Mục tiêu phân tích: [câu hỏi cần trả lời]. Các cột dữ liệu: [tên cột và ý nghĩa]. Dữ liệu mẫu đã ẩn thông tin nhạy cảm: [dán dữ liệu mẫu].">
+        <span class="ai-quickstart-icon" aria-hidden="true">▦</span><strong>Phân tích dữ liệu</strong><span>Xác định câu hỏi, dữ liệu đầu vào và cách kiểm tra kết luận.</span>
+      </button>
+      <button class="ai-quickstart-btn" type="button" data-ai-quick-task="Viết báo cáo" data-ai-quick-output="Báo cáo có tiêu đề và kết luận" data-ai-quick-context="Đối tượng đọc báo cáo: [người đọc]. Kỳ báo cáo: [thời gian]. Dữ kiện đã xác minh: [liệt kê dữ kiện]. Vấn đề cần nêu: [vấn đề].">
+        <span class="ai-quickstart-icon" aria-hidden="true">▤</span><strong>Làm báo cáo</strong><span>Chuyển dữ kiện đã xác minh thành báo cáo có cấu trúc.</span>
+      </button>
+    </div>
+  </section>
+ · AI SKILLS</span>
       <h1 id="aiHeroTitle">Đừng chỉ hỏi AI.<br>Hãy biết cách giao việc.</h1>
       <p>Học cách mô tả đúng vấn đề, cung cấp đủ bối cảnh, nhận kết quả có thể dùng và tự kiểm tra trước khi áp dụng vào công việc.</p>
       <div class="ai-actions">
@@ -164,6 +198,17 @@ Nếu thiếu thông tin quan trọng, hãy hỏi lại trước khi kết luậ
   const prompt=document.getElementById('aiGeneratedPrompt');
   const copy=document.getElementById('aiCopyPrompt');
   const status=document.getElementById('aiCopyStatus');
+  document.querySelectorAll('[data-ai-quick-task]').forEach(function(button){
+    button.addEventListener('click',function(){
+      task.value=button.getAttribute('data-ai-quick-task')||task.value;
+      output.value=button.getAttribute('data-ai-quick-output')||output.value;
+      context.value=button.getAttribute('data-ai-quick-context')||'';
+      constraints.value='Không tự bịa dữ liệu; nêu rõ giả định và chỉ ra điều cần kiểm chứng.';
+      updatePrompt();
+      document.getElementById('aiPromptPractice').scrollIntoView({behavior:'smooth',block:'start'});
+      context.focus({preventScroll:true});
+    });
+  });
   function updatePrompt(){
     const ctx=context.value.trim()||'[Hãy nhập bối cảnh và dữ liệu liên quan]';
     const extra=constraints.value.trim();
