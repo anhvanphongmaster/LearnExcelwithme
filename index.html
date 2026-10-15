@@ -1660,6 +1660,30 @@ html.avp-site-home body #home-books{display:none!important}
 @media(max-width:560px){.avp-redesign-hub,.avp-redesign-tools,.avp-redesign-flow{padding:38px 14px}.avp-redesign-grid{grid-template-columns:1fr;gap:11px}.avp-redesign-card{min-height:190px;padding:18px}.avp-redesign-steps{grid-template-columns:1fr}.avp-redesign-tool-feature{padding:22px}}
 </style>
 
+<style id="avp-redesign-first-track-styles">
+.avp-home-redesign-demo .avp-rd-open-track{font-family:inherit!important;background:transparent!important;border:0!important;cursor:pointer!important;text-align:left!important}
+.avp-home-redesign-demo .avp-rd-card-active{border-color:#c4dfca!important}
+.avp-home-redesign-demo .avp-rd-track-panel{margin-top:18px!important;padding:24px!important;border:1px solid #d8e7db!important;border-radius:20px!important;background:#fff!important;box-shadow:0 12px 30px #173d2908!important}
+.avp-home-redesign-demo .avp-rd-track-panel[hidden]{display:none!important}
+.avp-home-redesign-demo .avp-rd-track-heading{display:flex!important;justify-content:space-between!important;align-items:flex-start!important;gap:18px!important;margin-bottom:20px!important}
+.avp-home-redesign-demo .avp-rd-track-heading h3{font-size:26px!important;letter-spacing:-.045em!important;margin:7px 0!important;color:#173d29!important}
+.avp-home-redesign-demo .avp-rd-track-heading p{max-width:650px!important;font-size:12px!important;line-height:1.7!important;margin:0!important;color:#728276!important}
+.avp-home-redesign-demo .avp-rd-track-count{flex:none!important;border-radius:999px!important;padding:7px 10px!important;background:#e8f5eb!important;color:#217346!important;font-size:9px!important;font-weight:900!important}
+.avp-home-redesign-demo .avp-rd-track-steps{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}
+.avp-home-redesign-demo .avp-rd-track-steps article{display:flex!important;align-items:flex-start!important;gap:12px!important;min-width:0!important;padding:16px!important;border:1px solid #e3ece5!important;border-radius:14px!important;background:#fbfdfb!important}
+.avp-home-redesign-demo .avp-rd-track-number{display:grid!important;place-items:center!important;flex:0 0 34px!important;width:34px!important;height:34px!important;border-radius:10px!important;background:#e5f3e8!important;color:#217346!important;font-size:11px!important;font-weight:900!important}
+.avp-home-redesign-demo .avp-rd-track-steps article>div{flex:1!important;min-width:0!important}
+.avp-home-redesign-demo .avp-rd-track-steps strong{display:block!important;font-size:13px!important;color:#244631!important}
+.avp-home-redesign-demo .avp-rd-track-steps p{font-size:11px!important;line-height:1.6!important;margin:6px 0 10px!important;color:#718176!important}
+.avp-home-redesign-demo .avp-rd-track-steps small{font-size:8px!important;letter-spacing:.08em!important;font-weight:900!important;color:#53815f!important}
+.avp-home-redesign-demo .avp-rd-step-arrow{color:#8eaa96!important;font-size:17px!important}
+.avp-home-redesign-demo .avp-rd-track-footer{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;margin-top:16px!important;padding-top:14px!important;border-top:1px solid #edf2ed!important}
+.avp-home-redesign-demo .avp-rd-track-footer>span:first-child{font-size:11px!important;line-height:1.6!important;color:#718176!important}
+.avp-home-redesign-demo .avp-rd-track-footer strong{color:#31543c!important}
+.avp-home-redesign-demo .avp-rd-track-demo-tag{flex:none!important;font-size:8px!important;letter-spacing:.08em!important;font-weight:900!important;color:#a66c1e!important;background:#fbf0dd!important;border-radius:999px!important;padding:7px 9px!important}
+@media(max-width:600px){.avp-home-redesign-demo .avp-rd-track-panel{padding:17px!important}.avp-home-redesign-demo .avp-rd-track-heading{flex-direction:column!important;gap:10px!important}.avp-home-redesign-demo .avp-rd-track-heading h3{font-size:23px!important}.avp-home-redesign-demo .avp-rd-track-steps{grid-template-columns:1fr!important}.avp-home-redesign-demo .avp-rd-track-footer{align-items:flex-start!important;flex-direction:column!important}}
+</style>
+
 </head>
 
 
@@ -1850,7 +1874,7 @@ html.avp-site-home body #home-books{display:none!important}
       <span class="avp-redesign-side-note">BỐ CỤC ĐỀ XUẤT · CHƯA GẮN NỘI DUNG CŨ</span>
     </div>
     <div class="avp-redesign-cards">
-      <article class="avp-redesign-card avp-rd-green"><span class="avp-rd-icon">▤</span><span class="avp-rd-level">START HERE</span><h4>Excel nền tảng</h4><p>Công cụ, thao tác và tư duy bảng tính.</p><span class="avp-rd-bottom">Bắt đầu từ cơ bản <b>↗</b></span></article>
+      <article class="avp-redesign-card avp-rd-green avp-rd-card-active"><span class="avp-rd-icon">▤</span><span class="avp-rd-level">START HERE</span><h4>Excel nền tảng</h4><p>Công cụ, thao tác và tư duy bảng tính.</p><button class="avp-rd-bottom avp-rd-open-track" id="avpOpenExcelFoundation" type="button" aria-expanded="false" aria-controls="avpExcelFoundationTrack"><span id="avpExcelFoundationButtonText">Xem cấu trúc lộ trình</span><b>＋</b></button></article>
       <article class="avp-redesign-card avp-rd-blue"><span class="avp-rd-icon">ƒx</span><span class="avp-rd-level">FORMULAS</span><h4>Công thức &amp; phân tích</h4><p>Xử lý dữ liệu và giải quyết bài toán văn phòng.</p><span class="avp-rd-bottom">Đi sâu kỹ năng <b>↗</b></span></article>
       <article class="avp-redesign-card avp-rd-purple"><span class="avp-rd-icon">⟳</span><span class="avp-rd-level">TRANSFORM</span><h4>Power Query</h4><p>Làm sạch, kết hợp và chuẩn hóa dữ liệu.</p><span class="avp-rd-bottom">Xây quy trình dữ liệu <b>↗</b></span></article>
       <article class="avp-redesign-card avp-rd-amber"><span class="avp-rd-icon">▥</span><span class="avp-rd-level">REPORTING</span><h4>Dashboard &amp; báo cáo</h4><p>Biến số liệu thành thông tin dễ ra quyết định.</p><span class="avp-rd-bottom">Thiết kế báo cáo <b>↗</b></span></article>
@@ -1858,6 +1882,19 @@ html.avp-site-home body #home-books{display:none!important}
       <article class="avp-redesign-card avp-rd-teal"><span class="avp-rd-icon">◎</span><span class="avp-rd-level">REAL CASES</span><h4>Thực chiến</h4><p>Luyện kỹ năng bằng tình huống gần với công việc thật.</p><span class="avp-rd-bottom">Vào phòng thực hành <b>↗</b></span></article>
     </div>
 
+    <section class="avp-rd-track-panel" id="avpExcelFoundationTrack" hidden aria-labelledby="avpExcelFoundationTitle">
+      <div class="avp-rd-track-heading">
+        <div><span class="avp-redesign-label">LEARNING PATH / 01</span><h3 id="avpExcelFoundationTitle">Lộ trình Excel nền tảng</h3><p>Đây là cấu trúc bài học mẫu đầu tiên. Ta chốt cách chia chặng và cách điều hướng trước, sau đó mới gắn nội dung bài học hiện có.</p></div>
+        <span class="avp-rd-track-count">4 CHẶNG</span>
+      </div>
+      <div class="avp-rd-track-steps">
+        <article><span class="avp-rd-track-number">01</span><div><strong>Làm quen với bảng tính</strong><p>Giao diện, workbook, worksheet, vùng dữ liệu và thao tác nền tảng.</p><small>ĐẦU VÀO · LÀM QUEN</small></div><span class="avp-rd-step-arrow">→</span></article>
+        <article><span class="avp-rd-track-number">02</span><div><strong>Nhập liệu và định dạng</strong><p>Nhập dữ liệu đúng cách, định dạng bảng và chuẩn bị dữ liệu dễ đọc.</p><small>THAO TÁC · TRÌNH BÀY</small></div><span class="avp-rd-step-arrow">→</span></article>
+        <article><span class="avp-rd-track-number">03</span><div><strong>Công thức thiết yếu</strong><p>Tham chiếu ô, phép tính cơ bản và nhóm hàm thường dùng trong công việc.</p><small>TÍNH TOÁN · ỨNG DỤNG</small></div><span class="avp-rd-step-arrow">→</span></article>
+        <article><span class="avp-rd-track-number">04</span><div><strong>Lọc, sắp xếp và tổng hợp</strong><p>Tìm thông tin cần thiết và tạo bản tổng hợp đơn giản từ dữ liệu.</p><small>THỰC HÀNH · CỦNG CỐ</small></div><span class="avp-rd-step-arrow">→</span></article>
+      </div>
+      <div class="avp-rd-track-footer"><span><strong>Luồng sau khi chốt:</strong> Chọn chặng → xem bài học → thực hành → đánh dấu hoàn thành.</span><span class="avp-rd-track-demo-tag">NỘI DUNG MẪU</span></div>
+    </section>
     <div class="avp-redesign-section-head avp-redesign-practice-head" id="avp-demo-practice-path">
       <div><span class="avp-redesign-label">02 / PRACTICE FLOW</span><h3>Luồng thực hành đề xuất</h3></div>
       <span class="avp-redesign-side-note">CHỐT LUỒNG TRƯỚC · GHÉP NỘI DUNG SAU</span>
@@ -2277,6 +2314,25 @@ document.addEventListener("click", function(e){
   }catch(e){set('avpDemoStatus','KHÔNG KHẢ DỤNG');set('avpDemoMetric1','—');set('avpDemoMetric2','—');set('avpDemoChartTitle','Chưa có dữ liệu');set('avpDemoFoot','Không thể tải thống kê website');console.warn('[AVP analytics]',e)}
  }
  load();
+})();
+</script>
+
+<script id="avp-redesign-first-track-interaction">
+(function(){
+ const button=document.getElementById('avpOpenExcelFoundation');
+ const panel=document.getElementById('avpExcelFoundationTrack');
+ const label=document.getElementById('avpExcelFoundationButtonText');
+ if(!button||!panel||button.dataset.ready==='1')return;
+ button.dataset.ready='1';
+ button.addEventListener('click',function(){
+   const open=button.getAttribute('aria-expanded')!=='true';
+   button.setAttribute('aria-expanded',String(open));
+   panel.hidden=!open;
+   const mark=button.querySelector('b');
+   if(label)label.textContent=open?'Thu gọn lộ trình':'Xem cấu trúc lộ trình';
+   if(mark)mark.textContent=open?'−':'＋';
+   if(open)panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+ });
 })();
 </script>
 
