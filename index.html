@@ -1877,24 +1877,26 @@ document.addEventListener("click", function(e){
 <script id="avp40-admin-home-card">
 (function(){
  async function waitClient(){
-  const end=Date.now()+10000;
-  while(Date.now()<end){if(window.avpSupabase)return window.avpSupabase;await new Promise(r=>setTimeout(r,100));}
+  const end=Date.now()+15000;
+  while(Date.now()<end){if(window.avpSupabase)return window.avpSupabase;await new Promise(r=>setTimeout(r,150));}
   return null;
  }
  async function check(){
   const client=await waitClient();if(!client)return;
   let session=null;
-  try{const r=await client.auth.getSession();session=r.data&&r.data.session;}catch(e){}
+  try{for(let i=0;i<20&&!session;i++){const r=await client.auth.getSession();session=r.data&&r.data.session;if(!session)await new Promise(r=>setTimeout(r,150));}}catch(e){}
   if(!session||!session.user)return;
   let ok=false;
   try{const r=await client.rpc('is_admin_user');if(!r.error)ok=r.data===true;}catch(e){}
   if(!ok){try{const r=await client.from('profiles').select('is_admin').eq('id',session.user.id).maybeSingle();ok=!r.error&&r.data&&r.data.is_admin===true;}catch(e){}}
   if(!ok)return;
-  const grid=document.querySelector('#ky-nang-excel .home-path-grid');if(!grid||document.getElementById('avp40AdminCard'))return;
-  const card=document.createElement('article');card.id='avp40AdminCard';card.className='home-path-card home-path-card--5';
-  card.innerHTML='<span>🔒 · ADMIN BETA</span><h3>AVP 4.0 — Luồng mới</h3><p>Xem thử giao diện và cấu trúc học tập mới. Chỉ hiển thị với tài khoản đã được xác nhận quyền Admin.</p><a href="avp40-beta.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:10px 14px;border-radius:10px;background:#2258d6;color:#fff;font-weight:700;text-decoration:none">Mở bản thử nghiệm <span aria-hidden="true">→</span></a>';
-  card.style.border='1px solid #cbd8ff';card.style.background='linear-gradient(145deg,#fff,#f1f5ff)';
-  grid.appendChild(card);
+  if(document.getElementById('avp40AdminCard'))return;
+  const card=document.createElement('section');card.id='avp40AdminCard';
+  card.style.cssText='max-width:1100px;margin:20px auto;padding:0 20px';
+  card.innerHTML='<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px;border:1px solid #cbd8ff;border-radius:16px;background:linear-gradient(120deg,#f1f5ff,#fff);box-shadow:0 8px 26px rgba(34,88,214,.08);color:#172238"><div><div style="font-size:12px;font-weight:800;letter-spacing:.08em;color:#2258d6">🔒 ADMIN ONLY · BETA</div><h2 style="margin:5px 0;font-size:22px;color:#172238">AVP 4.0 — Luồng mới</h2><p style="margin:0;color:#657187">Bản xem trước giao diện mới, chưa thay đổi website chính.</p></div><a href="avp40-beta.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:10px;background:#2258d6;color:white;font-weight:800;text-decoration:none">Mở bản thử nghiệm →</a></div>';
+  const hero=document.querySelector('.hero');
+  if(hero&&hero.parentNode)hero.insertAdjacentElement('afterend',card);
+  else document.body.insertBefore(card,document.body.firstChild);
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();
 })();
