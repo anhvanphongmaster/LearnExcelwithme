@@ -1561,8 +1561,8 @@ a.avp-yt-combo.avp-mobile-main-cta{
 .avp-demo-live-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#62ef9f;box-shadow:0 0 10px rgba(98,239,159,.7)}
 .avp-demo-arrow{margin-left:auto;color:#91e6b2;font-size:16px}
 @media(max-width:900px){.avp-hero .avp-hero-inner{grid-template-columns:1fr!important;max-width:700px!important;gap:28px!important}.avp-hero .avp-copy{align-items:center!important;text-align:center!important}.avp-hero .avp-eyebrow{margin-left:auto!important;margin-right:auto!important}.avp-hero .avp-title,.avp-hero .avp-desc,.avp-hero .avp-tagline{text-align:center!important}.avp-hero .avp-desc{margin-left:auto!important;margin-right:auto!important}.avp-hero .avp-mobile-main-cta-wrap{margin-left:auto!important;margin-right:auto!important}.avp-demo-dashboard{width:100%;transform:none}.avp-demo-dashboard:hover{transform:translateY(-2px)}}
-@media(max-width:560px){.avp-demo-dashboard{padding:15px;border-radius:19px}.avp-demo-kpis{gap:7px}.avp-demo-kpi{padding:10px}.avp-demo-chart{height:92px}.avp-demo-foot{align-items:flex-start}.avp-demo-tag{font-size:7px}}
-@media(prefers-reduced-motion:reduce){.avp-demo-dashboard,.avp-demo-chart span{transition:none}}
+@media(max-width:560px){.avp-demo-dashboard{padding:15px;border-radius:19px}.avp-demo-kpis{gap:7px}.avp-demo-kpi{padding:10px}.avp-demo-chart{height:106px}.avp-demo-foot{align-items:flex-start}.avp-demo-tag{font-size:7px}}
+@media(prefers-reduced-motion:reduce){.avp-demo-dashboard,.avp-demo-chart span{transition:none}.avp-demo-bar-item{animation:none}}
 </style>
 </head>
 
@@ -1649,27 +1649,21 @@ a.avp-yt-combo.avp-mobile-main-cta{
                     <span>✓ Dễ áp dụng</span>
                 </div>
             
-            <aside class="avp-demo-dashboard" id="avpHeroDemoDashboard" aria-label="Dashboard minh họa có thể tương tác">
+            <aside class="avp-demo-dashboard" id="avpHeroDemoDashboard" aria-label="Website analytics">
               <div class="avp-demo-head">
-                <div><span class="avp-demo-kicker">AVP · INTERACTIVE PREVIEW</span><h2 id="avpDemoTitle">Sales overview</h2></div>
-                <span class="avp-demo-tag">DỮ LIỆU DEMO</span>
-              </div>
-              <div class="avp-demo-tabs" role="group" aria-label="Chọn dashboard minh họa">
-                <button type="button" class="is-active" data-demo-mode="sales" aria-pressed="true">Doanh số</button>
-                <button type="button" data-demo-mode="quality" aria-pressed="false">Chất lượng</button>
+                <div><span class="avp-demo-kicker">AVP · WEBSITE ANALYTICS</span><h2 id="avpDemoTitle">Hoạt động website</h2></div>
+                <span class="avp-demo-tag" id="avpDemoStatus">ĐANG TẢI</span>
               </div>
               <div class="avp-demo-kpis">
-                <div class="avp-demo-kpi"><span id="avpDemoMetric1Label">Doanh số</span><strong id="avpDemoMetric1">128,6 triệu</strong><small id="avpDemoMetric1Note">+12,8% so với kỳ trước</small></div>
-                <div class="avp-demo-kpi"><span id="avpDemoMetric2Label">Đạt mục tiêu</span><strong id="avpDemoMetric2">92,6%</strong><small id="avpDemoMetric2Note">Target: 138,9 triệu</small></div>
+                <div class="avp-demo-kpi"><span id="avpDemoMetric1Label">Lượt truy cập</span><strong id="avpDemoMetric1">—</strong><small id="avpDemoMetric1Note">Tổng hợp từ Admin</small></div>
+                <div class="avp-demo-kpi"><span id="avpDemoMetric2Label">Người truy cập</span><strong id="avpDemoMetric2">—</strong><small id="avpDemoMetric2Note">Trong 7 ngày gần nhất</small></div>
               </div>
-              <div class="avp-demo-chart-wrap">
-                <div class="avp-demo-chart-head"><span id="avpDemoChartTitle">Kết quả theo tuần</span><span id="avpDemoChartMeta">Tuần 1–6</span></div>
-                <div class="avp-demo-chart" id="avpDemoChart" role="img" aria-label="Biểu đồ dữ liệu minh họa theo tuần">
-                  <span style="--bar:42%"></span><span style="--bar:57%"></span><span style="--bar:48%"></span><span style="--bar:72%"></span><span style="--bar:63%"></span><span style="--bar:88%"></span>
-                </div>
-                <div class="avp-demo-axis"><span>Tuần 1</span><span>Tuần 3</span><span>Tuần 6</span></div>
+              <div class="avp-demo-chart-wrap" id="avpDemoChartPanel">
+                <div class="avp-demo-chart-head"><span id="avpDemoChartTitle">Hoạt động theo ngày</span><span id="avpDemoChartMeta">7 ngày</span></div>
+                <div class="avp-demo-chart" id="avpDemoChart" role="img" aria-label="Hoạt động website theo ngày"></div>
+                <div class="avp-demo-axis" id="avpDemoAxis"></div>
               </div>
-              <div class="avp-demo-foot"><span class="avp-demo-live-dot"></span><span>Thử bấm bộ lọc để xem dashboard đổi dữ liệu mẫu</span><span class="avp-demo-arrow">↗</span></div>
+              <div class="avp-demo-foot"><span class="avp-demo-live-dot"></span><span id="avpDemoFoot">Số liệu tổng hợp từ hệ thống thống kê website</span><span class="avp-demo-arrow">↗</span></div>
             </aside>
 </div>
 
@@ -2060,19 +2054,76 @@ document.addEventListener("click", function(e){
   const root=document.getElementById('avpHeroDemoDashboard');
   if(!root||root.dataset.ready==='1')return;
   root.dataset.ready='1';
-  const modes={
-    sales:{title:'Sales overview',labels:['Doanh số','Đạt mục tiêu'],values:['128,6 triệu','92,6%'],notes:['+12,8% so với kỳ trước','Target: 138,9 triệu'],chartTitle:'Kết quả theo tuần',meta:'Tuần 1–6',bars:[42,57,48,72,63,88]},
-    quality:{title:'Quality overview',labels:['Lỗi ghi nhận','Tỷ lệ lỗi'],values:['24 lỗi','1,6%'],notes:['Dữ liệu minh họa theo ca','Mục tiêu lỗi dưới 2%'],chartTitle:'Lỗi theo ca sản xuất',meta:'Ca 1–6',bars:[74,43,61,30,48,22]}
-  };
-  const setText=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
-  root.querySelectorAll('[data-demo-mode]').forEach(btn=>btn.addEventListener('click',function(){
-    const mode=this.dataset.demoMode==='quality'?'quality':'sales',d=modes[mode];
-    root.querySelectorAll('[data-demo-mode]').forEach(b=>{const active=b===this;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',active?'true':'false')});
-    setText('avpDemoTitle',d.title);setText('avpDemoMetric1Label',d.labels[0]);setText('avpDemoMetric2Label',d.labels[1]);
-    setText('avpDemoMetric1',d.values[0]);setText('avpDemoMetric2',d.values[1]);setText('avpDemoMetric1Note',d.notes[0]);setText('avpDemoMetric2Note',d.notes[1]);
-    setText('avpDemoChartTitle',d.chartTitle);setText('avpDemoChartMeta',d.meta);
-    const chart=document.getElementById('avpDemoChart');if(chart){chart.classList.toggle('is-quality',mode==='quality');chart.querySelectorAll('span').forEach((bar,i)=>bar.style.setProperty('--bar',(d.bars[i]||25)+'%'));chart.setAttribute('aria-label',d.chartTitle+' — dữ liệu minh họa')}
-  }));
+  const $=id=>document.getElementById(id);
+  const setText=(id,value)=>{const el=$(id);if(el)el.textContent=value};
+  const fmt=value=>Number(value||0).toLocaleString('vi-VN');
+  const views=[
+    {key:'page_views',title:'Lượt xem theo ngày',metric1:'Lượt xem',metric2:'Người truy cập',note:'Theo dữ liệu Admin',meta:'7 ngày'},
+    {key:'visitors',title:'Người truy cập theo ngày',metric1:'Lượt xem',metric2:'Người truy cập',note:'Theo dữ liệu Admin',meta:'7 ngày'},
+    {key:'tool_runs',title:'Công cụ được sử dụng',metric1:'Lượt xem',metric2:'Người truy cập',note:'Theo dữ liệu Admin',meta:'7 ngày'},
+    {key:'activity',title:'Tổng hoạt động theo ngày',metric1:'Lượt xem',metric2:'Người truy cập',note:'Theo dữ liệu Admin',meta:'7 ngày'}
+  ];
+  let dataRows=[],summary={},current=0,timer=null;
+  const numeric=(row,keys)=>{for(const key of keys){const value=row?.[key];if(value!==undefined&&value!==null&&Number.isFinite(Number(value)))return Number(value)}return 0};
+  function rowDate(row,i){const raw=row?.date||row?.day||row?.event_date||row?.stat_date||row?.created_at; if(!raw)return String(i+1);const d=new Date(raw);return Number.isNaN(d.getTime())?String(raw).slice(0,10):d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})}
+  function seriesFor(view){
+    return dataRows.slice(-7).map((row,i)=>({label:rowDate(row,i),value:view.key==='activity'?numeric(row,['page_views','views','total_events','events']):numeric(row,[view.key,'unique_visitors','visitor_count'])}));
+  }
+  function render(index){
+    if(!dataRows.length){setText('avpDemoTitle','Hoạt động website');setText('avpDemoStatus','CHƯA CÓ DỮ LIỆU');setText('avpDemoChartTitle','Hoạt động theo ngày');setText('avpDemoChartMeta','7 ngày gần nhất');setText('avpDemoFoot','Chưa thể tải số liệu thống kê từ Admin');return}
+    const view=views[index%views.length],series=seriesFor(view),max=Math.max(1,...series.map(x=>x.value));
+    setText('avpDemoTitle',view.title);setText('avpDemoStatus','ADMIN DATA');
+    setText('avpDemoMetric1Label',view.metric1);setText('avpDemoMetric2Label',view.metric2);
+    setText('avpDemoMetric1',fmt(numeric(summary,['page_views','views','total_page_views'])));
+    setText('avpDemoMetric2',fmt(numeric(summary,['visitors','unique_visitors','total_visitors'])));
+    setText('avpDemoMetric1Note','Tổng ghi nhận');setText('avpDemoMetric2Note','Trong khoảng thống kê');
+    setText('avpDemoChartTitle',view.title);setText('avpDemoChartMeta',view.meta);
+    const chart=$('avpDemoChart'),axis=$('avpDemoAxis');chart.replaceChildren();axis.replaceChildren();
+    chart.classList.toggle('is-quality',index%2===1);chart.classList.toggle('is-3d',true);
+    series.forEach(point=>{
+      const item=document.createElement('span');item.className='avp-demo-bar-item';
+      const label=document.createElement('b');label.className='avp-demo-data-label';label.textContent=fmt(point.value);
+      const bar=document.createElement('i');bar.className='avp-demo-bar';bar.style.setProperty('--bar',Math.max(8,point.value/max*100)+'%');bar.title=point.label+': '+fmt(point.value);
+      item.append(label,bar);chart.append(item);
+      const tick=document.createElement('span');tick.textContent=point.label;axis.append(tick);
+    });
+    setText('avpDemoFoot','Dữ liệu thống kê website · Tự chuyển biểu đồ');
+  }
+  function normalizeRows(data){
+    if(Array.isArray(data))return data;
+    if(Array.isArray(data?.rows))return data.rows;
+    if(Array.isArray(data?.trend))return data.trend;
+    if(Array.isArray(data?.data))return data.data;
+    return [];
+  }
+  async function load(){
+    const deadline=Date.now()+6000;
+    while(Date.now()<deadline&&!window.avpSupabase)await new Promise(resolve=>setTimeout(resolve,150));
+    const client=window.avpSupabase;
+    if(!client?.rpc){setText('avpDemoStatus','CHƯA KẾT NỐI');render(current);return}
+    try{
+      const results=await Promise.all([
+        client.rpc('admin_analytics_trend',{p_days:7}),
+        client.rpc('admin_analytics_summary',{p_days:7})
+      ]);
+      const trend=results[0],sum=results[1];
+      if(trend.error||sum.error)throw trend.error||sum.error;
+      dataRows=normalizeRows(trend.data);
+      summary=Array.isArray(sum.data)?(sum.data[0]||{}):(sum.data||{});
+      if(!dataRows.length)throw new Error('No analytics rows');
+      render(current);
+      if(timer)clearInterval(timer);
+      timer=setInterval(()=>{current=(current+1)%views.length;render(current)},5000);
+    }catch(error){
+      setText('avpDemoStatus','KHÔNG KHẢ DỤNG');
+      setText('avpDemoMetric1','—');setText('avpDemoMetric2','—');
+      setText('avpDemoFoot','Không thể truy xuất số liệu tổng hợp từ Admin');
+      setText('avpDemoChartTitle','Chưa có dữ liệu để hiển thị');
+      $('avpDemoChart')?.replaceChildren();$('avpDemoAxis')?.replaceChildren();
+      console.warn('[AVP analytics preview] Không tải được dữ liệu Admin:',error);
+    }
+  }
+  load();
 })();
 </script>
 
