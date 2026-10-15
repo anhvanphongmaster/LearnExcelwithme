@@ -1,55 +1,2181 @@
-<!doctype html>
-<html lang="vi">
+<!DOCTYPE html>
+<html lang="vi" class="avp-site-upgrade avp-site-home">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="index,follow">
-<title>AVP 4.0 | Anh Văn Phòng</title>
-<meta name="description" content="Không gian học Excel, phân tích dữ liệu, báo cáo và tự động hóa.">
-<style>
-:root{--ink:#163b2a;--muted:#687c70;--green:#217346;--lime:#b8ed74;--line:#dfe9e2;--paper:#f5f8f5;--white:#fff;--navy:#102d22}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}button{font:inherit}.wrap{width:min(1160px,calc(100% - 40px));margin:auto}.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.nav{height:70px;display:flex;align-items:center;gap:28px}.brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.04em;font-size:19px;white-space:nowrap}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;background:var(--green);color:white;font-size:17px}.navlinks{display:flex;align-items:center;gap:22px;margin-left:auto;color:#557064;font-size:13px;font-weight:700}.navlinks a:hover{color:var(--green)}.nav-cta,.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;background:var(--green);color:white;font-size:13px;font-weight:800;border:1px solid var(--green);cursor:pointer}.nav-cta{white-space:nowrap}.hero{padding:64px 0 38px;background:radial-gradient(ellipse at 85% 20%,#e0f2d6 0,transparent 36%),linear-gradient(180deg,#fff 0%,#f5f8f5 100%)}.hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:42px;align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid #d7e8d9;border-radius:999px;background:#f0f8ef;color:var(--green);font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.eyebrow i{width:7px;height:7px;background:#5da66b;border-radius:50%}h1{margin:20px 0 16px;font-size:clamp(40px,5.2vw,65px);line-height:1.02;letter-spacing:-.065em;max-width:650px}h1 em{font-style:normal;color:var(--green)}.hero-copy{max-width:510px;color:var(--muted);font-size:16px;line-height:1.8}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}.btn.secondary{background:white;color:var(--ink);border-color:var(--line)}.trustline{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;color:#6d8174;font-size:11px;font-weight:700}.trustline span:before{content:"✓";color:var(--green);font-weight:900;margin-right:6px}.hero-board{position:relative;padding:18px;border:1px solid #dce8dd;border-radius:24px;background:rgba(255,255,255,.86);box-shadow:0 24px 65px #173d2912}.board-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.board-title{font-size:12px;font-weight:900}.live{font-size:10px;color:#37814b;font-weight:800}.live:before{content:"";display:inline-block;width:6px;height:6px;background:#4caf68;border-radius:50%;margin-right:6px}.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{padding:13px;border-radius:14px;background:#f4f8f4;border:1px solid #e6eee7}.stat small{display:block;color:#738579;font-size:10px;font-weight:700}.stat strong{display:block;margin-top:7px;font-size:22px;letter-spacing:-.05em}.stat em{display:block;margin-top:3px;font-size:9px;font-style:normal;color:#428251}.chartbox{margin-top:12px;padding:15px;border:1px solid #e4ece5;border-radius:15px}.charthead{display:flex;justify-content:space-between;font-size:11px;font-weight:800}.charthead span{color:#7d8e82;font-weight:600}.bars{height:110px;display:flex;align-items:end;gap:10px;padding:14px 6px 0;border-bottom:1px solid #e3ece4}.bar{flex:1;min-width:6px;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#88c99a,#217346)}.chartlabels{display:flex;justify-content:space-between;margin-top:7px;color:#91a096;font-size:9px}.section{padding:58px 0}.section.white{background:white;border-top:1px solid #eaf0eb;border-bottom:1px solid #eaf0eb}.section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:24px}.kicker{font-size:10px;color:var(--green);font-weight:900;letter-spacing:.14em;text-transform:uppercase}.section h2{margin:8px 0 0;font-size:clamp(27px,3.4vw,38px);line-height:1.12;letter-spacing:-.05em}.section-desc{max-width:490px;margin:0;color:var(--muted);font-size:13px;line-height:1.7}.learning-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.learn-card{position:relative;display:flex;flex-direction:column;min-height:230px;padding:21px;border:1px solid var(--line);border-radius:19px;background:white;overflow:hidden;transition:transform .2s,box-shadow .2s,border-color .2s}.learn-card:hover{transform:translateY(-4px);box-shadow:0 15px 35px #163b2a12;border-color:#b7d4be}.learn-card:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--accent)}.learn-card .card-top{display:flex;justify-content:space-between;align-items:center}.card-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:13px;background:var(--soft);font-size:22px}.level{padding:6px 8px;border-radius:999px;background:var(--soft);color:var(--accent);font-size:9px;font-weight:900}.learn-card h3{margin:18px 0 7px;font-size:19px;letter-spacing:-.035em}.learn-card p{margin:0 0 18px;color:var(--muted);font-size:12px;line-height:1.65}.card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:13px;border-top:1px solid #edf2ed;color:var(--accent);font-size:11px;font-weight:900}.card-bottom small{color:#849388;font-size:10px;font-weight:700}.c1{--accent:#217346;--soft:#e8f5eb}.c2{--accent:#2779a7;--soft:#e7f3fa}.c3{--accent:#7853aa;--soft:#f0eafb}.c4{--accent:#ad711e;--soft:#fbf0dd}.c5{--accent:#bd5e48;--soft:#fbece7}.c6{--accent:#3e7771;--soft:#e7f4f1}.path-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}.path-step{display:flex;gap:12px;align-items:flex-start;padding:16px;border:1px solid var(--line);border-radius:15px;background:#fff}.step-no{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:10px;background:#edf6ee;color:var(--green);font-size:11px;font-weight:900}.path-step strong{display:block;font-size:12px}.path-step small{display:block;margin-top:5px;color:var(--muted);font-size:10px;line-height:1.5}.tool-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}.tool-feature{padding:26px;border-radius:22px;background:var(--navy);color:#fff;display:flex;flex-direction:column;justify-content:space-between;min-height:250px;overflow:hidden;position:relative}.tool-feature:after{content:"ƒx";position:absolute;right:20px;bottom:-30px;font-size:170px;font-weight:900;color:#ffffff0a;letter-spacing:-.12em}.tool-feature .kicker{color:var(--lime)}.tool-feature h3{position:relative;z-index:1;max-width:390px;font-size:29px;letter-spacing:-.05em;margin:15px 0 10px}.tool-feature p{position:relative;z-index:1;max-width:390px;color:#b8cbbf;font-size:12px;line-height:1.7}.tool-feature .btn{align-self:flex-start;background:var(--lime);border-color:var(--lime);color:#183b28;position:relative;z-index:1}.tool-list{display:grid;gap:10px}.tool-item{display:flex;align-items:center;gap:13px;padding:16px;border:1px solid var(--line);border-radius:15px;background:#fff}.tool-item .card-icon{flex:0 0 42px}.tool-item strong{display:block;font-size:12px}.tool-item small{display:block;margin-top:4px;color:var(--muted);font-size:10px}.tool-item b{margin-left:auto;color:var(--green)}.bottom-cta{padding:38px;border-radius:24px;background:linear-gradient(120deg,#e9f5e8,#f8fbf7);border:1px solid #d8e8d8;display:flex;align-items:center;justify-content:space-between;gap:24px}.bottom-cta h2{margin:0;font-size:29px;letter-spacing:-.05em}.bottom-cta p{margin:8px 0 0;color:var(--muted);font-size:12px}.footer{padding:28px 0;color:#718176;font-size:11px}.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:18px}.demo-note{position:fixed;right:16px;bottom:16px;z-index:50;display:flex;align-items:center;gap:10px;max-width:310px;padding:12px 14px;border:1px solid #cce1ce;border-radius:14px;background:#fff;box-shadow:0 8px 30px #163b2a18;font-size:11px;color:#4f6858}.demo-note b{color:var(--green)}.mobile-menu{display:none}
-@media(max-width:850px){.nav{gap:14px}.navlinks{gap:13px}.navlinks a:nth-child(3),.navlinks a:nth-child(4){display:none}.hero-grid{grid-template-columns:1fr;gap:30px}.hero{padding-top:45px}.hero-board{max-width:620px}.learning-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.path-strip{grid-template-columns:repeat(2,1fr)}.section-head{align-items:flex-start;flex-direction:column;gap:10px}.tool-grid{grid-template-columns:1fr}.tool-feature{min-height:220px}}
-@media(max-width:560px){.wrap{width:min(100% - 28px,1160px)}.nav{height:60px}.brand{font-size:17px}.navlinks{display:none}.nav-cta{margin-left:auto;padding:10px 12px;font-size:11px}.hero{padding:35px 0 25px}h1{font-size:43px}.hero-copy{font-size:14px}.trustline{gap:10px}.hero-board{padding:12px;border-radius:18px}.stat{padding:10px}.stat strong{font-size:18px}.section{padding:42px 0}.learning-grid{grid-template-columns:1fr;gap:11px}.learn-card{min-height:190px;padding:18px}.learn-card h3{margin-top:14px}.path-strip{grid-template-columns:1fr}.tool-feature{padding:22px}.tool-feature h3{font-size:25px}.bottom-cta{padding:23px;align-items:flex-start;flex-direction:column}.bottom-cta h2{font-size:25px}.footer-inner{align-items:flex-start;flex-direction:column}.demo-note{left:12px;right:12px;bottom:12px;max-width:none}}
-</style>
+  <link rel="preconnect" href="https://esm.sh" crossorigin>
+  <link rel="preconnect" href="https://itnnbyhlpfredaqyhlpr.supabase.co" crossorigin>
+  <link rel="dns-prefetch" href="https://esm.sh">
+
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="home-ui-owner-v1.css?v=20261015-learning-cards-demo1" data-avp-home-ui-owner-v1>
+    <title>AVP 4.0 | Anh Văn Phòng</title>
+<meta name="description" content="AVP 4.0 — Anh Văn Phòng. Làm chủ công cụ, nâng tầm công việc với Excel, Power Query, phân tích dữ liệu, báo cáo và tự động hóa.">
 <link rel="canonical" href="https://anhvanphongmaster.github.io/LearnExcelwithme/">
+<meta property="og:title" content="AVP 4.0 | Anh Văn Phòng">
+<meta property="og:description" content="Làm chủ công cụ. Nâng tầm công việc. Excel · Data · Reporting · Automation · AI.">
+<meta property="og:url" content="https://anhvanphongmaster.github.io/LearnExcelwithme/">
+<meta name="robots" content="index,follow">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7f5;
+            color: #222;
+        }
+
+        /* ===== MENU ===== */
+
+    
+        /* ===== HERO ===== */
+
+        .hero {
+            background: #217346;
+            color: white;
+            text-align: center;
+
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin: 0 0 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: auto;
+            line-height: 1.7;
+        }
+
+        .hero-button {
+            display: inline-block;
+
+            margin-top: 30px;
+            padding: 15px 30px;
+
+            background: white;
+            color: #217346;
+
+            text-decoration: none;
+
+            border-radius: 10px;
+
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .hero-button:hover {
+            background: #e8f5e9;
+        }
+
+
+        /* ===== GIỚI THIỆU ===== */
+
+        .intro {
+            max-width: 1000px;
+            margin: auto;
+
+            padding: 60px 20px;
+
+            text-align: center;
+        }
+
+        .intro h2 {
+            color: #217346;
+            font-size: 32px;
+        }
+
+        .intro p {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+
+        /* ===== KHÓA HỌC ===== */
+
+        .courses {
+            max-width: 1100px;
+            margin: auto;
+
+            padding: 20px 20px 70px;
+        }
+
+        .courses-title {
+            text-align: center;
+
+            color: #217346;
+            font-size: 32px;
+
+            margin-bottom: 40px;
+        }
+
+
+        .course-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 25px;
+        }
+
+
+        /* ===== CARD ===== */
+
+        .course-card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+
+            transition: 0.25s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(0, 0, 0, 0.12);
+        }
+
+        .icon {
+            font-size: 45px;
+        }
+
+        .course-card h3 {
+            color: #217346;
+            font-size: 22px;
+        }
+
+        .course-card p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .course-card a {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 11px 20px;
+
+            background: #217346;
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+        .course-card a:hover {
+            background: #185c37;
+        }
+
+
+        /* ===== FOOTER ===== */
+
+        footer {
+            background: #185c37;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 25px;
+
+            margin-top: 20px;
+        }
+
+
+        /* ===== ĐIỆN THOẠI ===== */
+
+        @media (max-width: 800px) {
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+          
+            
+
+        }
+.featured,
+.quick-access {
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+.featured h2,
+.quick-access h2 {
+    text-align: center;
+    color: #217346;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.featured-card {
+    background: white;
+    padding: 28px;
+    border-radius: 14px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.featured-card h3 {
+    color: #217346;
+}
+
+.featured-card p {
+    line-height: 1.6;
+}
+
+.featured-card a {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 20px;
+    background: #217346;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.quick-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.quick-grid a {
+    background: white;
+    color: #185c37;
+    text-decoration: none;
+    text-align: center;
+    padding: 18px;
+    border-radius: 10px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.quick-grid a:hover {
+    background: #e8f5e9;
+}
+
+@media (max-width: 800px) {
+    .featured-grid,
+    .quick-grid {
+        grid-template-columns: 1fr;
+    }
+}.home-search {
+    margin-top: 25px;
+
+    display: flex;
+    justify-content: center;
+
+    gap: 10px;
+}
+
+.home-search input {
+    width: 420px;
+    max-width: 70%;
+
+    padding: 13px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 16px;
+}
+
+.home-search button {
+    padding: 13px 20px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #185c37;
+    color: white;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.home-search button:hover {
+    background: #144b2e;
+}
+
+@media (max-width: 600px) {
+
+    .home-search {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .home-search input {
+        width: 100%;
+        max-width: 100%;
+    }
+
+}#backToTop {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+
+    width: 48px;
+    height: 48px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #217346;
+    color: white;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+    display: none;
+}
+
+#backToTop:hover {
+    background: #185c37;
+}.home-contact {
+    max-width: 1000px;
+    margin: 40px auto 70px;
+    padding: 40px 20px;
+
+    background: white;
+    border-radius: 15px;
+
+    text-align: center;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.home-contact h2 {
+    color: #217346;
+    font-size: 30px;
+}
+
+.home-contact p {
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.home-contact a {
+    display: inline-block;
+
+    margin-top: 15px;
+    padding: 12px 24px;
+
+    background: #217346;
+    color: white;
+
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* ===== Learn Excel with Anh Van Phong - PROFESSIONAL HERO ===== */
+.avp-hero {
+    position: relative;
+    min-height: 650px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 110px 20px 90px;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(33,115,70,.36), transparent 36%),
+        radial-gradient(circle at 85% 75%, rgba(32,201,151,.20), transparent 34%),
+        linear-gradient(135deg, #071810 0%, #0b2418 50%, #07120d 100%);
+    color: #fff;
+}
+
+.avp-grid-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .18;
+    background-image:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), transparent);
+}
+
+.avp-orb {
+    position: absolute;
+    width: 440px;
+    height: 440px;
+    border-radius: 50%;
+    background: rgba(64, 224, 155, .14);
+    filter: blur(90px);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: left .08s linear, top .08s linear;
+}
+
+.avp-hero-inner {
+    position: relative;
+    z-index: 2;
+    width: min(1120px, 100%);
+    display: grid;
+    grid-template-columns: 1.18fr .82fr;
+    gap: 54px;
+    align-items: center;
+}
+
+.avp-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 13px;
+    border: 1px solid rgba(133,255,191,.22);
+    border-radius: 999px;
+    background: rgba(255,255,255,.06);
+    color: #baf7d5;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+}
+
+.avp-eyebrow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #62f3a8;
+    box-shadow: 0 0 16px #62f3a8;
+}
+
+.avp-title {
+    margin: 24px 0 16px;
+    font-size: clamp(48px, 7vw, 86px);
+    line-height: .98;
+    letter-spacing: -3px;
+    font-weight: 900;
+}
+
+.avp-title span {
+    display: block;
+    background: linear-gradient(90deg, #ffffff 0%, #bdf6d8 50%, #63e8a4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.avp-tagline {
+    min-height: 34px;
+    font-size: clamp(18px, 2vw, 23px);
+    color: #a9e8c7;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.avp-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 3px;
+    vertical-align: -2px;
+    background: #7df0b3;
+    animation: avpBlink .8s infinite;
+}
+
+@keyframes avpBlink {
+    0%, 45% { opacity: 1; }
+    46%, 100% { opacity: 0; }
+}
+
+.avp-desc {
+    max-width: 650px;
+    color: #c0cec6;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.avp-actions {
+    display: flex;
+    gap: 13px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.avp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 50px;
+    padding: 0 22px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 800;
+    transition: .25s ease;
+}
+
+.avp-btn-primary {
+    color: #092015;
+    background: linear-gradient(135deg, #79efb2, #b9f9d7);
+    box-shadow: 0 12px 35px rgba(73,230,151,.22);
+}
+
+.avp-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 38px rgba(73,230,151,.34);
+}
+
+.avp-btn-secondary {
+    color: #e9fff3;
+    border: 1px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,.06);
+    backdrop-filter: blur(10px);
+}
+
+.avp-btn-secondary:hover {
+    transform: translateY(-3px);
+    background: rgba(255,255,255,.10);
+}
+
+.avp-mini-info {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    color: #9db0a5;
+    font-size: 13px;
+}
+
+.avp-mini-info span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.avp-panel {
+    position: relative;
+    padding: 24px;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,.13);
+    background: linear-gradient(160deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+    box-shadow: 0 30px 80px rgba(0,0,0,.35);
+    backdrop-filter: blur(18px);
+    transform: perspective(1000px) rotateY(-3deg) rotateX(2deg);
+    transition: transform .25s ease;
+}
+
+.avp-panel:hover {
+    transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-4px);
+}
+
+.avp-panel-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+}
+
+.avp-panel-brand {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #9bcbae;
+    font-weight: 800;
+}
+
+.avp-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    color: #9bf0bd;
+    font-weight: 700;
+}
+
+.avp-live::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    background: #62f3a8;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #62f3a8;
+}
+
+.avp-tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
+}
+
+.avp-tool {
+    display: block;
+    min-height: 116px;
+    padding: 18px;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(4,17,10,.44);
+    transition: .22s ease;
+}
+
+.avp-tool:hover {
+    transform: translateY(-4px);
+    border-color: rgba(116,241,176,.34);
+    background: rgba(14,49,30,.66);
+}
+
+.avp-tool-icon {
+    display: block;
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+
+.avp-tool strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 5px;
+}
+
+.avp-tool small {
+    color: #98aaa0;
+    line-height: 1.45;
+}
+
+.avp-search {
+    display: flex;
+    gap: 9px;
+    margin-top: 15px;
+    padding: 8px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.09);
+    background: rgba(0,0,0,.18);
+}
+
+.avp-search input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #fff;
+    padding: 9px 10px;
+    font-size: 14px;
+}
+
+.avp-search input::placeholder { color: #7f9588; }
+
+.avp-search button {
+    border: 0;
+    border-radius: 10px;
+    padding: 0 15px;
+    font-weight: 800;
+    cursor: pointer;
+    color: #082014;
+    background: #8ff1bb;
+}
+
+.avp-scroll-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: #88a597;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+    .avp-hero {
+        min-height: auto;
+        padding: 95px 18px 75px;
+    }
+
+    .avp-hero-inner {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+
+    .avp-panel {
+        transform: none;
+    }
+
+    .avp-title {
+        letter-spacing: -2px;
+    }
+}
+
+@media (max-width: 560px) {
+    .avp-tool-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .avp-actions .avp-btn {
+        width: 100%;
+    }
+
+    .avp-mini-info {
+        gap: 10px 16px;
+    }
+
+    .avp-search {
+        flex-direction: column;
+    }
+
+    .avp-search button {
+        min-height: 42px;
+    }
+}
+
+    </style>
+
+    <link rel="stylesheet" href="upgrade.css">
+    <link rel="stylesheet" href="global-search.css">
+    <link rel="stylesheet" href="simple-nav.css">
+    <link rel="stylesheet" href="home-effects.css?v=20261003-fixedslot2">
+<link rel="stylesheet" href="home-page-motion.css?v=20261003-typing-audit1">
+<link rel="stylesheet" href="home-code-hub.css?v=20260908-codehub14">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="avp-core.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#217346">
+
+<style id="skill-level-cards-style">
+.skill-level-section{max-width:1100px;margin:34px auto 44px;padding:0 20px}
+.skill-level-head{text-align:center;margin-bottom:22px}
+.skill-level-head h2{margin:0 0 8px;color:#185c37;font-size:clamp(26px,4vw,34px)}
+.skill-level-head p{margin:0;color:#66756d;line-height:1.65}
+.skill-level-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.skill-level-card{background:#fff;border:1px solid #dbe7df;border-radius:22px;padding:25px;box-shadow:0 10px 28px rgba(24,92,55,.08);position:relative;overflow:hidden}
+.skill-level-card:before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:#217346}
+.skill-level-card.advanced:before{background:linear-gradient(90deg,#185c37,#45a86b)}
+.skill-level-badge{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:#edf7f1;color:#185c37;font-size:12px;font-weight:800;letter-spacing:.02em}
+.skill-level-card h3{margin:14px 0 8px;color:#173f2a;font-size:23px}
+.skill-level-desc{margin:0 0 18px;color:#66756d;line-height:1.6}
+.skill-lessons{display:grid;gap:9px;margin:0 0 20px;padding:0;list-style:none}
+.skill-lessons a,.skill-lessons .soon{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border-radius:12px;background:#f7faf8;color:#24382d;text-decoration:none;font-weight:700;border:1px solid #edf2ef}
+.skill-lessons a:hover{border-color:#8cc4a3;transform:translateY(-1px)}
+.skill-lessons small{font-size:11px;font-weight:800;color:#217346;background:#e8f5ed;padding:4px 7px;border-radius:999px;white-space:nowrap}
+.skill-lessons .soon{color:#6f7772;background:#fafafa;border-style:dashed}
+.skill-lessons .soon small{color:#7a6540;background:#fff4d8}
+.skill-level-action{display:inline-flex;align-items:center;justify-content:center;padding:12px 15px;border-radius:12px;background:#217346;color:#fff;text-decoration:none;font-weight:800}
+.skill-level-action.secondary{background:#173f2a}
+@media(max-width:760px){.skill-level-grid{grid-template-columns:1fr}.skill-level-card{padding:20px}.skill-lessons a,.skill-lessons .soon{align-items:flex-start}.skill-level-head{text-align:left}}
+body.dark-mode .skill-level-card{background:#18221d;border-color:#2d4135}
+body.dark-mode .skill-level-head h2,body.dark-mode .skill-level-card h3{color:#dff5e8}
+body.dark-mode .skill-level-head p,body.dark-mode .skill-level-desc{color:#b5c2ba}
+body.dark-mode .skill-lessons a,body.dark-mode .skill-lessons .soon{background:#202d25;border-color:#304438;color:#e5eee8}
+</style>
+<link rel="stylesheet" href="learning-progress.css">
+
+
+
+<link rel="stylesheet" href="cloud-sync-v11.css">
+
+<style id="v16-home-modules">
+.home-modules-grid-v16 .home-module-card-featured{
+  background:linear-gradient(145deg,rgba(41,125,81,.34),rgba(13,74,45,.88));
+  border-color:rgba(139,237,179,.45);
+}
+.home-modules-grid-v16 .home-module-card-featured h3{color:#d8ffe7}
+@media (max-width:700px){
+  .home-modules-grid-v16{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .home-modules-grid-v16 .home-module-card{min-width:0}
+  .home-modules-grid-v16 .home-module-card p{font-size:.82rem;line-height:1.45}
+}
+.avp-continue-cta{
+  margin-top:0;display:flex;align-items:center;gap:12px;
+  width:100%;max-width:560px;min-height:64px;padding:10px 16px;
+  border-radius:16px;text-decoration:none;box-sizing:border-box;
+  background:#173f2d;color:#fff;border:1px solid #2e6b4a;
+}
+.avp-continue-cta-icon{font-size:18px}
+.avp-continue-cta-copy{flex:1;min-width:0}
+.avp-continue-cta-copy strong{display:block;font-size:15px}
+.avp-continue-cta-copy small{display:block;margin-top:2px;opacity:.8;font-size:12px}
+.avp-continue-cta-arrow{font-size:20px;opacity:.85}
+.avp-continue-cta:hover{background:#125c38}
+</style>
+
+
+<style id="home-minimal">
+.avp-hero{text-align:center;}
+.avp-hero-inner{grid-template-columns:1fr !important;max-width:720px !important;margin:0 auto !important;justify-items:center;text-align:center;}
+.avp-copy{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.avp-title,.avp-desc,.avp-tagline{text-align:center;}
+.avp-desc{max-width:28em;margin-left:auto;margin-right:auto;}
+.avp-eyebrow{margin-left:auto;margin-right:auto;}
+
+
+.avp-mobile-main-cta{
+  background:linear-gradient(135deg,#1b5e3b,#2e7d4f)!important;
+  color:#f4faf6!important;
+  box-shadow:0 8px 24px rgba(23,63,42,.28)!important;
+}
+.avp-mobile-main-cta small{color:rgba(244,250,246,.88)!important}
+
+.avp-yt-combo,
+a.avp-yt-combo.avp-mobile-main-cta{
+  background:#1f6b45 !important;
+  background-image:linear-gradient(135deg,#185a38,#2a7a4e) !important;
+  color:#f3faf6 !important;
+  box-shadow:0 8px 24px rgba(24,90,56,.26) !important;
+}
+
+.avp-yt-combo{
+  background:linear-gradient(135deg,#163d2a,#215c3d)!important;
+  box-shadow:0 8px 24px rgba(16,40,28,.28)!important;
+}
+
+
+.avp-mobile-main-cta-copy strong,
+.avp-yt-combo .avp-mobile-main-cta-copy strong{
+  color:#fff !important;
+  font-weight:800 !important;
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+.avp-mobile-main-cta-copy small,
+.avp-yt-combo .avp-mobile-main-cta-copy small{
+  color:#e8f6ee !important;
+}
+
+.avp-mobile-main-cta{position:relative}
+.avp-brand-badge{position:absolute;top:8px;right:10px;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.avp-brand-tt{background:#111}
+.avp-brand-yt{background:#ff0000}
+.avp-yt-combo{background:linear-gradient(135deg,#c1121f,#e53935)!important;box-shadow:0 8px 28px rgba(193,18,31,.28)!important;animation:none}
+.avp-yt-combo:hover{filter:brightness(1.05)}
+.avp-yt-combo-ava{display:flex;align-items:center;justify-content:center}
+.avp-yt-combo-ava img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.85);display:block}
+
+.avp-mobile-main-cta-wrap{width:100%;max-width:560px;margin:22px auto 0;display:flex;flex-direction:column;align-items:stretch;gap:10px;}
+.avp-mobile-main-cta,.avp-continue-cta{margin-left:auto;margin-right:auto;width:100%;text-align:left;}
+.avp-home-cta-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;}
+.avp-home-cta-row .avp-continue-cta{margin:0;max-width:none;width:100%;min-height:64px;position:relative;}
+.avp-race-cta{background:linear-gradient(135deg,#0f4c81,#1a6bb5)!important;border-color:#3d8fd1!important;}
+.avp-race-cta:hover{background:linear-gradient(135deg,#0c3d68,#155a96)!important;}
+.avp-new-badge{
+  position:absolute;top:-9px;right:10px;z-index:2;
+  background:#ff2d55;color:#fff;font-size:10px;font-weight:900;
+  letter-spacing:.6px;padding:3px 8px;border-radius:999px;
+  box-shadow:0 2px 10px rgba(255,45,85,.45);
+  animation:avpNewPulse 1.6s ease-in-out infinite;
+}
+@keyframes avpNewPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@media (max-width:520px){.avp-home-cta-row{grid-template-columns:1fr}}
+
+.avp-youtube-cta{
+  display:flex;align-items:center;gap:12px;width:100%;max-width:100%;
+  margin:10px 0 0;padding:10px 14px;min-height:64px;box-sizing:border-box;
+  text-decoration:none;border-radius:16px;
+  background:#ff0000;color:#fff;
+  box-shadow:0 8px 20px rgba(200,0,0,.25);
+  transition:transform .15s ease, filter .15s ease;
+}
+.avp-youtube-cta:hover{filter:brightness(1.06);transform:translateY(-1px);color:#fff}
+.avp-yt-avatars{position:relative;flex:0 0 auto;width:44px;height:44px}
+.avp-yt-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #fff;display:block;background:#fff}
+.avp-yt-logo{
+  position:absolute;right:-4px;bottom:-4px;width:22px;height:22px;border-radius:50%;
+  background:#ff0000;border:2px solid #fff;display:grid;place-items:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.2);
+}
+.avp-yt-logo svg{display:block}
+.avp-yt-copy{flex:1;min-width:0}
+.avp-yt-copy strong{display:block;font-size:15px;font-weight:800}
+.avp-yt-copy small{display:block;margin-top:2px;font-size:12px;opacity:.92}
+.avp-yt-arrow{font-size:20px;opacity:.9;flex:0 0 auto}
+
+.avp-yt-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-top:10px}
+.avp-youtube-cta{margin-top:0 !important}
+.avp-yt-practice{display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;padding:10px 14px;min-height:64px;text-decoration:none;border-radius:16px;background:linear-gradient(135deg,#1b6b45,#218c5a);color:#fff;box-shadow:0 8px 20px rgba(27,107,69,.22)}
+.avp-yt-practice:hover{filter:brightness(1.06);transform:translateY(-1px);color:#fff}
+.avp-yt-practice-icon{font-size:22px;flex:0 0 auto}
+@media (max-width:560px){.avp-yt-row{grid-template-columns:1fr}}
+
+
+
+.avp-mini-info{justify-content:center;margin-left:auto;margin-right:auto;}
+.avp-scroll-hint{display:none !important;}
+.home-path{max-width:1120px;margin:28px auto 56px;padding:0 18px;position:relative;z-index:2;}
+.home-path-inner{
+  background:#fff;
+  border:1px solid #d5e6db;
+  border-radius:24px;
+  padding:28px 24px 22px;
+  box-shadow:0 18px 50px rgba(16,64,40,.10);
+}
+.home-path h2{margin:0 0 6px;color:#185c37;font-size:clamp(22px,3vw,28px);text-align:center;}
+.home-path > .home-path-inner > p{margin:0 0 20px;color:#66756d;text-align:center;}
+.home-path-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;}
+.home-path-card{background:#f7fbf8;border:1px solid #dbe7df;border-radius:16px;padding:16px 16px 12px;}
+.home-path-card span{display:block;font-size:12px;font-weight:800;color:#217346;margin-bottom:6px;}
+.home-path-card h3{margin:0 0 10px;color:#173f2a;font-size:17px;}
+.home-path-card ul{list-style:none;margin:0;padding:0;}
+.home-path-card li{margin:0;}
+.home-path-card a{display:flex;align-items:center;gap:8px;padding:8px 10px;margin:4px 0;color:#24382d;text-decoration:none;font-weight:650;border:1px solid #e3eee7;border-radius:10px;background:#fff;font-size:14px;}
+.home-path-card a:hover{color:#217346;border-color:#9ecfb0;background:#f3faf6;}
+.home-path-card a .hp-ic{width:22px;text-align:center;flex:0 0 22px;}
+.home-path-card--1{background:#f3faf6;border-color:#cfe8d8;}
+.home-path-card--2{background:#f3f6fb;border-color:#d4deef;}
+.home-path-card--3{background:#f8f5fb;border-color:#e2d7ee;}
+.home-path-card--4{background:#fbf7f1;border-color:#ecdcc6;}
+.home-path-more{margin:22px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.home-more-card{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px 16px;border-radius:16px;text-decoration:none;border:1px solid #dbe7df;background:#fff;min-height:92px;}
+.home-more-card span{font-size:22px;line-height:1;}
+.home-more-card strong{color:#173f2a;font-size:15px;}
+.home-more-card small{color:#66756d;font-size:12px;}
+.home-more-card:hover{transform:translateY(-2px);}
+.home-more-1{background:#eef7f2;border-color:#c5e0d1;}
+.home-more-2{background:#eef4fb;border-color:#c9d8ee;}
+.home-more-3{background:#f6f1fb;border-color:#dccfea;}
+@media(max-width:700px){.home-path-more{grid-template-columns:1fr;}}
+@media(max-width:900px){.home-path-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:560px){.home-path-grid{grid-template-columns:1fr;}.home-path-inner{padding:20px 14px 16px;}}
+
+.home-aff-note{margin:8px 0 12px;font-size:12.5px;line-height:1.45;color:#5b6b63;}
+.home-books-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.home-book-card{display:flex;flex-direction:column;gap:4px;padding:14px 16px;border-radius:16px;text-decoration:none;border:1px solid #dbe7df;background:#f7fbf8;min-height:92px;}
+.home-book-card span{font-size:12px;font-weight:800;color:#217346;}
+.home-book-card strong{color:#173f2a;font-size:15px;line-height:1.35;}
+.home-book-card small{color:#66756d;font-size:12px;line-height:1.4;}
+.home-book-card:hover{border-color:#9ecfb0;background:#eef7f2;transform:translateY(-2px);}
+.home-book-card:nth-child(3n){background:#f3f6fb;border-color:#d4deef;}
+.home-book-card:nth-child(3n+2){background:#f8f5fb;border-color:#e2d7ee;}
+@media(max-width:700px){.home-books-grid{grid-template-columns:1fr;}}
+
+</style>
+
+
+<link rel="stylesheet" href="avp-hover-lift.css" />
+<style id="avp-home-full-css">
+.avp-hero{position:relative;isolation:isolate;overflow:hidden;--px:0}
+.avp-hero::before{content:"";position:absolute;inset:-20% -10% auto -10%;height:70%;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(74,222,128,.18),transparent 60%);
+  animation:avpGlow 8s ease-in-out infinite alternate}
+@keyframes avpGlow{from{opacity:.55;transform:scale(1)}to{opacity:1;transform:scale(1.06)}}
+.avp-hero-inner{position:relative;z-index:2}
+.avp-title span{background:linear-gradient(90deg,#ecfdf5 0%,#a7f3d0 45%,#ecfdf5 100%);background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:avpTitleShine 7s linear infinite}
+@keyframes avpTitleShine{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+.avp-mobile-main-cta{box-shadow:0 8px 28px rgba(16,185,129,.28);animation:avpCtaBreath 3.6s ease-in-out infinite;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease,filter .25s ease}
+@keyframes avpCtaBreath{0%,100%{box-shadow:0 8px 24px rgba(16,185,129,.22)}50%{box-shadow:0 12px 32px rgba(16,185,129,.38)}}
+.avp-mobile-main-cta:hover,.avp-youtube-cta:hover,.avp-yt-practice:hover,.avp-scroll-tease-btn:hover{
+  transform:translateY(-3px) scale(1.01);filter:brightness(1.05);box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.avp-youtube-cta,.avp-yt-practice,.avp-scroll-tease-btn{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease,filter .25s ease}
+.avp-scroll-tease-btn{position:relative;overflow:hidden}
+.avp-scroll-tease-btn::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.14) 50%,transparent 60%);
+  transform:translateX(-120%);animation:avpSheen 4.5s ease-in-out infinite}
+@keyframes avpSheen{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.home-path-more--5{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:10px!important}
+.home-path-more--5 .home-more-card{position:relative;display:flex;flex-direction:column;gap:4px;min-height:88px;padding:14px 12px!important;
+  border-radius:14px!important;text-decoration:none!important;border:1px solid rgba(0,0,0,.06)!important;background:#eef7f1!important;color:#145a32!important;box-sizing:border-box;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease}
+.home-path-more--5 .home-more-2{background:#eef4fb!important}
+.home-path-more--5 .home-more-5{background:#fff7e9!important;border-color:#eed9ad!important;color:#704b12!important}
+.home-path-more--5 .home-more-3{background:#f4eef8!important}
+.home-path-more--5 .home-more-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(20,90,50,.1)}
+.home-path-more--5 .home-more-race small{color:#1d4ed8!important;font-weight:800;background:#dbeafe;border-radius:6px;padding:2px 6px}
+.home-more-new{position:absolute;top:8px;right:8px;background:#ff2d55;color:#fff;font-size:9px;font-weight:900;padding:2px 6px;border-radius:999px}
+.home-path-card{transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s ease}
+.home-path-card:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(20,90,50,.12)}
+.avp-rise{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.avp-rise.in{opacity:1;transform:none}
+@media(max-width:1080px){.home-path-more--5{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:700px){.home-path-more--5{grid-template-columns:1fr 1fr!important}}
+@media(max-width:520px){.home-path-more--5{grid-template-columns:1fr!important}}
+@media(prefers-reduced-motion:reduce){
+  .avp-title span,.avp-mobile-main-cta,.avp-scroll-tease-btn::after,.avp-hero::before{animation:none!important}
+  .avp-rise{opacity:1;transform:none}
+}
+</style>
+
+
+<style id="avp-brand-shine">
+.avp-title{position:relative}
+.avp-title span{
+  display:inline-block;
+  background:linear-gradient(100deg,#d1fae5 0%,#ecfdf5 18%,#fff 36%,#6ee7b7 48%,#fff 60%,#ecfdf5 78%,#a7f3d0 100%);
+  background-size:220% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  animation:avpBrandShine 3.2s ease-in-out infinite !important;
+  filter:drop-shadow(0 0 10px rgba(110,231,183,.35));
+}
+.avp-title::after{
+  content:"";position:absolute;left:8%;right:8%;bottom:-6px;height:2px;border-radius:999px;
+  background:linear-gradient(90deg,transparent,rgba(110,231,183,.55),transparent);
+  animation:avpBrandLine 3.2s ease-in-out infinite;pointer-events:none;
+}
+@keyframes avpBrandShine{
+  0%{background-position:100% 50%;filter:drop-shadow(0 0 6px rgba(110,231,183,.25))}
+  40%{background-position:0% 50%;filter:drop-shadow(0 0 16px rgba(167,243,208,.55))}
+  100%{background-position:-100% 50%;filter:drop-shadow(0 0 8px rgba(110,231,183,.3))}
+}
+@keyframes avpBrandLine{0%,100%{opacity:.35;transform:scaleX(.85)}40%{opacity:.9;transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){
+  .avp-title span{animation:none;background:#ecfdf5;-webkit-text-fill-color:#ecfdf5;color:#ecfdf5;filter:none}
+  .avp-title::after{animation:none}
+}
+</style>
+
+<style id="avp-locked-inline-css">
+@media(max-width:640px){
+}
+.home-path-grid{
+  margin-top: 8px !important;
+}
+
+/* === site motion === */
+/*! avp-site-motion.css — hiệu ứng nổi + parallax nhẹ toàn site (chỉ visual) */
+:root{
+  --avp-lift: cubic-bezier(.22,1,.36,1);
+  --avp-shadow: 0 14px 32px rgba(15,42,28,.12);
+}
+
+/* ===== Hover lift (chuột thật) ===== */
+@media (hover:hover) and (pointer:fine){
+  .course-card,
+  .practice-file-card,
+  .summary-card,
+  .level-card,
+  .continue-card,
+  .dash-panel,
+  .home-cta-card,
+  .home-practice-cta,
+  .home-path-card,
+  .home-more-card,
+  .home-book-card,
+  .pv-hero,
+  .ml-hero,
+  .pq-hero,
+  .dashboard-hero,
+  .course-panel,
+  .pq-lesson,
+  .lesson-tips-panel,
+  .badge-card,
+  .tool-card,
+  .stat-card,
+  .lab-card,
+  .auth-card,
+  .admin-card,
+  .mail-item,
+  .pv-panel,
+  .pv-line,
+  .path-item,
+  .feature-card,
+  .content-card,
+  .grid-card,
+  article.card,
+  .card{
+    transition:
+      transform .28s var(--avp-lift),
+      box-shadow .28s ease,
+      filter .2s ease,
+      border-color .2s ease !important;
+    will-change: transform;
+  }
+
+  .course-card:hover,
+  .practice-file-card:hover,
+  .summary-card:hover,
+  .level-card:hover,
+  .continue-card:hover,
+  .home-cta-card:hover,
+  .home-practice-cta:hover,
+  .home-path-card:hover,
+  .home-more-card:hover,
+  .home-book-card:hover,
+  .course-panel:hover,
+  .pq-lesson:hover,
+  .badge-card:hover,
+  .tool-card:hover,
+  .lab-card:hover,
+  .content-card:hover,
+  .grid-card:hover,
+  article.card:hover,
+  .card:hover{
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: var(--avp-shadow) !important;
+    filter: brightness(1.03);
+  }
+
+  .path-item:hover,
+  .pv-line:hover,
+  .mail-item:hover,
+  .pq-lesson:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(15,42,28,.1) !important;
+  }
+
+  /* Banner / hero blocks trong khung */
+  .pv-hero:hover,
+  .ml-hero:hover,
+  .pq-hero:hover,
+  .dashboard-hero:hover,
+  .dash-panel:hover,
+  .lesson-tips-panel:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(15,42,28,.14) !important;
+  }
+
+  /* Buttons */
+  .btn, button.btn, a.btn, .filter-btn, .pq-btn, .complete-btn,
+  .next-lesson-btn, .continue-btn, .vote-btn, .go, .mode,
+  .avp-mobile-main-cta, .avp-youtube-cta, .avp-yt-practice,
+  .lp-filter, input[type="submit"], button[type="submit"]{
+    transition: transform .2s var(--avp-lift), box-shadow .2s ease, filter .2s ease !important;
+  }
+  .btn:hover, button.btn:hover, a.btn:hover, .filter-btn:hover, .pq-btn:hover,
+  .complete-btn:hover, .next-lesson-btn:hover, .continue-btn:hover,
+  .avp-mobile-main-cta:hover, .avp-youtube-cta:hover, .avp-yt-practice:hover,
+  input[type="submit"]:hover, button[type="submit"]:hover{
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,.14) !important;
+  }
+
+  a.course-card:hover,
+  a.home-more-card:hover,
+  a.practice-file-card:hover{
+    transform: translateY(-5px) scale(1.01);
+  }
+}
+
+/* ===== Scroll reveal ===== */
+.avp-motion-rise{
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition: opacity .65s var(--avp-lift), transform .65s var(--avp-lift);
+}
+.avp-motion-rise.avp-in{
+  opacity: 1;
+  transform: none;
+}
+
+/* ===== Parallax layer helper ===== */
+.avp-parallax-layer{
+  will-change: transform;
+  transition: transform .08s linear;
+}
+
+@media (hover:none){
+  .course-card:hover, .btn:hover{ transform:none !important; }
+}
+@media (prefers-reduced-motion: reduce){
+  .course-card, .btn, .home-path-card, .pv-hero, .avp-motion-rise{
+    transition: none !important;
+  }
+  .course-card:hover, .btn:hover{ transform:none !important; }
+  .avp-motion-rise{ opacity:1; transform:none; }
+}
+
+/* === hover === */
+/* redirected: use avp-site-motion.css */
+@import url("avp-site-motion.css");
+
+</style>
+
+
+<style id="avp-board-force">
+.home-path-more--5{
+  display:grid !important;
+  grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  gap:10px !important;
+}
+#avpScrollTease, .avp-scroll-tease{ display:block !important; width:100% !important; }
+@media(max-width:1080px){.home-path-more--5{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:700px){.home-path-more--5{grid-template-columns:1fr 1fr!important}}
+@media(max-width:520px){.home-path-more--5{grid-template-columns:1fr!important}}
+</style>
+
+
+<style id="avp-tease-chev">
+.avp-tease-title{display:flex!important;align-items:center;justify-content:center;gap:8px}
+.avp-tease-chevs{display:inline-flex;flex-direction:column;align-items:center;line-height:.48;font-size:15px;font-weight:900}
+.avp-tease-chevs span{
+  background:linear-gradient(180deg,#fff,#86efac,#4ade80);background-size:100% 200%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 6px rgba(134,239,171,.55));
+  animation:avpTeaseChev 1.35s ease-in-out infinite;
+}
+.avp-tease-chevs span:nth-child(2){animation-delay:.12s}
+.avp-tease-chevs span:nth-child(3){animation-delay:.24s}
+@keyframes avpTeaseChev{
+  0%{background-position:0% 0%;transform:translateY(0)}
+  50%{background-position:0% 100%;transform:translateY(2px);filter:drop-shadow(0 0 10px rgba(134,239,171,.85))}
+  100%{background-position:0% 0%;transform:translateY(0)}
+}
+</style>
+
+
+<style>
+.avp-practice-hub-cta{
+  position:relative;
+  overflow:visible;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(85,187,255,.18),transparent 34%),
+    linear-gradient(135deg,#145f3b,#1d7b4e) !important;
+  border-color:rgba(173,245,200,.6) !important;
+}
+.avp-practice-hub-badges{
+  position:absolute;
+  top:-10px;
+  right:12px;
+  display:flex;
+  gap:5px;
+  z-index:3;
+}
+.avp-mini-channel{
+  width:24px;
+  height:24px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#fff;
+  font-size:11px;
+  font-weight:900;
+  border:2px solid rgba(255,255,255,.9);
+  box-shadow:0 3px 10px rgba(0,0,0,.2);
+}
+.avp-mini-channel-tt{background:#111;}
+.avp-mini-channel-yt{background:#ff0000;}
+.avp-mini-channel-grade{background:#2563eb;}
+.avp-practice-hub-badges{
+  overflow:visible!important;
+  perspective:180px;
+}
+.avp-mini-channel{
+  position:relative;
+  transform-style:preserve-3d;
+  transform-origin:50% 80%;
+  overflow:hidden;
+}
+.avp-mini-channel::after{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.0) 42%,rgba(255,255,255,.85) 50%,rgba(255,255,255,0) 58%,transparent 70%);
+  transform:translateX(-120%) rotate(18deg);
+  pointer-events:none;
+}
+.avp-mini-channel-tt{animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) 0s infinite}
+.avp-mini-channel-yt{animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) .28s infinite}
+.avp-mini-channel-grade{animation:avpMiniBounce 1.8s cubic-bezier(.22,1.4,.36,1) .56s infinite}
+.avp-mini-channel-tt::after{animation:avpMiniFlash 1.8s ease-in-out 0s infinite}
+.avp-mini-channel-yt::after{animation:avpMiniFlash 1.8s ease-in-out .28s infinite}
+.avp-mini-channel-grade::after{animation:avpMiniFlash 1.8s ease-in-out .56s infinite}
+@keyframes avpMiniBounce{
+  0%,18%,100%{transform:translateY(0) scale(1) rotateX(0) rotateY(0)}
+  32%{transform:translateY(-7px) scale(1.14) rotateX(16deg) rotateY(-10deg)}
+  46%{transform:translateY(-2px) scale(1.04) rotateX(-6deg) rotateY(8deg)}
+  58%{transform:translateY(-5px) scale(1.08) rotateX(10deg) rotateY(-4deg)}
+  72%{transform:translateY(0) scale(1) rotateX(0) rotateY(0)}
+}
+@keyframes avpMiniFlash{
+  0%,22%{transform:translateX(-130%) rotate(18deg);opacity:0}
+  32%{opacity:1}
+  48%{transform:translateX(130%) rotate(18deg);opacity:.3}
+  49%,100%{opacity:0;transform:translateX(130%) rotate(18deg)}
+}
+@media (prefers-reduced-motion:reduce){
+}
+</style>
+
+
+
+<style id="homeBooksCompactV114">
+.home-reference-v114{margin:18px auto 0;padding:0 16px}
+.home-reference-grid-v114{
+  max-width:1120px;margin:0 auto;display:grid!important;
+  grid-template-columns:1fr 1fr;gap:10px;padding:12px!important;
+  border:1px solid #d9e7df;border-radius:18px;background:#fff;
+  box-shadow:0 8px 24px rgba(23,70,43,.05)
+}
+.home-ref-item-v114{
+  min-width:0;display:grid;grid-template-columns:52px minmax(0,1fr) auto;
+  gap:12px;align-items:center;padding:13px 14px;border:1px solid #dbe7df;
+  border-radius:14px;background:#f9fcfa;color:#173f2a;text-decoration:none;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease
+}
+.home-ref-handbook-v114{background:#f1f9f4;border-color:#c6dfcf}
+.home-ref-icon-v114{
+  width:52px;height:52px;display:grid;place-items:center;border-radius:12px;
+  background:#edf6f0;font-size:21px
+}
+.home-ref-cover-v114{
+  background:linear-gradient(145deg,#185c37,#217346);color:#fff;
+  font-size:13px;font-weight:950;box-shadow:inset 4px 0 0 rgba(255,255,255,.10)
+}
+.home-ref-copy-v114{min-width:0;display:grid;gap:2px}
+.home-ref-copy-v114 small{color:#217346;font-size:8px;font-weight:950;letter-spacing:.08em}
+.home-ref-copy-v114 strong{color:#173f2a;font-size:14px;line-height:1.3}
+.home-ref-copy-v114 em{font-style:normal;color:#718078;font-size:10px;line-height:1.4}
+.home-ref-item-v114>b{color:#185c37;font-size:10px;white-space:nowrap}
+.home-ref-item-v114:hover{transform:translateY(-2px);border-color:#9ec9ad;box-shadow:0 8px 18px rgba(22,72,43,.07)}
+@media(max-width:760px){.home-reference-grid-v114{grid-template-columns:1fr}}
+@media(max-width:520px){
+  .home-reference-v114{padding:0 10px}
+  .home-ref-item-v114{grid-template-columns:44px minmax(0,1fr);padding:11px}
+  .home-ref-icon-v114{width:44px;height:44px}
+  .home-ref-item-v114>b{grid-column:2;justify-self:start}
+}
+</style>
+
+
+<style id="homeRootCauseEffectFix">
+/* Keep current layout. Restore only homepage visual effects. */
+.avp-practice-hub-cta{isolation:isolate}
+.avp-practice-hub-cta::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  border-radius:inherit;
+  transform:none!important;
+  background:linear-gradient(
+    110deg,
+    transparent 0%,transparent 31%,
+    rgba(255,255,255,.07) 40%,
+    rgba(255,255,255,.48) 49%,
+    rgba(255,255,255,.12) 56%,
+    transparent 66%,transparent 100%
+  );
+  background-size:240% 100%;
+  background-position:145% 0;
+  animation:avpPracticeSafeShineRoot 4.15s ease-in-out infinite!important;
+}
+@keyframes avpPracticeSafeShineRoot{
+  0%,62%{background-position:145% 0;opacity:0}
+  67%{opacity:1}
+  88%{background-position:-145% 0;opacity:1}
+  100%{background-position:-145% 0;opacity:0}
+}
+
+.avp-scroll-tease-btn{isolation:isolate}
+.avp-scroll-tease-btn::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  border-radius:inherit;
+  transform:none!important;
+  background:linear-gradient(
+    108deg,
+    transparent 0%,transparent 34%,
+    rgba(255,255,255,.03) 42%,
+    rgba(255,255,255,.20) 50%,
+    rgba(255,255,255,.04) 58%,
+    transparent 66%,transparent 100%
+  )!important;
+  background-size:240% 100%!important;
+  background-position:145% 0;
+  animation:avpRouteSafeShineRoot 4.7s ease-in-out infinite!important;
+}
+.avp-scroll-tease-btn>*{position:relative;z-index:1}
+@keyframes avpRouteSafeShineRoot{
+  0%,64%{background-position:145% 0;opacity:0}
+  70%{opacity:1}
+  90%{background-position:-145% 0;opacity:1}
+  100%{background-position:-145% 0;opacity:0}
+}
+
+@media (hover:hover) and (pointer:fine){
+  .home-ref-item-v114{
+    transition:
+      transform .28s cubic-bezier(.22,1,.36,1),
+      box-shadow .28s ease,
+      filter .2s ease,
+      border-color .2s ease!important;
+  }
+  .home-ref-item-v114:hover{
+    transform:translateY(-5px) scale(1.01);
+    box-shadow:0 14px 32px rgba(15,42,28,.12)!important;
+    filter:brightness(1.03);
+  }
+}
+</style>
+
+<link rel="stylesheet" href="home-mini-bounce.css?v=20260831-desk">
+  <link rel="stylesheet" href="avp-ui-system.css?v=20261001-ui2" data-avp-ui-system>
+
+<style id="avp40-home-brand-polish">
+.avp-title{max-width:760px;line-height:1.04;letter-spacing:-.045em!important;font-weight:850!important}
+.avp-title>span{display:block}
+.avp-brand-vietnamese{display:block;margin-top:12px;font-size:.47em;line-height:1.25;letter-spacing:.13em;font-weight:750;color:#baf7d5}
+.avp-desc{max-width:620px!important;font-size:clamp(17px,2vw,21px)!important;line-height:1.65!important;color:#e4f4eb!important}
+.avp-domain-line{display:block;margin-top:15px;font-size:12px;line-height:1.5;letter-spacing:.14em;font-weight:800;color:#baf7d5;text-transform:uppercase}
+.avp-eyebrow{letter-spacing:.12em!important}
+@media(max-width:560px){.avp-title{font-size:clamp(36px,10vw,52px)!important}.avp-brand-vietnamese{font-size:.43em;letter-spacing:.09em}.avp-domain-line{font-size:10px;letter-spacing:.08em}}
+</style>
+
+<style id="avp40-home-hero-design">
+/* Banner AVP 4.0 — chỉ tác động khu vực hero */
+.avp-hero{
+  position:relative!important;overflow:hidden!important;text-align:left!important;
+  min-height:560px;background:
+    radial-gradient(ellipse at 78% 48%,rgba(25,190,116,.22),transparent 34%),
+    radial-gradient(ellipse at 18% 18%,rgba(25,112,71,.34),transparent 38%),
+    linear-gradient(115deg,#031b12 0%,#073522 52%,#021b12 100%)!important;
+  color:#f4fff8!important;padding:76px 5.5% 66px!important;
+}
+.avp-hero:before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;
+  background-image:linear-gradient(rgba(111,224,168,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(111,224,168,.12) 1px,transparent 1px);
+  background-size:44px 44px;mask-image:linear-gradient(90deg,transparent,#000 42%,#000);
+}
+.avp-hero:after{
+  content:"";position:absolute;z-index:0;right:5%;top:17%;width:39%;height:65%;border:1px solid rgba(111,224,168,.32);border-radius:24px;
+  background:
+    linear-gradient(180deg,rgba(10,52,36,.84),rgba(2,24,16,.78)),
+    repeating-linear-gradient(0deg,transparent 0 34px,rgba(91,214,147,.18) 35px 36px),
+    repeating-linear-gradient(90deg,transparent 0 54px,rgba(91,214,147,.15) 55px 56px);
+  box-shadow:0 24px 80px rgba(0,0,0,.32),0 0 60px rgba(20,201,118,.12),inset 0 0 45px rgba(35,181,110,.08);
+  transform:perspective(900px) rotateY(-8deg) rotateX(2deg);
+  pointer-events:none;
+}
+.avp-hero-inner{position:relative!important;z-index:1;display:grid!important;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr)!important;gap:5%!important;align-items:center!important;max-width:1320px!important;margin:0 auto!important;text-align:left!important;justify-items:stretch!important}
+.avp-copy{align-items:flex-start!important;text-align:left!important;max-width:700px}
+.avp-eyebrow{margin:0 0 26px!important;display:inline-flex;align-items:center;gap:12px;padding:10px 17px;border:1px solid rgba(135,235,181,.28);border-radius:999px;background:rgba(18,94,60,.3);color:#baf7d5!important;font-size:12px!important;font-weight:800}
+.avp-title{max-width:760px!important;margin:0 0 18px!important;font-size:clamp(58px,6.4vw,94px)!important;line-height:.98!important;letter-spacing:-.055em!important;text-align:left!important;color:#f5fff8!important;text-shadow:0 8px 34px rgba(34,224,135,.12)}
+.avp-title>span{display:block}
+.avp-brand-vietnamese{margin-top:14px!important;font-size:clamp(24px,2.8vw,38px)!important;letter-spacing:.12em!important;line-height:1.2!important;color:#d4fbe4!important}
+.avp-tagline-static{display:block!important;margin:0 0 20px!important;max-width:620px;font-size:clamp(18px,2vw,25px)!important;line-height:1.55!important;color:#e4f4eb!important;text-align:left!important}
+.avp-desc{margin:0!important;max-width:620px!important;font-size:clamp(17px,1.8vw,22px)!important;line-height:1.65!important;color:#baf7d5!important;text-align:left!important}
+.avp-domain-line{margin-top:17px!important;font-size:12px!important;letter-spacing:.13em!important;color:#7ef0b2!important}
+.avp-mobile-main-cta-wrap{margin-top:28px!important;width:min(100%,430px)!important}
+.avp-mobile-main-cta{border:1px solid rgba(161,241,195,.2)!important;border-radius:16px!important}
+.avp-mini-info{margin-top:24px!important;justify-content:flex-start!important;color:#c8e9d6!important}
+.avp-scroll-hint{display:none!important}
+@media(max-width:800px){
+ .avp-hero{min-height:0!important;padding:54px 22px 42px!important}
+ .avp-hero:after{right:-18%;top:12%;width:72%;height:47%;opacity:.42}
+ .avp-hero-inner{grid-template-columns:1fr!important;gap:20px!important;max-width:650px!important}
+ .avp-title{font-size:clamp(48px,12vw,72px)!important}
+ .avp-brand-vietnamese{font-size:clamp(20px,5.3vw,31px)!important;letter-spacing:.08em!important}
+ .avp-tagline-static{font-size:18px!important}
+ .avp-desc{font-size:16px!important}
+ .avp-domain-line{font-size:10px!important;letter-spacing:.07em!important}
+ .avp-mobile-main-cta-wrap{margin-top:22px!important}
+}
+@media(max-width:420px){.avp-hero{padding-left:18px!important;padding-right:18px!important}.avp-title{font-size:45px!important}.avp-brand-vietnamese{font-size:19px!important}}
+
+.avp-tagline-static{width:100%;max-width:720px!important;min-height:1.6em;white-space:nowrap;overflow:hidden;text-overflow:clip}
+#avpTyping{display:inline}
+.avp-typing-caret{display:inline-block;width:2px;height:1em;margin-left:4px;vertical-align:-.12em;background:#7ef0b2;animation:avpTypingBlink .85s steps(2,start) infinite}
+@keyframes avpTypingBlink{to{visibility:hidden}}
+@media(max-width:800px){.avp-tagline-static{font-size:clamp(14px,3.5vw,18px)!important;letter-spacing:-.02em;min-height:1.6em}}
+@media(max-width:380px){.avp-tagline-static{font-size:13px!important}}
+@media(prefers-reduced-motion:reduce){.avp-typing-caret{animation:none}}
+
+/* Fix: giữ dòng slogan và con trỏ trên cùng một hàng */
+.avp-tagline-static{
+ display:flex!important;flex-wrap:nowrap!important;align-items:center!important;
+ width:100%!important;max-width:100%!important;min-width:0!important;
+ white-space:nowrap!important;overflow:hidden!important;overflow-wrap:normal!important;
+}
+#avpTyping{
+ display:block!important;flex:0 1 auto!important;min-width:0!important;
+ white-space:nowrap!important;overflow:hidden!important;text-overflow:clip!important;
+}
+.avp-typing-caret{display:block!important;flex:0 0 2px!important;align-self:center!important;margin-left:4px!important}
+@media(max-width:800px){
+ .avp-tagline-static{font-size:clamp(12px,3.1vw,17px)!important;letter-spacing:-.035em!important}
+}
+@media(max-width:380px){.avp-tagline-static{font-size:11px!important}}
+</style>
+
+<style id="avp-hero-demo-dashboard-css">
+/* Hero two-column layout with a compact interactive dashboard preview */
+.avp-hero .avp-hero-inner{grid-template-columns:minmax(0,1.03fr) minmax(340px,.97fr)!important;gap:clamp(28px,4vw,64px)!important;max-width:1320px!important;width:min(1320px,100%)!important;align-items:center!important;text-align:left!important;justify-items:stretch!important}
+.avp-hero .avp-copy{align-items:flex-start!important;text-align:left!important;min-width:0}
+.avp-hero .avp-eyebrow{margin-left:0!important;margin-right:0!important}
+.avp-hero .avp-title,.avp-hero .avp-desc,.avp-hero .avp-tagline{text-align:left!important}
+.avp-hero .avp-desc{margin-left:0!important;margin-right:0!important}
+.avp-hero .avp-mobile-main-cta-wrap{margin-left:0!important;margin-right:0!important}
+.avp-demo-dashboard{position:relative;min-width:0;padding:clamp(17px,2vw,25px);border:1px solid rgba(204,255,226,.22);border-radius:24px;background:linear-gradient(145deg,rgba(250,255,252,.12),rgba(236,255,246,.055));box-shadow:0 26px 70px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.15);backdrop-filter:blur(16px);color:#f2fff7;transform:perspective(1200px) rotateY(-3deg);transition:transform .25s ease,border-color .25s ease}
+.avp-demo-dashboard:hover{transform:perspective(1200px) rotateY(0) translateY(-3px);border-color:rgba(145,255,194,.42)}
+.avp-demo-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:17px}
+.avp-demo-kicker{display:block;color:#8ce9b2;font-size:9px;letter-spacing:.14em;font-weight:900}
+.avp-demo-head h2{margin:5px 0 0;color:#f4fff8;font-size:clamp(19px,2vw,25px);letter-spacing:-.03em}
+.avp-demo-tag{flex:0 0 auto;padding:6px 8px;border:1px solid rgba(255,204,117,.34);border-radius:999px;background:rgba(123,77,14,.24);color:#ffdb9b;font-size:8px;font-weight:900;letter-spacing:.04em}
+.avp-demo-tabs{display:flex;gap:6px;padding:4px;margin-bottom:12px;border:1px solid rgba(255,255,255,.10);border-radius:12px;background:rgba(0,0,0,.15)}
+.avp-demo-tabs button{flex:1;min-height:33px;border:0;border-radius:8px;background:transparent;color:#c5dfd0;font-size:11px;font-weight:800;cursor:pointer;transition:background .2s,color .2s}
+.avp-demo-tabs button.is-active{background:#d9fbe7;color:#125333;box-shadow:0 3px 12px rgba(0,0,0,.12)}
+.avp-demo-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.avp-demo-kpi{min-width:0;padding:13px;border:1px solid rgba(255,255,255,.11);border-radius:14px;background:rgba(1,22,13,.32)}
+.avp-demo-kpi>span{display:block;color:#b8d8c6;font-size:10px;font-weight:700}
+.avp-demo-kpi strong{display:block;margin-top:7px;color:#fff;font-size:clamp(18px,2vw,25px);letter-spacing:-.04em;line-height:1.1}
+.avp-demo-kpi small{display:block;margin-top:6px;color:#8fe2b0;font-size:9px;line-height:1.4}
+.avp-demo-chart-wrap{margin-top:12px;padding:13px 13px 10px;border:1px solid rgba(255,255,255,.10);border-radius:15px;background:rgba(0,0,0,.14)}
+.avp-demo-chart-head{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#e6f8ed;font-size:10px;font-weight:800}
+.avp-demo-chart-head span+span{color:#a3cbb4;font-size:9px;font-weight:600}
+.avp-demo-chart{height:130px;display:flex;align-items:stretch;gap:clamp(5px,1vw,11px);padding:10px 5px 0;margin-top:5px;border-bottom:1px solid rgba(255,255,255,.17);background:repeating-linear-gradient(to bottom,transparent 0,transparent 27px,rgba(255,255,255,.07) 28px,transparent 29px);perspective:700px}
+.avp-demo-chart.type-line,.avp-demo-chart.type-area{display:block;background:none;border:0;padding:0;overflow:visible}
+.avp-demo-svg{width:100%;height:100%;overflow:visible}
+.avp-demo-svg-label{font-size:10px;fill:#effff5;font-weight:800;paint-order:stroke;stroke:#073725;stroke-width:2px;stroke-linejoin:round}
+.avp-demo-bar-item{display:flex!important;flex:1;min-width:0;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px;animation:avpBarIn .5s both}
+.avp-demo-data-label{color:#effff5;font-size:9px;line-height:1;white-space:nowrap;text-shadow:0 1px 5px #002b18}
+.avp-demo-bar{display:block;width:100%;height:var(--bar);min-height:5px;border-radius:5px 5px 2px 2px;background:linear-gradient(90deg,#1c9a60,#83f5b3 48%,#31b878);box-shadow:5px 0 0 #12613f,0 8px 15px rgba(0,0,0,.18);transform:rotateX(5deg);transform-origin:bottom;transition:height .6s cubic-bezier(.22,1,.36,1)}
+.avp-demo-axis{display:flex;justify-content:space-around;gap:4px;margin-top:6px;color:#9fc4af;font-size:8px}
+.avp-demo-axis span{flex:1;text-align:center;white-space:nowrap}
+.avp-demo-chart.type-ranking{height:142px;display:flex;flex-direction:column;justify-content:center;gap:7px;overflow:hidden;padding:7px 3px 3px;background:none;border:0;perspective:none}
+.avp-demo-rank-item{display:grid;grid-template-columns:minmax(0,1.1fr) auto;gap:3px 9px;align-items:center;min-width:0}
+.avp-demo-rank-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#dff7e8;font-size:9px;font-weight:700}
+.avp-demo-rank-count{color:#fff;font-size:9px;font-variant-numeric:tabular-nums}
+.avp-demo-rank-track{grid-column:1/-1;height:5px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.10)}
+.avp-demo-rank-track i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#239b61,#9af4bd);box-shadow:0 0 10px rgba(100,239,163,.18);animation:avpRankIn .7s both}
+.avp-demo-empty{color:#a9cdb8;font-size:10px;text-align:center}
+@keyframes avpRankIn{from{width:0;opacity:.4}to{opacity:1}}
+
+.avp-demo-chart.type-donut{display:flex;align-items:center;justify-content:center;background:none;border:0;padding:0}
+.avp-demo-donut-wrap{display:flex;align-items:center;justify-content:center;gap:18px;width:100%;height:100%}
+.avp-demo-donut{width:104px;height:104px;flex:0 0 104px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#8bc9ff 0 var(--pct),#79e7a8 var(--pct) 100%);position:relative;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.avp-demo-donut:before{content:"";position:absolute;inset:16px;border-radius:50%;background:#10432f}
+.avp-demo-donut strong{z-index:1;color:#fff;font-size:17px}
+.avp-demo-legend{flex:1;min-width:0;display:grid;gap:12px}
+.avp-demo-legend-row{display:grid;grid-template-columns:8px 1fr auto;align-items:center;gap:6px;color:#d8eee1;font-size:10px}
+.avp-demo-legend-row i{width:8px;height:8px;border-radius:50%}
+.avp-demo-legend-row b{color:#fff;font-size:11px}
+@keyframes avpBarIn{from{opacity:.2;transform:translateY(9px) rotateY(-10deg)}to{opacity:1;transform:translateY(0) rotateY(0)}}
+.avp-demo-foot{display:flex;align-items:center;gap:7px;margin-top:14px;color:#b9d9c8;font-size:9px;line-height:1.4}
+.avp-demo-live-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#62ef9f;box-shadow:0 0 10px rgba(98,239,159,.7)}
+.avp-demo-arrow{margin-left:auto;color:#91e6b2;font-size:16px}
+@media(max-width:900px){.avp-hero .avp-hero-inner{grid-template-columns:1fr!important;max-width:700px!important;gap:28px!important}.avp-hero .avp-copy{align-items:center!important;text-align:center!important}.avp-hero .avp-eyebrow{margin-left:auto!important;margin-right:auto!important}.avp-hero .avp-title,.avp-hero .avp-desc,.avp-hero .avp-tagline{text-align:center!important}.avp-hero .avp-desc{margin-left:auto!important;margin-right:auto!important}.avp-hero .avp-mobile-main-cta-wrap{margin-left:auto!important;margin-right:auto!important}.avp-demo-dashboard{width:100%;transform:none}.avp-demo-dashboard:hover{transform:translateY(-2px)}}
+@media(max-width:560px){.avp-demo-dashboard{padding:15px;border-radius:19px}.avp-demo-kpis{gap:7px}.avp-demo-kpi{padding:10px}.avp-demo-chart{height:106px}.avp-demo-foot{align-items:flex-start}.avp-demo-tag{font-size:7px}}
+@media(prefers-reduced-motion:reduce){.avp-demo-dashboard,.avp-demo-chart span{transition:none}.avp-demo-bar-item{animation:none}}
+</style>
+
+<style id="avp-learning-cards-live-fix">
+/* Loaded after legacy inline styles so the homepage learning-card redesign wins the cascade. */
+html.avp-site-home body .home-path{max-width:none!important;width:100%!important;margin:0!important;padding:54px 20px 48px!important;position:relative!important;z-index:2!important;background:linear-gradient(180deg,#f4f8f5 0%,#edf4ef 100%)!important;color:#183d2b!important}
+html.avp-site-home body .home-path-inner{width:min(1180px,100%)!important;max-width:1180px!important;margin:0 auto!important;padding:0!important}
+html.avp-site-home body .home-path-inner>h2{margin:0 0 9px!important;color:#143d29!important;font-size:clamp(27px,3.2vw,38px)!important;line-height:1.15!important;letter-spacing:-.035em!important;text-align:left!important}
+html.avp-site-home body .home-path-inner>p{max-width:650px!important;margin:0 0 28px!important;color:#62766a!important;font-size:15px!important;line-height:1.65!important;text-align:left!important}
+html.avp-site-home body .home-path-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:16px!important;align-items:stretch!important}
+html.avp-site-home body .home-path-card{--path-accent:#238452;--path-soft:#e5f5eb;position:relative!important;min-width:0!important;padding:23px 19px 20px!important;overflow:hidden!important;border:1px solid #d7e6dc!important;border-radius:19px!important;background:linear-gradient(155deg,#fff 0%,#fbfdfb 76%,var(--path-soft) 145%)!important;box-shadow:0 8px 22px rgba(22,66,42,.065)!important;text-align:left!important;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease!important}
+html.avp-site-home body .home-path-card:before{content:""!important;position:absolute!important;inset:0 0 auto!important;height:4px!important;background:var(--path-accent)!important}
+html.avp-site-home body .home-path-card--1{--path-accent:#258653;--path-soft:#e5f5eb}
+html.avp-site-home body .home-path-card--2{--path-accent:#2878a8;--path-soft:#e7f2f9}
+html.avp-site-home body .home-path-card--3{--path-accent:#7652ad;--path-soft:#f0eafa}
+html.avp-site-home body .home-path-card--4{--path-accent:#b77920;--path-soft:#fbf1df}
+html.avp-site-home body .home-path-card>span{display:inline-flex!important;align-items:center!important;margin:0 0 12px!important;padding:6px 9px!important;border:1px solid var(--path-soft)!important;border-radius:999px!important;background:var(--path-soft)!important;color:var(--path-accent)!important;font-size:10px!important;line-height:1!important;font-weight:900!important;letter-spacing:.04em!important}
+html.avp-site-home body .home-path-card h3{margin:0 0 16px!important;color:#183d2b!important;font-size:21px!important;line-height:1.2!important;letter-spacing:-.025em!important}
+html.avp-site-home body .home-path-card ul{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;margin:0!important;padding:0!important;list-style:none!important}
+html.avp-site-home body .home-path-card li{margin:0!important;padding:0!important}
+html.avp-site-home body .home-path-card li a{display:flex!important;align-items:center!important;gap:10px!important;min-height:43px!important;margin:0!important;padding:9px 10px!important;border:1px solid #e6eee8!important;border-radius:11px!important;background:rgba(255,255,255,.84)!important;color:#294b37!important;text-align:left!important;text-decoration:none!important;font-size:12.5px!important;line-height:1.35!important;font-weight:750!important;box-shadow:none!important;transition:background .18s ease,border-color .18s ease,transform .18s ease!important}
+html.avp-site-home body .home-path-card li a .hp-ic{display:grid!important;flex:0 0 28px!important;place-items:center!important;width:28px!important;height:28px!important;border-radius:8px!important;background:var(--path-soft)!important;font-size:15px!important;text-align:center!important}
+html.avp-site-home body .home-path-card li a:hover{transform:translateX(3px)!important;border-color:var(--path-accent)!important;background:#fff!important;color:var(--path-accent)!important}
+html.avp-site-home body .home-path-more--codehub{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:12px!important;margin:18px 0 0!important}
+html.avp-site-home body .home-path-more--codehub .home-more-card{min-width:0!important;min-height:108px!important;height:auto!important;padding:15px!important;border:1px solid #d8e5dc!important;border-radius:15px!important;background:#fff!important;color:#214a34!important;box-shadow:0 5px 15px rgba(22,66,42,.045)!important;text-align:left!important;text-decoration:none!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease!important}
+html.avp-site-home body .home-path-more--codehub .home-more-card>span,html.avp-site-home body .home-path-more--codehub .home-more-card .home-codehub-icon{display:grid!important;place-items:center!important;width:34px!important;height:34px!important;margin:0 0 10px!important;border-radius:10px!important;background:#e9f5ed!important;color:#217346!important;font-size:17px!important}
+html.avp-site-home body .home-path-more--codehub .home-more-card strong{display:block!important;color:#1b432e!important;font-size:13px!important;line-height:1.35!important}
+html.avp-site-home body .home-path-more--codehub .home-more-card small{display:block!important;margin-top:5px!important;color:#708075!important;font-size:10.5px!important;line-height:1.45!important}
+@media(min-width:901px){html.avp-site-home body .home-path-card:hover,html.avp-site-home body .home-path-more--codehub .home-more-card:hover{transform:translateY(-4px)!important;border-color:#a8cdb5!important;box-shadow:0 14px 28px rgba(22,66,42,.11)!important}}
+@media(max-width:1050px){html.avp-site-home body .home-path-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}html.avp-site-home body .home-path-more--codehub{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:600px){html.avp-site-home body .home-path{padding:36px 14px 32px!important}html.avp-site-home body .home-path-inner>h2{font-size:28px!important}html.avp-site-home body .home-path-inner>p{font-size:13px!important;margin-bottom:20px!important}html.avp-site-home body .home-path-grid{grid-template-columns:1fr!important;gap:12px!important}html.avp-site-home body .home-path-card{padding:19px 16px 17px!important;border-radius:16px!important}html.avp-site-home body .home-path-card h3{font-size:20px!important;margin-bottom:13px!important}html.avp-site-home body .home-path-card ul{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}html.avp-site-home body .home-path-card li a{min-height:46px!important;padding:8px!important;font-size:11px!important;gap:7px!important}html.avp-site-home body .home-path-card li a .hp-ic{flex-basis:25px!important;width:25px!important;height:25px!important;font-size:13px!important}html.avp-site-home body .home-path-more--codehub{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}html.avp-site-home body .home-path-more--codehub .home-more-card{min-height:102px!important;padding:12px!important}}
+@media(prefers-reduced-motion:reduce){html.avp-site-home body .home-path-card,html.avp-site-home body .home-path-card li a,html.avp-site-home body .home-path-more--codehub .home-more-card{transition:none!important}}
+</style>
+
 </head>
+
+
 <body>
-<header class="topbar"><div class="wrap nav">
-<a class="brand" href="#"><span class="brand-mark">A</span><span>AVP <span style="color:var(--green)">4.0</span></span></a>
-<nav class="navlinks"><a href="#lo-trinh">Lộ trình học</a><a href="#cong-cu">Công cụ</a><a href="#thuc-hanh">Thực hành</a><a href="#bat-dau">Bắt đầu</a></nav>
-<a class="nav-cta" href="#lo-trinh">Khám phá lộ trình ↗</a>
-</div></header>
-<main>
-<section class="hero"><div class="wrap hero-grid">
-<div><div class="eyebrow"><i></i> HỌC EXCEL · DATA · AUTOMATION</div>
-<h1>Làm chủ dữ liệu.<br><em>Làm chủ công việc.</em></h1>
-<p class="hero-copy">Một không gian học và thực hành Excel, phân tích dữ liệu, báo cáo và tự động hóa — đi từ nền tảng đến bài toán thực tế nơi công sở.</p>
-<div class="hero-actions"><a class="btn" href="#lo-trinh">Chọn lộ trình học <span>→</span></a><a class="btn secondary" href="#cong-cu">Khám phá công cụ ↗</a></div>
-<div class="trustline"><span>Học theo từng bước</span><span>Ví dụ thực tế</span><span>Thực hành có mục tiêu</span></div></div>
-<div class="hero-board"><div class="board-top"><div class="board-title">LEARNING & DATA OVERVIEW</div><div class="live">BẢN DEMO</div></div>
-<div class="stat-grid"><div class="stat"><small>Nhóm học tập</small><strong>06</strong><em>Định hướng rõ ràng</em></div><div class="stat"><small>Luồng học</small><strong>04</strong><em>Từ cơ bản đến nâng cao</em></div><div class="stat"><small>Không gian</small><strong>01</strong><em>Học · Làm · Thử</em></div></div>
-<div class="chartbox"><div class="charthead">Lộ trình phát triển kỹ năng <span>Minh họa</span></div><div class="bars"><div class="bar" style="height:28%"></div><div class="bar" style="height:38%"></div><div class="bar" style="height:49%"></div><div class="bar" style="height:56%"></div><div class="bar" style="height:66%"></div><div class="bar" style="height:77%"></div><div class="bar" style="height:91%"></div></div><div class="chartlabels"><span>Nền tảng</span><span>Phân tích</span><span>Tự động hóa</span><span>Thực chiến</span></div></div>
-</div></div></section>
-<section class="section white" id="lo-trinh"><div class="wrap">
-<div class="section-head"><div><div class="kicker">01 / LEARNING HUB</div><h2>Chọn đúng thứ cần học</h2></div><p class="section-desc">Sáu nhóm nội dung được thiết kế như các lối vào độc lập. Khi chốt giao diện, nội dung thật sẽ được gắn vào từng nhóm — không cần bê nguyên bố cục cũ sang.</p></div>
-<div class="learning-grid">
-<a class="learn-card c1" href="#bat-dau"><div class="card-top"><span class="card-icon">▦</span><span class="level">NỀN TẢNG</span></div><h3>Excel cơ bản</h3><p>Thao tác, công thức và tư duy làm việc với bảng tính vững chắc.</p><div class="card-bottom"><span>Xem lộ trình ↗</span><small>01 · START</small></div></a>
-<a class="learn-card c2" href="#bat-dau"><div class="card-top"><span class="card-icon">↗</span><span class="level">PHÂN TÍCH</span></div><h3>Excel nâng cao</h3><p>Công thức nâng cao, PivotTable và xử lý tình huống văn phòng.</p><div class="card-bottom"><span>Khám phá ↗</span><small>02 · ANALYZE</small></div></a>
-<a class="learn-card c3" href="#bat-dau"><div class="card-top"><span class="card-icon">⟳</span><span class="level">DỮ LIỆU</span></div><h3>Power Query</h3><p>Làm sạch, ghép và chuẩn hóa dữ liệu thành quy trình có thể làm mới.</p><div class="card-bottom"><span>Khám phá ↗</span><small>03 · TRANSFORM</small></div></a>
-<a class="learn-card c4" href="#bat-dau"><div class="card-top"><span class="card-icon">▤</span><span class="level">MÔ HÌNH</span></div><h3>Power Pivot &amp; DAX</h3><p>Kết nối bảng dữ liệu, xây dựng mô hình và đo lường chỉ số.</p><div class="card-bottom"><span>Khám phá ↗</span><small>04 · MODEL</small></div></a>
-<a class="learn-card c5" href="#bat-dau"><div class="card-top"><span class="card-icon">▥</span><span class="level">BÁO CÁO</span></div><h3>Dashboard &amp; Reporting</h3><p>Biến số liệu thành báo cáo trực quan, dễ theo dõi và ra quyết định.</p><div class="card-bottom"><span>Khám phá ↗</span><small>05 · INSIGHT</small></div></a>
-<a class="learn-card c6" href="#thuc-hanh"><div class="card-top"><span class="card-icon">⌘</span><span class="level">THỰC CHIẾN</span></div><h3>Practice Lab</h3><p>Luyện qua tình huống, file mẫu và bài toán gần với công việc thật.</p><div class="card-bottom"><span>Vào phòng thực hành ↗</span><small>06 · PRACTICE</small></div></a>
+<script src="avp-ui-system.js?v=20261002-ui1" data-avp-ui-system></script>
+<div id="scrollProgress"></div>
+
+    <!-- MENU -->
+
+    
+
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html" data-avp-nav="learn">Học</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+
+
+    <!-- HERO - Learn Excel with Anh Van Phong -->
+    
+
+<section class="avp-hero" id="trangchu">
+        <div class="avp-grid-bg"></div>
+        <div class="avp-orb" id="avpOrb"></div>
+
+        <div class="avp-hero-inner">
+            <div class="avp-copy">
+                <div class="avp-eyebrow">
+                    <span class="avp-eyebrow-dot"></span>
+                    OFFICE LEARNING HUB
+                </div>
+
+                <h1 class="avp-title">
+                    <span>AVP 4.0 <span class="avp-brand-vietnamese">ANH VĂN PHÒNG</span></span>
+                </h1>
+
+                <div class="avp-tagline avp-tagline-static" aria-live="polite">
+                    <span id="avpTyping">Học đúng trọng tâm. Thực hành trên dữ liệu thật.</span>
+                </div>
+
+                <p class="avp-desc">Làm chủ công cụ. Nâng tầm công việc.<span class="avp-domain-line">Excel · Data · Reporting · Automation · AI</span></p>
+
+                
+<div class="avp-mobile-main-cta-wrap">
+  <a class="avp-mobile-main-cta avp-practice-hub-cta" href="practice-video.html">
+    <span class="avp-practice-hub-badges" aria-hidden="true">
+      <span class="avp-mini-channel avp-mini-channel-tt">♪</span>
+      <span class="avp-mini-channel avp-mini-channel-yt">▶</span>
+      <span class="avp-mini-channel avp-mini-channel-grade">✓</span>
+    </span>
+    <span class="avp-mobile-main-cta-icon">📚</span>
+    <span class="avp-mobile-main-cta-copy">
+      <strong>Bài tập Excel</strong>
+      <small>3 cách thực hành trong cùng một khu</small>
+      <small style="opacity:.88;font-size:12px;display:block;margin-top:2px">TikTok · YouTube · Chấm điểm tự động</small>
+    </span>
+    <span class="avp-mobile-main-cta-arrow">→</span>
+  </a>
+<div class="avp-scroll-tease avp-scroll-tease--under-yt" id="avpScrollTease" style="width:100%;margin-top:12px;box-sizing:border-box">
+    <button type="button" class="avp-scroll-tease-btn" id="avpScrollToPath"
+      style="width:100%;box-sizing:border-box;border-radius:14px;padding:12px 16px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:#e8f5ec;cursor:pointer;text-align:center">
+      <span class="avp-tease-title" style="display:block;font-weight:900;font-size:13.5px">
+        <span class="avp-tease-chevs" aria-hidden="true"><span>▾</span><span>▾</span><span>▾</span></span>
+        Lộ trình 14 bài
+      </span>
+      <span style="display:block;font-size:12px;margin-top:4px;opacity:.9" id="avpTeasePreview">Xem các bài học theo lộ trình từ cơ bản đến nâng cao.</span>
+    </button>
+  </div>
+
 </div>
-<div class="path-strip"><div class="path-step"><span class="step-no">01</span><div><strong>Học nền tảng</strong><small>Nắm công cụ và nguyên tắc.</small></div></div><div class="path-step"><span class="step-no">02</span><div><strong>Xử lý dữ liệu</strong><small>Làm sạch và phân tích.</small></div></div><div class="path-step"><span class="step-no">03</span><div><strong>Xây báo cáo</strong><small>Chuyển dữ liệu thành insight.</small></div></div><div class="path-step"><span class="step-no">04</span><div><strong>Tự động hóa</strong><small>Biến thao tác thành quy trình.</small></div></div></div>
-</div></section>
-<section class="section" id="cong-cu"><div class="wrap"><div class="section-head"><div><div class="kicker">02 / TOOLBOX</div><h2>Học xong, làm được việc</h2></div><p class="section-desc">Tách công cụ khỏi lộ trình học để người đã biết kiến thức có thể đi thẳng tới thứ họ cần.</p></div>
-<div class="tool-grid"><div class="tool-feature"><div><div class="kicker">WORKFLOW STUDIO</div><h3>Từ file rời rạc đến quy trình gọn gàng.</h3><p>Khu vực dành cho công cụ tra cứu, xử lý nhanh, tài nguyên tải về và các tiện ích hỗ trợ công việc.</p></div><a class="btn" href="#bat-dau">Khám phá toolbox ↗</a></div>
-<div class="tool-list"><a class="tool-item" href="#bat-dau"><span class="card-icon" style="background:#e8f5eb">ƒx</span><span><strong>Tra cứu công thức</strong><small>Tìm hàm theo mục đích sử dụng</small></span><b>↗</b></a><a class="tool-item" href="#bat-dau"><span class="card-icon" style="background:#e7f3fa">⌕</span><span><strong>Từ điển Excel</strong><small>Tra cứu thuật ngữ và khái niệm</small></span><b>↗</b></a><a class="tool-item" href="#bat-dau"><span class="card-icon" style="background:#fbf0dd">⇩</span><span><strong>Tài liệu &amp; file mẫu</strong><small>Tài nguyên cho việc học và thực hành</small></span><b>↗</b></a><a class="tool-item" href="#bat-dau"><span class="card-icon" style="background:#f0eafb">◎</span><span><strong>Quiz &amp; thử thách</strong><small>Kiểm tra kiến thức theo chủ đề</small></span><b>↗</b></a></div></div>
-</div></section>
-<section class="section white" id="thuc-hanh"><div class="wrap"><div class="section-head"><div><div class="kicker">03 / PRACTICE FLOW</div><h2>Một luồng học dễ theo dõi</h2></div><p class="section-desc">Đây là đề xuất luồng điều hướng cho trang chủ; chưa gắn nội dung bài học hiện có ở giai đoạn demo.</p></div><div class="path-strip"><div class="path-step"><span class="step-no">A</span><div><strong>Chọn mục tiêu</strong><small>Học mới, giải quyết việc gấp hoặc luyện kỹ năng.</small></div></div><div class="path-step"><span class="step-no">B</span><div><strong>Chọn khu vực</strong><small>Lộ trình học, công cụ hoặc tài liệu.</small></div></div><div class="path-step"><span class="step-no">C</span><div><strong>Làm thử</strong><small>Thực hành với ví dụ hoặc file mẫu.</small></div></div><div class="path-step"><span class="step-no">D</span><div><strong>Tiếp tục</strong><small>Quay lại chủ đề đang học hoặc đi sâu hơn.</small></div></div></div></div></section>
-<section class="section" id="bat-dau"><div class="wrap"><div class="bottom-cta"><div><div class="kicker">NEXT STEP</div><h2>Chốt bố cục trước, gắn nội dung sau.</h2><p>Demo này chỉ trình bày cấu trúc, phong cách và luồng điều hướng đề xuất.</p></div><a class="btn" href="#lo-trinh">Xem lại lộ trình ↑</a></div></div></section>
-</main>
-<footer class="footer"><div class="wrap footer-inner"><a class="brand" href="#"><span class="brand-mark">A</span><span>AVP <span style="color:var(--green)">4.0</span></span></a><span>DEMO GIAO DIỆN · Nội dung mẫu, chưa nối với các trang hiện tại.</span></div></footer>
-<div class="demo-note"><span>◉</span><span><b>Chế độ demo</b><br>Giao diện và luồng đề xuất; nội dung thật đang được để riêng.</span></div>
-</body></html>
+
+
+                <div class="avp-mini-info">
+                    <span>✓ Học miễn phí</span>
+                    <span>✓ Nội dung thực tế</span>
+                    <span>✓ Dễ áp dụng</span>
+                </div>
+            
+            <aside class="avp-demo-dashboard" id="avpHeroDemoDashboard" aria-label="Website analytics">
+              <div class="avp-demo-head">
+                <div><span class="avp-demo-kicker">AVP · WEBSITE ANALYTICS</span><h2 id="avpDemoTitle">Hoạt động website</h2></div>
+                <span class="avp-demo-tag" id="avpDemoStatus">ĐANG TẢI</span>
+              </div>
+              <div class="avp-demo-kpis">
+                <div class="avp-demo-kpi"><span id="avpDemoMetric1Label">Lượt truy cập</span><strong id="avpDemoMetric1">—</strong><small id="avpDemoMetric1Note">Tổng hợp từ Admin</small></div>
+                <div class="avp-demo-kpi"><span id="avpDemoMetric2Label">Người truy cập</span><strong id="avpDemoMetric2">—</strong><small id="avpDemoMetric2Note">Trong 7 ngày gần nhất</small></div>
+              </div>
+              <div class="avp-demo-chart-wrap" id="avpDemoChartPanel">
+                <div class="avp-demo-chart-head"><span id="avpDemoChartTitle">Hoạt động theo ngày</span><span id="avpDemoChartMeta">7 ngày</span></div>
+                <div class="avp-demo-chart" id="avpDemoChart" role="img" aria-label="Hoạt động website theo ngày"></div>
+                <div class="avp-demo-axis" id="avpDemoAxis"></div>
+              </div>
+              <div class="avp-demo-foot"><span class="avp-demo-live-dot"></span><span id="avpDemoFoot">Số liệu tổng hợp từ hệ thống thống kê website</span><span class="avp-demo-arrow">↗</span></div>
+            </aside>
+</div>
+
+            
+<div class="avp-scroll-hint">Cuộn xuống để khám phá ↓</div>
+    
+
+
+</section>
+
+
+<!-- Trùng với master-roadmap — ẩn để gọn trang chủ -->
+<section class="learn-status" id="learningStatus" hidden></section>
+
+
+<section class="home-path" id="ky-nang-excel">
+  <div class="home-path-inner">
+    <h2>Lộ trình 14 bài</h2>
+    <p>Học theo thứ tự. Mỗi bài có ví dụ và quiz.</p>
+
+    <div class="home-path-grid">
+      <article class="home-path-card home-path-card--1">
+        <span>01 · Beginner</span>
+        <h3>Nền tảng</h3>
+        <ul>
+          <li><a href="excel.html"><span class="hp-ic">📘</span>Excel cơ bản</a></li>
+          <li><a href="phimtatexcel.html"><span class="hp-ic">⌨️</span>Phím tắt</a></li>
+          <li><a href="congthucexcel.html"><span class="hp-ic">🧮</span>Công thức</a></li>
+          <li><a href="filtersort.html"><span class="hp-ic">🔎</span>Filter &amp; Sort</a></li>
+        </ul>
+      </article>
+      <article class="home-path-card home-path-card--2">
+        <span>02 · Analyst</span>
+        <h3>Phân tích</h3>
+        <ul>
+          <li><a href="pivottable.html"><span class="hp-ic">📊</span>PivotTable</a></li>
+          <li><a href="bieudopareto.html"><span class="hp-ic">📈</span>Pareto</a></li>
+          <li><a href="baocaoexcel.html"><span class="hp-ic">📋</span>Báo cáo QC</a></li>
+        </ul>
+      </article>
+      <article class="home-path-card home-path-card--3">
+        <span>03 · Advanced</span>
+        <h3>Thực chiến</h3>
+        <ul>
+          <li><a href="excel-nang-cao.html"><span class="hp-ic">🚀</span>Excel nâng cao</a></li>
+          <li><a href="power-query-course.html"><span class="hp-ic">🔄</span>Power Query</a></li>
+          <li><a href="power-pivot-dax.html"><span class="hp-ic">🧩</span>Power Pivot &amp; DAX</a></li>
+          <li><a href="dashboard-dong.html"><span class="hp-ic">📉</span>Dashboard động</a></li>
+          <li><a href="practice-lab.html"><span class="hp-ic">🧪</span>Practice Lab</a></li>
+        </ul>
+      </article>
+      <article class="home-path-card home-path-card--4">
+        <span>04 · Master</span>
+        <h3>Tự động hóa</h3>
+        <ul>
+          <li><a href="vba-macro.html"><span class="hp-ic">⚙️</span>VBA / Macro</a></li>
+          <li><a href="solver-whatif.html"><span class="hp-ic">🎯</span>What-If &amp; Solver</a></li>
+        </ul>
+      </article>
+    </div>
+    <div class="home-path-more home-path-more--codehub home-path-more--5">
+      <a class="home-more-card home-more-1" id="homeContinueLearn" href="excel.html">
+        <span>▶</span>
+        <strong id="homeContinueTitle">Tiếp tục học</strong>
+        <small id="homeContinueMeta">Quay lại đúng bài đang dở</small>
+      </a>
+      <a class="home-more-card home-more-2" href="skill-map.html">
+        <span>🧭</span>
+        <strong>Skill Map</strong>
+        <small>Xem lộ trình và kỹ năng tiếp theo</small>
+      </a>
+      <button type="button" class="home-more-card home-codehub-launcher" id="homeCodeHubOpen" aria-haspopup="dialog" aria-controls="avpCodeHubModal">
+        <span class="home-codehub-icon">⌨️</span>
+        <strong>Excel Code Hub</strong>
+        <small>🔐 Đăng nhập / đăng ký để mở · Python · VBA · Power Query</small>
+      </button>
+      <a class="home-more-card home-more-3 home-more-race" href="excel-race.html">
+        <span>🏁</span>
+        <strong>Excel Race</strong>
+        <small>Luyện nhanh khi muốn thử sức</small>
+      </a>
+      <a class="home-more-card home-more-5 home-more-tools" href="tools-library.html">
+        <span>🧰</span>
+        <strong>Kho Tool</strong>
+        <small>Tool thực dụng · tải ZIP · ý tưởng cộng đồng</small>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+
+<div class="avp-codehub-modal" id="avpCodeHubModal" hidden role="dialog" aria-modal="true" aria-labelledby="avpCodeHubTitle">
+  <div class="avp-codehub-backdrop" aria-hidden="true"></div>
+  <section class="avp-codehub-dialog">
+    <header class="avp-codehub-head">
+      <div>
+        <span class="avp-codehub-kicker">⌨ Excel Code Hub</span>
+        <h2 id="avpCodeHubTitle">Code thực dụng cho Excel &amp; Automation</h2>
+        <p>Chọn code → đọc mục đích và cách dùng → copy. Không cần nhớ cú pháp; ưu tiên các tình huống thực tế với file Excel.</p>
+      </div>
+      <button type="button" class="avp-codehub-close" id="avpCodeHubClose" aria-label="Đóng thư viện code">×</button>
+    </header>
+    <div class="avp-codehub-toolbar">
+      <input class="avp-codehub-search" id="avpCodeHubSearch" type="search" placeholder="Tìm: gộp file, audit header, PDF, backup..." autocomplete="off">
+      <div class="avp-codehub-filters" aria-label="Lọc loại code">
+        <button type="button" class="avp-codehub-filter is-active" data-code-filter="all">Tất cả</button>
+        <button type="button" class="avp-codehub-filter" data-code-filter="Python">Python</button>
+        <button type="button" class="avp-codehub-filter" data-code-filter="VBA">VBA</button>
+        <button type="button" class="avp-codehub-filter" data-code-filter="Power Query">Power Query</button>
+      </div>
+      <span class="avp-codehub-count" id="avpCodeHubCount">10/10 code</span>
+    </div>
+    <div class="avp-codehub-list" id="avpCodeHubList"></div>
+  </section>
+</div>
+
+<section class="home-reference home-reference-v114" id="home-books">
+  <div class="home-reference-inner home-reference-grid-v114">
+    <a class="home-ref-item-v114 home-ref-handbook-v114" href="excel-handbook.html">
+      <span class="home-ref-icon-v114 home-ref-cover-v114" aria-hidden="true">A–Z</span>
+      <span class="home-ref-copy-v114">
+        <small>CẨM NANG NỘI BỘ · MỚI</small>
+        <strong>Excel từ A–Z bằng hình ảnh</strong>
+        <em>12 chương · minh hoạ từ workbook · đọc như sách thực hành</em>
+      </span>
+      <b>Đọc cẩm nang →</b>
+    </a>
+
+    <a class="home-ref-item-v114" href="tai-lieu-tham-khao.html">
+      <span class="home-ref-icon-v114" aria-hidden="true">📚</span>
+      <span class="home-ref-copy-v114">
+        <small>TÀI LIỆU THAM KHẢO</small>
+        <strong>Sách &amp; tài liệu học thêm</strong>
+        <em>Toàn bộ sách/combo affiliate được gom ở một trang riêng.</em>
+      </span>
+      <b>Xem tài liệu →</b>
+    </a>
+  </div>
+</section>
+
+
+<footer class="site-footer">
+  <p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p>
+  <p class="site-footer-sub">Excel • Data • Reporting • Automation • AI</p>
+
+  <div class="site-footer-legal">
+    <a href="terms.html">Điều khoản</a>
+    <a href="privacy.html">Quyền riêng tư</a>
+    <a href="disclaimer.html">Tuyên bố pháp lý</a>
+    <a href="open-source.html">Mã nguồn mở</a>
+  </div>
+</footer>
+
+
+<script>
+
+function timBaiHoc() {
+
+    const keyword =
+        document
+        .getElementById("homeSearch")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    if (
+        keyword.includes("phím") ||
+        keyword.includes("shortcut")
+    ) {
+        window.location.href =
+            "phimtatexcel.html";
+    }
+
+    else if (
+        keyword.includes("vlookup") ||
+        keyword.includes("xlookup") ||
+        keyword.includes("sum") ||
+        keyword.includes("if") ||
+        keyword.includes("công thức") ||
+        keyword.includes("hàm")
+    ) {
+        window.location.href =
+            "congthucexcel.html";
+    }
+
+    else if (
+        keyword.includes("pivot")
+    ) {
+        window.location.href =
+            "pivottable.html";
+    }
+
+    else if (
+        keyword.includes("pareto") ||
+        keyword.includes("biểu đồ")
+    ) {
+        window.location.href =
+            "bieudopareto.html";
+    }
+
+    else if (
+        keyword.includes("filter") ||
+        keyword.includes("sort") ||
+        keyword.includes("lọc")
+    ) {
+        window.location.href =
+            "filtersort.html";
+    }
+
+    else if (
+        keyword.includes("báo cáo") ||
+        keyword.includes("report") ||
+        keyword.includes("ng rate")
+    ) {
+        window.location.href =
+            "baocaoexcel.html";
+    }
+
+    else {
+        alert(
+            "Chưa tìm thấy bài học phù hợp."
+        );
+    }
+
+}
+window.addEventListener("scroll", function() {
+
+    const button =
+        document.getElementById("backToTop");
+
+    if (window.scrollY > 300) {
+        button.style.display = "block";
+    } else {
+        button.style.display = "none";
+    }
+
+});
+
+function lenDauTrang() {
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+</script>
+<button id="backToTop" onclick="lenDauTrang()">
+    ↑
+</button>
+
+
+    <script defer src="global-search.js"></script>
+    <script defer src="simple-nav.js"></script>
+    <script defer src="home-effects.js?v=20261003-single-writer1"></script>
+<script defer src="home-page-motion.js?v=20261003-typing-audit1"></script>
+<script defer src="home-copy-v104.js?v=20261003-fixedslot2" data-home-copy-v104></script>
+<script defer src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js?v=20261003-reviewcooldown1"></script>
+    
+
+<script defer src="analytics-tracker.js"></script>
+<script defer src="avp-core.js"></script>
+<script defer src="learning-progress.js"></script>
+
+<script>document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("homeXpValue");if(e)e.textContent=String((parseInt(localStorage.getItem("avp_xp_self_v1")||"0",10)||0)+(function(){try{return Number((JSON.parse(localStorage.getItem("avp_coach_exp_v2")||"{}")||{}).total)||0;}catch(e){return 0;}})())})</script>
+
+
+<script defer src="cloud-sync-v11.js"></script>
+<script>
+document.addEventListener("click", function(e){
+  const a = e.target.closest("#home-books .home-book-card");
+  if(!a || !window.avpAnalytics) return;
+  const title = (a.querySelector("strong")?.textContent || a.textContent || "sach").trim().slice(0,80);
+  window.avpAnalytics.track("book_click", {page:"index.html", tool:title});
+});
+</script>
+  <script id="avp-home-boot">
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function ease(t){ return 1 - Math.pow(1 - t, 5); }
+  function bindScroll(){
+    var btn = document.getElementById('avpScrollToPath');
+    if (!btn || btn.__bound) return;
+    btn.__bound = true;
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      var el = document.getElementById('ky-nang-excel') || document.querySelector('.home-path');
+      if (!el) return;
+      var s = window.pageYOffset || 0;
+      var end = Math.max(0, el.getBoundingClientRect().top + s - 16);
+      var d = end - s;
+      if (Math.abs(d) < 4) return;
+      if (reduce) { window.scrollTo(0, end); return; }
+      var t0 = performance.now(), dur = Math.min(1600, Math.max(900, Math.abs(d) * 0.8));
+      (function f(n){
+        var p = Math.min(1, (n - t0) / dur);
+        window.scrollTo(0, s + d * ease(p));
+        if (p < 1) requestAnimationFrame(f);
+      })(t0);
+    });
+  }
+  function rise(){
+    if (reduce || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.home-path-card, .home-more-card, .home-book-card').forEach(function(n,i){
+      n.classList.add('avp-rise');
+      n.style.transitionDelay = Math.min(i * 0.05, 0.35) + 's';
+      io.observe(n);
+    });
+  }
+  function init(){ bindScroll(); rise(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+  setTimeout(bindScroll, 800);
+})();
+</script>
+
+
+
+<script defer src="home-code-hub.js?v=20260906-codehub13"></script>
+
+<script id="avp-motion-inline-boot">
+(function(){
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  function rise(){
+    var sel='.home-path-card,.home-more-card,.home-book-card,.course-card,.pyt-card';
+    var nodes=document.querySelectorAll(sel);
+    if(!nodes.length||!window.IntersectionObserver)return;
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('avp-in'); io.unobserve(en.target);} });
+    },{threshold:0.1});
+    nodes.forEach(function(n,i){
+      n.classList.add('avp-motion-rise');
+      n.style.transitionDelay=Math.min(i*0.04,0.28)+'s';
+      io.observe(n);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rise); else rise();
+})();
+</script>
+
+
+
+
+
+<script id="avp40-typing-slogans">
+(function(){
+ const el=document.getElementById('avpTyping');
+ if(!el)return;
+ const lines=[
+  'Học đúng trọng tâm. Thực hành trên dữ liệu thật.',
+  'Biến dữ liệu thành quyết định.',
+  'Làm chủ Excel. Tối ưu mọi quy trình.',
+  'Từ thao tác đến tư duy dữ liệu.',
+  'Học để làm được. Làm để tiến xa.',
+  'Làm chủ công cụ. Nâng tầm công việc.'
+ ];
+ if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=lines[0];return;}
+ let line=0,pos=lines[0].length,deleting=true,wait=1200;
+ function tick(){
+  const text=lines[line];
+  if(wait>0){wait-=40;setTimeout(tick,40);return;}
+  if(deleting){
+   pos=Math.max(0,pos-1);el.textContent=text.slice(0,pos);
+   if(pos===0){deleting=false;line=(line+1)%lines.length;}
+   setTimeout(tick,deleting?28:220);
+  }else{
+   const next=lines[line];pos=Math.min(next.length,pos+1);el.textContent=next.slice(0,pos);
+   if(pos===next.length){deleting=true;wait=1700;}
+   setTimeout(tick,deleting?40:42);
+  }
+ }
+ setTimeout(tick,1200);
+})();
+</script>
+
+
+<script id="avp-hero-demo-dashboard-js">
+(function(){
+ const root=document.getElementById('avpHeroDemoDashboard');if(!root||root.dataset.ready==='1')return;root.dataset.ready='1';
+ const $=id=>document.getElementById(id),set=(id,v)=>{if($(id))$(id).textContent=v},fmt=v=>Number(v||0).toLocaleString('vi-VN');
+ const views=[
+  {key:'page_views',title:'Xu hướng lượt xem',type:'line',meta:'7 ngày',m1:'Lượt xem',m2:'Người truy cập'},
+  {key:'unique_visitors',title:'Xu hướng người truy cập',type:'area',meta:'7 ngày',m1:'Người truy cập',m2:'Lượt tương tác'},
+  {key:'feature_usage',title:'Tính năng được dùng nhiều',type:'bar',meta:'Xếp hạng · 7 ngày',m1:'Lượt tương tác',m2:'Tính năng nổi bật'},
+  {key:'activity_mix',title:'Cơ cấu tương tác',type:'donut',meta:'7 ngày',m1:'Lượt tương tác',m2:'Lượt xem'}
+ ];
+ let rows=[],features=[],summary={},idx=0,timer=null;
+ const val=(r,k)=>Number(r?.[k]||0);
+ const label=r=>{const d=new Date(r.day||r.date);return Number.isNaN(d.getTime())?String(r.day||r.date||''):d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})};
+ function svgEl(tag,attrs={}){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,String(v)));return e}
+ function render(n){
+  const v=views[n%views.length],interactions=features.reduce((a,r)=>a+val(r,'uses'),0),top=features[0];
+  set('avpDemoTitle',v.title);set('avpDemoStatus','LIVE DATA');
+  set('avpDemoMetric1Label',v.m1);set('avpDemoMetric2Label',v.m2);
+  set('avpDemoMetric1',fmt(v.key==='unique_visitors'?summary.unique_visitors:v.key==='feature_usage'||v.key==='activity_mix'?interactions:summary.page_views));
+  set('avpDemoMetric2',fmt(v.key==='page_views'?summary.unique_visitors:v.key==='unique_visitors'?interactions:v.key==='feature_usage'?(top?.uses||0):summary.page_views));
+  set('avpDemoMetric1Note','Tổng trong 7 ngày');set('avpDemoMetric2Note',v.key==='feature_usage'?(top?.feature||'Chưa có tương tác'):'Dữ liệu ghi nhận');
+  set('avpDemoChartTitle',v.title);set('avpDemoChartMeta',v.meta);
+  const chart=$('avpDemoChart'),axis=$('avpDemoAxis');chart.replaceChildren();axis.replaceChildren();chart.className='avp-demo-chart type-'+v.type;
+  if(v.type==='line'||v.type==='area'){
+   const vals=rows.map(r=>val(r,v.key)),max=Math.max(1,...vals),W=440,H=145,L=18,R=18,T=26,B=12;
+   const pts=vals.map((x,i)=>[L+i*(W-L-R)/Math.max(1,vals.length-1),T+(H-T-B)*(1-x/max)]);
+   const d=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' ');
+   const svg=svgEl('svg',{viewBox:'0 0 440 145',preserveAspectRatio:'none',class:'avp-demo-svg'});
+   if(v.type==='area'){
+    const defs=svgEl('defs'),grad=svgEl('linearGradient',{id:'avpAreaGrad',x1:'0',y1:'0',x2:'0',y2:'1'});
+    grad.append(svgEl('stop',{offset:'0%','stop-color':'#6ee7a4','stop-opacity':'.48'}),svgEl('stop',{offset:'100%','stop-color':'#6ee7a4','stop-opacity':'0.02'}));defs.append(grad);svg.append(defs);
+    svg.append(svgEl('path',{d:d+' L '+pts[pts.length-1][0]+' '+(H-B)+' L '+pts[0][0]+' '+(H-B)+' Z',fill:'url(#avpAreaGrad)'}));
+   }
+   svg.append(svgEl('path',{d,fill:'none',stroke:'#8bf0b4','stroke-width':'3','stroke-linecap':'round','stroke-linejoin':'round'}));
+   pts.forEach((p,i)=>{svg.append(svgEl('circle',{cx:p[0],cy:p[1],r:3.5,fill:'#effff5',stroke:'#2dbb76','stroke-width':'2'}));const t=svgEl('text',{x:p[0],y:Math.max(12,p[1]-9),'text-anchor':'middle',class:'avp-demo-svg-label'});t.textContent=fmt(vals[i]);svg.append(t)});
+   chart.append(svg);rows.forEach(r=>{const tick=document.createElement('span');tick.textContent=label(r);axis.append(tick)});
+  }else if(v.type==='bar'){
+   chart.classList.add('type-ranking');
+   const list=features.slice(0,6),max=Math.max(1,...list.map(r=>val(r,'uses')));
+   list.forEach((r,i)=>{const item=document.createElement('div');item.className='avp-demo-rank-item';const name=document.createElement('span');name.className='avp-demo-rank-name';name.textContent=r.feature;const count=document.createElement('b');count.className='avp-demo-rank-count';count.textContent=fmt(r.uses);const track=document.createElement('div');track.className='avp-demo-rank-track';const fill=document.createElement('i');fill.style.width=Math.max(2,val(r,'uses')/max*100)+'%';fill.style.animationDelay=(i*70)+'ms';track.append(fill);item.append(name,count,track);chart.append(item)});
+   if(!list.length){const empty=document.createElement('span');empty.className='avp-demo-empty';empty.textContent='Chưa ghi nhận tương tác trong kỳ';chart.append(empty)}
+   axis.textContent='Xếp hạng theo lượt tương tác thực tế';
+  }else{
+   const groups={};features.forEach(r=>{groups[r.category]=(groups[r.category]||0)+val(r,'uses')});
+   const entries=Object.entries(groups),total=entries.reduce((a,x)=>a+x[1],0),first=entries[0]?.[1]||0,pct=total?first/total*100:0;
+   chart.classList.add('type-donut');const wrap=document.createElement('div');wrap.className='avp-demo-donut-wrap';const donut=document.createElement('div');donut.className='avp-demo-donut';donut.style.setProperty('--pct',pct+'%');const center=document.createElement('strong');center.textContent=total?Math.round(pct)+'%':'—';donut.append(center);const legend=document.createElement('div');legend.className='avp-demo-legend';
+   entries.forEach(([name,num],i)=>{const line=document.createElement('div');line.className='avp-demo-legend-row';const dot=document.createElement('i');dot.style.background=i?'#8bc9ff':'#79e7a8';const text=document.createElement('span');text.textContent=name;const value=document.createElement('b');value.textContent=fmt(num);line.append(dot,text,value);legend.append(line)});
+   if(!entries.length){const empty=document.createElement('span');empty.className='avp-demo-empty';empty.textContent='Chưa có dữ liệu tương tác';legend.append(empty)}
+   wrap.append(donut,legend);chart.append(wrap);axis.textContent='Tỷ trọng các nhóm tương tác được ghi nhận';
+  }
+  set('avpDemoFoot','Số liệu tổng hợp từ hoạt động website');
+ }
+ async function load(){
+  const deadline=Date.now()+6000;while(Date.now()<deadline&&!window.avpSupabase)await new Promise(r=>setTimeout(r,150));
+  if(!window.avpSupabase?.rpc){set('avpDemoStatus','CHƯA KẾT NỐI');set('avpDemoFoot','Chưa kết nối được dữ liệu thống kê');return}
+  try{
+   const [trend,sum,usage]=await Promise.all([
+    window.avpSupabase.rpc('public_home_analytics_trend',{p_days:7}),
+    window.avpSupabase.rpc('public_home_analytics_summary',{p_days:7}),
+    window.avpSupabase.rpc('public_home_feature_usage',{p_days:7})
+   ]);
+   if(trend.error||sum.error||usage.error)throw trend.error||sum.error||usage.error;
+   rows=Array.isArray(trend.data)?trend.data:[];summary=Array.isArray(sum.data)?sum.data[0]||{}:sum.data||{};features=Array.isArray(usage.data)?usage.data:[];
+   if(!rows.length)throw Error('No trend data');
+   render(idx);timer=setInterval(()=>{idx=(idx+1)%views.length;render(idx)},5000);
+  }catch(e){set('avpDemoStatus','KHÔNG KHẢ DỤNG');set('avpDemoMetric1','—');set('avpDemoMetric2','—');set('avpDemoChartTitle','Chưa có dữ liệu');set('avpDemoFoot','Không thể tải thống kê website');console.warn('[AVP analytics]',e)}
+ }
+ load();
+})();
+</script>
+
+</body>
+
+</html> 
