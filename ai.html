@@ -62,7 +62,35 @@
     .ai-quickstart-btn span:last-child{font-size:12px;color:var(--ai-muted);line-height:1.45}
     @media(max-width:900px){.ai-quickstart-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:560px){.ai-quickstart{padding:17px}.ai-quickstart-head{display:block}.ai-quickstart-head p{margin-top:8px}.ai-quickstart-grid{grid-template-columns:1fr}.ai-quickstart-btn{min-height:unset;display:grid;grid-template-columns:36px minmax(0,1fr);align-items:center;column-gap:12px}.ai-quickstart-btn .ai-quickstart-icon{grid-row:span 2}.ai-quickstart-btn span:last-child{grid-column:2}}
-</style>
+
+    /* Practical AI lab: case-first learning, evidence and acceptance criteria */
+    .ai-lab-intro{display:flex;gap:18px;align-items:flex-start;justify-content:space-between;padding:24px;border-radius:20px;background:#17243b;color:#fff;margin-bottom:18px}
+    .ai-lab-intro h3{font-size:21px;line-height:1.3;margin:0 0 7px}.ai-lab-intro p{margin:0;max-width:700px;color:#d2dcef;line-height:1.65;font-size:14px}
+    .ai-lab-label{display:inline-flex;white-space:nowrap;align-items:center;padding:7px 10px;border-radius:999px;background:#ffffff16;border:1px solid #ffffff2a;color:#e4eaff;font-size:11px;font-weight:900;letter-spacing:.08em}
+    .ai-case-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .ai-case{background:#fff;border:1px solid var(--ai-line);border-radius:20px;overflow:hidden;box-shadow:0 10px 30px #1b2a4a08;min-width:0}
+    .ai-case-top{padding:20px 20px 17px;border-bottom:1px solid var(--ai-line);background:linear-gradient(145deg,#fff,#f6f8ff)}
+    .ai-case-number{font-size:11px;letter-spacing:.1em;font-weight:900;color:var(--ai-blue)}
+    .ai-case h3{font-size:19px;line-height:1.35;margin:9px 0}
+    .ai-case-top p{font-size:13px;line-height:1.6;color:var(--ai-muted);margin:0}
+    .ai-case-body{padding:18px 20px 20px}
+    .ai-case-block{margin-bottom:15px}.ai-case-block:last-child{margin-bottom:0}
+    .ai-case-block strong{display:block;font-size:12px;letter-spacing:.02em;margin-bottom:7px;color:var(--ai-ink)}
+    .ai-case-block p,.ai-case-block li{font-size:13px;line-height:1.6;color:var(--ai-muted)}
+    .ai-case-block p{margin:0}.ai-case-block ul,.ai-case-block ol{padding-left:18px;margin:0}
+    .ai-case-data{font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;background:#f5f7fb;border:1px solid #e4e9f2;border-radius:10px;padding:11px;color:#2d3a55}
+    .ai-case-check{padding:12px;border-radius:12px;background:#edf8f2;border:1px solid #d5eee0;color:#245c43;font-size:12px;line-height:1.6}
+    .ai-case details{border-top:1px solid var(--ai-line);margin-top:15px;padding-top:13px}
+    .ai-case summary{cursor:pointer;font-size:13px;font-weight:850;color:var(--ai-blue);list-style:none;display:flex;justify-content:space-between;gap:8px}
+    .ai-case summary::-webkit-details-marker{display:none}.ai-case summary:after{content:"＋";font-size:17px}.ai-case details[open] summary:after{content:"−"}
+    .ai-case-detail{padding-top:12px}.ai-case-detail .ai-case-data{margin-top:7px}
+    .ai-case-detail .ai-lesson-copy{width:100%;margin-top:10px}
+    .ai-lab-rule{margin-top:15px;padding:14px 16px;border-left:3px solid #4864f2;background:#eef2ff;color:#435171;border-radius:0 12px 12px 0;font-size:13px;line-height:1.65}
+    @media(max-width:900px){.ai-case-grid{grid-template-columns:1fr}.ai-case{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}.ai-case-top{border-bottom:0;border-right:1px solid var(--ai-line)}}
+    @media(max-width:560px){.ai-lab-intro{display:block;padding:20px}.ai-lab-label{margin-top:14px}.ai-case{display:block}.ai-case-top{border-right:0;border-bottom:1px solid var(--ai-line)}}
+    body.dark-mode .ai-case{background:#172033;border-color:#2d3a53}body.dark-mode .ai-case-top{background:linear-gradient(145deg,#172033,#1d2940);border-color:#2d3a53}body.dark-mode .ai-case h3,body.dark-mode .ai-case-block strong{color:#eef3ff}body.dark-mode .ai-case-top p,body.dark-mode .ai-case-block p,body.dark-mode .ai-case-block li{color:#b4c0d5}body.dark-mode .ai-case-data{background:#101827;border-color:#303d54;color:#dce5f7}body.dark-mode .ai-case-check{background:#17382d;border-color:#245540;color:#bde8d2}body.dark-mode .ai-lab-rule{background:#202d4b;color:#d0dcf5}
+
+  </style>
 </head>
 <body>
 <script src="avp-ui-system.js?v=20261002-ui1" data-avp-ui-system></script>
@@ -83,10 +111,10 @@
   <section class="ai-hero" aria-labelledby="aiHeroTitle">
     <div>
       <span class="ai-kicker">LEARNEXCELWITHME · AI SKILLS</span>
-      <h1 id="aiHeroTitle">Đừng chỉ hỏi AI.<br>Hãy biết cách giao việc.</h1>
-      <p>Học cách mô tả đúng vấn đề, cung cấp đủ bối cảnh, nhận kết quả có thể dùng và tự kiểm tra trước khi áp dụng vào công việc.</p>
+      <h1 id="aiHeroTitle">Dùng AI để giải quyết<br>việc thật, không đoán mò.</h1>
+      <p>Thực hành trên các ca Excel, Power Query, KPI và báo cáo. Tìm nguyên nhân, thử phương án, đối chiếu số liệu và nghiệm thu kết quả trước khi đưa vào công việc.</p>
       <div class="ai-actions">
-        <a class="ai-btn ai-btn-primary" href="#aiLearningPath">Bắt đầu học <span aria-hidden="true">→</span></a>
+        <a class="ai-btn ai-btn-primary" href="#aiPracticalLab">Vào phòng thực chiến <span aria-hidden="true">→</span></a>
         <a class="ai-btn ai-btn-ghost" href="#aiPromptPractice">Thử tạo prompt</a>
       </div>
     </div>
@@ -113,6 +141,58 @@
         <span class="ai-quickstart-icon" aria-hidden="true">▤</span><strong>Làm báo cáo</strong><span>Chuyển dữ kiện đã xác minh thành báo cáo có cấu trúc.</span>
       </button>
     </div>
+  </section>
+
+
+  <section class="ai-section" id="aiPracticalLab" aria-labelledby="aiLabTitle">
+    <div class="ai-section-head"><div><span class="ai-eyebrow">CASE-BASED LEARNING · PHÒNG THỰC CHIẾN</span><h2 id="aiLabTitle">Không học prompt suông. Giải quyết một ca việc thật.</h2></div><p>Mỗi case có dữ liệu đầu vào, cách điều tra, điểm cần kiểm chứng và tiêu chí nghiệm thu. AI chỉ hỗ trợ quá trình; người học phải tự xác minh kết quả.</p></div>
+    <div class="ai-lab-intro"><div><h3>Quy trình thực chiến áp dụng cho mọi case</h3><p>01. Xác định lỗi hoặc quyết định cần đưa ra → 02. Chuẩn hóa dữ liệu và tiêu chí đúng → 03. Dùng AI để lập giả thuyết, không đoán mò → 04. Kiểm thử từng giả thuyết → 05. Ghi lại nguyên nhân, cách sửa và bằng chứng.</p></div><span class="ai-lab-label">THỰC HÀNH CÓ KIỂM CHỨNG</span></div>
+    <div class="ai-case-grid">
+      <article class="ai-case">
+        <div class="ai-case-top"><span class="ai-case-number">CASE 01 · KPI / EXCEL</span><h3>Tỷ lệ trên dashboard không khớp số gốc</h3><p>Báo cáo hiển thị tỷ lệ lỗi khác với phép tính thủ công. Không sửa công thức ngay: phải xác định đúng mẫu số, phạm vi lọc và định nghĩa KPI trước.</p></div>
+        <div class="ai-case-body">
+          <div class="ai-case-block"><strong>Dữ liệu đầu vào</strong><div class="ai-case-data">Ca ngày: 7 lỗi / 150 lượt
+Ca đêm: 3 lỗi / 150 lượt
+Bộ lọc đang chọn: chỉ ca ngày
+Dashboard hiển thị: 1,33%</div></div>
+          <div class="ai-case-block"><strong>Nhiệm vụ của người học</strong><ol><li>Tính lại tỷ lệ theo phạm vi ca ngày.</li><li>Kiểm tra dashboard có dùng nhầm tổng hai ca, số ngày hay vùng dữ liệu khác không.</li><li>Đề xuất cách kiểm tra để con số tự khớp khi đổi bộ lọc.</li></ol></div>
+          <div class="ai-case-block"><strong>Tiêu chí nghiệm thu</strong><div class="ai-case-check">Ca ngày: 7 ÷ 150 = 4,67%. Hai ca: 10 ÷ 300 = 3,33%. Kết quả phải đổi theo đúng ca được chọn và không đếm thêm ca bị loại bởi bộ lọc.</div></div>
+          <details><summary>Mở hướng dẫn điều tra và prompt hỗ trợ</summary><div class="ai-case-detail"><div class="ai-case-block"><strong>Điều tra theo thứ tự</strong><ol><li>Xác nhận tử số và mẫu số của KPI.</li><li>Kiểm tra bộ lọc ca, ngày và nguồn dữ liệu của từng thành phần KPI.</li><li>Tính thủ công bằng một tập dữ liệu nhỏ.</li><li>Đối chiếu công thức hoặc PivotTable; chỉ sửa sau khi xác định nguyên nhân.</li></ol></div><div class="ai-case-block"><strong>Yêu cầu AI hỗ trợ chẩn đoán</strong><div class="ai-case-data">Phân tích tình huống KPI dưới đây. Trước tiên hãy tính kết quả kỳ vọng, ghi rõ tử số/mẫu số và phạm vi lọc. Sau đó liệt kê các nguyên nhân có thể khiến dashboard khác kết quả thủ công, xếp theo thứ tự kiểm tra. Với mỗi nguyên nhân, nêu bằng chứng cần xem; chưa được kết luận khi chưa có bằng chứng. Cuối cùng đề xuất bộ test cho ca ngày, ca đêm và cả hai ca.</div><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span></div><div class="ai-case-block"><strong>Lỗi người mới thường mắc</strong><p>Sửa mẫu số cho ra con số mong muốn mà không kiểm tra bộ lọc, hoặc so sánh hai KPI có định nghĩa khác nhau.</p></div></div></details>
+        </div>
+      </article>
+      <article class="ai-case">
+        <div class="ai-case-top"><span class="ai-case-number">CASE 02 · POWER QUERY</span><h3>Refresh dữ liệu thì truy vấn báo lỗi cột</h3><p>Truy vấn từng chạy bình thường nhưng tháng mới bị lỗi sau bước đổi tên hoặc xóa cột. Mục tiêu là tìm đúng Applied Step gây lỗi, không viết lại toàn bộ truy vấn.</p></div>
+        <div class="ai-case-body">
+          <div class="ai-case-block"><strong>Tình huống đầu vào</strong><div class="ai-case-data">Bảng tháng trước: Mã hàng | Ngày | Số lượng
+Bảng tháng này: Mã hàng | Ngày bán | Số lượng
+Applied Steps:
+1. Source
+2. Promoted Headers
+3. Changed Type
+4. Renamed Columns
+5. Removed Columns
+Lỗi: không tìm thấy cột "Ngày"</div></div>
+          <div class="ai-case-block"><strong>Nhiệm vụ của người học</strong><ol><li>Xác định tên cột thực tế ở từng bước.</li><li>Tìm bước đầu tiên tham chiếu tên cột không còn tồn tại.</li><li>Chọn cách sửa ít ảnh hưởng nhất và kiểm tra các bước sau.</li></ol></div>
+          <div class="ai-case-block"><strong>Tiêu chí nghiệm thu</strong><div class="ai-case-check">Chỉ rõ nguyên nhân bằng tên bước và tên cột. Sau khi sửa, truy vấn refresh được, số dòng không giảm bất thường và các kiểu dữ liệu vẫn đúng.</div></div>
+          <details><summary>Mở hướng dẫn điều tra và prompt hỗ trợ</summary><div class="ai-case-detail"><div class="ai-case-block"><strong>Điều tra theo thứ tự</strong><ol><li>Mở từng Applied Step và xác nhận tên cột hiện có.</li><li>Khoanh vùng bước đầu tiên phát sinh lỗi, không chỉ nhìn bước cuối.</li><li>Kiểm tra bước đổi tên, đổi kiểu dữ liệu và xóa cột có phụ thuộc tên cũ không.</li><li>Sửa tên tham chiếu hoặc chuẩn hóa tên cột nguồn; refresh lại và so sánh số dòng.</li></ol></div><div class="ai-case-block"><strong>Yêu cầu AI hỗ trợ chẩn đoán</strong><div class="ai-case-data">Hãy phân tích lỗi Power Query theo chuỗi Applied Steps tôi cung cấp. Xác định bước đầu tiên có khả năng tham chiếu cột không tồn tại; giải thích bằng tên cột trước/sau từng bước. Đưa ra tối đa hai phương án sửa, nêu rủi ro và cách kiểm tra số dòng, kiểu dữ liệu sau khi sửa. Hướng dẫn bằng giao diện Power Query trước; không tự viết M Code khi chưa có đủ thông tin.</div><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span></div><div class="ai-case-block"><strong>Lỗi người mới thường mắc</strong><p>Sửa bước cuối cùng đang đỏ mà không tìm bước đầu tiên sai; đổi tên cột nhưng quên những bước phía sau vẫn gọi tên cũ.</p></div></div></details>
+        </div>
+      </article>
+      <article class="ai-case">
+        <div class="ai-case-top"><span class="ai-case-number">CASE 03 · BÁO CÁO THÁNG</span><h3>Phân bổ Target còn thiếu cho các ngày còn lại</h3><p>Doanh số đầu tháng lệch kế hoạch. Cần cập nhật Target còn lại theo trọng số ngày thường và cuối tuần, nhưng vẫn giữ nguyên tổng mục tiêu tháng.</p></div>
+        <div class="ai-case-body">
+          <div class="ai-case-block"><strong>Dữ liệu đầu vào</strong><div class="ai-case-data">Target tháng: 300.000.000
+Đã bán: 110.000.000
+Còn 10 ngày: 6 ngày thường,
+4 ngày cuối tuần
+Trọng số: ngày thường = 1
+Cuối tuần = 1,5</div></div>
+          <div class="ai-case-block"><strong>Nhiệm vụ của người học</strong><ol><li>Tính phần Target còn phải đạt.</li><li>Phân bổ theo trọng số thay vì chia đều cho 10 ngày.</li><li>Kiểm tra tổng phân bổ có khớp Target còn lại hay không.</li></ol></div>
+          <div class="ai-case-block"><strong>Tiêu chí nghiệm thu</strong><div class="ai-case-check">Target còn lại là 190.000.000. Tổng trọng số là 12; mỗi đơn vị trọng số tương đương khoảng 15.833.333,33. Ngày cuối tuần nhận 1,5 lần Target ngày thường; tổng sau làm tròn phải được cân chỉnh để không lệch mục tiêu.</div></div>
+          <details><summary>Mở hướng dẫn điều tra và prompt hỗ trợ</summary><div class="ai-case-detail"><div class="ai-case-block"><strong>Quy trình tính và kiểm tra</strong><ol><li>Tính Target tháng trừ doanh số đã ghi nhận.</li><li>Tính tổng trọng số của các ngày còn lại.</li><li>Chia Target còn lại theo tỷ trọng từng ngày.</li><li>Đối chiếu tổng phân bổ; xử lý sai số làm tròn ở ngày cuối cùng theo quy tắc đã thống nhất.</li><li>Thử trường hợp doanh số vượt kế hoạch hoặc không còn ngày nào.</li></ol></div><div class="ai-case-block"><strong>Yêu cầu AI hỗ trợ mô hình</strong><div class="ai-case-data">Xây dựng phương pháp phân bổ Target còn lại cho từng ngày dựa trên trọng số ngày thường và cuối tuần. Trình bày công thức từng bước, bảng kết quả mẫu và phép kiểm tra tổng. Nêu rõ cách xử lý làm tròn, doanh số đã vượt Target và trường hợp không còn ngày phân bổ. Không chỉ đưa công thức cuối; hãy giải thích giả định và cho bộ test để tôi tự đối chiếu.</div><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span></div><div class="ai-case-block"><strong>Lỗi người mới thường mắc</strong><p>Phân bổ đều mỗi ngày, bỏ qua trọng số; hoặc làm tròn từng ngày khiến tổng Target bị lệch.</p></div></div></details>
+        </div>
+      </article>
+    </div>
+    <div class="ai-lab-rule"><strong>Chuẩn học của khu này:</strong> prompt chỉ là công cụ hỗ trợ. Hoàn thành một case khi bạn giải thích được nguyên nhân, tự kiểm tra kết quả và nêu được bằng chứng cho thấy cách xử lý đúng.</div>
   </section>
 
   <section class="ai-section" aria-labelledby="aiOutcomesTitle">
