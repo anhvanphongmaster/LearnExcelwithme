@@ -90,6 +90,41 @@
     @media(max-width:560px){.ai-lab-intro{display:block;padding:20px}.ai-lab-label{margin-top:14px}.ai-case{display:block}.ai-case-top{border-right:0;border-bottom:1px solid var(--ai-line)}}
     body.dark-mode .ai-case{background:#172033;border-color:#2d3a53}body.dark-mode .ai-case-top{background:linear-gradient(145deg,#172033,#1d2940);border-color:#2d3a53}body.dark-mode .ai-case h3,body.dark-mode .ai-case-block strong{color:#eef3ff}body.dark-mode .ai-case-top p,body.dark-mode .ai-case-block p,body.dark-mode .ai-case-block li{color:#b4c0d5}body.dark-mode .ai-case-data{background:#101827;border-color:#303d54;color:#dce5f7}body.dark-mode .ai-case-check{background:#17382d;border-color:#245540;color:#bde8d2}body.dark-mode .ai-lab-rule{background:#202d4b;color:#d0dcf5}
 
+  
+    /* Compact workspace layout: progressive disclosure instead of a long scroll */
+    .ai-page{width:min(1200px,calc(100% - 32px));margin:20px auto 56px}
+    .ai-hero{padding:clamp(24px,3.5vw,42px);border-radius:24px;grid-template-columns:minmax(0,1.3fr) minmax(210px,.7fr);gap:20px}
+    .ai-hero h1{font-size:clamp(30px,4vw,48px);margin:12px 0}
+    .ai-hero-art{min-height:170px}.ai-orbit{width:205px}.ai-orbit-core{width:82px;height:82px;border-radius:22px;font-size:27px}
+    .ai-quickstart{margin-top:16px;padding:18px 20px;border-radius:18px}
+    .ai-quickstart-head{align-items:center;margin-bottom:12px}.ai-quickstart-head h2{font-size:23px}
+    .ai-quickstart-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+    .ai-quickstart-btn{min-height:94px;padding:12px;gap:7px;border-radius:13px}
+    .ai-quickstart-icon{width:30px;height:30px;font-size:15px}.ai-quickstart-btn strong{font-size:13px}.ai-quickstart-btn span:last-child{font-size:11px}
+    .ai-section{margin-top:28px}.ai-section-head{margin-bottom:13px}.ai-section-head h2{font-size:25px}
+    .ai-outcomes{gap:10px}.ai-outcome{padding:16px;border-radius:15px}.ai-outcome .ai-icon{width:34px;height:34px;margin-bottom:10px}
+    .ai-tools-grid{gap:10px}.ai-tool-card{padding:16px;border-radius:16px}.ai-tool-mark{width:44px;height:44px;flex-basis:44px;border-radius:13px}
+    .ai-lab-intro{padding:18px;margin-bottom:12px;border-radius:16px}.ai-lab-intro h3{font-size:18px}
+    .ai-case-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .ai-case{display:block;border-radius:16px}
+    .ai-case-top{padding:16px 16px 13px}.ai-case h3{font-size:16px;margin:7px 0}.ai-case-top p{font-size:12px}
+    .ai-case-body{padding:13px 16px 16px}.ai-case-block{margin-bottom:11px}.ai-case-block p,.ai-case-block li{font-size:12px}
+    .ai-case-detail .ai-case-data{font-size:11px}
+    .ai-lab-rule{margin-top:11px;padding:11px 13px}
+    .ai-path-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 13px}
+    .ai-path-filter{border:1px solid var(--ai-line);background:#fff;color:#52617b;border-radius:999px;padding:8px 13px;font-size:12px;font-weight:850;cursor:pointer}
+    .ai-path-filter[aria-pressed="true"]{background:#263f9e;color:#fff;border-color:#263f9e}
+    .ai-module-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .ai-module{padding:15px;border-radius:15px;gap:12px}.ai-module .ai-icon{width:36px;height:36px;flex-basis:36px;font-size:15px;border-radius:11px}
+    .ai-module h3{font-size:15px}.ai-module p{font-size:12px;line-height:1.5}.ai-module small{font-size:10px;margin-bottom:5px}.ai-module .ai-module-meta{margin-top:8px}
+    .ai-chip{font-size:10px;padding:4px 7px}.ai-lesson{margin-top:10px;padding-top:9px}.ai-lesson summary{font-size:12px}
+    .ai-practice{gap:12px}.ai-prompt-card{padding:18px;border-radius:16px}.ai-generated{min-height:120px}
+    .ai-safety-grid{gap:10px}.ai-safety{padding:16px;border-radius:15px}
+    .ai-next{padding:18px 20px;border-radius:16px}
+    body.dark-mode .ai-path-filter{background:#172033;color:#c5d0e6;border-color:#2d3a53}body.dark-mode .ai-path-filter[aria-pressed="true"]{background:#4058cb;color:white;border-color:#4058cb}
+    @media(max-width:900px){.ai-case-grid{grid-template-columns:1fr}.ai-case{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}.ai-case-top{border-right:1px solid var(--ai-line);border-bottom:0}.ai-quickstart-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:650px){.ai-page{width:calc(100% - 22px);margin-top:12px}.ai-hero{grid-template-columns:1fr;padding:24px 20px}.ai-hero-art{display:none}.ai-quickstart{padding:15px}.ai-quickstart-head{display:block}.ai-quickstart-head p{margin-top:6px}.ai-quickstart-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-quickstart-btn{min-height:100px;display:flex;align-items:flex-start}.ai-outcomes,.ai-module-grid,.ai-practice,.ai-safety-grid,.ai-tools-grid{grid-template-columns:1fr}.ai-case{display:block}.ai-case-top{border-right:0;border-bottom:1px solid var(--ai-line)}.ai-section-head h2{font-size:22px}.ai-section-head p{font-size:13px}.ai-module{padding:14px}.ai-next{align-items:flex-start;flex-direction:column}}
+
   </style>
 </head>
 <body>
@@ -213,6 +248,13 @@ Cuối tuần = 1,5</div></div>
   </section>
   <section class="ai-section" id="aiLearningPath" aria-labelledby="aiPathTitle">
     <div class="ai-section-head"><div><span class="ai-eyebrow">LỘ TRÌNH HỌC</span><h2 id="aiPathTitle">Học theo thứ tự dễ áp dụng</h2></div><p>Bắt đầu từ cách giao việc, sau đó luyện trên tình huống công việc. Mở từng chặng để xem cách làm, prompt mẫu và bài tập có thể thực hành ngay.</p></div>
+    <div class="ai-path-filters" role="group" aria-label="Lọc nhóm kỹ năng">
+      <button class="ai-path-filter" type="button" data-ai-path-filter="all" aria-pressed="true">Tất cả</button>
+      <button class="ai-path-filter" type="button" data-ai-path-filter="foundation" aria-pressed="false">Nền tảng</button>
+      <button class="ai-path-filter" type="button" data-ai-path-filter="office" aria-pressed="false">Văn phòng</button>
+      <button class="ai-path-filter" type="button" data-ai-path-filter="data" aria-pressed="false">Excel & dữ liệu</button>
+      <button class="ai-path-filter" type="button" data-ai-path-filter="advanced" aria-pressed="false">Nâng cao</button>
+    </div>
     <div class="ai-module-grid">
       <article class="ai-module"><div class="ai-icon" aria-hidden="true">01</div><div><small>CHẶNG 01 · NỀN TẢNG</small><h3>Hiểu AI và đặt yêu cầu</h3><p>Biết khi nào nên dùng AI, cung cấp bối cảnh và nói rõ kết quả cần nhận.</p><div class="ai-module-meta"><span class="ai-chip">Cho người mới</span><span class="ai-chip">15 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Cách thực hiện</strong><ol><li>Nêu một nhiệm vụ cụ thể, không chỉ nói “giúp tôi làm việc”.</li><li>Cho biết ai sẽ dùng kết quả và thông tin nào đã có.</li><li>Nói rõ định dạng, độ dài và điều không được tự suy đoán.</li><li>Yêu cầu AI hỏi lại nếu thiếu dữ kiện quan trọng.</li></ol><strong>Prompt thực hành</strong><pre>Hãy giúp tôi [nhiệm vụ]. Bối cảnh là [bối cảnh]. Người đọc/người dùng là [đối tượng]. Tôi cần kết quả ở dạng [định dạng]. Nếu thiếu dữ liệu quan trọng, hãy hỏi lại; không tự tạo thông tin.</pre><button type="button" class="ai-btn ai-lesson-copy" data-ai-copy-lesson>Sao chép prompt</button><span class="ai-lesson-copy-status" role="status"></span><strong>Bài tập</strong><p>Viết lại câu “Làm báo cáo giúp tôi” thành một yêu cầu có bối cảnh, đầu ra và giới hạn rõ ràng.</p></div></details></div></article>
       <article class="ai-module"><div class="ai-icon" aria-hidden="true">02</div><div><small>CHẶNG 02 · PROMPT</small><h3>Viết prompt có cấu trúc</h3><p>Dùng khung yêu cầu có thể tái sử dụng cho nhiều công việc.</p><div class="ai-module-meta"><span class="ai-chip">Có mẫu sao chép</span><span class="ai-chip">20 phút</span></div><details class="ai-lesson"><summary>Học bài này</summary><div class="ai-lesson-body"><strong>Khung prompt gồm 6 phần</strong><ol><li><b>Vai trò:</b> AI cần hỗ trợ dưới góc nhìn nào.</li><li><b>Nhiệm vụ:</b> cần hoàn thành việc gì.</li><li><b>Bối cảnh:</b> tình huống và đối tượng sử dụng.</li><li><b>Đầu vào:</b> dữ liệu, ví dụ hoặc nội dung nguồn.</li><li><b>Đầu ra:</b> bảng, email, danh sách bước hay báo cáo.</li><li><b>Tiêu chí:</b> điều kiện đúng, giới hạn và cách xử lý thông tin thiếu.</li></ol><strong>Prompt mẫu</strong><pre>Vai trò: Bạn là trợ lý văn phòng.
@@ -277,6 +319,20 @@ Nếu thiếu thông tin quan trọng, hãy hỏi lại trước khi kết luậ
 <script defer src="global-search.js"></script>
 <script defer src="avp-core.js"></script>
 <script>
+(function(){
+  const categoryByModule=['foundation','foundation','office','data','advanced','advanced','advanced','office','data','data','office','advanced'];
+  const grid=document.querySelector('.ai-module-grid');
+  const filterButtons=document.querySelectorAll('[data-ai-path-filter]');
+  if(grid){
+    const modules=Array.from(grid.querySelectorAll('.ai-module'));
+    modules.forEach((module,index)=>module.dataset.aiCategory=categoryByModule[index]||'advanced');
+    filterButtons.forEach(button=>button.addEventListener('click',function(){
+      const chosen=button.dataset.aiPathFilter;
+      filterButtons.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+      modules.forEach(module=>{module.hidden=chosen!=='all'&&module.dataset.aiCategory!==chosen;});
+    }));
+  }
+})();
 (function(){
   const task=document.getElementById('aiTaskType');
   const context=document.getElementById('aiContext');
