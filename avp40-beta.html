@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f8fa">
+<title>AVP 4.0 — Học để làm chủ công việc</title>
+<meta name="description" content="Hệ sinh thái học tập và kỹ năng văn phòng: Excel, báo cáo, dữ liệu, Power Query, tự động hóa và AI ứng dụng.">
+<style>
+:root{--ink:#172238;--muted:#657187;--line:#e4e8ef;--paper:#fff;--bg:#f7f8fa;--brand:#2258d6;--brand2:#173e9c;--soft:#edf2ff;--green:#178568;--shadow:0 12px 32px rgba(24,39,75,.07)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:92px}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1160px,calc(100% - 40px));margin-inline:auto}
+header{height:76px;position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(228,232,239,.9)}.nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:-.04em;font-size:19px}.brand-mark{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--ink);color:#fff;font-size:14px;letter-spacing:-.04em}.brand small{display:block;font-size:10px;letter-spacing:.14em;color:var(--muted);font-weight:750;margin-top:-2px}.nav-links{display:flex;align-items:center;gap:25px;color:#526078;font-size:13px;font-weight:650}.nav-links a:hover{color:var(--brand)}.nav-cta{background:var(--brand);color:white;padding:10px 15px;border-radius:10px;font-size:13px;font-weight:750}.menu-btn{display:none;background:white;border:1px solid var(--line);border-radius:9px;padding:8px 11px;color:var(--ink)}
+.hero{padding:72px 0 45px;overflow:hidden}.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:50px}.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--brand);font-size:11px;letter-spacing:.13em;font-weight:850;text-transform:uppercase}.eyebrow:before{content:"";width:20px;height:2px;background:var(--brand);border-radius:2px}.hero h1{font-size:clamp(38px,5.2vw,64px);letter-spacing:-.06em;line-height:1.04;margin:17px 0 19px;max-width:720px}.hero h1 span{color:var(--brand)}.hero-copy{font-size:17px;line-height:1.8;color:var(--muted);max-width:620px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:27px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 18px;border-radius:11px;font-weight:750;font-size:14px;border:1px solid transparent;cursor:pointer}.btn-primary{background:var(--brand);color:white;box-shadow:0 8px 18px rgba(34,88,214,.18)}.btn-primary:hover{background:var(--brand2)}.btn-secondary{background:#fff;border-color:var(--line);color:var(--ink)}.hero-note{display:flex;align-items:center;gap:12px;margin-top:28px;color:var(--muted);font-size:12px}.dot{width:8px;height:8px;border-radius:50%;background:#25a27e;box-shadow:0 0 0 4px #e0f5ed}.hero-panel{position:relative;padding:23px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(150deg,#fff,#f1f5ff);box-shadow:var(--shadow)}.panel-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.panel-title{font-weight:800;letter-spacing:-.02em}.beta{font-size:10px;font-weight:850;color:var(--brand);background:#e2eaff;border-radius:6px;padding:5px 8px;letter-spacing:.06em}.path-list{display:grid;gap:10px}.path-row{display:flex;align-items:center;gap:13px;background:#fff;border:1px solid #e9edf4;border-radius:13px;padding:13px}.path-icon{display:grid;place-items:center;width:39px;height:39px;border-radius:11px;background:var(--soft);color:var(--brand);font-weight:850;font-size:12px;flex-shrink:0}.path-row strong{display:block;font-size:13px}.path-row small{color:var(--muted);font-size:11px}.path-arrow{margin-left:auto;color:#99a5b8;font-size:18px}.panel-foot{display:flex;justify-content:space-between;margin-top:17px;padding-top:15px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}.panel-foot strong{color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:15px;background:white;margin-top:20px}.stat{padding:15px 18px}.stat+.stat{border-left:1px solid var(--line)}.stat strong{display:block;font-size:17px;letter-spacing:-.03em}.stat span{color:var(--muted);font-size:11px}
+.section{padding:47px 0}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:22px}.kicker{color:var(--brand);font-size:11px;font-weight:850;letter-spacing:.13em;text-transform:uppercase}.section h2{font-size:clamp(25px,3vw,34px);line-height:1.2;letter-spacing:-.045em;margin:6px 0}.section-head p{margin:0;color:var(--muted);max-width:570px;font-size:14px}.search-wrap{display:flex;gap:10px;margin:21px 0 17px}.search-box{position:relative;flex:1}.search-box span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#7c879a}.search-box input{width:100%;border:1px solid var(--line);background:#fff;border-radius:11px;padding:13px 14px 13px 42px;outline:none}.search-box input:focus{border-color:#9bb5fa;box-shadow:0 0 0 3px #e9efff}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.filter{border:1px solid var(--line);background:white;color:#58657b;padding:8px 12px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer}.filter.active,.filter:hover{background:var(--ink);border-color:var(--ink);color:white}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.course{display:flex;flex-direction:column;min-height:225px;padding:21px;background:white;border:1px solid var(--line);border-radius:16px;transition:transform .18s,border-color .18s,box-shadow .18s}.course:hover{transform:translateY(-3px);border-color:#c5d2f4;box-shadow:var(--shadow)}.course-top{display:flex;justify-content:space-between;align-items:center}.course-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--soft);color:var(--brand);font-weight:850;font-size:12px}.course-tag{font-size:10px;color:#637087;background:#f2f4f8;padding:5px 8px;border-radius:6px;font-weight:800}.course h3{font-size:18px;letter-spacing:-.025em;margin:16px 0 7px}.course p{color:var(--muted);font-size:13px;line-height:1.7;margin:0}.course-link{margin-top:auto;padding-top:18px;color:var(--brand);font-size:12px;font-weight:800}.course[hidden]{display:none}.empty{display:none;padding:25px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px;background:#fff}
+.feature-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}.feature{padding:24px;border-radius:18px;background:var(--ink);color:white;min-height:210px;position:relative;overflow:hidden}.feature.light{background:#eaf0ff;color:var(--ink)}.feature-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:850;color:#aebfe8}.feature.light .feature-label{color:var(--brand)}.feature h3{font-size:24px;letter-spacing:-.04em;margin:12px 0 8px}.feature p{max-width:470px;color:#c7d0e1;font-size:13px;line-height:1.8;margin:0}.feature.light p{color:#5d6b82}.feature a{display:inline-flex;margin-top:18px;font-size:12px;font-weight:800;color:#fff}.feature.light a{color:var(--brand)}.feature-mark{position:absolute;right:17px;bottom:-24px;font-size:108px;font-weight:900;letter-spacing:-.1em;color:rgba(255,255,255,.07)}.feature.light .feature-mark{color:rgba(34,88,214,.08)}
+.method{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.step{padding:18px;border:1px solid var(--line);border-radius:14px;background:white}.step b{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:var(--soft);color:var(--brand);font-size:11px;margin-bottom:14px}.step strong{display:block;font-size:14px;margin-bottom:5px}.step p{font-size:12px;color:var(--muted);margin:0;line-height:1.7}
+.bottom-cta{padding:34px;border-radius:20px;background:#eaf0ff;display:flex;align-items:center;justify-content:space-between;gap:24px}.bottom-cta h2{font-size:27px;letter-spacing:-.045em;margin:0 0 8px}.bottom-cta p{margin:0;color:#5d6b82;font-size:13px}.bottom-cta .btn{flex-shrink:0}
+footer{margin-top:45px;background:#111b2d;color:#fff;padding:34px 0 24px}.footer-main{display:flex;justify-content:space-between;gap:30px;padding-bottom:24px}.footer-brand{font-size:17px;font-weight:850}.footer-main p{max-width:440px;color:#aab5c8;font-size:12px}.footer-links{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:#d0d7e3}.footer-bottom{padding-top:17px;border-top:1px solid #2d3748;color:#8996ab;font-size:11px;display:flex;justify-content:space-between;gap:12px}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:28px}.hero-panel{max-width:620px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.method{grid-template-columns:repeat(2,1fr)}.nav-links{gap:15px}}
+@media(max-width:650px){.wrap{width:min(100% - 26px,1160px)}header{height:66px}.nav-links{display:none;position:absolute;top:65px;left:0;right:0;background:white;padding:18px 22px 22px;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:14px}.nav-links.open{display:flex}.nav-links .nav-cta{text-align:center}.menu-btn{display:block}.hero{padding:44px 0 28px}.hero h1{font-size:40px}.hero-copy{font-size:15px}.hero-panel{padding:16px}.stats{margin-top:15px}.stat{padding:12px 10px}.stat strong{font-size:15px}.stat span{font-size:10px}.section{padding:34px 0}.section-head{align-items:flex-start;flex-direction:column}.cards{grid-template-columns:1fr}.course{min-height:unset}.feature-row{grid-template-columns:1fr}.method{grid-template-columns:1fr 1fr}.bottom-cta{padding:23px;align-items:flex-start;flex-direction:column}.bottom-cta h2{font-size:23px}.footer-main,.footer-bottom{flex-direction:column}.footer-links{gap:13px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+</style>
+
+<style id="avp40-admin-gate-css">
+#avp40AdminGate{position:fixed;inset:0;z-index:2147483647;background:#f7f8fa;color:#172238;display:grid;place-items:center;padding:24px;font:15px/1.6 system-ui,sans-serif}
+#avp40AdminGate .gate-card{max-width:440px;background:#fff;border:1px solid #e4e8ef;border-radius:18px;padding:28px;box-shadow:0 16px 50px #17223818;text-align:center}
+#avp40AdminGate h1{font-size:22px;margin:0 0 8px}#avp40AdminGate p{color:#657187;margin:8px 0 0}
+</style>
+<div id="avp40AdminGate"><div class="gate-card"><h1>AVP 4.0 Beta</h1><strong>Đang xác minh quyền Admin…</strong><p>Trang thử nghiệm chỉ dành cho tài khoản quản trị.</p></div></div>
+<script src="supabase-config.js"></script>
+<script type="module" src="supabase-auth.js"></script>
+<script>
+(function(){
+ const gate=document.getElementById('avp40AdminGate');
+ function deny(msg){document.body.innerHTML='<main style="min-height:100vh;display:grid;place-items:center;background:#f7f8fa;font:16px system-ui;padding:24px;color:#172238"><section style="max-width:460px;background:white;padding:28px;border-radius:18px;border:1px solid #e4e8ef;text-align:center"><h1>Không có quyền truy cập</h1><p>'+msg+'</p><p><a href="auth.html?next=avp40-beta.html&admin=1&tab=login">Đăng nhập Admin</a> · <a href="index.html">Về trang chủ</a></p></section></main>';}
+ async function run(){
+  const deadline=Date.now()+10000;let client=null;
+  while(Date.now()<deadline){client=window.avpSupabase;if(client)break;await new Promise(r=>setTimeout(r,100));}
+  if(!client){deny('Không khởi tạo được đăng nhập. Hãy quay lại trang chủ và đăng nhập Admin.');return;}
+  let session=null;
+  try{for(let i=0;i<30&&!session;i++){const r=await client.auth.getSession();session=r.data&&r.data.session;if(!session)await new Promise(r=>setTimeout(r,150));}}catch(e){}
+  if(!session||!session.user){deny('Bạn chưa đăng nhập. Hãy đăng nhập bằng tài khoản Admin rồi mở lại thẻ Beta.');return;}
+  let ok=false;
+  try{const r=await client.rpc('is_admin_user');if(!r.error)ok=r.data===true;}catch(e){}
+  if(!ok){try{const r=await client.from('profiles').select('is_admin').eq('id',session.user.id).maybeSingle();ok=!r.error&&r.data&&r.data.is_admin===true;}catch(e){}}
+  if(!ok){deny('Tài khoản hiện tại chưa được xác nhận có quyền Admin.');return;}
+  gate.remove();
+ }
+ run();
+})();
+</script>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="AVP 4.0 trang chủ"><span class="brand-mark">AVP</span><span>AVP 4.0<small>KNOWLEDGE · WORK · GROW</small></span></a>
+    <nav class="nav-links" id="navLinks" aria-label="Điều hướng chính">
+      <a href="#lo-trinh">Lộ trình học</a><a href="#khu-vuc">Chuyên mục</a><a href="#thuc-chien">Thực chiến</a><a href="tools-center.html">Công cụ</a><a class="nav-cta" href="skill-map.html">Khám phá bài học ↗</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Mở menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Không chỉ học công cụ · Làm chủ công việc</div>
+        <h1>Biết nhiều hơn.<br><span>Làm tốt hơn.</span></h1>
+        <p class="hero-copy">Một không gian học tập dành cho kỹ năng văn phòng hiện đại — từ Excel và báo cáo đến dữ liệu, tự động hóa và AI. Học theo lộ trình, thực hành bằng tình huống thật, hiểu bản chất thay vì học mẹo rời rạc.</p>
+        <div class="actions"><a class="btn btn-primary" href="#lo-trinh">Khám phá lộ trình <span>→</span></a><a class="btn btn-secondary" href="tools-center.html">Mở trung tâm công cụ ↗</a></div>
+        <div class="hero-note"><span class="dot"></span><span>Học theo cấp độ · Thực hành · Kiểm chứng kết quả</span></div>
+      </div>
+      <div>
+        <div class="hero-panel">
+          <div class="panel-top"><span class="panel-title">Lộ trình phát triển kỹ năng</span><span class="beta">BETA 4.0</span></div>
+          <div class="path-list">
+            <a class="path-row" href="skill-map.html"><span class="path-icon">01</span><span><strong>Nền tảng vững chắc</strong><small>Excel cơ bản · thao tác · định dạng</small></span><span class="path-arrow">›</span></a>
+            <a class="path-row" href="congthucexcel.html"><span class="path-icon">02</span><span><strong>Công thức & tư duy</strong><small>Hàm · tra cứu · xử lý bài toán</small></span><span class="path-arrow">›</span></a>
+            <a class="path-row" href="baocaoexcel.html"><span class="path-icon">03</span><span><strong>Phân tích & báo cáo</strong><small>Pivot · KPI · dashboard</small></span><span class="path-arrow">›</span></a>
+            <a class="path-row" href="knowledge.html"><span class="path-icon">04</span><span><strong>Dữ liệu & tự động hóa</strong><small>Power Query · quy trình · AI</small></span><span class="path-arrow">›</span></a>
+          </div>
+          <div class="panel-foot"><span><strong>Học có hệ thống</strong><br>Đi từ nền tảng đến ứng dụng</span><span><strong>Ưu tiên thực hành</strong><br>Giải quyết việc thật</span></div>
+        </div>
+        <div class="stats"><div class="stat"><strong>Excel-first</strong><span>Lấy Excel làm nền tảng</span></div><div class="stat"><strong>Thực tế</strong><span>Tình huống công việc</span></div><div class="stat"><strong>Mở rộng</strong><span>Dữ liệu · AI · Automation</span></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="section" id="lo-trinh">
+    <div class="wrap">
+      <div class="section-head"><div><div class="kicker">Explore the ecosystem</div><h2>Một hệ sinh thái. Nhiều năng lực.</h2></div><p>Tìm đúng nội dung cần học, hoặc bắt đầu từ nền tảng nếu bạn muốn xây kiến thức một cách bài bản.</p></div>
+      <div class="search-wrap"><label class="search-box"><span>⌕</span><input id="courseSearch" type="search" placeholder="Tìm Excel, hàm, Pivot, báo cáo, Power Query..." aria-label="Tìm chuyên mục"></label><a class="btn btn-secondary" href="skill-map.html">Tất cả bài học ↗</a></div>
+      <div class="filters" role="group" aria-label="Lọc chuyên mục"><button class="filter active" data-filter="all">Tất cả</button><button class="filter" data-filter="excel">Excel</button><button class="filter" data-filter="report">Báo cáo & dữ liệu</button><button class="filter" data-filter="automation">Tự động hóa</button><button class="filter" data-filter="tools">Công cụ</button></div>
+      <div class="cards" id="courseCards">
+        <a class="course" data-category="excel" data-search="excel cơ bản nền tảng phím tắt thao tác định dạng dữ liệu" href="skill-map.html"><div class="course-top"><span class="course-icon">EX</span><span class="course-tag">FOUNDATION</span></div><h3>Excel cơ bản</h3><p>Từ giao diện, nhập liệu và phím tắt đến định dạng, tham chiếu và những hàm đầu tiên.</p><span class="course-link">Xây nền tảng →</span></a>
+        <a class="course" data-category="excel" data-search="hàm công thức excel nâng cao if sumifs countifs xlookup hàm lồng" href="congthucexcel.html"><div class="course-top"><span class="course-icon">fx</span><span class="course-tag">ADVANCED</span></div><h3>Hàm & tư duy công thức</h3><p>Hiểu logic, kết hợp hàm, tra cứu dữ liệu và giải quyết bài toán thay vì học thuộc cú pháp.</p><span class="course-link">Học công thức →</span></a>
+        <a class="course" data-category="report" data-search="pivot table pivotchart slicer báo cáo kpi dashboard biểu đồ" href="baocaoexcel.html"><div class="course-top"><span class="course-icon">↗</span><span class="course-tag">REPORTING</span></div><h3>Phân tích & báo cáo</h3><p>Biến dữ liệu thô thành báo cáo có thể lọc, phân tích, theo dõi KPI và hỗ trợ quyết định.</p><span class="course-link">Xây báo cáo →</span></a>
+        <a class="course" data-category="report" data-search="power query làm sạch dữ liệu merge append unpivot refresh m code" href="knowledge.html"><div class="course-top"><span class="course-icon">PQ</span><span class="course-tag">DATA</span></div><h3>Power Query & dữ liệu</h3><p>Nhập, chuẩn hóa, hợp nhất và làm mới dữ liệu theo quy trình có thể tái sử dụng.</p><span class="course-link">Khám phá kiến thức →</span></a>
+        <a class="course" data-category="automation" data-search="tự động hóa macro vba ai quy trình làm việc tối ưu" href="knowledge.html"><div class="course-top"><span class="course-icon">⚙</span><span class="course-tag">AUTOMATION</span></div><h3>Tự động hóa & AI</h3><p>Tìm hiểu cách giảm thao tác lặp lại, tổ chức quy trình và ứng dụng AI có kiểm chứng.</p><span class="course-link">Tìm hiểu thêm →</span></a>
+        <a class="course" data-category="tools" data-search="công cụ tiện ích công thức làm sạch văn bản ngày tháng pareto" href="tools-center.html"><div class="course-top"><span class="course-icon">TO</span><span class="course-tag">TOOLBOX</span></div><h3>Trung tâm công cụ</h3><p>Các tiện ích hỗ trợ công việc văn phòng, dùng nhanh khi cần mà không phải học theo thứ tự.</p><span class="course-link">Mở công cụ →</span></a>
+        <a class="course" data-category="report" data-search="dự án thực chiến bài tập excel dữ liệu chất lượng nhân sự doanh số" href="baitapexcel.html"><div class="course-top"><span class="course-icon">PR</span><span class="course-tag">PROJECTS</span></div><h3>Bài tập & dự án thực chiến</h3><p>Rèn kỹ năng qua tình huống gần với công việc và kiểm tra kết quả trước khi bàn giao.</p><span class="course-link">Thực hành ngay →</span></a>
+        <a class="course" data-category="tools" data-search="tài nguyên file mẫu hướng dẫn phím tắt kiến thức mở rộng văn phòng" href="skill-map.html"><div class="course-top"><span class="course-icon">LIB</span><span class="course-tag">RESOURCES</span></div><h3>Thư viện kiến thức</h3><p>Tập hợp hướng dẫn, tài nguyên và kiến thức bổ trợ cho công việc văn phòng hiện đại.</p><span class="course-link">Khám phá thư viện →</span></a>
+        <a class="course" data-category="automation" data-search="kỹ năng văn phòng AI tư duy dữ liệu hiệu suất công việc" href="knowledge.html"><div class="course-top"><span class="course-icon">AI</span><span class="course-tag">WORK SKILLS</span></div><h3>Kỹ năng công việc số</h3><p>Tư duy dữ liệu, AI hỗ trợ công việc và cách kiểm tra đầu ra trước khi sử dụng.</p><span class="course-link">Khám phá →</span></a>
+      </div>
+      <div class="empty" id="emptyState">Không tìm thấy nội dung phù hợp. Thử từ khóa khác.</div>
+    </div>
+  </section>
+  <section class="section" id="thuc-chien">
+    <div class="wrap">
+      <div class="section-head"><div><div class="kicker">Learn by doing</div><h2>Học xong phải làm được.</h2></div><p>Mỗi chặng học nên hướng đến một năng lực cụ thể, không dừng ở việc xem xong bài.</p></div>
+      <div class="feature-row">
+        <div class="feature"><div class="feature-label">01 / Practice</div><h3>Từ kiến thức đến sản phẩm</h3><p>Luyện tập bằng dữ liệu mẫu, làm theo từng bước, hiểu vì sao cách làm đúng và biết kiểm tra kết quả.</p><a href="baitapexcel.html">Đến khu thực hành ↗</a><span class="feature-mark">01</span></div>
+        <div class="feature light"><div class="feature-label">02 / Build</div><h3>Từ thao tác đến quy trình</h3><p>Kết hợp công thức, PivotTable và Power Query để xây báo cáo có thể cập nhật, kiểm tra và bàn giao.</p><a href="baocaoexcel.html">Khám phá báo cáo ↗</a><span class="feature-mark">02</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><div><div class="kicker">Learning principles</div><h2>Lộ trình rõ. Tiêu chuẩn rõ.</h2></div></div>
+      <div class="method">
+        <div class="step"><b>01</b><strong>Hiểu nền tảng</strong><p>Nắm khái niệm và điều kiện cần trước khi chuyển sang chủ đề mới.</p></div>
+        <div class="step"><b>02</b><strong>Xem ví dụ thật</strong><p>Giải thích logic qua dữ liệu và tình huống công việc cụ thể.</p></div>
+        <div class="step"><b>03</b><strong>Tự thực hành</strong><p>Làm bài tập, kiểm tra đầu ra và sửa lỗi có nguyên nhân.</p></div>
+        <div class="step"><b>04</b><strong>Đạt chuẩn PASS</strong><p>Chỉ xem là hoàn thành khi đáp ứng tiêu chí của bài học.</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      <div class="bottom-cta"><div><h2>Bắt đầu từ đúng chỗ.</h2><p>Chọn lộ trình học hoặc mở công cụ đang cần cho công việc hôm nay.</p></div><div class="actions" style="margin:0"><a class="btn btn-primary" href="skill-map.html">Bắt đầu học →</a><a class="btn btn-secondary" href="tools-center.html">Mở công cụ</a></div></div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="footer-main"><div><div class="footer-brand">AVP 4.0</div><p>Hệ sinh thái kiến thức và kỹ năng văn phòng do Anh Văn Phòng phát triển. Học có lộ trình, thực hành có mục tiêu, kết quả có kiểm chứng.</p></div><div class="footer-links"><a href="#lo-trinh">Lộ trình học</a><a href="skill-map.html">Bài học</a><a href="tools-center.html">Công cụ</a><a href="contact.html">Liên hệ</a></div></div>
+    <div class="footer-bottom"><span>AVP 4.0 · Bản Beta thử nghiệm</span><span>Thương hiệu đang trong giai đoạn phát triển; tên gọi chưa xác nhận đăng ký nhãn hiệu.</span></div>
+  </div>
+</footer>
+<script>
+(function(){
+  const search=document.getElementById('courseSearch');
+  const cards=[...document.querySelectorAll('.course')];
+  const filters=[...document.querySelectorAll('.filter')];
+  const empty=document.getElementById('emptyState');
+  let active='all';
+  function update(){
+    const q=(search.value||'').trim().toLocaleLowerCase('vi');
+    let count=0;
+    cards.forEach(card=>{
+      const category=card.dataset.category||'';
+      const text=((card.dataset.search||'')+' '+card.innerText).toLocaleLowerCase('vi');
+      const visible=(active==='all'||category===active)&&(!q||text.includes(q));
+      card.hidden=!visible;
+      if(visible)count++;
+    });
+    empty.style.display=count?'none':'block';
+  }
+  filters.forEach(btn=>btn.addEventListener('click',()=>{
+    active=btn.dataset.filter;
+    filters.forEach(item=>{const selected=item===btn;item.classList.toggle('active',selected);item.setAttribute('aria-pressed',String(selected));});
+    update();
+  }));
+  search.addEventListener('input',update);
+  const menu=document.getElementById('menuBtn'), nav=document.getElementById('navLinks');
+  menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.textContent=open?'✕':'☰';});
+  nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='☰';}));
+})();
+</script>
+</body>
+</html>
