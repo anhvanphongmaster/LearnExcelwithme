@@ -1873,6 +1873,33 @@ document.addEventListener("click", function(e){
 })();
 </script>
 
+
+<script id="avp40-admin-home-card">
+(function(){
+ async function waitClient(){
+  const end=Date.now()+10000;
+  while(Date.now()<end){if(window.avpSupabase)return window.avpSupabase;await new Promise(r=>setTimeout(r,100));}
+  return null;
+ }
+ async function check(){
+  const client=await waitClient();if(!client)return;
+  let session=null;
+  try{const r=await client.auth.getSession();session=r.data&&r.data.session;}catch(e){}
+  if(!session||!session.user)return;
+  let ok=false;
+  try{const r=await client.rpc('is_admin_user');if(!r.error)ok=r.data===true;}catch(e){}
+  if(!ok){try{const r=await client.from('profiles').select('is_admin').eq('id',session.user.id).maybeSingle();ok=!r.error&&r.data&&r.data.is_admin===true;}catch(e){}}
+  if(!ok)return;
+  const grid=document.querySelector('#ky-nang-excel .home-path-grid');if(!grid||document.getElementById('avp40AdminCard'))return;
+  const card=document.createElement('article');card.id='avp40AdminCard';card.className='home-path-card home-path-card--5';
+  card.innerHTML='<span>🔒 · ADMIN BETA</span><h3>AVP 4.0 — Luồng mới</h3><p>Xem thử giao diện và cấu trúc học tập mới. Chỉ hiển thị với tài khoản đã được xác nhận quyền Admin.</p><a href="avp40-beta.html" style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:10px 14px;border-radius:10px;background:#2258d6;color:#fff;font-weight:700;text-decoration:none">Mở bản thử nghiệm <span aria-hidden="true">→</span></a>';
+  card.style.border='1px solid #cbd8ff';card.style.background='linear-gradient(145deg,#fff,#f1f5ff)';
+  grid.appendChild(card);
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',check,{once:true});else check();
+})();
+</script>
+
 </body>
 
 </html> 
