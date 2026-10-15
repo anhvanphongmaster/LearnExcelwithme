@@ -1553,10 +1553,14 @@ a.avp-yt-combo.avp-mobile-main-cta{
 .avp-demo-chart-wrap{margin-top:12px;padding:13px 13px 10px;border:1px solid rgba(255,255,255,.10);border-radius:15px;background:rgba(0,0,0,.14)}
 .avp-demo-chart-head{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#e6f8ed;font-size:10px;font-weight:800}
 .avp-demo-chart-head span+span{color:#a3cbb4;font-size:9px;font-weight:600}
-.avp-demo-chart{height:116px;display:flex;align-items:flex-end;gap:clamp(8px,1.3vw,15px);padding:14px 8px 0;margin-top:5px;border-bottom:1px solid rgba(255,255,255,.17);background:repeating-linear-gradient(to bottom,transparent 0,transparent 27px,rgba(255,255,255,.07) 28px,transparent 29px)}
-.avp-demo-chart span{display:block;flex:1;min-width:0;height:var(--bar);border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#7bf3ad,#229d62);box-shadow:0 0 18px rgba(66,221,137,.12);transition:height .35s cubic-bezier(.22,1,.36,1)}
-.avp-demo-chart.is-quality span{background:linear-gradient(180deg,#8ed8ff,#368cc4);box-shadow:0 0 18px rgba(66,173,237,.13)}
-.avp-demo-axis{display:flex;justify-content:space-between;margin-top:6px;color:#9fc4af;font-size:8px}
+.avp-demo-chart{height:130px;display:flex;align-items:stretch;gap:clamp(5px,1vw,11px);padding:10px 5px 0;margin-top:5px;border-bottom:1px solid rgba(255,255,255,.17);background:repeating-linear-gradient(to bottom,transparent 0,transparent 27px,rgba(255,255,255,.07) 28px,transparent 29px);perspective:700px}
+.avp-demo-bar-item{display:flex!important;flex:1;min-width:0;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px;transform:translateZ(0);animation:avpBarIn .5s both}
+.avp-demo-data-label{color:#effff5;font-size:9px;line-height:1;white-space:nowrap;text-shadow:0 1px 5px #002b18}
+.avp-demo-bar{display:block;width:100%;height:var(--bar);min-height:5px;border-radius:5px 5px 2px 2px;background:linear-gradient(90deg,#1c9a60,#83f5b3 48%,#31b878);box-shadow:5px 0 0 #12613f,0 8px 15px rgba(0,0,0,.18);transform:rotateX(5deg);transform-origin:bottom;transition:height .6s cubic-bezier(.22,1,.36,1),filter .4s}
+.avp-demo-chart.is-quality .avp-demo-bar{background:linear-gradient(90deg,#287ca9,#a0e4ff 48%,#4aa9dd);box-shadow:5px 0 0 #1d5878,0 8px 15px rgba(0,0,0,.18)}
+.avp-demo-axis{display:flex;justify-content:space-around;gap:4px;margin-top:6px;color:#9fc4af;font-size:8px}
+.avp-demo-axis span{flex:1;text-align:center;white-space:nowrap}
+@keyframes avpBarIn{from{opacity:.2;transform:translateY(9px) rotateY(-10deg)}to{opacity:1;transform:translateY(0) rotateY(0)}}
 .avp-demo-foot{display:flex;align-items:center;gap:7px;margin-top:14px;color:#b9d9c8;font-size:9px;line-height:1.4}
 .avp-demo-live-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#62ef9f;box-shadow:0 0 10px rgba(98,239,159,.7)}
 .avp-demo-arrow{margin-left:auto;color:#91e6b2;font-size:16px}
@@ -2071,11 +2075,13 @@ document.addEventListener("click", function(e){
   }
   function render(index){
     if(!dataRows.length){setText('avpDemoTitle','Hoạt động website');setText('avpDemoStatus','CHƯA CÓ DỮ LIỆU');setText('avpDemoChartTitle','Hoạt động theo ngày');setText('avpDemoChartMeta','7 ngày gần nhất');setText('avpDemoFoot','Chưa thể tải số liệu thống kê từ Admin');return}
-    const view=views[index%views.length],series=seriesFor(view),max=Math.max(1,...series.map(x=>x.value));
+    const view=views[index%views.length];
+    const series=dataRows.slice(-7).map((row,i)=>({label:rowDate(row,i),value:numeric(row,view.key==='page_views'?['page_views']:view.key==='visitors'?['unique_visitors']:view.key==='tool_runs'?['tool_runs']:['page_views'])}));
+    const max=Math.max(1,...series.map(x=>x.value));
     setText('avpDemoTitle',view.title);setText('avpDemoStatus','ADMIN DATA');
     setText('avpDemoMetric1Label',view.metric1);setText('avpDemoMetric2Label',view.metric2);
-    setText('avpDemoMetric1',fmt(numeric(summary,['page_views','views','total_page_views'])));
-    setText('avpDemoMetric2',fmt(numeric(summary,['visitors','unique_visitors','total_visitors'])));
+    setText('avpDemoMetric1',fmt(numeric(summary,['page_views'])));
+    setText('avpDemoMetric2',fmt(numeric(summary,['unique_visitors'])));
     setText('avpDemoMetric1Note','Tổng ghi nhận');setText('avpDemoMetric2Note','Trong khoảng thống kê');
     setText('avpDemoChartTitle',view.title);setText('avpDemoChartMeta',view.meta);
     const chart=$('avpDemoChart'),axis=$('avpDemoAxis');chart.replaceChildren();axis.replaceChildren();
@@ -2103,8 +2109,8 @@ document.addEventListener("click", function(e){
     if(!client?.rpc){setText('avpDemoStatus','CHƯA KẾT NỐI');render(current);return}
     try{
       const results=await Promise.all([
-        client.rpc('admin_analytics_trend',{p_days:7}),
-        client.rpc('admin_analytics_summary',{p_days:7})
+        client.rpc('public_home_analytics_trend',{p_days:7}),
+        client.rpc('public_home_analytics_summary',{p_days:7})
       ]);
       const trend=results[0],sum=results[1];
       if(trend.error||sum.error)throw trend.error||sum.error;
