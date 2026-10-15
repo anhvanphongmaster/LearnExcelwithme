@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f9">
+  <title>LearnExcelwithme — Beta mới</title>
+  <style>
+    :root{color-scheme:light;--ink:#172033;--muted:#657087;--line:#e2e7ef;--paper:#fff;--wash:#f6f7f9;--accent:#2457d6;--soft:#edf2ff}
+    *{box-sizing:border-box}body{margin:0;background:var(--wash);color:var(--ink);font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:inherit;text-decoration:none}.wrap{width:min(1120px,calc(100% - 32px));margin:auto}
+    header{padding:22px 0;border-bottom:1px solid var(--line);background:rgba(255,255,255,.88)}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{font-weight:800;letter-spacing:-.03em;font-size:20px}.tag{font-size:12px;font-weight:700;background:var(--soft);color:var(--accent);padding:5px 9px;border-radius:999px}
+    main{padding:42px 0 64px}.hero{padding:30px 0 34px;max-width:760px}.eyebrow{color:var(--accent);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.09em}
+    h1{font-size:clamp(32px,5vw,54px);line-height:1.08;letter-spacing:-.045em;margin:10px 0 16px}p{margin:0;color:var(--muted)}.hero p{font-size:18px;max-width:680px}
+    .continue{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 22px;background:#172033;color:#fff;border-radius:18px;margin:12px 0 36px}
+    .continue p{color:#c6cede;font-size:14px}.continue strong{display:block;font-size:18px;margin-bottom:3px}.continue .pill{white-space:nowrap;background:#fff;color:#172033;border-radius:10px;padding:10px 13px;font-weight:750;font-size:14px}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:0 0 16px}.section-head h2{font-size:22px;letter-spacing:-.025em;margin:0}.section-head p{font-size:14px}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px;min-height:188px;display:flex;flex-direction:column;transition:transform .15s,border-color .15s}.card:hover{transform:translateY(-2px);border-color:#b8c7eb}.num{font-size:12px;color:var(--accent);font-weight:800;letter-spacing:.08em}.card h3{font-size:19px;line-height:1.25;margin:12px 0 8px}.card p{font-size:14px}.card .foot{margin-top:auto;padding-top:18px;font-size:13px;font-weight:750;color:var(--accent)}
+    .note{margin-top:28px;padding:15px 17px;border:1px dashed #c7cfdd;border-radius:12px;color:var(--muted);font-size:13px}
+    footer{border-top:1px solid var(--line);padding:20px 0;color:var(--muted);font-size:13px}
+    @media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.continue{align-items:flex-start;flex-direction:column}.hero{padding-top:24px}}
+    @media(max-width:480px){.grid{grid-template-columns:1fr}.card{min-height:unset}.wrap{width:min(100% - 24px,1120px)}main{padding-top:24px}.continue{padding:18px}}
+  </style>
+</head>
+<body>
+  <header><div class="wrap top"><a class="brand" href="./">LearnExcelwithme</a><span class="tag">BETA · BẢN DỰNG MỚI</span></div></header>
+  <main class="wrap">
+    <section class="hero">
+      <div class="eyebrow">Học có lộ trình · Làm được việc</div>
+      <h1>Học Excel từ nền tảng đến làm chủ báo cáo.</h1>
+      <p>Mỗi khu vực có lộ trình rõ ràng, bài học theo thứ tự, bài tập thực hành và tiêu chí hoàn thành. Không còn học các chủ đề rời rạc.</p>
+    </section>
+    <a class="continue" href="#lo-trinh">
+      <div><strong>Bắt đầu từ đúng trình độ của bạn</strong><p>Chọn lộ trình, học từng bước và thực hành trên dữ liệu mẫu.</p></div>
+      <span class="pill">Xem lộ trình ↓</span>
+    </a>
+    <section id="lo-trinh">
+      <div class="section-head"><div><h2>Các khu vực học tập</h2><p>Khung nội dung bản đầu — chưa kết nối dữ liệu cũ.</p></div></div>
+      <div class="grid">
+        <a class="card" href="#excel-co-ban"><span class="num">01 · FOUNDATION</span><h3>Excel cơ bản</h3><p>Giao diện, nhập liệu, định dạng, tham chiếu, hàm cơ bản và phím tắt thiết yếu.</p><span class="foot">Xây nền tảng →</span></a>
+        <a class="card" href="#excel-nang-cao"><span class="num">02 · ADVANCED</span><h3>Excel nâng cao</h3><p>Hàm điều kiện, tra cứu, hàm lồng, xử lý lỗi và tư duy xây dựng công thức.</p><span class="foot">Học công thức →</span></a>
+        <a class="card" href="#bao-cao"><span class="num">03 · REPORTING</span><h3>Phân tích & báo cáo</h3><p>PivotTable, biểu đồ, KPI, dashboard và kiểm tra tính đúng đắn của số liệu.</p><span class="foot">Phân tích dữ liệu →</span></a>
+        <a class="card" href="#power-query"><span class="num">04 · DATA</span><h3>Power Query</h3><p>Nhập, làm sạch, hợp nhất, biến đổi và làm mới dữ liệu theo quy trình.</p><span class="foot">Xử lý dữ liệu →</span></a>
+        <a class="card" href="#tu-dong-hoa"><span class="num">05 · AUTOMATION</span><h3>Tự động hóa</h3><p>Macro, VBA, tối ưu workbook và tự động hóa công việc lặp lại.</p><span class="foot">Tự động hóa →</span></a>
+        <a class="card" href="#thuc-chien"><span class="num">06 · PROJECTS</span><h3>Dự án thực chiến</h3><p>Giải bài toán doanh số, KPI, chất lượng, nhân sự và báo cáo định kỳ.</p><span class="foot">Làm dự án →</span></a>
+        <a class="card" href="#cong-cu"><span class="num">07 · TOOLBOX</span><h3>Trung tâm công cụ</h3><p>Công cụ hỗ trợ công thức, làm sạch văn bản, ngày tháng và phân tích.</p><span class="foot">Mở công cụ →</span></a>
+        <a class="card" href="#kien-thuc-bo-tro"><span class="num">08 · EXTRA</span><h3>Kiến thức bổ trợ</h3><p>AI hỗ trợ học Excel, tư duy dữ liệu và cách kiểm chứng kết quả.</p><span class="foot">Khám phá →</span></a>
+      </div>
+    </section>
+    <div class="note">Bản khung độc lập: các thẻ hiện là cấu trúc điều hướng mẫu. Chưa xóa hoặc sửa trang cũ, chưa kết nối Supabase, đăng nhập, tiến độ học hay Admin Chat. Nội dung và chức năng sẽ được chuyển sang sau khi kiểm tra từng phần.</div>
+  </main>
+  <footer><div class="wrap">LearnExcelwithme · Beta rebuild · Xây dựng theo lộ trình học tập</div></footer>
+</body>
+</html>
