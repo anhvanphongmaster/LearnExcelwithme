@@ -1527,6 +1527,43 @@ a.avp-yt-combo.avp-mobile-main-cta{
 }
 @media(max-width:380px){.avp-tagline-static{font-size:11px!important}}
 </style>
+
+<style id="avp-hero-demo-dashboard-css">
+/* Hero two-column layout with a compact interactive dashboard preview */
+.avp-hero .avp-hero-inner{grid-template-columns:minmax(0,1.03fr) minmax(340px,.97fr)!important;gap:clamp(28px,4vw,64px)!important;max-width:1320px!important;width:min(1320px,100%)!important;align-items:center!important;text-align:left!important;justify-items:stretch!important}
+.avp-hero .avp-copy{align-items:flex-start!important;text-align:left!important;min-width:0}
+.avp-hero .avp-eyebrow{margin-left:0!important;margin-right:0!important}
+.avp-hero .avp-title,.avp-hero .avp-desc,.avp-hero .avp-tagline{text-align:left!important}
+.avp-hero .avp-desc{margin-left:0!important;margin-right:0!important}
+.avp-hero .avp-mobile-main-cta-wrap{margin-left:0!important;margin-right:0!important}
+.avp-demo-dashboard{position:relative;min-width:0;padding:clamp(17px,2vw,25px);border:1px solid rgba(204,255,226,.22);border-radius:24px;background:linear-gradient(145deg,rgba(250,255,252,.12),rgba(236,255,246,.055));box-shadow:0 26px 70px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.15);backdrop-filter:blur(16px);color:#f2fff7;transform:perspective(1200px) rotateY(-3deg);transition:transform .25s ease,border-color .25s ease}
+.avp-demo-dashboard:hover{transform:perspective(1200px) rotateY(0) translateY(-3px);border-color:rgba(145,255,194,.42)}
+.avp-demo-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:17px}
+.avp-demo-kicker{display:block;color:#8ce9b2;font-size:9px;letter-spacing:.14em;font-weight:900}
+.avp-demo-head h2{margin:5px 0 0;color:#f4fff8;font-size:clamp(19px,2vw,25px);letter-spacing:-.03em}
+.avp-demo-tag{flex:0 0 auto;padding:6px 8px;border:1px solid rgba(255,204,117,.34);border-radius:999px;background:rgba(123,77,14,.24);color:#ffdb9b;font-size:8px;font-weight:900;letter-spacing:.04em}
+.avp-demo-tabs{display:flex;gap:6px;padding:4px;margin-bottom:12px;border:1px solid rgba(255,255,255,.10);border-radius:12px;background:rgba(0,0,0,.15)}
+.avp-demo-tabs button{flex:1;min-height:33px;border:0;border-radius:8px;background:transparent;color:#c5dfd0;font-size:11px;font-weight:800;cursor:pointer;transition:background .2s,color .2s}
+.avp-demo-tabs button.is-active{background:#d9fbe7;color:#125333;box-shadow:0 3px 12px rgba(0,0,0,.12)}
+.avp-demo-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.avp-demo-kpi{min-width:0;padding:13px;border:1px solid rgba(255,255,255,.11);border-radius:14px;background:rgba(1,22,13,.32)}
+.avp-demo-kpi>span{display:block;color:#b8d8c6;font-size:10px;font-weight:700}
+.avp-demo-kpi strong{display:block;margin-top:7px;color:#fff;font-size:clamp(18px,2vw,25px);letter-spacing:-.04em;line-height:1.1}
+.avp-demo-kpi small{display:block;margin-top:6px;color:#8fe2b0;font-size:9px;line-height:1.4}
+.avp-demo-chart-wrap{margin-top:12px;padding:13px 13px 10px;border:1px solid rgba(255,255,255,.10);border-radius:15px;background:rgba(0,0,0,.14)}
+.avp-demo-chart-head{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#e6f8ed;font-size:10px;font-weight:800}
+.avp-demo-chart-head span+span{color:#a3cbb4;font-size:9px;font-weight:600}
+.avp-demo-chart{height:116px;display:flex;align-items:flex-end;gap:clamp(8px,1.3vw,15px);padding:14px 8px 0;margin-top:5px;border-bottom:1px solid rgba(255,255,255,.17);background:repeating-linear-gradient(to bottom,transparent 0,transparent 27px,rgba(255,255,255,.07) 28px,transparent 29px)}
+.avp-demo-chart span{display:block;flex:1;min-width:0;height:var(--bar);border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#7bf3ad,#229d62);box-shadow:0 0 18px rgba(66,221,137,.12);transition:height .35s cubic-bezier(.22,1,.36,1)}
+.avp-demo-chart.is-quality span{background:linear-gradient(180deg,#8ed8ff,#368cc4);box-shadow:0 0 18px rgba(66,173,237,.13)}
+.avp-demo-axis{display:flex;justify-content:space-between;margin-top:6px;color:#9fc4af;font-size:8px}
+.avp-demo-foot{display:flex;align-items:center;gap:7px;margin-top:14px;color:#b9d9c8;font-size:9px;line-height:1.4}
+.avp-demo-live-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#62ef9f;box-shadow:0 0 10px rgba(98,239,159,.7)}
+.avp-demo-arrow{margin-left:auto;color:#91e6b2;font-size:16px}
+@media(max-width:900px){.avp-hero .avp-hero-inner{grid-template-columns:1fr!important;max-width:700px!important;gap:28px!important}.avp-hero .avp-copy{align-items:center!important;text-align:center!important}.avp-hero .avp-eyebrow{margin-left:auto!important;margin-right:auto!important}.avp-hero .avp-title,.avp-hero .avp-desc,.avp-hero .avp-tagline{text-align:center!important}.avp-hero .avp-desc{margin-left:auto!important;margin-right:auto!important}.avp-hero .avp-mobile-main-cta-wrap{margin-left:auto!important;margin-right:auto!important}.avp-demo-dashboard{width:100%;transform:none}.avp-demo-dashboard:hover{transform:translateY(-2px)}}
+@media(max-width:560px){.avp-demo-dashboard{padding:15px;border-radius:19px}.avp-demo-kpis{gap:7px}.avp-demo-kpi{padding:10px}.avp-demo-chart{height:92px}.avp-demo-foot{align-items:flex-start}.avp-demo-tag{font-size:7px}}
+@media(prefers-reduced-motion:reduce){.avp-demo-dashboard,.avp-demo-chart span{transition:none}}
+</style>
 </head>
 
 
@@ -1611,7 +1648,30 @@ a.avp-yt-combo.avp-mobile-main-cta{
                     <span>✓ Nội dung thực tế</span>
                     <span>✓ Dễ áp dụng</span>
                 </div>
-            </div>
+            
+            <aside class="avp-demo-dashboard" id="avpHeroDemoDashboard" aria-label="Dashboard minh họa có thể tương tác">
+              <div class="avp-demo-head">
+                <div><span class="avp-demo-kicker">AVP · INTERACTIVE PREVIEW</span><h2 id="avpDemoTitle">Sales overview</h2></div>
+                <span class="avp-demo-tag">DỮ LIỆU DEMO</span>
+              </div>
+              <div class="avp-demo-tabs" role="group" aria-label="Chọn dashboard minh họa">
+                <button type="button" class="is-active" data-demo-mode="sales" aria-pressed="true">Doanh số</button>
+                <button type="button" data-demo-mode="quality" aria-pressed="false">Chất lượng</button>
+              </div>
+              <div class="avp-demo-kpis">
+                <div class="avp-demo-kpi"><span id="avpDemoMetric1Label">Doanh số</span><strong id="avpDemoMetric1">128,6 triệu</strong><small id="avpDemoMetric1Note">+12,8% so với kỳ trước</small></div>
+                <div class="avp-demo-kpi"><span id="avpDemoMetric2Label">Đạt mục tiêu</span><strong id="avpDemoMetric2">92,6%</strong><small id="avpDemoMetric2Note">Target: 138,9 triệu</small></div>
+              </div>
+              <div class="avp-demo-chart-wrap">
+                <div class="avp-demo-chart-head"><span id="avpDemoChartTitle">Kết quả theo tuần</span><span id="avpDemoChartMeta">Tuần 1–6</span></div>
+                <div class="avp-demo-chart" id="avpDemoChart" role="img" aria-label="Biểu đồ dữ liệu minh họa theo tuần">
+                  <span style="--bar:42%"></span><span style="--bar:57%"></span><span style="--bar:48%"></span><span style="--bar:72%"></span><span style="--bar:63%"></span><span style="--bar:88%"></span>
+                </div>
+                <div class="avp-demo-axis"><span>Tuần 1</span><span>Tuần 3</span><span>Tuần 6</span></div>
+              </div>
+              <div class="avp-demo-foot"><span class="avp-demo-live-dot"></span><span>Thử bấm bộ lọc để xem dashboard đổi dữ liệu mẫu</span><span class="avp-demo-arrow">↗</span></div>
+            </aside>
+</div>
 
             
 <div class="avp-scroll-hint">Cuộn xuống để khám phá ↓</div>
@@ -1991,6 +2051,28 @@ document.addEventListener("click", function(e){
   }
  }
  setTimeout(tick,1200);
+})();
+</script>
+
+
+<script id="avp-hero-demo-dashboard-js">
+(function(){
+  const root=document.getElementById('avpHeroDemoDashboard');
+  if(!root||root.dataset.ready==='1')return;
+  root.dataset.ready='1';
+  const modes={
+    sales:{title:'Sales overview',labels:['Doanh số','Đạt mục tiêu'],values:['128,6 triệu','92,6%'],notes:['+12,8% so với kỳ trước','Target: 138,9 triệu'],chartTitle:'Kết quả theo tuần',meta:'Tuần 1–6',bars:[42,57,48,72,63,88]},
+    quality:{title:'Quality overview',labels:['Lỗi ghi nhận','Tỷ lệ lỗi'],values:['24 lỗi','1,6%'],notes:['Dữ liệu minh họa theo ca','Mục tiêu lỗi dưới 2%'],chartTitle:'Lỗi theo ca sản xuất',meta:'Ca 1–6',bars:[74,43,61,30,48,22]}
+  };
+  const setText=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
+  root.querySelectorAll('[data-demo-mode]').forEach(btn=>btn.addEventListener('click',function(){
+    const mode=this.dataset.demoMode==='quality'?'quality':'sales',d=modes[mode];
+    root.querySelectorAll('[data-demo-mode]').forEach(b=>{const active=b===this;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',active?'true':'false')});
+    setText('avpDemoTitle',d.title);setText('avpDemoMetric1Label',d.labels[0]);setText('avpDemoMetric2Label',d.labels[1]);
+    setText('avpDemoMetric1',d.values[0]);setText('avpDemoMetric2',d.values[1]);setText('avpDemoMetric1Note',d.notes[0]);setText('avpDemoMetric2Note',d.notes[1]);
+    setText('avpDemoChartTitle',d.chartTitle);setText('avpDemoChartMeta',d.meta);
+    const chart=document.getElementById('avpDemoChart');if(chart){chart.classList.toggle('is-quality',mode==='quality');chart.querySelectorAll('span').forEach((bar,i)=>bar.style.setProperty('--bar',(d.bars[i]||25)+'%'));chart.setAttribute('aria-label',d.chartTitle+' — dữ liệu minh họa')}
+  }));
 })();
 </script>
 
