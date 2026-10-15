@@ -314,6 +314,7 @@
           "power-query-course.html","power-pivot-dax.html","dashboard-dong.html",
           "vba-macro.html","solver-whatif.html","focus-room.html","certificate.html"
         ]),
+        ai:new Set(["ai.html"]),
         practice:new Set([
           "practice-video.html","practice-youtube.html","practice-lab.html",
           "baitapexcel.html","excel-race.html"
