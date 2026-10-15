@@ -1620,6 +1620,46 @@ html.avp-site-home body .home-path-more--codehub .home-more-card small{display:b
 @media(prefers-reduced-motion:reduce){html.avp-site-home body .home-path-card,html.avp-site-home body .home-path-card li a,html.avp-site-home body .home-path-more--codehub .home-more-card{transition:none!important}}
 </style>
 
+
+<style id="avp-home-redesign-demo">
+/* Layout-only homepage redesign. Preserve navigation, AVP hero, robot/orb, live chart, scripts, auth and admin systems. */
+html.avp-site-home body #ky-nang-excel,
+html.avp-site-home body #home-books{display:none!important}
+.avp-redesign-hub,.avp-redesign-tools,.avp-redesign-flow{padding:58px 22px;background:#f5f8f5;color:#173b29}
+.avp-redesign-tools{background:#fff;border-top:1px solid #e5eee7;border-bottom:1px solid #e5eee7}
+.avp-redesign-inner{width:min(1160px,100%);margin:0 auto}
+.avp-redesign-section-head{display:flex;align-items:end;justify-content:space-between;gap:28px;margin:0 0 25px}
+.avp-redesign-kicker{display:block;color:#217346;font-size:10px;font-weight:900;letter-spacing:.14em}
+.avp-redesign-section-head h2{margin:8px 0 0;font-size:clamp(27px,3.5vw,38px);line-height:1.12;letter-spacing:-.05em;color:#163b2a}
+.avp-redesign-section-head>p{max-width:490px;margin:0;color:#687c70;font-size:13px;line-height:1.75}
+.avp-redesign-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.avp-redesign-card{--accent:#217346;--soft:#e8f5eb;position:relative;display:flex;flex-direction:column;min-height:220px;padding:21px;border:1px solid #dfe9e2;border-radius:18px;background:#fff;color:#173b29;text-decoration:none;transition:transform .2s,border-color .2s,box-shadow .2s;overflow:hidden}
+.avp-redesign-card:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--accent)}
+.avp-redesign-card.green{--accent:#217346;--soft:#e8f5eb}.avp-redesign-card.blue{--accent:#2779a7;--soft:#e7f3fa}.avp-redesign-card.purple{--accent:#7853aa;--soft:#f0eafb}.avp-redesign-card.amber{--accent:#ad711e;--soft:#fbf0dd}.avp-redesign-card.coral{--accent:#bd5e48;--soft:#fbece7}.avp-redesign-card.teal{--accent:#3e7771;--soft:#e7f4f1}
+.avp-redesign-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 14px 28px #163b2a12}
+.avp-redesign-icon{display:grid;place-items:center;width:43px;height:43px;border-radius:13px;background:var(--soft);color:var(--accent);font-size:22px}
+.avp-redesign-level{position:absolute;top:24px;right:18px;padding:6px 8px;border-radius:999px;background:var(--soft);color:var(--accent);font-size:9px;font-weight:900}
+.avp-redesign-card h3{margin:17px 0 7px;font-size:19px;letter-spacing:-.035em;color:#173b29}
+.avp-redesign-card p{margin:0 0 18px;color:#687c70;font-size:12px;line-height:1.7}
+.avp-redesign-link{display:flex;justify-content:space-between;gap:10px;margin-top:auto;padding-top:12px;border-top:1px solid #edf2ed;color:var(--accent);font-size:11px;font-weight:900}
+.avp-redesign-tool-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+.avp-redesign-tool-feature{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-height:260px;padding:28px;border-radius:21px;background:#102d22;color:#fff}
+.avp-redesign-tool-feature .avp-redesign-kicker{color:#b8ed74}
+.avp-redesign-tool-feature h3{max-width:400px;margin:15px 0 10px;font-size:clamp(25px,3vw,32px);line-height:1.12;letter-spacing:-.05em;color:#fff}
+.avp-redesign-tool-feature p{max-width:420px;color:#b8cbbf;font-size:12px;line-height:1.75}
+.avp-redesign-tool-feature>a{margin-top:12px;padding:11px 14px;border-radius:11px;background:#b8ed74;color:#183b28;font-size:12px;font-weight:900;text-decoration:none}
+.avp-redesign-tool-list{display:grid;gap:10px}
+.avp-redesign-tool-list>a{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid #dfe9e2;border-radius:15px;background:#fff;text-decoration:none;color:#173b29}
+.avp-redesign-tool-list>a>span{display:grid;place-items:center;flex:0 0 42px;height:42px;border-radius:12px;background:#e8f5eb;color:#217346;font-size:17px;font-weight:900}
+.avp-redesign-tool-list>a>div{min-width:0}.avp-redesign-tool-list strong{display:block;font-size:12px}.avp-redesign-tool-list small{display:block;margin-top:4px;color:#687c70;font-size:10px}.avp-redesign-tool-list>a>b{margin-left:auto;color:#217346}
+.avp-redesign-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.avp-redesign-steps>div{padding:18px;border:1px solid #dfe9e2;border-radius:15px;background:#fff}
+.avp-redesign-steps>div>span{display:grid;place-items:center;width:31px;height:31px;margin-bottom:14px;border-radius:10px;background:#e8f5eb;color:#217346;font-size:11px;font-weight:900}
+.avp-redesign-steps strong{display:block;font-size:13px}.avp-redesign-steps small{display:block;margin-top:6px;color:#687c70;font-size:11px;line-height:1.6}
+@media(max-width:850px){.avp-redesign-section-head{align-items:flex-start;flex-direction:column;gap:10px}.avp-redesign-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.avp-redesign-tool-layout{grid-template-columns:1fr}.avp-redesign-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.avp-redesign-hub,.avp-redesign-tools,.avp-redesign-flow{padding:38px 14px}.avp-redesign-grid{grid-template-columns:1fr;gap:11px}.avp-redesign-card{min-height:190px;padding:18px}.avp-redesign-steps{grid-template-columns:1fr}.avp-redesign-tool-feature{padding:22px}}
+</style>
+
 </head>
 
 
@@ -1730,6 +1770,52 @@ html.avp-site-home body .home-path-more--codehub .home-more-card small{display:b
 
 </section>
 
+
+<!-- AVP HOMEPAGE REDESIGN: layout demo only; existing content remains in source and is hidden, not deleted. -->
+<section class="avp-redesign-hub" id="avpLearningHub">
+  <div class="avp-redesign-inner">
+    <div class="avp-redesign-section-head">
+      <div><span class="avp-redesign-kicker">01 / LEARNING HUB</span><h2>Chọn đúng thứ cần học</h2></div>
+      <p>Một điểm bắt đầu rõ ràng cho từng mục tiêu. Bản demo chỉ chốt bố cục và luồng; nội dung bài học thật sẽ được gắn sau.</p>
+    </div>
+    <div class="avp-redesign-grid">
+      <a class="avp-redesign-card green" href="#avpFlow"><span class="avp-redesign-icon">▦</span><span class="avp-redesign-level">NỀN TẢNG</span><h3>Excel cơ bản</h3><p>Thao tác, bảng tính, công thức và tư duy làm việc đúng ngay từ đầu.</p><span class="avp-redesign-link">Khám phá lộ trình <b>↗</b></span></a>
+      <a class="avp-redesign-card blue" href="#avpFlow"><span class="avp-redesign-icon">↗</span><span class="avp-redesign-level">PHÂN TÍCH</span><h3>Excel nâng cao</h3><p>Công thức nâng cao, PivotTable và xử lý tình huống công việc.</p><span class="avp-redesign-link">Khám phá lộ trình <b>↗</b></span></a>
+      <a class="avp-redesign-card purple" href="#avpFlow"><span class="avp-redesign-icon">⟳</span><span class="avp-redesign-level">DỮ LIỆU</span><h3>Power Query</h3><p>Làm sạch, ghép và chuẩn hóa dữ liệu thành quy trình làm mới được.</p><span class="avp-redesign-link">Khám phá lộ trình <b>↗</b></span></a>
+      <a class="avp-redesign-card amber" href="#avpFlow"><span class="avp-redesign-icon">▤</span><span class="avp-redesign-level">MÔ HÌNH</span><h3>Power Pivot &amp; DAX</h3><p>Kết nối bảng, xây dựng mô hình dữ liệu và đo lường chỉ số.</p><span class="avp-redesign-link">Khám phá lộ trình <b>↗</b></span></a>
+      <a class="avp-redesign-card coral" href="#avpFlow"><span class="avp-redesign-icon">▥</span><span class="avp-redesign-level">BÁO CÁO</span><h3>Dashboard &amp; Reporting</h3><p>Biến dữ liệu thành báo cáo trực quan, dễ theo dõi và ra quyết định.</p><span class="avp-redesign-link">Khám phá lộ trình <b>↗</b></span></a>
+      <a class="avp-redesign-card teal" href="#avpFlow"><span class="avp-redesign-icon">⌘</span><span class="avp-redesign-level">THỰC CHIẾN</span><h3>Practice Lab</h3><p>Luyện bằng tình huống, file mẫu và bài toán gần với công việc thật.</p><span class="avp-redesign-link">Vào khu thực hành <b>↗</b></span></a>
+    </div>
+  </div>
+</section>
+<section class="avp-redesign-tools" id="avpToolsHub">
+  <div class="avp-redesign-inner">
+    <div class="avp-redesign-section-head">
+      <div><span class="avp-redesign-kicker">02 / TOOLBOX</span><h2>Cần công cụ? Đi thẳng vào việc.</h2></div>
+      <p>Tách công cụ và tài nguyên khỏi lộ trình học để người đã biết kiến thức không phải đi vòng qua bài học.</p>
+    </div>
+    <div class="avp-redesign-tool-layout">
+      <div class="avp-redesign-tool-feature"><span class="avp-redesign-kicker">WORKFLOW STUDIO</span><h3>Từ thao tác rời rạc đến quy trình gọn gàng.</h3><p>Khu vực dành cho tra cứu, tiện ích, tài nguyên tải về và công cụ hỗ trợ công việc.</p><a href="#avpFlow">Khám phá toolbox <b>↗</b></a></div>
+      <div class="avp-redesign-tool-list">
+        <a href="#avpFlow"><span>ƒx</span><div><strong>Tra cứu công thức</strong><small>Tìm hàm theo mục đích sử dụng</small></div><b>↗</b></a>
+        <a href="#avpFlow"><span>⌕</span><div><strong>Từ điển Excel</strong><small>Tra cứu thuật ngữ và khái niệm</small></div><b>↗</b></a>
+        <a href="#avpFlow"><span>⇩</span><div><strong>Tài liệu &amp; file mẫu</strong><small>Tài nguyên học và thực hành</small></div><b>↗</b></a>
+        <a href="#avpFlow"><span>◎</span><div><strong>Quiz &amp; thử thách</strong><small>Kiểm tra kiến thức theo chủ đề</small></div><b>↗</b></a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="avp-redesign-flow" id="avpFlow">
+  <div class="avp-redesign-inner">
+    <div class="avp-redesign-section-head"><div><span class="avp-redesign-kicker">03 / LEARNING FLOW</span><h2>Luồng sử dụng đề xuất</h2></div><p>Trang chủ giúp người dùng chọn hướng đi; nội dung chi tiết nằm trong từng khu, không dồn tất cả lên một trang.</p></div>
+    <div class="avp-redesign-steps">
+      <div><span>01</span><strong>Chọn mục tiêu</strong><small>Học mới, xử lý việc gấp hoặc luyện kỹ năng.</small></div>
+      <div><span>02</span><strong>Chọn khu vực</strong><small>Lộ trình học, công cụ hoặc tài liệu.</small></div>
+      <div><span>03</span><strong>Thực hành</strong><small>Áp dụng qua bài tập và file mẫu.</small></div>
+      <div><span>04</span><strong>Tiếp tục</strong><small>Quay lại tiến độ hoặc học sâu hơn.</small></div>
+    </div>
+  </div>
+</section>
 
 <!-- Trùng với master-roadmap — ẩn để gọn trang chủ -->
 <section class="learn-status" id="learningStatus" hidden></section>
