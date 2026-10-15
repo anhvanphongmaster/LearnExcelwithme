@@ -1451,6 +1451,59 @@ a.avp-yt-combo.avp-mobile-main-cta{
 .avp-eyebrow{letter-spacing:.12em!important}
 @media(max-width:560px){.avp-title{font-size:clamp(36px,10vw,52px)!important}.avp-brand-vietnamese{font-size:.43em;letter-spacing:.09em}.avp-domain-line{font-size:10px;letter-spacing:.08em}}
 </style>
+
+<style id="avp40-home-hero-design">
+/* Banner AVP 4.0 — chỉ tác động khu vực hero */
+.avp-hero{
+  position:relative!important;overflow:hidden!important;text-align:left!important;
+  min-height:560px;background:
+    radial-gradient(ellipse at 78% 48%,rgba(25,190,116,.22),transparent 34%),
+    radial-gradient(ellipse at 18% 18%,rgba(25,112,71,.34),transparent 38%),
+    linear-gradient(115deg,#031b12 0%,#073522 52%,#021b12 100%)!important;
+  color:#f4fff8!important;padding:76px 5.5% 66px!important;
+}
+.avp-hero:before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;
+  background-image:linear-gradient(rgba(111,224,168,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(111,224,168,.12) 1px,transparent 1px);
+  background-size:44px 44px;mask-image:linear-gradient(90deg,transparent,#000 42%,#000);
+}
+.avp-hero:after{
+  content:"";position:absolute;z-index:0;right:5%;top:17%;width:39%;height:65%;border:1px solid rgba(111,224,168,.32);border-radius:24px;
+  background:
+    linear-gradient(180deg,rgba(10,52,36,.84),rgba(2,24,16,.78)),
+    repeating-linear-gradient(0deg,transparent 0 34px,rgba(91,214,147,.18) 35px 36px),
+    repeating-linear-gradient(90deg,transparent 0 54px,rgba(91,214,147,.15) 55px 56px);
+  box-shadow:0 24px 80px rgba(0,0,0,.32),0 0 60px rgba(20,201,118,.12),inset 0 0 45px rgba(35,181,110,.08);
+  transform:perspective(900px) rotateY(-8deg) rotateX(2deg);
+  pointer-events:none;
+}
+.avp-hero-inner{position:relative!important;z-index:1;display:grid!important;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr)!important;gap:5%!important;align-items:center!important;max-width:1320px!important;margin:0 auto!important;text-align:left!important;justify-items:stretch!important}
+.avp-copy{align-items:flex-start!important;text-align:left!important;max-width:700px}
+.avp-eyebrow{margin:0 0 26px!important;display:inline-flex;align-items:center;gap:12px;padding:10px 17px;border:1px solid rgba(135,235,181,.28);border-radius:999px;background:rgba(18,94,60,.3);color:#baf7d5!important;font-size:12px!important;font-weight:800}
+.avp-title{max-width:760px!important;margin:0 0 18px!important;font-size:clamp(58px,6.4vw,94px)!important;line-height:.98!important;letter-spacing:-.055em!important;text-align:left!important;color:#f5fff8!important;text-shadow:0 8px 34px rgba(34,224,135,.12)}
+.avp-title>span{display:block}
+.avp-brand-vietnamese{margin-top:14px!important;font-size:clamp(24px,2.8vw,38px)!important;letter-spacing:.12em!important;line-height:1.2!important;color:#d4fbe4!important}
+.avp-tagline-static{display:block!important;margin:0 0 20px!important;max-width:620px;font-size:clamp(18px,2vw,25px)!important;line-height:1.55!important;color:#e4f4eb!important;text-align:left!important}
+.avp-desc{margin:0!important;max-width:620px!important;font-size:clamp(17px,1.8vw,22px)!important;line-height:1.65!important;color:#baf7d5!important;text-align:left!important}
+.avp-domain-line{margin-top:17px!important;font-size:12px!important;letter-spacing:.13em!important;color:#7ef0b2!important}
+.avp-mobile-main-cta-wrap{margin-top:28px!important;width:min(100%,430px)!important}
+.avp-mobile-main-cta{border:1px solid rgba(161,241,195,.2)!important;border-radius:16px!important}
+.avp-mini-info{margin-top:24px!important;justify-content:flex-start!important;color:#c8e9d6!important}
+.avp-scroll-hint{display:none!important}
+@media(max-width:800px){
+ .avp-hero{min-height:0!important;padding:54px 22px 42px!important}
+ .avp-hero:after{right:-18%;top:12%;width:72%;height:47%;opacity:.42}
+ .avp-hero-inner{grid-template-columns:1fr!important;gap:20px!important;max-width:650px!important}
+ .avp-title{font-size:clamp(48px,12vw,72px)!important}
+ .avp-brand-vietnamese{font-size:clamp(20px,5.3vw,31px)!important;letter-spacing:.08em!important}
+ .avp-tagline-static{font-size:18px!important}
+ .avp-desc{font-size:16px!important}
+ .avp-domain-line{font-size:10px!important;letter-spacing:.07em!important}
+ .avp-mobile-main-cta-wrap{margin-top:22px!important}
+}
+@media(max-width:420px){.avp-hero{padding-left:18px!important;padding-right:18px!important}.avp-title{font-size:45px!important}.avp-brand-vietnamese{font-size:19px!important}}
+</style>
+
 </head>
 
 
@@ -1494,8 +1547,8 @@ a.avp-yt-combo.avp-mobile-main-cta{
                     <span>AVP 4.0 <span class="avp-brand-vietnamese">ANH VĂN PHÒNG</span></span>
                 </h1>
 
-                <div class="avp-tagline">
-                    <span id="avpTyping"></span>
+                <div class="avp-tagline avp-tagline-static">
+                    Học đúng trọng tâm. Thực hành trên dữ liệu thật.
                 </div>
 
                 <p class="avp-desc">Làm chủ công cụ. Nâng tầm công việc.<span class="avp-domain-line">Excel · Data · Reporting · Automation · AI</span></p>
