@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Kỹ năng sử dụng AI | LearnExcelwithme</title>
+  <meta name="description" content="Học cách giao việc cho AI, viết prompt rõ ràng, ứng dụng AI vào công việc văn phòng và kiểm chứng kết quả.">
+  <meta name="theme-color" content="#f6f8fc">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="simple-nav.css">
+  <link rel="stylesheet" href="auth.css">
+  <link rel="stylesheet" href="global-search.css">
+  <link rel="stylesheet" href="avp-core.css">
+  <link rel="stylesheet" href="avp-ui-system.css?v=20261001-ui2" data-avp-ui-system>
+  <style>
+    :root{--ai-ink:#17243b;--ai-muted:#66738a;--ai-line:#e3e9f2;--ai-blue:#365cf5;--ai-violet:#7658e8;--ai-bg:#f6f8fc;--ai-card:#fff}
+    body{background:var(--ai-bg);color:var(--ai-ink)}
+    .ai-page{width:min(1160px,calc(100% - 36px));margin:28px auto 72px}
+    .ai-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr);gap:30px;align-items:center;padding:clamp(28px,5vw,60px);border-radius:30px;background:linear-gradient(125deg,#111d3c 0%,#263e80 58%,#5746a5 100%);color:white;box-shadow:0 22px 60px #1e2f621f}
+    .ai-hero:after{content:"";position:absolute;width:300px;height:300px;border:1px solid #ffffff24;border-radius:50%;right:-70px;top:-120px;box-shadow:0 0 0 35px #ffffff08,0 0 0 75px #ffffff06}
+    .ai-kicker{display:inline-flex;gap:8px;align-items:center;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#bfcaff}
+    .ai-hero h1{font-size:clamp(34px,5vw,58px);line-height:1.06;letter-spacing:-.045em;margin:16px 0}
+    .ai-hero p{max-width:620px;font-size:clamp(15px,1.7vw,18px);line-height:1.7;color:#e1e7ff;margin:0}
+    .ai-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+    .ai-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 17px;border-radius:12px;border:1px solid transparent;font-weight:800;text-decoration:none;cursor:pointer}
+    .ai-btn-primary{background:#fff;color:#263a7c}.ai-btn-ghost{border-color:#ffffff52;color:#fff;background:#ffffff0c}
+    .ai-hero-art{position:relative;z-index:1;display:grid;place-items:center;min-height:220px}
+    .ai-orbit{width:min(270px,100%);aspect-ratio:1;border-radius:50%;border:1px solid #ffffff35;display:grid;place-items:center;background:radial-gradient(circle,#ffffff18 0%,#ffffff04 66%,transparent 67%);position:relative}
+    .ai-orbit:before,.ai-orbit:after{content:"";position:absolute;border:1px solid #ffffff30;border-radius:50%;inset:20px}.ai-orbit:after{inset:42px}
+    .ai-orbit-core{width:105px;height:105px;border-radius:28px;background:linear-gradient(145deg,#fff,#dfe5ff);color:#3248a3;display:grid;place-items:center;font-size:32px;font-weight:900;box-shadow:0 15px 45px #080f382e}
+    .ai-orbit-tag{position:absolute;background:#fff;color:#283a78;padding:9px 12px;border-radius:12px;font-size:12px;font-weight:800;box-shadow:0 8px 22px #07133330}.ai-orbit-tag.one{top:25px;right:-5px}.ai-orbit-tag.two{bottom:24px;left:-9px}.ai-orbit-tag.three{bottom:9px;right:8px}
+    .ai-section{margin-top:44px}.ai-section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}.ai-section-head h2{font-size:clamp(23px,3vw,31px);letter-spacing:-.03em;margin:7px 0}.ai-section-head p{color:var(--ai-muted);margin:0;max-width:540px;line-height:1.6}.ai-eyebrow{font-size:11px;letter-spacing:.12em;color:var(--ai-blue);font-weight:900}
+    .ai-outcomes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.ai-outcome,.ai-module,.ai-prompt-card,.ai-safety{background:var(--ai-card);border:1px solid var(--ai-line);border-radius:19px;padding:22px;box-shadow:0 8px 24px #20385d06}
+    .ai-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:#edf1ff;color:#3c55c5;font-size:20px;font-weight:900;margin-bottom:15px}.ai-outcome h3,.ai-module h3,.ai-prompt-card h3,.ai-safety h3{margin:0 0 8px;font-size:17px}.ai-outcome p,.ai-module p,.ai-prompt-card p,.ai-safety p{margin:0;color:var(--ai-muted);font-size:14px;line-height:1.65}
+    .ai-module-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.ai-module{display:flex;gap:16px;align-items:flex-start}.ai-module .ai-icon{flex:0 0 44px;margin:0}.ai-module small{display:block;color:var(--ai-blue);font-weight:900;letter-spacing:.06em;margin-bottom:7px}.ai-module .ai-module-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.ai-chip{display:inline-flex;border-radius:999px;background:#f0f3f9;color:#56627a;padding:5px 9px;font-size:11px;font-weight:800}
+    .ai-practice{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.85fr);gap:18px;align-items:start}.ai-prompt-card{padding:24px}.ai-field{display:grid;gap:7px;margin-top:14px}.ai-field label{font-size:13px;font-weight:800}.ai-field select,.ai-field textarea,.ai-field input{width:100%;box-sizing:border-box;border:1px solid #dbe2ee;border-radius:11px;padding:11px 12px;font:inherit;color:var(--ai-ink);background:#fff}.ai-field textarea{min-height:86px;resize:vertical}.ai-generated{white-space:pre-wrap;background:#f6f8ff;border:1px solid #e1e7ff;border-radius:13px;padding:15px;min-height:150px;font-size:13px;line-height:1.65;color:#25335a;overflow-wrap:anywhere}.ai-copy{margin-top:12px;background:var(--ai-blue);color:white;width:100%}.ai-note{font-size:12px;color:var(--ai-muted);line-height:1.6;margin-top:12px}
+    .ai-safety-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.ai-safety{padding:20px}.ai-safety strong{display:block;margin-bottom:7px}
+    .ai-next{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:23px 26px;background:#eef1ff;border:1px solid #dce3ff;border-radius:19px}.ai-next h3{margin:0 0 6px}.ai-next p{margin:0;color:#5f6d8c;line-height:1.55;font-size:14px}.ai-next .ai-btn{background:#334fdd;color:#fff;flex-shrink:0}
+    @media(max-width:760px){.ai-page{width:min(100% - 24px,600px);margin-top:16px}.ai-hero{grid-template-columns:1fr;padding:28px 23px;border-radius:22px}.ai-hero-art{min-height:190px}.ai-orbit{width:205px}.ai-orbit-core{width:82px;height:82px;border-radius:22px}.ai-outcomes,.ai-module-grid,.ai-practice,.ai-safety-grid{grid-template-columns:1fr}.ai-section{margin-top:34px}.ai-section-head{display:block}.ai-section-head p{margin-top:8px}.ai-next{align-items:flex-start;flex-direction:column}.ai-module{padding:18px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+  </style>
+</head>
+<body>
+<script src="avp-ui-system.js?v=20261002-ui1" data-avp-ui-system></script>
+<nav class="top-simple-nav" aria-label="Điều hướng chính">
+  <div class="top-simple-links">
+    <a href="index.html" data-avp-nav="home">Trang chủ</a>
+    <a href="skill-map.html?entry=learn" data-avp-nav="learn">Học</a>
+    <a href="ai.html" data-avp-nav="ai" class="is-current" aria-current="page">Học AI</a>
+    <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
+    <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
+    <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
+    <span class="auth-nav-slot"></span>
+    <button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+  </div>
+  <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+</nav>
+<main class="ai-page">
+  <section class="ai-hero" aria-labelledby="aiHeroTitle">
+    <div>
+      <span class="ai-kicker">LEARNEXCELWITHME · AI SKILLS</span>
+      <h1 id="aiHeroTitle">Đừng chỉ hỏi AI.<br>Hãy biết cách giao việc.</h1>
+      <p>Học cách mô tả đúng vấn đề, cung cấp đủ bối cảnh, nhận kết quả có thể dùng và tự kiểm tra trước khi áp dụng vào công việc.</p>
+      <div class="ai-actions">
+        <a class="ai-btn ai-btn-primary" href="#aiLearningPath">Bắt đầu học <span aria-hidden="true">→</span></a>
+        <a class="ai-btn ai-btn-ghost" href="#aiPromptPractice">Thử tạo prompt</a>
+      </div>
+    </div>
+    <div class="ai-hero-art" aria-hidden="true">
+      <div class="ai-orbit"><div class="ai-orbit-core">AI</div><span class="ai-orbit-tag one">Nêu mục tiêu</span><span class="ai-orbit-tag two">Đưa bối cảnh</span><span class="ai-orbit-tag three">Kiểm chứng</span></div>
+    </div>
+  </section>
+  <section class="ai-section" aria-labelledby="aiOutcomesTitle">
+    <div class="ai-section-head"><div><span class="ai-eyebrow">HỌC ĐỂ LÀM ĐƯỢC</span><h2 id="aiOutcomesTitle">Sau phần này, bạn có thể</h2></div><p>Không cần biết lập trình hay tích hợp API. Bạn thực hành trực tiếp trên công cụ AI mình đang dùng.</p></div>
+    <div class="ai-outcomes">
+      <article class="ai-outcome"><div class="ai-icon" aria-hidden="true">⌘</div><h3>Giao việc rõ ràng</h3><p>Biến yêu cầu chung chung thành nhiệm vụ có mục tiêu, bối cảnh, giới hạn và định dạng đầu ra.</p></article>
+      <article class="ai-outcome"><div class="ai-icon" aria-hidden="true">▤</div><h3>Ứng dụng vào công việc</h3><p>Dùng AI hỗ trợ email, báo cáo, kế hoạch, công thức Excel và phân tích dữ liệu.</p></article>
+      <article class="ai-outcome"><div class="ai-icon" aria-hidden="true">✓</div><h3>Kiểm tra trước khi dùng</h3><p>Nhận biết câu trả lời thiếu căn cứ, thử nghiệm kết quả và tránh đưa dữ liệu nhạy cảm lên AI.</p></article>
+    </div>
+  </section>
+  <section class="ai-section" id="aiLearningPath" aria-labelledby="aiPathTitle">
+    <div class="ai-section-head"><div><span class="ai-eyebrow">LỘ TRÌNH HỌC</span><h2 id="aiPathTitle">Học theo thứ tự dễ áp dụng</h2></div><p>Bắt đầu từ cách giao việc, sau đó luyện trên tình huống công việc. Các phần dưới đây là khung học; bài chi tiết sẽ được bổ sung theo từng chặng.</p></div>
+    <div class="ai-module-grid">
+      <article class="ai-module"><div class="ai-icon" aria-hidden="true">01</div><div><small>CHẶNG 01 · NỀN TẢNG</small><h3>Hiểu AI và đặt yêu cầu</h3><p>AI phù hợp với việc gì, cần cung cấp bối cảnh nào, làm rõ đầu ra ra sao và khi nào phải hỏi lại.</p><div class="ai-module-meta"><span class="ai-chip">Cho người mới</span><span class="ai-chip">Nên học đầu tiên</span></div></div></article>
+      <article class="ai-module"><div class="ai-icon" aria-hidden="true">02</div><div><small>CHẶNG 02 · PROMPT</small><h3>Viết prompt có cấu trúc</h3><p>Mục tiêu, vai trò, dữ liệu đầu vào, điều kiện, định dạng kết quả và tiêu chí đánh giá.</p><div class="ai-module-meta"><span class="ai-chip">Có prompt mẫu</span><span class="ai-chip">Thực hành</span></div></div></article>
+      <article class="ai-module"><div class="ai-icon" aria-hidden="true">03</div><div><small>CHẶNG 03 · VĂN PHÒNG</small><h3>AI giải quyết việc hằng ngày</h3><p>Soạn email, tóm tắt tài liệu, lập kế hoạch, chuẩn hóa nội dung và xây dựng báo cáo.</p><div class="ai-module-meta"><span class="ai-chip">Tình huống thực tế</span></div></div></article>
+      <article class="ai-module"><div class="ai-icon" aria-hidden="true">04</div><div><small>CHẶNG 04 · EXCEL & DỮ LIỆU</small><h3>AI hỗ trợ Excel</h3><p>Giải thích công thức, gỡ lỗi, phân tích bảng dữ liệu và đề xuất cách xử lý phù hợp.</p><div class="ai-module-meta"><span class="ai-chip">Excel</span><span class="ai-chip">Power Query</span></div></div></article>
+      <article class="ai-module"><div class="ai-icon" aria-hidden="true">05</div><div><small>CHẶNG 05 · KIỂM CHỨNG</small><h3>Đánh giá câu trả lời của AI</h3><p>Kiểm tra sự thật, thử công thức trên dữ liệu mẫu, nhận diện suy đoán và sửa yêu cầu khi kết quả chưa đạt.</p><div class="ai-module-meta"><span class="ai-chip">Chống sai sót</span></div></div></article>
+      <article class="ai-module"><div class="ai-icon" aria-hidden="true">06</div><div><small>CHẶNG 06 · THỰC CHIẾN</small><h3>Hoàn thành một nhiệm vụ</h3><p>Đi từ yêu cầu ban đầu đến kết quả cuối cùng, qua các vòng phản hồi và kiểm tra chất lượng.</p><div class="ai-module-meta"><span class="ai-chip">Bài tập tổng hợp</span></div></div></article>
+    </div>
+  </section>
+  <section class="ai-section" id="aiPromptPractice" aria-labelledby="aiPromptTitle">
+    <div class="ai-section-head"><div><span class="ai-eyebrow">THỬ NGAY TRÊN TRANG</span><h2 id="aiPromptTitle">Tạo prompt theo công việc</h2></div><p>Điền thông tin để tạo một yêu cầu rõ ràng hơn. Sau đó sao chép prompt và dán vào ChatGPT, Gemini hoặc công cụ AI bạn đang dùng.</p></div>
+    <div class="ai-practice">
+      <div class="ai-prompt-card">
+        <h3>Thông tin đầu vào</h3><p>Chỉ nhập dữ liệu mẫu; không đưa thông tin bí mật của công ty hoặc khách hàng.</p>
+        <div class="ai-field"><label for="aiTaskType">Bạn cần AI hỗ trợ việc gì?</label><select id="aiTaskType"><option value="Soạn một email công việc">Soạn email công việc</option><option value="Tóm tắt tài liệu">Tóm tắt tài liệu</option><option value="Phân tích dữ liệu Excel">Phân tích dữ liệu Excel</option><option value="Giải thích hoặc sửa công thức Excel">Giải thích / sửa công thức Excel</option><option value="Lập kế hoạch thực hiện công việc">Lập kế hoạch công việc</option><option value="Viết báo cáo">Viết báo cáo</option></select></div>
+        <div class="ai-field"><label for="aiContext">Bối cảnh và dữ liệu liên quan</label><textarea id="aiContext" placeholder="Ví dụ: Tôi cần gửi quản lý email báo cáo tiến độ hoàn thành đơn hàng tuần này."></textarea></div>
+        <div class="ai-field"><label for="aiOutput">Bạn muốn nhận kết quả dưới dạng nào?</label><select id="aiOutput"><option>Email ngắn, chuyên nghiệp</option><option>Bảng có cột rõ ràng</option><option>Các bước thực hiện</option><option>Giải thích từng bước, kèm ví dụ</option><option>Báo cáo có tiêu đề và kết luận</option></select></div>
+        <div class="ai-field"><label for="aiConstraints">Điều kiện hoặc giới hạn (không bắt buộc)</label><input id="aiConstraints" placeholder="Ví dụ: ngắn gọn, không tự suy đoán số liệu"></div>
+      </div>
+      <div class="ai-prompt-card">
+        <h3>Prompt được tạo</h3><p>Đọc lại, thay thông tin mẫu và kiểm tra dữ liệu trước khi sử dụng.</p>
+        <div class="ai-generated" id="aiGeneratedPrompt" aria-live="polite">Hãy hỗ trợ tôi thực hiện nhiệm vụ: Soạn một email công việc.
+
+Bối cảnh:
+[Hãy nhập bối cảnh và dữ liệu liên quan]
+
+Đầu ra mong muốn: Email ngắn, chuyên nghiệp.
+
+Nếu thiếu thông tin quan trọng, hãy hỏi lại trước khi kết luận. Không tự bịa dữ liệu. Nêu rõ những điểm cần tôi kiểm tra.</div>
+        <button class="ai-btn ai-copy" type="button" id="aiCopyPrompt">Sao chép prompt</button>
+        <p class="ai-note" id="aiCopyStatus" role="status">Trang này chỉ tạo prompt tại trình duyệt, không gửi dữ liệu của bạn đến API AI.</p>
+      </div>
+    </div>
+  </section>
+  <section class="ai-section" aria-labelledby="aiSafetyTitle">
+    <div class="ai-section-head"><div><span class="ai-eyebrow">NGUYÊN TẮC BẮT BUỘC</span><h2 id="aiSafetyTitle">Dùng AI có kiểm soát</h2></div></div>
+    <div class="ai-safety-grid">
+      <article class="ai-safety"><strong>Không tin ngay câu trả lời</strong><p>Đối chiếu dữ kiện, thử công thức và xác minh các kết luận quan trọng trước khi dùng.</p></article>
+      <article class="ai-safety"><strong>Không đưa dữ liệu nhạy cảm</strong><p>Ẩn tên, mã nhân viên, thông tin khách hàng, dữ liệu nội bộ và thông tin đăng nhập.</p></article>
+      <article class="ai-safety"><strong>Chịu trách nhiệm về kết quả</strong><p>AI là công cụ hỗ trợ; người dùng cần rà soát và quyết định có áp dụng kết quả hay không.</p></article>
+    </div>
+  </section>
+  <section class="ai-section ai-next" aria-label="Bước tiếp theo">
+    <div><h3>Bắt đầu từ một nhiệm vụ thật</h3><p>Chọn công việc nhỏ, mô tả rõ yêu cầu, thử prompt rồi kiểm tra kết quả trước khi áp dụng.</p></div>
+    <a class="ai-btn" href="#aiPromptPractice">Thử tạo prompt →</a>
+  </section>
+</main>
+<script src="simple-nav.js"></script>
+<script src="global-search.js"></script>
+<script src="auth.js"></script>
+<script>
+(function(){
+  const task=document.getElementById('aiTaskType');
+  const context=document.getElementById('aiContext');
+  const output=document.getElementById('aiOutput');
+  const constraints=document.getElementById('aiConstraints');
+  const prompt=document.getElementById('aiGeneratedPrompt');
+  const copy=document.getElementById('aiCopyPrompt');
+  const status=document.getElementById('aiCopyStatus');
+  function updatePrompt(){
+    const ctx=context.value.trim()||'[Hãy nhập bối cảnh và dữ liệu liên quan]';
+    const extra=constraints.value.trim();
+    prompt.textContent='Hãy hỗ trợ tôi thực hiện nhiệm vụ: '+task.value+'.\n\nBối cảnh và dữ liệu:\n'+ctx+'\n\nĐầu ra mong muốn: '+output.value+'.'+(extra?'\n\nĐiều kiện cần tuân thủ: '+extra+'.':'')+'\n\nNếu thiếu thông tin quan trọng, hãy hỏi lại trước khi kết luận. Không tự bịa dữ liệu. Nêu rõ giả định, điểm chưa chắc chắn và những gì tôi cần kiểm tra.';
+  }
+  [task,context,output,constraints].forEach(el=>el.addEventListener('input',updatePrompt));
+  [task,output].forEach(el=>el.addEventListener('change',updatePrompt));
+  copy.addEventListener('click',async function(){
+    const value=prompt.textContent;
+    try{
+      if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(value);}
+      else{const temp=document.createElement('textarea');temp.value=value;temp.style.position='fixed';temp.style.opacity='0';document.body.appendChild(temp);temp.select();const ok=document.execCommand('copy');temp.remove();if(!ok)throw new Error('copy failed');}
+      status.textContent='Đã sao chép prompt. Hãy dán vào công cụ AI bạn đang sử dụng.';
+    }catch(e){status.textContent='Chưa sao chép tự động được. Hãy chọn và sao chép nội dung prompt thủ công.';}
+  });
+  updatePrompt();
+})();
+</script>
+</body>
+</html>
