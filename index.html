@@ -1692,7 +1692,8 @@ html.avp-site-home body .home-path-more--codehub .home-more-card small{display:b
 @keyframes avpChartItemIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes avpChartDonutIn{from{opacity:.25;transform:scale(.72) rotate(-24deg)}to{opacity:1;transform:scale(1) rotate(0)}}
 @media(prefers-reduced-motion:reduce){
- #avpHeroDemoDashboard *,#avpHeroDemoDashboard *::before,#avpHeroDemoDashboard *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+ /* Keep requested chart-data animation visible on desktop; reduce only non-chart transitions. */
+ #avpHeroDemoDashboard .avp-demo-metric{transition-duration:.01ms!important}
 }
 </style>
 <style id="avp-dashboard-visual-animations-v2">
