@@ -1656,6 +1656,50 @@ html.avp-site-home body .home-path-more--codehub .home-more-card small{display:b
  .avp-mobile-main-cta{width:100%!important}
 }
 </style>
+<style id="avp-dashboard-chart-motion">
+/* Consistent motion across all analytics chart types, not just ranked bars. */
+#avpHeroDemoDashboard .avp-demo-svg{overflow:visible}
+#avpHeroDemoDashboard .avp-demo-svg path[stroke="#8bf0b4"]{
+ stroke-dasharray:700;stroke-dashoffset:700;
+ animation:avpChartLineDraw 1.25s cubic-bezier(.22,1,.36,1) forwards;
+}
+#avpHeroDemoDashboard .avp-demo-svg path[fill="url(#avpAreaGrad)"]{
+ opacity:0;transform-origin:center;animation:avpChartAreaReveal .85s ease-out .15s forwards;
+}
+#avpHeroDemoDashboard .avp-demo-svg circle{
+ transform-box:fill-box;transform-origin:center;opacity:0;
+ animation:avpChartPointPop .38s cubic-bezier(.2,.9,.3,1.4) forwards;
+}
+#avpHeroDemoDashboard .avp-demo-svg circle:nth-of-type(1){animation-delay:.12s}
+#avpHeroDemoDashboard .avp-demo-svg circle:nth-of-type(2){animation-delay:.2s}
+#avpHeroDemoDashboard .avp-demo-svg circle:nth-of-type(3){animation-delay:.28s}
+#avpHeroDemoDashboard .avp-demo-svg circle:nth-of-type(4){animation-delay:.36s}
+#avpHeroDemoDashboard .avp-demo-svg circle:nth-of-type(5){animation-delay:.44s}
+#avpHeroDemoDashboard .avp-demo-svg circle:nth-of-type(6){animation-delay:.52s}
+#avpHeroDemoDashboard .avp-demo-svg circle:nth-of-type(7){animation-delay:.6s}
+#avpHeroDemoDashboard .avp-demo-svg text{opacity:0;animation:avpChartLabelIn .45s ease-out .45s forwards}
+#avpHeroDemoDashboard .avp-demo-rank-item{animation:avpChartItemIn .45s cubic-bezier(.22,1,.36,1) both}
+#avpHeroDemoDashboard .avp-demo-rank-item:nth-child(2){animation-delay:.06s}
+#avpHeroDemoDashboard .avp-demo-rank-item:nth-child(3){animation-delay:.12s}
+#avpHeroDemoDashboard .avp-demo-rank-item:nth-child(4){animation-delay:.18s}
+#avpHeroDemoDashboard .avp-demo-rank-item:nth-child(5){animation-delay:.24s}
+#avpHeroDemoDashboard .avp-demo-rank-item:nth-child(6){animation-delay:.30s}
+#avpHeroDemoDashboard .avp-demo-donut{animation:avpChartDonutIn .8s cubic-bezier(.22,1,.36,1) both}
+#avpHeroDemoDashboard .avp-demo-legend-row{animation:avpChartItemIn .4s ease-out both}
+#avpHeroDemoDashboard .avp-demo-legend-row:nth-child(2){animation-delay:.08s}
+#avpHeroDemoDashboard .avp-demo-legend-row:nth-child(3){animation-delay:.16s}
+#avpHeroDemoDashboard .avp-demo-legend-row:nth-child(4){animation-delay:.24s}
+#avpHeroDemoDashboard .avp-demo-kpi strong{animation:avpChartLabelIn .4s ease-out both}
+@keyframes avpChartLineDraw{to{stroke-dashoffset:0}}
+@keyframes avpChartAreaReveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes avpChartPointPop{from{opacity:0;transform:scale(.25)}to{opacity:1;transform:scale(1)}}
+@keyframes avpChartLabelIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes avpChartItemIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes avpChartDonutIn{from{opacity:.25;transform:scale(.72) rotate(-24deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@media(prefers-reduced-motion:reduce){
+ #avpHeroDemoDashboard *,#avpHeroDemoDashboard *::before,#avpHeroDemoDashboard *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
 </head>
 
 
