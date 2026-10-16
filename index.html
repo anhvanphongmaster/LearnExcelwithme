@@ -1620,6 +1620,24 @@ html.avp-site-home body .home-path-more--codehub .home-more-card small{display:b
 @media(prefers-reduced-motion:reduce){html.avp-site-home body .home-path-card,html.avp-site-home body .home-path-card li a,html.avp-site-home body .home-path-more--codehub .home-more-card{transition:none!important}}
 </style>
 
+<style id="avp40-home-layout-fix">
+/* Layout correction: brand title is a separate line; dashboard occupies the right column. */
+.avp-hero-inner{display:grid!important;grid-template-columns:minmax(0,1.02fr) minmax(340px,.98fr)!important;gap:clamp(28px,4vw,64px)!important;align-items:center!important;max-width:1360px!important}
+.avp-copy{min-width:0!important;max-width:none!important}
+.avp-title{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:0!important;overflow:visible!important}
+.avp-title>span:first-child{display:block!important;line-height:1!important}
+.avp-title>.avp-brand-vietnamese{display:block!important;position:static!important;margin-top:20px!important;font-size:clamp(23px,2.6vw,37px)!important;line-height:1.2!important;letter-spacing:.12em!important;white-space:normal!important}
+.avp-title>span:first-child .avp-brand-vietnamese{display:none!important}
+.avp-demo-dashboard{width:100%!important;max-width:600px!important;justify-self:end!important;z-index:2!important;transform:none!important}
+.avp-demo-dashboard:hover{transform:translateY(-3px)!important}
+.avp-hero:after{right:3%!important;left:auto!important;width:43%!important;top:14%!important;height:70%!important}
+@media(max-width:800px){
+ .avp-hero-inner{grid-template-columns:minmax(0,1fr)!important;gap:28px!important}
+ .avp-demo-dashboard{max-width:100%!important;justify-self:stretch!important}
+ .avp-hero:after{right:-18%!important;left:auto!important;width:72%!important;top:12%!important;height:47%!important}
+ .avp-title>.avp-brand-vietnamese{margin-top:12px!important;font-size:clamp(19px,5.3vw,31px)!important;letter-spacing:.08em!important}
+}
+</style>
 </head>
 
 
@@ -1661,7 +1679,7 @@ html.avp-site-home body .home-path-more--codehub .home-more-card small{display:b
                 </div>
 
                 <h1 class="avp-title">
-                    <span>AVP 4.0 <span class="avp-brand-vietnamese">ANH VĂN PHÒNG</span></span>
+                    <span>AVP 4.0</span><span class="avp-brand-vietnamese">ANH VĂN PHÒNG</span>
                 </h1>
 
                 <div class="avp-tagline avp-tagline-static" aria-live="polite">
