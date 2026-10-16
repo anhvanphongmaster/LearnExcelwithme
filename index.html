@@ -1679,6 +1679,12 @@ html.avp-site-home body .home-path-more--codehub .home-more-card small{display:b
 #avpHeroDemoDashboard .avp-demo-svg circle:nth-of-type(7){animation-delay:.6s}
 #avpHeroDemoDashboard .avp-demo-svg text{opacity:0;animation:avpChartLabelIn .45s ease-out .45s forwards}
 #avpHeroDemoDashboard .avp-demo-rank-item{animation:avpChartItemIn .45s cubic-bezier(.22,1,.36,1) both}
+#avpHeroDemoDashboard .avp-demo-rank-track i{
+ transform:scaleX(0);transform-origin:left center;
+ animation:avpRankFillSmooth .9s cubic-bezier(.22,1,.36,1) both!important;
+}
+@keyframes avpRankFillSmooth{from{transform:scaleX(0);opacity:.55}to{transform:scaleX(1);opacity:1}}
+
 #avpHeroDemoDashboard .avp-demo-rank-item:nth-child(2){animation-delay:.06s}
 #avpHeroDemoDashboard .avp-demo-rank-item:nth-child(3){animation-delay:.12s}
 #avpHeroDemoDashboard .avp-demo-rank-item:nth-child(4){animation-delay:.18s}
