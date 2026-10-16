@@ -1638,6 +1638,24 @@ html.avp-site-home body .home-path-more--codehub .home-more-card small{display:b
  .avp-title>.avp-brand-vietnamese{margin-top:12px!important;font-size:clamp(19px,5.3vw,31px)!important;letter-spacing:.08em!important}
 }
 </style>
+<style id="avp40-home-layout-correction">
+/* Keep the copy and analytics as sibling columns inside the hero grid. */
+@media(min-width:681px){
+ .avp-hero-inner{grid-template-columns:minmax(0,.98fr) minmax(0,1.02fr)!important;gap:clamp(20px,3vw,44px)!important;align-items:center!important;max-width:1360px!important}
+ .avp-copy{width:100%!important;min-width:0!important;max-width:none!important}
+ .avp-demo-dashboard{display:block!important;width:100%!important;min-width:0!important;max-width:none!important;justify-self:stretch!important;align-self:center!important;margin:0!important;transform:none!important}
+ .avp-demo-dashboard:hover{transform:translateY(-3px)!important}
+ .avp-mobile-main-cta-wrap{width:100%!important;max-width:none!important}
+ .avp-mobile-main-cta{width:100%!important}
+ .avp-hero:after{right:2%!important;width:45%!important}
+}
+@media(max-width:680px){
+ .avp-hero-inner{grid-template-columns:minmax(0,1fr)!important;gap:24px!important}
+ .avp-demo-dashboard{width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;transform:none!important}
+ .avp-mobile-main-cta-wrap{width:100%!important;max-width:none!important}
+ .avp-mobile-main-cta{width:100%!important}
+}
+</style>
 </head>
 
 
@@ -1723,6 +1741,7 @@ html.avp-site-home body .home-path-more--codehub .home-more-card small{display:b
                     <span>✓ Nội dung thực tế</span>
                     <span>✓ Dễ áp dụng</span>
                 </div>
+            </div>
             
             <aside class="avp-demo-dashboard" id="avpHeroDemoDashboard" aria-label="Website analytics">
               <div class="avp-demo-head">
@@ -1740,7 +1759,6 @@ html.avp-site-home body .home-path-more--codehub .home-more-card small{display:b
               </div>
               <div class="avp-demo-foot"><span class="avp-demo-live-dot"></span><span id="avpDemoFoot">Số liệu tổng hợp từ hệ thống thống kê website</span><span class="avp-demo-arrow">↗</span></div>
             </aside>
-</div>
 
             
 <div class="avp-scroll-hint">Cuộn xuống để khám phá ↓</div>
