@@ -25,7 +25,8 @@ const supabase = configured
 
 window.avpSupabase = supabase;
 
-function loadAdminChatAssets() {\n  if (/office-quest(?:-world|-admin)?\\.html$/i.test(location.pathname)) return;
+function loadAdminChatAssets() {
+  if (/office-quest(?:-world|-admin)?\.html$/i.test(location.pathname)) return;\n  if (/office-quest(?:-world|-admin)?\\.html$/i.test(location.pathname)) return;
   if (!document.querySelector('link[data-avp-admin-chat]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -970,6 +971,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 /* ===== AVP AI CHAT LOADER V1 ===== */
 (function(){
+  if (/office-quest(?:-world|-admin)?\.html$/i.test(location.pathname)) return;
   if(document.getElementById('avpAiChatScript')) return;
 
   const css=document.createElement('link');
