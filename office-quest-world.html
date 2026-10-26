@@ -78,7 +78,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
   box(1.92,.07,.58,-2.15,.85,h-4.1,mat('#315d49'),false);
   label('LỄ TÂN',-2.15,1.12,h-4.1,'#ffffff',{w:1.15,h:.25,inward:true});
    // Receptionist stands behind the counter, facing visitors. Brighter anime-style face, uniform, employee badge.
-   const npc=new THREE.Group();npc.position.set(-2.15,0,h-5.05);npc.rotation.y=0;
+   const npc=new THREE.Group();npc.position.set(-2.15,0,h-5.05);npc.rotation.y=Math.PI;
    const nm=c=>new THREE.MeshStandardMaterial({color:c,roughness:.68});
    function np(geo,ma,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,ma);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;npc.add(o);return o}
    const skin=nm('#ffd9bd'),hair=nm('#513128'),hairLight=nm('#805044'),jacket=nm('#286d55'),blouse=nm('#fff8e9'),skirt=nm('#bd4778'),eye=nm('#39242b'),iris=nm('#4c7d76'),white=nm('#fffdf7'),gold=nm('#dfb85b'),shoe=nm('#303641'),sock=nm('#f1e8dc'),cheek=nm('#f19b9c');
