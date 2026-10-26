@@ -78,7 +78,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
   box(2.30,.08,.62,0,.91,h-4.1,mat('#315d49'),false);
   label('LỄ TÂN',0,1.24,h-3.68,'#ffffff',{w:1.35,h:.30});
    // Receptionist stands behind the counter, facing visitors. Brighter anime-style face, uniform, employee badge.
-   const npc=new THREE.Group();npc.position.set(0,0,h-2.55);npc.rotation.y=Math.PI;
+   const npc=new THREE.Group();npc.position.set(0,0,h-5.05);npc.rotation.y=0;
    const nm=c=>new THREE.MeshStandardMaterial({color:c,roughness:.68});
    function np(geo,ma,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,ma);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;npc.add(o);return o}
    const skin=nm('#ffe0c8'),hair=nm('#42271f'),hairLight=nm('#98634b'),jacket=nm('#1f7657'),blouse=nm('#fffaf0'),skirt=nm('#d84f86'),eye=nm('#30202a'),iris=nm('#347f78'),white=nm('#fffdf9'),gold=nm('#e4bd61'),shoe=nm('#303641'),sock=nm('#f8eee1'),cheek=nm('#f28f9d');
@@ -87,7 +87,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    np(new THREE.ConeGeometry(.085,.14,4),blouse,-.065,1.39,.14,1,.8,.45);np(new THREE.ConeGeometry(.085,.14,4),blouse,.065,1.39,.14,1,.8,.45);np(new THREE.BoxGeometry(.055,.28,.025),blouse,0,1.22,.177);
    np(new THREE.CylinderGeometry(.145,.19,.32,20),skirt,0,.82,0,1,.92,1);
    for(const x of [-.235,.235]){const arm=np(new THREE.CapsuleGeometry(.052,.30,6,12),jacket,x,1.12,.005);arm.rotation.z=x<0?-.32:.32;np(new THREE.SphereGeometry(.062,16,12),skin,x*1.30,.94,.06)}
-   const raised=np(new THREE.CapsuleGeometry(.05,.27,6,12),jacket,-.31,1.24,.02);raised.rotation.z=-.62;np(new THREE.SphereGeometry(.066,16,12),skin,-.42,1.40,.04);for(let f=0;f<4;f++){const finger=np(new THREE.CapsuleGeometry(.012,.065,4,8),skin,-.47+f*.025,1.49,.045);finger.rotation.z=-.2+f*.12}
+   const waveArm=np(new THREE.CapsuleGeometry(.05,.27,6,12),jacket,-.29,1.28,.02);waveArm.rotation.z=-.92;np(new THREE.SphereGeometry(.066,16,12),skin,-.43,1.43,.04);for(let f=0;f<4;f++){const finger=np(new THREE.CapsuleGeometry(.012,.065,4,8),skin,-.48+f*.025,1.51,.045);finger.rotation.z=-.2+f*.12}
    np(new THREE.CylinderGeometry(.065,.075,.13,16),skin,0,1.48,.015);np(new THREE.SphereGeometry(.215,32,24),skin,0,1.68,.035,1,.99,.88);
    for(const x of [-.222,.222])np(new THREE.SphereGeometry(.045,14,12),skin,x,1.66,.005);
    for(const x of [-.078,.078]){np(new THREE.SphereGeometry(.067,24,18),white,x,1.69,.211,1,1.12,.68);np(new THREE.SphereGeometry(.044,22,18),iris,x,1.686,.241,1,1.12,.62);np(new THREE.SphereGeometry(.027,20,16),eye,x,1.684,.258,1,1.1,.58);np(new THREE.SphereGeometry(.013,14,10),white,x-.012,1.706,.273);const brow=np(new THREE.CapsuleGeometry(.012,.052,5,10),hair,x,1.765,.208);brow.rotation.z=x<0?-.15:.15;const lash=np(new THREE.CapsuleGeometry(.008,.035,4,8),hair,x+(x<0?-.05:.05),1.72,.238);lash.rotation.z=x<0?-.5:.5;np(new THREE.SphereGeometry(.031,16,12),cheek,x*1.65,1.625,.188,1.6,.7,.38)}
@@ -96,7 +96,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    for(const [x,y,rz] of [[-.13,1.79,-.18],[-.065,1.82,-.08],[.015,1.825,.02],[.09,1.81,.13],[.15,1.78,.20]]){const bang=np(new THREE.SphereGeometry(.09,18,14),hairLight,x,y,.16,.88,1.05,.48);bang.rotation.z=rz}
    np(new THREE.SphereGeometry(.075,16,12),hairLight,-.12,1.84,.105,1.2,.55,.7);np(new THREE.SphereGeometry(.045,12,10),nm('#d85c82'),0,1.405,.19);for(const x of [-.035,.035]){const bow=np(new THREE.SphereGeometry(.045,12,10),nm('#e77d9b'),x,1.405,.18,1.2,.65,.45);bow.rotation.z=x<0?-.3:.3}for(const y of [1.25,1.15,1.05])np(new THREE.SphereGeometry(.014,10,8),gold,.075,y,.18);
    const bc=document.createElement('canvas');bc.width=256;bc.height=320;const bx=bc.getContext('2d');bx.fillStyle='#fff8ec';bx.fillRect(0,0,256,320);bx.fillStyle='#24674d';bx.textAlign='center';bx.font='bold 58px system-ui';bx.fillText('AVP',128,105);bx.font='bold 32px system-ui';bx.fillText('LỄ TÂN',128,170);bx.fillStyle='#c5a451';bx.fillRect(45,205,166,8);const badge=np(new THREE.BoxGeometry(.13,.18,.025),gold,.145,1.29,.195);badge.material=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(bc),side:THREE.DoubleSide});
-   (window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:0,z:h-2.55};
+   (window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:0,z:h-5.05};
    // Logo plaque mounted on the visitor-facing front of the reception counter.
    const frontCanvas=document.createElement('canvas');frontCanvas.width=720;frontCanvas.height=260;const fc=frontCanvas.getContext('2d');
    fc.fillStyle='#f8f4e8';fc.fillRect(0,0,720,260);fc.strokeStyle='#2e7559';fc.lineWidth=12;fc.strokeRect(9,9,702,242);
@@ -105,7 +105,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    fc.strokeStyle='#d0ae59';fc.lineWidth=4;fc.beginPath();fc.moveTo(170,190);fc.lineTo(550,190);fc.stroke();
    fc.fillStyle='#526d5b';fc.font='600 20px system-ui';fc.fillText('HỌC HỎI • SÁNG TẠO • CẢI TIẾN',360,224);
    const frontLogo=new THREE.Mesh(new THREE.PlaneGeometry(1.62,.58),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(frontCanvas),side:THREE.DoubleSide}));
-   frontLogo.position.set(0,.46,h-4.49);frontLogo.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(frontLogo);
+   frontLogo.position.set(0,.46,h-3.69);frontLogo.rotation.y=0;(window.avpBuildGroup||scene).add(frontLogo);
    // Computer, keyboard and mouse on the reception counter.
    box(.72,.43,.055,0,1.16,h-4.18,mat('#182b25'),false);box(.65,.35,.025,0,1.17,h-4.14,mat('#70bda4'),false);box(.10,.16,.09,0,.94,h-4.16,mat('#263e32'),false);box(.38,.035,.20,0,.89,h-4.03,mat('#d6ded2'),false);box(.12,.018,.18,.27,.89,h-4.03,mat('#d6ded2'),false);
    const pot2=new THREE.Mesh(new THREE.CylinderGeometry(.18,.23,.42,16),nm('#e7e0cf'));pot2.position.set(3.05,.24,h-5.4);pot2.castShadow=true;(window.avpBuildGroup||scene).add(pot2);
