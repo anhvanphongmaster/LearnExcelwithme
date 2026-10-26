@@ -69,10 +69,23 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
   q.fillStyle='#315d49';q.font='600 29px system-ui';q.fillText('HỌC HỎI  •  SÁNG TẠO  •  CẢI TIẾN',450,365);
   const logoMesh=new THREE.Mesh(new THREE.PlaneGeometry(2.65,1.53),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),side:THREE.DoubleSide}));
   logoMesh.position.set(0,2.35,h-.16);logoMesh.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(logoMesh);
-  poster('CẢI TIẾN MỖI NGÀY','Chia sẻ • Học hỏi • Tiến bộ','operations',-3.78,2.28,0,'left');poster('TÔN TRỌNG • HỢP TÁC','Cùng giải quyết vấn đề','data',3.78,2.28,0,'right');box(.09,2.1,.09,-3.78,2.2,0,mat(colors[1]),false);box(.09,2.1,.09,3.78,2.2,0,mat(colors[1]),false);makeDesk(0,1.25,deskName,kind);
+  poster('CẢI TIẾN MỖI NGÀY','Chia sẻ • Học hỏi • Tiến bộ','operations',-3.78,2.28,0,'left');poster('TÔN TRỌNG • HỢP TÁC','Cùng giải quyết vấn đề','data',3.78,2.28,0,'right');makeDesk(0,1.25,deskName,kind);
 
  }
- if(hall){box(1.9,.82,.65,0,.41,h-3,mat('#8a6746'));box(1.78,.06,.52,0,.85,h-3,mat('#315d49'),false);label('LỄ TÂN',0,.53,h-2.665,'#ffffff',{w:1.25,h:.26,inward:true});poster('CHÀO MỪNG ĐẾN AVP','Hợp tác • Trách nhiệm • Cải tiến','lobby',0,2.35,-h+.18,false);poster('AN TOÀN • KỶ LUẬT','Làm đúng ngay từ đầu','operations',-3.78,2.3,-14,'left');poster('CẢI TIẾN MỖI NGÀY','Học hỏi • Sáng tạo • Tiến bộ','data',3.78,2.3,12,'right');const cc=document.createElement('canvas');cc.width=512;cc.height=512;const cx=cc.getContext('2d');cx.fillStyle='#f7f3e5';cx.beginPath();cx.arc(256,256,236,0,Math.PI*2);cx.fill();cx.lineWidth=18;cx.strokeStyle='#173f2e';cx.stroke();cx.textAlign='center';cx.textBaseline='middle';cx.fillStyle='#173f2e';cx.font='bold 44px system-ui';for(let n=1;n<=12;n++){const a=n*Math.PI/6-Math.PI/2;cx.fillText(String(n),256+Math.cos(a)*177,256+Math.sin(a)*177)}cx.strokeStyle='#c49a43';cx.lineWidth=8;cx.beginPath();cx.moveTo(256,256);cx.lineTo(256,118);cx.stroke();cx.strokeStyle='#478b6c';cx.lineWidth=12;cx.beginPath();cx.moveTo(256,256);cx.lineTo(350,256);cx.stroke();cx.fillStyle='#173f2e';cx.beginPath();cx.arc(256,256,13,0,Math.PI*2);cx.fill();const clock=new THREE.Mesh(new THREE.PlaneGeometry(1.55,1.55),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(cc),side:THREE.DoubleSide}));clock.position.set(0,2.55,-h+.17);(window.avpBuildGroup||scene).add(clock);poster('THỜI GIAN AVP','15 phút thật = 8 giờ game','lobby',0,1.25,-h+.17,false);}
+ if(hall){
+box(2.05,.82,.72,-1.7,.41,h-4.1,mat('#8a6746'));
+box(1.92,.07,.58,-1.7,.85,h-4.1,mat('#315d49'),false);
+label('LỄ TÂN',-1.7,.55,h-3.72,'#ffffff',{w:1.15,h:.25,inward:true});
+poster('CHÀO MỪNG ĐẾN AVP','Hợp tác • Trách nhiệm • Cải tiến','lobby',-1.05,2.45,-h+.18,false);
+poster('AN TOÀN • KỶ LUẬT','Làm đúng ngay từ đầu','operations',-3.78,2.35,-14,'left');
+poster('CẢI TIẾN MỖI NGÀY','Học hỏi • Sáng tạo • Tiến bộ','data',3.78,2.35,12,'right');
+const cc=document.createElement('canvas');cc.width=512;cc.height=512;const cx=cc.getContext('2d');
+cx.fillStyle='#f7f3e5';cx.beginPath();cx.arc(256,256,236,0,Math.PI*2);cx.fill();cx.lineWidth=18;cx.strokeStyle='#173f2e';cx.stroke();cx.textAlign='center';cx.textBaseline='middle';cx.fillStyle='#173f2e';cx.font='bold 44px system-ui';
+for(let n=1;n<=12;n++){const ang=n*Math.PI/6-Math.PI/2;cx.fillText(String(n),256+Math.cos(ang)*177,256+Math.sin(ang)*177)}
+cx.strokeStyle='#c49a43';cx.lineWidth=8;cx.beginPath();cx.moveTo(256,256);cx.lineTo(256,118);cx.stroke();cx.strokeStyle='#478b6c';cx.lineWidth=12;cx.beginPath();cx.moveTo(256,256);cx.lineTo(350,256);cx.stroke();cx.fillStyle='#173f2e';cx.beginPath();cx.arc(256,256,13,0,Math.PI*2);cx.fill();
+const clock=new THREE.Mesh(new THREE.PlaneGeometry(1.25,1.25),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(cc),side:THREE.DoubleSide}));clock.position.set(1.35,2.45,-h+.17);(window.avpBuildGroup||scene).add(clock);
+poster('THỜI GIAN AVP','15 phút thật = 8 giờ game','lobby',1.35,1.35,-h+.17,false);
+}
  else if(key==='training'){label('WASD: DI CHUYỂN',0,1.9,0,'#ffffff',{w:2.2,h:.35});label('E: TƯƠNG TÁC • V: ĐỔI GÓC NHÌN',0,1.45,0,'#ffffff',{w:2.8,h:.35});}
  window.avpBuildGroup=oldGroup;return g;
 }
