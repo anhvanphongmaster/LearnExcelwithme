@@ -6,7 +6,7 @@ window.AVP_SUPABASE_CONFIG = {
 (function(){
   if(typeof document==='undefined')return;
   var page=(location.pathname.split('/').pop()||'').toLowerCase();
-  var items=[];
+  var items=[];\n  if(/^office-quest(?:-world|-admin)?\\.html$/.test(page))return;
 
   /* Admin Chat is a site-wide entry point on every normal page. */
   if(page==='admin.html'){
