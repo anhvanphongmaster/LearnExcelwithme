@@ -29,7 +29,7 @@
 </section>
 <script>
 (()=>{
-const $=id=>document.getElementById(id);let sb=null,user=null,app=null,renderer,scene,camera,player,clock;let thirdPerson=true,computerOpen=false,selectedDesk=null,keys={},yaw=0,pitch=-.08,cameraDistance=6,worldReady=false,trainingComplete=false;let cells=[],selectedCell={r:0,c:0};const desks=[];
+const $=id=>document.getElementById(id);let sb=null,user=null,app=null,renderer,scene,camera,player,clock;let thirdPerson=true,computerOpen=false,selectedDesk=null,keys={},yaw=0,pitch=-.08,cameraDistance=6,worldReady=false,trainingComplete=false,currentRoom='lobby';let cells=[],selectedCell={r:0,c:0};const desks=[];
 function say(msg){const t=$('toast');t.textContent=msg;t.style.display='block';clearTimeout(say.timer);say.timer=setTimeout(()=>t.style.display='none',2600)}
 function gate(msg, retry=false){$('gateMsg').textContent=msg;$('retryBtn').classList.toggle('hidden',!retry);$('gate').classList.remove('hidden')}
 function withTimeout(p,ms,message){return Promise.race([p,new Promise((_,reject)=>setTimeout(()=>reject(Error(message)),ms))])}
@@ -44,30 +44,41 @@ box(32,.3,26,0,-.2,0,mat('#d6d9c5'),false);
 // Khu vực đào tạo, phòng ban và phòng quản lý được ngăn tường riêng, có lối cửa ở giữa.
 box(32,3.6,.25,0,1.8,-13,mat('#e7eee0'));box(32,3.6,.25,0,1.8,13,mat('#e7eee0'));
 box(.25,3.6,26,-16,1.8,0,mat('#e7eee0'));box(.25,3.6,26,16,1.8,0,mat('#e7eee0'));
-// Tường ngăn kín theo từng phòng, có cửa mở rõ ràng ở giữa mỗi vách.
-const wall=mat('#dce8d8'),trim=mat('#2e7655');
-for(const z of [-4,4]){
-  // Tường ngang chia các dãy; chừa cửa ở giữa từng phòng.
-  for(const x of [-11.5,0,11.5]){
-    box(3.5,3.4,.22,x-2.5,1.7,z,wall);
-    box(3.5,3.4,.22,x+2.5,1.7,z,wall);
-    box(.22,3.4,.22,x,1.7,z-.0,trim,false);
-    box(.22,3.4,.22,x,1.7,z+.0,trim,false);
-  }
+// Sảnh và hành lang trung tâm; các phòng là những khối riêng có tường bao và cửa.
+const wall=mat('#dce8d8'),darkWall=mat('#b7cdbd'),doorMat=mat('#6b8f7a'),floorHall=mat('#d6d9c5');
+box(32,.3,26,0,-.2,0,floorHall,false);
+// Hành lang trung tâm chạy dọc theo trục Z.
+box(7,.08,24,0,.02,0,mat('#c7d8cc'),false);
+label('SẢNH AVP',0,3.1,-11.8);label('HÀNH LANG CÔNG TY',0,3.1,0);
+// Phòng bên trái: đào tạo ở phía trước, QC phía sau.
+function roomShell(cx,cz,name,color){
+  box(9,.12,8,cx,.02,cz,mat(color),false);
+  // tường sau và hai vách bên; mặt hướng hành lang có cửa chính ở giữa
+  box(9,3.5,.25,cx,1.75,cz-4,wall);
+  box(.25,3.5,8,cx-4.5,1.75,cz,wall);
+  box(.25,3.5,8,cx+4.5,1.75,cz,wall);
+  box(2.9,3.5,.25,cx-3.05,1.75,cz+4,wall);
+  box(2.9,3.5,.25,cx+3.05,1.75,cz+4,wall);
+  // khung cửa hai bên và biển hiệu rõ phía trên cửa
+  box(.16,2.5,.22,cx-1.6,1.25,cz+4,doorMat,false);
+  box(.16,2.5,.22,cx+1.6,1.25,cz+4,doorMat,false);
+  box(3.35,.16,.3,cx,2.55,cz+4,doorMat,false);
+  label(name,cx,3.25,cz+3.72);
 }
-// Vách dọc chia phòng đào tạo / QC bên trái và quản lý / vận hành bên phải.
-for(const zc of [-8,8]){
-  for(const x of [-5,5]){
-    box(.22,3.4,3.0,x,1.7,zc-2.5,wall);
-    box(.22,3.4,3.0,x,1.7,zc+2.5,wall);
-    box(.22,3.4,.22,x,1.7,zc,trim,false);
-  }
-}
-// Biển phòng lớn, đặt sát phía trên cửa ra vào.
-label('PHÒNG ĐÀO TẠO',-11,3.3,-12.5);label('PHÒNG QC',-11,3.3,12.3);label('PHÒNG DỮ LIỆU',0,3.3,12.3);label('PHÒNG VẬN HÀNH',11,3.3,12.3);label('PHÒNG QUẢN LÝ',11,3.3,-12.5);
-box(9,.1,7,-11,0,-8,mat('#c5d8bc'),false);box(9,.1,7,0,0,-8,mat('#e4d7ba'),false);box(9,.1,7,11,0,-8,mat('#d5e4d2'),false);
-box(9,.1,7,-11,0,8,mat('#d5e4d2'),false);box(9,.1,7,0,0,8,mat('#d4d9c5'),false);box(9,.1,7,11,0,8,mat('#d5e4d2'),false);
-makeDesk(-11,-8,'Bàn hướng dẫn','training');makeDesk(-11,8,'Bàn QC','qc');makeDesk(0,8,'Bàn dữ liệu','data');makeDesk(11,8,'Bàn vận hành','operations');makeDesk(11,-8,'Bàn quản lý','boss');
+roomShell(-11,-7,'PHÒNG ĐÀO TẠO','#c5d8bc');
+roomShell(-11,7,'PHÒNG QC','#d5e4d2');
+roomShell(11,7,'PHÒNG DỮ LIỆU','#d4d9c5');
+roomShell(11,-7,'PHÒNG VẬN HÀNH','#d5e4d2');
+roomShell(0,-7,'PHÒNG QUẢN LÝ','#e4d7ba');
+// Bàn bên trong từng phòng, không rải bàn ra hành lang.
+makeDesk(-11,-7,'Bàn hướng dẫn','training');
+makeDesk(-11,7,'Bàn QC','qc');
+makeDesk(11,7,'Bàn dữ liệu','data');
+makeDesk(11,-7,'Bàn vận hành','operations');
+makeDesk(0,-7,'Bàn quản lý','boss');
+// Biển chỉ hướng ở sảnh giúp chọn phòng trước khi mở cửa.
+label('QC  ←',-3.2,2.2,2.2);label('→  DỮ LIỆU',3.2,2.2,2.2);
+label('ĐÀO TẠO  ←',-3.2,2.2,-9.5);label('→  VẬN HÀNH',3.2,2.2,-9.5);
 player=new THREE.Group();
 const female=app.character_gender==='female';
 const skin=mat('#d9a27c'),shirt=mat(female?'#b64d78':'#3479b7'),pants=mat(female?'#343b57':'#253b50'),shoe=mat('#252a28'),hairMat=mat(female?'#241b1b':'#33271f');
@@ -81,14 +92,16 @@ for(const ex of [-.075,.075]){part(new THREE.SphereGeometry(.025,8,6),mat('#fff9
 part(new THREE.BoxGeometry(.09,.13,.07),skin,0,1.47,-.21,.7,1,.7);
 for(const x of [-.12,.12]){part(new THREE.CapsuleGeometry(.065,.34,4,8),shirt,x,.78,0,.85,1,.9);part(new THREE.SphereGeometry(.075,10,8),skin,x,.57,-.005)}
 for(const x of [-.105,.105]){part(new THREE.CapsuleGeometry(.075,.36,4,8),pants,x,.34,0,.85,1,.9);part(new THREE.BoxGeometry(.14,.1,.25),shoe,x,.1,-.045)}
-scene.add(player);player.position.set(-11,0,-6);clock=new THREE.Clock();$('place').textContent='Khu văn phòng · '+(app.department||'nhân viên').toUpperCase();updateViewButton();animate();say('Chào '+(app.full_name||'nhân viên')+'. Đến gần bàn và nhấn E để làm việc.')}
+scene.add(player);player.position.set(0,0,2);clock=new THREE.Clock();$('place').textContent='Khu văn phòng · '+(app.department||'nhân viên').toUpperCase();updateViewButton();animate();say('Chào '+(app.full_name||'nhân viên')+'. Đến gần bàn và nhấn E để làm việc.')}
 function updateViewButton(){$('viewBtn').textContent='Góc nhìn: '+(thirdPerson?'Thứ ba':'Thứ nhất');player?.children.forEach(o=>o.visible=thirdPerson)}
 function nearestDesk(){let best=null,dist=Infinity;for(const d of desks){const q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<2.35?best:null}
-function interact(){const d=nearestDesk();if(!d){say('Đến gần bàn rồi nhấn E để tương tác.');return}if(d.kind!=='training'&&!trainingComplete){say('Hoàn thành hướng dẫn tại Phòng đào tạo để mở lối vào các phòng ban.');return}selectedDesk=d;computerOpen=true;$('computerTitle').textContent=d.kind==='training'?'Đào tạo hội nhập — phím tắt và thao tác nhanh':d.kind==='boss'?'Bàn quản lý — '+d.name:'Máy tính — '+d.name;$('computer').classList.add('open');$('computer').classList.toggle('training-mode',d.kind==='training');$('sheetStatus').textContent=d.kind==='training'?'HƯỚNG DẪN NHANH\\nW A S D hoặc phím mũi tên: di chuyển. E: tương tác/ngồi vào bàn. V: đổi góc nhìn. Esc: đứng dậy/đóng máy tính. Dùng nút Hướng dẫn nếu cần xem lại. Khi hoàn tất, nhấn Hoàn tất hướng dẫn để mở cửa phòng ban.':'Đang ngồi tại '+d.name+'. Bạn có thể nhập dữ liệu, thử công thức hoặc dùng file Excel thực tế.';keys={};document.exitPointerLock?.()}
+function nearestDoor(){const doors=[{x:-3,z:-9,room:'training',label:'Phòng đào tạo',tx:-11,tz:-7},{x:-3,z:5,room:'qc',label:'Phòng QC',tx:-11,tz:7},{x:3,z:5,room:'data',label:'Phòng dữ liệu',tx:11,tz:7},{x:3,z:-9,room:'operations',label:'Phòng vận hành',tx:11,tz:-7},{x:0,z:-3,room:'boss',label:'Phòng quản lý',tx:0,tz:-7}];let best=null,dist=Infinity;for(const d of doors){const q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<2.5?best:null}
+function enterRoom(d){if(!trainingComplete&&d.room!=='training'){say('Hoàn thành hướng dẫn tại phòng đào tạo trước khi mở cửa phòng ban.');return}currentRoom=d.room;player.position.set(d.tx,0,d.tz+1.8);yaw=0;cameraDistance=5;$('place').textContent='Đang ở: '+d.label;say('Đã vào '+d.label+'. Đi đến bàn và nhấn E để làm việc.')}
+function interact(){const door=nearestDoor();if(door){enterRoom(door);return}const d=nearestDesk();if(!d){say('Đến gần cửa phòng hoặc bàn làm việc rồi nhấn E để tương tác.');return}if(d.kind!=='training'&&!trainingComplete){say('Hoàn thành hướng dẫn tại Phòng đào tạo để mở lối vào các phòng ban.');return}selectedDesk=d;computerOpen=true;$('computerTitle').textContent=d.kind==='training'?'Đào tạo hội nhập — phím tắt và thao tác nhanh':d.kind==='boss'?'Bàn quản lý — '+d.name:'Máy tính — '+d.name;$('computer').classList.add('open');$('computer').classList.toggle('training-mode',d.kind==='training');$('sheetStatus').textContent=d.kind==='training'?'HƯỚNG DẪN NHANH\\nW A S D hoặc phím mũi tên: di chuyển. E: tương tác/ngồi vào bàn. V: đổi góc nhìn. Esc: đứng dậy/đóng máy tính. Dùng nút Hướng dẫn nếu cần xem lại. Khi hoàn tất, nhấn Hoàn tất hướng dẫn để mở cửa phòng ban.':'Đang ngồi tại '+d.name+'. Bạn có thể nhập dữ liệu, thử công thức hoặc dùng file Excel thực tế.';keys={};document.exitPointerLock?.()}
 function closeComputer(){computerOpen=false;$('computer').classList.remove('open')}
 $('trainingBtn').textContent='Hoàn tất hướng dẫn và mở cửa phòng ban';$('trainingBtn').onclick=()=>{if(!selectedDesk||selectedDesk.kind!=='training'){say('Hãy đến Phòng đào tạo và nhấn E trước.');return}trainingComplete=true;try{localStorage.setItem('avp-office-quest-training-'+user.id,'done')}catch{}$('place').textContent='Đã hoàn tất hướng dẫn · Cửa phòng ban đã mở';$('sheetStatus').textContent='Đã hoàn tất hướng dẫn. Các bàn phòng ban đã mở khóa. Đứng dậy và đi đến biển hiệu QC, Dữ liệu hoặc Vận hành.';closeComputer();say('Hoàn tất hướng dẫn! Các phòng ban đã mở khóa.')};
 function toggleView(){thirdPerson=!thirdPerson;updateViewButton();say(thirdPerson?'Đã chuyển sang góc nhìn thứ ba.':'Đã chuyển sang góc nhìn thứ nhất.')}
-function animate(){requestAnimationFrame(animate);if(!worldReady)return;const dt=Math.min(clock.getDelta(),.04);if(!computerOpen){let f=0,s=0;if(keys.KeyW||keys.ArrowUp)f-=1;if(keys.KeyS||keys.ArrowDown)f+=1;if(keys.KeyA||keys.ArrowLeft)s-=1;if(keys.KeyD||keys.ArrowRight)s+=1;const len=Math.hypot(f,s)||1;f/=len;s/=len;const speed=4*dt;player.position.x+=s*Math.cos(yaw)*speed+f*Math.sin(yaw)*speed;player.position.z+=f*Math.cos(yaw)*speed-s*Math.sin(yaw)*speed;player.position.x=Math.max(-14.5,Math.min(14.5,player.position.x));player.position.z=Math.max(-11.5,Math.min(11.5,player.position.z));if(!thirdPerson){camera.position.set(player.position.x,player.position.y+1.55,player.position.z);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}else{const target=new THREE.Vector3(player.position.x,player.position.y+1.15,player.position.z);const offset=new THREE.Vector3(Math.sin(yaw)*cameraDistance,cameraDistance*.53,Math.cos(yaw)*cameraDistance);camera.position.copy(target).add(offset);camera.lookAt(target)}const d=nearestDesk();$('place').textContent=d?(!trainingComplete&&d.kind!=='training'?'Đào tạo cơ bản bắt buộc · '+d.name:'Có thể tương tác: '+d.name):(!trainingComplete?'Phòng đào tạo cơ bản · Hoàn tất để mở phòng ban':'Văn phòng AVP · Di chuyển đến bàn làm việc');}renderer.render(scene,camera)}
+function animate(){requestAnimationFrame(animate);if(!worldReady)return;const dt=Math.min(clock.getDelta(),.04);if(!computerOpen){let f=0,s=0;if(keys.KeyW||keys.ArrowUp)f-=1;if(keys.KeyS||keys.ArrowDown)f+=1;if(keys.KeyA||keys.ArrowLeft)s-=1;if(keys.KeyD||keys.ArrowRight)s+=1;const len=Math.hypot(f,s)||1;f/=len;s/=len;const speed=4*dt;player.position.x+=s*Math.cos(yaw)*speed+f*Math.sin(yaw)*speed;player.position.z+=f*Math.cos(yaw)*speed-s*Math.sin(yaw)*speed;player.position.x=Math.max(-14.5,Math.min(14.5,player.position.x));player.position.z=Math.max(-11.5,Math.min(11.5,player.position.z));if(!thirdPerson){camera.position.set(player.position.x,player.position.y+1.55,player.position.z);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}else{const target=new THREE.Vector3(player.position.x,player.position.y+1.15,player.position.z);const offset=new THREE.Vector3(Math.sin(yaw)*cameraDistance,cameraDistance*.53,Math.cos(yaw)*cameraDistance);camera.position.copy(target).add(offset);camera.lookAt(target)}const d=nearestDesk(),door=nearestDoor();$('place').textContent=door?'Cửa phòng: '+door.label+' · Nhấn E để mở':d?(!trainingComplete&&d.kind!=='training'?'Đào tạo cơ bản bắt buộc · '+d.name:'Có thể tương tác: '+d.name):(!trainingComplete?'Sảnh công ty · Vào phòng đào tạo trước':'Sảnh / hành lang công ty · Tìm cửa phòng ban');}renderer.render(scene,camera)}
 window.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();if(e.key==='Escape'&&computerOpen){closeComputer();return}if(computerOpen)return;keys[e.code]=true;if(e.code==='KeyE')interact();if(e.code==='KeyV')toggleView()});window.addEventListener('keyup',e=>keys[e.code]=false);
 const pad=$('stickpad'),dot=$('stickdot');let padId=null;function padMove(e){const r=pad.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=r.width*.34,len=Math.hypot(dx,dy)||1,scale=Math.min(1,max/len);keys.KeyW=dy/max*scale<-.25;keys.KeyS=dy/max*scale>.25;keys.KeyA=dx/max*scale<-.25;keys.KeyD=dx/max*scale>.25;dot.style.left=(50+dx/max*34*scale)+'%';dot.style.top=(50+dy/max*34*scale)+'%'}function padReset(){padId=null;keys.KeyW=keys.KeyA=keys.KeyS=keys.KeyD=false;dot.style.left='50%';dot.style.top='50%'}pad.addEventListener('pointerdown',e=>{e.preventDefault();padId=e.pointerId;pad.setPointerCapture(e.pointerId);padMove(e)});pad.addEventListener('pointermove',e=>{if(e.pointerId===padId)padMove(e)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>pad.addEventListener(ev,padReset));$('mobileInteract').onclick=interact;$('mobileView').onclick=toggleView;let lookLast=null;
 function beginLook(e){if(e.pointerType==='mouse'&&e.button!==0)return;if(computerOpen)return;lookLast={x:e.clientX,y:e.clientY,id:e.pointerId};try{e.currentTarget.setPointerCapture(e.pointerId)}catch{}}
