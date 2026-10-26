@@ -62,10 +62,11 @@ $('applyCell').onclick=applyCell;$('formulaInput').addEventListener('keydown',e=
 $('downloadBtn').onclick=()=>{document.querySelectorAll('#sheet td').forEach(td=>{const r=+td.dataset.r,c=+td.dataset.c;cells[r]??=[];cells[r][c]=td.textContent});if(!window.XLSX){say('Thư viện Excel chưa tải xong.');return}const ws=XLSX.utils.aoa_to_sheet(cells),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'DuLieu');XLSX.writeFile(wb,'AVP-Office-Quest.xlsx');$('sheetStatus').textContent='Đã tạo file AVP-Office-Quest.xlsx để mở bằng Microsoft Excel.'};
 $('uploadBtn').onclick=()=>$('fileInput').click();$('fileInput').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=await f.arrayBuffer();if(f.name.toLowerCase().endsWith('.csv')){const txt=new TextDecoder().decode(data);cells=txt.split(/\r?\n/).filter(Boolean).map(line=>line.split(','))}else{const wb=XLSX.read(data,{type:'array'});cells=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:''})}renderSheet();$('sheetStatus').textContent='Đã mở '+f.name+'. Chỉnh sửa xong có thể tải lại thành file Excel.'}catch(err){say('Không đọc được file: '+err.message)}e.target.value=''};
 $('excelWebBtn').onclick=()=>{window.open('https://www.microsoft365.com/launch/excel','_blank','noopener');say('Tải file Excel xuống trước, sau đó tải file đó lên Excel trên web để tiếp tục chỉnh sửa.')};
-seed();verifyAccess();setTimeout(()=>{const g=$('gate'),m=$('gateMsg');if(g&&!g.classList.contains('hidden')&&m&&/Đang (kết nối|xác minh|kiểm tra)/.test(m.textContent)){gate('Kết nối đang bị treo hoặc thư viện chưa tải được. Hãy tải lại bằng Ctrl + F5; nếu vẫn lỗi, bấm Thử kết nối lại.',true)}},15000);
+verifyAccess();try{seed()}catch(e){console.error('Office Quest seed failed',e)}setTimeout(()=>{const g=$('gate'),m=$('gateMsg');if(g&&!g.classList.contains('hidden')&&m&&/Đang (kết nối|xác minh|kiểm tra)/.test(m.textContent)){gate('Kết nối đang bị treo hoặc thư viện chưa tải được. Hãy tải lại bằng Ctrl + F5; nếu vẫn lỗi, bấm Thử kết nối lại.',true)}},15000);
 })();
 </script><script>
-/* Independent watchdog: still runs if the game script fails to parse. */
+/* Independent watchdog: catches startup failures even if the main script throws. */
+window.addEventListener('error',function(e){var m=document.getElementById('gateMsg');if(m&&document.getElementById('gate')&&!document.getElementById('gate').classList.contains('hidden')){m.textContent='Lỗi khởi tạo: '+(e.message||'JavaScript không chạy được')+'. Tải lại trang hoặc thử kết nối lại.';var b=document.getElementById('retryBtn');if(b)b.classList.remove('hidden')}});
 setTimeout(function(){
   var gate=document.getElementById('gate');
   var msg=document.getElementById('gateMsg');
