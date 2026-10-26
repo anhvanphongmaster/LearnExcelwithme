@@ -78,7 +78,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
   box(1.92,.07,.58,-2.15,.85,h-4.1,mat('#315d49'),false);
   label('LỄ TÂN',-2.15,1.12,h-4.1,'#ffffff',{w:1.15,h:.25,inward:true});
    // Receptionist stands behind the counter, facing visitors. Brighter anime-style face, uniform, employee badge.
-   const npc=new THREE.Group();npc.position.set(-2.15,0,h-5.05);npc.rotation.y=Math.PI;
+   const npc=new THREE.Group();npc.position.set(-2.15,0,h-3.05);npc.rotation.y=Math.PI;
    const nm=c=>new THREE.MeshStandardMaterial({color:c,roughness:.72});
    function np(geo,ma,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,ma);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;npc.add(o);return o}
    const skin=nm('#ffd9bd'),hair=nm('#57352e'),hairHi=nm('#75483d'),jacket=nm('#3e8b72'),blouse=nm('#fff8ec'),skirt=nm('#c94f83'),eye=nm('#3b2426'),white=nm('#fffdf7'),gold=nm('#e4bd60'),shoe=nm('#303640');
@@ -98,7 +98,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    for(const y of [1.27,1.15,1.03])np(new THREE.SphereGeometry(.018,8,8),gold,.065,y,.19);
    const badge=np(new THREE.BoxGeometry(.12,.17,.025),gold,.145,1.29,.195);
    const bc=document.createElement('canvas');bc.width=256;bc.height=320;const bx=bc.getContext('2d');bx.fillStyle='#fff8ec';bx.fillRect(0,0,256,320);bx.fillStyle='#24674d';bx.textAlign='center';bx.font='bold 58px system-ui';bx.fillText('AVP',128,105);bx.font='bold 34px system-ui';bx.fillText('LỄ TÂN',128,170);bx.fillStyle='#c5a451';bx.fillRect(45,205,166,8);badge.material=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(bc),side:THREE.DoubleSide});
-   (window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:-2.15,z:h-5.05};
+   (window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:-2.15,z:h-3.05};
    // Computer, keyboard and mouse on the reception counter.
    box(.72,.43,.055,-2.15,1.12,h-4.18,mat('#182b25'),false);box(.65,.35,.025,-2.15,1.13,h-4.14,mat('#70bda4'),false);box(.10,.16,.09,-2.15,.91,h-4.16,mat('#263e32'),false);box(.38,.035,.20,-2.15,.865,h-4.03,mat('#d6ded2'),false);box(.12,.018,.18,-1.88,.865,h-4.03,mat('#d6ded2'),false);
    // Lobby decor spaced along the walls: flower pot, water dispenser, and filing cabinet.
