@@ -47,7 +47,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
  const hall=key==='lobby',depth=hall?32:10,h=depth/2;
  box(8,.25,depth,0,-.2,0,mat('#c9d0c5'),false);box(8,.2,depth,0,4.05,0,mat('#e6e9e1'),false);
  box(8,4,.25,0,2,-h,mat(wallColor));box(8,4,.25,0,2,h,mat(wallColor));
- if(hall){for(const x of [-4,4]){let cur=-h;for(const z of [-11,-6,-1,4,9,14]){const a=z-.68,b=z+.68;if(a>cur)box(.25,4,a-cur,x,2,(cur+a)/2,mat(wallColor));box(.16,3.05,.18,x,1.525,a,mat('#254b38'),false);box(.16,3.05,.18,x,1.525,b,mat('#254b38'),false);box(.16,.18,1.36,x,3.05,z,mat('#254b38'),false);cur=b;}if(cur<h)box(.25,4,h-cur,x,2,(cur+h)/2,mat(wallColor));}}
+ if(hall){const corridorDoors=[[-11,'ĐÀO TẠO'],[-6,'QC'],[-1,'DỮ LIỆU'],[4,'VẬN HÀNH'],[9,'QUẢN LÝ'],[14,'NHÂN SỰ']];for(const x of [-4,4]){let cur=-h;for(const [z,title] of corridorDoors){const a=z-.68,b=z+.68;if(a>cur)box(.25,4,a-cur,x,2,(cur+a)/2,mat(wallColor));box(.16,3.05,.18,x,1.525,a,mat('#254b38'),false);box(.16,3.05,.18,x,1.525,b,mat('#254b38'),false);box(.16,.18,1.36,x,3.05,z,mat('#254b38'),false);box(.08,2.75,1.22,x+(x<0?.12:-.12),1.48,z,mat('#6c8b78'),false);box(.07,.38,1.34,x+(x<0?.16:-.16),3.38,z,mat('#254b38'),false);label(title,x+(x<0?.205:-.205),3.38,z,'#ffffff',{w:1.18,h:.28});cur=b;}if(cur<h)box(.25,4,h-cur,x,2,(cur+h)/2,mat(wallColor));}}
  else{
    // Doorway is a true opening centered in the corridor-facing wall.
    box(2.95,4,.25,-2.525,2,-h,mat(wallColor));box(2.95,4,.25,2.525,2,-h,mat(wallColor));box(2.1,.75,.25,0,3.625,-h,mat(wallColor));
@@ -60,9 +60,9 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    makeDesk(0,1.25,deskName,kind);
    for(const side of [-1,1]){box(.06,1.15,1.9,side*3.86,2.4,0,mat('#8fb8bd'),false);box(.08,1.28,.08,side*3.8,2.4,0,mat('#f1f2e8'),false);}
    // Three simple wall-mounted decor panels; these are on the long walls, not on doors.
-   for(const side of [-1,1]){box(.07,.85,1.25,side*3.82,2.35,2.1,mat('#f3edda'),false);box(.08,.08,1.32,side*3.78,2.35,2.1,mat('#b49b5f'),false);}
+   for(const side of [-1,1]){box(.08,1.05,.08,side*3.78,2.35,2.1,mat('#b49b5f'),false);box(.08,1.05,.08,side*3.78,2.35,2.95,mat('#b49b5f'),false);box(.08,.08,.93,side*3.78,2.85,2.52,mat('#b49b5f'),false);box(.08,.08,.93,side*3.78,1.85,2.52,mat('#b49b5f'),false);}
  }
- if(hall){box(1.9,.82,.65,0,.41,h-3,mat('#8a6746'));box(1.78,.06,.52,0,.85,h-3,mat('#315d49'),false);label('LỄ TÂN',0,1.22,h-3.35,'#ffffff',{w:1.25,h:.3});poster('CHÀO MỪNG ĐẾN AVP','Hợp tác • Trách nhiệm • Cải tiến','lobby',0,2.35,-h+.18,true);poster('AN TOÀN LÀ TRÊN HẾT','Giữ lối đi thông thoáng','operations',-3.82,2.3,-14,'left');poster('MỖI NGÀY TỐT HƠN','Chủ động • Trách nhiệm • Cải tiến','data',3.82,2.3,12,'right');}
+ if(hall){box(1.9,.82,.65,0,.41,h-3,mat('#8a6746'));box(1.78,.06,.52,0,.85,h-3,mat('#315d49'),false);label('LỄ TÂN',0,.53,h-2.665,'#ffffff',{w:1.25,h:.26});poster('CHÀO MỪNG ĐẾN AVP','Hợp tác • Trách nhiệm • Cải tiến','lobby',0,2.35,-h+.18,true);poster('AN TOÀN LÀ TRÊN HẾT','Giữ lối đi thông thoáng','operations',-3.82,2.3,-14,'left');poster('MỖI NGÀY TỐT HƠN','Chủ động • Trách nhiệm • Cải tiến','data',3.82,2.3,12,'right');}
  else if(key==='training'){label('WASD: DI CHUYỂN',0,1.9,0,'#ffffff',{w:2.2,h:.35});label('E: TƯƠNG TÁC • V: GÓC NHÌN',0,1.45,0,'#ffffff',{w:2.8,h:.35});}
  window.avpBuildGroup=oldGroup;return g;
 }
