@@ -112,14 +112,14 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    for(let j=0;j<7;j++){const ang=j*Math.PI*2/7;const leaf=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.46,5,10),nm(j%2?'#438b62':'#6da66f'));leaf.position.set(3.05+Math.cos(ang)*.20,.72+(j%3)*.07,h-5.4+Math.sin(ang)*.20);leaf.rotation.z=Math.cos(ang)*.48;leaf.rotation.x=Math.sin(ang)*.38;leaf.castShadow=true;(window.avpBuildGroup||scene).add(leaf)}
     const potLeft=new THREE.Mesh(new THREE.CylinderGeometry(.18,.23,.42,16),nm('#e7e0cf'));potLeft.position.set(-3.05,.24,h-5.4);potLeft.castShadow=true;(window.avpBuildGroup||scene).add(potLeft);
     for(let j=0;j<7;j++){const ang=j*Math.PI*2/7;const leaf=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.46,5,10),nm(j%2?'#438b62':'#6da66f'));leaf.position.set(-3.05+Math.cos(ang)*.20,.72+(j%3)*.07,h-5.4+Math.sin(ang)*.20);leaf.rotation.z=Math.cos(ang)*.48;leaf.rotation.x=Math.sin(ang)*.38;leaf.castShadow=true;(window.avpBuildGroup||scene).add(leaf)}
-   box(1.35,.28,.48,2.55,.38,h-9.3,mat('#477963'),false);box(1.35,.58,.22,2.55,.75,h-9.55,mat('#477963'),false);for(const x of [2.05,3.05])for(const z of [h-9.48,h-9.12])box(.08,.32,.08,x,.16,z,mat('#79583b'),false);box(.58,.08,.58,1.55,.56,h-9.3,mat('#8b6948'),false);box(.07,.52,.07,1.55,.29,h-9.3,mat('#8b6948'),false);
+   box(1.35,.28,.48,3.18,.38,h-5.8,mat('#477963'),false);box(1.35,.58,.22,3.18,.75,h-6.05,mat('#477963'),false);for(const x of [2.05,3.05])for(const z of [h-9.48,h-9.12])box(.08,.32,.08,x,.16,z,mat('#79583b'),false);box(.58,.08,.58,1.55,.56,h-9.3,mat('#8b6948'),false);box(.07,.52,.07,1.55,.29,h-9.3,mat('#8b6948'),false);
    // Hallway amenities: water dispenser, printer station, filing cabinet and waiting area, spaced along the side walls.
    // Water dispenser near the right wall, away from the doorways.
-   box(.72,.10,.62,3.12,.72,h-7.0,mat('#e8eee7'),false);
-   box(.48,.62,.42,3.12,1.08,h-7.0,mat('#f4f3e9'),false);
-   box(.38,.36,.34,3.12,1.60,h-7.0,mat('#58a9c9'),false);
-   box(.40,.07,.36,3.12,1.80,h-7.0,mat('#d5e7ec'),false);
-   box(.09,.20,.08,3.12,1.38,h-6.78,mat('#d6b45b'),false);
+   box(.72,.10,.62,3.12,.72,h-1.2,mat('#e8eee7'),false);
+   box(.48,.62,.42,3.12,1.08,h-1.2,mat('#f4f3e9'),false);
+   box(.38,.36,.34,3.12,1.60,h-1.2,mat('#58a9c9'),false);
+   box(.40,.07,.36,3.12,1.80,h-1.2,mat('#d5e7ec'),false);
+   box(.09,.20,.08,3.12,1.38,h-.98,mat('#d6b45b'),false);
    // Printer table and office printer on the opposite side.
    box(1.15,.12,.62,-3.05,.78,h-2.0,mat('#8a6746'),false);
    for(const x of [-3.48,-2.62])for(const z of [h-2.22,h-1.78])box(.07,.68,.07,x,.36,z,mat('#65472f'),false);
