@@ -50,13 +50,25 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
  box(8,4,.25,0,2,-h,mat(wallColor));box(8,4,.25,0,2,h,mat(wallColor));
  if(hall){const doors=[[-11,'ĐÀO TẠO'],[-6,'QC'],[-1,'DỮ LIỆU'],[4,'VẬN HÀNH'],[9,'QUẢN LÝ'],[14,'NHÂN SỰ']];for(const side of [-1,1]){let cur=-h;for(const [z,title] of doors){const lo=z-.72,hi=z+.72;if(lo>cur)box(.25,4,lo-cur,side*3.875,2,(cur+lo)/2,mat(wallColor));box(.12,3.12,.16,side*3.82,1.56,lo,mat('#254b38'),false);box(.12,3.12,.16,side*3.82,1.56,hi,mat('#254b38'),false);box(.12,.16,1.44,side*3.82,3.12,z,mat('#254b38'),false);box(.08,2.9,1.34,side*3.82,1.45,z,mat('#456b54'),false);box(.035,.34,.035,side*3.75,1.45,z+(side<0?.48:-.48),mat('#d4b86a'),false);box(.07,.38,1.28,side*3.72,3.38,z,mat('#254b38'),false);label(title,side*3.675,3.38,z,'#ffffff',{w:1.15,h:.26,rotationY:side<0?Math.PI/2:-Math.PI/2});cur=hi;}if(cur<h)box(.25,4,h-cur,side*3.875,2,(cur+h)/2,mat(wallColor));}}
  else{
-  box(2.95,4,.25,-2.525,2,-h,mat(wallColor));box(2.95,4,.25,2.525,2,-h,mat(wallColor));box(2.1,.75,.25,0,3.625,-h,mat(wallColor));
-  box(.12,3.1,.16,-1.05,1.55,-h,mat('#254b38'),false);box(.12,3.1,.16,1.05,1.55,-h,mat('#254b38'),false);box(2.1,.12,.16,0,3.1,-h,mat('#254b38'),false);
-  box(1.02,2.92,.09,-.52,1.46,-h+.08,mat('#5d7d68'),false);box(.035,.12,.035,-.12,1.45,-h+.015,mat('#d4b86a'),false);
-  box(1.9,.42,.07,0,3.36,-h+.15,mat('#254b38'),false);label(name,0,3.36,-h+.195,'#ffffff',{w:1.72,h:.28});
-  const slogans={boss:['LÀM GƯƠNG • DẪN ĐẦU','Minh bạch • Trách nhiệm • Hiệu quả'],qc:['ĐÚNG NGAY TỪ ĐẦU','Chất lượng là trách nhiệm của tất cả'],data:['DỮ LIỆU ĐÚNG','Quyết định tốt bắt đầu từ dữ liệu sạch'],operations:['AN TOÀN • KỶ LUẬT','Năng suất bền vững mỗi ngày'],hr:['CON NGƯỜI LÀ TRỌNG TÂM','Tôn trọng • Phát triển • Gắn kết'],planning:['KẾ HOẠCH RÕ RÀNG','Đúng tiến độ • Chủ động nguồn lực'],warehouse:['ĐÚNG HÀNG • ĐÚNG VỊ TRÍ','Gọn gàng • Chính xác • An toàn'],maintenance:['PHÒNG NGỪA TRƯỚC SỰ CỐ','Thiết bị tốt • Vận hành ổn định'],finance:['SỐ LIỆU MINH BẠCH','Đối soát kỹ • Báo cáo đúng hạn'],training:['HỌC ĐÚNG • LÀM ĐƯỢC','Mỗi ngày nâng cao một kỹ năng']};
-  if(slogans[key])poster(slogans[key][0],slogans[key][1],kind,0,2.35,h-.2,true);
-  poster('TÔN TRỌNG • HỢP TÁC','Cùng giải quyết vấn đề','data',-3.79,2.3,1.8,'left');poster('CẢI TIẾN MỖI NGÀY','Chia sẻ • Học hỏi • Tiến bộ','operations',3.79,2.3,1.8,'right');
+  // Cửa phòng: cùng kiểu với cửa hành lang, nằm hẳn phía trong phòng để tránh z-fighting.
+  box(2.95,4,.25,-2.525,2,-h,mat(wallColor));box(2.95,4,.25,2.525,2,-h,mat(wallColor));box(2.1,.78,.25,0,3.61,-h,mat(wallColor));
+  const dz=-h+.20;
+  box(.13,3.12,.20,-1.08,1.56,dz,mat('#163b2a'),false);
+  box(.13,3.12,.20,1.08,1.56,dz,mat('#163b2a'),false);
+  box(2.28,.16,.20,0,3.12,dz,mat('#163b2a'),false);
+  box(1.92,2.94,.12,0,1.49,-h+.24,mat('#234a35'),false);
+  box(.055,.40,.055,.68,1.48,-h+.15,mat('#d5b45c'),false);
+  box(1.9,.42,.08,0,3.42,-h+.16,mat('#163b2a'),false);
+  label(name,0,3.42,-h+.205,'#ffffff',{w:1.72,h:.28});
+  // Một bảng thương hiệu AVP duy nhất, gắn phẳng lên tường đối diện cửa.
+  const c=document.createElement('canvas');c.width=900;c.height=520;const q=c.getContext('2d');
+  q.fillStyle='#f7f4e8';q.fillRect(0,0,900,520);q.fillStyle='#173f2e';q.fillRect(12,12,876,496);q.fillStyle='#f7f4e8';q.fillRect(28,28,844,464);
+  q.fillStyle='#173f2e';q.textAlign='center';q.font='900 112px system-ui';q.fillText('AVP',450,190);
+  q.fillStyle='#4d8068';q.font='700 48px system-ui';q.fillText('ANH VĂN PHÒNG',450,260);
+  q.strokeStyle='#c9a85a';q.lineWidth=7;q.beginPath();q.moveTo(170,300);q.lineTo(730,300);q.stroke();
+  q.fillStyle='#315d49';q.font='600 29px system-ui';q.fillText('HỌC HỎI  •  SÁNG TẠO  •  CẢI TIẾN',450,365);
+  const logoMesh=new THREE.Mesh(new THREE.PlaneGeometry(2.65,1.53),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),side:THREE.DoubleSide}));
+  logoMesh.position.set(0,2.35,h-.16);logoMesh.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(logoMesh);
   makeDesk(0,1.25,deskName,kind);
 
  }
