@@ -79,25 +79,23 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
   label('LỄ TÂN',-2.15,1.12,h-4.1,'#ffffff',{w:1.15,h:.25,inward:true});
    // Receptionist stands behind the counter, facing visitors. Brighter anime-style face, uniform, employee badge.
    const npc=new THREE.Group();npc.position.set(-2.15,0,h-5.05);npc.rotation.y=0;
-   const nm=c=>new THREE.MeshStandardMaterial({color:c,roughness:.72});
-   function np(geo,ma,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,ma);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;npc.add(o);return o}
-   const skin=nm('#ffd9bd'),hair=nm('#57352e'),hairHi=nm('#75483d'),jacket=nm('#3e8b72'),blouse=nm('#fff8ec'),skirt=nm('#c94f83'),eye=nm('#3b2426'),white=nm('#fffdf7'),gold=nm('#e4bd60'),shoe=nm('#303640');
-   np(new THREE.CylinderGeometry(.07,.08,.15,16),skin,0,1.49,0);
-   np(new THREE.CapsuleGeometry(.235,.39,6,16),jacket,0,1.18,0,1.02,1,.78);
-   np(new THREE.ConeGeometry(.09,.16,4),blouse,-.065,1.39,.15,1,.8,.4);np(new THREE.ConeGeometry(.09,.16,4),blouse,.065,1.39,.15,1,.8,.4);
-   np(new THREE.BoxGeometry(.06,.3,.018),blouse,0,1.22,.18);
-   np(new THREE.CylinderGeometry(.15,.20,.34,16),skirt,0,.82,0);
-   for(const x of [-.255,.255]){const arm=np(new THREE.CapsuleGeometry(.055,.31,5,10),jacket,x,1.12,.015);arm.rotation.z=x<0?-.28:.28;np(new THREE.SphereGeometry(.067,14,12),skin,x*1.34,.94,.055)}
-   for(const x of [-.078,.078]){np(new THREE.CylinderGeometry(.045,.052,.34,12),skin,x,.49,0);np(new THREE.BoxGeometry(.12,.085,.22),shoe,x,.29,.035)}
-   np(new THREE.SphereGeometry(.215,24,20),skin,0,1.68,.025,1,.98,.91);
-   np(new THREE.SphereGeometry(.226,24,18,0,Math.PI*2,0,Math.PI*.64),hair,0,1.79,-.005,1.04,1.02,1.02);
-   np(new THREE.SphereGeometry(.20,20,16),hair,-.17,1.65,-.005,.48,1.05,.88);np(new THREE.SphereGeometry(.20,20,16),hair,.17,1.65,-.005,.48,1.05,.88);
-   np(new THREE.SphereGeometry(.11,18,12),hairHi,-.09,1.79,.17,1.1,.62,.55);np(new THREE.SphereGeometry(.105,18,12),hairHi,.045,1.81,.17,1.1,.58,.55);
-   for(const x of [-.078,.078]){np(new THREE.SphereGeometry(.052,16,12),white,x,1.69,.205,1,1.08,.65);np(new THREE.SphereGeometry(.031,14,12),eye,x,1.69,.232,1,1.15,.6);np(new THREE.SphereGeometry(.013,10,8),white,x-.009,1.704,.247);np(new THREE.SphereGeometry(.025,12,10),nm('#ef9e9e'),x*1.55,1.625,.197,1.4,.65,.35)}
-   const smile=np(new THREE.TorusGeometry(.035,.008,6,16,Math.PI),nm('#b65c65'),0,1.605,.219);smile.rotation.z=Math.PI;
-   for(const y of [1.27,1.15,1.03])np(new THREE.SphereGeometry(.018,8,8),gold,.065,y,.19);
-   const badge=np(new THREE.BoxGeometry(.12,.17,.025),gold,.145,1.29,.195);
-   const bc=document.createElement('canvas');bc.width=256;bc.height=320;const bx=bc.getContext('2d');bx.fillStyle='#fff8ec';bx.fillRect(0,0,256,320);bx.fillStyle='#24674d';bx.textAlign='center';bx.font='bold 58px system-ui';bx.fillText('AVP',128,105);bx.font='bold 34px system-ui';bx.fillText('LỄ TÂN',128,170);bx.fillStyle='#c5a451';bx.fillRect(45,205,166,8);badge.material=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(bc),side:THREE.DoubleSide});
+   const nm=c=>new THREE.MeshStandardMaterial({color:c,roughness:.68});
+   function np(geo,ma,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,ma);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;npc.add(o);return o}
+   const skin=nm('#ffd9bd'),hair=nm('#513128'),hairLight=nm('#805044'),jacket=nm('#286d55'),blouse=nm('#fff8e9'),skirt=nm('#bd4778'),eye=nm('#39242b'),iris=nm('#4c7d76'),white=nm('#fffdf7'),gold=nm('#dfb85b'),shoe=nm('#303641'),sock=nm('#f1e8dc'),cheek=nm('#f19b9c');
+   for(const x of [-.09,.09]){np(new THREE.CylinderGeometry(.047,.055,.34,16),skin,x,.49,0);np(new THREE.CylinderGeometry(.052,.055,.12,16),sock,x,.34,.008);np(new THREE.BoxGeometry(.13,.085,.23),shoe,x,.275,.045);np(new THREE.BoxGeometry(.13,.018,.20),nm('#a9aeb0'),x,.231,.05)}
+   np(new THREE.CapsuleGeometry(.205,.38,8,20),jacket,0,1.18,0,1.02,1,.8);
+   np(new THREE.ConeGeometry(.085,.14,4),blouse,-.065,1.39,.14,1,.8,.45);np(new THREE.ConeGeometry(.085,.14,4),blouse,.065,1.39,.14,1,.8,.45);np(new THREE.BoxGeometry(.055,.28,.025),blouse,0,1.22,.177);
+   np(new THREE.CylinderGeometry(.145,.19,.32,20),skirt,0,.82,0,1,.92,1);
+   for(const x of [-.235,.235]){const arm=np(new THREE.CapsuleGeometry(.052,.30,6,12),jacket,x,1.12,.005);arm.rotation.z=x<0?-.32:.32;np(new THREE.SphereGeometry(.062,16,12),skin,x*1.30,.94,.06)}
+   const raised=np(new THREE.CapsuleGeometry(.05,.27,6,12),jacket,-.31,1.24,.02);raised.rotation.z=-.62;np(new THREE.SphereGeometry(.066,16,12),skin,-.42,1.40,.04);for(let f=0;f<4;f++){const finger=np(new THREE.CapsuleGeometry(.012,.065,4,8),skin,-.47+f*.025,1.49,.045);finger.rotation.z=-.2+f*.12}
+   np(new THREE.CylinderGeometry(.065,.075,.13,16),skin,0,1.48,.015);np(new THREE.SphereGeometry(.215,32,24),skin,0,1.68,.035,1,.99,.88);
+   for(const x of [-.222,.222])np(new THREE.SphereGeometry(.045,14,12),skin,x,1.66,.005);
+   for(const x of [-.078,.078]){np(new THREE.SphereGeometry(.060,20,16),white,x,1.69,.211,1,1.08,.62);np(new THREE.SphereGeometry(.039,20,16),iris,x,1.686,.238,1,1.12,.60);np(new THREE.SphereGeometry(.025,18,14),eye,x,1.684,.253,1,1.1,.55);np(new THREE.SphereGeometry(.012,12,10),white,x-.011,1.703,.267);const brow=np(new THREE.CapsuleGeometry(.009,.045,4,8),hair,x,1.765,.208);brow.rotation.z=x<0?-.12:.12;np(new THREE.SphereGeometry(.027,14,10),cheek,x*1.65,1.625,.188,1.5,.65,.35)}
+   np(new THREE.SphereGeometry(.018,12,10),nm('#eaa88c'),0,1.655,.225,.8,.8,.6);const smile=np(new THREE.TorusGeometry(.034,.008,8,18,Math.PI),nm('#b95c65'),0,1.615,.218);smile.rotation.z=Math.PI;
+   np(new THREE.SphereGeometry(.225,28,20,0,Math.PI*2,0,Math.PI*.58),hair,0,1.80,-.002,1.04,1.02,1.02);np(new THREE.SphereGeometry(.19,20,16),hair,-.175,1.65,-.005,.47,1.12,.88);np(new THREE.SphereGeometry(.19,20,16),hair,.175,1.65,-.005,.47,1.12,.88);
+   for(const [x,y,rz] of [[-.13,1.79,-.18],[-.065,1.82,-.08],[.015,1.825,.02],[.09,1.81,.13],[.15,1.78,.20]]){const bang=np(new THREE.SphereGeometry(.09,18,14),hairLight,x,y,.16,.88,1.05,.48);bang.rotation.z=rz}
+   np(new THREE.SphereGeometry(.075,16,12),hairLight,-.12,1.84,.105,1.2,.55,.7);np(new THREE.SphereGeometry(.045,12,10),nm('#d85c82'),0,1.405,.19);for(const x of [-.035,.035]){const bow=np(new THREE.SphereGeometry(.045,12,10),nm('#e77d9b'),x,1.405,.18,1.2,.65,.45);bow.rotation.z=x<0?-.3:.3}for(const y of [1.25,1.15,1.05])np(new THREE.SphereGeometry(.014,10,8),gold,.075,y,.18);
+   const bc=document.createElement('canvas');bc.width=256;bc.height=320;const bx=bc.getContext('2d');bx.fillStyle='#fff8ec';bx.fillRect(0,0,256,320);bx.fillStyle='#24674d';bx.textAlign='center';bx.font='bold 58px system-ui';bx.fillText('AVP',128,105);bx.font='bold 32px system-ui';bx.fillText('LỄ TÂN',128,170);bx.fillStyle='#c5a451';bx.fillRect(45,205,166,8);const badge=np(new THREE.BoxGeometry(.13,.18,.025),gold,.145,1.29,.195);badge.material=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(bc),side:THREE.DoubleSide});
    (window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:-2.15,z:h-5.05};
    // Logo plaque mounted on the visitor-facing front of the reception counter.
    const frontCanvas=document.createElement('canvas');frontCanvas.width=720;frontCanvas.height=260;const fc=frontCanvas.getContext('2d');
@@ -110,6 +108,9 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    frontLogo.position.set(-2.15,.43,h-3.735);(window.avpBuildGroup||scene).add(frontLogo);
    // Computer, keyboard and mouse on the reception counter.
    box(.72,.43,.055,-2.15,1.12,h-4.18,mat('#182b25'),false);box(.65,.35,.025,-2.15,1.13,h-4.14,mat('#70bda4'),false);box(.10,.16,.09,-2.15,.91,h-4.16,mat('#263e32'),false);box(.38,.035,.20,-2.15,.865,h-4.03,mat('#d6ded2'),false);box(.12,.018,.18,-1.88,.865,h-4.03,mat('#d6ded2'),false);
+   const pot2=new THREE.Mesh(new THREE.CylinderGeometry(.18,.23,.42,16),nm('#e7e0cf'));pot2.position.set(3.05,.24,h-5.4);pot2.castShadow=true;(window.avpBuildGroup||scene).add(pot2);
+   for(let j=0;j<7;j++){const ang=j*Math.PI*2/7;const leaf=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.46,5,10),nm(j%2?'#438b62':'#6da66f'));leaf.position.set(3.05+Math.cos(ang)*.20,.72+(j%3)*.07,h-5.4+Math.sin(ang)*.20);leaf.rotation.z=Math.cos(ang)*.48;leaf.rotation.x=Math.sin(ang)*.38;leaf.castShadow=true;(window.avpBuildGroup||scene).add(leaf)}
+   box(1.35,.28,.48,2.55,.38,h-9.3,mat('#477963'),false);box(1.35,.58,.22,2.55,.75,h-9.55,mat('#477963'),false);for(const x of [2.05,3.05])for(const z of [h-9.48,h-9.12])box(.08,.32,.08,x,.16,z,mat('#79583b'),false);box(.58,.08,.58,1.55,.56,h-9.3,mat('#8b6948'),false);box(.07,.52,.07,1.55,.29,h-9.3,mat('#8b6948'),false);
    // Soft warm lobby lighting and decorative wall sconces.
    const warm=new THREE.PointLight('#ffd79a',1.1,12);warm.position.set(-2.1,3.25,h-5.5);(window.avpBuildGroup||scene).add(warm);
    const warm2=new THREE.PointLight('#ffe6b7',.8,12);warm2.position.set(2.1,3.25,h-5.5);(window.avpBuildGroup||scene).add(warm2);
