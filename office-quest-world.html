@@ -226,6 +226,21 @@ verifyAccess();try{seed()}catch(e){console.error('Office Quest seed failed',e)}s
 /* Independent watchdog: catches startup failures even if the main script throws. */
 window.addEventListener('error',function(e){var m=document.getElementById('gateMsg');if(m&&document.getElementById('gate')&&!document.getElementById('gate').classList.contains('hidden')){m.textContent='Lỗi khởi tạo: '+(e.message||'JavaScript không chạy được')+'. Tải lại trang hoặc thử kết nối lại.';var b=document.getElementById('retryBtn');if(b)b.classList.remove('hidden')}});
 setTimeout(function(){
+  var world=document.getElementById('world');
+  var place=document.getElementById('place');
+  var canvas=world&&world.querySelector('canvas');
+  var gate=document.getElementById('gate');
+  if(!canvas && place && place.textContent.indexOf('Đang tải văn phòng')>=0){
+    place.textContent='Không tải được 3D';
+    if(gate){
+      var msg=document.getElementById('gateMsg');
+      if(msg)msg.textContent='Văn phòng 3D chưa khởi động. Hãy tải lại bằng Ctrl + F5. Nếu vẫn lỗi, kiểm tra mạng hoặc tiện ích chặn script.';
+      gate.classList.remove('hidden');
+      var retry=document.getElementById('retryBtn');if(retry)retry.classList.remove('hidden');
+    }
+  }
+},18000);
+setTimeout(function(){
   var gate=document.getElementById('gate');
   var msg=document.getElementById('gateMsg');
   var retry=document.getElementById('retryBtn');
