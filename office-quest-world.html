@@ -29,79 +29,58 @@
 </section>
 <script>
 (()=>{
-const $=id=>document.getElementById(id);let sb=null,user=null,app=null,renderer,scene,camera,player,clock;let thirdPerson=true,computerOpen=false,selectedDesk=null,keys={},yaw=0,pitch=-.08,cameraDistance=6,worldReady=false,trainingComplete=false,currentRoom='lobby';let cells=[],selectedCell={r:0,c:0};const desks=[];
+const $=id=>document.getElementById(id);let sb=null,user=null,app=null,renderer,scene,camera,player,clock;let thirdPerson=true,computerOpen=false,selectedDesk=null,keys={},yaw=0,pitch=-.08,cameraDistance=3.8,worldReady=false,trainingComplete=false,currentRoom='lobby',roomBounds={minX:-3,maxX:3,minZ:-3,maxZ:3};let cells=[],selectedCell={r:0,c:0};const desks=[];
 function say(msg){const t=$('toast');t.textContent=msg;t.style.display='block';clearTimeout(say.timer);say.timer=setTimeout(()=>t.style.display='none',2600)}
 function gate(msg, retry=false){$('gateMsg').textContent=msg;$('retryBtn').classList.toggle('hidden',!retry);$('gate').classList.remove('hidden')}
 function withTimeout(p,ms,message){return Promise.race([p,new Promise((_,reject)=>setTimeout(()=>reject(Error(message)),ms))])}
 async function verifyAccess(){gate('Đang kết nối AVP…');try{for(let i=0;i<50&&!window.avpSupabase;i++)await new Promise(r=>setTimeout(r,100));sb=window.avpSupabase;if(!sb)throw Error('Không tải được thư viện đăng nhập. Kiểm tra mạng hoặc trình chặn nội dung rồi thử lại.');gate('Đang xác minh tài khoản…');const auth=await withTimeout(sb.auth.getUser(),10000,'Máy chủ đăng nhập phản hồi quá lâu. Kiểm tra mạng rồi bấm Thử kết nối lại.');const {data,error}=auth;if(error)throw error;user=data.user;if(!user){gate('Bạn cần đăng nhập website AVP trước khi vào văn phòng.');return}gate('Đang kiểm tra trạng thái hồ sơ…');const result=await withTimeout(sb.from('office_quest_applications').select('status,department,full_name,character_gender,admin_note').eq('user_id',user.id).maybeSingle(),10000,'Máy chủ hồ sơ phản hồi quá lâu. Bấm Thử kết nối lại.');if(result.error)throw result.error;app=result.data;if(!app||app.status!=='approved'){gate(app?.status==='pending'?'Hồ sơ đang chờ Anh Văn Phòng duyệt.':app?.status==='rejected'?'Hồ sơ cần bổ sung: '+(app.admin_note||'Vui lòng liên hệ Admin.'):'Chưa tìm thấy hồ sơ được duyệt. Hãy quay lại trang Office Quest để nộp CV.');return}if(!window.THREE)throw Error('Thư viện dựng hình 3D chưa tải xong. Hãy tải lại trang.');trainingComplete=localStorage.getItem('avp-office-quest-training-'+user.id)==='done';$('gate').classList.add('hidden');initWorld();}catch(e){gate('Không thể xác minh quyền vào game: '+(e.message||e),true)}}
 $('retryBtn').onclick=verifyAccess;
 function mat(color,rough=.82){return new THREE.MeshStandardMaterial({color,roughness:rough})}
-function box(w,h,d,x,y,z,material,collide=true){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;m.userData.collide=collide;scene.add(m);return m}
-function label(text,x,y,z,color='#ffffff'){const c=document.createElement('canvas');c.width=512;c.height=96;const ctx=c.getContext('2d');ctx.fillStyle='#10251cdd';ctx.fillRect(0,0,512,96);ctx.fillStyle=color;ctx.font='bold 31px system-ui';ctx.textAlign='center';ctx.fillText(text,256,60);const tex=new THREE.CanvasTexture(c);const m=new THREE.Mesh(new THREE.PlaneGeometry(4,0.75),new THREE.MeshBasicMaterial({map:tex,transparent:true,side:THREE.DoubleSide}));m.position.set(x,y,z);scene.add(m);return m}
+function box(w,h,d,x,y,z,material,collide=true){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;m.userData.collide=collide;(window.avpBuildGroup||scene).add(m);return m}
+function label(text,x,y,z,color='#ffffff'){const c=document.createElement('canvas');c.width=512;c.height=96;const ctx=c.getContext('2d');ctx.fillStyle='#10251cdd';ctx.fillRect(0,0,512,96);ctx.fillStyle=color;ctx.font='bold 31px system-ui';ctx.textAlign='center';ctx.fillText(text,256,60);const tex=new THREE.CanvasTexture(c);const m=new THREE.Mesh(new THREE.PlaneGeometry(4,0.75),new THREE.MeshBasicMaterial({map:tex,transparent:true,side:THREE.DoubleSide}));m.position.set(x,y,z);(window.avpBuildGroup||scene).add(m);return m}
 function makeDesk(x,z,name,kind){box(2.1,.16,1.05,x,.95,z,mat('#9b7049'));box(.13,.9,.13,x-.85,.48,z-.38,mat('#6b4b31'));box(.13,.9,.13,x+.85,.48,z-.38,mat('#6b4b31'));box(.13,.9,.13,x-.85,.48,z+.38,mat('#6b4b31'));box(.13,.9,.13,x+.85,.48,z+.38,mat('#6b4b31'));box(.9,.55,.07,x,.99,z-.25,mat('#202b29'));box(.82,.45,.025,x,1.01,z-.205,mat('#74b6a0'),false);box(.14,.35,.14,x, .66,z-.23,mat('#46554b'));box(.55,.035,.38,x,.08,z+.72,mat('#40574a'));box(.55,.07,.55,x,.48,z+.72,mat('#334a3a'));const obj={x,z,name,kind};desks.push(obj);label(name,x,2.3,z-1.15,kind==='boss'?'#ffe0a4':'#c8ffd6')}
-function initWorld(){if(worldReady)return;worldReady=true;scene=new THREE.Scene();scene.background=new THREE.Color('#a9cbb8');scene.fog=new THREE.Fog('#a9cbb8',22,55);camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.1,120);renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;$('world').appendChild(renderer.domElement);scene.add(new THREE.HemisphereLight('#f0fff4','#526657',2.0));const sun=new THREE.DirectionalLight('#fff2d4',2.4);sun.position.set(-8,15,9);sun.castShadow=true;scene.add(sun);
-box(32,.3,26,0,-.2,0,mat('#d6d9c5'),false);
-// Khu vực đào tạo, phòng ban và phòng quản lý được ngăn tường riêng, có lối cửa ở giữa.
-box(32,3.6,.25,0,1.8,-13,mat('#e7eee0'));box(32,3.6,.25,0,1.8,13,mat('#e7eee0'));
-box(.25,3.6,26,-16,1.8,0,mat('#e7eee0'));box(.25,3.6,26,16,1.8,0,mat('#e7eee0'));
-// Sảnh và hành lang trung tâm; các phòng là những khối riêng có tường bao và cửa.
-const wall=mat('#dce8d8'),darkWall=mat('#b7cdbd'),doorMat=mat('#6b8f7a'),floorHall=mat('#d6d9c5');
-box(32,.3,26,0,-.2,0,floorHall,false);
-// Hành lang trung tâm chạy dọc theo trục Z.
-box(7,.08,24,0,.02,0,mat('#c7d8cc'),false);
-label('SẢNH AVP',0,3.1,-11.8);label('HÀNH LANG CÔNG TY',0,3.1,0);
-// Phòng bên trái: đào tạo ở phía trước, QC phía sau.
-function roomShell(cx,cz,name,color){
-  box(9,.12,8,cx,.02,cz,mat(color),false);
-  // tường sau và hai vách bên; mặt hướng hành lang có cửa chính ở giữa
-  box(9,3.5,.25,cx,1.75,cz-4,wall);
-  box(.25,3.5,8,cx-4.5,1.75,cz,wall);
-  box(.25,3.5,8,cx+4.5,1.75,cz,wall);
-  box(2.9,3.5,.25,cx-3.05,1.75,cz+4,wall);
-  box(2.9,3.5,.25,cx+3.05,1.75,cz+4,wall);
-  // khung cửa hai bên và biển hiệu rõ phía trên cửa
-  box(.16,2.5,.22,cx-1.6,1.25,cz+4,doorMat,false);
-  box(.16,2.5,.22,cx+1.6,1.25,cz+4,doorMat,false);
-  box(3.35,.16,.3,cx,2.55,cz+4,doorMat,false);
-  label(name,cx,3.25,cz+3.72);
+function initWorld(){if(worldReady)return;worldReady=true;scene=new THREE.Scene();scene.background=new THREE.Color('#a9cbb8');scene.fog=new THREE.Fog('#a9cbb8',10,22);camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.1,60);renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;$('world').appendChild(renderer.domElement);scene.add(new THREE.HemisphereLight('#f0fff4','#526657',2));const sun=new THREE.DirectionalLight('#fff2d4',2.2);sun.position.set(-4,10,5);sun.castShadow=true;scene.add(sun);
+window.avpRoomGroups={};const oldGroup=window.avpBuildGroup;
+function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
+ const g=new THREE.Group();window.avpRoomGroups[key]=g;scene.add(g);window.avpBuildGroup=g;
+ box(8,.25,8,0,-.2,0,mat('#d6d9c5'),false);
+ // phòng kín, tường cao, trần và cửa ở tường phía trước
+ box(8,4,.25,0,2,-4,mat(wallColor));box(8,4,.25,0,2,4,mat(wallColor));
+ box(.25,4,8,-4,2,0,mat(wallColor));box(.25,4,8,4,2,0,mat(wallColor));
+ box(8,.2,8,0,4.05,0,mat('#f0f2e9'),false);
+ // Cửa mở giữa tường trước bằng hai trụ và thanh trên; khoảng trống ở dưới là lối đi.
+ box(2.35,3.5,.25,-2.8,1.75,4,mat(wallColor));box(2.35,3.5,.25,2.8,1.75,4,mat(wallColor));
+ box(3.3,.2,.3,0,3.55,4,mat('#47745a'),false);
+ label(name,0,3.2,3.72);
+ makeDesk(0,0,deskName,kind);
+ if(key==='training'){label('WASD: DI CHUYỂN',0,2.5,-3.72);label('E: TƯƠNG TÁC · V: GÓC NHÌN',0,2,-3.72)}
+ window.avpBuildGroup=oldGroup;return g;
 }
-roomShell(-11,-7,'PHÒNG ĐÀO TẠO','#c5d8bc');
-roomShell(-11,7,'PHÒNG QC','#d5e4d2');
-roomShell(11,7,'PHÒNG DỮ LIỆU','#d4d9c5');
-roomShell(11,-7,'PHÒNG VẬN HÀNH','#d5e4d2');
-roomShell(0,-7,'PHÒNG QUẢN LÝ','#e4d7ba');
-// Bàn bên trong từng phòng, không rải bàn ra hành lang.
-makeDesk(-11,-7,'Bàn hướng dẫn','training');
-makeDesk(-11,7,'Bàn QC','qc');
-makeDesk(11,7,'Bàn dữ liệu','data');
-makeDesk(11,-7,'Bàn vận hành','operations');
-makeDesk(0,-7,'Bàn quản lý','boss');
-// Biển chỉ hướng ở sảnh giúp chọn phòng trước khi mở cửa.
-label('QC  ←',-3.2,2.2,2.2);label('→  DỮ LIỆU',3.2,2.2,2.2);
-label('ĐÀO TẠO  ←',-3.2,2.2,-9.5);label('→  VẬN HÀNH',3.2,2.2,-9.5);
-player=new THREE.Group();
-const female=app.character_gender==='female';
-const skin=mat('#d9a27c'),shirt=mat(female?'#b64d78':'#3479b7'),pants=mat(female?'#343b57':'#253b50'),shoe=mat('#252a28'),hairMat=mat(female?'#241b1b':'#33271f');
-function part(geo,material,x,y,z,sx=1,sy=1,sz=1){const m=new THREE.Mesh(geo,material);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=true;player.add(m);return m}
-part(new THREE.CapsuleGeometry(.28,.48,5,10),shirt,0,1.02,0,1,1,.8);
-part(new THREE.SphereGeometry(.205,16,12),skin,0,1.53,-.015,1,1.12,1);
-part(new THREE.SphereGeometry(.212,16,12,0,Math.PI*2,0,Math.PI*.62),hairMat,0,1.62,.005,1.04,1,1.04);
-if(female){part(new THREE.ConeGeometry(.19,.34,16),hairMat,0,1.37,.13,1,1,.85);part(new THREE.SphereGeometry(.13,12,8),hairMat,0,1.48,.16,1,1.25,.75)}
-else{part(new THREE.SphereGeometry(.21,16,10,0,Math.PI*2,0,Math.PI*.35),hairMat,0,1.68,0,1,1,.9)}
-for(const ex of [-.075,.075]){part(new THREE.SphereGeometry(.025,8,6),mat('#fff9e9'),ex,1.55,-.207);part(new THREE.SphereGeometry(.012,8,6),mat('#20251f'),ex,1.55,-.23)}
-part(new THREE.BoxGeometry(.09,.13,.07),skin,0,1.47,-.21,.7,1,.7);
-for(const x of [-.12,.12]){part(new THREE.CapsuleGeometry(.065,.34,4,8),shirt,x,.78,0,.85,1,.9);part(new THREE.SphereGeometry(.075,10,8),skin,x,.57,-.005)}
-for(const x of [-.105,.105]){part(new THREE.CapsuleGeometry(.075,.36,4,8),pants,x,.34,0,.85,1,.9);part(new THREE.BoxGeometry(.14,.1,.25),shoe,x,.1,-.045)}
-scene.add(player);player.position.set(0,0,2);clock=new THREE.Clock();$('place').textContent='Khu văn phòng · '+(app.department||'nhân viên').toUpperCase();updateViewButton();animate();say('Chào '+(app.full_name||'nhân viên')+'. Đến gần bàn và nhấn E để làm việc.')}
+buildRoom('lobby','SẢNH AVP','lobby','Bàn tiếp tân','lobby','#dce8e0');
+buildRoom('training','PHÒNG ĐÀO TẠO','training','Bàn hướng dẫn','training','#c5d8bc');
+buildRoom('qc','PHÒNG QC','qc','Bàn QC','qc','#d5e4d2');
+buildRoom('data','PHÒNG DỮ LIỆU','data','Bàn dữ liệu','data','#d4d9c5');
+buildRoom('operations','PHÒNG VẬN HÀNH','operations','Bàn vận hành','operations','#d5e4d2');
+buildRoom('boss','PHÒNG QUẢN LÝ','boss','Bàn quản lý','boss','#e4d7ba');
+Object.entries(window.avpRoomGroups).forEach(([k,g])=>g.visible=k==='lobby');
+window.avpBuildGroup=oldGroup;
+player=new THREE.Group();const female=app.character_gender==='female';const skin=mat('#d9a27c'),shirt=mat(female?'#b64d78':'#3479b7'),pants=mat(female?'#343b57':'#253b50'),shoe=mat('#252a28'),hairMat=mat(female?'#241b1b':'#33271f');function part(geo,material,x,y,z,sx=1,sy=1,sz=1){const m=new THREE.Mesh(geo,material);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=true;player.add(m)}part(new THREE.CapsuleGeometry(.28,.48,5,10),shirt,0,1.02,0,1,1,.8);part(new THREE.SphereGeometry(.205,16,12),skin,0,1.53,-.015,1,1.12,1);part(new THREE.SphereGeometry(.212,16,12,0,Math.PI*2,0,Math.PI*.62),hairMat,0,1.62,.005,1.04,1,1.04);if(female){part(new THREE.ConeGeometry(.19,.34,16),hairMat,0,1.37,.13,1,1,.85)}else{part(new THREE.SphereGeometry(.21,16,10,0,Math.PI*2,0,Math.PI*.35),hairMat,0,1.68,0,1,1,.9)}for(const ex of [-.075,.075]){part(new THREE.SphereGeometry(.025,8,6),mat('#fff9e9'),ex,1.55,-.207);part(new THREE.SphereGeometry(.012,8,6),mat('#20251f'),ex,1.55,-.23)}for(const x of [-.12,.12]){part(new THREE.CapsuleGeometry(.065,.34,4,8),shirt,x,.78,0,.85,1,.9);part(new THREE.SphereGeometry(.075,10,8),skin,x,.57,-.005)}for(const x of [-.105,.105]){part(new THREE.CapsuleGeometry(.075,.36,4,8),pants,x,.34,0,.85,1,.9);part(new THREE.BoxGeometry(.14,.1,.25),shoe,x,.1,-.045)}scene.add(player);player.position.set(0,0,0);clock=new THREE.Clock();$('place').textContent='Sảnh AVP · Đi đến cửa phòng đào tạo để bắt đầu';updateViewButton();animate();say('Chào '+(app.full_name||'nhân viên')+'. Bạn đang ở sảnh AVP. Đi đến cửa và nhấn E để vào phòng.')}
 function updateViewButton(){$('viewBtn').textContent='Góc nhìn: '+(thirdPerson?'Thứ ba':'Thứ nhất');player?.children.forEach(o=>o.visible=thirdPerson)}
 function nearestDesk(){let best=null,dist=Infinity;for(const d of desks){const q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<2.35?best:null}
 function nearestDoor(){const doors=[{x:-11,z:-3,room:'training',label:'Phòng đào tạo',tx:-11,tz:-7},{x:-11,z:11,room:'qc',label:'Phòng QC',tx:-11,tz:7},{x:11,z:11,room:'data',label:'Phòng dữ liệu',tx:11,tz:7},{x:11,z:-3,room:'operations',label:'Phòng vận hành',tx:11,tz:-7},{x:0,z:-3,room:'boss',label:'Phòng quản lý',tx:0,tz:-7}];let best=null,dist=Infinity;for(const d of doors){const q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<2.5?best:null}
-function enterRoom(d){if(!trainingComplete&&d.room!=='training'){say('Hoàn thành hướng dẫn tại phòng đào tạo trước khi mở cửa phòng ban.');return}currentRoom=d.room;player.position.set(d.tx,0,d.tz+1.8);yaw=0;cameraDistance=5;$('place').textContent='Đang ở: '+d.label;say('Đã vào '+d.label+'. Đi đến bàn và nhấn E để làm việc.')}
-function interact(){const door=nearestDoor();if(door){enterRoom(door);return}const d=nearestDesk();if(!d){say('Đến gần cửa phòng hoặc bàn làm việc rồi nhấn E để tương tác.');return}if(d.kind!=='training'&&!trainingComplete){say('Hoàn thành hướng dẫn tại Phòng đào tạo để mở lối vào các phòng ban.');return}selectedDesk=d;computerOpen=true;$('computerTitle').textContent=d.kind==='training'?'Đào tạo hội nhập — phím tắt và thao tác nhanh':d.kind==='boss'?'Bàn quản lý — '+d.name:'Máy tính — '+d.name;$('computer').classList.add('open');$('computer').classList.toggle('training-mode',d.kind==='training');$('sheetStatus').textContent=d.kind==='training'?'HƯỚNG DẪN NHANH\\nW A S D hoặc phím mũi tên: di chuyển. E: tương tác/ngồi vào bàn. V: đổi góc nhìn. Esc: đứng dậy/đóng máy tính. Dùng nút Hướng dẫn nếu cần xem lại. Khi hoàn tất, nhấn Hoàn tất hướng dẫn để mở cửa phòng ban.':'Đang ngồi tại '+d.name+'. Bạn có thể nhập dữ liệu, thử công thức hoặc dùng file Excel thực tế.';keys={};document.exitPointerLock?.()}
+function enterRoom(d){
+if(!trainingComplete&&d.room!=='training'){say('Hoàn thành hướng dẫn ở phòng đào tạo trước khi mở cửa phòng ban.');return}
+currentRoom=d.room;const roomGroups=window.avpRoomGroups||{};Object.values(roomGroups).forEach(g=>g.visible=false);
+if(roomGroups[currentRoom])roomGroups[currentRoom].visible=true;
+roomBounds={minX:-3.6,maxX:3.6,minZ:-3.6,maxZ:3.6};player.position.set(0,0,2.5);yaw=0;pitch=-.06;cameraDistance=3.8;
+$('place').textContent='Đang ở: '+d.label;say('Bạn đã vào '+d.label+'. Cửa ra hành lang ở phía trước.');
+}
+function exitRoom(){if(currentRoom==='lobby')return;const roomGroups=window.avpRoomGroups||{};Object.values(roomGroups).forEach(g=>g.visible=false);if(roomGroups.lobby)roomGroups.lobby.visible=true;currentRoom='lobby';roomBounds={minX:-3,maxX:3,minZ:-3,maxZ:3};player.position.set(0,0,0);yaw=0;cameraDistance=3.8;$('place').textContent='Sảnh và hành lang công ty';say('Bạn đã ra sảnh công ty.')}
+function interact(){if(currentRoom!=='lobby'){if(player.position.z<-2.6){exitRoom();return}const d=nearestDesk();if(d){selectedDesk=d;computerOpen=true;$('computerTitle').textContent='Máy tính — '+d.name;$('computer').classList.add('open');$('sheetStatus').textContent='Đang ngồi tại '+d.name+'. Bạn có thể nhập dữ liệu, thử công thức hoặc dùng file Excel thực tế.';keys={};return}say('Đến gần bàn làm việc rồi nhấn E.');return}const door=nearestDoor();if(door){enterRoom(door);return}const d=nearestDesk();if(!d){say('Đến gần cửa phòng hoặc bàn làm việc rồi nhấn E để tương tác.');return}if(d.kind!=='training'&&!trainingComplete){say('Hoàn thành hướng dẫn tại Phòng đào tạo để mở lối vào các phòng ban.');return}selectedDesk=d;computerOpen=true;$('computerTitle').textContent=d.kind==='training'?'Đào tạo hội nhập — phím tắt và thao tác nhanh':d.kind==='boss'?'Bàn quản lý — '+d.name:'Máy tính — '+d.name;$('computer').classList.add('open');$('computer').classList.toggle('training-mode',d.kind==='training');$('sheetStatus').textContent=d.kind==='training'?'HƯỚNG DẪN NHANH\\nW A S D hoặc phím mũi tên: di chuyển. E: tương tác/ngồi vào bàn. V: đổi góc nhìn. Esc: đứng dậy/đóng máy tính. Dùng nút Hướng dẫn nếu cần xem lại. Khi hoàn tất, nhấn Hoàn tất hướng dẫn để mở cửa phòng ban.':'Đang ngồi tại '+d.name+'. Bạn có thể nhập dữ liệu, thử công thức hoặc dùng file Excel thực tế.';keys={};document.exitPointerLock?.()}
 function closeComputer(){computerOpen=false;$('computer').classList.remove('open')}
 $('trainingBtn').textContent='Hoàn tất hướng dẫn và mở cửa phòng ban';$('trainingBtn').onclick=()=>{if(!selectedDesk||selectedDesk.kind!=='training'){say('Hãy đến Phòng đào tạo và nhấn E trước.');return}trainingComplete=true;try{localStorage.setItem('avp-office-quest-training-'+user.id,'done')}catch{}$('place').textContent='Đã hoàn tất hướng dẫn · Cửa phòng ban đã mở';$('sheetStatus').textContent='Đã hoàn tất hướng dẫn. Các bàn phòng ban đã mở khóa. Đứng dậy và đi đến biển hiệu QC, Dữ liệu hoặc Vận hành.';closeComputer();say('Hoàn tất hướng dẫn! Các phòng ban đã mở khóa.')};
 function toggleView(){thirdPerson=!thirdPerson;updateViewButton();say(thirdPerson?'Đã chuyển sang góc nhìn thứ ba.':'Đã chuyển sang góc nhìn thứ nhất.')}
-function animate(){requestAnimationFrame(animate);if(!worldReady)return;const dt=Math.min(clock.getDelta(),.04);if(!computerOpen){let f=0,s=0;if(keys.KeyW||keys.ArrowUp)f-=1;if(keys.KeyS||keys.ArrowDown)f+=1;if(keys.KeyA||keys.ArrowLeft)s-=1;if(keys.KeyD||keys.ArrowRight)s+=1;const len=Math.hypot(f,s)||1;f/=len;s/=len;const speed=4*dt;player.position.x+=s*Math.cos(yaw)*speed+f*Math.sin(yaw)*speed;player.position.z+=f*Math.cos(yaw)*speed-s*Math.sin(yaw)*speed;player.position.x=Math.max(-14.5,Math.min(14.5,player.position.x));player.position.z=Math.max(-11.5,Math.min(11.5,player.position.z));if(!thirdPerson){camera.position.set(player.position.x,player.position.y+1.55,player.position.z);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}else{const target=new THREE.Vector3(player.position.x,player.position.y+1.15,player.position.z);const offset=new THREE.Vector3(Math.sin(yaw)*cameraDistance,cameraDistance*.53,Math.cos(yaw)*cameraDistance);camera.position.copy(target).add(offset);camera.lookAt(target)}const d=nearestDesk(),door=nearestDoor();$('place').textContent=door?'Cửa phòng: '+door.label+' · Nhấn E để mở':d?(!trainingComplete&&d.kind!=='training'?'Đào tạo cơ bản bắt buộc · '+d.name:'Có thể tương tác: '+d.name):(!trainingComplete?'Sảnh công ty · Vào phòng đào tạo trước':'Sảnh / hành lang công ty · Tìm cửa phòng ban');}renderer.render(scene,camera)}
+function animate(){requestAnimationFrame(animate);if(!worldReady)return;const dt=Math.min(clock.getDelta(),.04);if(!computerOpen){let f=0,s=0;if(keys.KeyW||keys.ArrowUp)f-=1;if(keys.KeyS||keys.ArrowDown)f+=1;if(keys.KeyA||keys.ArrowLeft)s-=1;if(keys.KeyD||keys.ArrowRight)s+=1;const len=Math.hypot(f,s)||1;f/=len;s/=len;const speed=4*dt;player.position.x+=s*Math.cos(yaw)*speed+f*Math.sin(yaw)*speed;player.position.z+=f*Math.cos(yaw)*speed-s*Math.sin(yaw)*speed;player.position.x=Math.max(roomBounds.minX,Math.min(roomBounds.maxX,player.position.x));player.position.z=Math.max(roomBounds.minZ,Math.min(roomBounds.maxZ,player.position.z));if(f||s)player.rotation.y=Math.atan2(s,f);if(!thirdPerson){camera.position.set(player.position.x,player.position.y+1.55,player.position.z);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}else{const target=new THREE.Vector3(player.position.x,player.position.y+1.15,player.position.z);const offset=new THREE.Vector3(Math.sin(yaw)*cameraDistance,cameraDistance*.42,Math.cos(yaw)*cameraDistance);camera.position.copy(target).add(offset);camera.lookAt(target)}const d=nearestDesk(),door=nearestDoor();$('place').textContent=currentRoom!=='lobby'?'Đang ở: '+currentRoom.toUpperCase()+(player.position.z<-2.6?' · Nhấn E để ra hành lang':d?' · Nhấn E để ngồi vào bàn':''):door?'Cửa phòng: '+door.label+' · Nhấn E để mở':(!trainingComplete?'Sảnh công ty · Vào phòng đào tạo trước':'Sảnh / hành lang công ty · Tìm cửa phòng ban');}renderer.render(scene,camera)}
 window.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();if(e.key==='Escape'&&computerOpen){closeComputer();return}if(computerOpen)return;keys[e.code]=true;if(e.code==='KeyE')interact();if(e.code==='KeyV')toggleView()});window.addEventListener('keyup',e=>keys[e.code]=false);
 const pad=$('stickpad'),dot=$('stickdot');let padId=null;function padMove(e){const r=pad.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=r.width*.34,len=Math.hypot(dx,dy)||1,scale=Math.min(1,max/len);keys.KeyW=dy/max*scale<-.25;keys.KeyS=dy/max*scale>.25;keys.KeyA=dx/max*scale<-.25;keys.KeyD=dx/max*scale>.25;dot.style.left=(50+dx/max*34*scale)+'%';dot.style.top=(50+dy/max*34*scale)+'%'}function padReset(){padId=null;keys.KeyW=keys.KeyA=keys.KeyS=keys.KeyD=false;dot.style.left='50%';dot.style.top='50%'}pad.addEventListener('pointerdown',e=>{e.preventDefault();padId=e.pointerId;pad.setPointerCapture(e.pointerId);padMove(e)});pad.addEventListener('pointermove',e=>{if(e.pointerId===padId)padMove(e)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>pad.addEventListener(ev,padReset));$('mobileInteract').onclick=interact;$('mobileView').onclick=toggleView;let lookLast=null;
 function beginLook(e){if(e.pointerType==='mouse'&&e.button!==0)return;if(computerOpen)return;lookLast={x:e.clientX,y:e.clientY,id:e.pointerId};try{e.currentTarget.setPointerCapture(e.pointerId)}catch{}}
