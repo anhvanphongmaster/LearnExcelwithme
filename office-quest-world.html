@@ -56,7 +56,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    box(1.9,.42,.08,0,3.36,-h+.19,mat('#254b38'),false);label(name,0,3.36,-h+.235,'#ffffff',{w:1.72,h:.3});
    const slogans={boss:['LÀM GƯƠNG • DẪN ĐẦU','Minh bạch • Trách nhiệm • Hiệu quả'],qc:['ĐÚNG NGAY TỪ ĐẦU','Chất lượng là trách nhiệm của tất cả'],data:['DỮ LIỆU ĐÚNG','Quyết định tốt bắt đầu từ dữ liệu sạch'],operations:['AN TOÀN • KỶ LUẬT','Năng suất bền vững mỗi ngày'],hr:['CON NGƯỜI LÀ TRỌNG TÂM','Tôn trọng • Phát triển • Gắn kết'],planning:['KẾ HOẠCH RÕ RÀNG','Đúng tiến độ • Chủ động nguồn lực'],warehouse:['ĐÚNG HÀNG • ĐÚNG VỊ TRÍ','Gọn gàng • Chính xác • An toàn'],maintenance:['PHÒNG NGỪA TRƯỚC SỰ CỐ','Thiết bị tốt • Vận hành ổn định'],finance:['SỐ LIỆU MINH BẠCH','Đối soát kỹ • Báo cáo đúng hạn'],training:['HỌC ĐÚNG • LÀM ĐƯỢC','Mỗi ngày nâng cao một kỹ năng']};
    // Poster is mounted on the rear wall, well away from the entrance.
-   if(slogans[key])poster(slogans[key][0],slogans[key][1],kind,0,2.35,h-.18,false);
+   if(slogans[key])poster(slogans[key][0],slogans[key][1],kind,0,2.35,h-.18,true);
    makeDesk(0,1.25,deskName,kind);
    for(const side of [-1,1]){box(.06,1.15,1.9,side*3.86,2.4,0,mat('#8fb8bd'),false);box(.08,1.28,.08,side*3.8,2.4,0,mat('#f1f2e8'),false);}
    // Three simple wall-mounted decor panels; these are on the long walls, not on doors.
@@ -87,7 +87,7 @@ function enterRoom(d){
 if(!trainingComplete&&d.room!=='training'){say('Hoàn thành hướng dẫn ở phòng đào tạo trước khi mở cửa phòng ban.');return}
 currentRoom=d.room;const roomGroups=window.avpRoomGroups||{};Object.values(roomGroups).forEach(g=>g.visible=false);
 if(roomGroups[currentRoom])roomGroups[currentRoom].visible=true;
-roomBounds={minX:-3.15,maxX:3.15,minZ:-3.15,maxZ:3.15};player.position.set(0,0,1.4);yaw=0;pitch=-.06;cameraDistance=3.8;
+roomBounds={minX:-3.15,maxX:3.15,minZ:-4.65,maxZ:3.15};player.position.set(0,0,1.4);yaw=0;pitch=-.06;cameraDistance=3.8;
 $('place').textContent='Đang ở: '+d.label;say('Bạn đã vào '+d.label+'. Cửa ra hành lang ở phía trước.');
 }
 function exitRoom(){if(currentRoom==='lobby')return;const roomGroups=window.avpRoomGroups||{};Object.values(roomGroups).forEach(g=>g.visible=false);if(roomGroups.lobby)roomGroups.lobby.visible=true;currentRoom='lobby';roomBounds={minX:-3.6,maxX:3.6,minZ:-15.5,maxZ:15.5};player.position.set(0,0,0);yaw=0;cameraDistance=3.8;$('place').textContent='Sảnh / hành lang công ty';say('Bạn đã ra hành lang công ty. Đến cửa phòng và nhấn E để vào.')}
