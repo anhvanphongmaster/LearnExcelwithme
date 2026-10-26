@@ -74,11 +74,11 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
  }
  if(hall){
   // Four walls are used deliberately: welcome board, clock, and slogans are separated.
-  box(2.05,.82,.72,-2.15,.41,h-4.1,mat('#8a6746'));
-  box(1.92,.07,.58,-2.15,.85,h-4.1,mat('#315d49'),false);
-  label('LỄ TÂN',-2.15,1.20,h-3.68,'#ffffff',{w:1.15,h:.28});
+  box(2.45,.88,.78,0,.44,h-4.1,mat('#8a6746'));
+  box(2.30,.08,.62,0,.91,h-4.1,mat('#315d49'),false);
+  label('LỄ TÂN',0,1.24,h-3.68,'#ffffff',{w:1.35,h:.30});
    // Receptionist stands behind the counter, facing visitors. Brighter anime-style face, uniform, employee badge.
-   const npc=new THREE.Group();npc.position.set(-2.15,0,h-3.0);npc.rotation.y=Math.PI;
+   const npc=new THREE.Group();npc.position.set(0,0,h-2.55);npc.rotation.y=Math.PI;
    const nm=c=>new THREE.MeshStandardMaterial({color:c,roughness:.68});
    function np(geo,ma,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,ma);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;npc.add(o);return o}
    const skin=nm('#ffe0c8'),hair=nm('#42271f'),hairLight=nm('#98634b'),jacket=nm('#1f7657'),blouse=nm('#fffaf0'),skirt=nm('#d84f86'),eye=nm('#30202a'),iris=nm('#347f78'),white=nm('#fffdf9'),gold=nm('#e4bd61'),shoe=nm('#303641'),sock=nm('#f8eee1'),cheek=nm('#f28f9d');
@@ -96,7 +96,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    for(const [x,y,rz] of [[-.13,1.79,-.18],[-.065,1.82,-.08],[.015,1.825,.02],[.09,1.81,.13],[.15,1.78,.20]]){const bang=np(new THREE.SphereGeometry(.09,18,14),hairLight,x,y,.16,.88,1.05,.48);bang.rotation.z=rz}
    np(new THREE.SphereGeometry(.075,16,12),hairLight,-.12,1.84,.105,1.2,.55,.7);np(new THREE.SphereGeometry(.045,12,10),nm('#d85c82'),0,1.405,.19);for(const x of [-.035,.035]){const bow=np(new THREE.SphereGeometry(.045,12,10),nm('#e77d9b'),x,1.405,.18,1.2,.65,.45);bow.rotation.z=x<0?-.3:.3}for(const y of [1.25,1.15,1.05])np(new THREE.SphereGeometry(.014,10,8),gold,.075,y,.18);
    const bc=document.createElement('canvas');bc.width=256;bc.height=320;const bx=bc.getContext('2d');bx.fillStyle='#fff8ec';bx.fillRect(0,0,256,320);bx.fillStyle='#24674d';bx.textAlign='center';bx.font='bold 58px system-ui';bx.fillText('AVP',128,105);bx.font='bold 32px system-ui';bx.fillText('LỄ TÂN',128,170);bx.fillStyle='#c5a451';bx.fillRect(45,205,166,8);const badge=np(new THREE.BoxGeometry(.13,.18,.025),gold,.145,1.29,.195);badge.material=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(bc),side:THREE.DoubleSide});
-   (window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:-2.15,z:h-3.0};
+   (window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:0,z:h-2.55};
    // Logo plaque mounted on the visitor-facing front of the reception counter.
    const frontCanvas=document.createElement('canvas');frontCanvas.width=720;frontCanvas.height=260;const fc=frontCanvas.getContext('2d');
    fc.fillStyle='#f8f4e8';fc.fillRect(0,0,720,260);fc.strokeStyle='#2e7559';fc.lineWidth=12;fc.strokeRect(9,9,702,242);
@@ -105,9 +105,9 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    fc.strokeStyle='#d0ae59';fc.lineWidth=4;fc.beginPath();fc.moveTo(170,190);fc.lineTo(550,190);fc.stroke();
    fc.fillStyle='#526d5b';fc.font='600 20px system-ui';fc.fillText('HỌC HỎI • SÁNG TẠO • CẢI TIẾN',360,224);
    const frontLogo=new THREE.Mesh(new THREE.PlaneGeometry(1.62,.58),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(frontCanvas),side:THREE.DoubleSide}));
-   frontLogo.position.set(-2.15,.43,h-3.735);frontLogo.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(frontLogo);
+   frontLogo.position.set(0,.46,h-4.49);frontLogo.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(frontLogo);
    // Computer, keyboard and mouse on the reception counter.
-   box(.72,.43,.055,-2.15,1.12,h-4.18,mat('#182b25'),false);box(.65,.35,.025,-2.15,1.13,h-4.14,mat('#70bda4'),false);box(.10,.16,.09,-2.15,.91,h-4.16,mat('#263e32'),false);box(.38,.035,.20,-2.15,.865,h-4.03,mat('#d6ded2'),false);box(.12,.018,.18,-1.88,.865,h-4.03,mat('#d6ded2'),false);
+   box(.72,.43,.055,0,1.16,h-4.18,mat('#182b25'),false);box(.65,.35,.025,0,1.17,h-4.14,mat('#70bda4'),false);box(.10,.16,.09,0,.94,h-4.16,mat('#263e32'),false);box(.38,.035,.20,0,.89,h-4.03,mat('#d6ded2'),false);box(.12,.018,.18,.27,.89,h-4.03,mat('#d6ded2'),false);
    const pot2=new THREE.Mesh(new THREE.CylinderGeometry(.18,.23,.42,16),nm('#e7e0cf'));pot2.position.set(3.05,.24,h-5.4);pot2.castShadow=true;(window.avpBuildGroup||scene).add(pot2);
    for(let j=0;j<7;j++){const ang=j*Math.PI*2/7;const leaf=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.46,5,10),nm(j%2?'#438b62':'#6da66f'));leaf.position.set(3.05+Math.cos(ang)*.20,.72+(j%3)*.07,h-5.4+Math.sin(ang)*.20);leaf.rotation.z=Math.cos(ang)*.48;leaf.rotation.x=Math.sin(ang)*.38;leaf.castShadow=true;(window.avpBuildGroup||scene).add(leaf)}
    box(1.35,.28,.48,2.55,.38,h-9.3,mat('#477963'),false);box(1.35,.58,.22,2.55,.75,h-9.55,mat('#477963'),false);for(const x of [2.05,3.05])for(const z of [h-9.48,h-9.12])box(.08,.32,.08,x,.16,z,mat('#79583b'),false);box(.58,.08,.58,1.55,.56,h-9.3,mat('#8b6948'),false);box(.07,.52,.07,1.55,.29,h-9.3,mat('#8b6948'),false);
