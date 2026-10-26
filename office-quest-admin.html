@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AVP Office Quest — Duyệt hồ sơ</title>
-<script src="supabase-config.js"></script><script src="supabase-auth.js"></script>
+<script src="supabase-config.js"></script><script type="module" src="supabase-auth.js"></script>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#102019;color:#1e3528;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}.wrap{max-width:1100px;margin:auto;padding:24px}.head{color:#f0fff3;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.head h1{font-size:clamp(23px,4vw,34px);margin:0}.head p{color:#bad6c1;margin:5px 0 20px}.panel{background:#fff9eb;border-radius:18px;padding:18px;margin-top:16px;box-shadow:0 12px 36px #0002}.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}select,button,textarea{font:inherit;border-radius:10px;padding:10px;border:1px solid #cbd9cc}button{font-weight:800;cursor:pointer;background:#176b46;color:white;border:0}.secondary{background:#e4eee0;color:#244d36}.status{font-weight:800;padding:4px 9px;border-radius:99px;background:#e7f1df}.pending{background:#fff0cb}.rejected{background:#ffe2d9}.row{border-top:1px solid #dce5d8;padding:16px 0}.row:first-child{border-top:0}.rowhead{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}.field{background:#f1f4e9;padding:10px;border-radius:10px;overflow-wrap:anywhere}.field b{display:block;font-size:12px;color:#637362}.note{width:100%;min-height:68px;margin:8px 0}.actions{display:flex;gap:8px;flex-wrap:wrap}.muted{color:#617362;font-size:13px}.error{color:#a3361b;font-weight:700}@media(max-width:600px){.wrap{padding:14px}.grid{grid-template-columns:1fr}.panel{padding:13px}}
 </style>
@@ -18,7 +18,7 @@ const $=id=>document.getElementById(id), esc=v=>String(v??'').replace(/[&<>"']/g
 const labels={qc:'Quản lý chất lượng',data:'Phân tích dữ liệu',hr:'Nhân sự',sales:'Kinh doanh',operations:'Vận hành'};
 const statusLabel={pending:'Đang chờ',approved:'Đã duyệt',rejected:'Cần bổ sung'};
 let sb=null, rows=[];
-async function init(){sb=window.avpSupabase;if(!sb){$('notice').textContent='Không tải được kết nối Supabase.';return}
+async function init(){for(let i=0;i<120;i++){sb=window.avpSupabase;if(sb)break;await new Promise(resolve=>setTimeout(resolve,100))}if(!sb){$('notice').textContent='Không tải được thư viện kết nối Supabase. Hãy kiểm tra mạng rồi tải lại trang.';return}
 const {data:{user},error}=await sb.auth.getUser();if(error||!user){$('notice').innerHTML='Bạn cần đăng nhập trước. Mở <a href="admin.html">trang Admin</a> để đăng nhập rồi quay lại đây.';return}
 const {data:profile,error:pe}=await sb.from('profiles').select('is_admin').eq('id',user.id).maybeSingle();if(pe||!profile?.is_admin){$('notice').textContent='Tài khoản hiện tại không có quyền Admin.';return}
 $('notice').textContent='Đã xác minh quyền Admin.';await load()}
