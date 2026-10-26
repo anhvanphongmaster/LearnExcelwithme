@@ -126,15 +126,15 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    // Reference layout: left wall = water station, bench, printer and file cabinet; right wall = copier and plant.
    // Keep the center and the path to the receptionist completely open.
    // Water dispenser at the front-left corner, facing into the lobby.
-   box(.62,.12,.52,-3.10,.78,h-8.2,mat('#e9eee8'),false);
-   box(.46,.72,.40,-3.10,1.18,h-8.2,mat('#f7f4ea'),false);
-   box(.35,.42,.32,-3.10,1.73,h-8.2,mat('#49a8cf'),false);
-   box(.38,.07,.34,-3.10,1.97,h-8.2,mat('#e1edf0'),false);
-   box(.08,.18,.06,-2.84,1.47,h-8.2,mat('#d45c75'),false);
+   box(.62,.12,.52,-3.10,-.005,h-8.2,mat('#e9eee8'),false);
+   box(.46,.72,.40,-3.10,.405,h-8.2,mat('#f7f4ea'),false);
+   box(.35,.42,.32,-3.10,.975,h-8.2,mat('#49a8cf'),false);
+   box(.38,.07,.34,-3.10,1.22,h-8.2,mat('#e1edf0'),false);
+   box(.08,.18,.06,-2.84,.72,h-8.2,mat('#d45c75'),false);
    // Waiting bench flush to left wall, with seat facing the central aisle.
-   box(1.24,.18,.42,-3.10,.48,h-5.65,mat('#477963'),false);
-   box(1.24,.46,.15,-3.27,.76,h-5.65,mat('#477963'),false);
-   for(const x of [-3.58,-2.62])for(const z of [h-5.82,h-5.48])box(.065,.40,.065,x,.22,z,mat('#79583b'),false);
+   box(1.24,.18,.42,-3.10,.22,h-5.65,mat('#477963'),false);
+   box(1.24,.46,.15,-3.27,.50,h-5.65,mat('#477963'),false);
+   for(const x of [-3.58,-2.62])for(const z of [h-5.82,h-5.48])box(.065,.40,.065,x,.08,z,mat('#79583b'),false);
    // Printer/copier on a proper side table near the rear-left wall.
    box(1.00,.12,.55,-3.10,.78,h-2.9,mat('#9b7049'),false);
    for(const x of [-3.48,-2.72])for(const z of [h-3.10,h-2.70])box(.065,.68,.065,x,.36,z,mat('#65472f'),false);
