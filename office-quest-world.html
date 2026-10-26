@@ -76,7 +76,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
   // Four walls are used deliberately: welcome board, clock, and slogans are separated.
   box(2.05,.82,.72,-2.15,.41,h-4.1,mat('#8a6746'));
   box(1.92,.07,.58,-2.15,.85,h-4.1,mat('#315d49'),false);
-  label('LỄ TÂN',-2.15,1.12,h-4.1,'#ffffff',{w:1.15,h:.25,inward:true});
+  label('LỄ TÂN',-2.15,1.20,h-3.68,'#ffffff',{w:1.15,h:.28});
    // Receptionist stands behind the counter, facing visitors. Brighter anime-style face, uniform, employee badge.
    const npc=new THREE.Group();npc.position.set(-2.15,0,h-3.0);npc.rotation.y=Math.PI;
    const nm=c=>new THREE.MeshStandardMaterial({color:c,roughness:.68});
@@ -105,7 +105,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    fc.strokeStyle='#d0ae59';fc.lineWidth=4;fc.beginPath();fc.moveTo(170,190);fc.lineTo(550,190);fc.stroke();
    fc.fillStyle='#526d5b';fc.font='600 20px system-ui';fc.fillText('HỌC HỎI • SÁNG TẠO • CẢI TIẾN',360,224);
    const frontLogo=new THREE.Mesh(new THREE.PlaneGeometry(1.62,.58),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(frontCanvas),side:THREE.DoubleSide}));
-   frontLogo.position.set(-2.15,.43,h-3.735);(window.avpBuildGroup||scene).add(frontLogo);
+   frontLogo.position.set(-2.15,.43,h-3.735);frontLogo.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(frontLogo);
    // Computer, keyboard and mouse on the reception counter.
    box(.72,.43,.055,-2.15,1.12,h-4.18,mat('#182b25'),false);box(.65,.35,.025,-2.15,1.13,h-4.14,mat('#70bda4'),false);box(.10,.16,.09,-2.15,.91,h-4.16,mat('#263e32'),false);box(.38,.035,.20,-2.15,.865,h-4.03,mat('#d6ded2'),false);box(.12,.018,.18,-1.88,.865,h-4.03,mat('#d6ded2'),false);
    const pot2=new THREE.Mesh(new THREE.CylinderGeometry(.18,.23,.42,16),nm('#e7e0cf'));pot2.position.set(3.05,.24,h-5.4);pot2.castShadow=true;(window.avpBuildGroup||scene).add(pot2);
