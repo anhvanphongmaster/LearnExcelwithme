@@ -78,7 +78,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
   box(1.92,.07,.58,-2.15,.85,h-4.1,mat('#315d49'),false);
   label('LỄ TÂN',-2.15,1.12,h-4.1,'#ffffff',{w:1.15,h:.25,inward:true});
    // Receptionist stands behind the counter, facing visitors. Brighter anime-style face, uniform, employee badge.
-   const npc=new THREE.Group();npc.position.set(-2.15,0,h-3.05);npc.rotation.y=Math.PI;
+   const npc=new THREE.Group();npc.position.set(-2.15,0,h-5.05);npc.rotation.y=0;
    const nm=c=>new THREE.MeshStandardMaterial({color:c,roughness:.72});
    function np(geo,ma,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,ma);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;npc.add(o);return o}
    const skin=nm('#ffd9bd'),hair=nm('#57352e'),hairHi=nm('#75483d'),jacket=nm('#3e8b72'),blouse=nm('#fff8ec'),skirt=nm('#c94f83'),eye=nm('#3b2426'),white=nm('#fffdf7'),gold=nm('#e4bd60'),shoe=nm('#303640');
@@ -98,9 +98,25 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    for(const y of [1.27,1.15,1.03])np(new THREE.SphereGeometry(.018,8,8),gold,.065,y,.19);
    const badge=np(new THREE.BoxGeometry(.12,.17,.025),gold,.145,1.29,.195);
    const bc=document.createElement('canvas');bc.width=256;bc.height=320;const bx=bc.getContext('2d');bx.fillStyle='#fff8ec';bx.fillRect(0,0,256,320);bx.fillStyle='#24674d';bx.textAlign='center';bx.font='bold 58px system-ui';bx.fillText('AVP',128,105);bx.font='bold 34px system-ui';bx.fillText('LỄ TÂN',128,170);bx.fillStyle='#c5a451';bx.fillRect(45,205,166,8);badge.material=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(bc),side:THREE.DoubleSide});
-   (window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:-2.15,z:h-3.05};
+   (window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:-2.15,z:h-5.05};
+   // Logo plaque mounted on the visitor-facing front of the reception counter.
+   const frontCanvas=document.createElement('canvas');frontCanvas.width=720;frontCanvas.height=260;const fc=frontCanvas.getContext('2d');
+   fc.fillStyle='#f8f4e8';fc.fillRect(0,0,720,260);fc.strokeStyle='#2e7559';fc.lineWidth=12;fc.strokeRect(9,9,702,242);
+   fc.textAlign='center';fc.fillStyle='#164b35';fc.font='900 96px system-ui';fc.fillText('AVP',360,112);
+   fc.fillStyle='#347b5e';fc.font='700 36px system-ui';fc.fillText('ANH VĂN PHÒNG',360,165);
+   fc.strokeStyle='#d0ae59';fc.lineWidth=4;fc.beginPath();fc.moveTo(170,190);fc.lineTo(550,190);fc.stroke();
+   fc.fillStyle='#526d5b';fc.font='600 20px system-ui';fc.fillText('HỌC HỎI • SÁNG TẠO • CẢI TIẾN',360,224);
+   const frontLogo=new THREE.Mesh(new THREE.PlaneGeometry(1.62,.58),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(frontCanvas),side:THREE.DoubleSide}));
+   frontLogo.position.set(-2.15,.43,h-3.735);(window.avpBuildGroup||scene).add(frontLogo);
    // Computer, keyboard and mouse on the reception counter.
    box(.72,.43,.055,-2.15,1.12,h-4.18,mat('#182b25'),false);box(.65,.35,.025,-2.15,1.13,h-4.14,mat('#70bda4'),false);box(.10,.16,.09,-2.15,.91,h-4.16,mat('#263e32'),false);box(.38,.035,.20,-2.15,.865,h-4.03,mat('#d6ded2'),false);box(.12,.018,.18,-1.88,.865,h-4.03,mat('#d6ded2'),false);
+   // Soft warm lobby lighting and decorative wall sconces.
+   const warm=new THREE.PointLight('#ffd79a',1.1,12);warm.position.set(-2.1,3.25,h-5.5);(window.avpBuildGroup||scene).add(warm);
+   const warm2=new THREE.PointLight('#ffe6b7',.8,12);warm2.position.set(2.1,3.25,h-5.5);(window.avpBuildGroup||scene).add(warm2);
+   for(const x of [-3.35,3.35]){
+    box(.12,.55,.12,x,3.28,h-5.7,mat('#d1ad62'),false);
+    const glow=new THREE.Mesh(new THREE.SphereGeometry(.13,12,10),new THREE.MeshBasicMaterial({color:'#ffe4a3'}));glow.position.set(x,3.12,h-5.7);(window.avpBuildGroup||scene).add(glow);
+   }
    // Lobby decor spaced along the walls: flower pot, water dispenser, and filing cabinet.
    const pot=new THREE.Mesh(new THREE.CylinderGeometry(.13,.18,.25,12),nm('#bd7952'));pot.position.set(-3.12,.34,h-7.2);pot.castShadow=true;(window.avpBuildGroup||scene).add(pot);
    for(let i=0;i<5;i++){const a=i*Math.PI*2/5;const fl=new THREE.Mesh(new THREE.SphereGeometry(.095,10,8),nm(['#e57c9b','#e9b95b','#df8eac','#f0c96a','#d97791'][i]));fl.position.set(-3.12+Math.cos(a)*.12,.57+(i%2)*.045,h-7.2+Math.sin(a)*.12);fl.scale.set(.8,1.25,.7);(window.avpBuildGroup||scene).add(fl)}
