@@ -25,7 +25,7 @@ const supabase = configured
 
 window.avpSupabase = supabase;
 
-function loadAdminChatAssets() {
+function loadAdminChatAssets() {\n  if (/office-quest(?:-world|-admin)?\\.html$/i.test(location.pathname)) return;
   if (!document.querySelector('link[data-avp-admin-chat]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
