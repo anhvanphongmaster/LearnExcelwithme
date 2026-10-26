@@ -112,29 +112,33 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    for(let j=0;j<7;j++){const ang=j*Math.PI*2/7;const leaf=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.46,5,10),nm(j%2?'#438b62':'#6da66f'));leaf.position.set(3.05+Math.cos(ang)*.20,.72+(j%3)*.07,h-5.4+Math.sin(ang)*.20);leaf.rotation.z=Math.cos(ang)*.48;leaf.rotation.x=Math.sin(ang)*.38;leaf.castShadow=true;(window.avpBuildGroup||scene).add(leaf)}
     const potLeft=new THREE.Mesh(new THREE.CylinderGeometry(.18,.23,.42,16),nm('#e7e0cf'));potLeft.position.set(-3.05,.24,h-5.4);potLeft.castShadow=true;(window.avpBuildGroup||scene).add(potLeft);
     for(let j=0;j<7;j++){const ang=j*Math.PI*2/7;const leaf=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.46,5,10),nm(j%2?'#438b62':'#6da66f'));leaf.position.set(-3.05+Math.cos(ang)*.20,.72+(j%3)*.07,h-5.4+Math.sin(ang)*.20);leaf.rotation.z=Math.cos(ang)*.48;leaf.rotation.x=Math.sin(ang)*.38;leaf.castShadow=true;(window.avpBuildGroup||scene).add(leaf)}
-   box(1.35,.28,.48,3.18,.38,h-5.8,mat('#477963'),false);box(1.35,.58,.22,3.18,.75,h-6.05,mat('#477963'),false);for(const x of [2.05,3.05])for(const z of [h-9.48,h-9.12])box(.08,.32,.08,x,.16,z,mat('#79583b'),false);box(.58,.08,.58,1.55,.56,h-9.3,mat('#8b6948'),false);box(.07,.52,.07,1.55,.29,h-9.3,mat('#8b6948'),false);
-   // Hallway amenities: water dispenser, printer station, filing cabinet and waiting area, spaced along the side walls.
-   // Water dispenser near the right wall, away from the doorways.
-   box(.72,.10,.62,3.12,.72,h-1.2,mat('#e8eee7'),false);
-   box(.48,.62,.42,3.12,1.08,h-1.2,mat('#f4f3e9'),false);
-   box(.38,.36,.34,3.12,1.60,h-1.2,mat('#58a9c9'),false);
-   box(.40,.07,.36,3.12,1.80,h-1.2,mat('#d5e7ec'),false);
-   box(.09,.20,.08,3.12,1.38,h-.98,mat('#d6b45b'),false);
-   // Printer table and office printer on the opposite side.
-   box(1.15,.12,.62,-3.05,.78,h-2.0,mat('#8a6746'),false);
-   for(const x of [-3.48,-2.62])for(const z of [h-2.22,h-1.78])box(.07,.68,.07,x,.36,z,mat('#65472f'),false);
-   box(.72,.32,.48,-3.05,1.00,h-2.0,mat('#e7ece7'),false);
-   box(.62,.07,.40,-3.05,1.19,h-2.0,mat('#c7d3cc'),false);
-   box(.42,.025,.24,-3.05,1.235,h-2.0,mat('#263e35'),false);
-   box(.28,.04,.18,-2.88,1.26,h-2.0,mat('#eaf1eb'),false);
-   // Low filing cabinet and paper trays.
-   box(.78,.92,.55,-3.08,.48,h-12.7,mat('#547466'),false);
-   for(const y of [.30,.55,.80]){box(.66,.035,.025,-3.08,y,h-12.405,mat('#d8e2d9'),false);box(.09,.035,.025,-3.08,y,h-12.38,mat('#d3b45c'),false)}
-   box(.82,.06,.58,-3.08,.96,h-12.7,mat('#365b49'),false);
-   // Waiting bench on the right wall.
-   box(1.42,.20,.45,3.05,.48,h-12.0,mat('#477963'),false);
-   box(1.42,.48,.16,3.05,.78,h-12.18,mat('#477963'),false);
-   for(const x of [2.48,3.62])for(const z of [h-12.18,h-11.82])box(.07,.42,.07,x,.23,z,mat('#79583b'),false);
+   // CLEAN LOBBY FURNITURE LAYOUT: keep the central aisle and reception approach clear.
+   // Water dispenser on the right wall, between doorways.
+   box(.62,.12,.55,3.12,.78,h-8.2,mat('#e9eee8'),false);
+   box(.46,.72,.40,3.12,1.18,h-8.2,mat('#f7f4ea'),false);
+   box(.35,.42,.32,3.12,1.73,h-8.2,mat('#49a8cf'),false);
+   box(.38,.07,.34,3.12,1.97,h-8.2,mat('#e1edf0'),false);
+   box(.08,.18,.06,3.12,1.47,h-7.96,mat('#d45c75'),false);
+   // Printer and low drawer unit along the left wall, not in the walking lane.
+   box(1.02,.12,.58,-3.08,.78,h-8.2,mat('#9b7049'),false);
+   for(const x of [-3.48,-2.68])for(const z of [h-8.42,h-7.98])box(.065,.68,.065,x,.36,z,mat('#65472f'),false);
+   box(.66,.30,.46,-3.08,1.00,h-8.2,mat('#e7ece7'),false);
+   box(.58,.07,.38,-3.08,1.18,h-8.2,mat('#c7d3cc'),false);
+   box(.40,.025,.23,-3.08,1.225,h-8.2,mat('#263e35'),false);
+   box(.24,.035,.16,-2.91,1.25,h-8.2,mat('#f5f1e5'),false);
+   // File cabinet in a separate left-wall bay.
+   box(.78,1.12,.52,-3.08,.58,h-3.1,mat('#547466'),false);
+   for(const y of [.32,.59,.86]){box(.66,.035,.025,-3.08,y,h-2.82,mat('#d8e2d9'),false);box(.09,.035,.025,-3.08,y,h-2.79,mat('#d3b45c'),false)}
+   box(.82,.06,.55,-3.08,1.16,h-3.1,mat('#365b49'),false);
+   // Waiting bench in its own right-wall bay; no chair/table scattered in the middle.
+   box(1.28,.18,.42,3.08,.48,h-3.1,mat('#477963'),false);
+   box(1.28,.46,.15,3.08,.76,h-3.25,mat('#477963'),false);
+   for(const x of [2.55,3.61])for(const z of [h-3.27,h-2.93])box(.065,.40,.065,x,.22,z,mat('#79583b'),false);
+   // A small side table and potted plant beside the waiting bench.
+   box(.62,.09,.48,2.82,.58,h-4.55,mat('#9b7049'),false);
+   for(const x of [2.58,3.06])for(const z of [h-4.72,h-4.38])box(.045,.52,.045,x,.27,z,mat('#65472f'),false);
+   const sidePot=new THREE.Mesh(new THREE.CylinderGeometry(.14,.18,.25,14),nm('#d9d0bd'));sidePot.position.set(2.82,.75,h-4.55);(window.avpBuildGroup||scene).add(sidePot);
+   for(let j=0;j<5;j++){const a=j*Math.PI*2/5;const leaf=new THREE.Mesh(new THREE.CapsuleGeometry(.045,.38,5,8),nm(j%2?'#438b62':'#6da66f'));leaf.position.set(2.82+Math.cos(a)*.11,1.03+(j%2)*.04,h-4.55+Math.sin(a)*.11);leaf.rotation.z=Math.cos(a)*.4;leaf.rotation.x=Math.sin(a)*.4;(window.avpBuildGroup||scene).add(leaf)}
    // Soft warm lobby lighting and decorative wall sconces.
    const warm=new THREE.PointLight('#ffd79a',1.1,12);warm.position.set(-2.1,3.25,h-5.5);(window.avpBuildGroup||scene).add(warm);
    const warm2=new THREE.PointLight('#ffe6b7',.8,12);warm2.position.set(2.1,3.25,h-5.5);(window.avpBuildGroup||scene).add(warm2);
