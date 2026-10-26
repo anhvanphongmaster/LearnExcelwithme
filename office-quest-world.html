@@ -44,15 +44,29 @@ box(32,.3,26,0,-.2,0,mat('#d6d9c5'),false);
 // Khu vực đào tạo, phòng ban và phòng quản lý được ngăn tường riêng, có lối cửa ở giữa.
 box(32,3.6,.25,0,1.8,-13,mat('#e7eee0'));box(32,3.6,.25,0,1.8,13,mat('#e7eee0'));
 box(.25,3.6,26,-16,1.8,0,mat('#e7eee0'));box(.25,3.6,26,16,1.8,0,mat('#e7eee0'));
-// Tường chia ngang theo từng phòng; chừa khoảng cửa ở vị trí x gần lối đi.
-for(const z of [-4,4]){box(9,3.4,.22,-11.5,1.7,z,mat('#dce8d8'));box(9,3.4,.22,11.5,1.7,z,mat('#dce8d8'));box(8,3.4,.22,0,1.7,z,mat('#dce8d8'))}
-box(.22,3.4,8,-5,1.7,-8,mat('#dce8d8'));box(.22,3.4,8,5,1.7,-8,mat('#dce8d8'));
-box(.22,3.4,8,-5,1.7,8,mat('#dce8d8'));box(.22,3.4,8,5,1.7,8,mat('#dce8d8'));
-// Lối cửa nhìn thấy rõ bằng khung xanh đậm.
-for(const [x,z] of [[-11.5,-4],[-11.5,4],[0,-4],[0,4],[11.5,-4],[11.5,4]]){box(1.4,.12,.28,x,3.45,z,mat('#2e7655'),false)}
+// Tường ngăn kín theo từng phòng, có cửa mở rõ ràng ở giữa mỗi vách.
+const wall=mat('#dce8d8'),trim=mat('#2e7655');
+for(const z of [-4,4]){
+  // Tường ngang chia các dãy; chừa cửa ở giữa từng phòng.
+  for(const x of [-11.5,0,11.5]){
+    box(3.5,3.4,.22,x-2.5,1.7,z,wall);
+    box(3.5,3.4,.22,x+2.5,1.7,z,wall);
+    box(.22,3.4,.22,x,1.7,z-.0,trim,false);
+    box(.22,3.4,.22,x,1.7,z+.0,trim,false);
+  }
+}
+// Vách dọc chia phòng đào tạo / QC bên trái và quản lý / vận hành bên phải.
+for(const zc of [-8,8]){
+  for(const x of [-5,5]){
+    box(.22,3.4,3.0,x,1.7,zc-2.5,wall);
+    box(.22,3.4,3.0,x,1.7,zc+2.5,wall);
+    box(.22,3.4,.22,x,1.7,zc,trim,false);
+  }
+}
+// Biển phòng lớn, đặt sát phía trên cửa ra vào.
+label('PHÒNG ĐÀO TẠO',-11,3.3,-12.5);label('PHÒNG QC',-11,3.3,12.3);label('PHÒNG DỮ LIỆU',0,3.3,12.3);label('PHÒNG VẬN HÀNH',11,3.3,12.3);label('PHÒNG QUẢN LÝ',11,3.3,-12.5);
 box(9,.1,7,-11,0,-8,mat('#c5d8bc'),false);box(9,.1,7,0,0,-8,mat('#e4d7ba'),false);box(9,.1,7,11,0,-8,mat('#d5e4d2'),false);
 box(9,.1,7,-11,0,8,mat('#d5e4d2'),false);box(9,.1,7,0,0,8,mat('#d4d9c5'),false);box(9,.1,7,11,0,8,mat('#d5e4d2'),false);
-label('PHÒNG ĐÀO TẠO',-11,3.3,-12.5);label('PHÒNG QC',-11,3.3,12.3);label('PHÒNG DỮ LIỆU',0,3.3,12.3);label('PHÒNG VẬN HÀNH',11,3.3,12.3);label('PHÒNG QUẢN LÝ',11,3.3,-12.5);
 makeDesk(-11,-8,'Bàn hướng dẫn','training');makeDesk(-11,8,'Bàn QC','qc');makeDesk(0,8,'Bàn dữ liệu','data');makeDesk(11,8,'Bàn vận hành','operations');makeDesk(11,-8,'Bàn quản lý','boss');
 player=new THREE.Group();
 const female=app.character_gender==='female';
@@ -81,8 +95,9 @@ function beginLook(e){if(e.pointerType==='mouse'&&e.button!==0)return;if(compute
 function moveLook(e){if(!lookLast||e.pointerId!==lookLast.id)return;const dx=e.clientX-lookLast.x,dy=e.clientY-lookLast.y;yaw-=dx*.008;pitch=Math.max(-.85,Math.min(.65,pitch-dy*.006));lookLast={x:e.clientX,y:e.clientY,id:e.pointerId}}
 function endLook(e){if(lookLast&&e.pointerId===lookLast.id)lookLast=null}
 const lookpad=$('lookpad');lookpad.style.touchAction='none';lookpad.addEventListener('pointerdown',beginLook);lookpad.addEventListener('pointermove',moveLook);['pointerup','pointercancel','lostpointercapture'].forEach(ev=>lookpad.addEventListener(ev,endLook));
-const canvas=renderer.domElement;canvas.style.touchAction='none';canvas.addEventListener('pointerdown',beginLook);canvas.addEventListener('pointermove',moveLook);['pointerup','pointercancel','lostpointercapture'].forEach(ev=>canvas.addEventListener(ev,endLook));
-canvas.addEventListener('wheel',e=>{if(!thirdPerson||computerOpen)return;e.preventDefault();cameraDistance=Math.max(3,Math.min(11,cameraDistance+Math.sign(e.deltaY)*.65) )},{passive:false});
+// Gắn điều khiển lên vùng #world ngay từ đầu; renderer được tạo muộn sau khi xác minh xong.
+const worldArea=$('world');worldArea.style.touchAction='none';worldArea.addEventListener('pointerdown',e=>{if(e.target.closest('button')||e.target.closest('#computer'))return;beginLook(e)});worldArea.addEventListener('pointermove',moveLook);['pointerup','pointercancel','lostpointercapture'].forEach(ev=>worldArea.addEventListener(ev,endLook));
+worldArea.addEventListener('wheel',e=>{if(!thirdPerson||computerOpen)return;e.preventDefault();cameraDistance=Math.max(2.8,Math.min(12,cameraDistance+Math.sign(e.deltaY)*.8) )},{passive:false});
 $('viewBtn').onclick=toggleView;$('helpBtn').onclick=()=>say('Di chuyển: giữ W A S D hoặc phím mũi tên. Xoay góc nhìn: giữ chuột trái và kéo; trên điện thoại, chạm giữ rồi vuốt. Lăn bánh xe chuột để thu phóng ở góc nhìn thứ ba. Nhấn E để dùng bàn, V để đổi góc nhìn.');$('exitBtn').onclick=()=>location.href='office-quest.html';$('standBtn').onclick=closeComputer;window.addEventListener('resize',()=>{if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});renderer?.domElement.addEventListener('click',()=>{if(!computerOpen&&thirdPerson)renderer.domElement.requestPointerLock?.()});document.addEventListener('mousemove',e=>{if(document.pointerLockElement===renderer?.domElement&&!computerOpen){yaw-=e.movementX*.0025;pitch=Math.max(-.6,Math.min(.6,pitch-e.movementY*.002))}});
 function seed(){cells=[['Ngày','Mã đơn','Sản phẩm','Số lượng','Doanh thu'],['2026-10-01','DH101','Bút bi',10,50000],['2026-10-01','DH102','Sổ tay',5,75000],['2026-10-02','DH103','Bút bi',12,60000],['2026-10-02','DH104','Bìa hồ sơ',4,40000],['2026-10-03','DH105','Sổ tay',8,120000]];renderSheet();$('sheetStatus').textContent='Đã nạp dữ liệu mẫu. Nhấp đúp hoặc chọn ô để sửa nội dung.'}
 function colName(n){let s='';while(n>=0){s=String.fromCharCode(n%26+65)+s;n=Math.floor(n/26)-1}return s}
