@@ -108,50 +108,43 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    frontLogo.position.set(0,.46,h-4.49);frontLogo.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(frontLogo);
    // Computer, keyboard and mouse on the reception counter.
    box(.72,.43,.055,0,1.16,h-4.18,mat('#182b25'),false);box(.65,.35,.025,0,1.17,h-4.14,mat('#70bda4'),false);box(.10,.16,.09,0,.94,h-4.16,mat('#263e32'),false);box(.38,.035,.20,0,.89,h-4.03,mat('#d6ded2'),false);box(.12,.018,.18,.27,.89,h-4.03,mat('#d6ded2'),false);
-   const pot2=new THREE.Mesh(new THREE.CylinderGeometry(.18,.23,.42,16),nm('#e7e0cf'));pot2.position.set(3.05,.24,h-5.4);pot2.castShadow=true;(window.avpBuildGroup||scene).add(pot2);
-   for(let j=0;j<7;j++){const ang=j*Math.PI*2/7;const leaf=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.46,5,10),nm(j%2?'#438b62':'#6da66f'));leaf.position.set(3.05+Math.cos(ang)*.20,.72+(j%3)*.07,h-5.4+Math.sin(ang)*.20);leaf.rotation.z=Math.cos(ang)*.48;leaf.rotation.x=Math.sin(ang)*.38;leaf.castShadow=true;(window.avpBuildGroup||scene).add(leaf)}
-    const potLeft=new THREE.Mesh(new THREE.CylinderGeometry(.18,.23,.42,16),nm('#e7e0cf'));potLeft.position.set(-3.05,.24,h-5.4);potLeft.castShadow=true;(window.avpBuildGroup||scene).add(potLeft);
-    for(let j=0;j<7;j++){const ang=j*Math.PI*2/7;const leaf=new THREE.Mesh(new THREE.CapsuleGeometry(.075,.46,5,10),nm(j%2?'#438b62':'#6da66f'));leaf.position.set(-3.05+Math.cos(ang)*.20,.72+(j%3)*.07,h-5.4+Math.sin(ang)*.20);leaf.rotation.z=Math.cos(ang)*.48;leaf.rotation.x=Math.sin(ang)*.38;leaf.castShadow=true;(window.avpBuildGroup||scene).add(leaf)}
-   // CLEAN LOBBY FURNITURE LAYOUT: keep the central aisle and reception approach clear.
-   // Water dispenser on the right wall, between doorways.
-   box(.62,.12,.55,3.12,.78,h-8.2,mat('#e9eee8'),false);
-   box(.46,.72,.40,3.12,1.18,h-8.2,mat('#f7f4ea'),false);
-   box(.35,.42,.32,3.12,1.73,h-8.2,mat('#49a8cf'),false);
-   box(.38,.07,.34,3.12,1.97,h-8.2,mat('#e1edf0'),false);
-   box(.08,.18,.06,3.12,1.47,h-7.96,mat('#d45c75'),false);
-   // Printer and low drawer unit along the left wall, not in the walking lane.
-   box(1.02,.12,.58,-3.08,.78,h-8.2,mat('#9b7049'),false);
-   for(const x of [-3.48,-2.68])for(const z of [h-8.42,h-7.98])box(.065,.68,.065,x,.36,z,mat('#65472f'),false);
-   box(.66,.30,.46,-3.08,1.00,h-8.2,mat('#e7ece7'),false);
-   box(.58,.07,.38,-3.08,1.18,h-8.2,mat('#c7d3cc'),false);
-   box(.40,.025,.23,-3.08,1.225,h-8.2,mat('#263e35'),false);
-   box(.24,.035,.16,-2.91,1.25,h-8.2,mat('#f5f1e5'),false);
-   // File cabinet in a separate left-wall bay.
-   box(.78,1.12,.52,-3.08,.58,h-3.1,mat('#547466'),false);
-   for(const y of [.32,.59,.86]){box(.66,.035,.025,-3.08,y,h-2.82,mat('#d8e2d9'),false);box(.09,.035,.025,-3.08,y,h-2.79,mat('#d3b45c'),false)}
-   box(.82,.06,.55,-3.08,1.16,h-3.1,mat('#365b49'),false);
-   // Waiting bench in its own right-wall bay; no chair/table scattered in the middle.
-   box(1.28,.18,.42,3.08,.48,h-3.1,mat('#477963'),false);
-   box(1.28,.46,.15,3.08,.76,h-3.25,mat('#477963'),false);
-   for(const x of [2.55,3.61])for(const z of [h-3.27,h-2.93])box(.065,.40,.065,x,.22,z,mat('#79583b'),false);
-   // A small side table and potted plant beside the waiting bench.
-   box(.62,.09,.48,2.82,.58,h-4.55,mat('#9b7049'),false);
-   for(const x of [2.58,3.06])for(const z of [h-4.72,h-4.38])box(.045,.52,.045,x,.27,z,mat('#65472f'),false);
-   const sidePot=new THREE.Mesh(new THREE.CylinderGeometry(.14,.18,.25,14),nm('#d9d0bd'));sidePot.position.set(2.82,.75,h-4.55);(window.avpBuildGroup||scene).add(sidePot);
-   for(let j=0;j<5;j++){const a=j*Math.PI*2/5;const leaf=new THREE.Mesh(new THREE.CapsuleGeometry(.045,.38,5,8),nm(j%2?'#438b62':'#6da66f'));leaf.position.set(2.82+Math.cos(a)*.11,1.03+(j%2)*.04,h-4.55+Math.sin(a)*.11);leaf.rotation.z=Math.cos(a)*.4;leaf.rotation.x=Math.sin(a)*.4;(window.avpBuildGroup||scene).add(leaf)}
-   // Soft warm lobby lighting and decorative wall sconces.
-   const warm=new THREE.PointLight('#ffd79a',1.1,12);warm.position.set(-2.1,3.25,h-5.5);(window.avpBuildGroup||scene).add(warm);
-   const warm2=new THREE.PointLight('#ffe6b7',.8,12);warm2.position.set(2.1,3.25,h-5.5);(window.avpBuildGroup||scene).add(warm2);
-   for(const x of [-3.35,3.35]){
-    box(.12,.55,.12,x,3.28,h-5.7,mat('#d1ad62'),false);
-    const glow=new THREE.Mesh(new THREE.SphereGeometry(.13,12,10),new THREE.MeshBasicMaterial({color:'#ffe4a3'}));glow.position.set(x,3.12,h-5.7);(window.avpBuildGroup||scene).add(glow);
+   // COMPLETE LOBBY FURNITURE RESET: one object per station, placed against side walls.
+   // AVP reception computer, centered on the existing counter.
+   box(.72,.43,.055,0,1.16,h-4.18,mat('#182b25'),false);
+   box(.65,.35,.025,0,1.17,h-4.14,mat('#70bda4'),false);
+   box(.10,.16,.09,0,.94,h-4.16,mat('#263e32'),false);
+   box(.38,.035,.20,0,.89,h-4.03,mat('#d6ded2'),false);
+   box(.12,.018,.18,.27,.89,h-4.03,mat('#d6ded2'),false);
+   // Left wall: printer on a narrow table, with a separate file cabinet farther down.
+   box(1.00,.12,.55,-3.10,.78,h-8.2,mat('#9b7049'),false);
+   for(const x of [-3.48,-2.72])for(const z of [h-8.40,h-8.00])box(.065,.68,.065,x,.36,z,mat('#65472f'),false);
+   box(.66,.30,.44,-3.10,1.00,h-8.2,mat('#e7ece7'),false);
+   box(.58,.07,.37,-3.10,1.18,h-8.2,mat('#c7d3cc'),false);
+   box(.40,.025,.23,-3.10,1.225,h-8.2,mat('#263e35'),false);
+   box(.24,.035,.16,-2.93,1.25,h-8.2,mat('#f5f1e5'),false);
+   box(.76,1.08,.48,-3.10,.56,h-3.15,mat('#547466'),false);
+   for(const y of [.32,.58,.84]){box(.64,.035,.025,-3.10,y,h-2.89,mat('#d8e2d9'),false);box(.09,.035,.025,-3.10,y,h-2.86,mat('#d3b45c'),false)}
+   box(.80,.06,.52,-3.10,1.13,h-3.15,mat('#365b49'),false);
+   // Right wall: water dispenser and waiting bench, with clear spacing between them.
+   box(.62,.12,.52,3.10,.78,h-8.2,mat('#e9eee8'),false);
+   box(.46,.72,.40,3.10,1.18,h-8.2,mat('#f7f4ea'),false);
+   box(.35,.42,.32,3.10,1.73,h-8.2,mat('#49a8cf'),false);
+   box(.38,.07,.34,3.10,1.97,h-8.2,mat('#e1edf0'),false);
+   box(.08,.18,.06,3.10,1.47,h-7.96,mat('#d45c75'),false);
+   box(1.28,.18,.42,3.08,.48,h-3.15,mat('#477963'),false);
+   box(1.28,.46,.15,3.08,.76,h-3.30,mat('#477963'),false);
+   for(const x of [2.55,3.61])for(const z of [h-3.32,h-2.98])box(.065,.40,.065,x,.22,z,mat('#79583b'),false);
+   // Matching potted plants at the two ends of the reception zone.
+   function lobbyPlant(x,z){
+    const p=new THREE.Mesh(new THREE.CylinderGeometry(.15,.20,.28,14),nm('#e4d7bf'));p.position.set(x,.16,z);p.castShadow=true;(window.avpBuildGroup||scene).add(p);
+    const soil=new THREE.Mesh(new THREE.CylinderGeometry(.145,.145,.025,14),nm('#5c4633'));soil.position.set(x,.31,z);(window.avpBuildGroup||scene).add(soil);
+    for(let n=0;n<7;n++){const a=n*Math.PI*2/7;const l=new THREE.Mesh(new THREE.CapsuleGeometry(.055,.48,5,10),nm(n%2?'#438b62':'#70a86c'));l.position.set(x+Math.cos(a)*.14,.61+(n%3)*.07,z+Math.sin(a)*.14);l.rotation.z=Math.cos(a)*.42;l.rotation.x=Math.sin(a)*.42;l.castShadow=true;(window.avpBuildGroup||scene).add(l)}
    }
-   // Lobby decor spaced along the walls: flower pot, water dispenser, and filing cabinet.
-   const pot=new THREE.Mesh(new THREE.CylinderGeometry(.13,.18,.25,12),nm('#bd7952'));pot.position.set(-3.12,.34,h-7.2);pot.castShadow=true;(window.avpBuildGroup||scene).add(pot);
-   for(let i=0;i<5;i++){const a=i*Math.PI*2/5;const fl=new THREE.Mesh(new THREE.SphereGeometry(.095,10,8),nm(['#e57c9b','#e9b95b','#df8eac','#f0c96a','#d97791'][i]));fl.position.set(-3.12+Math.cos(a)*.12,.57+(i%2)*.045,h-7.2+Math.sin(a)*.12);fl.scale.set(.8,1.25,.7);(window.avpBuildGroup||scene).add(fl)}
-   box(.48,1.25,.48,3.12,.63,h-7.5,mat('#e8eee7'),false);box(.39,.42,.39,3.12,1.38,h-7.5,mat('#6db9d9'),false);box(.52,.08,.52,3.12,1.05,h-7.5,mat('#344d46'),false);box(.16,.2,.05,3.12,.92,h-7.23,mat('#4b9fc0'),false);
-   box(.9,1.25,.55,3.12,.625,h-11,mat('#829a91'),false);
-   for(let i=0;i<3;i++){box(.72,.025,.025,3.12,.32+i*.36,h-10.71,mat('#d9e5d7'),false);box(.12,.18,.035,2.86,.32+i*.36,h-10.68,mat(['#d9a45b','#77a9c4','#d985a0'][i]),false);box(.08,.035,.025,3.17,.32+i*.36,h-10.67,mat('#e8eee4'),false)}
+   lobbyPlant(-2.35,h-5.2);lobbyPlant(2.35,h-5.2);
+   // Warm wall lights; the center aisle stays completely empty.
+   const warm=new THREE.PointLight('#ffd79a',1.0,10);warm.position.set(-2.0,3.15,h-5.5);(window.avpBuildGroup||scene).add(warm);
+   const warm2=new THREE.PointLight('#ffe6b7',1.0,10);warm2.position.set(2.0,3.15,h-5.5);(window.avpBuildGroup||scene).add(warm2);
+   for(const x of [-3.35,3.35]){box(.10,.42,.10,x,3.20,h-5.5,mat('#c9a65a'),false);const glow=new THREE.Mesh(new THREE.SphereGeometry(.12,12,10),new THREE.MeshBasicMaterial({color:'#ffe4a3'}));glow.position.set(x,3.02,h-5.5);(window.avpBuildGroup||scene).add(glow)}
   poster('CHÀO MỪNG ĐẾN AVP','Hợp tác • Trách nhiệm • Cải tiến','lobby',0,2.4,-h+.18,false);
   poster('AN TOÀN • KỶ LUẬT','Làm đúng ngay từ đầu','operations',-3.78,2.35,-14,'left');
   poster('CẢI TIẾN MỖI NGÀY','Học hỏi • Sáng tạo • Tiến bộ','data',3.78,2.35,12,'right');
