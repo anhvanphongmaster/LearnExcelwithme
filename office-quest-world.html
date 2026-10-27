@@ -77,7 +77,28 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
   q.fillStyle='#315d49';q.font='600 29px system-ui';q.fillText('HỌC HỎI  •  SÁNG TẠO  •  CẢI TIẾN',450,365);
   const logoMesh=new THREE.Mesh(new THREE.PlaneGeometry(2.65,1.53),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),side:THREE.DoubleSide}));
   logoMesh.position.set(0,2.35,h-.16);logoMesh.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(logoMesh);
-  poster('CẢI TIẾN MỖI NGÀY','Chia sẻ • Học hỏi • Tiến bộ','operations',-3.78,2.28,0,'left');poster('TÔN TRỌNG • HỢP TÁC','Cùng giải quyết vấn đề','data',3.78,2.28,0,'right');makeDesk(0,1.25,deskName,kind);
+  poster('CẢI TIẾN MỖI NGÀY','Chia sẻ • Học hỏi • Tiến bộ','operations',-3.78,2.28,0,'left');poster('TÔN TRỌNG • HỢP TÁC','Cùng giải quyết vấn đề','data',3.78,2.28,0,'right');
+  // Lively, furnished department floor: collaborative desk pods, glass dividers, warm task lights and coworkers.
+  box(6,.035,4.1,0,-.055,.05,mat(colors[1]),false);box(5.72,.018,3.82,0,-.032,.05,mat(colors[0]),false);
+  makeDesk(0,1.25,deskName,kind);makeDesk(-2.28,-1.45,'Bàn cộng tác','data');makeDesk(2.28,-1.45,'Bàn cộng tác','operations');
+  const glassMat=new THREE.MeshPhysicalMaterial({color:'#b9e8ec',transparent:true,opacity:.32,roughness:.16,metalness:.08});
+  for(const x of [-1.16,1.16]){box(.055,1.48,3.15,x,.88,-1.35,glassMat,false);box(.10,.07,3.2,x,.13,-1.35,mat(colors[1]),false);box(.10,.07,3.2,x,1.62,-1.35,mat('#d9edf0'),false);for(const z of [-2.92,.22])box(.07,1.5,.07,x,.88,z,mat('#91b8b1'),false)}
+  // Two friendly coworkers make the room feel active while leaving the main aisle open.
+  function coworker(x,z,shirtColor,hairColor,badgeText){
+   const person=new THREE.Group();person.position.set(x,0,z);const skinMat=mat('#efc5a2'),shirtMat=mat(shirtColor),hairM=mat(hairColor),dark=mat('#273642'),whiteM=mat('#fff8e9');
+   function part(geo,m,px,py,pz,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,m);o.position.set(px,py,pz);o.scale.set(sx,sy,sz);o.castShadow=true;person.add(o)}
+   part(new THREE.CapsuleGeometry(.22,.48,5,10),shirtMat,0,.93,0,1.05,1,.78);part(new THREE.SphereGeometry(.19,18,14),skinMat,0,1.51,0,1,1.05,.9);part(new THREE.SphereGeometry(.195,16,12,0,Math.PI*2,0,Math.PI*.58),hairM,0,1.61,-.015,1.05,1,.98);
+   for(const ex of [-.065,.065]){part(new THREE.SphereGeometry(.033,12,10),whiteM,ex,1.52,.17);part(new THREE.SphereGeometry(.017,10,8),dark,ex,1.52,.195)}
+   part(new THREE.BoxGeometry(.10,.13,.025),mat('#e8c66d'),.12,1.12,.16);
+   for(const sx of [-1,1]){const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.055,.29,4,8),shirtMat);arm.position.set(sx*.25,.92,0);arm.rotation.z=sx*.22;person.add(arm);part(new THREE.CapsuleGeometry(.075,.34,4,8),dark,sx*.105,.32,0,.8,1,.8)}
+   const tag=document.createElement('canvas');tag.width=256;tag.height=96;const ctx=tag.getContext('2d');ctx.fillStyle='#fff8e9';ctx.fillRect(0,0,256,96);ctx.fillStyle='#204e38';ctx.font='bold 42px system-ui';ctx.textAlign='center';ctx.fillText(badgeText,128,62);
+   const badge=new THREE.Mesh(new THREE.PlaneGeometry(.48,.18),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(tag),transparent:true,side:THREE.DoubleSide}));badge.position.set(0,1.20,.18);person.add(badge);(window.avpBuildGroup||scene).add(person);
+  }
+  coworker(-2.35,-2.05,'#3479b7','#382a25','DATA');coworker(2.35,-2.05,'#bd5876','#4a302b','TEAM');
+  lobbyPlant(-3.25,3.25);lobbyPlant(3.25,3.25);
+  for(const x of [-2.25,2.25]){const lamp=new THREE.PointLight('#ffdc9b',.75,6);lamp.position.set(x,3.25,-1.1);(window.avpBuildGroup||scene).add(lamp);box(.52,.055,.52,x,3.85,-1.1,mat('#d8bd73'),false);const glow=new THREE.Mesh(new THREE.SphereGeometry(.16,12,10),new THREE.MeshBasicMaterial({color:'#ffe6ae'}));glow.position.set(x,3.68,-1.1);(window.avpBuildGroup||scene).add(glow)}
+  label(dept.toUpperCase()+' TEAM',0,3.72,0,'#ffffff',{w:2.25,h:.36});
+
 
  }
  if(hall){
