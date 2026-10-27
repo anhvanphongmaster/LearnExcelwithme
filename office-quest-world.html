@@ -16,6 +16,57 @@
 /* Clear room signage, fewer desks, and focused onboarding tutorial. */
 #computer.training-mode .formula,#computer.training-mode .sheet-wrap,#computer.training-mode #sampleBtn,#computer.training-mode #formulaBtn,#computer.training-mode #downloadBtn,#computer.training-mode #uploadBtn,#computer.training-mode #excelWebBtn{display:none!important}
 #computer.training-mode .statusline{white-space:pre-line;min-height:150px;font-size:18px;line-height:1.8;background:#e9f4e5;color:#173b29;padding:22px;border-radius:12px}
+
+/* Office phone, NPC dialogue and real office-computer workspaces. */
+#phoneDock{position:fixed;right:18px;bottom:20px;z-index:8;pointer-events:auto}
+#phoneToggle{background:#183b2a;border:1px solid #b7d5b3;border-radius:18px;padding:12px 16px;box-shadow:0 8px 28px #0008}
+#phoneBadge,#taskAppBadge{display:inline-grid;place-items:center;min-width:20px;height:20px;margin-left:4px;border-radius:20px;background:#e75c62;color:#fff;font-size:11px}
+#phoneBadge:empty,#taskAppBadge:empty{display:none}
+.phone-panel{position:fixed;z-index:9;right:18px;bottom:82px;width:min(360px,calc(100vw - 28px));max-height:min(72vh,640px);display:flex;flex-direction:column;overflow:hidden;border:1px solid #b8cfb8;border-radius:22px;background:#f7f8ef;color:#203526;box-shadow:0 18px 70px #000a}
+.phone-panel[hidden],.dialog-panel[hidden]{display:none!important}
+.phone-panel>header{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;background:#173c2c;color:#fff}
+.phone-panel>header div{display:grid;gap:2px}.phone-panel small{font-size:11px;opacity:.76}
+.phone-panel button,.dialog-panel button{background:#e4eddf;color:#1b3d2b;border-color:#c8d8c3}
+.phone-panel nav,.computer-apps{display:flex;gap:6px;padding:8px;background:#e8eee2;border-bottom:1px solid #cdd8c7}
+.phone-panel nav button,.computer-apps button{flex:1}
+.phone-panel nav button.active,.computer-apps button.active{background:#286a45;color:#fff;border-color:#286a45}
+.phone-content{padding:12px;overflow:auto}
+.phone-note,.task-card{background:#fff;border:1px solid #d5dfd0;border-radius:13px;padding:12px;margin-bottom:9px}
+.phone-note small,.task-card small{display:block;color:#637365;margin-top:4px}
+.phone-note p,.task-card p{margin:7px 0;color:#314636}
+.phone-note button,.task-card button{margin:4px 5px 0 0}
+.phone-empty{padding:18px;text-align:center;color:#68776b}
+.dialog-panel{position:fixed;inset:0;z-index:12;display:grid;place-items:center;padding:16px;background:#07160dc9}
+.dialog-card{width:min(460px,100%);border:1px solid #a9c9b0;border-radius:20px;background:#f8f6ea;color:#203628;padding:18px;box-shadow:0 20px 80px #000b}
+.dialog-person{display:flex;align-items:center;gap:10px}.dialog-person>div{display:grid;flex:1}.dialog-person small{color:#667767}
+.dialog-person>span{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#296a49;color:#fff;font-weight:900}
+.dialog-person #dialogClose{font-size:20px;padding:3px 11px}
+#dialogText{min-height:56px;color:#46584a}
+.dialog-choices{display:grid;gap:8px}.dialog-choices button{text-align:left;padding:11px}
+.computer-apps{flex:none}
+.computer-workspace{display:flex;flex:1;min-height:0;flex-direction:column}
+.office-workspace{flex:1;min-height:0;overflow:auto;background:#f4f6ed;color:#263a2c;padding:14px}
+.office-workspace.hidden{display:none!important}
+.contact-list{width:220px;max-width:32%;overflow:auto;border-right:1px solid #d5dfd1;padding-right:8px}
+.office-workspace#mailWorkspace{display:flex;gap:12px}
+.contact-list button{width:100%;display:block;text-align:left;margin:0 0 7px;background:#fff;color:#283a2d;border-color:#d6e0d3}
+.contact-list button.active{background:#dcebd7;border-color:#74a57e}
+.chat-window{display:flex;flex:1;min-width:0;flex-direction:column}
+.chat-window>header{padding:4px 2px 9px;border-bottom:1px solid #d5dfd1}
+.chat-window h3,.task-header h3{margin:0}
+.chat-log{display:flex;flex:1;min-height:180px;flex-direction:column;gap:8px;overflow:auto;padding:12px 2px}
+.chat-msg{max-width:86%;align-self:flex-start;border-radius:12px;padding:9px 11px;background:#fff;border:1px solid #dde5d8}
+.chat-msg.mine{align-self:flex-end;background:#dcefd9}
+.chat-msg small{display:block;color:#718074;font-size:10px;margin-bottom:3px}
+.chat-compose{display:flex;gap:8px;padding-top:8px;border-top:1px solid #d5dfd1}
+.chat-compose input{flex:1;min-width:0;border:1px solid #c8d7c5;border-radius:10px;padding:10px;color:#263a2c;background:#fff}
+.task-header{display:flex;justify-content:space-between;gap:10px;align-items:start}
+.task-header p{margin:5px 0;color:#617163}
+.computer-tasks{padding-top:12px}
+.task-card h4{margin:0;color:#203b2a}.task-card .task-state{font-weight:800;color:#34734a}
+.training-mode .computer-apps{display:none}
+@media(max-width:700px){.panel{inset:0;border-radius:0}.contact-list{width:118px}.office-workspace{padding:9px}.computer-apps button{padding:7px 4px;font-size:12px}#phoneDock{bottom:112px}.phone-panel{bottom:168px;right:10px}}
+
 </style></head>
 <body>
 <div id="world"></div>
@@ -23,24 +74,166 @@
 <div id="gate" class="gate"><div class="gatecard"><h1>AVP Office Quest</h1><p id="gateMsg">Đang xác minh hồ sơ nhân viên…</p><button id="retryBtn" class="hidden">Thử kết nối lại</button></div></div>
 <section id="computer" class="panel" aria-label="Máy tính bàn làm việc">
 <header><div><h2 id="computerTitle">Máy tính bàn làm việc</h2><p>Không gian thực hành dữ liệu · Có thể nhập và sửa ô trực tiếp</p></div><button id="standBtn">Đứng dậy (Esc)</button></header>
-<div class="toolbar"><button id="trainingBtn" class="ghost">Hoàn tất đào tạo cơ bản</button><button id="sampleBtn">Nạp dữ liệu mẫu</button><button id="formulaBtn">Tính tổng cột D</button><button id="downloadBtn">Tải file Excel (.xlsx)</button><button id="uploadBtn" class="ghost">Mở file Excel trên máy</button><button id="excelWebBtn" class="ghost">Mở Excel trên web</button><input id="fileInput" type="file" accept=".xlsx,.xls,.csv" hidden></div>
+<nav class="computer-apps"><button data-office-app="excel" class="active">Excel</button><button data-office-app="mail">Outlook · Tin nhắn</button><button data-office-app="tasks">Planner · Nhiệm vụ <span id="taskAppBadge"></span></button></nav>
+<div id="excelWorkspace" class="computer-workspace"><div class="toolbar"><button id="trainingBtn" class="ghost">Hoàn tất đào tạo cơ bản</button><button id="sampleBtn">Nạp dữ liệu mẫu</button><button id="formulaBtn">Tính tổng cột D</button><button id="downloadBtn">Tải file Excel (.xlsx)</button><button id="uploadBtn" class="ghost">Mở file Excel trên máy</button><button id="excelWebBtn" class="ghost">Mở Excel trên web</button><input id="fileInput" type="file" accept=".xlsx,.xls,.csv" hidden></div>
 <div class="formula"><strong id="cellName">A1</strong><span>fx</span><input id="formulaInput" aria-label="Nội dung ô đang chọn" placeholder="Chọn ô rồi nhập giá trị hoặc công thức, ví dụ =SUM(D2:D5)"><button id="applyCell">Áp dụng</button></div>
 <div class="sheet-wrap"><table id="sheet" class="sheet"></table></div><div id="sheetStatus" class="statusline">Chọn một ô để nhập dữ liệu. Hỗ trợ công thức SUM cơ bản.</div>
+</div>
+<div id="mailWorkspace" class="office-workspace hidden"><aside id="contactList" class="contact-list"></aside><div class="chat-window"><header><h3 id="chatTitle">Tin nhắn nội bộ</h3></header><div id="chatLog" class="chat-log"></div><div class="chat-compose"><input id="chatInput" maxlength="500" placeholder="Nhắn cho đồng nghiệp..."><button id="chatSend">Gửi</button></div></div></div>
+<div id="taskWorkspace" class="office-workspace hidden"><div class="task-header"><div><h3>Bàn giao & nhiệm vụ</h3><p id="taskIntro">Nhiệm vụ từ Anh Văn Phòng sẽ xuất hiện ở đây.</p></div><button id="refreshTasks" class="ghost">Làm mới</button></div><div id="computerTasks" class="computer-tasks"></div></div>
 </section>
+<aside id="phoneDock"><button id="phoneToggle" aria-label="Mở điện thoại trong game">📱 Điện thoại <span id="phoneBadge"></span></button></aside>
+<section id="phonePanel" class="phone-panel" hidden><header><div><b>AVP Mobile</b><small id="phoneStatus">Nhân viên · Không có thông báo mới</small></div><button id="phoneClose" aria-label="Đóng điện thoại">×</button></header><nav><button data-phone-view="tasks" class="active">Nhiệm vụ</button><button data-phone-view="messages">Tin nhắn</button></nav><div id="phoneContent" class="phone-content"></div></section>
+<section id="dialogPanel" class="dialog-panel" hidden><div class="dialog-card"><div class="dialog-person"><span id="dialogAvatar">AVP</span><div><b id="dialogName">Đồng nghiệp</b><small id="dialogRole"></small></div><button id="dialogClose">×</button></div><p id="dialogText"></p><div id="dialogChoices" class="dialog-choices"></div></div></section>
 <script>
 (()=>{
-const $=id=>document.getElementById(id);let sb=null,user=null,app=null,renderer,scene,camera,player,clock;let thirdPerson=true,computerOpen=false,selectedDesk=null,keys={},yaw=0,pitch=-.08,cameraDistance=3.8,worldReady=false,trainingComplete=false,currentRoom='lobby',roomBounds={minX:-3,maxX:3,minZ:-3,maxZ:3};let cells=[],selectedCell={r:0,c:0};const desks=[];
+const $=id=>document.getElementById(id);let sb=null,user=null,app=null,renderer,scene,camera,player,clock;let thirdPerson=true,computerOpen=false,phoneOpen=false,dialogOpen=false,selectedDesk=null,keys={},yaw=0,pitch=-.08,cameraDistance=3.8,worldReady=false,trainingComplete=false,currentRoom='lobby',roomBounds={minX:-3,maxX:3,minZ:-3,maxZ:3};let cells=[],selectedCell={r:0,c:0};const desks=[];
+let officeSim={tasks:[],notifications:[],threads:{},lastAutoAt:0,workCount:0};
+let activeContact='director',phoneView='tasks';
+const contacts={director:'Anh Văn Phòng',reception:'Lễ tân Mai',qc:'Linh · QC',data:'Minh · Dữ liệu',hr:'An · Nhân sự',sales:'Vy · Kinh doanh',operations:'Huy · Vận hành',planning:'Lan · Kế hoạch'};
+
 function say(msg){const t=$('toast');t.textContent=msg;t.style.display='block';clearTimeout(say.timer);say.timer=setTimeout(()=>t.style.display='none',2600)}
+function officeSimKey(){return 'avp-office-sim-'+(user?.id||'guest')}
+function saveOfficeSim(){try{localStorage.setItem(officeSimKey(),JSON.stringify(officeSim))}catch{}}
+function notifyPhone(text,title='Thông báo AVP'){
+ officeSim.notifications.unshift({id:'n'+Date.now(),title,text,at:Date.now(),read:false});officeSim.notifications=officeSim.notifications.slice(0,30);
+ saveOfficeSim();renderPhone();
+ if($('phoneToggle')){const b=$('phoneBadge');b.textContent=officeSim.notifications.filter(n=>!n.read).length||''}
+}
+function loadOfficeSimulation(){
+ try{const raw=localStorage.getItem(officeSimKey());if(raw){const saved=JSON.parse(raw);officeSim={...officeSim,...saved}}}catch{}
+ officeSim.tasks=Array.isArray(officeSim.tasks)?officeSim.tasks:[];officeSim.notifications=Array.isArray(officeSim.notifications)?officeSim.notifications:[];officeSim.threads=officeSim.threads&&typeof officeSim.threads==='object'?officeSim.threads:{};
+ for(const id of Object.keys(contacts))officeSim.threads[id]=Array.isArray(officeSim.threads[id])?officeSim.threads[id]:[];
+ if(!officeSim.threads.director.length)officeSim.threads.director.push({from:'Anh Văn Phòng',text:'Chào mừng em đến AVP. Khi có nhiệm vụ, anh sẽ gửi thông báo tới điện thoại và hộp thư công ty.',mine:false,at:Date.now()});
+ if(!officeSim.threads.reception.length)officeSim.threads.reception.push({from:'Lễ tân Mai',text:'Chào bạn! Nếu cần sơ đồ phòng ban hoặc hỗ trợ tìm bàn làm việc, cứ nhắn mình nhé.',mine:false,at:Date.now()});
+ saveOfficeSim();renderPhone();renderOfficeTasks();renderMailWorkspace();
+ if(!window.avpOfficeTaskTimer)window.avpOfficeTaskTimer=setInterval(()=>{if(trainingComplete)maybeAssignOfficeTask()},45000);
+}
+function currentDepartment(){return departmentRoom(app?.department||'')}
+function taskTemplate(){
+ const dept=currentDepartment();
+ const templates={
+  qc:{title:'Kiểm tra lô hàng AVP-204',brief:'Đối chiếu số lỗi theo lô, ghi kết luận kiểm tra và báo lại QC.',data:[['Mã lô','Sản phẩm','Lỗi','Số lượng'],['AVP-204','Bàn phím cơ','Xước vỏ',3],['AVP-204','Chuột không dây','Lỗi kết nối',1],['AVP-204','Tai nghe','Không lỗi',0]]},
+  data:{title:'Tổng hợp doanh thu tuần',brief:'Tính tổng doanh thu và xác định sản phẩm có doanh thu cao nhất.',data:[['Ngày','Sản phẩm','Số lượng','Doanh thu'],['T2','Màn hình',4,7200000],['T3','Bàn phím',8,6400000],['T4','Chuột',12,3600000],['T5','Tai nghe',5,5750000]]},
+  hr:{title:'Sàng lọc hồ sơ ứng viên',brief:'Rà soát điểm phỏng vấn, ghi nhận ứng viên cần mời vòng tiếp theo.',data:[['Ứng viên','Vị trí','Excel','Giao tiếp'],['Nguyễn An','Chuyên viên dữ liệu',8,9],['Trần Bình','Điều phối',7,8],['Lê Chi','Kinh doanh',9,7]]},
+  sales:{title:'Chuẩn bị báo giá khách hàng',brief:'Tổng hợp số lượng và thành tiền để gửi khách hàng trước 16:00.',data:[['Sản phẩm','Đơn giá','Số lượng','Thành tiền'],['Màn hình',1800000,2,''],['Bàn phím',800000,3,''],['Chuột',300000,5,'']]},
+  operations:{title:'Ưu tiên đơn hàng trong ngày',brief:'Rà soát thời hạn giao và đánh dấu đơn cần xử lý trước.',data:[['Mã đơn','Khách hàng','Hạn giao','Ưu tiên'],['DH-104','Công ty Minh An','09:30',''],['DH-105','Văn phòng Hòa Bình','14:00',''],['DH-106','Trung tâm Sao Mai','11:00','']]},
+  planning:{title:'Lập kế hoạch tuần mới',brief:'Tóm tắt mục tiêu và người phụ trách cho ba đầu việc chính.',data:[['Đầu việc','Hạn','Phụ trách','Trạng thái'],['Kiểm kê thiết bị','T3','', ''],['Cập nhật báo cáo','T5','', ''],['Họp phòng ban','T6','', '']]}
+ };
+ return templates[dept]||templates.data;
+}
+function maybeAssignOfficeTask(force=false){
+ if(!trainingComplete)return;
+ if(!force&&Date.now()-officeSim.lastAutoAt<150000)return;
+ if(!force&&officeSim.tasks.some(t=>t.status==='assigned'||t.status==='accepted'))return;
+ const tpl=taskTemplate(),task={id:'task-'+Date.now(),title:tpl.title,brief:tpl.brief,dept:currentDepartment(),data:tpl.data,status:'assigned',createdAt:Date.now(),workCount:0};
+ officeSim.tasks.unshift(task);officeSim.lastAutoAt=Date.now();saveOfficeSim();
+ const msg='Anh Văn Phòng giao nhiệm vụ: '+task.title+'. Mở điện thoại để xem chi tiết.';
+ notifyPhone(msg,'Nhiệm vụ mới · '+roomTitle(task.dept));
+ const thread=officeSim.threads.director;thread.push({from:'Anh Văn Phòng',text:task.title+' — '+task.brief,mine:false,at:Date.now()});saveOfficeSim();
+ say('Điện thoại AVP: Sếp vừa giao nhiệm vụ mới.');renderOfficeTasks();renderMailWorkspace();
+}
+function acceptOfficeTask(id){const t=officeSim.tasks.find(x=>x.id===id);if(!t)return;t.status='accepted';saveOfficeSim();renderPhone();renderOfficeTasks();notifyPhone('Đã nhận nhiệm vụ “'+t.title+'”. Hãy về đúng phòng ban và mở máy tính.','Đã nhận việc')}
+function loadTaskOnComputer(id){
+ const t=officeSim.tasks.find(x=>x.id===id);if(!t)return;
+ if(currentRoom!==currentDepartment()){say('Bạn cần quay về '+roomTitle(currentDepartment())+' để dùng máy tính được phân công.');return}
+ if(!computerOpen){const desk=nearestDesk();if(!desk){say('Đến gần bàn làm việc trong phòng của bạn rồi mới mở dữ liệu nhiệm vụ.');return}openComputerAtDesk(desk)}
+ if(t.status==='assigned'){say('Nhận nhiệm vụ trên điện thoại hoặc Planner trước khi bắt đầu.');return}
+ cells=t.data.map(row=>row.slice());selectedCell={r:0,c:0};t.workCount=0;officeSim.workCount=0;selectedDesk=nearestDesk()||selectedDesk;saveOfficeSim();renderSheet();setComputerApp('excel');$('sheetStatus').textContent='Nhiệm vụ: '+t.brief+' Sửa ít nhất một ô rồi gửi báo cáo trong Planner.';say('Dữ liệu nhiệm vụ đã mở trên máy tính.');renderOfficeTasks();
+}
+function recordComputerEdit(){
+ const t=officeSim.tasks.find(x=>x.status==='accepted');
+ if(t){t.workCount=(t.workCount||0)+1;officeSim.workCount=t.workCount;saveOfficeSim();renderOfficeTasks()}
+}
+function submitOfficeTask(id){
+ const t=officeSim.tasks.find(x=>x.id===id);if(!t||t.status!=='accepted')return;
+ if(!(t.workCount>0)){say('Hãy xử lý dữ liệu trên máy tính trước khi gửi báo cáo.');return}
+ t.status='completed';t.completedAt=Date.now();saveOfficeSim();notifyPhone('Sếp đã nhận báo cáo “'+t.title+'”. Cảm ơn bạn!','Báo cáo đã gửi');
+ officeSim.threads.director.push({from:'Anh Văn Phòng',text:'Anh đã nhận báo cáo “'+t.title+'”. Cảm ơn em.',mine:false,at:Date.now()});saveOfficeSim();renderOfficeTasks();renderPhone();renderMailWorkspace();say('Đã gửi báo cáo nhiệm vụ cho Anh Văn Phòng.')
+}
+function setComputerApp(view){
+ for(const [id,v] of [['excelWorkspace','excel'],['mailWorkspace','mail'],['taskWorkspace','tasks']])$(id).classList.toggle('hidden',v!==view);
+ document.querySelectorAll('[data-office-app]').forEach(b=>b.classList.toggle('active',b.dataset.officeApp===view));
+ if(view==='mail')renderMailWorkspace();if(view==='tasks')renderOfficeTasks();
+}
+function renderOfficeTasks(){
+ const containers=[$('computerTasks'),$('phoneContent')].filter(Boolean);
+ const tasks=officeSim.tasks;
+ if($('taskAppBadge')){const n=tasks.filter(t=>t.status==='assigned'||t.status==='accepted').length;$('taskAppBadge').textContent=n||''}
+ if($('taskIntro'))$('taskIntro').textContent=tasks.some(t=>t.status==='assigned'||t.status==='accepted')?'Nhiệm vụ được giao cho '+roomTitle(currentDepartment())+'.':'Chưa có nhiệm vụ đang mở.';
+ for(const host of containers){
+  if(host.id==='phoneContent'&&phoneView!=='tasks')continue;
+  host.replaceChildren();
+  if(!tasks.length){const p=document.createElement('div');p.className='phone-empty';p.textContent='Chưa có nhiệm vụ. Sếp sẽ gửi việc khi phòng ban cần hỗ trợ.';host.append(p);continue}
+  for(const task of tasks.slice(0,8)){
+   const card=document.createElement('article');card.className='task-card';
+   const h=document.createElement('h4');h.textContent=task.title;const state=document.createElement('div');state.className='task-state';state.textContent=task.status==='assigned'?'Đã giao · Chờ bạn nhận':task.status==='accepted'?'Đang thực hiện': 'Đã hoàn tất';
+   const desc=document.createElement('p');desc.textContent=task.brief;const dept=document.createElement('small');dept.textContent=roomTitle(task.dept)+' · '+new Date(task.createdAt).toLocaleString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+   card.append(h,state,desc,dept);
+   if(task.status==='assigned'){const accept=document.createElement('button');accept.textContent='Nhận nhiệm vụ';accept.onclick=()=>acceptOfficeTask(task.id);card.append(accept)}
+   if(task.status==='accepted'){const open=document.createElement('button');open.textContent='Mở dữ liệu trên máy tính';open.onclick=()=>loadTaskOnComputer(task.id);const done=document.createElement('button');done.textContent='Gửi báo cáo';done.disabled=!(task.workCount>0);done.onclick=()=>submitOfficeTask(task.id);card.append(open,done)}
+   host.append(card)
+  }
+ }
+}
+function renderPhone(){
+ const b=$('phoneBadge');if(b)b.textContent=officeSim.notifications.filter(n=>!n.read).length||'';
+ const status=$('phoneStatus');if(status)status.textContent=(app?.department||'Nhân viên')+' · '+officeSim.notifications.filter(n=>!n.read).length+' thông báo chưa đọc';
+ renderOfficeTasks();
+ if(phoneView==='messages'&&$('phoneContent')){
+  const host=$('phoneContent');host.replaceChildren();
+  const notes=officeSim.notifications.slice(0,12);
+  if(!notes.length){const e=document.createElement('div');e.className='phone-empty';e.textContent='Chưa có thông báo mới.';host.append(e)}
+  for(const n of notes){const card=document.createElement('article');card.className='phone-note';const h=document.createElement('b');h.textContent=n.title;const p=document.createElement('p');p.textContent=n.text;const tm=document.createElement('small');tm.textContent=new Date(n.at).toLocaleString('vi-VN');card.append(h,p,tm);host.append(card);n.read=true}
+  saveOfficeSim();if(b)b.textContent='';
+ }
+}
+function renderMailWorkspace(){
+ const list=$('contactList'),log=$('chatLog');if(!list||!log)return;
+ list.replaceChildren();log.replaceChildren();
+ for(const [id,name] of Object.entries(contacts)){const btn=document.createElement('button');btn.textContent=name;btn.classList.toggle('active',id===activeContact);btn.onclick=()=>{activeContact=id;renderMailWorkspace()};list.append(btn)}
+ $('chatTitle').textContent=contacts[activeContact]||'Tin nhắn nội bộ';
+ for(const m of officeSim.threads[activeContact]||[]){const bubble=document.createElement('div');bubble.className='chat-msg'+(m.mine?' mine':'');const from=document.createElement('small');from.textContent=m.mine?'Bạn':m.from;const content=document.createElement('div');content.textContent=m.text;bubble.append(from,content);log.append(bubble)}
+ log.scrollTop=log.scrollHeight;
+}
+function sendOfficeMessage(){
+ const input=$('chatInput'),textValue=input.value.trim();if(!textValue)return;
+ const thread=officeSim.threads[activeContact]||(officeSim.threads[activeContact]=[]);
+ thread.push({from:'Bạn',text:textValue,mine:true,at:Date.now()});input.value='';saveOfficeSim();renderMailWorkspace();
+ const to=activeContact,name=contacts[to]||'Đồng nghiệp';
+ setTimeout(()=>{const replies={director:'Anh đã nhận được tin nhắn. Anh sẽ phản hồi sau khi xem tiến độ.',reception:'Mình nhận được rồi, để mình hỗ trợ bạn nhé.',qc:'Mình sẽ kiểm tra lại số liệu bên QC rồi phản hồi bạn.',data:'Mình đang xem dữ liệu, mình gửi lại kết quả nhé.',hr:'Mình đã ghi nhận, cảm ơn bạn.',sales:'Mình sẽ liên hệ khách hàng và cập nhật cho bạn.',operations:'Đã nhận thông tin, mình phối hợp xử lý.'};officeSim.threads[to].push({from:name,text:replies[to]||'Mình đã nhận được tin nhắn.',mine:false,at:Date.now()});saveOfficeSim();notifyPhone('Tin nhắn mới từ '+name,'Tin nhắn AVP');if(!$('mailWorkspace').classList.contains('hidden')&&activeContact===to)renderMailWorkspace()},1100)
+}
+function showDialogue(person){dialogOpen=true;
+ const manager=person==='director',name=manager?'Anh Văn Phòng':'Lễ tân Mai';
+ $('dialogName').textContent=name;$('dialogRole').textContent=manager?'Giám đốc · Ban điều hành':'Lễ tân · Sảnh AVP';$('dialogAvatar').textContent=manager?'AVP':'MAI';
+ $('dialogText').textContent=manager?'Chào em. Anh có thể giao nhiệm vụ, nghe báo cáo hoặc trao đổi về công việc.':'Xin chào! Mình có thể chỉ đường, giới thiệu phòng ban hoặc giúp bạn liên hệ sếp.';
+ const host=$('dialogChoices');host.replaceChildren();
+ const options=manager?[
+  ['Nhận nhiệm vụ từ sếp',()=>{maybeAssignOfficeTask(true);$('dialogText').textContent='Anh đã gửi nhiệm vụ tới điện thoại AVP của em. Em xem nội dung, nhận việc rồi dùng máy tính ở phòng ban của mình.'}],
+  ['Báo cáo tiến độ',()=>{const t=officeSim.tasks.find(x=>x.status==='accepted');officeSim.threads.director.push({from:'Bạn',text:t?'Em đang thực hiện: '+t.title:'Hiện em chưa có nhiệm vụ đang thực hiện.',mine:true,at:Date.now()});saveOfficeSim();notifyPhone('Đã gửi cập nhật tiến độ tới Anh Văn Phòng.','Cập nhật tiến độ');$('dialogText').textContent='Anh đã nhận được cập nhật qua hộp thư AVP.'}],
+  ['Hỏi mục tiêu tuần',()=>{$('dialogText').textContent='Mục tiêu của AVP là làm đúng dữ liệu, phối hợp giữa các phòng ban và báo cáo rõ ràng. Anh sẽ gửi nhiệm vụ phù hợp với phòng ban của em.'}],
+  ['Kết thúc cuộc trò chuyện',()=>closeDialogue()]
+ ]:[
+  ['Chỉ đường tới phòng ban của tôi',()=>{$('dialogText').textContent='Phòng của bạn: '+roomTitle(currentDepartment())+'. Hãy đi theo biển tên ở hành lang rồi nhấn E tại cửa.'}],
+  ['Xem sơ đồ và cách dùng máy tính',()=>{$('dialogText').textContent='Dùng W A S D để đi, E để tương tác, V đổi góc nhìn. Chỉ bàn máy tính trong phòng ban được phân công mới cho phép làm việc.'}],
+  ['Nhắn Anh Văn Phòng',()=>{officeSim.threads.director.push({from:'Bạn',text:'Em đang ở sảnh và muốn trao đổi với Anh Văn Phòng.',mine:true,at:Date.now()});saveOfficeSim();notifyPhone('Lễ tân đã chuyển lời nhắn tới Anh Văn Phòng.','Đã chuyển lời nhắn');closeDialogue()}],
+  ['Kết thúc cuộc trò chuyện',()=>closeDialogue()]
+ ];
+ for(const [textValue,fn] of options){const btn=document.createElement('button');btn.textContent=textValue;btn.onclick=fn;host.append(btn)}
+ $('dialogPanel').hidden=false
+}
+function closeDialogue(){dialogOpen=false;$('dialogPanel').hidden=true}
+
 function gate(msg, retry=false){$('gateMsg').textContent=msg;$('retryBtn').classList.toggle('hidden',!retry);$('gate').classList.remove('hidden')}
 function withTimeout(p,ms,message){return Promise.race([p,new Promise((_,reject)=>setTimeout(()=>reject(Error(message)),ms))])}
-async function verifyAccess(){gate('Đang kết nối AVP…');try{for(let i=0;i<50&&!window.avpSupabase;i++)await new Promise(r=>setTimeout(r,100));sb=window.avpSupabase;if(!sb)throw Error('Không tải được thư viện đăng nhập. Kiểm tra mạng hoặc trình chặn nội dung rồi thử lại.');gate('Đang xác minh tài khoản…');const auth=await withTimeout(sb.auth.getUser(),10000,'Máy chủ đăng nhập phản hồi quá lâu. Kiểm tra mạng rồi bấm Thử kết nối lại.');const {data,error}=auth;if(error)throw error;user=data.user;if(!user){gate('Bạn cần đăng nhập website AVP trước khi vào văn phòng.');return}gate('Đang kiểm tra trạng thái hồ sơ…');const result=await withTimeout(sb.from('office_quest_applications').select('status,department,full_name,character_gender,admin_note').eq('user_id',user.id).maybeSingle(),10000,'Máy chủ hồ sơ phản hồi quá lâu. Bấm Thử kết nối lại.');if(result.error)throw result.error;app=result.data;if(!app||app.status!=='approved'){gate(app?.status==='pending'?'Hồ sơ đang chờ Anh Văn Phòng duyệt.':app?.status==='rejected'?'Hồ sơ cần bổ sung: '+(app.admin_note||'Vui lòng liên hệ Admin.'):'Chưa tìm thấy hồ sơ được duyệt. Hãy quay lại trang Office Quest để nộp CV.');return}if(!window.THREE)throw Error('Thư viện dựng hình 3D chưa tải xong. Hãy tải lại trang.');trainingComplete=localStorage.getItem('avp-office-quest-training-'+user.id)==='done';$('gate').classList.add('hidden');initWorld();}catch(e){gate('Không thể xác minh quyền vào game: '+(e.message||e),true)}}
+async function verifyAccess(){gate('Đang kết nối AVP…');try{for(let i=0;i<50&&!window.avpSupabase;i++)await new Promise(r=>setTimeout(r,100));sb=window.avpSupabase;if(!sb)throw Error('Không tải được thư viện đăng nhập. Kiểm tra mạng hoặc trình chặn nội dung rồi thử lại.');gate('Đang xác minh tài khoản…');const auth=await withTimeout(sb.auth.getUser(),10000,'Máy chủ đăng nhập phản hồi quá lâu. Kiểm tra mạng rồi bấm Thử kết nối lại.');const {data,error}=auth;if(error)throw error;user=data.user;if(!user){gate('Bạn cần đăng nhập website AVP trước khi vào văn phòng.');return}gate('Đang kiểm tra trạng thái hồ sơ…');const result=await withTimeout(sb.from('office_quest_applications').select('status,department,full_name,character_gender,admin_note').eq('user_id',user.id).maybeSingle(),10000,'Máy chủ hồ sơ phản hồi quá lâu. Bấm Thử kết nối lại.');if(result.error)throw result.error;app=result.data;if(!app||app.status!=='approved'){gate(app?.status==='pending'?'Hồ sơ đang chờ Anh Văn Phòng duyệt.':app?.status==='rejected'?'Hồ sơ cần bổ sung: '+(app.admin_note||'Vui lòng liên hệ Admin.'):'Chưa tìm thấy hồ sơ được duyệt. Hãy quay lại trang Office Quest để nộp CV.');return}if(!window.THREE)throw Error('Thư viện dựng hình 3D chưa tải xong. Hãy tải lại trang.');trainingComplete=localStorage.getItem('avp-office-quest-training-'+user.id)==='done';loadOfficeSimulation();$('gate').classList.add('hidden');initWorld();}catch(e){gate('Không thể xác minh quyền vào game: '+(e.message||e),true)}}
 $('retryBtn').onclick=verifyAccess;
 function mat(color,rough=.82){return new THREE.MeshStandardMaterial({color,roughness:rough})}
 function box(w,h,d,x,y,z,material,collide=true){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;m.userData.collide=collide;(window.avpBuildGroup||scene).add(m);return m}
 function label(text,x,y,z,color='#ffffff',opts={}){const c=document.createElement('canvas');c.width=512;c.height=96;const ctx=c.getContext('2d');ctx.fillStyle='#10251c';ctx.fillRect(0,0,512,96);ctx.fillStyle=color;ctx.font='bold 27px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,48,480);const tex=new THREE.CanvasTexture(c);const m=new THREE.Mesh(new THREE.PlaneGeometry(opts.w||2.4,opts.h||.45),new THREE.MeshBasicMaterial({map:tex,side:THREE.FrontSide}));m.position.set(x,y,z);if(opts.rotationY!==undefined)m.rotation.y=opts.rotationY;else if(opts.inward)m.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(m);return m}
 function poster(title,sub,kind,x,y,z,inward=false){const c=document.createElement('canvas');c.width=640;c.height=360;const q=c.getContext('2d');q.fillStyle='#f3edda';q.fillRect(0,0,640,360);const accent=kind==='boss'?'#244c39':kind==='qc'?'#28654b':kind==='data'?'#315e78':kind==='operations'?'#8a5a2b':'#315d49';q.fillStyle=accent;q.fillRect(12,12,616,336);q.fillStyle='#f6f2df';q.fillRect(24,24,592,312);q.fillStyle=accent;q.font='bold 34px system-ui';q.textAlign='center';q.fillText(title,320,70,560);q.strokeStyle='#c6a85a';q.lineWidth=5;q.beginPath();q.moveTo(70,92);q.lineTo(570,92);q.stroke();if(kind==='qc'){q.fillStyle='#d9eee0';q.beginPath();q.arc(320,178,58,0,Math.PI*2);q.fill();q.strokeStyle=accent;q.lineWidth=13;q.beginPath();q.moveTo(286,178);q.lineTo(310,204);q.lineTo(358,145);q.stroke()}else if(kind==='data'){q.fillStyle=accent;for(let i=0;i<5;i++)q.fillRect(185+i*58,220-(i%3)*30,34,70+(i%3)*30);q.strokeStyle='#c6a85a';q.lineWidth=5;q.beginPath();q.moveTo(170,240);q.lineTo(455,145);q.stroke()}else if(kind==='operations'){q.fillStyle='#d9a441';q.beginPath();q.moveTo(320,120);q.lineTo(370,210);q.lineTo(270,210);q.closePath();q.fill()}else{q.fillStyle='#d9a441';q.beginPath();q.arc(320,172,45,Math.PI,Math.PI*2);q.lineTo(365,200);q.lineTo(275,200);q.closePath();q.fill()}q.fillStyle='#203d2c';q.font='bold 23px system-ui';q.fillText(sub,320,300,560);const tex=new THREE.CanvasTexture(c);const m=new THREE.Mesh(new THREE.PlaneGeometry(2.45,1.38),new THREE.MeshBasicMaterial({map:tex,side:THREE.FrontSide}));m.position.set(x,y,z);if(inward===true)m.rotation.y=Math.PI;else if(inward==='left')m.rotation.y=Math.PI/2;else if(inward==='right')m.rotation.y=-Math.PI/2;else m.rotation.y=0;(window.avpBuildGroup||scene).add(m);// No detached frame bars: poster is a single clean wall-mounted panel.
 }
-function makeDesk(x,z,name,kind){box(2.1,.16,1.05,x,.95,z,mat('#9b7049'));box(.13,.9,.13,x-.85,.48,z-.38,mat('#6b4b31'));box(.13,.9,.13,x+.85,.48,z-.38,mat('#6b4b31'));box(.13,.9,.13,x-.85,.48,z+.38,mat('#6b4b31'));box(.13,.9,.13,x+.85,.48,z+.38,mat('#6b4b31'));box(.9,.55,.07,x,.99,z-.25,mat('#202b29'));box(.82,.45,.025,x,1.01,z-.205,mat('#74b6a0'),false);box(.14,.35,.14,x, .66,z-.23,mat('#46554b'));const chairLeg=mat(kind==='boss'?'#4b3a63':'#40574a'),chairSeat=mat(kind==='boss'?'#72578f':'#334a3a');box(.55,.035,.38,x,.08,z+.72,chairLeg);box(.55,.07,.55,x,.48,z+.72,chairSeat);if(kind==='boss')box(.62,.86,.14,x,.98,z+1.08,mat('#5b4679'),false);const obj={x,z,name,kind,roomKey:window.avpBuildingRoom||'lobby'};desks.push(obj)}
+function makeDesk(x,z,name,kind){box(2.1,.16,1.05,x,.95,z,mat('#9b7049'));box(.13,.9,.13,x-.85,.48,z-.38,mat('#6b4b31'));box(.13,.9,.13,x+.85,.48,z-.38,mat('#6b4b31'));box(.13,.9,.13,x-.85,.48,z+.38,mat('#6b4b31'));box(.13,.9,.13,x+.85,.48,z+.38,mat('#6b4b31'));box(.9,.55,.07,x,1.39,z-.25,mat('#202b29'));box(.82,.45,.025,x,1.40,z-.205,mat('#74b6a0'),false);box(.14,.22,.14,x,1.10,z-.23,mat('#46554b'));box(.48,.035,.24,x,1.07,z+.08,mat('#d6ded2'),false);box(.12,.018,.18,x+.34,1.07,z+.08,mat('#d6ded2'),false);const chairLeg=mat(kind==='boss'?'#4b3a63':'#40574a'),chairSeat=mat(kind==='boss'?'#72578f':'#334a3a');box(.55,.035,.38,x,.08,z+.72,chairLeg);box(.55,.07,.55,x,.48,z+.72,chairSeat);if(kind==='boss')box(.62,.86,.14,x,.98,z+1.08,mat('#5b4679'),false);const obj={x,z,name,kind,roomKey:window.avpBuildingRoom||'lobby'};desks.push(obj)}
 function lobbyPlant(x,z){
  const group=window.avpBuildGroup||scene;
  box(.48,.10,.48,x,.10,z,mat('#e9e5d8'),false);
@@ -170,7 +363,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    for(const x of [-3.28,-3.08])for(const y of [.62,1.20,1.78])box(.12,.32,.18,x,y,1.35,mat(['#4b8068','#b2604f','#dfbd6b'][Math.floor(y*2)%3]),false);
    for(const x of [-1.8,1.8]){box(.72,.18,.72,x,.34,-1.35,mat('#70478b'),false);box(.72,.68,.16,x,.68,-1.68,mat('#70478b'),false);for(const dx of [-.25,.25])box(.07,.35,.07,x+dx,.08,-1.35,wood,false)}
    box(.48,.12,.38,2.75,.72,2.5,mat('#6f528b'),false);box(.35,.04,.27,2.75,.81,2.5,gold,false);label('AVP',2.75,1.14,2.5,'#fff8e8',{w:.48,h:.22});
-   const boss=createAnimeCharacter({role:'boss',gender:'male'});boss.position.set(0,0,2.17);(window.avpBuildGroup||scene).add(boss);
+   const boss=createAnimeCharacter({role:'boss',gender:'male'});boss.position.set(0,0,2.17);(window.avpBuildGroup||scene).add(boss);window.avpBoss={x:0,z:2.17};
   }else{
    makeDesk(0,1.25,deskName,kind);
    if(key==='training'){makeDesk(-2.28,-1.35,'Bàn thực hành','training');makeDesk(2.28,-1.35,'Bàn thực hành','training');infoBoard('LEARN BY DOING','THỰC HÀNH • HỎI ĐÁP',0,4.62,'#3b815d');}
@@ -293,12 +486,48 @@ const bossRoom=d.room==='boss';roomBounds={minX:-3.15,maxX:3.15,minZ:-4.65,maxZ:
 $('place').textContent='Đang ở: '+d.label;say('Bạn đã vào '+d.label+'. Cửa ra hành lang ở phía trước.');
 }
 function exitRoom(){if(currentRoom==='lobby')return;const roomGroups=window.avpRoomGroups||{};Object.values(roomGroups).forEach(g=>g.visible=false);if(roomGroups.lobby)roomGroups.lobby.visible=true;currentRoom='lobby';roomBounds={minX:-3.6,maxX:3.6,minZ:-15.5,maxZ:15.5};player.position.set(0,0,0);yaw=0;player.rotation.y=0;cameraDistance=3.8;$('place').textContent='Sảnh / hành lang công ty';say('Bạn đã ra hành lang công ty. Đến cửa phòng và nhấn E để vào.')}
-function interact(){if(currentRoom!=='lobby'){if(player.position.z < -2.55 && Math.abs(player.position.x)<1.05){exitRoom();return}const d=nearestDesk();if(d){selectedDesk=d;computerOpen=true;$('computerTitle').textContent='Máy tính — '+d.name;$('computer').classList.add('open');$('sheetStatus').textContent='Đang ngồi tại '+d.name+'. Bạn có thể nhập dữ liệu, thử công thức hoặc dùng file Excel thực tế.';keys={};return}say('Đến gần bàn làm việc rồi nhấn E.');return}const npc=window.avpReceptionist;if(npc&&Math.hypot(player.position.x-npc.x,player.position.z-npc.z)<2.4){say('Lễ Tân: Xin chào! Chào mừng bạn đến với AVP. Bạn muốn tìm hiểu công ty, sơ đồ phòng ban hay hướng dẫn di chuyển?');return}const door=nearestDoor();if(door){enterRoom(door);return}const d=nearestDesk();if(!d){say('Đến gần cửa phòng hoặc bàn làm việc rồi nhấn E để tương tác.');return}if(d.kind!=='training'&&!trainingComplete){say('Hoàn thành hướng dẫn tại Phòng đào tạo để mở lối vào các phòng ban.');return}selectedDesk=d;computerOpen=true;$('computerTitle').textContent=d.kind==='training'?'Đào tạo hội nhập — phím tắt và thao tác nhanh':d.kind==='boss'?'Bàn quản lý — '+d.name:'Máy tính — '+d.name;$('computer').classList.add('open');$('computer').classList.toggle('training-mode',d.kind==='training');$('sheetStatus').textContent=d.kind==='training'?'HƯỚNG DẪN NHANH\\nW A S D hoặc phím mũi tên: di chuyển. E: tương tác/ngồi vào bàn. V: đổi góc nhìn. Esc: đứng dậy/đóng máy tính. Dùng nút Hướng dẫn nếu cần xem lại. Khi hoàn tất, nhấn Hoàn tất hướng dẫn để mở cửa phòng ban.':'Đang ngồi tại '+d.name+'. Bạn có thể nhập dữ liệu, thử công thức hoặc dùng file Excel thực tế.';keys={};document.exitPointerLock?.()}
+function openComputerAtDesk(d){
+ if(!d)return;
+ selectedDesk=d;computerOpen=true;$('computerTitle').textContent=d.kind==='training'?'Đào tạo hội nhập — phím tắt và thao tác nhanh':'Máy tính — '+d.name;
+ $('computer').classList.add('open');$('computer').classList.toggle('training-mode',d.kind==='training');setComputerApp('excel');
+ $('sheetStatus').textContent=d.kind==='training'?'HƯỚNG DẪN NHANH\\nW A S D hoặc phím mũi tên: di chuyển. E: tương tác/ngồi vào bàn. V: đổi góc nhìn. Esc: đứng dậy. Khi hoàn tất, nhấn nút xác nhận để mở cửa phòng ban.':'Đang đăng nhập máy tính phòng '+roomTitle(currentRoom)+'. Hộp thư và nhiệm vụ AVP nằm ở các thẻ phía trên.';
+ keys={};document.exitPointerLock?.()
+}
+function interact(){
+ if(computerOpen||phoneOpen||dialogOpen)return;
+ if(currentRoom!=='lobby'){
+  if(player.position.z < -2.55 && Math.abs(player.position.x)<1.05){exitRoom();return}
+  if(currentRoom==='boss'&&window.avpBoss&&Math.hypot(player.position.x-window.avpBoss.x,player.position.z-window.avpBoss.z)<2.7){showDialogue('director');return}
+  const d=nearestDesk();
+  if(d){
+   const ownRoom=currentRoom===currentDepartment();
+   const onboarding=currentRoom==='training'&&!trainingComplete&&d.kind==='training';
+   if(!ownRoom&&!onboarding){say('Máy tính này chỉ dùng được ở phòng ban của bạn: '+roomTitle(currentDepartment())+'.');return}
+   if(currentRoom==='training'&&trainingComplete){say('Đào tạo đã xong. Hãy làm việc tại '+roomTitle(currentDepartment())+'.');return}
+   openComputerAtDesk(d);return
+  }
+  if(currentRoom==='boss'){say('Đến gần Anh Văn Phòng để trao đổi.');return}
+  say('Đến gần bàn làm việc rồi nhấn E.');return
+ }
+ const npc=window.avpReceptionist;
+ if(npc&&Math.hypot(player.position.x-npc.x,player.position.z-npc.z)<2.4){showDialogue('reception');return}
+ const door=nearestDoor();if(door){enterRoom(door);return}
+ say('Đến gần lễ tân hoặc cửa phòng để tương tác.')
+}
 function closeComputer(){computerOpen=false;$('computer').classList.remove('open')}
-$('trainingBtn').textContent='Hoàn tất hướng dẫn và mở cửa phòng ban';$('trainingBtn').onclick=()=>{if(!selectedDesk||selectedDesk.kind!=='training'){say('Hãy đến Phòng đào tạo và nhấn E trước.');return}trainingComplete=true;try{localStorage.setItem('avp-office-quest-training-'+user.id,'done')}catch{}$('place').textContent='Đã hoàn tất hướng dẫn · Cửa phòng ban đã mở';$('sheetStatus').textContent='Đã hoàn tất hướng dẫn. Các bàn phòng ban đã mở khóa. Đứng dậy và đi đến biển hiệu QC, Dữ liệu hoặc Vận hành.';closeComputer();say('Hoàn tất hướng dẫn! Các phòng ban đã mở khóa.')};
+$('trainingBtn').textContent='Hoàn tất hướng dẫn và mở cửa phòng ban';$('trainingBtn').onclick=()=>{if(!selectedDesk||selectedDesk.kind!=='training'){say('Hãy đến Phòng đào tạo và nhấn E trước.');return}trainingComplete=true;try{localStorage.setItem('avp-office-quest-training-'+user.id,'done')}catch{}$('place').textContent='Đã hoàn tất hướng dẫn · Cửa phòng ban đã mở';$('sheetStatus').textContent='Đã hoàn tất hướng dẫn. Các bàn phòng ban đã mở khóa. Đứng dậy và đi đến biển hiệu QC, Dữ liệu hoặc Vận hành.';closeComputer();maybeAssignOfficeTask(true);say('Hoàn tất hướng dẫn! Các phòng ban đã mở khóa. Sếp vừa gửi nhiệm vụ đầu tiên tới điện thoại.')};
 function toggleView(){thirdPerson=!thirdPerson;updateViewButton();say(thirdPerson?'Đã chuyển sang góc nhìn thứ ba.':'Đã chuyển sang góc nhìn thứ nhất.')}
-function animate(){requestAnimationFrame(animate);if(!worldReady)return;const idleTime=performance.now()/1000;for(const actor of (window.avpAnimeCharacters||[])){actor.position.y=Math.sin(idleTime*2+actor.userData.idlePhase)*.009;if(actor.userData.animeHead)actor.userData.animeHead.rotation.y=Math.sin(idleTime*.8+actor.userData.idlePhase)*.035;if(actor.userData.waveArm)actor.userData.waveArm.rotation.z=actor.userData.waveBase+Math.sin(idleTime*3.2)*.13}if(window.avpClockHands){const t=performance.now()/1000;window.avpClockHands.secondHand.rotation.z=-t*2*Math.PI/1.875;window.avpClockHands.minuteHand.rotation.z=-t*2*Math.PI/112.5;window.avpClockHands.hourHand.rotation.z=-t*2*Math.PI/2700;}const dt=Math.min(clock.getDelta(),.04);if(!computerOpen){let f=0,s=0;if(keys.KeyW||keys.ArrowUp)f-=1;if(keys.KeyS||keys.ArrowDown)f+=1;if(keys.KeyA||keys.ArrowLeft)s-=1;if(keys.KeyD||keys.ArrowRight)s+=1;const len=Math.hypot(f,s)||1;f/=len;s/=len;const speed=4*dt;player.position.x+=s*Math.cos(yaw)*speed+f*Math.sin(yaw)*speed;player.position.z+=f*Math.cos(yaw)*speed-s*Math.sin(yaw)*speed;player.position.x=Math.max(roomBounds.minX,Math.min(roomBounds.maxX,player.position.x));player.position.z=Math.max(roomBounds.minZ,Math.min(roomBounds.maxZ,player.position.z));if(f||s){const dx=s*Math.cos(yaw)+f*Math.sin(yaw),dz=f*Math.cos(yaw)-s*Math.sin(yaw);player.rotation.y=Math.atan2(-dx,-dz);}if(!thirdPerson){camera.position.set(player.position.x,player.position.y+1.55,player.position.z);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}else{const target=new THREE.Vector3(player.position.x,player.position.y+1.15,player.position.z);const offset=new THREE.Vector3(Math.sin(yaw)*cameraDistance,cameraDistance*.42,Math.cos(yaw)*cameraDistance);camera.position.copy(target).add(offset);camera.lookAt(target)}const d=nearestDesk(),door=nearestDoor();$('place').textContent=currentRoom!=='lobby'?'Đang ở: '+currentRoom.toUpperCase()+(player.position.z < -2.55?' · Nhấn E để ra hành lang':d?' · Nhấn E để ngồi vào bàn':''):door?'Cửa phòng: '+door.label+' · Nhấn E để mở':(!trainingComplete?'Sảnh công ty · Vào phòng đào tạo trước':'Sảnh / hành lang công ty · Tìm cửa phòng ban');}renderer.render(scene,camera)}
-window.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();if(e.key==='Escape'&&computerOpen){closeComputer();return}if(computerOpen)return;keys[e.code]=true;if(e.code==='KeyE')interact();if(e.code==='KeyV')toggleView()});window.addEventListener('keyup',e=>keys[e.code]=false);
+document.querySelectorAll('[data-office-app]').forEach(b=>b.addEventListener('click',()=>setComputerApp(b.dataset.officeApp)));
+$('phoneToggle').onclick=()=>{phoneOpen=!phoneOpen;$('phonePanel').hidden=!phoneOpen;if(phoneOpen)renderPhone()};
+$('phoneClose').onclick=()=>{$('phonePanel').hidden=true;phoneOpen=false};
+document.querySelectorAll('[data-phone-view]').forEach(b=>b.onclick=()=>{phoneView=b.dataset.phoneView;document.querySelectorAll('[data-phone-view]').forEach(x=>x.classList.toggle('active',x===b));renderPhone()});
+$('dialogClose').onclick=closeDialogue;
+$('chatSend').onclick=sendOfficeMessage;
+$('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sendOfficeMessage()}});
+$('refreshTasks').onclick=()=>{renderOfficeTasks();say('Đã cập nhật bàn nhiệm vụ.')};
+
+function animate(){requestAnimationFrame(animate);if(!worldReady)return;const idleTime=performance.now()/1000;for(const actor of (window.avpAnimeCharacters||[])){actor.position.y=Math.sin(idleTime*2+actor.userData.idlePhase)*.009;if(actor.userData.animeHead)actor.userData.animeHead.rotation.y=Math.sin(idleTime*.8+actor.userData.idlePhase)*.035;if(actor.userData.waveArm)actor.userData.waveArm.rotation.z=actor.userData.waveBase+Math.sin(idleTime*3.2)*.13}if(window.avpClockHands){const t=performance.now()/1000;window.avpClockHands.secondHand.rotation.z=-t*2*Math.PI/1.875;window.avpClockHands.minuteHand.rotation.z=-t*2*Math.PI/112.5;window.avpClockHands.hourHand.rotation.z=-t*2*Math.PI/2700;}const dt=Math.min(clock.getDelta(),.04);if(!computerOpen&&!phoneOpen&&!dialogOpen){let f=0,s=0;if(keys.KeyW||keys.ArrowUp)f-=1;if(keys.KeyS||keys.ArrowDown)f+=1;if(keys.KeyA||keys.ArrowLeft)s-=1;if(keys.KeyD||keys.ArrowRight)s+=1;const len=Math.hypot(f,s)||1;f/=len;s/=len;const speed=4*dt;player.position.x+=s*Math.cos(yaw)*speed+f*Math.sin(yaw)*speed;player.position.z+=f*Math.cos(yaw)*speed-s*Math.sin(yaw)*speed;player.position.x=Math.max(roomBounds.minX,Math.min(roomBounds.maxX,player.position.x));player.position.z=Math.max(roomBounds.minZ,Math.min(roomBounds.maxZ,player.position.z));if(f||s){const dx=s*Math.cos(yaw)+f*Math.sin(yaw),dz=f*Math.cos(yaw)-s*Math.sin(yaw);player.rotation.y=Math.atan2(-dx,-dz);}if(!thirdPerson){camera.position.set(player.position.x,player.position.y+1.55,player.position.z);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}else{const target=new THREE.Vector3(player.position.x,player.position.y+1.15,player.position.z);const offset=new THREE.Vector3(Math.sin(yaw)*cameraDistance,cameraDistance*.42,Math.cos(yaw)*cameraDistance);camera.position.copy(target).add(offset);camera.lookAt(target)}const d=nearestDesk(),door=nearestDoor();$('place').textContent=currentRoom!=='lobby'?'Đang ở: '+currentRoom.toUpperCase()+(player.position.z < -2.55?' · Nhấn E để ra hành lang':d?' · Nhấn E để ngồi vào bàn':''):door?'Cửa phòng: '+door.label+' · Nhấn E để mở':(!trainingComplete?'Sảnh công ty · Vào phòng đào tạo trước':'Sảnh / hành lang công ty · Tìm cửa phòng ban');}renderer.render(scene,camera)}
+window.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();if(e.key==='Escape'&&computerOpen){closeComputer();return}if(computerOpen||phoneOpen||dialogOpen)return;keys[e.code]=true;if(e.code==='KeyE')interact();if(e.code==='KeyV')toggleView()});window.addEventListener('keyup',e=>keys[e.code]=false);
 const pad=$('stickpad'),dot=$('stickdot');let padId=null;function padMove(e){const r=pad.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=r.width*.34,len=Math.hypot(dx,dy)||1,scale=Math.min(1,max/len);keys.KeyW=dy/max*scale<-.25;keys.KeyS=dy/max*scale>.25;keys.KeyA=dx/max*scale<-.25;keys.KeyD=dx/max*scale>.25;dot.style.left=(50+dx/max*34*scale)+'%';dot.style.top=(50+dy/max*34*scale)+'%'}function padReset(){padId=null;keys.KeyW=keys.KeyA=keys.KeyS=keys.KeyD=false;dot.style.left='50%';dot.style.top='50%'}pad.addEventListener('pointerdown',e=>{e.preventDefault();padId=e.pointerId;pad.setPointerCapture(e.pointerId);padMove(e)});pad.addEventListener('pointermove',e=>{if(e.pointerId===padId)padMove(e)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>pad.addEventListener(ev,padReset));$('mobileInteract').onclick=interact;$('mobileView').onclick=toggleView;let lookLast=null;
 function beginLook(e){if(e.pointerType==='mouse'&&e.button!==0)return;if(computerOpen)return;lookLast={x:e.clientX,y:e.clientY,id:e.pointerId};try{e.currentTarget.setPointerCapture(e.pointerId)}catch{}}
 function moveLook(e){if(!lookLast||e.pointerId!==lookLast.id)return;const dx=e.clientX-lookLast.x,dy=e.clientY-lookLast.y;yaw-=dx*.008;pitch=Math.max(-.85,Math.min(.65,pitch-dy*.006));lookLast={x:e.clientX,y:e.clientY,id:e.pointerId}}
@@ -310,9 +539,9 @@ worldArea.addEventListener('wheel',e=>{if(!thirdPerson||computerOpen)return;e.pr
 $('viewBtn').onclick=toggleView;$('helpBtn').onclick=()=>say('Di chuyển: giữ W A S D hoặc phím mũi tên. Xoay góc nhìn: giữ chuột trái và kéo; trên điện thoại, chạm giữ rồi vuốt. Lăn bánh xe chuột để thu phóng ở góc nhìn thứ ba. Nhấn E để dùng bàn, V để đổi góc nhìn.');$('exitBtn').onclick=()=>location.href='office-quest.html';$('standBtn').onclick=closeComputer;window.addEventListener('resize',()=>{if(!renderer)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});renderer?.domElement.addEventListener('click',()=>{if(!computerOpen&&thirdPerson)renderer.domElement.requestPointerLock?.()});document.addEventListener('mousemove',e=>{if(document.pointerLockElement===renderer?.domElement&&!computerOpen){yaw-=e.movementX*.0025;pitch=Math.max(-.6,Math.min(.6,pitch-e.movementY*.002))}});
 function seed(){cells=[['Ngày','Mã đơn','Sản phẩm','Số lượng','Doanh thu'],['2026-10-01','DH101','Bút bi',10,50000],['2026-10-01','DH102','Sổ tay',5,75000],['2026-10-02','DH103','Bút bi',12,60000],['2026-10-02','DH104','Bìa hồ sơ',4,40000],['2026-10-03','DH105','Sổ tay',8,120000]];renderSheet();$('sheetStatus').textContent='Đã nạp dữ liệu mẫu. Nhấp đúp hoặc chọn ô để sửa nội dung.'}
 function colName(n){let s='';while(n>=0){s=String.fromCharCode(n%26+65)+s;n=Math.floor(n/26)-1}return s}
-function renderSheet(){const t=$('sheet');t.replaceChildren();const maxCols=Math.max(5,...cells.map(r=>r.length));const head=document.createElement('tr');const corner=document.createElement('th');corner.textContent='';head.append(corner);for(let c=0;c<maxCols;c++){const th=document.createElement('th');th.textContent=colName(c);head.append(th)}t.append(head);for(let r=0;r<Math.max(15,cells.length);r++){const tr=document.createElement('tr'),th=document.createElement('th');th.textContent=r+1;tr.append(th);for(let c=0;c<maxCols;c++){const td=document.createElement('td');td.contentEditable='true';td.dataset.r=r;td.dataset.c=c;td.textContent=cells[r]?.[c]??'';td.onclick=()=>selectCell(r,c);td.onblur=()=>{cells[r]??=[];cells[r][c]=td.textContent};td.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();td.blur();selectCell(Math.min(r+1,Math.max(0,cells.length-1)),c)}};tr.append(td)}t.append(tr)}selectCell(selectedCell.r,selectedCell.c)}
+function renderSheet(){const t=$('sheet');t.replaceChildren();const maxCols=Math.max(5,...cells.map(r=>r.length));const head=document.createElement('tr');const corner=document.createElement('th');corner.textContent='';head.append(corner);for(let c=0;c<maxCols;c++){const th=document.createElement('th');th.textContent=colName(c);head.append(th)}t.append(head);for(let r=0;r<Math.max(15,cells.length);r++){const tr=document.createElement('tr'),th=document.createElement('th');th.textContent=r+1;tr.append(th);for(let c=0;c<maxCols;c++){const td=document.createElement('td');td.contentEditable='true';td.dataset.r=r;td.dataset.c=c;td.textContent=cells[r]?.[c]??'';td.onclick=()=>selectCell(r,c);td.onblur=()=>{const before=cells[r]?.[c]??'';cells[r]??=[];cells[r][c]=td.textContent;if(String(before)!==td.textContent)recordComputerEdit()};td.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();td.blur();selectCell(Math.min(r+1,Math.max(0,cells.length-1)),c)}};tr.append(td)}t.append(tr)}selectCell(selectedCell.r,selectedCell.c)}
 function selectCell(r,c){selectedCell={r,c};$('cellName').textContent=colName(c)+(r+1);$('formulaInput').value=cells[r]?.[c]??'';document.querySelectorAll('#sheet td').forEach(td=>td.style.background=(+td.dataset.r===r&&+td.dataset.c===c)?'#e6f8df':'')}
-function applyCell(){const {r,c}=selectedCell;const val=$('formulaInput').value;cells[r]??=[];cells[r][c]=evaluate(val);renderSheet();selectCell(r,c);$('sheetStatus').textContent='Đã cập nhật ô '+colName(c)+(r+1)}
+function applyCell(){const {r,c}=selectedCell;const val=$('formulaInput').value;cells[r]??=[];cells[r][c]=evaluate(val);recordComputerEdit();renderSheet();selectCell(r,c);$('sheetStatus').textContent='Đã cập nhật ô '+colName(c)+(r+1)}
 function evaluate(v){if(typeof v!=='string'||!v.startsWith('='))return v;const m=v.match(/^=SUM\(([A-Z]+)(\d+):([A-Z]+)(\d+)\)$/i);if(m){const a=colIndex(m[1]),r1=+m[2]-1,b=colIndex(m[3]),r2=+m[4]-1;let sum=0;for(let r=Math.min(r1,r2);r<=Math.max(r1,r2);r++)for(let c=Math.min(a,b);c<=Math.max(a,b);c++)sum+=Number(String(cells[r]?.[c]??0).replace(/[^\d.-]/g,''))||0;return sum}return '#CÔNG THỨC?'}
 function colIndex(s){let n=0;for(const ch of s.toUpperCase())n=n*26+ch.charCodeAt(0)-64;return n-1}
 $('applyCell').onclick=applyCell;$('formulaInput').addEventListener('keydown',e=>{if(e.key==='Enter')applyCell()});$('sampleBtn').onclick=seed;$('formulaBtn').onclick=()=>{$('formulaInput').value='=SUM(D2:D6)';selectedCell={r:6,c:3};applyCell();say('Đã tính tổng số lượng bằng công thức SUM.')};
