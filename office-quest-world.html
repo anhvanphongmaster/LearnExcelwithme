@@ -56,7 +56,17 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
  const hall=key==='lobby',depth=hall?32:10,h=depth/2;
  const palette={lobby:['#d8cba8','#c79b50'],training:['#c6ddce','#478b6c'],qc:['#c4dfc8','#37835d'],data:['#c5dce8','#4389ae'],operations:['#ead7b5','#b77a35'],boss:['#d7c9e8','#8662a7'],hr:['#e4cddd','#a45f8e'],planning:['#c8e0df','#378b8b'],warehouse:['#e5d0b7','#b47a43'],maintenance:['#c8ded6','#4a9180'],finance:['#e4dfbd','#a28a3c']};const colors=palette[key]||['#d8dfd1','#4e8a70'];box(8,.25,depth,0,-.2,0,mat(colors[0]),false);box(8,.2,depth,0,4.05,0,mat('#354b3d'),false);box(.08,.12,depth-.3,-3.86,.08,0,mat(colors[1]),false);box(.08,.12,depth-.3,3.86,.08,0,mat(colors[1]),false);box(7.7,.12,.08,0,.08,-h+.14,mat(colors[1]),false);box(7.7,.12,.08,0,.08,h-.14,mat(colors[1]),false);
  box(8,4,.25,0,2,-h,mat(wallColor));box(8,4,.25,0,2,h,mat(wallColor));
- if(hall){const doors=[[-11,'ĐÀO TẠO'],[-6,'QC'],[-1,'DỮ LIỆU'],[4,'VẬN HÀNH']];for(const side of [-1,1]){let cur=-h;for(const [z,title] of doors){const lo=z-.72,hi=z+.72;if(lo>cur)box(.25,4,lo-cur,side*3.875,2,(cur+lo)/2,mat(wallColor));box(.12,3.12,.16,side*3.82,1.56,lo,mat('#254b38'),false);box(.12,3.12,.16,side*3.82,1.56,hi,mat('#254b38'),false);box(.12,.16,1.44,side*3.82,3.12,z,mat('#254b38'),false);box(.08,2.9,1.34,side*3.82,1.45,z,mat('#456b54'),false);box(.035,.34,.035,side*3.75,1.45,z+(side<0?.48:-.48),mat('#d4b86a'),false);box(.07,.38,1.28,side*3.72,3.38,z,mat('#254b38'),false);label(title,side*3.675,3.38,z,'#ffffff',{w:1.15,h:.26,rotationY:side<0?Math.PI/2:-Math.PI/2});cur=hi;}if(cur<h)box(.25,4,h-cur,side*3.875,2,(cur+h)/2,mat(wallColor));}}
+ if(hall){
+  // Color-coded department doors: left and right walls lead to different rooms.
+  const doors=[[-11,'training','ĐÀO TẠO','qc','QC'],[-6,'data','DỮ LIỆU','operations','VẬN HÀNH'],[-1,'boss','SẾP • ANH VĂN PHÒNG','hr','NHÂN SỰ'],[4,'sales','KINH DOANH','planning','KẾ HOẠCH']];
+  const doorAccent={training:'#3e9c73',qc:'#318a58',data:'#397fa6',operations:'#c87937',boss:'#9b6aca',hr:'#c15c86',sales:'#e06b52',planning:'#318f91'};
+  for(const side of [-1,1]){let cur=-h;for(const [z,leftKey,leftTitle,rightKey,rightTitle] of doors){const key=side<0?leftKey:rightKey,title=side<0?leftTitle:rightTitle,accent=doorAccent[key]||'#3e9c73',lo=z-.72,hi=z+.72;if(lo>cur)box(.25,4,lo-cur,side*3.875,2,(cur+lo)/2,mat(wallColor));box(.12,3.12,.16,side*3.82,1.56,lo,mat(accent),false);box(.12,3.12,.16,side*3.82,1.56,hi,mat(accent),false);box(.12,.16,1.44,side*3.82,3.12,z,mat(accent),false);box(.08,2.9,1.34,side*3.82,1.45,z,mat('#b9d9ce'),false);box(.035,.34,.035,side*3.75,1.45,z+(side<0?.48:-.48),mat('#f0ce78'),false);box(.07,.38,1.28,side*3.72,3.38,z,mat(accent),false);label(title,side*3.675,3.38,z,'#ffffff',{w:1.35,h:.30,rotationY:side<0?Math.PI/2:-Math.PI/2});cur=hi;}if(cur<h)box(.25,4,h-cur,side*3.875,2,(cur+h)/2,mat(wallColor));}
+  // A bright carpet runner, warm ceiling pendants and plants make the corridor feel welcoming.
+  box(2.8,.035,depth-1,0,-.055,0,mat('#3d725a'),false);box(2.46,.02,depth-1.2,0,-.031,0,mat('#77956a'),false);
+  for(const x of [-1.58,1.58])box(.045,.04,depth-1,x,-.028,0,mat('#d7b260'),false);
+  for(const z of [-12,-6,0,6,12]){box(.52,.06,.42,0,3.88,z,mat('#d6b363'),false);const glow=new THREE.Mesh(new THREE.SphereGeometry(.19,14,12),new THREE.MeshBasicMaterial({color:'#ffe8b8'}));glow.position.set(0,3.70,z);(window.avpBuildGroup||scene).add(glow);const light=new THREE.PointLight('#ffdda4',.55,7);light.position.set(0,3.45,z);(window.avpBuildGroup||scene).add(light)}
+  for(const z of [-14,-8,-2,4,10]){lobbyPlant(-3.25,z);lobbyPlant(3.25,z)}
+ }
  else{
   // Cửa phòng: cùng kiểu với cửa hành lang, nằm hẳn phía trong phòng để tránh z-fighting.
   box(2.95,4,.25,-2.525,2,-h,mat(wallColor));box(2.95,4,.25,2.525,2,-h,mat(wallColor));box(2.1,.78,.25,0,3.61,-h,mat(wallColor));
@@ -72,32 +82,50 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
   const c=document.createElement('canvas');c.width=900;c.height=520;const q=c.getContext('2d');
   q.fillStyle='#f7f4e8';q.fillRect(0,0,900,520);q.fillStyle='#173f2e';q.fillRect(12,12,876,496);q.fillStyle='#f7f4e8';q.fillRect(28,28,844,464);
   q.fillStyle='#173f2e';q.textAlign='center';q.font='900 112px system-ui';q.fillText('AVP',450,190);
-  q.fillStyle='#4d8068';q.font='700 48px system-ui';q.fillText('ANH VĂN PHÒNG',450,260);
+  q.fillStyle='#4d8068';q.font='700 48px system-ui';q.fillText(key==='boss'?'ANH VĂN PHÒNG':name.toUpperCase(),450,260);
   q.strokeStyle='#c9a85a';q.lineWidth=7;q.beginPath();q.moveTo(170,300);q.lineTo(730,300);q.stroke();
   q.fillStyle='#315d49';q.font='600 29px system-ui';q.fillText('HỌC HỎI  •  SÁNG TẠO  •  CẢI TIẾN',450,365);
   const logoMesh=new THREE.Mesh(new THREE.PlaneGeometry(2.65,1.53),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),side:THREE.DoubleSide}));
   logoMesh.position.set(0,2.35,h-.16);logoMesh.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(logoMesh);
   poster('CẢI TIẾN MỖI NGÀY','Chia sẻ • Học hỏi • Tiến bộ','operations',-3.78,2.28,0,'left');poster('TÔN TRỌNG • HỢP TÁC','Cùng giải quyết vấn đề','data',3.78,2.28,0,'right');
-  // Lively, furnished department floor: collaborative desk pods, glass dividers, warm task lights and coworkers.
+  // Each department gets its own furniture, palette, work culture and focal point.
+  const roomNames={training:['LEARNING STUDIO','Thực hành • Thử nghiệm'],qc:['QUALITY CONTROL','Kiểm tra • Cải tiến'],data:['DATA ANALYTICS','Dữ liệu • Báo cáo'],operations:['OPERATIONS HUB','Điều phối • Vận hành'],boss:['VĂN PHÒNG ANH VĂN PHÒNG','Giám đốc • AVP'],hr:['PEOPLE & CULTURE','Nhân sự • Phỏng vấn'],sales:['CLIENT SUCCESS','Kinh doanh • Khách hàng'],planning:['PROJECT ROOM','Kế hoạch • Sáng kiến'],warehouse:['SUPPLY HUB','Kho • Giao nhận'],maintenance:['TECH WORKSHOP','Bảo trì • Kỹ thuật'],finance:['FINANCE OFFICE','Tài chính • Kế toán']};
+  const roomInfo=roomNames[key]||[name.toUpperCase(),dept.toUpperCase()];
   box(6,.035,4.1,0,-.055,.05,mat(colors[1]),false);box(5.72,.018,3.82,0,-.032,.05,mat(colors[0]),false);
-  makeDesk(0,1.25,deskName,kind);makeDesk(-2.28,-1.45,'Bàn cộng tác','data');makeDesk(2.28,-1.45,'Bàn cộng tác','operations');
-  const glassMat=new THREE.MeshPhysicalMaterial({color:'#b9e8ec',transparent:true,opacity:.32,roughness:.16,metalness:.08});
-  for(const x of [-1.16,1.16]){box(.055,1.48,3.15,x,.88,-1.35,glassMat,false);box(.10,.07,3.2,x,.13,-1.35,mat(colors[1]),false);box(.10,.07,3.2,x,1.62,-1.35,mat('#d9edf0'),false);for(const z of [-2.92,.22])box(.07,1.5,.07,x,.88,z,mat('#91b8b1'),false)}
-  // Two friendly coworkers make the room feel active while leaving the main aisle open.
-  function coworker(x,z,shirtColor,hairColor,badgeText){
-   const person=new THREE.Group();person.position.set(x,0,z);const skinMat=mat('#efc5a2'),shirtMat=mat(shirtColor),hairM=mat(hairColor),dark=mat('#273642'),whiteM=mat('#fff8e9');
-   function part(geo,m,px,py,pz,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,m);o.position.set(px,py,pz);o.scale.set(sx,sy,sz);o.castShadow=true;person.add(o)}
-   part(new THREE.CapsuleGeometry(.22,.48,5,10),shirtMat,0,.93,0,1.05,1,.78);part(new THREE.SphereGeometry(.19,18,14),skinMat,0,1.51,0,1,1.05,.9);part(new THREE.SphereGeometry(.195,16,12,0,Math.PI*2,0,Math.PI*.58),hairM,0,1.61,-.015,1.05,1,.98);
-   for(const ex of [-.065,.065]){part(new THREE.SphereGeometry(.033,12,10),whiteM,ex,1.52,.17);part(new THREE.SphereGeometry(.017,10,8),dark,ex,1.52,.195)}
-   part(new THREE.BoxGeometry(.10,.13,.025),mat('#e8c66d'),.12,1.12,.16);
-   for(const sx of [-1,1]){const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.055,.29,4,8),shirtMat);arm.position.set(sx*.25,.92,0);arm.rotation.z=sx*.22;person.add(arm);part(new THREE.CapsuleGeometry(.075,.34,4,8),dark,sx*.105,.32,0,.8,1,.8)}
-   const tag=document.createElement('canvas');tag.width=256;tag.height=96;const ctx=tag.getContext('2d');ctx.fillStyle='#fff8e9';ctx.fillRect(0,0,256,96);ctx.fillStyle='#204e38';ctx.font='bold 42px system-ui';ctx.textAlign='center';ctx.fillText(badgeText,128,62);
-   const badge=new THREE.Mesh(new THREE.PlaneGeometry(.48,.18),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(tag),transparent:true,side:THREE.DoubleSide}));badge.position.set(0,1.20,.18);person.add(badge);(window.avpBuildGroup||scene).add(person);
+
+  function infoBoard(title,subtitle,x,z,accent){
+   box(2.1,1.10,.12,x,2.25,z,mat('#f5efe0'),false);box(2.0,.98,.08,x,2.25,z-.075,mat(accent),false);
+   label(title,x,2.47,z-.12,'#ffffff',{w:1.75,h:.30});label(subtitle,x,2.05,z-.12,'#fff8e8',{w:1.85,h:.24});
   }
-  coworker(-2.35,-2.05,'#3479b7','#382a25','DATA');coworker(2.35,-2.05,'#bd5876','#4a302b','TEAM');
-  lobbyPlant(-3.25,3.25);lobbyPlant(3.25,3.25);
-  for(const x of [-2.25,2.25]){const lamp=new THREE.PointLight('#ffdc9b',.75,6);lamp.position.set(x,3.25,-1.1);(window.avpBuildGroup||scene).add(lamp);box(.52,.055,.52,x,3.85,-1.1,mat('#d8bd73'),false);const glow=new THREE.Mesh(new THREE.SphereGeometry(.16,12,10),new THREE.MeshBasicMaterial({color:'#ffe6ae'}));glow.position.set(x,3.68,-1.1);(window.avpBuildGroup||scene).add(glow)}
-  label(dept.toUpperCase()+' TEAM',0,3.72,0,'#ffffff',{w:2.25,h:.36});
+  const accent=colors[1],gold=mat('#d9b762'),wood=mat('#8a6545');
+  if(key==='boss'){
+   makeDesk(0,1.45,'Bàn giám đốc — Anh Văn Phòng','boss');
+   infoBoard('ANH VĂN PHÒNG','GIÁM ĐỐC • AVP',0,4.62,'#644684');
+   // Executive bookcase, awards, guest chairs and a distinctive purple-and-brass palette.
+   box(.42,2.35,.72,-3.18,1.12,1.35,mat('#73533c'),false);for(const y of [.40,.98,1.56])box(.46,.055,.76,-3.18,y,1.35,gold,false);
+   for(const x of [-3.28,-3.08])for(const y of [.62,1.20,1.78])box(.12,.32,.18,x,y,1.35,mat(['#4b8068','#b2604f','#dfbd6b'][Math.floor(y*2)%3]),false);
+   for(const x of [-1.8,1.8]){box(.72,.18,.72,x,.34,-1.35,mat('#70478b'),false);box(.72,.68,.16,x,.68,-1.68,mat('#70478b'),false);for(const dx of [-.25,.25])box(.07,.35,.07,x+dx,.08,-1.35,wood,false)}
+   box(.48,.12,.38,2.75,.72,2.5,mat('#6f528b'),false);box(.35,.04,.27,2.75,.81,2.5,gold,false);label('AVP',2.75,1.14,2.5,'#fff8e8',{w:.48,h:.22});
+   const boss=new THREE.Group();boss.position.set(0,0,-.8);
+   function bossPart(g,m,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;boss.add(o)}
+   bossPart(new THREE.CapsuleGeometry(.23,.48,5,12),mat('#263d50'),0,.93,0);bossPart(new THREE.SphereGeometry(.19,18,14),mat('#e6b994'),0,1.52,0,1,1.05,.92);bossPart(new THREE.SphereGeometry(.20,16,12,0,Math.PI*2,0,Math.PI*.5),mat('#34271f'),0,1.63,-.02);
+   for(const ex of [-.065,.065]){bossPart(new THREE.SphereGeometry(.033,12,10),mat('#fff8e8'),ex,1.53,.17);bossPart(new THREE.SphereGeometry(.016,10,8),mat('#25303b'),ex,1.53,.195)}
+   const tie=new THREE.Mesh(new THREE.ConeGeometry(.075,.22,4),mat('#b84f61'));tie.position.set(0,1.19,.16);boss.add(tie);(window.avpBuildGroup||scene).add(boss);
+  }else{
+   makeDesk(0,1.25,deskName,kind);
+   if(key==='training'){makeDesk(-2.28,-1.35,'Bàn thực hành','training');makeDesk(2.28,-1.35,'Bàn thực hành','training');infoBoard('LEARN BY DOING','THỰC HÀNH • HỎI ĐÁP',0,4.62,'#3b815d');}
+   if(key==='qc'){makeDesk(-2.25,-1.35,'Trạm kiểm tra','qc');infoBoard('QUALITY CHECK','CHUẨN • AN TOÀN • CHÍNH XÁC',0,4.62,'#397d58');for(const y of [.55,.88,1.21]){box(.36,.16,.08,-3.05,y,1.6,mat('#fff8e8'),false);box(.08,.08,.10,-3.05,y,1.48,mat('#46a87a'),false)}}
+   if(key==='data'){makeDesk(-2.28,-1.35,'Trạm phân tích','data');makeDesk(2.28,-1.35,'Dashboard','data');infoBoard('LIVE DASHBOARD','DOANH THU • TĂNG TRƯỞNG',0,4.62,'#347fa5');for(let n=0;n<5;n++)box(.23,.22+n*.13,.11,-2.8+n*.32,1.05+n*.065,2.55,mat(['#4b9fc2','#75c9a1','#edc562','#d98268','#9f8bd2'][n]),false)}
+   if(key==='operations'){makeDesk(-2.28,-1.35,'Điều phối đơn hàng','operations');infoBoard('DAILY OPERATIONS','TIẾN ĐỘ • ƯU TIÊN • HỖ TRỢ',0,4.62,'#bb7737');for(const y of [.55,.85,1.15]){box(.20,.12,.08,-3.15,y,2.1,mat('#f3d596'),false);box(.42,.12,.08,-2.75,y,2.1,mat('#76b99b'),false)}}
+   if(key==='hr'){infoBoard('PEOPLE FIRST','PHÒNG PHỎNG VẤN',0,4.62,'#ad5b86');box(1.25,.22,.48,-2.25,.28,-1.45,mat('#b15e87'),false);box(1.25,.45,.16,-2.25,.56,-1.62,mat('#b15e87'),false);for(const x of [-2.7,-1.8])box(.07,.36,.07,x,.08,-1.45,wood,false);box(.56,.42,.56,2.55,.24,-1.65,mat('#b38c56'),false);lobbyPlant(3.1,2.8)}
+   if(key==='sales'){makeDesk(-2.28,-1.35,'Bàn khách hàng','sales');infoBoard('CLIENT SUCCESS','LẮNG NGHE • GIẢI PHÁP',0,4.62,'#c9634e');for(let n=0;n<3;n++){box(.13,.65,.13,2.1+n*.42,.34,2.1,mat('#db8165'),false);box(.25,.08,.20,2.1+n*.42,.72,2.1,gold,false)}}
+   if(key==='planning'){makeDesk(-2.28,-1.35,'Bàn dự án','planning');infoBoard('QUARTERLY PLAN','MỤC TIÊU • MỐC TIẾN ĐỘ',0,4.62,'#398b8b');box(1.6,.12,.5,2.35,.86,-1.4,wood,false);for(const x of [1.75,2.95])for(const z of [-1.58,-1.22])box(.08,.78,.08,x,.39,z,wood,false)}
+   if(key==='warehouse'){infoBoard('GOODS IN • GOODS OUT','SẮP XẾP • GIAO NHẬN',0,4.62,'#ac783a');for(const x of [-2.65,2.65]){box(.12,2.8,.12,x,1.35,1.9,wood,false);box(.12,2.8,.12,x,1.35,-1.2,wood,false);for(const y of [.35,1.25,2.15])box(.28,.12,3.15,x,y,.35,wood,false)}for(const [x,z,c] of [[-2.15,1.7,'#c79557'],[-2.15,-.1,'#d5ab68'],[2.15,1.7,'#b9814c'],[2.15,-.1,'#d5ab68']])box(.72,.62,.62,x,.36,z,mat(c),false)}
+   if(key==='maintenance'){infoBoard('TECH WORKSHOP','REPAIR • TEST • RETURN',0,4.62,'#378579');box(2.2,.16,.72,0,.78,2.8,wood,false);for(const x of [-.75,-.25,.25,.75]){box(.08,.52,.08,x,1.10,2.9,mat('#d7ded7'),false);box(.18,.08,.07,x,1.38,2.9,mat('#d6a954'),false)}}
+   if(key==='finance'){makeDesk(-2.28,-1.35,'Kiểm soát ngân sách','finance');infoBoard('FINANCE OFFICE','SỐ LIỆU • KIỂM SOÁT',0,4.62,'#938141');for(const x of [-3.1,-2.55]){box(.5,1.3,.52,x,.65,1.9,mat('#657e70'),false);for(const y of [.35,.7,1.05])box(.42,.035,.03,x,y,1.62,gold,false)}}
+   if(key==='it'){infoBoard('IT SUPPORT','HỖ TRỢ • HỆ THỐNG',0,4.62,'#587ca3');makeDesk(-2.28,-1.35,'Trạm hỗ trợ IT','data')}
+  }
+  if(key!=='boss'){const plantX=key==='hr'?-3.1:3.1;lobbyPlant(plantX,3.2)}
 
 
  }
@@ -203,7 +231,8 @@ buildRoom('training','PHÒNG ĐÀO TẠO','training','Bàn hướng dẫn','trai
 buildRoom('qc','PHÒNG QC','qc','Bàn QC','qc','#d5e4d2');
 buildRoom('data','PHÒNG DỮ LIỆU','data','Bàn dữ liệu','data','#d4d9c5');
 buildRoom('operations','PHÒNG VẬN HÀNH','operations','Bàn vận hành','operations','#d5e4d2');
-buildRoom('boss','PHÒNG QUẢN LÝ','boss','Bàn quản lý','boss','#e4d7ba');
+buildRoom('boss','PHÒNG ANH VĂN PHÒNG','boss','Bàn giám đốc — Anh Văn Phòng','boss','#e4d7ba');
+buildRoom('sales','PHÒNG KINH DOANH','sales','Bàn kinh doanh','sales','#f0d0c4');
 buildRoom('hr','PHÒNG NHÂN SỰ','hr','Bàn nhân sự','operations','#d8dfec');
 buildRoom('planning','PHÒNG KẾ HOẠCH','planning','Bàn kế hoạch','data','#d7e3e7');
 buildRoom('warehouse','PHÒNG KHO','warehouse','Bàn kho','operations','#e2d9c7');
@@ -213,8 +242,8 @@ Object.entries(window.avpRoomGroups).forEach(([k,g])=>g.visible=k==='lobby');
 window.avpBuildGroup=oldGroup;
 player=new THREE.Group();const female=app.character_gender==='female';const skin=mat('#d9a27c'),shirt=mat(female?'#b64d78':'#3479b7'),pants=mat(female?'#343b57':'#253b50'),shoe=mat('#252a28'),hairMat=mat(female?'#241b1b':'#33271f');function part(geo,material,x,y,z,sx=1,sy=1,sz=1){const m=new THREE.Mesh(geo,material);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=true;player.add(m)}part(new THREE.CapsuleGeometry(.28,.48,5,10),shirt,0,1.02,0,1,1,.8);part(new THREE.SphereGeometry(.205,16,12),skin,0,1.53,-.015,1,1.12,1);part(new THREE.SphereGeometry(.212,16,12,0,Math.PI*2,0,Math.PI*.62),hairMat,0,1.62,.005,1.04,1,1.04);if(female){part(new THREE.ConeGeometry(.19,.34,16),hairMat,0,1.37,.13,1,1,.85)}else{part(new THREE.SphereGeometry(.21,16,10,0,Math.PI*2,0,Math.PI*.35),hairMat,0,1.68,0,1,1,.9)}for(const ex of [-.075,.075]){part(new THREE.SphereGeometry(.025,8,6),mat('#fff9e9'),ex,1.55,-.207);part(new THREE.SphereGeometry(.012,8,6),mat('#20251f'),ex,1.55,-.23)}for(const x of [-.12,.12]){part(new THREE.CapsuleGeometry(.065,.34,4,8),shirt,x,.78,0,.85,1,.9);part(new THREE.SphereGeometry(.075,10,8),skin,x,.57,-.005)}for(const x of [-.105,.105]){part(new THREE.CapsuleGeometry(.075,.36,4,8),pants,x,.34,0,.85,1,.9);part(new THREE.BoxGeometry(.14,.1,.25),shoe,x,.1,-.045)}scene.add(player);const ownRoom=trainingComplete?departmentRoom(app.department):'training';currentRoom=ownRoom;Object.entries(window.avpRoomGroups).forEach(([k,g])=>g.visible=k===ownRoom);roomBounds={minX:-3.15,maxX:3.15,minZ:-3.15,maxZ:3.15};player.position.set(0,0,.7);clock=new THREE.Clock();$('place').textContent='Đang ở: '+roomTitle(ownRoom);updateViewButton();animate();say('Chào '+(app.full_name||'nhân viên')+'. Bạn đang ở '+roomTitle(ownRoom)+'. Cửa ra hành lang ở phía trước.')}
 function updateViewButton(){$('viewBtn').textContent='Góc nhìn: '+(thirdPerson?'Thứ ba':'Thứ nhất');player?.children.forEach(o=>o.visible=thirdPerson)}
-function departmentRoom(dept){const v=String(dept||'').toLowerCase();if(/qc|quality|chất lượng/.test(v))return 'qc';if(/data|dữ liệu|excel|kế toán/.test(v))return 'data';if(/operation|vận hành|sản xuất|hr|nhân sự|sales|kinh doanh/.test(v))return 'operations';return 'qc'}function roomTitle(k){return ({lobby:'SẢNH / HÀNH LANG AVP',training:'PHÒNG ĐÀO TẠO',qc:'PHÒNG QC',data:'PHÒNG DỮ LIỆU',operations:'PHÒNG VẬN HÀNH',boss:'PHÒNG QUẢN LÝ'})[k]||'PHÒNG BAN'}function nearestDesk(){let best=null,dist=Infinity;for(const d of desks){if(d.roomKey!==currentRoom)continue;const q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<2.35?best:null}
-function nearestDoor(){if(currentRoom!=='lobby')return null;const doors=[{x:-3.25,z:-11,room:'training',label:'Phòng đào tạo'},{x:3.25,z:-11,room:'qc',label:'Phòng QC'},{x:-3.25,z:-6,room:'data',label:'Phòng dữ liệu'},{x:3.25,z:-6,room:'operations',label:'Phòng vận hành'},{x:-3.25,z:-1,room:'boss',label:'Phòng quản lý'},{x:3.25,z:-1,room:'hr',label:'Phòng nhân sự'},{x:-3.25,z:4,room:'planning',label:'Phòng kế hoạch'},{x:3.25,z:4,room:'warehouse',label:'Phòng kho'}];let best=null,dist=Infinity;for(const d of doors){const q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<1.7?best:null}
+function departmentRoom(dept){const v=String(dept||'').toLowerCase();if(/qc|quality|chất lượng/.test(v))return 'qc';if(/data|dữ liệu|excel|kế toán/.test(v))return 'data';if(/hr|nhân sự|human resource/.test(v))return 'hr';if(/sales|kinh doanh|business/.test(v))return 'sales';if(/operation|vận hành|sản xuất/.test(v))return 'operations';if(/plan|kế hoạch/.test(v))return 'planning';if(/warehouse|kho/.test(v))return 'warehouse';if(/finance|tài chính/.test(v))return 'finance';if(/maintenance|bảo trì/.test(v))return 'maintenance';if(/boss|manager|giám đốc/.test(v))return 'boss';return 'training'}function roomTitle(k){return ({lobby:'SẢNH / HÀNH LANG AVP',training:'PHÒNG ĐÀO TẠO',qc:'PHÒNG QC',data:'PHÒNG DỮ LIỆU',operations:'PHÒNG VẬN HÀNH',boss:'PHÒNG ANH VĂN PHÒNG',hr:'PHÒNG NHÂN SỰ',sales:'PHÒNG KINH DOANH',planning:'PHÒNG KẾ HOẠCH',warehouse:'PHÒNG KHO',finance:'PHÒNG TÀI CHÍNH',maintenance:'PHÒNG BẢO TRÌ',it:'PHÒNG IT'})[k]||'PHÒNG BAN'}function nearestDesk(){let best=null,dist=Infinity;for(const d of desks){if(d.roomKey!==currentRoom)continue;const q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<2.35?best:null}
+function nearestDoor(){if(currentRoom!=='lobby')return null;const doors=[{x:-3.25,z:-11,room:'training',label:'Phòng đào tạo'},{x:3.25,z:-11,room:'qc',label:'Phòng QC'},{x:-3.25,z:-6,room:'data',label:'Phòng dữ liệu'},{x:3.25,z:-6,room:'operations',label:'Phòng vận hành'},{x:-3.25,z:-1,room:'boss',label:'Phòng Anh Văn Phòng'},{x:3.25,z:-1,room:'hr',label:'Phòng nhân sự'},{x:-3.25,z:4,room:'sales',label:'Phòng kinh doanh'},{x:3.25,z:4,room:'planning',label:'Phòng kế hoạch'}];let best=null,dist=Infinity;for(const d of doors){const q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<1.7?best:null}
 function enterRoom(d){
 if(!trainingComplete&&d.room!=='training'){say('Hoàn thành hướng dẫn ở phòng đào tạo trước khi mở cửa phòng ban.');return}
 currentRoom=d.room;const roomGroups=window.avpRoomGroups||{};Object.values(roomGroups).forEach(g=>g.visible=false);
