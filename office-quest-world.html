@@ -49,8 +49,71 @@ function lobbyPlant(x,z){
  for(const a of [-1.0,-.45,.25,.8,1.45]){const leaf=new THREE.Mesh(new THREE.SphereGeometry(.13,10,8),stemMat);leaf.scale.set(.55,1.8,.42);leaf.position.set(x+Math.sin(a)*.28,.82+Math.cos(a)*.10,z+Math.cos(a)*.22);leaf.rotation.z=-Math.sin(a)*.6;leaf.castShadow=true;group.add(leaf)}
  const crown=new THREE.Mesh(new THREE.SphereGeometry(.22,12,10),mat('#5f9b61'));crown.position.set(x,1.08,z);crown.scale.set(1.05,1.25,1.0);group.add(crown);
 }
+function createAnimeCharacter(options={}){
+ const role=options.role||'player',gender=options.gender||'male',isFemale=gender==='female';
+ const toonRamp=new THREE.DataTexture(new Uint8Array([72,72,72,255,158,158,158,255,255,255,255,255]),3,1,THREE.RGBAFormat);
+ toonRamp.magFilter=THREE.NearestFilter;toonRamp.minFilter=THREE.NearestFilter;toonRamp.generateMipmaps=false;toonRamp.needsUpdate=true;
+ const material=c=>new THREE.MeshToonMaterial({color:c,gradientMap:toonRamp});
+ const palette=role==='boss'?{skin:'#f2c8a5',hair:'#29222d',coat:'#223c5b',shirt:'#fff5dd',tie:'#c3515c',pants:'#25334a',accent:'#d6ae57'}:role==='receptionist'?{skin:'#f5c9ae',hair:'#442838',coat:'#16775b',shirt:'#fff8ef',tie:'#e783a1',pants:'#38435b',accent:'#e6c567'}:isFemale?{skin:'#efc09f',hair:'#34243b',coat:'#934d72',shirt:'#fff4e7',tie:'#e0ad61',pants:'#3e4059',accent:'#f0c879'}:{skin:'#e9b894',hair:'#30252a',coat:'#3268a2',shirt:'#f7f3e7',tie:'#e3ae54',pants:'#293c54',accent:'#e6c36e'};
+ const root=new THREE.Group(),head=new THREE.Group();root.name='Anime '+role;head.position.y=1.60;root.add(head);
+ function part(parent,geo,color,pos,scale,rot){const o=new THREE.Mesh(geo,material(color));o.position.set(pos[0],pos[1],pos[2]);if(scale)o.scale.set(scale[0],scale[1],scale[2]);if(rot)o.rotation.set(rot[0],rot[1],rot[2]);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+ const sphere=(parent,c,pos,scale)=>part(parent,new THREE.SphereGeometry(1,32,24),c,pos,scale);
+ const capsule=(parent,c,pos,r,len,rot)=>part(parent,new THREE.CapsuleGeometry(r,len,8,16),c,pos,null,rot);
+ // Tailored suit, shaped shoulders, crisp shirt, tie and fitted trousers.
+ sphere(root,palette.pants,[0,.72,0],[.26,.25,.19]);
+ sphere(root,palette.coat,[0,1.10,0],[.34,.43,.23]);
+ sphere(root,palette.shirt,[0,1.14,.178],[.15,.30,.045]);
+ for(const side of [-1,1]){
+  part(root,new THREE.ConeGeometry(.105,.22,4),palette.shirt,[side*.09,1.43,.17],[1,1,.4],[0,0,side*.18]);
+  const leg=capsule(root,palette.pants,[side*.115,.39,0],.095,.40,[side*.015,0,side*.03]);
+  sphere(root,'#292b38',[side*.12,.105,.045],[.125,.095,.23]);
+ }
+ part(root,new THREE.ConeGeometry(.065,.26,4),palette.tie,[0,1.14,.228],[.76,1,.28]);
+ const arms=[];
+ for(const side of [-1,1]){
+  const armRoot=new THREE.Group();armRoot.position.set(side*.34,1.36,0);root.add(armRoot);
+  capsule(armRoot,palette.coat,[0,-.22,0],.078,.38,[0,0,side*.08]);
+  sphere(armRoot,palette.skin,[0,-.47,.015],[.085,.09,.09]);
+  arms.push(armRoot);
+ }
+ // Large expressive anime eyes with iris rings, twin catchlights and fine brows.
+ sphere(head,palette.skin,[0,0,0],[.295,.32,.245]);
+ for(const side of [-1,1]){
+  sphere(head,palette.skin,[side*.292,-.015,0],[.065,.10,.065]);
+  sphere(head,palette.hair,[side*.205,.13,-.035],[.105,.15,.16]);
+  sphere(head,'#fffdf7',[side*.108,.035,.214],[.092,.128,.054]);
+  sphere(head,isFemale?'#53a99c':'#4f82c5',[side*.106,.025,.257],[.057,.088,.027]);
+  sphere(head,'#211b29',[side*.106,.018,.279],[.031,.059,.018]);
+  sphere(head,'#ffffff',[side*.126,.065,.294],[.023,.03,.012]);
+  sphere(head,'#ffffff',[side*.083,-.005,.294],[.010,.014,.008]);
+  capsule(head,palette.hair,[side*.108,.19,.218],.014,.115,[0,0,side*.10]);
+ }
+ sphere(head,palette.skin,[0,-.065,.242],[.030,.038,.027]);
+ const smileCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(-.055,-.145,.222),new THREE.Vector3(0,-.164,.238),new THREE.Vector3(.055,-.145,.222)]);
+ const smile=new THREE.Mesh(new THREE.TubeGeometry(smileCurve,16,.008,6,false),material(role==='boss'?'#9f5260':'#b85f72'));head.add(smile);
+ // Sculpted hair cap, separate bangs and side locks create a clean anime silhouette.
+ sphere(head,palette.hair,[0,.245,-.015],[.307,.185,.266]);
+ if(isFemale){
+  sphere(head,palette.hair,[0,-.17,-.105],[.28,.34,.19]);
+  for(const side of [-1,1])capsule(head,palette.hair,[side*.255,-.12,-.015],.085,.38,[0,0,-side*.08]);
+  for(const [x,y,r] of [[-.22,.20,-.35],[-.12,.255,-.20],[0,.27,0],[.12,.25,.18],[.22,.19,.35]])part(head,new THREE.ConeGeometry(.105,.25,12),palette.hair,[x,y,.12],[1.05,.92,.72],[0,0,r]);
+  if(role==='receptionist'||role==='player')sphere(head,palette.tie,[-.23,.32,.09],[.075,.04,.045]);
+ }else{
+  sphere(head,palette.hair,[0,.16,-.12],[.285,.25,.18]);
+  for(const [x,y,r] of [[-.21,.18,-.38],[-.12,.255,-.22],[-.015,.285,-.08],[.11,.27,.16],[.215,.19,.34]])part(head,new THREE.ConeGeometry(.095,.22,12),palette.hair,[x,y,.12],[1,.94,.72],[0,0,r]);
+  sphere(head,palette.hair,[.27,-.03,-.02],[.065,.16,.10]);
+ }
+ // Animated office ID badge with a readable role label.
+ const badgeCanvas=document.createElement('canvas');badgeCanvas.width=256;badgeCanvas.height=128;const ctx=badgeCanvas.getContext('2d');
+ ctx.fillStyle='#fff8e9';ctx.fillRect(0,0,256,128);ctx.fillStyle=role==='boss'?'#684c83':'#24674d';ctx.font='bold 36px system-ui';ctx.textAlign='center';ctx.fillText(role==='boss'?'ANH VP':role==='receptionist'?'LỄ TÂN':'AVP',128,78);
+ const badge=new THREE.Mesh(new THREE.PlaneGeometry(.22,.12),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(badgeCanvas),transparent:true,side:THREE.DoubleSide}));badge.position.set(.16,1.22,.222);root.add(badge);
+ if(role==='receptionist'){arms[0].rotation.z=-2.45;arms[1].rotation.z=.12}
+ root.userData={animeHead:head,waveArm:role==='receptionist'?arms[0]:null,waveBase:-2.45,idlePhase:Math.random()*6.28};
+ (window.avpAnimeCharacters=window.avpAnimeCharacters||[]).push(root);
+ return root;
+}
 function initWorld(){if(worldReady)return;worldReady=true;scene=new THREE.Scene();scene.background=new THREE.Color('#a9cbb8');scene.fog=new THREE.Fog('#a9cbb8',10,22);camera=new THREE.PerspectiveCamera(68,innerWidth/innerHeight,.1,60);renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;$('world').appendChild(renderer.domElement);scene.add(new THREE.HemisphereLight('#f4fff7','#526657',2.25));const sun=new THREE.DirectionalLight('#fff0d2',2.7);sun.position.set(-4,10,5);sun.castShadow=true;scene.add(sun);const fillLight=new THREE.DirectionalLight('#b9e8d4',1.0);fillLight.position.set(5,5,-6);scene.add(fillLight);
-window.avpRoomGroups={};const oldGroup=window.avpBuildGroup;
+window.avpRoomGroups={};window.avpAnimeCharacters=[];const oldGroup=window.avpBuildGroup;
 function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
  const g=new THREE.Group();window.avpRoomGroups[key]=g;scene.add(g);window.avpBuildGroup=g;window.avpBuildingRoom=key;
  const hall=key==='lobby',depth=hall?32:10,h=depth/2;
@@ -106,11 +169,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
    for(const x of [-3.28,-3.08])for(const y of [.62,1.20,1.78])box(.12,.32,.18,x,y,1.35,mat(['#4b8068','#b2604f','#dfbd6b'][Math.floor(y*2)%3]),false);
    for(const x of [-1.8,1.8]){box(.72,.18,.72,x,.34,-1.35,mat('#70478b'),false);box(.72,.68,.16,x,.68,-1.68,mat('#70478b'),false);for(const dx of [-.25,.25])box(.07,.35,.07,x+dx,.08,-1.35,wood,false)}
    box(.48,.12,.38,2.75,.72,2.5,mat('#6f528b'),false);box(.35,.04,.27,2.75,.81,2.5,gold,false);label('AVP',2.75,1.14,2.5,'#fff8e8',{w:.48,h:.22});
-   const boss=new THREE.Group();boss.position.set(0,0,-.8);
-   function bossPart(g,m,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;boss.add(o)}
-   bossPart(new THREE.CapsuleGeometry(.23,.48,5,12),mat('#263d50'),0,.93,0);bossPart(new THREE.SphereGeometry(.19,18,14),mat('#e6b994'),0,1.52,0,1,1.05,.92);bossPart(new THREE.SphereGeometry(.20,16,12,0,Math.PI*2,0,Math.PI*.5),mat('#34271f'),0,1.63,-.02);
-   for(const ex of [-.065,.065]){bossPart(new THREE.SphereGeometry(.033,12,10),mat('#fff8e8'),ex,1.53,.17);bossPart(new THREE.SphereGeometry(.016,10,8),mat('#25303b'),ex,1.53,.195)}
-   const tie=new THREE.Mesh(new THREE.ConeGeometry(.075,.22,4),mat('#b84f61'));tie.position.set(0,1.19,.16);boss.add(tie);(window.avpBuildGroup||scene).add(boss);
+   const boss=createAnimeCharacter({role:'boss',gender:'male'});boss.position.set(0,0,-.8);(window.avpBuildGroup||scene).add(boss);
   }else{
    makeDesk(0,1.25,deskName,kind);
    if(key==='training'){makeDesk(-2.28,-1.35,'Bàn thực hành','training');makeDesk(2.28,-1.35,'Bàn thực hành','training');infoBoard('LEARN BY DOING','THỰC HÀNH • HỎI ĐÁP',0,4.62,'#3b815d');}
@@ -134,26 +193,7 @@ function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
   box(2.45,.88,.78,0,.44,h-4.1,mat('#8a6746'));
   box(2.30,.08,.62,0,.91,h-4.1,mat('#315d49'),false);
   label('LỄ TÂN',0,1.24,h-3.68,'#ffffff',{w:1.35,h:.30});
-   // Receptionist stands behind the counter, facing visitors. Brighter anime-style face, uniform, employee badge.
-   const npc=new THREE.Group();npc.position.set(0,0,h-3.15);npc.rotation.y=Math.PI;
-   const nm=c=>new THREE.MeshStandardMaterial({color:c,roughness:.68});
-   function np(geo,ma,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,ma);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;npc.add(o);return o}
-   const skin=nm('#ffe0c8'),hair=nm('#42271f'),hairLight=nm('#98634b'),jacket=nm('#1f7657'),blouse=nm('#fffaf0'),skirt=nm('#d84f86'),eye=nm('#30202a'),iris=nm('#347f78'),white=nm('#fffdf9'),gold=nm('#e4bd61'),shoe=nm('#303641'),sock=nm('#f8eee1'),cheek=nm('#f28f9d');
-   for(const x of [-.09,.09]){np(new THREE.CylinderGeometry(.047,.055,.34,16),skin,x,.49,0);np(new THREE.CylinderGeometry(.052,.055,.12,16),sock,x,.34,.008);np(new THREE.BoxGeometry(.13,.085,.23),shoe,x,.275,.045);np(new THREE.BoxGeometry(.13,.018,.20),nm('#a9aeb0'),x,.231,.05)}
-   np(new THREE.CapsuleGeometry(.205,.38,8,20),jacket,0,1.18,0,1.02,1,.8);
-   np(new THREE.ConeGeometry(.085,.14,4),blouse,-.065,1.39,.14,1,.8,.45);np(new THREE.ConeGeometry(.085,.14,4),blouse,.065,1.39,.14,1,.8,.45);np(new THREE.BoxGeometry(.055,.28,.025),blouse,0,1.22,.177);
-   np(new THREE.CylinderGeometry(.145,.19,.32,20),skirt,0,.82,0,1,.92,1);
-   for(const x of [-.235,.235]){const arm=np(new THREE.CapsuleGeometry(.052,.30,6,12),jacket,x,1.12,.005);arm.rotation.z=x<0?-.32:.32;np(new THREE.SphereGeometry(.062,16,12),skin,x*1.30,.94,.06)}
-   const waveArm=np(new THREE.CapsuleGeometry(.05,.27,6,12),jacket,-.29,1.28,.02);waveArm.rotation.z=-.92;np(new THREE.SphereGeometry(.066,16,12),skin,-.43,1.43,.04);for(let f=0;f<4;f++){const finger=np(new THREE.CapsuleGeometry(.012,.065,4,8),skin,-.48+f*.025,1.51,.045);finger.rotation.z=-.2+f*.12}
-   np(new THREE.CylinderGeometry(.065,.075,.13,16),skin,0,1.48,.015);np(new THREE.SphereGeometry(.215,32,24),skin,0,1.68,.035,1,.99,.88);
-   for(const x of [-.222,.222])np(new THREE.SphereGeometry(.045,14,12),skin,x,1.66,.005);
-   for(const x of [-.078,.078]){np(new THREE.SphereGeometry(.067,24,18),white,x,1.69,.211,1,1.12,.68);np(new THREE.SphereGeometry(.044,22,18),iris,x,1.686,.241,1,1.12,.62);np(new THREE.SphereGeometry(.027,20,16),eye,x,1.684,.258,1,1.1,.58);np(new THREE.SphereGeometry(.013,14,10),white,x-.012,1.706,.273);const brow=np(new THREE.CapsuleGeometry(.012,.052,5,10),hair,x,1.765,.208);brow.rotation.z=x<0?-.15:.15;const lash=np(new THREE.CapsuleGeometry(.008,.035,4,8),hair,x+(x<0?-.05:.05),1.72,.238);lash.rotation.z=x<0?-.5:.5;np(new THREE.SphereGeometry(.031,16,12),cheek,x*1.65,1.625,.188,1.6,.7,.38)}
-   np(new THREE.SphereGeometry(.018,12,10),nm('#eaa88c'),0,1.655,.225,.8,.8,.6);const smile=np(new THREE.TorusGeometry(.034,.008,8,18,Math.PI),nm('#b95c65'),0,1.615,.218);smile.rotation.z=Math.PI;
-   np(new THREE.SphereGeometry(.225,28,20,0,Math.PI*2,0,Math.PI*.58),hair,0,1.80,-.002,1.04,1.02,1.02);np(new THREE.SphereGeometry(.19,20,16),hair,-.175,1.65,-.005,.47,1.12,.88);np(new THREE.SphereGeometry(.19,20,16),hair,.175,1.65,-.005,.47,1.12,.88);
-   for(const [x,y,rz] of [[-.13,1.79,-.18],[-.065,1.82,-.08],[.015,1.825,.02],[.09,1.81,.13],[.15,1.78,.20]]){const bang=np(new THREE.SphereGeometry(.09,18,14),hairLight,x,y,.16,.88,1.05,.48);bang.rotation.z=rz}
-   np(new THREE.SphereGeometry(.075,16,12),hairLight,-.12,1.84,.105,1.2,.55,.7);np(new THREE.SphereGeometry(.045,12,10),nm('#d85c82'),0,1.405,.19);for(const x of [-.035,.035]){const bow=np(new THREE.SphereGeometry(.045,12,10),nm('#e77d9b'),x,1.405,.18,1.2,.65,.45);bow.rotation.z=x<0?-.3:.3}for(const y of [1.25,1.15,1.05])np(new THREE.SphereGeometry(.014,10,8),gold,.075,y,.18);
-   const bc=document.createElement('canvas');bc.width=256;bc.height=320;const bx=bc.getContext('2d');bx.fillStyle='#fff8ec';bx.fillRect(0,0,256,320);bx.fillStyle='#24674d';bx.textAlign='center';bx.font='bold 58px system-ui';bx.fillText('AVP',128,105);bx.font='bold 32px system-ui';bx.fillText('LỄ TÂN',128,170);bx.fillStyle='#c5a451';bx.fillRect(45,205,166,8);const badge=np(new THREE.BoxGeometry(.13,.18,.025),gold,.145,1.29,.195);badge.material=new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(bc),side:THREE.DoubleSide});
-   (window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:0,z:h-3.15};
+   const npc=createAnimeCharacter({role:'receptionist',gender:'female'});npc.position.set(0,0,h-3.15);npc.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:0,z:h-3.15};
    // Logo plaque mounted on the visitor-facing front of the reception counter.
    const frontCanvas=document.createElement('canvas');frontCanvas.width=720;frontCanvas.height=260;const fc=frontCanvas.getContext('2d');
    fc.fillStyle='#f8f4e8';fc.fillRect(0,0,720,260);fc.strokeStyle='#2e7559';fc.lineWidth=12;fc.strokeRect(9,9,702,242);
@@ -240,7 +280,7 @@ buildRoom('maintenance','PHÒNG BẢO TRÌ','maintenance','Bàn bảo trì','ope
 buildRoom('finance','PHÒNG TÀI CHÍNH','finance','Bàn tài chính','data','#e4dfc8');
 Object.entries(window.avpRoomGroups).forEach(([k,g])=>g.visible=k==='lobby');
 window.avpBuildGroup=oldGroup;
-player=new THREE.Group();const female=app.character_gender==='female';const skin=mat('#d9a27c'),shirt=mat(female?'#b64d78':'#3479b7'),pants=mat(female?'#343b57':'#253b50'),shoe=mat('#252a28'),hairMat=mat(female?'#241b1b':'#33271f');function part(geo,material,x,y,z,sx=1,sy=1,sz=1){const m=new THREE.Mesh(geo,material);m.position.set(x,y,z);m.scale.set(sx,sy,sz);m.castShadow=true;player.add(m)}part(new THREE.CapsuleGeometry(.28,.48,5,10),shirt,0,1.02,0,1,1,.8);part(new THREE.SphereGeometry(.205,16,12),skin,0,1.53,-.015,1,1.12,1);part(new THREE.SphereGeometry(.212,16,12,0,Math.PI*2,0,Math.PI*.62),hairMat,0,1.62,.005,1.04,1,1.04);if(female){part(new THREE.ConeGeometry(.19,.34,16),hairMat,0,1.37,.13,1,1,.85)}else{part(new THREE.SphereGeometry(.21,16,10,0,Math.PI*2,0,Math.PI*.35),hairMat,0,1.68,0,1,1,.9)}for(const ex of [-.075,.075]){part(new THREE.SphereGeometry(.025,8,6),mat('#fff9e9'),ex,1.55,-.207);part(new THREE.SphereGeometry(.012,8,6),mat('#20251f'),ex,1.55,-.23)}for(const x of [-.12,.12]){part(new THREE.CapsuleGeometry(.065,.34,4,8),shirt,x,.78,0,.85,1,.9);part(new THREE.SphereGeometry(.075,10,8),skin,x,.57,-.005)}for(const x of [-.105,.105]){part(new THREE.CapsuleGeometry(.075,.36,4,8),pants,x,.34,0,.85,1,.9);part(new THREE.BoxGeometry(.14,.1,.25),shoe,x,.1,-.045)}scene.add(player);const ownRoom=trainingComplete?departmentRoom(app.department):'training';currentRoom=ownRoom;Object.entries(window.avpRoomGroups).forEach(([k,g])=>g.visible=k===ownRoom);roomBounds={minX:-3.15,maxX:3.15,minZ:-3.15,maxZ:3.15};player.position.set(0,0,.7);clock=new THREE.Clock();$('place').textContent='Đang ở: '+roomTitle(ownRoom);updateViewButton();animate();say('Chào '+(app.full_name||'nhân viên')+'. Bạn đang ở '+roomTitle(ownRoom)+'. Cửa ra hành lang ở phía trước.')}
+player=createAnimeCharacter({role:'player',gender:app.character_gender||'male'});const ownRoom=trainingComplete?departmentRoom(app.department):'training';currentRoom=ownRoom;Object.entries(window.avpRoomGroups).forEach(([k,g])=>g.visible=k===ownRoom);roomBounds={minX:-3.15,maxX:3.15,minZ:-3.15,maxZ:3.15};player.position.set(0,0,.7);clock=new THREE.Clock();$('place').textContent='Đang ở: '+roomTitle(ownRoom);updateViewButton();animate();say('Chào '+(app.full_name||'nhân viên')+'. Bạn đang ở '+roomTitle(ownRoom)+'. Cửa ra hành lang ở phía trước.')}
 function updateViewButton(){$('viewBtn').textContent='Góc nhìn: '+(thirdPerson?'Thứ ba':'Thứ nhất');player?.children.forEach(o=>o.visible=thirdPerson)}
 function departmentRoom(dept){const v=String(dept||'').toLowerCase();if(/qc|quality|chất lượng/.test(v))return 'qc';if(/data|dữ liệu|excel|kế toán/.test(v))return 'data';if(/hr|nhân sự|human resource/.test(v))return 'hr';if(/sales|kinh doanh|business/.test(v))return 'sales';if(/operation|vận hành|sản xuất/.test(v))return 'operations';if(/plan|kế hoạch/.test(v))return 'planning';if(/warehouse|kho/.test(v))return 'warehouse';if(/finance|tài chính/.test(v))return 'finance';if(/maintenance|bảo trì/.test(v))return 'maintenance';if(/boss|manager|giám đốc/.test(v))return 'boss';return 'training'}function roomTitle(k){return ({lobby:'SẢNH / HÀNH LANG AVP',training:'PHÒNG ĐÀO TẠO',qc:'PHÒNG QC',data:'PHÒNG DỮ LIỆU',operations:'PHÒNG VẬN HÀNH',boss:'PHÒNG ANH VĂN PHÒNG',hr:'PHÒNG NHÂN SỰ',sales:'PHÒNG KINH DOANH',planning:'PHÒNG KẾ HOẠCH',warehouse:'PHÒNG KHO',finance:'PHÒNG TÀI CHÍNH',maintenance:'PHÒNG BẢO TRÌ',it:'PHÒNG IT'})[k]||'PHÒNG BAN'}function nearestDesk(){let best=null,dist=Infinity;for(const d of desks){if(d.roomKey!==currentRoom)continue;const q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<2.35?best:null}
 function nearestDoor(){if(currentRoom!=='lobby')return null;const doors=[{x:-3.25,z:-11,room:'training',label:'Phòng đào tạo'},{x:3.25,z:-11,room:'qc',label:'Phòng QC'},{x:-3.25,z:-6,room:'data',label:'Phòng dữ liệu'},{x:3.25,z:-6,room:'operations',label:'Phòng vận hành'},{x:-3.25,z:-1,room:'boss',label:'Phòng Anh Văn Phòng'},{x:3.25,z:-1,room:'hr',label:'Phòng nhân sự'},{x:-3.25,z:4,room:'sales',label:'Phòng kinh doanh'},{x:3.25,z:4,room:'planning',label:'Phòng kế hoạch'}];let best=null,dist=Infinity;for(const d of doors){const q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<1.7?best:null}
@@ -256,7 +296,7 @@ function interact(){if(currentRoom!=='lobby'){if(player.position.z < -2.55 && Ma
 function closeComputer(){computerOpen=false;$('computer').classList.remove('open')}
 $('trainingBtn').textContent='Hoàn tất hướng dẫn và mở cửa phòng ban';$('trainingBtn').onclick=()=>{if(!selectedDesk||selectedDesk.kind!=='training'){say('Hãy đến Phòng đào tạo và nhấn E trước.');return}trainingComplete=true;try{localStorage.setItem('avp-office-quest-training-'+user.id,'done')}catch{}$('place').textContent='Đã hoàn tất hướng dẫn · Cửa phòng ban đã mở';$('sheetStatus').textContent='Đã hoàn tất hướng dẫn. Các bàn phòng ban đã mở khóa. Đứng dậy và đi đến biển hiệu QC, Dữ liệu hoặc Vận hành.';closeComputer();say('Hoàn tất hướng dẫn! Các phòng ban đã mở khóa.')};
 function toggleView(){thirdPerson=!thirdPerson;updateViewButton();say(thirdPerson?'Đã chuyển sang góc nhìn thứ ba.':'Đã chuyển sang góc nhìn thứ nhất.')}
-function animate(){requestAnimationFrame(animate);if(!worldReady)return;if(window.avpClockHands){const t=performance.now()/1000;window.avpClockHands.secondHand.rotation.z=-t*2*Math.PI/1.875;window.avpClockHands.minuteHand.rotation.z=-t*2*Math.PI/112.5;window.avpClockHands.hourHand.rotation.z=-t*2*Math.PI/2700;}const dt=Math.min(clock.getDelta(),.04);if(!computerOpen){let f=0,s=0;if(keys.KeyW||keys.ArrowUp)f-=1;if(keys.KeyS||keys.ArrowDown)f+=1;if(keys.KeyA||keys.ArrowLeft)s-=1;if(keys.KeyD||keys.ArrowRight)s+=1;const len=Math.hypot(f,s)||1;f/=len;s/=len;const speed=4*dt;player.position.x+=s*Math.cos(yaw)*speed+f*Math.sin(yaw)*speed;player.position.z+=f*Math.cos(yaw)*speed-s*Math.sin(yaw)*speed;player.position.x=Math.max(roomBounds.minX,Math.min(roomBounds.maxX,player.position.x));player.position.z=Math.max(roomBounds.minZ,Math.min(roomBounds.maxZ,player.position.z));if(f||s){const dx=s*Math.cos(yaw)+f*Math.sin(yaw),dz=f*Math.cos(yaw)-s*Math.sin(yaw);player.rotation.y=Math.atan2(dx,-dz);}if(!thirdPerson){camera.position.set(player.position.x,player.position.y+1.55,player.position.z);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}else{const target=new THREE.Vector3(player.position.x,player.position.y+1.15,player.position.z);const offset=new THREE.Vector3(Math.sin(yaw)*cameraDistance,cameraDistance*.42,Math.cos(yaw)*cameraDistance);camera.position.copy(target).add(offset);camera.lookAt(target)}const d=nearestDesk(),door=nearestDoor();$('place').textContent=currentRoom!=='lobby'?'Đang ở: '+currentRoom.toUpperCase()+(player.position.z < -2.55?' · Nhấn E để ra hành lang':d?' · Nhấn E để ngồi vào bàn':''):door?'Cửa phòng: '+door.label+' · Nhấn E để mở':(!trainingComplete?'Sảnh công ty · Vào phòng đào tạo trước':'Sảnh / hành lang công ty · Tìm cửa phòng ban');}renderer.render(scene,camera)}
+function animate(){requestAnimationFrame(animate);if(!worldReady)return;const idleTime=performance.now()/1000;for(const actor of (window.avpAnimeCharacters||[])){actor.position.y=Math.sin(idleTime*2+actor.userData.idlePhase)*.009;if(actor.userData.animeHead)actor.userData.animeHead.rotation.y=Math.sin(idleTime*.8+actor.userData.idlePhase)*.035;if(actor.userData.waveArm)actor.userData.waveArm.rotation.z=actor.userData.waveBase+Math.sin(idleTime*3.2)*.13}if(window.avpClockHands){const t=performance.now()/1000;window.avpClockHands.secondHand.rotation.z=-t*2*Math.PI/1.875;window.avpClockHands.minuteHand.rotation.z=-t*2*Math.PI/112.5;window.avpClockHands.hourHand.rotation.z=-t*2*Math.PI/2700;}const dt=Math.min(clock.getDelta(),.04);if(!computerOpen){let f=0,s=0;if(keys.KeyW||keys.ArrowUp)f-=1;if(keys.KeyS||keys.ArrowDown)f+=1;if(keys.KeyA||keys.ArrowLeft)s-=1;if(keys.KeyD||keys.ArrowRight)s+=1;const len=Math.hypot(f,s)||1;f/=len;s/=len;const speed=4*dt;player.position.x+=s*Math.cos(yaw)*speed+f*Math.sin(yaw)*speed;player.position.z+=f*Math.cos(yaw)*speed-s*Math.sin(yaw)*speed;player.position.x=Math.max(roomBounds.minX,Math.min(roomBounds.maxX,player.position.x));player.position.z=Math.max(roomBounds.minZ,Math.min(roomBounds.maxZ,player.position.z));if(f||s){const dx=s*Math.cos(yaw)+f*Math.sin(yaw),dz=f*Math.cos(yaw)-s*Math.sin(yaw);player.rotation.y=Math.atan2(dx,-dz);}if(!thirdPerson){camera.position.set(player.position.x,player.position.y+1.55,player.position.z);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch}else{const target=new THREE.Vector3(player.position.x,player.position.y+1.15,player.position.z);const offset=new THREE.Vector3(Math.sin(yaw)*cameraDistance,cameraDistance*.42,Math.cos(yaw)*cameraDistance);camera.position.copy(target).add(offset);camera.lookAt(target)}const d=nearestDesk(),door=nearestDoor();$('place').textContent=currentRoom!=='lobby'?'Đang ở: '+currentRoom.toUpperCase()+(player.position.z < -2.55?' · Nhấn E để ra hành lang':d?' · Nhấn E để ngồi vào bàn':''):door?'Cửa phòng: '+door.label+' · Nhấn E để mở':(!trainingComplete?'Sảnh công ty · Vào phòng đào tạo trước':'Sảnh / hành lang công ty · Tìm cửa phòng ban');}renderer.render(scene,camera)}
 window.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();if(e.key==='Escape'&&computerOpen){closeComputer();return}if(computerOpen)return;keys[e.code]=true;if(e.code==='KeyE')interact();if(e.code==='KeyV')toggleView()});window.addEventListener('keyup',e=>keys[e.code]=false);
 const pad=$('stickpad'),dot=$('stickdot');let padId=null;function padMove(e){const r=pad.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=r.width*.34,len=Math.hypot(dx,dy)||1,scale=Math.min(1,max/len);keys.KeyW=dy/max*scale<-.25;keys.KeyS=dy/max*scale>.25;keys.KeyA=dx/max*scale<-.25;keys.KeyD=dx/max*scale>.25;dot.style.left=(50+dx/max*34*scale)+'%';dot.style.top=(50+dy/max*34*scale)+'%'}function padReset(){padId=null;keys.KeyW=keys.KeyA=keys.KeyS=keys.KeyD=false;dot.style.left='50%';dot.style.top='50%'}pad.addEventListener('pointerdown',e=>{e.preventDefault();padId=e.pointerId;pad.setPointerCapture(e.pointerId);padMove(e)});pad.addEventListener('pointermove',e=>{if(e.pointerId===padId)padMove(e)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>pad.addEventListener(ev,padReset));$('mobileInteract').onclick=interact;$('mobileView').onclick=toggleView;let lookLast=null;
 function beginLook(e){if(e.pointerType==='mouse'&&e.button!==0)return;if(computerOpen)return;lookLast={x:e.clientX,y:e.clientY,id:e.pointerId};try{e.currentTarget.setPointerCapture(e.pointerId)}catch{}}
