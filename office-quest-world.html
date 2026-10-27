@@ -2,13 +2,12 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<meta name="theme-color" content="#10251c"><title>AVP Office Quest — Văn phòng 3D</title>
+<meta name="theme-color" content="#10251c"><title>AVP Office Quest — Văn phòng 2D</title>
 <script src="supabase-config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script><script>try{const c=window.AVP_SUPABASE_CONFIG||{};if(window.supabase&&c.url&&c.publishableKey)window.avpSupabase=window.supabase.createClient(c.url,c.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}catch(e){console.error("Office Quest auth init failed",e)}</script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
 :root{color-scheme:dark;--bg:#102019;--panel:#172d23;--mint:#b8f3c9;--green:#287b4b;--line:#365344}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#effff2;font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}button,input,select{font:inherit}button{cursor:pointer;border:1px solid #456b54;border-radius:10px;padding:9px 12px;background:#234b34;color:#f2fff4;font-weight:700}button:hover{filter:brightness(1.15)}button:disabled{opacity:.45;cursor:not-allowed}#world{position:fixed;inset:0}canvas{display:block}#hud{position:fixed;inset:0;pointer-events:none}.top{position:absolute;left:16px;top:14px;padding:12px 15px;border:1px solid #426451;border-radius:14px;background:#10251cdd;max-width:min(390px,calc(100vw - 32px))}.brand{font-weight:950;letter-spacing:.05em}.brand span{color:var(--mint)}#place{font-size:13px;color:#c4dfcc;margin-top:3px}#onlineStatus{display:flex;align-items:center;gap:7px;margin-top:6px;font-size:11px;color:#d7f1dd}#onlineStatus:before{content:"";width:7px;height:7px;flex:none;border-radius:50%;background:#e7b969;box-shadow:0 0 8px currentColor}#onlineStatus.is-live:before{background:#56d58b;color:#56d58b}#onlineStatus.is-error:before{background:#e77b71;color:#e77b71}.actions{position:absolute;right:16px;top:14px;display:flex;gap:8px;pointer-events:auto;flex-wrap:wrap;justify-content:flex-end}.bottom{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);padding:10px 15px;border-radius:12px;background:#10251cdd;border:1px solid #426451;text-align:center;max-width:calc(100vw - 24px);white-space:nowrap}.toast{position:absolute;left:50%;top:80px;transform:translateX(-50%);background:#f2ffe9;color:#183a25;padding:10px 15px;border-radius:12px;font-weight:800;display:none;max-width:90vw}.panel{position:fixed;z-index:5;inset:4vh 4vw;background:#f7f9ef;color:#1b3023;border:1px solid #b8cdb8;border-radius:18px;box-shadow:0 24px 100px #000b;display:none;flex-direction:column;overflow:hidden}.panel.open{display:flex}.panel header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:#e7f0df;border-bottom:1px solid #cbd9c5}.panel header h2{font-size:18px;margin:0}.panel header p{margin:2px 0 0;color:#607263;font-size:12px}.panel button{background:#246a42;color:white;border-color:#246a42}.panel .ghost{background:#e3ebdd;color:#284432;border-color:#c5d4c1}.toolbar{display:flex;gap:7px;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid #d5e0d1}.sheet-wrap{overflow:auto;flex:1;padding:10px}.sheet{border-collapse:collapse;background:white;color:#18281c;min-width:100%;font-size:13px}.sheet th,.sheet td{border:1px solid #ccd8ca;min-width:110px;height:32px;padding:4px 7px}.sheet th{background:#e7efe3;font-weight:800}.sheet td[contenteditable=true]{outline:none}.sheet td[contenteditable=true]:focus{box-shadow:inset 0 0 0 2px #2d8b50;background:#f5fff3}.formula{padding:8px 12px;background:#fff;border-bottom:1px solid #d5e0d1;display:flex;gap:8px;align-items:center;color:#304c37}.formula input{min-width:0;flex:1;padding:7px;border:1px solid #bdcdb9;border-radius:7px;color:#172d1e;background:white}.statusline{padding:9px 13px;background:#eef4e8;color:#536b56;font-size:12px}.gate{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(ellipse at top,#2a6243,#0e1c15 72%)}.gatecard{max-width:480px;background:#fff9eb;color:#1c3828;padding:28px;border-radius:20px;text-align:center}.gatecard h1{margin-top:0}.gatecard a{color:#176b46}.hidden{display:none!important}.mobilepad{display:none;position:absolute;bottom:20px;left:16px;pointer-events:auto;gap:10px;align-items:center}.stickpad{width:118px;height:118px;border-radius:50%;border:2px solid #ffffff9c;background:#10251c88;position:relative;touch-action:none}.stickdot{position:absolute;width:46px;height:46px;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);background:#e7f7e8e8;border:2px solid #fff}.mobilebuttons{display:flex;flex-direction:column;gap:8px}.mobilebuttons button{min-width:62px;min-height:48px}.lookpad{position:absolute;right:16px;bottom:24px;width:35vw;height:155px;max-width:220px;pointer-events:auto;touch-action:none;border-radius:16px;background:#10251c24;border:1px solid #ffffff25;display:none;align-items:flex-end;justify-content:flex-end;padding:8px;color:#fff;font-size:11px}@media(max-width:650px){.mobilepad{display:flex}.lookpad{display:flex}.top{left:8px;top:8px;padding:9px 11px}.actions{right:8px;top:8px;max-width:48vw}.actions button{font-size:11px;padding:8px}.bottom{bottom:10px;font-size:12px}.panel{inset:2vh 2vw}.panel header h2{font-size:16px}.toolbar button{font-size:11px;padding:8px}.sheet th,.sheet td{min-width:90px}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#effff2;font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}button,input,select{font:inherit}button{cursor:pointer;border:1px solid #456b54;border-radius:10px;padding:9px 12px;background:#234b34;color:#f2fff4;font-weight:700}button:hover{filter:brightness(1.15)}button:disabled{opacity:.45;cursor:not-allowed}#world{position:fixed;inset:0;overflow:hidden;touch-action:none;background:#eadab8}#officeCanvas{display:block;width:100%;height:100%;cursor:default;touch-action:none}#hud{position:fixed;inset:0;pointer-events:none}.top{position:absolute;left:16px;top:14px;padding:12px 15px;border:1px solid #426451;border-radius:14px;background:#10251cdd;max-width:min(390px,calc(100vw - 32px))}.brand{font-weight:950;letter-spacing:.05em}.brand span{color:var(--mint)}#place{font-size:13px;color:#c4dfcc;margin-top:3px}#onlineStatus{display:flex;align-items:center;gap:7px;margin-top:6px;font-size:11px;color:#d7f1dd}#onlineStatus:before{content:"";width:7px;height:7px;flex:none;border-radius:50%;background:#e7b969;box-shadow:0 0 8px currentColor}#onlineStatus.is-live:before{background:#56d58b;color:#56d58b}#onlineStatus.is-error:before{background:#e77b71;color:#e77b71}.actions{position:absolute;right:16px;top:14px;display:flex;gap:8px;pointer-events:auto;flex-wrap:wrap;justify-content:flex-end}.bottom{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);padding:10px 15px;border-radius:12px;background:#10251cdd;border:1px solid #426451;text-align:center;max-width:calc(100vw - 24px);white-space:nowrap}.toast{position:absolute;left:50%;top:80px;transform:translateX(-50%);background:#f2ffe9;color:#183a25;padding:10px 15px;border-radius:12px;font-weight:800;display:none;max-width:90vw}.panel{position:fixed;z-index:5;inset:4vh 4vw;background:#f7f9ef;color:#1b3023;border:1px solid #b8cdb8;border-radius:18px;box-shadow:0 24px 100px #000b;display:none;flex-direction:column;overflow:hidden}.panel.open{display:flex}.panel header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:#e7f0df;border-bottom:1px solid #cbd9c5}.panel header h2{font-size:18px;margin:0}.panel header p{margin:2px 0 0;color:#607263;font-size:12px}.panel button{background:#246a42;color:white;border-color:#246a42}.panel .ghost{background:#e3ebdd;color:#284432;border-color:#c5d4c1}.toolbar{display:flex;gap:7px;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid #d5e0d1}.sheet-wrap{overflow:auto;flex:1;padding:10px}.sheet{border-collapse:collapse;background:white;color:#18281c;min-width:100%;font-size:13px}.sheet th,.sheet td{border:1px solid #ccd8ca;min-width:110px;height:32px;padding:4px 7px}.sheet th{background:#e7efe3;font-weight:800}.sheet td[contenteditable=true]{outline:none}.sheet td[contenteditable=true]:focus{box-shadow:inset 0 0 0 2px #2d8b50;background:#f5fff3}.formula{padding:8px 12px;background:#fff;border-bottom:1px solid #d5e0d1;display:flex;gap:8px;align-items:center;color:#304c37}.formula input{min-width:0;flex:1;padding:7px;border:1px solid #bdcdb9;border-radius:7px;color:#172d1e;background:white}.statusline{padding:9px 13px;background:#eef4e8;color:#536b56;font-size:12px}.gate{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(ellipse at top,#2a6243,#0e1c15 72%)}.gatecard{max-width:480px;background:#fff9eb;color:#1c3828;padding:28px;border-radius:20px;text-align:center}.gatecard h1{margin-top:0}.gatecard a{color:#176b46}.hidden{display:none!important}.mobilepad{display:none;position:absolute;bottom:20px;left:16px;pointer-events:auto;gap:10px;align-items:center}.stickpad{width:118px;height:118px;border-radius:50%;border:2px solid #ffffff9c;background:#10251c88;position:relative;touch-action:none}.stickdot{position:absolute;width:46px;height:46px;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);background:#e7f7e8e8;border:2px solid #fff}.mobilebuttons{display:flex;flex-direction:column;gap:8px}.mobilebuttons button{min-width:62px;min-height:48px}@media(max-width:650px){.mobilepad{display:flex}.top{left:8px;top:8px;padding:9px 11px}.actions{right:8px;top:8px;max-width:48vw}.actions button{font-size:11px;padding:8px}.bottom{bottom:10px;font-size:12px}.panel{inset:2vh 2vw}.panel header h2{font-size:16px}.toolbar button{font-size:11px;padding:8px}.sheet th,.sheet td{min-width:90px}}
 
 /* Office Quest: suppress site-wide chat widgets and overlays on this game page. */
 #avpChatBubble,#avpChatLazyRoot,#avpAiChatRoot,#avpAiChatLauncher,#avpAiChatWidget,[id*="avpChat"],[id*="avpAiChat"],[class*="ai-chat"],[class*="admin-chat"]{display:none!important;visibility:hidden!important;pointer-events:none!important}
@@ -70,7 +69,7 @@
 </style></head>
 <body>
 <div id="world"></div>
-<div id="hud"><div class="top"><div class="brand">AVP <span>OFFICE QUEST</span></div><div id="place">Đang tải văn phòng…</div><div id="onlineStatus" aria-live="polite">Đang kết nối danh sách nhân viên…</div></div><div class="actions"><button id="viewBtn">Góc nhìn: Thứ ba</button><button id="helpBtn">Hướng dẫn</button><button id="exitBtn">Rời văn phòng</button></div><div class="bottom">W A S D / phím mũi tên: di chuyển · E: tương tác · V: đổi góc nhìn</div><div class="mobilepad"><div class="stickpad" id="stickpad"><div class="stickdot" id="stickdot"></div></div><div class="mobilebuttons"><button id="mobileInteract">TƯƠNG TÁC</button><button id="mobileView">ĐỔI GÓC</button></div></div><div class="lookpad" id="lookpad">Kéo để xoay camera</div><div id="toast" class="toast"></div></div>
+<div id="hud"><div class="top"><div class="brand">AVP <span>OFFICE QUEST</span></div><div id="place">Đang tải văn phòng…</div><div id="onlineStatus" aria-live="polite">Đang kết nối danh sách nhân viên…</div></div><div class="actions"><button id="helpBtn">Hướng dẫn</button><button id="exitBtn">Rời văn phòng</button></div><div class="bottom">W A S D / phím mũi tên: di chuyển · E: tương tác · Lăn chuột: thu phóng</div><div class="mobilepad"><div class="stickpad" id="stickpad"><div class="stickdot" id="stickdot"></div></div><div class="mobilebuttons"><button id="mobileInteract">TƯƠNG TÁC</button></div></div><div id="toast" class="toast"></div></div>
 <div id="gate" class="gate"><div class="gatecard"><h1>AVP Office Quest</h1><p id="gateMsg">Đang xác minh hồ sơ nhân viên…</p><button id="retryBtn" class="hidden">Thử kết nối lại</button></div></div>
 <section id="computer" class="panel" aria-label="Máy tính bàn làm việc">
 <header><div><h2 id="computerTitle">Máy tính bàn làm việc</h2><p>Không gian thực hành dữ liệu · Có thể nhập và sửa ô trực tiếp</p></div><button id="standBtn">Đứng dậy (Esc)</button></header>
@@ -87,7 +86,7 @@
 <section id="dialogPanel" class="dialog-panel" hidden><div class="dialog-card"><div class="dialog-person"><span id="dialogAvatar">AVP</span><div><b id="dialogName">Đồng nghiệp</b><small id="dialogRole"></small></div><button id="dialogClose">×</button></div><p id="dialogText"></p><div id="dialogChoices" class="dialog-choices"></div></div></section>
 <script>
 (()=>{
-const $=id=>document.getElementById(id);let sb=null,user=null,app=null,renderer,scene,camera,player,clock;let thirdPerson=true,overviewMode=true,computerOpen=false,phoneOpen=false,dialogOpen=false,selectedDesk=null,keys={},yaw=0,pitch=-.08,cameraDistance=3.8,mapViewHeight=54,worldReady=false,trainingComplete=false,currentRoom='lobby',roomBounds={minX:-29,maxX:29,minZ:-28,maxZ:28};let cells=[],selectedCell={r:0,c:0};const desks=[];let officeRealtimeChannel=null,officeRealtimeReady=false,officeJoinSequence=0,lastOfficeBroadcastAt=0,lastOfficeBroadcastPos=null;const remoteOfficePlayers=new Map();
+const $=id=>document.getElementById(id);let sb=null,user=null,app=null,canvas2d,ctx,scene,player;let zoom=1,computerOpen=false,phoneOpen=false,dialogOpen=false,selectedDesk=null,keys={},yaw=0,worldReady=false,trainingComplete=false,currentRoom='lobby',roomBounds={minX:-29,maxX:29,minZ:-28,maxZ:28};let cells=[],selectedCell={r:0,c:0};const desks=[];let officeRealtimeChannel=null,officeRealtimeReady=false,officeJoinSequence=0,lastOfficeBroadcastAt=0,lastOfficeBroadcastPos=null;const remoteOfficePlayers=new Map();
 let officeSim={tasks:[],notifications:[],threads:{},lastAutoAt:0,workCount:0};
 let activeContact='director',phoneView='tasks';
 const contacts={director:'Anh Văn Phòng',reception:'Lễ tân Mai',qc:'Linh · QC',data:'Minh · Dữ liệu',hr:'An · Nhân sự',sales:'Vy · Kinh doanh',operations:'Huy · Vận hành',planning:'Lan · Kế hoạch'};
@@ -103,13 +102,9 @@ function makeOfficeNameplate(name,department){
  c.fillStyle='rgba(14,37,27,.92)';c.beginPath();c.roundRect(10,10,620,130,28);c.fill();c.strokeStyle='#8ed0a4';c.lineWidth=5;c.stroke();
  c.textAlign='center';c.textBaseline='middle';c.fillStyle='#f6fff7';c.font='700 42px system-ui';c.fillText(String(name||'Nhân viên').slice(0,26),320,60,570);
  c.fillStyle='#bee3c5';c.font='600 25px system-ui';c.fillText('AVP · '+String(department||'Nhân viên').toUpperCase(),320,105,570);
- const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false}));
- sprite.position.set(0,2.25,0);sprite.scale.set(1.65,.39,1);sprite.renderOrder=5;return sprite;
+ return {name:String(name||''),department:String(department||'')};
 }
-function disposeRemoteAvatar(root){
- if(!root)return;root.traverse(obj=>{if(obj.geometry)obj.geometry.dispose();if(obj.material){const mats=Array.isArray(obj.material)?obj.material:[obj.material];for(const m of mats){if(m.map)m.map.dispose();m.dispose()}}});
- scene?.remove(root);const actors=window.avpAnimeCharacters||[],index=actors.indexOf(root);if(index>=0)actors.splice(index,1);
-}
+function disposeRemoteAvatar(root){if(!root)return;scene?.remove(root);const actors=window.avpAnimeCharacters||[],index=actors.indexOf(root);if(index>=0)actors.splice(index,1)}
 function clearOfficeRemotePlayers(){for(const p of remoteOfficePlayers.values())disposeRemoteAvatar(p.root);remoteOfficePlayers.clear()}
 function officeRoomCount(){
  if(!officeRealtimeChannel)return 1;const state=officeRealtimeChannel.presenceState(),ids=new Set();
@@ -117,17 +112,7 @@ function officeRoomCount(){
  return Math.max(1,ids.size);
 }
 function updateOfficeCount(){const count=officeRoomCount();setOfficeOnlineStatus(count+' nhân viên đang trong công ty','live')}
-function upsertOfficeRemotePlayer(meta,room=currentRoom){
- if(!meta||!user||meta.user_id===user.id)return;
- const id=String(meta.user_id||'');if(!/^[0-9a-f-]{30,40}$/i.test(id))return;
- const px=Number(meta.x),pz=Number(meta.z),rotation=Number(meta.yaw)||0;if(!Number.isFinite(px)||!Number.isFinite(pz))return;
- const x=Math.max(-29,Math.min(29,px)),z=Math.max(-28,Math.min(28,pz));let remote=remoteOfficePlayers.get(id);
- if(!remote){
-  const root=createAnimeCharacter({role:'player',gender:meta.gender==='female'?'female':'male'});root.name='Đồng nghiệp '+String(meta.display_name||'');root.add(makeOfficeNameplate(meta.display_name,meta.department));scene.add(root);
-  remote={root,targetX:x,targetZ:z,targetYaw:rotation};remoteOfficePlayers.set(id,remote);root.position.set(x,0,z);root.rotation.y=rotation;
- }else{remote.targetX=x;remote.targetZ=z;remote.targetYaw=rotation}
- updateOfficeCount();
-}
+function upsertOfficeRemotePlayer(meta,room=currentRoom){if(!meta||!user||meta.user_id===user.id)return;const id=String(meta.user_id||'');if(!/^[0-9a-f-]{30,40}$/i.test(id))return;const x=Math.max(-29,Math.min(29,Number(meta.x))),z=Math.max(-28,Math.min(28,Number(meta.z))),rotation=Number(meta.yaw)||0;if(!Number.isFinite(x)||!Number.isFinite(z))return;let remote=remoteOfficePlayers.get(id);if(!remote){const root=createAnimeCharacter({role:'player',gender:meta.gender==='female'?'female':'male'});root.name=String(meta.display_name||'Đồng nghiệp');root.position.set(x,0,z);root.rotation.y=rotation;scene.add(root);remote={root,targetX:x,targetZ:z,targetYaw:rotation,gender:meta.gender,name:String(meta.display_name||'Đồng nghiệp')};remoteOfficePlayers.set(id,remote)}else{remote.targetX=x;remote.targetZ=z;remote.targetYaw=rotation;remote.gender=meta.gender;remote.name=String(meta.display_name||remote.name)}updateOfficeCount()}
 function handleOfficeMove(payload,room){
  if(!payload)return;const state=officeRealtimeChannel?.presenceState?.()||{};let trusted=null;
  for(const group of Object.values(state))for(const meta of group||[])if(meta?.user_id===payload.user_id){trusted=meta;break}
@@ -149,13 +134,7 @@ function broadcastPlayerPosition(force=false){
  officeRealtimeChannel.send({type:'broadcast',event:'player-move',payload:{user_id:user.id,display_name:app?.full_name||'Nhân viên',department:app?.department||'',gender:app?.character_gender||'male',room:currentRoom,x,z,yaw:yawNow}}).catch(()=>{});
 }
 async function updateOfficePresenceRoom(){if(!officeRealtimeReady||!officeRealtimeChannel||!user)return;try{await officeRealtimeChannel.track({user_id:user.id,display_name:app?.full_name||'Nhân viên',department:app?.department||'',gender:app?.character_gender||'male',room:currentRoom,x:player.position.x,z:player.position.z,yaw:player.rotation.y})}catch{}}
-function updateOfficeRemotePlayers(dt){
- const alpha=1-Math.exp(-Math.max(0,dt)*12);
- for(const remote of remoteOfficePlayers.values()){
-  remote.root.position.x+=(remote.targetX-remote.root.position.x)*alpha;remote.root.position.z+=(remote.targetZ-remote.root.position.z)*alpha;
-  const delta=Math.atan2(Math.sin(remote.targetYaw-remote.root.rotation.y),Math.cos(remote.targetYaw-remote.root.rotation.y));remote.root.rotation.y+=delta*alpha;
- }
-}
+function updateOfficeRemotePlayers(dt){const alpha=1-Math.exp(-Math.max(0,dt)*12);for(const remote of remoteOfficePlayers.values()){remote.root.position.x+=(remote.targetX-remote.root.position.x)*alpha;remote.root.position.z+=(remote.targetZ-remote.root.position.z)*alpha;const delta=Math.atan2(Math.sin(remote.targetYaw-remote.root.rotation.y),Math.cos(remote.targetYaw-remote.root.rotation.y));remote.root.rotation.y+=delta*alpha}}
 async function subscribeOfficeRoom(room){
  if(!sb||!user||!scene)return;const generation=++officeJoinSequence,old=officeRealtimeChannel;
  officeRealtimeChannel=null;officeRealtimeReady=false;clearOfficeRemotePlayers();lastOfficeBroadcastPos=null;
@@ -297,7 +276,7 @@ function showDialogue(person){dialogOpen=true;
   ['Kết thúc cuộc trò chuyện',()=>closeDialogue()]
  ]:[
   ['Chỉ đường tới phòng ban của tôi',()=>{$('dialogText').textContent='Phòng của bạn: '+roomTitle(currentDepartment())+'. Hãy đi theo biển tên ở hành lang rồi nhấn E tại cửa.'}],
-  ['Xem sơ đồ và cách dùng máy tính',()=>{$('dialogText').textContent='Dùng W A S D để đi, E để tương tác, V đổi góc nhìn. Chỉ bàn máy tính trong phòng ban được phân công mới cho phép làm việc.'}],
+  ['Xem sơ đồ và cách dùng máy tính',()=>{$('dialogText').textContent='Dùng W A S D để đi, E để tương tác, lăn chuột để thu phóng. Chỉ bàn máy tính trong phòng ban được phân công mới cho phép làm việc.'}],
   ['Nhắn Anh Văn Phòng',()=>{officeSim.threads.director.push({from:'Bạn',text:'Em đang ở sảnh và muốn trao đổi với Anh Văn Phòng.',mine:true,at:Date.now()});saveOfficeSim();notifyPhone('Lễ tân đã chuyển lời nhắn tới Anh Văn Phòng.','Đã chuyển lời nhắn');closeDialogue()}],
   ['Kết thúc cuộc trò chuyện',()=>closeDialogue()]
  ];
@@ -308,289 +287,47 @@ function closeDialogue(){dialogOpen=false;$('dialogPanel').hidden=true}
 
 function gate(msg, retry=false){$('gateMsg').textContent=msg;$('retryBtn').classList.toggle('hidden',!retry);$('gate').classList.remove('hidden')}
 function withTimeout(p,ms,message){return Promise.race([p,new Promise((_,reject)=>setTimeout(()=>reject(Error(message)),ms))])}
-async function verifyAccess(){gate('Đang kết nối AVP…');try{for(let i=0;i<50&&!window.avpSupabase;i++)await new Promise(r=>setTimeout(r,100));sb=window.avpSupabase;if(!sb)throw Error('Không tải được thư viện đăng nhập. Kiểm tra mạng hoặc trình chặn nội dung rồi thử lại.');gate('Đang xác minh tài khoản…');const auth=await withTimeout(sb.auth.getUser(),10000,'Máy chủ đăng nhập phản hồi quá lâu. Kiểm tra mạng rồi bấm Thử kết nối lại.');const {data,error}=auth;if(error)throw error;user=data.user;if(!user){gate('Bạn cần đăng nhập website AVP trước khi vào văn phòng.');return}gate('Đang kiểm tra trạng thái hồ sơ…');const result=await withTimeout(sb.from('office_quest_applications').select('status,department,full_name,character_gender,admin_note').eq('user_id',user.id).maybeSingle(),10000,'Máy chủ hồ sơ phản hồi quá lâu. Bấm Thử kết nối lại.');if(result.error)throw result.error;app=result.data;if(!app||app.status!=='approved'){gate(app?.status==='pending'?'Hồ sơ đang chờ Anh Văn Phòng duyệt.':app?.status==='rejected'?'Hồ sơ cần bổ sung: '+(app.admin_note||'Vui lòng liên hệ Admin.'):'Chưa tìm thấy hồ sơ được duyệt. Hãy quay lại trang Office Quest để nộp CV.');return}if(!window.THREE)throw Error('Thư viện dựng hình 3D chưa tải xong. Hãy tải lại trang.');trainingComplete=localStorage.getItem('avp-office-quest-training-'+user.id)==='done';loadOfficeSimulation();$('gate').classList.add('hidden');initWorld();}catch(e){gate('Không thể xác minh quyền vào game: '+(e.message||e),true)}}
+async function verifyAccess(){gate('Đang kết nối AVP…');try{for(let i=0;i<50&&!window.avpSupabase;i++)await new Promise(r=>setTimeout(r,100));sb=window.avpSupabase;if(!sb)throw Error('Không tải được thư viện đăng nhập. Kiểm tra mạng hoặc trình chặn nội dung rồi thử lại.');gate('Đang xác minh tài khoản…');const auth=await withTimeout(sb.auth.getUser(),10000,'Máy chủ đăng nhập phản hồi quá lâu. Kiểm tra mạng rồi bấm Thử kết nối lại.');const {data,error}=auth;if(error)throw error;user=data.user;if(!user){gate('Bạn cần đăng nhập website AVP trước khi vào văn phòng.');return}gate('Đang kiểm tra trạng thái hồ sơ…');const result=await withTimeout(sb.from('office_quest_applications').select('status,department,full_name,character_gender,admin_note').eq('user_id',user.id).maybeSingle(),10000,'Máy chủ hồ sơ phản hồi quá lâu. Bấm Thử kết nối lại.');if(result.error)throw result.error;app=result.data;if(!app||app.status!=='approved'){gate(app?.status==='pending'?'Hồ sơ đang chờ Anh Văn Phòng duyệt.':app?.status==='rejected'?'Hồ sơ cần bổ sung: '+(app.admin_note||'Vui lòng liên hệ Admin.'):'Chưa tìm thấy hồ sơ được duyệt. Hãy quay lại trang Office Quest để nộp CV.');return}trainingComplete=localStorage.getItem('avp-office-quest-training-'+user.id)==='done';loadOfficeSimulation();$('gate').classList.add('hidden');initWorld();}catch(e){gate('Không thể xác minh quyền vào game: '+(e.message||e),true)}}
 $('retryBtn').onclick=verifyAccess;
-function mat(color,rough=.82){return new THREE.MeshStandardMaterial({color,roughness:rough})}
-function box(w,h,d,x,y,z,material,collide=true){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;m.userData.collide=collide;(window.avpBuildGroup||scene).add(m);return m}
-function label(text,x,y,z,color='#ffffff',opts={}){const c=document.createElement('canvas');c.width=512;c.height=96;const ctx=c.getContext('2d');ctx.fillStyle='#10251c';ctx.fillRect(0,0,512,96);ctx.fillStyle=color;ctx.font='bold 27px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,48,480);const tex=new THREE.CanvasTexture(c);const m=new THREE.Mesh(new THREE.PlaneGeometry(opts.w||2.4,opts.h||.45),new THREE.MeshBasicMaterial({map:tex,side:THREE.FrontSide}));m.position.set(x,y,z);if(opts.rotationY!==undefined)m.rotation.y=opts.rotationY;else if(opts.inward)m.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(m);return m}
-function poster(title,sub,kind,x,y,z,inward=false){const c=document.createElement('canvas');c.width=640;c.height=360;const q=c.getContext('2d');q.fillStyle='#f3edda';q.fillRect(0,0,640,360);const accent=kind==='boss'?'#244c39':kind==='qc'?'#28654b':kind==='data'?'#315e78':kind==='operations'?'#8a5a2b':'#315d49';q.fillStyle=accent;q.fillRect(12,12,616,336);q.fillStyle='#f6f2df';q.fillRect(24,24,592,312);q.fillStyle=accent;q.font='bold 34px system-ui';q.textAlign='center';q.fillText(title,320,70,560);q.strokeStyle='#c6a85a';q.lineWidth=5;q.beginPath();q.moveTo(70,92);q.lineTo(570,92);q.stroke();if(kind==='qc'){q.fillStyle='#d9eee0';q.beginPath();q.arc(320,178,58,0,Math.PI*2);q.fill();q.strokeStyle=accent;q.lineWidth=13;q.beginPath();q.moveTo(286,178);q.lineTo(310,204);q.lineTo(358,145);q.stroke()}else if(kind==='data'){q.fillStyle=accent;for(let i=0;i<5;i++)q.fillRect(185+i*58,220-(i%3)*30,34,70+(i%3)*30);q.strokeStyle='#c6a85a';q.lineWidth=5;q.beginPath();q.moveTo(170,240);q.lineTo(455,145);q.stroke()}else if(kind==='operations'){q.fillStyle='#d9a441';q.beginPath();q.moveTo(320,120);q.lineTo(370,210);q.lineTo(270,210);q.closePath();q.fill()}else{q.fillStyle='#d9a441';q.beginPath();q.arc(320,172,45,Math.PI,Math.PI*2);q.lineTo(365,200);q.lineTo(275,200);q.closePath();q.fill()}q.fillStyle='#203d2c';q.font='bold 23px system-ui';q.fillText(sub,320,300,560);const tex=new THREE.CanvasTexture(c);const m=new THREE.Mesh(new THREE.PlaneGeometry(2.45,1.38),new THREE.MeshBasicMaterial({map:tex,side:THREE.FrontSide}));m.position.set(x,y,z);if(inward===true)m.rotation.y=Math.PI;else if(inward==='left')m.rotation.y=Math.PI/2;else if(inward==='right')m.rotation.y=-Math.PI/2;else m.rotation.y=0;(window.avpBuildGroup||scene).add(m);// No detached frame bars: poster is a single clean wall-mounted panel.
+function createAnimeCharacter(options={}){const role=String(options.role||'player');return {name:'AVP '+role,userData:{role,gender:options.gender||'male'},position:{x:0,y:0,z:0,set(x,y,z){this.x=x;this.y=y;this.z=z}},rotation:{y:0},add(){},traverse(){}}}
+function initWorld(){if(worldReady)return;worldReady=true;const host=$('world');canvas2d=document.createElement('canvas');canvas2d.id='officeCanvas';host.appendChild(canvas2d);ctx=canvas2d.getContext('2d');scene={add(){},remove(){}};
+ window.avpRoomOffsets={lobby:{x:0,z:0},training:{x:-12,z:-20},qc:{x:0,z:-20},data:{x:12,z:-20},operations:{x:24,z:-20},boss:{x:24,z:0},hr:{x:12,z:0},sales:{x:0,z:20},planning:{x:12,z:20},warehouse:{x:24,z:20},maintenance:{x:-24,z:20},finance:{x:-12,z:20},meeting:{x:-24,z:0},pantry:{x:-12,z:0},it:{x:-24,z:-20}};
+ window.avpRoomGroups={};window.avpAnimeCharacters=[];desks.length=0;const defs={training:['Bàn hướng dẫn','training'],qc:['Bàn QC','qc'],data:['Bàn dữ liệu','data'],operations:['Bàn vận hành','operations'],boss:['Bàn giám đốc — Anh Văn Phòng','boss'],hr:['Bàn nhân sự','operations'],sales:['Bàn kinh doanh','sales'],planning:['Bàn kế hoạch','data'],warehouse:['Bàn kho','operations'],maintenance:['Bàn bảo trì','operations'],finance:['Bàn tài chính','data'],meeting:['Bàn họp','shared'],pantry:['Bàn pantry','shared'],it:['Trạm hỗ trợ IT','data']};for(const [key,v] of Object.entries(defs)){const xs=key==='training'?[-2.07,2.07]:[-1.4,1.4];for(const x of xs)desks.push({room:key,roomKey:key,x,z:1,name:v[0],kind:v[1]})}
+ resizeOfficeCanvas();window.addEventListener('resize',()=>{resizeOfficeCanvas();drawOffice()});canvas2d.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.56,Math.min(2.6,zoom*(e.deltaY<0?1.12:.89)));drawOffice()},{passive:false});
+ window.avpReceptionist={x:0,z:.8};window.avpBoss={x:24,z:.67};const ownRoom=trainingComplete?departmentRoom(app.department):'training',o=roomOffset(ownRoom);player=createAnimeCharacter({role:'player',gender:app.character_gender||'male'});player.position.set(o.x,0,o.z+.7);currentRoom=ownRoom;$('place').textContent='Đang ở: '+roomTitle(ownRoom);drawOffice();animate();subscribeOfficeRoom(currentRoom);say('Chào '+(app.full_name||'nhân viên')+'. Lăn chuột để phóng to, W A S D để di chuyển.')
 }
-function makeDesk(x,z,name,kind){box(2.1,.16,1.05,x,.95,z,mat('#9b7049'));box(.13,.9,.13,x-.85,.48,z-.38,mat('#6b4b31'));box(.13,.9,.13,x+.85,.48,z-.38,mat('#6b4b31'));box(.13,.9,.13,x-.85,.48,z+.38,mat('#6b4b31'));box(.13,.9,.13,x+.85,.48,z+.38,mat('#6b4b31'));box(.9,.55,.07,x,1.39,z-.25,mat('#202b29'));box(.82,.45,.025,x,1.40,z-.205,mat('#74b6a0'),false);box(.14,.22,.14,x,1.10,z-.23,mat('#46554b'));box(.48,.035,.24,x,1.07,z+.08,mat('#d6ded2'),false);box(.12,.018,.18,x+.34,1.07,z+.08,mat('#d6ded2'),false);const chairLeg=mat(kind==='boss'?'#4b3a63':'#40574a'),chairSeat=mat(kind==='boss'?'#72578f':'#334a3a');box(.55,.035,.38,x,.08,z+.72,chairLeg);box(.55,.07,.55,x,.48,z+.72,chairSeat);if(kind==='boss')box(.62,.86,.14,x,.98,z+1.08,mat('#5b4679'),false);const obj={x,z,name,kind,roomKey:window.avpBuildingRoom||'lobby'};desks.push(obj)}
-function lobbyPlant(x,z){
- const group=window.avpBuildGroup||scene;
- box(.48,.10,.48,x,.10,z,mat('#e9e5d8'),false);
- const pot=new THREE.Mesh(new THREE.CylinderGeometry(.20,.27,.52,12),mat('#e6e0d2'));pot.position.set(x,.39,z);pot.castShadow=true;group.add(pot);
- const stemMat=mat('#477b4e');
- for(const a of [-1.0,-.45,.25,.8,1.45]){const leaf=new THREE.Mesh(new THREE.SphereGeometry(.13,10,8),stemMat);leaf.scale.set(.55,1.8,.42);leaf.position.set(x+Math.sin(a)*.28,.82+Math.cos(a)*.10,z+Math.cos(a)*.22);leaf.rotation.z=-Math.sin(a)*.6;leaf.castShadow=true;group.add(leaf)}
- const crown=new THREE.Mesh(new THREE.SphereGeometry(.22,12,10),mat('#5f9b61'));crown.position.set(x,1.08,z);crown.scale.set(1.05,1.25,1.0);group.add(crown);
-}
-function createAnimeCharacter(options={}){
- const role=options.role||'player',gender=options.gender||'male',isFemale=gender==='female';
- const toonRamp=new THREE.DataTexture(new Uint8Array([72,72,72,255,158,158,158,255,255,255,255,255]),3,1,THREE.RGBAFormat);
- toonRamp.magFilter=THREE.NearestFilter;toonRamp.minFilter=THREE.NearestFilter;toonRamp.generateMipmaps=false;toonRamp.needsUpdate=true;
- const material=c=>new THREE.MeshToonMaterial({color:c,gradientMap:toonRamp});
- const palette=role==='boss'?{skin:'#f2c8a5',hair:'#29222d',coat:'#223c5b',shirt:'#fff5dd',tie:'#c3515c',pants:'#25334a',accent:'#d6ae57'}:role==='receptionist'?{skin:'#f5c9ae',hair:'#442838',coat:'#16775b',shirt:'#fff8ef',tie:'#e783a1',pants:'#38435b',accent:'#e6c567'}:isFemale?{skin:'#efc09f',hair:'#34243b',coat:'#934d72',shirt:'#fff4e7',tie:'#e0ad61',pants:'#3e4059',accent:'#f0c879'}:{skin:'#e9b894',hair:'#30252a',coat:'#3268a2',shirt:'#f7f3e7',tie:'#e3ae54',pants:'#293c54',accent:'#e6c36e'};
- const root=new THREE.Group(),head=new THREE.Group();root.name='Anime '+role;head.position.y=1.60;root.add(head);
- function part(parent,geo,color,pos,scale,rot){const o=new THREE.Mesh(geo,material(color));o.position.set(pos[0],pos[1],pos[2]);if(scale)o.scale.set(scale[0],scale[1],scale[2]);if(rot)o.rotation.set(rot[0],rot[1],rot[2]);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
- const sphere=(parent,c,pos,scale)=>part(parent,new THREE.SphereGeometry(1,32,24),c,pos,scale);
- const capsule=(parent,c,pos,r,len,rot)=>part(parent,new THREE.CapsuleGeometry(r,len,8,16),c,pos,null,rot);
- // Tailored suit, shaped shoulders, crisp shirt, tie and fitted trousers.
- sphere(root,palette.pants,[0,role==='boss'?.60:.72,0],[.26,.25,.19]);
- sphere(root,palette.coat,[0,1.10,0],[.34,.43,.23]);
- sphere(root,palette.shirt,[0,1.14,.178],[.15,.30,.045]);
- for(const side of [-1,1]){
-  part(root,new THREE.ConeGeometry(.105,.22,4),palette.shirt,[side*.09,1.43,.17],[1,1,.4],[0,0,side*.18]);
-  if(role==='boss'){capsule(root,palette.pants,[side*.115,.55,.22],.095,.30,[Math.PI/2,0,0]);capsule(root,palette.pants,[side*.115,.31,.34],.085,.30,[.10,0,0]);sphere(root,'#292b38',[side*.12,.105,.52],[.125,.095,.23])}
-  else{capsule(root,palette.pants,[side*.115,.39,0],.095,.40,[side*.015,0,side*.03]);sphere(root,'#292b38',[side*.12,.105,.045],[.125,.095,.23])}
- }
- part(root,new THREE.ConeGeometry(.065,.26,4),palette.tie,[0,1.14,.228],[.76,1,.28]);
- const arms=[];
- for(const side of [-1,1]){
-  const armRoot=new THREE.Group();armRoot.position.set(side*.34,1.36,0);root.add(armRoot);
-  capsule(armRoot,palette.coat,[0,-.22,0],.078,.38,[0,0,side*.08]);
-  sphere(armRoot,palette.skin,[0,-.47,.015],[.085,.09,.09]);
-  if(role==='boss')armRoot.rotation.x=-1.12;arms.push(armRoot);
- }
- // Large expressive anime eyes with iris rings, twin catchlights and fine brows.
- sphere(head,palette.skin,[0,0,0],[.295,.32,.245]);
- for(const side of [-1,1]){
-  sphere(head,palette.skin,[side*.292,-.015,0],[.065,.10,.065]);
-  sphere(head,palette.hair,[side*.205,.13,-.035],[.105,.15,.16]);
-  sphere(head,'#fffdf7',[side*.108,.035,.214],[.092,.128,.054]);
-  sphere(head,isFemale?'#53a99c':'#4f82c5',[side*.106,.025,.257],[.057,.088,.027]);
-  sphere(head,'#211b29',[side*.106,.018,.279],[.031,.059,.018]);
-  sphere(head,'#ffffff',[side*.126,.065,.294],[.023,.03,.012]);
-  sphere(head,'#ffffff',[side*.083,-.005,.294],[.010,.014,.008]);
-  capsule(head,palette.hair,[side*.108,.19,.218],.014,.115,[0,0,side*.10]);
- }
- sphere(head,palette.skin,[0,-.065,.242],[.030,.038,.027]);
- const smileCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(-.055,-.145,.222),new THREE.Vector3(0,-.164,.238),new THREE.Vector3(.055,-.145,.222)]);
- const smile=new THREE.Mesh(new THREE.TubeGeometry(smileCurve,16,.008,6,false),material(role==='boss'?'#9f5260':'#b85f72'));head.add(smile);
- // Sculpted hair cap, separate bangs and side locks create a clean anime silhouette.
- sphere(head,palette.hair,[0,.245,-.015],[.307,.185,.266]);
- if(isFemale){
-  sphere(head,palette.hair,[0,-.17,-.105],[.28,.34,.19]);
-  for(const side of [-1,1])capsule(head,palette.hair,[side*.255,-.12,-.015],.085,.38,[0,0,-side*.08]);
-  for(const [x,y,r] of [[-.22,.20,-.35],[-.12,.255,-.20],[0,.27,0],[.12,.25,.18],[.22,.19,.35]])part(head,new THREE.ConeGeometry(.105,.25,12),palette.hair,[x,y,.12],[1.05,.92,.72],[0,0,r]);
-  if(role==='receptionist'||role==='player')sphere(head,palette.tie,[-.23,.32,.09],[.075,.04,.045]);
- }else{
-  sphere(head,palette.hair,[0,.16,-.12],[.285,.25,.18]);
-  for(const [x,y,r] of [[-.21,.18,-.38],[-.12,.255,-.22],[-.015,.285,-.08],[.11,.27,.16],[.215,.19,.34]])part(head,new THREE.ConeGeometry(.095,.22,12),palette.hair,[x,y,.12],[1,.94,.72],[0,0,r]);
-  sphere(head,palette.hair,[.27,-.03,-.02],[.065,.16,.10]);
- }
- // Animated office ID badge with a readable role label.
- const badgeCanvas=document.createElement('canvas');badgeCanvas.width=256;badgeCanvas.height=128;const ctx=badgeCanvas.getContext('2d');
- ctx.fillStyle='#fff8e9';ctx.fillRect(0,0,256,128);ctx.fillStyle=role==='boss'?'#684c83':'#24674d';ctx.font='bold 36px system-ui';ctx.textAlign='center';ctx.fillText(role==='boss'?'ANH VP':role==='receptionist'?'LỄ TÂN':'AVP',128,78);
- const badge=new THREE.Mesh(new THREE.PlaneGeometry(.22,.12),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(badgeCanvas),transparent:true,side:THREE.DoubleSide}));badge.position.set(.16,1.22,.222);root.add(badge);
- if(role==='receptionist'){arms[0].rotation.z=-2.45;arms[1].rotation.z=.12}
- if(role==='player'||role==='boss'){const art=new THREE.Group();for(const child of [...root.children]){root.remove(child);art.add(child)}art.rotation.y=Math.PI;root.add(art)}
- root.userData={animeHead:head,waveArm:role==='receptionist'?arms[0]:null,waveBase:-2.45,idlePhase:Math.random()*6.28};
- (window.avpAnimeCharacters=window.avpAnimeCharacters||[]).push(root);
- return root;
-}
-function initWorld(){if(worldReady)return;worldReady=true;scene=new THREE.Scene();scene.background=new THREE.Color('#d8e8e3');scene.fog=null;const aspect=innerWidth/innerHeight,mapHeight=Math.max(mapViewHeight,56/aspect),mapWidth=mapHeight*aspect;camera=new THREE.OrthographicCamera(-mapWidth/2,mapWidth/2,mapHeight/2,-mapHeight/2,.1,180);camera.position.set(0,70,46);camera.lookAt(0,0,0);renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;$('world').appendChild(renderer.domElement);scene.add(new THREE.HemisphereLight('#ffffff','#84988a',2.65));const sun=new THREE.DirectionalLight('#fff7e7',2.2);sun.position.set(-4,10,5);sun.castShadow=true;scene.add(sun);const fillLight=new THREE.DirectionalLight('#b9e8d4',1.0);fillLight.position.set(5,5,-6);scene.add(fillLight);
-window.avpRoomGroups={};window.avpAnimeCharacters=[];window.avpRoomOffsets={lobby:{x:0,z:0},training:{x:-12,z:-20},qc:{x:0,z:-20},data:{x:12,z:-20},operations:{x:24,z:-20},boss:{x:24,z:0},hr:{x:12,z:0},sales:{x:0,z:20},planning:{x:12,z:20},warehouse:{x:24,z:20},maintenance:{x:-24,z:20},finance:{x:-12,z:20},meeting:{x:-24,z:0},pantry:{x:-12,z:0},it:{x:-24,z:-20}};const oldGroup=window.avpBuildGroup;
-function buildRoom(key,name,dept,deskName,kind,wallColor='#e7eee0'){
- const g=new THREE.Group();window.avpRoomGroups[key]=g;scene.add(g);window.avpBuildGroup=g;window.avpBuildingRoom=key;const roomOffset=window.avpRoomOffsets?.[key]||{x:0,z:0};g.position.set(roomOffset.x,0,roomOffset.z);
- const hall=key==='lobby',depth=hall?24:10,h=depth/2,w=hall?16:8;
- const palette={lobby:['#d8cba8','#c79b50'],training:['#c6ddce','#478b6c'],qc:['#c4dfc8','#37835d'],data:['#c5dce8','#4389ae'],operations:['#ead7b5','#b77a35'],boss:['#d7c9e8','#8662a7'],hr:['#e4cddd','#a45f8e'],planning:['#c8e0df','#378b8b'],warehouse:['#e5d0b7','#b47a43'],maintenance:['#c8ded6','#4a9180'],finance:['#e4dfbd','#a28a3c']};const colors=palette[key]||['#d8dfd1','#4e8a70'];box(w,.25,depth,0,-.2,0,mat(colors[0]),false);// Open ceiling keeps desks, screens, staff and glass partitions visible from the office overview.box(.08,.12,depth-.3,-w/2+.14,.08,0,mat(colors[1]),false);box(.08,.12,depth-.3,w/2-.14,.08,0,mat(colors[1]),false);box(w-.3,.12,.08,0,.08,-h+.14,mat(colors[1]),false);box(w-.3,.12,.08,0,.08,h-.14,mat(colors[1]),false);
- box(w,4,.25,0,2,-h,mat(wallColor));box(w,4,.25,0,2,h,mat(wallColor));
- if(hall){
-  // Color-coded department doors: left and right walls lead to different rooms.
-  const doors=[[-8,'training','ĐÀO TẠO','qc','QC'],[-4,'data','DỮ LIỆU','operations','VẬN HÀNH'],[0,'boss','SẾP • ANH VĂN PHÒNG','hr','NHÂN SỰ'],[4,'sales','KINH DOANH','planning','KẾ HOẠCH'],[8,'meeting','PHÒNG HỌP','pantry','PANTRY']];
-  const doorAccent={training:'#3e9c73',qc:'#318a58',data:'#397fa6',operations:'#c87937',boss:'#9b6aca',hr:'#c15c86',sales:'#e06b52',planning:'#318f91'};
-  for(const side of [-1,1]){let cur=-h;for(const [z,leftKey,leftTitle,rightKey,rightTitle] of doors){const key=side<0?leftKey:rightKey,title=side<0?leftTitle:rightTitle,accent=doorAccent[key]||'#3e9c73',lo=z-.72,hi=z+.72;if(lo>cur)box(.25,4,lo-cur,side*(w/2-.125),2,(cur+lo)/2,mat(wallColor));box(.12,3.12,.16,side*(w/2-.18),1.56,lo,mat(accent),false);box(.12,3.12,.16,side*(w/2-.18),1.56,hi,mat(accent),false);box(.12,.16,1.44,side*(w/2-.18),3.12,z,mat(accent),false);box(.08,2.9,1.34,side*(w/2-.20),1.45,z,mat('#b9d9ce'),false);box(.035,.34,.035,side*(w/2-.25),1.45,z+(side<0?.48:-.48),mat('#f0ce78'),false);box(.07,.38,1.28,side*(w/2-.28),3.38,z,mat(accent),false);label(title,side*(w/2-.33),3.38,z,'#ffffff',{w:1.35,h:.30,rotationY:side<0?Math.PI/2:-Math.PI/2});cur=hi;}if(cur<h)box(.25,4,h-cur,side*(w/2-.125),2,(cur+h)/2,mat(wallColor));}
-  // A bright carpet runner, warm ceiling pendants and plants make the corridor feel welcoming.
-  box(2.8,.035,depth-1,0,-.055,0,mat('#3d725a'),false);box(2.46,.02,depth-1.2,0,-.031,0,mat('#77956a'),false);
-  for(const x of [-1.58,1.58])box(.045,.04,depth-1,x,-.028,0,mat('#d7b260'),false);
-  for(const z of [-13,-9,-5,-1,3,7,11,15]){box(.64,.07,.70,0,3.88,z,mat('#f4e8c4'),false);box(.46,.035,.50,0,3.81,z,mat('#fff8df'),false);const light=new THREE.PointLight('#fff0c4',.42,6);light.position.set(0,3.50,z);(window.avpBuildGroup||scene).add(light)}
-  for(const z of [-14,-8,-2,4,10]){lobbyPlant(-3.25,z);lobbyPlant(3.25,z)}
-  // Reception lounge: visitor sofas and coffee tables sit outside the central walking lane.
-  for(const side of [-1,1]){const x=side*5.35,sofa=mat(side<0?'#547b67':'#a96e55');box(2.0,.68,.74,x,.42,-1.15,sofa,false);box(2.0,.18,.82,x,.82,-1.45,sofa,false);box(.22,.48,.82,x-1.03,.64,-1.15,sofa,false);box(.22,.48,.82,x+1.03,.64,-1.15,sofa,false);box(.94,.10,.66,x,.48,1.15,mat('#aa8955'),false);box(.72,.04,.45,x,.56,1.15,mat('#f3dfb2'),false);lobbyPlant(side*6.85,3.4)}
- }
- else{
-  // Cửa phòng: cùng kiểu với cửa hành lang, nằm hẳn phía trong phòng để tránh z-fighting.
-  box(2.95,4,.25,-2.525,2,-h,mat(wallColor));box(2.95,4,.25,2.525,2,-h,mat(wallColor));box(2.1,.78,.25,0,3.61,-h,mat(wallColor));
-  const glassWall=new THREE.MeshStandardMaterial({color:'#9ccfc3',transparent:true,opacity:.30,roughness:.25,metalness:.04});
-  for(const side of [-1,1]){box(.06,3.25,depth-.25,side*(w/2-.035),1.72,0,glassWall,false);for(const z of [-h+1.45,-h+3.4,h-3.4,h-1.45])box(.075,3.35,.075,side*(w/2-.035),1.70,z,mat('#8ba69a'),false);box(.08,.08,depth-.15,side*(w/2-.035),3.38,0,mat('#8ba69a'),false)}
-  const dz=-h+.20;
-  box(.13,3.12,.20,-1.08,1.56,dz,mat('#163b2a'),false);
-  box(.13,3.12,.20,1.08,1.56,dz,mat('#163b2a'),false);
-  box(2.28,.16,.20,0,3.12,dz,mat('#163b2a'),false);
-  box(1.92,2.94,.12,0,1.49,-h+.24,mat('#234a35'),false);
-  box(.055,.40,.055,.68,1.48,-h+.15,mat('#d5b45c'),false);
-  box(1.9,.42,.08,0,3.42,-h+.16,mat('#163b2a'),false);
-  label(name,0,3.42,-h+.205,'#ffffff',{w:1.72,h:.28});
-  // Một bảng thương hiệu AVP duy nhất, gắn phẳng lên tường đối diện cửa.
-  const c=document.createElement('canvas');c.width=900;c.height=520;const q=c.getContext('2d');
-  q.fillStyle='#f7f4e8';q.fillRect(0,0,900,520);q.fillStyle='#173f2e';q.fillRect(12,12,876,496);q.fillStyle='#f7f4e8';q.fillRect(28,28,844,464);
-  q.fillStyle='#173f2e';q.textAlign='center';q.font='900 112px system-ui';q.fillText('AVP',450,190);
-  q.fillStyle='#4d8068';q.font='700 48px system-ui';q.fillText(key==='boss'?'ANH VĂN PHÒNG':name.toUpperCase(),450,260);
-  q.strokeStyle='#c9a85a';q.lineWidth=7;q.beginPath();q.moveTo(170,300);q.lineTo(730,300);q.stroke();
-  q.fillStyle='#315d49';q.font='600 29px system-ui';q.fillText('HỌC HỎI  •  SÁNG TẠO  •  CẢI TIẾN',450,365);
-  const logoMesh=new THREE.Mesh(new THREE.PlaneGeometry(2.65,1.53),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),side:THREE.DoubleSide}));
-  logoMesh.position.set(0,2.35,h-.16);logoMesh.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(logoMesh);
-  poster('CẢI TIẾN MỖI NGÀY','Chia sẻ • Học hỏi • Tiến bộ','operations',-3.78,2.28,0,'left');poster('TÔN TRỌNG • HỢP TÁC','Cùng giải quyết vấn đề','data',3.78,2.28,0,'right');
-  // Each department gets its own furniture, palette, work culture and focal point.
-  const roomNames={training:['LEARNING STUDIO','Thực hành • Thử nghiệm'],qc:['QUALITY CONTROL','Kiểm tra • Cải tiến'],data:['DATA ANALYTICS','Dữ liệu • Báo cáo'],operations:['OPERATIONS HUB','Điều phối • Vận hành'],boss:['VĂN PHÒNG ANH VĂN PHÒNG','Giám đốc • AVP'],hr:['PEOPLE & CULTURE','Nhân sự • Phỏng vấn'],sales:['CLIENT SUCCESS','Kinh doanh • Khách hàng'],planning:['PROJECT ROOM','Kế hoạch • Sáng kiến'],warehouse:['SUPPLY HUB','Kho • Giao nhận'],maintenance:['TECH WORKSHOP','Bảo trì • Kỹ thuật'],finance:['FINANCE OFFICE','Tài chính • Kế toán']};
-  const roomInfo=roomNames[key]||[name.toUpperCase(),dept.toUpperCase()];
-  box(6,.035,4.1,0,-.055,.05,mat(colors[1]),false);box(5.72,.018,3.82,0,-.032,.05,mat(colors[0]),false);
-
-  function infoBoard(title,subtitle,x,z,accent){
-   box(2.1,1.10,.12,x,2.25,z,mat('#f5efe0'),false);box(2.0,.98,.08,x,2.25,z-.075,mat(accent),false);
-   label(title,x,2.47,z-.12,'#ffffff',{w:1.75,h:.30});label(subtitle,x,2.05,z-.12,'#fff8e8',{w:1.85,h:.24});
-  }
-  const accent=colors[1],gold=mat('#d9b762'),wood=mat('#8a6545');
-  if(key==='meeting'){
-   const glass=new THREE.MeshStandardMaterial({color:'#83b9b0',transparent:true,opacity:.34,roughness:.22,metalness:.08});
-   box(2.55,.16,1.15,0,.82,.15,mat('#7a5b43'),false);for(const x of [-1.05,1.05])for(const z of [-.22,.55])box(.12,.72,.12,x,.36,z,mat('#63736a'),false);
-   for(const x of [-2.55,2.55]){box(.78,.12,.75,x,.48,-1.18,mat('#587c72'),false);box(.78,.54,.15,x,.79,-1.48,mat('#587c72'),false);box(.78,.12,.75,x,.48,1.48,mat('#587c72'),false);box(.78,.54,.15,x,.79,1.78,mat('#587c72'),false)}
-   box(2.2,1.25,.09,0,2.30,4.70,glass,false);box(2.28,.10,.16,0,2.98,4.66,mat('#a5b8b0'),false);infoBoard('PHÒNG HỌP','TRAO ĐỔI • LÊN KẾ HOẠCH',0,4.54,'#327b78');box(.88,.50,.08,2.88,2.0,2.0,mat('#173f3b'),false);box(.76,.38,.025,2.88,2.0,1.95,mat('#8ac8b1'),false);
-   for(const x of [-3.27,3.27]){box(.06,2.65,7.2,x,1.55,.0,glass,false);for(const y of [.28,2.86])box(.08,.08,7.3,x,y,0,mat('#91a79d'),false);for(const z of [-2.35,0,2.35])box(.08,2.6,.07,x,1.55,z,mat('#a4b7ad'),false)}
-  }else if(key==='pantry'){
-   infoBoard('KHU PANTRY','NGHỈ NGƠI • TRÒ CHUYỆN',0,4.62,'#b58a4b');box(2.65,.20,.68,-2.25,.82,1.15,mat('#8e6849'),false);box(.12,1.28,.16,-3.38,1.36,1.15,mat('#e6e8de'),false);box(.72,.68,.53,-3.38,1.24,1.48,mat('#8fc2b1'),false);box(.28,.20,.32,-2.30,1.02,1.18,mat('#3d4944'),false);box(.18,.12,.20,-2.30,1.17,1.18,mat('#d49b46'),false);
-   box(1.65,.12,.80,.95,.78,-.35,mat('#9b704e'),false);for(const x of [.35,1.55])for(const z of [-.66,-.04])box(.09,.70,.09,x,.35,z,mat('#70563f'),false);
-   for(const x of [-.15,2.05]){box(.46,.10,.46,x,.44,-1.35,mat('#4d7767'),false);box(.46,.52,.12,x,.74,-1.56,mat('#4d7767'),false)}
-   box(.80,1.85,.70,3.15,.93,1.35,mat('#e7eee7'),false);box(.82,.10,.72,3.15,1.78,1.35,mat('#c8d3ce'),false);lobbyPlant(3.05,3.2);
-  }else if(key==='boss'){
-   makeDesk(0,1.45,'Bàn giám đốc — Anh Văn Phòng','boss');
-   infoBoard('ANH VĂN PHÒNG','GIÁM ĐỐC • AVP',0,4.62,'#644684');
-   // Executive bookcase, awards, guest chairs and a distinctive purple-and-brass palette.
-   box(.42,2.35,.72,-3.18,1.12,1.35,mat('#73533c'),false);for(const y of [.40,.98,1.56])box(.46,.055,.76,-3.18,y,1.35,gold,false);
-   for(const x of [-3.28,-3.08])for(const y of [.62,1.20,1.78])box(.12,.32,.18,x,y,1.35,mat(['#4b8068','#b2604f','#dfbd6b'][Math.floor(y*2)%3]),false);
-   for(const x of [-1.8,1.8]){box(.72,.18,.72,x,.34,-1.35,mat('#70478b'),false);box(.72,.68,.16,x,.68,-1.68,mat('#70478b'),false);for(const dx of [-.25,.25])box(.07,.35,.07,x+dx,.08,-1.35,wood,false)}
-   box(.48,.12,.38,2.75,.72,2.5,mat('#6f528b'),false);box(.35,.04,.27,2.75,.81,2.5,gold,false);label('AVP',2.75,1.14,2.5,'#fff8e8',{w:.48,h:.22});
-   const boss=createAnimeCharacter({role:'boss',gender:'male'});boss.position.set(0,0,2.17);(window.avpBuildGroup||scene).add(boss);window.avpBoss={x:0,z:2.17};
-  }else{
-   makeDesk(0,1.25,deskName,kind);
-   if(key==='training'){makeDesk(-2.28,-1.35,'Bàn thực hành','training');makeDesk(2.28,-1.35,'Bàn thực hành','training');infoBoard('LEARN BY DOING','THỰC HÀNH • HỎI ĐÁP',0,4.62,'#3b815d');}
-   if(key==='qc'){makeDesk(-2.25,-1.35,'Trạm kiểm tra','qc');infoBoard('QUALITY CHECK','CHUẨN • AN TOÀN • CHÍNH XÁC',0,4.62,'#397d58');for(const y of [.55,.88,1.21]){box(.36,.16,.08,-3.05,y,1.6,mat('#fff8e8'),false);box(.08,.08,.10,-3.05,y,1.48,mat('#46a87a'),false)}}
-   if(key==='data'){makeDesk(-2.28,-1.35,'Trạm phân tích','data');makeDesk(2.28,-1.35,'Dashboard','data');infoBoard('LIVE DASHBOARD','DOANH THU • TĂNG TRƯỞNG',0,4.62,'#347fa5');for(let n=0;n<5;n++)box(.23,.22+n*.13,.11,-2.8+n*.32,1.05+n*.065,2.55,mat(['#4b9fc2','#75c9a1','#edc562','#d98268','#9f8bd2'][n]),false)}
-   if(key==='operations'){makeDesk(-2.28,-1.35,'Điều phối đơn hàng','operations');infoBoard('DAILY OPERATIONS','TIẾN ĐỘ • ƯU TIÊN • HỖ TRỢ',0,4.62,'#bb7737');for(const y of [.55,.85,1.15]){box(.20,.12,.08,-3.15,y,2.1,mat('#f3d596'),false);box(.42,.12,.08,-2.75,y,2.1,mat('#76b99b'),false)}}
-   if(key==='hr'){infoBoard('PEOPLE FIRST','PHÒNG PHỎNG VẤN',0,4.62,'#ad5b86');box(1.25,.22,.48,-2.25,.28,-1.45,mat('#b15e87'),false);box(1.25,.45,.16,-2.25,.56,-1.62,mat('#b15e87'),false);for(const x of [-2.7,-1.8])box(.07,.36,.07,x,.08,-1.45,wood,false);box(.56,.42,.56,2.55,.24,-1.65,mat('#b38c56'),false);lobbyPlant(3.1,2.8)}
-   if(key==='sales'){makeDesk(-2.28,-1.35,'Bàn khách hàng','sales');infoBoard('CLIENT SUCCESS','LẮNG NGHE • GIẢI PHÁP',0,4.62,'#c9634e');for(let n=0;n<3;n++){box(.13,.65,.13,2.1+n*.42,.34,2.1,mat('#db8165'),false);box(.25,.08,.20,2.1+n*.42,.72,2.1,gold,false)}}
-   if(key==='planning'){makeDesk(-2.28,-1.35,'Bàn dự án','planning');infoBoard('QUARTERLY PLAN','MỤC TIÊU • MỐC TIẾN ĐỘ',0,4.62,'#398b8b');box(1.6,.12,.5,2.35,.86,-1.4,wood,false);for(const x of [1.75,2.95])for(const z of [-1.58,-1.22])box(.08,.78,.08,x,.39,z,wood,false)}
-   if(key==='warehouse'){infoBoard('GOODS IN • GOODS OUT','SẮP XẾP • GIAO NHẬN',0,4.62,'#ac783a');for(const x of [-2.65,2.65]){box(.12,2.8,.12,x,1.35,1.9,wood,false);box(.12,2.8,.12,x,1.35,-1.2,wood,false);for(const y of [.35,1.25,2.15])box(.28,.12,3.15,x,y,.35,wood,false)}for(const [x,z,c] of [[-2.15,1.7,'#c79557'],[-2.15,-.1,'#d5ab68'],[2.15,1.7,'#b9814c'],[2.15,-.1,'#d5ab68']])box(.72,.62,.62,x,.36,z,mat(c),false)}
-   if(key==='maintenance'){infoBoard('TECH WORKSHOP','REPAIR • TEST • RETURN',0,4.62,'#378579');box(2.2,.16,.72,0,.78,2.8,wood,false);for(const x of [-.75,-.25,.25,.75]){box(.08,.52,.08,x,1.10,2.9,mat('#d7ded7'),false);box(.18,.08,.07,x,1.38,2.9,mat('#d6a954'),false)}}
-   if(key==='finance'){makeDesk(-2.28,-1.35,'Kiểm soát ngân sách','finance');infoBoard('FINANCE OFFICE','SỐ LIỆU • KIỂM SOÁT',0,4.62,'#938141');for(const x of [-3.1,-2.55]){box(.5,1.3,.52,x,.65,1.9,mat('#657e70'),false);for(const y of [.35,.7,1.05])box(.42,.035,.03,x,y,1.62,gold,false)}}
-   if(key==='it'){infoBoard('IT SUPPORT','HỖ TRỢ • HỆ THỐNG',0,4.62,'#587ca3');makeDesk(-2.28,-1.35,'Trạm hỗ trợ IT','data')}
-  }
-  if(key!=='boss'){const plantX=key==='hr'?-3.1:3.1;lobbyPlant(plantX,3.2)}
-
-
- }
- if(hall){
-  // Four walls are used deliberately: welcome board, clock, and slogans are separated.
-  box(2.45,.88,.78,0,.44,h-4.1,mat('#8a6746'));
-  box(2.30,.08,.62,0,.91,h-4.1,mat('#315d49'),false);
-  label('LỄ TÂN',0,1.24,h-3.68,'#ffffff',{w:1.35,h:.30});
-   const npc=createAnimeCharacter({role:'receptionist',gender:'female'});npc.position.set(0,0,h-3.15);npc.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(npc);window.avpReceptionist={x:0,z:h-3.15};
-   // Logo plaque mounted on the visitor-facing front of the reception counter.
-   const frontCanvas=document.createElement('canvas');frontCanvas.width=720;frontCanvas.height=260;const fc=frontCanvas.getContext('2d');
-   fc.fillStyle='#f8f4e8';fc.fillRect(0,0,720,260);fc.strokeStyle='#2e7559';fc.lineWidth=12;fc.strokeRect(9,9,702,242);
-   fc.textAlign='center';fc.fillStyle='#164b35';fc.font='900 96px system-ui';fc.fillText('AVP',360,112);
-   fc.fillStyle='#347b5e';fc.font='700 36px system-ui';fc.fillText('ANH VĂN PHÒNG',360,165);
-   fc.strokeStyle='#d0ae59';fc.lineWidth=4;fc.beginPath();fc.moveTo(170,190);fc.lineTo(550,190);fc.stroke();
-   fc.fillStyle='#526d5b';fc.font='600 20px system-ui';fc.fillText('HỌC HỎI • SÁNG TẠO • CẢI TIẾN',360,224);
-   const frontLogo=new THREE.Mesh(new THREE.PlaneGeometry(1.62,.58),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(frontCanvas),side:THREE.DoubleSide}));
-   frontLogo.position.set(0,.46,h-4.49);frontLogo.rotation.y=Math.PI;(window.avpBuildGroup||scene).add(frontLogo);
-   // Computer, keyboard and mouse on the reception counter.
-   box(.72,.43,.055,0,1.16,h-4.18,mat('#182b25'),false);box(.65,.35,.025,0,1.17,h-4.14,mat('#70bda4'),false);box(.10,.16,.09,0,.94,h-4.16,mat('#263e32'),false);box(.38,.035,.20,0,.89,h-4.03,mat('#d6ded2'),false);box(.12,.018,.18,.27,.89,h-4.03,mat('#d6ded2'),false);
-   // COMPLETE LOBBY FURNITURE RESET: one object per station, placed against side walls.
-   // AVP reception computer, centered on the existing counter.
-   box(.72,.43,.055,0,1.16,h-4.18,mat('#182b25'),false);
-   box(.65,.35,.025,0,1.17,h-4.14,mat('#70bda4'),false);
-   box(.10,.16,.09,0,.94,h-4.16,mat('#263e32'),false);
-   box(.38,.035,.20,0,.89,h-4.03,mat('#d6ded2'),false);
-   box(.12,.018,.18,.27,.89,h-4.03,mat('#d6ded2'),false);
-   // Reference layout: left wall = water station, bench, printer and file cabinet; right wall = copier and plant.
-   // Keep the center and the path to the receptionist completely open.
-   // Water dispenser at the front-left corner, facing into the lobby.
-   box(.62,.12,.52,-3.10,-.005,h-8.2,mat('#e9eee8'),false);
-   box(.46,.72,.40,-3.10,.405,h-8.2,mat('#f7f4ea'),false);
-   box(.35,.42,.32,-3.10,.975,h-8.2,mat('#49a8cf'),false);
-   box(.38,.07,.34,-3.10,1.22,h-8.2,mat('#e1edf0'),false);
-   box(.08,.18,.06,-2.84,.72,h-8.2,mat('#d45c75'),false);
-   // Waiting bench flush to left wall, with seat facing the central aisle.
-   box(1.24,.18,.42,-3.10,.22,h-5.65,mat('#477963'),false);
-   box(1.24,.46,.15,-3.27,.50,h-5.65,mat('#477963'),false);
-   for(const x of [-3.58,-2.62])for(const z of [h-5.82,h-5.48])box(.065,.40,.065,x,.08,z,mat('#79583b'),false);
-   // Printer/copier on a proper side table near the rear-left wall.
-   box(1.00,.12,.55,-3.10,.78,h-2.9,mat('#9b7049'),false);
-   for(const x of [-3.48,-2.72])for(const z of [h-3.10,h-2.70])box(.065,.68,.065,x,.36,z,mat('#65472f'),false);
-   box(.66,.30,.44,-3.10,1.00,h-2.9,mat('#e7ece7'),false);
-   box(.58,.07,.37,-3.10,1.18,h-2.9,mat('#c7d3cc'),false);
-   box(.40,.025,.23,-3.10,1.225,h-2.9,mat('#263e35'),false);
-   box(.24,.035,.16,-2.93,1.25,h-2.9,mat('#f5f1e5'),false);
-   // File cabinet beside the printer, not in the walking lane.
-   box(.76,1.08,.48,-3.10,.56,h-1.45,mat('#547466'),false);
-   for(const y of [.32,.58,.84]){box(.64,.035,.025,-3.10,y,h-1.19,mat('#d8e2d9'),false);box(.09,.035,.025,-3.10,y,h-1.16,mat('#d3b45c'),false)}
-   box(.80,.06,.52,-3.10,1.13,h-1.45,mat('#365b49'),false);
-   // Right wall: a small copier table and waiting plant; the door swing/route remains clear.
-   box(.92,.12,.52,3.10,.78,h-3.0,mat('#9b7049'),false);
-   for(const x of [2.76,3.44])for(const z of [h-3.20,h-2.80])box(.055,.68,.055,x,.36,z,mat('#65472f'),false);
-   box(.62,.30,.42,3.10,1.00,h-3.0,mat('#e7ece7'),false);
-   box(.52,.06,.32,3.10,1.18,h-3.0,mat('#c7d3cc'),false);
-   box(.34,.025,.20,3.10,1.225,h-3.0,mat('#263e35'),false);
-   // Two matching plants at the far corners, not beside the reception desk.
-   lobbyPlant(-2.55,h-1.05);lobbyPlant(2.55,h-1.05);
-   // Warm wall lights; the center aisle stays completely empty.
-   const warm=new THREE.PointLight('#ffd79a',1.0,10);warm.position.set(-2.0,3.15,h-5.5);(window.avpBuildGroup||scene).add(warm);
-   const warm2=new THREE.PointLight('#ffe6b7',1.0,10);warm2.position.set(2.0,3.15,h-5.5);(window.avpBuildGroup||scene).add(warm2);
-   for(const x of [-3.35,3.35]){box(.10,.42,.10,x,3.20,h-5.5,mat('#c9a65a'),false);const glow=new THREE.Mesh(new THREE.SphereGeometry(.12,12,10),new THREE.MeshBasicMaterial({color:'#ffe4a3'}));glow.position.set(x,3.02,h-5.5);(window.avpBuildGroup||scene).add(glow)}
-  poster('CHÀO MỪNG ĐẾN AVP','Hợp tác • Trách nhiệm • Cải tiến','lobby',0,2.4,-h+.18,false);
-  poster('AN TOÀN • KỶ LUẬT','Làm đúng ngay từ đầu','operations',-3.78,2.35,-14,'left');
-  poster('CẢI TIẾN MỖI NGÀY','Học hỏi • Sáng tạo • Tiến bộ','data',3.78,2.35,12,'right');
-  // Clock on the opposite wall, with independent moving hands.
-  const cc=document.createElement('canvas');cc.width=512;cc.height=512;const cx=cc.getContext('2d');
-  cx.fillStyle='#f7f3e5';cx.beginPath();cx.arc(256,256,236,0,Math.PI*2);cx.fill();cx.lineWidth=18;cx.strokeStyle='#173f2e';cx.stroke();cx.textAlign='center';cx.textBaseline='middle';cx.fillStyle='#173f2e';cx.font='bold 44px system-ui';
-  for(let n=1;n<=12;n++){const ang=n*Math.PI/6-Math.PI/2;cx.fillText(String(n),256+Math.cos(ang)*177,256+Math.sin(ang)*177)}
-  const clockGroup=new THREE.Group();clockGroup.position.set(0,2.45,h-.17);clockGroup.rotation.y=Math.PI;
-  const face=new THREE.Mesh(new THREE.PlaneGeometry(1.45,1.45),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(cc),side:THREE.DoubleSide}));clockGroup.add(face);
-  const handMat=new THREE.MeshBasicMaterial({color:'#173f2e'});
-  const hourHand=new THREE.Mesh(new THREE.BoxGeometry(.055,.37,.025),handMat);hourHand.position.y=.12;clockGroup.add(hourHand);
-  const minuteHand=new THREE.Mesh(new THREE.BoxGeometry(.035,.52,.025),new THREE.MeshBasicMaterial({color:'#c49a43'}));minuteHand.position.y=.19;clockGroup.add(minuteHand);
-  const secondHand=new THREE.Mesh(new THREE.BoxGeometry(.018,.61,.028),new THREE.MeshBasicMaterial({color:'#b94d43'}));secondHand.position.y=.23;clockGroup.add(secondHand);
-  (window.avpBuildGroup||scene).add(clockGroup);window.avpClockHands={hourHand,minuteHand,secondHand,group:clockGroup};
-  poster('QUY ƯỚC THỜI GIAN','15 phút thật = 8 giờ game','lobby',0,1.15,h-.17,false);
-}
- else if(key==='training'){label('WASD: DI CHUYỂN',0,1.9,0,'#ffffff',{w:2.2,h:.35});label('E: TƯƠNG TÁC • V: ĐỔI GÓC NHÌN',0,1.45,0,'#ffffff',{w:2.8,h:.35});}
- window.avpBuildGroup=oldGroup;return g;
-}
-buildRoom('lobby','SẢNH AVP','lobby','Quầy lễ tân','lobby','#dce8e0');
-buildRoom('training','PHÒNG ĐÀO TẠO','training','Bàn hướng dẫn','training','#c5d8bc');
-buildRoom('qc','PHÒNG QC','qc','Bàn QC','qc','#d5e4d2');
-buildRoom('data','PHÒNG DỮ LIỆU','data','Bàn dữ liệu','data','#d4d9c5');
-buildRoom('operations','PHÒNG VẬN HÀNH','operations','Bàn vận hành','operations','#d5e4d2');
-buildRoom('boss','PHÒNG ANH VĂN PHÒNG','boss','Bàn giám đốc — Anh Văn Phòng','boss','#e4d7ba');
-buildRoom('sales','PHÒNG KINH DOANH','sales','Bàn kinh doanh','sales','#f0d0c4');
-buildRoom('hr','PHÒNG NHÂN SỰ','hr','Bàn nhân sự','operations','#d8dfec');
-buildRoom('planning','PHÒNG KẾ HOẠCH','planning','Bàn kế hoạch','data','#d7e3e7');
-buildRoom('warehouse','PHÒNG KHO','warehouse','Bàn kho','operations','#e2d9c7');
-buildRoom('maintenance','PHÒNG BẢO TRÌ','maintenance','Bàn bảo trì','operations','#d4ded7');
-buildRoom('finance','PHÒNG TÀI CHÍNH','finance','Bàn tài chính','data','#e4dfc8');
-buildRoom('meeting','PHÒNG HỌP','meeting','Bàn họp','shared','#d9e8e5');
-buildRoom('pantry','KHU PANTRY','pantry','Bàn pantry','shared','#e9e2d2');
-buildRoom('it','PHÒNG HỖ TRỢ IT','it','Trạm hỗ trợ IT','data','#dce2ec');
-if(window.avpBoss){const executiveOffset=window.avpRoomOffsets.boss;window.avpBoss.x+=executiveOffset.x;window.avpBoss.z+=executiveOffset.z}
-Object.entries(window.avpRoomGroups).forEach(([k,g])=>g.visible=true);
-window.avpBuildGroup=oldGroup;
-player=createAnimeCharacter({role:'player',gender:app.character_gender||'male'});scene.add(player);const ownRoom=trainingComplete?departmentRoom(app.department):'training',ownOffset=roomOffset(ownRoom);currentRoom=ownRoom;Object.entries(window.avpRoomGroups).forEach(([k,g])=>g.visible=true);roomBounds={minX:-29,maxX:29,minZ:-28,maxZ:28};player.position.set(ownOffset.x,0,ownOffset.z+.7);clock=new THREE.Clock();$('place').textContent='Đang ở: '+roomTitle(ownRoom);updateViewButton();focusCameraOnRoom('lobby');animate();subscribeOfficeRoom(currentRoom);say('Chào '+(app.full_name||'nhân viên')+'. Bạn đang ở '+roomTitle(ownRoom)+'. Đi theo lối giữa để tới các khu vực.')}
-function updateViewButton(){if($('viewBtn'))$('viewBtn').textContent='Góc nhìn: '+(overviewMode?'Toàn văn phòng':'Khu vực hiện tại')}
-function applyMapCamera(targetX=0,targetZ=0,height=mapViewHeight){if(!camera)return;const aspect=innerWidth/innerHeight,minWidth=height>=mapViewHeight?61:13,h=Math.max(height,minWidth/aspect),w=h*aspect;camera.left=-w/2;camera.right=w/2;camera.top=h/2;camera.bottom=-h/2;camera.position.set(targetX,70,targetZ+46);camera.up.set(0,1,0);camera.lookAt(targetX,0,targetZ);camera.updateProjectionMatrix()}
-function focusCameraOnRoom(room){const o=roomOffset(room);applyMapCamera(o.x,o.z,overviewMode?mapViewHeight:15)}
-function departmentRoom(dept){const v=String(dept||'').toLowerCase();if(/qc|quality|chất lượng/.test(v))return 'qc';if(/data|dữ liệu|excel|kế toán/.test(v))return 'data';if(/hr|nhân sự|human resource/.test(v))return 'hr';if(/sales|kinh doanh|business/.test(v))return 'sales';if(/operation|vận hành|sản xuất/.test(v))return 'operations';if(/plan|kế hoạch/.test(v))return 'planning';if(/warehouse|kho/.test(v))return 'warehouse';if(/finance|tài chính/.test(v))return 'finance';if(/maintenance|bảo trì/.test(v))return 'maintenance';if(/boss|manager|giám đốc/.test(v))return 'boss';return 'training'}function roomTitle(k){return ({lobby:'SẢNH AVP',training:'PHÒNG ĐÀO TẠO',qc:'PHÒNG QC',data:'PHÒNG DỮ LIỆU',operations:'PHÒNG VẬN HÀNH',boss:'PHÒNG ANH VĂN PHÒNG',hr:'PHÒNG NHÂN SỰ',sales:'PHÒNG KINH DOANH',planning:'PHÒNG KẾ HOẠCH',warehouse:'PHÒNG KHO',finance:'PHÒNG TÀI CHÍNH',maintenance:'PHÒNG BẢO TRÌ',it:'PHÒNG IT',meeting:'PHÒNG HỌP',pantry:'KHU PANTRY'})[k]||'PHÒNG BAN'}
+function resizeOfficeCanvas(){if(!canvas2d)return;const dpr=Math.min(devicePixelRatio||1,2);canvas2d.width=Math.round(innerWidth*dpr);canvas2d.height=Math.round(innerHeight*dpr);canvas2d.style.width=innerWidth+'px';canvas2d.style.height=innerHeight+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+function roundRect(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
+const officePalette={lobby:'#bc8d45',training:'#389873',qc:'#3f9959',data:'#3285a8',operations:'#c28438',boss:'#8c61b1',hr:'#c05d8a',sales:'#e07252',planning:'#348e91',warehouse:'#a37645',maintenance:'#418f7e',finance:'#b89a3f',meeting:'#507f9a',pantry:'#c67f48',it:'#536f9e'};
+function drawOffice(){if(!ctx||!canvas2d)return;const w=innerWidth,h=innerHeight,fit=Math.min((w-56)/1780,(h-140)/990),scale=Math.max(.12,fit)*zoom;ctx.setTransform(Math.min(devicePixelRatio||1,2),0,0,Math.min(devicePixelRatio||1,2),0,0);ctx.clearRect(0,0,w,h);ctx.fillStyle='#cba978';ctx.fillRect(0,0,w,h);ctx.save();ctx.translate(w/2,h/2+12);ctx.scale(scale,scale);const X=v=>v*30,Y=v=>v*18;
+ ctx.fillStyle='rgba(48,55,40,.24)';roundRect(ctx,-890,-486,1780,972,32);ctx.fill();ctx.fillStyle='#e6d5b1';roundRect(ctx,-878,-474,1756,948,26);ctx.fill();for(let x=-840;x<860;x+=60)for(let y=-440;y<460;y+=36){ctx.fillStyle=((x/60+y/36)%2===0)?'#d8c49a':'#eadbbd';ctx.fillRect(x,y,58,34)}
+ for(const key of ['it','training','qc','data','operations','meeting','pantry','lobby','hr','boss','maintenance','finance','sales','planning','warehouse'])drawRoom(key);
+ drawPlants();drawAvatar(player.position.x*30,player.position.z*18,{gender:app?.character_gender||'male',player:true,label:app?.full_name||'Bạn',heading:player.rotation.y});for(const p of remoteOfficePlayers.values())drawAvatar(p.root.position.x*30,p.root.position.z*18,{gender:p.gender,label:p.name,heading:p.root.rotation.y});ctx.restore()}
+function drawRoom(key){const o=roomOffset(key),lobby=key==='lobby',w=(lobby?15.2:8.5)*30,h=(lobby?16:10)*18,cx=o.x*30,cy=o.z*18,accent=officePalette[key]||'#4b8d6e';ctx.save();ctx.shadowColor='rgba(49,43,31,.25)';ctx.shadowBlur=18;ctx.shadowOffsetY=8;ctx.fillStyle='#f7ecd1';roundRect(ctx,cx-w/2,cy-h/2,w,h,lobby?18:12);ctx.fill();ctx.shadowColor='transparent';ctx.save();roundRect(ctx,cx-w/2+7,cy-h/2+7,w-14,h-14,9);ctx.clip();ctx.fillStyle=lobby?'#e9d6aa':'#e8dec8';ctx.fillRect(cx-w/2+7,cy-h/2+7,w-14,h-14);for(let x=cx-w/2+18;x<cx+w/2-12;x+=30)for(let y=cy-h/2+18;y<cy+h/2-12;y+=24){ctx.fillStyle=((Math.floor(x/30)+Math.floor(y/24))%2)?'#d9c8a5':'#efdfbd';ctx.fillRect(x,y,28,22)}if(lobby)drawLounge(cx,cy);else drawWorkstations(cx,cy,key,accent);ctx.restore();
+ ctx.lineWidth=7;ctx.strokeStyle='#557d79';let side=key==='boss'||key==='hr'?'left':(key==='meeting'||key==='pantry'?'right':(o.z<0?'bottom':'top'));ctx.beginPath();if(side==='top'){ctx.moveTo(cx-w/2,cy-h/2);ctx.lineTo(cx-36,cy-h/2);ctx.moveTo(cx+36,cy-h/2);ctx.lineTo(cx+w/2,cy-h/2);ctx.moveTo(cx-w/2,cy-h/2);ctx.lineTo(cx-w/2,cy+h/2);ctx.moveTo(cx+w/2,cy-h/2);ctx.lineTo(cx+w/2,cy+h/2);ctx.moveTo(cx-w/2,cy+h/2);ctx.lineTo(cx+w/2,cy+h/2)}else if(side==='bottom'){ctx.moveTo(cx-w/2,cy+h/2);ctx.lineTo(cx-36,cy+h/2);ctx.moveTo(cx+36,cy+h/2);ctx.lineTo(cx+w/2,cy+h/2);ctx.moveTo(cx-w/2,cy-h/2);ctx.lineTo(cx-w/2,cy+h/2);ctx.moveTo(cx+w/2,cy-h/2);ctx.lineTo(cx+w/2,cy+h/2);ctx.moveTo(cx-w/2,cy-h/2);ctx.lineTo(cx+w/2,cy-h/2)}else{let xx=side==='left'?cx-w/2:cx+w/2;ctx.moveTo(xx,cy-h/2);ctx.lineTo(xx,cy-30);ctx.moveTo(xx,cy+30);ctx.lineTo(xx,cy+h/2);ctx.moveTo(cx-w/2,cy-h/2);ctx.lineTo(cx+w/2,cy-h/2);ctx.moveTo(cx-w/2,cy+h/2);ctx.lineTo(cx+w/2,cy+h/2);if(side==='left')ctx.moveTo(cx+w/2,cy-h/2),ctx.lineTo(cx+w/2,cy+h/2);else ctx.moveTo(cx-w/2,cy-h/2),ctx.lineTo(cx-w/2,cy+h/2)}ctx.stroke();
+ ctx.fillStyle=accent;roundRect(ctx,cx-w/2+12,cy-h/2+11,w-24,34,8);ctx.fill();ctx.fillStyle='#fffdf4';ctx.font='bold 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(roomTitle(key),cx,cy-h/2+28,w-38);ctx.fillStyle='#174f38';roundRect(ctx,cx-29,cy-h/2+52,58,21,4);ctx.fill();ctx.fillStyle='#f8d65d';ctx.font='900 13px system-ui';ctx.fillText('AVP',cx,cy-h/2+63);
+ if(key==='boss')drawAvatar(cx,cy+12,{gender:'male',label:'Anh Văn Phòng',boss:true,heading:Math.PI});if(key==='lobby')drawReception();if(['training','qc','data','operations','hr','sales','planning','warehouse','finance','maintenance','it'].includes(key))drawAvatar(cx-58,cy+26,{gender:key==='hr'||key==='sales'?'female':'male',label:key==='hr'?'Nhân sự':key==='sales'?'Kinh doanh':'Nhân viên',heading:Math.PI});ctx.restore()}
+function drawWorkstations(cx,cy,key,accent){const ps=key==='training'?[[-62,16],[62,16]]:[[-42,18],[42,18]];for(const [dx,dy] of ps){const x=cx+dx,y=cy+dy;ctx.fillStyle='#8c6040';roundRect(ctx,x-39,y-12,78,42,6);ctx.fill();ctx.fillStyle='#c8925d';ctx.fillRect(x-35,y-8,70,33);ctx.fillStyle='#192d38';roundRect(ctx,x-17,y-31,34,22,4);ctx.fill();ctx.fillStyle=accent;roundRect(ctx,x-13,y-28,26,15,2);ctx.fill();ctx.fillStyle='#e8f5ee';ctx.fillRect(x-10,y-25,20,2);ctx.fillStyle='#d4e9de';ctx.fillRect(x-10,y-21,13,2);ctx.fillStyle='#272e38';roundRect(ctx,x-15,y+31,30,8,3);ctx.fill();ctx.fillStyle='#4d6170';ctx.beginPath();ctx.ellipse(x,y+52,18,12,0,0,Math.PI*2);ctx.fill()}}
+function drawLounge(cx,cy){ctx.fillStyle='#a75f47';roundRect(ctx,cx-225,cy-22,118,56,15);ctx.fill();ctx.fillStyle='#c47a5c';roundRect(ctx,cx-221,cy-28,110,24,9);ctx.fill();ctx.fillStyle='#526d5b';roundRect(ctx,cx+107,cy-22,118,56,15);ctx.fill();ctx.fillStyle='#78917a';roundRect(ctx,cx+111,cy-28,110,24,9);ctx.fill();ctx.fillStyle='#ba9457';ctx.beginPath();ctx.ellipse(cx,cy+8,42,29,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#f1dfb6';ctx.beginPath();ctx.ellipse(cx,cy+3,32,20,0,0,Math.PI*2);ctx.fill()}
+function drawReception(){if(!ctx)return;ctx.fillStyle='#8c5e3d';roundRect(ctx,-76,38,152,37,8);ctx.fill();ctx.fillStyle='#c48b55';roundRect(ctx,-82,29,164,17,6);ctx.fill();ctx.fillStyle='#1d573e';roundRect(ctx,-51,32,102,13,3);ctx.fill();ctx.fillStyle='#f7d65b';ctx.font='900 10px system-ui';ctx.textAlign='center';ctx.fillText('LỄ TÂN • AVP',0,41);drawAvatar(0,15,{gender:'female',label:'Lễ tân Mai',reception:true,heading:Math.PI})}
+function drawPlants(){const spots=[[-8,-7],[8,-7],[-8,7],[8,7],[-24,-20],[-12,-20],[12,-20],[24,-20],[-24,20],[-12,20],[12,20],[24,20],[-24,0],[-12,0],[12,0],[24,0]];for(const [x,z] of spots){const px=x*30,py=z*18;ctx.fillStyle='#b3763e';ctx.beginPath();ctx.arc(px,py+6,12,0,Math.PI*2);ctx.fill();ctx.fillStyle='#3a8954';for(let a=0;a<5;a++){const ang=a*Math.PI*2/5;ctx.beginPath();ctx.ellipse(px+Math.cos(ang)*8,py+Math.sin(ang)*8,7,13,ang,0,Math.PI*2);ctx.fill()}}}
+function drawAvatar(x,y,o={}){ctx.save();ctx.translate(x,y+Math.sin(performance.now()/460+x*.02)*1.2);ctx.fillStyle='rgba(29,39,29,.22)';ctx.beginPath();ctx.ellipse(0,30,22,8,0,0,Math.PI*2);ctx.fill();const coat=o.boss?'#253d5d':o.reception?'#1c795a':o.gender==='female'?'#9a4f78':'#3574a3';ctx.fillStyle=coat;roundRect(ctx,-18,7,36,33,11);ctx.fillStyle='#f7f1df';roundRect(ctx,-4,9,8,18,3);ctx.fillStyle='#e7ba4f';ctx.beginPath();ctx.moveTo(0,12);ctx.lineTo(5,19);ctx.lineTo(0,27);ctx.lineTo(-4,19);ctx.fill();ctx.fillStyle=o.gender==='female'?'#f1c4a7':'#e8b894';ctx.beginPath();ctx.arc(0,-5,16,0,Math.PI*2);ctx.fill();ctx.fillStyle='#32272a';ctx.beginPath();ctx.arc(0,-13,17,Math.PI,Math.PI*2);ctx.fill();ctx.ellipse(-11,-6,7,12,-.5,0,Math.PI*2);ctx.ellipse(11,-6,7,12,.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(-6,-4,4.2,5.5,0,0,Math.PI*2);ctx.ellipse(6,-4,4.2,5.5,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#302b35';ctx.beginPath();ctx.arc(-5,-3,2,0,Math.PI*2);ctx.arc(5,-3,2,0,Math.PI*2);ctx.fill();if(o.player){ctx.fillStyle='#ffd333';ctx.beginPath();ctx.moveTo(0,-43);ctx.lineTo(-9,-30);ctx.lineTo(9,-30);ctx.fill()}if(o.label){ctx.font='bold 10px system-ui';let tw=ctx.measureText(o.label).width+14;ctx.fillStyle='rgba(255,255,255,.93)';roundRect(ctx,-tw/2,43,tw,18,6);ctx.fill();ctx.fillStyle='#274637';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(o.label,0,52,150)}ctx.restore()}
+function animate(){if(!worldReady)return;let now=performance.now();requestAnimationFrame(animate);if(!computerOpen&&!phoneOpen&&!dialogOpen){let dx=0,dz=0;if(keys.KeyA||keys.ArrowLeft)dx--;if(keys.KeyD||keys.ArrowRight)dx++;if(keys.KeyW||keys.ArrowUp)dz--;if(keys.KeyS||keys.ArrowDown)dz++;let len=Math.hypot(dx,dz)||1;if(dx||dz){let speed=4*(Math.min(34,now-(animate.last||now))/1000);player.position.x=Math.max(-29,Math.min(29,player.position.x+dx/len*speed));player.position.z=Math.max(-28,Math.min(28,player.position.z+dz/len*speed));player.rotation.y=Math.atan2(dx,dz);updateRoomFromPosition()}}animate.last=now;updateOfficeRemotePlayers(.05);broadcastPlayerPosition(false);drawOffice()}
+function departmentRoom(dept){const v=String(dept||'').toLowerCase();if(/qc|quality|chất lượng/.test(v))return 'qc';if(/data|dữ liệu|excel|kế toán/.test(v))return 'data';if(/hr|nhân sự|human resource/.test(v))return 'hr';if(/sales|kinh doanh|business/.test(v))return 'sales';if(/operation|vận hành|sản xuất/.test(v))return 'operations';if(/plan|kế hoạch/.test(v))return 'planning';if(/warehouse|kho/.test(v))return 'warehouse';if(/finance|tài chính/.test(v))return 'finance';if(/maintenance|bảo trì/.test(v))return 'maintenance';if(/boss|manager|giám đốc/.test(v))return 'boss';return 'training'}
+function roomTitle(k){return ({lobby:'SẢNH AVP',training:'PHÒNG ĐÀO TẠO',qc:'PHÒNG QC',data:'PHÒNG DỮ LIỆU',operations:'PHÒNG VẬN HÀNH',boss:'PHÒNG ANH VĂN PHÒNG',hr:'PHÒNG NHÂN SỰ',sales:'PHÒNG KINH DOANH',planning:'PHÒNG KẾ HOẠCH',warehouse:'PHÒNG KHO',finance:'PHÒNG TÀI CHÍNH',maintenance:'PHÒNG BẢO TRÌ',it:'PHÒNG IT',meeting:'PHÒNG HỌP',pantry:'KHU PANTRY'})[k]||'PHÒNG BAN'}
 function roomOffset(k){return window.avpRoomOffsets?.[k]||{x:0,z:0}}
-function roomAtPosition(x,z){const entries=Object.entries(window.avpRoomOffsets||{}).filter(([k])=>k!=='lobby');for(const [k,o] of entries)if(Math.abs(x-o.x)<=4.05&&Math.abs(z-o.z)<=5.05)return k;const o=roomOffset('lobby');if(Math.abs(x-o.x)<=7.9&&Math.abs(z-o.z)<=11.9)return 'lobby';return 'lobby'}
-function updateRoomFromPosition(){const next=roomAtPosition(player.position.x,player.position.z);if(next===currentRoom)return;currentRoom=next;$('place').textContent='Đang ở: '+roomTitle(next);updateOfficePresenceRoom();broadcastPlayerPosition(true);if(!overviewMode)focusCameraOnRoom(next);say('Bạn đã vào '+roomTitle(next)+'.')}function nearestDesk(){let best=null,dist=Infinity;for(const d of desks){if(d.roomKey!==currentRoom)continue;const o=window.avpRoomOffsets?.[d.roomKey]||{x:0,z:0},q=Math.hypot(player.position.x-(o.x+d.x),player.position.z-(o.z+d.z));if(q<dist){dist=q;best=d}}return dist<2.35?best:null}
-function nearestDoor(){let best=null,dist=Infinity;for(const [room,o] of Object.entries(window.avpRoomOffsets||{})){if(room==='lobby')continue;const d={x:o.x,z:o.z-5,room,label:roomTitle(room)};const q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<1.7?best:null}
-function enterRoom(d){if(!d)return;const o=roomOffset(d.room);currentRoom=d.room;player.position.set(o.x,0,o.z+1.4);yaw=0;player.rotation.y=0;pitch=-.06;roomBounds={minX:-29,maxX:29,minZ:-28,maxZ:28};$('place').textContent='Đang ở: '+roomTitle(d.room);updateOfficePresenceRoom();broadcastPlayerPosition(true);if(!overviewMode)focusCameraOnRoom(currentRoom);say('Bạn đã vào '+roomTitle(d.room)+'.')}
-function exitRoom(){if(currentRoom==='lobby')return;player.position.set(0,0,0);yaw=0;player.rotation.y=0;currentRoom='lobby';$('place').textContent='Sảnh AVP';updateOfficePresenceRoom();broadcastPlayerPosition(true);if(!overviewMode)focusCameraOnRoom('lobby');say('Bạn đã ra sảnh công ty.')}
+function roomAtPosition(x,z){for(const [k,o] of Object.entries(window.avpRoomOffsets||{})){if(k==='lobby')continue;if(Math.abs(x-o.x)<=4.25&&Math.abs(z-o.z)<=5.1)return k}return Math.abs(x)<=10&&Math.abs(z)<=8.5?'lobby':'lobby'}
+function focusCameraOnRoom(){}
+function updateRoomFromPosition(){const next=roomAtPosition(player.position.x,player.position.z);if(next===currentRoom)return;currentRoom=next;$('place').textContent='Đang ở: '+roomTitle(next);updateOfficePresenceRoom();broadcastPlayerPosition(true);say('Bạn đã vào '+roomTitle(next)+'.')}
+function nearestDesk(){let best=null,dist=Infinity;for(const d of desks){if(d.roomKey!==currentRoom)continue;const o=roomOffset(d.roomKey),q=Math.hypot(player.position.x-(o.x+d.x),player.position.z-(o.z+d.z));if(q<dist){dist=q;best=d}}return dist<2.45?best:null}
+function nearestDoor(){let best=null,dist=Infinity;for(const [room,o] of Object.entries(window.avpRoomOffsets||{})){if(room==='lobby')continue;const d={x:o.x,z:o.z-5,room,label:roomTitle(room)},q=Math.hypot(player.position.x-d.x,player.position.z-d.z);if(q<dist){dist=q;best=d}}return dist<1.9?best:null}
+function enterRoom(d){if(!d)return;const o=roomOffset(d.room);currentRoom=d.room;player.position.set(o.x,0,o.z+1.4);player.rotation.y=Math.PI;$('place').textContent='Đang ở: '+roomTitle(d.room);updateOfficePresenceRoom();broadcastPlayerPosition(true);say('Bạn đã vào '+roomTitle(d.room)+'.')}
+function exitRoom(){if(currentRoom==='lobby')return;player.position.set(0,0,0);player.rotation.y=0;currentRoom='lobby';$('place').textContent='Sảnh AVP';updateOfficePresenceRoom();broadcastPlayerPosition(true);say('Bạn đã ra sảnh công ty.')}
 function openComputerAtDesk(d){
  if(!d)return;
  selectedDesk=d;computerOpen=true;$('computerTitle').textContent=d.kind==='training'?'Đào tạo hội nhập — phím tắt và thao tác nhanh':'Máy tính — '+d.name;
  $('computer').classList.add('open');$('computer').classList.toggle('training-mode',d.kind==='training');setComputerApp('excel');
- $('sheetStatus').textContent=d.kind==='training'?'HƯỚNG DẪN NHANH\\nW A S D hoặc phím mũi tên: di chuyển. E: tương tác/ngồi vào bàn. V: đổi góc nhìn. Esc: đứng dậy. Khi hoàn tất, nhấn nút xác nhận để mở cửa phòng ban.':'Đang đăng nhập máy tính phòng '+roomTitle(currentRoom)+'. Hộp thư và nhiệm vụ AVP nằm ở các thẻ phía trên.';
+ $('sheetStatus').textContent=d.kind==='training'?'HƯỚNG DẪN NHANH\\nW A S D hoặc phím mũi tên: di chuyển. E: tương tác/ngồi vào bàn. Lăn chuột: thu phóng. Esc: đứng dậy. Khi hoàn tất, nhấn nút xác nhận để mở cửa phòng ban.':'Đang đăng nhập máy tính phòng '+roomTitle(currentRoom)+'. Hộp thư và nhiệm vụ AVP nằm ở các thẻ phía trên.';
  keys={};document.exitPointerLock?.()
 }
 function interact(){
@@ -616,7 +353,6 @@ function interact(){
 }
 function closeComputer(){computerOpen=false;$('computer').classList.remove('open')}
 $('trainingBtn').textContent='Hoàn tất hướng dẫn và mở cửa phòng ban';$('trainingBtn').onclick=()=>{if(!selectedDesk||selectedDesk.kind!=='training'){say('Hãy đến Phòng đào tạo và nhấn E trước.');return}trainingComplete=true;try{localStorage.setItem('avp-office-quest-training-'+user.id,'done')}catch{}$('place').textContent='Đã hoàn tất hướng dẫn · Cửa phòng ban đã mở';$('sheetStatus').textContent='Đã hoàn tất hướng dẫn. Các bàn phòng ban đã mở khóa. Đứng dậy và đi đến biển hiệu QC, Dữ liệu hoặc Vận hành.';closeComputer();maybeAssignOfficeTask(true);say('Hoàn tất hướng dẫn! Các phòng ban đã mở khóa. Sếp vừa gửi nhiệm vụ đầu tiên tới điện thoại.')};
-function toggleView(){overviewMode=!overviewMode;updateViewButton();focusCameraOnRoom(overviewMode?'lobby':currentRoom);say(overviewMode?'Toàn cảnh văn phòng.':'Đang xem '+roomTitle(currentRoom)+'.')}
 document.querySelectorAll('[data-office-app]').forEach(b=>b.addEventListener('click',()=>setComputerApp(b.dataset.officeApp)));
 $('phoneToggle').onclick=()=>{phoneOpen=!phoneOpen;$('phonePanel').hidden=!phoneOpen;if(phoneOpen)renderPhone()};
 $('phoneClose').onclick=()=>{$('phonePanel').hidden=true;phoneOpen=false};
@@ -626,17 +362,8 @@ $('chatSend').onclick=sendOfficeMessage;
 $('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sendOfficeMessage()}});
 $('refreshTasks').onclick=()=>{renderOfficeTasks();say('Đã cập nhật bàn nhiệm vụ.')};
 
-function animate(){requestAnimationFrame(animate);if(!worldReady)return;const idleTime=performance.now()/1000;for(const actor of (window.avpAnimeCharacters||[])){actor.position.y=Math.sin(idleTime*2+actor.userData.idlePhase)*.009;if(actor.userData.animeHead)actor.userData.animeHead.rotation.y=Math.sin(idleTime*.8+actor.userData.idlePhase)*.035;if(actor.userData.waveArm)actor.userData.waveArm.rotation.z=actor.userData.waveBase+Math.sin(idleTime*3.2)*.13}if(window.avpClockHands){const t=performance.now()/1000;window.avpClockHands.secondHand.rotation.z=-t*2*Math.PI/1.875;window.avpClockHands.minuteHand.rotation.z=-t*2*Math.PI/112.5;window.avpClockHands.hourHand.rotation.z=-t*2*Math.PI/2700;}const dt=Math.min(clock.getDelta(),.04);if(!computerOpen&&!phoneOpen&&!dialogOpen){let f=0,s=0;if(keys.KeyW||keys.ArrowUp)f-=1;if(keys.KeyS||keys.ArrowDown)f+=1;if(keys.KeyA||keys.ArrowLeft)s-=1;if(keys.KeyD||keys.ArrowRight)s+=1;const len=Math.hypot(f,s)||1;f/=len;s/=len;const speed=4*dt;player.position.x+=s*Math.cos(yaw)*speed+f*Math.sin(yaw)*speed;player.position.z+=f*Math.cos(yaw)*speed-s*Math.sin(yaw)*speed;player.position.x=Math.max(roomBounds.minX,Math.min(roomBounds.maxX,player.position.x));player.position.z=Math.max(roomBounds.minZ,Math.min(roomBounds.maxZ,player.position.z));if(f||s){const dx=s*Math.cos(yaw)+f*Math.sin(yaw),dz=f*Math.cos(yaw)-s*Math.sin(yaw);player.rotation.y=Math.atan2(-dx,-dz);}updateRoomFromPosition();const d=nearestDesk(),door=nearestDoor();$('place').textContent=currentRoom!=='lobby'?'Đang ở: '+currentRoom.toUpperCase()+(player.position.z < -2.55?' · Nhấn E để ra hành lang':d?' · Nhấn E để ngồi vào bàn':''):door?'Cửa phòng: '+door.label+' · Nhấn E để mở':(!trainingComplete?'Sảnh công ty · Vào phòng đào tạo trước':'Sảnh / hành lang công ty · Tìm cửa phòng ban');}broadcastPlayerPosition(false);updateOfficeRemotePlayers(dt);renderer.render(scene,camera)}
-window.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();if(e.key==='Escape'&&computerOpen){closeComputer();return}if(computerOpen||phoneOpen||dialogOpen)return;keys[e.code]=true;if(e.code==='KeyE')interact();if(e.code==='KeyV')toggleView()});window.addEventListener('keyup',e=>keys[e.code]=false);
-const pad=$('stickpad'),dot=$('stickdot');let padId=null;function padMove(e){const r=pad.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=r.width*.34,len=Math.hypot(dx,dy)||1,scale=Math.min(1,max/len);keys.KeyW=dy/max*scale<-.25;keys.KeyS=dy/max*scale>.25;keys.KeyA=dx/max*scale<-.25;keys.KeyD=dx/max*scale>.25;dot.style.left=(50+dx/max*34*scale)+'%';dot.style.top=(50+dy/max*34*scale)+'%'}function padReset(){padId=null;keys.KeyW=keys.KeyA=keys.KeyS=keys.KeyD=false;dot.style.left='50%';dot.style.top='50%'}pad.addEventListener('pointerdown',e=>{e.preventDefault();padId=e.pointerId;pad.setPointerCapture(e.pointerId);padMove(e)});pad.addEventListener('pointermove',e=>{if(e.pointerId===padId)padMove(e)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>pad.addEventListener(ev,padReset));$('mobileInteract').onclick=interact;$('mobileView').onclick=toggleView;let lookLast=null;
-function beginLook(e){if(e.pointerType==='mouse'&&e.button!==0)return;if(computerOpen)return;lookLast={x:e.clientX,y:e.clientY,id:e.pointerId};try{e.currentTarget.setPointerCapture(e.pointerId)}catch{}}
-function moveLook(e){if(!lookLast||e.pointerId!==lookLast.id)return;const dx=e.clientX-lookLast.x,dy=e.clientY-lookLast.y;yaw-=dx*.008;pitch=Math.max(-.85,Math.min(.65,pitch-dy*.006));lookLast={x:e.clientX,y:e.clientY,id:e.pointerId}}
-function endLook(e){if(lookLast&&e.pointerId===lookLast.id)lookLast=null}
-const lookpad=$('lookpad');lookpad.style.touchAction='none';lookpad.addEventListener('pointerdown',beginLook);lookpad.addEventListener('pointermove',moveLook);['pointerup','pointercancel','lostpointercapture'].forEach(ev=>lookpad.addEventListener(ev,endLook));
-// Gắn điều khiển lên vùng #world ngay từ đầu; renderer được tạo muộn sau khi xác minh xong.
-const worldArea=$('world');worldArea.style.touchAction='none';worldArea.addEventListener('pointerdown',e=>{if(e.target.closest('button')||e.target.closest('#computer'))return;beginLook(e)});worldArea.addEventListener('pointermove',moveLook);['pointerup','pointercancel','lostpointercapture'].forEach(ev=>worldArea.addEventListener(ev,endLook));
-worldArea.addEventListener('wheel',e=>{if(!thirdPerson||computerOpen)return;e.preventDefault();cameraDistance=Math.max(2.8,Math.min(12,cameraDistance+Math.sign(e.deltaY)*.8) )},{passive:false});
-$('viewBtn').onclick=toggleView;$('helpBtn').onclick=()=>say('Di chuyển: giữ W A S D hoặc phím mũi tên. Xoay góc nhìn: giữ chuột trái và kéo; trên điện thoại, chạm giữ rồi vuốt. Lăn bánh xe chuột để thu phóng ở góc nhìn thứ ba. Nhấn E để dùng bàn, V để đổi góc nhìn.');$('exitBtn').onclick=()=>location.href='office-quest.html';$('standBtn').onclick=closeComputer;window.addEventListener('resize',()=>{if(!renderer)return;renderer.setSize(innerWidth,innerHeight);focusCameraOnRoom(overviewMode?'lobby':currentRoom)});
+window.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();if(e.key==='Escape'&&computerOpen){closeComputer();return}if(computerOpen||phoneOpen||dialogOpen)return;keys[e.code]=true;if(e.code==='KeyE')interact()});window.addEventListener('keyup',e=>keys[e.code]=false);
+const pad=$('stickpad'),dot=$('stickdot');let padId=null;function padMove(e){const r=pad.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,max=r.width*.34,len=Math.hypot(dx,dy)||1,scale=Math.min(1,max/len);keys.KeyW=dy/max*scale<-.25;keys.KeyS=dy/max*scale>.25;keys.KeyA=dx/max*scale<-.25;keys.KeyD=dx/max*scale>.25;dot.style.left=(50+dx/max*34*scale)+'%';dot.style.top=(50+dy/max*34*scale)+'%'}function padReset(){padId=null;keys.KeyW=keys.KeyA=keys.KeyS=keys.KeyD=false;dot.style.left='50%';dot.style.top='50%'}pad.addEventListener('pointerdown',e=>{e.preventDefault();padId=e.pointerId;pad.setPointerCapture(e.pointerId);padMove(e)});pad.addEventListener('pointermove',e=>{if(e.pointerId===padId)padMove(e)});['pointerup','pointercancel','lostpointercapture'].forEach(ev=>pad.addEventListener(ev,padReset));$('mobileInteract').onclick=interact;$('helpBtn').onclick=()=>say('Di chuyển bằng W A S D hoặc phím mũi tên. Nhấn E để tương tác. Lăn chuột để phóng to hoặc thu nhỏ.');$('exitBtn').onclick=()=>location.href='office-quest.html';$('standBtn').onclick=closeComputer;
 function seed(){cells=[['Ngày','Mã đơn','Sản phẩm','Số lượng','Doanh thu'],['2026-10-01','DH101','Bút bi',10,50000],['2026-10-01','DH102','Sổ tay',5,75000],['2026-10-02','DH103','Bút bi',12,60000],['2026-10-02','DH104','Bìa hồ sơ',4,40000],['2026-10-03','DH105','Sổ tay',8,120000]];renderSheet();$('sheetStatus').textContent='Đã nạp dữ liệu mẫu. Nhấp đúp hoặc chọn ô để sửa nội dung.'}
 function colName(n){let s='';while(n>=0){s=String.fromCharCode(n%26+65)+s;n=Math.floor(n/26)-1}return s}
 function renderSheet(){const t=$('sheet');t.replaceChildren();const maxCols=Math.max(5,...cells.map(r=>r.length));const head=document.createElement('tr');const corner=document.createElement('th');corner.textContent='';head.append(corner);for(let c=0;c<maxCols;c++){const th=document.createElement('th');th.textContent=colName(c);head.append(th)}t.append(head);for(let r=0;r<Math.max(15,cells.length);r++){const tr=document.createElement('tr'),th=document.createElement('th');th.textContent=r+1;tr.append(th);for(let c=0;c<maxCols;c++){const td=document.createElement('td');td.contentEditable='true';td.dataset.r=r;td.dataset.c=c;td.textContent=cells[r]?.[c]??'';td.onclick=()=>selectCell(r,c);td.onblur=()=>{const before=cells[r]?.[c]??'';cells[r]??=[];cells[r][c]=td.textContent;if(String(before)!==td.textContent)recordComputerEdit()};td.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();td.blur();selectCell(Math.min(r+1,Math.max(0,cells.length-1)),c)}};tr.append(td)}t.append(tr)}selectCell(selectedCell.r,selectedCell.c)}
@@ -659,10 +386,10 @@ setTimeout(function(){
   var canvas=world&&world.querySelector('canvas');
   var gate=document.getElementById('gate');
   if(!canvas && place && place.textContent.indexOf('Đang tải văn phòng')>=0){
-    place.textContent='Không tải được 3D';
+    place.textContent='Không tải được văn phòng 2D';
     if(gate){
       var msg=document.getElementById('gateMsg');
-      if(msg)msg.textContent='Văn phòng 3D chưa khởi động. Hãy tải lại bằng Ctrl + F5. Nếu vẫn lỗi, kiểm tra mạng hoặc tiện ích chặn script.';
+      if(msg)msg.textContent='Văn phòng chưa khởi động. Hãy tải lại trang và kiểm tra kết nối mạng.';
       gate.classList.remove('hidden');
       var retry=document.getElementById('retryBtn');if(retry)retry.classList.remove('hidden');
     }
