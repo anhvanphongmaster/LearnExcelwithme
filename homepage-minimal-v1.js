@@ -62,7 +62,7 @@ function setup(){
  var discover=el('section','avp-canonical-discover');
  discover.innerHTML='<div class="avp-canonical-section-head"><div><h2>Khám phá ngay</h2><p>Chọn khu vực bạn quan tâm để bắt đầu hành trình.</p></div><a href="tools-center.html">Khám phá tất cả　↗</a></div><div class="avp-canonical-discover-grid"></div>';
  var cats=[
- ['learning-chapter-4.html','ƒx','Chương 4 · Hàm Excel','Vào thẳng bài học và thực hành hàm Excel','green'],
+ ['learning-chapters.html','↪','Lộ trình học','12 chương được thiết kế theo đúng công việc thực tế','green'],
  ['excel-library.html','ƒx','Thư viện hàm Excel','Tra cứu nhanh công dụng, ví dụ và cách dùng','blue'],
  ['practice-video.html','▤','File thực hành','Tải file theo từng chương, bài học','amber'],
  ['ai.html','✳','Công cụ hỗ trợ','Template, tiện ích và công cụ hữu ích','purple'],
@@ -101,12 +101,12 @@ function setup(){
  modal.querySelector('.avp-chapter-picker-close').addEventListener('click',closeChapterPicker);
  modal.addEventListener('click',function(event){if(event.target===modal)closeChapterPicker();});
  document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!modal.hidden)closeChapterPicker();});
- if(new URLSearchParams(location.search).get('openChapters')==='1')openChapterPicker();
  document.body.classList.add('avp-chapter-picker-ready');
 
  hero.insertAdjacentElement('afterend',discover);
  var lessons=el('section','avp-canonical-lessons');
  lessons.innerHTML='<div class="avp-canonical-lesson-main"><div class="avp-canonical-section-head"><div><h2>Bài học nổi bật</h2><p>Những nội dung đang được quan tâm.</p></div><a href="excel.html">Xem tất cả　→</a></div><div class="avp-canonical-lesson-grid"></div></div><aside class="avp-canonical-trending"><h3>Xu hướng hôm nay　↗</h3><ol><li><b>1</b><span><strong>SUMIFS</strong><small>Tính tổng nhiều điều kiện</small></span></li><li><b>2</b><span><strong>XLOOKUP</strong><small>Tra cứu dữ liệu hiện đại</small></span></li><li><b>3</b><span><strong>PivotTable</strong><small>Báo cáo nhanh</small></span></li><li><b>4</b><span><strong>Power Query</strong><small>Làm sạch và kết hợp dữ liệu</small></span></li><li><b>5</b><span><strong>Phím tắt Excel</strong><small>Làm việc nhanh hơn</small></span></li></ol></aside>';
+ var chapterCta=document.createElement('div');chapterCta.className='avp-canonical-banner';chapterCta.innerHTML='<span class="avp-banner-art">▥<small>AVP</small></span><div><h2>Sẵn sàng nâng cấp kỹ năng Excel?</h2><p>Tham gia lộ trình 12 chương với ví dụ thực tế và bài tập có file thực hành.</p></div><a href="learning-chapter-4.html">Xem lộ trình 12 chương　→</a></div>';lessons.appendChild(chapterCta);
  var lessonData=[
  ['power-query-course.html','Power Query cơ bản','Từ dữ liệu thô đến báo cáo','12:30','pq'],
  ['excel.html','XLOOKUP tra cứu dữ liệu','Tra cứu dữ liệu hiện đại','10:15','lookup'],
