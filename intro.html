@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#062f24">
+<title>Giới thiệu Anh Văn Phòng | Learn Excel With Me</title>
+<style>
+:root{color-scheme:dark;--green:#00d084;--mint:#baf5d5;--ink:#071a13;--panel:#0c2a20;--white:#f5fff9}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#04150f;color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,a{font:inherit}
+.player{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 42%,#103d2c 0,#061a12 55%,#020b07 100%)}
+.stage{position:relative;width:min(100vw,177.7778vh);height:min(100vh,56.25vw);min-width:320px;overflow:hidden;isolation:isolate;background:linear-gradient(135deg,#071b13,#0c3324 62%,#061a12);box-shadow:0 25px 100px #0008}
+.stage:before,.stage:after{content:"";position:absolute;pointer-events:none;z-index:0}
+.stage:before{inset:-30%;background:radial-gradient(circle at 15% 30%,#16a86a22,transparent 32%),radial-gradient(circle at 82% 72%,#7affc51c,transparent 29%);animation:ambient 18s ease-in-out infinite alternate}
+.stage:after{inset:0;opacity:.12;background-image:linear-gradient(#b8f7d40a 1px,transparent 1px),linear-gradient(90deg,#b8f7d40a 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(90deg,transparent,#000 40%,#000 80%,transparent)}
+.topbar{position:absolute;z-index:20;left:4%;right:4%;top:5%;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:10px;align-items:center;font-size:clamp(10px,1vw,15px);font-weight:800;letter-spacing:.01em}
+.mark{display:grid;place-items:center;width:34px;height:34px;border:1px solid #baf5d566;border-radius:11px;background:linear-gradient(135deg,#1ab979,#07573b);color:#fff;font-size:11px;box-shadow:0 0 25px #00d08420}
+.brand small{display:block;color:#a3cdb7;font-size:.68em;font-weight:500;margin-top:2px;letter-spacing:.08em}
+.controls{display:flex;gap:8px;align-items:center}
+.control{border:1px solid #c7f8de3d;border-radius:999px;background:#071d15c9;color:#e9fff2;padding:9px 14px;font-size:clamp(10px,.9vw,13px);cursor:pointer;backdrop-filter:blur(10px);transition:background .2s,border-color .2s,transform .2s}
+.control:hover{background:#145239;border-color:#8af2ba;transform:translateY(-1px)}
+.skip{background:#f0fff6;color:#073321;border-color:#fff;font-weight:800}
+.scene{position:absolute;inset:0;z-index:2;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:4%;padding:10% 8% 9%;opacity:0;visibility:hidden;transform:translateY(12px) scale(.99);transition:opacity .8s ease,transform .9s cubic-bezier(.2,.8,.2,1),visibility .8s}
+.scene.active{opacity:1;visibility:visible;transform:none}
+.copy{position:relative;z-index:4;max-width:620px}
+.kicker{display:flex;align-items:center;gap:9px;color:#8ee9b8;font-size:clamp(9px,.85vw,13px);font-weight:850;letter-spacing:.18em;text-transform:uppercase;margin-bottom:clamp(13px,2vh,24px)}
+.kicker:before{content:"";width:25px;height:2px;background:var(--green);box-shadow:0 0 12px var(--green)}
+h1,h2,p{margin:0}
+h1{font-size:clamp(36px,5.5vw,86px);line-height:.98;letter-spacing:-.065em;font-weight:900}
+h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font-weight:900}
+.accent{color:#6ef0ac}
+.lead{max-width:490px;margin-top:clamp(14px,2.5vh,25px);color:#c0d9cb;font-size:clamp(12px,1.35vw,19px);line-height:1.65}
+.pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:clamp(18px,3vh,32px)}
+.pill{padding:8px 11px;border:1px solid #baf5d52c;border-radius:9px;background:#ffffff08;color:#d9f5e4;font-size:clamp(9px,.85vw,12px)}
+.visual{position:relative;min-width:0;display:grid;place-items:center;perspective:1000px}
+.window{position:relative;width:min(100%,520px);border:1px solid #b8f7d43b;border-radius:16px;overflow:hidden;background:#f8fcf9;color:#153527;box-shadow:0 35px 80px #0006,0 0 60px #00d08412;transform:rotateY(-7deg) rotateX(2deg);animation:float 6s ease-in-out infinite}
+.windowbar{height:31px;display:flex;align-items:center;gap:5px;padding:0 12px;background:#eaf4ed;border-bottom:1px solid #dce8df}
+.dot{width:6px;height:6px;border-radius:50%;background:#a8c3b2}
+.address{margin-left:8px;padding:4px 10px;border-radius:5px;background:#fff;color:#779183;font-size:8px;flex:1}
+.mocknav{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid #e5eee8;font-size:8px;font-weight:800}
+.mockbrand{display:flex;gap:6px;align-items:center;color:#145337}
+.mini-mark{display:grid;place-items:center;width:19px;height:19px;background:#d7f5e3;color:#08764b;border-radius:6px}
+.mocklinks{display:flex;gap:10px;color:#557565;font-size:7px}
+.mockhero{margin:10px;padding:17px;border-radius:10px;background:linear-gradient(110deg,#e2f5e9,#c8ead7);display:grid;grid-template-columns:1.1fr .9fr;gap:10px;align-items:center;min-height:130px}
+.mockhero strong{display:block;font-size:clamp(15px,1.7vw,24px);line-height:1.04;letter-spacing:-.05em;color:#102d20}
+.mockhero p{margin-top:7px;font-size:8px;line-height:1.5;color:#4b6c59}
+.mockbutton{display:inline-block;margin-top:10px;padding:7px 10px;border-radius:6px;background:#08764b;color:#fff;font-size:7px;font-weight:800}
+.mockchart{height:90px;display:flex;align-items:end;justify-content:center;gap:7px;padding:12px;border-radius:9px;background:#ffffff99;border:1px solid #fff}
+.mockchart i{width:13%;border-radius:3px 3px 0 0;background:linear-gradient(#4fdc99,#08764b);animation:bars 2.5s ease-in-out infinite alternate}
+.mockchart i:nth-child(1){height:30%}.mockchart i:nth-child(2){height:54%;animation-delay:.2s}.mockchart i:nth-child(3){height:42%;animation-delay:.4s}.mockchart i:nth-child(4){height:78%;animation-delay:.6s}.mockchart i:nth-child(5){height:96%;animation-delay:.8s}
+.mockcards{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:0 10px 11px}
+.mockcard{height:50px;border:1px solid #e0ebe3;border-radius:7px;background:#fff;padding:7px}
+.mockcard b{display:block;width:19px;height:19px;border-radius:5px;background:#dff5e7;margin-bottom:6px}
+.mockcard span{display:block;width:70%;height:3px;background:#b6cfc0;border-radius:3px}
+.mockcard span+span{margin-top:4px;width:48%}
+.floatlabel{position:absolute;z-index:3;padding:9px 12px;border-radius:9px;border:1px solid #c7f8de54;background:#09291d;color:#a7f2c8;font-size:clamp(9px,.9vw,12px);font-weight:800;box-shadow:0 12px 30px #0004;animation:float 4s ease-in-out infinite}
+.floatlabel.one{top:9%;left:-4%}.floatlabel.two{right:-3%;bottom:13%;animation-delay:-2s}
+.focus-ring{position:absolute;z-index:3;inset:12% 8%;border:1px solid #78f0b14c;border-radius:18px;box-shadow:0 0 0 1px #78f0b11a,0 0 55px #00d08410;transform:rotate(-5deg);animation:ring 5s ease-in-out infinite}
+.chapter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;width:min(100%,480px)}
+.chapter{position:relative;min-height:77px;padding:12px;border:1px solid #baf5d52b;border-radius:12px;background:linear-gradient(145deg,#113b2a,#09271c);overflow:hidden}
+.chapter b{display:block;color:#6cebaa;font-size:clamp(17px,2vw,27px);letter-spacing:-.04em}
+.chapter span{display:block;margin-top:7px;color:#c4dfce;font-size:clamp(9px,.9vw,12px)}
+.chapter.pending{border-style:dashed;background:#ffffff05}
+.chapter.pending b{color:#e5f5eb}
+.case-window{width:min(100%,470px);padding:20px;border:1px solid #baf5d536;border-radius:16px;background:#0b2b1f;box-shadow:0 25px 65px #0005;transform:rotateY(6deg);animation:float 5s ease-in-out infinite}
+.case-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid #baf5d51e;color:#d9f7e5;font-size:12px;font-weight:800}
+.case-head span{color:#76eaaa;font-size:9px}
+.case-row{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid #baf5d51a}
+.case-num{display:grid;place-items:center;width:27px;height:27px;border-radius:8px;background:#174b34;color:#9af0bf;font-size:10px;font-weight:900}
+.case-row strong{display:block;font-size:12px}.case-row small{display:block;margin-top:4px;color:#a1c6af;font-size:9px}
+.case-tag{font-size:8px;color:#a6efc2;padding:5px 7px;border:1px solid #4d9e7050;border-radius:6px}
+.endmark{display:grid;place-items:center;width:clamp(90px,12vw,160px);aspect-ratio:1;border-radius:32%;border:1px solid #9bf4c366;background:linear-gradient(145deg,#27c985,#07563b);font-size:clamp(28px,4vw,54px);font-weight:950;box-shadow:0 0 80px #00d08430;animation:markpulse 3s ease-in-out infinite}
+.timeline{position:absolute;z-index:25;left:4%;right:4%;bottom:4.2%;display:flex;align-items:center;gap:12px}
+.time{color:#a9cbb7;font-size:11px;font-variant-numeric:tabular-nums;min-width:70px}
+.track{height:3px;flex:1;border-radius:99px;background:#ffffff24;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#2acb84,#c2ffdc);box-shadow:0 0 14px #43e99a;transition:width .15s linear}
+.scene-count{color:#9fc7ae;font-size:10px;letter-spacing:.1em}
+.start-screen{position:absolute;inset:0;z-index:50;display:grid;place-items:center;background:#04150feF;backdrop-filter:blur(16px);transition:opacity .5s,visibility .5s}
+.start-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.start-card{text-align:center;width:min(90%,600px);padding:30px}
+.start-card .endmark{margin:0 auto 25px}
+.start-card h2{font-size:clamp(30px,4.5vw,58px)}
+.start-card p{margin:16px auto 24px;max-width:430px;color:#b6d5c2;line-height:1.6;font-size:clamp(12px,1.2vw,16px)}
+.play{border:0;border-radius:999px;padding:14px 24px;background:#baffd5;color:#063621;font-weight:900;cursor:pointer;box-shadow:0 0 35px #00d08422;transition:transform .2s}
+.play:hover{transform:scale(1.04)}
+.hint{margin-top:14px;color:#739b83;font-size:11px}
+@keyframes ambient{to{transform:translate3d(3%,-2%,0) scale(1.08)}}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 -9px}}
+@keyframes bars{from{filter:brightness(.8);transform:scaleY(.94);transform-origin:bottom}to{filter:brightness(1.15);transform:scaleY(1);transform-origin:bottom}}
+@keyframes ring{0%,100%{transform:rotate(-5deg) scale(.98);opacity:.6}50%{transform:rotate(1deg) scale(1.03);opacity:1}}
+@keyframes markpulse{0%,100%{box-shadow:0 0 45px #00d08422;transform:scale(1)}50%{box-shadow:0 0 90px #00d08445;transform:scale(1.035)}}
+@media(max-width:650px){.stage{width:100vw;height:100vh;min-width:0}.topbar{top:3%;left:5%;right:5%}.scene{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:3%;padding:18% 7% 13%;align-content:center}.copy{max-width:100%}.scene h1{font-size:clamp(38px,11vw,60px)}.scene h2{font-size:clamp(32px,9vw,48px)}.lead{font-size:13px;margin-top:12px}.pillrow{margin-top:14px}.visual{max-height:42vh}.window{max-width:440px}.case-window{max-width:430px}.chapter-grid{max-width:450px}.chapter{min-height:58px;padding:8px}.chapter span{font-size:9px}.mockhero{min-height:105px}.mockchart{height:65px}.mockcards{display:none}.floatlabel.one{left:0}.floatlabel.two{right:0}.timeline{bottom:2.4%;left:5%;right:5%}.control{padding:8px 10px}.brand{font-size:10px}.mark{width:29px;height:29px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="player" id="player">
+ <div class="stage" id="stage" aria-label="Video giới thiệu website Anh Văn Phòng">
+  <header class="topbar">
+   <div class="brand"><span class="mark">AVP</span><span>ANH VĂN PHÒNG<small>LEARN EXCEL WITH ME</small></span></div>
+   <div class="controls"><button class="control" id="sound" type="button" aria-label="Bật hoặc tắt âm thanh">♪ Âm thanh: bật</button><button class="control skip" id="skip" type="button">Bỏ qua ↗</button></div>
+  </header>
+  <section class="scene active" data-scene="0">
+   <div class="copy"><div class="kicker">Excel · Data · Reporting · Automation · AI</div><h1>Biến kỹ năng<br>thành <span class="accent">giá trị.</span></h1><p class="lead">Anh Văn Phòng — nơi bạn học cách dùng Excel và dữ liệu để giải quyết công việc thực tế, không chỉ ghi nhớ công thức.</p><div class="pillrow"><span class="pill">Học có mục tiêu</span><span class="pill">Làm bằng dữ liệu thật</span><span class="pill">Tạo kết quả rõ ràng</span></div></div>
+   <div class="visual"><div class="focus-ring"></div><div class="endmark">AVP</div><div class="floatlabel one">EXCEL → INSIGHT</div><div class="floatlabel two">LEARN · BUILD · IMPROVE</div></div>
+  </section>
+  <section class="scene" data-scene="1">
+   <div class="copy"><div class="kicker">01 / Một điểm bắt đầu rõ ràng</div><h2>Không chỉ là<br>một <span class="accent">website học.</span></h2><p class="lead">Từ trang chủ, bạn có thể đi thẳng đến lộ trình học, thư viện tra cứu, file thực hành và các bài toán ứng dụng.</p><div class="pillrow"><span class="pill">Điều hướng rõ ràng</span><span class="pill">Nội dung theo nhu cầu</span></div></div>
+   <div class="visual"><div class="window"><div class="windowbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address">anhvanphongmaster.github.io</div></div><div class="mocknav"><div class="mockbrand"><i class="mini-mark">A</i> Anh Văn Phòng</div><div class="mocklinks"><span>Học</span><span>Hôm nay</span><span>Học AI</span><span>Thực hành</span></div></div><div class="mockhero"><div><strong>Học Excel<br>để làm được việc.</strong><p>Ví dụ thực tế, bài tập và file thực hành.</p><span class="mockbutton">BẮT ĐẦU KHÁM PHÁ →</span></div><div class="mockchart"><i></i><i></i><i></i><i></i><i></i></div></div><div class="mockcards"><div class="mockcard"><b></b><span></span><span></span></div><div class="mockcard"><b></b><span></span><span></span></div><div class="mockcard"><b></b><span></span><span></span></div><div class="mockcard"><b></b><span></span><span></span></div></div></div></div>
+  </section>
+  <section class="scene" data-scene="2">
+   <div class="copy"><div class="kicker">02 / Lộ trình học</div><h2>Học theo<br>từng <span class="accent">chặng.</span></h2><p class="lead">Kiến thức được định hướng theo từng bước, từ nền tảng đến ứng dụng nâng cao. Lộ trình 12 chương vẫn đang được xây dựng — các chương chưa hoàn thiện sẽ được bổ sung tiếp.</p><div class="pillrow"><span class="pill">Không học lan man</span><span class="pill">Tiến từng bước</span></div></div>
+   <div class="visual"><div class="chapter-grid"><div class="chapter"><b>01</b><span>Nền tảng</span></div><div class="chapter"><b>02</b><span>Công thức</span></div><div class="chapter"><b>03</b><span>Tra cứu</span></div><div class="chapter"><b>04</b><span>Phân tích</span></div><div class="chapter"><b>05</b><span>Power Query</span></div><div class="chapter"><b>06</b><span>Báo cáo</span></div><div class="chapter pending"><b>07—12</b><span>Đang phát triển</span></div><div class="chapter"><b>+</b><span>Thực hành</span></div><div class="chapter"><b>↗</b><span>Ứng dụng</span></div></div></div>
+  </section>
+  <section class="scene" data-scene="3">
+   <div class="copy"><div class="kicker">03 / Tra cứu nhanh</div><h2>Hiểu công cụ.<br><span class="accent">Giải quyết việc.</span></h2><p class="lead">Tra cứu hàm Excel, xem ví dụ, tìm hiểu cách xử lý dữ liệu và xây dựng báo cáo phù hợp với bài toán đang gặp.</p><div class="pillrow"><span class="pill">Công thức</span><span class="pill">PivotTable</span><span class="pill">Power Query</span><span class="pill">Dashboard</span></div></div>
+   <div class="visual"><div class="window"><div class="windowbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address">Thư viện kiến thức · Excel</div></div><div style="padding:22px"><div style="font-size:10px;color:#4d8c67;font-weight:900;letter-spacing:.15em">TRA CỨU / HỌC / ÁP DỤNG</div><div style="margin-top:8px;font-size:clamp(21px,2.6vw,36px);font-weight:900;letter-spacing:-.05em">Từ câu hỏi đến lời giải.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px"><div style="padding:14px;border-radius:9px;background:#e6f6ec"><b style="color:#08764b">ƒx</b><p style="margin-top:8px;font-size:12px;font-weight:800">Hàm Excel</p><small style="font-size:9px;color:#62816d">Cú pháp · Ví dụ · Lỗi thường gặp</small></div><div style="padding:14px;border-radius:9px;background:#edf1ff"><b style="color:#4264ac">▦</b><p style="margin-top:8px;font-size:12px;font-weight:800">Phân tích dữ liệu</p><small style="font-size:9px;color:#62816d">Làm sạch · Tổng hợp · Báo cáo</small></div></div><div style="height:7px;margin-top:18px;border-radius:8px;background:#e5eee7"><div style="width:76%;height:100%;border-radius:8px;background:#31bb7c"></div></div></div></div></div>
+  </section>
+  <section class="scene" data-scene="4">
+   <div class="copy"><div class="kicker">04 / Kho workbook</div><h2>Đừng chỉ xem.<br><span class="accent">Hãy mở file.</span></h2><p class="lead">Workbook và dữ liệu thực hành giúp bạn thử thao tác, kiểm tra kết quả và tự làm lại theo nhu cầu của công việc.</p><div class="pillrow"><span class="pill">File mẫu</span><span class="pill">Dữ liệu luyện tập</span><span class="pill">Tự thực hành</span></div></div>
+   <div class="visual"><div class="window"><div class="windowbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address">Workbook · Practice files</div></div><div style="padding:22px"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:19px;letter-spacing:-.04em">Kho workbook</b><span style="padding:6px 9px;border-radius:6px;background:#dff5e7;color:#08764b;font-size:9px;font-weight:900">XLSX · CSV</span></div><div style="margin-top:17px;border:1px solid #e0ebe3;border-radius:10px;overflow:hidden"><div style="display:grid;grid-template-columns:1.4fr 1fr .7fr;padding:10px;background:#eaf5ee;font-size:9px;font-weight:900"><span>TÊN TÀI LIỆU</span><span>CHỦ ĐỀ</span><span>LOẠI</span></div><div style="display:grid;grid-template-columns:1.4fr 1fr .7fr;padding:12px 10px;border-top:1px solid #e6eee8;font-size:10px"><b>Dữ liệu bán hàng</b><span>Excel</span><span>CSV</span></div><div style="display:grid;grid-template-columns:1.4fr 1fr .7fr;padding:12px 10px;border-top:1px solid #e6eee8;font-size:10px"><b>Báo cáo tổng hợp</b><span>PivotTable</span><span>XLSX</span></div><div style="display:grid;grid-template-columns:1.4fr 1fr .7fr;padding:12px 10px;border-top:1px solid #e6eee8;font-size:10px"><b>Làm sạch dữ liệu</b><span>Power Query</span><span>XLSX</span></div></div></div></div><div class="floatlabel two">MỞ FILE · THỬ · KIỂM TRA</div></div>
+  </section>
+  <section class="scene" data-scene="5">
+   <div class="copy"><div class="kicker">05 / Case thực chiến</div><h2>Từ dữ liệu<br>đến <span class="accent">sản phẩm.</span></h2><p class="lead">Case thực chiến tập trung vào bài toán, dữ liệu đầu vào, mục tiêu đầu ra và cách xây dựng lời giải — gần với cách xử lý công việc thật.</p><div class="pillrow"><span class="pill">Đặt vấn đề</span><span class="pill">Phân tích dữ liệu</span><span class="pill">Trình bày kết quả</span></div></div>
+   <div class="visual"><div class="case-window"><div class="case-head">CASE THỰC CHIẾN <span>PROJECT LAB / 01</span></div><div class="case-row"><span class="case-num">01</span><div><strong>Tổng hợp dữ liệu</strong><small>Chuẩn hóa nhiều nguồn đầu vào</small></div><span class="case-tag">DATA</span></div><div class="case-row"><span class="case-num">02</span><div><strong>Phân tích và tìm điểm bất thường</strong><small>Chọn chỉ số, đối chiếu và kiểm tra</small></div><span class="case-tag">ANALYZE</span></div><div class="case-row"><span class="case-num">03</span><div><strong>Hoàn thiện báo cáo</strong><small>Biến kết quả thành thông tin dễ dùng</small></div><span class="case-tag">REPORT</span></div><div style="margin-top:16px;padding:13px;border-radius:9px;background:#17442f;color:#b9f8d2;font-size:11px">Mục tiêu: một lời giải có thể giải thích và kiểm tra.</div></div></div>
+  </section>
+  <section class="scene" data-scene="6">
+   <div class="copy"><div class="kicker">06 / Học và làm tốt hơn</div><h2>Công cụ là<br>điểm bắt đầu.</h2><p class="lead">Hãy kết hợp kiến thức, thực hành và tư duy phân tích để tạo ra kết quả rõ ràng hơn trong công việc văn phòng.</p><div class="pillrow"><span class="pill">Excel</span><span class="pill">Dữ liệu</span><span class="pill">Tự động hóa</span><span class="pill">AI hỗ trợ</span></div></div>
+   <div class="visual"><div class="window" style="background:#0b2b1f;color:#eafff1;border-color:#65e6a24d"><div class="windowbar" style="background:#123b29;border-color:#ffffff12"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address" style="background:#0a2a1d;color:#91bba0">Workflow · From data to decision</div></div><div style="padding:22px"><div style="font-size:9px;letter-spacing:.17em;color:#79e9ac;font-weight:900">A PRACTICAL WORKFLOW</div><div style="font-size:clamp(20px,2.8vw,38px);font-weight:900;letter-spacing:-.05em;margin-top:8px">Từ dữ liệu<br>đến quyết định.</div><div style="display:flex;align-items:center;gap:6px;margin-top:22px"><span style="flex:1;padding:13px 5px;text-align:center;border-radius:8px;background:#164630;font-size:10px;font-weight:800">DỮ LIỆU</span><b style="color:#70e9a7">→</b><span style="flex:1;padding:13px 5px;text-align:center;border-radius:8px;background:#164630;font-size:10px;font-weight:800">PHÂN TÍCH</span><b style="color:#70e9a7">→</b><span style="flex:1;padding:13px 5px;text-align:center;border-radius:8px;background:#164630;font-size:10px;font-weight:800">KẾT QUẢ</span></div><div style="height:85px;display:flex;align-items:end;gap:7px;padding-top:18px"><i style="height:25%;flex:1;background:#1a7750;border-radius:4px 4px 0 0"></i><i style="height:42%;flex:1;background:#239866;border-radius:4px 4px 0 0"></i><i style="height:35%;flex:1;background:#2cae78;border-radius:4px 4px 0 0"></i><i style="height:66%;flex:1;background:#3ecb8c;border-radius:4px 4px 0 0"></i><i style="height:84%;flex:1;background:#80f1b6;border-radius:4px 4px 0 0"></i></div></div></div></div>
+  </section>
+  <section class="scene" data-scene="7">
+   <div class="copy"><div class="kicker">Bắt đầu từ việc của bạn</div><h2>Học để làm được.<br><span class="accent">Làm để tiến xa.</span></h2><p class="lead">Khám phá Anh Văn Phòng, chọn đúng tài nguyên và bắt đầu từ một vấn đề thực tế bạn muốn giải quyết hôm nay.</p><div class="pillrow"><span class="pill">Learn Excel With Me</span><span class="pill">12 chương đang được hoàn thiện</span></div><button class="play" id="explore" style="margin-top:24px">Khám phá website ↗</button></div>
+   <div class="visual"><div class="endmark">AVP</div></div>
+  </section>
+  <div class="timeline"><span class="time" id="time">00:00 / 01:00</span><div class="track"><div class="fill" id="fill"></div></div><span class="scene-count" id="sceneCount">01 / 08</span></div>
+  <div class="start-screen" id="startScreen"><div class="start-card"><div class="endmark">AVP</div><div class="kicker" style="justify-content:center">Một phút khám phá</div><h2>Chào mừng đến<br><span class="accent">Anh Văn Phòng.</span></h2><p>Giới thiệu nhanh về website với chuyển động, điểm nhấn giao diện và âm thanh. Bạn có thể tắt tiếng hoặc bỏ qua bất cứ lúc nào.</p><button class="play" id="start">▶　Bắt đầu giới thiệu</button><div class="hint">Nhấn Esc để bỏ qua · Thời lượng khoảng 60 giây</div></div></div>
+ </div>
+</main>
+<script>
+(function(){
+ const scenes=[...document.querySelectorAll('.scene')],fill=document.getElementById('fill'),time=document.getElementById('time'),count=document.getElementById('sceneCount');
+ const startScreen=document.getElementById('startScreen'),startBtn=document.getElementById('start'),skipBtn=document.getElementById('skip'),soundBtn=document.getElementById('sound'),exploreBtn=document.getElementById('explore');
+ const durations=[6,8,8,8,8,8,7,7],total=durations.reduce((a,b)=>a+b,0);
+ let running=false,muted=false,startedAt=0,elapsed=0,raf=0,sceneIndex=-1,audioCtx=null,master=null,ambienceTimer=null;
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function soundInit(){
+  if(muted)return;
+  try{
+   const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+   if(!audioCtx){audioCtx=new AC();master=audioCtx.createGain();master.gain.value=.16;master.connect(audioCtx.destination);musicBed();}
+   if(audioCtx.state==='suspended')audioCtx.resume();
+  }catch(e){}
+ }
+ function tone(freq,dur,type='sine',vol=.12,delay=0){
+  if(muted||!audioCtx||!master)return;
+  const t=audioCtx.currentTime+delay,o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.001,vol),t+.035);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.04);
+ }
+ function musicBed(){
+  if(!audioCtx||muted)return;
+  const notes=[55,82.41,110,164.81];notes.forEach((n,i)=>tone(n,3.6,'sine',.025,i*.02));
+  const seq=[261.63,329.63,392,493.88,392,329.63];
+  seq.forEach((n,i)=>tone(n,1.7,'triangle',.018,i*.38));
+  ambienceTimer=setTimeout(()=>{if(running&&!muted)musicBed()},6500);
+ }
+ function cue(i){
+  if(muted)return;
+  if(ambienceTimer)clearTimeout(ambienceTimer);
+  if(!audioCtx)soundInit();
+  if(!audioCtx)return;
+  const patterns=[[392,523.25,659.25],[330,440,554.37],[293.66,392,493.88],[349.23,440,587.33],[392,493.88,659.25],[330,415.3,523.25],[349.23,523.25,698.46],[392,523.25,783.99]];
+  (patterns[i]||patterns[0]).forEach((n,j)=>tone(n,.65,'triangle',.055,j*.095));
+  // Short low cinematic impact on scene changes, synthesized locally (no external sound file).
+  tone(i===0?73.42:61.74,.42,'sine',.08,0);
+  setTimeout(()=>{if(running&&!muted)musicBed()},700);
+ }
+ function showScene(i){
+  if(i===sceneIndex)return;
+  sceneIndex=i;
+  scenes.forEach((s,j)=>s.classList.toggle('active',j===i));
+  count.textContent=String(i+1).padStart(2,'0')+' / '+String(scenes.length).padStart(2,'0');
+  cue(i);
+ }
+ function tick(now){
+  if(!running)return;
+  elapsed=Math.min(total,(now-startedAt)/1000);
+  fill.style.width=(elapsed/total*100)+'%';
+  const mm=String(Math.floor(elapsed/60)).padStart(2,'0'),ss=String(Math.floor(elapsed%60)).padStart(2,'0');
+  time.textContent=mm+':'+ss+' / 01:00';
+  let acc=0,index=durations.length-1;
+  for(let i=0;i<durations.length;i++){acc+=durations[i];if(elapsed<acc){index=i;break;}}
+  showScene(index);
+  if(elapsed>=total){finish();return;}
+  raf=requestAnimationFrame(tick);
+ }
+ function begin(){
+  if(running)return;
+  running=true;elapsed=0;startedAt=performance.now();startScreen.classList.add('hidden');soundInit();showScene(0);raf=requestAnimationFrame(tick);
+ }
+ function finish(){
+  running=false;cancelAnimationFrame(raf);if(ambienceTimer)clearTimeout(ambienceTimer);
+  fill.style.width='100%';time.textContent='01:00 / 01:00';
+  setTimeout(()=>{location.href='index.html';},450);
+ }
+ function skip(){if(ambienceTimer)clearTimeout(ambienceTimer);running=false;cancelAnimationFrame(raf);location.href='index.html';}
+ startBtn.addEventListener('click',begin);
+ skipBtn.addEventListener('click',skip);
+ exploreBtn.addEventListener('click',skip);
+ soundBtn.addEventListener('click',()=>{
+  muted=!muted;soundBtn.textContent=muted?'♪ Âm thanh: tắt':'♪ Âm thanh: bật';
+  if(muted){if(master)master.gain.setTargetAtTime(.0001,audioCtx.currentTime,.05);if(ambienceTimer)clearTimeout(ambienceTimer);}
+  else{soundInit();if(master)master.gain.setTargetAtTime(.16,audioCtx.currentTime,.08);if(running)cue(Math.max(0,sceneIndex));}
+ });
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();skip();}if((e.key===' '||e.key==='Enter')&&!running&&!startScreen.classList.contains('hidden')){e.preventDefault();begin();}});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden&&audioCtx&&audioCtx.state==='running')audioCtx.suspend();else if(!document.hidden&&running&&audioCtx&&!muted)audioCtx.resume();});
+ if(reduced){document.documentElement.style.setProperty('--unused','0');}
+})();
+</script>
+</body>
+</html>
