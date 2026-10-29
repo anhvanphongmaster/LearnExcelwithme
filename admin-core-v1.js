@@ -339,14 +339,6 @@
     if(!v) return "—";
     try{return new Date(v).toLocaleString("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})}catch(e){return "—"}
   }
-  function progressStats(row){
-    const d=row?.progress_data&&typeof row.progress_data==="object"?row.progress_data:{};
-    const xp=Math.max(Number(d.xp)||0,Number(d.totalXP)||0,Number(d.total_xp)||0);
-    let completed=0;
-    const candidates=[d.completedLessons,d.completed_lessons,d.completed,d.lessonsCompleted];
-    for(const v of candidates){if(Array.isArray(v)){completed=Math.max(completed,v.length)}else if(v&&typeof v==="object"){completed=Math.max(completed,Object.keys(v).filter(k=>v[k]).length)}else if(Number.isFinite(Number(v))){completed=Math.max(completed,Number(v))}}
-    return {xp,completed};
-  }
   function renderAdminUsers(rows){
     adminUsersCache=Array.isArray(rows)?rows:[];
     const body=$("adminUsersBody"); if(!body)return;
