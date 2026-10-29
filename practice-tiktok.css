@@ -79,3 +79,33 @@ body:has(.tt-workspace){background:#f7faf8!important}
  .tt-workspace .tt-lesson-roll .avp-roll-stage>.tt-lesson-card{width:min(560px,84vw)!important;height:310px!important;max-height:310px!important;padding:17px!important}
 }
 @media(prefers-reduced-motion:reduce){.tt-topic-roll,.tt-lesson-roll{scroll-behavior:auto!important}}
+
+/* TikTok topics grouped into five compact iPhone-style folders */
+.tt-folder-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;padding:24px 8px 18px}
+.tt-folder-tile{appearance:none!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;min-width:0!important;min-height:120px!important;padding:10px 5px!important;border:1px solid transparent!important;border-radius:16px!important;background:transparent!important;color:#173b29!important;box-shadow:none!important;text-align:center!important;cursor:pointer}
+.tt-folder-tile:hover{background:#f2f8f4!important;border-color:#dce9e0!important}
+.tt-folder-icon{display:grid;place-items:center;width:58px;height:54px;border-radius:16px;background:linear-gradient(145deg,#dff4e7,#a9dfbf);color:#08794f;font-size:25px;font-weight:850;box-shadow:0 3px 7px rgba(22,75,47,.12),inset 0 1px 0 rgba(255,255,255,.8)}
+.tt-folder-tile:nth-child(2) .tt-folder-icon{background:linear-gradient(145deg,#e2f0ff,#b6d7f6);color:#245f96}
+.tt-folder-tile:nth-child(3) .tt-folder-icon{background:linear-gradient(145deg,#f0eaff,#d3c4fa);color:#6548a2}
+.tt-folder-tile:nth-child(4) .tt-folder-icon{background:linear-gradient(145deg,#fff0d8,#f4d49e);color:#8b5b10}
+.tt-folder-tile:nth-child(5) .tt-folder-icon{background:linear-gradient(145deg,#ffe8e8,#f4bdbd);color:#a33b3b}
+.tt-folder-tile strong{font-size:13px;line-height:1.3}
+.tt-folder-tile small{font-size:11px;color:#718177}
+.tt-folder-backdrop{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(17,35,26,.42);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.tt-folder-backdrop[hidden]{display:none!important}
+.tt-folder-window{position:relative;width:min(580px,100%);max-height:min(78vh,700px);overflow:auto;padding:24px;border:1px solid rgba(255,255,255,.8);border-radius:26px;background:rgba(249,252,250,.98);box-shadow:0 28px 90px rgba(0,0,0,.24);color:#173b29}
+.tt-folder-close{position:absolute;right:14px;top:13px;width:36px!important;height:36px!important;min-height:36px!important;padding:0!important;border:0!important;border-radius:50%!important;background:#e8f0eb!important;color:#315b43!important;font-size:24px!important}
+.tt-folder-heading{display:flex;align-items:center;gap:13px;padding-right:36px;margin-bottom:18px}
+.tt-folder-heading h3{margin:0 0 4px;font-size:21px;color:#173b29}
+.tt-folder-heading p{margin:0;color:#728177;font-size:13px}
+.tt-folder-heading .tt-folder-icon{flex:0 0 48px;width:48px;height:46px;border-radius:13px;font-size:21px}
+.tt-folder-topics{display:grid;gap:9px}
+.tt-folder-topic{display:flex!important;align-items:center!important;gap:12px!important;width:100%!important;min-width:0!important;min-height:66px!important;padding:11px 13px!important;border:1px solid #e0eae3!important;border-radius:15px!important;background:#fff!important;color:#173b29!important;text-align:left!important;box-shadow:none!important}
+.tt-folder-topic-icon{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:12px;background:#e5f5eb;color:#08794f;font-weight:850;font-size:17px}
+.tt-folder-topic>span:nth-child(2){display:grid;gap:4px;min-width:0;flex:1}
+.tt-folder-topic strong{font-size:13px;line-height:1.35}
+.tt-folder-topic small{color:#718177;font-size:11px;line-height:1.45}
+.tt-folder-topic b{font-size:22px;color:#08794f}
+.tt-folder-empty{padding:20px;text-align:center;color:#718177}
+body.tt-folder-open{overflow:hidden}
+@media(max-width:700px){.tt-folder-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:18px 0 10px}.tt-folder-tile{min-height:92px!important;padding:7px 1px!important;gap:7px!important}.tt-folder-icon{width:42px;height:40px;border-radius:12px;font-size:19px}.tt-folder-tile strong{font-size:10px;letter-spacing:-.025em}.tt-folder-tile small{font-size:9px}.tt-folder-window{padding:20px 14px;border-radius:23px}.tt-folder-heading h3{font-size:18px}.tt-folder-topic{padding:10px!important}.tt-folder-topic strong{font-size:12px}}
