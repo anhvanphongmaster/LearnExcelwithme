@@ -1,3 +1,14 @@
+/* One-time cleanup of retired learning XP/progress keys. Practice-grader submissions are not touched. */
+(function(){
+  try{
+    var marker='avp_learning_reset_20261030_v1';
+    if(localStorage.getItem(marker))return;
+    ['avp_coach_exp_v2','avp_xp_v2','avp_quiz_done_v1','avp_lesson_progress_v1',
+     'avp_coach_daily_v1','avp_coach_daily_start_v1','avp_coach_cases_v1',
+     'avp_learning_achievements_v1','avp_learning_streak_v1'].forEach(function(k){localStorage.removeItem(k)});
+    localStorage.setItem(marker,'1');
+  }catch(e){}
+})();
 
 (function avpHideEmbeddedChrome(){
   var embedded=false;
