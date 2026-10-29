@@ -115,13 +115,14 @@ function setup(){
  document.head.appendChild(toolsStyle);
  document.body.appendChild(toolsModal);
  var toolApps=[
-  ['learning-chapters.html','◆','LỘ TRÌNH NÂNG CAO','Excel Master','Hệ nội dung chuyên sâu','Mở khu học tập →','master'],
-  ['practice-video.html','◴','HỌC NHANH 2–3 PHÚT','Học nhanh hôm nay','Mỗi ngày một kỹ năng nhỏ, dùng được ngay','Học ngay →','quick'],
-  ['index.html#avp-code-hub','⌘','CODE & AUTOMATION','Excel Code Hub','Python · VBA · Power Query','Mở Code Hub →','code'],
-  ['practice-lab.html','ϟ','GAME & PHẢN XẠ','Excel Arena','Đấu kỹ năng theo thời gian','Vào Arena →','arena'],
-  ['tools-center.html','▣','TOOL & TEMPLATE','Kho Tool','Tool thực dụng · tiện ích · mẫu dùng ngay','Mở Kho Tool →','kho']
+  ['excel-mobile.html','◆','LỘ TRÌNH NÂNG CAO','Excel Master','Hệ nội dung chuyên sâu','Mở Excel Mobile →','master'],
+  ['quick-learn.html','◴','HỌC NHANH 2–3 PHÚT','Học nhanh hôm nay','Mỗi ngày tự đề xuất một bài học ngắn','Học bài hôm nay →','quick'],
+  ['#open-code-hub','⌘','CODE & AUTOMATION','Excel Code Hub','Python · VBA · Power Query','Mở Code Hub →','code'],
+  ['excel-race.html','ϟ','GAME & PHẢN XẠ','Excel Race','Đấu kỹ năng theo thời gian','Vào Excel Race →','arena'],
+  ['tools-library.html','▣','TOOL & TEMPLATE','Kho Tool','Compare File · Clean Data Pro · Công nợ','Mở Kho Tool →','kho']
  ];
- toolsModal.querySelector('.avp-tools-picker-grid').innerHTML=toolApps.map(function(t){return '<a class="avp-tools-app '+t[6]+'" href="'+t[0]+'"><span class="avp-tools-app-icon">'+t[1]+'</span><small>'+t[2]+'</small><strong>'+t[3]+'</strong><em>'+t[4]+'</em><b>'+t[5]+'</b></a>';}).join('');
+ toolsModal.querySelector('.avp-tools-picker-grid').innerHTML=toolApps.map(function(t){var tag=t[0]==='#open-code-hub'?'button':'a';var dest=t[0]==='#open-code-hub'?' type="button" data-open-code-hub':' href="'+t[0]+'"';return '<'+tag+' class="avp-tools-app '+t[6]+'"'+dest+'><span class="avp-tools-app-icon">'+t[1]+'</span><small>'+t[2]+'</small><strong>'+t[3]+'</strong><em>'+t[4]+'</em><b>'+t[5]+'</b></'+tag+'>';}).join('');
+ toolsModal.querySelector('[data-open-code-hub]').addEventListener('click',function(){var launcher=document.querySelector('#homeCodeHubOpen,.home-codehub-launcher,[aria-controls="avpCodeHubModal"]');if(launcher){closeToolsPicker();launcher.click();}else{location.href='index.html#avpCodeHubModal';}});
  function openToolsPicker(){toolsModal.hidden=false;document.body.classList.add('avp-chapter-picker-open');toolsModal.querySelector('.avp-chapter-picker-close').focus();}
  function closeToolsPicker(){toolsModal.hidden=true;document.body.classList.remove('avp-chapter-picker-open');}
  if(toolsCard){toolsCard.href='#choose-avp-tools';toolsCard.setAttribute('role','button');toolsCard.setAttribute('aria-haspopup','dialog');toolsCard.setAttribute('aria-label','Mở thư mục Công cụ hỗ trợ');toolsCard.addEventListener('click',function(event){event.preventDefault();openToolsPicker();});}
