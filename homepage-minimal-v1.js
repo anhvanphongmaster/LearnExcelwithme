@@ -101,6 +101,7 @@ function setup(){
  modal.querySelector('.avp-chapter-picker-close').addEventListener('click',closeChapterPicker);
  modal.addEventListener('click',function(event){if(event.target===modal)closeChapterPicker();});
  document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!modal.hidden)closeChapterPicker();});
+ if(new URLSearchParams(location.search).get('openChapters')==='1')openChapterPicker();
  document.body.classList.add('avp-chapter-picker-ready');
 
  hero.insertAdjacentElement('afterend',discover);
