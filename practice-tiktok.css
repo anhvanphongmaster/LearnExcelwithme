@@ -24,3 +24,58 @@
 .tt-workspace .tt-lesson-roll .tt-lesson-actions{margin-top:auto}
 .tt-workspace .tt-lesson-roll .tt-highlight{border-color:#72b991!important;box-shadow:0 0 0 3px #dcefe3!important}
 @media(max-width:700px){.tt-workspace .tt-lesson-roll{height:390px!important}.tt-workspace .tt-lesson-roll .avp-roll-stage>.tt-lesson-card{width:min(560px,82vw)!important;height:315px!important;max-height:315px!important;padding:18px!important}}
+
+/* AVP TikTok Practice refresh — preserve existing topic/lesson IDs and JS behavior. */
+body:has(.tt-workspace){background:#f7faf8!important}
+.pw-page:has(.tt-workspace){width:min(1120px,calc(100% - 32px));margin:22px auto 58px}
+.pw-page:has(.tt-workspace) .pw-backline{align-items:center;margin-bottom:14px;font-size:12px;color:#748379}
+.pw-page:has(.tt-workspace) .pw-backline a{display:inline-flex;align-items:center;min-height:38px;padding:0 13px;border:1px solid #d5e6db;border-radius:999px;background:#fff;color:#08794f;font-weight:800}
+.pw-page:has(.tt-workspace) .pw-hero{position:relative;overflow:hidden;padding:clamp(24px,4vw,42px)!important;border:1px solid #cce4d5!important;border-left:5px solid #08794f!important;border-radius:26px!important;background:radial-gradient(ellipse at 92% 0%,rgba(91,211,151,.18),transparent 42%),linear-gradient(135deg,#f5fbf7,#eaf7ef)!important;box-shadow:none!important}
+.pw-page:has(.tt-workspace) .pw-kicker{font-size:10px!important;letter-spacing:.16em!important;color:#16805a!important}
+.pw-page:has(.tt-workspace) .pw-hero h1{max-width:760px;margin:12px 0!important;color:#173b29!important;font-size:clamp(32px,5vw,52px)!important;line-height:1.04!important;letter-spacing:-.045em}
+.pw-page:has(.tt-workspace) .pw-hero p{max-width:680px;color:#607467!important;font-size:clamp(14px,1.7vw,17px)!important;line-height:1.7!important}
+.tt-hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tt-hero-pills span{padding:8px 11px;border:1px solid #d3e6da;border-radius:999px;background:rgba(255,255,255,.8);color:#52705d;font-size:11px;font-weight:750}
+.tt-workspace{margin-top:18px!important;padding:clamp(15px,2.5vw,24px)!important;border:1px solid #dce9e0!important;border-radius:24px!important;background:#fff!important;box-shadow:0 8px 26px rgba(17,58,37,.035)!important}
+.tt-toolbar{margin-bottom:18px!important}
+.tt-workspace .avp-roll-head{margin-bottom:16px}
+.tt-workspace .avp-roll-head span{color:#16805a!important;font-size:10px!important;font-weight:900!important;letter-spacing:.13em!important}
+.tt-workspace .avp-roll-head h2{margin:7px 0 0!important;color:#173b29!important;font-size:clamp(22px,3vw,29px)!important;letter-spacing:-.035em}
+.tt-workspace .tt-topic-roll{height:355px!important}
+.tt-topic-roll .avp-roll-stage>.tt-topic-card{width:min(350px,78vw)!important;height:275px!important;padding:23px!important;border:1px solid #d7e7dd!important;border-radius:22px!important;background:linear-gradient(145deg,#f5fbf7,#fff)!important;box-shadow:0 8px 22px rgba(17,58,37,.05)!important}
+.tt-topic-card>span{color:#16805a!important;font-size:10px!important;letter-spacing:.13em!important}
+.tt-topic-card h3{color:#173b29!important;font-size:22px!important;letter-spacing:-.025em}
+.tt-topic-card p{color:#65766b!important;font-size:13px!important}
+.tt-topic-card small{color:#687c70!important;font-size:12px!important}
+.tt-topic-card button{border-color:#08794f!important;background:#08794f!important;border-radius:11px!important}
+.tt-workspace .avp-roll-dots button::after{background:#d1e0d6!important}
+.tt-workspace .avp-roll-dots button.active::after{background:#08794f!important}
+.tt-workspace .tt-back{margin-bottom:12px;border-radius:999px!important}
+#ttTopicTitle{color:#173b29!important;font-size:clamp(25px,3.5vw,34px)!important;letter-spacing:-.035em}
+#ttTopicDescription{color:#68796f!important;font-size:14px!important;line-height:1.7}
+.tt-filters{gap:12px!important;margin:20px 0!important}
+.tt-filters label{color:#476652!important;font-size:12px!important;font-weight:750}
+.tt-filters input,.tt-filters select{min-height:46px!important;border:1px solid #d4e4da!important;border-radius:12px!important;background:#fbfdfb!important;color:#214b34!important}
+#ttResultCount{color:#718177!important;font-size:12px!important}
+.tt-workspace .tt-lesson-roll{height:410px!important}
+.tt-workspace .tt-lesson-roll .avp-roll-stage>.tt-lesson-card{border:1px solid #dce9e0!important;border-radius:20px!important;background:#fff!important;box-shadow:0 8px 22px rgba(17,58,37,.04)!important}
+.tt-lesson-card h3{color:#173b29!important;font-size:19px!important;letter-spacing:-.02em}
+.tt-lesson-card>p{color:#65766b!important;font-size:14px!important;line-height:1.65!important}
+.tt-lesson-meta{color:#728278!important}
+.tt-workspace .tt-watch{border-color:#08794f!important;background:#08794f!important;border-radius:11px!important}
+.tt-workspace .tt-lesson-actions a,.tt-workspace .tt-lesson-actions button{border-radius:11px!important}
+.tt-empty{border-color:#cfe2d5!important;background:#f7fbf8!important;color:#506d5a!important}
+@media(max-width:700px){
+ .pw-page:has(.tt-workspace){width:calc(100% - 24px);margin:14px auto 38px}
+ .pw-page:has(.tt-workspace) .pw-backline{font-size:10px}
+ .pw-page:has(.tt-workspace) .pw-hero{padding:23px 18px!important;border-radius:21px!important}
+ .pw-page:has(.tt-workspace) .pw-hero h1{font-size:34px!important}
+ .tt-hero-pills{gap:6px;margin-top:14px}
+ .tt-hero-pills span{font-size:10px;padding:7px 9px}
+ .tt-workspace{padding:14px!important;border-radius:19px!important}
+ .tt-workspace .tt-topic-roll{height:385px!important}
+ .tt-topic-roll .avp-roll-stage>.tt-topic-card{width:min(310px,80vw)!important;height:295px!important;padding:19px!important}
+ .tt-workspace .tt-lesson-roll{height:380px!important}
+ .tt-workspace .tt-lesson-roll .avp-roll-stage>.tt-lesson-card{width:min(560px,84vw)!important;height:310px!important;max-height:310px!important;padding:17px!important}
+}
+@media(prefers-reduced-motion:reduce){.tt-topic-roll,.tt-lesson-roll{scroll-behavior:auto!important}}
