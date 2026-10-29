@@ -255,7 +255,7 @@
     $("raceAdminBest").textContent=n(Math.max(0,...adminRaceCache.map(x=>Number(x.best_streak)||0)));
     $("raceAdminLevel").textContent=n(Math.max(1,...adminRaceCache.map(x=>Number(x.best_level)||1)));
     if(!adminRaceCache.length){
-      body.innerHTML='<tr><td colspan="6" class="admin-users-empty">BXH Race chưa có người chơi.</td></tr>';
+      body.innerHTML='<tr><td colspan="4" class="admin-users-empty">BXH Race chưa có người chơi.</td></tr>';
       return;
     }
     body.innerHTML=adminRaceCache.map((r,i)=>`<tr data-race-id="${escapeHtml(r.ranking_id)}">
@@ -353,20 +353,16 @@
     $("adminUsersShown").textContent=n(adminUsersCache.length);
     $("adminUsersAdmins").textContent=n(adminUsersCache.filter(x=>x.is_admin).length);
     $("adminUsersHidden").textContent=n(adminUsersCache.filter(x=>x.exclude_from_leaderboard).length);
-    $("adminUsersWithXp").textContent=n(adminUsersCache.filter(x=>progressStats(x).xp>0).length);
     const notice=$("adminUsersNotice"); if(notice) notice.hidden=true;
-    if(!adminUsersCache.length){body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Không tìm thấy tài khoản phù hợp.</td></tr>';return}
+    if(!adminUsersCache.length){body.innerHTML='<tr><td colspan="4" class="admin-users-empty">Không tìm thấy tài khoản phù hợp.</td></tr>';return}
     body.innerHTML=adminUsersCache.map(r=>{
-      const s=progressStats(r), legacy=r.legacy_leaderboard, hidden=!!r.exclude_from_leaderboard, adm=!!r.is_admin;
+      const hidden=!!r.exclude_from_leaderboard, adm=!!r.is_admin;
       return `<tr data-user-id="${r.user_id}">
         <td><div class="admin-user-identity"><strong>${escapeHtml(r.display_name||"Học viên")}${adm?' <span class="admin-user-badge admin-badge-admin">ADMIN</span>':''}</strong><small>${escapeHtml(r.email||"")}</small><em>Đăng ký ${fmtDate(r.created_at)}</em></div></td>
-        <td><div class="admin-user-progress"><b>${n(s.xp)} XP</b><small>${n(s.completed)} bài hoàn thành • </small></div></td>
-        <td><div class="admin-user-progress"><b>${legacy?`${n(legacy.xp)} XP`:"—"}</b><small>${legacy?`Streak ${n(legacy.current_streak)} ngày · lưu ${fmtDate(legacy.archived_at)}`:"Không có dữ liệu BXH cũ"}</small></div></td>
         <td><span class="admin-user-badge ${hidden||adm?'admin-badge-hidden':'admin-badge-visible'}">${adm?'Admin':hidden?'Đang ẩn':'Đang hiện'}</span></td>
         <td><small>${fmtDate(r.last_sign_in_at)}</small></td>
         <td><div class="admin-user-actions">
           <button type="button" data-act="leaderboard" data-hidden="${hidden?'1':'0'}" ${adm?'disabled':''}>${hidden?'Hiện BXH':'Ẩn BXH'}</button>
-          <button type="button" data-act="progress" class="danger">Reset tiến độ</button>
           <button type="button" data-act="admin" data-admin="${adm?'1':'0'}" class="${adm?'warn':''}">${adm?'Bỏ Admin':'Cấp Admin'}</button>
         </div></td>
       </tr>`;
@@ -395,9 +391,6 @@
         const hidden=btn.dataset.hidden==="1";
         {const ok=await window.avpConfirm(`${hidden?'Hiện':'Ẩn'} ${who} ${hidden?'trên':'khỏi'} BXH?`,{title:"Cập nhật BXH?",tone:"warn",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return;}
         await rpc("admin_um_set_leaderboard_visibility",{p_user_id:id,p_hidden:!hidden}); ok=true;
-      }else if(act==="progress"){
-        {const ok=await window.avpConfirm(`RESET TIẾN ĐỘ hiện tại của ${who}? Bản lưu BXH cũ được giữ nguyên.`,{title:"Reset toàn bộ tiến độ?",tone:"danger",icon:"!",ok:"Reset tiến độ",cancel:"Hủy"});if(!ok)return;}
-        await rpc("admin_um_reset_progress",{p_user_id:id}); ok=true;
       }else if(act==="admin"){
         const isAdm=btn.dataset.admin==="1";
         {const ok=await window.avpConfirm(`${isAdm?'Bỏ':'Cấp'} quyền Admin cho ${who}?`,{title:`${isAdm?'Bỏ':'Cấp'} quyền Admin?`,tone:"danger",icon:"🔐",ok:"Xác nhận",cancel:"Hủy"});if(!ok)return;}

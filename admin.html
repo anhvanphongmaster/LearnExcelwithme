@@ -396,7 +396,7 @@ where is_admin = true;</pre>
   </div>
   <div class="admin-race-toolbar"><input id="adminRaceSearch" type="search" placeholder="Tìm tên người chơi…"><button id="adminRaceSearchBtn" type="button">Tìm</button></div>
   <div id="adminRaceNotice" class="admin-users-notice" hidden></div>
-  <div class="admin-race-table-wrap"><table class="admin-race-table"><thead><tr><th>#</th><th>Người chơi</th><th>Chuỗi</th><th>Cấp</th><th>Cập nhật</th><th>Thao tác</th></tr></thead><tbody id="adminRaceBody"><tr><td colspan="6" class="admin-users-empty">Chuyển sang tab Excel Race để tải BXH.</td></tr></tbody></table></div>
+  <div class="admin-race-table-wrap"><table class="admin-race-table"><thead><tr><th>#</th><th>Người chơi</th><th>Chuỗi</th><th>Cấp</th><th>Cập nhật</th><th>Thao tác</th></tr></thead><tbody id="adminRaceBody"><tr><td colspan="4" class="admin-users-empty">Chuyển sang tab Excel Race để tải BXH.</td></tr></tbody></table></div>
 </section>
 
 <div class="admin-section-heading admin-view-section" data-admin-section="users"><span>👥 NGƯỜI DÙNG</span><h2>Quản lý tài khoản học viên</h2></div>
@@ -416,12 +416,12 @@ where is_admin = true;</pre>
         <article><small>Đang hiển thị</small><strong id="adminUsersShown">0</strong></article>
         <article><small>Admin</small><strong id="adminUsersAdmins">0</strong></article>
         <article><small>Ẩn khỏi BXH</small><strong id="adminUsersHidden">0</strong></article>
-        <article><small>Có XP</small><strong id="adminUsersWithXp">0</strong></article>
+        
       </div>
-      <div id="adminUsersNotice" class="admin-users-notice">Bản lưu BXH cũ chỉ là số liệu lịch sử; hoạt động quay lại được xem trong mục “Người dùng quay lại”.</div>
+      <div id="adminUsersNotice" class="admin-users-notice">Danh sách tài khoản lấy từ Supabase Auth và Profiles. Hoạt động quay lại được xem trong mục “Người dùng quay lại”.</div>
       <div class="admin-users-table-wrap">
         <table class="admin-users-table">
-          <thead><tr><th>Học viên</th><th>Tiến độ</th><th>BXH cũ</th><th>BXH</th><th>Đăng nhập gần nhất</th><th>Thao tác</th></tr></thead>
+          <thead><tr><th>Tài khoản</th><th>BXH</th><th>Đăng nhập gần nhất</th><th>Thao tác</th></tr></thead>
           <tbody id="adminUsersBody"><tr><td colspan="6" class="admin-users-empty">Chuyển sang tab Người dùng để tải danh sách.</td></tr></tbody>
         </table>
       </div>
