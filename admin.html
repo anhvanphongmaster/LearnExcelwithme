@@ -28,7 +28,6 @@
 <nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
     <a href="index.html" data-avp-nav="home">Trang chủ</a>
-    <a href="skill-map.html" data-avp-nav="learn">Học</a>
     <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
     <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
     <button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button>
@@ -43,7 +42,7 @@
     <div>
       <span class="admin-kicker">🔐 ADMIN ONLY</span>
       <h1>Website Analytics</h1>
-      <p>Theo dõi người dùng, hành vi học, XP, Level, quiz và mức độ hoàn thành lộ trình — không lưu nội dung file Excel.</p>
+      <p>Theo dõi tài khoản, lượt truy cập, đăng nhập, tương tác và người dùng quay lại — không lưu nội dung file Excel.</p>
     </div>
 
     <div class="admin-period">
@@ -119,9 +118,7 @@ where is_admin = true;</pre>
         <button type="button" data-admin-view="race" role="tab">
           <b>🏁 Excel Race</b><small>BXH, reset & xoá tên</small>
         </button>
-        <button type="button" data-admin-view="learning" role="tab">
-          <b>🎓 Học tập</b><small>Tiến độ, bài học & quiz</small>
-        </button><button type="button" data-admin-view="practice" role="tab">
+<button type="button" data-admin-view="practice" role="tab">
           <b>📱 TikTok Practice</b><small>Chủ đề, bài, video & file</small>
         </button>
         <button type="button" data-admin-view="content" role="tab"><b>🎬 Content OS</b><small>Ý tưởng, video, audit & PASS</small></button>
@@ -430,17 +427,7 @@ where is_admin = true;</pre>
       </div>
     </section>
 
-    <div class="admin-section-heading admin-view-section" data-admin-section="learning"><span>🎓 HỌC TẬP</span><h2>Người học đang tiến bộ thế nào?</h2></div>
-    <section class="admin-two-column admin-learning-grid admin-view-section" id="adminLearningOverview" data-admin-section="learning">
-      <article class="admin-panel">
-        <div class="admin-panel-head"><div><span>🎓 FUNNEL</span><h2>Beginner → Master</h2></div></div>
-        <div id="learningFunnel" class="admin-funnel"></div>
-      </article>
-      <article class="admin-panel">
-        <div class="admin-panel-head"><div><span>🆕 USERS</span><h2>Tài khoản mới theo ngày</h2></div></div>
-        <div id="newUserTrend" class="admin-user-trend"></div>
-      </article>
-    </section><div class="admin-section-heading admin-view-section" data-admin-section="engagement"><span>🖱️ TƯƠNG TÁC</span><h2>Click tải file, xem video & bộ sách</h2></div>
+<div class="admin-section-heading admin-view-section" data-admin-section="engagement"><span>🖱️ TƯƠNG TÁC</span><h2>Click tải file, xem video & bộ sách</h2></div>
 <section class="admin-grid admin-view-section" data-admin-section="engagement">
       <article class="admin-panel" style="grid-column:1/-1">
         <div class="admin-panel-head">
