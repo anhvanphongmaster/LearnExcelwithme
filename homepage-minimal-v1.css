@@ -96,3 +96,26 @@ html.avp-home-canonical .avp-resource-copy>b{display:inline-flex;margin-top:13px
 html.avp-home-canonical .avp-resource-cases .avp-resource-copy>b{background:#4264ac}
 html.avp-home-canonical .avp-resource-decoration{position:absolute;right:-9px;bottom:-17px;color:#08734b0b;font-size:54px;font-weight:950;letter-spacing:-.08em;pointer-events:none}
 @media(max-width:650px){html.avp-home-canonical.avp-force-desktop-mobile .avp-resource-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}html.avp-home-canonical.avp-force-desktop-mobile .avp-resource-card{padding:16px;gap:10px}html.avp-home-canonical.avp-force-desktop-mobile .avp-resource-icon{flex-basis:38px;width:38px;height:38px;font-size:19px}html.avp-home-canonical.avp-force-desktop-mobile .avp-resource-copy>strong{font-size:15px}html.avp-home-canonical:not(.avp-force-desktop-mobile) .avp-resource-grid{grid-template-columns:1fr}}
+
+
+/* Resource hub: banner + four real destinations, aligned with the in-progress homepage design. */
+html.avp-home-canonical .avp-resource-heading{box-sizing:border-box;padding:20px 24px;margin-bottom:14px;border-radius:16px;background:linear-gradient(110deg,#064b35,#07553d 68%,#0c6045);color:#fff}
+html.avp-home-canonical .avp-resource-heading>div>small{color:#b8e8ce}
+html.avp-home-canonical .avp-resource-heading h2{color:#fff;font-size:24px}
+html.avp-home-canonical .avp-resource-heading p{color:#d0e8da;font-size:13px}
+html.avp-home-canonical .avp-resource-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+html.avp-home-canonical .avp-resource-card{min-height:145px}
+html.avp-home-canonical .avp-resource-collection{background:linear-gradient(125deg,#fff,#f5f2fb);border-color:#e4dcef}
+html.avp-home-canonical .avp-resource-collection .avp-resource-icon{background:#eee5fa;color:#7751a5}
+html.avp-home-canonical .avp-resource-collection .avp-resource-copy>small{color:#7751a5}
+html.avp-home-canonical .avp-resource-collection .avp-resource-copy>b{background:#7751a5}
+html.avp-home-canonical .avp-resource-results{background:linear-gradient(125deg,#fff,#fff8ed);border-color:#f0e2cc}
+html.avp-home-canonical .avp-resource-results .avp-resource-icon{background:#ffedcc;color:#996319}
+html.avp-home-canonical .avp-resource-results .avp-resource-copy>small{color:#996319}
+html.avp-home-canonical .avp-resource-results .avp-resource-copy>b{background:#996319}
+@media(max-width:650px){
+ html.avp-home-canonical.avp-force-desktop-mobile .avp-resource-heading{padding:16px}
+ html.avp-home-canonical.avp-force-desktop-mobile .avp-resource-heading h2{font-size:20px}
+ html.avp-home-canonical.avp-force-desktop-mobile .avp-resource-heading p{font-size:11px}
+ html.avp-home-canonical.avp-force-desktop-mobile .avp-resource-card{min-height:145px}
+}
