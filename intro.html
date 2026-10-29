@@ -147,7 +147,7 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  const startScreen=document.getElementById('startScreen'),startBtn=document.getElementById('start'),skipBtn=document.getElementById('skip'),soundBtn=document.getElementById('sound'),startSoundTest=document.getElementById('startSoundTest'),exploreBtn=document.getElementById('explore');
  const durations=[6,8,8,8,8,8,7,7],total=durations.reduce((a,b)=>a+b,0);
  let running=false,muted=false,startedAt=0,raf=0,sceneIndex=-1,audio=null,sfxPlayers=[];
- const MUSIC_URL='https://assets.mixkit.co/music/614/614.mp3';
+ const MUSIC_URL='https://assets.mixkit.co/music/371/371.mp3';
  const SFX={
   intro:'https://assets.mixkit.co/active_storage/sfx/1492/1492-preview.mp3',
   whoosh:'https://assets.mixkit.co/active_storage/sfx/1489/1489-preview.mp3',
@@ -155,7 +155,7 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
   impact:'https://assets.mixkit.co/active_storage/sfx/2908/2908-preview.mp3'
  };
  function prepareAudio(){
-  if(!audio){audio=new Audio(MUSIC_URL);audio.loop=true;audio.preload='auto';audio.volume=.68;audio.playsInline=true;audio.load();audio.addEventListener('error',()=>{soundBtn.textContent='Âm thanh lỗi · Chạm để thử lại';});}
+  if(!audio){audio=new Audio(MUSIC_URL);audio.loop=true;audio.preload='auto';audio.volume=.27;audio.playsInline=true;audio.load();audio.addEventListener('error',()=>{soundBtn.textContent='Âm thanh lỗi · Chạm để thử lại';});}
   return audio;
  }
  function playEffect(name,volume=.38){
