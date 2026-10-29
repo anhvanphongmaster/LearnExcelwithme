@@ -3,7 +3,13 @@
   const C = window.AVPLearningCoach;
   if (!C) return;
   const KEY = 'avp_coach_daily_start_v1';
-  const GLOBAL = () => (window.AVPDailyExpand && window.AVPDailyExpand.globalStartDate) || (window.AVPDailyExpand && window.AVPDailyExpand.startDate) || '2026-09-14';
+  const RESET_KEY = 'avp_learning_reset_20261030_v1';
+  if (!localStorage.getItem(RESET_KEY)) {
+    ['avp_coach_exp_v2','avp_xp_v2','avp_quiz_done_v1','avp_lesson_progress_v1','avp_coach_daily_v1','avp_coach_daily_start_v1','avp_coach_cases_v1','avp_learning_achievements_v1','avp_learning_streak_v1'].forEach(k => { try { localStorage.removeItem(k); } catch (_) {} });
+    try { localStorage.setItem(RESET_KEY, '1'); } catch (_) {}
+  }
+
+  const GLOBAL = () => (window.AVPDailyExpand && window.AVPDailyExpand.globalStartDate) || (window.AVPDailyExpand && window.AVPDailyExpand.startDate) || '2026-10-30';
 
   function readMap() {
     try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; }
@@ -42,7 +48,7 @@
   function apply() {
     const E = window.AVPDailyExpand;
     if (!E) return getDailyStartDate();
-    if (!E.globalStartDate) E.globalStartDate = E.startDate || '2026-09-14';
+    if (!E.globalStartDate) E.globalStartDate = E.startDate || '2026-10-30';
     E.startDate = getDailyStartDate();
     return E.startDate;
   }
