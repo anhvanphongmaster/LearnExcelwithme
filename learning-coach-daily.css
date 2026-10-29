@@ -16,3 +16,16 @@
 .lc-focus p,.lc-step small,.lc-panel-card>p{color:#3d4f63}
 .lc-step strong{color:#0f2438;font-size:14px}
 @media(max-width:760px){.lc-today-body{flex-direction:column}.lc-today-side{flex-direction:row;align-items:flex-start}}
+
+/* One recommended task per day — legacy five-card pack removed. */
+.dx-grid-1{grid-template-columns:minmax(0,1fr)!important;max-width:900px;margin:0 auto}
+.dx-single-card{min-height:0;padding:22px}
+.dx-single-card h2{margin:12px 0 8px;color:#173f2a;font-size:clamp(22px,3vw,30px);line-height:1.25}
+.dx-single-card h3{margin:18px 0 8px;color:#1e633e;font-size:15px}
+.dx-single-card ol{padding-left:22px}
+.dx-single-card li{margin:5px 0}
+.dx-single-card .dx-actions{margin-top:18px}
+.dx-single-note{margin:14px 0 0!important;padding:10px 12px;border-radius:10px;background:#f1f8f3;color:#376449!important;font-size:13px!important}
+.dx-one-focus{margin:14px 0;padding:18px;border:1px solid #d5e5da;border-radius:16px;background:#f7fbf8}
+.dx-one-focus h2{margin:5px 0;color:#173f2a;font-size:20px}
+.dx-one-focus p{color:#52675a;font-size:13px;line-height:1.55}
