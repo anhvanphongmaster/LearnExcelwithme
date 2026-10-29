@@ -5,7 +5,7 @@ const $=id=>document.getElementById(id);
 const qa=s=>Array.from(document.querySelectorAll(s));
 const DIFF_LABEL={basic:"🌱 Cơ bản",intermediate:"📘 Trung cấp",advanced:"🏆 Nâng cao"};
 const TOPICS=[["all","Tất cả"],["clean","🧹 Làm sạch"],["pq","⚙️ Power Query"],["input","⌨️ Nhập liệu"],["formula","🧮 Công thức"],["format","🎨 Định dạng"]];
-const ROLL_TOPICS=[["clean","🧹","Làm sạch dữ liệu"],["pq","⚙️","Power Query"],["input","⌨️","Nhập liệu"],["formula","ƒx","Công thức"],["format","🎨","Định dạng"]];
+const ROLL_TOPICS=[["clean","▤","Làm sạch dữ liệu"],["pq","↻","Power Query"],["input","⌨","Nhập liệu"],["formula","ƒx","Công thức"],["format","▦","Định dạng"]];
 
 let currentTopic="clean",currentDifficulty="all",currentRankDifficulty="basic";
 let pendingLesson=null,pendingFile=null,pendingAppealLesson=null,xlsxPromise=null;
@@ -98,17 +98,17 @@ function renderTopicTabs(){
   if(!stage)return;
   stage.innerHTML=ROLL_TOPICS.map(([id,icon,label],i)=>{
     const count=lessons().filter(l=>l.topic===id).length;
-    return `<article class="pg-topic-roll-card${id===currentTopic?" active":""}" data-practice-roll-card data-topic-roll="${id}"><span>0${i+1}</span><div><div style="font-size:30px">${icon}</div><h3>${label}</h3><p>${count} bài tự chấm · nhiều mức độ và tình huống.</p></div><small>${id===currentTopic?"Đang chọn":"Chọn chủ đề →"}</small></article>`;
+    return `<button type="button" class="pg-iphone-folder${id===currentTopic?" active":""}" data-topic-roll="${id}" aria-label="Mở chủ đề ${label}">
+      <span class="pg-iphone-folder-icon">${icon}</span><strong>${label}</strong><small>${count} bài tự chấm</small>
+    </button>`;
   }).join("");
-  const root=$("pgTopicRoll");if(root){delete root.dataset.rollReady;root._avpPracticeRoll=null;window.AVPPracticeRoll?.init(root);const idx=Math.max(0,ROLL_TOPICS.findIndex(x=>x[0]===currentTopic));setTimeout(()=>root._avpPracticeRoll?.go(idx),0);}
-  stage.querySelectorAll("[data-topic-roll]").forEach(c=>c.addEventListener("click",()=>{
-    const id=c.dataset.topicRoll;
+  stage.querySelectorAll("[data-topic-roll]").forEach(card=>card.addEventListener("click",()=>{
+    const id=card.dataset.topicRoll;
     currentTopic=id;
     renderTopicTabs();
     openTopicLessons();
   }));
 }
-
 function filteredLessons(){
   return lessons().slice()
     .sort((a,b)=>(a.topic||"").localeCompare(b.topic||"")||(a.order||0)-(b.order||0))
