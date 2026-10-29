@@ -130,9 +130,26 @@
       grid.appendChild(linkCard('practice-video.html','▤','Thực hành','Bài tập Excel và tình huống thực tế.','amber'));
       grid.appendChild(linkCard('ai.html','✳','Khu học AI','Ứng dụng AI vào công việc văn phòng.','violet'));
       grid.appendChild(linkCard('tools-center.html','⌘','Công cụ hỗ trợ','Template, tiện ích và tài nguyên.','blue'));
-      grid.appendChild(linkCard('office-quest.html','↗','Office Quest','Khám phá thế giới văn phòng tương tác.','rose'));
+      grid.appendChild(linkCard('tools-center.html','♟','Cộng đồng','Hỏi đáp, chia sẻ kinh nghiệm và thảo luận.','rose'));
       ecosystem.appendChild(head);ecosystem.appendChild(grid);
       hero.insertAdjacentElement('afterend',ecosystem);
+    }
+
+
+    /* Homepage composition inspired by the supplied desktop/mobile reference. */
+    var heroTitle=document.querySelector('.avp-hero .avp-title');
+    if(heroTitle)heroTitle.innerHTML='<span>Học <b>Excel</b></span><span class="avp-brand-vietnamese">để làm được việc.</span>';
+    var eyebrow=document.querySelector('.avp-hero .avp-eyebrow');
+    if(eyebrow)eyebrow.innerHTML='<span class="avp-eyebrow-dot"></span> EXCEL　·　DỮ LIỆU　·　BÁO CÁO　·　TỰ ĐỘNG HÓA　·　AI';
+    var tagline=document.querySelector('.avp-hero .avp-tagline');
+    if(tagline)tagline.innerHTML='<span id="avpTyping">Từ cơ bản đến nâng cao, kèm ví dụ thực tế, bài tập và file thực hành.</span>';
+    var desc=document.querySelector('.avp-hero .avp-desc');
+    if(desc)desc.innerHTML='Giúp bạn xử lý công việc nhanh hơn, chính xác hơn và chuyên nghiệp hơn.';
+    var quest=document.querySelector('.avp-hero .avp-office-quest-entry');
+    if(quest)quest.remove();
+    var mainCta=document.querySelector('.avp-hero .avp-mobile-main-cta-wrap');
+    if(mainCta){
+      mainCta.innerHTML='<div class="avp-reference-ctas"><a class="avp-reference-primary" href="skill-map.html"><span class="avp-reference-cta-icon">▤</span><span><strong>Bắt đầu học ngay</strong><small>Dành cho người mới</small></span><b>→</b></a><a class="avp-reference-secondary" href="#home-ai-intro"><span class="avp-reference-play">▶</span><span><strong>Xem giới thiệu</strong><small>1 phút hiểu về AVP</small></span></a></div>';
     }
 
     /* Keep the existing curriculum routes available, but remove the crowded old lesson grid from the homepage. */
