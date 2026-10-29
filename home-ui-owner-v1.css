@@ -221,3 +221,6 @@
 @media(prefers-reduced-motion:reduce){
   .home-path-card,.home-path-card li a,.home-path-more--codehub .home-more-card{transition:none!important}
 }
+
+/* Excel Master is now available as a normal destination: remove its old status badge. */
+.home-path-more--extras .home-extra-card-v2.is-restoring::after{content:none!important;display:none!important}
