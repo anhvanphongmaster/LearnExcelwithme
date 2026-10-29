@@ -480,7 +480,7 @@
       "vba-macro.html": ["excel-nang-cao.html", "Kỹ năng nâng cao"],
       "solver-whatif.html": ["excel-nang-cao.html", "Kỹ năng nâng cao"],
 
-      "certificate.html": ["skill-map.html", "Skill Map"],
+      "certificate.html": ["learning-coach.html", "Bài học hôm nay"],
       "master-learning.html": ["index.html", "Trang chủ"],
       "practice-lab.html": ["index.html", "Trang chủ"],
       "formula-finder.html": ["tools-center.html", "Công cụ"],
