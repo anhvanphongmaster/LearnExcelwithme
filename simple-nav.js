@@ -553,3 +553,10 @@ document.addEventListener("DOMContentLoaded", function(){
     document.head.appendChild(l);
   }catch(e){}
 })();
+
+/* Redirect the retired Skill Map entry to the new daily learning page. */
+document.addEventListener("DOMContentLoaded",function(){
+  document.querySelectorAll('.top-simple-links a[data-avp-nav="learn"]').forEach(function(a){
+    a.href="learning-coach.html";
+  });
+});
