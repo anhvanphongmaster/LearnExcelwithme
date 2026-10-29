@@ -103,3 +103,11 @@ body.ph-folder-open{overflow:hidden}
 .ph-folder-apps.ph-folder-choices .ph-folder-app{appearance:none;width:100%;font:inherit;cursor:pointer}
 .ph-folder-back-button{grid-column:1/-1;justify-self:start;border:0;border-radius:999px;padding:8px 12px;background:#eaf3ed;color:#176c49;font-size:12px;font-weight:800;cursor:pointer}
 @media(max-width:620px){.ph-folder-apps.ph-folder-choices{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.ph-folder-apps.ph-folder-choices .ph-folder-app{padding:10px 3px}.ph-folder-apps.ph-folder-choices .ph-folder-app-icon{width:42px;height:42px;border-radius:12px}.ph-folder-apps.ph-folder-choices .ph-folder-app strong{font-size:10px}.ph-folder-apps.ph-folder-choices .ph-folder-app small{font-size:9px}}
+
+/* Five miniature app icons previewing the folder on tile six */
+.ph-flow-grid.ph-flow-grid-v1 .ph-need-entry .ph-iphone-folder-preview{display:grid!important;grid-template-columns:repeat(3,27px)!important;grid-template-rows:repeat(2,27px)!important;gap:5px!important;align-content:start!important;justify-content:start!important;margin:0 0 15px!important;padding:0!important;letter-spacing:0!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-need-entry .ph-iphone-folder-preview i{display:grid!important;place-items:center!important;width:27px!important;height:27px!important;margin:0!important;border-radius:8px!important;background:linear-gradient(145deg,#d8f0e2,#9ed7b7)!important;color:#08794f!important;font-size:13px!important;font-style:normal!important;font-weight:850!important;box-shadow:0 2px 4px rgba(20,70,45,.09)!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-need-entry .ph-iphone-folder-preview i:nth-child(2){background:linear-gradient(145deg,#e0efff,#b7d7f8)!important;color:#245f96!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-need-entry .ph-iphone-folder-preview i:nth-child(3){background:linear-gradient(145deg,#f0eaff,#d2c4fa)!important;color:#6548a2!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-need-entry .ph-iphone-folder-preview i:nth-child(4){background:linear-gradient(145deg,#fff0d8,#f5d39a)!important;color:#8b5b10!important}
+.ph-flow-grid.ph-flow-grid-v1 .ph-need-entry .ph-iphone-folder-preview i:nth-child(5){background:linear-gradient(145deg,#ffe7e7,#f6bcbc)!important;color:#a33b3b!important}
