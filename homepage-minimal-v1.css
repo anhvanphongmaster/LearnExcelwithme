@@ -406,3 +406,16 @@ html.avp-home-minimal footer *,html.avp-home-minimal .site-footer *,html.avp-hom
 html.avp-home-minimal .avp-reference-next-steps{margin-top:20px!important}
 html.avp-home-minimal .avp-reference-steps{background:#fff!important}
 @media(prefers-reduced-motion:reduce){html.avp-home-minimal .avp-home-brand-mark{animation:none!important}}
+
+/* Hotfix: hero content was hidden by inherited hero layout selectors; explicitly restore visibility and grid. */
+html.avp-home-minimal .avp-reference-hero{height:auto!important;min-height:330px!important;display:block!important;visibility:visible!important}
+html.avp-home-minimal .avp-reference-hero .avp-hero-inner{display:grid!important;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr)!important;align-items:center!important;gap:24px!important;width:100%!important;max-width:1450px!important;margin:0 auto!important;visibility:visible!important}
+html.avp-home-minimal .avp-reference-hero .avp-copy{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;z-index:2!important;color:#111a14!important}
+html.avp-home-minimal .avp-reference-hero .avp-reference-title{display:block!important;visibility:visible!important;opacity:1!important;color:#101713!important}
+html.avp-home-minimal .avp-reference-hero .avp-reference-lead{display:block!important;visibility:visible!important;opacity:1!important}
+html.avp-home-minimal .avp-reference-hero .avp-reference-art{display:block!important;visibility:visible!important;opacity:1!important}
+html.avp-home-minimal .avp-reference-hero .avp-hero-inner>*{min-width:0!important}
+html.avp-home-minimal .avp-reference-hero .avp-reference-ctas{display:flex!important}
+@media(max-width:650px){
+ html.avp-home-minimal.avp-force-desktop-mobile .avp-reference-hero .avp-hero-inner{grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr)!important}
+}
