@@ -45,23 +45,23 @@
 
 
   function installDesktopPreview(){
+    var params=new URLSearchParams(window.location.search);
+    if(params.get('avp-desktop-frame')==='1')return;
     if(document.getElementById('avp-desktop-preview-toggle'))return;
     var button=el('button','');
     button.id='avp-desktop-preview-toggle';
     button.type='button';
-    button.setAttribute('aria-pressed','false');
-    button.setAttribute('aria-label','Bật chế độ xem giao diện desktop');
+    button.setAttribute('aria-label','Xem giao diện desktop');
     button.innerHTML='<span class="avp-desktop-toggle-icon" aria-hidden="true">▣</span><span class="avp-desktop-toggle-label">Xem desktop</span>';
     button.addEventListener('click',function(){
-      var enabled=!document.documentElement.classList.contains('avp-home-desktop-preview');
-      document.documentElement.classList.toggle('avp-home-desktop-preview',enabled);
-      button.setAttribute('aria-pressed',enabled?'true':'false');
-      button.setAttribute('aria-label',enabled?'Tắt chế độ xem giao diện desktop':'Bật chế độ xem giao diện desktop');
-      var label=button.querySelector('.avp-desktop-toggle-label');
-      if(label)label.textContent=enabled?'Xem mobile':'Xem desktop';
-      var icon=button.querySelector('.avp-desktop-toggle-icon');
-      if(icon)icon.textContent=enabled?'▱':'▣';
-      if(enabled){window.scrollTo(0,0);document.documentElement.scrollLeft=0;}
+      if(document.getElementById('avp-desktop-preview-overlay'))return;
+      var overlay=el('div','');
+      overlay.id='avp-desktop-preview-overlay';
+      overlay.innerHTML='<div class="avp-desktop-preview-toolbar"><span><strong>Chế độ xem desktop</strong><small>Vuốt ngang để xem toàn bộ bố cục máy tính</small></span><button type="button" class="avp-desktop-preview-close" aria-label="Đóng chế độ xem desktop">Đóng ×</button></div><div class="avp-desktop-preview-stage"><iframe title="Bản xem trước giao diện desktop" loading="eager" src="'+window.location.pathname+'?avp-desktop-frame=1&v=4"></iframe></div>';
+      document.body.appendChild(overlay);
+      document.documentElement.classList.add('avp-desktop-preview-open');
+      var close=overlay.querySelector('.avp-desktop-preview-close');
+      close.addEventListener('click',function(){overlay.remove();document.documentElement.classList.remove('avp-desktop-preview-open');});
     });
     document.body.appendChild(button);
   }
