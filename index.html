@@ -1739,7 +1739,6 @@ html.avp-site-home body .home-path-more--codehub .home-more-card small{display:b
 <nav class="top-simple-nav" aria-label="Điều hướng chính">
   <div class="top-simple-links">
     <a href="index.html" data-avp-nav="home">Trang chủ</a>
-    <a href="skill-map.html" data-avp-nav="learn">Học</a>
     <a href="ai.html" data-avp-nav="ai">Học AI</a>
     <a href="practice-video.html" data-avp-nav="practice">Thực hành</a>
     <a href="tools-center.html" data-avp-nav="tools">Công cụ</a>
@@ -2109,9 +2108,6 @@ function lenDauTrang() {
 
 <script defer src="analytics-tracker.js"></script>
 <script defer src="avp-core.js"></script>
-<script defer src="learning-progress.js"></script>
-
-<script>document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("homeXpValue");if(e)e.textContent=String((parseInt(localStorage.getItem("avp_xp_self_v1")||"0",10)||0)+(function(){try{return Number((JSON.parse(localStorage.getItem("avp_coach_exp_v2")||"{}")||{}).total)||0;}catch(e){return 0;}})())})</script>
 
 
 <script defer src="cloud-sync-v11.js"></script>

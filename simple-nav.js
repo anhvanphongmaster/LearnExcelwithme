@@ -308,7 +308,7 @@
       const groups={
         home:new Set(["","index.html","gioithieu.html","lienhe.html","terms.html","privacy.html","disclaimer.html","open-source.html"]),
         learn:new Set([
-          "skill-map.html","master-learning.html","learning-path.html","excel.html",
+          "excel.html",
           "phimtatexcel.html","congthucexcel.html","filtersort.html","pivottable.html",
           "bieudopareto.html","baocaoexcel.html","excel-nang-cao.html",
           "power-query-course.html","power-pivot-dax.html","dashboard-dong.html",
@@ -471,12 +471,7 @@
 
       "certificate.html": ["skill-map.html", "Skill Map"],
       "master-learning.html": ["index.html", "Trang chủ"],
-      "learning-path.html": ["skill-map.html", "Skill Map"],
       "practice-lab.html": ["index.html", "Trang chủ"],
-      "dashboard.html": ["index.html", "Trang chủ"],
-      "profile.html": ["dashboard.html", "Hồ sơ & Thành tích"],
-      "achievements.html": ["dashboard.html", "Hồ sơ & Thành tích"],
-      "achievement-learning.html": ["achievements.html", "Thành tích"],
       "formula-finder.html": ["tools-center.html", "Công cụ"],
       "tools-center.html": ["index.html", "Trang chủ"],
       "qc-dashboard.html": ["tools-center.html", "Công cụ"],

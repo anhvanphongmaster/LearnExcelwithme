@@ -65,33 +65,7 @@ const PROFILE_KEY = "avpUserProfile";
   Chỉ đồng bộ dữ liệu học.
   Không đồng bộ theme, lịch sử tìm kiếm hay dữ liệu QC riêng.
 */
-const PROGRESS_KEYS = [
-  "completedCourses",
-  "currentCourse",
-  "quizBestScore",
-  "avp_playground_progress_v1",
-  "avpLearningPath30",
-  "avpLearningPathLastVisit",
-  "avpRecentActivities",
-  "avp_bonus_xp_v1",
-  "avp_activity_days_v1",
-  "avp_learning_events_v1",
-  "avp_daily_rewards_v1",
-  "avp_excel_challenge_stats_v1",
-
-  // V6–V11 learning system: these are the keys users expect to follow them
-  // across phone / computer after signing in.
-  "avp_lesson_progress_v1",
-  "avp_xp_v2",
-  "avp_quiz_done_v1",
-  "avp_badge_unlock_dates_v9",
-  "avp_bookmarks_v2",
-  "avp_learning_history_v2",
-  "avp_visit_days_v1",
-  "avp_recent_lessons_v1",
-  "avp_playground_completed_v1",
-  "avp.practiceLab.v14"
-];
+const PROGRESS_KEYS = []; // Learning progress and gamification sync retired.
 
 const ARRAY_UNION_KEYS = new Set([
   "avp_activity_days_v1",
@@ -423,6 +397,8 @@ async function saveProgressObject(user, payload) {
 }
 
 async function syncProgressToCloud() {
+  // Learning progress sync was retired; profile and account sync remain active.
+  return false;
   if (AVP_IS_ADMIN_PAGE) return false;
   if (!supabase || applyingCloud) return false;
 
@@ -476,6 +452,8 @@ function scheduleProgressSync(delay = 700) {
 }
 
 async function loadAndMergeProgress() {
+  // Do not hydrate or recreate the retired 42-lesson progress dataset.
+  return false;
   if (AVP_IS_ADMIN_PAGE) return false;
   if (!supabase) return false;
   const user = await getUser();
