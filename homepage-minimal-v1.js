@@ -44,35 +44,12 @@
   }
 
 
-  function installDesktopPreview(){
-    var params=new URLSearchParams(window.location.search);
-    if(params.get('avp-desktop-frame')==='1')return;
-    if(document.getElementById('avp-desktop-preview-toggle'))return;
-    var button=el('button','');
-    button.id='avp-desktop-preview-toggle';
-    button.type='button';
-    button.setAttribute('aria-label','Xem giao diện desktop');
-    button.innerHTML='<span class="avp-desktop-toggle-icon" aria-hidden="true">▣</span><span class="avp-desktop-toggle-label">Xem desktop</span>';
-    button.addEventListener('click',function(){
-      if(document.getElementById('avp-desktop-preview-overlay'))return;
-      var overlay=el('div','');
-      overlay.id='avp-desktop-preview-overlay';
-      overlay.innerHTML='<div class="avp-desktop-preview-toolbar"><span><strong>Chế độ xem desktop</strong><small>Vuốt ngang để xem toàn bộ bố cục máy tính</small></span><button type="button" class="avp-desktop-preview-close" aria-label="Đóng chế độ xem desktop">Đóng ×</button></div><div class="avp-desktop-preview-stage"><iframe title="Bản xem trước giao diện desktop" loading="eager" src="'+window.location.pathname+'?avp-desktop-frame=1&v=4"></iframe></div>';
-      document.body.appendChild(overlay);
-      document.documentElement.classList.add('avp-desktop-preview-open');
-      var close=overlay.querySelector('.avp-desktop-preview-close');
-      close.addEventListener('click',function(){overlay.remove();document.documentElement.classList.remove('avp-desktop-preview-open');});
-    });
-    document.body.appendChild(button);
-  }
-
   function setup(){
     var nav=document.querySelector('.top-simple-nav');
     var hero=document.querySelector('.avp-hero');
     var pathSection=document.getElementById('ky-nang-excel');
     var books=document.getElementById('home-books');
     if(!nav||!hero||!pathSection)return;
-    installDesktopPreview();
 
     if(!nav.querySelector('.avp-home-brand')){
       var brand=el('a','avp-home-brand');
