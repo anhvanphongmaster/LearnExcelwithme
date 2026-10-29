@@ -58,8 +58,16 @@ const search=$('#libSearch'),results=$('#libResults'),count=$('#libResultCount')
 let activeGroup='all';
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').toLowerCase();
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const textOf=e=>[e.title,e.subtitle,e.type,e.purpose,e.syntax,(e.keywords||[]).join(' '),(e.causes||[]).join(' '),(e.fixes||[]).join(' ')].join(' ');
-function score(e,q){if(!q)return 1;const n=norm(q),t=norm(e.title),all=norm(textOf(e));if(t===n)return 100;if(t.startsWith(n))return 70;if(t.includes(n))return 45;const terms=n.split(/\s+/).filter(Boolean);let pts=0;for(const term of terms){if(!all.includes(term))return -1;pts+=all.includes(term)?5:0}return pts}
+const aliases={
+ 'kpi':'doanh so target ty le dat hieu suat','doanh so':'sumifs sumif doanh thu','target':'sumifs sumif muc tieu',
+ 'tang ca':'gio lam ngay cong thoi gian','ngay cong':'date days networkdays ngay thang',
+ 'qc':'loi chat luong countifs countif ty le loi','ty le loi':'countifs countif loi chat luong',
+ 'bao cao':'pivottable sumifs countifs tong hop','tra cuu':'xlookup vlookup index match',
+ 'dem':'count countif countifs counta','cong':'sum sumif sumifs subtotal','ngay thang':'date day month year eomonth',
+ 'loi cong thuc':'iferror ifna value ref name num'
+};
+const textOf=e=>{const base=[e.title,e.subtitle,e.type,e.purpose,e.syntax,(e.keywords||[]).join(' '),(e.causes||[]).join(' '),(e.checks||[]).join(' '),(e.fixes||[]).join(' '),(e.related||[]).join(' ')].join(' ');const n=norm(base);const extra=Object.entries(aliases).filter(([k])=>n.includes(norm(k))).map(([,v])=>v).join(' ');return base+' '+extra;};
+function score(e,q){if(!q)return 1;const n=norm(q),t=norm(e.title),all=norm(textOf(e));if(t===n)return 150;if(t.startsWith(n))return 100;if(t.includes(n))return 75;if(all.includes(n))return 55;const terms=n.split(/\s+/).filter(Boolean);let matched=0,pts=0;for(const term of terms){if(all.includes(term)){matched++;pts+=term.length>3?9:5;}}if(!matched)return -1;return pts-(terms.length-matched)*1.5;}
 function card(e){return '<button class="lib-function" data-id="'+esc(e.id)+'"><div class="lib-function-top"><h3>'+esc(e.title)+'</h3><span class="lib-tag">'+esc(e.type||'Excel')+'</span></div><p>'+esc(e.purpose||e.subtitle||'Tra cứu cách sử dụng')+'</p>'+(e.syntax?'<code>'+esc(e.syntax)+'</code>':'')+'<span class="lib-open">Xem hướng dẫn <b>↗</b></span></button>'}
 function render(){let arr=data.map(e=>({e,s:score(e,search.value)})).filter(x=>x.s>=0&&(activeGroup==='all'||x.e.type===activeGroup)).sort((a,b)=>b.s-a.s||String(a.e.title).localeCompare(String(b.e.title),'vi')).map(x=>x.e);count.textContent=arr.length+' mục';$('#libResultsTitle').textContent=search.value.trim()?'Kết quả tra cứu':activeGroup==='all'?'Toàn bộ thư viện':activeGroup;results.innerHTML=arr.slice(0,120).map(card).join('')||'<div class="lib-empty">Chưa tìm thấy mục phù hợp. Thử từ khóa khác hoặc mô tả vấn đề ngắn hơn.</div>';$$('#libResults [data-id]').forEach(b=>b.addEventListener('click',()=>show(data.find(e=>e.id===b.dataset.id))));}
 function show(e){if(!e)return;const section=(title,body)=>body?'<section class="lib-detail-block"><h3>'+title+'</h3>'+body+'</section>':'';const list=a=>a&&a.length?'<ul>'+a.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'';const code=(s)=>'<div class="lib-code"><code>'+esc(s)+'</code><button class="lib-copy" data-copy="'+encodeURIComponent(s)+'">Sao chép</button></div>';
