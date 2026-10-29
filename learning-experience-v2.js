@@ -58,8 +58,8 @@
     <section class="avp-learning-intro">
       <div class="avp-learning-kicker"><span class="kind">${escapeHtml(cfg.type)}</span><span>${escapeHtml(cfg.stage)}</span></div>
       <h1>${escapeHtml(cfg.title)}</h1><p>${escapeHtml(cfg.summary)}</p>
-      <div class="avp-learning-meta"><span>${escapeHtml(metaOrder)}</span><span>Khoảng ${cfg.mins} phút</span><span class="status ${status?'done':''}" data-lx-status>${status?'✓ Đã ghi nhận':'Chưa hoàn thành'}</span></div>
-      <div class="avp-learning-intro-actions"><a class="avp-learning-primary" data-lx-start href="${cfg.start||'#'}">${escapeHtml(cfg.startLabel||'Bắt đầu')}</a><a class="avp-learning-secondary" href="learning-coach.html">← Quay lại lộ trình</a>${cfg.secondary?`<a class="avp-learning-secondary" href="${cfg.secondary.href}"${cfg.secondary.href.includes('downloads/')?' download':''}>${escapeHtml(cfg.secondary.label)}</a>`:''}</div>
+      <div class="avp-learning-meta"><span>${escapeHtml(metaOrder)}</span><span>Khoảng ${cfg.mins} phút</span></div>
+      <div class="avp-learning-intro-actions"><a class="avp-learning-primary" data-lx-start href="${cfg.start||'#'}">${escapeHtml(cfg.startLabel||'Bắt đầu')}</a><a class="avp-learning-secondary" href="learning-coach.html">← Bài học hôm nay</a>${cfg.secondary?`<a class="avp-learning-secondary" href="${cfg.secondary.href}"${cfg.secondary.href.includes('downloads/')?' download':''}>${escapeHtml(cfg.secondary.label)}</a>`:''}</div>
       <div class="avp-learning-outcomes">${cfg.outcomes.map((x,i)=>`<div class="avp-learning-outcome"><small>${i===0?'Bạn sẽ làm được':'Sau bài này'}</small><strong>${escapeHtml(x)}</strong></div>`).join('')}</div>
     </section>`;
   }
