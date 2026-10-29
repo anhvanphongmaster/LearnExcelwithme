@@ -23,14 +23,37 @@
     window.AVPPracticeRoll?.initAll(root.parentElement||document);
     sync();
   }
+  const topicFolders=[
+    {id:'data',title:'Dữ liệu',icon:'▤',desc:'Làm sạch, chuẩn hóa và kết hợp dữ liệu',keys:/data|dữ liệu|power query|query|làm sạch|gộp|combine|transform|unpivot|merge/i},
+    {id:'report',title:'Báo cáo',icon:'▥',desc:'Báo cáo, biểu đồ, KPI và dashboard',keys:/báo cáo|report|dashboard|kpi|pivot|biểu đồ|chart|phân tích|analysis/i},
+    {id:'formula',title:'Công thức',icon:'ƒx',desc:'Hàm Excel và xử lý nghiệp vụ',keys:/công thức|formula|hàm|function|lookup|tính toán|nghiệp vụ|excel công việc/i},
+    {id:'automation',title:'Tự động hóa',icon:'↻',desc:'Tối ưu thao tác và quy trình lặp lại',keys:/tự động|automation|vba|macro|power pivot|dax|nâng cao/i},
+    {id:'troubleshoot',title:'Sửa lỗi Excel',icon:'⌕',desc:'Tìm nguyên nhân và xử lý lỗi',keys:/lỗi|error|sửa lỗi|debug|kiểm tra|troubleshoot|khắc phục/i}
+  ];
+  let openFolder='';
+  function folderFor(topic){
+    const text=String(topic.title||'')+' '+String(topic.description||'');
+    return topicFolders.find(folder=>folder.keys.test(text))?.id||'formula';
+  }
   function renderTopics(){
     $('ttTopicStage').hidden=false;$('ttLessonStage').hidden=true;
     const mount=$('ttTopics');
     if(!topics.length){mount.innerHTML='<div class="tt-empty"><strong>Chưa có bài TikTok được phát hành</strong><p>Khi có video hướng dẫn mới, chủ đề và file thực hành sẽ xuất hiện tại đây.</p></div>';return}
-    mount.innerHTML=`<div class="avp-roll-shell"><div class="avp-practice-roll tt-topic-roll" data-practice-roll data-roll-kind="topic" tabindex="0" aria-label="Chọn chủ đề TikTok"><div class="avp-roll-stage" data-practice-roll-stage>${topics.map(row=>`<article class="tt-topic-card" data-practice-roll-card><span>CHỦ ĐỀ</span><h3>${T.esc(row.title)}</h3><p>${T.esc(row.description||'Xem video và làm theo với file thực hành của từng bài.')}</p><small>${lessons.filter(item=>item.topic_id===row.id).length} bài có video</small><button type="button" data-tt-topic="${T.esc(row.id)}">Mở chủ đề →</button></article>`).join('')}</div><div class="avp-roll-dots" data-practice-roll-dots></div></div><p class="avp-roll-hint">Vuốt ngang hoặc dùng phím ← → để chọn chủ đề</p></div>`;
-    const root=mount.querySelector('[data-practice-roll]');
-    bindRollAccessibility(root,topics,'Chủ đề');
+    mount.innerHTML='<div class="tt-folder-grid" aria-label="Thư mục chủ đề TikTok">'+topicFolders.map(folder=>{
+      const count=topics.filter(topic=>folderFor(topic)===folder.id).length;
+      return '<button type="button" class="tt-folder-tile" data-tt-folder="'+folder.id+'"><span class="tt-folder-icon">'+folder.icon+'</span><strong>'+T.esc(folder.title)+'</strong><small>'+count+' chủ đề</small></button>';
+    }).join('')+'</div><div class="tt-folder-backdrop" id="ttFolderBackdrop" hidden><section class="tt-folder-window" role="dialog" aria-modal="true" aria-labelledby="ttFolderTitle"><button type="button" class="tt-folder-close" data-tt-folder-close aria-label="Đóng thư mục">×</button><div class="tt-folder-heading"><span class="tt-folder-icon" id="ttFolderIcon">▤</span><div><h3 id="ttFolderTitle">Chủ đề</h3><p id="ttFolderDesc"></p></div></div><div class="tt-folder-topics" id="ttFolderTopics"></div></section></div>';
   }
+  function openTopicFolder(id){
+    const folder=topicFolders.find(item=>item.id===id);if(!folder)return;
+    openFolder=id;
+    const back=$('ttFolderBackdrop'),list=$('ttFolderTopics');
+    $('ttFolderTitle').textContent=folder.title;$('ttFolderDesc').textContent=folder.desc;$('ttFolderIcon').textContent=folder.icon;
+    const rows=topics.filter(topic=>folderFor(topic)===id);
+    list.innerHTML=rows.length?rows.map(topic=>'<button type="button" class="tt-folder-topic" data-tt-topic="'+T.esc(topic.id)+'"><span class="tt-folder-topic-icon">'+folder.icon+'</span><span><strong>'+T.esc(topic.title)+'</strong><small>'+T.esc(topic.description||'Mở các video và file thực hành trong chủ đề này')+'</small></span><b>›</b></button>').join(''):'<p class="tt-folder-empty">Chưa có chủ đề trong thư mục này.</p>';
+    back.hidden=false;document.body.classList.add('tt-folder-open');
+  }
+  function closeTopicFolder(){const back=$('ttFolderBackdrop');if(back)back.hidden=true;document.body.classList.remove('tt-folder-open');}
   function lessonCard(row){
     const date=row.published_at?new Date(row.published_at).toLocaleDateString('vi-VN'):'';
     return `<article class="tt-lesson-card" id="tt-lesson-${T.esc(row.id)}" data-practice-roll-card><div class="tt-lesson-meta"><span>VIDEO TIKTOK</span>${date?`<time datetime="${T.esc(row.published_at)}">${T.esc(date)}</time>`:''}</div><h3>${T.esc(row.title)}</h3>${row.description?`<p>${T.esc(row.description)}</p>`:''}<div class="tt-lesson-actions"><a class="tt-watch" href="${T.esc(T.videoUrl(row.tiktok_url))}" target="_blank" rel="noopener noreferrer">▶ Xem TikTok</a><button type="button" data-tt-download="${T.esc(row.id)}">↓ Tải file thực hành</button></div><p class="tt-file-caption">${T.esc(row.file_name||'File thực hành')} · Đăng nhập để tải</p><p class="tt-action-notice" data-tt-file-notice role="status" hidden></p></article>`;
@@ -78,7 +101,15 @@
   function boot(){
     if(!$('ttTopics'))return;
     $('ttReload').addEventListener('click',()=>load(true));
-    $('ttTopics').addEventListener('click',event=>{const button=event.target.closest('[data-tt-topic]');if(button&&!event.defaultPrevented&&button.closest('[data-practice-roll-card]').classList.contains('is-roll-active'))selectTopic(button.dataset.ttTopic)});
+    $('ttTopics').addEventListener('click',event=>{
+      const folderButton=event.target.closest('[data-tt-folder]');
+      if(folderButton){openTopicFolder(folderButton.dataset.ttFolder);return}
+      const topicButton=event.target.closest('[data-tt-topic]');
+      if(topicButton){const id=topicButton.dataset.ttTopic;closeTopicFolder();selectTopic(id);return}
+      if(event.target.closest('[data-tt-folder-close]'))closeTopicFolder();
+      if(event.target.id==='ttFolderBackdrop')closeTopicFolder();
+    });
+    $('ttTopics').addEventListener('keydown',event=>{if(event.key==='Escape')closeTopicFolder()});
     $('ttBackTopics').addEventListener('click',()=>{selected='';setRoute('');showNotice('');renderTopics()});
     $('ttSearch').addEventListener('input',()=>renderLessons());$('ttSort').addEventListener('change',()=>renderLessons());
     $('ttLessons').addEventListener('click',event=>{const button=event.target.closest('[data-tt-download]');if(button){const notice=button.closest('article').querySelector('[data-tt-file-notice]');return T.download(button.dataset.ttDownload,button,notice)}if(event.target.closest('[data-tt-clear]')){$('ttSearch').value='';renderLessons()}});
