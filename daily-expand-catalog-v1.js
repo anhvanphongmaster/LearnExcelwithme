@@ -93,7 +93,7 @@
     version: 'daily-3d-v1',
     cycleDays: 3,
     timezone: 'Asia/Ho_Chi_Minh',
-    startDate: '2026-09-14',
+    startDate: '2026-10-30',
     packs,
     lessons,
     byId,
