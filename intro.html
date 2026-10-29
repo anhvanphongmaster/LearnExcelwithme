@@ -241,7 +241,7 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  function begin(){
   if(running)return;
   running=true;startedAt=performance.now();startScreen.classList.add('hidden');
-  if(initAudio()&&!muted){signature();musicBed();}
+  if(initAudio()&&!muted){soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';signature();musicBed();}
   showScene(0);raf=requestAnimationFrame(tick);
  }
  function finish(){
