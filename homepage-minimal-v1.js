@@ -71,6 +71,16 @@ function setup(){
  lessonData.forEach(function(d){lg.appendChild(link(d[0],'avp-canonical-lesson','<div class="avp-canonical-thumb '+d[4]+'"><small>AVP · EXCEL</small><strong>'+d[1]+'</strong><span class="avp-thumb-sheet"><i></i><i></i><i></i><i></i><i></i></span><b>'+d[3]+'</b></div><div class="avp-canonical-lesson-copy"><strong>'+d[1]+'</strong><small>'+d[2]+'</small></div>'));});
  discover.insertAdjacentElement('afterend',lessons);
  /* Removed by request: duplicate onboarding and tools blocks are deleted from the homepage composition. */
+
+ /* Focused resources area: workbook library and real-world case projects. */
+ var resourceSection=document.getElementById('avp-canonical-resources');
+ if(!resourceSection){
+  resourceSection=el('section','avp-canonical-resources');
+  resourceSection.id='avp-canonical-resources';
+  resourceSection.innerHTML='<div class="avp-resource-heading"><div><small>TÀI NGUYÊN THỰC CHIẾN</small><h2>Học xong, có thứ để làm được ngay</h2><p>File dùng được trong công việc và dự án mẫu để luyện cách giải quyết bài toán thực tế.</p></div></div><div class="avp-resource-grid"><a class="avp-resource-card avp-resource-workbook" href="practice-video.html"><span class="avp-resource-icon">▤</span><span class="avp-resource-copy"><small>01 · TẢI VÀ THỰC HÀNH</small><strong>Kho workbook</strong><em>Workbook mẫu, dữ liệu luyện tập và file thực hành theo chủ đề.</em><b>Mở kho workbook　→</b></span><span class="avp-resource-decoration">XLSX</span></a><a class="avp-resource-card avp-resource-cases" href="practice-lab.html"><span class="avp-resource-icon">▦</span><span class="avp-resource-copy"><small>02 · GIẢI QUYẾT BÀI TOÁN</small><strong>Case thực chiến</strong><em>Đề bài công việc, dữ liệu đầu vào và mục tiêu đầu ra để tự xây lời giải.</em><b>Khám phá case　→</b></span><span class="avp-resource-decoration">CASE</span></a></div>';
+  lessons.insertAdjacentElement('afterend',resourceSection);
+ }
+
  var books=document.getElementById('home-books');
  if(books){books.classList.add('avp-canonical-books');var heading=books.querySelector('.home-reference-heading');if(heading)heading.textContent='Tài liệu tham khảo';}
 }
