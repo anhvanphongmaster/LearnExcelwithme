@@ -160,8 +160,8 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
     const t=i/rate,phase=t%4,bar=Math.floor(t/4),n=notes[Math.floor((t%4)/.333)%notes.length];
     const fade=Math.min(1,t/.22,(seconds-t)/.4);
     const pad=(Math.sin(TAU*(bar%2===0?65.41:73.42)*t)*.14+Math.sin(TAU*(bar%2===0?98:110)*t)*.09);
-    const pulse=Math.exp(-((phase-.04)/.16)**2)*Math.sin(TAU*(52+80*Math.exp(-phase*12))*t)*.62;
-    const shimmer=(Math.sin(TAU*n*t)+.45*Math.sin(TAU*n*2*t))*Math.exp(-((phase-.35)/.22)**2)*.16;
+    const pulse=Math.exp(-(((phase-.04)/.16)**2))*Math.sin(TAU*(52+80*Math.exp(-phase*12))*t)*.62;
+    const shimmer=(Math.sin(TAU*n*t)+.45*Math.sin(TAU*n*2*t))*Math.exp(-(((phase-.35)/.22)**2))*.16;
     const swphase=(t%2)/2,noise=(Math.random()*2-1)*Math.pow(Math.sin(Math.PI*swphase),3)*.11;
     const v=Math.max(-.95,Math.min(.95,(pad+pulse+shimmer+noise)*fade));
     view.setInt16(44+i*2,Math.round(v*32767),true);
