@@ -55,6 +55,31 @@
   function setup(){
     var nav=document.querySelector('.top-simple-nav');
     var hero=document.querySelector('.avp-hero');
+
+    /* Featured lessons + trending panel + end-of-section learning CTA from the approved reference. */
+    var featuredLessons=document.getElementById('avp-featured-lessons');
+    if(!featuredLessons){
+      featuredLessons=el('section','avp-featured-lessons');
+      featuredLessons.id='avp-featured-lessons';
+      featuredLessons.innerHTML='<div class="avp-featured-lessons-main"><div class="avp-featured-heading"><div><h2>Bài học nổi bật</h2><p>Những nội dung đang được quan tâm.</p></div><a href="excel.html">Xem tất cả　→</a></div><div class="avp-lesson-cards"></div></div><aside class="avp-trending"><h3>Xu hướng hôm nay <span>→</span></h3><ol><li><b>1</b><span><strong>SUMIFS</strong><small>Tính tổng nhiều điều kiện</small></span></li><li><b>2</b><span><strong>XLOOKUP</strong><small>Tra cứu dữ liệu hiện đại</small></span></li><li><b>3</b><span><strong>PivotTable</strong><small>Báo cáo nhanh</small></span></li><li><b>4</b><span><strong>Power Query</strong><small>Làm sạch và kết hợp dữ liệu</small></span></li><li><b>5</b><span><strong>Phím tắt Excel</strong><small>Làm việc nhanh hơn</small></span></li></ol></aside><div class="avp-featured-cta"><div class="avp-cta-mini-art">▥<span>AVP</span></div><div><h2>Sẵn sàng nâng cấp kỹ năng Excel?</h2><p>Tham gia lộ trình 12 chương với ví dụ thực tế và bài tập có file thực hành.</p></div><a href="skill-map.html">Xem lộ trình 12 chương　→</a></div>';
+      var lessonData=[
+        ['power-query-course.html','Power Query cơ bản','Từ dữ liệu thô đến báo cáo','12:30','pq','Excel'],
+        ['excel.html','XLOOKUP trong thực tế','Tra cứu dữ liệu hiện đại','10:15','lookup','XLOOKUP'],
+        ['congthucexcel.html','SUMIFS chi tiết','Tính tổng nhiều điều kiện','08:42','sumifs','SUMIFS'],
+        ['pivottable.html','PivotTable cơ bản','Phân tích dữ liệu nhanh','11:28','pivot','PivotTable']
+      ];
+      var lessonGrid=featuredLessons.querySelector('.avp-lesson-cards');
+      lessonData.forEach(function(d){
+        var a=el('a','avp-lesson-card');a.href=d[0];
+        a.innerHTML='<div class="avp-lesson-thumb thumb-'+d[4]+'"><span class="avp-thumb-brand">AVP · EXCEL</span><strong>'+d[5]+'</strong><div class="avp-thumb-spread"><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="avp-thumb-time">'+d[3]+'</span></div><div class="avp-lesson-card-body"><strong>'+d[1]+'</strong><small>'+d[2]+'</small></div>';
+        lessonGrid.appendChild(a);
+      });
+      var hero=document.querySelector('.avp-reference-hero');
+      var ecosystem=document.getElementById('avp-reference-featured');
+      if(ecosystem)ecosystem.insertAdjacentElement('afterend',featuredLessons);
+      else if(hero)hero.insertAdjacentElement('afterend',featuredLessons);
+    }
+
     var pathSection=document.getElementById('ky-nang-excel');
     var books=document.getElementById('home-books');
     if(!nav||!hero||!pathSection)return;
