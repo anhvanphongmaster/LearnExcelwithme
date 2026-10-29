@@ -3,6 +3,7 @@
 
   const $ = id => document.getElementById(id);
   const MAX_DAILY = 5;
+  const STANDALONE_COMMUNITY = /(?:^|\/)community\.html$/i.test(location.pathname);
   let quotaAdmin=false;
 
   let client = null;
@@ -2542,6 +2543,15 @@
 
     await currentUser();
     await updateNotificationBadge();
+
+    if(STANDALONE_COMMUNITY){
+      document.body.classList.add("avp-community-standalone");
+      const bubble=$("avpAiChatBubble");
+      if(bubble) bubble.hidden=true;
+      const panel=$("avpAiChatPanel");
+      if(panel) panel.hidden=false;
+      await switchMode("community");
+    }
 
     const unreadTimer=setInterval(()=>{
       if(document.visibilityState==="visible"){
