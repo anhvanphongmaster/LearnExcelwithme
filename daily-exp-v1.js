@@ -4,7 +4,7 @@
   if (!C) return;
   const KEY = 'avp_daily_xp_v3';
   const RULES = { lesson: 10, quizCorrect: 0, quizWrong: 0, selfPer10: 0 };
-  const esc = v => String(v ?? '').replace(/[&<>"']/g, ch => ({'&':'&','<':'<','>':'>','"':'"',"'":'&#39;'}[ch]));
+  const esc = v => String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   function vnDate() {
     if (window.AVPDailyStart && window.AVPDailyStart.vnDate) return window.AVPDailyStart.vnDate();
     try { return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()); }
