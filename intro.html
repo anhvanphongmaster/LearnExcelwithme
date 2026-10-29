@@ -172,13 +172,13 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
    o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.05);
   }catch(e){}
  }
- function audibleIntro(){
-  soundInit();
-  if(!audioCtx||muted)return;
-  if(audioCtx.state==='suspended')audioCtx.resume();
-  // Audible, high-register opening chime plus a short cinematic low hit.
-  [440,554.37,659.25,880].forEach((n,i)=>tone(n,.65,'sawtooth',.22,i*.13));
-  tone(110,.8,'sine',.4,0);
+ async function audibleIntro(){
+  const ready=await soundInit();
+  if(!ready||muted)return false;
+  cinematicHit();
+  [523.25,659.25,783.99,1046.5].forEach((n,i)=>tone(n,.8,'triangle',.38,.12+i*.14));
+  setTimeout(()=>{if(!muted&&audioCtx&&audioCtx.state==='running')noiseSweep();},420);
+  return true;
  }
  function musicBed(){
   if(!audioCtx||muted)return;
@@ -258,10 +258,14 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  startBtn.addEventListener('click',begin);
  skipBtn.addEventListener('click',skip);
  exploreBtn.addEventListener('click',skip);
- soundBtn.addEventListener('click',()=>{
-  muted=!muted;soundBtn.textContent=muted?'♪ Âm thanh: tắt':'♪ Âm thanh: bật';
-  if(muted){if(master)master.gain.setTargetAtTime(.0001,audioCtx.currentTime,.05);if(ambienceTimer)clearTimeout(ambienceTimer);}
-  else{soundInit().then(ready=>{if(ready){if(master)master.gain.setTargetAtTime(1,audioCtx.currentTime,.08);audibleIntro();if(running)cue(Math.max(0,sceneIndex));}});}
+ soundBtn.textContent='♪ Kiểm tra âm thanh';
+ soundBtn.addEventListener('click',async()=>{
+  if(muted){muted=false;soundBtn.textContent='♪ Kiểm tra âm thanh';}
+  const ready=await soundInit();
+  if(!ready){soundBtn.textContent='Âm thanh không khả dụng';return;}
+  if(master)master.gain.setTargetAtTime(1,audioCtx.currentTime,.03);
+  tone(880,.35,'sine',.7,0);tone(1174.66,.45,'sine',.7,.18);
+  if(running)await audibleIntro();
  });
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();skip();}if((e.key===' '||e.key==='Enter')&&!running&&!startScreen.classList.contains('hidden')){e.preventDefault();begin();}});
  document.addEventListener('visibilitychange',()=>{if(document.hidden&&audioCtx&&audioCtx.state==='running')audioCtx.suspend();else if(!document.hidden&&running&&audioCtx&&!muted)audioCtx.resume();});
