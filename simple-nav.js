@@ -5,7 +5,7 @@
     if(localStorage.getItem(marker))return;
     ['avp_coach_exp_v2','avp_xp_v2','avp_quiz_done_v1','avp_lesson_progress_v1',
      'avp_coach_daily_v1','avp_coach_daily_start_v1','avp_coach_cases_v1',
-     'avp_learning_achievements_v1','avp_learning_streak_v1'].forEach(function(k){localStorage.removeItem(k)});
+     'avp_learning_achievements_v1','avp_learning_streak_v1','avp_last_lesson_v1','avp_daily_xp_v3'].forEach(function(k){localStorage.removeItem(k)});
     localStorage.setItem(marker,'1');
   }catch(e){}
 })();
@@ -532,106 +532,6 @@
     }else{
       document.body.insertAdjacentElement("afterbegin", wrap);
     }
-  });
-})();
-
-/* ===== UNIFIED LESSON PATH NAVIGATION ===== */
-(function(){
-  document.addEventListener("DOMContentLoaded", function(){
-    const current = (location.pathname.split("/").pop() || "").toLowerCase();
-    const topics = [
-      ["excel.html", "Excel cơ bản", "Beginner"],
-      ["phimtatexcel.html", "Phím tắt", "Beginner"],
-      ["congthucexcel.html", "Công thức", "Beginner"],
-      ["filtersort.html", "Filter & Sort", "Beginner"],
-      ["pivottable.html", "PivotTable", "Analyst"],
-      ["bieudopareto.html", "Pareto", "Analyst"],
-      ["baocaoexcel.html", "Báo cáo QC", "Analyst"],
-      ["excel-nang-cao.html", "Excel nâng cao", "Advanced"],
-      ["power-query-course.html", "Power Query", "Advanced"],
-      ["power-pivot-dax.html", "Power Pivot & DAX", "Advanced"],
-      ["dashboard-dong.html", "Dashboard động", "Advanced"],
-      ["practice-lab.html", "Practice Lab", "Advanced"],
-      ["vba-macro.html", "VBA / Macro", "Master"],
-      ["solver-whatif.html", "What-If & Solver", "Master"]
-    ];
-    const idx = topics.findIndex(function(item){ return item[0] === current; });
-    if(idx < 0) return;
-    document.body.classList.add("core-topic-page");
-    try{
-      localStorage.setItem("avp_last_lesson_v1", JSON.stringify({
-        url: topics[idx][0],
-        title: topics[idx][1],
-        stage: topics[idx][2],
-        index: idx,
-        ts: Date.now()
-      }));
-    }catch(e){}
-    if(document.querySelector(".core-topic-nav")) return;
-
-    const box = document.createElement("div");
-    box.className = "core-topic-nav";
-    box.setAttribute("aria-label", "Điều hướng lộ trình học");
-
-    const top = document.createElement("div");
-    top.className = "core-topic-top";
-
-    const crumb = document.createElement("div");
-    crumb.className = "core-topic-crumb";
-    crumb.innerHTML = '<a href="index.html">Trang chủ</a><span>›</span><a href="skill-map.html">Lộ trình</a><span>›</span><strong>' + topics[idx][2] + " • " + topics[idx][1] + '</strong>';
-    top.appendChild(crumb);
-
-    const status = document.createElement("div");
-    status.className = "core-topic-status";
-    status.textContent = "Bài " + (idx + 1) + "/" + topics.length;
-    top.appendChild(status);
-    box.appendChild(top);
-
-    const actions = document.createElement("div");
-    actions.className = "core-topic-actions";
-
-    const prev = document.createElement("a");
-    prev.className = "core-topic-prev";
-    if(idx > 0){
-      prev.href = topics[idx-1][0];
-      prev.textContent = "← " + topics[idx-1][1];
-    } else {
-      prev.href = "skill-map.html";
-      prev.textContent = "← Skill Map";
-    }
-    actions.appendChild(prev);
-
-    const all = document.createElement("a");
-    all.href = "skill-map.html";
-    all.className = "core-topic-all";
-    all.textContent = "Skill Map";
-    actions.appendChild(all);
-
-    const next = document.createElement("a");
-    next.className = "core-topic-next";
-    if(idx < topics.length-1){
-      next.href = topics[idx+1][0];
-      next.textContent = topics[idx+1][1] + " →";
-    } else {
-      next.href = "skill-map.html";
-      next.textContent = "Xem Skill Map →";
-    }
-    actions.appendChild(next);
-    box.appendChild(actions);
-
-    const header = document.querySelector("body > header, .page-header, .pq-hero, .pl-hero, .hero");
-    if(header) header.insertAdjacentElement("afterend", box);
-    else {
-      const topNav = document.querySelector(".top-simple-nav");
-      if(topNav) topNav.insertAdjacentElement("afterend", box);
-      else document.body.insertAdjacentElement("afterbegin", box);
-    }
-
-    function hideDupBack(){
-      document.querySelectorAll(".avp-page-back-wrap").forEach(function(el){ el.style.display = "none"; });
-    }
-    hideDupBack();
-    setTimeout(hideDupBack, 200);
   });
 })();
 
