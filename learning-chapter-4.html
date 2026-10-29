@@ -157,5 +157,6 @@ function updateProgress(){const n=document.querySelectorAll('.done:checked').len
 document.addEventListener('change',e=>{if(e.target.classList.contains('done'))updateProgress()});
 function checkQuiz(){const a=document.querySelector('input[name="q"]:checked');const f=document.getElementById('feedback');if(!a){f.textContent='Chọn một đáp án trước.';f.style.color='#9a6422';return}f.textContent=a.value==='b'?'Chính xác. SUMIF cộng các giá trị thỏa một điều kiện.':'Chưa đúng. Gợi ý: hàm cần vừa cộng số liệu vừa lọc theo một điều kiện.';f.style.color=a.value==='b'?'#08794f':'#9a6422'}
 </script>
+<script defer src="simple-nav.js"></script><script defer src="global-search.js"></script><script defer src="supabase-config.js"></script><script type="module" src="supabase-auth.js"></script><script defer src="avp-core.js"></script><script src="avp-display-mode.js?v=1"></script>
 </body>
 </html>
