@@ -376,3 +376,33 @@ html.avp-home-minimal .avp-hero .avp-grid-bg,html.avp-home-minimal .avp-hero .av
  html.avp-home-minimal:not(.avp-force-desktop-mobile) .avp-reference-feature-card{min-height:92px!important}
  html.avp-home-minimal #home-books{grid-template-columns:1fr!important}
 }
+
+
+/* Targeted corrections from mobile QA screenshot: remove duplicate panel, restore readable footer, strengthen AVP wordmark. */
+html.avp-home-minimal .avp-home-brand{gap:11px!important}
+html.avp-home-minimal .avp-home-brand-mark{
+ width:44px!important;height:44px!important;border-radius:15px!important;
+ background:linear-gradient(145deg,#e8fff0 0%,#c6ead4 48%,#f8fff9 100%)!important;
+ border:1px solid #b7dfc5!important;color:#087447!important;font-size:14px!important;font-weight:950!important;
+ box-shadow:0 0 0 3px #dff3e6a8,0 5px 16px #08744720,inset 0 1px 0 #fff!important;
+ text-shadow:0 1px 0 #fff,0 0 10px #6fcf98a0!important;
+ animation:avpBrandGlow 3.2s ease-in-out infinite!important
+}
+html.avp-home-minimal .avp-home-brand-copy strong{
+ color:#163f2b!important;font-size:16px!important;font-weight:900!important;letter-spacing:-.045em!important;
+ text-shadow:0 1px 0 #fff!important
+}
+html.avp-home-minimal .avp-home-brand-copy small{color:#648170!important;font-size:10px!important;font-weight:650!important}
+@keyframes avpBrandGlow{
+ 0%,100%{box-shadow:0 0 0 3px #dff3e6a8,0 5px 16px #08744720,inset 0 1px 0 #fff}
+ 50%{box-shadow:0 0 0 5px #dff3e6c9,0 0 22px #32a86a48,inset 0 1px 0 #fff}
+}
+html.avp-home-minimal footer,html.avp-home-minimal .site-footer,html.avp-home-minimal .footer,html.avp-home-minimal body>footer{
+ color:#64756a!important;background:#f8fbf9!important
+}
+html.avp-home-minimal footer *,html.avp-home-minimal .site-footer *,html.avp-home-minimal .footer *,html.avp-home-minimal body>footer *{
+ color:#64756a!important;text-shadow:none!important;opacity:1!important
+}
+html.avp-home-minimal .avp-reference-next-steps{margin-top:20px!important}
+html.avp-home-minimal .avp-reference-steps{background:#fff!important}
+@media(prefers-reduced-motion:reduce){html.avp-home-minimal .avp-home-brand-mark{animation:none!important}}
