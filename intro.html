@@ -149,21 +149,40 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  function soundInit(){
   if(muted)return;
   try{
-   const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
-   if(!audioCtx){audioCtx=new AC();master=audioCtx.createGain();master.gain.value=.8;master.connect(audioCtx.destination);musicBed();}
+   const AC=window.AudioContext||window.webkitAudioContext;if(!AC){soundBtn.textContent='Âm thanh không hỗ trợ';return;}
+   if(!audioCtx){
+    audioCtx=new AC();
+    master=audioCtx.createGain();
+    master.gain.value=1;
+    const limiter=audioCtx.createDynamicsCompressor();
+    limiter.threshold.value=-10;limiter.knee.value=12;limiter.ratio.value=5;limiter.attack.value=.003;limiter.release.value=.22;
+    master.connect(limiter);limiter.connect(audioCtx.destination);
+   }
    if(audioCtx.state==='suspended')audioCtx.resume();
+  }catch(e){soundBtn.textContent='Không bật được âm thanh';}
+ }
+ function tone(freq,dur,type='sine',vol=.42,delay=0){
+  if(muted||!audioCtx||!master)return;
+  try{
+   const t=audioCtx.currentTime+delay,o=audioCtx.createOscillator(),g=audioCtx.createGain();
+   o.type=type;o.frequency.setValueAtTime(freq,t);
+   g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.001,vol),t+.025);g.gain.setValueAtTime(Math.max(.001,vol),t+Math.max(.04,dur*.55));g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+   o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.05);
   }catch(e){}
  }
- function tone(freq,dur,type='sine',vol=.22,delay=0){
-  if(muted||!audioCtx||!master)return;
-  const t=audioCtx.currentTime+delay,o=audioCtx.createOscillator(),g=audioCtx.createGain();
-  o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.001,vol),t+.035);g.gain.exponentialRampToValueAtTime(.0001,t+dur);o.connect(g);g.connect(master);o.start(t);o.stop(t+dur+.04);
+ function audibleIntro(){
+  soundInit();
+  if(!audioCtx||muted)return;
+  if(audioCtx.state==='suspended')audioCtx.resume();
+  // Audible, high-register opening chime plus a short cinematic low hit.
+  [440,554.37,659.25,880].forEach((n,i)=>tone(n,.65,'sawtooth',.22,i*.13));
+  tone(110,.8,'sine',.4,0);
  }
  function musicBed(){
   if(!audioCtx||muted)return;
-  const notes=[55,82.41,110,164.81];notes.forEach((n,i)=>tone(n,3.6,'sine',.07,i*.02));
-  const seq=[261.63,329.63,392,493.88,392,329.63];
-  seq.forEach((n,i)=>tone(n,1.7,'triangle',.065,i*.38));
+  const notes=[82.41,110,164.81];notes.forEach((n,i)=>tone(n,3.6,'sine',.12,i*.02));
+  const seq=[440,523.25,659.25,783.99,659.25,523.25];
+  seq.forEach((n,i)=>tone(n,1.1,'triangle',.11,i*.38));
   ambienceTimer=setTimeout(()=>{if(running&&!muted)musicBed()},6500);
  }
  function sweep(){
@@ -181,9 +200,9 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
   if(!audioCtx)soundInit();
   if(!audioCtx)return;
   const patterns=[[392,523.25,659.25],[330,440,554.37],[293.66,392,493.88],[349.23,440,587.33],[392,493.88,659.25],[330,415.3,523.25],[349.23,523.25,698.46],[392,523.25,783.99]];
-  (patterns[i]||patterns[0]).forEach((n,j)=>tone(n,.8,'triangle',.18,j*.095));
+  (patterns[i]||patterns[0]).forEach((n,j)=>tone(n,.8,'sawtooth',.26,j*.095));
   // Stronger synthesized cinematic hit and airy sweep for audible transitions.
-  tone(i===0?65.41:73.42,.75,'sine',.28,0);
+  tone(i===0?82.41:98,.75,'sine',.42,0);
   sweep();
   setTimeout(()=>{if(running&&!muted)musicBed()},700);
  }
@@ -208,7 +227,7 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  }
  function begin(){
   if(running)return;
-  running=true;elapsed=0;startedAt=performance.now();startScreen.classList.add('hidden');soundInit();showScene(0);raf=requestAnimationFrame(tick);
+  running=true;elapsed=0;startedAt=performance.now();startScreen.classList.add('hidden');audibleIntro();showScene(0);raf=requestAnimationFrame(tick);
  }
  function finish(){
   running=false;cancelAnimationFrame(raf);if(ambienceTimer)clearTimeout(ambienceTimer);
@@ -222,7 +241,7 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  soundBtn.addEventListener('click',()=>{
   muted=!muted;soundBtn.textContent=muted?'♪ Âm thanh: tắt':'♪ Âm thanh: bật';
   if(muted){if(master)master.gain.setTargetAtTime(.0001,audioCtx.currentTime,.05);if(ambienceTimer)clearTimeout(ambienceTimer);}
-  else{soundInit();if(master)master.gain.setTargetAtTime(.8,audioCtx.currentTime,.08);if(running)cue(Math.max(0,sceneIndex));}
+  else{soundInit();if(master)master.gain.setTargetAtTime(1,audioCtx.currentTime,.08);audibleIntro();if(running)cue(Math.max(0,sceneIndex));}
  });
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();skip();}if((e.key===' '||e.key==='Enter')&&!running&&!startScreen.classList.contains('hidden')){e.preventDefault();begin();}});
  document.addEventListener('visibilitychange',()=>{if(document.hidden&&audioCtx&&audioCtx.state==='running')audioCtx.suspend();else if(!document.hidden&&running&&audioCtx&&!muted)audioCtx.resume();});
