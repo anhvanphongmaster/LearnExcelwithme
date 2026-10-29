@@ -2,7 +2,6 @@
 (function(){
   "use strict";
   const PAGE=(location.pathname.split('/').pop()||'').toLowerCase();
-  const XPKEY='avp_xp_v2', QUIZKEY='avp_quiz_done_v1', PROGRESSKEY='avp_lesson_progress_v1';
 
   const pages={
     'excel.html':{id:'excel',order:1,stage:'Nền tảng',kind:'lesson',type:'Bài cốt lõi',mins:18,title:'Excel cơ bản: bắt đầu đúng từ bảng dữ liệu',summary:'Bài đầu tiên dành cho người mới. Bạn sẽ hiểu file Excel gồm những gì, nhập dữ liệu đúng kiểu và tự viết công thức đầu tiên trước khi học các công cụ phân tích.',outcomes:['Phân biệt Workbook, Worksheet, ô và vùng dữ liệu','Nhập số, ngày, phần trăm đúng kiểu dữ liệu','Viết công thức cơ bản và hiểu tham chiếu ô'],start:'#excel-lam-quen',startLabel:'Bắt đầu từ phần 1',aidTitle:'Nhớ 2 nguyên tắc trước khi học tiếp',understand:'Excel làm việc tốt nhất khi dữ liệu được tổ chức thành bảng rõ tiêu đề, mỗi cột chỉ chứa một loại thông tin và mỗi dòng là một bản ghi.',example:'Input 1.000 và NG 25 → NG Rate = 2,5%. Nếu đổi Input thành 1.250, công thức tham chiếu ô phải tự cập nhật NG Rate thành 2,0%.',mistakes:['Không gộp ô trong vùng dữ liệu nguồn.','Đừng nhập số/ngày dưới dạng text nếu còn phải tính toán.','Công thức luôn bắt đầu bằng dấu = và nên kiểm tra tham chiếu trước khi kéo xuống.'],quiz:{xp:20,q:'Workbook trong Excel là gì?',opts:['Một ô dữ liệu','Một file Excel có thể chứa nhiều sheet','Một công thức','Một biểu đồ'],ans:1}},
@@ -28,7 +27,6 @@
   const refined=document.body?.dataset.learningRefined==='1';
 
   function json(key,fallback){try{return JSON.parse(localStorage.getItem(key)||'null')??fallback}catch(e){return fallback}}
-  function isDone(){const p=json(PROGRESSKEY,{}),q=json(QUIZKEY,{});return !!(p[cfg.id]||q[PAGE])}
   function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
   function slug(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,64)||'noi-dung'}
   function getMain(){return document.querySelector('main')}
@@ -52,7 +50,6 @@
   }
 
   function introHtml(){
-    const status=isDone();
     const metaOrder=cfg.kind==='reference'?'Kho tra cứu':cfg.type;
     return `<div class="avp-learning-breadcrumb"><a href="learning-coach.html">Bài học hôm nay</a><i>›</i><span>${escapeHtml(cfg.stage)}</span><i>›</i><strong>${escapeHtml(cfg.title)}</strong></div>
     <section class="avp-learning-intro">
@@ -96,7 +93,7 @@
 
   function makeSidebar(items){
     const aside=document.createElement('aside');aside.className='avp-learning-sidebar';
-    aside.innerHTML=`<div class="avp-learning-sidebar-head"><strong>Nội dung bài</strong><button class="avp-learning-toc-toggle" type="button" aria-expanded="false">Mở mục lục</button></div><nav class="avp-learning-toc">${items.map(x=>`<a href="#${escapeHtml(x.id)}">${escapeHtml(x.text)}</a>`).join('')}<a href="#hieu-nhanh">Hiểu nhanh & lỗi thường gặp</a>${cfg.quiz?'<a href="#kiem-tra-cuoi-bai">Kiểm tra cuối bài</a>':''}</nav><div class="avp-learning-how"><strong>Nếu chưa biết bắt đầu đâu:</strong><ol><li>Đọc mục tiêu ở đầu trang.</li><li>Đi theo mục lục từ trên xuống.</li><li>Làm kiểm tra ở cuối bài.</li></ol></div>`;
+    aside.innerHTML=`<div class="avp-learning-sidebar-head"><strong>Nội dung bài</strong><button class="avp-learning-toc-toggle" type="button" aria-expanded="false">Mở mục lục</button></div><nav class="avp-learning-toc">${items.map(x=>`<a href="#${escapeHtml(x.id)}">${escapeHtml(x.text)}</a>`).join('')}<a href="#hieu-nhanh">Hiểu nhanh & lỗi thường gặp</a></nav><div class="avp-learning-how"><strong>Nếu chưa biết bắt đầu đâu:</strong><ol><li>Đọc mục tiêu ở đầu trang.</li><li>Đi theo mục lục từ trên xuống.</li><li>Thực hành theo hướng dẫn và tự kiểm tra kết quả.</li></ol></div>`;
     const btn=aside.querySelector('.avp-learning-toc-toggle');btn.addEventListener('click',()=>{const open=aside.classList.toggle('open');btn.setAttribute('aria-expanded',open?'true':'false');btn.textContent=open?'Đóng mục lục':'Mở mục lục'});
     aside.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{if(innerWidth<=920){aside.classList.remove('open');btn.setAttribute('aria-expanded','false');btn.textContent='Mở mục lục'}}));
     if(refined){
@@ -112,34 +109,10 @@
     return aside;
   }
 
-  function buildQuiz(){
-    if(!cfg.quiz)return null;
-    const q=cfg.quiz,sec=document.createElement('section');sec.className='avp-learning-checkpoint';sec.id='kiem-tra-cuoi-bai';
-    const done=isDone();
-    sec.innerHTML=`<div class="avp-learning-checkpoint-head"><div><span>KIỂM TRA CUỐI BÀI</span><h2>Kiểm tra một ý quan trọng</h2><p>Trả lời đúng để ghi nhận hoàn thành và nhận +${q.xp} XP nếu chưa nhận trước đó.</p></div><div class="avp-learning-status-pill ${done?'done':''}" data-lx-check-status>${done?'✓ Đã hoàn thành':'Chưa hoàn thành'}</div></div><div class="avp-quiz-question">${escapeHtml(q.q)}</div><div class="avp-quiz-options">${q.opts.map((x,i)=>`<button type="button" class="avp-quiz-option" data-i="${i}">${escapeHtml(x)}</button>`).join('')}</div><div class="avp-quiz-actions"><button type="button" class="avp-quiz-submit">Kiểm tra đáp án</button><span class="avp-quiz-result">${done?'Bài này đã được ghi nhận trước đó.':''}</span></div><div class="avp-learning-manual"><span>Nếu bạn đã học/thực hành nhưng chưa muốn làm quiz, vẫn có thể ghi nhận tiến độ thủ công; thao tác này không cộng XP.</span><button type="button" data-lx-manual class="${done?'is-done':''}">${done?'✓ Đã học':'Đánh dấu đã học'}</button></div>`;
-    let selected=null;const result=sec.querySelector('.avp-quiz-result');
-    sec.querySelectorAll('.avp-quiz-option').forEach(b=>b.addEventListener('click',()=>{selected=+b.dataset.i;sec.querySelectorAll('.avp-quiz-option').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}));
-    sec.querySelector('.avp-quiz-submit').addEventListener('click',()=>{
-      if(selected===null){result.textContent='Chọn một đáp án trước.';result.className='avp-quiz-result bad';return}
-      sec.querySelectorAll('.avp-quiz-option').forEach((b,i)=>{b.classList.remove('correct','wrong');if(i===q.ans)b.classList.add('correct');else if(i===selected)b.classList.add('wrong')});
-      const passed=selected===q.ans;try{window.avpAnalytics?.track('quiz_attempt',{page:PAGE,metadata:{passed,score:passed?1:0,total:1}})}catch(e){}
-      if(!passed){result.textContent='Chưa đúng. Xem lại phần liên quan rồi thử lại.';result.className='avp-quiz-result bad';return}
-      const doneMap=json(QUIZKEY,{});let fresh=false;if(!doneMap[PAGE]){doneMap[PAGE]=true;localStorage.setItem(QUIZKEY,JSON.stringify(doneMap));localStorage.setItem(XPKEY,String((+localStorage.getItem(XPKEY)||0)+q.xp));fresh=true;try{window.avpAnalytics?.track('lesson_complete',{page:PAGE,metadata:{xp:q.xp}})}catch(e){}}
-      result.textContent=fresh?`Chính xác. Bài học đã hoàn thành và +${q.xp} XP.`:'Chính xác. Bài này đã được ghi nhận trước đó.';result.className='avp-quiz-result ok';
-      syncUiDone();window.dispatchEvent(new CustomEvent('avp:course-xp',{detail:{xp:fresh?q.xp:0,file:PAGE}}));window.dispatchEvent(new CustomEvent('avp:progress-changed'));
-    });
-    sec.querySelector('[data-lx-manual]').addEventListener('click',()=>{const p=json(PROGRESSKEY,{});p[cfg.id]=!p[cfg.id];localStorage.setItem(PROGRESSKEY,JSON.stringify(p));syncUiDone();window.dispatchEvent(new CustomEvent('avp:progress-changed'))});
-    return sec;
-  }
-
-  function syncUiDone(){
-    const d=isDone();document.querySelectorAll('[data-lx-status]').forEach(x=>{x.textContent=d?'✓ Đã ghi nhận':'Chưa hoàn thành';x.classList.toggle('done',d)});document.querySelectorAll('[data-lx-check-status]').forEach(x=>{x.textContent=d?'✓ Đã hoàn thành':'Chưa hoàn thành';x.classList.toggle('done',d)});document.querySelectorAll('[data-lx-manual]').forEach(x=>{x.textContent=d?'✓ Đã học':'Đánh dấu đã học';x.classList.toggle('is-done',d)})
-  }
-
   function buildNav(){
     const nav=document.createElement('nav');nav.className='avp-learning-nav';nav.setAttribute('aria-label','Điều hướng nội dung học');
     if(refined){
-      const shortNames={'excel.html':'Excel cơ bản','phimtatexcel.html':'Phím tắt Excel','congthucexcel.html':'Công thức Excel','filtersort.html':'Filter & Sort','pivottable.html':'PivotTable','bieudopareto.html':'Biểu đồ Pareto','baocaoexcel.html':'Báo cáo Excel','excel-nang-cao.html':'Excel nâng cao','power-query-course.html':'Power Query','power-pivot-dax.html':'Power Pivot & DAX','dashboard-dong.html':'Dashboard động','practice-lab.html':'Practice Lab','vba-macro.html':'VBA / Macro','solver-whatif.html':'What-If & Solver','dashboard.html':'Tiến độ học tập'};
+      const shortNames={'excel.html':'Excel cơ bản','phimtatexcel.html':'Phím tắt Excel','congthucexcel.html':'Công thức Excel','filtersort.html':'Filter & Sort','pivottable.html':'PivotTable','bieudopareto.html':'Biểu đồ Pareto','baocaoexcel.html':'Báo cáo Excel','excel-nang-cao.html':'Excel nâng cao','power-query-course.html':'Power Query','power-pivot-dax.html':'Power Pivot & DAX','dashboard-dong.html':'Dashboard động','practice-lab.html':'Practice Lab','vba-macro.html':'VBA / Macro','solver-whatif.html':'What-If & Solver','dashboard.html':'Bài học hôm nay'};
       const link=(file,label,cls='side')=>`<a class="${cls}" href="${file}"><small>${label}</small><strong>${escapeHtml(shortNames[file]||'Lộ trình học')}</strong></a>`;
       const map=link('learning-coach.html','DANH SÁCH BÀI','side map');
       if(cfg.kind==='reference'){
@@ -207,7 +180,7 @@
     });
     const aid=document.createElement('div');aid.innerHTML=aidHtml();content.appendChild(aid.firstElementChild);
     /* Legacy course XP/progress checkpoint removed. XP now comes only from today's task or practice grader. */
-    content.appendChild(buildNav());fixStart(main);setupObservers(sidebar);syncUiDone();
+    content.appendChild(buildNav());fixStart(main);setupObservers(sidebar);
     if(refined){
       // Keep the summary before the existing Power Query quiz, so the quiz ends the lesson.
       const nativeQuiz=main.querySelector('.pq-quiz');
@@ -219,9 +192,6 @@
       });
       const updateOffset=()=>{const top=document.querySelector('.top-simple-nav');const height=top?.getBoundingClientRect().height||64;host.style.setProperty('--lx-top-offset',`${Math.ceil(height)+16}px`)};
       updateOffset();if('ResizeObserver'in window){const resize=new ResizeObserver(updateOffset);const top=document.querySelector('.top-simple-nav');if(top)resize.observe(top)}
-      window.addEventListener('storage',e=>{if([XPKEY,QUIZKEY,PROGRESSKEY].includes(e.key)||e.key===null)syncUiDone()});
-      window.addEventListener('avp:progress-changed',syncUiDone);
-      window.addEventListener('avp:course-xp',syncUiDone);
       // Native initial fragment navigation can precede headings generated by this script.
       if(location.hash)requestAnimationFrame(()=>{try{const target=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(target&&host.contains(target))target.scrollIntoView({block:'start'})}catch(_){}});
     }
