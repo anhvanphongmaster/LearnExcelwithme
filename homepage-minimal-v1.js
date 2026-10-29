@@ -152,6 +152,53 @@
       mainCta.innerHTML='<div class="avp-reference-ctas"><a class="avp-reference-primary" href="skill-map.html"><span class="avp-reference-cta-icon">▤</span><span><strong>Bắt đầu học ngay</strong><small>Dành cho người mới</small></span><b>→</b></a><a class="avp-reference-secondary" href="#home-ai-intro"><span class="avp-reference-play">▶</span><span><strong>Xem giới thiệu</strong><small>1 phút hiểu về AVP</small></span></a></div>';
     }
 
+
+    /* Rebuild the reference homepage sections from existing routes; preserve underlying app/auth. */
+    var oldEcosystem=document.getElementById('avp-home-ecosystem');
+    if(oldEcosystem)oldEcosystem.remove();
+    var hero=document.querySelector('.avp-hero');
+    if(hero){
+      var copy=hero.querySelector('.avp-copy');
+      var dashboard=hero.querySelector('.avp-demo-dashboard');
+      hero.classList.add('avp-reference-hero');
+      if(copy){
+        copy.innerHTML='<div class="avp-reference-eyebrow">●　EXCEL　·　DỮ LIỆU　·　BÁO CÁO　·　TỰ ĐỘNG HÓA　·　AI</div><h1 class="avp-reference-title">Học <span>Excel</span><br>để làm được việc.</h1><p class="avp-reference-lead">Từ cơ bản đến nâng cao, kèm ví dụ thực tế, bài tập và file thực hành.<br>Giúp bạn xử lý công việc nhanh hơn, chính xác hơn và chuyên nghiệp hơn.</p><div class="avp-reference-ctas"><a class="avp-reference-primary" href="skill-map.html"><span class="avp-reference-cta-icon">▤</span><span><strong>Bắt đầu học ngay</strong><small>Dành cho người mới</small></span></a><a class="avp-reference-secondary" href="#avp-reference-featured"><span class="avp-reference-play">▶</span><span><strong>Xem giới thiệu</strong><small>1 phút hiểu về AVP</small></span></a></div>';
+      }
+      if(dashboard){
+        dashboard.className='avp-reference-art';
+        dashboard.removeAttribute('id');
+        dashboard.innerHTML='<div class="avp-art-label">Power Query</div><div class="avp-art-sheet"><span>AVP · DATA</span><div class="avp-art-bars"><i></i><i></i><i></i><i></i><i></i></div></div><div class="avp-art-float">✓　Dữ liệu<br>✓　Phân tích<br>✓　Báo cáo<br>✓　Tự động hóa</div><div class="avp-art-person">👨🏻‍💻</div><div class="avp-art-laptop">▦<b>X</b></div><div class="avp-art-books">Excel　 ·　 Power Query　 ·　 Dashboard</div>';
+      }
+    }
+    var feature=document.getElementById('avp-reference-featured');
+    if(!feature){
+      feature=el('section','avp-reference-featured');
+      feature.id='avp-reference-featured';
+      feature.innerHTML='<div class="avp-reference-section-head"><div><h2>Khám phá ngay</h2><p>Chọn khu vực bạn quan tâm để bắt đầu hành trình.</p></div><a href="tools-center.html">Khám phá tất cả　↗</a></div><div class="avp-reference-feature-grid"></div>';
+      var cards=[
+        ['skill-map.html','↪','Lộ trình học','12 chương được thiết kế theo đúng công việc thực tế','green'],
+        ['excel-handbook.html','ƒx','Thư viện hàm Excel','Tra cứu nhanh công dụng, ví dụ và cách dùng','blue'],
+        ['practice-video.html','▤','File thực hành','Tải file theo từng chương, ví dụ và bài học','amber'],
+        ['ai.html','✳','Công cụ hỗ trợ','Template, tiện ích và công cụ hữu ích','violet'],
+        ['tools-center.html','♟','Cộng đồng','Hỏi đáp, chia sẻ kinh nghiệm và thảo luận','rose']
+      ];
+      var fg=feature.querySelector('.avp-reference-feature-grid');
+      cards.forEach(function(c){var a=el('a','avp-reference-feature-card tone-'+c[4]);a.href=c[0];a.innerHTML='<span class="avp-reference-feature-icon">'+c[1]+'</span><span class="avp-reference-feature-copy"><strong>'+c[2]+'</strong><small>'+c[3]+'</small></span><b>→</b>';fg.appendChild(a)});
+      hero.insertAdjacentElement('afterend',feature);
+    }
+    var pathSection=document.getElementById('ky-nang-excel');
+    if(pathSection){pathSection.hidden=true;}
+    var aiIntro=document.getElementById('home-ai-intro');
+    if(aiIntro)aiIntro.hidden=true;
+    var books=document.getElementById('home-books');
+    if(books){books.classList.add('avp-reference-books');}
+    var extra=document.querySelector('.avp-reference-next-steps');
+    if(!extra){
+      extra=el('section','avp-reference-next-steps');
+      extra.innerHTML='<div class="avp-reference-steps"><span class="avp-reference-kicker">DÀNH CHO NGƯỜI MỚI</span><h2>Bắt đầu đúng chỗ</h2><p>Chọn luồng học, học bài rồi thực hành lại bằng file.</p><div class="avp-reference-step-grid"><a href="skill-map.html"><b>01</b><strong>Chọn lộ trình</strong><small>Chọn mục tiêu phù hợp.</small></a><a href="excel.html"><b>02</b><strong>Học bài</strong><small>Nắm nội dung theo lộ trình.</small></a><a href="practice-video.html"><b>03</b><strong>Thực hành</strong><small>Làm lại bằng file và case.</small></a></div><a class="avp-reference-continue" href="excel.html">Tiếp tục học　→</a><p class="avp-reference-step-foot">4 luồng học · 5 luồng thực hành.</p></div><div class="avp-reference-expand"><span class="avp-reference-kicker">BỔ TRỢ · CÔNG CỤ</span><h2>Mở rộng kỹ năng</h2><p>Công cụ và khu nâng cao để học sâu hơn khi cần.</p><div class="avp-reference-pills"><a href="excel.html">Excel cơ bản ↗</a><a href="congthucexcel.html">Công thức và hàm ↗</a><a href="phimtatexcel.html">Phím tắt ↗</a><a href="power-query-course.html">Power Query ↗</a><a href="pivottable.html">PivotTable ↗</a></div></div>';
+      feature.insertAdjacentElement('afterend',extra);
+    }
+
     /* Keep the existing curriculum routes available, but remove the crowded old lesson grid from the homepage. */
     var oldGrid=pathSection.querySelector('.home-path-grid');
     if(oldGrid)oldGrid.hidden=true;
