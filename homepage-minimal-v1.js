@@ -55,9 +55,7 @@ function setup(){
  var lg=lessons.querySelector('.avp-canonical-lesson-grid');
  lessonData.forEach(function(d){lg.appendChild(link(d[0],'avp-canonical-lesson','<div class="avp-canonical-thumb '+d[4]+'"><small>AVP · EXCEL</small><strong>'+d[1]+'</strong><span class="avp-thumb-sheet"><i></i><i></i><i></i><i></i><i></i></span><b>'+d[3]+'</b></div><div class="avp-canonical-lesson-copy"><strong>'+d[1]+'</strong><small>'+d[2]+'</small></div>'));});
  discover.insertAdjacentElement('afterend',lessons);
- var start=el('section','avp-canonical-start');
- start.innerHTML='<div class="avp-canonical-start-box"><div class="avp-start-head"><small>DÀNH CHO NGƯỜI MỚI</small><h2>Bắt đầu đúng chỗ</h2><p>Chọn luồng học, học bài rồi thực hành lại bằng file.</p></div><div class="avp-start-steps"><a href="skill-map.html"><b>01</b><strong>Chọn lộ trình</strong><small>Chọn mục tiêu phù hợp.</small></a><a href="excel.html"><b>02</b><strong>Học bài</strong><small>Nắm nội dung theo lộ trình.</small></a><a href="practice-video.html"><b>03</b><strong>Thực hành</strong><small>Làm lại bằng file và case.</small></a></div><a class="avp-start-continue" href="skill-map.html">Bắt đầu học　→</a></div><div class="avp-canonical-tools"><small>BỔ TRỢ · CÔNG CỤ</small><h2>Mở rộng kỹ năng</h2><p>Công cụ và khu nâng cao để học sâu hơn khi cần.</p><div><a href="excel.html">Excel cơ bản ↗</a><a href="congthucexcel.html">Công thức và hàm ↗</a><a href="phimtatexcel.html">Phím tắt ↗</a><a href="power-query-course.html">Power Query ↗</a><a href="pivottable.html">PivotTable ↗</a></div></div>';
- lessons.insertAdjacentElement('afterend',start);
+ /* Removed by request: duplicate onboarding and tools blocks are deleted from the homepage composition. */
  var books=document.getElementById('home-books');
  if(books){books.classList.add('avp-canonical-books');var heading=books.querySelector('.home-reference-heading');if(heading)heading.textContent='Tài liệu tham khảo';}
 }
