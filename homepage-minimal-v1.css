@@ -419,3 +419,9 @@ html.avp-home-minimal .avp-reference-hero .avp-reference-ctas{display:flex!impor
 @media(max-width:650px){
  html.avp-home-minimal.avp-force-desktop-mobile .avp-reference-hero .avp-hero-inner{grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr)!important}
 }
+
+
+/* Ensure the main hero CTA remains visible after duplicate-panel cleanup. */
+html.avp-home-minimal .avp-reference-hero .avp-reference-ctas .avp-reference-primary{
+ display:flex!important;visibility:visible!important;opacity:1!important
+}
