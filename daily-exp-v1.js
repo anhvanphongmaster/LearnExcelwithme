@@ -125,7 +125,7 @@
         ? '<div class="lc-feedback good"><strong>Đúng.</strong> ' + esc(review) + ' Nhận ' + got.added + ' điểm.</div>'
         : '<div class="lc-feedback bad"><strong>Chưa đúng · 0 điểm.</strong> Cần kiểm tra lại: ' + esc(review) + '</div>';
       const actions = wrap.querySelector('.dx-modal-actions');
-      actions.innerHTML = '<button type="button" class="lc-btn solid" data-dx-back>Quay lại 5 bài</button>';
+      actions.innerHTML = '<button type="button" class="lc-btn solid" data-dx-back>Quay lại bài hôm nay</button>';
       actions.querySelector('[data-dx-back]').addEventListener('click', () => {
         closeGate();
         if (window.AVPDailyExpandUI && window.AVPDailyExpandUI.renderToday) window.AVPDailyExpandUI.renderToday();
