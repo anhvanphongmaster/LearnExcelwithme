@@ -2,8 +2,8 @@
   'use strict';
   const C = window.AVPLearningCoach;
   if (!C) return;
-  const KEY = 'avp_coach_exp_v2';
-  const RULES = { lesson: 10, quizCorrect: 5, quizWrong: 0, selfPer10: 1 };
+  const KEY = 'avp_daily_xp_v3';
+  const RULES = { lesson: 10, quizCorrect: 0, quizWrong: 0, selfPer10: 0 };
   const esc = v => String(v ?? '').replace(/[&<>"']/g, ch => ({'&':'&','<':'<','>':'>','"':'"',"'":'&#39;'}[ch]));
   function vnDate() {
     if (window.AVPDailyStart && window.AVPDailyStart.vnDate) return window.AVPDailyStart.vnDate();
@@ -11,8 +11,9 @@
     catch (_) { return C.localDate ? C.localDate() : new Date().toISOString().slice(0, 10); }
   }
   function load() {
-    try { return JSON.parse(localStorage.getItem(KEY) || 'null') || { total: 0, days: {} }; }
-    catch (_) { return { total: 0, days: {} }; }
+    try { const v=JSON.parse(localStorage.getItem(KEY)||'null'); if(v&&v.version===3)return v; }
+    catch (_) {}
+    return { version: 3, total: 0, days: {} };
   }
   function save(state) {
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (_) {}
@@ -91,7 +92,7 @@
     wrap.setAttribute('role', 'dialog');
     wrap.setAttribute('aria-modal', 'true');
     if (!q) {
-      wrap.innerHTML = '<div class="dx-modal"><div class="dx-modal-head">Chưa có câu xác nhận</div><div class="dx-modal-body"><button type="button" class="lc-btn solid" data-dx-back>Quay lại 5 bài</button></div></div>';
+      wrap.innerHTML = '<div class="dx-modal"><div class="dx-modal-head">Chưa có câu xác nhận</div><div class="dx-modal-body"><button type="button" class="lc-btn solid" data-dx-back>Quay lại bài hôm nay</button></div></div>';
       document.body.appendChild(wrap);
       wrap.querySelector('[data-dx-back]').onclick = closeGate;
       return;
@@ -152,7 +153,7 @@
       const hero = host.querySelector('.dx-hero-body div') || host.querySelector('.dx-hero') || host;
       hero.appendChild(hud);
     }
-    hud.textContent = 'Hôm nay ' + snap.today + ' điểm (bài ' + snap.lessonPts + ' · hỏi nhanh ' + snap.quiz + '). Tổng ' + snap.total + '. Đúng mới được điểm, sai = 0.';
+    hud.textContent = 'XP hôm nay: ' + snap.today + ' · Tổng XP: ' + snap.total + '. Chỉ cộng 10 XP khi hoàn thành đúng bài hôm nay.';
     lockButtons();
   }
   function bind() {
