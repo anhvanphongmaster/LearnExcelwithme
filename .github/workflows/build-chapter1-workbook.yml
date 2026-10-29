@@ -25,4 +25,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add Chuong_1_Thuc_hanh_Nhap_mon_Excel.xlsx
-          git diff --cached --quiet || (git commit -m "Build Chapter 1 practical workbook" && git push)
+          if ! git diff --cached --quiet; then
+            git commit -m "Build Chapter 1 practical workbook"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
