@@ -23,21 +23,15 @@
 .lc-section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:28px 0 14px}
 .lc-section-head h2{margin:0;font-size:23px;letter-spacing:-.03em}
 .lc-section-head p{margin:0;color:#74847a;font-size:12px}
-.lc-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;padding:16px;border:1px solid #e0ebe4;border-radius:22px;background:#fff;box-shadow:0 8px 24px rgba(21,68,44,.04)}
-.lc-chapter{display:flex;flex-direction:column;align-items:center;gap:9px;min-width:0;min-height:128px;padding:12px 5px;border:1px solid transparent;border-radius:16px;background:transparent;color:#173b29;text-decoration:none;text-align:center;transition:background .16s,border-color .16s,transform .16s}
-.lc-chapter:hover{background:#f3f9f5;border-color:#dcebe1;transform:translateY(-2px)}
-.lc-icon{display:grid;place-items:center;width:54px;height:52px;border-radius:15px;background:linear-gradient(145deg,#dff4e7,#a9dfbf);color:#08794f;font-size:23px;font-weight:900;box-shadow:0 3px 7px rgba(22,75,47,.11),inset 0 1px 0 rgba(255,255,255,.8)}
-.lc-chapter:nth-child(6n+2) .lc-icon{background:linear-gradient(145deg,#e2f0ff,#b6d7f6);color:#245f96}
-.lc-chapter:nth-child(6n+3) .lc-icon{background:linear-gradient(145deg,#f0eaff,#d3c4fa);color:#6548a2}
-.lc-chapter:nth-child(6n+4) .lc-icon{background:linear-gradient(145deg,#fff0d8,#f4d49e);color:#8b5b10}
-.lc-chapter:nth-child(6n+5) .lc-icon{background:linear-gradient(145deg,#ffe8e8,#f4bdbd);color:#a33b3b}
-.lc-chapter:nth-child(6n) .lc-icon{background:linear-gradient(145deg,#e5f0f2,#b9dadd);color:#23666b}
-.lc-num{font-size:9px;font-weight:900;letter-spacing:.12em;color:#729581}
-.lc-chapter strong{font-size:12px;line-height:1.35}
-.lc-chapter small{font-size:10px;color:#718177;line-height:1.35}
-.lc-note{margin:12px 2px 0;color:#7b8a81;font-size:11px;line-height:1.6}
-@media(max-width:850px){.lc-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media(max-width:560px){.lc-wrap{width:calc(100% - 24px);margin-top:18px}.lc-hero{padding:22px 18px;border-radius:20px}.lc-section-head{display:block}.lc-section-head p{margin-top:6px}.lc-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;padding:9px;border-radius:17px}.lc-chapter{min-height:108px;padding:9px 2px;gap:7px}.lc-icon{width:43px;height:42px;border-radius:12px;font-size:19px}.lc-chapter strong{font-size:10px;letter-spacing:-.02em}.lc-chapter small{font-size:9px}}
+.lc-grid{display:block;overflow:hidden;border:1px solid #e1e1e1;border-radius:24px;background:#fff;box-shadow:0 8px 24px rgba(21,68,44,.04)}
+.lc-chapter{display:grid;grid-template-columns:64px minmax(0,1fr);align-items:start;gap:16px;min-width:0;padding:24px 20px;border-bottom:1px solid #e8e8e8;color:#171717}
+.lc-chapter:last-child{border-bottom:0}
+.lc-num{display:grid;place-items:center;width:64px;height:64px;border-radius:15px;background:#f1f1f1;color:#171717;font-size:22px;font-weight:800;letter-spacing:-.03em}
+.lc-copy{min-width:0}
+.lc-chapter strong{display:block;margin:2px 0 8px;font-size:22px;line-height:1.25;letter-spacing:-.025em;color:#171717}
+.lc-chapter p{margin:0;color:#686868;font-size:18px;line-height:1.48}
+.lc-note{margin:16px 2px 0;color:#7b8a81;font-size:12px;line-height:1.6}
+@media(max-width:560px){.lc-wrap{width:calc(100% - 24px);margin-top:18px}.lc-hero{padding:22px 18px;border-radius:20px}.lc-section-head{display:block}.lc-section-head p{margin-top:6px}.lc-grid{border-radius:20px}.lc-chapter{grid-template-columns:64px minmax(0,1fr);gap:14px;padding:24px 16px;min-height:0}.lc-num{width:64px;height:64px;font-size:21px;border-radius:14px}.lc-chapter strong{font-size:21px}.lc-chapter p{font-size:18px;line-height:1.48}}
 </style>
 </head>
 <body>
@@ -49,21 +43,19 @@
 <a class="lc-back" href="index.html">← Trang chủ</a>
 <header class="lc-hero"><span class="lc-kicker">LEARN EXCEL · LEARNING PATH</span><h1>Lộ trình học theo 12 chương</h1><p>Đi từ nền tảng Excel đến quy trình xử lý file thực tế. Chọn một chương để mở nội dung, ví dụ và phần thực hành của chương đó.</p><div class="lc-meta"><span>12 chương</span><span>Từ cơ bản đến thực chiến</span><span>Học theo nhu cầu, không cần mở thêm luồng</span></div></header>
 <div class="lc-section-head"><h2>Chọn chương để bắt đầu</h2><p>Chạm vào biểu tượng như mở ứng dụng trên iPhone</p></div>
-<section class="lc-grid" aria-label="12 chương học">
-<a class="lc-chapter" href="excel-handbook.html#chap-01"><span class="lc-icon">▤</span><span class="lc-num">CHƯƠNG 01</span><strong>Bắt đầu đúng với Excel</strong><small>Workbook, sheet và ô</small></a>
-<a class="lc-chapter" href="excel-handbook.html#chap-02"><span class="lc-icon">⌨</span><span class="lc-num">CHƯƠNG 02</span><strong>Nhập dữ liệu đúng</strong><small>Kiểu dữ liệu và cấu trúc</small></a>
-<a class="lc-chapter" href="excel-handbook.html#chap-03"><span class="lc-icon">ƒx</span><span class="lc-num">CHƯƠNG 03</span><strong>Công thức từ phép tính đến IF</strong><small>Logic tính toán</small></a>
-<a class="lc-chapter" href="excel-handbook.html#chap-04"><span class="lc-icon">⌕</span><span class="lc-num">CHƯƠNG 04</span><strong>Tra cứu với XLOOKUP</strong><small>Liên kết bảng dữ liệu</small></a>
-<a class="lc-chapter" href="excel-handbook.html#chap-05"><span class="lc-icon">☷</span><span class="lc-num">CHƯƠNG 05</span><strong>Filter và Sort</strong><small>Lọc và sắp xếp</small></a>
-<a class="lc-chapter" href="excel-handbook.html#chap-06"><span class="lc-icon">↻</span><span class="lc-num">CHƯƠNG 06</span><strong>Làm sạch dữ liệu</strong><small>Chuẩn hóa dữ liệu thực tế</small></a>
-<a class="lc-chapter" href="excel-handbook.html#chap-07"><span class="lc-icon">▥</span><span class="lc-num">CHƯƠNG 07</span><strong>PivotTable để tổng hợp</strong><small>Tóm tắt dữ liệu</small></a>
-<a class="lc-chapter" href="excel-handbook.html#chap-08"><span class="lc-icon">⚙</span><span class="lc-num">CHƯƠNG 08</span><strong>Power Query</strong><small>Quy trình lặp lại</small></a>
-<a class="lc-chapter" href="excel-handbook.html#chap-09"><span class="lc-icon">▧</span><span class="lc-num">CHƯƠNG 09</span><strong>Dashboard có mục tiêu</strong><small>KPI và trực quan hóa</small></a>
-<a class="lc-chapter" href="excel-handbook.html#chap-10"><span class="lc-icon">⌕</span><span class="lc-num">CHƯƠNG 10</span><strong>Các lỗi Excel thường gặp</strong><small>Kiểm tra và sửa lỗi</small></a>
-<a class="lc-chapter" href="excel-handbook.html#chap-11"><span class="lc-icon">▣</span><span class="lc-num">CHƯƠNG 11</span><strong>Quy trình xử lý file công việc</strong><small>Từ đầu vào đến bàn giao</small></a>
-<a class="lc-chapter" href="excel-handbook.html#chap-12"><span class="lc-icon">✓</span><span class="lc-num">CHƯƠNG 12</span><strong>Checklist Excel A–Z</strong><small>Rà soát trước khi bàn giao</small></a>
-</section>
-<p class="lc-note">Các chương đang mở nội dung trong cẩm nang Excel từ A–Z. Có thể bổ sung bài tập, video và workbook cho từng chương mà không phải tạo thêm luồng học mới.</p>
+<section class="lc-grid" aria-label="12 chương học"><article class="lc-chapter"><span class="lc-num">01</span><div class="lc-copy"><strong>Nhập môn Excel</strong><p>Giao diện, workbook, worksheet, ô, vùng dữ liệu, kiểu dữ liệu, định dạng và quản lý file.</p></div></article>
+<article class="lc-chapter"><span class="lc-num">02</span><div class="lc-copy"><strong>Thao tác và phím tắt</strong><p>Di chuyển, chọn vùng, nhập liệu, chỉnh sửa, định dạng, quản lý bảng và thao tác nhanh theo từng tình huống.</p></div></article>
+<article class="lc-chapter"><span class="lc-num">03</span><div class="lc-copy"><strong>Nền tảng công thức</strong><p>Toán tử, thứ tự tính, tham chiếu tương đối/tuyệt đối/hỗn hợp, sao chép công thức và xử lý lỗi.</p></div></article>
+<article class="lc-chapter"><span class="lc-num">04</span><div class="lc-copy"><strong>Hàm Excel từ cơ bản đến nâng cao</strong><p>Hàm tính toán, thống kê, logic, điều kiện, tra cứu, văn bản, ngày giờ, mảng động, hàm mới và công thức lồng nhau.</p></div></article>
+<article class="lc-chapter"><span class="lc-num">05</span><div class="lc-copy"><strong>Công cụ xử lý dữ liệu trên Ribbon</strong><p>Sort, Filter, Find & Replace, Remove Duplicates, Text to Columns, Flash Fill, Data Validation, Conditional Formatting và các công cụ liên quan.</p></div></article>
+<article class="lc-chapter"><span class="lc-num">06</span><div class="lc-copy"><strong>Tổ chức và kiểm soát dữ liệu</strong><p>Excel Table, quy tắc dữ liệu, khóa định danh, dữ liệu trùng, dữ liệu thiếu, chuẩn hóa và kiểm tra tính nhất quán.</p></div></article>
+<article class="lc-chapter"><span class="lc-num">07</span><div class="lc-copy"><strong>PivotTable và PivotChart</strong><p>Tạo bảng tổng hợp, bố trí trường, tính toán, Group, lọc, Refresh, Slicer, Timeline và các lỗi thường gặp.</p></div></article>
+<article class="lc-chapter"><span class="lc-num">08</span><div class="lc-copy"><strong>Biểu đồ và Dashboard</strong><p>Từng loại biểu đồ, lựa chọn biểu đồ theo mục đích, định dạng, KPI, biểu đồ kết hợp, tương tác và thiết kế báo cáo.</p></div></article>
+<article class="lc-chapter"><span class="lc-num">09</span><div class="lc-copy"><strong>Power Query</strong><p>Nhập nguồn, làm sạch, biến đổi, Merge, Append, Unpivot, Combine Files, M Code, Refresh và tối ưu hiệu năng.</p></div></article>
+<article class="lc-chapter"><span class="lc-num">10</span><div class="lc-copy"><strong>Phân tích dữ liệu</strong><p>Xác định câu hỏi, xây dựng chỉ số, so sánh, xu hướng, chênh lệch, Pareto, tìm nguyên nhân và diễn giải kết quả.</p></div></article>
+<article class="lc-chapter"><span class="lc-num">11</span><div class="lc-copy"><strong>Tự động hóa Excel</strong><p>Dynamic Arrays, LET, LAMBDA, VBA/Macro và lựa chọn phương pháp tự động hóa phù hợp với phiên bản Excel.</p></div></article>
+<article class="lc-chapter"><span class="lc-num">12</span><div class="lc-copy"><strong>Quy trình báo cáo doanh nghiệp</strong><p>Tiếp nhận yêu cầu, xử lý nguồn, đối soát, xây dựng báo cáo, kiểm thử, bàn giao và thiết kế quy trình cập nhật định kỳ.</p></div></article></section>
+<p class="lc-note">Đây là khung chương trình đã chốt. Hiện mới dựng cấu trúc và phạm vi từng chương; nội dung bài học, ví dụ, bài tập và tài liệu sẽ được triển khai sau theo từng chương.</p>
 </main>
 <script defer src="simple-nav.js"></script><script defer src="global-search.js"></script><script defer src="supabase-config.js"></script><script type="module" src="supabase-auth.js"></script><script defer src="avp-core.js"></script><script src="avp-display-mode.js?v=1"></script>
 </body></html>
