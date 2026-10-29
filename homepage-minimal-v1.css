@@ -187,3 +187,31 @@ html.avp-home-minimal .avp-hero [class*="entry-card"]{
    font-size:17px!important;line-height:1.45!important;margin-top:12px!important
  }
 }
+
+
+/* Desktop preview toggle for phone review. */
+html.avp-home-minimal #avp-desktop-preview-toggle{position:fixed!important;z-index:2147483000!important;right:14px!important;bottom:calc(18px + env(safe-area-inset-bottom))!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;min-height:46px!important;padding:0 16px!important;border:1px solid #c5dfce!important;border-radius:999px!important;background:#0d6845!important;color:#fff!important;font:700 13px/1.2 system-ui,-apple-system,sans-serif!important;box-shadow:0 8px 28px rgba(9,60,37,.25)!important;cursor:pointer!important}
+html.avp-home-minimal #avp-desktop-preview-toggle .avp-desktop-toggle-icon{font-size:17px!important}
+html.avp-home-minimal.avp-home-desktop-preview{overflow-x:auto!important}
+html.avp-home-minimal.avp-home-desktop-preview body{width:1024px!important;min-width:1024px!important;max-width:none!important;padding-top:0!important;margin:0!important;overflow:visible!important}
+html.avp-home-minimal.avp-home-desktop-preview .top-simple-nav{width:1024px!important;min-width:1024px!important;box-sizing:border-box!important;padding:12px 28px!important;min-height:70px!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important}
+html.avp-home-minimal.avp-home-desktop-preview .top-simple-links{display:flex!important;flex-direction:row!important;gap:2px!important}
+html.avp-home-minimal.avp-home-desktop-preview .top-simple-links a{display:inline-flex!important;white-space:nowrap!important;padding:0 9px!important;font-size:12px!important}
+html.avp-home-minimal.avp-home-desktop-preview .top-mobile-toggle{display:none!important}
+html.avp-home-minimal.avp-home-desktop-preview .avp-hero{width:960px!important;max-width:none!important;min-width:960px!important;box-sizing:border-box!important;margin:18px 32px 0!important;padding:52px 58px!important;border-radius:28px!important}
+html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-hero-inner{width:100%!important;max-width:none!important}
+html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-copy{max-width:780px!important}
+html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-title{font-size:62px!important;line-height:1.02!important}
+html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-title .avp-brand-vietnamese{font-size:22px!important}
+html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-tagline{font-size:21px!important}
+html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-desc{font-size:15px!important;max-width:620px!important}
+html.avp-home-minimal.avp-home-desktop-preview .avp-mobile-main-cta-wrap{display:none!important}
+html.avp-home-minimal.avp-home-desktop-preview #avp-home-ecosystem,html.avp-home-minimal.avp-home-desktop-preview #ky-nang-excel,html.avp-home-minimal.avp-home-desktop-preview #home-books{width:920px!important;max-width:none!important;min-width:920px!important;margin:44px 52px 0!important;box-sizing:border-box!important}
+html.avp-home-minimal.avp-home-desktop-preview .avp-home-ecosystem-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
+html.avp-home-minimal.avp-home-desktop-preview .avp-home-ecosystem-card{min-height:116px!important;padding:18px!important;flex-direction:row!important}
+html.avp-home-minimal.avp-home-desktop-preview #home-books .home-reference-grid-v114{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+html.avp-home-minimal.avp-home-desktop-preview #home-books .home-ref-item-v114{grid-template-columns:48px minmax(0,1fr) auto!important}
+html.avp-home-minimal.avp-home-desktop-preview .site-footer{min-width:1024px!important}
+html.avp-home-minimal.avp-home-desktop-preview #avp-desktop-preview-toggle{background:#24352b!important;border-color:#496451!important}
+html.avp-home-minimal.avp-home-desktop-preview #avp-desktop-preview-toggle::after{content:"Tắt xem desktop";white-space:nowrap}
+html.avp-home-minimal.avp-home-desktop-preview #avp-desktop-preview-toggle .avp-desktop-toggle-label{display:none!important}
