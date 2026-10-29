@@ -200,3 +200,23 @@ html.avp-home-minimal *,html.avp-home-minimal *::before,html.avp-home-minimal *:
  html.avp-home-minimal .avp-home-card-copy{overflow-wrap:anywhere}
  html.avp-home-minimal #home-books .home-reference-grid-v114,html.avp-home-minimal #home-books .home-ref-item-v114{min-width:0!important;max-width:100%!important}
 }
+
+
+/* TEMPORARY DESKTOP VIEW ON PHONE — remove this block to restore normal mobile layout. */
+html.avp-home-minimal.avp-force-desktop-mobile body{
+  min-width:1200px!important;
+  width:1200px!important;
+  max-width:none!important;
+  overflow-x:visible!important;
+}
+html.avp-home-minimal.avp-force-desktop-mobile .top-simple-nav,
+html.avp-home-minimal.avp-force-desktop-mobile .avp-hero,
+html.avp-home-minimal.avp-force-desktop-mobile #avp-home-ecosystem,
+html.avp-home-minimal.avp-force-desktop-mobile #ky-nang-excel,
+html.avp-home-minimal.avp-force-desktop-mobile #home-books{
+  max-width:1360px!important;
+}
+@media(max-width:650px){
+ html.avp-home-minimal.avp-force-desktop-mobile .avp-home-ecosystem-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ html.avp-home-minimal.avp-force-desktop-mobile .avp-home-ecosystem-card{min-width:0!important}
+}
