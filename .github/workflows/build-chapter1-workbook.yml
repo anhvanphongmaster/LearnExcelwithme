@@ -1,0 +1,28 @@
+name: Build Chapter 1 workbook
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/build_chapter1_workbook.py'
+      - '.github/workflows/build-chapter1-workbook.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install openpyxl
+      - run: python tools/build_chapter1_workbook.py
+      - name: Commit workbook
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Chuong_1_Thuc_hanh_Nhap_mon_Excel.xlsx
+          git diff --cached --quiet || (git commit -m "Build Chapter 1 practical workbook" && git push)
