@@ -6,11 +6,8 @@ if(path!==''&&path!=='index.html')return;
 if(window.__AVP_HOME_CANONICAL__)return;
 window.__AVP_HOME_CANONICAL__=true;
 document.documentElement.classList.add('avp-home-canonical');
-var vp=document.querySelector('meta[name="viewport"]');
-if(vp&&window.matchMedia('(max-width:650px)').matches){
- vp.setAttribute('content','width=1200, initial-scale=0.32, maximum-scale=3, user-scalable=yes');
- document.documentElement.classList.add('avp-force-desktop-mobile');
-}
+/* Preserve the document's responsive viewport on mobile.
+   The homepage must adapt its layout instead of zooming out a forced desktop canvas. */
 function el(tag,cls,html){var n=document.createElement(tag);if(cls)n.className=cls;if(html!==undefined)n.innerHTML=html;return n;}
 function link(href,cls,html){var a=el('a',cls,html);a.href=href;return a;}
 function deleteLegacyDuplicateBlocks(){
@@ -84,5 +81,15 @@ function setup(){
  var books=document.getElementById('home-books');
  if(books){books.classList.add('avp-canonical-books');var heading=books.querySelector('.home-reference-heading');if(heading)heading.textContent='Tài liệu tham khảo';}
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setup();deleteLegacyDuplicateBlocks();setTimeout(deleteLegacyDuplicateBlocks,250);setTimeout(deleteLegacyDuplicateBlocks,1000);},{once:true});else{setup();deleteLegacyDuplicateBlocks();setTimeout(deleteLegacyDuplicateBlocks,250);setTimeout(deleteLegacyDuplicateBlocks,1000);}
+/* Build the homepage once, then remove legacy duplicates once.
+   Do not use delayed DOM deletion to compensate for competing renderers. */
+if(document.readyState==='loading'){
+ document.addEventListener('DOMContentLoaded',function(){
+  setup();
+  deleteLegacyDuplicateBlocks();
+ },{once:true});
+}else{
+ setup();
+ deleteLegacyDuplicateBlocks();
+}
 })();
