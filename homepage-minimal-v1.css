@@ -147,3 +147,43 @@ html.avp-home-minimal body.dark-mode .avp-mini-info{color:#b2c7b8!important}
 @media(prefers-reduced-motion:reduce){
  html.avp-home-minimal *,html.avp-home-minimal *::before,html.avp-home-minimal *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
+
+
+/* V1.1: stronger hero contrast and remove the two oversized legacy entry cards */
+html.avp-home-minimal .avp-hero .avp-title,
+html.avp-home-minimal .avp-hero .avp-title > span,
+html.avp-home-minimal .avp-hero .avp-title > span:first-child{
+  background:none!important;background-image:none!important;
+  -webkit-background-clip:border-box!important;background-clip:border-box!important;
+  -webkit-text-fill-color:#153f2b!important;color:#153f2b!important;
+  text-shadow:none!important;filter:none!important;animation:none!important;
+  opacity:1!important
+}
+html.avp-home-minimal .avp-hero .avp-title .avp-brand-vietnamese{
+  color:#176642!important;-webkit-text-fill-color:#176642!important;
+  font-weight:750!important;letter-spacing:-.025em!important
+}
+html.avp-home-minimal .avp-hero .avp-tagline,
+html.avp-home-minimal .avp-hero .avp-tagline #avpTyping{
+  color:#285a40!important;-webkit-text-fill-color:#285a40!important;opacity:1!important
+}
+/* The hero should be brand + message only; these legacy cards are redundant with the main navigation. */
+html.avp-home-minimal .avp-hero .avp-mobile-main-cta-wrap,
+html.avp-home-minimal .avp-hero .avp-home-legacy-entry,
+html.avp-home-minimal .avp-hero [class*="path-entry"],
+html.avp-home-minimal .avp-hero [class*="practice-entry"],
+html.avp-home-minimal .avp-hero [class*="learning-entry"],
+html.avp-home-minimal .avp-hero [class*="dual-cta"],
+html.avp-home-minimal .avp-hero [class*="entry-card"]{
+  display:none!important
+}
+@media(max-width:650px){
+ html.avp-home-minimal .avp-hero .avp-title,
+ html.avp-home-minimal .avp-hero .avp-title>span:first-child{
+   font-size:clamp(39px,11vw,54px)!important;line-height:1.04!important;
+   color:#153f2b!important;-webkit-text-fill-color:#153f2b!important
+ }
+ html.avp-home-minimal .avp-hero .avp-title .avp-brand-vietnamese{
+   font-size:17px!important;line-height:1.45!important;margin-top:12px!important
+ }
+}
