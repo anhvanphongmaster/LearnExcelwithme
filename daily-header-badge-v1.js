@@ -14,7 +14,7 @@
   var link=document.getElementById('avpDailyHeaderLinkV1');
   if(!link){
    link=document.createElement('a');link.id='avpDailyHeaderLinkV1';link.href='learning-coach.html';link.textContent='Hôm nay';link.setAttribute('data-avp-nav','today');
-   var learn=nav.querySelector('a[href="skill-map.html"]');
+   var learn=nav.querySelector('[data-avp-nav="learn"]');
    if(learn&&learn.parentNode===nav)learn.insertAdjacentElement('afterend',link);else nav.insertBefore(link,nav.firstChild);
   }
   var page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
