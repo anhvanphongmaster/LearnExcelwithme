@@ -54,12 +54,12 @@
   function introHtml(){
     const status=isDone();
     const metaOrder=cfg.order?`Bài ${cfg.order}/12`:(cfg.kind==='reference'?'Dùng khi cần':cfg.type);
-    return `<div class="avp-learning-breadcrumb"><a href="skill-map.html">Lộ trình học</a><i>›</i><span>${escapeHtml(cfg.stage)}</span><i>›</i><strong>${escapeHtml(cfg.title)}</strong></div>
+    return `<div class="avp-learning-breadcrumb"><a href="learning-coach.html">Bài học hôm nay</a><i>›</i><span>${escapeHtml(cfg.stage)}</span><i>›</i><strong>${escapeHtml(cfg.title)}</strong></div>
     <section class="avp-learning-intro">
       <div class="avp-learning-kicker"><span class="kind">${escapeHtml(cfg.type)}</span><span>${escapeHtml(cfg.stage)}</span></div>
       <h1>${escapeHtml(cfg.title)}</h1><p>${escapeHtml(cfg.summary)}</p>
       <div class="avp-learning-meta"><span>${escapeHtml(metaOrder)}</span><span>Khoảng ${cfg.mins} phút</span><span class="status ${status?'done':''}" data-lx-status>${status?'✓ Đã ghi nhận':'Chưa hoàn thành'}</span></div>
-      <div class="avp-learning-intro-actions"><a class="avp-learning-primary" data-lx-start href="${cfg.start||'#'}">${escapeHtml(cfg.startLabel||'Bắt đầu')}</a><a class="avp-learning-secondary" href="skill-map.html">← Quay lại lộ trình</a>${cfg.secondary?`<a class="avp-learning-secondary" href="${cfg.secondary.href}"${cfg.secondary.href.includes('downloads/')?' download':''}>${escapeHtml(cfg.secondary.label)}</a>`:''}</div>
+      <div class="avp-learning-intro-actions"><a class="avp-learning-primary" data-lx-start href="${cfg.start||'#'}">${escapeHtml(cfg.startLabel||'Bắt đầu')}</a><a class="avp-learning-secondary" href="learning-coach.html">← Quay lại lộ trình</a>${cfg.secondary?`<a class="avp-learning-secondary" href="${cfg.secondary.href}"${cfg.secondary.href.includes('downloads/')?' download':''}>${escapeHtml(cfg.secondary.label)}</a>`:''}</div>
       <div class="avp-learning-outcomes">${cfg.outcomes.map((x,i)=>`<div class="avp-learning-outcome"><small>${i===0?'Bạn sẽ làm được':'Sau bài này'}</small><strong>${escapeHtml(x)}</strong></div>`).join('')}</div>
     </section>`;
   }
@@ -141,7 +141,7 @@
     if(refined){
       const shortNames={'excel.html':'Excel cơ bản','phimtatexcel.html':'Phím tắt Excel','congthucexcel.html':'Công thức Excel','filtersort.html':'Filter & Sort','pivottable.html':'PivotTable','bieudopareto.html':'Biểu đồ Pareto','baocaoexcel.html':'Báo cáo Excel','excel-nang-cao.html':'Excel nâng cao','power-query-course.html':'Power Query','power-pivot-dax.html':'Power Pivot & DAX','dashboard-dong.html':'Dashboard động','practice-lab.html':'Practice Lab','vba-macro.html':'VBA / Macro','solver-whatif.html':'What-If & Solver','dashboard.html':'Tiến độ học tập'};
       const link=(file,label,cls='side')=>`<a class="${cls}" href="${file}"><small>${label}</small><strong>${escapeHtml(shortNames[file]||'Lộ trình học')}</strong></a>`;
-      const map=link('skill-map.html','DANH SÁCH BÀI','side map');
+      const map=link('learning-coach.html','DANH SÁCH BÀI','side map');
       if(cfg.kind==='reference'){
         const other=referenceRoute.find(file=>file!==PAGE);
         nav.innerHTML=link('excel.html','ÔN KIẾN THỨC')+map+link(other,'KHO TRA CỨU KHÁC','side next');
@@ -155,11 +155,11 @@
     }
     if(cfg.kind==='reference'){
       const i=referenceRoute.indexOf(PAGE),other=pages[referenceRoute[i===0?1:0]];
-      nav.innerHTML=`<a class="side" href="skill-map.html"><small>LỘ TRÌNH</small><strong>← Quay lại Skill Map</strong></a><a class="map" href="skill-map.html">Danh sách học</a><a class="side next" href="${referenceRoute[i===0?1:0]}"><small>KHO TRA CỨU KHÁC</small><strong>${escapeHtml(other.title)} →</strong></a>`;
+      nav.innerHTML=`<a class="side" href="learning-coach.html"><small>LỘ TRÌNH</small><strong>← Quay lại Bài học hôm nay</strong></a><a class="map" href="learning-coach.html">Danh sách học</a><a class="side next" href="${referenceRoute[i===0?1:0]}"><small>KHO TRA CỨU KHÁC</small><strong>${escapeHtml(other.title)} →</strong></a>`;
       return nav;
     }
     const i=coreRoute.indexOf(PAGE),prev=i>0?pages[coreRoute[i-1]]:null,next=i>=0&&i<coreRoute.length-1?pages[coreRoute[i+1]]:null;
-    nav.innerHTML=`${prev?`<a class="side" href="${coreRoute[i-1]}"><small>BÀI TRƯỚC</small><strong>← ${escapeHtml(prev.title)}</strong></a>`:`<a class="side" href="skill-map.html"><small>LỘ TRÌNH</small><strong>← Skill Map</strong></a>`}<a class="map" href="skill-map.html">Danh sách bài</a>${next?`<a class="side next" href="${coreRoute[i+1]}"><small>BÀI TIẾP THEO</small><strong>${escapeHtml(next.title)} →</strong></a>`:`<a class="side next" href="practice-video.html"><small>HOÀN THÀNH LỘ TRÌNH</small><strong>Đi thực hành →</strong></a>`}`;
+    nav.innerHTML=`${prev?`<a class="side" href="${coreRoute[i-1]}"><small>BÀI TRƯỚC</small><strong>← ${escapeHtml(prev.title)}</strong></a>`:`<a class="side" href="learning-coach.html"><small>LỘ TRÌNH</small><strong>← Skill Map</strong></a>`}<a class="map" href="learning-coach.html">Danh sách bài</a>${next?`<a class="side next" href="${coreRoute[i+1]}"><small>BÀI TIẾP THEO</small><strong>${escapeHtml(next.title)} →</strong></a>`:`<a class="side next" href="practice-video.html"><small>HOÀN THÀNH LỘ TRÌNH</small><strong>Đi thực hành →</strong></a>`}`;
     return nav;
   }
 
@@ -198,7 +198,7 @@
     if(refined){
       // Keep all learning sections in document order and include them in the TOC.
       document.querySelectorAll('.lesson-tips-panel').forEach(x=>{if(!main.contains(x))main.appendChild(x)});
-      host.querySelector('.avp-learning-intro-actions a[href="skill-map.html"]')?.remove();
+      host.querySelector('.avp-learning-intro-actions a[href="learning-coach.html"]')?.remove();
     }
     const toc=ensureTocTargets(main);const sidebar=makeSidebar(toc);grid.appendChild(sidebar);grid.appendChild(content);content.appendChild(main);
     document.querySelectorAll('.lesson-tips-panel').forEach(x=>{
@@ -206,7 +206,7 @@
       if(cfg.kind==='reference') content.insertBefore(x,main); else content.appendChild(x);
     });
     const aid=document.createElement('div');aid.innerHTML=aidHtml();content.appendChild(aid.firstElementChild);
-    const quiz=buildQuiz();if(quiz)content.appendChild(quiz);
+    /* Legacy course XP/progress checkpoint removed. XP now comes only from today's task or practice grader. */
     content.appendChild(buildNav());fixStart(main);setupObservers(sidebar);syncUiDone();
     if(refined){
       // Keep the summary before the existing Power Query quiz, so the quiz ends the lesson.
