@@ -103,6 +103,32 @@ function setup(){
  document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!modal.hidden)closeChapterPicker();});
  document.body.classList.add('avp-chapter-picker-ready');
 
+
+ /* Công cụ hỗ trợ: mở thư mục ứng dụng dạng iPhone, tương tự bộ chọn 12 chương. */
+ var toolsCard=grid.querySelectorAll('.avp-canonical-category')[3];
+ var toolsModal=document.createElement('div');
+ toolsModal.className='avp-chapter-picker-backdrop avp-tools-picker-backdrop';
+ toolsModal.hidden=true;
+ toolsModal.innerHTML='<section class="avp-chapter-picker avp-tools-picker" role="dialog" aria-modal="true" aria-labelledby="avpToolsPickerTitle"><button type="button" class="avp-chapter-picker-close" aria-label="Đóng">×</button><div class="avp-chapter-picker-head"><small>AVP · TOOL & WORKSPACE</small><h2 id="avpToolsPickerTitle">Công cụ hỗ trợ</h2><p>Chọn một khu vực để mở công cụ phù hợp với công việc của bạn.</p></div><div class="avp-chapter-picker-grid avp-tools-picker-grid"></div></section>';
+ var toolsStyle=document.createElement('style');
+ toolsStyle.textContent='.avp-tools-picker{width:min(920px,100%)}.avp-tools-picker-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.avp-tools-app{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-width:0;min-height:205px;padding:17px 14px;border:1px solid #e3e8f0;border-top:4px solid var(--tool-accent,#365cf5);border-radius:19px;background:linear-gradient(160deg,#fff,#fbfcff);color:#1b2d48;text-align:left;text-decoration:none;box-shadow:0 5px 15px #172b4d0a;transition:transform .18s ease,box-shadow .18s ease}.avp-tools-app:hover{transform:translateY(-3px);box-shadow:0 14px 28px #172b4d18}.avp-tools-app-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:var(--tool-tint,#e8edff);color:var(--tool-accent,#365cf5);font-size:23px;font-weight:900}.avp-tools-app small{font-size:9px;line-height:1.35;font-weight:900;letter-spacing:.08em;color:var(--tool-accent,#365cf5)}.avp-tools-app strong{font-size:16px;line-height:1.3}.avp-tools-app em{font-size:11px;line-height:1.5;color:#748095;font-style:normal}.avp-tools-app b{margin-top:auto;font-size:11px;color:var(--tool-accent,#365cf5)}.avp-tools-app.master{--tool-accent:#394b99;--tool-tint:#e9ebff}.avp-tools-app.quick{--tool-accent:#287a9a;--tool-tint:#e2f5fb}.avp-tools-app.code{--tool-accent:#087b68;--tool-tint:#def5ef}.avp-tools-app.arena{--tool-accent:#8749a2;--tool-tint:#f3e5fb}.avp-tools-app.kho{--tool-accent:#9a6417;--tool-tint:#fff0d6}@media(max-width:700px){.avp-tools-picker{padding:20px 12px}.avp-tools-picker-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.avp-tools-app{min-height:175px;padding:13px 11px}.avp-tools-app strong{font-size:14px}}';
+ document.head.appendChild(toolsStyle);
+ document.body.appendChild(toolsModal);
+ var toolApps=[
+  ['learning-chapters.html','◆','LỘ TRÌNH NÂNG CAO','Excel Master','Hệ nội dung chuyên sâu','Mở khu học tập →','master'],
+  ['practice-video.html','◴','HỌC NHANH 2–3 PHÚT','Học nhanh hôm nay','Mỗi ngày một kỹ năng nhỏ, dùng được ngay','Học ngay →','quick'],
+  ['index.html#avp-code-hub','⌘','CODE & AUTOMATION','Excel Code Hub','Python · VBA · Power Query','Mở Code Hub →','code'],
+  ['practice-lab.html','ϟ','GAME & PHẢN XẠ','Excel Arena','Đấu kỹ năng theo thời gian','Vào Arena →','arena'],
+  ['tools-center.html','▣','TOOL & TEMPLATE','Kho Tool','Tool thực dụng · tiện ích · mẫu dùng ngay','Mở Kho Tool →','kho']
+ ];
+ toolsModal.querySelector('.avp-tools-picker-grid').innerHTML=toolApps.map(function(t){return '<a class="avp-tools-app '+t[6]+'" href="'+t[0]+'"><span class="avp-tools-app-icon">'+t[1]+'</span><small>'+t[2]+'</small><strong>'+t[3]+'</strong><em>'+t[4]+'</em><b>'+t[5]+'</b></a>';}).join('');
+ function openToolsPicker(){toolsModal.hidden=false;document.body.classList.add('avp-chapter-picker-open');toolsModal.querySelector('.avp-chapter-picker-close').focus();}
+ function closeToolsPicker(){toolsModal.hidden=true;document.body.classList.remove('avp-chapter-picker-open');}
+ if(toolsCard){toolsCard.href='#choose-avp-tools';toolsCard.setAttribute('role','button');toolsCard.setAttribute('aria-haspopup','dialog');toolsCard.setAttribute('aria-label','Mở thư mục Công cụ hỗ trợ');toolsCard.addEventListener('click',function(event){event.preventDefault();openToolsPicker();});}
+ toolsModal.querySelector('.avp-chapter-picker-close').addEventListener('click',closeToolsPicker);
+ toolsModal.addEventListener('click',function(event){if(event.target===toolsModal)closeToolsPicker();});
+ document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!toolsModal.hidden)closeToolsPicker();});
+
  hero.insertAdjacentElement('afterend',discover);
  var lessons=el('section','avp-canonical-lessons');
  lessons.innerHTML='<div class="avp-canonical-lesson-main"><div class="avp-canonical-section-head"><div><h2>Bài học nổi bật</h2><p>Những nội dung đang được quan tâm.</p></div><a href="excel.html">Xem tất cả　→</a></div><div class="avp-canonical-lesson-grid"></div></div><aside class="avp-canonical-trending"><h3>Xu hướng hôm nay　↗</h3><ol><li><b>1</b><span><strong>SUMIFS</strong><small>Tính tổng nhiều điều kiện</small></span></li><li><b>2</b><span><strong>XLOOKUP</strong><small>Tra cứu dữ liệu hiện đại</small></span></li><li><b>3</b><span><strong>PivotTable</strong><small>Báo cáo nhanh</small></span></li><li><b>4</b><span><strong>Power Query</strong><small>Làm sạch và kết hợp dữ liệu</small></span></li><li><b>5</b><span><strong>Phím tắt Excel</strong><small>Làm việc nhanh hơn</small></span></li></ol></aside>';
