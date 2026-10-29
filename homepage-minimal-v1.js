@@ -13,6 +13,21 @@ if(vp&&window.matchMedia('(max-width:650px)').matches){
 }
 function el(tag,cls,html){var n=document.createElement(tag);if(cls)n.className=cls;if(html!==undefined)n.innerHTML=html;return n;}
 function link(href,cls,html){var a=el('a',cls,html);a.href=href;return a;}
+function deleteLegacyDuplicateBlocks(){
+ var targets=['Bắt đầu đúng chỗ','Mở rộng kỹ năng'];
+ document.querySelectorAll('h1,h2,h3,h4,strong,div,section').forEach(function(node){
+  if(node.children.length>5)return;
+  var txt=(node.textContent||'').replace(/\\s+/g,' ').trim();
+  if(!targets.some(function(t){return txt===t;}))return;
+  var box=node;
+  for(var i=0;i<6&&box&&box!==document.body;i++){
+   if(box.matches('section,.home-first-v1,.home-first-inner-v1,.avp-canonical-start,.home-path-inner,.home-path,.home-extra-panel-v104'))break;
+   box=box.parentElement;
+  }
+  if(box&&box!==document.body)box.remove();
+ });
+ document.querySelectorAll('.home-first-v1,.avp-canonical-start,.avp-canonical-tools').forEach(function(n){n.remove();});
+}
 function setup(){
  var nav=document.querySelector('.top-simple-nav');
  if(nav){
@@ -59,5 +74,5 @@ function setup(){
  var books=document.getElementById('home-books');
  if(books){books.classList.add('avp-canonical-books');var heading=books.querySelector('.home-reference-heading');if(heading)heading.textContent='Tài liệu tham khảo';}
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup,{once:true});else setup();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setup();deleteLegacyDuplicateBlocks();setTimeout(deleteLegacyDuplicateBlocks,250);setTimeout(deleteLegacyDuplicateBlocks,1000);},{once:true});else{setup();deleteLegacyDuplicateBlocks();setTimeout(deleteLegacyDuplicateBlocks,250);setTimeout(deleteLegacyDuplicateBlocks,1000);}
 })();
