@@ -6,6 +6,8 @@ if(path!==''&&path!=='index.html')return;
 if(window.__AVP_HOME_CANONICAL__)return;
 window.__AVP_HOME_CANONICAL__=true;
 document.documentElement.classList.add('avp-home-canonical');
+/* Restore the desktop layout class required by homepage-minimal-v1.css. */
+document.documentElement.classList.add('avp-force-desktop-mobile');
 /* Restore the previous desktop-canvas behavior on phones as requested. */
 var viewport=document.querySelector('meta[name="viewport"]');
 if(viewport){
