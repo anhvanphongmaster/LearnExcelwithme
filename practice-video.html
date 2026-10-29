@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=1200, initial-scale=0.32, minimum-scale=0.1, maximum-scale=2, user-scalable=yes"><title>Trung tâm thực hành Excel | Anh Văn Phòng</title>
 <meta name="description" content="Chọn đúng cách thực hành Excel: học theo video, làm bài tập, tự chấm hoặc tra cứu hướng dẫn.">
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="simple-nav.css"><link rel="stylesheet" href="auth.css"><link rel="stylesheet" href="global-search.css"><link rel="stylesheet" href="avp-core.css"><link rel="stylesheet" href="practice-roll.css?v=20260901-rollfix3"><link rel="stylesheet" href="practice-hub-flow-v1.css?v=20261030-hub3"><link rel="stylesheet" href="avp-site-motion.css?v=20260901-rollfix3"><link rel="stylesheet" href="practice-hub-theme-v1.css?v=20260913-hub1" data-avp-route-identity><meta name="theme-color" content="#ffffff"><script>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="simple-nav.css"><link rel="stylesheet" href="auth.css"><link rel="stylesheet" href="global-search.css"><link rel="stylesheet" href="avp-core.css"><link rel="stylesheet" href="practice-roll.css?v=20260901-rollfix3"><link rel="stylesheet" href="practice-hub-flow-v1.css?v=20261030-needs1"><link rel="stylesheet" href="avp-site-motion.css?v=20260901-rollfix3"><link rel="stylesheet" href="practice-hub-theme-v1.css?v=20260913-hub1" data-avp-route-identity><meta name="theme-color" content="#ffffff"><script>
 (() => { const routes={tiktok:'practice-tiktok.html',youtube:'practice-youtube.html',homework:'homework.html',grader:'practice-grader.html',guide:'practice-guides.html',professional:'professional-access.html?intro=1'};const target=routes[location.hash.slice(1)];if(target)location.replace(target+(target.includes('?')?'':location.search)); })();
 </script>  <link rel="stylesheet" href="avp-ui-system.css?v=20260909-ui2" data-avp-ui-system>
 </head><body class="ph-white-body">
@@ -27,10 +27,20 @@
       <a class="ph-flow-link" href="professional-access.html?intro=1"><i class="icon" aria-hidden="true">◆</i><span>05 · CHUYÊN SÂU</span><strong>Lộ trình chuyên nghiệp</strong><p>Rèn kỹ năng qua case nghiệp vụ, theo điều kiện truy cập và tiến độ của lộ trình.</p><b>Khám phá lộ trình <span aria-hidden="true">↗</span></b></a>
     </div>
   </section>
-  <section class="ph-hub-guide" aria-labelledby="phGuideTitle">
-    <div class="ph-hub-guide-icon" aria-hidden="true">?</div>
-    <div class="ph-hub-guide-copy"><span class="ph-hub-eyebrow">CHƯA BIẾT BẮT ĐẦU TỪ ĐÂU?</span><h2 id="phGuideTitle">Hướng dẫn thực hành</h2><p>Tìm cách tiếp cận, kiến thức cần dùng và lỗi thường gặp — không đưa sẵn đáp án hoàn chỉnh.</p></div>
-    <a href="practice-guides.html" class="ph-hub-guide-link">Tra cứu hướng dẫn <span aria-hidden="true">↗</span></a>
+  <section class="ph-need-finder" aria-labelledby="phNeedTitle">
+    <div class="ph-need-finder-head">
+      <span class="ph-hub-eyebrow">ĐI TỪ CÔNG VIỆC THỰC TẾ</span>
+      <h2 id="phNeedTitle">Bạn đang cần giải quyết việc gì?</h2>
+      <p>Chọn nhu cầu để tìm nội dung phù hợp trong các luồng thực hành hiện có.</p>
+    </div>
+    <div class="ph-need-grid" id="phNeedGrid">
+      <a class="ph-need-card" href="practice-guides.html?topic=data"><span class="ph-need-icon">▤</span><strong>Xử lý và làm sạch dữ liệu</strong><span>Chuẩn hóa, gộp bảng, xử lý dữ liệu lỗi.</span><b>Tìm nội dung <i>↗</i></b></a>
+      <a class="ph-need-card" href="practice-guides.html?topic=report"><span class="ph-need-icon">▥</span><strong>Lập báo cáo và phân tích</strong><span>PivotTable, biểu đồ, KPI và dashboard.</span><b>Tìm nội dung <i>↗</i></b></a>
+      <a class="ph-need-card" href="practice-guides.html?topic=formula"><span class="ph-need-icon">ƒx</span><strong>Công thức và nghiệp vụ</strong><span>Tra cứu, tính toán, đối soát và xử lý điều kiện.</span><b>Tìm nội dung <i>↗</i></b></a>
+      <a class="ph-need-card" href="practice-guides.html?topic=automation"><span class="ph-need-icon">↻</span><strong>Tự động hóa công việc</strong><span>Power Query nâng cao, VBA và quy trình lặp lại.</span><b>Tìm nội dung <i>↗</i></b></a>
+      <a class="ph-need-card" href="practice-guides.html?topic=troubleshoot"><span class="ph-need-icon">⌕</span><strong>Tìm và sửa lỗi Excel</strong><span>Kiểm tra công thức, dữ liệu bất thường và lỗi báo cáo.</span><b>Tìm nội dung <i>↗</i></b></a>
+    </div>
+    <p class="ph-need-note">Danh mục nhu cầu có thể mở rộng theo nội dung mới mà không cần tạo thêm luồng thực hành.</p>
   </section>
   <p class="ph-hub-note">Mẹo: học theo video thì chọn Project; muốn luyện lại kiến thức thì chọn Bài tập về nhà; cần kiểm tra kết quả thì vào Bài tập tự chấm.</p>
 </main>
