@@ -192,20 +192,10 @@
     if(aiIntro)aiIntro.hidden=true;
     var books=document.getElementById('home-books');
     if(books){books.classList.add('avp-reference-books');}
-    var extra=document.querySelector('.avp-reference-next-steps');
-    if(!extra){
-      extra=el('section','avp-reference-next-steps');
-      extra.innerHTML='<div class="avp-reference-steps"><span class="avp-reference-kicker">DÀNH CHO NGƯỜI MỚI</span><h2>Bắt đầu đúng chỗ</h2><p>Chọn luồng học, học bài rồi thực hành lại bằng file.</p><div class="avp-reference-step-grid"><a href="skill-map.html"><b>01</b><strong>Chọn lộ trình</strong><small>Chọn mục tiêu phù hợp.</small></a><a href="excel.html"><b>02</b><strong>Học bài</strong><small>Nắm nội dung theo lộ trình.</small></a><a href="practice-video.html"><b>03</b><strong>Thực hành</strong><small>Làm lại bằng file và case.</small></a></div><a class="avp-reference-continue" href="excel.html">Tiếp tục học　→</a><p class="avp-reference-step-foot">4 luồng học · 5 luồng thực hành.</p></div><div class="avp-reference-expand"><span class="avp-reference-kicker">BỔ TRỢ · CÔNG CỤ</span><h2>Mở rộng kỹ năng</h2><p>Công cụ và khu nâng cao để học sâu hơn khi cần.</p><div class="avp-reference-pills"><a href="excel.html">Excel cơ bản ↗</a><a href="congthucexcel.html">Công thức và hàm ↗</a><a href="phimtatexcel.html">Phím tắt ↗</a><a href="power-query-course.html">Power Query ↗</a><a href="pivottable.html">PivotTable ↗</a></div></div>';
-      feature.insertAdjacentElement('afterend',extra);
-    }
+    /* Remove duplicated onboarding panels; keep the main hero CTA intact. */
+    document.querySelectorAll('.avp-reference-next-steps').forEach(function(n){n.remove();});
 
-
-    /* Fix reported duplicates: remove the repeated hero CTA and any onboarding panel before discovery. */
-    document.querySelectorAll('.avp-reference-hero .avp-reference-primary').forEach(function(n){n.remove();});
-    var discovery=document.getElementById('avp-reference-featured');
-    document.querySelectorAll('.avp-reference-next-steps').forEach(function(n){
-      if(discovery && n.compareDocumentPosition(discovery) & Node.DOCUMENT_POSITION_FOLLOWING) n.remove();
-    });
+    /* Do not remove hero CTA buttons; only duplicated onboarding panels are removed. */
 
     /* Keep the existing curriculum routes available, but remove the crowded old lesson grid from the homepage. */
     var oldGrid=pathSection.querySelector('.home-path-grid');
