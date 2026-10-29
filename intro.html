@@ -146,40 +146,38 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  const fill=document.getElementById('fill'),time=document.getElementById('time'),count=document.getElementById('sceneCount');
  const startScreen=document.getElementById('startScreen'),startBtn=document.getElementById('start'),skipBtn=document.getElementById('skip'),soundBtn=document.getElementById('sound'),startSoundTest=document.getElementById('startSoundTest'),exploreBtn=document.getElementById('explore');
  const durations=[6,8,8,8,8,8,7,7],total=durations.reduce((a,b)=>a+b,0);
- let running=false,muted=false,startedAt=0,raf=0,sceneIndex=-1,audio=null,audioUrl='',audioReady=false;
- function buildSoundtrack(){
-  if(audioReady)return true;
-  try{
-   // Build a compact PCM WAV locally. HTMLAudioElement is more reliable than Web Audio
-   // for iOS Safari's user-gesture playback restrictions.
-   const rate=22050,seconds=12,samples=rate*seconds,bytes=new ArrayBuffer(44+samples*2),view=new DataView(bytes);
-   const put=(o,s)=>{for(let i=0;i<s.length;i++)view.setUint8(o+i,s.charCodeAt(i));};
-   put(0,'RIFF');view.setUint32(4,36+samples*2,true);put(8,'WAVE');put(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);view.setUint32(24,rate,true);view.setUint32(28,rate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);put(36,'data');view.setUint32(40,samples*2,true);
-   const TAU=Math.PI*2,notes=[261.63,329.63,392,523.25,392,329.63,293.66,349.23,440,587.33,440,349.23];
-   for(let i=0;i<samples;i++){
-    const t=i/rate,phase=t%4,bar=Math.floor(t/4),n=notes[Math.floor((t%4)/.333)%notes.length];
-    const fade=Math.min(1,t/.22,(seconds-t)/.4);
-    const pad=(Math.sin(TAU*(bar%2===0?65.41:73.42)*t)*.14+Math.sin(TAU*(bar%2===0?98:110)*t)*.09);
-    const pulse=Math.exp(-(((phase-.04)/.16)**2))*Math.sin(TAU*(52+80*Math.exp(-phase*12))*t)*.62;
-    const shimmer=(Math.sin(TAU*n*t)+.45*Math.sin(TAU*n*2*t))*Math.exp(-(((phase-.35)/.22)**2))*.16;
-    const swphase=(t%2)/2,noise=(Math.random()*2-1)*Math.pow(Math.sin(Math.PI*swphase),3)*.11;
-    const v=Math.max(-.95,Math.min(.95,(pad+pulse+shimmer+noise)*fade));
-    view.setInt16(44+i*2,Math.round(v*32767),true);
-   }
-   const blob=new Blob([bytes],{type:'audio/wav'});audioUrl=URL.createObjectURL(blob);
-   audio=new Audio(audioUrl);audio.loop=true;audio.preload='auto';audio.volume=.8;
-   audio.addEventListener('error',()=>{soundBtn.textContent='Không tải được âm thanh';});
-   audioReady=true;return true;
-  }catch(err){soundBtn.textContent='Âm thanh không khả dụng';return false;}
+ let running=false,muted=false,startedAt=0,raf=0,sceneIndex=-1,audio=null,sfxPlayers=[];
+ const MUSIC_URL='https://assets.mixkit.co/music/371/371.mp3';
+ const SFX={
+  intro:'https://assets.mixkit.co/active_storage/sfx/1492/1492-preview.mp3',
+  whoosh:'https://assets.mixkit.co/active_storage/sfx/1489/1489-preview.mp3',
+  ping:'https://assets.mixkit.co/active_storage/sfx/911/911-preview.mp3',
+  impact:'https://assets.mixkit.co/active_storage/sfx/2908/2908-preview.mp3'
+ };
+ function prepareAudio(){
+  if(!audio){audio=new Audio(MUSIC_URL);audio.loop=true;audio.preload='auto';audio.volume=.27;audio.addEventListener('error',()=>{soundBtn.textContent='Âm thanh lỗi · Chạm để thử lại';});}
+  return audio;
+ }
+ function playEffect(name,volume=.38){
+  if(muted)return;
+  const src=SFX[name];if(!src)return;
+  const fx=new Audio(src);fx.preload='auto';fx.volume=volume;sfxPlayers.push(fx);
+  fx.addEventListener('ended',()=>{sfxPlayers=sfxPlayers.filter(x=>x!==fx);});
+  fx.play().catch(()=>{});
  }
  async function playSound(){
-  if(muted||!buildSoundtrack())return false;
-  try{const p=audio.play();if(p&&p.then)await p; soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';return true;}
+  if(muted)return false;
+  try{const a=prepareAudio();const p=a.play();if(p&&p.then)await p;soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';return true;}
   catch(err){soundBtn.dataset.state='off';soundBtn.textContent='Chạm để bật âm thanh';return false;}
  }
- function stopSound(){muted=true;if(audio){audio.pause();audio.currentTime=0;}soundBtn.dataset.state='off';soundBtn.textContent='♪ Bật âm thanh';}
+ function stopSound(){
+  muted=true;if(audio){audio.pause();audio.currentTime=0;}
+  sfxPlayers.forEach(x=>{x.pause();x.currentTime=0;});sfxPlayers=[];
+  soundBtn.dataset.state='off';soundBtn.textContent='♪ Bật âm thanh';
+ }
  function showScene(i){
   if(i===sceneIndex)return;sceneIndex=i;scenes.forEach((s,j)=>s.classList.toggle('active',j===i));
+  if(i===0)playEffect('intro',.48);else if(i===7)playEffect('impact',.42);else playEffect(i%2===0?'ping':'whoosh',i%2===0?.18:.25);
   count.textContent=String(i+1).padStart(2,'0')+' / '+String(scenes.length).padStart(2,'0');
  }
  function tick(now){
@@ -205,15 +203,14 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  skipBtn.addEventListener('click',skip);exploreBtn.addEventListener('click',skip);
  soundBtn.textContent='♪ Kiểm tra âm thanh';
  async function testSound(button){
-  button.textContent='Đang kiểm tra âm thanh…';
-  if(!audioReady&&!buildSoundtrack()){button.textContent='Không tạo được âm thanh';return;}
+  button.textContent='Đang tải nhạc…';
   muted=false;
   try{
-   audio.currentTime=0;
-   const p=audio.play();
-   if(p&&p.then)await p;
+   const a=prepareAudio();a.currentTime=0;
+   const p=a.play();if(p&&p.then)await p;
    soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';
-   button.textContent='Đang phát âm thanh · Nhấn để tắt';
+   playEffect('intro',.35);
+   button.textContent='Đang phát nhạc · Nhấn để tắt';
   }catch(err){button.textContent='Không phát được · Chạm lại';soundBtn.textContent='Chạm để bật âm thanh';}
  }
  soundBtn.addEventListener('click',()=>{
@@ -223,7 +220,7 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  if(startSoundTest)startSoundTest.addEventListener('click',()=>testSound(startSoundTest));
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();skip();}if((e.key===' '||e.key==='Enter')&&!running&&!startScreen.classList.contains('hidden')){e.preventDefault();begin();}});
  document.addEventListener('visibilitychange',()=>{if(!audio)return;if(document.hidden)audio.pause();else if(running&&!muted)audio.play().catch(()=>{soundBtn.textContent='Chạm để bật âm thanh';});});
- window.addEventListener('pagehide',()=>{if(audio)audio.pause();if(audioUrl)URL.revokeObjectURL(audioUrl);});
+ window.addEventListener('pagehide',()=>{if(audio)audio.pause();sfxPlayers.forEach(x=>x.pause());});
 })();
 </script>
 </body>
