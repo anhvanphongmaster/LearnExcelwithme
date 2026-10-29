@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#217346">
+  <title>Cộng đồng Anh Văn Phòng</title>
+  <meta name="description" content="Cộng đồng Anh Văn Phòng — hỏi đáp Excel, Power Query, chia sẻ kinh nghiệm và thảo luận.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="simple-nav.css">
+  <link rel="stylesheet" href="ai-chat.css?v=20261030-community-page1">
+  <style>
+    body.avp-community-standalone{background:#f4f8f5;color:#17211b;min-height:100vh}
+    .community-page-head{max-width:1100px;margin:34px auto 0;padding:0 18px}
+    .community-page-head .eyebrow{font-size:11px;letter-spacing:.14em;font-weight:800;color:#217346}
+    .community-page-head h1{font-size:clamp(28px,4vw,42px);line-height:1.12;margin:10px 0;color:#173b29}
+    .community-page-head p{margin:0;color:#637268;font-size:15px;line-height:1.6}
+    body.avp-community-standalone #avpAiChatRoot{font-family:inherit}
+    body.avp-community-standalone .avp-ai-bubble{display:none!important}
+    body.avp-community-standalone .avp-ai-panel{
+      display:flex!important;position:relative;inset:auto;width:min(1100px,calc(100% - 36px));
+      height:auto;min-height:600px;margin:24px auto 48px;border:1px solid #e0e9e2;
+      border-radius:22px;box-shadow:0 12px 36px rgba(25,70,43,.07);overflow:hidden;background:#fff
+    }
+    body.avp-community-standalone .avp-ai-head{padding:18px 22px;background:#fff}
+    body.avp-community-standalone .avp-ai-head strong{font-size:19px;color:#173b29}
+    body.avp-community-standalone .avp-ai-head small{font-size:12px;color:#738176}
+    body.avp-community-standalone .avp-ai-close{display:none}
+    body.avp-community-standalone #avpAiMode{display:none!important}
+    body.avp-community-standalone #avpCommunityMode{display:flex!important;min-height:540px}
+    body.avp-community-standalone .avp-community-content{overflow:visible}
+    @media(max-width:640px){
+      .community-page-head{margin-top:24px}
+      body.avp-community-standalone .avp-ai-panel{width:calc(100% - 20px);min-height:calc(100vh - 210px);margin:18px auto 30px;border-radius:16px}
+      body.avp-community-standalone .avp-ai-head{padding:14px}
+      body.avp-community-standalone #avpCommunityMode{min-height:calc(100vh - 260px)}
+    }
+  </style>
+</head>
+<body>
+  <nav class="top-simple-nav" aria-label="Điều hướng chính">
+    <div class="top-simple-links">
+      <a href="index.html" data-avp-nav="home">Trang chủ</a>
+      <a href="learning-chapters.html" data-avp-nav="learn">Lộ trình học</a>
+      <a href="practice-video.html" data-avp-nav="practice">File thực hành</a>
+      <a href="community.html" aria-current="page">Cộng đồng</a>
+    </div>
+    <button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button>
+  </nav>
+  <main>
+    <header class="community-page-head">
+      <div class="eyebrow">ANH VĂN PHÒNG · CỘNG ĐỒNG</div>
+      <h1>Hỏi đáp, chia sẻ kinh nghiệm</h1>
+      <p>Đặt câu hỏi, trao đổi cách xử lý công việc và học hỏi từ những người đang làm Excel, Power Query và phân tích dữ liệu.</p>
+    </header>
+  </main>
+  <script defer src="supabase-config.js?v=20261030-community-page1"></script>
+  <script type="module" src="supabase-auth.js?v=20261030-community-page1"></script>
+  <script defer src="ai-chat.js?v=20261030-community-page1"></script>
+  <script defer src="simple-nav.js"></script>
+</body>
+</html>
