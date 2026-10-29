@@ -132,9 +132,15 @@ function setup(){
 
  hero.insertAdjacentElement('afterend',discover);
  var lessons=el('section','avp-canonical-lessons');
- lessons.innerHTML='<div class="avp-canonical-lesson-main"><div class="avp-canonical-section-head"><div><h2>Bài học nổi bật</h2><p>Những nội dung đang được quan tâm.</p></div></div><div class="avp-canonical-lesson-grid" aria-label="Các khung bài học"></div></div><aside class="avp-canonical-trending" aria-label="Khung xu hướng"></aside>';
+ lessons.innerHTML='<div class="avp-canonical-lesson-main"><div class="avp-canonical-section-head"><div><h2>Bài học nổi bật</h2><p>Những nội dung đang được quan tâm.</p></div><a href="excel.html">Xem tất cả　→</a></div><div class="avp-canonical-lesson-grid"></div></div><aside class="avp-canonical-trending" aria-label="Khung xu hướng"></aside>';
+ var lessonData=[
+  ['power-query-course.html','Power Query cơ bản','Từ dữ liệu thô đến báo cáo','12:30','pq'],
+  ['excel.html','XLOOKUP tra cứu dữ liệu','Tra cứu dữ liệu hiện đại','10:15','lookup'],
+  ['congthucexcel.html','SUMIFS nhiều điều kiện','Tính tổng nhiều điều kiện','08:42','sumifs'],
+  ['pivottable.html','PivotTable từ A đến Z','Phân tích dữ liệu nhanh','11:28','pivot']
+ ];
  var lg=lessons.querySelector('.avp-canonical-lesson-grid');
- for(var i=0;i<4;i++){lg.appendChild(el('div','avp-canonical-lesson avp-canonical-lesson-empty'));}
+ lessonData.forEach(function(d){lg.appendChild(link(d[0],'avp-canonical-lesson','<div class="avp-canonical-thumb '+d[4]+'"><small>AVP · EXCEL</small><strong>'+d[1]+'</strong><span class="avp-thumb-sheet"><i></i><i></i><i></i><i></i><i></i></span><b>'+d[3]+'</b></div><div class="avp-canonical-lesson-copy"><strong>'+d[1]+'</strong><small>'+d[2]+'</small></div>'));});
  discover.insertAdjacentElement('afterend',lessons);
  /* Removed by request: duplicate onboarding and tools blocks are deleted from the homepage composition. */
 
