@@ -22,6 +22,27 @@
       '<span class="avp-home-card-arrow" aria-hidden="true">↗</span>';
     return a;
   }
+
+  function removeLegacyHeroCards(){
+    var hero=document.querySelector('.avp-hero');
+    if(!hero)return;
+    var needles=['học theo lộ trình','thực hành kỹ năng'];
+    Array.prototype.slice.call(hero.querySelectorAll('a,button,article,section,div')).forEach(function(node){
+      if(!node.isConnected||!hero.contains(node))return;
+      var own=(node.innerText||node.textContent||'').replace(/\\s+/g,' ').trim().toLowerCase();
+      if(!needles.some(function(n){return own.indexOf(n)!==-1;}))return;
+      var parent=node.parentElement;
+      /* Remove the smallest card-like wrapper containing the label, not the entire hero or its copy. */
+      var card=node;
+      while(parent&&parent!==hero&&parent!==hero.querySelector('.avp-copy')){
+        var txt=(parent.innerText||parent.textContent||'').replace(/\\s+/g,' ').trim().toLowerCase();
+        if(needles.some(function(n){return txt.indexOf(n)!==-1;})){card=parent;parent=parent.parentElement;}
+        else break;
+      }
+      if(card&&card!==hero&&card!==hero.querySelector('.avp-copy'))card.remove();
+    });
+  }
+
   function setup(){
     var nav=document.querySelector('.top-simple-nav');
     var hero=document.querySelector('.avp-hero');
@@ -81,6 +102,9 @@
         btn.addEventListener('click',function(){var target=document.getElementById('avp-home-ecosystem');if(target)target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});});
       }
     }
+    removeLegacyHeroCards();
+    var cardObserver=new MutationObserver(function(){removeLegacyHeroCards();});
+    cardObserver.observe(hero,{childList:true,subtree:true});
     var mini=hero.querySelector('.avp-mini-info');
     if(mini)mini.innerHTML='<span>✓ Học theo lộ trình</span><span>✓ Ví dụ thực tế</span><span>✓ Có file thực hành</span>';
 
