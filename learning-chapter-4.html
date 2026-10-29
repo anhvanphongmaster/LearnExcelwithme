@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" class="avp-site-upgrade">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Chương 4 · Hàm Excel từ cơ bản đến nâng cao | Anh Văn Phòng</title>
 <meta name="description" content="Học 12 bài hàm Excel qua ví dụ văn phòng, hướng dẫn từng bước, bài tập tương tác và đáp án kiểm tra.">
 <link rel="stylesheet" href="style.css">
@@ -115,7 +115,7 @@
 <div class="c1-chips"><span>12 bài học</span><span>Ví dụ thực tế</span><span>Bài tập tự kiểm tra</span><span>Excel 2016 đến Microsoft 365</span></div></div>
 </section>
 <div class="c1-layout">
-<section>
+<section class="c1-main">
 <div class="c1-section-head"><h2>Nội dung bài học</h2><p>Mở một bài để học; bài khác sẽ tự đóng.</p></div>
 <div class="c1-lessons" id="lessons"></div>
 </section>
@@ -145,12 +145,13 @@ const data=[
 ];
 const container=document.getElementById('lessons');
 data.forEach((d,i)=>{
- const el=document.createElement('details');el.className='lesson';el.dataset.lesson=i;
- el.innerHTML='<summary><div class="c1-lesson-no">'+String(i+1).padStart(2,'0')+'</div><div><h3>'+d.t+'</h3><div class="desc">'+d.desc+'</div></div><div class="chev">⌄</div></summary><div class="c1-detail-body"><h4>Mục tiêu</h4><p>'+d.goal+'</p><h4>Thao tác từng bước</h4><ol>'+d.steps.map(s=>'<li>'+s+'</li>').join('')+'</ol><h4>Công thức mẫu</h4><div class="code">'+d.formula+'</div><div class="expected"><strong>Kết quả cần quan sát</strong><br>'+d.result+'</div><div class="warning"><strong>Lỗi thường gặp</strong><br>'+d.warn+'</div><div class="quiz"><label><input type="checkbox" class="done" data-index="'+i+'"> Tôi đã tự nhập công thức và kiểm tra kết quả của bài này.</label></div></div>';
+ const el=document.createElement('article');el.className='c1-lesson';el.dataset.lesson=i;
+ el.innerHTML='<div class="c1-lesson-top"><span class="c1-lesson-no">'+String(i+1).padStart(2,'0')+'</span><div><h3>'+d.t+'</h3><p>'+d.desc+'</p></div></div><div class="c1-topics"><span>'+d.tag+'</span></div><details class="c1-detail"><summary>Học và thực hành từng bước</summary><div class="c1-detail-body"><h4>Mục tiêu</h4><p>'+d.goal+'</p><h4>Cách thực hiện</h4><ol>'+d.steps.map(s=>'<li>'+s+'</li>').join('')+'</ol><h4>Công thức mẫu</h4><div class="c1-example"><p>'+d.formula.replace(/\\n/g,'<br>')+'</p></div><div class="c1-example"><strong>Kết quả cần quan sát</strong><p>'+d.result+'</p></div><div class="c1-check-result"><strong>Lỗi thường gặp</strong><p>'+d.warn+'</p></div><label><input type="checkbox" class="done" data-index="'+i+'"> Tôi đã tự nhập công thức và kiểm tra kết quả của bài này.</label></div></details>';
  container.appendChild(el);
 });
-container.querySelectorAll('details').forEach(d=>d.addEventListener('toggle',()=>{
- if(d.open)container.querySelectorAll('details').forEach(other=>{if(other!==d)other.open=false});
+const lessonDetails=[...container.querySelectorAll('.c1-detail')];
+lessonDetails.forEach(d=>d.addEventListener('toggle',()=>{
+ if(d.open)lessonDetails.forEach(other=>{if(other!==d)other.open=false});
 }));
 function updateProgress(){const n=document.querySelectorAll('.done:checked').length;document.getElementById('progresslabel').textContent='Đã hoàn thành '+n+' trên 12 bài';document.getElementById('progressfill').style.width=(n/12*100)+'%'}
 document.addEventListener('change',e=>{if(e.target.classList.contains('done'))updateProgress()});
