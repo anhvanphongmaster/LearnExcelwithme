@@ -53,7 +53,7 @@
 
   function introHtml(){
     const status=isDone();
-    const metaOrder=cfg.order?`Bài ${cfg.order}/12`:(cfg.kind==='reference'?'Dùng khi cần':cfg.type);
+    const metaOrder=cfg.kind==='reference'?'Kho tra cứu':cfg.type;
     return `<div class="avp-learning-breadcrumb"><a href="learning-coach.html">Bài học hôm nay</a><i>›</i><span>${escapeHtml(cfg.stage)}</span><i>›</i><strong>${escapeHtml(cfg.title)}</strong></div>
     <section class="avp-learning-intro">
       <div class="avp-learning-kicker"><span class="kind">${escapeHtml(cfg.type)}</span><span>${escapeHtml(cfg.stage)}</span></div>
@@ -147,7 +147,7 @@
         nav.innerHTML=link('excel.html','ÔN KIẾN THỨC')+map+link(other,'KHO TRA CỨU KHÁC','side next');
       }else{
         const i=coreRoute.indexOf(PAGE);
-        const previous=i>0?link(coreRoute[i-1],'← BÀI TRƯỚC'):link('dashboard.html','TIẾN ĐỘ HỌC');
+        const previous=i>0?link(coreRoute[i-1],'← BÀI TRƯỚC'):link('dashboard.html','BÀI HỌC HÔM NAY');
         const next=i<coreRoute.length-1?link(coreRoute[i+1],'BÀI TIẾP THEO →','side next'):'<a class="side next" href="practice-video.html"><small>BƯỚC TIẾP THEO →</small><strong>Chọn bài thực hành</strong></a>';
         nav.innerHTML=previous+map+next;
       }
