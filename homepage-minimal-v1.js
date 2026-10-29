@@ -94,7 +94,7 @@ function setup(){
  document.head.appendChild(modalStyle);
  document.body.appendChild(modal);
  var modalGrid=modal.querySelector('.avp-chapter-picker-grid');
- modalGrid.innerHTML=chapterList.map(function(item,i){return '<a class="avp-chapter-app" href="learning-chapter.html?chapter='+(i+1)+'"><span class="avp-chapter-app-icon">'+item[1]+'</span><small>CHƯƠNG '+String(i+1).padStart(2,'0')+'</small><strong>'+item[0]+'</strong></a>';}).join('');
+ modalGrid.innerHTML=chapterList.map(function(item,i){return '<div class="avp-chapter-app" aria-label="Chương '+String(i+1).padStart(2,'0')+': '+item[0]+'"><span class="avp-chapter-app-icon">'+item[1]+'</span><small>CHƯƠNG '+String(i+1).padStart(2,'0')+'</small><strong>'+item[0]+'</strong></div>';}).join('');
  function openChapterPicker(){modal.hidden=false;document.body.classList.add('avp-chapter-picker-open');modal.querySelector('.avp-chapter-picker-close').focus();}
  function closeChapterPicker(){modal.hidden=true;document.body.classList.remove('avp-chapter-picker-open');}
  pathCard.addEventListener('click',function(event){event.preventDefault();openChapterPicker();});
