@@ -15,7 +15,7 @@ button,a{font:inherit}
 .stage:before,.stage:after{content:"";position:absolute;pointer-events:none;z-index:0}
 .stage:before{inset:-30%;background:radial-gradient(circle at 15% 30%,#16a86a22,transparent 32%),radial-gradient(circle at 82% 72%,#7affc51c,transparent 29%);animation:ambient 18s ease-in-out infinite alternate}
 .stage:after{inset:0;opacity:.12;background-image:linear-gradient(#b8f7d40a 1px,transparent 1px),linear-gradient(90deg,#b8f7d40a 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(90deg,transparent,#000 40%,#000 80%,transparent)}
-.topbar{position:absolute;z-index:20;left:4%;right:4%;top:5%;display:flex;align-items:center;justify-content:space-between}
+.topbar{position:absolute;z-index:60;left:4%;right:4%;top:5%;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;gap:10px;align-items:center;font-size:clamp(10px,1vw,15px);font-weight:800;letter-spacing:.01em}
 .mark{display:grid;place-items:center;width:34px;height:34px;border:1px solid #baf5d566;border-radius:11px;background:linear-gradient(135deg,#1ab979,#07573b);color:#fff;font-size:11px;box-shadow:0 0 25px #00d08420}
 .brand small{display:block;color:#a3cdb7;font-size:.68em;font-weight:500;margin-top:2px;letter-spacing:.08em}
@@ -136,7 +136,7 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
    <div class="visual"><div class="endmark">AVP</div></div>
   </section>
   <div class="timeline"><span class="time" id="time">00:00 / 01:00</span><div class="track"><div class="fill" id="fill"></div></div><span class="scene-count" id="sceneCount">01 / 08</span></div>
-  <div class="start-screen" id="startScreen"><div class="start-card"><div class="endmark">AVP</div><div class="kicker" style="justify-content:center">Một phút khám phá</div><h2>Chào mừng đến<br><span class="accent">Anh Văn Phòng.</span></h2><p>Giới thiệu nhanh về website với chuyển động, điểm nhấn giao diện và âm thanh. Bạn có thể tắt tiếng hoặc bỏ qua bất cứ lúc nào.</p><button class="play" id="start">▶　Bắt đầu giới thiệu</button><div class="hint">Nhấn Esc để bỏ qua · Thời lượng khoảng 60 giây</div></div></div>
+  <div class="start-screen" id="startScreen"><div class="start-card"><div class="endmark">AVP</div><div class="kicker" style="justify-content:center">Một phút khám phá</div><h2>Chào mừng đến<br><span class="accent">Anh Văn Phòng.</span></h2><p>Giới thiệu nhanh về website với chuyển động, điểm nhấn giao diện và âm thanh. Bạn có thể tắt tiếng hoặc bỏ qua bất cứ lúc nào.</p><button class="play" id="start">▶　Bắt đầu giới thiệu</button><div style="margin-top:14px"><button class="control" id="startSoundTest" type="button">♪ Kiểm tra âm thanh</button></div><div class="hint">Nhấn Esc để bỏ qua · Thời lượng khoảng 60 giây</div></div></div>
  </div>
 </main>
 <script>
@@ -144,7 +144,7 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  'use strict';
  const scenes=Array.from(document.querySelectorAll('.scene'));
  const fill=document.getElementById('fill'),time=document.getElementById('time'),count=document.getElementById('sceneCount');
- const startScreen=document.getElementById('startScreen'),startBtn=document.getElementById('start'),skipBtn=document.getElementById('skip'),soundBtn=document.getElementById('sound'),exploreBtn=document.getElementById('explore');
+ const startScreen=document.getElementById('startScreen'),startBtn=document.getElementById('start'),skipBtn=document.getElementById('skip'),soundBtn=document.getElementById('sound'),startSoundTest=document.getElementById('startSoundTest'),exploreBtn=document.getElementById('explore');
  const durations=[6,8,8,8,8,8,7,7],total=durations.reduce((a,b)=>a+b,0);
  let running=false,muted=false,startedAt=0,raf=0,sceneIndex=-1,audio=null,audioUrl='',audioReady=false;
  function buildSoundtrack(){
@@ -204,13 +204,23 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  startBtn.addEventListener('click',begin);
  skipBtn.addEventListener('click',skip);exploreBtn.addEventListener('click',skip);
  soundBtn.textContent='♪ Kiểm tra âm thanh';
- soundBtn.addEventListener('click',async()=>{
-  if(!audioReady&&!buildSoundtrack()){soundBtn.textContent='Âm thanh không khả dụng';return;}
-  if(!muted&&soundBtn.dataset.state==='on'){stopSound();return;}
+ async function testSound(button){
+  button.textContent='Đang kiểm tra âm thanh…';
+  if(!audioReady&&!buildSoundtrack()){button.textContent='Không tạo được âm thanh';return;}
   muted=false;
-  if(!running){audio.currentTime=0;}
-  await playSound();
+  try{
+   audio.currentTime=0;
+   const p=audio.play();
+   if(p&&p.then)await p;
+   soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';
+   button.textContent='Đang phát âm thanh · Nhấn để tắt';
+  }catch(err){button.textContent='Không phát được · Chạm lại';soundBtn.textContent='Chạm để bật âm thanh';}
+ }
+ soundBtn.addEventListener('click',()=>{
+  if(!muted&&soundBtn.dataset.state==='on'){stopSound();soundBtn.textContent='♪ Bật âm thanh';if(startSoundTest)startSoundTest.textContent='♪ Kiểm tra âm thanh';return;}
+  testSound(soundBtn);
  });
+ if(startSoundTest)startSoundTest.addEventListener('click',()=>testSound(startSoundTest));
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();skip();}if((e.key===' '||e.key==='Enter')&&!running&&!startScreen.classList.contains('hidden')){e.preventDefault();begin();}});
  document.addEventListener('visibilitychange',()=>{if(!audio)return;if(document.hidden)audio.pause();else if(running&&!muted)audio.play().catch(()=>{soundBtn.textContent='Chạm để bật âm thanh';});});
  window.addEventListener('pagehide',()=>{if(audio)audio.pause();if(audioUrl)URL.revokeObjectURL(audioUrl);});
