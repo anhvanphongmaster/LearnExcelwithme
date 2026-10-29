@@ -58,7 +58,7 @@ const n=Number(params.get("chapter"));
 const chapter=chapters[n-1];
 if(!chapter||n<1||n>12){document.getElementById("chapterMount").innerHTML='<div class="chp-not-found"><strong>Chương học không tồn tại.</strong><p>Hãy quay lại danh sách 12 chương để chọn chương cần học.</p></div>';return;}
 document.title="Chương "+String(n).padStart(2,"0")+" · "+chapter.title+" | Anh Văn Phòng";
-document.getElementById("chapterMount").innerHTML='<header class="chp-hero"><span class="chp-icon">'+chapter.icon+'</span><div><span class="chp-kicker">LỘ TRÌNH EXCEL · CHƯƠNG '+String(n).padStart(2,"0")+'</span><h1>'+chapter.title+'</h1><p>'+chapter.desc+'</p><span class="chp-number">CHƯƠNG '+String(n).padStart(2,"0")+' / 12</span></div></header><section class="chp-content"><h2>Nội dung chương</h2><div class="chp-content-panel" id="chapterLessons"><p></p></div></section>';
+document.getElementById("chapterMount").innerHTML='<header class="chp-hero"><span class="chp-icon">'+chapter.icon+'</span><div><span class="chp-kicker">LỘ TRÌNH EXCEL · CHƯƠNG '+String(n).padStart(2,"0")+'</span><h1>'+chapter.title+'</h1><p>'+chapter.desc+'</p><span class="chp-number">CHƯƠNG '+String(n).padStart(2,"0")+' / 12</span></div></header>';
 })();
 </script>
 <script defer src="simple-nav.js"></script><script defer src="global-search.js"></script><script defer src="supabase-config.js"></script><script type="module" src="supabase-auth.js"></script><script defer src="avp-core.js"></script><script src="avp-display-mode.js?v=1"></script>
