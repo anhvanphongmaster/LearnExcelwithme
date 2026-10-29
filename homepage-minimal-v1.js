@@ -17,18 +17,28 @@ function el(tag,cls,html){var n=document.createElement(tag);if(cls)n.className=c
 function link(href,cls,html){var a=el('a',cls,html);a.href=href;return a;}
 function deleteLegacyDuplicateBlocks(){
  var targets=['Bắt đầu đúng chỗ','Mở rộng kỹ năng'];
- document.querySelectorAll('h1,h2,h3,h4,strong,div,section').forEach(function(node){
-  if(node.children.length>5)return;
-  var txt=(node.textContent||'').replace(/\\s+/g,' ').trim();
-  if(!targets.some(function(t){return txt===t;}))return;
-  var box=node;
-  for(var i=0;i<6&&box&&box!==document.body;i++){
-   if(box.matches('section,.home-first-v1,.home-first-inner-v1,.avp-canonical-start,.home-path-inner,.home-path,.home-extra-panel-v104'))break;
-   box=box.parentElement;
-  }
-  if(box&&box!==document.body)box.remove();
- });
- document.querySelectorAll('.home-first-v1,.avp-canonical-start,.avp-canonical-tools').forEach(function(n){n.remove();});
+ function clean(){
+  document.querySelectorAll('h1,h2,h3,h4,strong,[role="heading"]').forEach(function(node){
+   var txt=(node.textContent||'').replace(/\s+/g,' ').trim();
+   if(!targets.some(function(t){return txt===t;}))return;
+   var box=node;
+   for(var i=0;i<8&&box&&box!==document.body;i++){
+    if(box.matches('section,.home-first-v1,.home-first-inner-v1,.avp-canonical-start,.home-path-inner,.home-path,.home-extra-panel-v104,[data-home-block]'))break;
+    box=box.parentElement;
+   }
+   if(box&&box!==document.body)box.remove();
+  });
+  document.querySelectorAll('.home-first-v1,.avp-canonical-start,.avp-canonical-tools').forEach(function(n){n.remove();});
+ }
+ clean();
+ if(!window.__avpLegacyBlockObserver){
+  var pending=false;
+  window.__avpLegacyBlockObserver=new MutationObserver(function(){
+   if(pending)return;pending=true;
+   requestAnimationFrame(function(){pending=false;clean();});
+  });
+  window.__avpLegacyBlockObserver.observe(document.body,{childList:true,subtree:true});
+ }
 }
 function setup(){
  var nav=document.querySelector('.top-simple-nav');
