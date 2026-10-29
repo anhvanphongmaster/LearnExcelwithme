@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi" class="avp-site-upgrade">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200, initial-scale=0.32, minimum-scale=0.1, maximum-scale=2, user-scalable=yes">
+<title>Chương học | Anh Văn Phòng</title>
+<meta name="description" content="Khu học riêng của từng chương trong lộ trình Excel Anh Văn Phòng.">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="global-search.css">
+<link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="avp-core.css">
+<link rel="stylesheet" href="avp-ui-system.css?v=20261001-ui2">
+<style>
+.chp-wrap{width:min(1060px,calc(100% - 36px));margin:28px auto 64px;color:#173b29}
+.chp-back{display:inline-flex;margin-bottom:16px;padding:9px 13px;border:1px solid #d4e4da;border-radius:999px;background:#fff;color:#176c49;text-decoration:none;font-size:12px;font-weight:800}
+.chp-hero{display:grid;grid-template-columns:88px minmax(0,1fr);align-items:start;gap:22px;padding:32px;border:1px solid #d2e5d9;border-left:4px solid #08794f;border-radius:24px;background:radial-gradient(ellipse at 90% 0,rgba(91,211,151,.16),transparent 45%),linear-gradient(135deg,#f7fbf8,#edf8f1)}
+.chp-icon{display:grid;place-items:center;width:82px;height:82px;border-radius:23px;background:linear-gradient(145deg,#dff4e7,#a9dfbf);color:#08794f;font-size:35px;font-weight:900;box-shadow:0 5px 12px rgba(22,75,47,.12),inset 0 1px 0 rgba(255,255,255,.8)}
+.chp-kicker{font-size:10px;letter-spacing:.16em;font-weight:900;color:#16805a}
+.chp-hero h1{margin:9px 0;font-size:clamp(28px,4vw,42px);line-height:1.1;letter-spacing:-.04em}
+.chp-hero p{max-width:760px;margin:0;color:#617468;font-size:15px;line-height:1.75}
+.chp-number{display:inline-flex;margin-top:15px;padding:7px 10px;border:1px solid #d6e8dd;border-radius:999px;background:#fff;color:#24714b;font-size:11px;font-weight:800}
+.chp-content{margin-top:28px}
+.chp-content h2{margin:0 0 12px;font-size:23px;letter-spacing:-.03em}
+.chp-content-panel{min-height:110px;padding:22px;border:1px solid #e0ebe4;border-radius:20px;background:#fff}
+.chp-content-panel p{margin:0;color:#718177;font-size:13px;line-height:1.65}
+.chp-not-found{padding:30px;border:1px solid #f0d6d6;border-radius:20px;background:#fff8f8;color:#763d3d}
+@media(max-width:560px){.chp-wrap{width:calc(100% - 24px);margin-top:18px}.chp-hero{grid-template-columns:56px minmax(0,1fr);gap:14px;padding:22px 16px;border-radius:20px}.chp-icon{width:54px;height:54px;border-radius:15px;font-size:24px}.chp-hero h1{font-size:25px}.chp-hero p{font-size:13px}.chp-content h2{font-size:20px}.chp-content-panel{padding:16px}}
+</style>
+</head>
+<body>
+<script src="avp-ui-system.js?v=20261002-ui1" data-avp-ui-system></script>
+<nav class="top-simple-nav" aria-label="Điều hướng chính"><div class="top-simple-links">
+<a href="index.html" data-avp-nav="home">Trang chủ</a><a href="skill-map.html" data-avp-nav="learn">Học</a><a href="ai.html" data-avp-nav="ai">Học AI</a><a href="practice-video.html" data-avp-nav="practice">Thực hành</a><a href="tools-center.html" data-avp-nav="tools">Công cụ</a><button id="avpSearchTrigger" type="button" class="top-search-button" aria-label="Tìm kiếm">Tìm kiếm</button><span class="auth-nav-slot"></span><button id="themeToggle" type="button" class="top-theme-button" aria-label="Đổi giao diện" title="Đổi giao diện">◐</button>
+</div><button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button></nav>
+<main class="chp-wrap">
+<a class="chp-back" href="learning-chapters.html?v=2">← Tất cả 12 chương</a>
+<div id="chapterMount"><div class="chp-not-found">Không tìm thấy chương học.</div></div>
+</main>
+<script>
+(function(){
+const chapters=[
+{title:"Nhập môn Excel",icon:"▤",desc:"Giao diện Excel, workbook, worksheet, ô và vùng dữ liệu, kiểu dữ liệu, định dạng và quản lý file."},
+{title:"Thao tác và phím tắt",icon:"⌨",desc:"Di chuyển, chọn vùng, nhập liệu, chỉnh sửa, định dạng, quản lý bảng và thao tác nhanh theo tình huống."},
+{title:"Nền tảng công thức",icon:"ƒx",desc:"Toán tử, thứ tự tính, tham chiếu tương đối, tuyệt đối và hỗn hợp, sao chép công thức và xử lý lỗi."},
+{title:"Hàm Excel từ cơ bản đến nâng cao",icon:"ƒ",desc:"Hệ thống hàm Excel từ tính toán, thống kê, logic, điều kiện, tra cứu đến văn bản, ngày giờ, mảng động và công thức lồng nhau."},
+{title:"Công cụ xử lý dữ liệu trên Ribbon",icon:"⌕",desc:"Sort, Filter, Find & Replace, Remove Duplicates, Text to Columns, Flash Fill, Data Validation và Conditional Formatting."},
+{title:"Tổ chức và kiểm soát dữ liệu",icon:"▦",desc:"Excel Table, quy tắc dữ liệu, khóa định danh, dữ liệu trùng hoặc thiếu, chuẩn hóa và kiểm tra tính nhất quán."},
+{title:"PivotTable và PivotChart",icon:"▥",desc:"Tạo bảng tổng hợp, bố trí trường, tính toán, Group, lọc, Refresh, Slicer, Timeline và PivotChart."},
+{title:"Biểu đồ và Dashboard",icon:"▧",desc:"Chọn biểu đồ theo mục đích, định dạng, KPI, biểu đồ kết hợp, tương tác và thiết kế báo cáo trực quan."},
+{title:"Power Query",icon:"↻",desc:"Kết nối nguồn, làm sạch, biến đổi, Merge, Append, Unpivot, Combine Files, M Code, Refresh và tối ưu hiệu năng."},
+{title:"Phân tích dữ liệu",icon:"⌁",desc:"Xác định câu hỏi, xây dựng chỉ số, so sánh, xu hướng, chênh lệch, Pareto, tìm nguyên nhân và diễn giải kết quả."},
+{title:"Tự động hóa Excel",icon:"⚙",desc:"Dynamic Arrays, LET, LAMBDA, VBA/Macro và lựa chọn phương pháp tự động hóa phù hợp với phiên bản Excel."},
+{title:"Quy trình báo cáo doanh nghiệp",icon:"✓",desc:"Tiếp nhận yêu cầu, xử lý nguồn, đối soát, xây dựng báo cáo, kiểm thử, bàn giao và thiết kế quy trình cập nhật định kỳ."}
+];
+const params=new URLSearchParams(location.search);
+const n=Number(params.get("chapter"));
+const chapter=chapters[n-1];
+if(!chapter||n<1||n>12){document.getElementById("chapterMount").innerHTML='<div class="chp-not-found"><strong>Chương học không tồn tại.</strong><p>Hãy quay lại danh sách 12 chương để chọn chương cần học.</p></div>';return;}
+document.title="Chương "+String(n).padStart(2,"0")+" · "+chapter.title+" | Anh Văn Phòng";
+document.getElementById("chapterMount").innerHTML='<header class="chp-hero"><span class="chp-icon">'+chapter.icon+'</span><div><span class="chp-kicker">LỘ TRÌNH EXCEL · CHƯƠNG '+String(n).padStart(2,"0")+'</span><h1>'+chapter.title+'</h1><p>'+chapter.desc+'</p><span class="chp-number">CHƯƠNG '+String(n).padStart(2,"0")+' / 12</span></div></header><section class="chp-content"><h2>Nội dung chương</h2><div class="chp-content-panel" id="chapterLessons"><p></p></div></section>';
+})();
+</script>
+<script defer src="simple-nav.js"></script><script defer src="global-search.js"></script><script defer src="supabase-config.js"></script><script type="module" src="supabase-auth.js"></script><script defer src="avp-core.js"></script><script src="avp-display-mode.js?v=1"></script>
+</body></html>
