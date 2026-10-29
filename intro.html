@@ -255,12 +255,16 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
  exploreBtn.addEventListener('click',skip);
  soundBtn.textContent='♪ Kiểm tra âm thanh';
  soundBtn.addEventListener('click',()=>{
+  if(!muted&&soundBtn.dataset.state==='on'){
+   muted=true;if(master&&audioCtx)master.gain.setTargetAtTime(0,audioCtx.currentTime,.03);
+   clearTimeout(musicTimer);soundBtn.dataset.state='off';soundBtn.textContent='♪ Bật âm thanh';return;
+  }
   muted=false;
   if(!initAudio()){soundBtn.textContent='Âm thanh không khả dụng';return;}
   if(master)master.gain.setTargetAtTime(.72,audioCtx.currentTime,.04);
   tone(660,.42,'sine',.65,0);tone(880,.48,'sine',.65,.22);tone(1108.73,.55,'triangle',.48,.45);
   setTimeout(()=>{if(!muted&&audioCtx&&audioCtx.state==='running')whoosh();},550);
-  soundBtn.textContent='♪ Âm thanh đang bật';
+  soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';
  });
  soundBtn.addEventListener('contextmenu',e=>e.preventDefault());
  document.addEventListener('keydown',e=>{
