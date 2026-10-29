@@ -62,7 +62,7 @@ function setup(){
  var discover=el('section','avp-canonical-discover');
  discover.innerHTML='<div class="avp-canonical-section-head"><div><h2>Khám phá ngay</h2><p>Chọn khu vực bạn quan tâm để bắt đầu hành trình.</p></div><a href="tools-center.html">Khám phá tất cả　↗</a></div><div class="avp-canonical-discover-grid"></div>';
  var cats=[
- ['learning-chapters.html','↪','Lộ trình học','12 chương được thiết kế theo đúng công việc thực tế','green'],
+ ['learning-chapter-4.html','ƒx','Chương 4 · Hàm Excel','Vào thẳng bài học và thực hành hàm Excel','green'],
  ['excel-library.html','ƒx','Thư viện hàm Excel','Tra cứu nhanh công dụng, ví dụ và cách dùng','blue'],
  ['practice-video.html','▤','File thực hành','Tải file theo từng chương, bài học','amber'],
  ['ai.html','✳','Công cụ hỗ trợ','Template, tiện ích và công cụ hữu ích','purple'],
