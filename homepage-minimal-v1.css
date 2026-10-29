@@ -188,45 +188,15 @@ html.avp-home-minimal .avp-hero [class*="entry-card"]{
  }
 }
 
-
-/* Desktop preview toggle for phone review. */
-html.avp-home-minimal #avp-desktop-preview-toggle{position:fixed!important;z-index:2147483000!important;right:14px!important;bottom:calc(18px + env(safe-area-inset-bottom))!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;min-height:46px!important;padding:0 16px!important;border:1px solid #c5dfce!important;border-radius:999px!important;background:#0d6845!important;color:#fff!important;font:700 13px/1.2 system-ui,-apple-system,sans-serif!important;box-shadow:0 8px 28px rgba(9,60,37,.25)!important;cursor:pointer!important}
-html.avp-home-minimal #avp-desktop-preview-toggle .avp-desktop-toggle-icon{font-size:17px!important}
-html.avp-home-minimal.avp-home-desktop-preview{overflow-x:auto!important}
-html.avp-home-minimal.avp-home-desktop-preview body{width:1024px!important;min-width:1024px!important;max-width:none!important;padding-top:0!important;margin:0!important;overflow:visible!important}
-html.avp-home-minimal.avp-home-desktop-preview .top-simple-nav{width:1024px!important;min-width:1024px!important;box-sizing:border-box!important;padding:12px 28px!important;min-height:70px!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important}
-html.avp-home-minimal.avp-home-desktop-preview .top-simple-links{display:flex!important;flex-direction:row!important;gap:2px!important}
-html.avp-home-minimal.avp-home-desktop-preview .top-simple-links a{display:inline-flex!important;white-space:nowrap!important;padding:0 9px!important;font-size:12px!important}
-html.avp-home-minimal.avp-home-desktop-preview .top-mobile-toggle{display:none!important}
-html.avp-home-minimal.avp-home-desktop-preview .avp-hero{width:960px!important;max-width:none!important;min-width:960px!important;box-sizing:border-box!important;margin:18px 32px 0!important;padding:52px 58px!important;border-radius:28px!important}
-html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-hero-inner{width:100%!important;max-width:none!important}
-html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-copy{max-width:780px!important}
-html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-title{font-size:62px!important;line-height:1.02!important}
-html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-title .avp-brand-vietnamese{font-size:22px!important}
-html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-tagline{font-size:21px!important}
-html.avp-home-minimal.avp-home-desktop-preview .avp-hero .avp-desc{font-size:15px!important;max-width:620px!important}
-html.avp-home-minimal.avp-home-desktop-preview .avp-mobile-main-cta-wrap{display:none!important}
-html.avp-home-minimal.avp-home-desktop-preview #avp-home-ecosystem,html.avp-home-minimal.avp-home-desktop-preview #ky-nang-excel,html.avp-home-minimal.avp-home-desktop-preview #home-books{width:920px!important;max-width:none!important;min-width:920px!important;margin:44px 52px 0!important;box-sizing:border-box!important}
-html.avp-home-minimal.avp-home-desktop-preview .avp-home-ecosystem-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
-html.avp-home-minimal.avp-home-desktop-preview .avp-home-ecosystem-card{min-height:116px!important;padding:18px!important;flex-direction:row!important}
-html.avp-home-minimal.avp-home-desktop-preview #home-books .home-reference-grid-v114{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-html.avp-home-minimal.avp-home-desktop-preview #home-books .home-ref-item-v114{grid-template-columns:48px minmax(0,1fr) auto!important}
-html.avp-home-minimal.avp-home-desktop-preview .site-footer{min-width:1024px!important}
-html.avp-home-minimal.avp-home-desktop-preview #avp-desktop-preview-toggle{background:#24352b!important;border-color:#496451!important}
-html.avp-home-minimal.avp-home-desktop-preview #avp-desktop-preview-toggle::after{content:"Tắt xem desktop";white-space:nowrap}
-html.avp-home-minimal.avp-home-desktop-preview #avp-desktop-preview-toggle .avp-desktop-toggle-label{display:none!important}
-
-
-/* True desktop preview: use a 1024px iframe viewport so desktop media queries are applied. */
-html.avp-home-minimal #avp-desktop-preview-overlay{position:fixed!important;inset:0!important;z-index:2147483001!important;display:flex!important;flex-direction:column!important;background:#e8eee9!important}
-html.avp-home-minimal .avp-desktop-preview-toolbar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;flex:0 0 auto!important;min-height:64px!important;box-sizing:border-box!important;padding:10px 14px!important;background:#123d29!important;color:#fff!important;font-family:system-ui,-apple-system,sans-serif!important}
-html.avp-home-minimal .avp-desktop-preview-toolbar>span{display:flex!important;flex-direction:column!important;gap:3px!important}
-html.avp-home-minimal .avp-desktop-preview-toolbar strong{font-size:14px!important}
-html.avp-home-minimal .avp-desktop-preview-toolbar small{font-size:11px!important;color:#c8e3d1!important}
-html.avp-home-minimal .avp-desktop-preview-close{flex:0 0 auto!important;min-height:38px!important;padding:0 13px!important;border:1px solid #6b9278!important;border-radius:12px!important;background:#20583b!important;color:#fff!important;font-size:13px!important;font-weight:750!important}
-html.avp-home-minimal .avp-desktop-preview-stage{flex:1 1 auto!important;min-height:0!important;overflow:auto!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important;background:#f8faf8!important}
-html.avp-home-minimal .avp-desktop-preview-stage iframe{display:block!important;width:1024px!important;min-width:1024px!important;height:100%!important;min-height:100%!important;border:0!important;background:#fbfcfa!important}
-html.avp-home-minimal.avp-desktop-preview-open{overflow:hidden!important}
-html.avp-home-minimal.avp-desktop-preview-open body{overflow:hidden!important}
-html.avp-home-minimal #avp-desktop-preview-toggle{touch-action:manipulation!important}
-html.avp-home-minimal #avp-desktop-preview-overlay button{cursor:pointer!important;touch-action:manipulation!important}
+/* Responsive refinement: preserve desktop visual language without forcing a desktop-width canvas on phones. */
+html.avp-home-minimal,html.avp-home-minimal body{max-width:100%;overflow-x:clip!important}
+html.avp-home-minimal *,html.avp-home-minimal *::before,html.avp-home-minimal *::after{box-sizing:border-box}
+@media(max-width:650px){
+ html.avp-home-minimal .top-simple-nav{width:100%!important;max-width:100%!important}
+ html.avp-home-minimal .avp-hero{min-width:0!important;max-width:calc(100% - 24px)!important}
+ html.avp-home-minimal #avp-home-ecosystem,html.avp-home-minimal #ky-nang-excel,html.avp-home-minimal #home-books{min-width:0!important;max-width:calc(100% - 28px)!important}
+ html.avp-home-minimal .avp-home-ecosystem-grid{grid-template-columns:1fr!important}
+ html.avp-home-minimal .avp-home-ecosystem-card{width:100%!important;min-width:0!important}
+ html.avp-home-minimal .avp-home-card-copy{overflow-wrap:anywhere}
+ html.avp-home-minimal #home-books .home-reference-grid-v114,html.avp-home-minimal #home-books .home-ref-item-v114{min-width:0!important;max-width:100%!important}
+}
