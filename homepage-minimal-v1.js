@@ -43,12 +43,36 @@
     });
   }
 
+
+  function installDesktopPreview(){
+    if(document.getElementById('avp-desktop-preview-toggle'))return;
+    var button=el('button','');
+    button.id='avp-desktop-preview-toggle';
+    button.type='button';
+    button.setAttribute('aria-pressed','false');
+    button.setAttribute('aria-label','Bật chế độ xem giao diện desktop');
+    button.innerHTML='<span class="avp-desktop-toggle-icon" aria-hidden="true">▣</span><span class="avp-desktop-toggle-label">Xem desktop</span>';
+    button.addEventListener('click',function(){
+      var enabled=!document.documentElement.classList.contains('avp-home-desktop-preview');
+      document.documentElement.classList.toggle('avp-home-desktop-preview',enabled);
+      button.setAttribute('aria-pressed',enabled?'true':'false');
+      button.setAttribute('aria-label',enabled?'Tắt chế độ xem giao diện desktop':'Bật chế độ xem giao diện desktop');
+      var label=button.querySelector('.avp-desktop-toggle-label');
+      if(label)label.textContent=enabled?'Xem mobile':'Xem desktop';
+      var icon=button.querySelector('.avp-desktop-toggle-icon');
+      if(icon)icon.textContent=enabled?'▱':'▣';
+      if(enabled){window.scrollTo(0,0);document.documentElement.scrollLeft=0;}
+    });
+    document.body.appendChild(button);
+  }
+
   function setup(){
     var nav=document.querySelector('.top-simple-nav');
     var hero=document.querySelector('.avp-hero');
     var pathSection=document.getElementById('ky-nang-excel');
     var books=document.getElementById('home-books');
     if(!nav||!hero||!pathSection)return;
+    installDesktopPreview();
 
     if(!nav.querySelector('.avp-home-brand')){
       var brand=el('a','avp-home-brand');
