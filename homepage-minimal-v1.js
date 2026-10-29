@@ -46,7 +46,7 @@ function setup(){
  '<div class="avp-canonical-eyebrow">●　EXCEL　·　DỮ LIỆU　·　BÁO CÁO　·　TỰ ĐỘNG HÓA　·　AI</div>'+
  '<h1>Học <span>Excel</span><br>để làm được việc.</h1>'+
  '<p>Từ cơ bản đến nâng cao, kèm ví dụ thực tế, bài tập và file thực hành.<br>Giúp bạn xử lý công việc nhanh hơn, chính xác hơn và chuyên nghiệp hơn.</p>'+
- '<div class="avp-canonical-actions"><a class="avp-canonical-primary" href="skill-map.html"><span>▤</span><b>Bắt đầu học ngay<small>Dành cho người mới</small></b><i>→</i></a><a class="avp-canonical-secondary" href="intro.html?v=6"><span>▶</span><b>Xem giới thiệu<small>1 phút hiểu về AVP</small></b></a></div></div>'+
+ '<div class="avp-canonical-actions"><a class="avp-canonical-primary" href="skill-map.html"><span>▤</span><b>Bắt đầu học ngay<small>Dành cho người mới</small></b><i>→</i></a><a class="avp-canonical-secondary" href="intro.html?v=7"><span>▶</span><b>Xem giới thiệu<small>1 phút hiểu về AVP</small></b></a></div></div>'+
  '<div class="avp-canonical-illustration"><div class="avp-float-label">Power Query</div><div class="avp-sheet"><small>AVP · DATA</small><div class="avp-bars"><i></i><i></i><i></i><i></i><i></i></div></div><div class="avp-checklist">✓　Dữ liệu<br>✓　Phân tích<br>✓　Báo cáo<br>✓　Tự động hóa</div><div class="avp-person">👨🏻‍💻</div><div class="avp-laptop"><span>▦</span><b>X</b></div><div class="avp-books-stack">Excel　·　Power Query　·　Dashboard</div></div></div>';
  ['#home-ai-intro','#ky-nang-excel','.home-path','#avp-home-ecosystem','#avp-reference-featured','#avp-featured-lessons','.avp-reference-next-steps'].forEach(function(s){document.querySelectorAll(s).forEach(function(n){n.remove();});});
  var discover=el('section','avp-canonical-discover');
