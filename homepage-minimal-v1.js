@@ -199,6 +199,14 @@
       feature.insertAdjacentElement('afterend',extra);
     }
 
+
+    /* Fix reported duplicates: remove the repeated hero CTA and any onboarding panel before discovery. */
+    document.querySelectorAll('.avp-reference-hero .avp-reference-primary').forEach(function(n){n.remove();});
+    var discovery=document.getElementById('avp-reference-featured');
+    document.querySelectorAll('.avp-reference-next-steps').forEach(function(n){
+      if(discovery && n.compareDocumentPosition(discovery) & Node.DOCUMENT_POSITION_FOLLOWING) n.remove();
+    });
+
     /* Keep the existing curriculum routes available, but remove the crowded old lesson grid from the homepage. */
     var oldGrid=pathSection.querySelector('.home-path-grid');
     if(oldGrid)oldGrid.hidden=true;
