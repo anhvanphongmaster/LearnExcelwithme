@@ -66,7 +66,7 @@ function setup(){
  ['excel-library.html','ƒx','Thư viện hàm Excel','Tra cứu nhanh công dụng, ví dụ và cách dùng','blue'],
  ['practice-video.html','▤','File thực hành','Tải file theo từng chương, bài học','amber'],
  ['ai.html','✳','Công cụ hỗ trợ','Template, tiện ích và công cụ hữu ích','purple'],
- ['tools-center.html','♟','Cộng đồng','Hỏi đáp, chia sẻ kinh nghiệm và thảo luận','pink']
+ ['community.html','♟','Cộng đồng','Hỏi đáp, chia sẻ kinh nghiệm và thảo luận','pink']
  ];
  var grid=discover.querySelector('.avp-canonical-discover-grid');
 
