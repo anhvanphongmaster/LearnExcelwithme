@@ -7,6 +7,14 @@
   window.__AVP_HOME_MINIMAL_V1__=true;
   document.documentElement.classList.add('avp-home-minimal');
 
+  /* TEMPORARY: let phones render the desktop layout; remove this block to restore responsive mobile. */
+  var avpViewport=document.querySelector('meta[name="viewport"]');
+  var avpForceDesktop=window.matchMedia('(max-width: 650px)').matches;
+  if(avpViewport && avpForceDesktop){
+    avpViewport.setAttribute('content','width=1200, initial-scale=0.32, maximum-scale=3, user-scalable=yes');
+    document.documentElement.classList.add('avp-force-desktop-mobile');
+  }
+
   function el(tag,cls,html){
     var n=document.createElement(tag);
     if(cls)n.className=cls;
