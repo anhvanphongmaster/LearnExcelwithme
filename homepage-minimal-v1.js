@@ -156,6 +156,10 @@ function setup(){
  var lessonPanel=null;
 
  modalStyle.textContent+='.avp-lesson-workflow{margin-top:16px;padding:16px;border:1px solid #e2ebe5;border-radius:16px;background:#f8fbf9}.avp-lesson-workflow h4{margin:12px 0 8px;color:#16805a;font-size:11px;letter-spacing:.08em}.avp-lesson-workflow ol{margin:0;padding-left:20px}.avp-lesson-workflow li,.avp-lesson-workflow p{font-size:12px;line-height:1.7;color:#53675b}.avp-lesson-library-section{margin-top:18px;padding-top:14px;border-top:1px solid #e5eee8}.avp-lesson-library-section>h4{margin:0 0 7px;color:#16805a;font-size:11px;letter-spacing:.08em}.avp-lesson-library-section>p{font-size:12px;line-height:1.65;color:#718177}.avp-lesson-library-section .avp-lesson-ref-list{grid-template-columns:repeat(2,minmax(0,1fr))}.avp-lesson-library-section .avp-lesson-drawer{z-index:100004}@media(max-width:700px){.avp-lesson-library-section .avp-lesson-ref-list{grid-template-columns:1fr}}';
+
+/* Detailed step-by-step lesson procedure v2 */
+.avp-lesson-procedure-v2{margin-top:18px;padding:17px;border:1px solid #dce9df;border-radius:16px;background:linear-gradient(180deg,#fbfefc,#f4faf6)}.avp-lesson-procedure-v2 h4{margin:16px 0 8px;color:#147347;font-size:12px;letter-spacing:.07em}.avp-lesson-procedure-v2 h4:first-child{margin-top:0}.avp-lesson-procedure-v2 p,.avp-lesson-procedure-v2 li{font-size:13px;line-height:1.8;color:#405b4a}.avp-lesson-procedure-v2 ol{margin:0;padding-left:23px}.avp-lesson-procedure-v2 li{padding:3px 0 5px}.avp-procedure-mouse{padding:12px 14px;border-left:3px solid #24845a;border-radius:7px;background:#eaf5ee}.avp-procedure-goal{font-weight:600}
+
 modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:2px}.avp-lesson-main{min-width:0;padding:20px;border:1px solid #e2ebe5;border-radius:18px;background:#fff}.avp-lesson-kicker{font-size:10px;font-weight:900;letter-spacing:.12em;color:#16805a}.avp-lesson-main h3{margin:8px 0 12px;font-size:22px;line-height:1.25;color:#173b29}.avp-lesson-main p{font-size:13px;line-height:1.75;color:#53675b}.avp-lesson-main h4{margin:18px 0 8px;color:#234a34;font-size:14px}.avp-lesson-example{padding:13px 15px;border-radius:12px;background:#f2f8f4;color:#244c35;font-size:13px;line-height:1.7}.avp-lesson-ref-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}.avp-lesson-ref{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #dce9df;border-radius:13px;background:#f8fbf9;color:#234a34;text-align:left;cursor:pointer}.avp-lesson-ref strong{display:block;font-size:12px}.avp-lesson-ref small{display:block;margin-top:4px;color:#78887e;font-size:10px}.avp-lesson-reader-back{margin-bottom:12px}.avp-lesson-drawer{display:none;position:fixed;z-index:100002;inset:0;background:rgba(13,32,22,.42);align-items:stretch;justify-content:flex-end}.avp-lesson-drawer.open{display:flex}.avp-lesson-drawer-panel{width:min(480px,44vw);height:100%;overflow:auto;padding:24px;background:#fff;box-shadow:-18px 0 55px rgba(0,0,0,.18);color:#173b29}.avp-lesson-drawer-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid #e5eee8}.avp-lesson-drawer-head small{font-size:10px;font-weight:900;letter-spacing:.1em;color:#16805a}.avp-lesson-drawer-close{width:36px;height:36px;border:0;border-radius:50%;background:#edf4ef;color:#315b43;font-size:22px;cursor:pointer}.avp-lesson-drawer-panel h3{font-size:21px;line-height:1.3}.avp-lesson-drawer-panel p,.avp-lesson-drawer-panel li{font-size:13px;line-height:1.75;color:#53675b}.avp-lesson-drawer-panel h4{margin:18px 0 7px;font-size:12px;letter-spacing:.08em;color:#16805a}.avp-lesson-drawer-example{padding:12px;border-radius:11px;background:#f2f8f4;font-size:13px;line-height:1.7;color:#244c35}.avp-lesson-drawer-loading{padding:28px 8px;color:#718177;font-size:13px}@media(max-width:700px){.avp-lesson-main{padding:15px}.avp-lesson-ref-list{grid-template-columns:1fr}.avp-lesson-drawer-panel{width:100%;padding:20px 17px}.avp-lesson-main h3{font-size:19px}}`;
  function renderDataTypesLesson(){
   if(!lessonPanel)return;
@@ -249,6 +253,17 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
  }
  function renderStructuredLesson(chapterIndex,lessonIndex){
   if(!lessonPanel||chapterIndex<1||chapterIndex>3||lessonIndex<0||lessonIndex>=chapterLessons[chapterIndex].length)return;
+  if(!window.AVP_LESSON_PROCEDURES_V2){
+   lessonPanel.innerHTML='<div class="avp-lesson-main"><p>Đang tải hướng dẫn thao tác chi tiết…</p></div>';
+   var procedureScript=document.getElementById('avp-lesson-procedures-v2-script');
+   if(!procedureScript){
+    procedureScript=document.createElement('script');procedureScript.id='avp-lesson-procedures-v2-script';procedureScript.src='chapter-lesson-procedures-v2.js?v=1';
+    procedureScript.onload=function(){renderStructuredLesson(chapterIndex,lessonIndex);};
+    procedureScript.onerror=function(){lessonPanel.innerHTML='<div class="avp-lesson-main"><h3>Không tải được hướng dẫn bài học</h3><p>Hãy tải lại trang sau ít phút. Nội dung bài chưa bị thay đổi.</p></div>';};
+    document.head.appendChild(procedureScript);
+   }else{procedureScript.addEventListener('load',function(){renderStructuredLesson(chapterIndex,lessonIndex);},{once:true});}
+   return;
+  }
   var catalogs={
   1:[
    ["Di chuyển nhanh trong Sheet","Đi đến ô hoặc vùng mà không phải cuộn thủ công.","Dùng Name Box để nhập địa chỉ như A500 hoặc A1:D20. Ctrl+Home về đầu vùng; Ctrl+End đến ô cuối Excel đang nhận diện có dữ liệu/định dạng.","Thử nhảy tới A500 bằng Name Box, sau đó dùng Ctrl+Home và Ctrl+End để so sánh.","Nhầm Ctrl+End với ô cuối có dữ liệu thực tế; định dạng thừa có thể làm vùng sử dụng bị kéo dài.","Muốn đến ô XFD1000 nhanh nhất, nên dùng Name Box hay cuộn chuột? Name Box."],
@@ -303,13 +318,25 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
   lessonPanel.querySelector('.avp-lesson-practice').textContent=d[3];
   lessonPanel.querySelector('.avp-lesson-mistake').textContent=d[4];
   lessonPanel.querySelector('.avp-lesson-check').textContent=d[5];
-  var workflow=document.createElement('section');workflow.className='avp-lesson-workflow';
-  workflow.innerHTML='<h4>QUY TRÌNH ÁP DỤNG</h4><ol><li class="step-source"></li><li class="step-action"></li><li class="step-verify"></li></ol><h4>TIÊU CHÍ HOÀN THÀNH</h4><p class="step-output"></p>';
-  workflow.querySelector('.step-source').textContent='Xác định đúng vùng dữ liệu, mục tiêu và điều kiện đầu vào trước khi thao tác.';
-  workflow.querySelector('.step-action').textContent=d[3];
-  workflow.querySelector('.step-verify').textContent='Đối chiếu kết quả với quy tắc: '+d[4]+' Kiểm tra lại trên một vài bản ghi đại diện.';
-  workflow.querySelector('.step-output').textContent=d[5];
-  lessonPanel.querySelector('.avp-lesson-main').appendChild(workflow);
+  var procedure=window.AVP_LESSON_PROCEDURES_V2.find(function(item){return item.id==='C'+(chapterIndex+1)+'L'+String(lessonIndex+1).padStart(2,'0');});
+  if(procedure){
+   var main=lessonPanel.querySelector('.avp-lesson-main');
+   var detail=document.createElement('section');detail.className='avp-lesson-procedure-v2';
+   var heading=document.createElement('h4');heading.textContent='HƯỚNG DẪN THAO TÁC TỪNG BƯỚC';detail.appendChild(heading);
+   var intro=document.createElement('p');intro.className='avp-procedure-goal';intro.textContent=procedure.goal;detail.appendChild(intro);
+   var listTitle=document.createElement('h4');listTitle.textContent='THỰC HIỆN TRÊN EXCEL';detail.appendChild(listTitle);
+   var list=document.createElement('ol');list.className='avp-procedure-steps';
+   procedure.steps.forEach(function(step){var li=document.createElement('li');li.textContent=step;list.appendChild(li);});detail.appendChild(list);
+   var mouseTitle=document.createElement('h4');mouseTitle.textContent='DÙNG CHUỘT NÀO, BẤM Ở ĐÂU?';detail.appendChild(mouseTitle);
+   var mouse=document.createElement('p');mouse.className='avp-procedure-mouse';mouse.textContent=procedure.mouse;detail.appendChild(mouse);
+   var expectedTitle=document.createElement('h4');expectedTitle.textContent='KẾT QUẢ CẦN NHÌN THẤY';detail.appendChild(expectedTitle);
+   var expected=document.createElement('p');expected.textContent=procedure.expected;detail.appendChild(expected);
+   var practiceTitle=document.createElement('h4');practiceTitle.textContent='MỞ RỘNG VÀ ÁP DỤNG THỰC TẾ';detail.appendChild(practiceTitle);
+   var practice=document.createElement('p');practice.textContent=procedure.practice;detail.appendChild(practice);
+   var errorsTitle=document.createElement('h4');errorsTitle.textContent='LỖI CẦN TRÁNH';detail.appendChild(errorsTitle);
+   var errors=document.createElement('p');errors.textContent=procedure.errors;detail.appendChild(errors);
+   main.appendChild(detail);
+  }
   renderLessonLibraryRefs(lessonPanel,chapterIndex,lessonIndex);
  }
  function renderChapterGrid(){
