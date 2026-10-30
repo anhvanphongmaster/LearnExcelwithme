@@ -319,3 +319,43 @@ html.avp-home-canonical .avp-book-excel{width:100%!important;background:linear-g
   html.avp-home-canonical .avp-books-stack{width:27%!important;right:0!important;bottom:7%!important;height:32%!important}
   html.avp-home-canonical .avp-book{padding-left:6px!important;font-size:7px!important}
 }
+
+/* Final AVP hero: use the complete reference-style illustration as one artwork. */
+html.avp-home-canonical .avp-canonical-illustration.avp-hero-art{
+  position:relative!important;display:block!important;width:100%!important;height:265px!important;
+  overflow:hidden!important;border-radius:20px!important;background:#d8efe2!important;
+  isolation:isolate!important;
+}
+html.avp-home-canonical .avp-hero-art-image{
+  position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;
+  max-width:none!important;object-fit:cover!important;object-position:center center!important;
+  border:0!important;border-radius:inherit!important;animation:avpHeroArtworkFloat 8s ease-in-out infinite!important;
+}
+html.avp-home-canonical .avp-hero-art .avp-tool-bubble{
+  position:absolute!important;left:16%!important;top:23%!important;z-index:9!important;
+  display:flex!important;min-width:clamp(98px,12vw,150px)!important;min-height:38px!important;
+  padding:8px 12px!important;border:1px solid #d7e9dd!important;border-radius:13px!important;
+  background:linear-gradient(145deg,#fffefc,#f5fbf7)!important;color:#24583c!important;
+  box-shadow:0 8px 22px #16452a20!important;font-size:clamp(9px,.85vw,12px)!important;
+}
+html.avp-home-canonical .avp-hero-art .avp-tool-bubble:after{
+  content:""!important;position:absolute!important;left:18px!important;bottom:-6px!important;
+  width:10px!important;height:10px!important;background:#f8fcf9!important;
+  border-right:1px solid #d7e9dd!important;border-bottom:1px solid #d7e9dd!important;transform:rotate(45deg)!important;
+}
+html.avp-home-canonical .avp-hero-art .avp-tool-bubble span{
+  position:absolute!important;inset:0!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  padding:0 8px!important;white-space:nowrap!important;opacity:0!important;visibility:hidden!important;
+  transform:translate3d(-9px,7px,0) scale(.9)!important;transform-origin:50% 100%!important;
+  animation:avpToolBubble 36s cubic-bezier(.2,.75,.25,1) infinite both!important;
+  animation-delay:calc(var(--tool-index)*3s)!important;
+}
+@keyframes avpHeroArtworkFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.003)}}
+@media(max-width:700px){
+  html.avp-home-canonical .avp-canonical-illustration.avp-hero-art{height:220px!important;border-radius:15px!important}
+  html.avp-home-canonical .avp-hero-art-image{object-position:center center!important}
+  html.avp-home-canonical .avp-hero-art .avp-tool-bubble{
+    left:15%!important;top:22%!important;min-width:88px!important;min-height:30px!important;
+    padding:6px 8px!important;font-size:8px!important;border-radius:10px!important;
+  }
+}
