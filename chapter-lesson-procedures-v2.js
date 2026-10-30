@@ -653,5 +653,207 @@ window.AVP_LESSON_PROCEDURES_V2 = [
     "practice": "Thêm điều kiện theo trạng thái hoặc khoảng ngày; kiểm tra dữ liệu có mã trùng và dòng trống.",
     "errors": "Không xác định định nghĩa KPI trước khi viết công thức; các vùng điều kiện lệch kích thước; không kiểm tra kết quả biên.",
     "library": "SUM; AVERAGE; COUNTIF; SUMIFS; IF; IFERROR"
+  },
+  {
+    "id": "C1L01",
+    "title": "Làm quen giao diện Excel",
+    "goal": "Nhận diện các vùng chính trên cửa sổ Excel và biết nơi thao tác.",
+    "steps": [
+      "1. Mở Excel và tạo Blank Workbook.",
+      "2. Nhấn chuột trái vào tab Home trên Ribbon; quan sát các nhóm Clipboard, Font, Alignment, Number.",
+      "3. Nhấn chuột trái vào một ô bất kỳ; quan sát Name Box và Formula Bar.",
+      "4. Nhấn chuột trái vào các tab Sheet1 phía dưới để nhận diện Worksheet.",
+      "5. Nhấn dấu + cạnh tab Sheet để thêm Worksheet; nhấp đúp chuột trái vào tên Sheet để đổi tên.",
+      "6. Vào File → New để xem mẫu Workbook; nhấn Esc để quay lại."
+    ],
+    "mouse": "Chuột trái dùng để chọn tab Ribbon, ô và Worksheet; nhấp đúp chuột trái vào tên Sheet để đổi tên. Chuột phải trên tab Sheet mở menu đổi tên/di chuyển/xóa.",
+    "expected": "Nhận diện được Ribbon, Name Box, Formula Bar, vùng ô, tab Sheet và thanh trạng thái.",
+    "practice": "Tạo Workbook quản lý đơn hàng với các Sheet Data, Master và Report.",
+    "errors": "Nhầm Workbook với Worksheet; sửa dữ liệu trên nhầm Sheet; đóng cửa sổ mà chưa lưu file.",
+    "library": "K001; K002; K003"
+  },
+  {
+    "id": "C1L02",
+    "title": "Workbook, Worksheet và cấu trúc file",
+    "goal": "Phân biệt tệp Excel với các trang tính bên trong và tổ chức file có chủ đích.",
+    "steps": [
+      "1. Vào File → New → Blank Workbook.",
+      "2. Nhấn chuột trái vào tab Sheet1, nhấp đúp tên Sheet1 và gõ Data.",
+      "3. Nhấn dấu + để thêm Sheet; đổi tên thành Master.",
+      "4. Thêm Sheet thứ ba và đổi tên thành Report.",
+      "5. Nhấn chuột phải vào tab Report để xem Rename, Move or Copy, Delete, Tab Color.",
+      "6. Nhấn Ctrl+S, chọn vị trí lưu, đặt tên file rồi nhấn Save."
+    ],
+    "mouse": "Chuột trái để chọn/nhấp đúp đổi tên; chuột phải vào tab Sheet để mở menu quản lý trang tính.",
+    "expected": "Một Workbook có ba Worksheet tên Data, Master và Report; file được lưu với tên rõ ràng.",
+    "practice": "Tách dữ liệu đầu vào, danh mục chuẩn và báo cáo tổng hợp thành ba Sheet.",
+    "errors": "Tạo nhiều file riêng không cần thiết; xóa nhầm Worksheet; đặt tên Sheet trùng hoặc khó hiểu.",
+    "library": "K001"
+  },
+  {
+    "id": "C1L03",
+    "title": "Ô, dòng, cột, vùng và địa chỉ",
+    "goal": "Đọc đúng địa chỉ ô và chọn vùng dữ liệu trước khi nhập hoặc định dạng.",
+    "steps": [
+      "1. Nhấn chuột trái vào ô B3; đọc địa chỉ B3 trên Name Box.",
+      "2. Nhấn chuột trái vào chữ B trên đầu cột để chọn cả cột B.",
+      "3. Nhấn chuột trái vào số 3 bên trái để chọn cả dòng 3.",
+      "4. Giữ chuột trái tại B3, kéo đến D8 để chọn vùng B3:D8.",
+      "5. Nhấn Ctrl+G, nhập B3:D8 rồi Enter để chọn lại vùng bằng địa chỉ.",
+      "6. Nhìn Formula Bar để phân biệt nội dung ô với địa chỉ ô."
+    ],
+    "mouse": "Chuột trái chọn ô, tiêu đề cột, tiêu đề dòng và kéo vùng. Chuột phải chỉ mở menu thao tác, không dùng để xác định vùng chọn.",
+    "expected": "Name Box hiển thị đúng địa chỉ; vùng B3:D8 được tô chọn; cột B hoặc dòng 3 được chọn toàn bộ.",
+    "practice": "Chọn đúng vùng dữ liệu trước khi áp dụng định dạng hoặc công thức.",
+    "errors": "Nhầm B3:D8 là một ô; kéo lệch vùng; chọn tiêu đề cột thay vì một ô.",
+    "library": "K002; K003"
+  },
+  {
+    "id": "C1L04",
+    "title": "Di chuyển và chọn vùng bằng chuột",
+    "goal": "Di chuyển trong Worksheet và chọn một vùng liên tục bằng thao tác chuột chính xác.",
+    "steps": [
+      "1. Nhấn chuột trái vào ô A1.",
+      "2. Dùng thanh cuộn dọc bên phải để kéo xuống khoảng dòng 100.",
+      "3. Dùng thanh cuộn ngang phía dưới để kéo sang cột H.",
+      "4. Nhấn chuột trái vào ô B2, giữ nút chuột trái và kéo đến E10.",
+      "5. Muốn chọn vùng lớn, nhấn vào ô đầu, giữ Shift rồi nhấn ô cuối.",
+      "6. Nhấn Ctrl+Home để quay về A1."
+    ],
+    "mouse": "Chuột trái để chọn ô và kéo thanh cuộn; lăn bánh xe chuột để cuộn dọc. Nhấn giữ Shift và nhấp chuột trái để chọn vùng từ ô đầu đến ô cuối.",
+    "expected": "Vùng B2:E10 được chọn chính xác; vị trí đang đứng thể hiện trên Name Box.",
+    "practice": "Thực hành chọn vùng dữ liệu lớn trên bảng kiểm tra chất lượng mà không kéo lệch cột.",
+    "errors": "Kéo thanh cuộn ngang/dọc khiến mất vị trí; nhấn chuột phải khi định chọn vùng; chọn ô cuối nhưng quên giữ Shift.",
+    "library": "K002; K003"
+  },
+  {
+    "id": "C1L05",
+    "title": "Nhập, sửa và xóa nội dung ô",
+    "goal": "Nhập dữ liệu, chỉnh sửa nội dung và xóa đúng phần cần xóa.",
+    "steps": [
+      "1. Nhấn chuột trái vào ô A1, gõ Mã đơn rồi nhấn Enter.",
+      "2. Nhập dữ liệu mẫu vào A2, B2 và C2.",
+      "3. Muốn sửa toàn bộ nội dung, chọn ô rồi gõ nội dung mới và Enter.",
+      "4. Muốn sửa một phần, nhấp đúp chuột trái vào ô hoặc chọn ô rồi nhấn F2.",
+      "5. Muốn xóa nội dung nhưng giữ định dạng, chọn ô và nhấn Delete trên bàn phím.",
+      "6. Muốn xóa cả nội dung, định dạng và ghi chú, vào Home → Clear → Clear All."
+    ],
+    "mouse": "Chuột trái chọn ô; nhấp đúp chuột trái để sửa trực tiếp. Chuột phải mở menu Clear Contents nếu cần; phím Delete chỉ xóa nội dung.",
+    "expected": "Nội dung được nhập/sửa đúng ô; thao tác Delete không làm mất định dạng; Clear All xóa cả định dạng.",
+    "practice": "Nhập mã sản phẩm, số lượng, ngày phát sinh và ghi chú theo đúng cột.",
+    "errors": "Nhấn Delete khi đang chọn cả dòng/cột; gõ đè làm mất nội dung cũ; nhầm Clear Contents với Clear All.",
+    "library": "K002; K006"
+  },
+  {
+    "id": "C1L07",
+    "title": "Định dạng số, ngày và phần trăm",
+    "goal": "Thay đổi cách hiển thị số mà không làm sai giá trị gốc.",
+    "steps": [
+      "1. Nhập 12500000 vào A2, 0.085 vào A3 và một ngày hợp lệ vào A4.",
+      "2. Chọn A2 bằng chuột trái; vào Home → Number Format → Number hoặc Currency.",
+      "3. Chọn A3; vào Home → Number Format → Percentage.",
+      "4. Chọn A4; vào Home → Number Format → Short Date.",
+      "5. Nhấn Ctrl+1 để mở Format Cells; chọn Number, Date hoặc Percentage rồi nhấn OK.",
+      "6. Chọn từng ô và nhìn Formula Bar để so sánh giá trị thật với cách hiển thị."
+    ],
+    "mouse": "Chuột trái chọn ô và danh sách Number Format; Ctrl+1 mở Format Cells. Chuột phải → Format Cells cũng được.",
+    "expected": "12.500.000 hiển thị dạng số/tiền; 0.085 hiển thị 8,5%; ngày hiển thị theo định dạng đã chọn.",
+    "practice": "Định dạng báo cáo doanh số, tỷ lệ lỗi và ngày kiểm tra trước khi gửi quản lý.",
+    "errors": "Nhập 8.5 rồi định dạng Percentage thành 850%; tưởng đổi định dạng là chuyển Text thành Date; dùng Currency không đúng đơn vị.",
+    "library": "K006; K007; K008"
+  },
+  {
+    "id": "C1L08",
+    "title": "Định dạng trình bày và bố cục bảng",
+    "goal": "Tạo bảng dễ đọc bằng định dạng tiêu đề, căn chỉnh, đường viền và độ rộng.",
+    "steps": [
+      "1. Chọn hàng tiêu đề bằng cách kéo chuột trái qua các ô A1:F1.",
+      "2. Vào Home → Font → Bold để in đậm; chọn Fill Color để tô nền.",
+      "3. Vào Home → Alignment → Center để căn giữa tiêu đề.",
+      "4. Chọn cột A:F bằng cách kéo qua các chữ cái cột; nhấp đúp ranh giới giữa hai chữ cái cột để AutoFit Column Width.",
+      "5. Chọn vùng bảng, vào Home → Borders → All Borders.",
+      "6. Nếu cần xuống dòng, chọn ô rồi nhấn Home → Wrap Text."
+    ],
+    "mouse": "Chuột trái chọn vùng, nút Bold, Fill Color, Alignment, Borders và Wrap Text. Nhấp đúp chuột trái vào ranh giới cột để AutoFit.",
+    "expected": "Tiêu đề nổi bật, nội dung không bị cắt, cột vừa với dữ liệu và bảng có đường viền dễ đọc.",
+    "practice": "Chuẩn hóa báo cáo ca ngày/ca đêm để người nhận đọc nhanh.",
+    "errors": "Gộp ô tràn lan; căn giữa mọi dữ liệu; tô quá nhiều màu; chỉnh độ rộng từng cột thủ công.",
+    "library": "K003"
+  },
+  {
+    "id": "C1L09",
+    "title": "Sao chép dữ liệu và AutoFill",
+    "goal": "Sao chép nội dung và điền chuỗi dữ liệu bằng Fill Handle.",
+    "steps": [
+      "1. Nhập mã NV001 vào A2.",
+      "2. Chọn A2, đưa con trỏ đến ô vuông nhỏ ở góc dưới phải vùng chọn.",
+      "3. Giữ chuột trái và kéo xuống A10; quan sát Auto Fill Options.",
+      "4. Muốn tạo dãy số, nhập 1 ở B2 và 2 ở B3; chọn cả B2:B3 rồi kéo Fill Handle xuống.",
+      "5. Muốn sao chép định dạng, Copy ô mẫu, chọn vùng đích, nhấn chuột phải → Paste Special → Formats.",
+      "6. Kiểm tra dữ liệu ở dòng cuối và xóa vùng thử nghiệm nếu cần."
+    ],
+    "mouse": "Chuột trái kéo Fill Handle; chuột phải tại ô đích để chọn Paste Special → Formats.",
+    "expected": "Dữ liệu hoặc chuỗi được điền theo quy luật; định dạng được sao chép mà không thay đổi giá trị.",
+    "practice": "Tạo số thứ tự, lịch ngày hoặc sao chép công thức xuống các dòng báo cáo.",
+    "errors": "Kéo một giá trị đơn và mong tạo chuỗi; nhầm Fill Handle với viền vùng chọn; sao chép đè dữ liệu có sẵn.",
+    "library": "K050; K048"
+  },
+  {
+    "id": "C1L10",
+    "title": "Tạo, lưu và chọn đúng định dạng file",
+    "goal": "Lưu Workbook đúng vị trí, tên và định dạng để tránh mất dữ liệu hoặc mất tính năng.",
+    "steps": [
+      "1. Nhấn Ctrl+S hoặc vào File → Save As.",
+      "2. Chọn Browse để mở cửa sổ lưu file.",
+      "3. Chọn thư mục đích, nhập tên file có phiên bản/ngày rõ ràng.",
+      "4. Mở danh sách Save as type.",
+      "5. Chọn Excel Workbook (*.xlsx) cho file thông thường; chọn Excel Macro-Enabled Workbook (*.xlsm) nếu có Macro.",
+      "6. Nhấn Save; nếu Excel cảnh báo tính năng không tương thích, đọc kỹ trước khi chọn tiếp.",
+      "7. Đóng rồi mở lại file để xác nhận file lưu đúng."
+    ],
+    "mouse": "Chuột trái chọn File → Save As → Browse, chọn thư mục, định dạng và Save. Ctrl+S lưu nhanh sau khi đã có tên file.",
+    "expected": "File xuất hiện đúng thư mục, đúng tên và đúng phần mở rộng; Macro không bị mất khi lưu .xlsm.",
+    "practice": "Tạo bản sao trước khi chỉnh sửa file báo cáo gốc; đặt tên theo tháng và phiên bản.",
+    "errors": "Lưu file có Macro thành .xlsx; ghi đè nhầm bản gốc; không kiểm tra thư mục lưu.",
+    "library": "K001"
+  },
+  {
+    "id": "C1L11",
+    "title": "Thiết lập trang in và xuất PDF",
+    "goal": "Chọn vùng in, kiểm tra bố cục trang và xuất báo cáo thành PDF.",
+    "steps": [
+      "1. Chọn vùng bảng cần in bằng chuột trái kéo từ ô đầu đến ô cuối.",
+      "2. Vào Page Layout → Print Area → Set Print Area.",
+      "3. Vào Page Layout → Orientation → Landscape nếu bảng nhiều cột.",
+      "4. Chọn Page Layout → Size → A4.",
+      "5. Trong Scale to Fit, chọn Fit All Columns on One Page nếu cần vừa chiều ngang; tránh ép quá nhiều dòng vào một trang.",
+      "6. Vào File → Print để xem Print Preview; kiểm tra lề, tiêu đề và số trang.",
+      "7. Vào File → Export → Create PDF/XPS hoặc Save As → PDF; chọn Publish/Save."
+    ],
+    "mouse": "Chuột trái thao tác Page Layout và File; Print Preview là bước bắt buộc trước khi xuất. Không dùng chuột phải để xuất PDF.",
+    "expected": "Bảng nằm gọn trong trang, không bị cắt cột; file PDF mở được và đúng nội dung.",
+    "practice": "Xuất báo cáo QC một trang để gửi quản lý hoặc lưu hồ sơ.",
+    "errors": "Chọn sai Print Area; ép vừa một trang khiến chữ quá nhỏ; không kiểm tra Print Preview; xuất nhầm Sheet.",
+    "library": "K003"
+  },
+  {
+    "id": "C1L12",
+    "title": "Bài thực hành tổng hợp: dựng Workbook quản lý đơn hàng",
+    "goal": "Tạo một Workbook có cấu trúc rõ ràng, nhập liệu, định dạng và xuất báo cáo.",
+    "steps": [
+      "1. Tạo Blank Workbook và đổi Sheet1 thành Data; thêm Master và Report.",
+      "2. Trên Data, nhập tiêu đề Mã đơn, Ngày, Cửa hàng, Mã hàng, Số lượng, Đơn giá.",
+      "3. Nhập ít nhất 10 dòng dữ liệu; giữ mã có số 0 đầu dưới dạng Text.",
+      "4. Trên Master, tạo danh sách cửa hàng và mã hàng chuẩn.",
+      "5. Trên Report, tạo tiêu đề báo cáo và liên kết vài chỉ tiêu từ Data.",
+      "6. Định dạng ngày, số lượng, đơn giá; AutoFit cột; in đậm tiêu đề và thêm đường viền.",
+      "7. Lưu file dạng .xlsx; thiết lập vùng in và xuất PDF.",
+      "8. Đóng/mở lại file để kiểm tra cấu trúc và nội dung."
+    ],
+    "mouse": "Chuột trái để chọn Sheet, ô và vùng; nhấp đúp tên Sheet để đổi tên; chuột phải tab Sheet để quản lý; Ctrl+S lưu file; Page Layout để thiết lập in.",
+    "expected": "Workbook có ba Sheet đúng vai trò, dữ liệu không lệch cột, định dạng phù hợp và PDF không bị cắt.",
+    "practice": "Mở rộng thêm cột Trạng thái đơn và ghi chú; thử thay dữ liệu nguồn rồi cập nhật Report.",
+    "errors": "Để tất cả dữ liệu trên một Sheet; dùng sai kiểu dữ liệu; quên lưu; xuất PDF trước khi xem Print Preview.",
+    "library": "K001; K002; K003; K006; K007"
   }
 ];
