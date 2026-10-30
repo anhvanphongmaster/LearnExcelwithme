@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Thư viện hàm Excel | Anh Văn Phòng</title>
-<meta name="description" content="Tra cứu hàm Excel thông dụng, ví dụ thực tế, bài tập và công thức lồng từ cơ bản đến nâng cao.">
+<meta name="description" content="Tra cứu 112 hàm Excel thông dụng, ví dụ thực tế, bài tập và công thức lồng từ cơ bản đến nâng cao.">
 <meta name="theme-color" content="#08734b">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
@@ -78,10 +78,13 @@
 .fl-level-tabs button[data-difficulty="Cơ bản"].active{background:#23865b;border-color:#23865b;color:#fff}
 .fl-level-tabs button[data-difficulty="Nâng cao"].active{background:#3976b8;border-color:#3976b8;color:#fff}
 .fl-level-tabs button[data-difficulty="Tất cả"].active{background:#31533e;border-color:#31533e;color:#fff}
-.fl-item[data-difficulty="Cơ bản"]{--cat:#23865b;--tint:#e8f5ed}
-.fl-item[data-difficulty="Nâng cao"]{--cat:#3976b8;--tint:#eaf1fb}
-.fl-item[data-difficulty="Hàm lồng"]{--cat:#8d63b7;--tint:#f3edfa}
+.fl-item[data-difficulty="Cơ bản"]{--cat:#23865b;--tint:#e8f5ed;border-top:3px solid var(--cat)}
+.fl-item[data-difficulty="Nâng cao"]{--cat:#3976b8;--tint:#eaf1fb;border-top:3px solid var(--cat)}
+.fl-item[data-difficulty="Hàm lồng"]{--cat:#8d63b7;--tint:#f3edfa;border-top:3px solid var(--cat)}
+.fl-item[data-difficulty] .fl-level{background:var(--tint);color:var(--cat)}
+.fl-item[data-difficulty] h3{color:var(--cat)}
 .fl-nested{border-top-color:#8d63b7!important;--cat:#8d63b7!important;--tint:#f3edfa!important}
+.fl-nested .fl-level{background:#f3edfa;color:#7653a4}
 html[data-avp-display-mode="desktop"] .fl-shell{width:1120px;max-width:none;margin:28px auto 70px}
 html[data-avp-display-mode="desktop"] .fl-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 html[data-avp-display-mode="desktop"] .fl-topgrid{grid-template-columns:1fr 1fr}
@@ -103,9 +106,9 @@ html[data-avp-display-mode="mobile"] .fl-grid{grid-template-columns:1fr}
  <a class="fl-crumb" href="index.html">← Trang chủ / Thư viện Excel / Hàm & công thức</a>
  <section class="fl-hero">
   <span class="fl-kicker">AVP · EXCEL FORMULA LIBRARY</span>
-  <h1>Thư viện hàm Excel</h1>
+  <h1>Thư viện 112 hàm Excel thông dụng</h1>
   <p>Không chỉ xem cú pháp. Mỗi công thức đi kèm tình huống công việc, ví dụ áp dụng và một câu hỏi kiểm tra. Học từ hàm cơ bản, hàm xử lý dữ liệu đến công thức kết hợp nhiều hàm.</p>
-  <div class="fl-stats"><span id="catalogCount">Đang tải danh mục</span><span>Ví dụ có thể sao chép</span><span>9 nhóm chức năng</span><span>Excel 365 · Windows</span></div>
+  <div class="fl-stats"><span id="catalogCount">Đang tải danh mục</span><span>Ví dụ có thể sao chép</span><span>112 hàm · 9 nhóm chức năng</span><span>Excel 365 · Windows</span></div>
   <div class="fl-level-overview" id="levelOverview"><article class="fl-level-card basic"><strong id="basicCount">—</strong><b>Cơ bản</b><small>Hàm nền tảng và xử lý thường ngày</small><i><span id="basicBar"></span></i></article><article class="fl-level-card advanced"><strong id="advancedCount">—</strong><b>Nâng cao</b><small>Điều kiện, tra cứu, mảng và phân tích</small><i><span id="advancedBar"></span></i></article><article class="fl-level-card nested"><strong id="nestedLevelCount">12</strong><b>Hàm lồng</b><small>Kết hợp nhiều hàm trong một công thức</small><i><span id="nestedBar"></span></i></article></div>
  </section>
  <section class="fl-topgrid">
