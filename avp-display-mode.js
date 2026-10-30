@@ -7,7 +7,8 @@ const embedded=(()=>{try{return new URLSearchParams(location.search).get('embed'
 if(embedded)return;
 let mode=window.matchMedia&&window.matchMedia('(max-width: 700px)').matches?'mobile':'desktop';
 try{if(localStorage.getItem(KEY+'-user-choice')==='1')mode=localStorage.getItem(KEY)||mode}catch(e){}
-let applyingInitialMode=true;\nfunction setMode(next){
+let applyingInitialMode=true;
+function setMode(next){
  mode=next==='mobile'?'mobile':'desktop';
  document.documentElement.dataset.avpDisplayMode=mode;
  if(viewport)viewport.setAttribute('content',mode==='desktop'?desktopContent:mobileContent);
@@ -26,7 +27,7 @@ function install(){
   nav.insertBefore(group,theme||null);
   group.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.avpDisplayMode)));
  }
- setMode(mode);
+ setMode(mode);applyingInitialMode=false;
 }
 const style=document.createElement('style');
 style.textContent=`
