@@ -254,7 +254,7 @@ function setup(){
   ['excel-formula-library.html','ƒx','Hàm & công thức','Tra cứu cú pháp, đối số và ví dụ','MỞ THƯ VIỆN','ready'],
   ['excel-shortcut-library.html','⌨','Phím tắt Excel','Học và luyện tập từ cơ bản đến nâng cao','MỞ THƯ VIỆN','ready'],
   ['excel-knowledge-library.html','▤','Kiến thức Excel','Khái niệm và nguyên lý nền tảng','MỞ THƯ VIỆN','ready'],
-  ['#','⚙','Hướng dẫn thao tác','Hướng dẫn trực quan từng bước','ĐANG CHUẨN BỊ','soon'],
+  ['excel-operation-library.html','⚙','Hướng dẫn thao tác','Hướng dẫn trực quan từng bước','MỞ THƯ VIỆN','ready'],
   ['#','▦','Định dạng & dữ liệu','Kiểu dữ liệu, định dạng và kiểm soát','ĐANG CHUẨN BỊ','soon'],
   ['#','▧','Mẫu Workbook','File mẫu và cấu trúc sử dụng','ĐANG CHUẨN BỊ','soon']
  ];
