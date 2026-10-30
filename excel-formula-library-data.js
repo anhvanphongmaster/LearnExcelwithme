@@ -116,7 +116,7 @@ const rows=[
 ['SCAN','Mảng động','=SCAN(0,A2:A10,LAMBDA(a,v,a+v))','Trả về các kết quả tích lũy trung gian.','Tạo dãy tổng lũy kế.']
 ];
 const categories=[...new Set(rows.map(r=>r[1]))];
-const bank=rows.map((r,i)=>{const pool=rows.filter(x=>x[1]===r[1]&&x[0]!==r[0]).map(x=>x[0]);const distractors=pool.slice((i*3)%Math.max(1,pool.length), (i*3)%Math.max(1,pool.length)+3);while(distractors.length<3)distractors.push(...rows.filter(x=>x[0]!==r[0]&&!distractors.includes(x[0])).slice(0,3-distractors.length).map(x=>x[0]));return {id:String(i+1).padStart(3,'0'),name:r[0],level:r[1],formula:r[2],description:r[3],scenario:'Ví dụ thực tế trong Excel',question:r[4]+' Nên dùng hàm nào?',options:[r[0],...distractors],answer:0,explanation:'Đáp án: '+r[0]+'. '+r[3]+' Công thức mẫu: '+r[2]};});
+const bank=rows.map((r,i)=>{const pool=rows.filter(x=>x[1]===r[1]&&x[0]!==r[0]).map(x=>x[0]);const distractors=pool.slice((i*3)%Math.max(1,pool.length), (i*3)%Math.max(1,pool.length)+3);while(distractors.length<3)distractors.push(...rows.filter(x=>x[0]!==r[0]&&!distractors.includes(x[0])).slice(0,3-distractors.length).map(x=>x[0]));return {id:String(i+1).padStart(3,'0'),name:r[0],level:r[1],difficulty:['Cơ bản','Logic','Văn bản','Ngày giờ'].includes(r[1])?'Cơ bản':'Nâng cao',formula:r[2],description:r[3],scenario:'Ví dụ thực tế trong Excel',question:r[4]+' Nên dùng hàm nào?',options:[r[0],...distractors],answer:0,explanation:'Đáp án: '+r[0]+'. '+r[3]+' Công thức mẫu: '+r[2]};});
 const nested=[
 ['IF + AND','=IF(AND(E2>=100,F2="PASS"),"Đạt","Kiểm tra")','Chỉ đạt khi số lượng đạt ngưỡng và trạng thái là PASS.'],
 ['IF + OR','=IF(OR(F2="NG",G2="NG"),"Cảnh báo","Bình thường")','Cảnh báo nếu một trong hai cột xuất hiện NG.'],
