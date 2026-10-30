@@ -151,4 +151,39 @@
       }
     });
   });
+
+  const lessonChecks={
+    'f01-excel-workspace':q('Trước khi chỉnh một workbook do người khác gửi, việc nào nên làm trước?',['Sửa ngay sheet đầu tiên','Xác định cấu trúc file và lưu bản Working','Xóa các sheet không hiểu','Đổi tên toàn bộ cột'],1,'Cần hiểu file và bảo vệ bản gốc trước khi thao tác.'),
+    'f02-data-entry-types':q('Mã nhân viên 00125 cần giữ số 0 đầu. Nên lưu kiểu nào?',['Number','Text','Date','Percentage'],1,'Mã định danh không nên bị Excel chuyển thành số làm mất số 0 đầu.'),
+    'f03-formatting-display':q('Đổi Number Format từ 0.15 sang 15% có làm thay đổi giá trị lưu trong ô không?',['Có, giá trị thành 15','Không, chỉ đổi cách hiển thị','Xóa công thức','Chuyển thành text'],1,'Number Format thay đổi cách hiển thị, không thay đổi giá trị gốc.'),
+    'f04-formulas-references':q('Khi kéo công thức xuống nhưng một ô tỷ lệ cố định phải giữ nguyên, cần dùng gì?',['Relative reference','Absolute reference bằng 
+,'Merge Cells','Format Painter'],1,'Tham chiếu tuyệt đối giữ nguyên địa chỉ khi sao chép công thức.'),
+    'f05-core-functions':q('Muốn cộng doanh thu trong một vùng số, hàm nền tảng phù hợp là gì?',['SUM','COUNT','LEFT','TODAY'],0,'SUM cộng các giá trị số trong vùng.'),
+    'f06-data-table-structure':q('Một bảng nguồn tốt nên có đặc điểm nào?',['Một hàng header rõ, mỗi dòng là một record','Nhiều hàng tiêu đề gộp ô','Dòng trống xen giữa dữ liệu','Tổng phụ chen giữa record'],0,'Cấu trúc phẳng giúp Sort, Filter, Table và Pivot xử lý ổn định.'),
+    's07-logic':q('Trong IF, điều kiện được kiểm tra để trả về gì?',['Kết quả đúng hoặc sai tương ứng','Luôn trả về tổng','Luôn trả về ngày','Tạo dropdown'],0,'IF trả về một kết quả khi điều kiện TRUE và kết quả khác khi FALSE.'),
+    's08-conditional-aggregation':q('Muốn cộng Revenue theo nhiều điều kiện, hàm nào phù hợp?',['SUMIFS','COUNT','LEFT','NOW'],0,'SUMIFS cộng sum_range theo một hoặc nhiều cặp điều kiện.'),
+    's09-lookup':q('Khi tra cứu mã không tồn tại trong bảng Master, nên xử lý thế nào?',['Âm thầm đổi thành 0','Hiển thị trạng thái không tìm thấy để kiểm tra','Xóa dòng giao dịch','Lấy kết quả dòng đầu bất kỳ'],1,'Unmatched key cần được nhận diện thay vì che bằng một giá trị có vẻ hợp lệ.'),
+    's10-text':q('Muốn lấy một số ký tự từ bên trái chuỗi, hàm nào phù hợp?',['LEFT','SUMIFS','COUNTIF','EOMONTH'],0,'LEFT trích ký tự từ đầu chuỗi.'),
+    's11-date-time':q('Muốn lấy ngày cuối cùng của tháng chứa một ngày, hàm nào phù hợp?',['EOMONTH','LEFT','COUNT','ROUND'],0,'EOMONTH trả về ngày cuối tháng sau số tháng dịch chuyển.'),
+    's12-clean-control':q('Sau khi làm sạch dữ liệu, bước nào giúp chứng minh không làm mất record ngoài dự kiến?',['Đối chiếu row count và kiểm tra exception','Chỉ đổi màu bảng','Ẩn cột lỗi','Xóa dữ liệu nguồn'],0,'Cần có control trước/sau và giải thích các dòng bị loại.'),
+    'a13-excel-table':q('Ưu điểm quan trọng của Excel Table khi dữ liệu thêm dòng là gì?',['Structured references và vùng bảng tự mở rộng','Tự sửa mọi lỗi dữ liệu','Tự tạo KPI đúng','Tự loại duplicate'],0,'Excel Table hỗ trợ vùng dữ liệu mở rộng và công thức có cấu trúc.'),
+    'a14-pivottable':q('Khi dữ liệu nguồn thay đổi, PivotTable thường cần thao tác gì để cập nhật?',['Refresh','Merge Cells','Text to Columns','Goal Seek'],0,'PivotTable cần Refresh để đọc lại nguồn đã thay đổi.'),
+    'a15-kpi-analysis':q('Khi tính tỷ lệ lỗi, mẫu số phải được chọn theo nguyên tắc nào?',['Đúng định nghĩa nghiệp vụ và cùng filter context','Luôn lấy số dòng toàn workbook','Lấy số lớn nhất','Tùy ý để KPI đẹp'],0,'Mẫu số phải phản ánh đúng tổng cơ hội/khối lượng tương ứng với tử số.'),
+    'a18-report-audit-handover':q('Trước khi bàn giao báo cáo, điều gì cần được xác nhận?',['Nguồn, phạm vi lọc, thời điểm Refresh và control số liệu','Chỉ cần chart đẹp','Chỉ cần đổi tên file','Ẩn sheet nguồn'],0,'Bàn giao phải giúp người nhận hiểu nguồn, phạm vi và cách kiểm chứng.'),
+    'x19-advanced-formulas':q('Khi công thức nâng cao trả về kết quả sai, cách kiểm tra đầu tiên nên là gì?',['Tách và kiểm tra từng thành phần/điều kiện','Bọc toàn bộ bằng IFERROR ngay','Đổi màu ô','Xóa dữ liệu nguồn'],0,'Kiểm tra từng phần giúp tìm lỗi logic thay vì che lỗi.'),
+    'x20-dynamic-array':q('Dynamic Array thường trả kết quả như thế nào?',['Tràn kết quả sang các ô lân cận','Chỉ ghi vào một ô duy nhất','Tự tạo PivotTable','Tự lưu file'],0,'Công thức mảng động có thể spill ra vùng kết quả.'),
+    'd07-sort-filter':q('Khi Sort bảng nhiều cột, cần bảo đảm điều gì?',['Toàn bộ record di chuyển cùng nhau','Chỉ cột đang chọn thay đổi','Xóa các dòng ẩn','Chuyển mọi ô thành text'],0,'Sort phải giữ nguyên các trường thuộc cùng một record.'),
+    'd08-find-replace':q('Trước Replace All, thao tác nào giúp kiểm tra vị trí và số lượng kết quả?',['Find All','Sort A to Z','Remove Duplicates','Text to Columns'],0,'Find All cho phép rà soát các ô khớp trước khi thay.'),
+    'd09-data-validation':q('Data Validation có đảm bảo mọi dữ liệu paste đều hợp lệ không?',['Có, tuyệt đối','Không; cần test paste và kiểm tra sau nhập','Chỉ khi tô màu ô','Chỉ khi khóa sheet'],1,'Một số cách paste có thể bỏ qua hoặc ghi đè validation.'),
+    'a19-reconciliation':q('Vì sao không nên chỉ đối chiếu Grand Total?',['Tổng có thể khớp dù thiếu và thừa record bù trừ nhau','Grand Total luôn sai','Không cần kiểm tra tổng','Pivot không có tổng'],0,'Cần kết hợp row count, key và metric để phát hiện nhiều loại sai lệch.')
+  };
+  Object.entries(lessonChecks).forEach(([id,item])=>{
+    const lesson=byId.get(id);
+    if(!lesson||!Array.isArray(lesson.sections)||!lesson.sections.length)return;
+    const hasQuestions=lesson.sections.some(section=>Array.isArray(section.questions)&&section.questions.length);
+    if(hasQuestions)return;
+    const last=lesson.sections[lesson.sections.length-1];
+    last.questions=Array.isArray(last.questions)?last.questions:[];
+    last.questions.push(item);
+  });
 })();
