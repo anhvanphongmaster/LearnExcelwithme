@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=1200, initial-scale=0.32, minimum-scale=0.1, maximum-scale=2, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#062f24">
 <title>Giới thiệu Anh Văn Phòng | Learn Excel With Me</title>
 <style>
@@ -93,7 +93,14 @@ h2{font-size:clamp(30px,4.2vw,64px);line-height:1.02;letter-spacing:-.055em;font
 @keyframes ring{0%,100%{transform:rotate(-5deg) scale(.98);opacity:.6}50%{transform:rotate(1deg) scale(1.03);opacity:1}}
 @keyframes markpulse{0%,100%{box-shadow:0 0 45px #00d08422;transform:scale(1)}50%{box-shadow:0 0 90px #00d08445;transform:scale(1.035)}}
 @media(max-width:650px){.stage{width:100vw;height:100vh;min-width:0}.topbar{top:3%;left:5%;right:5%}.scene{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:3%;padding:18% 7% 13%;align-content:center}.copy{max-width:100%}.scene h1{font-size:clamp(38px,11vw,60px)}.scene h2{font-size:clamp(32px,9vw,48px)}.lead{font-size:13px;margin-top:12px}.pillrow{margin-top:14px}.visual{max-height:42vh}.window{max-width:440px}.case-window{max-width:430px}.chapter-grid{max-width:450px}.chapter{min-height:58px;padding:8px}.chapter span{font-size:9px}.mockhero{min-height:105px}.mockchart{height:65px}.mockcards{display:none}.floatlabel.one{left:0}.floatlabel.two{right:0}.timeline{bottom:2.4%;left:5%;right:5%}.control{padding:8px 10px}.brand{font-size:10px}.mark{width:29px;height:29px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* Intro is a cinematic experience: keep its authored motion active on desktop and mobile. */
+/* The global site header and floating robot are intentionally hidden here;
+   this page has its own controls and must use the full viewport. */
+.top-simple-nav,#avpEdgeLauncher,.avp-edge-mini-preview-v2{display:none!important}
+html,body,.player{width:100%;height:100%;min-height:100%;overflow:hidden}
+.stage{width:min(100vw,177.7778vh);height:min(100vh,56.25vw)}
+@media(max-width:650px){.stage{width:100vw;height:100vh}}
+
 </style>
 </head>
 <body>
