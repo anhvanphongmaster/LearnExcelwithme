@@ -940,6 +940,53 @@ window.AVP_KNOWLEDGE_BANK = [
       "Kích thước màn hình"
     ]
   }
+
+  ,
+  {
+    "id":"K048","categoryId":"05","category":"Quản lý dữ liệu","title":"Paste Special và dán theo mục đích",
+    "level":"Cơ bản","summary":"Paste Special cho phép chỉ dán giá trị, công thức, định dạng hoặc chuyển vị trí dữ liệu.",
+    "concept":"Paste thông thường sao chép nhiều thành phần cùng lúc; Paste Special giúp chọn chính xác thành phần cần chuyển sang vùng đích.",
+    "principle":"Values chỉ giữ kết quả hiện tại; Formulas giữ công thức; Formats giữ định dạng; Transpose đổi hàng thành cột hoặc cột thành hàng. Các tùy chọn phép tính có thể cộng, trừ, nhân hoặc chia vùng đích với dữ liệu sao chép.",
+    "example":"Sao chép cột Thành tiền có công thức, sau đó Paste Special → Values sang báo cáo bàn giao để giữ kết quả mà không mang theo công thức.",
+    "scenario":"Khi cần chốt số liệu, gửi báo cáo độc lập hoặc chuyển bảng ngang thành bảng dọc.",
+    "misconception":"Dán Values không giữ công thức; dán Formats không thay đổi giá trị gốc.",
+    "question":"Muốn giữ kết quả nhưng bỏ công thức, chọn tùy chọn nào?","answer":"Values",
+    "options":["Formulas","Formats","Transpose"]
+  },
+  {
+    "id":"K049","categoryId":"05","category":"Quản lý dữ liệu","title":"Chèn và xóa dòng, cột an toàn",
+    "level":"Cơ bản","summary":"Chèn hoặc xóa đúng cấu trúc để tránh làm lệch dữ liệu và công thức liên quan.",
+    "concept":"Một bản ghi thường chiếm trọn một hàng; một thuộc tính thường chiếm trọn một cột. Thay đổi cấu trúc cần thao tác trên toàn hàng hoặc toàn cột khi phù hợp.",
+    "principle":"Chọn tiêu đề hàng/cột để Insert hoặc Delete. Trong Excel Table, thêm dữ liệu ngay dưới bảng thường giúp bảng tự mở rộng. Xóa nội dung ô khác với xóa cả hàng hoặc cột.",
+    "example":"Muốn thêm trường Ghi chú, chèn một cột mới trong Table thay vì ghi đè lên cột Trạng thái.",
+    "scenario":"Khi cần mở rộng bảng nhập liệu hoặc loại bỏ trường không còn sử dụng.",
+    "misconception":"Nhấn Delete chỉ xóa nội dung vùng chọn, không xóa cấu trúc hàng hoặc cột.",
+    "question":"Muốn loại bỏ cả một hàng bản ghi, cần dùng thao tác nào?","answer":"Delete Sheet Rows",
+    "options":["Clear Contents","Delete trên bàn phím","Hide"]
+  },
+  {
+    "id":"K050","categoryId":"01","category":"Nền tảng Excel","title":"Fill Handle và AutoFill",
+    "level":"Cơ bản","summary":"Fill Handle sao chép công thức hoặc tạo chuỗi dữ liệu theo quy luật.",
+    "concept":"Fill Handle là chốt nhỏ ở góc dưới bên phải vùng chọn, dùng để kéo nội dung hoặc quy luật sang vùng lân cận.",
+    "principle":"Một mẫu có thể được sao chép nguyên trạng; hai hoặc nhiều mẫu liên tiếp giúp Excel nhận diện quy luật tăng số, ngày hoặc chuỗi. Với công thức, tham chiếu thay đổi theo quy tắc tương đối và tuyệt đối.",
+    "example":"Nhập 1 và 2 ở hai ô, chọn cả hai rồi kéo xuống để tạo dãy 3, 4, 5. Với công thức ở D2, kéo xuống D3 sẽ điều chỉnh tham chiếu theo hàng.",
+    "scenario":"Đánh số thứ tự, tạo lịch ngày hoặc điền công thức cho nhiều bản ghi.",
+    "misconception":"Chỉ nhập số 1 rồi kéo có thể sao chép số 1 thay vì tạo dãy tăng.",
+    "question":"Muốn Excel nhận diện quy luật 1, 2, 3..., nên chọn bao nhiêu giá trị mẫu?","answer":"Ít nhất hai giá trị",
+    "options":["Một giá trị","Không cần giá trị mẫu","Bốn giá trị bắt buộc"]
+  },
+  {
+    "id":"K051","categoryId":"05","category":"Quản lý dữ liệu","title":"Freeze Panes và cố định tiêu đề",
+    "level":"Cơ bản","summary":"Freeze Panes giữ hàng hoặc cột nhận diện luôn hiển thị khi cuộn bảng.",
+    "concept":"Excel cố định các hàng phía trên và các cột bên trái ô đang chọn. Phần còn lại của trang tính vẫn cuộn bình thường.",
+    "principle":"Chọn ô nằm ngay dưới các hàng và bên phải các cột muốn cố định, sau đó vào View → Freeze Panes. Freeze Top Row và Freeze First Column là lựa chọn nhanh cho từng trường hợp.",
+    "example":"Chọn B2 rồi Freeze Panes để giữ hàng 1. Chọn C2 để giữ hàng 1 và cột A.",
+    "scenario":"Làm việc với bảng dài hoặc bảng có nhiều cột cần giữ mã nhận diện.",
+    "misconception":"Chọn sai ô trước khi Freeze Panes sẽ cố định sai số hàng hoặc cột.",
+    "question":"Muốn cố định hàng 1 và cột A, chọn ô nào trước?","answer":"B2",
+    "options":["A1","A2","B1"]
+  }
+
 ];
 window.AVP_KNOWLEDGE_CATEGORIES = [
   {
