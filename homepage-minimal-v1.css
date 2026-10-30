@@ -355,3 +355,51 @@ html.avp-home-canonical .avp-hero-split .avp-canonical-copy>p{max-width:590px!im
 html.avp-home-canonical .avp-home-map-card{font-family:inherit!important}
 @media(max-width:760px){html.avp-home-canonical .avp-canonical-inner.avp-hero-split{grid-template-columns:minmax(0,1fr) minmax(270px,.9fr)!important;gap:14px!important}html.avp-home-canonical .avp-hero-split .avp-canonical-copy h1{font-size:clamp(25px,4vw,38px)!important}html.avp-home-canonical .avp-hero-split .avp-canonical-copy>p{font-size:11px!important}html.avp-home-canonical .avp-home-map-card{min-height:225px!important;padding:14px!important}html.avp-home-canonical .avp-home-map-card>strong{font-size:18px!important}html.avp-home-canonical .avp-home-map-copy{font-size:10px!important}html.avp-home-canonical .avp-home-map-art svg{height:88px!important}}
 @media(max-width:520px){html.avp-home-canonical .avp-canonical-inner.avp-hero-split{grid-template-columns:1fr!important}html.avp-home-canonical .avp-home-map-card{min-height:205px!important}}
+
+
+/* Responsive correction: keep the intro and journey card readable on phones. */
+@media(max-width:760px){
+  html.avp-home-canonical .avp-canonical-inner.avp-hero-split{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:18px!important;
+  }
+  html.avp-home-canonical .avp-hero-split .avp-canonical-copy h1{
+    font-size:clamp(32px,8vw,46px)!important;
+  }
+  html.avp-home-canonical .avp-hero-split .avp-canonical-copy>p{
+    font-size:14px!important;
+  }
+  html.avp-home-canonical .avp-home-map-card{
+    width:100%!important;
+    min-height:0!important;
+    padding:18px!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) 112px!important;
+    column-gap:14px!important;
+    align-items:center!important;
+    text-align:left!important;
+  }
+  html.avp-home-canonical .avp-home-map-kicker,
+  html.avp-home-canonical .avp-home-map-card>strong,
+  html.avp-home-canonical .avp-home-map-copy,
+  html.avp-home-canonical .avp-home-map-footer{grid-column:1!important}
+  html.avp-home-canonical .avp-home-map-art{
+    grid-column:2!important;
+    grid-row:1 / span 4!important;
+    min-width:0!important;
+    overflow:hidden!important;
+  }
+  html.avp-home-canonical .avp-home-map-art svg{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    max-height:110px!important;
+  }
+  html.avp-home-canonical .avp-home-map-copy{font-size:12px!important;line-height:1.5!important}
+}
+@media(max-width:390px){
+  html.avp-home-canonical .avp-home-map-card{
+    grid-template-columns:minmax(0,1fr) 88px!important;
+    padding:14px!important;
+  }
+}
