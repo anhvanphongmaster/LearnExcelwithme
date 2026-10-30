@@ -265,7 +265,7 @@
       var link = document.createElement("link");
       link.id = "avpSiteMotionCss";
       link.rel = "stylesheet";
-      link.href = "avp-site-motion.css?v=20261030-motion-sync1";
+      link.href = "avp-site-motion.css?v=20261030-motion-sync2";
       document.head.appendChild(link);
     }
     var page=(location.pathname.split("/").pop()||"").toLowerCase();
@@ -273,7 +273,7 @@
     if(document.querySelector('script[src*="home-page-motion"]')) return;
     if (!document.querySelector('script[src*="avp-site-motion.js"]') && !window.__avpSiteMotionV94 && !window.__avpSiteMotion) {
       var s = document.createElement("script");
-      s.src = "avp-site-motion.js?v=20261030-motion-sync1";
+      s.src = "avp-site-motion.js?v=20261030-motion-sync2";
       s.defer = true;
       document.head.appendChild(s);
     }
