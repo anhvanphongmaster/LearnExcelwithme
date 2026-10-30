@@ -277,6 +277,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
    if(advanced&&advanced.library){
     return advanced.library.split(';').map(function(token){token=token.trim();if(!token)return null;
      if(/^K\\d{3}$/.test(token))return ["knowledge",token];
+     if(/^DF\\d{2}$/.test(token))return ["format",token];
      if(/^(Ctrl|Alt|Shift|F[1-12]|Delete|Enter|Esc|Tab)/.test(token))return ["shortcut",token];
      return ["formula",token];
     }).filter(Boolean);
@@ -311,7 +312,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
     ensureLessonLibraryData(pair[0],function(){
      var rows=pair[0]==='shortcut'?window.AVP_SHORTCUT_BANK:pair[0]==='knowledge'?window.AVP_KNOWLEDGE_BANK:pair[0]==='formula'?window.AVP_FORMULA_BANK:(window.AVP_DATA_LIBRARY&&window.AVP_DATA_LIBRARY.items);
      var item=rows&&rows.find(function(x){return pair[0]==='shortcut'?x.key===pair[1]:pair[0]==='formula'?x.name===pair[1]:x.id===pair[1];});
-     if(!item){content.innerHTML='<p>Chưa tìm thấy chủ đề này trong thư viện. <a href="'+(pair[0]==='shortcut'?'excel-shortcut-library.html':pair[0]==='knowledge'?'excel-knowledge-library.html':'excel-formula-library.html')+'" target="_blank" rel="noopener">Mở thư viện đầy đủ trong tab mới</a>.</p>';return;}
+     if(!item){content.innerHTML='<p>Chưa tìm thấy chủ đề này trong thư viện. <a href="'+(pair[0]==='shortcut'?'excel-shortcut-library.html':pair[0]==='knowledge'?'excel-knowledge-library.html':pair[0]==='format'?'excel-data-format-library.html':'excel-formula-library.html')+'" target="_blank" rel="noopener">Mở thư viện đầy đủ trong tab mới</a>.</p>';return;}
      var title=pair[0]==='shortcut'?item.name:pair[0]==='formula'?item.name:item.title;
      var summary=item.summary||item.description||item.concept||item.syntax||item.when||'';
      var blocks=[];
@@ -321,7 +322,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
      content.innerHTML='<h3></h3>';content.querySelector('h3').textContent=title;
      blocks.forEach(function(b){var h=document.createElement('h4');h.textContent=b.h;var p=document.createElement('p');p.textContent=b.t;content.append(h,p);});
      if(pair[0]==='formula'&&item.formula){var code=document.createElement('div');code.className='avp-lesson-drawer-example';code.textContent=item.formula;content.appendChild(code);}
-     var link=document.createElement('p'),a=document.createElement('a');a.href=pair[0]==='shortcut'?'excel-shortcut-library.html':pair[0]==='knowledge'?'excel-knowledge-library.html':'excel-formula-library.html';a.target='_blank';a.rel='noopener';a.textContent='Mở toàn bộ '+labels[pair[0]]+' ↗';link.appendChild(a);content.appendChild(link);
+     var link=document.createElement('p'),a=document.createElement('a');a.href=pair[0]==='shortcut'?'excel-shortcut-library.html':pair[0]==='knowledge'?'excel-knowledge-library.html':pair[0]==='format'?'excel-data-format-library.html':'excel-formula-library.html';a.target='_blank';a.rel='noopener';a.textContent='Mở toàn bộ '+labels[pair[0]]+' ↗';link.appendChild(a);content.appendChild(link);
     });
    });
    list.appendChild(button);
