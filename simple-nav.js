@@ -688,3 +688,10 @@ document.addEventListener("DOMContentLoaded",function(){
   links.querySelectorAll("a").forEach(function(a){a.addEventListener("click",closeMenu);});
   document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMenu();});
 });
+
+/* Shared persistent settings entry point. */
+(function(){
+  if(window.__AVP_SETTINGS_LOADER__)return;
+  window.__AVP_SETTINGS_LOADER__=true;
+  var s=document.createElement('script');s.src='avp-settings.js?v=20261030-1';s.defer=true;document.head.appendChild(s);
+})();
