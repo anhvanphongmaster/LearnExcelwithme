@@ -155,7 +155,8 @@ function setup(){
  var chapterView='grid';
  var lessonPanel=null;
 
- modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:2px}.avp-lesson-main{min-width:0;padding:20px;border:1px solid #e2ebe5;border-radius:18px;background:#fff}.avp-lesson-kicker{font-size:10px;font-weight:900;letter-spacing:.12em;color:#16805a}.avp-lesson-main h3{margin:8px 0 12px;font-size:22px;line-height:1.25;color:#173b29}.avp-lesson-main p{font-size:13px;line-height:1.75;color:#53675b}.avp-lesson-main h4{margin:18px 0 8px;color:#234a34;font-size:14px}.avp-lesson-example{padding:13px 15px;border-radius:12px;background:#f2f8f4;color:#244c35;font-size:13px;line-height:1.7}.avp-lesson-ref-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}.avp-lesson-ref{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #dce9df;border-radius:13px;background:#f8fbf9;color:#234a34;text-align:left;cursor:pointer}.avp-lesson-ref strong{display:block;font-size:12px}.avp-lesson-ref small{display:block;margin-top:4px;color:#78887e;font-size:10px}.avp-lesson-reader-back{margin-bottom:12px}.avp-lesson-drawer{display:none;position:fixed;z-index:100002;inset:0;background:rgba(13,32,22,.42);align-items:stretch;justify-content:flex-end}.avp-lesson-drawer.open{display:flex}.avp-lesson-drawer-panel{width:min(480px,44vw);height:100%;overflow:auto;padding:24px;background:#fff;box-shadow:-18px 0 55px rgba(0,0,0,.18);color:#173b29}.avp-lesson-drawer-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid #e5eee8}.avp-lesson-drawer-head small{font-size:10px;font-weight:900;letter-spacing:.1em;color:#16805a}.avp-lesson-drawer-close{width:36px;height:36px;border:0;border-radius:50%;background:#edf4ef;color:#315b43;font-size:22px;cursor:pointer}.avp-lesson-drawer-panel h3{font-size:21px;line-height:1.3}.avp-lesson-drawer-panel p,.avp-lesson-drawer-panel li{font-size:13px;line-height:1.75;color:#53675b}.avp-lesson-drawer-panel h4{margin:18px 0 7px;font-size:12px;letter-spacing:.08em;color:#16805a}.avp-lesson-drawer-example{padding:12px;border-radius:11px;background:#f2f8f4;font-size:13px;line-height:1.7;color:#244c35}.avp-lesson-drawer-loading{padding:28px 8px;color:#718177;font-size:13px}@media(max-width:700px){.avp-lesson-main{padding:15px}.avp-lesson-ref-list{grid-template-columns:1fr}.avp-lesson-drawer-panel{width:100%;padding:20px 17px}.avp-lesson-main h3{font-size:19px}}`;
+ modalStyle.textContent+='.avp-lesson-workflow{margin-top:16px;padding:16px;border:1px solid #e2ebe5;border-radius:16px;background:#f8fbf9}.avp-lesson-workflow h4{margin:12px 0 8px;color:#16805a;font-size:11px;letter-spacing:.08em}.avp-lesson-workflow ol{margin:0;padding-left:20px}.avp-lesson-workflow li,.avp-lesson-workflow p{font-size:12px;line-height:1.7;color:#53675b}.avp-lesson-library-section{margin-top:18px;padding-top:14px;border-top:1px solid #e5eee8}.avp-lesson-library-section>h4{margin:0 0 7px;color:#16805a;font-size:11px;letter-spacing:.08em}.avp-lesson-library-section>p{font-size:12px;line-height:1.65;color:#718177}.avp-lesson-library-section .avp-lesson-ref-list{grid-template-columns:repeat(2,minmax(0,1fr))}.avp-lesson-library-section .avp-lesson-drawer{z-index:100004}@media(max-width:700px){.avp-lesson-library-section .avp-lesson-ref-list{grid-template-columns:1fr}}';
+modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:2px}.avp-lesson-main{min-width:0;padding:20px;border:1px solid #e2ebe5;border-radius:18px;background:#fff}.avp-lesson-kicker{font-size:10px;font-weight:900;letter-spacing:.12em;color:#16805a}.avp-lesson-main h3{margin:8px 0 12px;font-size:22px;line-height:1.25;color:#173b29}.avp-lesson-main p{font-size:13px;line-height:1.75;color:#53675b}.avp-lesson-main h4{margin:18px 0 8px;color:#234a34;font-size:14px}.avp-lesson-example{padding:13px 15px;border-radius:12px;background:#f2f8f4;color:#244c35;font-size:13px;line-height:1.7}.avp-lesson-ref-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}.avp-lesson-ref{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #dce9df;border-radius:13px;background:#f8fbf9;color:#234a34;text-align:left;cursor:pointer}.avp-lesson-ref strong{display:block;font-size:12px}.avp-lesson-ref small{display:block;margin-top:4px;color:#78887e;font-size:10px}.avp-lesson-reader-back{margin-bottom:12px}.avp-lesson-drawer{display:none;position:fixed;z-index:100002;inset:0;background:rgba(13,32,22,.42);align-items:stretch;justify-content:flex-end}.avp-lesson-drawer.open{display:flex}.avp-lesson-drawer-panel{width:min(480px,44vw);height:100%;overflow:auto;padding:24px;background:#fff;box-shadow:-18px 0 55px rgba(0,0,0,.18);color:#173b29}.avp-lesson-drawer-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid #e5eee8}.avp-lesson-drawer-head small{font-size:10px;font-weight:900;letter-spacing:.1em;color:#16805a}.avp-lesson-drawer-close{width:36px;height:36px;border:0;border-radius:50%;background:#edf4ef;color:#315b43;font-size:22px;cursor:pointer}.avp-lesson-drawer-panel h3{font-size:21px;line-height:1.3}.avp-lesson-drawer-panel p,.avp-lesson-drawer-panel li{font-size:13px;line-height:1.75;color:#53675b}.avp-lesson-drawer-panel h4{margin:18px 0 7px;font-size:12px;letter-spacing:.08em;color:#16805a}.avp-lesson-drawer-example{padding:12px;border-radius:11px;background:#f2f8f4;font-size:13px;line-height:1.7;color:#244c35}.avp-lesson-drawer-loading{padding:28px 8px;color:#718177;font-size:13px}@media(max-width:700px){.avp-lesson-main{padding:15px}.avp-lesson-ref-list{grid-template-columns:1fr}.avp-lesson-drawer-panel{width:100%;padding:20px 17px}.avp-lesson-main h3{font-size:19px}}`;
  function renderDataTypesLesson(){
   if(!lessonPanel)return;
   lessonPanel.innerHTML='<div class="avp-chapter-lessons-toolbar avp-lesson-reader-back"><button type="button" class="avp-chapter-lessons-back" data-back-lessons>← Danh sách bài học</button><span class="avp-chapter-lessons-count">CHƯƠNG 01 · BÀI 06</span></div><div class="avp-lesson-reader"><article class="avp-lesson-main"><div class="avp-lesson-kicker">BÀI HỌC 06 · NHẬP MÔN EXCEL</div><h3>Kiểu dữ liệu: Text, Number, Date và Percentage</h3><p>Một ô Excel không chỉ có phần hiển thị. Bên trong, Excel lưu giá trị theo kiểu dữ liệu. Nhận diện đúng kiểu dữ liệu giúp tính toán, lọc, sắp xếp và tổng hợp chính xác.</p><h4>1. Number – dữ liệu số</h4><p>Dùng cho giá trị cần tính toán như số lượng, đơn giá, doanh thu hoặc điểm số.</p><div class="avp-lesson-example"><b>Ví dụ:</b> 1250 là một giá trị số. Có thể cộng, trừ, nhân, chia và dùng trong các hàm thống kê.</div><h4>2. Text – dữ liệu văn bản</h4><p>Dùng cho nội dung nhận diện hoặc mô tả. Mã nhân viên, mã hàng và số điện thoại thường nên lưu dạng Text, kể cả khi chỉ gồm chữ số.</p><div class="avp-lesson-example"><b>Ví dụ:</b> Mã 00125 cần giữ số 0 đầu. Nếu lưu thành Number, Excel có thể chỉ giữ 125.</div><h4>3. Date – dữ liệu ngày tháng</h4><p>Ngày hợp lệ trong Excel được lưu dưới dạng số sê-ri và có thể dùng để tính số ngày, lọc theo tháng hoặc nhóm trong PivotTable. Chuỗi ký tự trông giống ngày chưa chắc là ngày thật.</p><div class="avp-lesson-example"><b>Kiểm tra:</b> =ISNUMBER(A2) giúp kiểm tra giá trị ngày có đang được lưu dưới dạng số hay không.</div><h4>4. Percentage – dữ liệu tỷ lệ</h4><p>Tỷ lệ phần trăm được lưu dưới dạng số thập phân. Giá trị 0.15 khi định dạng Percentage sẽ hiển thị là 15 phần trăm.</p><div class="avp-lesson-example"><b>Lưu ý:</b> Nhập 15 rồi áp dụng Percentage sẽ hiển thị 1500 phần trăm. Không nhân thêm 100 nếu dữ liệu đã lưu ở dạng 0.15.</div><h4>Ghi nhớ</h4><p>Định dạng hiển thị không phải lúc nào cũng thay đổi kiểu dữ liệu gốc. Trước khi sửa dữ liệu, hãy kiểm tra giá trị thực và mục đích sử dụng của cột.</p><h4>Tài liệu tham khảo mở rộng</h4><p>Các chủ đề dưới đây thuộc Thư viện Định dạng & dữ liệu độc lập. Mở tham khảo ngay tại đây, sau đó đóng bảng để quay lại đúng bài học.</p><div class="avp-lesson-ref-list"><button class="avp-lesson-ref" type="button" data-ref-topic="DF01"><span>▦</span><span><strong>Phân biệt Number và Text</strong><small>Thư viện · Kiểu dữ liệu</small></span><b>→</b></button><button class="avp-lesson-ref" type="button" data-ref-topic="DF02"><span>▦</span><span><strong>Nhận diện ngày thật và ngày dạng Text</strong><small>Thư viện · Kiểu dữ liệu</small></span><b>→</b></button></div><h4>Tự kiểm tra</h4><p>1. Mã nhân viên 00045 nên lưu dạng gì? 2. Giá trị nào hiển thị thành 25 phần trăm khi áp dụng Percentage: 0.25 hay 25?</p><div class="avp-lesson-example"><b>Đáp án:</b> 1. Text. 2. 0.25. Hãy tự giải thích lý do trước khi xem đáp án.</div></article></div><div class="avp-lesson-drawer" aria-hidden="true"><section class="avp-lesson-drawer-panel" role="dialog" aria-modal="true" aria-label="Tài liệu tham khảo"><div class="avp-lesson-drawer-head"><small>THƯ VIỆN ĐỊNH DẠNG & DỮ LIỆU</small><button type="button" class="avp-lesson-drawer-close" aria-label="Đóng tài liệu">×</button></div><div class="avp-lesson-drawer-content"><div class="avp-lesson-drawer-loading">Đang tải chủ đề tham khảo…</div></div></section></div>';
@@ -174,6 +175,78 @@ function setup(){
   });});
  }
 
+
+ function lessonLibraryPlan(chapterIndex,lessonIndex){
+  var plans={
+   1:[
+    [["shortcut","Ctrl+G"],["shortcut","Ctrl+End"]],[["shortcut","Ctrl+Shift+*"],["shortcut","Ctrl+Space"],["shortcut","Shift+Space"]],
+    [["shortcut","Ctrl+C"],["shortcut","Ctrl+X"],["shortcut","Ctrl+V"]],[["shortcut","Ctrl+Alt+V"]],
+    [["shortcut","Ctrl+Z"],["shortcut","Ctrl+Y"]],[["shortcut","Ctrl+F"],["shortcut","Ctrl+H"]],
+    [["shortcut","Ctrl++"],["shortcut","Ctrl+-"]],[["shortcut","Ctrl+D"],["shortcut","Ctrl+R"]],
+    [["knowledge","K003"],["shortcut","Alt+W,F,F"]],[["knowledge","K019"],["shortcut","Ctrl+Shift+L"]],
+    [["shortcut","Ctrl+G"],["shortcut","Ctrl+Shift+*"],["shortcut","Ctrl+F"]],
+    [["shortcut","Ctrl+Shift+L"],["shortcut","Ctrl+Alt+V"],["shortcut","Ctrl+Z"]]
+   ],
+   2:[
+    [["knowledge","K016"],["knowledge","K017"]],[["knowledge","K016"]],[["knowledge","K012"]],[["knowledge","K013"]],[["knowledge","K014"]],
+    [["knowledge","K012"],["knowledge","K013"],["knowledge","K014"]],[["formula","CONCAT"],["formula","CONCATENATE"]],
+    [["formula","ROUND"],["formula","ROUNDUP"],["formula","ROUNDDOWN"]],[["knowledge","K007"],["formula","DATE"],["formula","YEAR"],["formula","MONTH"]],
+    [["formula","IF"]],[["formula","IFERROR"],["knowledge","K021"]],[["formula","IF"],["formula","ROUND"],["formula","DATE"]]
+   ],
+   3:[
+    [["formula","SUM"],["formula","AVERAGE"]],[["formula","MIN"],["formula","MAX"],["formula","COUNT"]],
+    [["formula","COUNTA"],["formula","COUNTBLANK"]],[["formula","IF"]],[["formula","AND"],["formula","OR"]],
+    [["formula","SUMIF"]],[["formula","COUNTIF"]],[["formula","SUMIFS"],["formula","COUNTIFS"]],
+    [["formula","IFERROR"]],[["formula","LEFT"],["formula","RIGHT"],["formula","MID"],["formula","LEN"]],
+    [["formula","TRIM"],["formula","SUBSTITUTE"],["formula","TODAY"],["formula","YEAR"]],
+    [["formula","SUMIFS"],["formula","COUNTIFS"],["formula","IFERROR"],["formula","LEFT"]]
+   ]
+  };
+  return (plans[chapterIndex]&&plans[chapterIndex][lessonIndex])||[];
+ }
+ function ensureLessonLibraryData(type,done){
+  var config={shortcut:["avp-shortcut-reference-script","excel-shortcut-library-data.js","AVP_SHORTCUT_BANK"],knowledge:["avp-knowledge-reference-script","excel-knowledge-library-data.js","AVP_KNOWLEDGE_BANK"],formula:["avp-formula-reference-script","excel-formula-library-data.js","AVP_FORMULA_BANK"],format:["avp-data-format-reference-script","excel-data-format-library-data.js","AVP_DATA_LIBRARY"]}[type];
+  if(!config){done();return;} if(window[config[2]]){done();return;}
+  var script=document.getElementById(config[0]);
+  if(script){script.addEventListener('load',done,{once:true});script.addEventListener('error',done,{once:true});return;}
+  script=document.createElement('script');script.id=config[0];script.src=config[1]+'?v=3';script.onload=done;script.onerror=done;document.head.appendChild(script);
+ }
+ function renderLessonLibraryRefs(panel,chapterIndex,lessonIndex){
+  var plan=lessonLibraryPlan(chapterIndex,lessonIndex);if(!plan.length)return;
+  var section=document.createElement('section');section.className='avp-lesson-library-section';
+  section.innerHTML='<h4>TÀI LIỆU THAM KHẢO MỞ RỘNG</h4><p>Các chủ đề liên quan được mở ngay trong bài học. Đóng bảng tham khảo để tiếp tục đúng vị trí đang học.</p><div class="avp-lesson-ref-list"></div><div class="avp-lesson-drawer" aria-hidden="true"><section class="avp-lesson-drawer-panel" role="dialog" aria-modal="true" aria-label="Tài liệu tham khảo"><div class="avp-lesson-drawer-head"><small>THƯ VIỆN EXCEL · THAM KHẢO</small><button type="button" class="avp-lesson-drawer-close" aria-label="Đóng tài liệu">×</button></div><div class="avp-lesson-drawer-content"><div class="avp-lesson-drawer-loading">Chọn một chủ đề để xem nội dung.</div></div></section></div>';
+  panel.appendChild(section);
+  var list=section.querySelector('.avp-lesson-ref-list'),drawer=section.querySelector('.avp-lesson-drawer'),content=section.querySelector('.avp-lesson-drawer-content');
+  var labels={shortcut:"Thư viện Phím tắt Excel",knowledge:"Thư viện Kiến thức Excel",formula:"Thư viện Hàm & công thức",format:"Thư viện Định dạng & dữ liệu"};
+  function close(){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');}
+  section.querySelector('.avp-lesson-drawer-close').addEventListener('click',close);
+  drawer.addEventListener('click',function(e){if(e.target===drawer)close();});
+  plan.forEach(function(pair){
+   var button=document.createElement('button');button.type='button';button.className='avp-lesson-ref';
+   button.innerHTML='<span>▦</span><span><strong></strong><small></small></span><b>→</b>';
+   button.querySelector('strong').textContent=pair[1];button.querySelector('small').textContent=labels[pair[0]];
+   button.addEventListener('click',function(){
+    drawer.classList.add('open');drawer.setAttribute('aria-hidden','false');
+    content.innerHTML='<div class="avp-lesson-drawer-loading">Đang tải chủ đề tham khảo…</div>';
+    ensureLessonLibraryData(pair[0],function(){
+     var rows=pair[0]==='shortcut'?window.AVP_SHORTCUT_BANK:pair[0]==='knowledge'?window.AVP_KNOWLEDGE_BANK:pair[0]==='formula'?window.AVP_FORMULA_BANK:(window.AVP_DATA_LIBRARY&&window.AVP_DATA_LIBRARY.items);
+     var item=rows&&rows.find(function(x){return pair[0]==='shortcut'?x.key===pair[1]:pair[0]==='formula'?x.name===pair[1]:x.id===pair[1];});
+     if(!item){content.innerHTML='<p>Chưa tìm thấy chủ đề này trong thư viện. <a href="'+(pair[0]==='shortcut'?'excel-shortcut-library.html':pair[0]==='knowledge'?'excel-knowledge-library.html':'excel-formula-library.html')+'" target="_blank" rel="noopener">Mở thư viện đầy đủ trong tab mới</a>.</p>';return;}
+     var title=pair[0]==='shortcut'?item.name:pair[0]==='formula'?item.name:item.title;
+     var summary=item.summary||item.description||item.concept||item.syntax||item.when||'';
+     var blocks=[];
+     function add(h,t){if(!t)return;blocks.push({h:h,t:Array.isArray(t)?t.join(' · '):String(t)});}
+     add('TỔNG QUAN',summary);add(pair[0]==='shortcut'?'TÌNH HUỐNG':pair[0]==='formula'?'CÚ PHÁP':'BẢN CHẤT',item.scenario||item.syntax||item.principle||item.concept||item.when);
+     add('VÍ DỤ',item.example||item.formula);add('QUY TẮC CẦN NHỚ',item.rules||item.misconception);add('TỰ KIỂM TRA',item.question||item.check);add('ĐÁP ÁN',item.answer);
+     content.innerHTML='<h3></h3>';content.querySelector('h3').textContent=title;
+     blocks.forEach(function(b){var h=document.createElement('h4');h.textContent=b.h;var p=document.createElement('p');p.textContent=b.t;content.append(h,p);});
+     if(pair[0]==='formula'&&item.formula){var code=document.createElement('div');code.className='avp-lesson-drawer-example';code.textContent=item.formula;content.appendChild(code);}
+     var link=document.createElement('p'),a=document.createElement('a');a.href=pair[0]==='shortcut'?'excel-shortcut-library.html':pair[0]==='knowledge'?'excel-knowledge-library.html':'excel-formula-library.html';a.target='_blank';a.rel='noopener';a.textContent='Mở toàn bộ '+labels[pair[0]]+' ↗';link.appendChild(a);content.appendChild(link);
+    });
+   });
+   list.appendChild(button);
+  });
+ }
  function renderStructuredLesson(chapterIndex,lessonIndex){
   if(!lessonPanel||chapterIndex<1||chapterIndex>3||lessonIndex<0||lessonIndex>=chapterLessons[chapterIndex].length)return;
   var catalogs={
@@ -230,6 +303,14 @@ function setup(){
   lessonPanel.querySelector('.avp-lesson-practice').textContent=d[3];
   lessonPanel.querySelector('.avp-lesson-mistake').textContent=d[4];
   lessonPanel.querySelector('.avp-lesson-check').textContent=d[5];
+  var workflow=document.createElement('section');workflow.className='avp-lesson-workflow';
+  workflow.innerHTML='<h4>QUY TRÌNH ÁP DỤNG</h4><ol><li class="step-source"></li><li class="step-action"></li><li class="step-verify"></li></ol><h4>TIÊU CHÍ HOÀN THÀNH</h4><p class="step-output"></p>';
+  workflow.querySelector('.step-source').textContent='Xác định đúng vùng dữ liệu, mục tiêu và điều kiện đầu vào trước khi thao tác.';
+  workflow.querySelector('.step-action').textContent=d[3];
+  workflow.querySelector('.step-verify').textContent='Đối chiếu kết quả với quy tắc: '+d[4]+' Kiểm tra lại trên một vài bản ghi đại diện.';
+  workflow.querySelector('.step-output').textContent=d[5];
+  lessonPanel.querySelector('.avp-lesson-main').appendChild(workflow);
+  renderLessonLibraryRefs(lessonPanel,chapterIndex,lessonIndex);
  }
  function renderChapterGrid(){
   chapterView='grid';
