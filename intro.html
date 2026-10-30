@@ -102,6 +102,27 @@ html,body,.player{width:100%;height:100%;min-height:100%;overflow:hidden}
 @media(max-width:650px){.stage{width:100vw;height:100vh}}
 
 </style>
+<style id="avp-intro-hide-site-chrome">
+html.avp-intro-no-site-chrome body .top-simple-nav,
+html.avp-intro-no-site-chrome body #avpEdgeLauncher,
+html.avp-intro-no-site-chrome body .avp-edge-mini-preview-v2,
+html.avp-intro-no-site-chrome body .avp-install-banner,
+html.avp-intro-no-site-chrome body .avp-page-back,
+html.avp-intro-no-site-chrome body .avp-page-back-wrap{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+html.avp-intro-no-site-chrome body{padding-top:0!important;margin-top:0!important}
+</style>
+<script>
+(function(){
+  document.documentElement.classList.add('avp-intro-no-site-chrome');
+  function removeSiteChrome(){
+    document.querySelectorAll('.top-simple-nav,#avpEdgeLauncher,.avp-edge-mini-preview-v2,.avp-install-banner,.avp-page-back,.avp-page-back-wrap').forEach(function(el){el.remove();});
+    document.body.style.paddingTop='0';
+    document.body.style.marginTop='0';
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',removeSiteChrome,{once:true});else removeSiteChrome();
+  new MutationObserver(removeSiteChrome).observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
 </head>
 <body>
 <main class="player" id="player">
