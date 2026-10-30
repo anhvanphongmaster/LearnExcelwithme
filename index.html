@@ -2096,7 +2096,7 @@ document.addEventListener("click", function(e){
 </script>
   <script id="avp-home-boot">
 (function(){
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduce = false; /* AVP keeps authored motion enabled across devices. */
   function ease(t){ return 1 - Math.pow(1 - t, 5); }
   function bindScroll(){
     var btn = document.getElementById('avpScrollToPath');
@@ -2145,7 +2145,7 @@ document.addEventListener("click", function(e){
 
 <script id="avp-motion-inline-boot">
 (function(){
-  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  /* AVP entrance motion is kept enabled across devices. */
   function rise(){
     var sel='.home-path-card,.home-more-card,.home-book-card,.course-card,.pyt-card';
     var nodes=document.querySelectorAll(sel);
