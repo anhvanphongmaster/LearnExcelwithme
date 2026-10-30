@@ -320,6 +320,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
   lessonPanel.querySelector('.avp-adv-practice').textContent=p.practice;
   lessonPanel.querySelector('.avp-adv-errors').textContent=p.errors;
   renderLessonLibraryRefs(lessonPanel,chapterIndex,lessonIndex);
+  mountChapterCheckpoint(lessonPanel,chapterIndex,lessonIndex,p);
  }
  function renderDataTypesLesson(){
   if(!lessonPanel)return;
@@ -495,6 +496,28 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
    list.appendChild(button);
   });
  }
+ function mountChapterCheckpoint(panel,chapterIndex,lessonIndex,procedure){
+  if(!panel||!procedure||chapterIndex<1||chapterIndex>11)return;
+  var chapter=String(chapterIndex+1).padStart(2,'0'),lesson=String(lessonIndex+1).padStart(2,'0'),key='avp_checkpoint_local_v1_C'+chapter+'L'+lesson;
+  if(panel.querySelector('[data-checkpoint-key="'+key+'"]'))return;
+  var expected=String(procedure.expected||procedure.passCriteria||'Thực hiện đúng thao tác và đối chiếu kết quả.').trim(),practice=String(procedure.practice||'Thực hiện lại thao tác của bài trên bảng dữ liệu mẫu.').trim(),errors=String(procedure.errors||'Không bỏ qua bước kiểm tra kết quả.').trim(),goal=String(procedure.goal||procedure.concept||'Nắm được nội dung trọng tâm của bài.').trim();
+  var questions=[{q:'Mục tiêu trọng tâm của bài học này là gì?',opts:[goal,practice,errors],a:0,why:goal},{q:'Nhiệm vụ nào phù hợp để áp dụng nội dung vừa học?',opts:[errors,practice,expected],a:1,why:practice},{q:'Kết quả hoặc tiêu chí nào cần được kiểm tra sau khi thực hiện?',opts:[practice,goal,expected],a:2,why:expected}];
+  questions=questions.map(function(q){var a=q.opts.map(function(v,i){return {v:v,c:i===q.a};});for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return {q:q.q,opts:a.map(function(x){return x.v;}),a:a.findIndex(function(x){return x.c;})};});
+  var saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{};}catch(e){}
+  var wrap=document.createElement('section');wrap.className='avp-lesson-checkpoint';wrap.setAttribute('data-checkpoint-key',key);
+  var head=document.createElement('div');head.className='avp-checkpoint-head';var eyebrow=document.createElement('small');eyebrow.textContent='CHECKPOINT TỰ ĐÁNH GIÁ · CHƯƠNG '+chapter+' / BÀI '+lesson;var title=document.createElement('h4');title.textContent='Kiểm tra trước khi chuyển bài';var intro=document.createElement('p');intro.textContent='Trả lời đủ 3 câu hỏi và tự thực hiện nhiệm vụ. Cần đúng ít nhất 2 câu để đạt checkpoint kiến thức.';head.append(eyebrow,title,intro);wrap.appendChild(head);
+  var form=document.createElement('div');form.className='avp-checkpoint-questions';
+  questions.forEach(function(q,i){var field=document.createElement('fieldset');field.className='avp-checkpoint-question';var legend=document.createElement('legend');legend.textContent=(i+1)+'. '+q.q;field.appendChild(legend);q.opts.forEach(function(opt,k){var label=document.createElement('label');label.className='avp-checkpoint-option';var input=document.createElement('input');input.type='radio';input.name=key+'-q'+i;input.value=String(k);if(saved.answers&&Number(saved.answers[i])===k)input.checked=true;var span=document.createElement('span');span.textContent=opt;label.append(input,span);field.appendChild(label);});form.appendChild(field);});wrap.appendChild(form);
+  var task=document.createElement('div');task.className='avp-checkpoint-task';var taskTitle=document.createElement('strong');taskTitle.textContent='NHIỆM VỤ THỰC HÀNH';var taskText=document.createElement('p');taskText.textContent=practice;task.append(taskTitle,taskText);wrap.appendChild(task);
+  var practiceLabel=document.createElement('label');practiceLabel.className='avp-checkpoint-practice';var check=document.createElement('input');check.type='checkbox';check.checked=!!saved.practice;var checkText=document.createElement('span');checkText.textContent='Tôi đã tự thực hiện nhiệm vụ trên Excel và kiểm tra kết quả.';practiceLabel.append(check,checkText);wrap.appendChild(practiceLabel);
+  var actions=document.createElement('div');actions.className='avp-checkpoint-actions';var submit=document.createElement('button');submit.type='button';submit.className='avp-checkpoint-submit';submit.textContent='Kiểm tra checkpoint';var reset=document.createElement('button');reset.type='button';reset.className='avp-checkpoint-reset';reset.textContent='Làm lại';actions.append(submit,reset);wrap.appendChild(actions);
+  var result=document.createElement('div');result.className='avp-checkpoint-result';result.setAttribute('role','status');result.setAttribute('aria-live','polite');wrap.appendChild(result);
+  var disclaimer=document.createElement('p');disclaimer.className='avp-checkpoint-disclaimer';disclaimer.textContent='Lưu trên thiết bị hiện tại. Đây là tự đánh giá, không phải hệ thống tự xác minh file thực hành và chưa đồng bộ tiến độ tài khoản.';wrap.appendChild(disclaimer);
+  if(saved.passed){result.classList.add('is-pass');result.textContent='Đã PASS checkpoint tự đánh giá trên thiết bị này.';}
+  submit.addEventListener('click',function(){var score=0,answers=[],missing=false;questions.forEach(function(q,i){var chosen=form.querySelector('input[name="'+key+'-q'+i+'"]:checked');if(!chosen){missing=true;answers.push(null);}else{var v=Number(chosen.value);answers.push(v);if(v===q.a)score++;}});if(missing){result.className='avp-checkpoint-result is-error';result.textContent='Hãy trả lời đủ 3 câu hỏi.';return;}if(!check.checked){result.className='avp-checkpoint-result is-error';result.textContent='Hãy thực hiện nhiệm vụ và tích xác nhận trước khi kiểm tra.';return;}saved={answers:answers,practice:true,score:score,passed:score>=2,completedAt:new Date().toISOString(),source:'local-self-check'};try{localStorage.setItem(key,JSON.stringify(saved));}catch(e){}result.className='avp-checkpoint-result '+(saved.passed?'is-pass':'is-error');result.textContent=saved.passed?'PASS · Đúng '+score+'/3 câu. Kết quả chỉ lưu trên thiết bị này.':'Chưa đạt · Đúng '+score+'/3 câu. Xem lại bài và thử lại.';});
+  reset.addEventListener('click',function(){form.querySelectorAll('input[type="radio"]').forEach(function(n){n.checked=false;});check.checked=false;saved={};try{localStorage.removeItem(key);}catch(e){}result.className='avp-checkpoint-result';result.textContent='Đã xóa kết quả checkpoint trên thiết bị này.';});
+  panel.appendChild(wrap);
+ }
  function renderStructuredLesson(chapterIndex,lessonIndex){
   if(!lessonPanel||chapterIndex<1||chapterIndex>3||lessonIndex<0||lessonIndex>=chapterLessons[chapterIndex].length)return;
   if(!window.AVP_LESSON_PROCEDURES_V2){
@@ -582,6 +605,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
    main.appendChild(detail);
   }
   renderLessonLibraryRefs(lessonPanel,chapterIndex,lessonIndex);
+  if(procedure)mountChapterCheckpoint(lessonPanel,chapterIndex,lessonIndex,procedure);
  }
  function renderChapterGrid(){
   chapterView='grid';
