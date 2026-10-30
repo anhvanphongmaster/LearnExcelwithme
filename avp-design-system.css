@@ -1,0 +1,43 @@
+/* AVP Global Design System — shared foundations for desktop and mobile.
+   Components are opt-in via .avp-ds-* classes; legacy pages remain unchanged until migrated. */
+:root{
+ --avp-color-brand:#08734b;--avp-color-brand-strong:#123d2a;--avp-color-ink:#1c3024;
+ --avp-color-muted:#718076;--avp-color-line:#dfebe3;--avp-color-surface:#fff;
+ --avp-color-canvas:#f5f9f6;--avp-color-soft:#e8f6ed;--avp-color-focus:#78b993;
+ --avp-radius-sm:10px;--avp-radius-md:14px;--avp-radius-lg:20px;--avp-radius-xl:26px;
+ --avp-shadow-card:0 8px 24px rgba(23,63,41,.07);--avp-shadow-float:0 18px 44px rgba(18,61,42,.13);
+ --avp-space-1:4px;--avp-space-2:8px;--avp-space-3:12px;--avp-space-4:16px;
+ --avp-space-5:20px;--avp-space-6:24px;--avp-space-8:32px;--avp-space-10:40px;
+ --avp-content-width:1160px;--avp-page-gutter:24px;
+ --avp-font-body:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+html.avp-design-system{scroll-behavior:smooth;max-width:100%;overflow-x:hidden}
+html.avp-design-system body{max-width:100%;overflow-x:hidden;font-family:var(--avp-font-body)}
+html.avp-design-system img,html.avp-design-system video,html.avp-design-system svg{max-width:100%}
+.avp-ds-shell{width:min(var(--avp-content-width),calc(100% - 2*var(--avp-page-gutter)));margin:24px auto 64px}
+.avp-ds-hero{padding:clamp(24px,4vw,44px);border:1px solid var(--avp-color-line);border-radius:var(--avp-radius-xl);background:linear-gradient(125deg,var(--avp-color-soft),var(--avp-color-surface) 58%,#edf5ff);box-shadow:var(--avp-shadow-card)}
+.avp-ds-eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--avp-color-brand);font-size:11px;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
+.avp-ds-title{margin:10px 0;color:var(--avp-color-brand-strong);font-size:clamp(28px,4vw,44px);line-height:1.12;letter-spacing:-.035em}
+.avp-ds-lead{max-width:760px;color:var(--avp-color-muted);font-size:15px;line-height:1.75}
+.avp-ds-panel{padding:var(--avp-space-5);border:1px solid var(--avp-color-line);border-radius:var(--avp-radius-lg);background:var(--avp-color-surface);box-shadow:var(--avp-shadow-card)}
+.avp-ds-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--avp-space-4)}
+.avp-ds-card{min-width:0;padding:var(--avp-space-4);border:1px solid var(--avp-color-line);border-radius:var(--avp-radius-md);background:var(--avp-color-surface);box-shadow:var(--avp-shadow-card);transition:transform .18s,border-color .18s,box-shadow .18s}
+.avp-ds-card:hover{transform:translateY(-2px);border-color:#b9d9c5;box-shadow:var(--avp-shadow-float)}
+.avp-ds-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 8px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.avp-ds-tab{flex:0 0 auto;min-height:40px;padding:0 14px;border:1px solid var(--avp-color-line);border-radius:999px;background:#fff;color:var(--avp-color-muted);font:inherit;font-size:12px;font-weight:750;cursor:pointer}
+.avp-ds-tab[aria-selected="true"],.avp-ds-tab.is-active{border-color:var(--avp-color-brand);background:var(--avp-color-brand);color:#fff}
+.avp-ds-input{width:100%;min-height:46px;padding:0 14px;border:1px solid var(--avp-color-line);border-radius:var(--avp-radius-sm);background:#fff;color:var(--avp-color-ink);font:inherit;font-size:14px}
+.avp-ds-input:focus-visible,.avp-ds-tab:focus-visible,.avp-ds-button:focus-visible{outline:3px solid rgba(8,115,75,.2);outline-offset:2px;border-color:var(--avp-color-focus)}
+.avp-ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border:1px solid var(--avp-color-line);border-radius:var(--avp-radius-sm);background:#fff;color:var(--avp-color-ink);font:inherit;font-size:13px;font-weight:750;cursor:pointer}
+.avp-ds-button--primary{border-color:var(--avp-color-brand);background:var(--avp-color-brand);color:#fff}
+.avp-ds-muted{color:var(--avp-color-muted)}
+@media(max-width:800px){
+ :root{--avp-page-gutter:14px}
+ .avp-ds-shell{margin:14px auto 48px}
+ .avp-ds-hero{padding:22px 18px;border-radius:var(--avp-radius-lg)}
+ .avp-ds-lead{font-size:14px}
+ .avp-ds-grid{grid-template-columns:1fr}
+ .avp-ds-panel{padding:14px}
+ .avp-ds-button{min-height:44px}
+}
+@media(prefers-reduced-motion:reduce){html.avp-design-system{scroll-behavior:auto}.avp-ds-card{transition:none}}
