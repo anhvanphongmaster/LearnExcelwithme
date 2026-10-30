@@ -693,5 +693,5 @@ document.addEventListener("DOMContentLoaded",function(){
 (function(){
   if(window.__AVP_SETTINGS_LOADER__)return;
   window.__AVP_SETTINGS_LOADER__=true;
-  var s=document.createElement('script');s.src='avp-settings.js?v=20261030-1';s.defer=true;document.head.appendChild(s);
+  var s=document.createElement('script');s.src='avp-settings.js?v=20261030-2';s.defer=true;document.head.appendChild(s);
 })();
