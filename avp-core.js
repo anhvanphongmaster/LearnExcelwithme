@@ -61,24 +61,17 @@
   if(!IGNORE.has(page)){
     const hist=safe(KEY_HISTORY).filter(x=>x.url!==page);hist.unshift({url:page,title,ts:now});save(KEY_HISTORY,hist.slice(0,12));
   }
-  function progress(){
-    const courses=safe('completedCourses'); const pg=safe('avp_playground_completed_v1');
-    const coursePct=Math.min(100,Math.round((Array.isArray(courses)?courses.length:0)/6*100));
-    const pgPct=Math.min(100,Math.round((Array.isArray(pg)?pg.length:0)/10*100));
-    const quiz=Math.min(100,(parseInt(localStorage.getItem('quizBestScore')||'0',10)||0)*20);
-    return Math.round((coursePct+pgPct+quiz)/3);
-  }
   function renderHub(){
-    const h=safe(KEY_HISTORY), b=safe(KEY_BOOK); const pct=progress();
+    const h=safe(KEY_HISTORY), b=safe(KEY_BOOK);
     const recent=h.slice(0,5).map(x=>`<div class="avp-hub-card"><strong>${esc(x.title)}</strong><small>${ago(x.ts)}</small><div class="avp-hub-actions"><a class="avp-hub-btn" href="${attr(x.url)}">Mở lại →</a></div></div>`).join('')||'<div class="avp-hub-empty">Chưa có lịch sử học trên thiết bị này.</div>';
     const books=b.slice(0,6).map(x=>`<div class="avp-hub-card avp-hub-row"><div><strong>${esc(x.title)}</strong><small>Đã lưu để học lại</small></div><a class="avp-hub-btn" href="${attr(x.url)}">Mở</a></div>`).join('')||'<div class="avp-hub-empty">Chưa lưu bài nào. Bấm biểu tượng 🔖 ở cạnh phải để lưu.</div>';
     return `<div class="avp-hub-head"><div><div class="avp-hub-title">📚 Trung tâm học tập</div><small>Tiếp tục đúng chỗ, không mất tiến độ</small></div><button class="avp-hub-close" aria-label="Đóng">×</button></div>
-      <section class="avp-hub-section"><h3>Tiến độ tổng</h3><div class="avp-hub-card"><div class="avp-hub-row"><strong>${pct}% hoàn thành</strong><small>trên thiết bị này</small></div><div class="avp-hub-progress"><span style="width:${pct}%"></span></div><div class="avp-hub-actions"><a class="avp-hub-btn" href="dashboard.html">Xem Dashboard</a><a class="avp-hub-btn secondary" href="skill-map.html">Lộ trình học</a></div></div></section><section class="avp-hub-section"><h3>Chức năng nhanh</h3><div class="avp-hub-quick">
+      <section class="avp-hub-section"><h3>Chức năng nhanh</h3><div class="avp-hub-quick">
 <a class="avp-hub-btn" href="index.html">🏠 Trang chủ</a>
 <a class="avp-hub-btn" href="practice-video.html">📚 Practice Hub</a>
 <a class="avp-hub-btn" href="excel-race.html">🏁 Excel Race</a>
 <a class="avp-hub-btn secondary" href="excel.html">📘 Excel cơ bản</a>
-<a class="avp-hub-btn secondary" href="dashboard.html">📊 Tiến độ</a>
+<a class="avp-hub-btn secondary" href="index.html">🧭 Bản đồ học tập</a>
 <a class="avp-hub-btn secondary" href="auth.html?tab=login">👤 Đăng nhập</a>
 </div></section>
       <section class="avp-hub-section"><h3>Học gần đây</h3>${recent}</section>
