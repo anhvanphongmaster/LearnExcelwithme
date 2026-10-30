@@ -963,6 +963,10 @@ a.avp-yt-combo.avp-mobile-main-cta{
 <link rel="stylesheet" href="avp-hover-lift.css" />
 <style id="avp-home-full-css">
 .avp-hero{position:relative;isolation:isolate;overflow:hidden;--px:0}
+/* Khoảng trống cho fixed header: tránh che phần đầu Hero trên desktop. */
+.avp-hero{scroll-margin-top:78px;padding-top:96px!important}
+@media(max-width:900px){.avp-hero{padding-top:88px!important}}
+
 .avp-hero::before{content:"";position:absolute;inset:-20% -10% auto -10%;height:70%;pointer-events:none;z-index:0;
   background:radial-gradient(ellipse at 50% 0%,rgba(74,222,128,.18),transparent 60%);
   animation:avpGlow 8s ease-in-out infinite alternate}
