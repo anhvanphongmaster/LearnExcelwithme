@@ -151,3 +151,47 @@ html.avp-home-canonical #home-books .home-reference-grid-v114>.home-ref-item-v11
     grid-template-columns:44px minmax(0,1fr)!important;
   }
 }
+
+
+/* Match the two reference cards to the exact grid footprint and card size
+   used by the four resource cards above. */
+html.avp-home-canonical #home-books{
+  width:calc(100% - 48px)!important;
+  max-width:1460px!important;
+  margin:22px auto 26px!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+}
+html.avp-home-canonical #home-books .home-reference-grid-v114{
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:12px!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-auto-rows:145px!important;
+  gap:12px!important;
+  align-items:stretch!important;
+  box-sizing:border-box!important;
+}
+html.avp-home-canonical #home-books .home-reference-grid-v114>.home-ref-item-v114{
+  width:100%!important;
+  min-width:0!important;
+  min-height:145px!important;
+  height:145px!important;
+  padding:21px!important;
+  box-sizing:border-box!important;
+  align-self:stretch!important;
+}
+@media(max-width:760px){
+  html.avp-home-canonical #home-books .home-reference-grid-v114{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    grid-auto-rows:145px!important;
+  }
+}
+@media(max-width:520px){
+  html.avp-home-canonical #home-books .home-reference-grid-v114>.home-ref-item-v114{
+    grid-template-columns:44px minmax(0,1fr)!important;
+    padding:11px!important;
+  }
+}
