@@ -101,7 +101,7 @@ function setup(){
  discover.innerHTML='<div class="avp-canonical-section-head"><div><h2>Khám phá ngay</h2><p>Chọn khu vực bạn quan tâm để bắt đầu hành trình.</p></div><a href="tools-center.html">Khám phá tất cả　↗</a></div><div class="avp-canonical-discover-grid"></div>';
  var cats=[
  ['learning-chapters.html','↪','Lộ trình học','12 chương được thiết kế theo đúng công việc thực tế','green'],
- ['excel-library.html','ƒx','Thư viện hàm Excel','Tra cứu nhanh công dụng, ví dụ và cách dùng','blue'],
+ ['#open-excel-library','▦','Thư viện Excel','Tra cứu phím tắt, hàm, kiến thức và hướng dẫn','blue'],
  ['practice-video.html','▤','File thực hành','Tải file theo từng chương, bài học','amber'],
  ['ai.html','✳','Công cụ hỗ trợ','Template, tiện ích và công cụ hữu ích','purple'],
  ['community.html','♟','Cộng đồng','Hỏi đáp, chia sẻ kinh nghiệm và thảo luận','pink']
@@ -238,6 +238,33 @@ function setup(){
  toolsModal.querySelector('.avp-chapter-picker-close').addEventListener('click',closeToolsPicker);
  toolsModal.addEventListener('click',function(event){if(event.target===toolsModal)closeToolsPicker();});
  document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!toolsModal.hidden)closeToolsPicker();});
+
+
+ /* Thư viện Excel: cửa vào chung cho các thư viện tra cứu. */
+ var libraryCard=grid.querySelectorAll('.avp-canonical-category')[1];
+ var libraryModal=document.createElement('div');
+ libraryModal.className='avp-chapter-picker-backdrop avp-library-picker-backdrop';
+ libraryModal.hidden=true;
+ libraryModal.innerHTML='<section class="avp-chapter-picker avp-library-picker" role="dialog" aria-modal="true" aria-labelledby="avpLibraryPickerTitle"><button type="button" class="avp-chapter-picker-close" aria-label="Đóng">×</button><div class="avp-chapter-picker-head"><small>LEARN EXCEL · KNOWLEDGE LIBRARY</small><h2 id="avpLibraryPickerTitle">Thư viện Excel</h2><p>Tra cứu kiến thức, công cụ và hướng dẫn Excel theo nhu cầu.</p></div><div class="avp-library-grid"></div></section>';
+ var libraryStyle=document.createElement('style');
+ libraryStyle.textContent='.avp-library-picker{width:min(820px,100%)}.avp-library-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.avp-library-app{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;min-width:0;min-height:145px;padding:17px 10px 14px;border:1px solid #e2ebe5;border-radius:17px;background:#fff;color:#214a34;text-align:center;text-decoration:none;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}.avp-library-app[href]:hover{transform:translateY(-3px);border-color:#a9d5b8;box-shadow:0 10px 22px #17452f12}.avp-library-app[aria-disabled=true]{cursor:default;background:#fbfcfb}.avp-library-app-icon{display:grid;place-items:center;width:48px;height:46px;border-radius:14px;background:var(--lib-tint,#e3f4e9);color:var(--lib-accent,#16764d);font-size:23px;font-weight:900}.avp-library-app strong{font-size:13px;line-height:1.35}.avp-library-app small{font-size:10px;line-height:1.4;color:#77867c}.avp-library-app em{margin-top:auto;padding:4px 8px;border-radius:999px;background:#f1f5f2;color:#718078;font-size:9px;font-style:normal;font-weight:800}.avp-library-app.ready em{background:#e5f5eb;color:#147347}.avp-library-app:nth-child(2){--lib-accent:#416fc1;--lib-tint:#e6eeff}.avp-library-app:nth-child(3){--lib-accent:#7851a7;--lib-tint:#f1e9ff}.avp-library-app:nth-child(4){--lib-accent:#a36b20;--lib-tint:#fff0d9}.avp-library-app:nth-child(5){--lib-accent:#b64e5b;--lib-tint:#fce7e9}.avp-library-app:nth-child(6){--lib-accent:#347d83;--lib-tint:#e2f1f2}@media(max-width:560px){.avp-library-picker{padding:21px 12px;max-height:88dvh}.avp-library-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.avp-library-app{min-height:132px;padding:13px 8px}.avp-library-app strong{font-size:12px}}';
+ document.head.appendChild(libraryStyle);
+ document.body.appendChild(libraryModal);
+ var libraryItems=[
+  ['formula-finder.html','ƒx','Hàm & công thức','Tra cứu cú pháp, đối số và ví dụ','MỞ THƯ VIỆN','ready'],
+  ['#','⌨','Phím tắt Excel','Tìm kiếm và học tổ hợp phím','ĐANG CHUẨN BỊ','soon'],
+  ['#','▤','Kiến thức Excel','Khái niệm và nguyên lý nền tảng','ĐANG CHUẨN BỊ','soon'],
+  ['#','⚙','Hướng dẫn thao tác','Hướng dẫn trực quan từng bước','ĐANG CHUẨN BỊ','soon'],
+  ['#','▦','Định dạng & dữ liệu','Kiểu dữ liệu, định dạng và kiểm soát','ĐANG CHUẨN BỊ','soon'],
+  ['#','▧','Mẫu Workbook','File mẫu và cấu trúc sử dụng','ĐANG CHUẨN BỊ','soon']
+ ];
+ libraryModal.querySelector('.avp-library-grid').innerHTML=libraryItems.map(function(item){var active=item[5]==='ready';return '<'+(active?'a':'div')+' class="avp-library-app '+(active?'ready':'')+'"'+(active?' href="'+item[0]+'"':' aria-disabled="true"')+'><span class="avp-library-app-icon">'+item[1]+'</span><strong>'+item[2]+'</strong><small>'+item[3]+'</small><em>'+item[4]+'</em></'+(active?'a':'div')+'>';}).join('');
+ function openLibraryPicker(){libraryModal.hidden=false;document.body.classList.add('avp-chapter-picker-open');libraryModal.querySelector('.avp-chapter-picker-close').focus();}
+ function closeLibraryPicker(){libraryModal.hidden=true;document.body.classList.remove('avp-chapter-picker-open');}
+ if(libraryCard){libraryCard.href='#open-excel-library';libraryCard.setAttribute('role','button');libraryCard.setAttribute('aria-haspopup','dialog');libraryCard.setAttribute('aria-label','Mở Thư viện Excel');libraryCard.addEventListener('click',function(event){event.preventDefault();openLibraryPicker();});}
+ libraryModal.querySelector('.avp-chapter-picker-close').addEventListener('click',closeLibraryPicker);
+ libraryModal.addEventListener('click',function(event){if(event.target===libraryModal)closeLibraryPicker();});
+ document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!libraryModal.hidden)closeLibraryPicker();});
 
  hero.insertAdjacentElement('afterend',discover);
  var lessons=el('section','avp-canonical-lessons');
