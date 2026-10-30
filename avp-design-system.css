@@ -40,7 +40,6 @@ html.avp-design-system img,html.avp-design-system video,html.avp-design-system s
  .avp-ds-panel{padding:14px}
  .avp-ds-button{min-height:44px}
 }
-.avp-ds-card{transition:none}}
 
 /* Shared responsive filter layout for Knowledge Library */
 .k-search-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px}
