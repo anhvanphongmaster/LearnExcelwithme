@@ -195,3 +195,42 @@ html.avp-home-canonical #home-books .home-reference-grid-v114>.home-ref-item-v11
     padding:11px!important;
   }
 }
+
+
+/* Homepage card parallax — restrained 3D tilt, depth and pointer-following sheen. */
+html.avp-home-canonical .avp-canonical-category,
+html.avp-home-canonical .avp-canonical-lesson,
+html.avp-home-canonical .avp-canonical-trending li,
+html.avp-home-canonical .avp-resource-card,
+html.avp-home-canonical .avp-canonical-banner,
+html.avp-home-canonical .avp-canonical-book{
+ --avp-tilt-x:0deg;--avp-tilt-y:0deg;--avp-lift:0px;--avp-mx:50%;--avp-my:50%;
+ transform:perspective(900px) rotateY(var(--avp-tilt-x)) rotateX(var(--avp-tilt-y)) translateY(var(--avp-lift)) translateZ(0);
+ transform-style:preserve-3d;will-change:transform;
+ transition:transform .24s cubic-bezier(.2,.75,.25,1),box-shadow .24s ease,border-color .24s ease!important;
+}
+html.avp-home-canonical .avp-canonical-category::after,
+html.avp-home-canonical .avp-canonical-lesson::after,
+html.avp-home-canonical .avp-resource-card::after,
+html.avp-home-canonical .avp-canonical-book::after{
+ content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;
+ background:radial-gradient(260px circle at var(--avp-mx) var(--avp-my),rgba(255,255,255,.46),transparent 72%);
+ opacity:0;transition:opacity .22s ease;
+}
+html.avp-home-canonical .avp-parallax-active::after{opacity:1}
+html.avp-home-canonical .avp-canonical-category .avp-cat-icon,
+html.avp-home-canonical .avp-canonical-category .avp-cat-copy,
+html.avp-home-canonical .avp-canonical-lesson .avp-canonical-thumb,
+html.avp-home-canonical .avp-canonical-lesson .avp-canonical-lesson-copy,
+html.avp-home-canonical .avp-resource-card .avp-resource-icon,
+html.avp-home-canonical .avp-resource-card .avp-resource-copy{transform:translateZ(15px);transition:transform .24s ease}
+html.avp-home-canonical .avp-canonical-lesson,
+html.avp-home-canonical .avp-canonical-trending li{position:relative}
+html.avp-home-canonical .avp-canonical-category:hover,
+html.avp-home-canonical .avp-canonical-lesson:hover,
+html.avp-home-canonical .avp-resource-card:hover,
+html.avp-home-canonical .avp-canonical-book:hover{box-shadow:0 18px 34px rgba(18,64,39,.16)!important;border-color:#a9cfb7!important}
+@media(hover:none),(pointer:coarse){
+ html.avp-home-canonical .avp-canonical-category,html.avp-home-canonical .avp-canonical-lesson,
+ html.avp-home-canonical .avp-resource-card,html.avp-home-canonical .avp-canonical-book{transform:none;will-change:auto}
+}
