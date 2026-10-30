@@ -195,3 +195,83 @@ html.avp-home-canonical #home-books .home-reference-grid-v114>.home-ref-item-v11
     padding:11px!important;
   }
 }
+
+/* AVP HERO MOTION V1 — independent, lightweight CSS animation */
+html.avp-home-canonical .avp-canonical-illustration{
+  isolation:isolate;
+}
+html.avp-home-canonical .avp-canonical-illustration:before{
+  content:"";position:absolute;inset:-25%;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%,#ffffff52 0%,#ffffff00 52%);
+  transform:translateX(-28%);animation:avpHeroGlow 11s ease-in-out infinite alternate;
+}
+html.avp-home-canonical .avp-tool-bubble{
+  position:absolute;left:5.5%;top:25%;z-index:8;
+  display:flex;align-items:center;justify-content:center;
+  min-width:112px;min-height:42px;padding:10px 15px;
+  box-sizing:border-box;border:1px solid #d7e9dd;border-radius:15px;
+  background:linear-gradient(145deg,#fff,#f5fbf7);
+  color:#24583c;font-size:clamp(10px,.95vw,13px);font-weight:900;letter-spacing:.01em;
+  box-shadow:0 9px 24px #16452a18,0 2px 5px #16452a0b;
+}
+html.avp-home-canonical .avp-tool-bubble:after{
+  content:"";position:absolute;left:19px;bottom:-6px;width:11px;height:11px;
+  background:#f8fcf9;border-right:1px solid #d7e9dd;border-bottom:1px solid #d7e9dd;
+  transform:rotate(45deg);
+}
+html.avp-home-canonical .avp-tool-bubble span{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:0 10px;white-space:nowrap;opacity:0;visibility:hidden;
+  transform:translate3d(-10px,8px,0) scale(.88);transform-origin:50% 100%;
+  animation:avpToolBubble 36s cubic-bezier(.2,.75,.25,1) infinite both;
+  animation-delay:calc(var(--tool-index)*3s);
+}
+html.avp-home-canonical .avp-sheet{
+  z-index:2;animation:avpSheetFloat 6s ease-in-out infinite;
+}
+html.avp-home-canonical .avp-bars i{
+  transform-origin:bottom;animation:avpBarRise 4.8s cubic-bezier(.2,.8,.2,1) infinite alternate;
+}
+html.avp-home-canonical .avp-bars i:nth-child(1){animation-delay:0s}
+html.avp-home-canonical .avp-bars i:nth-child(2){animation-delay:.18s}
+html.avp-home-canonical .avp-bars i:nth-child(3){animation-delay:.36s}
+html.avp-home-canonical .avp-bars i:nth-child(4){animation-delay:.54s}
+html.avp-home-canonical .avp-bars i:nth-child(5){animation-delay:.72s}
+html.avp-home-canonical .avp-person{animation:avpPersonFloat 4.2s ease-in-out infinite}
+html.avp-home-canonical .avp-laptop{animation:avpLaptopFloat 5s ease-in-out infinite;z-index:5}
+html.avp-home-canonical .avp-laptop b{
+  width:31px;height:31px;padding:2px;overflow:hidden;
+  box-shadow:0 0 0 0 #24c88955;animation:avpLogoPulse 3.2s ease-in-out infinite;
+}
+html.avp-home-canonical .avp-laptop b img{
+  display:block;width:100%;height:100%;object-fit:contain;border-radius:5px;
+}
+html.avp-home-canonical .avp-checklist{
+  display:grid;gap:3px;line-height:1.45;
+}
+html.avp-home-canonical .avp-checklist span{
+  display:block;white-space:nowrap;animation:avpChecklistGlow 5s ease-in-out infinite;
+}
+html.avp-home-canonical .avp-checklist span:nth-child(2){animation-delay:.45s}
+html.avp-home-canonical .avp-checklist span:nth-child(3){animation-delay:.9s}
+html.avp-home-canonical .avp-checklist span:nth-child(4){animation-delay:1.35s}
+@keyframes avpToolBubble{
+  0%{opacity:0;visibility:hidden;transform:translate3d(-10px,8px,0) scale(.88)}
+  1.6%{opacity:1;visibility:visible;transform:translate3d(0,0,0) scale(1)}
+  6.5%{opacity:1;visibility:visible;transform:translate3d(0,0,0) scale(1)}
+  8.33%{opacity:0;visibility:hidden;transform:translate3d(11px,-7px,0) scale(.9)}
+  100%{opacity:0;visibility:hidden;transform:translate3d(11px,-7px,0) scale(.9)}
+}
+@keyframes avpHeroGlow{from{transform:translate3d(-22%,-4%,0)}to{transform:translate3d(22%,5%,0)}}
+@keyframes avpSheetFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes avpBarRise{from{filter:brightness(.9);transform:scaleY(.78)}to{filter:brightness(1.12);transform:scaleY(1)}}
+@keyframes avpPersonFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes avpLaptopFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(2px)}}
+@keyframes avpLogoPulse{0%,100%{box-shadow:0 0 0 0 #24c88900}50%{box-shadow:0 0 0 5px #24c88922}}
+@keyframes avpChecklistGlow{0%,72%,100%{filter:none}82%{filter:brightness(1.12)}}
+@media(max-width:700px){
+  html.avp-home-canonical .avp-tool-bubble{left:2%;top:19%;min-width:90px;min-height:34px;padding:7px 10px;border-radius:12px;font-size:9px}
+  html.avp-home-canonical .avp-tool-bubble:after{left:14px}
+  html.avp-home-canonical .avp-checklist{font-size:9px;padding:8px 9px}
+  html.avp-home-canonical .avp-laptop b{width:25px;height:25px}
+}
