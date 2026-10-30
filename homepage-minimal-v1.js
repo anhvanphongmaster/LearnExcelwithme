@@ -251,9 +251,8 @@ function setup(){
  document.head.appendChild(libraryStyle);
  document.body.appendChild(libraryModal);
  var libraryItems=[
-  ['formula-finder.html','ƒx','Hàm & công thức','Tra cứu cú pháp, đối số và ví dụ','MỞ THƯ VIỆN','ready'],
+  ['excel-formula-library.html','ƒx','Hàm & công thức','Tra cứu cú pháp, đối số và ví dụ','MỞ THƯ VIỆN','ready'],
   ['excel-shortcuts.html','⌨','Phím tắt Excel','Tìm kiếm và học tổ hợp phím','MỞ THƯ VIỆN','ready'],
-  ['#','⌨','Phím tắt Excel','Tìm kiếm và học tổ hợp phím','ĐANG CHUẨN BỊ','soon'],
   ['#','▤','Kiến thức Excel','Khái niệm và nguyên lý nền tảng','ĐANG CHUẨN BỊ','soon'],
   ['#','⚙','Hướng dẫn thao tác','Hướng dẫn trực quan từng bước','ĐANG CHUẨN BỊ','soon'],
   ['#','▦','Định dạng & dữ liệu','Kiểu dữ liệu, định dạng và kiểm soát','ĐANG CHUẨN BỊ','soon'],
