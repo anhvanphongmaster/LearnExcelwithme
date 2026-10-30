@@ -338,3 +338,12 @@ html.avp-home-canonical .avp-canonical-illustration .avp-books-stack{
   0%,100%{transform:translate3d(0,0,0)}
   50%{transform:translate3d(0,-3px,0)}
 }
+
+/* Pointer-following depth is applied with the independent translate property,
+   so it composes safely with each layer's ambient keyframe animation. */
+html.avp-home-canonical .avp-canonical-illustration .avp-float-label{translate:calc(var(--avp-scene-x,0px)*-.16) calc(var(--avp-scene-y,0px)*-.16)}
+html.avp-home-canonical .avp-canonical-illustration .avp-sheet{translate:calc(var(--avp-scene-x,0px)*.12) calc(var(--avp-scene-y,0px)*.12)}
+html.avp-home-canonical .avp-canonical-illustration .avp-checklist{translate:calc(var(--avp-scene-x,0px)*-.22) calc(var(--avp-scene-y,0px)*-.18)}
+html.avp-home-canonical .avp-canonical-illustration .avp-person{translate:calc(var(--avp-scene-x,0px)*.08) calc(var(--avp-scene-y,0px)*.08)}
+html.avp-home-canonical .avp-canonical-illustration .avp-laptop{translate:calc(var(--avp-scene-x,0px)*.04) calc(var(--avp-scene-y,0px)*.04)}
+html.avp-home-canonical .avp-canonical-illustration .avp-books-stack{translate:calc(var(--avp-scene-x,0px)*-.1) calc(var(--avp-scene-y,0px)*-.1)}
