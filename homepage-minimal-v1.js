@@ -244,3 +244,41 @@ if(document.readyState==='loading'){
  deleteLegacyDuplicateBlocks();
 }
 })();
+
+/* Restore the original hero illustration motion: one tool label cycles every 3s. */
+(function(){
+  'use strict';
+  var root=document.querySelector('.avp-canonical-illustration');
+  if(!root||root.dataset.avpMotionBound==='1')return;
+  root.dataset.avpMotionBound='1';
+  var badge=root.querySelector('.avp-float-label');
+  var tools=['Power Query','Excel','Power Pivot','DAX','PivotTable','Dashboard','VBA','Python','SQL','Office Scripts','Power Automate','AI'];
+  var index=0,cycle=null,frame=0;
+  if(badge){
+    badge.setAttribute('aria-label','Công cụ đang giới thiệu');
+    cycle=window.setInterval(function(){
+      if(document.hidden)return;
+      index=(index+1)%tools.length;
+      badge.textContent=tools[index];
+    },3000);
+  }
+  function reset(){
+    root.style.setProperty('--avp-scene-x','0px');
+    root.style.setProperty('--avp-scene-y','0px');
+  }
+  root.addEventListener('pointermove',function(event){
+    if(event.pointerType!=='mouse'&&event.pointerType!=='pen')return;
+    if(frame)return;
+    frame=requestAnimationFrame(function(){
+      frame=0;
+      var rect=root.getBoundingClientRect();
+      if(!rect.width||!rect.height)return;
+      var x=(event.clientX-rect.left)/rect.width-.5;
+      var y=(event.clientY-rect.top)/rect.height-.5;
+      root.style.setProperty('--avp-scene-x',(x*12).toFixed(2)+'px');
+      root.style.setProperty('--avp-scene-y',(y*8).toFixed(2)+'px');
+    });
+  },{passive:true});
+  root.addEventListener('pointerleave',reset,{passive:true});
+  document.addEventListener('visibilitychange',function(){if(document.hidden)reset();});
+})();
