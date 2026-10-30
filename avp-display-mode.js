@@ -5,14 +5,13 @@ const desktopContent='width=1200, initial-scale=0.32, minimum-scale=0.1, maximum
 const mobileContent='width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes';
 const embedded=(()=>{try{return new URLSearchParams(location.search).get('embed')==='1'||window.self!==window.top}catch(e){return true}})();
 if(embedded)return;
-let mode=window.matchMedia&&window.matchMedia('(max-width: 700px)').matches?'mobile':'desktop';
-try{if(localStorage.getItem(KEY+'-user-choice')==='1')mode=localStorage.getItem(KEY)||mode}catch(e){}
-let applyingInitialMode=true;
+let mode='desktop';
+try{mode=localStorage.getItem(KEY)||'desktop'}catch(e){}
 function setMode(next){
  mode=next==='mobile'?'mobile':'desktop';
  document.documentElement.dataset.avpDisplayMode=mode;
  if(viewport)viewport.setAttribute('content',mode==='desktop'?desktopContent:mobileContent);
- try{localStorage.setItem(KEY,mode);if(!applyingInitialMode)localStorage.setItem(KEY+'-user-choice','1')}catch(e){}
+ try{localStorage.setItem(KEY,mode)}catch(e){}
  document.querySelectorAll('[data-avp-display-mode]').forEach(b=>{
   const active=b.dataset.avpDisplayMode===mode;
   b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));
@@ -27,7 +26,7 @@ function install(){
   nav.insertBefore(group,theme||null);
   group.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.avpDisplayMode)));
  }
- setMode(mode);applyingInitialMode=false;
+ setMode(mode);
 }
 const style=document.createElement('style');
 style.textContent=`
