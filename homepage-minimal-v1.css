@@ -275,3 +275,47 @@ html.avp-home-canonical .avp-checklist span:nth-child(4){animation-delay:1.35s}
   html.avp-home-canonical .avp-checklist{font-size:9px;padding:8px 9px}
   html.avp-home-canonical .avp-laptop b{width:25px;height:25px}
 }
+
+/* AVP hero artwork refinement: anime office character + physical book stack */
+html.avp-home-canonical .avp-person{
+  left:37%!important;bottom:17%!important;width:31%!important;height:68%!important;
+  display:flex!important;align-items:flex-end!important;justify-content:center!important;
+  font-size:0!important;filter:drop-shadow(0 8px 8px #19452a20)!important;
+}
+html.avp-home-canonical .avp-hero-character{
+  display:block;width:100%;height:100%;overflow:visible;
+}
+html.avp-home-canonical .avp-laptop{
+  left:25%!important;bottom:6%!important;width:44%!important;height:27%!important;
+  z-index:5!important;
+}
+html.avp-home-canonical .avp-laptop>span{font-size:19px!important;opacity:.8}
+html.avp-home-canonical .avp-laptop>b{
+  width:34px!important;height:34px!important;padding:2px!important;
+  background:#087a4e!important;border-radius:7px!important;
+}
+html.avp-home-canonical .avp-books-stack{
+  position:absolute!important;right:1%!important;bottom:7%!important;z-index:7!important;
+  width:25%!important;height:35%!important;padding:0!important;
+  display:flex!important;flex-direction:column!important;justify-content:flex-end!important;
+  gap:3px!important;background:transparent!important;border-radius:0!important;
+}
+html.avp-home-canonical .avp-book{
+  position:relative!important;display:flex!important;align-items:center!important;
+  justify-content:flex-start!important;height:28%!important;min-height:19px!important;
+  padding:0 8px 0 12px!important;box-sizing:border-box!important;
+  border:1px solid #d8e5d8!important;border-left:5px solid #9c6c3e!important;
+  border-radius:3px 7px 7px 3px!important;color:#f7fff9!important;
+  box-shadow:0 4px 7px #0c39251f!important;transform:skewY(-3deg)!important;
+  font-size:clamp(7px,.72vw,10px)!important;letter-spacing:.01em!important;
+}
+html.avp-home-canonical .avp-book b{font-weight:900!important;white-space:nowrap!important;text-shadow:0 1px 2px #173c2a55!important}
+html.avp-home-canonical .avp-book-dashboard{width:91%!important;margin-left:9%!important;background:linear-gradient(100deg,#0a3929,#176d4a)!important;border-left-color:#c7a66a!important}
+html.avp-home-canonical .avp-book-pq{width:96%!important;margin-left:4%!important;background:linear-gradient(100deg,#174c38,#20865b)!important;border-left-color:#d8bd7d!important}
+html.avp-home-canonical .avp-book-excel{width:100%!important;background:linear-gradient(100deg,#0b5339,#159260)!important;border-left-color:#d5b76f!important}
+@media(max-width:700px){
+  html.avp-home-canonical .avp-person{left:35%!important;bottom:17%!important;width:34%!important;height:65%!important}
+  html.avp-home-canonical .avp-laptop{left:23%!important;width:47%!important}
+  html.avp-home-canonical .avp-books-stack{width:27%!important;right:0!important;bottom:7%!important;height:32%!important}
+  html.avp-home-canonical .avp-book{padding-left:6px!important;font-size:7px!important}
+}
