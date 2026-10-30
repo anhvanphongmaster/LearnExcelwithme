@@ -61,10 +61,12 @@ async function injectGlobalHeader(req,res){
     const type=res.headers.get("content-type")||"";
     if(!type.includes("text/html"))return res;
     const html=await res.text();
-    if(/simple-nav\\.js(?:[?'"\\s]|$)/i.test(html))return new Response(html,{status:res.status,statusText:res.statusText,headers:res.headers});
+    const headers=new Headers(res.headers);
+    headers.delete("content-length");headers.delete("content-encoding");headers.delete("transfer-encoding");
+    if(html.includes("simple-nav.js"))return new Response(html,{status:res.status,statusText:res.statusText,headers:headers});
     const tag='<script defer src="./simple-nav.js?v=20261030-global-header1" data-avp-global-header-loader></script>';
     const updated=html.includes("</body>")?html.replace("</body>",tag+"</body>"):html+tag;
-    return new Response(updated,{status:res.status,statusText:res.statusText,headers:res.headers});
+    return new Response(updated,{status:res.status,statusText:res.statusText,headers:headers});
   }catch(_){return res;}
 }
 
