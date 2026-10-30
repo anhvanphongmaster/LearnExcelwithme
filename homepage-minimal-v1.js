@@ -191,7 +191,7 @@ function setup(){
  }
 
  var books=document.getElementById('home-books');
- if(books){books.classList.add('avp-canonical-books');var heading=books.querySelector('.home-reference-heading');if(heading)heading.textContent='Tài liệu tham khảo';}
+ if(books){books.classList.remove('avp-canonical-books');var heading=books.querySelector('.home-reference-heading');if(heading)heading.textContent='Tài liệu tham khảo';}
 }
 /* Build the homepage once, then remove legacy duplicates once.
    Do not use delayed DOM deletion to compensate for competing renderers. */
