@@ -1024,7 +1024,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Một Query được tạo; dữ liệu đầu ra nằm trong Worksheet mới hoặc vị trí đã chọn.",
     "practice": "Dùng Power Query khi phải lặp lại thao tác chuẩn hóa dữ liệu nhiều lần.",
     "errors": "Nghĩ Power Query tự cập nhật ngay khi nguồn đổi; quên Refresh; chỉnh sửa trực tiếp kết quả load thay vì query.",
-    "library": "K024;K025"
+    "library": "K024;K025",
+    "concept": "Power Query ghi lại chuỗi bước biến đổi để có thể chạy lại khi dữ liệu nguồn thay đổi. Nó không tự cập nhật tức thời; người dùng cần Refresh. Nên dùng cho quy trình nhập, làm sạch và kết hợp dữ liệu lặp lại; công thức phù hợp hơn cho tính toán trực tiếp trên ô.",
+    "example": "Mỗi tuần nhận một file gồm 5.000 dòng. Thay vì xóa dòng trống, tách cột và sửa kiểu dữ liệu thủ công mỗi tuần, tạo Query một lần rồi Refresh khi nhận file mới.",
+    "selfCheck": "Power Query có tự chạy lại ngay khi bạn sửa dữ liệu nguồn không?",
+    "answer": "Không. Query cần Refresh hoặc thiết lập làm mới theo lịch/mở file. Dữ liệu đầu ra là kết quả được nạp, không nên sửa trực tiếp vì lần Refresh có thể ghi đè.",
+    "passCriteria": "Tạo được Query, chỉ ra được nguồn, các bước biến đổi và nơi Load; giải thích đúng khi nào cần Refresh."
   },
   {
     "id": "C9L02",
@@ -1042,7 +1047,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Query hiển thị đúng bảng, cột, encoding và dấu phân cách.",
     "practice": "Kết nối nhiều file xuất báo cáo cùng cấu trúc.",
     "errors": "Chọn nhầm Sheet; delimiter sai; CSV mã hóa sai gây lỗi tiếng Việt; tự động đoán kiểu dữ liệu không chính xác.",
-    "library": "K043;K006"
+    "library": "K043;K006",
+    "concept": "Kết nối dữ liệu cần kiểm tra đúng đối tượng, dấu phân cách, encoding và kiểu dữ liệu. Với CSV tiếng Việt, encoding sai có thể làm lỗi dấu; delimiter sai có thể dồn cả dòng vào một cột. Navigator cho phép chọn đúng Sheet/Table trước khi biến đổi.",
+    "example": "Một CSV có các cột Ngày;Mã lỗi;Số lượng. Nếu chọn dấu phẩy thay vì dấu chấm phẩy, preview có thể chỉ hiện một cột. Chọn delimiter đúng và kiểm tra tiếng Việt trước khi Transform.",
+    "selfCheck": "CSV hiện toàn bộ dữ liệu trong một cột, cần kiểm tra điều gì trước?",
+    "answer": "Kiểm tra Delimiter trong Text/CSV; đồng thời kiểm tra File Origin/encoding nếu tiếng Việt lỗi dấu. Không tách cột thủ công trước khi xác định nguyên nhân.",
+    "passCriteria": "Kết nối được cả Excel và CSV, chọn đúng Sheet/Table, delimiter và encoding; preview có tiêu đề/cột đúng."
   },
   {
     "id": "C9L03",
@@ -1061,7 +1071,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bạn nhận diện được Query Settings, Applied Steps, Data Preview và Formula Bar; xóa bước chỉ ảnh hưởng query.",
     "practice": "Đổi tên query theo quy tắc q_Source, q_Clean, q_Report.",
     "errors": "Xóa bước giữa làm bước sau lỗi; nhầm xóa cột với xóa query; đổi tên query nhưng không cập nhật phụ thuộc.",
-    "library": "K035"
+    "library": "K035",
+    "concept": "Power Query Editor gồm Data Preview để xem dữ liệu, Applied Steps để xem lịch sử biến đổi, Query Settings để quản lý query và Formula Bar để xem biểu thức M của bước đang chọn. Xóa một bước có thể làm các bước sau lỗi nếu chúng phụ thuộc kết quả của bước đó.",
+    "example": "Sau bước Changed Type, bước Removed Columns tham chiếu một cột đã đổi tên. Chọn từng Applied Step để xác định bước đầu tiên phát sinh lỗi, thay vì xóa ngẫu nhiên nhiều bước.",
+    "selfCheck": "Applied Steps dùng để làm gì và vì sao không nên xóa bước tùy tiện?",
+    "answer": "Nó lưu trình tự biến đổi; bước sau có thể tham chiếu tên cột hoặc kết quả của bước trước. Hãy chọn từng bước để tìm điểm lỗi trước khi sửa.",
+    "passCriteria": "Nhận diện đúng bốn vùng chính, đổi tên Query và giải thích được ảnh hưởng của việc xóa một bước."
   },
   {
     "id": "C9L04",
@@ -1079,7 +1094,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Cột có kiểu đúng; lỗi được hiểu nguyên nhân, không bị thay bằng giá trị giả.",
     "practice": "Chuẩn hóa ngày kiểm tra, số lượng lỗi và mã sản phẩm.",
     "errors": "Đổi mã có số 0 đầu thành Number; Replace Errors bằng 0 khi chưa hiểu; dùng locale sai.",
-    "library": "K006;K007;K036;K040"
+    "library": "K006;K007;K036;K040",
+    "concept": "Kiểu dữ liệu quyết định cách Power Query diễn giải và xử lý giá trị. Using Locale dùng khi chuỗi ngày/số theo quy ước vùng khác; mã định danh có số 0 đầu thường phải để Text. Error khác Null: Error là phép biến đổi thất bại, Null là giá trị thiếu.",
+    "example": "Chuỗi 03/04/2026 có thể là ngày 3 tháng 4 hoặc 4 tháng 3 tùy locale. Mã 00125 phải giữ Text để không biến thành 125. Dùng Using Locale cho ngày và Text cho mã.",
+    "selfCheck": "Khi nào nên dùng Using Locale thay vì Change Type thông thường?",
+    "answer": "Khi chuỗi ngày/số được ghi theo quy ước vùng khác với locale mặc định, ví dụ ngày tháng hoặc dấu thập phân. Chọn locale theo nguồn dữ liệu thực tế.",
+    "passCriteria": "Chuẩn hóa được ít nhất ba kiểu dữ liệu, giữ nguyên mã có số 0 đầu và giải thích được Error/Null."
   },
   {
     "id": "C9L05",
@@ -1098,7 +1118,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Preview chỉ còn dòng/cột đúng yêu cầu; bước thao tác được ghi trong Applied Steps.",
     "practice": "Loại bỏ dòng tiêu đề lặp giữa các trang dữ liệu và cột ghi chú không sử dụng.",
     "errors": "Xóa nhầm cột khóa; Remove Top Rows cố định khi file mới có số dòng mở đầu khác; Keep Top Rows bị để lại trong query thật.",
-    "library": "K025;K035"
+    "library": "K025;K035",
+    "concept": "Remove Rows/Columns là thao tác có tính quy tắc; bước loại bỏ cố định chỉ an toàn khi cấu trúc nguồn ổn định. Choose Columns thường bền hơn nếu chỉ muốn giữ danh sách trường cần thiết. Không loại bỏ cột khóa hoặc cột dùng ở bước sau.",
+    "example": "Báo cáo có 2 dòng tiêu đề mở đầu ở mọi file: Remove Top Rows = 2 là phù hợp. Nếu số dòng tiêu đề thay đổi giữa các file, cần nhận diện dòng tiêu đề theo nội dung thay vì xóa cố định.",
+    "selfCheck": "Vì sao Remove Top Rows có thể làm mất dữ liệu thật ở file tháng sau?",
+    "answer": "Vì file mới có thể thay đổi số dòng mở đầu. Cần kiểm tra cấu trúc đầu vào hoặc lọc theo điều kiện nhận diện dòng tiêu đề.",
+    "passCriteria": "Giữ đúng các cột khóa, loại đúng dòng không hợp lệ và kiểm tra Applied Steps sau thao tác."
   },
   {
     "id": "C9L06",
@@ -1117,7 +1142,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Cột được tách/ghép đúng; giá trị thay thế chỉ tác động đúng cột và giá trị.",
     "practice": "Tách mã Model-Ca-Mã lỗi; chuẩn hóa tên nhóm nhập không đồng nhất.",
     "errors": "Chọn sai delimiter; ghép cột sai thứ tự; Replace Values trên toàn bảng thay cả trường không liên quan.",
-    "library": "K006;K025"
+    "library": "K006;K025",
+    "concept": "Split Column chia một trường theo delimiter; Merge Columns nối nhiều trường theo thứ tự đã chọn. Replace Values chỉ nên áp dụng trong cột phù hợp và theo quy tắc nghiệp vụ; thao tác thay thế rộng có thể làm sai mã hoặc nội dung khác.",
+    "example": "Mã FPC-CEN-A có thể tách theo dấu gạch ngang thành FPC, CEN, A. Khi ghép Họ và Tên, chọn đúng thứ tự và dấu cách làm separator.",
+    "selfCheck": "Nếu mã có nhiều dấu gạch ngang, chọn Each occurrence hay Left-most delimiter?",
+    "answer": "Tùy cấu trúc cần tách. Each occurrence tách tại mọi dấu; Left-most chỉ tách tại dấu đầu tiên. Xem preview để chọn đúng quy tắc.",
+    "passCriteria": "Tách và ghép được dữ liệu đúng delimiter, giữ đúng thứ tự và chỉ Replace Values trong cột dự kiến."
   },
   {
     "id": "C9L07",
@@ -1136,7 +1166,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Một bảng mới có số dòng bằng tổng các nguồn; dữ liệu các tháng nối tiếp nhau.",
     "practice": "Gộp file dữ liệu ca ngày và ca đêm hoặc nhiều tháng.",
     "errors": "Tên cột khác nhau tạo cột riêng; append nhầm query đã tổng hợp; kiểu dữ liệu lệch.",
-    "library": "K025;K006"
+    "library": "K025;K006",
+    "concept": "Append nối các bảng theo chiều dọc, gộp các bản ghi thành nhiều dòng; nó không dò khóa để ghép thêm cột. Tên cột quyết định cách ghép: tên khác nhau có thể tạo hai cột riêng với nhiều Null. Kiểu dữ liệu nên chuẩn hóa trước khi Append.",
+    "example": "Bảng CaNgày có 120 dòng và CaĐêm có 115 dòng. Append đúng sẽ có 235 dòng, miễn không có bước lọc bỏ dòng; cột Model phải cùng tên ở hai bảng.",
+    "selfCheck": "Append khác Merge ở điểm cốt lõi nào?",
+    "answer": "Append nối dòng từ các bảng cùng cấu trúc; Merge nối cột dựa trên khóa chung. Chọn nhầm thao tác sẽ làm sai cấu trúc kết quả.",
+    "passCriteria": "Append được hai nguồn, tổng dòng khớp kỳ vọng, không phát sinh cột trùng do tên trường không thống nhất."
   },
   {
     "id": "C9L08",
@@ -1156,7 +1191,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bảng giao dịch có thêm mô tả từ danh mục; số dòng không tăng ngoài dự kiến.",
     "practice": "Ghép Mã lỗi với danh mục nguyên nhân hoặc Mã hàng với danh mục Model.",
     "errors": "Khóa khác kiểu dữ liệu; trùng khóa ở bảng danh mục làm nhân bản dòng; chọn Inner Join làm mất bản ghi không khớp.",
-    "library": "K025;K006"
+    "library": "K025;K006",
+    "concept": "Merge kết hợp bảng theo khóa; kết quả phụ thuộc Join Kind và tính duy nhất của khóa ở bảng tra cứu. Left Outer giữ toàn bộ dòng bảng trái, nhưng khóa trùng ở bảng phải có thể nhân bản dòng trái. Luôn kiểm tra số dòng và các khóa không khớp.",
+    "example": "Bảng giao dịch có mã lỗi E01 xuất hiện 5 lần; danh mục có E01 một dòng. Merge Left Outer giữ 5 dòng. Nếu danh mục có E01 hai dòng, kết quả có thể tăng thành 10 dòng.",
+    "selfCheck": "Tại sao Merge có thể làm số dòng tăng sau khi Expand?",
+    "answer": "Vì khóa ở bảng tra cứu không duy nhất; một dòng bên trái khớp nhiều dòng bên phải. Kiểm tra và xử lý trùng khóa ở bảng tra cứu trước khi Merge.",
+    "passCriteria": "Chọn đúng khóa và Join Kind, Expand đúng trường, kiểm tra số dòng và phát hiện khóa trùng."
   },
   {
     "id": "C9L09",
@@ -1175,7 +1215,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Mỗi nhóm có một dòng; số dòng hoặc tổng số lượng đúng theo nhóm.",
     "practice": "Tổng hợp lỗi theo Model, Ca và nhóm nguyên nhân.",
     "errors": "Group By sai cấp; Count Rows nhầm với Sum; bỏ cột cần tổng hợp trước khi Group.",
-    "library": "K025;COUNT;SUM"
+    "library": "K025;COUNT;SUM",
+    "concept": "Group By gom nhiều bản ghi thành một dòng cho mỗi tổ hợp khóa. Count Rows đếm số dòng; Sum cộng giá trị số; hai phép tính không thay thế nhau. Chọn đúng cấp nhóm và giữ các cột cần tổng hợp.",
+    "example": "Ba dòng Model A có Số lượng 2, 3, 5. Group By Model với Count Rows = 3; Sum Số lượng = 10.",
+    "selfCheck": "Muốn biết tổng số lượng theo Model, chọn Count Rows hay Sum?",
+    "answer": "Sum trên cột Số lượng. Count Rows chỉ đếm số bản ghi thuộc nhóm, dù mỗi bản ghi có số lượng lớn hay nhỏ.",
+    "passCriteria": "Tạo đúng cấp nhóm và ít nhất hai phép tổng hợp, đối chiếu được tổng với dữ liệu trước Group."
   },
   {
     "id": "C9L10",
@@ -1194,7 +1239,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bảng chuyển thành các cột khóa, Attribute và Value; tổng số lượng không đổi.",
     "practice": "Chuẩn hóa báo cáo tháng nằm ngang thành dữ liệu dọc để PivotTable phân tích.",
     "errors": "Chọn Unpivot Columns thay vì Other Columns làm mất cột định danh; không đổi tên Attribute/Value; bỏ null không đúng quy tắc.",
-    "library": "K025;K024"
+    "library": "K025;K024",
+    "concept": "Unpivot chuyển các cột thuộc tính lặp (như tháng hoặc ca) thành các dòng Attribute–Value, giúp dữ liệu ở dạng chuẩn để lọc, PivotTable và biểu đồ. Chọn Unpivot Other Columns khi muốn giữ nguyên các cột định danh.",
+    "example": "Bảng Model A có Tháng 1 = 10, Tháng 2 = 15. Sau Unpivot, có hai dòng Model A với Attribute là Tháng 1/Tháng 2 và Value là 10/15; tổng vẫn là 25.",
+    "selfCheck": "Khi cột Model và Mã lỗi cần giữ nguyên, nên chọn Unpivot thao tác nào?",
+    "answer": "Chọn hai cột định danh rồi dùng Unpivot Other Columns để chuyển các cột còn lại thành Attribute và Value.",
+    "passCriteria": "Unpivot đúng các cột cần chuyển, giữ nguyên khóa và tổng Value khớp dữ liệu ban đầu."
   },
   {
     "id": "C9L11",
@@ -1213,7 +1263,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Dữ liệu đầu ra cập nhật sau Refresh; kiểu load phù hợp với mục tiêu.",
     "practice": "Tạo query tổng hợp nhiều file hàng tháng và refresh khi có dữ liệu mới.",
     "errors": "Sửa dữ liệu trực tiếp trong bảng kết quả; nguồn file di chuyển; query load nhầm vị trí; refresh khi file nguồn đóng/mất quyền.",
-    "library": "K035;K043"
+    "library": "K035;K043",
+    "concept": "Close & Load đưa kết quả Query vào Excel theo kiểu Table, PivotTable Report hoặc Connection. Refresh cập nhật kết quả từ nguồn; Refresh All có thể làm mới nhiều Query/Connection. Thiết lập Refresh on open cần cân nhắc thời gian và khả năng truy cập nguồn.",
+    "example": "Query tổng hợp dữ liệu tháng được Load To Table. Khi thêm dữ liệu nguồn, Refresh làm Table kết quả cập nhật; không nhập tay vào Table kết quả vì lần Refresh có thể ghi đè.",
+    "selfCheck": "Khi nào nên chọn Only Create Connection thay vì Load ra Worksheet?",
+    "answer": "Khi Query chỉ là bước trung gian cho Query khác hoặc sẽ dùng trong Data Model/PivotTable; không cần tạo thêm bảng trên Worksheet.",
+    "passCriteria": "Chọn đúng kiểu Load, Refresh thành công và xác định được nơi lưu kết quả."
   },
   {
     "id": "C9L12",
@@ -1233,7 +1288,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "File mới trong thư mục được gộp sau Refresh; cấu trúc và tổng số dòng được kiểm tra.",
     "practice": "Áp dụng gộp báo cáo lỗi của nhiều nhóm/ca theo tháng.",
     "errors": "File mẫu khác cấu trúc; tên Sheet không thống nhất; thiếu quyền thư mục; chỉnh file đầu ra thay vì query.",
-    "library": "K025;K035;K043"
+    "library": "K025;K035;K043",
+    "concept": "Combine Files from Folder dùng một file mẫu để suy ra cách đọc các file trong thư mục. Các file cần có cấu trúc tương thích: tên Sheet/Table, tiêu đề và kiểu dữ liệu. Thêm file mới vào đúng thư mục rồi Refresh để cập nhật; không nên sửa thủ công query phụ do Combine tạo ra nếu chưa hiểu quan hệ.",
+    "example": "Ba file ca ngày/ca đêm cùng cấu trúc có 100, 110 và 90 dòng. Sau Combine, kỳ vọng 300 dòng; thêm file 40 dòng rồi Refresh, kỳ vọng 340 dòng nếu không có bước lọc.",
+    "selfCheck": "Vì sao một file mới trong thư mục có thể không được gộp đúng?",
+    "answer": "File có thể khác tên Sheet, tiêu đề, cấu trúc hoặc định dạng so với file mẫu; kiểm tra Sample File và bước Transform Sample File.",
+    "passCriteria": "Gộp ít nhất ba file, xác nhận số dòng, thêm file mới và Refresh để kiểm chứng."
   },
   {
     "id": "C10L01",
@@ -1251,7 +1311,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bạn mô tả được mỗi dòng là gì, phạm vi thời gian, đơn vị và các vấn đề dữ liệu.",
     "practice": "Lập data dictionary ngắn cho bảng lỗi QC.",
     "errors": "Đọc biểu đồ trước khi hiểu dữ liệu; không phân biệt số dòng với số sự kiện; không xác định mẫu số.",
-    "library": "K025;K028;K027"
+    "library": "K025;K028;K027",
+    "concept": "Trước phân tích phải xác định đơn vị quan sát: một dòng là một giao dịch, một sản phẩm lỗi hay một lần kiểm tra. Phân biệt số dòng, số sự kiện và số đối tượng duy nhất; xác định mẫu số trước khi tính tỷ lệ.",
+    "example": "Bảng có 500 dòng kiểm tra nhưng chỉ có 120 AGV. Số dòng không đồng nghĩa số AGV gặp sự cố; cần đếm Distinct Count mã AGV trong phạm vi lỗi.",
+    "selfCheck": "Vì sao 500 dòng dữ liệu không nhất thiết có nghĩa là 500 sự kiện độc lập?",
+    "answer": "Một sự kiện/đối tượng có thể xuất hiện nhiều dòng do nhiều lần ghi nhận hoặc nhiều thuộc tính. Cần hiểu grain và khóa định danh trước khi đếm.",
+    "passCriteria": "Mô tả đúng một dòng đại diện cho gì, đơn vị, thời gian, khóa và ít nhất hai vấn đề chất lượng dữ liệu."
   },
   {
     "id": "C10L02",
@@ -1268,7 +1333,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bảng thống kê có N, trung bình, trung vị, min, max và độ lệch chuẩn.",
     "practice": "Mô tả số lỗi theo ca hoặc thời gian xử lý.",
     "errors": "Dùng Average khi phân phối lệch mạnh mà không xem Median; dùng sai STDEV.S/P; tính trên vùng chứa tổng phụ.",
-    "library": "COUNT;AVERAGE;MEDIAN;MIN;MAX;STDEV.S"
+    "library": "COUNT;AVERAGE;MEDIAN;MIN;MAX;STDEV.S",
+    "concept": "Thống kê mô tả cho biết trung tâm và độ phân tán. Mean nhạy với ngoại lệ; Median bền hơn khi phân phối lệch. STDEV.S dùng mẫu; STDEV.P dùng toàn bộ tổng thể đang nghiên cứu. COUNT chỉ đếm số, COUNTA đếm ô không rỗng.",
+    "example": "Thời gian xử lý 5 tác vụ là 5, 6, 6, 7, 40 phút. Mean = 12,8 phút nhưng Median = 6 phút; giá trị 40 kéo trung bình lên.",
+    "selfCheck": "Khi dữ liệu có một vài giá trị cực lớn, nên xem Mean hay Median cùng nhau?",
+    "answer": "Xem cả hai; Median mô tả trung tâm bền vững hơn, Mean cho thấy ảnh hưởng của giá trị lớn. Không bỏ Mean nếu nó là KPI được định nghĩa.",
+    "passCriteria": "Tính đúng N, Mean, Median, Min, Max và chọn đúng STDEV.S/P; diễn giải được ảnh hưởng ngoại lệ."
   },
   {
     "id": "C10L03",
@@ -1286,7 +1356,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Mỗi nhóm có số liệu cùng định nghĩa; tổng các nhóm đối chiếu được với toàn bộ.",
     "practice": "So sánh tỷ lệ lỗi theo ca và model, không chỉ so số lỗi tuyệt đối.",
     "errors": "Nhóm có quy mô khác nhau nhưng so số tuyệt đối; phân nhóm không nhất quán; bỏ qua dữ liệu chưa phân loại.",
-    "library": "K024;SUMIFS;COUNTIFS"
+    "library": "K024;SUMIFS;COUNTIFS",
+    "concept": "So sánh nhóm bằng số tuyệt đối có thể gây hiểu lầm nếu quy mô nhóm khác nhau. Với nhóm có sản lượng khác nhau, cần xem tỷ lệ trên mẫu số phù hợp, đồng thời báo cáo cả số lượng và tỷ lệ khi cần.",
+    "example": "Ca ngày kiểm tra 1.000 sản phẩm có 20 lỗi (2%); ca đêm kiểm tra 200 sản phẩm có 10 lỗi (5%). Số lỗi ca ngày cao hơn nhưng tỷ lệ lỗi ca đêm cao hơn.",
+    "selfCheck": "Khi hai ca có sản lượng khác nhau, chỉ so tổng số lỗi có đủ không?",
+    "answer": "Không. Cần so tỷ lệ lỗi = số lỗi/sản lượng kiểm tra với cùng định nghĩa và kỳ; có thể hiển thị thêm số lỗi tuyệt đối.",
+    "passCriteria": "Tạo phân tích theo ít nhất hai nhóm, có số tuyệt đối và tỷ lệ chuẩn hóa cùng mẫu số."
   },
   {
     "id": "C10L04",
@@ -1304,7 +1379,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Variance có dấu âm/dương đúng; % đạt dùng cùng mẫu số và kỳ.",
     "practice": "Theo dõi số lượng kiểm tra thực tế so với Target mỗi ca.",
     "errors": "Target bằng 0; so ngày với target tháng; tính trung bình % từng ngày thay vì tổng Actual/tổng Target.",
-    "library": "K018;IFERROR;SUMIFS"
+    "library": "K018;IFERROR;SUMIFS",
+    "concept": "Variance = Actual − Target cho biết thiếu/vượt tuyệt đối; Achievement = Actual/Target cho biết mức hoàn thành. Tỷ lệ toàn kỳ nên tính tổng Actual chia tổng Target, không lấy trung bình đơn giản các tỷ lệ từng ngày nếu Target khác nhau.",
+    "example": "Ngày 1 đạt 100/100 = 100%; ngày 2 đạt 150/200 = 75%. Cả kỳ đạt 250/300 = 83,33%, không phải trung bình 87,5%.",
+    "selfCheck": "Vì sao trung bình hai tỷ lệ ngày có thể sai khi tính % đạt toàn tháng?",
+    "answer": "Vì mỗi ngày có Target khác nhau; tỷ lệ toàn kỳ phải là SUM(Actual)/SUM(Target), tức trung bình có trọng số theo Target.",
+    "passCriteria": "Tính đúng Variance và Achievement, xử lý Target bằng 0 và đối chiếu tỷ lệ toàn kỳ bằng tổng/tổng."
   },
   {
     "id": "C10L05",
@@ -1322,7 +1402,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Biểu đồ có trục thời gian liên tục, đơn vị rõ và xu hướng không bị nhầm kỳ.",
     "practice": "Theo dõi lỗi theo tuần/tháng và phát hiện thời điểm tăng bất thường.",
     "errors": "Ngày là Text; group chỉ theo Month làm gộp nhiều năm; suy diễn nguyên nhân từ tương quan thời gian.",
-    "library": "K007;K023;K024"
+    "library": "K007;K023;K024",
+    "concept": "Phân tích thời gian yêu cầu ngày thật, kỳ liên tục và định nghĩa chỉ tiêu ổn định. Xu hướng không chứng minh nguyên nhân; cần kiểm tra thay đổi sản lượng, số ca, lịch nghỉ và quy trình ghi nhận.",
+    "example": "Tháng 1 có 10 lỗi/1.000 sản phẩm = 1%; tháng 2 có 12 lỗi/2.000 sản phẩm = 0,6%. Số lỗi tăng nhưng tỷ lệ lỗi giảm.",
+    "selfCheck": "Số lỗi tăng theo tháng có luôn đồng nghĩa chất lượng xấu đi không?",
+    "answer": "Không. Cần xem sản lượng/khối lượng kiểm tra và tỷ lệ lỗi; đồng thời kiểm tra số ca và cách ghi nhận có thay đổi không.",
+    "passCriteria": "Tạo xu hướng theo tháng/năm, xử lý đúng kiểu ngày và diễn giải ít nhất một giới hạn của dữ liệu."
   },
   {
     "id": "C10L06",
@@ -1340,7 +1425,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Tỷ trọng từng nhóm được tính trên cùng mẫu số; tổng gần 100%.",
     "practice": "Tìm nhóm lỗi chiếm tỷ trọng lớn nhất theo tháng hoặc ca.",
     "errors": "Mẫu số đổi khi lọc; so tỷ trọng của các nhóm trên các tổng khác nhau; cộng tỷ lệ đã làm tròn.",
-    "library": "K024;K020"
+    "library": "K024;K020",
+    "concept": "Tỷ trọng = giá trị nhóm/tổng của phạm vi được chọn. Khi Slicer thay đổi, Grand Total có thể đổi theo, khiến mẫu số và tỷ trọng đổi. Luôn ghi rõ tỷ trọng tính trên toàn bộ dữ liệu hay phần đang lọc.",
+    "example": "Tổng lỗi 100: Máy 50 = 50%, Người 30 = 30%, Vật liệu 20 = 20%. Nếu lọc riêng Máy và Người, tỷ trọng trong phần đang lọc thành 62,5% và 37,5%.",
+    "selfCheck": "Vì sao tỷ trọng của một nhóm thay đổi khi chọn Slicer dù số lỗi của nhóm không đổi?",
+    "answer": "Vì tổng làm mẫu số đã thay đổi theo phạm vi lọc. Cần xác định muốn % of Grand Total trong phần đang lọc hay tỷ trọng so với toàn bộ dữ liệu.",
+    "passCriteria": "Tính đúng tỷ trọng, giải thích mẫu số và xác nhận tổng tỷ trọng gần 100% trong đúng phạm vi."
   },
   {
     "id": "C10L07",
@@ -1358,7 +1448,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Cột giảm dần; đường lũy kế tăng đến 100%; nhóm nguyên nhân chính được xác định minh bạch.",
     "practice": "Phân tích Pareto lỗi máy/người để ưu tiên hành động.",
     "errors": "Coi 80/20 là quy luật bắt buộc; tính lũy kế trên dữ liệu chưa sắp xếp; mẫu số không thống nhất.",
-    "library": "SUM;SUMIFS;K026"
+    "library": "SUM;SUMIFS;K026",
+    "concept": "Pareto sắp nhóm theo quy mô giảm dần và cộng dồn tỷ trọng để ưu tiên nhóm đóng góp lớn. Quy tắc 80/20 là heuristic, không phải định luật; Pareto chỉ chỉ ra nơi tập trung, không tự chứng minh nguyên nhân gốc.",
+    "example": "Nguyên nhân A = 40 lỗi, B = 30, C = 20, D = 10. Tổng 100; tỷ trọng lũy kế lần lượt 40%, 70%, 90%, 100%.",
+    "selfCheck": "Nếu ba nhóm đầu chiếm 90% lỗi, có thể kết luận chúng là nguyên nhân gốc chưa?",
+    "answer": "Chưa. Pareto xác định nhóm ưu tiên điều tra; cần xác minh cơ chế, bằng chứng hiện trường và thử nghiệm nguyên nhân.",
+    "passCriteria": "Sắp xếp giảm dần, tính tỷ trọng lũy kế đúng đến 100% và phân biệt ưu tiên điều tra với kết luận nguyên nhân."
   },
   {
     "id": "C10L08",
@@ -1376,7 +1471,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Chênh lệch có dấu và tỷ lệ biến động có ý nghĩa; trường hợp mẫu số 0 được giải thích.",
     "practice": "So sánh lỗi tuần này với tuần trước đã chuẩn hóa số ca.",
     "errors": "Kỳ có số ngày khác nhau; mẫu số 0; diễn giải giảm số lỗi là cải thiện dù sản lượng cũng giảm.",
-    "library": "IFERROR;ABS;K020"
+    "library": "IFERROR;ABS;K020",
+    "concept": "Chênh lệch tuyệt đối cho biết thay đổi bao nhiêu đơn vị; chênh lệch tương đối cho biết thay đổi bao nhiêu phần trăm so với kỳ gốc. Kỳ gốc bằng 0 khiến % thay đổi không xác định; không nên tự động diễn giải thành 0%.",
+    "example": "Số lỗi từ 20 xuống 15: chênh lệch = −5, biến động = −25%. Từ 0 lên 5 không có % tăng hữu hạn theo công thức thông thường.",
+    "selfCheck": "Nếu kỳ trước bằng 0, có nên hiển thị % biến động là 0% không?",
+    "answer": "Không. 0% sẽ gây hiểu nhầm rằng không thay đổi. Hiển thị N/A hoặc ghi nhận phát sinh mới; nêu rõ mẫu số bằng 0.",
+    "passCriteria": "Tính đúng chênh lệch tuyệt đối/tương đối, xử lý mẫu số 0 và so sánh cùng phạm vi."
   },
   {
     "id": "C10L09",
@@ -1394,7 +1494,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Ngoại lệ được đánh dấu và có danh sách để xác minh; dữ liệu gốc được giữ.",
     "practice": "Kiểm tra số lỗi tăng đột biến ở một ca hoặc máy.",
     "errors": "Xem mọi ngoại lệ là lỗi; xóa giá trị lớn bất thường; không kiểm tra nguyên nhân vận hành.",
-    "library": "K027;K020;IF"
+    "library": "K027;K020;IF",
+    "concept": "Ngoại lệ thống kê là điểm cần xem xét, không mặc nhiên là lỗi nhập liệu. IQR tạo ngưỡng tham khảo dựa trên phân vị; trong quy trình QC cần giữ bản ghi gốc, kiểm tra thiết bị, ca, sản lượng và bối cảnh trước khi kết luận.",
+    "example": "Nếu Q1 = 4, Q3 = 8 thì IQR = 4; cận trên = 14. Giá trị 16 được đánh dấu để xác minh, không tự động xóa.",
+    "selfCheck": "Một điểm vượt cận trên IQR có chắc chắn là dữ liệu sai không?",
+    "answer": "Không. Nó có thể là sự kiện hiếm nhưng có thật. Đánh dấu, kiểm tra hồ sơ/hiện trường và ghi kết quả xác minh trước khi xử lý.",
+    "passCriteria": "Tạo được ngưỡng IQR, đánh dấu ngoại lệ và giữ lại dữ liệu gốc kèm trạng thái xác minh."
   },
   {
     "id": "C10L10",
@@ -1412,7 +1517,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Insight trả lời điều gì xảy ra, xảy ra ở đâu/mức nào và cần kiểm tra gì tiếp theo.",
     "practice": "Viết phần nhận xét báo cáo IPQC theo Model, ca và nhóm lỗi.",
     "errors": "Kết luận nguyên nhân khi chưa tái hiện; dùng % không có mẫu số; chọn riêng giai đoạn thuận lợi; nhầm tương quan với nguyên nhân.",
-    "library": "K025;K020"
+    "library": "K025;K020",
+    "concept": "Insight cần phân biệt dữ kiện, diễn giải và giả thuyết. Một kết luận tốt nêu kỳ, phạm vi, đơn vị, so sánh và giới hạn; tương quan không đủ để kết luận nguyên nhân. Với báo cáo bất thường QC, cần nói rõ điều đã quan sát và điều chưa tái hiện/xác minh.",
+    "example": "Trong tháng 4, lỗi gá lệch chiếm 35/100 lỗi (35%), cao nhất trong các nhóm. Đây là nhóm ưu tiên điều tra; chưa đủ bằng chứng để kết luận nguyên nhân là thao tác người vận hành.",
+    "selfCheck": "Câu “lỗi tăng do thao tác công nhân” có đủ căn cứ nếu mới thấy biểu đồ tăng không?",
+    "answer": "Không. Cần bằng chứng xác minh/tái hiện. Viết: “Số lỗi tăng từ X lên Y; hiện chưa xác định nguyên nhân, đề nghị kiểm tra...”",
+    "passCriteria": "Viết ba insight có số liệu, phạm vi, mẫu số và tách rõ dữ kiện với giả thuyết."
   },
   {
     "id": "C10L11",
@@ -1432,7 +1542,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Báo cáo có số liệu khớp, biểu đồ có đơn vị, insight phân biệt dữ kiện và giả thuyết.",
     "practice": "Thay doanh thu bằng sản lượng kiểm tra và lỗi QC để dùng trong công việc.",
     "errors": "So sánh nhóm không chuẩn hóa quy mô; dùng trung bình tỷ lệ; kết luận nguyên nhân không có bằng chứng.",
-    "library": "K024;SUMIFS;COUNTIFS;AVERAGE;MEDIAN"
+    "library": "K024;SUMIFS;COUNTIFS;AVERAGE;MEDIAN",
+    "concept": "Bài tổng hợp phải đi từ chất lượng dữ liệu đến mô tả, phân nhóm, xu hướng, Pareto và khuyến nghị. Tỷ lệ toàn kỳ dùng tổng tử số/tổng mẫu số; nhóm quy mô khác nhau cần chuẩn hóa; kết luận nguyên nhân cần bằng chứng.",
+    "example": "Nhóm A: 20 lỗi/1.000 kiểm tra = 2%; nhóm B: 15 lỗi/300 kiểm tra = 5%. Dù A có nhiều lỗi hơn, B có tỷ lệ lỗi cao hơn và cần được xem xét.",
+    "selfCheck": "Trong báo cáo, nếu số lỗi tuyệt đối và tỷ lệ lỗi chỉ ra hai nhóm ưu tiên khác nhau, nên xử lý thế nào?",
+    "answer": "Trình bày cả hai góc nhìn, giải thích quy mô mẫu và mục tiêu quản lý; không chọn một chỉ số để che khuất chỉ số còn lại.",
+    "passCriteria": "Báo cáo có kiểm tra dữ liệu, KPI đúng mẫu số, phân nhóm/xu hướng/Pareto, ba insight và giới hạn phân tích."
   },
   {
     "id": "C11L01",
