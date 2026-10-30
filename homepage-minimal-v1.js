@@ -222,6 +222,71 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
  function renderDataTypesLesson(){
   if(!lessonPanel)return;
   lessonPanel.innerHTML='<div class="avp-chapter-lessons-toolbar avp-lesson-reader-back"><button type="button" class="avp-chapter-lessons-back" data-back-lessons>← Danh sách bài học</button><span class="avp-chapter-lessons-count">CHƯƠNG 01 · BÀI 06</span></div><div class="avp-lesson-reader"><article class="avp-lesson-main"><div class="avp-lesson-kicker">BÀI HỌC 06 · NHẬP MÔN EXCEL</div><h3>Kiểu dữ liệu: Text, Number, Date và Percentage</h3><p>Một ô Excel không chỉ có phần hiển thị. Bên trong, Excel lưu giá trị theo kiểu dữ liệu. Nhận diện đúng kiểu dữ liệu giúp tính toán, lọc, sắp xếp và tổng hợp chính xác.</p><h4>1. Number – dữ liệu số</h4><p>Dùng cho giá trị cần tính toán như số lượng, đơn giá, doanh thu hoặc điểm số.</p><div class="avp-lesson-example"><b>Ví dụ:</b> 1250 là một giá trị số. Có thể cộng, trừ, nhân, chia và dùng trong các hàm thống kê.</div><h4>2. Text – dữ liệu văn bản</h4><p>Dùng cho nội dung nhận diện hoặc mô tả. Mã nhân viên, mã hàng và số điện thoại thường nên lưu dạng Text, kể cả khi chỉ gồm chữ số.</p><div class="avp-lesson-example"><b>Ví dụ:</b> Mã 00125 cần giữ số 0 đầu. Nếu lưu thành Number, Excel có thể chỉ giữ 125.</div><h4>3. Date – dữ liệu ngày tháng</h4><p>Ngày hợp lệ trong Excel được lưu dưới dạng số sê-ri và có thể dùng để tính số ngày, lọc theo tháng hoặc nhóm trong PivotTable. Chuỗi ký tự trông giống ngày chưa chắc là ngày thật.</p><div class="avp-lesson-example"><b>Kiểm tra:</b> =ISNUMBER(A2) giúp kiểm tra giá trị ngày có đang được lưu dưới dạng số hay không.</div><h4>4. Percentage – dữ liệu tỷ lệ</h4><p>Tỷ lệ phần trăm được lưu dưới dạng số thập phân. Giá trị 0.15 khi định dạng Percentage sẽ hiển thị là 15 phần trăm.</p><div class="avp-lesson-example"><b>Lưu ý:</b> Nhập 15 rồi áp dụng Percentage sẽ hiển thị 1500 phần trăm. Không nhân thêm 100 nếu dữ liệu đã lưu ở dạng 0.15.</div><h4>Ghi nhớ</h4><p>Định dạng hiển thị không phải lúc nào cũng thay đổi kiểu dữ liệu gốc. Trước khi sửa dữ liệu, hãy kiểm tra giá trị thực và mục đích sử dụng của cột.</p><h4>Tài liệu tham khảo mở rộng</h4><p>Các chủ đề dưới đây thuộc Thư viện Định dạng & dữ liệu độc lập. Mở tham khảo ngay tại đây, sau đó đóng bảng để quay lại đúng bài học.</p><div class="avp-lesson-ref-list"><button class="avp-lesson-ref" type="button" data-ref-topic="DF01"><span>▦</span><span><strong>Phân biệt Number và Text</strong><small>Thư viện · Kiểu dữ liệu</small></span><b>→</b></button><button class="avp-lesson-ref" type="button" data-ref-topic="DF02"><span>▦</span><span><strong>Nhận diện ngày thật và ngày dạng Text</strong><small>Thư viện · Kiểu dữ liệu</small></span><b>→</b></button></div><h4>Tự kiểm tra</h4><p>1. Mã nhân viên 00045 nên lưu dạng gì? 2. Giá trị nào hiển thị thành 25 phần trăm khi áp dụng Percentage: 0.25 hay 25?</p><div class="avp-lesson-example"><b>Đáp án:</b> 1. Text. 2. 0.25. Hãy tự giải thích lý do trước khi xem đáp án.</div></article></div><div class="avp-lesson-drawer" aria-hidden="true"><section class="avp-lesson-drawer-panel" role="dialog" aria-modal="true" aria-label="Tài liệu tham khảo"><div class="avp-lesson-drawer-head"><small>THƯ VIỆN ĐỊNH DẠNG & DỮ LIỆU</small><button type="button" class="avp-lesson-drawer-close" aria-label="Đóng tài liệu">×</button></div><div class="avp-lesson-drawer-content"><div class="avp-lesson-drawer-loading">Đang tải chủ đề tham khảo…</div></div></section></div>';
+  // Checkpoint thử nghiệm cho C1L06. Đây là bài kiểm tra kiến thức + tự xác nhận thực hành,
+  // chưa được dùng làm bằng chứng năng lực hoặc cộng vào tiến độ tổng.
+  (function mountC1L06Checkpoint(){
+   var key='avp_checkpoint_local_v1_C1L06';
+   var questions=[
+    {q:'Mã nhân viên 00045 cần lưu theo kiểu dữ liệu nào để giữ số 0 ở đầu?',opts:['Number','Text','Percentage'],answer:1,why:'Mã nhận diện cần giữ nguyên ký tự, vì vậy nên lưu dạng Text.'},
+    {q:'Muốn ô hiển thị 25% bằng định dạng Percentage, giá trị số gốc phù hợp là gì?',opts:['25','0.25','250'],answer:1,why:'Excel lưu tỷ lệ 25% dưới dạng số thập phân 0.25.'},
+    {q:'Trong ngữ cảnh kiểm tra một ngày Excel thật ở A2, công thức nào giúp kiểm tra giá trị có phải số sê-ri không?',opts:['=ISNUMBER(A2)','=ISTEXT(A2)','=LEN(A2)'],answer:0,why:'Ngày Excel thật được lưu dưới dạng số sê-ri; ISNUMBER kiểm tra giá trị có phải số hay không.'}
+   ];
+   var saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{};}catch(e){}
+   var wrap=document.createElement('section');wrap.className='avp-lesson-checkpoint';wrap.setAttribute('aria-labelledby','avp-c1l06-checkpoint-title');
+   var head=document.createElement('div');head.className='avp-checkpoint-head';
+   var eyebrow=document.createElement('small');eyebrow.textContent='CHECKPOINT KIẾN THỨC · CHƯƠNG 01 / BÀI 06';
+   var title=document.createElement('h4');title.id='avp-c1l06-checkpoint-title';title.textContent='Kiểm tra trước khi chuyển bài';
+   var intro=document.createElement('p');intro.textContent='Trả lời 3 câu hỏi và tự xác nhận đã thử thao tác trên Excel. Cần đúng ít nhất 2 câu để hoàn thành checkpoint thử nghiệm.';
+   head.append(eyebrow,title,intro);wrap.appendChild(head);
+   var form=document.createElement('div');form.className='avp-checkpoint-questions';
+   questions.forEach(function(q,i){
+    var field=document.createElement('fieldset');field.className='avp-checkpoint-question';
+    var legend=document.createElement('legend');legend.textContent=(i+1)+'. '+q.q;field.appendChild(legend);
+    q.opts.forEach(function(opt,k){
+     var label=document.createElement('label');label.className='avp-checkpoint-option';
+     var input=document.createElement('input');input.type='radio';input.name='avp-c1l06-q'+i;input.value=String(k);
+     if(saved.answers&&Number(saved.answers[i])===k)input.checked=true;
+     var span=document.createElement('span');span.textContent=opt;label.append(input,span);field.appendChild(label);
+    });
+    form.appendChild(field);
+   });
+   wrap.appendChild(form);
+   var practice=document.createElement('label');practice.className='avp-checkpoint-practice';
+   var practiceInput=document.createElement('input');practiceInput.type='checkbox';practiceInput.checked=!!saved.practice;
+   var practiceText=document.createElement('span');practiceText.textContent='Tôi đã tự thử trên Excel: lưu mã 00045 dạng Text, nhập 0.25 và định dạng Percentage, kiểm tra ngày bằng ISNUMBER.';
+   practice.append(practiceInput,practiceText);wrap.appendChild(practice);
+   var actions=document.createElement('div');actions.className='avp-checkpoint-actions';
+   var submit=document.createElement('button');submit.type='button';submit.className='avp-checkpoint-submit';submit.textContent='Kiểm tra checkpoint';
+   var reset=document.createElement('button');reset.type='button';reset.className='avp-checkpoint-reset';reset.textContent='Làm lại';
+   actions.append(submit,reset);wrap.appendChild(actions);
+   var result=document.createElement('div');result.className='avp-checkpoint-result';result.setAttribute('role','status');result.setAttribute('aria-live','polite');wrap.appendChild(result);
+   function restoreResult(){
+    if(saved.passed){result.textContent='Đã PASS checkpoint thử nghiệm trên thiết bị này. Bạn có thể xem lại hoặc làm lại.';result.classList.add('is-pass');}
+   }
+   restoreResult();
+   submit.addEventListener('click',function(){
+    var answers=[],score=0,missing=false;
+    questions.forEach(function(q,i){var chosen=form.querySelector('input[name="avp-c1l06-q'+i+'"]:checked');if(!chosen){missing=true;answers.push(null);}else{var value=Number(chosen.value);answers.push(value);if(value===q.answer)score++;}});
+    if(missing){result.className='avp-checkpoint-result is-error';result.textContent='Hãy trả lời đủ 3 câu trước khi kiểm tra.';return;}
+    if(!practiceInput.checked){result.className='avp-checkpoint-result is-error';result.textContent='Bạn cần hoàn thành thao tác thực hành trên Excel và tích xác nhận trước khi PASS.';return;}
+    if(score>=2){
+     saved={answers:answers,practice:true,score:score,passed:true,completedAt:new Date().toISOString(),source:'local-self-check'};
+     try{localStorage.setItem(key,JSON.stringify(saved));}catch(e){}
+     result.className='avp-checkpoint-result is-pass';result.textContent='PASS · Đúng '+score+'/3 câu. Đã lưu trạng thái trên thiết bị này. Đây chưa phải xác nhận năng lực được máy chấm.';
+    }else{
+     saved={answers:answers,practice:true,score:score,passed:false,source:'local-self-check'};
+     try{localStorage.setItem(key,JSON.stringify(saved));}catch(e){}
+     result.className='avp-checkpoint-result is-error';result.textContent='Chưa đạt · Đúng '+score+'/3 câu. Hãy xem lại nội dung rồi thử lại.';
+    }
+   });
+   reset.addEventListener('click',function(){
+    form.querySelectorAll('input[type="radio"]').forEach(function(input){input.checked=false;});practiceInput.checked=false;saved={};
+    try{localStorage.removeItem(key);}catch(e){}
+    result.className='avp-checkpoint-result';result.textContent='Đã xóa kết quả checkpoint trên thiết bị này.';
+   });
+   var style=document.createElement('style');style.textContent='.avp-lesson-checkpoint{margin:22px 0;padding:20px;border:1px solid #dce9e0;border-radius:18px;background:#f8fbf8;color:#173b29}.avp-checkpoint-head small{font-size:10px;font-weight:800;letter-spacing:.1em;color:#32805a}.avp-checkpoint-head h4{margin:7px 0;font-size:18px}.avp-checkpoint-head p{margin:0 0 16px;color:#52675a;font-size:13px;line-height:1.6}.avp-checkpoint-question{margin:12px 0;padding:13px;border:1px solid #e1e9e3;border-radius:12px;background:#fff}.avp-checkpoint-question legend{padding:0 4px;font-size:13px;font-weight:700;line-height:1.5}.avp-checkpoint-option{display:flex;align-items:center;gap:9px;margin:10px 0;font-size:13px;cursor:pointer}.avp-checkpoint-option input,.avp-checkpoint-practice input{accent-color:#16784d}.avp-checkpoint-practice{display:flex;align-items:flex-start;gap:9px;margin:15px 0;font-size:12px;line-height:1.55}.avp-checkpoint-practice input{margin-top:3px}.avp-checkpoint-actions{display:flex;gap:9px;flex-wrap:wrap}.avp-checkpoint-actions button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}.avp-checkpoint-submit{background:#08794d;color:white}.avp-checkpoint-reset{background:#e7eee9;color:#345744}.avp-checkpoint-result{margin-top:12px;font-size:13px;line-height:1.55}.avp-checkpoint-result.is-pass{color:#08794d;font-weight:700}.avp-checkpoint-result.is-error{color:#a34232;font-weight:700}@media(max-width:600px){.avp-lesson-checkpoint{padding:15px}.avp-checkpoint-question{padding:11px}}';
+   wrap.appendChild(style);lessonPanel.querySelector('.avp-lesson-reader').appendChild(wrap);
+  })();
   lessonPanel.querySelector('[data-back-lessons]').addEventListener('click',function(){renderChapterLessons(0);});
   var drawer=lessonPanel.querySelector('.avp-lesson-drawer');var drawerContent=lessonPanel.querySelector('.avp-lesson-drawer-content');
   function closeDrawer(){drawer.classList.remove('open');drawer.setAttribute('aria-hidden','true');}
