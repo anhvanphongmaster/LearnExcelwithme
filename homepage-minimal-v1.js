@@ -187,6 +187,33 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
   lessonPanel.querySelector('.avp-c1-errors').textContent=p.errors;
   renderLessonLibraryRefs(lessonPanel,0,lessonIndex);
  }
+ function renderChapterFiveToTwelveLesson(chapterIndex,lessonIndex){
+  if(!lessonPanel||chapterIndex<4||chapterIndex>11)return;
+  if(!window.AVP_LESSON_PROCEDURES_CH5_12){
+   lessonPanel.innerHTML='<div class="avp-lesson-main"><p>Đang tải nội dung hướng dẫn chi tiết…</p></div>';
+   var script=document.getElementById('avp-lesson-procedures-ch5-12-script');
+   if(!script){
+    script=document.createElement('script');script.id='avp-lesson-procedures-ch5-12-script';script.src='chapter-lesson-procedures-ch5-12.js?v=1';
+    script.onload=function(){renderChapterFiveToTwelveLesson(chapterIndex,lessonIndex);};
+    script.onerror=function(){lessonPanel.innerHTML='<div class="avp-lesson-main"><h3>Không tải được nội dung bài học</h3><p>Hãy tải lại trang sau ít phút. Nội dung bài chưa bị thay đổi.</p></div>';};
+    document.head.appendChild(script);
+   }else{script.addEventListener('load',function(){renderChapterFiveToTwelveLesson(chapterIndex,lessonIndex);},{once:true});}
+   return;
+  }
+  var p=window.AVP_LESSON_PROCEDURES_CH5_12.find(function(item){return item.id==='C'+(chapterIndex+1)+'L'+String(lessonIndex+1).padStart(2,'0');});
+  if(!p)return;
+  var title=chapterLessons[chapterIndex][lessonIndex],no=String(lessonIndex+1).padStart(2,'0');
+  lessonPanel.innerHTML='<div class="avp-chapter-lessons-toolbar avp-lesson-reader-back"><button type="button" class="avp-chapter-lessons-back" data-back-lessons>← Danh sách bài học</button><span class="avp-chapter-lessons-count">CHƯƠNG '+String(chapterIndex+1).padStart(2,'0')+' · BÀI '+no+'</span></div><article class="avp-lesson-main"><div class="avp-lesson-kicker">BÀI HỌC '+no+' · CHƯƠNG '+String(chapterIndex+1).padStart(2,'0')+'</div><h3></h3><h4>MỤC TIÊU BÀI HỌC</h4><p class="avp-adv-goal"></p><section class="avp-lesson-procedure-v2"><h4>HƯỚNG DẪN THAO TÁC TỪNG BƯỚC</h4><ol class="avp-adv-steps"></ol><h4>DÙNG CHUỘT NÀO, BẤM Ở ĐÂU?</h4><p class="avp-procedure-mouse"></p><h4>KẾT QUẢ CẦN NHÌN THẤY</h4><p class="avp-adv-expected"></p><h4>MỞ RỘNG VÀ ÁP DỤNG THỰC TẾ</h4><p class="avp-adv-practice"></p><h4>LỖI THƯỜNG GẶP CẦN TRÁNH</h4><p class="avp-adv-errors"></p></section></article>';
+  lessonPanel.querySelector('[data-back-lessons]').addEventListener('click',function(){renderChapterLessons(chapterIndex);});
+  lessonPanel.querySelector('.avp-lesson-main h3').textContent=title;
+  lessonPanel.querySelector('.avp-adv-goal').textContent=p.goal;
+  p.steps.forEach(function(step){var li=document.createElement('li');li.textContent=step;lessonPanel.querySelector('.avp-adv-steps').appendChild(li);});
+  lessonPanel.querySelector('.avp-procedure-mouse').textContent=p.mouse;
+  lessonPanel.querySelector('.avp-adv-expected').textContent=p.expected;
+  lessonPanel.querySelector('.avp-adv-practice').textContent=p.practice;
+  lessonPanel.querySelector('.avp-adv-errors').textContent=p.errors;
+  renderLessonLibraryRefs(lessonPanel,chapterIndex,lessonIndex);
+ }
  function renderDataTypesLesson(){
   if(!lessonPanel)return;
   lessonPanel.innerHTML='<div class="avp-chapter-lessons-toolbar avp-lesson-reader-back"><button type="button" class="avp-chapter-lessons-back" data-back-lessons>← Danh sách bài học</button><span class="avp-chapter-lessons-count">CHƯƠNG 01 · BÀI 06</span></div><div class="avp-lesson-reader"><article class="avp-lesson-main"><div class="avp-lesson-kicker">BÀI HỌC 06 · NHẬP MÔN EXCEL</div><h3>Kiểu dữ liệu: Text, Number, Date và Percentage</h3><p>Một ô Excel không chỉ có phần hiển thị. Bên trong, Excel lưu giá trị theo kiểu dữ liệu. Nhận diện đúng kiểu dữ liệu giúp tính toán, lọc, sắp xếp và tổng hợp chính xác.</p><h4>1. Number – dữ liệu số</h4><p>Dùng cho giá trị cần tính toán như số lượng, đơn giá, doanh thu hoặc điểm số.</p><div class="avp-lesson-example"><b>Ví dụ:</b> 1250 là một giá trị số. Có thể cộng, trừ, nhân, chia và dùng trong các hàm thống kê.</div><h4>2. Text – dữ liệu văn bản</h4><p>Dùng cho nội dung nhận diện hoặc mô tả. Mã nhân viên, mã hàng và số điện thoại thường nên lưu dạng Text, kể cả khi chỉ gồm chữ số.</p><div class="avp-lesson-example"><b>Ví dụ:</b> Mã 00125 cần giữ số 0 đầu. Nếu lưu thành Number, Excel có thể chỉ giữ 125.</div><h4>3. Date – dữ liệu ngày tháng</h4><p>Ngày hợp lệ trong Excel được lưu dưới dạng số sê-ri và có thể dùng để tính số ngày, lọc theo tháng hoặc nhóm trong PivotTable. Chuỗi ký tự trông giống ngày chưa chắc là ngày thật.</p><div class="avp-lesson-example"><b>Kiểm tra:</b> =ISNUMBER(A2) giúp kiểm tra giá trị ngày có đang được lưu dưới dạng số hay không.</div><h4>4. Percentage – dữ liệu tỷ lệ</h4><p>Tỷ lệ phần trăm được lưu dưới dạng số thập phân. Giá trị 0.15 khi định dạng Percentage sẽ hiển thị là 15 phần trăm.</p><div class="avp-lesson-example"><b>Lưu ý:</b> Nhập 15 rồi áp dụng Percentage sẽ hiển thị 1500 phần trăm. Không nhân thêm 100 nếu dữ liệu đã lưu ở dạng 0.15.</div><h4>Ghi nhớ</h4><p>Định dạng hiển thị không phải lúc nào cũng thay đổi kiểu dữ liệu gốc. Trước khi sửa dữ liệu, hãy kiểm tra giá trị thực và mục đích sử dụng của cột.</p><h4>Tài liệu tham khảo mở rộng</h4><p>Các chủ đề dưới đây thuộc Thư viện Định dạng & dữ liệu độc lập. Mở tham khảo ngay tại đây, sau đó đóng bảng để quay lại đúng bài học.</p><div class="avp-lesson-ref-list"><button class="avp-lesson-ref" type="button" data-ref-topic="DF01"><span>▦</span><span><strong>Phân biệt Number và Text</strong><small>Thư viện · Kiểu dữ liệu</small></span><b>→</b></button><button class="avp-lesson-ref" type="button" data-ref-topic="DF02"><span>▦</span><span><strong>Nhận diện ngày thật và ngày dạng Text</strong><small>Thư viện · Kiểu dữ liệu</small></span><b>→</b></button></div><h4>Tự kiểm tra</h4><p>1. Mã nhân viên 00045 nên lưu dạng gì? 2. Giá trị nào hiển thị thành 25 phần trăm khi áp dụng Percentage: 0.25 hay 25?</p><div class="avp-lesson-example"><b>Đáp án:</b> 1. Text. 2. 0.25. Hãy tự giải thích lý do trước khi xem đáp án.</div></article></div><div class="avp-lesson-drawer" aria-hidden="true"><section class="avp-lesson-drawer-panel" role="dialog" aria-modal="true" aria-label="Tài liệu tham khảo"><div class="avp-lesson-drawer-head"><small>THƯ VIỆN ĐỊNH DẠNG & DỮ LIỆU</small><button type="button" class="avp-lesson-drawer-close" aria-label="Đóng tài liệu">×</button></div><div class="avp-lesson-drawer-content"><div class="avp-lesson-drawer-loading">Đang tải chủ đề tham khảo…</div></div></section></div>';
@@ -240,6 +267,16 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
     [["formula","SUMIFS"],["formula","COUNTIFS"],["formula","IFERROR"],["formula","LEFT"]]
    ]
   };
+  if(chapterIndex>=4&&window.AVP_LESSON_PROCEDURES_CH5_12){
+   var advanced=window.AVP_LESSON_PROCEDURES_CH5_12.find(function(item){return item.id==='C'+(chapterIndex+1)+'L'+String(lessonIndex+1).padStart(2,'0');});
+   if(advanced&&advanced.library){
+    return advanced.library.split(';').map(function(token){token=token.trim();if(!token)return null;
+     if(/^K\\d{3}$/.test(token))return ["knowledge",token];
+     if(/^(Ctrl|Alt|Shift|F[1-12]|Delete|Enter|Esc|Tab)/.test(token))return ["shortcut",token];
+     return ["formula",token];
+    }).filter(Boolean);
+   }
+  }
   return (plans[chapterIndex]&&plans[chapterIndex][lessonIndex])||[];
  }
  function ensureLessonLibraryData(type,done){
@@ -409,7 +446,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
     list.appendChild(card);
    });
    lessonPanel.appendChild(list);
-   lessonPanel.addEventListener('click',function(event){var lessonButton=event.target.closest('[data-lesson-index]');if(!lessonButton)return;var lessonIndex=Number(lessonButton.getAttribute('data-lesson-index'));if(index===0){if(lessonIndex===5)renderDataTypesLesson();else renderChapterOneLesson(lessonIndex);}else if(index>=1&&index<=3){renderStructuredLesson(index,lessonIndex);}});
+   lessonPanel.addEventListener('click',function(event){var lessonButton=event.target.closest('[data-lesson-index]');if(!lessonButton)return;var lessonIndex=Number(lessonButton.getAttribute('data-lesson-index'));if(index===0){if(lessonIndex===5)renderDataTypesLesson();else renderChapterOneLesson(lessonIndex);}else if(index>=1&&index<=3){renderStructuredLesson(index,lessonIndex);}else if(index>=4&&index<=11){renderChapterFiveToTwelveLesson(index,lessonIndex);}});
   }else{
    var empty=el('div','avp-chapter-lessons-empty');
    empty.innerHTML='<span class="avp-chapter-lessons-empty-icon">✎</span><strong>Danh sách bài học đang được chuẩn hóa</strong><p>Chương này đã có trong lộ trình 12 chương. Bài học sẽ được đưa vào đây sau khi chốt mục tiêu, thứ tự và kỹ năng đầu ra; không dùng lại nội dung của chương trình 8 nhóm, 42 bài đã loại bỏ.</p>';
