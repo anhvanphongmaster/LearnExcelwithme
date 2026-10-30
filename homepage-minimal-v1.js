@@ -242,7 +242,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
   var chapterOne=[
    [["knowledge","K001"],["knowledge","K002"]],[["knowledge","K001"]],[["knowledge","K002"],["knowledge","K003"]],
    [["knowledge","K002"],["knowledge","K003"]],[["knowledge","K006"]],[["knowledge","K006"],["knowledge","K007"]],
-   [["knowledge","K003"]],[["knowledge","K050"],["knowledge","K048"]],[["knowledge","K001"]],
+   [["knowledge","K003"],["format","DF05"],["format","DF06"],["format","DF07"],["format","DF08"]],[["knowledge","K050"],["knowledge","K048"]],[["knowledge","K001"]],
    [["knowledge","K003"]],[["knowledge","K003"],["knowledge","K001"]],[["knowledge","K001"],["knowledge","K002"],["knowledge","K003"]]
   ];
   if(chapterIndex===0)return chapterOne[lessonIndex]||[];
@@ -253,22 +253,22 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
     [["shortcut","Ctrl+C"],["shortcut","Ctrl+X"],["shortcut","Ctrl+V"]],[["knowledge","K048"]],
     [["shortcut","Ctrl+Z"],["shortcut","Ctrl+Y"]],[["shortcut","Ctrl+F"],["shortcut","Ctrl+H"]],
     [["knowledge","K049"]],[["knowledge","K050"],["shortcut","Ctrl+D"],["shortcut","Ctrl+R"]],
-    [["knowledge","K051"]],[["knowledge","K026"],["knowledge","K027"],["shortcut","Ctrl+Shift+L"]],
+    [["knowledge","K051"]],[["knowledge","K026"],["knowledge","K027"],["shortcut","Ctrl+Shift+L"],["format","DF19"]],
     [["shortcut","Ctrl+G"],["shortcut","Ctrl+Shift+*"],["shortcut","Ctrl+F"]],
-    [["shortcut","Ctrl+Shift+L"],["shortcut","Ctrl+D"],["shortcut","Ctrl+Z"]]
+    [["shortcut","Ctrl+Shift+L"],["shortcut","Ctrl+D"],["shortcut","Ctrl+Z"],["format","DF19"]]
    ],
    2:[
     [["knowledge","K016"],["knowledge","K017"]],[["knowledge","K016"]],[["knowledge","K012"]],[["knowledge","K013"]],[["knowledge","K014"]],
     [["knowledge","K012"],["knowledge","K013"],["knowledge","K014"]],[["formula","CONCAT"],["knowledge","K006"]],
-    [["formula","ROUND"],["formula","ROUNDUP"],["formula","ROUNDDOWN"]],[["knowledge","K007"],["formula","DATE"],["formula","YEAR"],["formula","MONTH"]],
+    [["formula","ROUND"],["formula","ROUNDUP"],["formula","ROUNDDOWN"]],[["knowledge","K007"],["formula","DATE"],["formula","YEAR"],["formula","MONTH"],["format","DF02"],["format","DF08"]],
     [["formula","IF"]],[["formula","IFERROR"],["knowledge","K021"]],[["formula","IF"],["formula","ROUND"],["formula","DATE"]]
    ],
    3:[
     [["formula","SUM"],["formula","AVERAGE"]],[["formula","MIN"],["formula","MAX"],["formula","COUNT"]],
-    [["formula","COUNTA"],["formula","COUNTBLANK"]],[["formula","IF"]],[["formula","AND"],["formula","OR"]],
+    [["formula","COUNTA"],["formula","COUNTBLANK"],["format","DF03"]],[["formula","IF"]],[["formula","AND"],["formula","OR"]],
     [["formula","SUMIF"]],[["formula","COUNTIF"]],[["formula","SUMIFS"],["formula","COUNTIFS"]],
     [["formula","IFERROR"]],[["formula","LEFT"],["formula","RIGHT"],["formula","MID"],["formula","LEN"]],
-    [["formula","TRIM"],["formula","SUBSTITUTE"],["formula","TODAY"],["formula","YEAR"]],
+    [["formula","TRIM"],["formula","SUBSTITUTE"],["formula","TODAY"],["formula","YEAR"],["format","DF10"],["format","DF11"],["format","DF12"],["format","DF13"]],
     [["formula","SUMIFS"],["formula","COUNTIFS"],["formula","IFERROR"],["formula","LEFT"]]
    ]
   };
