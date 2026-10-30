@@ -93,9 +93,22 @@ function setup(){
  '<div class="avp-canonical-inner avp-hero-split"><div class="avp-canonical-copy">'+
  '<div class="avp-canonical-eyebrow">●　EXCEL　·　DỮ LIỆU　·　BÁO CÁO　·　TỰ ĐỘNG HÓA　·　AI</div>'+
  '<h1>Học <span>Excel</span><br>để làm được việc.</h1>'+
- '<p>Từ cơ bản đến nâng cao, kèm ví dụ thực tế, bài tập và file thực hành. Giúp bạn xử lý công việc nhanh hơn, chính xác hơn và chuyên nghiệp hơn.</p>'+
+ '<p>Học Excel qua bài học thực tế, bài tập và file thực hành — từ cơ bản đến nâng cao.</p>'+
  '<div class="avp-canonical-actions"><a class="avp-canonical-secondary" href="intro.html?v=11"><span>▶</span><b>Xem giới thiệu<small>1 phút hiểu về AVP</small></b></a></div></div>'+
- '<button class="avp-home-map-card" type="button" data-open-learning-map><span class="avp-home-map-kicker">MY LEARNING JOURNEY</span><strong>Bản đồ hành trình</strong><span class="avp-home-map-copy">Theo dõi bạn đã đi đến đâu, đang đứng ở đâu và chặng tiếp theo cần chinh phục.</span><span class="avp-home-map-art"><svg viewBox="0 0 520 220" role="img" aria-label="Đường hành trình uốn lượn qua các khu vực học tập"><path d="M0 180 Q80 110 150 155 T270 95 T390 135 T520 40" fill="none" stroke="#d4bd8b" stroke-width="34" stroke-linecap="round"/><path d="M0 180 Q80 110 150 155 T270 95 T390 135 T520 40" fill="none" stroke="#fff2d2" stroke-width="25" stroke-linecap="round"/><g fill="#79a77d"><path d="M35 72l17-34 17 34zM66 82l14-27 14 27zM350 192l18-36 18 36zM390 195l14-28 14 28z"/></g><g fill="#e8f4e8" stroke="#8ab397" stroke-width="2"><circle cx="72" cy="148" r="13"/><circle cx="195" cy="142" r="13"/><circle cx="302" cy="104" r="13"/><circle cx="430" cy="111" r="13"/></g><circle cx="72" cy="148" r="6" fill="#0b7950"/><circle cx="195" cy="142" r="6" fill="#0b7950"/><circle cx="302" cy="104" r="6" fill="#f3a342"/><circle cx="430" cy="111" r="6" fill="#fff" stroke="#8ab397"/><g transform="translate(302 66)"><circle r="19" fill="#f5a340" stroke="#fff" stroke-width="4"/><text text-anchor="middle" y="6" font-size="18">●</text></g></svg></span><span class="avp-home-map-footer"><span data-home-map-position>Điểm xuất phát</span><b>Mở bản đồ ↗</b></span></button></div>'
+ '<button class="avp-home-map-card" type="button" data-open-learning-map>'+
+ '<span class="avp-home-map-kicker">MY LEARNING JOURNEY</span>'+
+ '<strong>Bản đồ hành trình</strong>'+
+ '<span class="avp-home-map-copy">Theo dõi điểm xuất phát, chặng đã hoàn thành và bước tiếp theo trong lộ trình học.</span>'+
+ '<span class="avp-home-map-art"><svg viewBox="0 0 520 150" role="img" aria-label="Bản đồ hành trình qua 12 chương học">'+
+ '<path d="M18 116 C68 116 58 50 122 50 S177 122 235 103 S285 30 342 49 S402 120 490 24" fill="none" stroke="#d7c59c" stroke-width="25" stroke-linecap="round"/>'+
+ '<path d="M18 116 C68 116 58 50 122 50 S177 122 235 103 S285 30 342 49 S402 120 490 24" fill="none" stroke="#fff5df" stroke-width="17" stroke-linecap="round"/>'+
+ '<g fill="#7cae87"><path d="M48 72l12-25 12 25zM80 82l10-21 10 21zM388 92l13-27 13 27zM421 105l10-22 10 22z"/></g>'+
+ '<g fill="#fff" stroke="#8eb79a" stroke-width="3"><circle cx="61" cy="96" r="11"/><circle cx="158" cy="80" r="11"/><circle cx="258" cy="91" r="11"/><circle cx="367" cy="65" r="11"/></g>'+
+ '<g fill="#08734b"><circle cx="61" cy="96" r="5"/><circle cx="158" cy="80" r="5"/></g>'+
+ '<circle cx="258" cy="91" r="6" fill="#f2a34a"/>'+
+ '<g transform="translate(258 55)"><circle r="16" fill="#f2a34a" stroke="#fff" stroke-width="4"/><path d="M-4 0h8M0-4v8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></g>'+
+ '</svg></span>'+
+ '<span class="avp-home-map-footer"><span data-home-map-position>Điểm xuất phát</span><b>Mở bản đồ ↗</b></span></button></div>';
  ['#home-ai-intro','#ky-nang-excel','.home-path','#avp-home-ecosystem','#avp-reference-featured','#avp-featured-lessons','.avp-reference-next-steps'].forEach(function(s){document.querySelectorAll(s).forEach(function(n){n.remove();});});
  var discover=el('section','avp-canonical-discover');
  discover.innerHTML='<div class="avp-canonical-section-head"><div><h2>Khám phá ngay</h2><p>Chọn khu vực bạn quan tâm để bắt đầu hành trình.</p></div><a href="tools-center.html">Khám phá tất cả　↗</a></div><div class="avp-canonical-discover-grid"></div>';
