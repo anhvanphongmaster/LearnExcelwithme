@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Thư viện 200 công thức Excel | Anh Văn Phòng</title>
-<meta name="description" content="Học và tra cứu 200 ví dụ công thức Excel từ cơ bản đến nâng cao, hàm lồng và bài tập kiểm tra kiến thức.">
+<title>Thư viện hàm Excel | Anh Văn Phòng</title>
+<meta name="description" content="Tra cứu các hàm Excel thông dụng, ví dụ thực tế, bài tập và công thức lồng từ cơ bản đến nâng cao.">
 <meta name="theme-color" content="#08734b">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
@@ -65,6 +65,43 @@
 .fl-footer{margin-top:20px;text-align:center;color:#849187;font-size:10px}
 @media(max-width:760px){.fl-shell{width:calc(100% - 22px);margin:14px auto 48px}.fl-topgrid{grid-template-columns:1fr}.fl-feature{padding:16px}.fl-section{padding:15px}.fl-grid{grid-template-columns:1fr}.fl-feature h2{font-size:18px}.fl-section h2{font-size:18px}}
 @media(prefers-reduced-motion:reduce){.fl-progress span{transition:none}}
+
+/* Function category hierarchy — distinct color families */
+.fl-tabs button[data-level="Cơ bản"]{--cat:#23865b;--tint:#e8f5ed}
+.fl-tabs button[data-level="Logic"]{--cat:#3976b8;--tint:#eaf1fb}
+.fl-tabs button[data-level="Điều kiện"]{--cat:#bd7b25;--tint:#fbf1df}
+.fl-tabs button[data-level="Tra cứu"]{--cat:#7656b4;--tint:#f1ebfb}
+.fl-tabs button[data-level="Mảng động"]{--cat:#168b91;--tint:#e4f5f5}
+.fl-tabs button[data-level="Văn bản"]{--cat:#bd5d7c;--tint:#faedf1}
+.fl-tabs button[data-level="Ngày giờ"]{--cat:#477c9e;--tint:#eaf3f8}
+.fl-tabs button[data-level="Thống kê"]{--cat:#8a6b32;--tint:#f5f0e4}
+.fl-tabs button[data-level="Toán & phân tích"]{--cat:#687b45;--tint:#eff3e5}
+.fl-tabs button.active{background:var(--cat,#08734b);border-color:var(--cat,#08734b);color:#fff}
+.fl-item{border-top:3px solid var(--cat,#dce8df);background:linear-gradient(180deg,var(--tint,#fff) 0,#fff 62px)}
+.fl-item[data-level="Cơ bản"]{--cat:#23865b;--tint:#e8f5ed}
+.fl-item[data-level="Logic"]{--cat:#3976b8;--tint:#eaf1fb}
+.fl-item[data-level="Điều kiện"]{--cat:#bd7b25;--tint:#fbf1df}
+.fl-item[data-level="Tra cứu"]{--cat:#7656b4;--tint:#f1ebfb}
+.fl-item[data-level="Mảng động"]{--cat:#168b91;--tint:#e4f5f5}
+.fl-item[data-level="Văn bản"]{--cat:#bd5d7c;--tint:#faedf1}
+.fl-item[data-level="Ngày giờ"]{--cat:#477c9e;--tint:#eaf3f8}
+.fl-item[data-level="Thống kê"]{--cat:#8a6b32;--tint:#f5f0e4}
+.fl-item[data-level="Toán & phân tích"]{--cat:#687b45;--tint:#eff3e5}
+.fl-level{background:var(--tint,#eef6f0);color:var(--cat,#5e7867)}
+.fl-nested{border-top-color:#8d63b7!important;--cat:#8d63b7!important;--tint:#f3edfa!important}
+html[data-avp-display-mode="desktop"] .fl-shell{width:1120px;max-width:none;margin:28px auto 70px}
+html[data-avp-display-mode="desktop"] .fl-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+html[data-avp-display-mode="desktop"] .fl-topgrid{grid-template-columns:1fr 1fr}
+html[data-avp-display-mode="mobile"] .fl-shell{width:calc(100% - 22px);margin:14px auto 48px}
+html[data-avp-display-mode="mobile"] .fl-topgrid{grid-template-columns:1fr}
+html[data-avp-display-mode="mobile"] .fl-grid{grid-template-columns:1fr}
+@media(max-width:760px){
+ .fl-hero{padding:22px 18px}.fl-hero h1{font-size:30px}
+ .fl-topgrid{grid-template-columns:1fr}.fl-grid{grid-template-columns:1fr}
+ .fl-feature{padding:16px}.fl-section{padding:15px}
+ .fl-section-head{align-items:flex-start;flex-direction:column}
+}
+
 </style>
 </head>
 <body>
@@ -78,41 +115,43 @@
  <a class="fl-crumb" href="index.html">← Trang chủ / Thư viện Excel / Hàm & công thức</a>
  <section class="fl-hero">
   <span class="fl-kicker">AVP · EXCEL FORMULA LIBRARY</span>
-  <h1>Thư viện 200 công thức Excel</h1>
+  <h1>Thư viện 124 hàm Excel</h1>
   <p>Không chỉ xem cú pháp. Mỗi công thức đi kèm tình huống công việc, ví dụ áp dụng và một câu hỏi kiểm tra. Học từ hàm cơ bản, hàm xử lý dữ liệu đến công thức kết hợp nhiều hàm.</p>
-  <div class="fl-stats"><span>200 ví dụ công thức</span><span>200 câu hỏi thực hành</span><span>3 cấp độ</span><span>Excel 365 · Windows</span></div>
+  <div class="fl-stats"><span id="catalogCount">124 hàm thông dụng</span><span>Ví dụ có thể sao chép</span><span>10 nhóm chức năng</span><span>Excel 365 · Windows</span></div>
  </section>
  <section class="fl-topgrid">
   <article class="fl-feature" aria-labelledby="fl-recommend-title">
-   <div class="fl-feature-head"><span class="fl-badge">CÔNG THỨC ĐỀ XUẤT</span><span class="fl-counter" id="formulaCycleCount">01 / 200</span></div>
+   <div class="fl-feature-head"><span class="fl-badge">CÔNG THỨC ĐỀ XUẤT</span><span class="fl-counter" id="formulaCycleCount">01 / 124</span></div>
    <h2 id="formulaRecommendName">Đang tải công thức...</h2>
    <p id="formulaRecommendDescription"></p>
    <div class="fl-code" id="formulaRecommendCode"></div>
    <p id="formulaRecommendScenario"></p>
    <div class="fl-actions"><button class="fl-btn" id="copyRecommend">Sao chép công thức</button><button class="fl-btn primary" id="nextFormula">Công thức tiếp theo →</button></div>
    <div class="fl-progress"><span id="formulaCycleProgress"></span></div>
-   <p id="formulaCycleNote">Danh sách được xáo trộn, không lặp cho đến khi đi hết 200 công thức.</p>
+   <p id="formulaCycleNote">Danh sách được xáo trộn, mỗi hàm chỉ xuất hiện một lần trong một lượt.</p>
   </article>
   <article class="fl-feature" aria-labelledby="fl-challenge-title">
-   <div class="fl-feature-head"><span class="fl-badge">THỬ THÁCH CÔNG THỨC</span><span class="fl-counter" id="questionCycleCount">0 / 200 câu đúng</span></div>
+   <div class="fl-feature-head"><span class="fl-badge">THỬ THÁCH CÔNG THỨC</span><span class="fl-counter" id="questionCycleCount">0 / 124 câu đúng</span></div>
    <h2 id="challengeTitle">Câu hỏi đang tải...</h2>
    <p class="fl-challenge-question" id="challengeQuestion"></p>
    <div class="fl-options" id="challengeOptions"></div>
    <div class="fl-feedback" id="challengeFeedback" aria-live="polite">Chọn một đáp án để kiểm tra.</div>
    <div class="fl-actions"><button class="fl-btn primary" id="nextQuestion" disabled>Câu tiếp theo →</button><span class="fl-counter" id="questionQueueCount">Câu trong lượt: 01 / 200</span></div>
    <div class="fl-progress"><span id="questionCycleProgress"></span></div>
-   <p id="questionCycleNote">Chỉ câu trả lời đúng mới được tính hoàn thành. Trả lời đủ 200 câu, hệ thống tự tạo lượt mới.</p>
+   <p id="questionCycleNote">Chỉ câu trả lời đúng mới được tính hoàn thành. Trả lời đủ 124 câu, hệ thống tự tạo lượt mới.</p>
   </article>
  </section>
  <section class="fl-section">
   <div class="fl-section-head"><div><h2>Tra cứu toàn bộ công thức</h2><p>Tìm theo tên hàm, cú pháp hoặc tình huống công việc.</p></div><span class="fl-counter" id="formulaTotalCount">200 công thức</span></div>
   <input class="fl-search" id="formulaSearch" type="search" placeholder="Ví dụ: SUMIFS, tra cứu mã, đếm lỗi NG..." autocomplete="off">
-  <div class="fl-tabs" id="formulaTabs">
-   <button class="active" data-level="Tất cả">Tất cả</button><button data-level="Cơ bản">Cơ bản</button><button data-level="Nâng cao">Nâng cao</button><button data-level="Hàm lồng">Hàm lồng</button>
-  </div>
+  <div class="fl-tabs" id="formulaTabs"></div>
   <div class="fl-results"><span id="formulaResultCount">Đang tải...</span><span>Chọn Sao chép để lấy công thức</span></div>
   <div class="fl-grid" id="formulaGrid"></div>
-  <div class="fl-note"><strong>Lưu ý tương thích:</strong> Các ví dụ ưu tiên Excel 365. Một số hàm như XLOOKUP, FILTER, UNIQUE, SORT và MAXIFS cần phiên bản Excel hỗ trợ. Công thức có thể cần đổi dấu phẩy thành dấu chấm phẩy tùy thiết lập vùng của Excel. Ví dụ dữ liệu là mẫu; hãy điều chỉnh cột và vùng tham chiếu theo workbook thực tế.</div>
+  <section class="fl-section" id="nestedSection">
+  <div class="fl-section-head"><div><h2>Thực hành công thức lồng</h2><p>Kết hợp nhiều hàm để xử lý tình huống công việc. Đây là bài thực hành, không tính là tên hàm độc lập.</p></div><span class="fl-counter" id="nestedCount">12 bài mẫu</span></div>
+  <div class="fl-grid" id="nestedGrid"></div>
+ </section>
+ <div class="fl-note"><strong>Lưu ý tương thích:</strong> Danh mục gồm các hàm Excel thông dụng và một số hàm thế hệ mới, không phải toàn bộ hơn 500 hàm trong mọi phiên bản Excel. Các hàm như XLOOKUP, FILTER, TEXTSPLIT, TAKE, LAMBDA cần phiên bản Microsoft 365 hoặc Excel tương thích. Công thức mẫu dùng dấu phẩy; có thể cần đổi sang dấu chấm phẩy tùy thiết lập vùng. Hãy điều chỉnh vùng dữ liệu theo workbook thực tế.</div>
  </section>
  <p class="fl-footer">Learn Excel with Anh Văn Phòng · Học công thức qua tình huống thực tế.</p>
 </main>
@@ -120,31 +159,35 @@
 <script>
 (function(){
 'use strict';
-const bank=window.AVP_FORMULA_BANK||[];
-const $=id=>document.getElementById(id);
-const KEY='avp_formula_library_200_v1';
+const bank=window.AVP_FORMULA_BANK||[],nested=window.AVP_NESTED_BANK||[];
+const $=id=>document.getElementById(id),KEY='avp_formula_library_catalog_v2';
 const state={formulaOrder:[],formulaPos:0,questionOrder:[],questionPos:0,completed:[],answered:false,activeLevel:'Tất cả',query:''};
 function shuffle(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]];}return x;}
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');if(Array.isArray(x.formulaOrder)&&x.formulaOrder.length===bank.length)state.formulaOrder=x.formulaOrder;if(Number.isInteger(x.formulaPos))state.formulaPos=Math.max(0,Math.min(x.formulaPos,bank.length));if(Array.isArray(x.questionOrder)&&x.questionOrder.length===bank.length)state.questionOrder=x.questionOrder;if(Number.isInteger(x.questionPos))state.questionPos=Math.max(0,Math.min(x.questionPos,bank.length));if(Array.isArray(x.completed))state.completed=x.completed.filter(id=>bank.some(q=>q.id===id));}catch(e){}if(!state.formulaOrder.length)state.formulaOrder=shuffle(bank.map(x=>x.id));if(!state.questionOrder.length)state.questionOrder=shuffle(bank.map(x=>x.id));if(state.formulaPos>=bank.length){state.formulaOrder=shuffle(bank.map(x=>x.id));state.formulaPos=0;}if(state.questionPos>bank.length){state.questionOrder=shuffle(bank.map(x=>x.id));state.questionPos=0;state.completed=[];}save();}
 function save(){try{localStorage.setItem(KEY,JSON.stringify({formulaOrder:state.formulaOrder,formulaPos:state.formulaPos,questionOrder:state.questionOrder,questionPos:state.questionPos,completed:state.completed}));}catch(e){}}
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');if(Array.isArray(x.formulaOrder)&&x.formulaOrder.length===bank.length)state.formulaOrder=x.formulaOrder;if(Array.isArray(x.questionOrder)&&x.questionOrder.length===bank.length)state.questionOrder=x.questionOrder;if(state.formulaOrder.length)state.formulaPos=Math.min(Number(x.formulaPos)||0,bank.length-1);if(state.questionOrder.length)state.questionPos=Math.min(Number(x.questionPos)||0,bank.length);if(Array.isArray(x.completed))state.completed=x.completed.filter(id=>bank.some(q=>q.id===id));}catch(e){}if(!state.formulaOrder.length)state.formulaOrder=shuffle(bank.map(x=>x.id));if(!state.questionOrder.length)state.questionOrder=shuffle(bank.map(x=>x.id));save();}
 function byId(id){return bank.find(x=>x.id===id)||bank[0];}
 function formulaNow(){return byId(state.formulaOrder[state.formulaPos]);}
 function questionNow(){return byId(state.questionOrder[state.questionPos]);}
-function renderFormula(){const x=formulaNow();if(!x)return;$('formulaRecommendName').textContent=x.name+' · '+x.level;$('formulaRecommendDescription').textContent=x.description;$('formulaRecommendCode').textContent=x.formula;$('formulaRecommendScenario').textContent=x.scenario+' — '+x.description;$('formulaCycleCount').textContent=String(state.formulaPos+1).padStart(2,'0')+' / '+bank.length;$('formulaCycleProgress').style.width=((state.formulaPos+1)/bank.length*100)+'%';$('formulaCycleNote').textContent=state.formulaPos===bank.length-1?'Đã xem hết lượt này. Bấm tiếp để bắt đầu lượt xáo trộn mới.':'Đã đi qua '+state.formulaPos+'/'+bank.length+' công thức trong lượt hiện tại.';}
-function renderQuestion(){state.answered=false;$('challengeOptions').innerHTML='';if(state.questionPos>=bank.length){$('challengeTitle').textContent='Hoàn thành 200 câu';$('challengeQuestion').textContent='Bạn đã trả lời đúng toàn bộ 200 câu hỏi trong lượt này.';$('challengeFeedback').textContent='Một lượt mới sẽ được xáo trộn khi bạn chọn bắt đầu lại.';$('nextQuestion').disabled=false;$('nextQuestion').textContent='Bắt đầu lượt mới →';$('questionQueueCount').textContent='Câu trong lượt: 200 / 200';updateQuestionProgress();return;}const x=questionNow();if(!x)return;$('challengeTitle').textContent='Câu hỏi '+String(state.questionPos+1).padStart(3,'0');$('challengeQuestion').textContent=x.question;x.options.forEach((op,i)=>{const b=document.createElement('button');b.type='button';b.className='fl-option';b.textContent=String.fromCharCode(65+i)+'. '+op;b.addEventListener('click',()=>answer(i,b));$('challengeOptions').appendChild(b);});$('challengeFeedback').textContent='Chọn một đáp án để kiểm tra.';$('nextQuestion').disabled=true;$('nextQuestion').textContent='Câu tiếp theo →';$('questionQueueCount').textContent='Câu trong lượt: '+String(state.questionPos+1).padStart(2,'0')+' / '+bank.length;updateQuestionProgress();}
-function updateQuestionProgress(){const n=state.completed.length;$('questionCycleCount').textContent=n+' / '+bank.length+' câu đúng';$('questionCycleProgress').style.width=(n/bank.length*100)+'%';}
-function answer(i,button){if(state.answered)return;const x=questionNow();state.answered=true;const buttons=[...$('challengeOptions').children];buttons.forEach((b,j)=>{b.disabled=true;if(j===x.answer)b.classList.add('correct');});if(i===x.answer){button.classList.add('correct');if(!state.completed.includes(x.id))state.completed.push(x.id);$('challengeFeedback').textContent='Chính xác. '+x.explanation;state.questionPos++;if(state.questionPos>=bank.length){$('questionCycleNote').textContent='Bạn đã hoàn thành đủ 200 câu. Bấm Bắt đầu lượt mới để xáo trộn lại ngân hàng câu hỏi.';}else{$('questionCycleNote').textContent='Câu đúng được ghi nhận. Bạn có thể chuyển sang câu tiếp theo.';}$('nextQuestion').disabled=false;save();updateQuestionProgress();}else{button.classList.add('wrong');$('challengeFeedback').textContent='Chưa đúng. '+x.explanation+' Hãy xem lại công thức rồi thử câu tiếp theo.';$('nextQuestion').disabled=false;}}
-function nextQuestion(){if($('nextQuestion').disabled)return;if(state.questionPos>=bank.length){state.questionOrder=shuffle(bank.map(x=>x.id));state.questionPos=0;state.completed=[];$('questionCycleNote').textContent='Lượt mới đã được xáo trộn. Hãy bắt đầu thử thách tiếp theo.';save();updateQuestionProgress();}renderQuestion();}
-function renderGrid(){const q=state.query.toLocaleLowerCase('vi');const items=bank.filter(x=>(state.activeLevel==='Tất cả'||x.level===state.activeLevel)&&(!q||(x.name+' '+x.formula+' '+x.description+' '+x.scenario+' '+x.question).toLocaleLowerCase('vi').includes(q)));$('formulaGrid').innerHTML='';$('formulaResultCount').textContent='Hiển thị '+items.length+' / '+bank.length+' công thức';if(!items.length){$('formulaGrid').innerHTML='<div class="fl-empty">Không tìm thấy công thức phù hợp.</div>';return;}items.forEach(x=>{const card=document.createElement('article');card.className='fl-item';const top=document.createElement('div');top.className='fl-item-top';const h=document.createElement('h3');h.textContent=x.id+'. '+x.name;const tag=document.createElement('span');tag.className='fl-level';tag.textContent=x.level;top.append(h,tag);const p=document.createElement('p');p.textContent=x.description+' '+x.scenario;const code=document.createElement('code');code.textContent=x.formula;const foot=document.createElement('div');foot.className='fl-item-foot';const small=document.createElement('small');small.textContent='Ví dụ thực hành';const copy=document.createElement('button');copy.className='fl-copy';copy.type='button';copy.textContent='Sao chép';copy.addEventListener('click',()=>copyText(x.formula,copy));foot.append(small,copy);card.append(top,p,code,foot);$('formulaGrid').appendChild(card);});}
-function copyText(t,b){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>{b.textContent='Đã sao chép';setTimeout(()=>b.textContent='Sao chép',1200);}).catch(()=>fallbackCopy(t,b));}else fallbackCopy(t,b);}
+function copyText(t,b){const done=()=>{const old=b.textContent;b.textContent='Đã sao chép';setTimeout(()=>b.textContent=old,1200);};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done).catch(()=>fallbackCopy(t,b));else fallbackCopy(t,b);}
 function fallbackCopy(t,b){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');b.textContent='Đã sao chép';}catch(e){b.textContent='Không sao chép được';}a.remove();}
-function nextFormula(){state.formulaPos++;if(state.formulaPos>=bank.length){state.formulaOrder=shuffle(bank.map(x=>x.id));state.formulaPos=0;$('formulaCycleNote').textContent='Đã đi hết 200 công thức. Lượt mới đã được xáo trộn.';}save();renderFormula();}
-$('nextFormula').addEventListener('click',nextFormula);$('copyRecommend').addEventListener('click',()=>copyText(formulaNow().formula,$('copyRecommend')));$('nextQuestion').addEventListener('click',nextQuestion);$('formulaSearch').addEventListener('input',e=>{state.query=e.target.value;renderGrid();});$('formulaTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-level]');if(!b)return;state.activeLevel=b.dataset.level;document.querySelectorAll('#formulaTabs button').forEach(x=>x.classList.toggle('active',x===b));renderGrid();});
-if(bank.length!==200){$('formulaRecommendName').textContent='Dữ liệu công thức chưa tải đủ';$('formulaRecommendDescription').textContent='Cần có đúng 200 ví dụ trước khi sử dụng vòng đề xuất.';$('challengeFeedback').textContent='Hiện có '+bank.length+' công thức. Vui lòng kiểm tra tệp dữ liệu.';$('formulaTotalCount').textContent=bank.length+' công thức';return;}
-$('formulaTotalCount').textContent=bank.length+' công thức';load();renderFormula();renderQuestion();renderGrid();
+function renderFormula(){const x=formulaNow();if(!x)return;$('formulaRecommendName').textContent=x.name+' · '+x.level;$('formulaRecommendDescription').textContent=x.description;$('formulaRecommendCode').textContent=x.formula;$('formulaRecommendScenario').textContent=x.scenario;$('formulaCycleCount').textContent=String(state.formulaPos+1).padStart(2,'0')+' / '+bank.length;$('formulaCycleProgress').style.width=((state.formulaPos+1)/bank.length*100)+'%';$('formulaCycleNote').textContent=state.formulaPos===bank.length-1?'Đã đi hết danh mục. Bấm tiếp để bắt đầu lượt xáo trộn mới.':'Mỗi hàm chỉ xuất hiện một lần trong lượt đề xuất này.';}
+function updateQuestionProgress(){$('questionCycleCount').textContent=state.completed.length+' / '+bank.length+' câu đúng';$('questionCycleProgress').style.width=(state.completed.length/bank.length*100)+'%';}
+let currentOptions=[];
+function renderQuestion(){state.answered=false;$('challengeOptions').innerHTML='';if(state.questionPos>=bank.length){$('challengeTitle').textContent='Hoàn thành danh mục';$('challengeQuestion').textContent='Bạn đã trả lời đúng toàn bộ '+bank.length+' câu hỏi trong lượt này.';$('challengeFeedback').textContent='Bấm bắt đầu lượt mới để xáo trộn lại câu hỏi.';$('nextQuestion').disabled=false;$('nextQuestion').textContent='Bắt đầu lượt mới →';$('questionQueueCount').textContent=bank.length+' / '+bank.length;updateQuestionProgress();return;}const x=questionNow();$('challengeTitle').textContent='Câu hỏi '+String(state.questionPos+1).padStart(3,'0');$('challengeQuestion').textContent=x.question;currentOptions=shuffle(x.options.map((label,i)=>({label,correct:i===x.answer})));currentOptions.forEach((op,i)=>{const b=document.createElement('button');b.type='button';b.className='fl-option';b.textContent=String.fromCharCode(65+i)+'. '+op.label;b.addEventListener('click',()=>answer(i,b));$('challengeOptions').appendChild(b);});$('challengeFeedback').textContent='Chọn một đáp án để kiểm tra.';$('nextQuestion').disabled=true;$('nextQuestion').textContent='Câu tiếp theo →';$('questionQueueCount').textContent='Câu trong lượt: '+String(state.questionPos+1).padStart(2,'0')+' / '+bank.length;updateQuestionProgress();}
+function answer(i,button){if(state.answered)return;const x=questionNow();state.answered=true;[...$('challengeOptions').children].forEach((b,j)=>{b.disabled=true;if(currentOptions[j].correct)b.classList.add('correct');});if(currentOptions[i].correct){button.classList.add('correct');if(!state.completed.includes(x.id))state.completed.push(x.id);state.questionPos++;$('challengeFeedback').textContent='Chính xác. '+x.explanation;$('questionCycleNote').textContent=state.questionPos>=bank.length?'Đã hoàn thành đủ '+bank.length+' câu. Bắt đầu lượt mới khi sẵn sàng.':'Câu đúng được ghi nhận.';}else{button.classList.add('wrong');$('challengeFeedback').textContent='Chưa đúng. '+x.explanation+' Đáp án đúng đã được đánh dấu.';}$('nextQuestion').disabled=false;save();updateQuestionProgress();}
+function nextQuestion(){if($('nextQuestion').disabled)return;if(state.questionPos>=bank.length){state.questionOrder=shuffle(bank.map(x=>x.id));state.questionPos=0;state.completed=[];$('questionCycleNote').textContent='Lượt câu hỏi mới đã được xáo trộn.';save();}renderQuestion();}
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-');}
+function renderTabs(){const levels=['Tất cả',...new Set(bank.map(x=>x.level))];$('formulaTabs').innerHTML='';levels.forEach(level=>{const b=document.createElement('button');b.type='button';b.dataset.level=level;b.textContent=level==='Tất cả'?'Tất cả ('+bank.length+')':level+' ('+bank.filter(x=>x.level===level).length+')';b.classList.toggle('active',level===state.activeLevel);$('formulaTabs').appendChild(b);});}
+function renderGrid(){const q=state.query.toLocaleLowerCase('vi');const items=bank.filter(x=>(state.activeLevel==='Tất cả'||x.level===state.activeLevel)&&(!q||(x.name+' '+x.formula+' '+x.description+' '+x.question).toLocaleLowerCase('vi').includes(q)));$('formulaGrid').innerHTML='';$('formulaResultCount').textContent='Hiển thị '+items.length+' / '+bank.length+' hàm';if(!items.length){$('formulaGrid').innerHTML='<div class="fl-empty">Không tìm thấy hàm phù hợp.</div>';return;}items.forEach(x=>{const card=document.createElement('article');card.className='fl-item';card.dataset.level=x.level;const top=document.createElement('div');top.className='fl-item-top';const h=document.createElement('h3');h.textContent=x.id+'. '+x.name;const tag=document.createElement('span');tag.className='fl-level';tag.textContent=x.level;top.append(h,tag);const p=document.createElement('p');p.textContent=x.description;const code=document.createElement('code');code.textContent=x.formula;const foot=document.createElement('div');foot.className='fl-item-foot';const small=document.createElement('small');small.textContent=x.question;const copy=document.createElement('button');copy.className='fl-copy';copy.type='button';copy.textContent='Sao chép';copy.addEventListener('click',()=>copyText(x.formula,copy));foot.append(small,copy);card.append(top,p,code,foot);$('formulaGrid').appendChild(card);});}
+function renderNested(){const target=$('nestedGrid');target.innerHTML='';nested.forEach((x,i)=>{const card=document.createElement('article');card.className='fl-item fl-nested';const top=document.createElement('div');top.className='fl-item-top';const h=document.createElement('h3');h.textContent=String(i+1).padStart(2,'0')+'. '+x.name;const tag=document.createElement('span');tag.className='fl-level';tag.textContent='Hàm lồng';top.append(h,tag);const p=document.createElement('p');p.textContent=x.description;const code=document.createElement('code');code.textContent=x.formula;const foot=document.createElement('div');foot.className='fl-item-foot';const small=document.createElement('small');small.textContent='Bài thực hành';const copy=document.createElement('button');copy.className='fl-copy';copy.type='button';copy.textContent='Sao chép';copy.addEventListener('click',()=>copyText(x.formula,copy));foot.append(small,copy);card.append(top,p,code,foot);target.appendChild(card);});$('nestedCount').textContent=nested.length+' bài mẫu';}
+function nextFormula(){state.formulaPos++;if(state.formulaPos>=bank.length){state.formulaOrder=shuffle(bank.map(x=>x.id));state.formulaPos=0;$('formulaCycleNote').textContent='Đã đi hết danh mục. Một lượt mới đã được xáo trộn.';}save();renderFormula();}
+$('nextFormula').addEventListener('click',nextFormula);$('copyRecommend').addEventListener('click',()=>copyText(formulaNow().formula,$('copyRecommend')));$('nextQuestion').addEventListener('click',nextQuestion);$('formulaSearch').addEventListener('input',e=>{state.query=e.target.value;renderGrid();});$('formulaTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-level]');if(!b)return;state.activeLevel=b.dataset.level;renderTabs();renderGrid();});
+if(!bank.length){$('formulaRecommendName').textContent='Không tải được danh mục hàm';return;}
+$('catalogCount').textContent=bank.length+' hàm Excel';$('formulaTotalCount').textContent=bank.length+' hàm';load();renderTabs();renderFormula();renderQuestion();renderGrid();renderNested();
 })();
 </script>
 <script defer src="simple-nav.js"></script>
+<script defer src="avp-display-mode.js?v=2"></script>
 <script defer src="global-search.js"></script>
 <footer class="site-footer"><p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p><p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p><div class="site-footer-legal"><a href="terms.html">Điều khoản</a><a href="privacy.html">Quyền riêng tư</a><a href="disclaimer.html">Tuyên bố pháp lý</a><a href="open-source.html">Mã nguồn mở</a></div></footer>
 </body></html>
