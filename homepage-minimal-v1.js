@@ -40,6 +40,44 @@ function deleteLegacyDuplicateBlocks(){
   window.__avpLegacyBlockObserver.observe(document.body,{childList:true,subtree:true});
  }
 }
+
+/* Lightweight pointer parallax for homepage cards. Uses transform only; no layout writes. */
+function bindHomepageParallax(){
+ if(window.__AVP_HOME_PARALLAX_V1__)return;
+ window.__AVP_HOME_PARALLAX_V1__=true;
+ var selector='.avp-canonical-category,.avp-canonical-lesson,.avp-canonical-trending li,.avp-resource-card,.avp-canonical-banner,.avp-canonical-book';
+ var active=null,frame=0,last=null;
+ function reset(card){
+  if(!card)return;
+  card.style.setProperty('--avp-tilt-x','0deg');card.style.setProperty('--avp-tilt-y','0deg');
+  card.style.setProperty('--avp-lift','0px');card.style.setProperty('--avp-mx','50%');
+  card.style.setProperty('--avp-my','50%');card.classList.remove('avp-parallax-active');
+ }
+ document.addEventListener('pointermove',function(e){
+  if(e.pointerType!=='mouse'&&e.pointerType!=='pen')return;
+  var card=e.target.closest(selector);
+  if(active&&active!==card)reset(active);
+  active=card;if(!card){last=null;return;}
+  var r=card.getBoundingClientRect();if(!r.width||!r.height)return;
+  last={card:card,x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height};
+  if(frame)return;
+  frame=requestAnimationFrame(function(){
+   frame=0;if(!last)return;var p=last,dx=p.x-.5,dy=p.y-.5;
+   p.card.style.setProperty('--avp-tilt-x',(dx*7).toFixed(2)+'deg');
+   p.card.style.setProperty('--avp-tilt-y',(-dy*6).toFixed(2)+'deg');
+   p.card.style.setProperty('--avp-lift','-4px');
+   p.card.style.setProperty('--avp-mx',(p.x*100).toFixed(1)+'%');
+   p.card.style.setProperty('--avp-my',(p.y*100).toFixed(1)+'%');
+   p.card.classList.add('avp-parallax-active');
+  });
+ },{passive:true});
+ document.addEventListener('pointerout',function(e){
+  if(!active||e.pointerType==='touch')return;
+  if(e.relatedTarget&&active.contains(e.relatedTarget))return;
+  var card=active;active=null;last=null;reset(card);
+ },{passive:true});
+}
+
 function setup(){
  var nav=document.querySelector('.top-simple-nav');
  if(nav){
@@ -178,6 +216,7 @@ function setup(){
   }
  }
  loadLearningRankings();
+ bindHomepageParallax();
  discover.insertAdjacentElement('afterend',lessons);
  /* Removed by request: duplicate onboarding and tools blocks are deleted from the homepage composition. */
 
