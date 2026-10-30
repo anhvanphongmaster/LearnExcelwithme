@@ -1,0 +1,1616 @@
+/* AVP detailed lesson procedures — Chapters 5 to 12 */
+window.AVP_LESSON_PROCEDURES_CH5_12 = [
+  {
+    "id": "C5L01",
+    "title": "Làm quen các nhóm lệnh trên Ribbon",
+    "goal": "Nhận diện tab và nhóm lệnh để tìm đúng công cụ.",
+    "steps": [
+      "Mở Workbook và nhấn chuột trái lần lượt vào Home, Insert, Page Layout, Formulas, Data, Review, View.",
+      "Trên từng tab, quan sát tên nhóm lệnh như Clipboard, Font, Alignment, Number, Sort & Filter.",
+      "Đưa con trỏ chuột lên một nút lệnh và chờ tooltip mô tả.",
+      "Nhấn Ctrl+F1 để thu gọn hoặc mở Ribbon.",
+      "Nhấn Alt để xem Key Tips nếu muốn thao tác bằng bàn phím."
+    ],
+    "mouse": "Chuột trái chọn tab và lệnh; rê chuột không nhấn để xem tooltip. Ctrl+F1 thu gọn/mở Ribbon.",
+    "expected": "Bạn xác định được tab chứa lệnh cần dùng và không phải tìm mò trên Ribbon.",
+    "practice": "Tìm nhanh lệnh Freeze Panes, Remove Duplicates và Conditional Formatting.",
+    "errors": "Nhầm tab với nhóm lệnh; nhấn nhầm lệnh khi chỉ muốn xem; Ribbon có thể khác vị trí theo phiên bản Excel.",
+    "library": "K003;K020;K026"
+  },
+  {
+    "id": "C5L02",
+    "title": "Clipboard: Copy, Cut và Paste",
+    "goal": "Sao chép, di chuyển và dán dữ liệu đúng vị trí.",
+    "steps": [
+      "Chọn A2:D10 bằng cách kéo chuột trái.",
+      "Nhấn Home → Clipboard → Copy hoặc Ctrl+C.",
+      "Chọn ô đích F2 bằng chuột trái.",
+      "Nhấn Home → Paste hoặc Ctrl+V.",
+      "Thử Cut bằng Ctrl+X rồi chọn ô đích và Ctrl+V.",
+      "Muốn chỉ dán giá trị, nhấn chuột phải ô đích → Paste Special → Values."
+    ],
+    "mouse": "Chuột trái chọn vùng và ô đích; chuột phải tại ô đích để mở Paste Special.",
+    "expected": "Copy giữ dữ liệu nguồn; Cut chuyển dữ liệu; Values chỉ dán kết quả.",
+    "practice": "Sao chép vùng báo cáo sang Sheet bàn giao mà không mang công thức liên kết.",
+    "errors": "Copy thiếu vùng; dán đè dữ liệu; dùng Cut khi cần giữ bản gốc; nhầm Values với Paste thường.",
+    "library": "K048;Ctrl+C;Ctrl+X;Ctrl+V"
+  },
+  {
+    "id": "C5L03",
+    "title": "Font: định dạng chữ và màu sắc",
+    "goal": "Tạo phân cấp tiêu đề bằng kiểu chữ, màu và đường viền có kiểm soát.",
+    "steps": [
+      "Chọn vùng tiêu đề A1:F1.",
+      "Vào Home → Font → Bold để in đậm.",
+      "Mở Font Color để chọn màu chữ; mở Fill Color để chọn màu nền.",
+      "Mở Borders → Bottom Border để tạo đường phân cách.",
+      "Dùng Format Cells (Ctrl+1) để chỉnh Font, Effects và Border chi tiết.",
+      "Chọn một vùng dữ liệu và dùng Clear Formats nếu muốn bỏ định dạng nhưng giữ nội dung."
+    ],
+    "mouse": "Chuột trái chọn vùng và từng nút Font; chuột phải → Format Cells cũng mở hộp thoại định dạng.",
+    "expected": "Tiêu đề nổi bật, chữ dễ đọc, không dùng quá nhiều màu và đường viền.",
+    "practice": "Định dạng tiêu đề báo cáo QC, phân biệt tiêu đề cột và dòng tổng.",
+    "errors": "Tô màu quá nhiều; dùng màu chữ gần giống nền; xóa nhầm nội dung bằng Clear All thay vì Clear Formats.",
+    "library": "K021;K019"
+  },
+  {
+    "id": "C5L04",
+    "title": "Alignment: căn chỉnh và gộp ô",
+    "goal": "Căn lề, xuống dòng và gộp ô đúng trường hợp.",
+    "steps": [
+      "Chọn A1:F1.",
+      "Vào Home → Alignment → Center để căn giữa ngang.",
+      "Chọn Middle Align để căn giữa dọc.",
+      "Chọn Wrap Text để nội dung dài tự xuống dòng.",
+      "Chọn vùng A1:F1 rồi mở Merge & Center chỉ khi đó là tiêu đề trình bày.",
+      "Với bảng dữ liệu, dùng Center Across Selection hoặc căn chỉnh mà không gộp ô.",
+      "Thử tăng chiều cao hàng bằng kéo ranh giới số hàng."
+    ],
+    "mouse": "Chuột trái chọn lệnh Alignment; kéo ranh giới hàng bằng chuột trái. Chuột phải → Format Cells → Alignment là đường dẫn thay thế.",
+    "expected": "Nội dung hiển thị đủ; tiêu đề được căn chỉnh; bảng dữ liệu vẫn có cấu trúc ô riêng.",
+    "practice": "Tạo tiêu đề báo cáo nhiều cột nhưng giữ nguyên dữ liệu ở từng ô.",
+    "errors": "Gộp ô trong vùng dữ liệu khiến Sort, Filter, PivotTable khó hoạt động; Wrap Text không tự tăng cột; căn giữa toàn bộ dữ liệu gây khó đọc.",
+    "library": "K025;K022"
+  },
+  {
+    "id": "C5L05",
+    "title": "Number: định dạng số và ngày",
+    "goal": "Định dạng số, tiền tệ, ngày và phần trăm theo ý nghĩa dữ liệu.",
+    "steps": [
+      "Nhập 1250000, 0.075 và ngày 15/10/2026 vào ba ô thử nghiệm.",
+      "Chọn ô tiền → Home → Number → Comma Style hoặc Currency.",
+      "Chọn ô tỷ lệ → Percentage; tăng/giảm số thập phân bằng Increase/Decrease Decimal.",
+      "Chọn ô ngày → Short Date hoặc Long Date.",
+      "Nhấn Ctrl+1 → Number để xem Decimal places, Symbol và Negative numbers.",
+      "Kiểm tra Formula Bar để phân biệt giá trị thật và cách hiển thị."
+    ],
+    "mouse": "Chuột trái chọn ô và danh sách Number Format; Ctrl+1 mở Format Cells; chuột phải → Format Cells cũng được.",
+    "expected": "Số tiền có dấu phân cách, tỷ lệ 7,5%, ngày hiển thị đúng định dạng; giá trị gốc không bị đổi.",
+    "practice": "Chuẩn hóa định dạng báo cáo doanh số, tỷ lệ lỗi và thời gian kiểm tra.",
+    "errors": "Nhập 7.5 rồi định dạng Percentage thành 750%; định dạng không chuyển Text thành số; nhầm tiền tệ hoặc vùng ngày.",
+    "library": "K018;K019;K023"
+  },
+  {
+    "id": "C5L06",
+    "title": "Styles: Cell Styles và Conditional Formatting",
+    "goal": "Dùng kiểu có sẵn và quy tắc định dạng để làm nổi bật dữ liệu.",
+    "steps": [
+      "Chọn vùng tiêu đề và vào Home → Cell Styles; chọn Heading hoặc Title.",
+      "Chọn vùng dữ liệu cần cảnh báo, ví dụ E2:E100.",
+      "Vào Home → Conditional Formatting → Highlight Cells Rules → Greater Than.",
+      "Nhập ngưỡng 10, chọn kiểu tô và nhấn OK.",
+      "Mở Conditional Formatting → Manage Rules để xem phạm vi và thứ tự quy tắc.",
+      "Chọn Clear Rules nếu muốn xóa quy tắc đúng phạm vi."
+    ],
+    "mouse": "Chuột trái chọn vùng và các mục trên Ribbon; Manage Rules dùng để kiểm tra, không xóa bằng Clear All.",
+    "expected": "Các ô vượt ngưỡng được tô tự động; thay đổi giá trị thì định dạng thay đổi theo.",
+    "practice": "Tô đỏ số lỗi vượt ngưỡng và tô xanh trạng thái đạt.",
+    "errors": "Áp dụng quy tắc cho sai vùng; dùng màu thủ công thay Conditional Formatting; tạo quy tắc chồng chéo không kiểm tra thứ tự.",
+    "library": "K020;K021"
+  },
+  {
+    "id": "C5L07",
+    "title": "Cells: Insert, Delete và Format",
+    "goal": "Chèn, xóa và thay đổi kích thước ô/dòng/cột an toàn.",
+    "steps": [
+      "Chọn tiêu đề dòng 5 bằng chuột trái.",
+      "Vào Home → Cells → Insert → Insert Sheet Rows để chèn dòng phía trên.",
+      "Chọn tiêu đề cột C → Insert Sheet Columns để chèn cột.",
+      "Muốn xóa, chọn tiêu đề dòng/cột → Delete.",
+      "Vào Format → AutoFit Column Width hoặc AutoFit Row Height.",
+      "Nếu chỉ muốn xóa nội dung, chọn ô → Clear → Clear Contents."
+    ],
+    "mouse": "Chuột trái chọn tiêu đề dòng/cột; chuột phải trên tiêu đề để chọn Insert/Delete. Không dùng Delete trên tiêu đề nếu chỉ muốn xóa nội dung ô.",
+    "expected": "Dòng/cột mới xuất hiện đúng vị trí; dữ liệu các cột khác vẫn cùng bản ghi.",
+    "practice": "Thêm cột Người kiểm tra vào bảng lỗi mà không làm lệch các trường.",
+    "errors": "Xóa ô đơn lẻ làm dịch dữ liệu; chèn cột trong vùng không đồng nhất; nhầm Delete nội dung và Delete cả cột.",
+    "library": "K049;K022"
+  },
+  {
+    "id": "C5L08",
+    "title": "Editing: AutoSum, Fill và Clear",
+    "goal": "Tính nhanh tổng và điền/xóa dữ liệu đúng phạm vi.",
+    "steps": [
+      "Chọn ô ngay dưới cột số liệu.",
+      "Vào Home → Editing → AutoSum hoặc nhấn Alt+=.",
+      "Kiểm tra vùng Excel đề xuất rồi nhấn Enter.",
+      "Chọn công thức đầu tiên và kéo Fill Handle xuống các dòng dưới.",
+      "Dùng Home → Fill → Down hoặc Ctrl+D để điền công thức xuống vùng đã chọn.",
+      "Muốn xóa định dạng nhưng giữ nội dung, Home → Clear → Clear Formats."
+    ],
+    "mouse": "Chuột trái chọn ô và Fill Handle; AutoSum là chuột trái; Ctrl+D điền xuống. Chuột phải không cần thiết.",
+    "expected": "Tổng tính đúng vùng; công thức được điền xuống; nội dung vẫn còn khi Clear Formats.",
+    "practice": "Tính tổng số lượng theo ngày và điền công thức thành tiền xuống các dòng.",
+    "errors": "Không kiểm tra vùng AutoSum; kéo Fill Handle lệch; chọn Clear All khi chỉ muốn bỏ định dạng.",
+    "library": "K050;SUM;Ctrl+D"
+  },
+  {
+    "id": "C5L09",
+    "title": "Data Tools: Text to Columns và Remove Duplicates",
+    "goal": "Tách một cột theo dấu phân cách và loại bản ghi trùng có kiểm soát.",
+    "steps": [
+      "Sao chép cột dữ liệu gốc sang cột phụ trước khi thử.",
+      "Chọn cột phụ → Data → Text to Columns.",
+      "Chọn Delimited → Next; tích dấu phân cách phù hợp như Comma hoặc Other; xem Data preview.",
+      "Chọn Destination nếu không muốn ghi đè cột gốc; nhấn Finish.",
+      "Để xóa trùng, chọn bảng → Data → Remove Duplicates.",
+      "Tích các cột xác định một bản ghi trùng rồi nhấn OK; ghi lại số dòng bị loại."
+    ],
+    "mouse": "Chuột trái chọn cột/bảng, hộp thoại và các cột đối chiếu. Sao lưu trước Remove Duplicates; thao tác này xóa dòng thật.",
+    "expected": "Dữ liệu được tách đúng cột; Remove Duplicates báo số bản ghi bị loại và số còn lại.",
+    "practice": "Tách mã cửa hàng-khu vực và loại dòng giao dịch trùng theo Mã đơn + Ngày.",
+    "errors": "Chọn sai delimiter; Destination ghi đè dữ liệu; chọn thiếu cột định danh khi xóa trùng; xóa trùng trực tiếp trên nguồn duy nhất.",
+    "library": "K028;K025"
+  },
+  {
+    "id": "C5L10",
+    "title": "Bài thực hành: chuẩn hóa bảng bằng Ribbon",
+    "goal": "Dùng các nhóm lệnh trên Ribbon để biến bảng thô thành bảng báo cáo dễ đọc.",
+    "steps": [
+      "Tạo bảng dữ liệu có Mã lỗi, Ngày, Ca, Số lượng, Trạng thái.",
+      "Dùng Clipboard sao chép bản gốc sang Sheet mới.",
+      "Dùng Data → Text to Columns nếu cột mã đang ghép bằng dấu gạch.",
+      "Dùng Cells → Format để AutoFit cột và thêm dòng tiêu đề.",
+      "Dùng Font/Alignment/Number để định dạng tiêu đề, ngày, số lượng.",
+      "Dùng Conditional Formatting tô cảnh báo số lượng lớn.",
+      "Dùng Data → Remove Duplicates trên bản sao sau khi xác định khóa trùng.",
+      "Lưu file và kiểm tra lại số dòng trước/sau."
+    ],
+    "mouse": "Chuột trái thao tác Ribbon; chuột phải chỉ dùng ở ô đích khi Paste Special; luôn thao tác trên bản sao.",
+    "expected": "Bảng có cấu trúc rõ, dữ liệu tách đúng, định dạng nhất quán và không xóa nhầm bản ghi.",
+    "practice": "Áp dụng với bảng ghi nhận bất thường QC có dữ liệu nhập từ nhiều nhóm.",
+    "errors": "Chỉnh sửa trực tiếp dữ liệu gốc; xóa trùng theo một cột không đủ định danh; tô màu thủ công thay quy tắc.",
+    "library": "K025;K028;K020;K048"
+  },
+  {
+    "id": "C6L01",
+    "title": "Chuyển vùng dữ liệu thành Excel Table",
+    "goal": "Biến vùng dữ liệu thành Table để tự mở rộng, lọc và quản lý công thức.",
+    "steps": [
+      "Chọn một ô bất kỳ bên trong vùng dữ liệu có hàng tiêu đề.",
+      "Nhấn Ctrl+T hoặc vào Insert → Table.",
+      "Kiểm tra vùng trong hộp thoại Create Table.",
+      "Tích My table has headers nếu dòng đầu là tiêu đề rồi nhấn OK.",
+      "Vào Table Design → Table Name và đặt tên như tblSales.",
+      "Thêm dữ liệu ở dòng ngay dưới Table để kiểm tra Table tự mở rộng."
+    ],
+    "mouse": "Chuột trái chọn ô trong bảng và thao tác hộp thoại; Ctrl+T là phím tắt. Không chọn cả cột trống.",
+    "expected": "Table có bộ lọc ở tiêu đề, định dạng nhất quán và tự mở rộng khi thêm dòng liền kề.",
+    "practice": "Chuyển dữ liệu bán hàng hoặc lỗi QC thành Table trước khi làm PivotTable.",
+    "errors": "Bảng có tiêu đề trống/trùng; dòng tổng bị đưa vào dữ liệu; dữ liệu có ô gộp.",
+    "library": "K024;K025"
+  },
+  {
+    "id": "C6L02",
+    "title": "Đặt tên và quản lý Table",
+    "goal": "Đặt tên Table và quản lý kích thước, kiểu trình bày.",
+    "steps": [
+      "Nhấn chuột trái vào một ô bên trong Table.",
+      "Mở tab Table Design.",
+      "Trong ô Table Name, nhập tblQCData rồi nhấn Enter.",
+      "Trong Table Design → Resize Table, kiểm tra hoặc chỉnh lại phạm vi.",
+      "Bật/tắt Header Row, Total Row, Banded Rows theo nhu cầu.",
+      "Dùng Table Styles để chọn kiểu màu phù hợp.",
+      "Thử thêm dòng mới cuối bảng và kiểm tra Table có tự mở rộng."
+    ],
+    "mouse": "Chuột trái vào Table Design và các tùy chọn; tên Table phải bắt đầu bằng chữ, không có khoảng trắng.",
+    "expected": "Tên Table được đổi; vùng dữ liệu đúng; Total Row xuất hiện khi bật.",
+    "practice": "Quản lý các Table Data, Master và Report bằng tên dễ hiểu.",
+    "errors": "Đặt tên trùng với Named Range; dùng dấu cách; Resize Table thiếu dòng cuối; bật Total Row rồi tính tổng trùng.",
+    "library": "K024;K016"
+  },
+  {
+    "id": "C6L03",
+    "title": "Sử dụng Structured References",
+    "goal": "Viết công thức theo tên cột Table thay vì địa chỉ ô cố định.",
+    "steps": [
+      "Tạo Table tên tblSales có cột SoLuong, DonGia, ThanhTien.",
+      "Thêm cột Thành tiền trong Table.",
+      "Nhập công thức =[@SoLuong]*[@DonGia] tại dòng đầu cột Thành tiền.",
+      "Nhấn Enter và kiểm tra Excel tự điền công thức cho toàn cột.",
+      "Ở ô ngoài Table, nhập =SUM(tblSales[ThanhTien]) để tính tổng.",
+      "Đổi tên tiêu đề cột và quan sát công thức được cập nhật."
+    ],
+    "mouse": "Chuột trái chọn ô công thức trong Table; nhập công thức bằng bàn phím. Không kéo Fill Handle nếu Table đã tự điền cột công thức.",
+    "expected": "Công thức tự áp dụng cho các dòng; tổng ngoài Table tham chiếu theo tên cột.",
+    "practice": "Tạo cột Tỷ lệ lỗi hoặc Thành tiền có công thức tự mở rộng.",
+    "errors": "Tên cột có ký tự không nhất quán; tham chiếu [@] ngoài dòng Table; đổi tiêu đề khiến công thức khó đọc nếu tên cột không rõ.",
+    "library": "K016;SUM"
+  },
+  {
+    "id": "C6L04",
+    "title": "Sắp xếp và lọc dữ liệu trong Table",
+    "goal": "Lọc và sắp xếp bản ghi mà không làm rời dữ liệu giữa các cột.",
+    "steps": [
+      "Nhấn mũi tên lọc ở tiêu đề cột Trạng thái.",
+      "Bỏ Select All, tích Đạt rồi nhấn OK.",
+      "Mở mũi tên cột Ngày và chọn Sort Newest to Oldest.",
+      "Dùng Text Filters hoặc Date Filters để lọc điều kiện nâng cao.",
+      "Nhấn Clear Filter From để bỏ lọc.",
+      "Dùng Data → Sort nếu cần sắp xếp nhiều cấp; chọn Add Level để thêm điều kiện."
+    ],
+    "mouse": "Chuột trái vào mũi tên Filter và hộp thoại Sort; không bôi riêng một cột để sắp xếp.",
+    "expected": "Các dòng hiển thị đúng điều kiện; dữ liệu các cột đi cùng nhau.",
+    "practice": "Lọc lỗi theo ca, model và trạng thái xử lý.",
+    "errors": "Sort một cột riêng lẻ làm lệch bản ghi; nhầm lọc với xóa; quên bỏ filter trước khi đếm.",
+    "library": "K026;K027"
+  },
+  {
+    "id": "C6L05",
+    "title": "Thiết lập Data Validation",
+    "goal": "Tạo quy tắc kiểm soát dữ liệu nhập vào ô.",
+    "steps": [
+      "Chọn vùng C2:C200 cần nhập Trạng thái.",
+      "Vào Data → Data Validation.",
+      "Trong Allow, chọn List.",
+      "Trong Source, nhập danh sách như Mới,Đang xử lý,Đã đóng hoặc trỏ đến vùng danh mục.",
+      "Tích In-cell dropdown và nhấn OK.",
+      "Thử nhập giá trị ngoài danh sách để kiểm tra cảnh báo.",
+      "Trong tab Input Message/Error Alert, thiết lập hướng dẫn và thông báo lỗi."
+    ],
+    "mouse": "Chuột trái chọn vùng, mở Data Validation và chọn Allow/List. Người nhập chọn mũi tên dropdown trong ô.",
+    "expected": "Ô có danh sách chọn; giá trị ngoài danh sách bị cảnh báo theo thiết lập.",
+    "practice": "Tạo dropdown cho Ca, Mức độ lỗi, Trạng thái và Nhóm xử lý.",
+    "errors": "Danh sách nguồn có ô trống; nhập sai dấu phân cách theo thiết lập vùng; bỏ chọn Error Alert khiến dữ liệu ngoài danh sách vẫn được nhập.",
+    "library": "K029"
+  },
+  {
+    "id": "C6L06",
+    "title": "Tạo danh sách chọn phụ thuộc cơ bản",
+    "goal": "Tạo dropdown cấp hai dựa trên lựa chọn ở dropdown cấp một.",
+    "steps": [
+      "Tạo Sheet DanhMuc với nhóm Lỗi máy và Lỗi người; liệt kê loại lỗi dưới từng nhóm.",
+      "Đặt tên vùng cho từng danh sách bằng Formulas → Define Name, tên không dấu cách.",
+      "Ở ô B2, tạo Data Validation → List trỏ đến danh sách nhóm.",
+      "Ở ô C2, tạo Data Validation → List với Source =INDIRECT(SUBSTITUTE(B2,\" \",\"_\")) nếu tên vùng được chuẩn hóa tương ứng.",
+      "Chọn từng nhóm ở B2 và kiểm tra danh sách C2 thay đổi.",
+      "Nếu dùng Excel 365, cân nhắc vùng tràn động và FILTER để xây dựng cách linh hoạt hơn."
+    ],
+    "mouse": "Chuột trái tạo Named Range và Data Validation; chọn dropdown ở B2 trước, sau đó mới mở C2.",
+    "expected": "Danh sách cấp hai chỉ hiển thị mục thuộc nhóm đã chọn.",
+    "practice": "Dropdown Nhóm lỗi → Loại lỗi tương ứng cho biểu mẫu QC.",
+    "errors": "Tên vùng không khớp chuỗi dropdown; dấu cách/dấu tiếng Việt gây lỗi INDIRECT; quên tạo tên vùng; dữ liệu nguồn đổi mà Named Range không mở rộng.",
+    "library": "K029;K015"
+  },
+  {
+    "id": "C6L07",
+    "title": "Phát hiện và xử lý dữ liệu trùng",
+    "goal": "Xác định khóa trùng và loại bỏ bản ghi trùng có đối soát.",
+    "steps": [
+      "Tạo bản sao Sheet dữ liệu trước khi xử lý.",
+      "Chọn vùng Table và vào Data → Remove Duplicates.",
+      "Trong hộp thoại, tích các cột tạo thành khóa duy nhất, ví dụ Mã lỗi + Ngày + Ca.",
+      "Nhấn OK và ghi lại số bản ghi trùng bị loại.",
+      "Để chỉ đánh dấu trước khi xóa, thêm cột phụ dùng COUNTIFS theo các cột khóa.",
+      "Lọc kết quả lớn hơn 1 để rà soát rồi mới quyết định xóa."
+    ],
+    "mouse": "Chuột trái chọn cột khóa trong hộp thoại; không chọn Remove Duplicates trên file gốc chưa sao lưu.",
+    "expected": "Bản ghi trùng được nhận diện theo đúng khóa nghiệp vụ; số dòng trước/sau được ghi nhận.",
+    "practice": "Kiểm tra trùng mã sự cố theo ngày và ca trước khi tổng hợp KPI.",
+    "errors": "Chỉ chọn Mã hàng trong khi cùng mã có thể xuất hiện nhiều giao dịch; xóa trùng trước khi xác định quy tắc trùng; không lưu bản gốc.",
+    "library": "K028;COUNTIFS"
+  },
+  {
+    "id": "C6L08",
+    "title": "Tách dữ liệu bằng Text to Columns",
+    "goal": "Tách một trường chứa nhiều thành phần thành các cột riêng.",
+    "steps": [
+      "Sao chép cột gốc sang cột phụ.",
+      "Chọn cột phụ → Data → Text to Columns.",
+      "Chọn Delimited → Next.",
+      "Tích đúng dấu phân cách: Tab, Comma, Space, Semicolon hoặc Other.",
+      "Xem Data preview để chắc chắn vị trí tách đúng.",
+      "Nhấn Next, chọn định dạng cột nếu cần giữ mã dạng Text.",
+      "Chọn Destination rồi nhấn Finish."
+    ],
+    "mouse": "Chuột trái chọn cột và từng bước trong Wizard; không chọn Finish khi preview đang tách sai.",
+    "expected": "Mỗi thành phần nằm ở cột riêng; mã có số 0 đầu được giữ nếu chọn Text.",
+    "practice": "Tách chuỗi FPC-Cen-A-CaDem thành Model, Khu vực, Ca theo delimiter được thống nhất.",
+    "errors": "Chọn Space khiến tên có khoảng trắng bị tách sai; không chọn Text cho mã; ghi đè cột bên cạnh.",
+    "library": "K006;K025"
+  },
+  {
+    "id": "C6L09",
+    "title": "Dùng Flash Fill để chuẩn hóa dữ liệu",
+    "goal": "Dùng ví dụ mẫu để Excel nhận diện quy luật tách hoặc ghép văn bản.",
+    "steps": [
+      "Tạo cột Họ tên nguồn ở A.",
+      "Tại B2, nhập kết quả mong muốn cho dòng đầu, ví dụ tên viết hoa chuẩn.",
+      "Chọn B3 hoặc ô kế tiếp.",
+      "Vào Data → Flash Fill hoặc nhấn Ctrl+E.",
+      "Kiểm tra toàn bộ kết quả, đặc biệt tên có dấu, nhiều từ và ngoại lệ.",
+      "Nếu kết quả sai, sửa thêm ví dụ mẫu hoặc dùng Text functions thay thế."
+    ],
+    "mouse": "Chuột trái chọn ô kết quả; Ctrl+E chạy Flash Fill. Không nhầm Flash Fill với công thức tự cập nhật.",
+    "expected": "Excel điền phần còn lại theo mẫu; dữ liệu là kết quả tĩnh, không tự cập nhật khi nguồn thay đổi.",
+    "practice": "Tách mã nhân viên, chuẩn hóa họ tên hoặc ghép mã theo mẫu.",
+    "errors": "Tin Flash Fill hiểu đúng mọi ngoại lệ; không rà soát kết quả; quên rằng kết quả không liên kết công thức với nguồn.",
+    "library": "K006;TEXT;LEFT;RIGHT;MID"
+  },
+  {
+    "id": "C6L10",
+    "title": "Conditional Formatting để cảnh báo",
+    "goal": "Tạo quy tắc định dạng tự động theo giá trị hoặc công thức.",
+    "steps": [
+      "Chọn vùng D2:D200.",
+      "Vào Home → Conditional Formatting → Highlight Cells Rules → Greater Than.",
+      "Nhập ngưỡng cảnh báo và chọn định dạng.",
+      "Tạo thêm quy tắc Duplicate Values cho cột mã nếu cần.",
+      "Muốn tô cả dòng theo điều kiện, chọn toàn bảng → New Rule → Use a formula to determine which cells to format.",
+      "Nhập công thức như =$D2>10, chọn Format và OK.",
+      "Mở Manage Rules kiểm tra Applies to."
+    ],
+    "mouse": "Chuột trái chọn vùng và quy tắc; trong công thức tô cả dòng, khóa cột bằng $ nhưng để hàng thay đổi.",
+    "expected": "Ô hoặc cả dòng được tô đúng khi điều kiện đúng; thay giá trị thì màu tự đổi.",
+    "practice": "Tô đỏ dòng có số lỗi vượt ngưỡng hoặc trạng thái NG.",
+    "errors": "Chọn Applies to sai vùng; khóa cả hàng khiến quy tắc không dịch; dùng màu thủ công thay quy tắc.",
+    "library": "K020;K014"
+  },
+  {
+    "id": "C6L11",
+    "title": "Bảo vệ vùng dữ liệu và Worksheet",
+    "goal": "Khóa công thức và chỉ cho phép nhập tại vùng được mở khóa.",
+    "steps": [
+      "Chọn vùng người dùng được phép nhập.",
+      "Nhấn Ctrl+1 → Protection và bỏ tích Locked; nhấn OK.",
+      "Vào Review → Protect Sheet.",
+      "Chọn quyền được phép như Select unlocked cells; đặt mật khẩu nếu chính sách yêu cầu.",
+      "Nhấn OK và xác nhận mật khẩu nếu có.",
+      "Thử sửa ô công thức bị khóa và ô nhập liệu được mở khóa.",
+      "Muốn chỉnh sửa cấu trúc, dùng Review → Unprotect Sheet."
+    ],
+    "mouse": "Chuột trái chọn vùng, mở Format Cells và Protect Sheet. Mật khẩu phải được quản lý an toàn.",
+    "expected": "Ô nhập liệu sửa được; ô công thức bị khóa; người dùng không vô tình ghi đè công thức.",
+    "practice": "Bảo vệ biểu mẫu QC để nhóm chỉ nhập dữ liệu tại ô quy định.",
+    "errors": "Quên mở khóa vùng nhập trước khi Protect; nghĩ Protect Sheet là mã hóa file; quên mật khẩu; khóa nhầm toàn bộ.",
+    "library": "K046"
+  },
+  {
+    "id": "C6L12",
+    "title": "Bài thực hành: kiểm soát bảng dữ liệu đầu vào",
+    "goal": "Tạo biểu mẫu nhập liệu có Table, dropdown, cảnh báo và vùng bảo vệ.",
+    "steps": [
+      "Tạo Sheet Input với các cột Ngày, Ca, Model, Mã lỗi, Số lượng, Người nhập, Trạng thái.",
+      "Chuyển vùng thành Table bằng Ctrl+T và đặt tên tblQCInput.",
+      "Tạo dropdown cho Ca, Model và Trạng thái bằng Data Validation.",
+      "Dùng Conditional Formatting cảnh báo số lượng âm hoặc trạng thái chưa xử lý.",
+      "Tạo cột kiểm tra trùng bằng COUNTIFS theo Ngày + Ca + Mã lỗi.",
+      "Mở khóa các ô nhập liệu; giữ Locked cho công thức; Protect Sheet.",
+      "Nhập thử bản ghi hợp lệ và không hợp lệ; ghi lại cách hệ thống phản hồi."
+    ],
+    "mouse": "Chuột trái thao tác Table, Data Validation và Conditional Formatting; Ctrl+1 để mở Protection; Review → Protect Sheet.",
+    "expected": "Biểu mẫu tự mở rộng, dropdown hoạt động, dữ liệu sai được cảnh báo và công thức không bị ghi đè.",
+    "practice": "Áp dụng biểu mẫu cho nhiều nhóm QC nhập theo ca.",
+    "errors": "Không kiểm tra dữ liệu thử; khóa ô dropdown; không thống nhất danh mục; coi bảo vệ Sheet là thay thế phân quyền file.",
+    "library": "K024;K029;K020;K046"
+  },
+  {
+    "id": "C7L01",
+    "title": "Tạo PivotTable từ bảng dữ liệu",
+    "goal": "Tạo báo cáo tổng hợp từ Excel Table hoặc vùng dữ liệu sạch.",
+    "steps": [
+      "Nhấn chuột trái vào một ô trong Table nguồn.",
+      "Vào Insert → PivotTable.",
+      "Kiểm tra Table/Range và chọn New Worksheet.",
+      "Nhấn OK để tạo PivotTable.",
+      "Trong PivotTable Fields, kéo Cửa hàng vào Rows, Doanh thu vào Values.",
+      "Kiểm tra phép tính đang là Sum; nếu là Count, sửa trong Value Field Settings.",
+      "Đổi tên Sheet và lưu Workbook."
+    ],
+    "mouse": "Chuột trái chọn ô nguồn, Insert → PivotTable và kéo thả trường trong PivotTable Fields.",
+    "expected": "PivotTable hiển thị tổng doanh thu theo từng cửa hàng; tổng cộng khớp dữ liệu nguồn.",
+    "practice": "Tổng hợp lỗi theo Model, Ca hoặc Nhóm lỗi.",
+    "errors": "Nguồn thiếu tiêu đề; có dòng trống; cột số đang là Text; đặt nhầm trường vào Rows/Values.",
+    "library": "K024;SUM"
+  },
+  {
+    "id": "C7L02",
+    "title": "Tổ chức Rows, Columns, Values và Filters",
+    "goal": "Sắp xếp trường vào đúng khu vực để tạo bảng phân tích nhiều chiều.",
+    "steps": [
+      "Mở PivotTable Fields nếu đang ẩn bằng PivotTable Analyze → Field List.",
+      "Kéo Cửa hàng vào Rows.",
+      "Kéo Ca vào Columns.",
+      "Kéo Số lỗi vào Values.",
+      "Kéo Tháng vào Filters.",
+      "Nhấn mũi tên bộ lọc ở vùng Filters trên PivotTable để chọn tháng.",
+      "Thử kéo Ca từ Columns sang Rows để quan sát bố cục thay đổi."
+    ],
+    "mouse": "Chuột trái kéo trường giữa bốn khu vực; có thể dùng menu mũi tên trường để chọn Move to.",
+    "expected": "Bảng thể hiện số lỗi theo Cửa hàng và Ca, có thể lọc theo Tháng.",
+    "practice": "Tạo báo cáo lỗi theo Model × Ca × Nhóm lỗi.",
+    "errors": "Kéo nhầm trường số vào Rows; đặt ngày vào Values mà không chọn phép tính; dùng nhãn không rõ nghĩa.",
+    "library": "K024;K025"
+  },
+  {
+    "id": "C7L03",
+    "title": "Thay đổi phép tính và định dạng số",
+    "goal": "Đổi Sum/Count/Average và định dạng số trong PivotTable.",
+    "steps": [
+      "Nhấn chuột phải vào một giá trị trong vùng Values.",
+      "Chọn Summarize Values By → Sum, Count hoặc Average.",
+      "Hoặc chọn Value Field Settings để mở hộp thoại.",
+      "Chọn Number Format ở góc dưới hộp thoại.",
+      "Chọn Number, Decimal places và dấu phân cách; nhấn OK.",
+      "Đổi tên Custom Name thành Tổng số lỗi hoặc Doanh thu."
+    ],
+    "mouse": "Chuột phải trên một ô số trong PivotTable để mở Value Field Settings; chuột trái chọn phép tính và Number Format.",
+    "expected": "Giá trị được tổng hợp theo phép tính đúng; định dạng vẫn giữ sau Refresh.",
+    "practice": "Đếm số bản ghi lỗi thay vì cộng mã lỗi; tính trung bình sản lượng theo ca.",
+    "errors": "Đếm nhầm trường số; định dạng ô bằng Home thay vì Number Format trong Value Field Settings khiến mất sau Refresh.",
+    "library": "K024;SUM;COUNT;AVERAGE"
+  },
+  {
+    "id": "C7L04",
+    "title": "Group dữ liệu theo ngày và tháng",
+    "goal": "Gom ngày thành tháng/quý/năm để phân tích xu hướng.",
+    "steps": [
+      "Kéo trường Ngày vào Rows.",
+      "Nhấn chuột phải vào một ngày bất kỳ trong PivotTable.",
+      "Chọn Group.",
+      "Tích Months và Years; nhấn OK.",
+      "Kéo Doanh thu vào Values.",
+      "Nếu Group bị mờ, kiểm tra cột ngày nguồn có ô Text, ô trống hoặc lỗi không.",
+      "Refresh sau khi sửa dữ liệu nguồn."
+    ],
+    "mouse": "Chuột phải vào nhãn ngày trong PivotTable để chọn Group; chuột trái tích Months/Years.",
+    "expected": "PivotTable nhóm ngày theo tháng và năm, không còn liệt kê từng ngày.",
+    "practice": "So sánh số lỗi theo tháng và năm, tránh gộp nhầm tháng cùng tên của hai năm.",
+    "errors": "Nguồn ngày có Text hoặc Blank; chỉ group Months khiến tháng của nhiều năm bị cộng chung; quên Refresh.",
+    "library": "K007;K023"
+  },
+  {
+    "id": "C7L05",
+    "title": "Lọc bằng Label Filters và Value Filters",
+    "goal": "Lọc theo nhãn hoặc theo giá trị tổng hợp trong PivotTable.",
+    "steps": [
+      "Nhấn mũi tên ở Row Labels.",
+      "Chọn Label Filters → Begins With và nhập tiền tố cần lọc.",
+      "Mở lại menu → Value Filters → Greater Than.",
+      "Chọn trường giá trị và nhập ngưỡng.",
+      "Dùng Top 10 để tìm nhóm có giá trị cao; bỏ bộ lọc bằng Clear Filter.",
+      "Kiểm tra tổng cộng sau khi lọc."
+    ],
+    "mouse": "Chuột trái mũi tên Row Labels; chuột trái chọn Label Filters hoặc Value Filters.",
+    "expected": "Chỉ nhóm đáp ứng điều kiện được hiển thị; bộ lọc không xóa dữ liệu nguồn.",
+    "practice": "Tìm 10 model có số lỗi cao nhất hoặc cửa hàng vượt ngưỡng.",
+    "errors": "Dùng Label Filter khi cần lọc số; lọc nhầm trường Values; quên xóa filter khi xuất báo cáo.",
+    "library": "K026;K027"
+  },
+  {
+    "id": "C7L06",
+    "title": "Sử dụng Slicer và Timeline",
+    "goal": "Tạo bộ lọc trực quan cho PivotTable theo danh mục và thời gian.",
+    "steps": [
+      "Chọn PivotTable.",
+      "Vào PivotTable Analyze → Insert Slicer.",
+      "Tích Cửa hàng, Ca hoặc Model rồi nhấn OK.",
+      "Nhấn nút trong Slicer để lọc; giữ Ctrl và nhấn nhiều nút để chọn nhiều mục.",
+      "Với trường ngày, chọn Insert Timeline.",
+      "Dùng menu góc phải Timeline để chọn Years, Quarters, Months hoặc Days.",
+      "Nhấn Clear Filter để bỏ lọc."
+    ],
+    "mouse": "Chuột trái chọn nút Slicer; Ctrl + chuột trái chọn nhiều mục; kéo mép để đổi kích thước.",
+    "expected": "PivotTable thay đổi theo lựa chọn Slicer/Timeline; trạng thái lọc hiển thị rõ.",
+    "practice": "Dashboard lỗi theo ca, tháng và model.",
+    "errors": "Trường ngày chưa đúng kiểu Date; Slicer không liên kết PivotTable khác; quên Clear Filter.",
+    "library": "K024;K007"
+  },
+  {
+    "id": "C7L07",
+    "title": "Tạo PivotChart",
+    "goal": "Tạo biểu đồ gắn với PivotTable để phân tích trực quan.",
+    "steps": [
+      "Chọn một ô trong PivotTable.",
+      "Vào PivotTable Analyze → PivotChart.",
+      "Chọn Column hoặc Bar phù hợp rồi nhấn OK.",
+      "Dùng Chart Design → Add Chart Element để thêm tiêu đề và nhãn.",
+      "Kéo biểu đồ ra vùng bố cục mong muốn.",
+      "Thử thay đổi Slicer để kiểm tra biểu đồ cập nhật."
+    ],
+    "mouse": "Chuột trái chọn PivotTable, PivotChart và loại biểu đồ; kéo biểu đồ bằng chuột trái.",
+    "expected": "Biểu đồ hiển thị cùng bộ lọc và dữ liệu PivotTable.",
+    "practice": "So sánh số lỗi theo nhóm lỗi hoặc theo tháng.",
+    "errors": "Chọn Pie cho quá nhiều nhóm; tiêu đề không nói đơn vị; tạo chart từ vùng không thuộc PivotTable rồi tưởng nó tự lọc.",
+    "library": "K024"
+  },
+  {
+    "id": "C7L08",
+    "title": "Kết nối Slicer với nhiều PivotTable",
+    "goal": "Điều khiển nhiều PivotTable bằng cùng một Slicer khi chúng dùng chung Pivot Cache.",
+    "steps": [
+      "Tạo hai PivotTable từ cùng một Excel Table nguồn.",
+      "Chọn Slicer của PivotTable thứ nhất.",
+      "Vào tab Slicer → Report Connections hoặc PivotTable Connections.",
+      "Tích các PivotTable muốn điều khiển rồi nhấn OK.",
+      "Nhấn một mục trên Slicer và kiểm tra cả hai PivotTable.",
+      "Nếu PivotTable không xuất hiện trong danh sách, kiểm tra chúng có dùng chung nguồn/cache hay không."
+    ],
+    "mouse": "Chuột trái chọn Slicer → Report Connections; tích các PivotTable cần kết nối.",
+    "expected": "Một Slicer lọc đồng thời các PivotTable được chọn.",
+    "practice": "Một bộ lọc Cửa hàng điều khiển cả bảng tổng lỗi và biểu đồ theo ca.",
+    "errors": "PivotTable tạo từ nguồn/cache khác; trường tên khác nhau; tưởng Slicer tự liên kết mọi PivotTable trong file.",
+    "library": "K024"
+  },
+  {
+    "id": "C7L09",
+    "title": "Refresh và thay đổi nguồn dữ liệu",
+    "goal": "Cập nhật PivotTable khi dữ liệu nguồn thay đổi hoặc tăng thêm dòng.",
+    "steps": [
+      "Thêm một bản ghi mới ở dòng cuối Excel Table nguồn.",
+      "Nhấn chuột phải bên trong PivotTable → Refresh.",
+      "Hoặc vào Data → Refresh All.",
+      "Nếu nguồn là vùng cố định, chọn PivotTable Analyze → Change Data Source.",
+      "Chọn lại vùng hoặc Table đúng rồi nhấn OK.",
+      "Vào PivotTable Options → Data để cân nhắc Refresh data when opening the file."
+    ],
+    "mouse": "Chuột phải bên trong PivotTable → Refresh; Data → Refresh All bằng chuột trái.",
+    "expected": "Bản ghi mới xuất hiện trong PivotTable; tổng số dòng và số liệu thay đổi đúng.",
+    "practice": "Cập nhật dữ liệu hàng ngày bằng cách paste thêm vào cuối Table rồi Refresh.",
+    "errors": "Paste ngoài Table; nguồn vùng cố định không bao gồm dòng mới; quên Refresh; Refresh All làm mới nhiều kết nối.",
+    "library": "K024;K025"
+  },
+  {
+    "id": "C7L10",
+    "title": "Thiết kế báo cáo tổng hợp bằng PivotTable",
+    "goal": "Tổ chức báo cáo có bộ lọc, KPI và bảng chi tiết dễ đọc.",
+    "steps": [
+      "Tạo PivotTable tổng số lỗi theo Model và Nhóm lỗi.",
+      "Tạo PivotTable thứ hai theo Ca và Ngày.",
+      "Đổi tên các Sheet rõ nghĩa; định dạng số trong Value Field Settings.",
+      "Thêm Slicer cho Model và Ca; thêm Timeline cho Ngày.",
+      "Đặt tiêu đề, ghi rõ đơn vị và thời điểm cập nhật.",
+      "Kiểm tra tổng cộng với dữ liệu nguồn đã lọc.",
+      "Lưu bản báo cáo và hướng dẫn người dùng Refresh."
+    ],
+    "mouse": "Chuột trái kéo trường, tạo Slicer/Timeline; chuột phải trên PivotTable để Refresh và định dạng giá trị.",
+    "expected": "Báo cáo có thể lọc, tổng số khớp nguồn và các bảng có tiêu đề/đơn vị rõ.",
+    "practice": "Tạo báo cáo tuần cho quản lý chất lượng theo Model, Ca và nhóm lỗi.",
+    "errors": "KPI không theo slicer; trường ngày chưa chuẩn; định dạng bị reset sau Refresh; không ghi rõ phạm vi dữ liệu.",
+    "library": "K024;K020;K027"
+  },
+  {
+    "id": "C7L11",
+    "title": "Bài thực hành: báo cáo doanh số theo cửa hàng",
+    "goal": "Xây dựng PivotTable và PivotChart có thể cập nhật từ dữ liệu mới.",
+    "steps": [
+      "Tạo Table tblSales gồm Ngày, Cửa hàng, Nhân viên, Doanh thu, Số lượng.",
+      "Insert → PivotTable từ tblSales; chọn New Worksheet.",
+      "Kéo Cửa hàng vào Rows, Doanh thu vào Values, Ngày vào Filters.",
+      "Group Ngày theo Months và Years.",
+      "Tạo PivotChart dạng Column; thêm Slicer Cửa hàng và Timeline Ngày.",
+      "Thêm một giao dịch vào cuối Table; Data → Refresh All.",
+      "Đối chiếu tổng doanh thu với SUM(tblSales[Doanh thu])."
+    ],
+    "mouse": "Chuột trái tạo PivotTable/Chart/Slicer; chuột phải Refresh; dùng Formula Bar kiểm tra công thức đối chiếu.",
+    "expected": "PivotTable, PivotChart và bộ lọc cập nhật sau Refresh; tổng đối chiếu khớp.",
+    "practice": "Đổi ví dụ thành dữ liệu lỗi QC theo Model và Ca.",
+    "errors": "Nguồn không phải Table; ngày là Text; PivotChart không theo Slicer; không đối chiếu tổng.",
+    "library": "K024;SUM;K007"
+  },
+  {
+    "id": "C8L01",
+    "title": "Chọn loại biểu đồ phù hợp với dữ liệu",
+    "goal": "Chọn biểu đồ theo câu hỏi phân tích thay vì chọn theo hình thức.",
+    "steps": [
+      "Tạo bảng gồm Tháng và Doanh thu.",
+      "Chọn A1:B13 bằng chuột trái.",
+      "Vào Insert → Recommended Charts để xem gợi ý.",
+      "Chọn Line để thể hiện xu hướng theo thời gian.",
+      "Tạo bảng Cửa hàng và Doanh thu; chọn Bar/Column để so sánh nhóm.",
+      "Với cơ cấu ít thành phần, thử Pie; không dùng Pie khi có quá nhiều nhóm.",
+      "Kiểm tra tiêu đề và đơn vị."
+    ],
+    "mouse": "Chuột trái chọn vùng và Insert → Chart; không chọn cả dòng tổng nếu làm sai tỷ trọng.",
+    "expected": "Biểu đồ trả lời đúng câu hỏi: xu hướng, so sánh hay cơ cấu.",
+    "practice": "Chọn biểu đồ theo dõi lỗi theo tháng, so sánh model và cơ cấu nguyên nhân.",
+    "errors": "Chọn chart theo sở thích; dùng Pie quá nhiều nhóm; thiếu đơn vị; trục không bắt đầu từ 0 khi so sánh cột.",
+    "library": "K025"
+  },
+  {
+    "id": "C8L02",
+    "title": "Tạo biểu đồ từ bảng dữ liệu",
+    "goal": "Chèn biểu đồ và xác định đúng vùng dữ liệu/chuỗi.",
+    "steps": [
+      "Chọn bảng có tiêu đề và dữ liệu liên tục.",
+      "Vào Insert → Column or Bar Chart → Clustered Column.",
+      "Nhấn chuột phải biểu đồ → Select Data để kiểm tra Chart Data Range.",
+      "Trong Select Data, dùng Add/Edit để sửa Series Name và Series Values.",
+      "Dùng Switch Row/Column nếu Excel hiểu sai chiều dữ liệu.",
+      "Kéo biểu đồ vào vị trí cần đặt; chỉnh kích thước bằng các nút ở góc."
+    ],
+    "mouse": "Chuột trái chọn vùng và chèn chart; chuột phải trên biểu đồ → Select Data.",
+    "expected": "Trục danh mục và chuỗi dữ liệu đúng; không lấy nhầm tiêu đề hoặc dòng tổng.",
+    "practice": "Tạo biểu đồ số lỗi theo tháng cho từng ca.",
+    "errors": "Chọn vùng thiếu tiêu đề; lấy nhầm cột ID làm số; không kiểm tra Select Data.",
+    "library": "K025"
+  },
+  {
+    "id": "C8L03",
+    "title": "Định dạng trục, nhãn và chú giải",
+    "goal": "Làm rõ đơn vị, thang đo và thông tin của biểu đồ.",
+    "steps": [
+      "Nhấn chuột trái vào biểu đồ.",
+      "Vào Chart Design → Add Chart Element → Chart Title và Axis Titles.",
+      "Nhấn chuột phải vào trục tung → Format Axis.",
+      "Chỉnh Bounds, Units và Number Format nếu phù hợp.",
+      "Bật Data Labels khi cần đọc giá trị trực tiếp.",
+      "Dùng Legend Position để đặt chú giải; xóa thành phần thừa."
+    ],
+    "mouse": "Chuột trái chọn thành phần; chuột phải trục/nhãn → Format Axis hoặc Format Data Labels.",
+    "expected": "Người xem hiểu đơn vị, khoảng thời gian, từng chuỗi và thang đo.",
+    "practice": "Định dạng trục số lỗi, phần trăm lỗi hoặc doanh thu theo triệu đồng.",
+    "errors": "Cắt trục làm phóng đại chênh lệch; nhãn chồng lấn; thiếu đơn vị; quá nhiều Data Labels.",
+    "library": "K018;K019"
+  },
+  {
+    "id": "C8L04",
+    "title": "Sắp xếp thứ tự và lọc chuỗi dữ liệu",
+    "goal": "Kiểm soát thứ tự danh mục và ẩn/hiện chuỗi trên biểu đồ.",
+    "steps": [
+      "Sắp xếp bảng nguồn theo giá trị giảm dần bằng Data → Sort.",
+      "Chọn biểu đồ và nhấn Chart Filters (biểu tượng phễu).",
+      "Trong Categories, tích/bỏ mục cần hiển thị.",
+      "Trong Series, tích/bỏ chuỗi muốn xem.",
+      "Nhấn Apply.",
+      "Muốn đổi thứ tự trục danh mục, nhấn chuột phải trục ngang → Format Axis → Categories in reverse order nếu cần."
+    ],
+    "mouse": "Chuột trái biểu tượng Chart Filters và Apply; chuột phải trục → Format Axis.",
+    "expected": "Biểu đồ hiển thị đúng nhóm được chọn và thứ tự có chủ đích.",
+    "practice": "Hiển thị Top 5 nhóm lỗi thay vì hàng chục nhóm nhỏ.",
+    "errors": "Lọc trên chart nhưng quên dữ liệu nguồn; đảo trục khiến trục giá trị chuyển vị trí; Top 5 không cập nhật nếu vùng nguồn tĩnh.",
+    "library": "K026;K027"
+  },
+  {
+    "id": "C8L05",
+    "title": "Biểu đồ kết hợp và Secondary Axis",
+    "goal": "So sánh hai chỉ tiêu khác đơn vị bằng biểu đồ kết hợp.",
+    "steps": [
+      "Tạo bảng Tháng, Doanh thu, Tỷ lệ lỗi.",
+      "Chọn bảng và vào Insert → Combo Chart → Create Custom Combo Chart.",
+      "Chọn Doanh thu là Clustered Column; Tỷ lệ lỗi là Line.",
+      "Tích Secondary Axis cho Tỷ lệ lỗi.",
+      "Nhấn OK; thêm Axis Title cho trục trái và phải.",
+      "Kiểm tra thang đo và đơn vị từng trục."
+    ],
+    "mouse": "Chuột trái chọn Combo Chart và tích Secondary Axis; chuột phải trục để Format Axis.",
+    "expected": "Doanh thu và tỷ lệ lỗi cùng hiển thị nhưng mỗi chỉ tiêu có trục đúng đơn vị.",
+    "practice": "Theo dõi sản lượng và tỷ lệ lỗi theo tháng.",
+    "errors": "Không gắn nhãn hai trục; dùng Secondary Axis để che xu hướng; chọn nhầm series; tỷ lệ lỗi định dạng thành số thập phân khó đọc.",
+    "library": "K018"
+  },
+  {
+    "id": "C8L06",
+    "title": "Tạo KPI Cards bằng công thức và định dạng",
+    "goal": "Tạo thẻ KPI rõ giá trị, đơn vị, kỳ báo cáo và mức so sánh.",
+    "steps": [
+      "Tạo các ô KPI cho Doanh thu, Target, % đạt và Số lỗi.",
+      "Nhập công thức tham chiếu đến bảng tổng hợp hoặc PivotTable.",
+      "Chọn vùng ô KPI → Home → Merge & Center chỉ với vùng trình bày không chứa dữ liệu gốc.",
+      "Định dạng số lớn, đơn vị và màu nền; dùng Conditional Formatting cho trạng thái.",
+      "Thêm nhãn mô tả kỳ báo cáo và nguồn dữ liệu.",
+      "Thử thay bộ lọc nguồn và xác nhận KPI thay đổi."
+    ],
+    "mouse": "Chuột trái chọn ô và định dạng; không merge vùng dữ liệu nguồn; có thể dùng Shape/Text Box liên kết ô bằng Formula Bar.",
+    "expected": "KPI hiển thị giá trị, đơn vị, kỳ và trạng thái; thay đổi dữ liệu làm KPI cập nhật.",
+    "practice": "Tạo thẻ tổng số lỗi, tỷ lệ lỗi, số AGV gặp sự cố và mức hoàn thành mục tiêu.",
+    "errors": "KPI không cùng phạm vi lọc; % tính sai mẫu số; thiếu đơn vị/kỳ; màu xanh đỏ không có chú giải.",
+    "library": "K020;K018;SUMIFS;COUNTIFS"
+  },
+  {
+    "id": "C8L07",
+    "title": "Thiết kế bố cục Dashboard",
+    "goal": "Sắp xếp KPI, biểu đồ, bộ lọc và ghi chú theo luồng đọc.",
+    "steps": [
+      "Tạo Sheet Dashboard riêng.",
+      "Ẩn Gridlines tại View → Show → Gridlines.",
+      "Đặt tiêu đề và kỳ báo cáo ở phần trên.",
+      "Đặt 3–5 KPI cards ở hàng đầu.",
+      "Đặt biểu đồ xu hướng bên trái, biểu đồ so sánh bên phải.",
+      "Đặt bộ lọc/Slicer ở vị trí dễ tìm.",
+      "Dùng Align và Distribute để căn đều các đối tượng.",
+      "Kiểm tra ở mức zoom 100% và Print Preview."
+    ],
+    "mouse": "Chuột trái kéo Shape/Chart; dùng Shape Format → Align để căn chỉnh; tránh kéo tự do thiếu lưới.",
+    "expected": "Dashboard có thứ tự đọc rõ, không chồng lấn và người xem tìm được bộ lọc.",
+    "practice": "Thiết kế Dashboard QC theo tổng quan → xu hướng → nguyên nhân.",
+    "errors": "Quá nhiều biểu đồ; màu sắc thiếu nhất quán; KPI không có kỳ; đối tượng lệch; không thử màn hình nhỏ.",
+    "library": "K020;K021"
+  },
+  {
+    "id": "C8L08",
+    "title": "Kết nối biểu đồ với bộ lọc",
+    "goal": "Liên kết biểu đồ với PivotTable/Slicer hoặc vùng chọn điều khiển.",
+    "steps": [
+      "Tạo PivotChart từ PivotTable để biểu đồ tự nhận bộ lọc.",
+      "Chọn Slicer → tab Slicer → Report Connections.",
+      "Tích PivotTable nguồn của biểu đồ rồi nhấn OK.",
+      "Thử chọn một mục trên Slicer và quan sát chart.",
+      "Nếu chart thường lấy từ công thức, kiểm tra vùng dữ liệu nguồn có phụ thuộc ô điều kiện hay không.",
+      "Kiểm tra từng KPI và chart có cùng bộ lọc không."
+    ],
+    "mouse": "Chuột trái Slicer → Report Connections; không chỉ đặt Slicer cạnh chart mà nghĩ nó tự kết nối.",
+    "expected": "Biểu đồ thay đổi khi chọn bộ lọc; KPI và bảng liên quan cùng phạm vi.",
+    "practice": "Dashboard cho phép chọn ca ngày/ca đêm và tháng.",
+    "errors": "Slicer không kết nối PivotTable; KPI dùng vùng khác; chart thường không tự nhận Slicer.",
+    "library": "K024;K027"
+  },
+  {
+    "id": "C8L09",
+    "title": "Kiểm tra khả năng đọc và tính nhất quán",
+    "goal": "Rà soát thông tin, màu sắc, đơn vị, thang đo và bộ lọc trước khi bàn giao.",
+    "steps": [
+      "Đọc Dashboard từ tiêu đề xuống KPI rồi đến biểu đồ.",
+      "Kiểm tra mọi biểu đồ có tiêu đề và đơn vị.",
+      "So sánh màu cùng ý nghĩa ở các biểu đồ.",
+      "Thử từng Slicer, chọn nhiều mục và Clear Filter.",
+      "Đối chiếu tổng KPI với PivotTable hoặc công thức nguồn.",
+      "Chuyển sang View → Page Layout và Print Preview để kiểm tra bố cục.",
+      "Ghi chú thời điểm Refresh và nguồn dữ liệu."
+    ],
+    "mouse": "Chuột trái thao tác Slicer và Print Preview; kiểm tra chart bằng cách chọn từng đối tượng.",
+    "expected": "Không có KPI lệch bộ lọc, thiếu đơn vị, nhãn bị cắt hoặc tổng không đối chiếu được.",
+    "practice": "Tạo checklist kiểm tra Dashboard trước khi gửi quản lý.",
+    "errors": "Chỉ kiểm tra khi không có filter; so sánh tỷ lệ phần trăm với số lượng; bỏ qua cập nhật nguồn.",
+    "library": "K020;K018"
+  },
+  {
+    "id": "C8L10",
+    "title": "Bài thực hành: Dashboard theo dõi kết quả kinh doanh",
+    "goal": "Xây dựng Dashboard có KPI, biểu đồ xu hướng và bộ lọc dùng chung.",
+    "steps": [
+      "Tạo Table tblDaily gồm Ngày, Cửa hàng, Doanh thu, Target, Số lỗi, Ca.",
+      "Tạo PivotTable doanh thu theo tháng và cửa hàng; tạo PivotChart cột.",
+      "Tạo PivotTable số lỗi theo ca; tạo biểu đồ đường hoặc cột.",
+      "Tạo KPI % đạt = Doanh thu/Target và tổng số lỗi.",
+      "Chèn Slicer Cửa hàng, Ca và Timeline Ngày.",
+      "Kết nối Slicer với PivotTable cần điều khiển.",
+      "Định dạng Dashboard; kiểm tra từng tổ hợp lọc; đối chiếu tổng và lưu file."
+    ],
+    "mouse": "Chuột trái tạo Table/Pivot/Chart/Slicer; Slicer → Report Connections; dùng chuột phải trên PivotTable → Refresh.",
+    "expected": "Dashboard có KPI và biểu đồ cùng phản ánh một lựa chọn bộ lọc; tổng được đối chiếu.",
+    "practice": "Thay doanh thu bằng sản lượng và số lỗi QC để áp dụng cho báo cáo chất lượng.",
+    "errors": "KPI và chart khác phạm vi lọc; quên Refresh; không ghi đơn vị; chart không phù hợp với câu hỏi.",
+    "library": "K024;SUMIFS;COUNTIFS;K020"
+  },
+  {
+    "id": "C9L01",
+    "title": "Power Query là gì và khi nào nên dùng",
+    "goal": "Hiểu luồng Get Data → Transform → Load và phân biệt với công thức Excel.",
+    "steps": [
+      "Tạo bản sao file dữ liệu mẫu.",
+      "Chọn một ô trong vùng dữ liệu và vào Data → From Table/Range.",
+      "Nếu Excel hỏi Create Table, xác nhận vùng và tích My table has headers.",
+      "Quan sát Power Query Editor: Queries, Data Preview, Query Settings.",
+      "Vào Home → Close & Load để nạp kết quả về Excel.",
+      "Mở Queries & Connections để xem truy vấn vừa tạo."
+    ],
+    "mouse": "Chuột trái chọn Data → From Table/Range và Close & Load; không sửa dữ liệu nguồn khi chưa có bản sao.",
+    "expected": "Một Query được tạo; dữ liệu đầu ra nằm trong Worksheet mới hoặc vị trí đã chọn.",
+    "practice": "Dùng Power Query khi phải lặp lại thao tác chuẩn hóa dữ liệu nhiều lần.",
+    "errors": "Nghĩ Power Query tự cập nhật ngay khi nguồn đổi; quên Refresh; chỉnh sửa trực tiếp kết quả load thay vì query.",
+    "library": "K024;K025"
+  },
+  {
+    "id": "C9L02",
+    "title": "Kết nối dữ liệu từ Excel và CSV",
+    "goal": "Nạp dữ liệu từ workbook hoặc tệp CSV vào Power Query.",
+    "steps": [
+      "Vào Data → Get Data → From File → From Workbook.",
+      "Chọn file Excel nguồn và nhấn Import.",
+      "Trong Navigator, chọn Sheet/Table cần lấy; chọn Transform Data.",
+      "Với CSV, vào Data → Get Data → From File → From Text/CSV.",
+      "Kiểm tra File Origin, Delimiter và Data Type Detection trong preview.",
+      "Nhấn Transform Data để vào Editor; chưa Load cho đến khi kiểm tra dữ liệu."
+    ],
+    "mouse": "Chuột trái chọn Get Data, đường dẫn file và mục trong Navigator; Transform Data mở Editor.",
+    "expected": "Query hiển thị đúng bảng, cột, encoding và dấu phân cách.",
+    "practice": "Kết nối nhiều file xuất báo cáo cùng cấu trúc.",
+    "errors": "Chọn nhầm Sheet; delimiter sai; CSV mã hóa sai gây lỗi tiếng Việt; tự động đoán kiểu dữ liệu không chính xác.",
+    "library": "K043;K006"
+  },
+  {
+    "id": "C9L03",
+    "title": "Làm quen Power Query Editor",
+    "goal": "Nhận diện các vùng thao tác, Applied Steps và công cụ biến đổi.",
+    "steps": [
+      "Mở một Query bằng Data → Queries & Connections rồi nhấp đúp tên Query.",
+      "Quan sát Ribbon Home, Transform, Add Column, View.",
+      "Trong Query Settings, đổi tên Query.",
+      "Nhấn từng Applied Step để xem dữ liệu tại thời điểm đó.",
+      "Dùng nút X cạnh bước để xóa bước thử nghiệm.",
+      "Vào View → Formula Bar để bật thanh công thức M.",
+      "Chọn một cột và thử Home → Remove Columns trên bản sao Query."
+    ],
+    "mouse": "Chuột trái chọn tab, cột và Applied Steps; nhấp đúp tên Query trong Queries & Connections.",
+    "expected": "Bạn nhận diện được Query Settings, Applied Steps, Data Preview và Formula Bar; xóa bước chỉ ảnh hưởng query.",
+    "practice": "Đổi tên query theo quy tắc q_Source, q_Clean, q_Report.",
+    "errors": "Xóa bước giữa làm bước sau lỗi; nhầm xóa cột với xóa query; đổi tên query nhưng không cập nhật phụ thuộc.",
+    "library": "K035"
+  },
+  {
+    "id": "C9L04",
+    "title": "Đổi kiểu dữ liệu và xử lý lỗi",
+    "goal": "Chọn đúng kiểu dữ liệu và xác định nguyên nhân Error/Null.",
+    "steps": [
+      "Trong Power Query Editor, nhấn biểu tượng kiểu dữ liệu ở đầu cột.",
+      "Chọn Date, Whole Number, Decimal Number hoặc Text theo ý nghĩa cột.",
+      "Chọn cột ngày → Transform → Data Type → Using Locale nếu định dạng ngày theo vùng khác.",
+      "Chọn cột có lỗi; Home → Keep Rows → Keep Errors để cô lập lỗi.",
+      "Đọc Error Details, quay lại bước gây lỗi và sửa nguồn/kiểu dữ liệu.",
+      "Dùng Replace Errors chỉ khi đã xác định giá trị thay thế đúng nghiệp vụ."
+    ],
+    "mouse": "Chuột trái chọn biểu tượng Data Type và menu Transform; nhấp phải tiêu đề cột có thể chọn Change Type.",
+    "expected": "Cột có kiểu đúng; lỗi được hiểu nguyên nhân, không bị thay bằng giá trị giả.",
+    "practice": "Chuẩn hóa ngày kiểm tra, số lượng lỗi và mã sản phẩm.",
+    "errors": "Đổi mã có số 0 đầu thành Number; Replace Errors bằng 0 khi chưa hiểu; dùng locale sai.",
+    "library": "K006;K007;K036;K040"
+  },
+  {
+    "id": "C9L05",
+    "title": "Remove Rows, Remove Columns và Keep Rows",
+    "goal": "Giữ hoặc loại bỏ dòng/cột theo quy tắc rõ ràng.",
+    "steps": [
+      "Chọn Query dữ liệu thô.",
+      "Home → Remove Rows → Remove Top Rows và nhập số dòng cần bỏ.",
+      "Dùng Remove Blank Rows để bỏ dòng trống.",
+      "Chọn cột không cần thiết và Home → Remove Columns.",
+      "Dùng Choose Columns để giữ đúng danh sách cột cần thiết.",
+      "Dùng Keep Rows → Keep Top Rows hoặc Keep Range of Rows để giới hạn dữ liệu thử.",
+      "Kiểm tra Applied Steps sau mỗi thao tác."
+    ],
+    "mouse": "Chuột trái chọn menu Home và tiêu đề cột; chuột phải tiêu đề cột → Remove Columns cũng được.",
+    "expected": "Preview chỉ còn dòng/cột đúng yêu cầu; bước thao tác được ghi trong Applied Steps.",
+    "practice": "Loại bỏ dòng tiêu đề lặp giữa các trang dữ liệu và cột ghi chú không sử dụng.",
+    "errors": "Xóa nhầm cột khóa; Remove Top Rows cố định khi file mới có số dòng mở đầu khác; Keep Top Rows bị để lại trong query thật.",
+    "library": "K025;K035"
+  },
+  {
+    "id": "C9L06",
+    "title": "Split, Merge và Replace Values",
+    "goal": "Tách cột, ghép nội dung và thay giá trị sai theo quy tắc.",
+    "steps": [
+      "Chọn cột Mã ghép.",
+      "Transform → Split Column → By Delimiter.",
+      "Chọn delimiter, chọn Each occurrence hoặc Left-most delimiter và xem preview.",
+      "Đổi tên các cột kết quả.",
+      "Để ghép, chọn hai cột theo thứ tự bằng Ctrl+nhấp chuột trái.",
+      "Transform → Merge Columns; chọn separator và tên cột mới.",
+      "Để sửa giá trị, nhấp phải ô/cột → Replace Values; nhập giá trị cũ và mới."
+    ],
+    "mouse": "Chuột trái chọn cột; Ctrl+chuột trái chọn nhiều cột; chuột phải tiêu đề cột để mở Replace Values.",
+    "expected": "Cột được tách/ghép đúng; giá trị thay thế chỉ tác động đúng cột và giá trị.",
+    "practice": "Tách mã Model-Ca-Mã lỗi; chuẩn hóa tên nhóm nhập không đồng nhất.",
+    "errors": "Chọn sai delimiter; ghép cột sai thứ tự; Replace Values trên toàn bảng thay cả trường không liên quan.",
+    "library": "K006;K025"
+  },
+  {
+    "id": "C9L07",
+    "title": "Append Queries để gộp dữ liệu",
+    "goal": "Gộp các bảng cùng cấu trúc theo chiều dọc.",
+    "steps": [
+      "Chuẩn bị hai Query có cùng tên cột và kiểu dữ liệu.",
+      "Trong Editor, Home → Append Queries → Append Queries as New.",
+      "Chọn Two tables hoặc Three or more tables.",
+      "Chọn các Query nguồn rồi nhấn OK.",
+      "Đổi tên Query mới thành q_AllData.",
+      "Kiểm tra số dòng bằng tổng số dòng các Query nguồn.",
+      "Kiểm tra cột bị null do tên cột/kiểu dữ liệu không đồng nhất."
+    ],
+    "mouse": "Chuột trái Home → Append Queries as New; chọn Query nguồn trong hộp thoại.",
+    "expected": "Một bảng mới có số dòng bằng tổng các nguồn; dữ liệu các tháng nối tiếp nhau.",
+    "practice": "Gộp file dữ liệu ca ngày và ca đêm hoặc nhiều tháng.",
+    "errors": "Tên cột khác nhau tạo cột riêng; append nhầm query đã tổng hợp; kiểu dữ liệu lệch.",
+    "library": "K025;K006"
+  },
+  {
+    "id": "C9L08",
+    "title": "Merge Queries để tra cứu và kết hợp bảng",
+    "goal": "Ghép bảng giao dịch với bảng danh mục bằng khóa chung.",
+    "steps": [
+      "Mở Query giao dịch.",
+      "Home → Merge Queries → Merge Queries as New.",
+      "Chọn bảng danh mục ở danh sách thứ hai.",
+      "Nhấn chuột trái vào cột khóa ở bảng trên và cột khóa tương ứng ở bảng dưới.",
+      "Chọn Join Kind, thường là Left Outer để giữ mọi dòng giao dịch.",
+      "Nhấn OK; xuất hiện cột dạng Table.",
+      "Nhấn nút Expand ở đầu cột; chọn trường cần lấy và bỏ tích Use original column name as prefix nếu muốn.",
+      "Kiểm tra số dòng trước/sau Merge."
+    ],
+    "mouse": "Chuột trái chọn cột khóa theo cùng thứ tự ở hai bảng; chuột trái nút Expand. Không chọn cột tên gần giống nhưng khác mã.",
+    "expected": "Bảng giao dịch có thêm mô tả từ danh mục; số dòng không tăng ngoài dự kiến.",
+    "practice": "Ghép Mã lỗi với danh mục nguyên nhân hoặc Mã hàng với danh mục Model.",
+    "errors": "Khóa khác kiểu dữ liệu; trùng khóa ở bảng danh mục làm nhân bản dòng; chọn Inner Join làm mất bản ghi không khớp.",
+    "library": "K025;K006"
+  },
+  {
+    "id": "C9L09",
+    "title": "Group By và tổng hợp dữ liệu",
+    "goal": "Tổng hợp số dòng hoặc số lượng theo nhóm trong Power Query.",
+    "steps": [
+      "Chọn Query đã chuẩn hóa.",
+      "Home → Group By.",
+      "Chọn Basic hoặc Advanced.",
+      "Chọn cột nhóm như Model và Ca.",
+      "Đặt tên cột mới như SoDong; Operation chọn Count Rows.",
+      "Thêm phép tổng hợp Sum trên cột Số lượng nếu cần.",
+      "Nhấn OK và kiểm tra số nhóm cùng tổng cộng."
+    ],
+    "mouse": "Chuột trái Home → Group By và chọn cột/Operation; Advanced dùng khi cần nhiều phép tính.",
+    "expected": "Mỗi nhóm có một dòng; số dòng hoặc tổng số lượng đúng theo nhóm.",
+    "practice": "Tổng hợp lỗi theo Model, Ca và nhóm nguyên nhân.",
+    "errors": "Group By sai cấp; Count Rows nhầm với Sum; bỏ cột cần tổng hợp trước khi Group.",
+    "library": "K025;COUNT;SUM"
+  },
+  {
+    "id": "C9L10",
+    "title": "Unpivot để chuẩn hóa dữ liệu báo cáo",
+    "goal": "Chuyển dữ liệu dạng nhiều cột tháng/ca thành cấu trúc thuộc tính-giá trị.",
+    "steps": [
+      "Chọn bảng có cột định danh như Model, Mã lỗi và các cột tháng.",
+      "Giữ Ctrl và chọn các cột định danh.",
+      "Transform → Unpivot Columns → Unpivot Other Columns.",
+      "Đổi tên Attribute thành Tháng và Value thành Số lượng.",
+      "Chuyển Tháng về Date/Text đúng quy tắc; chuyển Số lượng thành Whole Number.",
+      "Lọc bỏ dòng null nếu phù hợp.",
+      "Kiểm tra tổng Value trước/sau Unpivot có khớp dữ liệu nguồn."
+    ],
+    "mouse": "Chuột trái chọn cột định danh; Ctrl+chuột trái chọn thêm; Transform → Unpivot Other Columns.",
+    "expected": "Bảng chuyển thành các cột khóa, Attribute và Value; tổng số lượng không đổi.",
+    "practice": "Chuẩn hóa báo cáo tháng nằm ngang thành dữ liệu dọc để PivotTable phân tích.",
+    "errors": "Chọn Unpivot Columns thay vì Other Columns làm mất cột định danh; không đổi tên Attribute/Value; bỏ null không đúng quy tắc.",
+    "library": "K025;K024"
+  },
+  {
+    "id": "C9L11",
+    "title": "Load dữ liệu và Refresh truy vấn",
+    "goal": "Nạp kết quả về Worksheet/Data Model và cập nhật khi nguồn đổi.",
+    "steps": [
+      "Trong Power Query Editor, Home → Close & Load hoặc Close & Load To.",
+      "Chọn Table, PivotTable Report hoặc Only Create Connection theo mục tiêu.",
+      "Trong Excel, mở Data → Queries & Connections.",
+      "Nhấp phải Query → Properties.",
+      "Thiết lập Refresh data when opening the file hoặc Refresh every nếu cần.",
+      "Thay dữ liệu nguồn trong file gốc; vào Data → Refresh All.",
+      "Kiểm tra kết quả và thời gian cập nhật."
+    ],
+    "mouse": "Chuột trái Close & Load To; chuột phải Query trong Queries & Connections → Properties/Refresh.",
+    "expected": "Dữ liệu đầu ra cập nhật sau Refresh; kiểu load phù hợp với mục tiêu.",
+    "practice": "Tạo query tổng hợp nhiều file hàng tháng và refresh khi có dữ liệu mới.",
+    "errors": "Sửa dữ liệu trực tiếp trong bảng kết quả; nguồn file di chuyển; query load nhầm vị trí; refresh khi file nguồn đóng/mất quyền.",
+    "library": "K035;K043"
+  },
+  {
+    "id": "C9L12",
+    "title": "Bài thực hành: tự động tổng hợp nhiều file",
+    "goal": "Tạo luồng nhập nhiều file cùng cấu trúc, chuẩn hóa và tổng hợp bằng Power Query.",
+    "steps": [
+      "Tạo thư mục chứa ít nhất ba file Excel cùng cấu trúc cột.",
+      "Excel → Data → Get Data → From File → From Folder.",
+      "Chọn thư mục, nhấn Combine & Transform Data.",
+      "Trong Combine Files, chọn Sheet/Table mẫu đúng.",
+      "Trong Editor, kiểm tra tên cột, kiểu dữ liệu và loại bỏ dòng tiêu đề lặp.",
+      "Tạo bước chuẩn hóa Model/Ca/Ngày; Group By nếu cần báo cáo tổng hợp.",
+      "Close & Load To → Table hoặc Only Create Connection.",
+      "Thêm file mới vào thư mục và Data → Refresh All; đối chiếu tổng số dòng."
+    ],
+    "mouse": "Chuột trái chọn thư mục, Combine & Transform, Applied Steps và Close & Load; chuột phải Query để Refresh.",
+    "expected": "File mới trong thư mục được gộp sau Refresh; cấu trúc và tổng số dòng được kiểm tra.",
+    "practice": "Áp dụng gộp báo cáo lỗi của nhiều nhóm/ca theo tháng.",
+    "errors": "File mẫu khác cấu trúc; tên Sheet không thống nhất; thiếu quyền thư mục; chỉnh file đầu ra thay vì query.",
+    "library": "K025;K035;K043"
+  },
+  {
+    "id": "C10L01",
+    "title": "Đọc và mô tả dữ liệu trước khi phân tích",
+    "goal": "Xác định cấu trúc, đơn vị, phạm vi và chất lượng dữ liệu trước khi rút kết luận.",
+    "steps": [
+      "Mở bảng dữ liệu và đọc hàng tiêu đề.",
+      "Xác định một dòng đại diện cho một giao dịch, một lỗi hay một ngày.",
+      "Ghi rõ đơn vị từng cột và khoảng thời gian.",
+      "Dùng Filter kiểm tra giá trị thiếu, mã lạ và bản ghi trùng.",
+      "Dùng Ctrl+End để xem vùng sử dụng; đối chiếu dòng đầu/cuối.",
+      "Tạo bản sao trước khi làm sạch."
+    ],
+    "mouse": "Chuột trái chọn tiêu đề và Filter; Ctrl+End kiểm tra cuối vùng; không sửa trực tiếp nguồn duy nhất.",
+    "expected": "Bạn mô tả được mỗi dòng là gì, phạm vi thời gian, đơn vị và các vấn đề dữ liệu.",
+    "practice": "Lập data dictionary ngắn cho bảng lỗi QC.",
+    "errors": "Đọc biểu đồ trước khi hiểu dữ liệu; không phân biệt số dòng với số sự kiện; không xác định mẫu số.",
+    "library": "K025;K028;K027"
+  },
+  {
+    "id": "C10L02",
+    "title": "Thống kê mô tả bằng các hàm Excel",
+    "goal": "Tính số lượng, trung bình, trung vị, độ lệch chuẩn và khoảng biến thiên.",
+    "steps": [
+      "Tạo vùng thống kê bên cạnh dữ liệu.",
+      "Nhập =COUNT(B2:B1000), =AVERAGE(B2:B1000), =MEDIAN(B2:B1000).",
+      "Tính =MIN(B2:B1000) và =MAX(B2:B1000).",
+      "Dùng =STDEV.S(B2:B1000) nếu dữ liệu là mẫu; STDEV.P nếu là toàn bộ tổng thể.",
+      "Định dạng kết quả cùng đơn vị; kiểm tra ô Text/Blank."
+    ],
+    "mouse": "Chuột trái chọn ô kết quả; công thức nhập bằng bàn phím; kiểm tra Formula Bar.",
+    "expected": "Bảng thống kê có N, trung bình, trung vị, min, max và độ lệch chuẩn.",
+    "practice": "Mô tả số lỗi theo ca hoặc thời gian xử lý.",
+    "errors": "Dùng Average khi phân phối lệch mạnh mà không xem Median; dùng sai STDEV.S/P; tính trên vùng chứa tổng phụ.",
+    "library": "COUNT;AVERAGE;MEDIAN;MIN;MAX;STDEV.S"
+  },
+  {
+    "id": "C10L03",
+    "title": "Phân tích theo nhóm và phân khúc",
+    "goal": "So sánh chỉ tiêu theo cửa hàng, model, ca hoặc loại lỗi.",
+    "steps": [
+      "Chuyển dữ liệu thành Table bằng Ctrl+T.",
+      "Insert → PivotTable.",
+      "Kéo trường phân khúc vào Rows và chỉ tiêu vào Values.",
+      "Chọn Summarize Values By đúng phép tính.",
+      "Sắp xếp giá trị giảm dần và thêm Slicer nếu cần.",
+      "Đối chiếu một nhóm bằng SUMIFS/COUNTIFS."
+    ],
+    "mouse": "Chuột trái kéo trường trong PivotTable; chuột phải giá trị để chọn Value Field Settings.",
+    "expected": "Mỗi nhóm có số liệu cùng định nghĩa; tổng các nhóm đối chiếu được với toàn bộ.",
+    "practice": "So sánh tỷ lệ lỗi theo ca và model, không chỉ so số lỗi tuyệt đối.",
+    "errors": "Nhóm có quy mô khác nhau nhưng so số tuyệt đối; phân nhóm không nhất quán; bỏ qua dữ liệu chưa phân loại.",
+    "library": "K024;SUMIFS;COUNTIFS"
+  },
+  {
+    "id": "C10L04",
+    "title": "So sánh thực tế với mục tiêu",
+    "goal": "Tính chênh lệch và tỷ lệ hoàn thành theo định nghĩa rõ ràng.",
+    "steps": [
+      "Tạo cột Actual và Target cùng kỳ.",
+      "Tại Variance nhập =Actual-Target.",
+      "Tại Achievement nhập =IFERROR(Actual/Target,0).",
+      "Định dạng Achievement thành Percentage.",
+      "Tạo Conditional Formatting cho dưới 100% và từ 100% trở lên.",
+      "Đối chiếu Target có cùng phạm vi thời gian và đơn vị với Actual."
+    ],
+    "mouse": "Chuột trái chọn ô công thức và Conditional Formatting; không nhập số mục tiêu rải rác trong công thức.",
+    "expected": "Variance có dấu âm/dương đúng; % đạt dùng cùng mẫu số và kỳ.",
+    "practice": "Theo dõi số lượng kiểm tra thực tế so với Target mỗi ca.",
+    "errors": "Target bằng 0; so ngày với target tháng; tính trung bình % từng ngày thay vì tổng Actual/tổng Target.",
+    "library": "K018;IFERROR;SUMIFS"
+  },
+  {
+    "id": "C10L05",
+    "title": "Phân tích xu hướng theo thời gian",
+    "goal": "Tổng hợp dữ liệu theo ngày/tuần/tháng và nhận diện xu hướng.",
+    "steps": [
+      "Đảm bảo cột Ngày là Date thật.",
+      "Tạo PivotTable, kéo Ngày vào Rows và chỉ tiêu vào Values.",
+      "Nhấn chuột phải ngày → Group → Months/Years.",
+      "Tạo Line Chart từ kết quả.",
+      "Tính chênh lệch kỳ trước bằng công thức hoặc Show Values As → Difference From.",
+      "Kiểm tra đủ kỳ và không có tháng bị thiếu dữ liệu."
+    ],
+    "mouse": "Chuột trái tạo PivotTable/Chart; chuột phải ngày → Group; Slicer/Timeline để lọc kỳ.",
+    "expected": "Biểu đồ có trục thời gian liên tục, đơn vị rõ và xu hướng không bị nhầm kỳ.",
+    "practice": "Theo dõi lỗi theo tuần/tháng và phát hiện thời điểm tăng bất thường.",
+    "errors": "Ngày là Text; group chỉ theo Month làm gộp nhiều năm; suy diễn nguyên nhân từ tương quan thời gian.",
+    "library": "K007;K023;K024"
+  },
+  {
+    "id": "C10L06",
+    "title": "Phân tích tỷ trọng và cơ cấu",
+    "goal": "Tính tỷ lệ đóng góp của từng nhóm trên tổng chung.",
+    "steps": [
+      "Tạo PivotTable tổng số lỗi theo Nhóm lỗi.",
+      "Kéo trường Số lỗi vào Values.",
+      "Nhấn chuột phải giá trị → Show Values As → % of Grand Total.",
+      "Tạo biểu đồ Bar hoặc 100% Stacked Column nếu cần.",
+      "Kiểm tra tổng tỷ trọng bằng 100% (có thể sai số làm tròn).",
+      "Ghi rõ mẫu số là toàn bộ lỗi hay nhóm lỗi đã lọc."
+    ],
+    "mouse": "Chuột phải giá trị trong PivotTable → Show Values As; chuột trái chọn dạng biểu đồ.",
+    "expected": "Tỷ trọng từng nhóm được tính trên cùng mẫu số; tổng gần 100%.",
+    "practice": "Tìm nhóm lỗi chiếm tỷ trọng lớn nhất theo tháng hoặc ca.",
+    "errors": "Mẫu số đổi khi lọc; so tỷ trọng của các nhóm trên các tổng khác nhau; cộng tỷ lệ đã làm tròn.",
+    "library": "K024;K020"
+  },
+  {
+    "id": "C10L07",
+    "title": "Phân tích Pareto và nguyên nhân chính",
+    "goal": "Xác định nhóm nguyên nhân đóng góp phần lớn số lỗi.",
+    "steps": [
+      "Tạo PivotTable số lỗi theo nguyên nhân.",
+      "Sắp xếp giảm dần theo số lỗi.",
+      "Tạo cột Tỷ trọng = Số lỗi/Tổng lỗi.",
+      "Tạo cột Tỷ trọng lũy kế bằng SUM cố định từ dòng đầu đến dòng hiện tại.",
+      "Chèn Combo Chart: số lỗi dạng Column, tỷ trọng lũy kế dạng Line trên Secondary Axis.",
+      "Thêm đường ngưỡng 80% nếu phù hợp và diễn giải nhóm đóng góp."
+    ],
+    "mouse": "Chuột trái sắp xếp và tạo Combo Chart; chuột phải series tỷ trọng → Format Data Series → Secondary Axis.",
+    "expected": "Cột giảm dần; đường lũy kế tăng đến 100%; nhóm nguyên nhân chính được xác định minh bạch.",
+    "practice": "Phân tích Pareto lỗi máy/người để ưu tiên hành động.",
+    "errors": "Coi 80/20 là quy luật bắt buộc; tính lũy kế trên dữ liệu chưa sắp xếp; mẫu số không thống nhất.",
+    "library": "SUM;SUMIFS;K026"
+  },
+  {
+    "id": "C10L08",
+    "title": "Phân tích chênh lệch và biến động",
+    "goal": "Đo chênh lệch tuyệt đối, tương đối và mức thay đổi giữa các kỳ.",
+    "steps": [
+      "Tạo bảng Kỳ trước và Kỳ này.",
+      "Chênh lệch tuyệt đối = Kỳ này - Kỳ trước.",
+      "Chênh lệch % = IFERROR((Kỳ này-Kỳ trước)/Kỳ trước,0).",
+      "Định dạng phần trăm và ghi chú khi kỳ trước bằng 0.",
+      "Dùng Conditional Formatting để đánh dấu biến động lớn.",
+      "Kiểm tra cùng số ngày/ca và cùng định nghĩa chỉ tiêu."
+    ],
+    "mouse": "Chuột trái nhập công thức và tạo quy tắc; kiểm tra mẫu số ở Formula Bar.",
+    "expected": "Chênh lệch có dấu và tỷ lệ biến động có ý nghĩa; trường hợp mẫu số 0 được giải thích.",
+    "practice": "So sánh lỗi tuần này với tuần trước đã chuẩn hóa số ca.",
+    "errors": "Kỳ có số ngày khác nhau; mẫu số 0; diễn giải giảm số lỗi là cải thiện dù sản lượng cũng giảm.",
+    "library": "IFERROR;ABS;K020"
+  },
+  {
+    "id": "C10L09",
+    "title": "Kiểm tra ngoại lệ và dữ liệu bất thường",
+    "goal": "Tìm giá trị ngoài ngưỡng, thiếu dữ liệu và điểm bất thường cần xác minh.",
+    "steps": [
+      "Dùng Filter tìm ô trống và mã lạ.",
+      "Tính Q1 bằng QUARTILE.INC(range,1) và Q3 bằng QUARTILE.INC(range,3).",
+      "Tính IQR = Q3-Q1; cận dưới Q1-1.5*IQR và cận trên Q3+1.5*IQR.",
+      "Dùng Conditional Formatting hoặc IF để đánh dấu giá trị ngoài cận.",
+      "Rà soát từng bản ghi gốc; không tự động xóa ngoại lệ.",
+      "Ghi trạng thái xác minh."
+    ],
+    "mouse": "Chuột trái Filter và Conditional Formatting; công thức nhập tại cột kiểm tra.",
+    "expected": "Ngoại lệ được đánh dấu và có danh sách để xác minh; dữ liệu gốc được giữ.",
+    "practice": "Kiểm tra số lỗi tăng đột biến ở một ca hoặc máy.",
+    "errors": "Xem mọi ngoại lệ là lỗi; xóa giá trị lớn bất thường; không kiểm tra nguyên nhân vận hành.",
+    "library": "K027;K020;IF"
+  },
+  {
+    "id": "C10L10",
+    "title": "Trình bày insight từ dữ liệu",
+    "goal": "Viết kết luận dựa trên số liệu, so sánh, nguyên nhân và giới hạn phân tích.",
+    "steps": [
+      "Chọn một phát hiện có số liệu hỗ trợ.",
+      "Viết cấu trúc: hiện tượng → mức độ/chênh lệch → nhóm đóng góp → giả thuyết cần kiểm chứng.",
+      "Đưa biểu đồ hoặc bảng nhỏ minh họa.",
+      "Ghi rõ thời gian, đơn vị, mẫu số và bộ lọc.",
+      "Tách dữ kiện đã xác nhận khỏi giả thuyết.",
+      "Đề xuất bước kiểm chứng hoặc hành động tiếp theo."
+    ],
+    "mouse": "Chuột trái chọn biểu đồ/bảng; không dùng hình ảnh thay thế số liệu nguồn.",
+    "expected": "Insight trả lời điều gì xảy ra, xảy ra ở đâu/mức nào và cần kiểm tra gì tiếp theo.",
+    "practice": "Viết phần nhận xét báo cáo IPQC theo Model, ca và nhóm lỗi.",
+    "errors": "Kết luận nguyên nhân khi chưa tái hiện; dùng % không có mẫu số; chọn riêng giai đoạn thuận lợi; nhầm tương quan với nguyên nhân.",
+    "library": "K025;K020"
+  },
+  {
+    "id": "C10L11",
+    "title": "Bài thực hành: phân tích hiệu quả kinh doanh",
+    "goal": "Tạo một báo cáo phân tích có mô tả, phân nhóm, xu hướng và khuyến nghị.",
+    "steps": [
+      "Chuẩn bị Table có Ngày, Nhóm, Thực tế, Target, Số lỗi.",
+      "Kiểm tra kiểu dữ liệu và bản ghi trùng.",
+      "Tính tổng, trung bình, trung vị và độ lệch chuẩn.",
+      "Tạo PivotTable theo nhóm và theo tháng.",
+      "Tính % đạt = Tổng thực tế/Tổng Target; tính biến động kỳ trước.",
+      "Tạo Pareto cho nhóm lỗi và biểu đồ xu hướng.",
+      "Viết 3 insight, mỗi insight có số liệu và phạm vi.",
+      "Đối chiếu tổng và ghi giới hạn dữ liệu."
+    ],
+    "mouse": "Chuột trái thao tác Table, PivotTable, chart; chuột phải Group/Value Field Settings; dùng công thức để đối chiếu.",
+    "expected": "Báo cáo có số liệu khớp, biểu đồ có đơn vị, insight phân biệt dữ kiện và giả thuyết.",
+    "practice": "Thay doanh thu bằng sản lượng kiểm tra và lỗi QC để dùng trong công việc.",
+    "errors": "So sánh nhóm không chuẩn hóa quy mô; dùng trung bình tỷ lệ; kết luận nguyên nhân không có bằng chứng.",
+    "library": "K024;SUMIFS;COUNTIFS;AVERAGE;MEDIAN"
+  },
+  {
+    "id": "C11L01",
+    "title": "Ghi và chạy Macro an toàn",
+    "goal": "Ghi thao tác lặp lại và chạy Macro trên bản sao an toàn.",
+    "steps": [
+      "Lưu bản sao Workbook trước khi ghi Macro.",
+      "Vào File → Options → Customize Ribbon và bật Developer nếu chưa có.",
+      "Developer → Record Macro.",
+      "Đặt tên không dấu cách, chọn Store macro in This Workbook; nhấn OK.",
+      "Thực hiện một thao tác định dạng thử trên vùng mẫu.",
+      "Developer → Stop Recording.",
+      "Nhấn Alt+F8, chọn Macro vừa ghi và Run trên bản sao."
+    ],
+    "mouse": "Chuột trái Developer → Record Macro/Stop Recording; Alt+F8 mở danh sách Macro. Không bật Enable All Macros tùy tiện.",
+    "expected": "Macro chạy lại thao tác đã ghi; file cần lưu dạng .xlsm.",
+    "practice": "Tự động định dạng tiêu đề báo cáo lặp lại hàng ngày.",
+    "errors": "Macro ghi cả thao tác chọn ô tuyệt đối không phù hợp; chạy trên dữ liệu gốc; bật Macro từ nguồn không tin cậy.",
+    "library": "K044;K043;Alt+F8"
+  },
+  {
+    "id": "C11L02",
+    "title": "Làm quen VBA Editor và Module",
+    "goal": "Mở VBE, tạo Module và hiểu vị trí chứa mã VBA.",
+    "steps": [
+      "Lưu file dạng Excel Macro-Enabled Workbook (*.xlsm).",
+      "Nhấn Alt+F11 để mở Visual Basic Editor.",
+      "Trong Project Explorer, chọn VBAProject của Workbook.",
+      "Nhấn chuột phải vào project → Insert → Module.",
+      "Trong cửa sổ Code, gõ Sub HelloAVP() rồi xuống dòng, gõ MsgBox \"Xin chào\" và End Sub.",
+      "Nhấn F5 để chạy khi con trỏ ở trong thủ tục.",
+      "Quay lại Excel bằng Alt+F11."
+    ],
+    "mouse": "Chuột phải Project Explorer → Insert → Module; gõ code trong cửa sổ Module; F5 chạy thủ tục.",
+    "expected": "Một hộp thoại hiện nội dung Xin chào; Module xuất hiện trong project.",
+    "practice": "Tạo Module riêng cho các thủ tục làm sạch hoặc định dạng báo cáo.",
+    "errors": "Lưu .xlsx làm mất VBA; dán code vào Sheet object thay vì Module; chạy Macro không rõ nguồn.",
+    "library": "K044;K043;Alt+F11"
+  },
+  {
+    "id": "C11L03",
+    "title": "Biến, kiểu dữ liệu và phạm vi",
+    "goal": "Khai báo biến để lưu giá trị và tránh dùng biến không rõ kiểu.",
+    "steps": [
+      "Trong VBE, mở Module.",
+      "Đầu Module gõ Option Explicit.",
+      "Tạo thủ tục Sub TestVariable().",
+      "Khai báo Dim lastRow As Long và Dim ws As Worksheet.",
+      "Gán Set ws = ThisWorkbook.Worksheets(\"Data\").",
+      "Gán lastRow = ws.Cells(ws.Rows.Count,\"A\").End(xlUp).Row.",
+      "Thêm MsgBox lastRow; chạy F5 và kiểm tra số dòng.",
+      "Thử đổi tên biến sai để thấy lỗi compile."
+    ],
+    "mouse": "Chuột trái cửa sổ code; Debug → Compile VBAProject để kiểm tra; F5 chạy thủ tục.",
+    "expected": "Biến giữ đúng kiểu; lastRow trả dòng cuối cột A; lỗi khai báo được phát hiện khi Compile.",
+    "practice": "Dùng biến lưu Worksheet, dòng cuối và đường dẫn file.",
+    "errors": "Dùng Integer cho dòng lớn; thiếu Set khi gán Object; quên Option Explicit; dùng ActiveSheet thay vì tham chiếu rõ.",
+    "library": "K044"
+  },
+  {
+    "id": "C11L04",
+    "title": "Điều kiện If và Select Case",
+    "goal": "Rẽ nhánh theo điều kiện để xử lý các tình huống khác nhau.",
+    "steps": [
+      "Trong Module, tạo Sub CheckValue().",
+      "Khai báo Dim score As Double; gán score = 85.",
+      "Viết If score >= 80 Then, MsgBox \"Đạt\", Else MsgBox \"Chưa đạt\", End If.",
+      "Tạo ví dụ Select Case score với các khoảng điểm.",
+      "Nhấn Debug → Compile VBAProject.",
+      "Đặt con trỏ trong Sub và nhấn F5; đổi score để kiểm tra các nhánh."
+    ],
+    "mouse": "Chuột trái nhập code; Debug → Compile và F5 chạy. Không bấm Run khi chưa đọc code.",
+    "expected": "Thông báo thay đổi theo điều kiện; chỉ một nhánh phù hợp được chạy.",
+    "practice": "Phân loại bản ghi theo ngưỡng số lỗi hoặc trạng thái.",
+    "errors": "Điều kiện biên bị bỏ sót; thứ tự Case sai; so sánh Text với Number; không xử lý Else.",
+    "library": "K044"
+  },
+  {
+    "id": "C11L05",
+    "title": "Vòng lặp For và For Each",
+    "goal": "Lặp qua dòng hoặc Worksheet để xử lý hàng loạt.",
+    "steps": [
+      "Tạo Sub FillStatus().",
+      "Khai báo ws và lastRow; gán Worksheet Data.",
+      "Dùng For i = 2 To lastRow.",
+      "Nếu ws.Cells(i,\"B\").Value = \"NG\" thì ghi \"Cần xử lý\" vào cột C.",
+      "Thêm Next i và End Sub.",
+      "Tạo ví dụ For Each ws In ThisWorkbook.Worksheets để in tên Sheet vào Immediate Window.",
+      "Chạy trên bản sao và kiểm tra một vài dòng."
+    ],
+    "mouse": "Chuột trái nhập code; Ctrl+G mở Immediate Window trong VBE; F5 chạy Sub.",
+    "expected": "Các dòng đáp ứng điều kiện được cập nhật; các dòng khác không bị thay đổi.",
+    "practice": "Tự động đánh dấu dòng NG trong bảng kiểm tra.",
+    "errors": "Vòng lặp sai chỉ số; ghi đè cột dữ liệu; quên Next; chạy trên ActiveSheet không đúng.",
+    "library": "K044"
+  },
+  {
+    "id": "C11L06",
+    "title": "Làm việc với Workbook, Worksheet và Range",
+    "goal": "Tham chiếu đúng file, Sheet và vùng ô trong VBA.",
+    "steps": [
+      "Tạo Sub WriteReport().",
+      "Dùng ThisWorkbook.Worksheets(\"Report\") để tham chiếu Sheet.",
+      "Gán Range(\"A1\").Value = \"Báo cáo\".",
+      "Dùng Cells(2,1).Value = Date.",
+      "Dùng Range(\"A1:B5\").Font.Bold = True.",
+      "Dùng With ws để gom nhiều thuộc tính.",
+      "Chạy F5 và kiểm tra đúng Sheet Report, không phải file đang active khác."
+    ],
+    "mouse": "Chuột trái nhập code; F5 chạy; dùng Project Explorer để xác nhận đúng Workbook.",
+    "expected": "Giá trị và định dạng được ghi vào đúng Worksheet/Range.",
+    "practice": "Tạo tiêu đề báo cáo và ghi ngày cập nhật tự động.",
+    "errors": "Dùng Range không gắn Worksheet nên tác động ActiveSheet; nhầm ThisWorkbook và ActiveWorkbook; tham chiếu Sheet sai tên.",
+    "library": "K044"
+  },
+  {
+    "id": "C11L07",
+    "title": "Tự động định dạng và xử lý dữ liệu",
+    "goal": "Tạo Macro định dạng vùng dữ liệu dựa trên dòng cuối.",
+    "steps": [
+      "Tạo Sub FormatData().",
+      "Khai báo ws và lastRow; gán Worksheet Data.",
+      "Tìm lastRow bằng Cells(Rows.Count,\"A\").End(xlUp).Row.",
+      "Định dạng hàng 1 Bold, Fill Color và WrapText.",
+      "AutoFit các cột A:F.",
+      "Định dạng cột Ngày bằng NumberFormat phù hợp.",
+      "Chạy trên bản sao; kiểm tra dòng cuối và cột dữ liệu không bị thiếu."
+    ],
+    "mouse": "Chuột trái nhập code và F5; không chạy Macro trên file gốc khi chưa kiểm tra vùng tác động.",
+    "expected": "Tiêu đề được định dạng, cột vừa nội dung, ngày hiển thị đúng và dữ liệu không bị xóa.",
+    "practice": "Tạo Macro chuẩn hóa file báo cáo mỗi ngày.",
+    "errors": "lastRow dựa vào cột có ô trống; định dạng toàn bộ cột làm file nặng; ghi đè dữ liệu; không tắt ScreenUpdating trong tác vụ dài.",
+    "library": "K044;K035"
+  },
+  {
+    "id": "C11L08",
+    "title": "Tạo nút chạy Macro",
+    "goal": "Gắn Macro vào nút bấm để người dùng chạy mà không mở VBE.",
+    "steps": [
+      "Quay lại Excel và bật Developer.",
+      "Vào Developer → Insert → Form Controls → Button.",
+      "Giữ chuột trái kéo để vẽ nút trên Worksheet.",
+      "Trong Assign Macro, chọn thủ tục cần chạy rồi nhấn OK.",
+      "Nhấn chuột phải vào nút → Edit Text để đổi tên.",
+      "Nhấn nút bằng chuột trái để chạy; thử trên bản sao dữ liệu."
+    ],
+    "mouse": "Chuột trái kéo vẽ Button và bấm chạy; chuột phải trên nút → Edit Text hoặc Assign Macro.",
+    "expected": "Nút hiển thị tên rõ và chạy đúng thủ tục được gán.",
+    "practice": "Tạo nút Cập nhật báo cáo hoặc Chuẩn hóa dữ liệu.",
+    "errors": "Gán nhầm Macro; đặt nút đè lên vùng dữ liệu; dùng ActiveX khi không cần; file không lưu .xlsm.",
+    "library": "K044;K043"
+  },
+  {
+    "id": "C11L09",
+    "title": "Kiểm soát lỗi và xác nhận trước khi chạy",
+    "goal": "Thêm xử lý lỗi, xác nhận và khôi phục trạng thái Excel sau Macro.",
+    "steps": [
+      "Trong Sub, thêm On Error GoTo ErrHandler.",
+      "Trước khi xử lý dữ liệu, dùng MsgBox hỏi xác nhận Yes/No.",
+      "Nếu No thì Exit Sub.",
+      "Trong ErrHandler, hiển thị Err.Number và Err.Description.",
+      "Dùng nhãn CleanExit để khôi phục ScreenUpdating/Calculation nếu đã thay đổi.",
+      "Debug → Compile; chạy với dữ liệu hợp lệ và cố tình tạo tình huống lỗi trên bản sao."
+    ],
+    "mouse": "Chuột trái nhập code; F5 chạy; hộp MsgBox chọn Yes/No bằng chuột trái.",
+    "expected": "Macro dừng khi người dùng chọn No; lỗi được báo; thiết lập Excel được khôi phục.",
+    "practice": "Macro xử lý file nhiều dòng cần xác nhận trước khi ghi đè.",
+    "errors": "On Error Resume Next che mọi lỗi; không khôi phục Calculation; Exit Sub bỏ qua phần dọn dẹp; thông báo không nói rõ lỗi.",
+    "library": "K044;K035"
+  },
+  {
+    "id": "C11L10",
+    "title": "Lưu file hỗ trợ Macro và bảo mật",
+    "goal": "Lưu đúng định dạng và kiểm soát nguồn Macro.",
+    "steps": [
+      "Vào File → Save As → Browse.",
+      "Trong Save as type chọn Excel Macro-Enabled Workbook (*.xlsm).",
+      "Nhấn Save và xác nhận định dạng.",
+      "Đóng/mở lại file; nếu xuất hiện Security Warning, chỉ Enable Content khi biết rõ nguồn và đã kiểm tra mã.",
+      "Vào Developer → Macro Security để xem thiết lập Trust Center; không chọn Enable all macros.",
+      "Giữ bản .xlsx không Macro riêng nếu cần chia sẻ dữ liệu."
+    ],
+    "mouse": "Chuột trái Save As và chọn .xlsm; chỉ bật nội dung từ nguồn tin cậy. Không dùng chuột phải để bỏ cảnh báo bảo mật.",
+    "expected": "File mở lại vẫn có Macro; người dùng biết nguồn và quyền chạy.",
+    "practice": "Bàn giao công cụ báo cáo có nút chạy Macro trong nội bộ.",
+    "errors": "Lưu thành .xlsx; gửi Macro không kiểm tra; bật mọi Macro; không ghi hướng dẫn sử dụng.",
+    "library": "K043;K044"
+  },
+  {
+    "id": "C11L11",
+    "title": "Bài thực hành: tự động hóa báo cáo định kỳ",
+    "goal": "Tạo Macro định dạng và cập nhật báo cáo có xác nhận.",
+    "steps": [
+      "Tạo bản sao file có Sheet Data và Report.",
+      "Lưu dạng .xlsm.",
+      "Alt+F11 → Insert → Module; bật Option Explicit.",
+      "Viết Sub UpdateReport với tham chiếu ThisWorkbook và Worksheet cụ thể.",
+      "Tìm lastRow; định dạng tiêu đề và AutoFit cột.",
+      "Thêm MsgBox xác nhận trước khi thực hiện.",
+      "Thêm ErrHandler và phần khôi phục trạng thái Excel.",
+      "Gắn Macro vào Button trên Sheet Report.",
+      "Chạy thử trên bản sao, kiểm tra kết quả và lưu lại."
+    ],
+    "mouse": "Chuột trái thao tác VBE/Developer; chuột phải nút để đổi tên; F5 chạy thử; không chạy trên nguồn duy nhất.",
+    "expected": "Nút chạy Macro đúng; có xác nhận; lỗi được báo; dữ liệu nguồn không bị ghi đè ngoài dự kiến.",
+    "practice": "Nâng cấp Macro thành quy trình xuất báo cáo PDF theo tháng sau khi đã kiểm thử.",
+    "errors": "Không xác định phạm vi thao tác; không xử lý lỗi; không sao lưu; chia sẻ .xlsm không hướng dẫn bảo mật.",
+    "library": "K044;K043"
+  },
+  {
+    "id": "C12L01",
+    "title": "Tiếp nhận yêu cầu và xác định KPI",
+    "goal": "Chuyển yêu cầu quản lý thành câu hỏi, chỉ tiêu và quy tắc tính đo được.",
+    "steps": [
+      "Ghi lại mục tiêu báo cáo và người sử dụng.",
+      "Tách câu hỏi quản lý cần trả lời thành các chỉ tiêu.",
+      "Với từng KPI, ghi tên, định nghĩa, tử số, mẫu số, đơn vị, kỳ và bộ lọc.",
+      "Xác định cấp độ dữ liệu: giao dịch, ca, ngày hay cửa hàng.",
+      "Xác nhận quy tắc ngoại lệ và nguồn dữ liệu với người yêu cầu.",
+      "Chốt mẫu báo cáo trước khi xây dựng."
+    ],
+    "mouse": "Chuột trái dùng để ghi/đối chiếu tài liệu; chưa cần thao tác công thức trước khi định nghĩa KPI.",
+    "expected": "Mỗi KPI có định nghĩa, đơn vị, mẫu số, kỳ và chủ sở hữu rõ ràng.",
+    "practice": "Định nghĩa tỷ lệ lỗi = số lỗi/sản lượng kiểm tra, tách ca ngày/đêm.",
+    "errors": "Dùng tên KPI mà không định nghĩa; lấy số lỗi chia số ca thay vì sản lượng; thay đổi mẫu số giữa các kỳ.",
+    "library": "K025;SUMIFS;COUNTIFS"
+  },
+  {
+    "id": "C12L02",
+    "title": "Kiểm tra nguồn và chất lượng dữ liệu",
+    "goal": "Đánh giá nguồn, trường dữ liệu, độ đầy đủ, tính duy nhất và độ tin cậy.",
+    "steps": [
+      "Mở từng nguồn và xác nhận thời gian cập nhật.",
+      "Kiểm tra hàng tiêu đề, kiểu dữ liệu và đơn vị.",
+      "Dùng Filter tìm Blank, lỗi và mã không thuộc danh mục.",
+      "Dùng COUNT/COUNTA/COUNTBLANK để kiểm tra độ đầy đủ.",
+      "Dùng Remove Duplicates trên bản sao hoặc COUNTIFS để phát hiện khóa trùng.",
+      "Đối chiếu số dòng và tổng chỉ tiêu với báo cáo gốc."
+    ],
+    "mouse": "Chuột trái Filter và công cụ kiểm tra; chuột phải tiêu đề cột để Remove Duplicates chỉ trên bản sao.",
+    "expected": "Có danh sách vấn đề dữ liệu và kết quả đối chiếu trước khi xử lý.",
+    "practice": "Kiểm tra dữ liệu từ nhiều nhóm/ca trước khi hợp nhất.",
+    "errors": "Tin dữ liệu nguồn luôn đúng; xóa trùng không có khóa; không ghi nhận lỗi nguồn; nhầm ô trống với chuỗi rỗng.",
+    "library": "K028;K027;K010"
+  },
+  {
+    "id": "C12L03",
+    "title": "Chuẩn hóa dữ liệu đầu vào",
+    "goal": "Đưa dữ liệu về cấu trúc bảng chuẩn, kiểu dữ liệu và danh mục thống nhất.",
+    "steps": [
+      "Tạo bản sao nguồn; chuyển vùng thành Table bằng Ctrl+T.",
+      "Chuẩn hóa tên cột và loại bỏ dòng tiêu đề lặp.",
+      "Chuyển Ngày thành Date, số lượng thành Whole Number, mã thành Text.",
+      "Dùng Data Validation hoặc Power Query Replace Values để chuẩn hóa danh mục.",
+      "Tạo khóa bản ghi theo quy tắc nghiệp vụ.",
+      "Kiểm tra dữ liệu trùng, thiếu và tổng số lượng trước/sau."
+    ],
+    "mouse": "Chuột trái Table/Data Validation; Power Query dùng chuột trái Data → Get Data; không chỉnh trực tiếp file nguồn gốc.",
+    "expected": "Bảng có cấu trúc nhất quán, kiểu dữ liệu đúng và không mất bản ghi ngoài quy tắc.",
+    "practice": "Chuẩn hóa mã lỗi, Model, Ca và ngày phát sinh.",
+    "errors": "Mã có số 0 đầu bị đổi thành số; chuẩn hóa làm gộp hai mã khác nhau; xóa dòng thiếu mà chưa đánh giá.",
+    "library": "K024;K006;K007;K029"
+  },
+  {
+    "id": "C12L04",
+    "title": "Thiết kế cấu trúc file báo cáo",
+    "goal": "Tổ chức Workbook thành vùng dữ liệu, danh mục, tính toán và báo cáo.",
+    "steps": [
+      "Tạo Workbook mới và đổi Sheet1 thành README hoặc Guide.",
+      "Thêm Data, Master, Calc và Report.",
+      "Quy định mỗi Sheet có một vai trò; không nhập dữ liệu thủ công vào vùng công thức.",
+      "Chuyển vùng nguồn thành Table và đặt tên rõ.",
+      "Đặt vị trí nhập liệu, ô tham số và vùng báo cáo.",
+      "Tạo quy tắc màu để phân biệt input, formula và output.",
+      "Lưu bản mẫu trước khi nhập dữ liệu thật."
+    ],
+    "mouse": "Chuột trái dấu + thêm Sheet; nhấp đúp tab đổi tên; Ctrl+T tạo Table; chuột phải tab để đổi màu.",
+    "expected": "Workbook có cấu trúc rõ và người dùng biết nhập dữ liệu ở đâu.",
+    "practice": "Thiết kế file báo cáo QC có Data, Master, Calc và Dashboard.",
+    "errors": "Gộp dữ liệu nguồn và báo cáo vào cùng vùng; đặt tên khó hiểu; công thức lẫn với ô nhập liệu.",
+    "library": "K001;K024;K025"
+  },
+  {
+    "id": "C12L05",
+    "title": "Xây dựng bảng tính và chỉ tiêu",
+    "goal": "Tính KPI từ dữ liệu chuẩn theo định nghĩa đã chốt.",
+    "steps": [
+      "Tạo bảng tham số cho kỳ, ca và ngưỡng.",
+      "Dùng SUMIFS/COUNTIFS để tính theo điều kiện.",
+      "Tính tỷ lệ bằng tổng tử số chia tổng mẫu số, dùng IFERROR có giải thích cho mẫu số 0.",
+      "Tách chỉ tiêu theo ca nếu yêu cầu.",
+      "Kiểm tra một ngày bằng cách lọc nguồn và tính đối chiếu.",
+      "Định dạng đơn vị và phần trăm; ghi rõ phạm vi."
+    ],
+    "mouse": "Chuột trái chọn ô công thức và tham số; dùng Filter đối chiếu; không gõ số ngưỡng rải rác trong công thức.",
+    "expected": "KPI thay đổi theo tham số; mẫu số đúng; kết quả đối chiếu được bằng dữ liệu nguồn.",
+    "practice": "Tính tỷ lệ lỗi theo Model, Ca và khoảng ngày.",
+    "errors": "Tính trung bình tỷ lệ từng ngày thay vì tổng lỗi/tổng sản lượng; mẫu số 0; điều kiện ngày bỏ sót giờ; bộ lọc không đồng nhất.",
+    "library": "SUMIFS;COUNTIFS;IFERROR;K018"
+  },
+  {
+    "id": "C12L06",
+    "title": "Tổng hợp và trực quan hóa kết quả",
+    "goal": "Tạo bảng tổng hợp và biểu đồ phù hợp với từng câu hỏi quản lý.",
+    "steps": [
+      "Tạo PivotTable từ Table chuẩn hoặc dùng SUMIFS/COUNTIFS.",
+      "Tổng hợp theo thời gian, nhóm và ca.",
+      "Tạo biểu đồ xu hướng, so sánh hoặc Pareto tùy mục tiêu.",
+      "Tạo KPI Cards và Slicer/Timeline nếu cần.",
+      "Kết nối bộ lọc với các PivotTable liên quan.",
+      "Ghi tiêu đề, đơn vị và thời điểm cập nhật."
+    ],
+    "mouse": "Chuột trái Insert → PivotTable/Chart; chuột phải ngày để Group; Slicer → Report Connections.",
+    "expected": "Bảng và biểu đồ cùng phản ánh phạm vi dữ liệu, KPI có đơn vị và bộ lọc rõ.",
+    "practice": "Tạo Dashboard quản lý chất lượng theo ca và Model.",
+    "errors": "Chart không theo Slicer; KPI khác phạm vi lọc; biểu đồ không phù hợp; thiếu đơn vị.",
+    "library": "K024;K020;K027"
+  },
+  {
+    "id": "C12L07",
+    "title": "Thiết lập kiểm tra và đối soát số liệu",
+    "goal": "Tạo kiểm tra chéo để phát hiện sai lệch trước khi phát hành.",
+    "steps": [
+      "Tính tổng nguồn và tổng báo cáo bằng công thức độc lập.",
+      "Đếm số dòng nguồn và số dòng sau làm sạch.",
+      "Đối chiếu theo ngày, ca và nhóm.",
+      "Tạo cột Check = Actual-Report hoặc trạng thái Match/Mismatch.",
+      "Lọc các dòng mismatch và truy ngược nguồn.",
+      "Ghi rõ sai lệch đã xử lý/chưa xử lý và người xác nhận."
+    ],
+    "mouse": "Chuột trái nhập công thức đối soát và Filter; không sửa số báo cáo để ép khớp.",
+    "expected": "Chênh lệch bằng 0 hoặc có danh sách ngoại lệ được giải thích; có dấu vết đối soát.",
+    "practice": "Đối chiếu tổng lỗi và sản lượng từ file nhập với Dashboard.",
+    "errors": "Chỉ đối chiếu Grand Total; bỏ qua phân nhóm; sửa kết quả thay vì tìm nguyên nhân; che sai lệch bằng IFERROR.",
+    "library": "K025;SUM;COUNTIFS;IFERROR"
+  },
+  {
+    "id": "C12L08",
+    "title": "Chuẩn hóa quy trình cập nhật định kỳ",
+    "goal": "Thiết lập quy trình thay dữ liệu, Refresh, kiểm tra và lưu phiên bản.",
+    "steps": [
+      "Xác định thư mục nguồn và quy tắc đặt tên file.",
+      "Xác định người được phép nhập và thời điểm khóa dữ liệu.",
+      "Nếu dùng Power Query, đặt đường dẫn nguồn ổn định và kiểm tra Query Dependencies.",
+      "Thay dữ liệu theo quy trình, không đổi tên cột tùy tiện.",
+      "Data → Refresh All.",
+      "Chạy checklist số dòng, tổng, kỳ và lỗi.",
+      "Lưu phiên bản theo ngày/giờ và ghi log cập nhật."
+    ],
+    "mouse": "Chuột trái Data → Refresh All; dùng Queries & Connections kiểm tra; không sửa file khi đang có người khác cập nhật nếu quy trình khóa đơn người.",
+    "expected": "Quy trình có đầu vào, người phụ trách, thao tác Refresh, kiểm tra và lịch sử phiên bản.",
+    "practice": "Cập nhật báo cáo QC hàng ngày hoặc hàng tháng từ file nhập nhóm.",
+    "errors": "Đường dẫn nguồn thay đổi; file bị ghi đè; nhiều người sửa đồng thời; Refresh nhưng không đối soát.",
+    "library": "K035;K043"
+  },
+  {
+    "id": "C12L09",
+    "title": "Đóng gói, lưu trữ và bàn giao báo cáo",
+    "goal": "Chuẩn bị file cuối, hướng dẫn sử dụng, nguồn và giới hạn báo cáo.",
+    "steps": [
+      "Xóa dữ liệu thử nghiệm và kiểm tra vùng ẩn.",
+      "Refresh All lần cuối; xác nhận kỳ và số dòng.",
+      "Vào File → Info kiểm tra Workbook Properties nếu cần.",
+      "Save As thành phiên bản phát hành; tạo PDF từ File → Export nếu cần.",
+      "Viết README gồm nguồn, kỳ, quy tắc KPI, cách Refresh và người liên hệ.",
+      "Đặt quyền truy cập theo chính sách; lưu bản nguồn và bản phát hành riêng.",
+      "Mở lại file/PDF để kiểm tra."
+    ],
+    "mouse": "Chuột trái File → Save As/Export; kiểm tra thư mục và quyền truy cập trước khi chia sẻ.",
+    "expected": "File mở được, số liệu đã cập nhật, tài liệu hướng dẫn đủ và phiên bản được nhận diện.",
+    "practice": "Bàn giao Dashboard QC kèm hướng dẫn cập nhật và định nghĩa KPI.",
+    "errors": "Gửi nhầm file thử nghiệm; PDF cũ; thiếu định nghĩa KPI; chia sẻ dữ liệu nhạy cảm không đúng quyền.",
+    "library": "K043;K046"
+  },
+  {
+    "id": "C12L10",
+    "title": "Bài thực hành tổng hợp: quy trình báo cáo doanh nghiệp",
+    "goal": "Triển khai trọn quy trình từ yêu cầu đến bàn giao một báo cáo có đối soát.",
+    "steps": [
+      "Nhận yêu cầu và viết định nghĩa KPI, đơn vị, mẫu số, kỳ, bộ lọc.",
+      "Kiểm tra file nguồn và lập danh sách lỗi dữ liệu.",
+      "Chuẩn hóa nguồn thành Table hoặc Power Query.",
+      "Thiết kế Workbook Data, Master, Calc, Report.",
+      "Tạo KPI và PivotTable theo nhóm/ngày/ca.",
+      "Tạo Dashboard, Slicer và biểu đồ.",
+      "Đối soát tổng, số dòng và một vài lát cắt.",
+      "Refresh thử với dữ liệu mới; ghi README và quy trình.",
+      "Lưu phiên bản phát hành và xuất PDF nếu cần."
+    ],
+    "mouse": "Chuột trái thao tác các tab Excel; chuột phải dùng ở PivotTable/Format; Refresh All trước khi phát hành.",
+    "expected": "Báo cáo có định nghĩa KPI, dữ liệu chuẩn, dashboard lọc được, số liệu đối soát và tài liệu bàn giao.",
+    "practice": "Dùng chính bảng báo cáo lỗi QC hoặc doanh số để mô phỏng một chu kỳ thật.",
+    "errors": "Bỏ qua xác nhận yêu cầu; không đối soát; chỉ làm đẹp Dashboard; không có hướng dẫn cập nhật.",
+    "library": "K024;K035;K020;SUMIFS;COUNTIFS"
+  }
+];
