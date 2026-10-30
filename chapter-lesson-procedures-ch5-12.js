@@ -531,7 +531,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "PivotTable hiển thị tổng doanh thu theo từng cửa hàng; tổng cộng khớp dữ liệu nguồn.",
     "practice": "Tổng hợp lỗi theo Model, Ca hoặc Nhóm lỗi.",
     "errors": "Nguồn thiếu tiêu đề; có dòng trống; cột số đang là Text; đặt nhầm trường vào Rows/Values.",
-    "library": "K024;SUM"
+    "library": "K024;SUM",
+    "concept": "PivotTable không sửa dữ liệu nguồn; nó tạo góc nhìn tổng hợp từ các trường. Sum chỉ phù hợp với đại lượng cộng được; mã, số thứ tự hoặc tỷ lệ không mặc nhiên được cộng.",
+    "example": "Nguồn gồm Cửa hàng A: 120, 150; Cửa hàng B: 90. Kết quả Sum theo cửa hàng phải là A = 270, B = 90, Grand Total = 360.",
+    "selfCheck": "Vì sao một cột Doanh thu đôi khi bị mặc định thành Count thay vì Sum?",
+    "answer": "Thường do một hoặc nhiều giá trị đang lưu dạng Text hoặc dữ liệu không đồng nhất. Kiểm tra kiểu dữ liệu nguồn, chuyển về Number, Refresh rồi đặt lại Summarize Values By = Sum.",
+    "passCriteria": "Tạo được PivotTable đúng trường, đúng phép tính; đối chiếu Grand Total với tổng nguồn và giải thích được vì sao chọn Sum."
   },
   {
     "id": "C7L02",
@@ -550,7 +555,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bảng thể hiện số lỗi theo Cửa hàng và Ca, có thể lọc theo Tháng.",
     "practice": "Tạo báo cáo lỗi theo Model × Ca × Nhóm lỗi.",
     "errors": "Kéo nhầm trường số vào Rows; đặt ngày vào Values mà không chọn phép tính; dùng nhãn không rõ nghĩa.",
-    "library": "K024;K025"
+    "library": "K024;K025",
+    "concept": "Bốn vùng quyết định cấu trúc báo cáo: Rows là nhóm theo hàng, Columns là nhóm theo cột, Values là phép tính, Filters là điều kiện lọc toàn báo cáo. Một trường đặt sai vùng có thể làm báo cáo khó đọc hoặc sai ý nghĩa.",
+    "example": "Dữ liệu có Cửa hàng, Ca, Số lỗi, Tháng. Rows = Cửa hàng; Columns = Ca; Values = Sum of Số lỗi; Filters = Tháng sẽ tạo ma trận lỗi theo cửa hàng và ca, lọc được từng tháng.",
+    "selfCheck": "Nếu kéo Số lỗi vào Rows thay vì Values thì báo cáo thay đổi thế nào?",
+    "answer": "Excel sẽ liệt kê các giá trị Số lỗi như nhãn nhóm thay vì cộng/đếm chúng. Đưa trường đo lường vào Values và chọn phép tính phù hợp.",
+    "passCriteria": "Tạo đúng báo cáo hai chiều, bộ lọc hoạt động và giải thích được vai trò của cả bốn vùng."
   },
   {
     "id": "C7L03",
@@ -568,7 +578,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Giá trị được tổng hợp theo phép tính đúng; định dạng vẫn giữ sau Refresh.",
     "practice": "Đếm số bản ghi lỗi thay vì cộng mã lỗi; tính trung bình sản lượng theo ca.",
     "errors": "Đếm nhầm trường số; định dạng ô bằng Home thay vì Number Format trong Value Field Settings khiến mất sau Refresh.",
-    "library": "K024;SUM;COUNT;AVERAGE"
+    "library": "K024;SUM;COUNT;AVERAGE",
+    "concept": "Summarize Values By quyết định cách tính dữ liệu; Number Format chỉ quyết định cách hiển thị. Định dạng trực tiếp ô thường không bền sau Refresh, nên định dạng số trong Value Field Settings.",
+    "example": "Các bản ghi số lỗi 2, 3, 5: Sum = 10; Count = 3; Average = 3,33. Ba kết quả trả lời ba câu hỏi khác nhau.",
+    "selfCheck": "Khi cần số bản ghi lỗi, nên dùng Sum hay Count?",
+    "answer": "Dùng Count nếu mỗi dòng là một bản ghi lỗi và trường được đếm không rỗng. Nếu cần đếm bản ghi có ô trống, cân nhắc đếm một mã định danh luôn có giá trị.",
+    "passCriteria": "Tạo được ba phép tính phù hợp và định dạng trong Value Field Settings; giải thích rõ đơn vị/kết quả."
   },
   {
     "id": "C7L04",
@@ -587,7 +602,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "PivotTable nhóm ngày theo tháng và năm, không còn liệt kê từng ngày.",
     "practice": "So sánh số lỗi theo tháng và năm, tránh gộp nhầm tháng cùng tên của hai năm.",
     "errors": "Nguồn ngày có Text hoặc Blank; chỉ group Months khiến tháng của nhiều năm bị cộng chung; quên Refresh.",
-    "library": "K007;K023"
+    "library": "K007;K023",
+    "concept": "Group gom ngày thành các cấp thời gian để nhận diện xu hướng. Group Months riêng có thể gộp tháng 1 của nhiều năm; chọn cả Years và Months để giữ đúng niên độ. Group cần trường ngày thực, không phải chuỗi văn bản.",
+    "example": "Ngày 05/01/2025 có 10 lỗi và 08/01/2026 có 7 lỗi. Group chỉ Months cho tháng 1 = 17; Group Years và Months giữ hai kỳ riêng: 2025 = 10, 2026 = 7.",
+    "selfCheck": "Vì sao báo cáo nhiều năm không nên chỉ Group theo Months?",
+    "answer": "Vì tháng cùng tên ở các năm khác nhau sẽ bị cộng chung, làm mất so sánh theo năm. Chọn Years cùng Months hoặc dùng cấu trúc ngày-năm riêng.",
+    "passCriteria": "Nhóm được ít nhất hai năm theo năm và tháng; giải thích được lỗi gộp tháng trùng tên."
   },
   {
     "id": "C7L05",
@@ -605,7 +625,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Chỉ nhóm đáp ứng điều kiện được hiển thị; bộ lọc không xóa dữ liệu nguồn.",
     "practice": "Tìm 10 model có số lỗi cao nhất hoặc cửa hàng vượt ngưỡng.",
     "errors": "Dùng Label Filter khi cần lọc số; lọc nhầm trường Values; quên xóa filter khi xuất báo cáo.",
-    "library": "K026;K027"
+    "library": "K026;K027",
+    "concept": "Label Filters lọc theo nội dung nhãn; Value Filters lọc theo kết quả tổng hợp. Top 10 là bộ lọc theo thứ hạng, không phải cam kết chỉ có đúng 10 dòng nếu thay đổi thiết lập.",
+    "example": "Các model có số lỗi M1 = 18, M2 = 7, M3 = 25. Value Filters Greater Than 10 giữ M1 và M3; Label Filters Begins With M giữ cả ba nếu cùng tiền tố.",
+    "selfCheck": "Muốn tìm model có tổng lỗi lớn hơn 10, dùng loại lọc nào?",
+    "answer": "Dùng Value Filters vì điều kiện áp dụng lên giá trị đã tổng hợp; Label Filters chỉ xét tên model.",
+    "passCriteria": "Áp dụng đúng một Label Filter và một Value Filter, kiểm tra phạm vi lọc và biết cách Clear Filter."
   },
   {
     "id": "C7L06",
@@ -624,7 +649,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "PivotTable thay đổi theo lựa chọn Slicer/Timeline; trạng thái lọc hiển thị rõ.",
     "practice": "Dashboard lỗi theo ca, tháng và model.",
     "errors": "Trường ngày chưa đúng kiểu Date; Slicer không liên kết PivotTable khác; quên Clear Filter.",
-    "library": "K024;K007"
+    "library": "K024;K007",
+    "concept": "Slicer lọc danh mục, Timeline lọc trường ngày. Chúng chỉ điều khiển PivotTable được kết nối qua Report Connections; đặt cạnh nhau không tự tạo liên kết. Trường ngày phải có kiểu Date để Timeline hoạt động.",
+    "example": "Một Slicer Cửa hàng chọn A sẽ lọc các PivotTable đã kết nối về cửa hàng A. Nếu bảng lỗi không đổi, kiểm tra Report Connections và nguồn/cache của PivotTable.",
+    "selfCheck": "Vì sao Slicer có thể lọc một PivotTable nhưng không lọc PivotTable khác?",
+    "answer": "PivotTable kia có thể không được kết nối, dùng Pivot Cache/nguồn khác hoặc cấu trúc trường không tương thích. Mở Report Connections để kiểm tra.",
+    "passCriteria": "Tạo được Slicer và Timeline, kết nối đúng bảng cần lọc và chứng minh bằng ít nhất hai lựa chọn."
   },
   {
     "id": "C7L07",
@@ -642,7 +672,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Biểu đồ hiển thị cùng bộ lọc và dữ liệu PivotTable.",
     "practice": "So sánh số lỗi theo nhóm lỗi hoặc theo tháng.",
     "errors": "Chọn Pie cho quá nhiều nhóm; tiêu đề không nói đơn vị; tạo chart từ vùng không thuộc PivotTable rồi tưởng nó tự lọc.",
-    "library": "K024"
+    "library": "K024",
+    "concept": "PivotChart gắn với PivotTable nên phản ánh cấu trúc tổng hợp và bộ lọc của PivotTable. Loại biểu đồ phải theo câu hỏi: cột/thanh để so sánh, đường để xem xu hướng. Biểu đồ không thay thế việc kiểm tra dữ liệu.",
+    "example": "Số lỗi theo nhóm: Máy 12, Người 8, Vật liệu 3. Biểu đồ cột giúp so sánh quy mô; nếu dữ liệu theo tháng, biểu đồ đường thể hiện xu hướng tốt hơn.",
+    "selfCheck": "Khi cần so sánh số lỗi giữa nhiều nhóm, nên ưu tiên loại biểu đồ nào?",
+    "answer": "Biểu đồ cột hoặc thanh; biểu đồ đường phù hợp hơn khi trục ngang là chuỗi thời gian có thứ tự.",
+    "passCriteria": "Tạo PivotChart đúng loại, có tiêu đề và đơn vị, thay đổi theo Slicer và đối chiếu được với PivotTable."
   },
   {
     "id": "C7L08",
@@ -660,7 +695,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Một Slicer lọc đồng thời các PivotTable được chọn.",
     "practice": "Một bộ lọc Cửa hàng điều khiển cả bảng tổng lỗi và biểu đồ theo ca.",
     "errors": "PivotTable tạo từ nguồn/cache khác; trường tên khác nhau; tưởng Slicer tự liên kết mọi PivotTable trong file.",
-    "library": "K024"
+    "library": "K024",
+    "concept": "Report Connections là nơi khai báo Slicer điều khiển những PivotTable nào. Thông thường các PivotTable cần dùng chung Pivot Cache; cùng một bảng nguồn chưa chắc đã bảo đảm dùng chung cache nếu tạo theo cách khác nhau.",
+    "example": "PivotTable A tổng lỗi theo Model; PivotTable B tổng lỗi theo Ca. Nếu cả hai tương thích và được kết nối, chọn Model X trên Slicer sẽ lọc cả hai báo cáo theo Model X.",
+    "selfCheck": "Nếu PivotTable B không xuất hiện trong Report Connections, cần kiểm tra gì trước?",
+    "answer": "Kiểm tra PivotTable B có cùng Pivot Cache/nguồn và trường tương thích hay không. Có thể tạo lại các PivotTable từ cùng Table hoặc dùng Data Model khi cần mô hình quan hệ.",
+    "passCriteria": "Một Slicer điều khiển đồng thời ít nhất hai PivotTable và người học giải thích được điều kiện kết nối."
   },
   {
     "id": "C7L09",
@@ -678,7 +718,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bản ghi mới xuất hiện trong PivotTable; tổng số dòng và số liệu thay đổi đúng.",
     "practice": "Cập nhật dữ liệu hàng ngày bằng cách paste thêm vào cuối Table rồi Refresh.",
     "errors": "Paste ngoài Table; nguồn vùng cố định không bao gồm dòng mới; quên Refresh; Refresh All làm mới nhiều kết nối.",
-    "library": "K024;K025"
+    "library": "K024;K025",
+    "concept": "Refresh cập nhật PivotTable từ nguồn; Refresh All còn có thể làm mới nhiều truy vấn/kết nối khác. Excel Table tự mở rộng khi nhập liền dưới cuối bảng, còn vùng nguồn cố định có thể bỏ sót dòng mới.",
+    "example": "Table tblSales có 100 dòng. Thêm giao dịch thứ 101 vào cuối Table rồi Refresh; tổng PivotTable phải tăng đúng bằng doanh thu giao dịch mới.",
+    "selfCheck": "Vì sao thêm dòng vào sheet nhưng PivotTable vẫn không đổi sau Refresh?",
+    "answer": "Dòng mới có thể nằm ngoài vùng nguồn, không thuộc Excel Table, hoặc PivotTable đang trỏ nguồn khác. Kiểm tra Table Name và Change Data Source.",
+    "passCriteria": "Thêm bản ghi, Refresh thành công, xác nhận bản ghi xuất hiện và tổng khớp phép tính độc lập."
   },
   {
     "id": "C7L10",
@@ -697,7 +742,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Báo cáo có thể lọc, tổng số khớp nguồn và các bảng có tiêu đề/đơn vị rõ.",
     "practice": "Tạo báo cáo tuần cho quản lý chất lượng theo Model, Ca và nhóm lỗi.",
     "errors": "KPI không theo slicer; trường ngày chưa chuẩn; định dạng bị reset sau Refresh; không ghi rõ phạm vi dữ liệu.",
-    "library": "K024;K020;K027"
+    "library": "K024;K020;K027",
+    "concept": "Báo cáo tốt cần xác định câu hỏi, phạm vi lọc, đơn vị, thời điểm cập nhật và phép đối chiếu. KPI, bảng và biểu đồ phải dùng cùng định nghĩa và cùng bộ lọc; không chỉ làm đẹp hình thức.",
+    "example": "Báo cáo QC có tổng lỗi theo Model, lỗi theo Ca và xu hướng theo Ngày. Chọn một tháng và một ca, tổng KPI phải khớp tổng các nhóm đang hiển thị trong cùng phạm vi.",
+    "selfCheck": "Trước khi bàn giao, cần kiểm tra điều gì để tránh KPI và PivotTable lệch nhau?",
+    "answer": "Kiểm tra cùng nguồn, cùng điều kiện lọc, cùng kỳ, cùng định nghĩa chỉ tiêu; đối chiếu tổng với dữ liệu nguồn đã lọc.",
+    "passCriteria": "Báo cáo có tối thiểu hai góc nhìn, bộ lọc rõ, đơn vị/kỳ đầy đủ và tổng được đối chiếu."
   },
   {
     "id": "C7L11",
@@ -716,7 +766,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "PivotTable, PivotChart và bộ lọc cập nhật sau Refresh; tổng đối chiếu khớp.",
     "practice": "Đổi ví dụ thành dữ liệu lỗi QC theo Model và Ca.",
     "errors": "Nguồn không phải Table; ngày là Text; PivotChart không theo Slicer; không đối chiếu tổng.",
-    "library": "K024;SUM;K007"
+    "library": "K024;SUM;K007",
+    "concept": "Bài thực hành kết hợp Table, PivotTable, PivotChart, Slicer và Timeline. Tổng PivotTable cần được xác nhận bằng phép tính độc lập; công thức đối chiếu phải dùng cùng phạm vi dữ liệu và tiêu chí.",
+    "example": "Dữ liệu mẫu: A tháng 1 doanh thu 100; A tháng 2 là 120; B tháng 1 là 80. Tổng theo cửa hàng: A = 220, B = 80; toàn bộ = 300.",
+    "selfCheck": "Nếu tổng PivotTable là 300 nhưng SUM(tblSales[Doanh thu]) là 280, hãy kiểm tra những nguyên nhân nào?",
+    "answer": "Có thể có dòng ngoài Table, giá trị Text, bộ lọc chưa được tính đồng nhất, hoặc PivotTable chưa Refresh. So sánh phạm vi, kiểu dữ liệu và trạng thái lọc.",
+    "passCriteria": "Hoàn thành báo cáo có thể lọc theo cửa hàng/thời gian, thêm giao dịch mới và đối chiếu tổng chính xác."
   },
   {
     "id": "C8L01",
@@ -735,7 +790,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Biểu đồ trả lời đúng câu hỏi: xu hướng, so sánh hay cơ cấu.",
     "practice": "Chọn biểu đồ theo dõi lỗi theo tháng, so sánh model và cơ cấu nguyên nhân.",
     "errors": "Chọn chart theo sở thích; dùng Pie quá nhiều nhóm; thiếu đơn vị; trục không bắt đầu từ 0 khi so sánh cột.",
-    "library": "K025"
+    "library": "K025",
+    "concept": "Chọn biểu đồ theo câu hỏi phân tích, không theo sở thích. Line phù hợp xu hướng theo thời gian; Column/Bar phù hợp so sánh nhóm; Pie chỉ nên dùng cho cơ cấu ít thành phần, cùng một tổng thể.",
+    "example": "Doanh thu 6 tháng dùng Line để xem xu hướng; doanh thu 5 cửa hàng dùng Bar để xếp hạng; tỷ trọng 3 nhóm chi phí có thể dùng Pie nếu tổng bằng 100%.",
+    "selfCheck": "Có 20 nhóm lỗi cần xếp hạng, Pie có phải lựa chọn tốt không?",
+    "answer": "Không. Dùng Bar/Column để so sánh và đọc tên nhóm; Pie quá nhiều lát khiến khó phân biệt.",
+    "passCriteria": "Chọn đúng loại cho ba tình huống xu hướng, so sánh và cơ cấu; nêu được lý do."
   },
   {
     "id": "C8L02",
@@ -753,7 +813,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Trục danh mục và chuỗi dữ liệu đúng; không lấy nhầm tiêu đề hoặc dòng tổng.",
     "practice": "Tạo biểu đồ số lỗi theo tháng cho từng ca.",
     "errors": "Chọn vùng thiếu tiêu đề; lấy nhầm cột ID làm số; không kiểm tra Select Data.",
-    "library": "K025"
+    "library": "K025",
+    "concept": "Biểu đồ dựa trên vùng dữ liệu và cách Excel nhận diện chuỗi. Select Data cho phép kiểm tra Series Name, Series Values và Horizontal Axis Labels; Switch Row/Column đổi cách diễn giải hàng/cột.",
+    "example": "Bảng có Tháng ở A2:A4, Ca ngày ở B2:B4 và Ca đêm ở C2:C4. Biểu đồ đúng phải có tháng trên trục ngang và hai chuỗi Ca ngày/Ca đêm.",
+    "selfCheck": "Nếu biểu đồ đang dùng tên nhân viên làm trục ngang thay vì tháng, nên kiểm tra ở đâu?",
+    "answer": "Mở Select Data, sửa Horizontal Axis Labels về vùng tháng và kiểm tra từng Series Values.",
+    "passCriteria": "Tạo biểu đồ với đúng nhãn trục và chuỗi, không lấy nhầm ID hoặc dòng tổng."
   },
   {
     "id": "C8L03",
@@ -771,7 +836,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Người xem hiểu đơn vị, khoảng thời gian, từng chuỗi và thang đo.",
     "practice": "Định dạng trục số lỗi, phần trăm lỗi hoặc doanh thu theo triệu đồng.",
     "errors": "Cắt trục làm phóng đại chênh lệch; nhãn chồng lấn; thiếu đơn vị; quá nhiều Data Labels.",
-    "library": "K018;K019"
+    "library": "K018;K019",
+    "concept": "Trục biểu đồ quyết định cách người xem cảm nhận quy mô. Đơn vị, khoảng chia và Bounds phải trung thực; không tùy tiện cắt trục để phóng đại chênh lệch. Data Labels chỉ bật khi giúp đọc số liệu.",
+    "example": "Số lỗi của ba tháng là 10, 12, 14. Nếu trục tung bắt đầu từ 9, chênh lệch nhìn sẽ bị phóng đại; với biểu đồ cột so sánh, thường nên bắt đầu từ 0.",
+    "selfCheck": "Khi nào cần thận trọng với việc đặt Minimum của trục tung lớn hơn 0?",
+    "answer": "Khi biểu đồ cột dùng để so sánh độ lớn, vì cắt trục có thể làm chênh lệch trông lớn hơn thực tế. Nếu dùng biểu đồ đường, vẫn phải ghi rõ thang đo.",
+    "passCriteria": "Biểu đồ có tiêu đề, đơn vị, chú giải dễ hiểu; giải thích được lựa chọn thang đo và tránh gây hiểu nhầm."
   },
   {
     "id": "C8L04",
@@ -789,7 +859,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Biểu đồ hiển thị đúng nhóm được chọn và thứ tự có chủ đích.",
     "practice": "Hiển thị Top 5 nhóm lỗi thay vì hàng chục nhóm nhỏ.",
     "errors": "Lọc trên chart nhưng quên dữ liệu nguồn; đảo trục khiến trục giá trị chuyển vị trí; Top 5 không cập nhật nếu vùng nguồn tĩnh.",
-    "library": "K026;K027"
+    "library": "K026;K027",
+    "concept": "Thứ tự danh mục có thể đến từ dữ liệu nguồn hoặc thiết lập trục. Chart Filters chỉ ẩn/hiện danh mục và chuỗi trong biểu đồ; nó không xóa dữ liệu nguồn và không tự tạo Top N động cho mọi kiểu nguồn.",
+    "example": "Số lỗi M1 = 18, M2 = 7, M3 = 25. Sắp xếp nguồn giảm dần sẽ hiển thị M3, M1, M2; bộ lọc chart có thể tạm ẩn M2.",
+    "selfCheck": "Ẩn một Series bằng Chart Filters có xóa dữ liệu gốc không?",
+    "answer": "Không. Nó chỉ thay đổi những gì biểu đồ hiển thị; dữ liệu nguồn vẫn còn.",
+    "passCriteria": "Sắp xếp được danh mục, ẩn/hiện được chuỗi và phân biệt rõ lọc biểu đồ với lọc dữ liệu nguồn."
   },
   {
     "id": "C8L05",
@@ -807,7 +882,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Doanh thu và tỷ lệ lỗi cùng hiển thị nhưng mỗi chỉ tiêu có trục đúng đơn vị.",
     "practice": "Theo dõi sản lượng và tỷ lệ lỗi theo tháng.",
     "errors": "Không gắn nhãn hai trục; dùng Secondary Axis để che xu hướng; chọn nhầm series; tỷ lệ lỗi định dạng thành số thập phân khó đọc.",
-    "library": "K018"
+    "library": "K018",
+    "concept": "Combo Chart dùng hai dạng biểu đồ trong cùng một vùng; Secondary Axis dành cho chuỗi có thang đo/đơn vị khác. Hai trục giúp đọc dữ liệu nhưng cũng có thể tạo cảm giác tương quan giả nếu thiết lập thiếu minh bạch.",
+    "example": "Doanh thu là 500–700 triệu đồng, tỷ lệ lỗi là 0,5–2%. Dùng cột cho doanh thu và đường cho tỷ lệ lỗi trên trục phụ; ghi rõ đơn vị ở hai trục.",
+    "selfCheck": "Vì sao không nên dùng Secondary Axis chỉ để hai đường/cột trông đẹp hơn?",
+    "answer": "Vì thang đo tùy chỉnh có thể làm biến dạng cảm nhận về quan hệ giữa hai chỉ tiêu. Chỉ dùng khi khác đơn vị/thang đo và ghi nhãn rõ.",
+    "passCriteria": "Tạo Combo Chart đúng chuỗi, đúng trục, ghi đơn vị hai bên và giải thích lý do dùng trục phụ."
   },
   {
     "id": "C8L06",
@@ -825,7 +905,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "KPI hiển thị giá trị, đơn vị, kỳ và trạng thái; thay đổi dữ liệu làm KPI cập nhật.",
     "practice": "Tạo thẻ tổng số lỗi, tỷ lệ lỗi, số AGV gặp sự cố và mức hoàn thành mục tiêu.",
     "errors": "KPI không cùng phạm vi lọc; % tính sai mẫu số; thiếu đơn vị/kỳ; màu xanh đỏ không có chú giải.",
-    "library": "K020;K018;SUMIFS;COUNTIFS"
+    "library": "K020;K018;SUMIFS;COUNTIFS",
+    "concept": "KPI Card là lớp trình bày, không phải nguồn tính toán. Công thức KPI cần đúng tử số, mẫu số, kỳ và phạm vi lọc. Merge chỉ nên dùng vùng trình bày; không merge bảng dữ liệu gốc hoặc vùng cần lọc.",
+    "example": "Doanh thu 900 triệu, Target 1.000 triệu thì % đạt = 90%. Nếu số lỗi là 12 trên 600 sản phẩm kiểm tra thì tỷ lệ lỗi = 2%, không phải 12%.",
+    "selfCheck": "Một KPI % đạt doanh thu nên lấy số nào làm mẫu số?",
+    "answer": "Target của đúng kỳ và phạm vi đang chọn. Không chia cho tổng doanh thu hoặc số dòng dữ liệu.",
+    "passCriteria": "Tạo ít nhất ba KPI có công thức đúng, đơn vị/kỳ rõ ràng và thay đổi đúng khi bộ lọc thay đổi."
   },
   {
     "id": "C8L07",
@@ -845,7 +930,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Dashboard có thứ tự đọc rõ, không chồng lấn và người xem tìm được bộ lọc.",
     "practice": "Thiết kế Dashboard QC theo tổng quan → xu hướng → nguyên nhân.",
     "errors": "Quá nhiều biểu đồ; màu sắc thiếu nhất quán; KPI không có kỳ; đối tượng lệch; không thử màn hình nhỏ.",
-    "library": "K020;K021"
+    "library": "K020;K021",
+    "concept": "Dashboard là giao diện trả lời câu hỏi nhanh. Thứ tự thường là bối cảnh/kỳ, KPI tổng quan, xu hướng, phân tích nguyên nhân và bộ lọc. Giảm số biểu đồ và ưu tiên khả năng đọc thay vì trang trí.",
+    "example": "Dashboard QC: hàng đầu là Tổng lỗi, Tỷ lệ lỗi, Số AGV gặp sự cố; bên dưới là xu hướng lỗi theo ngày và biểu đồ nhóm nguyên nhân; bộ lọc Ca/Model đặt ở vị trí nhất quán.",
+    "selfCheck": "Vì sao không nên đặt quá nhiều biểu đồ trên một màn hình?",
+    "answer": "Nhiều biểu đồ làm loãng trọng tâm, tăng thời gian đọc và dễ khiến người xem bỏ qua chỉ số quan trọng. Chỉ giữ biểu đồ trả lời câu hỏi quản lý.",
+    "passCriteria": "Bố cục có luồng đọc rõ, không chồng lấn, KPI có kỳ/đơn vị và bộ lọc dễ tìm."
   },
   {
     "id": "C8L08",
@@ -863,7 +953,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Biểu đồ thay đổi khi chọn bộ lọc; KPI và bảng liên quan cùng phạm vi.",
     "practice": "Dashboard cho phép chọn ca ngày/ca đêm và tháng.",
     "errors": "Slicer không kết nối PivotTable; KPI dùng vùng khác; chart thường không tự nhận Slicer.",
-    "library": "K024;K027"
+    "library": "K024;K027",
+    "concept": "Biểu đồ chỉ đổi theo Slicer nếu là PivotChart gắn với PivotTable được kết nối, hoặc biểu đồ thường lấy dữ liệu từ công thức/vùng phụ thuộc lựa chọn lọc. Đặt Slicer cạnh chart không tạo liên kết tự động.",
+    "example": "Một Slicer Ca lọc PivotTable lỗi theo ngày. Nếu KPI lấy từ SUMIFS không tham chiếu lựa chọn Ca, KPI vẫn đứng yên dù PivotChart thay đổi.",
+    "selfCheck": "Vì sao PivotChart đổi theo Slicer nhưng KPI Card không đổi?",
+    "answer": "KPI có thể đang dùng công thức hoặc vùng dữ liệu khác không phụ thuộc bộ lọc Slicer. Cần đồng bộ nguồn và điều kiện lọc của KPI.",
+    "passCriteria": "Chứng minh được ít nhất một Slicer điều khiển chart và KPI cùng phạm vi; giải thích được đường liên kết."
   },
   {
     "id": "C8L09",
@@ -882,7 +977,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Không có KPI lệch bộ lọc, thiếu đơn vị, nhãn bị cắt hoặc tổng không đối chiếu được.",
     "practice": "Tạo checklist kiểm tra Dashboard trước khi gửi quản lý.",
     "errors": "Chỉ kiểm tra khi không có filter; so sánh tỷ lệ phần trăm với số lượng; bỏ qua cập nhật nguồn.",
-    "library": "K020;K018"
+    "library": "K020;K018",
+    "concept": "Kiểm tra Dashboard phải bao gồm cả trạng thái có lọc và không lọc. Đối chiếu cùng kỳ, cùng đơn vị, cùng điều kiện; kiểm tra nhãn, màu, thang đo, vùng in và thời điểm Refresh.",
+    "example": "Chọn riêng Ca đêm trong tháng 3: tổng KPI phải bằng tổng các nhóm lỗi trên biểu đồ trong cùng bộ lọc; Clear Filter phải khôi phục tổng toàn bộ.",
+    "selfCheck": "Tại sao chỉ kiểm tra Dashboard khi chưa chọn Slicer là chưa đủ?",
+    "answer": "Vì lỗi kết nối hoặc công thức lệch phạm vi chỉ xuất hiện khi lọc. Cần thử nhiều tổ hợp lọc và Clear Filter.",
+    "passCriteria": "Hoàn thành checklist kiểm tra số liệu, bộ lọc, nhãn, đơn vị và Print Preview; không có sai lệch chưa giải thích."
   },
   {
     "id": "C8L10",
@@ -901,7 +1001,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Dashboard có KPI và biểu đồ cùng phản ánh một lựa chọn bộ lọc; tổng được đối chiếu.",
     "practice": "Thay doanh thu bằng sản lượng và số lỗi QC để áp dụng cho báo cáo chất lượng.",
     "errors": "KPI và chart khác phạm vi lọc; quên Refresh; không ghi đơn vị; chart không phù hợp với câu hỏi.",
-    "library": "K024;SUMIFS;COUNTIFS;K020"
+    "library": "K024;SUMIFS;COUNTIFS;K020",
+    "concept": "Bài thực hành kiểm tra năng lực tích hợp: dữ liệu nguồn phải chuẩn, PivotTable/Chart có cùng phạm vi, KPI dùng đúng mẫu số và Slicer kết nối đúng. Refresh là bước cập nhật, không thay thế việc xác nhận dữ liệu đầu vào.",
+    "example": "tblDaily có Doanh thu 100, 150 và Target 100, 200. Tổng doanh thu = 250; tổng Target = 300; % đạt tổng = 83,33%. Không lấy trung bình đơn giản của hai tỷ lệ ngày nếu mục tiêu là tỷ lệ toàn kỳ.",
+    "selfCheck": "Với hai ngày có % đạt lần lượt 100% và 75%, có thể lấy trung bình 87,5% làm % đạt cả kỳ không?",
+    "answer": "Không mặc nhiên. % đạt toàn kỳ phải tính tổng Doanh thu chia tổng Target. Ví dụ 100/100 và 150/200 cho tổng kỳ 250/300 = 83,33%.",
+    "passCriteria": "Dashboard có KPI và chart cùng phạm vi lọc, phép tính tổng kỳ đúng, thêm dữ liệu mới/Refresh và đối chiếu thành công."
   },
   {
     "id": "C9L01",
