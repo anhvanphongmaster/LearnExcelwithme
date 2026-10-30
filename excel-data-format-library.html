@@ -37,11 +37,11 @@ html[data-avp-display-mode=mobile] .df-hero,html[data-avp-display-mode=mobile] .
 <section class="df-results"><div class="df-results-head"><h2 id="dfResultsTitle">Tất cả chủ đề</h2><span class="df-result-count" id="dfResultCount">20 chủ đề</span></div><div class="df-grid" id="dfGrid"></div></section>
 </main>
 <div class="df-modal" id="dfModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="dfDetailTitle"><article class="df-reader"><header class="df-reader-head"><span class="df-reader-kicker">ĐỊNH DẠNG & DỮ LIỆU EXCEL</span><button class="df-close" id="dfClose" type="button" aria-label="Đóng">×</button></header><div class="df-reader-body" id="dfReaderBody"></div></article></div>
-<script src="excel-data-format-library-data.js"></script>
+<script src="excel-data-format-library-data.js?v=2"></script>
 <script>
 (function(){
 "use strict";
-const LIB=window.AVP_DATA_LIBRARY;if(!LIB||!Array.isArray(LIB.items))return;
+const LIB=window.AVP_DATA_LIBRARY;if(!LIB||!Array.isArray(LIB.items)){const msg="<div class=\"df-empty\"><strong>Chưa tải được dữ liệu thư viện.</strong><p>Hãy tải lại trang. Nếu lỗi vẫn tiếp diễn, báo lại để kiểm tra file dữ liệu.</p></div>";document.getElementById("dfCategories").innerHTML=msg;document.getElementById("dfTopics").innerHTML=msg;return;}
 const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const KEY="avp_data_format_completed_v1";let completed=new Set();try{completed=new Set(JSON.parse(localStorage.getItem(KEY)||"[]"))}catch(e){}
 let category="all",level="Tất cả",current=0;
