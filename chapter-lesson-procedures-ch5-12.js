@@ -15,7 +15,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bạn xác định được tab chứa lệnh cần dùng và không phải tìm mò trên Ribbon.",
     "practice": "Tìm nhanh lệnh Freeze Panes, Remove Duplicates và Conditional Formatting.",
     "errors": "Nhầm tab với nhóm lệnh; nhấn nhầm lệnh khi chỉ muốn xem; Ribbon có thể khác vị trí theo phiên bản Excel.",
-    "library": "K003;K020;K026"
+    "library": "K003;K020;K026",
+    "concept": "Ribbon được tổ chức theo tab, trong mỗi tab là các nhóm lệnh; cùng một thao tác có thể xuất hiện ở nhiều vị trí tùy phiên bản và kích thước cửa sổ.",
+    "example": "Ví dụ: muốn cố định hàng tiêu đề, tìm View → Freeze Panes; muốn xóa dòng trùng, tìm Data → Remove Duplicates.",
+    "selfCheck": "Nếu cần tìm Remove Duplicates, bạn mở tab nào?",
+    "answer": "Data. Hãy giải thích vì sao không nên bấm thử các lệnh chưa rõ chức năng.",
+    "passCriteria": "Tìm đúng ít nhất 3 lệnh được giao và giải thích được tab/nhóm chứa lệnh."
   },
   {
     "id": "C5L02",
@@ -33,7 +38,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Copy giữ dữ liệu nguồn; Cut chuyển dữ liệu; Values chỉ dán kết quả.",
     "practice": "Sao chép vùng báo cáo sang Sheet bàn giao mà không mang công thức liên kết.",
     "errors": "Copy thiếu vùng; dán đè dữ liệu; dùng Cut khi cần giữ bản gốc; nhầm Values với Paste thường.",
-    "library": "K048;Ctrl+C;Ctrl+X;Ctrl+V"
+    "library": "K048;Ctrl+C;Ctrl+X;Ctrl+V",
+    "concept": "Clipboard lưu tạm nội dung sao chép hoặc cắt. Copy tạo bản sao; Cut chuyển vùng; Paste Special cho phép chọn thành phần được dán.",
+    "example": "Ví dụ: ô G2 chứa =E2*F2. Dán Values sang Sheet bàn giao sẽ giữ kết quả hiện tại, không mang công thức phụ thuộc dữ liệu nguồn.",
+    "selfCheck": "Khi cần gửi báo cáo chỉ giữ kết quả tính, chọn kiểu dán nào?",
+    "answer": "Paste Special → Values. Kiểm tra Formula Bar để xác nhận ô đích không còn công thức.",
+    "passCriteria": "Sao chép, di chuyển và dán giá trị đúng vùng; không ghi đè dữ liệu ngoài dự kiến."
   },
   {
     "id": "C5L03",
@@ -51,7 +61,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Tiêu đề nổi bật, chữ dễ đọc, không dùng quá nhiều màu và đường viền.",
     "practice": "Định dạng tiêu đề báo cáo QC, phân biệt tiêu đề cột và dòng tổng.",
     "errors": "Tô màu quá nhiều; dùng màu chữ gần giống nền; xóa nhầm nội dung bằng Clear All thay vì Clear Formats.",
-    "library": "K021;K019"
+    "library": "K021;K019",
+    "concept": "Font định dạng phần nhìn thấy của dữ liệu, không thay đổi giá trị bên trong ô. Nên dùng định dạng để tạo thứ bậc, không dùng màu thay cho ý nghĩa dữ liệu.",
+    "example": "Ví dụ: A1:F1 là tiêu đề báo cáo; in đậm, tô nền nhẹ và thêm Bottom Border giúp phân biệt tiêu đề với dữ liệu.",
+    "selfCheck": "Clear Formats có xóa nội dung ô không?",
+    "answer": "Không. Clear Formats chỉ xóa định dạng; Clear Contents mới xóa nội dung.",
+    "passCriteria": "Tạo được tiêu đề dễ đọc và phân biệt rõ thao tác xóa định dạng với xóa dữ liệu."
   },
   {
     "id": "C5L04",
@@ -70,7 +85,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Nội dung hiển thị đủ; tiêu đề được căn chỉnh; bảng dữ liệu vẫn có cấu trúc ô riêng.",
     "practice": "Tạo tiêu đề báo cáo nhiều cột nhưng giữ nguyên dữ liệu ở từng ô.",
     "errors": "Gộp ô trong vùng dữ liệu khiến Sort, Filter, PivotTable khó hoạt động; Wrap Text không tự tăng cột; căn giữa toàn bộ dữ liệu gây khó đọc.",
-    "library": "K025;K022"
+    "library": "K025;K022",
+    "concept": "Alignment điều khiển vị trí hiển thị của nội dung trong ô. Gộp ô làm mất cấu trúc ô độc lập ở vùng gộp nên thường không phù hợp với bảng dữ liệu.",
+    "example": "Ví dụ: tiêu đề báo cáo A1:F1 có thể căn giữa; bảng giao dịch bên dưới không gộp ô để vẫn Sort, Filter và PivotTable được.",
+    "selfCheck": "Vì sao không nên Merge & Center trong vùng dữ liệu?",
+    "answer": "Vì ô gộp làm cấu trúc hàng/cột không đồng nhất, gây khó khăn khi lọc, sắp xếp và tổng hợp.",
+    "passCriteria": "Căn chỉnh tiêu đề đúng cách, giữ vùng dữ liệu không có ô gộp."
   },
   {
     "id": "C5L05",
@@ -88,7 +108,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Số tiền có dấu phân cách, tỷ lệ 7,5%, ngày hiển thị đúng định dạng; giá trị gốc không bị đổi.",
     "practice": "Chuẩn hóa định dạng báo cáo doanh số, tỷ lệ lỗi và thời gian kiểm tra.",
     "errors": "Nhập 7.5 rồi định dạng Percentage thành 750%; định dạng không chuyển Text thành số; nhầm tiền tệ hoặc vùng ngày.",
-    "library": "K018;K019;K023"
+    "library": "K018;K019;K023",
+    "concept": "Number Format thay đổi cách hiển thị, không nhất thiết thay đổi giá trị lưu trong ô. Phần trăm trong Excel lưu dạng thập phân: 0,075 hiển thị 7,5%.",
+    "example": "Ví dụ: nhập 0,075 rồi chọn Percentage sẽ hiển thị 7,5%; nhập 7,5 rồi chọn Percentage sẽ thành 750%.",
+    "selfCheck": "Muốn hiển thị 7,5% thì giá trị số gốc nên là bao nhiêu?",
+    "answer": "0,075. Nếu dữ liệu đang là 7,5 thì cần xác định đó là 7,5% hay 7,5 lần trước khi đổi.",
+    "passCriteria": "Định dạng đúng số, ngày và tỷ lệ; giải thích được khác biệt giữa giá trị gốc và cách hiển thị."
   },
   {
     "id": "C5L06",
@@ -106,7 +131,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Các ô vượt ngưỡng được tô tự động; thay đổi giá trị thì định dạng thay đổi theo.",
     "practice": "Tô đỏ số lỗi vượt ngưỡng và tô xanh trạng thái đạt.",
     "errors": "Áp dụng quy tắc cho sai vùng; dùng màu thủ công thay Conditional Formatting; tạo quy tắc chồng chéo không kiểm tra thứ tự.",
-    "library": "K020;K021"
+    "library": "K020;K021",
+    "concept": "Cell Styles là kiểu định dạng áp dụng nhanh; Conditional Formatting là quy tắc thay đổi định dạng theo giá trị hoặc công thức. Quy tắc cần đúng phạm vi và điều kiện.",
+    "example": "Ví dụ: vùng E2:E100 chứa số lỗi; đặt Greater Than 10 để làm nổi bật các giá trị vượt ngưỡng.",
+    "selfCheck": "Nếu thay số lỗi từ 8 thành 12, điều gì cần xảy ra?",
+    "answer": "Ô được tô theo quy tắc vì 12 lớn hơn 10; nếu không đổi, kiểm tra Applies to và Manage Rules.",
+    "passCriteria": "Quy tắc chỉ áp dụng đúng vùng và tự thay đổi khi dữ liệu đổi."
   },
   {
     "id": "C5L07",
@@ -124,7 +154,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Dòng/cột mới xuất hiện đúng vị trí; dữ liệu các cột khác vẫn cùng bản ghi.",
     "practice": "Thêm cột Người kiểm tra vào bảng lỗi mà không làm lệch các trường.",
     "errors": "Xóa ô đơn lẻ làm dịch dữ liệu; chèn cột trong vùng không đồng nhất; nhầm Delete nội dung và Delete cả cột.",
-    "library": "K049;K022"
+    "library": "K049;K022",
+    "concept": "Insert và Delete trên tiêu đề hàng/cột tác động cả hàng/cột; Clear Contents chỉ xóa nội dung trong ô. Cần phân biệt rõ trước khi thao tác.",
+    "example": "Ví dụ: muốn thêm trường Người kiểm tra giữa cột D và E, chọn tiêu đề cột E rồi Insert Sheet Columns; không xóa dữ liệu cũ.",
+    "selfCheck": "Muốn giữ ô và định dạng nhưng xóa nội dung, chọn lệnh nào?",
+    "answer": "Home → Clear → Clear Contents.",
+    "passCriteria": "Chèn/xóa đúng cấp độ và không làm lệch bản ghi."
   },
   {
     "id": "C5L08",
@@ -142,7 +177,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Tổng tính đúng vùng; công thức được điền xuống; nội dung vẫn còn khi Clear Formats.",
     "practice": "Tính tổng số lượng theo ngày và điền công thức thành tiền xuống các dòng.",
     "errors": "Không kiểm tra vùng AutoSum; kéo Fill Handle lệch; chọn Clear All khi chỉ muốn bỏ định dạng.",
-    "library": "K050;SUM;Ctrl+D"
+    "library": "K050;SUM;Ctrl+D",
+    "concept": "AutoSum đề xuất vùng tính dựa trên dữ liệu liền kề; Fill sao chép công thức hoặc nội dung theo vùng chọn. Luôn kiểm tra tham chiếu sau khi điền.",
+    "example": "Ví dụ: nếu B2:B6 là số lượng, chọn B7 rồi Alt+=; kiểm tra vùng SUM trước khi Enter.",
+    "selfCheck": "Vì sao cần kiểm tra vùng AutoSum đề xuất?",
+    "answer": "Excel có thể chọn thiếu hoặc thừa dữ liệu nếu có ô trống, tiêu đề hoặc tổng phụ.",
+    "passCriteria": "Tổng đúng vùng và công thức được điền đúng các dòng."
   },
   {
     "id": "C5L09",
@@ -160,7 +200,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Dữ liệu được tách đúng cột; Remove Duplicates báo số bản ghi bị loại và số còn lại.",
     "practice": "Tách mã cửa hàng-khu vực và loại dòng giao dịch trùng theo Mã đơn + Ngày.",
     "errors": "Chọn sai delimiter; Destination ghi đè dữ liệu; chọn thiếu cột định danh khi xóa trùng; xóa trùng trực tiếp trên nguồn duy nhất.",
-    "library": "K028;K025"
+    "library": "K028;K025",
+    "concept": "Text to Columns phân tách chuỗi theo dấu phân cách hoặc độ rộng cố định. Remove Duplicates xóa bản ghi dựa trên tổ hợp cột được chọn, không tự hiểu khóa nghiệp vụ.",
+    "example": "Ví dụ: một bảng có Mã đơn, Ngày, Sản phẩm; chỉ chọn Mã đơn làm khóa có thể xóa nhầm nhiều dòng hợp lệ nếu một đơn có nhiều sản phẩm.",
+    "selfCheck": "Khi xác định dòng trùng giao dịch, vì sao có thể cần chọn nhiều cột?",
+    "answer": "Vì một mã đơn có thể lặp hợp lệ; khóa cần phản ánh đúng định nghĩa một giao dịch duy nhất.",
+    "passCriteria": "Tách đúng delimiter, giữ cột nguồn và xác định khóa trùng có căn cứ."
   },
   {
     "id": "C5L10",
@@ -180,7 +225,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bảng có cấu trúc rõ, dữ liệu tách đúng, định dạng nhất quán và không xóa nhầm bản ghi.",
     "practice": "Áp dụng với bảng ghi nhận bất thường QC có dữ liệu nhập từ nhiều nhóm.",
     "errors": "Chỉnh sửa trực tiếp dữ liệu gốc; xóa trùng theo một cột không đủ định danh; tô màu thủ công thay quy tắc.",
-    "library": "K025;K028;K020;K048"
+    "library": "K025;K028;K020;K048",
+    "concept": "Bài thực hành kết hợp các nhóm Ribbon theo trình tự an toàn: sao lưu, chuẩn hóa cấu trúc, định dạng, kiểm tra chất lượng rồi mới loại trùng.",
+    "example": "Ví dụ: so sánh số dòng trước và sau Remove Duplicates; ghi rõ khóa trùng là Mã lỗi + Ngày + Ca thay vì chỉ Mã lỗi.",
+    "selfCheck": "Điều kiện tối thiểu trước khi xóa trùng trên bảng thực tế là gì?",
+    "answer": "Có bản sao dữ liệu và đã xác định khóa trùng theo nghiệp vụ.",
+    "passCriteria": "Hoàn thành bảng chuẩn hóa, đối chiếu được số dòng và không làm mất bản ghi hợp lệ."
   },
   {
     "id": "C6L01",
@@ -198,7 +248,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Table có bộ lọc ở tiêu đề, định dạng nhất quán và tự mở rộng khi thêm dòng liền kề.",
     "practice": "Chuyển dữ liệu bán hàng hoặc lỗi QC thành Table trước khi làm PivotTable.",
     "errors": "Bảng có tiêu đề trống/trùng; dòng tổng bị đưa vào dữ liệu; dữ liệu có ô gộp.",
-    "library": "K024;K025"
+    "library": "K024;K025",
+    "concept": "Excel Table là vùng dữ liệu có cấu trúc, có tiêu đề, bộ lọc và khả năng mở rộng. Table giúp công thức, PivotTable và dữ liệu mới dễ quản lý hơn.",
+    "example": "Ví dụ: chuyển A1:G100 thành Table tên tblQCInput; thêm bản ghi ở dòng ngay dưới để kiểm tra tự mở rộng.",
+    "selfCheck": "Điều gì cần kiểm tra trong hộp thoại Create Table?",
+    "answer": "Đúng phạm vi dữ liệu và tùy chọn My table has headers có khớp dòng đầu hay không.",
+    "passCriteria": "Tạo Table đúng phạm vi, tiêu đề hợp lệ và thêm dòng mới vẫn thuộc Table."
   },
   {
     "id": "C6L02",
@@ -217,7 +272,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Tên Table được đổi; vùng dữ liệu đúng; Total Row xuất hiện khi bật.",
     "practice": "Quản lý các Table Data, Master và Report bằng tên dễ hiểu.",
     "errors": "Đặt tên trùng với Named Range; dùng dấu cách; Resize Table thiếu dòng cuối; bật Total Row rồi tính tổng trùng.",
-    "library": "K024;K016"
+    "library": "K024;K016",
+    "concept": "Tên Table giúp công thức và truy vấn dễ đọc; Resize Table dùng khi phạm vi thực tế thay đổi nhưng Excel chưa tự nhận diện.",
+    "example": "Ví dụ: đặt tblQCData thay cho Table1; dùng Resize Table nếu vùng dữ liệu được bổ sung ở vị trí không liền kề.",
+    "selfCheck": "Tên Table có được chứa khoảng trắng không?",
+    "answer": "Không. Dùng chữ, số và dấu gạch dưới; tên không trùng tên đã tồn tại.",
+    "passCriteria": "Tên Table duy nhất, dễ hiểu và phạm vi bao phủ đủ dữ liệu."
   },
   {
     "id": "C6L03",
@@ -235,7 +295,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Công thức tự áp dụng cho các dòng; tổng ngoài Table tham chiếu theo tên cột.",
     "practice": "Tạo cột Tỷ lệ lỗi hoặc Thành tiền có công thức tự mở rộng.",
     "errors": "Tên cột có ký tự không nhất quán; tham chiếu [@] ngoài dòng Table; đổi tiêu đề khiến công thức khó đọc nếu tên cột không rõ.",
-    "library": "K016;SUM"
+    "library": "K016;SUM",
+    "concept": "Structured References gọi cột theo tên Table thay vì địa chỉ ô. Công thức theo dòng dùng @; tham chiếu cả cột dùng tên Table kèm tên trường.",
+    "example": "Ví dụ: trong tblSales, =[@SoLuong]*[@DonGia] tính từng dòng; =SUM(tblSales[ThanhTien]) tính tổng cột.",
+    "selfCheck": "Ký hiệu @ trong [@SoLuong] có ý nghĩa gì?",
+    "answer": "Chỉ giá trị của cột SoLuong trên chính dòng hiện tại.",
+    "passCriteria": "Công thức theo dòng và công thức tổng Table trả kết quả đúng; thêm dòng mới vẫn áp dụng."
   },
   {
     "id": "C6L04",
@@ -253,7 +318,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Các dòng hiển thị đúng điều kiện; dữ liệu các cột đi cùng nhau.",
     "practice": "Lọc lỗi theo ca, model và trạng thái xử lý.",
     "errors": "Sort một cột riêng lẻ làm lệch bản ghi; nhầm lọc với xóa; quên bỏ filter trước khi đếm.",
-    "library": "K026;K027"
+    "library": "K026;K027",
+    "concept": "Filter chỉ ẩn các dòng không thỏa điều kiện; Sort thay đổi thứ tự dòng. Cả hai phải thao tác trên toàn bộ bảng để các trường của một bản ghi đi cùng nhau.",
+    "example": "Ví dụ: lọc Trạng thái = Đang xử lý rồi sắp xếp Ngày từ mới đến cũ.",
+    "selfCheck": "Lọc một bảng có xóa các dòng bị ẩn không?",
+    "answer": "Không. Filter chỉ ẩn tạm thời; Clear Filter hiển thị lại các dòng.",
+    "passCriteria": "Lọc và sắp xếp đúng điều kiện, không làm rời dữ liệu giữa các cột."
   },
   {
     "id": "C6L05",
@@ -272,7 +342,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Ô có danh sách chọn; giá trị ngoài danh sách bị cảnh báo theo thiết lập.",
     "practice": "Tạo dropdown cho Ca, Mức độ lỗi, Trạng thái và Nhóm xử lý.",
     "errors": "Danh sách nguồn có ô trống; nhập sai dấu phân cách theo thiết lập vùng; bỏ chọn Error Alert khiến dữ liệu ngoài danh sách vẫn được nhập.",
-    "library": "K029"
+    "library": "K029",
+    "concept": "Data Validation đặt quy tắc cho dữ liệu được nhập. List tạo dropdown; Error Alert quyết định cách Excel phản hồi khi người dùng nhập giá trị ngoài danh sách.",
+    "example": "Ví dụ: cột Ca chỉ cho phép Ngày hoặc Đêm; danh mục dài nên đặt ở Sheet DanhMuc rồi tham chiếu vùng thay vì gõ trực tiếp.",
+    "selfCheck": "Dropdown có đảm bảo dữ liệu luôn hợp lệ nếu Error Alert bị tắt không?",
+    "answer": "Không. Người dùng có thể nhập giá trị ngoài danh sách; cần bật Stop nếu muốn chặn.",
+    "passCriteria": "Dropdown hiển thị đúng, cảnh báo đúng và thử nhập giá trị sai cho kết quả như thiết kế."
   },
   {
     "id": "C6L06",
@@ -290,7 +365,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Danh sách cấp hai chỉ hiển thị mục thuộc nhóm đã chọn.",
     "practice": "Dropdown Nhóm lỗi → Loại lỗi tương ứng cho biểu mẫu QC.",
     "errors": "Tên vùng không khớp chuỗi dropdown; dấu cách/dấu tiếng Việt gây lỗi INDIRECT; quên tạo tên vùng; dữ liệu nguồn đổi mà Named Range không mở rộng.",
-    "library": "K029;K015"
+    "library": "K029;K015",
+    "concept": "Dropdown phụ thuộc dùng lựa chọn cấp một để xác định danh sách cấp hai. Cách INDIRECT + Named Range phù hợp danh mục nhỏ, tên vùng phải khớp chuỗi sau chuẩn hóa.",
+    "example": "Ví dụ: B2 chọn Loi_may hoặc Loi_nguoi; C2 dùng =INDIRECT(B2) để gọi vùng có tên tương ứng. Nếu nhãn có dấu/khoảng trắng, cần quy ước tên và công thức chuyển đổi nhất quán.",
+    "selfCheck": "Nếu chọn nhóm mà C2 báo lỗi, cần kiểm tra gì đầu tiên?",
+    "answer": "Tên vùng có tồn tại và có khớp chính xác kết quả công thức INDIRECT hay không.",
+    "passCriteria": "Hai cấp dropdown thay đổi đúng theo lựa chọn; không có lỗi tên vùng."
   },
   {
     "id": "C6L07",
@@ -308,7 +388,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bản ghi trùng được nhận diện theo đúng khóa nghiệp vụ; số dòng trước/sau được ghi nhận.",
     "practice": "Kiểm tra trùng mã sự cố theo ngày và ca trước khi tổng hợp KPI.",
     "errors": "Chỉ chọn Mã hàng trong khi cùng mã có thể xuất hiện nhiều giao dịch; xóa trùng trước khi xác định quy tắc trùng; không lưu bản gốc.",
-    "library": "K028;COUNTIFS"
+    "library": "K028;COUNTIFS",
+    "concept": "Bản ghi trùng phải được định nghĩa bằng khóa nghiệp vụ. COUNTIFS có thể đánh dấu các tổ hợp xuất hiện nhiều lần trước khi quyết định xóa.",
+    "example": "Ví dụ: khóa sự cố gồm Ngày + Ca + Mã lỗi; cùng Mã lỗi ở ngày khác không mặc nhiên là trùng.",
+    "selfCheck": "Hai dòng có cùng Mã lỗi nhưng khác ngày có chắc là trùng không?",
+    "answer": "Không. Cần xét toàn bộ khóa đã thống nhất.",
+    "passCriteria": "Đánh dấu được các tổ hợp trùng, đối soát số dòng và chỉ xóa sau khi xác nhận."
   },
   {
     "id": "C6L08",
@@ -327,7 +412,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Mỗi thành phần nằm ở cột riêng; mã có số 0 đầu được giữ nếu chọn Text.",
     "practice": "Tách chuỗi FPC-Cen-A-CaDem thành Model, Khu vực, Ca theo delimiter được thống nhất.",
     "errors": "Chọn Space khiến tên có khoảng trắng bị tách sai; không chọn Text cho mã; ghi đè cột bên cạnh.",
-    "library": "K006;K025"
+    "library": "K006;K025",
+    "concept": "Text to Columns có thể tách theo dấu phân cách hoặc độ rộng cố định. Định dạng cột cần chọn trước khi hoàn tất nếu mã có số 0 đầu hoặc chuỗi ngày đặc biệt.",
+    "example": "Ví dụ: mã 00125 phải được giữ dạng Text; nếu để General/Number, số 0 đầu có thể mất.",
+    "selfCheck": "Khi tách mã 00125, nên chọn định dạng cột nào?",
+    "answer": "Text. Kiểm tra Data preview và Destination trước Finish.",
+    "passCriteria": "Tách đúng cột, giữ nguyên mã định danh và không ghi đè dữ liệu bên cạnh."
   },
   {
     "id": "C6L09",
@@ -345,7 +435,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Excel điền phần còn lại theo mẫu; dữ liệu là kết quả tĩnh, không tự cập nhật khi nguồn thay đổi.",
     "practice": "Tách mã nhân viên, chuẩn hóa họ tên hoặc ghép mã theo mẫu.",
     "errors": "Tin Flash Fill hiểu đúng mọi ngoại lệ; không rà soát kết quả; quên rằng kết quả không liên kết công thức với nguồn.",
-    "library": "K006;TEXT;LEFT;RIGHT;MID"
+    "library": "K006;TEXT;LEFT;RIGHT;MID",
+    "concept": "Flash Fill suy đoán quy luật từ ví dụ người dùng nhập và tạo kết quả tĩnh, không phải công thức liên kết với nguồn.",
+    "example": "Ví dụ: nhập tên chuẩn hóa ở B2, nhấn Ctrl+E tại B3; nếu tên có nhiều ngoại lệ, bổ sung ví dụ hoặc dùng hàm phù hợp.",
+    "selfCheck": "Nếu dữ liệu nguồn đổi sau khi Flash Fill, kết quả có tự cập nhật không?",
+    "answer": "Không. Flash Fill tạo giá trị tĩnh; cần chạy lại hoặc dùng công thức.",
+    "passCriteria": "Kiểm tra toàn bộ ngoại lệ và hiểu rằng kết quả không tự cập nhật."
   },
   {
     "id": "C6L10",
@@ -364,7 +459,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Ô hoặc cả dòng được tô đúng khi điều kiện đúng; thay giá trị thì màu tự đổi.",
     "practice": "Tô đỏ dòng có số lỗi vượt ngưỡng hoặc trạng thái NG.",
     "errors": "Chọn Applies to sai vùng; khóa cả hàng khiến quy tắc không dịch; dùng màu thủ công thay quy tắc.",
-    "library": "K020;K014"
+    "library": "K020;K014",
+    "concept": "Conditional Formatting có thể áp dụng cho ô riêng lẻ hoặc cả dòng. Công thức quy tắc cần khóa cột/hàng phù hợp với ô đầu tiên của vùng Applies to.",
+    "example": "Ví dụ: áp dụng cho A2:G200 với công thức =$D2>10; khóa cột D nhưng để số hàng thay đổi.",
+    "selfCheck": "Vì sao dùng =$D2 thay vì =$D$2 khi tô cả bảng?",
+    "answer": "Cột D cố định nhưng số hàng phải thay đổi theo từng dòng.",
+    "passCriteria": "Quy tắc tô đúng toàn dòng và vùng Applies to chính xác."
   },
   {
     "id": "C6L11",
@@ -383,7 +483,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Ô nhập liệu sửa được; ô công thức bị khóa; người dùng không vô tình ghi đè công thức.",
     "practice": "Bảo vệ biểu mẫu QC để nhóm chỉ nhập dữ liệu tại ô quy định.",
     "errors": "Quên mở khóa vùng nhập trước khi Protect; nghĩ Protect Sheet là mã hóa file; quên mật khẩu; khóa nhầm toàn bộ.",
-    "library": "K046"
+    "library": "K046",
+    "concept": "Protect Sheet ngăn sửa nhầm các ô được khóa; nó không mã hóa file và không thay thế quyền truy cập/chia sẻ ở cấp tệp.",
+    "example": "Ví dụ: mở khóa B2:G200 cho nhập liệu, giữ khóa cột công thức, sau đó Protect Sheet và thử sửa cả hai loại ô.",
+    "selfCheck": "Protect Sheet có bảo vệ dữ liệu khỏi người có ý định truy cập trái phép không?",
+    "answer": "Không. Đây chủ yếu là bảo vệ thao tác trên worksheet, không phải cơ chế bảo mật dữ liệu.",
+    "passCriteria": "Ô nhập sửa được, ô công thức bị chặn và người học hiểu giới hạn của Protect Sheet."
   },
   {
     "id": "C6L12",
@@ -402,7 +507,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Biểu mẫu tự mở rộng, dropdown hoạt động, dữ liệu sai được cảnh báo và công thức không bị ghi đè.",
     "practice": "Áp dụng biểu mẫu cho nhiều nhóm QC nhập theo ca.",
     "errors": "Không kiểm tra dữ liệu thử; khóa ô dropdown; không thống nhất danh mục; coi bảo vệ Sheet là thay thế phân quyền file.",
-    "library": "K024;K029;K020;K046"
+    "library": "K024;K029;K020;K046",
+    "concept": "Biểu mẫu nhập liệu tốt cần cấu trúc ổn định, danh mục thống nhất, cảnh báo và bảo vệ công thức. Kiểm thử cả dữ liệu hợp lệ lẫn không hợp lệ trước khi bàn giao.",
+    "example": "Ví dụ: nhập một dòng Ca ngày hợp lệ; thử số lượng âm, trạng thái ngoài danh sách và tổ hợp Ngày + Ca + Mã lỗi bị lặp.",
+    "selfCheck": "Trước khi bàn giao biểu mẫu, cần thử những trường hợp nào?",
+    "answer": "Ít nhất: dữ liệu hợp lệ, dữ liệu sai kiểu/ngoài danh sách, số lượng không hợp lệ, bản ghi trùng và thao tác sửa ô công thức.",
+    "passCriteria": "Hoàn thành đủ kiểm thử; ghi lại kết quả từng trường hợp và không có lỗi làm hỏng cấu trúc."
   },
   {
     "id": "C7L01",
