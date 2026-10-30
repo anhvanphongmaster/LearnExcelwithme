@@ -123,17 +123,88 @@ function setup(){
   ['PivotTable và PivotChart','▥'],['Biểu đồ và Dashboard','▧'],['Power Query','↻'],
   ['Phân tích dữ liệu','⌁'],['Tự động hóa Excel','⚙'],['Quy trình báo cáo doanh nghiệp','✓']
  ];
+ /* Lesson catalog is intentionally sourced only from the four existing chapter pages.
+    Chapters 5–12 show a clear build status until their lesson sequence is authored and reviewed. */
+ var chapterLessons=[
+  ['Làm quen giao diện Excel','Workbook, Worksheet và cấu trúc file','Ô, dòng, cột, vùng và địa chỉ','Di chuyển và chọn vùng bằng chuột','Nhập, sửa và xóa nội dung ô','Kiểu dữ liệu: Text, Number, Date và Percentage','Định dạng số, ngày và phần trăm','Định dạng trình bày và bố cục bảng','Sao chép dữ liệu và AutoFill','Tạo, lưu và chọn đúng định dạng file','Thiết lập trang in và xuất PDF','Bài thực hành tổng hợp: dựng Workbook quản lý đơn hàng'],
+  ['Di chuyển nhanh trong Sheet','Chọn vùng bằng bàn phím','Copy, Cut và Paste','Paste Special','Undo và Redo','Find và Replace','Chèn và xóa dòng, cột','Fill Handle và chuỗi dữ liệu','Freeze Panes','Sort và Filter','Quy trình thao tác bằng bàn phím','Bài thực hành tổng hợp'],
+  ['Toán tử và cấu trúc công thức','Thứ tự thực hiện phép tính','Tham chiếu tương đối','Tham chiếu tuyệt đối','Tham chiếu hỗn hợp','Sao chép và kiểm tra công thức','Nối văn bản và ghép nội dung','Làm tròn và xử lý số thập phân','Ngày tháng trong công thức','IF cơ bản','Nhận diện và xử lý lỗi công thức','Bài thực hành tổng hợp công thức'],
+  ['SUM và AVERAGE','MIN, MAX và COUNT','COUNTA và COUNTBLANK','IF','AND và OR','SUMIF','COUNTIF','SUMIFS và COUNTIFS','IFERROR','LEFT, RIGHT, MID và LEN','Hàm xử lý văn bản và ngày tháng','Bài thực hành tổng hợp hàm'],
+  ['Làm quen các nhóm lệnh trên Ribbon','Clipboard: Copy, Cut và Paste','Font: định dạng chữ và màu sắc','Alignment: căn chỉnh và gộp ô','Number: định dạng số và ngày','Styles: Cell Styles và Conditional Formatting','Cells: Insert, Delete và Format','Editing: AutoSum, Fill và Clear','Data Tools: Text to Columns và Remove Duplicates','Bài thực hành: chuẩn hóa bảng bằng Ribbon'],
+  ['Chuyển vùng dữ liệu thành Excel Table','Đặt tên và quản lý Table','Sử dụng Structured References','Sắp xếp và lọc dữ liệu trong Table','Thiết lập Data Validation','Tạo danh sách chọn phụ thuộc cơ bản','Phát hiện và xử lý dữ liệu trùng','Tách dữ liệu bằng Text to Columns','Dùng Flash Fill để chuẩn hóa dữ liệu','Conditional Formatting để cảnh báo','Bảo vệ vùng dữ liệu và Worksheet','Bài thực hành: kiểm soát bảng dữ liệu đầu vào'],
+  ['Tạo PivotTable từ bảng dữ liệu','Tổ chức Rows, Columns, Values và Filters','Thay đổi phép tính và định dạng số','Group dữ liệu theo ngày và tháng','Lọc bằng Label Filters và Value Filters','Sử dụng Slicer và Timeline','Tạo PivotChart','Kết nối Slicer với nhiều PivotTable','Refresh và thay đổi nguồn dữ liệu','Thiết kế báo cáo tổng hợp bằng PivotTable','Bài thực hành: báo cáo doanh số theo cửa hàng'],
+  ['Chọn loại biểu đồ phù hợp với dữ liệu','Tạo biểu đồ từ bảng dữ liệu','Định dạng trục, nhãn và chú giải','Sắp xếp thứ tự và lọc chuỗi dữ liệu','Biểu đồ kết hợp và Secondary Axis','Tạo KPI Cards bằng công thức và định dạng','Thiết kế bố cục Dashboard','Kết nối biểu đồ với bộ lọc','Kiểm tra khả năng đọc và tính nhất quán','Bài thực hành: Dashboard theo dõi kết quả kinh doanh'],
+  ['Power Query là gì và khi nào nên dùng','Kết nối dữ liệu từ Excel và CSV','Làm quen Power Query Editor','Đổi kiểu dữ liệu và xử lý lỗi','Remove Rows, Remove Columns và Keep Rows','Split, Merge và Replace Values','Append Queries để gộp dữ liệu','Merge Queries để tra cứu và kết hợp bảng','Group By và tổng hợp dữ liệu','Unpivot để chuẩn hóa dữ liệu báo cáo','Load dữ liệu và Refresh truy vấn','Bài thực hành: tự động tổng hợp nhiều file'],
+  ['Đọc và mô tả dữ liệu trước khi phân tích','Thống kê mô tả bằng các hàm Excel','Phân tích theo nhóm và phân khúc','So sánh thực tế với mục tiêu','Phân tích xu hướng theo thời gian','Phân tích tỷ trọng và cơ cấu','Phân tích Pareto và nguyên nhân chính','Phân tích chênh lệch và biến động','Kiểm tra ngoại lệ và dữ liệu bất thường','Trình bày insight từ dữ liệu','Bài thực hành: phân tích hiệu quả kinh doanh'],
+  ['Ghi và chạy Macro an toàn','Làm quen VBA Editor và Module','Biến, kiểu dữ liệu và phạm vi','Điều kiện If và Select Case','Vòng lặp For và For Each','Làm việc với Workbook, Worksheet và Range','Tự động định dạng và xử lý dữ liệu','Tạo nút chạy Macro','Kiểm soát lỗi và xác nhận trước khi chạy','Lưu file hỗ trợ Macro và bảo mật','Bài thực hành: tự động hóa báo cáo định kỳ'],
+  ['Tiếp nhận yêu cầu và xác định KPI','Kiểm tra nguồn và chất lượng dữ liệu','Chuẩn hóa dữ liệu đầu vào','Thiết kế cấu trúc file báo cáo','Xây dựng bảng tính và chỉ tiêu','Tổng hợp và trực quan hóa kết quả','Thiết lập kiểm tra và đối soát số liệu','Chuẩn hóa quy trình cập nhật định kỳ','Đóng gói, lưu trữ và bàn giao báo cáo','Bài thực hành tổng hợp: quy trình báo cáo doanh nghiệp']
+ ];
  var modal=document.createElement('div');
  modal.className='avp-chapter-picker-backdrop';
  modal.hidden=true;
  modal.innerHTML='<section class="avp-chapter-picker" role="dialog" aria-modal="true" aria-labelledby="avpChapterPickerTitle"><button type="button" class="avp-chapter-picker-close" aria-label="Đóng">×</button><div class="avp-chapter-picker-head"><small>LEARN EXCEL · 12 CHƯƠNG</small><h2 id="avpChapterPickerTitle">Chọn chương học</h2><p>Chọn một biểu tượng để vào chương tương ứng.</p></div><div class="avp-chapter-picker-grid"></div></section>';
  var modalStyle=document.createElement('style');
  modalStyle.textContent='.avp-chapter-picker-backdrop{position:fixed;inset:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(12,31,22,.48);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.avp-chapter-picker-backdrop[hidden]{display:none!important}.avp-chapter-picker{position:relative;width:min(760px,100%);max-height:min(86vh,850px);overflow:auto;padding:26px;border:1px solid rgba(255,255,255,.86);border-radius:28px;background:rgba(250,252,250,.98);box-shadow:0 28px 90px rgba(0,0,0,.28);color:#173b29}.avp-chapter-picker-close{position:absolute;right:15px;top:15px;width:38px;height:38px;border:0;border-radius:50%;background:#e8f0eb;color:#315b43;font-size:25px;cursor:pointer}.avp-chapter-picker-head{padding-right:42px;margin-bottom:20px}.avp-chapter-picker-head small{font-size:10px;letter-spacing:.16em;font-weight:900;color:#16805a}.avp-chapter-picker-head h2{margin:7px 0;font-size:clamp(23px,4vw,32px);letter-spacing:-.035em}.avp-chapter-picker-head p{margin:0;color:#718177;font-size:13px}.avp-chapter-picker-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.avp-chapter-app{display:flex;flex-direction:column;align-items:center;gap:9px;min-width:0;min-height:128px;padding:13px 6px;border:1px solid transparent;border-radius:17px;background:transparent;color:#173b29;text-align:center;text-decoration:none}.avp-chapter-app:hover{background:#f0f8f3;border-color:#dcebe1}.avp-chapter-app-icon{display:grid;place-items:center;width:54px;height:52px;border-radius:15px;background:linear-gradient(145deg,#dff4e7,#a9dfbf);color:#08794f;font-size:24px;font-weight:900;box-shadow:0 3px 7px rgba(22,75,47,.12),inset 0 1px 0 rgba(255,255,255,.8)}.avp-chapter-app:nth-child(6n+2) .avp-chapter-app-icon{background:linear-gradient(145deg,#e2f0ff,#b6d7f6);color:#245f96}.avp-chapter-app:nth-child(6n+3) .avp-chapter-app-icon{background:linear-gradient(145deg,#f0eaff,#d3c4fa);color:#6548a2}.avp-chapter-app:nth-child(6n+4) .avp-chapter-app-icon{background:linear-gradient(145deg,#fff0d8,#f4d49e);color:#8b5b10}.avp-chapter-app:nth-child(6n+5) .avp-chapter-app-icon{background:linear-gradient(145deg,#ffe8e8,#f4bdbd);color:#a33b3b}.avp-chapter-app:nth-child(6n) .avp-chapter-app-icon{background:linear-gradient(145deg,#e5f0f2,#b9dadd);color:#23666b}.avp-chapter-app strong{font-size:12px;line-height:1.35}.avp-chapter-app small{font-size:10px;color:#718177}@media(max-width:560px){.avp-chapter-picker{padding:21px 12px;border-radius:24px}.avp-chapter-picker-head{padding-left:5px}.avp-chapter-picker-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}.avp-chapter-app{min-height:110px;padding:9px 2px;gap:7px}.avp-chapter-app-icon{width:44px;height:42px;border-radius:12px;font-size:20px}.avp-chapter-app strong{font-size:10px;letter-spacing:-.02em}.avp-chapter-app small{font-size:9px}}';
+ modalStyle.textContent+=`.avp-chapter-picker-grid[hidden]{display:none!important}.avp-chapter-app{appearance:none;-webkit-appearance:none;width:100%;border:1px solid transparent;background:transparent;font:inherit;cursor:pointer}.avp-chapter-lessons{margin-top:2px}.avp-chapter-lessons-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px}.avp-chapter-lessons-back{border:1px solid #d9e9df;border-radius:999px;background:#f5faf6;color:#176c49;padding:9px 13px;font-size:12px;font-weight:800;cursor:pointer}.avp-chapter-lessons-count{color:#738278;font-size:11px;font-weight:800}.avp-chapter-lessons-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.avp-chapter-lesson-card{display:flex;align-items:center;gap:11px;min-width:0;padding:13px;border:1px solid #e1ebe4;border-radius:14px;background:#fff;color:#234a34}.avp-chapter-lesson-no{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:10px;background:#e6f5eb;color:#08794f;font-size:12px;font-weight:900}.avp-chapter-lesson-copy{display:block;flex:1;min-width:0}.avp-chapter-lesson-copy strong{display:block;font-size:12px;line-height:1.4}.avp-chapter-lesson-copy small{display:block;margin-top:4px;color:#849187;font-size:10px}.avp-chapter-lesson-arrow{color:#7b9b87;font-size:22px}.avp-chapter-lessons-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:190px;padding:24px;border:1px dashed #cbded1;border-radius:17px;background:#f8fbf9;text-align:center}.avp-chapter-lessons-empty-icon{display:grid;place-items:center;width:42px;height:42px;margin-bottom:10px;border-radius:13px;background:#e5f4ea;color:#08794f;font-size:20px}.avp-chapter-lessons-empty strong{color:#244c35;font-size:14px}.avp-chapter-lessons-empty p{max-width:490px;margin:8px 0 0;color:#718177;font-size:12px;line-height:1.65}@media(max-width:560px){.avp-chapter-lessons-grid{grid-template-columns:1fr;gap:7px}.avp-chapter-lesson-card{padding:11px}.avp-chapter-lesson-copy strong{font-size:11px}.avp-chapter-lessons-toolbar{align-items:flex-start}.avp-chapter-lessons-back{font-size:11px;padding:8px 11px}.avp-chapter-picker{max-height:88dvh}}`;
  document.head.appendChild(modalStyle);
  document.body.appendChild(modal);
  var modalGrid=modal.querySelector('.avp-chapter-picker-grid');
- modalGrid.innerHTML=chapterList.map(function(item,i){var tile='<span class="avp-chapter-app-icon">'+item[1]+'</span><small>CHƯƠNG '+String(i+1).padStart(2,'0')+'</small><strong>'+item[0]+'</strong>';if(i===0)return '<a class="avp-chapter-app" href="learning-chapter.html?chapter=excel-intro" aria-label="Mở Chương 1: '+item[0]+'">'+tile+'</a>';if(i===1)return '<a class="avp-chapter-app" href="learning-chapter-2.html?chapter=excel-operations" aria-label="Mở Chương 2: '+item[0]+'">'+tile+'</a>';if(i===2)return '<a class="avp-chapter-app" href="learning-chapter-3.html?chapter=excel-formulas" aria-label="Mở Chương 3: '+item[0]+'">'+tile+'</a>';if(i===3)return '<a class="avp-chapter-app" href="learning-chapter-4.html" aria-label="Mở Chương 4: '+item[0]+'">'+tile+'</a>';return '<div class="avp-chapter-app" aria-label="Chương '+String(i+1).padStart(2,'0')+': '+item[0]+'">'+tile+'</div>';}).join('');
- function openChapterPicker(){modal.hidden=false;document.body.classList.add('avp-chapter-picker-open');modal.querySelector('.avp-chapter-picker-close').focus();}
+ var pickerHead=modal.querySelector('.avp-chapter-picker-head');
+ var pickerTitle=modal.querySelector('#avpChapterPickerTitle');
+ var pickerIntro=pickerHead.querySelector('p');
+ var chapterView='grid';
+ var lessonPanel=null;
+ function renderChapterGrid(){
+  chapterView='grid';
+  if(lessonPanel){lessonPanel.remove();lessonPanel=null;}
+  modalGrid.hidden=false;
+  pickerTitle.textContent='Chọn chương học';
+  pickerIntro.textContent='Chọn một biểu tượng để xem danh sách bài học.';
+  modalGrid.innerHTML=chapterList.map(function(item,i){
+   var tile='<span class="avp-chapter-app-icon">'+item[1]+'</span><small>CHƯƠNG '+String(i+1).padStart(2,'0')+'</small><strong>'+item[0]+'</strong>';
+   return '<button type="button" class="avp-chapter-app" data-chapter-index="'+i+'" aria-label="Xem bài học Chương '+String(i+1).padStart(2,'0')+': '+item[0]+'">'+tile+'</button>';
+  }).join('');
+ }
+ function renderChapterLessons(index){
+  var chapter=chapterList[index];
+  if(!chapter)return;
+  chapterView='lessons';
+  modalGrid.hidden=true;
+  if(lessonPanel)lessonPanel.remove();
+  pickerTitle.textContent='Chương '+String(index+1).padStart(2,'0')+' · '+chapter[0];
+  pickerIntro.textContent='Danh sách bài học trong chương. Chọn bài học để xem nội dung ở bước tiếp theo.';
+  lessonPanel=el('div','avp-chapter-lessons');
+  var lessons=chapterLessons[index]||[];
+  var top=el('div','avp-chapter-lessons-toolbar');
+  var back=el('button','avp-chapter-lessons-back','← Tất cả 12 chương');
+  back.type='button';back.addEventListener('click',renderChapterGrid);
+  top.appendChild(back);
+  var count=el('span','avp-chapter-lessons-count',lessons.length?lessons.length+' bài học':'Đang xây dựng nội dung');
+  top.appendChild(count);lessonPanel.appendChild(top);
+  if(lessons.length){
+   var list=el('div','avp-chapter-lessons-grid');
+   lessons.forEach(function(title,i){
+    var card=el('div','avp-chapter-lesson-card');
+    card.innerHTML='<span class="avp-chapter-lesson-no">'+String(i+1).padStart(2,'0')+'</span><span class="avp-chapter-lesson-copy"><strong></strong><small>Bài học · Chương '+String(index+1).padStart(2,'0')+'</small></span><span class="avp-chapter-lesson-arrow">›</span>';
+    card.querySelector('strong').textContent=title;
+    list.appendChild(card);
+   });
+   lessonPanel.appendChild(list);
+  }else{
+   var empty=el('div','avp-chapter-lessons-empty');
+   empty.innerHTML='<span class="avp-chapter-lessons-empty-icon">✎</span><strong>Danh sách bài học đang được chuẩn hóa</strong><p>Chương này đã có trong lộ trình 12 chương. Bài học sẽ được đưa vào đây sau khi chốt mục tiêu, thứ tự và kỹ năng đầu ra; không dùng lại nội dung của chương trình 8 nhóm, 42 bài đã loại bỏ.</p>';
+   lessonPanel.appendChild(empty);
+  }
+  modalGrid.parentNode.insertBefore(lessonPanel,modalGrid.nextSibling);
+  modal.querySelector('.avp-chapter-picker').scrollTop=0;
+ }
+ renderChapterGrid();
+ modalGrid.addEventListener('click',function(event){
+  var button=event.target.closest('[data-chapter-index]');
+  if(!button)return;
+  renderChapterLessons(Number(button.getAttribute('data-chapter-index')));
+ });
+ function openChapterPicker(){renderChapterGrid();modal.hidden=false;document.body.classList.add('avp-chapter-picker-open');modal.querySelector('.avp-chapter-picker-close').focus();}
  function closeChapterPicker(){modal.hidden=true;document.body.classList.remove('avp-chapter-picker-open');}
  pathCard.addEventListener('click',function(event){event.preventDefault();openChapterPicker();});
  modal.querySelector('.avp-chapter-picker-close').addEventListener('click',closeChapterPicker);
