@@ -1566,7 +1566,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Macro chạy lại thao tác đã ghi; file cần lưu dạng .xlsm.",
     "practice": "Tự động định dạng tiêu đề báo cáo lặp lại hàng ngày.",
     "errors": "Macro ghi cả thao tác chọn ô tuyệt đối không phù hợp; chạy trên dữ liệu gốc; bật Macro từ nguồn không tin cậy.",
-    "library": "K044;K043;Alt+F8"
+    "library": "K044;K043;Alt+F8",
+    "concept": "Macro ghi lại thao tác hoặc chạy lệnh VBA để tự động hóa công việc lặp lại. Macro Recorder phù hợp thao tác giao diện đơn giản; nó không hiểu mục tiêu nghiệp vụ và có thể ghi cả thao tác chọn ô, cuộn hoặc định dạng thừa. Luôn thử trên bản sao và chỉ chạy Macro từ nguồn tin cậy.",
+    "example": "Bạn cần định dạng tiêu đề A1:F1. Macro Recorder có thể ghi thao tác bôi đen hàng tiêu đề, bật Bold, tô nền và AutoFit. Chạy lại trên bản sao để kiểm tra kết quả có đúng khi dữ liệu dài hơn không.",
+    "selfCheck": "Macro Recorder có tự tạo một quy trình thông minh để xử lý mọi cấu trúc dữ liệu không?",
+    "answer": "Không. Nó ghi lại thao tác cụ thể, có thể phụ thuộc vị trí ô và trạng thái giao diện. Cần kiểm tra code hoặc thử trên nhiều bộ dữ liệu trước khi dùng thật.",
+    "passCriteria": "Ghi, dừng và chạy lại Macro trên bản sao; lưu .xlsm; giải thích được rủi ro của thao tác ghi theo vị trí."
   },
   {
     "id": "C11L02",
@@ -1585,7 +1590,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Một hộp thoại hiện nội dung Xin chào; Module xuất hiện trong project.",
     "practice": "Tạo Module riêng cho các thủ tục làm sạch hoặc định dạng báo cáo.",
     "errors": "Lưu .xlsx làm mất VBA; dán code vào Sheet object thay vì Module; chạy Macro không rõ nguồn.",
-    "library": "K044;K043;Alt+F11"
+    "library": "K044;K043;Alt+F11",
+    "concept": "VBE là môi trường viết và quản lý mã VBA. Module chuẩn phù hợp chứa các thủ tục Sub/Function dùng chung; mã trong Sheet/ThisWorkbook gắn với sự kiện hoặc đối tượng cụ thể. F5 chạy thủ tục đang chứa con trỏ; cần Compile để phát hiện lỗi cú pháp.",
+    "example": "Một thủ tục Sub HelloAVP() hiển thị MsgBox. Đặt trong Module1 để có thể gọi từ danh sách Macro; lưu workbook dạng .xlsm để giữ mã.",
+    "selfCheck": "Vì sao thủ tục dùng chung thường nên đặt trong Standard Module thay vì Sheet object?",
+    "answer": "Standard Module tách logic dùng chung khỏi sự kiện của một Sheet, dễ gọi và bảo trì hơn. Sheet object phù hợp mã sự kiện gắn với Sheet đó.",
+    "passCriteria": "Tạo Module, chạy được thủ tục thử, nhận biết vị trí Module và lưu đúng định dạng .xlsm."
   },
   {
     "id": "C11L03",
@@ -1605,7 +1615,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Biến giữ đúng kiểu; lastRow trả dòng cuối cột A; lỗi khai báo được phát hiện khi Compile.",
     "practice": "Dùng biến lưu Worksheet, dòng cuối và đường dẫn file.",
     "errors": "Dùng Integer cho dòng lớn; thiếu Set khi gán Object; quên Option Explicit; dùng ActiveSheet thay vì tham chiếu rõ.",
-    "library": "K044"
+    "library": "K044",
+    "concept": "Biến lưu dữ liệu trong lúc chạy; kiểu dữ liệu giúp kiểm soát cách lưu và thao tác. Long phù hợp số dòng Excel; Worksheet là Object nên phải dùng Set. Option Explicit buộc khai báo biến, giảm lỗi gõ sai. Phạm vi Dim trong Sub chỉ tồn tại trong thủ tục đó.",
+    "example": "Dùng Dim lastRow As Long, ws As Worksheet; Set ws = ThisWorkbook.Worksheets(\"Data\"); lastRow = ws.Cells(ws.Rows.Count,\"A\").End(xlUp).Row. Cột A có dữ liệu đến dòng 250 thì lastRow = 250.",
+    "selfCheck": "Vì sao biến dòng cuối nên dùng Long thay vì Integer?",
+    "answer": "Excel có hơn một triệu dòng; Integer chỉ chứa số nguyên nhỏ hơn nhiều. Long đủ sức chứa chỉ số dòng Excel.",
+    "passCriteria": "Khai báo đúng Long và Worksheet, dùng Set, bật Option Explicit và Compile không lỗi."
   },
   {
     "id": "C11L04",
@@ -1623,7 +1638,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Thông báo thay đổi theo điều kiện; chỉ một nhánh phù hợp được chạy.",
     "practice": "Phân loại bản ghi theo ngưỡng số lỗi hoặc trạng thái.",
     "errors": "Điều kiện biên bị bỏ sót; thứ tự Case sai; so sánh Text với Number; không xử lý Else.",
-    "library": "K044"
+    "library": "K044",
+    "concept": "If...Then...Else phù hợp điều kiện nhị phân hoặc nhiều nhánh logic; Select Case phù hợp phân loại một biểu thức theo nhiều giá trị/khoảng. Điều kiện biên phải được định nghĩa rõ và thứ tự kiểm tra không được bỏ sót.",
+    "example": "score = 85: If score >= 80 Then trả về Đạt. Với Select Case, có thể phân loại dưới 50, từ 50 đến 79, và từ 80 trở lên.",
+    "selfCheck": "Nếu ngưỡng đạt là từ 80, score = 80 phải rơi vào nhánh nào?",
+    "answer": "Nhánh Đạt. Dùng >= 80, không dùng > 80; kiểm tra cả giá trị ngay dưới, đúng bằng và ngay trên ngưỡng.",
+    "passCriteria": "Viết được If và Select Case, Compile thành công và thử đủ giá trị biên."
   },
   {
     "id": "C11L05",
@@ -1642,7 +1662,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Các dòng đáp ứng điều kiện được cập nhật; các dòng khác không bị thay đổi.",
     "practice": "Tự động đánh dấu dòng NG trong bảng kiểm tra.",
     "errors": "Vòng lặp sai chỉ số; ghi đè cột dữ liệu; quên Next; chạy trên ActiveSheet không đúng.",
-    "library": "K044"
+    "library": "K044",
+    "concept": "For dùng khi biết số lần lặp hoặc khoảng chỉ số; For Each dùng duyệt từng phần tử trong tập hợp như Worksheet. Phải xác định vùng tác động và tránh ghi đè cột nguồn. Nếu dữ liệu có hàng tiêu đề, thường bắt đầu từ dòng 2.",
+    "example": "Bảng Data có 100 dòng, vòng For i = 2 To lastRow kiểm tra cột B; nếu là NG thì ghi Cần xử lý vào cột C. Dòng OK không bị thay đổi.",
+    "selfCheck": "Vì sao vòng lặp dữ liệu thường bắt đầu từ dòng 2?",
+    "answer": "Dòng 1 thường là tiêu đề. Tuy nhiên phải kiểm tra cấu trúc thực tế; nếu bảng không có tiêu đề hoặc bắt đầu dòng khác thì điều chỉnh.",
+    "passCriteria": "Duyệt đúng phạm vi, cập nhật đúng dòng NG, không thay đổi dữ liệu ngoài vùng chỉ định."
   },
   {
     "id": "C11L06",
@@ -1661,7 +1686,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Giá trị và định dạng được ghi vào đúng Worksheet/Range.",
     "practice": "Tạo tiêu đề báo cáo và ghi ngày cập nhật tự động.",
     "errors": "Dùng Range không gắn Worksheet nên tác động ActiveSheet; nhầm ThisWorkbook và ActiveWorkbook; tham chiếu Sheet sai tên.",
-    "library": "K044"
+    "library": "K044",
+    "concept": "Tham chiếu rõ ThisWorkbook, Worksheets và Range giúp Macro không phụ thuộc Workbook/Sheet đang active. ThisWorkbook là file chứa code; ActiveWorkbook là file đang được kích hoạt, có thể khác. Range không gắn Worksheet thường tham chiếu ActiveSheet.",
+    "example": "Set ws = ThisWorkbook.Worksheets(\"Report\"); ws.Range(\"A1\").Value = \"Báo cáo\". Cách này vẫn ghi đúng Sheet Report ngay cả khi người dùng đang đứng ở Sheet Data.",
+    "selfCheck": "Khi Macro phải ghi vào file chứa code, nên dùng ThisWorkbook hay ActiveWorkbook?",
+    "answer": "Dùng ThisWorkbook. ActiveWorkbook có thể là file khác đang được kích hoạt, dẫn đến ghi nhầm workbook.",
+    "passCriteria": "Ghi đúng Sheet chỉ định dù chuyển ActiveSheet; giải thích được ThisWorkbook và ActiveWorkbook."
   },
   {
     "id": "C11L07",
@@ -1680,7 +1710,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Tiêu đề được định dạng, cột vừa nội dung, ngày hiển thị đúng và dữ liệu không bị xóa.",
     "practice": "Tạo Macro chuẩn hóa file báo cáo mỗi ngày.",
     "errors": "lastRow dựa vào cột có ô trống; định dạng toàn bộ cột làm file nặng; ghi đè dữ liệu; không tắt ScreenUpdating trong tác vụ dài.",
-    "library": "K044;K035"
+    "library": "K044;K035",
+    "concept": "lastRow dựa vào một cột có dữ liệu ổn định; nếu cột đó có ô trống giữa/cuối thì kết quả có thể không phản ánh toàn bảng. Định dạng chỉ vùng đang dùng thay vì toàn bộ cột để tránh làm workbook nặng. NumberFormat điều khiển cách hiển thị, không đổi giá trị gốc.",
+    "example": "Cột A là mã bản ghi luôn có dữ liệu đến dòng 500; dùng cột A để tìm lastRow. Nếu cột F là Ghi chú thường trống, không nên dựa vào F để tìm dòng cuối.",
+    "selfCheck": "Điều gì xảy ra nếu tìm lastRow dựa trên cột có nhiều ô trống?",
+    "answer": "Macro có thể dừng sớm và bỏ sót các dòng phía dưới. Chọn cột khóa bắt buộc có dữ liệu hoặc xác định dòng cuối từ vùng Table.",
+    "passCriteria": "Macro định dạng đúng vùng có dữ liệu, không bỏ sót dòng và không tác động cả triệu ô không cần thiết."
   },
   {
     "id": "C11L08",
@@ -1698,7 +1733,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Nút hiển thị tên rõ và chạy đúng thủ tục được gán.",
     "practice": "Tạo nút Cập nhật báo cáo hoặc Chuẩn hóa dữ liệu.",
     "errors": "Gán nhầm Macro; đặt nút đè lên vùng dữ liệu; dùng ActiveX khi không cần; file không lưu .xlsm.",
-    "library": "K044;K043"
+    "library": "K044;K043",
+    "concept": "Form Control Button là cách đơn giản gắn thủ tục Macro cho người dùng. Nút chỉ là giao diện gọi Macro; cần gán đúng tên thủ tục và cung cấp hướng dẫn. Với workbook chia sẻ, kiểm tra quyền chạy Macro và định dạng .xlsm.",
+    "example": "Tạo nút “Cập nhật báo cáo”, gán Sub UpdateReport. Nhấn nút phải chạy đúng thủ tục, không chạy nhầm Macro thử nghiệm.",
+    "selfCheck": "Nếu nhấn nút nhưng không chạy đúng thao tác, cần kiểm tra gì?",
+    "answer": "Kiểm tra Assign Macro đang gắn đúng thủ tục, workbook đã lưu .xlsm và Macro có được phép chạy từ nguồn tin cậy hay không.",
+    "passCriteria": "Tạo nút, gán đúng Macro, đổi nhãn dễ hiểu và kiểm tra chạy thành công trên bản sao."
   },
   {
     "id": "C11L09",
@@ -1716,7 +1756,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Macro dừng khi người dùng chọn No; lỗi được báo; thiết lập Excel được khôi phục.",
     "practice": "Macro xử lý file nhiều dòng cần xác nhận trước khi ghi đè.",
     "errors": "On Error Resume Next che mọi lỗi; không khôi phục Calculation; Exit Sub bỏ qua phần dọn dẹp; thông báo không nói rõ lỗi.",
-    "library": "K044;K035"
+    "library": "K044;K035",
+    "concept": "Xử lý lỗi cần có luồng thoát an toàn. On Error GoTo chuyển tới ErrHandler; On Error Resume Next có thể che lỗi nên chỉ dùng rất hẹp và kiểm tra Err ngay sau lệnh. Nếu thay đổi ScreenUpdating/Calculation, phải khôi phục kể cả khi lỗi xảy ra.",
+    "example": "Macro tắt Application.ScreenUpdating rồi phát sinh lỗi. Nếu không có nhánh CleanExit khôi phục, Excel có thể tiếp tục hiển thị không cập nhật. Dùng một điểm thoát chung để bật lại trạng thái.",
+    "selfCheck": "Vì sao không nên dùng On Error Resume Next cho toàn bộ Macro?",
+    "answer": "Nó có thể bỏ qua lỗi và tiếp tục với dữ liệu sai, khiến kết quả không đáng tin. Dùng ErrHandler để báo lỗi, ghi nhận và khôi phục trạng thái.",
+    "passCriteria": "Có xác nhận Yes/No, ErrHandler báo số/mô tả lỗi và mọi thiết lập ứng dụng được khôi phục khi thành công hoặc thất bại."
   },
   {
     "id": "C11L10",
@@ -1734,7 +1779,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "File mở lại vẫn có Macro; người dùng biết nguồn và quyền chạy.",
     "practice": "Bàn giao công cụ báo cáo có nút chạy Macro trong nội bộ.",
     "errors": "Lưu thành .xlsx; gửi Macro không kiểm tra; bật mọi Macro; không ghi hướng dẫn sử dụng.",
-    "library": "K043;K044"
+    "library": "K043;K044",
+    "concept": ".xlsm lưu được VBA; .xlsx không lưu mã Macro. Trust Center kiểm soát chính sách chạy Macro; không nên bật Enable All Macros. Chỉ bật nội dung khi xác định nguồn, người tạo và đã kiểm tra mã. Chữ ký số/chính sách doanh nghiệp có thể được áp dụng.",
+    "example": "Lưu công cụ thành ReportTool.xlsm. Khi mở trên máy khác, cảnh báo bảo mật có thể xuất hiện; người nhận cần xác minh file từ nguồn nội bộ trước khi cho phép Macro chạy.",
+    "selfCheck": "Có nên chọn Enable All Macros để khỏi gặp cảnh báo không?",
+    "answer": "Không. Thiết lập đó cho phép Macro từ nguồn không tin cậy chạy, tạo rủi ro bảo mật. Chỉ dùng nguồn tin cậy và theo chính sách công ty.",
+    "passCriteria": "Lưu/mở lại .xlsm không mất Macro, giải thích được rủi ro và không bật mọi Macro."
   },
   {
     "id": "C11L11",
@@ -1755,7 +1805,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Nút chạy Macro đúng; có xác nhận; lỗi được báo; dữ liệu nguồn không bị ghi đè ngoài dự kiến.",
     "practice": "Nâng cấp Macro thành quy trình xuất báo cáo PDF theo tháng sau khi đã kiểm thử.",
     "errors": "Không xác định phạm vi thao tác; không xử lý lỗi; không sao lưu; chia sẻ .xlsm không hướng dẫn bảo mật.",
-    "library": "K044;K043"
+    "library": "K044;K043",
+    "concept": "Bài thực hành cần có phạm vi rõ, sao lưu, tham chiếu đối tượng tường minh, xác nhận người dùng, xử lý lỗi và kiểm thử. Không mở rộng chức năng xuất PDF hoặc ghi đè trước khi luồng định dạng cơ bản chạy ổn định.",
+    "example": "Sheet Data có 300 dòng; Macro UpdateReport tìm lastRow, định dạng hàng tiêu đề, AutoFit A:F và ghi ngày cập nhật vào Report!B2. Dữ liệu Data không được sửa.",
+    "selfCheck": "Trước khi giao Macro cho người khác, tối thiểu cần thử những tình huống nào?",
+    "answer": "Chạy với dữ liệu bình thường, dữ liệu rỗng/thiếu cột, chọn No ở hộp xác nhận, tình huống lỗi và kiểm tra workbook không bị thay đổi ngoài dự kiến.",
+    "passCriteria": "Macro chạy qua nút, xác nhận trước thao tác, xử lý lỗi, khôi phục trạng thái và không ghi đè nguồn."
   },
   {
     "id": "C12L01",
@@ -1773,7 +1828,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Mỗi KPI có định nghĩa, đơn vị, mẫu số, kỳ và chủ sở hữu rõ ràng.",
     "practice": "Định nghĩa tỷ lệ lỗi = số lỗi/sản lượng kiểm tra, tách ca ngày/đêm.",
     "errors": "Dùng tên KPI mà không định nghĩa; lấy số lỗi chia số ca thay vì sản lượng; thay đổi mẫu số giữa các kỳ.",
-    "library": "K025;SUMIFS;COUNTIFS"
+    "library": "K025;SUMIFS;COUNTIFS",
+    "concept": "Yêu cầu báo cáo phải chuyển thành định nghĩa đo lường có thể kiểm chứng: tên KPI, tử số, mẫu số, đơn vị, kỳ, phạm vi, bộ lọc và nguồn. Tên gọi giống nhau chưa chắc cách tính giống nhau; cần thống nhất với người dùng trước khi dựng công thức.",
+    "example": "Tỷ lệ lỗi = số sản phẩm lỗi/số sản phẩm đã kiểm tra. Không dùng số lỗi/số ca nếu quy mô kiểm tra giữa các ca khác nhau.",
+    "selfCheck": "KPI “Tỷ lệ lỗi” đã đủ rõ để bắt đầu làm báo cáo chưa?",
+    "answer": "Chưa. Cần xác định tử số đếm sản phẩm lỗi hay số lỗi, mẫu số là sản phẩm kiểm tra hay lượt kiểm tra, cùng kỳ và điều kiện lọc.",
+    "passCriteria": "Viết được định nghĩa đầy đủ cho từng KPI, bao gồm tử số, mẫu số, đơn vị, kỳ và bộ lọc."
   },
   {
     "id": "C12L02",
@@ -1791,7 +1851,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Có danh sách vấn đề dữ liệu và kết quả đối chiếu trước khi xử lý.",
     "practice": "Kiểm tra dữ liệu từ nhiều nhóm/ca trước khi hợp nhất.",
     "errors": "Tin dữ liệu nguồn luôn đúng; xóa trùng không có khóa; không ghi nhận lỗi nguồn; nhầm ô trống với chuỗi rỗng.",
-    "library": "K028;K027;K010"
+    "library": "K028;K027;K010",
+    "concept": "Kiểm tra nguồn gồm tính đầy đủ, hợp lệ, duy nhất, nhất quán và khả năng đối chiếu. Không xóa trùng chỉ dựa vào các dòng giống nhau về hình thức; phải xác định khóa nghiệp vụ và ý nghĩa bản ghi.",
+    "example": "Mã AGV có thể lặp vì một AGV phát sinh nhiều sự kiện. Nếu xóa duplicate theo mã AGV, có thể mất các sự kiện hợp lệ; cần khóa như mã sự kiện hoặc tổ hợp mã-thời điểm.",
+    "selfCheck": "Hai dòng có cùng mã AGV có chắc là bản ghi trùng không?",
+    "answer": "Không. Một AGV có thể xuất hiện nhiều lần. Phải xác định đơn vị bản ghi và khóa duy nhất trước khi xóa trùng.",
+    "passCriteria": "Lập được danh sách vấn đề dữ liệu, kiểm tra đầy đủ/khóa trùng và đối chiếu tổng nguồn mà không xóa tùy tiện."
   },
   {
     "id": "C12L03",
@@ -1809,7 +1874,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bảng có cấu trúc nhất quán, kiểu dữ liệu đúng và không mất bản ghi ngoài quy tắc.",
     "practice": "Chuẩn hóa mã lỗi, Model, Ca và ngày phát sinh.",
     "errors": "Mã có số 0 đầu bị đổi thành số; chuẩn hóa làm gộp hai mã khác nhau; xóa dòng thiếu mà chưa đánh giá.",
-    "library": "K024;K006;K007;K029"
+    "library": "K024;K006;K007;K029",
+    "concept": "Chuẩn hóa phải bảo toàn ý nghĩa dữ liệu. Mã định danh nên là Text để giữ số 0 đầu; ngày phải là Date; số lượng là Number. Danh mục chuẩn hóa cần mapping có kiểm soát, không gộp hai mã khác nghĩa chỉ vì tên gần giống.",
+    "example": "Mã lỗi 0012 phải giữ nguyên Text; chuỗi ngày 31/10/2026 chuyển thành Date theo locale phù hợp; số lượng “1.200” cần xác định dấu chấm là phân cách nghìn hay thập phân trước khi đổi kiểu.",
+    "selfCheck": "Tại sao mã sản phẩm 0012 không nên chuyển thành số?",
+    "answer": "Vì số 0 đầu là một phần của mã định danh; chuyển Number sẽ biến 0012 thành 12 và làm thay đổi khóa.",
+    "passCriteria": "Chuẩn hóa đúng kiểu dữ liệu, giữ mã định danh, có quy tắc danh mục và đối chiếu số dòng/tổng trước sau."
   },
   {
     "id": "C12L04",
@@ -1828,7 +1898,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Workbook có cấu trúc rõ và người dùng biết nhập dữ liệu ở đâu.",
     "practice": "Thiết kế file báo cáo QC có Data, Master, Calc và Dashboard.",
     "errors": "Gộp dữ liệu nguồn và báo cáo vào cùng vùng; đặt tên khó hiểu; công thức lẫn với ô nhập liệu.",
-    "library": "K001;K024;K025"
+    "library": "K001;K024;K025",
+    "concept": "Cấu trúc Workbook nên tách rõ dữ liệu nhập, danh mục, tính toán và đầu ra để giảm rủi ro ghi đè. Table là vùng dữ liệu có cấu trúc; README/Guide mô tả người dùng nhập ở đâu, cập nhật thế nào và không sửa vùng nào.",
+    "example": "Một file báo cáo gồm README, Data, Master, Calc và Report. Người dùng chỉ nhập vào Data; Master chứa danh mục; Calc chứa công thức; Report chỉ trình bày kết quả.",
+    "selfCheck": "Vì sao không nên cho người dùng nhập tay vào vùng công thức trên Report?",
+    "answer": "Vì có thể ghi đè logic tính toán, làm sai kết quả và khó truy vết. Phải phân biệt rõ input, formula và output.",
+    "passCriteria": "Tạo Workbook có vai trò Sheet rõ, Table đặt tên hợp lý và vùng nhập liệu được nhận diện."
   },
   {
     "id": "C12L05",
@@ -1846,7 +1921,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "KPI thay đổi theo tham số; mẫu số đúng; kết quả đối chiếu được bằng dữ liệu nguồn.",
     "practice": "Tính tỷ lệ lỗi theo Model, Ca và khoảng ngày.",
     "errors": "Tính trung bình tỷ lệ từng ngày thay vì tổng lỗi/tổng sản lượng; mẫu số 0; điều kiện ngày bỏ sót giờ; bộ lọc không đồng nhất.",
-    "library": "SUMIFS;COUNTIFS;IFERROR;K018"
+    "library": "SUMIFS;COUNTIFS;IFERROR;K018",
+    "concept": "KPI phải tính từ định nghĩa đã chốt. SUMIFS/COUNTIFS lọc theo nhiều điều kiện; tỷ lệ toàn kỳ cần tổng tử số chia tổng mẫu số. Điều kiện ngày nên dùng khoảng >= ngày bắt đầu và < ngày kế tiếp để bao trọn cả ngày có thời gian.",
+    "example": "Ca ngày có 8 lỗi trên 400 sản phẩm; ca đêm có 6 lỗi trên 200 sản phẩm. Tỷ lệ chung = 14/600 = 2,33%, không phải trung bình 2% và 3% nếu cần tỷ lệ gộp theo sản lượng.",
+    "selfCheck": "Vì sao tỷ lệ toàn kỳ không nên lấy AVERAGE của tỷ lệ từng ca khi sản lượng khác nhau?",
+    "answer": "Vì mỗi ca có quy mô mẫu khác nhau. Tính tổng số lỗi chia tổng sản lượng; đó là trung bình có trọng số theo sản lượng.",
+    "passCriteria": "KPI theo đúng điều kiện kỳ/ca, xử lý mẫu số 0 và đối chiếu một lát cắt với dữ liệu nguồn."
   },
   {
     "id": "C12L06",
@@ -1864,7 +1944,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Bảng và biểu đồ cùng phản ánh phạm vi dữ liệu, KPI có đơn vị và bộ lọc rõ.",
     "practice": "Tạo Dashboard quản lý chất lượng theo ca và Model.",
     "errors": "Chart không theo Slicer; KPI khác phạm vi lọc; biểu đồ không phù hợp; thiếu đơn vị.",
-    "library": "K024;K020;K027"
+    "library": "K024;K020;K027",
+    "concept": "Chọn PivotTable khi cần tổng hợp linh hoạt và Slicer; chọn công thức khi cần KPI tùy biến hoặc kiểm soát điều kiện rõ. Chart phải trả lời câu hỏi: xu hướng, so sánh, cơ cấu hay quan hệ. KPI, bảng và biểu đồ cần cùng phạm vi lọc.",
+    "example": "Dashboard QC có KPI tổng lỗi, tỷ lệ lỗi, biểu đồ xu hướng theo ngày và Bar Chart theo nhóm nguyên nhân; Slicer Ca và Model điều khiển các bảng liên quan.",
+    "selfCheck": "Đặt Slicer cạnh một biểu đồ thường có khiến biểu đồ tự lọc không?",
+    "answer": "Không. Slicer điều khiển PivotTable/PivotChart được kết nối. Biểu đồ thường chỉ đổi nếu vùng nguồn của nó phụ thuộc công thức/ô điều khiển.",
+    "passCriteria": "Tạo được bảng/biểu đồ phù hợp, đơn vị rõ và chứng minh bộ lọc điều khiển đúng các thành phần."
   },
   {
     "id": "C12L07",
@@ -1882,7 +1967,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Chênh lệch bằng 0 hoặc có danh sách ngoại lệ được giải thích; có dấu vết đối soát.",
     "practice": "Đối chiếu tổng lỗi và sản lượng từ file nhập với Dashboard.",
     "errors": "Chỉ đối chiếu Grand Total; bỏ qua phân nhóm; sửa kết quả thay vì tìm nguyên nhân; che sai lệch bằng IFERROR.",
-    "library": "K025;SUM;COUNTIFS;IFERROR"
+    "library": "K025;SUM;COUNTIFS;IFERROR",
+    "concept": "Đối soát là kiểm tra độc lập giữa nguồn và kết quả, không phải sửa kết quả cho khớp. Cần kiểm tra tổng, số dòng, nhóm, kỳ và các trường hợp ngoại lệ; một Grand Total khớp vẫn có thể che sai lệch giữa các nhóm.",
+    "example": "Nguồn: Ca ngày 12 lỗi, Ca đêm 8 lỗi. Báo cáo: tổng 20 lỗi nhưng phân bổ Ca ngày 10, Ca đêm 10. Grand Total khớp nhưng phân tích theo ca sai.",
+    "selfCheck": "Chỉ đối chiếu tổng toàn bộ có đủ để xác nhận báo cáo không?",
+    "answer": "Không. Cần đối chiếu theo lát cắt quan trọng như ngày, ca, model và nhóm lỗi để phát hiện sai lệch bù trừ.",
+    "passCriteria": "Có công thức kiểm tra tổng và số dòng, đối chiếu ít nhất hai chiều phân nhóm và ghi nhận mọi mismatch."
   },
   {
     "id": "C12L08",
@@ -1901,7 +1991,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Quy trình có đầu vào, người phụ trách, thao tác Refresh, kiểm tra và lịch sử phiên bản.",
     "practice": "Cập nhật báo cáo QC hàng ngày hoặc hàng tháng từ file nhập nhóm.",
     "errors": "Đường dẫn nguồn thay đổi; file bị ghi đè; nhiều người sửa đồng thời; Refresh nhưng không đối soát.",
-    "library": "K035;K043"
+    "library": "K035;K043",
+    "concept": "Quy trình cập nhật phải quy định chủ sở hữu, vị trí nguồn, tên file, thời điểm khóa, thao tác Refresh, kiểm tra và lưu phiên bản. Nếu chỉ một người được mở file tại một thời điểm, cần ghi rõ quy tắc bàn giao để tránh ghi đè đồng thời.",
+    "example": "Mỗi ngày nhóm nhập file theo mẫu vào thư mục tháng. Người phụ trách kiểm tra tên cột, mở báo cáo, Refresh All, chạy checklist rồi lưu bản phát hành có ngày cập nhật.",
+    "selfCheck": "Refresh All thành công có đảm bảo dữ liệu mới đã được đưa vào báo cáo đúng không?",
+    "answer": "Không. Query có thể chạy thành công nhưng nguồn sai, file mới không được nhận hoặc bộ lọc còn sót. Phải kiểm tra kỳ, số dòng, tổng và lỗi sau Refresh.",
+    "passCriteria": "Có quy trình rõ người làm, nguồn, thời điểm, Refresh, checklist, lưu phiên bản và quy tắc tránh sửa đồng thời."
   },
   {
     "id": "C12L09",
@@ -1920,7 +2015,12 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "File mở được, số liệu đã cập nhật, tài liệu hướng dẫn đủ và phiên bản được nhận diện.",
     "practice": "Bàn giao Dashboard QC kèm hướng dẫn cập nhật và định nghĩa KPI.",
     "errors": "Gửi nhầm file thử nghiệm; PDF cũ; thiếu định nghĩa KPI; chia sẻ dữ liệu nhạy cảm không đúng quyền.",
-    "library": "K043;K046"
+    "library": "K043;K046",
+    "concept": "Bàn giao gồm file hoạt động, định nghĩa KPI, nguồn và kỳ dữ liệu, hướng dẫn Refresh, giới hạn, quyền truy cập và phiên bản. PDF là bản chụp tại thời điểm xuất; cần tránh gửi PDF cũ hơn workbook.",
+    "example": "Workbook cập nhật lúc 10:00 nhưng PDF xuất từ hôm trước. Nếu gửi cả hai mà không ghi thời điểm, người nhận có thể hiểu nhầm chúng cùng phiên bản.",
+    "selfCheck": "Tại sao phải ghi thời điểm cập nhật trên báo cáo và PDF?",
+    "answer": "Để người nhận biết dữ liệu phản ánh đến thời điểm nào và tránh nhầm bản chụp cũ với workbook mới nhất.",
+    "passCriteria": "Mở lại được file phát hành, README có nguồn/kỳ/KPI/cách Refresh, PDF đúng phiên bản và quyền chia sẻ phù hợp."
   },
   {
     "id": "C12L10",
@@ -1941,6 +2041,11 @@ window.AVP_LESSON_PROCEDURES_CH5_12 = [
     "expected": "Báo cáo có định nghĩa KPI, dữ liệu chuẩn, dashboard lọc được, số liệu đối soát và tài liệu bàn giao.",
     "practice": "Dùng chính bảng báo cáo lỗi QC hoặc doanh số để mô phỏng một chu kỳ thật.",
     "errors": "Bỏ qua xác nhận yêu cầu; không đối soát; chỉ làm đẹp Dashboard; không có hướng dẫn cập nhật.",
-    "library": "K024;K035;K020;SUMIFS;COUNTIFS"
+    "library": "K024;K035;K020;SUMIFS;COUNTIFS",
+    "concept": "Dự án báo cáo hoàn chỉnh đi qua yêu cầu, chất lượng dữ liệu, chuẩn hóa, mô hình tính, trực quan hóa, đối soát và bàn giao. Không bắt đầu bằng Dashboard; phải khóa định nghĩa và kiểm tra dữ liệu trước để tránh làm đẹp một kết quả sai.",
+    "example": "Bảng lỗi QC có 1.000 sản phẩm kiểm tra, 24 sản phẩm lỗi. Tỷ lệ lỗi = 2,4%. Khi chia ca, cần dùng lỗi/kiểm tra từng ca; tổng kỳ tính 24/1.000, không lấy trung bình tỷ lệ ca nếu sản lượng khác nhau.",
+    "selfCheck": "Nếu Dashboard đẹp nhưng chưa đối chiếu dữ liệu và chưa có định nghĩa KPI, có thể phát hành không?",
+    "answer": "Không. Hình thức không thay thế độ đúng. Cần hoàn thành kiểm tra nguồn, công thức, bộ lọc, đối soát và hướng dẫn trước khi phát hành.",
+    "passCriteria": "Bàn giao được báo cáo có định nghĩa KPI, nguồn chuẩn, dashboard lọc đúng, đối soát theo tổng và lát cắt, README và phiên bản."
   }
 ];
