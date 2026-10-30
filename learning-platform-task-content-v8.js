@@ -122,4 +122,33 @@
       ],['Tolerance phải có căn cứ nghiệp vụ; không tự đặt mức chênh lệch chấp nhận được.','Control độc lập với công thức tạo KPI để tránh cùng một lỗi logic xuất hiện ở cả hai nơi.'],{title:'PASS khi',text:'Người khác có thể dùng control sheet để xác định tầng nào lệch và tái hiện kết luận.'},'Đừng đánh dấu PASS chỉ vì Grand Total khớp; phải kiểm tra cả cấu trúc và khóa.')
     ]
   });
+
+  const quizAdditions={
+    'd08-find-replace':[
+      q('Trước Replace All, thao tác nào giúp kiểm tra vị trí và số lượng kết quả?',['Find All','Sort A to Z','Remove Duplicates','Text to Columns'],0,'Find All cho phép rà soát các ô khớp trước khi thay.'),
+      q('Muốn chỉ thay trong một cột, cách an toàn hơn là gì?',['Chọn đúng vùng/cột trước khi Replace','Để Within = Workbook','Bật Match case bất kể dữ liệu','Ẩn các sheet khác'],0,'Giới hạn vùng giúp tránh sửa ngoài phạm vi dự kiến.'),
+      q('Sau Replace All, cần làm gì?',['Tin thông báo Excel','Tìm lại chuỗi cũ và kiểm tra các dòng mẫu','Xóa bản gốc','Sort toàn workbook'],1,'Cần xác nhận kết quả thực tế và phạm vi thay đổi.')
+    ],
+    'd09-data-validation':[
+      q('Muốn tạo dropdown từ danh mục, Allow nên chọn gì?',['List','Whole number','Date','Text length'],0,'List tạo danh sách lựa chọn từ Source.'),
+      q('Muốn chặn Qty nhỏ hơn 1, nên cấu hình gì?',['Whole number, minimum = 1','Text length = 1','List không có Source','Custom Sort'],0,'Whole number cho phép giới hạn miền số nguyên.'),
+      q('Data Validation có đảm bảo mọi dữ liệu paste đều hợp lệ không?',['Có, tuyệt đối','Không; cần test paste và kiểm tra sau nhập','Chỉ khi tô màu ô','Chỉ khi khóa sheet'],1,'Một số cách paste có thể bỏ qua hoặc ghi đè validation.')
+    ],
+    'a19-reconciliation':[
+      q('Vì sao không nên chỉ đối chiếu Grand Total?',['Vì tổng có thể khớp dù thiếu và thừa record bù trừ nhau','Vì Grand Total luôn sai','Vì không cần kiểm tra tổng','Vì Pivot không có tổng'],0,'Cần kết hợp row count, key và metric để phát hiện nhiều loại sai lệch.'),
+      q('Khi đối soát Raw → Clean → Pivot → Dashboard, mục tiêu chính là gì?',['Tìm tầng đầu tiên phát sinh chênh lệch','Làm cho mọi số đều giống nhau bằng tay','Ẩn dòng lỗi','Đổi màu KPI'],0,'So theo tầng giúp khoanh vùng nguyên nhân thay vì chỉ thấy kết quả cuối bị lệch.'),
+      q('Unmatched key nên được xử lý thế nào?',['Tự xóa','Đưa vào exception list để điều tra','Đổi thành 0','Bỏ qua nếu dashboard đẹp'],1,'Exception list giữ lại bằng chứng và hỗ trợ truy nguyên.')
+    ]
+  };
+  Object.entries(quizAdditions).forEach(([id,items])=>{
+    const lesson=byId.get(id);
+    if(!lesson||!Array.isArray(lesson.sections))return;
+    items.forEach((item,index)=>{
+      const section=lesson.sections[index];
+      if(section){
+        section.questions=Array.isArray(section.questions)?section.questions:[];
+        section.questions.push(item);
+      }
+    });
+  });
 })();
