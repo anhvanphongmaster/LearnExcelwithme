@@ -132,15 +132,52 @@ function setup(){
 
  hero.insertAdjacentElement('afterend',discover);
  var lessons=el('section','avp-canonical-lessons');
- lessons.innerHTML='<div class="avp-canonical-lesson-main"><div class="avp-canonical-section-head"><div><h2>Bài học nổi bật</h2><p>Những nội dung đang được quan tâm.</p></div></div><div class="avp-canonical-lesson-grid"></div></div><aside class="avp-canonical-trending"><h3>Xu hướng hôm nay　↗</h3><ol><li><b>1</b><span><strong>SUMIFS</strong><small>Tính tổng nhiều điều kiện</small></span></li><li><b>2</b><span><strong>XLOOKUP</strong><small>Tra cứu dữ liệu hiện đại</small></span></li><li><b>3</b><span><strong>PivotTable</strong><small>Báo cáo nhanh</small></span></li><li><b>4</b><span><strong>Power Query</strong><small>Làm sạch và kết hợp dữ liệu</small></span></li><li><b>5</b><span><strong>Phím tắt Excel</strong><small>Làm việc nhanh hơn</small></span></li></ol></aside>';
- var lessonData=[
-  ['Power Query cơ bản','Từ dữ liệu thô đến báo cáo','12:30','pq'],
-  ['XLOOKUP tra cứu dữ liệu','Tra cứu dữ liệu hiện đại','10:15','lookup'],
-  ['SUMIFS nhiều điều kiện','Tính tổng nhiều điều kiện','08:42','sumifs'],
-  ['PivotTable từ A đến Z','Phân tích dữ liệu nhanh','11:28','pivot']
- ];
+ lessons.innerHTML='<div class="avp-canonical-lesson-main"><div class="avp-canonical-section-head"><div><h2>Bài học nổi bật</h2><p>Những bài có nhiều học viên hoàn thành nhất.</p></div></div><div class="avp-canonical-lesson-grid" aria-live="polite"></div></div><aside class="avp-canonical-trending" aria-live="polite"><h3>Xu hướng hôm nay　↗</h3><ol><li><span><small>Đang tải dữ liệu học tập...</small></span></li></ol></aside>';
  var lg=lessons.querySelector('.avp-canonical-lesson-grid');
- lessonData.forEach(function(d){lg.appendChild(el('div','avp-canonical-lesson','<div class="avp-canonical-thumb '+d[3]+'"><small>AVP · EXCEL</small><strong>'+d[0]+'</strong><span class="avp-thumb-sheet"><i></i><i></i><i></i><i></i><i></i></span><b>'+d[2]+'</b></div><div class="avp-canonical-lesson-copy"><strong>'+d[0]+'</strong><small>'+d[1]+'</small></div>'));});
+ function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
+ function renderLearningRankings(data){
+  var featured=Array.isArray(data&&data.featured)?data.featured:[];
+  var trending=Array.isArray(data&&data.trending)?data.trending:[];
+  lg.innerHTML='';
+  featured.forEach(function(item,i){
+   var title=esc(item.title||'Bài học');
+   var learners=Math.max(0,Number(item.learners)||0);
+   var card=el('article','avp-canonical-lesson',
+    '<div class="avp-canonical-thumb rank-'+(i+1)+'"><small>AVP · EXCEL</small><strong>'+title+'</strong><span class="avp-thumb-sheet"><i></i><i></i><i></i><i></i><i></i></span><b>TOP '+(i+1)+'</b></div><div class="avp-canonical-lesson-copy"><strong>'+title+'</strong><small>'+learners.toLocaleString('vi-VN')+' học viên đã hoàn thành</small></div>');
+   lg.appendChild(card);
+  });
+  if(!featured.length)lg.appendChild(el('div','avp-learning-rank-empty','Chưa có dữ liệu hoàn thành bài học.'));
+  var list=lessons.querySelector('.avp-canonical-trending ol');
+  list.innerHTML='';
+  trending.forEach(function(item,i){
+   var recent=Math.max(0,Number(item.recent_learners)||0);
+   var growth=item.growth_pct==null?null:Number(item.growth_pct);
+   var note=growth===null?'Mới nổi · '+recent.toLocaleString('vi-VN')+' người học':(growth>0?'Tăng '+growth.toLocaleString('vi-VN')+'%':growth<0?'Giảm '+Math.abs(growth).toLocaleString('vi-VN')+'%':'Ổn định')+' · '+recent.toLocaleString('vi-VN')+' người học';
+   list.appendChild(el('li','','<b>'+(i+1)+'</b><span><strong>'+esc(item.title||'Bài học')+'</strong><small>'+esc(note)+' trong 7 ngày</small></span>'));
+  });
+  if(!trending.length)list.appendChild(el('li','avp-learning-rank-empty','Chưa có hoạt động học tập trong 7 ngày gần đây.'));
+ }
+ async function loadLearningRankings(){
+  var deadline=Date.now()+6000;
+  while(Date.now()<deadline&&!window.avpSupabase)await new Promise(function(resolve){setTimeout(resolve,150);});
+  if(!window.avpSupabase||typeof window.avpSupabase.rpc!=='function'){
+   renderLearningRankings({featured:[],trending:[]});
+   return;
+  }
+  try{
+   var result=await window.avpSupabase.rpc('public_home_learning_rankings',{p_days:7});
+   if(result.error)throw result.error;
+   renderLearningRankings(result.data||{});
+  }catch(error){
+   console.warn('[AVP learning rankings]',error);
+   lg.innerHTML='';
+   lg.appendChild(el('div','avp-learning-rank-empty','Chưa tải được dữ liệu xếp hạng.'));
+   var list=lessons.querySelector('.avp-canonical-trending ol');
+   list.innerHTML='';
+   list.appendChild(el('li','avp-learning-rank-empty','Dữ liệu xu hướng tạm thời không khả dụng.'));
+  }
+ }
+ loadLearningRankings();
  discover.insertAdjacentElement('afterend',lessons);
  /* Removed by request: duplicate onboarding and tools blocks are deleted from the homepage composition. */
 
