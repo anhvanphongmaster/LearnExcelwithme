@@ -1,0 +1,24 @@
+/* Shared chapter learning layout — pilot for chapters 1–4 */
+.chapter-start{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:14px;margin:18px 0 24px}
+.chapter-start-card{min-width:0;padding:20px 22px;border:1px solid #dce9e0;border-radius:18px;background:#fff}
+.chapter-start-card.is-outcome{background:linear-gradient(135deg,#f2faf5,#fff);border-color:#cfe4d6}
+.chapter-start-kicker{display:block;margin-bottom:8px;color:#16805a;font-size:10px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+.chapter-start-card h2{margin:0 0 8px;color:#173b29;font-size:18px;line-height:1.35;letter-spacing:-.02em}
+.chapter-start-card p{margin:0;color:#617468;font-size:13px;line-height:1.7}
+.chapter-start-result{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid #e5eee8;color:#365b43;font-size:13px;line-height:1.6}
+.chapter-start-result strong{color:#176c49}
+.chapter-learning-route{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 24px}
+.chapter-route-step{display:flex;align-items:center;gap:10px;min-width:0;padding:11px 13px;border:1px solid #e3ece6;border-radius:13px;background:#f8fbf9}
+.chapter-route-no{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border-radius:9px;background:#e5f4ea;color:#08794f;font-size:12px;font-weight:900}
+.chapter-route-step strong{display:block;color:#234a34;font-size:12px;line-height:1.35}
+.chapter-route-step small{display:block;margin-top:2px;color:#7a897f;font-size:10px;line-height:1.35}
+.c1-section-head{margin-top:0}
+@media(max-width:760px){
+ .chapter-start{grid-template-columns:1fr;gap:10px;margin:14px 0 18px}
+ .chapter-start-card{padding:16px;border-radius:15px}
+ .chapter-start-card h2{font-size:17px}
+ .chapter-start-card p,.chapter-start-result{font-size:13px}
+ .chapter-learning-route{grid-template-columns:1fr;gap:7px;margin-bottom:20px}
+ .chapter-route-step{padding:10px 12px}
+ .chapter-route-step small{font-size:11px}
+}
