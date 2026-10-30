@@ -218,9 +218,7 @@
   .home-path-more--codehub{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
   .home-path-more--codehub .home-more-card{min-height:102px!important;padding:12px!important}
 }
-@media(prefers-reduced-motion:reduce){
-  .home-path-card,.home-path-card li a,.home-path-more--codehub .home-more-card{transition:none!important}
-}
+/* AVP motion remains consistent across desktop and mobile. */
 
 /* Excel Master is now available as a normal destination: remove its old status badge. */
 .home-path-more--extras .home-extra-card-v2.is-restoring::after{content:none!important;display:none!important}
