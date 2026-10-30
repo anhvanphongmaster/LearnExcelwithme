@@ -560,3 +560,131 @@ document.addEventListener("DOMContentLoaded",function(){
     a.href="learning-coach.html";
   });
 });
+
+
+/* AVP GLOBAL HEADER V1 — one shared, fixed header across public pages. */
+(function(){
+  try{
+    if(window.self!==window.top)return;
+    var viewport=document.querySelector('meta[name="viewport"]');
+    if(viewport)viewport.setAttribute('content','width=device-width, initial-scale=1, viewport-fit=cover');
+    if(!document.querySelector('link[data-avp-global-header-css]')){
+      var css=document.createElement('link');
+      css.rel='stylesheet';
+      css.href='avp-global-header-v1.css?v=20261030-1';
+      css.dataset.avpGlobalHeaderCss='1';
+      document.head.appendChild(css);
+    }
+    if(!document.querySelector('link[href*="global-search.css"]')){
+      var searchCss=document.createElement('link');
+      searchCss.rel='stylesheet';searchCss.href='global-search.css?v=20261030-header1';
+      document.head.appendChild(searchCss);
+    }
+    if(!document.querySelector('script[src*="global-search.js"]')){
+      var searchScript=document.createElement('script');
+      searchScript.src='global-search.js?v=20261030-header1';
+      searchScript.dataset.avpGlobalSearch='1';
+      document.head.appendChild(searchScript);
+    }
+    if(!document.querySelector('link[href*="auth.css"]')){
+      var authCss=document.createElement('link');
+      authCss.rel='stylesheet';authCss.href='auth.css?v=20261030-header1';
+      document.head.appendChild(authCss);
+    }
+  }catch(e){}
+})();
+document.addEventListener("DOMContentLoaded",function(){
+  var nav=document.querySelector(".top-simple-nav");
+  if(!nav){
+    nav=document.createElement("nav");
+    nav.className="top-simple-nav";
+    nav.setAttribute("aria-label","Điều hướng chính");
+    document.body.insertBefore(nav,document.body.firstChild);
+  }
+  if(nav.dataset.avpGlobalHeader==="1")return;
+  var auth=nav.querySelector(".auth-nav-slot")||document.createElement("span");
+  auth.className="auth-nav-slot";
+  if(!auth.firstElementChild){
+    auth.innerHTML='<a class="auth-nav-button avp-header-login-fallback" href="auth.html?tab=login" aria-label="Tài khoản">Tài khoản</a>';
+  }
+  var search=nav.querySelector("#avpSearchTrigger");
+  if(!search){
+    search=document.createElement("button");
+    search.type="button";
+    search.id="avpSearchTrigger";
+    search.className="avp-search-trigger";
+    search.setAttribute("aria-label","Tìm kiếm toàn website");
+    search.innerHTML='<span>Tìm hàm, bài học, công cụ...</span><kbd>Ctrl K</kbd>';
+    search.addEventListener("click",function(){if(window.openGlobalSearch)window.openGlobalSearch();});
+  }else{
+    search.className="avp-search-trigger";
+    search.setAttribute("aria-label","Tìm kiếm toàn website");
+    search.innerHTML='<span>Tìm hàm, bài học, công cụ...</span><kbd>Ctrl K</kbd>';
+  }
+  var theme=nav.querySelector("#themeToggle");
+  var toggle=document.createElement("button");
+  toggle.type="button";
+  toggle.className="avp-header-menu-toggle";
+  toggle.setAttribute("aria-label","Mở menu");
+  toggle.setAttribute("aria-expanded","false");
+  toggle.innerHTML='<span></span><span></span><span></span>';
+
+  nav.innerHTML="";
+  nav.dataset.avpGlobalHeader="1";
+  var brand=document.createElement("a");
+  brand.className="avp-header-brand";
+  brand.href="index.html";
+  brand.innerHTML='<img src="icon-192.png" alt=""><span><strong>Anh Văn Phòng</strong><small>Learn Excel With Me</small></span>';
+  var links=document.createElement("div");
+  links.className="avp-header-links";
+  var items=[
+    ["index.html","Trang chủ","home"],
+    ["learning-coach.html","Lộ trình học","learn"],
+    ["excel-library.html","Thư viện kiến thức","library"],
+    ["practice-video.html","Thực hành","practice"],
+    ["tools-center.html","Công cụ","tools"],
+    ["community.html","Blog","blog"]
+  ];
+  items.forEach(function(item){
+    var a=document.createElement("a");
+    a.href=item[0];a.textContent=item[1];a.dataset.avpNav=item[2];
+    links.appendChild(a);
+  });
+  var actions=document.createElement("div");
+  actions.className="avp-header-actions";
+  actions.appendChild(search);
+  if(theme){theme.classList.add("avp-header-theme");actions.appendChild(theme);}
+  actions.appendChild(auth);
+  actions.appendChild(toggle);
+  nav.append(brand,links,actions);
+
+  var page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
+  var groups={
+    home:["","index.html","gioithieu.html","intro.html","lienhe.html","contact.html","terms.html","privacy.html","disclaimer.html","open-source.html"],
+    learn:["learning-coach.html","professional-track.html","professional-access.html","learning-chapter.html","learning-chapter-2.html","learning-chapter-3.html","learning-chapter-4.html","quick-learn.html","excel.html","excel-nang-cao.html","certificate.html"],
+    library:["excel-library.html","excel-handbook.html","excel-dictionary.html","tai-lieu-tham-khao.html","phimtatexcel.html","congthucexcel.html","filtersort.html","pivottable.html","bieudopareto.html","baocaoexcel.html","power-query-course.html","power-pivot-dax.html","dashboard-dong.html","vba-macro.html","solver-whatif.html"],
+    practice:["practice-video.html","practice-youtube.html","practice-lab.html","practice-guides.html","practice-tiktok.html","practice-grader.html","baitapexcel.html","excel-race.html","focus-room.html"],
+    tools:["tools-center.html","tools-library.html","excel-mobile.html","formula-finder.html","qc-dashboard.html","playground.html","excel-doctor.html"],
+    blog:["community.html"]
+  };
+  links.querySelectorAll("a").forEach(function(a){
+    var active=(groups[a.dataset.avpNav]||[]).indexOf(page)>=0;
+    a.classList.toggle("is-current",active);
+    if(active)a.setAttribute("aria-current","page");
+  });
+  function closeMenu(){
+    nav.classList.remove("avp-menu-open");
+    toggle.setAttribute("aria-expanded","false");
+    toggle.setAttribute("aria-label","Mở menu");
+  }
+  toggle.addEventListener("click",function(e){
+    e.stopPropagation();
+    var open=!nav.classList.contains("avp-menu-open");
+    nav.classList.toggle("avp-menu-open",open);
+    toggle.setAttribute("aria-expanded",String(open));
+    toggle.setAttribute("aria-label",open?"Đóng menu":"Mở menu");
+  });
+  document.addEventListener("click",function(e){if(!nav.contains(e.target))closeMenu();});
+  links.querySelectorAll("a").forEach(function(a){a.addEventListener("click",closeMenu);});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMenu();});
+});
