@@ -1454,7 +1454,7 @@
           dir=savedBot.dir===-1?-1:1;
         }
       }catch(_){ }
-      const SPEED=.9;
+      const SPEED=.38; // chậm và đều hơn, giảm tải cập nhật vị trí
       let lifting=false;
       let liftMoved=false;
       let startY=null,startX=0;
@@ -1491,10 +1491,8 @@
           if(x<=PAD){x=PAD;dir=1;}
           applyPos(x,PAD);
           launcher.classList.toggle('face-left',dir<0);
-          if(!window.__avpBotSaveT || Date.now()-window.__avpBotSaveT>400){
-            window.__avpBotSaveT=Date.now();
-            persist();
-          }
+          // Chỉ lưu khi đổi hướng; không ghi localStorage liên tục mỗi vài trăm ms.
+          if(x===mx || x===PAD) persist();
         }
         placeBubble();
         requestAnimationFrame(frame);
