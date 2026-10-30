@@ -132,9 +132,15 @@ function setup(){
 
  hero.insertAdjacentElement('afterend',discover);
  var lessons=el('section','avp-canonical-lessons');
- lessons.innerHTML='<div class="avp-canonical-lesson-main"><div class="avp-canonical-section-head"><div><h2>Bài học nổi bật</h2><p>Những nội dung đang được quan tâm.</p></div></div><div class="avp-canonical-lesson-grid" aria-label="Các khung bài học"></div></div><aside class="avp-canonical-trending" aria-label="Khung xu hướng"></aside>';
+ lessons.innerHTML='<div class="avp-canonical-lesson-main"><div class="avp-canonical-section-head"><div><h2>Bài học nổi bật</h2><p>Những nội dung đang được quan tâm.</p></div></div><div class="avp-canonical-lesson-grid"></div></div><aside class="avp-canonical-trending"><h3>Xu hướng hôm nay　↗</h3><ol><li><b>1</b><span><strong>SUMIFS</strong><small>Tính tổng nhiều điều kiện</small></span></li><li><b>2</b><span><strong>XLOOKUP</strong><small>Tra cứu dữ liệu hiện đại</small></span></li><li><b>3</b><span><strong>PivotTable</strong><small>Báo cáo nhanh</small></span></li><li><b>4</b><span><strong>Power Query</strong><small>Làm sạch và kết hợp dữ liệu</small></span></li><li><b>5</b><span><strong>Phím tắt Excel</strong><small>Làm việc nhanh hơn</small></span></li></ol></aside>';
+ var lessonData=[
+  ['Power Query cơ bản','Từ dữ liệu thô đến báo cáo','12:30','pq'],
+  ['XLOOKUP tra cứu dữ liệu','Tra cứu dữ liệu hiện đại','10:15','lookup'],
+  ['SUMIFS nhiều điều kiện','Tính tổng nhiều điều kiện','08:42','sumifs'],
+  ['PivotTable từ A đến Z','Phân tích dữ liệu nhanh','11:28','pivot']
+ ];
  var lg=lessons.querySelector('.avp-canonical-lesson-grid');
- for(var i=0;i<4;i++){lg.appendChild(el('div','avp-canonical-lesson avp-canonical-lesson-empty'));}
+ lessonData.forEach(function(d){lg.appendChild(el('div','avp-canonical-lesson','<div class="avp-canonical-thumb '+d[3]+'"><small>AVP · EXCEL</small><strong>'+d[0]+'</strong><span class="avp-thumb-sheet"><i></i><i></i><i></i><i></i><i></i></span><b>'+d[2]+'</b></div><div class="avp-canonical-lesson-copy"><strong>'+d[0]+'</strong><small>'+d[1]+'</small></div>'));});
  discover.insertAdjacentElement('afterend',lessons);
  /* Removed by request: duplicate onboarding and tools blocks are deleted from the homepage composition. */
 
@@ -143,7 +149,7 @@ function setup(){
  if(!resourceSection){
   resourceSection=el('section','avp-canonical-resources');
   resourceSection.id='avp-canonical-resources';
-  resourceSection.innerHTML='<div class="avp-resource-heading"><div><small>TÀI NGUYÊN DÀNH CHO DÂN VĂN PHÒNG</small><h2>Tạo ra sản phẩm thực tế, không chỉ học công cụ</h2><p>Tài nguyên để luyện tập, lưu lại nội dung hữu ích và theo dõi những gì bạn đã hoàn thành.</p></div></div><div class="avp-resource-grid" aria-label="Các khung tài nguyên"><div class="avp-resource-card avp-resource-workbook avp-resource-card-empty"></div><div class="avp-resource-card avp-resource-cases avp-resource-card-empty"></div><div class="avp-resource-card avp-resource-collection avp-resource-card-empty"></div><div class="avp-resource-card avp-resource-results avp-resource-card-empty"></div></div>'
+  resourceSection.innerHTML='<div class="avp-resource-heading"><div><small>TÀI NGUYÊN DÀNH CHO DÂN VĂN PHÒNG</small><h2>Tạo ra sản phẩm thực tế, không chỉ học công cụ</h2><p>Tài nguyên để luyện tập, lưu lại nội dung hữu ích và theo dõi những gì bạn đã hoàn thành.</p></div></div><div class="avp-resource-grid"><div class="avp-resource-card avp-resource-workbook"><span class="avp-resource-icon">▤</span><span class="avp-resource-copy"><small>01 · FILE MẪU VÀ DỮ LIỆU</small><strong>Kho workbook</strong><em>File thực hành, dữ liệu mẫu và tài liệu theo từng chủ đề.</em><b>Kho nội dung</b></span><span class="avp-resource-decoration">XLSX</span></div><div class="avp-resource-card avp-resource-cases"><span class="avp-resource-icon">▦</span><span class="avp-resource-copy"><small>02 · BÀI TOÁN THỰC TẾ</small><strong>Case thực chiến</strong><em>Thử giải bài toán bằng dữ liệu đầu vào và mục tiêu đầu ra cụ thể.</em><b>Nội dung tham khảo</b></span><span class="avp-resource-decoration">CASE</span></div><div class="avp-resource-card avp-resource-collection"><span class="avp-resource-icon">♧</span><span class="avp-resource-copy"><small>03 · HỌC TIẾP VÀ XEM LẠI</small><strong>Bộ sưu tập cá nhân</strong><em>Mở khu học tập để tiếp tục nội dung gần đây và xem các mục đã lưu trên thiết bị này.</em><b>Đang lưu trữ</b></span><span class="avp-resource-decoration">SAVE</span></div><div class="avp-resource-card avp-resource-results"><span class="avp-resource-icon">✓</span><span class="avp-resource-copy"><small>04 · THEO DÕI TIẾN ĐỘ</small><strong>Thành quả thực hành</strong><em>Xem tiến độ học tập và kết quả được hệ thống ghi nhận.</em><b>Thông tin hiển thị</b></span><span class="avp-resource-decoration">DONE</span></div></div>'
   lessons.insertAdjacentElement('afterend',resourceSection);
  }
 
