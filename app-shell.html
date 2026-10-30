@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#185c37">
+  <title>AVP 4.0 | Anh Văn Phòng</title>
+  <link rel="icon" href="./avp-logo.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./app-shell.css">
+  <!-- Apply prefs before first paint to avoid theme/layout flash -->
+  <script>
+    (function () {
+      try {
+        var k = 'avp-settings-v1';
+        var p = { language: 'vi', theme: 'light', layout: 'mobile' };
+        try { p = Object.assign(p, JSON.parse(localStorage.getItem(k) || '{}')); } catch (e) {}
+        var r = document.documentElement;
+        r.lang = p.language === 'en' ? 'en' : 'vi';
+        r.dataset.avpTheme = p.theme === 'dark' ? 'dark' : 'light';
+        r.dataset.avpLayout = p.layout === 'desktop' ? 'desktop' : 'mobile';
+        r.dataset.avpDisplayMode = r.dataset.avpLayout;
+        if (p.theme === 'dark') document.documentElement.style.background = '#0f1712';
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <header id="avpShellHeader" role="banner">
+    <a class="avp-shell-brand avp-shell-home" href="./index.html" data-shell-nav aria-label="Trang chủ AVP">
+      <img src="./avp-logo.svg" alt="" width="28" height="28">
+      <span>AVP 4.0</span>
+    </a>
+    <nav class="avp-shell-nav" aria-label="Điều hướng chính">
+      <a href="./index.html" data-shell-nav>Trang chủ</a>
+      <a href="./excel.html" data-shell-nav>Excel</a>
+      <a href="./learning-chapter.html" data-shell-nav>Học tập</a>
+      <a href="./tools-center.html" data-shell-nav>Công cụ</a>
+      <a href="./practice-lab.html" data-shell-nav>Thực hành</a>
+      <a href="./community.html" data-shell-nav>Cộng đồng</a>
+    </nav>
+    <div class="avp-shell-actions">
+      <span class="avp-shell-switch" role="group" aria-label="Bố cục">
+        <button type="button" data-shell-layout="mobile" aria-pressed="false" title="Mobile">Mobile</button>
+        <button type="button" data-shell-layout="desktop" aria-pressed="false" title="Desktop">Desktop</button>
+      </span>
+      <span class="avp-shell-switch" role="group" aria-label="Giao diện">
+        <button type="button" data-shell-theme="light" aria-pressed="false" title="Light">Light</button>
+        <button type="button" data-shell-theme="dark" aria-pressed="false" title="Dark">Dark</button>
+      </span>
+      <button type="button" id="avpShellSettingsBtn" aria-label="Cài đặt">⚙</button>
+      <a class="avp-shell-account" href="./auth.html?tab=login" title="Tài khoản">Tài khoản</a>
+    </div>
+  </header>
+
+  <main id="avpShellMain">
+    <div id="avpShellLoading" aria-hidden="true">Đang tải…</div>
+    <iframe
+      id="avpShellFrame"
+      title="Nội dung trang"
+      referrerpolicy="same-origin"
+      allow="clipboard-read; clipboard-write; fullscreen"
+    ></iframe>
+  </main>
+
+  <dialog id="avpShellSettings" aria-labelledby="avpShellSettingsTitle">
+    <form method="dialog">
+      <header>
+        <strong id="avpShellSettingsTitle">Cài đặt / Settings</strong>
+        <button type="submit" aria-label="Đóng">×</button>
+      </header>
+      <section>
+        <label>Language / Ngôn ngữ</label>
+        <div class="row">
+          <button type="button" data-setting="language" data-value="vi">Tiếng Việt</button>
+          <button type="button" data-setting="language" data-value="en">English</button>
+        </div>
+        <label>Theme / Giao diện</label>
+        <div class="row">
+          <button type="button" data-setting="theme" data-value="light">Light</button>
+          <button type="button" data-setting="theme" data-value="dark">Dark</button>
+        </div>
+        <label>Layout / Bố cục</label>
+        <div class="row">
+          <button type="button" data-setting="layout" data-value="mobile">Mobile</button>
+          <button type="button" data-setting="layout" data-value="desktop">Desktop</button>
+        </div>
+      </section>
+    </form>
+  </dialog>
+
+  <script src="./app-shell.js" defer></script>
+</body>
+</html>
