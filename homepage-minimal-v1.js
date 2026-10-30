@@ -180,16 +180,16 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
   var plans={
    1:[
     [["shortcut","Ctrl+G"],["shortcut","Ctrl+End"]],[["shortcut","Ctrl+Shift+*"],["shortcut","Ctrl+Space"],["shortcut","Shift+Space"]],
-    [["shortcut","Ctrl+C"],["shortcut","Ctrl+X"],["shortcut","Ctrl+V"]],[["shortcut","Ctrl+Alt+V"]],
+    [["shortcut","Ctrl+C"],["shortcut","Ctrl+X"],["shortcut","Ctrl+V"]],[["knowledge","K048"]],
     [["shortcut","Ctrl+Z"],["shortcut","Ctrl+Y"]],[["shortcut","Ctrl+F"],["shortcut","Ctrl+H"]],
-    [["shortcut","Ctrl++"],["shortcut","Ctrl+-"]],[["shortcut","Ctrl+D"],["shortcut","Ctrl+R"]],
-    [["knowledge","K003"],["shortcut","Alt+W,F,F"]],[["knowledge","K019"],["shortcut","Ctrl+Shift+L"]],
+    [["knowledge","K049"]],[["knowledge","K050"],["shortcut","Ctrl+D"],["shortcut","Ctrl+R"]],
+    [["knowledge","K051"]],[["knowledge","K026"],["knowledge","K027"],["shortcut","Ctrl+Shift+L"]],
     [["shortcut","Ctrl+G"],["shortcut","Ctrl+Shift+*"],["shortcut","Ctrl+F"]],
-    [["shortcut","Ctrl+Shift+L"],["shortcut","Ctrl+Alt+V"],["shortcut","Ctrl+Z"]]
+    [["shortcut","Ctrl+Shift+L"],["shortcut","Ctrl+D"],["shortcut","Ctrl+Z"]]
    ],
    2:[
     [["knowledge","K016"],["knowledge","K017"]],[["knowledge","K016"]],[["knowledge","K012"]],[["knowledge","K013"]],[["knowledge","K014"]],
-    [["knowledge","K012"],["knowledge","K013"],["knowledge","K014"]],[["formula","CONCAT"],["formula","CONCATENATE"]],
+    [["knowledge","K012"],["knowledge","K013"],["knowledge","K014"]],[["formula","CONCAT"],["knowledge","K006"]],
     [["formula","ROUND"],["formula","ROUNDUP"],["formula","ROUNDDOWN"]],[["knowledge","K007"],["formula","DATE"],["formula","YEAR"],["formula","MONTH"]],
     [["formula","IF"]],[["formula","IFERROR"],["knowledge","K021"]],[["formula","IF"],["formula","ROUND"],["formula","DATE"]]
    ],
