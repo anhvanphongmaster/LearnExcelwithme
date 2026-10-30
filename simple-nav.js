@@ -261,19 +261,19 @@
 /* === AVP site motion (visual only — no data) === */
 (function () {
   try {
-    var page=(location.pathname.split("/").pop()||"").toLowerCase();
-    if(/practice-video|practice-grader|index\.html|^$/.test(page)) return;
-    if(document.querySelector('script[src*="home-page-motion"]')) return;
     if (!document.getElementById("avpSiteMotionCss")) {
       var link = document.createElement("link");
       link.id = "avpSiteMotionCss";
       link.rel = "stylesheet";
-      link.href = "avp-site-motion.css?v=20260831-v94d";
+      link.href = "avp-site-motion.css?v=20261030-motion-sync1";
       document.head.appendChild(link);
     }
+    var page=(location.pathname.split("/").pop()||"").toLowerCase();
+    if(/practice-video|practice-grader|index\.html|^$/.test(page)) return;
+    if(document.querySelector('script[src*="home-page-motion"]')) return;
     if (!document.querySelector('script[src*="avp-site-motion.js"]') && !window.__avpSiteMotionV94 && !window.__avpSiteMotion) {
       var s = document.createElement("script");
-      s.src = "avp-site-motion.js?v=20260831-v94d";
+      s.src = "avp-site-motion.js?v=20261030-motion-sync1";
       s.defer = true;
       document.head.appendChild(s);
     }
