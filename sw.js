@@ -1,9 +1,9 @@
-const CACHE="learnexcel-assets-v20261030-hero-art5";
+const CACHE="learnexcel-assets-v20261030-single-daily1";
 const ASSETS=[
-  "./style.css","./simple-nav.css","./avp-global-header-v1.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css",
-  "./site-upgrade-v1.css","./home-ui-owner-v1.css","./upgrade.css","./homepage-minimal-v1.css",
-  "./simple-nav.js","./avp-logo.svg","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./home-page-motion-core-v108.js","./global-search.js",
-  "./site-upgrade-v1.js","./homepage-minimal-v1.js","./avp-home-hero-v2.webp","./site-runtime-cache-v1.js","./site-auth-cache-v1.js","./analytics-tracker.js","./daily-header-badge-v1.js","./learning-chapter-analytics-v1.js"
+  "./style.css","./simple-nav.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css",
+  "./site-upgrade-v1.css","./home-ui-owner-v1.css","./upgrade.css",
+  "./simple-nav.js","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./home-page-motion-core-v108.js","./global-search.js",
+  "./site-upgrade-v1.js","./site-runtime-cache-v1.js","./site-auth-cache-v1.js","./analytics-tracker.js","./daily-header-badge-v1.js"
 ];
 
 self.addEventListener("install",event=>{
@@ -52,24 +52,6 @@ async function cacheFirst(req){
   }catch(_){return Response.error();}
 }
 
-async function injectGlobalHeader(req,res){
-  if(!res||!res.ok)return res;
-  try{
-    const url=new URL(req.url);
-    const page=(url.pathname.split("/").pop()||"index.html").toLowerCase();
-    if(page==="admin.html"||page==="office-quest-admin.html"||page==="office-quest-world.html")return res;
-    const type=res.headers.get("content-type")||"";
-    if(!type.includes("text/html"))return res;
-    const html=await res.text();
-    const headers=new Headers(res.headers);
-    headers.delete("content-length");headers.delete("content-encoding");headers.delete("transfer-encoding");
-    if(html.includes("simple-nav.js"))return new Response(html,{status:res.status,statusText:res.statusText,headers:headers});
-    const tag='<script defer src="./simple-nav.js?v=20261030-hero-motion1" data-avp-global-header-loader></script>';
-    const updated=html.includes("</body>")?html.replace("</body>",tag+"</body>"):html+tag;
-    return new Response(updated,{status:res.status,statusText:res.statusText,headers:headers});
-  }catch(_){return res;}
-}
-
 async function simpleNavWithDailyBadge(req){
   const base=await networkFirst(req);
   if(!base||!base.ok) return base;
@@ -91,8 +73,7 @@ self.addEventListener("fetch",event=>{
   }
   const isHTML=req.mode==="navigate"||url.pathname.endsWith(".html")||url.pathname.endsWith("/");
   const isCode=/\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
-  if(isHTML){event.respondWith(networkFirst(req).then(res=>injectGlobalHeader(req,res)));return;}
-  if(isCode){event.respondWith(networkFirst(req));return;}
+  if(isHTML||isCode){event.respondWith(networkFirst(req));return;}
   event.respondWith(cacheFirst(req));
 });
 

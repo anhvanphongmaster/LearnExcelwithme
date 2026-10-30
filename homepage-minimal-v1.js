@@ -57,7 +57,7 @@ function setup(){
  '<h1>Học <span>Excel</span><br>để làm được việc.</h1>'+
  '<p>Từ cơ bản đến nâng cao, kèm ví dụ thực tế, bài tập và file thực hành.<br>Giúp bạn xử lý công việc nhanh hơn, chính xác hơn và chuyên nghiệp hơn.</p>'+
  '<div class="avp-canonical-actions"><a class="avp-canonical-secondary" href="intro.html?v=11"><span>▶</span><b>Xem giới thiệu<small>1 phút hiểu về AVP</small></b></a></div></div>'+
- '<div class="avp-canonical-illustration avp-hero-art" aria-label="Minh họa hệ sinh thái Anh Văn Phòng"><img class="avp-hero-art-image" src="avp-home-hero-v2.webp?v=1" alt="Nhân vật Anh Văn Phòng phong cách anime tóc đen mặc sơ mi trắng và cà vạt xanh, làm việc với laptop AVP; bên cạnh là sách Excel, Power Query, Dashboard, biểu đồ dữ liệu và checklist." loading="eager" fetchpriority="high"><div class="avp-tool-bubble" aria-label="Các công cụ AVP"><span style="--tool-index:0">Excel</span><span style="--tool-index:1">Power Query</span><span style="--tool-index:2">Power Pivot</span><span style="--tool-index:3">DAX</span><span style="--tool-index:4">PivotTable</span><span style="--tool-index:5">Dashboard</span><span style="--tool-index:6">VBA &amp; Macro</span><span style="--tool-index:7">Python</span><span style="--tool-index:8">SQL</span><span style="--tool-index:9">Office Scripts</span><span style="--tool-index:10">Power Automate</span><span style="--tool-index:11">AI</span></div></div></div>';
+ '<div class="avp-canonical-illustration"><div class="avp-float-label">Power Query</div><div class="avp-sheet"><small>AVP · DATA</small><div class="avp-bars"><i></i><i></i><i></i><i></i><i></i></div></div><div class="avp-checklist">✓　Dữ liệu<br>✓　Phân tích<br>✓　Báo cáo<br>✓　Tự động hóa</div><div class="avp-person">👨🏻‍💻</div><div class="avp-laptop"><span>▦</span><b>X</b></div><div class="avp-books-stack">Excel　·　Power Query　·　Dashboard</div></div></div>';
  ['#home-ai-intro','#ky-nang-excel','.home-path','#avp-home-ecosystem','#avp-reference-featured','#avp-featured-lessons','.avp-reference-next-steps'].forEach(function(s){document.querySelectorAll(s).forEach(function(n){n.remove();});});
  var discover=el('section','avp-canonical-discover');
  discover.innerHTML='<div class="avp-canonical-section-head"><div><h2>Khám phá ngay</h2><p>Chọn khu vực bạn quan tâm để bắt đầu hành trình.</p></div><a href="tools-center.html">Khám phá tất cả　↗</a></div><div class="avp-canonical-discover-grid"></div>';
@@ -132,52 +132,9 @@ function setup(){
 
  hero.insertAdjacentElement('afterend',discover);
  var lessons=el('section','avp-canonical-lessons');
- lessons.innerHTML='<div class="avp-canonical-lesson-main"><div class="avp-canonical-section-head"><div><h2>Bài học nổi bật</h2><p>Những bài có nhiều học viên hoàn thành nhất.</p></div></div><div class="avp-canonical-lesson-grid" aria-live="polite"></div></div><aside class="avp-canonical-trending" aria-live="polite"><h3>Xu hướng hôm nay　↗</h3><ol><li><span><small>Đang tải dữ liệu học tập...</small></span></li></ol></aside>';
+ lessons.innerHTML='<div class="avp-canonical-lesson-main"><div class="avp-canonical-section-head"><div><h2>Bài học nổi bật</h2><p>Những nội dung đang được quan tâm.</p></div></div><div class="avp-canonical-lesson-grid" aria-label="Các khung bài học"></div></div><aside class="avp-canonical-trending" aria-label="Khung xu hướng"></aside>';
  var lg=lessons.querySelector('.avp-canonical-lesson-grid');
- function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
- function renderLearningRankings(data){
-  var featured=Array.isArray(data&&data.featured)?data.featured:[];
-  var trending=Array.isArray(data&&data.trending)?data.trending:[];
-  lg.innerHTML='';
-  featured.forEach(function(item,i){
-   var title=esc(item.title||'Bài học');
-   var learners=Math.max(0,Number(item.learners)||0);
-   var card=el('article','avp-canonical-lesson',
-    '<div class="avp-canonical-thumb rank-'+(i+1)+'"><small>AVP · EXCEL</small><strong>'+title+'</strong><span class="avp-thumb-sheet"><i></i><i></i><i></i><i></i><i></i></span><b>TOP '+(i+1)+'</b></div><div class="avp-canonical-lesson-copy"><strong>'+title+'</strong><small>'+learners.toLocaleString('vi-VN')+' học viên đã hoàn thành</small></div>');
-   lg.appendChild(card);
-  });
-  if(!featured.length)lg.appendChild(el('div','avp-learning-rank-empty','Chưa có dữ liệu hoàn thành bài học.'));
-  var list=lessons.querySelector('.avp-canonical-trending ol');
-  list.innerHTML='';
-  trending.forEach(function(item,i){
-   var recent=Math.max(0,Number(item.recent_learners)||0);
-   var growth=item.growth_pct==null?null:Number(item.growth_pct);
-   var note=growth===null?'Mới nổi · '+recent.toLocaleString('vi-VN')+' người học':(growth>0?'Tăng '+growth.toLocaleString('vi-VN')+'%':growth<0?'Giảm '+Math.abs(growth).toLocaleString('vi-VN')+'%':'Ổn định')+' · '+recent.toLocaleString('vi-VN')+' người học';
-   list.appendChild(el('li','','<b>'+(i+1)+'</b><span><strong>'+esc(item.title||'Bài học')+'</strong><small>'+esc(note)+' trong 7 ngày</small></span>'));
-  });
-  if(!trending.length)list.appendChild(el('li','avp-learning-rank-empty','Chưa có hoạt động học tập trong 7 ngày gần đây.'));
- }
- async function loadLearningRankings(){
-  var deadline=Date.now()+6000;
-  while(Date.now()<deadline&&!window.avpSupabase)await new Promise(function(resolve){setTimeout(resolve,150);});
-  if(!window.avpSupabase||typeof window.avpSupabase.rpc!=='function'){
-   renderLearningRankings({featured:[],trending:[]});
-   return;
-  }
-  try{
-   var result=await window.avpSupabase.rpc('public_home_learning_rankings',{p_days:7});
-   if(result.error)throw result.error;
-   renderLearningRankings(result.data||{});
-  }catch(error){
-   console.warn('[AVP learning rankings]',error);
-   lg.innerHTML='';
-   lg.appendChild(el('div','avp-learning-rank-empty','Chưa tải được dữ liệu xếp hạng.'));
-   var list=lessons.querySelector('.avp-canonical-trending ol');
-   list.innerHTML='';
-   list.appendChild(el('li','avp-learning-rank-empty','Dữ liệu xu hướng tạm thời không khả dụng.'));
-  }
- }
- loadLearningRankings();
+ for(var i=0;i<4;i++){lg.appendChild(el('div','avp-canonical-lesson avp-canonical-lesson-empty'));}
  discover.insertAdjacentElement('afterend',lessons);
  /* Removed by request: duplicate onboarding and tools blocks are deleted from the homepage composition. */
 
@@ -186,12 +143,12 @@ function setup(){
  if(!resourceSection){
   resourceSection=el('section','avp-canonical-resources');
   resourceSection.id='avp-canonical-resources';
-  resourceSection.innerHTML='<div class="avp-resource-heading"><div><small>TÀI NGUYÊN DÀNH CHO DÂN VĂN PHÒNG</small><h2>Tạo ra sản phẩm thực tế, không chỉ học công cụ</h2><p>Tài nguyên để luyện tập, lưu lại nội dung hữu ích và theo dõi những gì bạn đã hoàn thành.</p></div></div><div class="avp-resource-grid"><div class="avp-resource-card avp-resource-workbook"><span class="avp-resource-icon">▤</span><span class="avp-resource-copy"><small>01 · FILE MẪU VÀ DỮ LIỆU</small><strong>Kho workbook</strong><em>File thực hành, dữ liệu mẫu và tài liệu theo từng chủ đề.</em><b>Kho nội dung</b></span><span class="avp-resource-decoration">XLSX</span></div><div class="avp-resource-card avp-resource-cases"><span class="avp-resource-icon">▦</span><span class="avp-resource-copy"><small>02 · BÀI TOÁN THỰC TẾ</small><strong>Case thực chiến</strong><em>Thử giải bài toán bằng dữ liệu đầu vào và mục tiêu đầu ra cụ thể.</em><b>Nội dung tham khảo</b></span><span class="avp-resource-decoration">CASE</span></div><div class="avp-resource-card avp-resource-collection"><span class="avp-resource-icon">♧</span><span class="avp-resource-copy"><small>03 · HỌC TIẾP VÀ XEM LẠI</small><strong>Bộ sưu tập cá nhân</strong><em>Mở khu học tập để tiếp tục nội dung gần đây và xem các mục đã lưu trên thiết bị này.</em><b>Đang lưu trữ</b></span><span class="avp-resource-decoration">SAVE</span></div><div class="avp-resource-card avp-resource-results"><span class="avp-resource-icon">✓</span><span class="avp-resource-copy"><small>04 · THEO DÕI TIẾN ĐỘ</small><strong>Thành quả thực hành</strong><em>Xem tiến độ học tập và kết quả được hệ thống ghi nhận.</em><b>Thông tin hiển thị</b></span><span class="avp-resource-decoration">DONE</span></div></div>'
+  resourceSection.innerHTML='<div class="avp-resource-heading"><div><small>TÀI NGUYÊN DÀNH CHO DÂN VĂN PHÒNG</small><h2>Tạo ra sản phẩm thực tế, không chỉ học công cụ</h2><p>Tài nguyên để luyện tập, lưu lại nội dung hữu ích và theo dõi những gì bạn đã hoàn thành.</p></div></div><div class="avp-resource-grid" aria-label="Các khung tài nguyên"><div class="avp-resource-card avp-resource-workbook avp-resource-card-empty"></div><div class="avp-resource-card avp-resource-cases avp-resource-card-empty"></div><div class="avp-resource-card avp-resource-collection avp-resource-card-empty"></div><div class="avp-resource-card avp-resource-results avp-resource-card-empty"></div></div>'
   lessons.insertAdjacentElement('afterend',resourceSection);
  }
 
  var books=document.getElementById('home-books');
- if(books){books.classList.remove('avp-canonical-books');var heading=books.querySelector('.home-reference-heading');if(heading)heading.textContent='Tài liệu tham khảo';}
+ if(books){books.classList.add('avp-canonical-books');var heading=books.querySelector('.home-reference-heading');if(heading)heading.textContent='Tài liệu tham khảo';}
 }
 /* Build the homepage once, then remove legacy duplicates once.
    Do not use delayed DOM deletion to compensate for competing renderers. */
