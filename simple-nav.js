@@ -634,7 +634,7 @@ document.addEventListener("DOMContentLoaded",function(){
   var brand=document.createElement("a");
   brand.className="avp-header-brand";
   brand.href="index.html";
-  brand.innerHTML='<img src="icon-192.png" alt=""><span><strong>Anh Văn Phòng</strong><small>Learn Excel With Me</small></span>';
+  brand.innerHTML='<img src="avp-logo.svg" alt=""><span><strong>Anh Văn Phòng</strong><small>Learn Excel With Me</small></span>';
   var links=document.createElement("div");
   links.className="avp-header-links";
   var items=[
