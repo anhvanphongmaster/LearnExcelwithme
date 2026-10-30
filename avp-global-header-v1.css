@@ -79,3 +79,12 @@ body.dark-mode #avpSearchTrigger.avp-search-trigger kbd{background:#1c3527!impor
 }
 body.avp-embedded-frame,body.avp-embedded-youtube{padding-top:0!important}
 body.avp-embedded-frame .top-simple-nav,body.avp-embedded-youtube .top-simple-nav{display:none!important}
+
+@media(max-width:980px){
+  .avp-header-actions .auth-nav-button{font-size:0!important;gap:0!important}
+  .avp-header-actions .auth-nav-button>span:not(.auth-nav-avatar){display:none!important}
+  .avp-header-actions .auth-nav-slot>.avp-header-login-fallback{font-size:0!important}
+  .avp-header-actions .auth-nav-slot>.avp-header-login-fallback:before{content:"♙";font:22px/1 Arial,sans-serif!important;color:#246342!important}
+  body.dark-mode .avp-header-actions .auth-nav-slot>.avp-header-login-fallback:before{color:#cbe8d5!important}
+  #avpSearchTrigger.avp-search-trigger:before{content:"⌕";font:30px/1 Arial,sans-serif!important;color:#246342!important}
+}
