@@ -359,3 +359,12 @@ html.avp-home-canonical .avp-hero-art .avp-tool-bubble span{
     padding:6px 8px!important;font-size:8px!important;border-radius:10px!important;
   }
 }
+
+/* Hero tool bubble: give each tool nearly its full 3-second slot. */
+@keyframes avpToolBubble{
+  0%{opacity:0;visibility:hidden;transform:translate3d(-9px,7px,0) scale(.9)}
+  .5%{opacity:1;visibility:visible;transform:translate3d(0,0,0) scale(1)}
+  7.45%{opacity:1;visibility:visible;transform:translate3d(0,0,0) scale(1)}
+  8.33%{opacity:0;visibility:hidden;transform:translate3d(9px,-6px,0) scale(.92)}
+  100%{opacity:0;visibility:hidden;transform:translate3d(9px,-6px,0) scale(.92)}
+}
