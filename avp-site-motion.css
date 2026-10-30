@@ -44,3 +44,31 @@ html.avp-motion-enabled{scroll-behavior:smooth}
 
 /* Do not globally cancel animation on desktop, mobile, or OS reduced-motion.
    AVP's visual motion is intentionally consistent across devices. */
+
+/* Restore the Home hero's intended ambient motion on every device. */
+.avp-hero::before{animation:avpGlow 8s ease-in-out infinite alternate!important}
+.avp-title span{animation:avpBrandShine 3.2s ease-in-out infinite!important}
+.avp-title::after{animation:avpBrandLine 3.2s ease-in-out infinite!important}
+.avp-mobile-main-cta{animation:avpCtaBreath 3.6s ease-in-out infinite!important}
+.avp-scroll-tease-btn::after{animation:avpSheen 4.5s ease-in-out infinite!important}
+
+/* Robot gait is an intentional AVP character animation. */
+.avp-edge-launcher.is-walking .avp-bot-leg-l{animation:avpBotStep .36s linear infinite!important}
+.avp-edge-launcher.is-walking .avp-bot-leg-r{animation:avpBotStep .36s linear infinite reverse!important}
+.avp-edge-launcher.is-walking .avp-bot-arm-l{animation:avpBotStep .36s linear infinite reverse!important}
+.avp-edge-launcher.is-walking .avp-bot-arm-r{animation:avpBotStep .36s linear infinite!important}
+.avp-edge-launcher.is-greeting .avp-bot-arm-r{animation:avpBotWaveHuman .55s ease-in-out infinite!important}
+
+/* AVP motion is deliberately consistent across desktop and mobile. */
+@media(prefers-reduced-motion:reduce){
+  .avp-hero::before{animation:avpGlow 8s ease-in-out infinite alternate!important}
+  .avp-title span{animation:avpBrandShine 3.2s ease-in-out infinite!important}
+  .avp-title::after{animation:avpBrandLine 3.2s ease-in-out infinite!important}
+  .avp-mobile-main-cta{animation:avpCtaBreath 3.6s ease-in-out infinite!important}
+  .avp-scroll-tease-btn::after{animation:avpSheen 4.5s ease-in-out infinite!important}
+  .avp-edge-launcher.is-walking .avp-bot-leg-l{animation:avpBotStep .36s linear infinite!important}
+  .avp-edge-launcher.is-walking .avp-bot-leg-r{animation:avpBotStep .36s linear infinite reverse!important}
+  .avp-edge-launcher.is-walking .avp-bot-arm-l{animation:avpBotStep .36s linear infinite reverse!important}
+  .avp-edge-launcher.is-walking .avp-bot-arm-r{animation:avpBotStep .36s linear infinite!important}
+  .avp-edge-launcher.is-greeting .avp-bot-arm-r{animation:avpBotWaveHuman .55s ease-in-out infinite!important}
+}
