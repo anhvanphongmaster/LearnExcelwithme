@@ -234,3 +234,107 @@ html.avp-home-canonical .avp-canonical-book:hover{box-shadow:0 18px 34px rgba(18
  html.avp-home-canonical .avp-canonical-category,html.avp-home-canonical .avp-canonical-lesson,
  html.avp-home-canonical .avp-resource-card,html.avp-home-canonical .avp-canonical-book{transform:none;will-change:auto}
 }
+
+
+/* AVP canonical hero illustration — restored layered motion, lightweight and scoped. */
+html.avp-home-canonical .avp-canonical-illustration{
+  isolation:isolate;
+  perspective:900px;
+  --avp-scene-x:0px;
+  --avp-scene-y:0px;
+  background-size:160% 160%;
+  animation:avpSceneBreath 9s ease-in-out infinite alternate;
+}
+html.avp-home-canonical .avp-canonical-illustration::before{
+  content:"";
+  position:absolute;inset:7% 8%;
+  border-radius:22px;
+  pointer-events:none;
+  background:radial-gradient(ellipse at 50% 62%,rgba(255,255,255,.34),transparent 68%);
+  animation:avpSceneLight 7s ease-in-out infinite alternate;
+}
+html.avp-home-canonical .avp-canonical-illustration .avp-float-label,
+html.avp-home-canonical .avp-canonical-illustration .avp-sheet,
+html.avp-home-canonical .avp-canonical-illustration .avp-checklist,
+html.avp-home-canonical .avp-canonical-illustration .avp-person,
+html.avp-home-canonical .avp-canonical-illustration .avp-laptop,
+html.avp-home-canonical .avp-canonical-illustration .avp-books-stack{
+  will-change:transform;
+  backface-visibility:hidden;
+}
+html.avp-home-canonical .avp-canonical-illustration .avp-float-label{
+  transform-origin:center;
+  animation:avpToolBadgeCycle 3s cubic-bezier(.22,.7,.25,1) infinite;
+  box-shadow:0 7px 18px #16452a12,0 0 0 0 rgba(20,130,82,0);
+}
+html.avp-home-canonical .avp-canonical-illustration .avp-sheet{
+  animation:avpSheetDrift 6.5s ease-in-out infinite;
+}
+html.avp-home-canonical .avp-canonical-illustration .avp-bars i{
+  transform-origin:bottom;
+  animation:avpBarPulse 3.6s ease-in-out infinite alternate;
+}
+html.avp-home-canonical .avp-canonical-illustration .avp-bars i:nth-child(2){animation-delay:-.8s}
+html.avp-home-canonical .avp-canonical-illustration .avp-bars i:nth-child(3){animation-delay:-1.5s}
+html.avp-home-canonical .avp-canonical-illustration .avp-bars i:nth-child(4){animation-delay:-2.1s}
+html.avp-home-canonical .avp-canonical-illustration .avp-bars i:nth-child(5){animation-delay:-2.8s}
+html.avp-home-canonical .avp-canonical-illustration .avp-checklist{
+  animation:avpChecklistFloat 7s ease-in-out infinite;
+}
+html.avp-home-canonical .avp-canonical-illustration .avp-checklist::first-line{
+  text-shadow:0 0 0 rgba(39,91,64,0);
+  animation:avpChecklistGlow 4.5s ease-in-out infinite;
+}
+html.avp-home-canonical .avp-canonical-illustration .avp-person{
+  animation:avpPersonFloat 4.8s ease-in-out infinite;
+  transform-origin:50% 100%;
+}
+html.avp-home-canonical .avp-canonical-illustration .avp-laptop{
+  animation:avpLaptopHover 5.5s ease-in-out infinite;
+  transform-origin:50% 100%;
+}
+html.avp-home-canonical .avp-canonical-illustration .avp-books-stack{
+  animation:avpToolStripFloat 6s ease-in-out infinite;
+}
+@keyframes avpSceneBreath{
+  0%{background-position:42% 52%}
+  100%{background-position:58% 48%}
+}
+@keyframes avpSceneLight{
+  0%{opacity:.45;transform:translate3d(-1%,1%,0) scale(.96)}
+  100%{opacity:.9;transform:translate3d(1%,-1%,0) scale(1.04)}
+}
+@keyframes avpToolBadgeCycle{
+  0%{opacity:0;transform:translate3d(-12px,5px,0) scale(.88)}
+  18%{opacity:1;transform:translate3d(0,0,0) scale(1)}
+  76%{opacity:1;transform:translate3d(0,0,0) scale(1)}
+  100%{opacity:0;transform:translate3d(9px,-3px,0) scale(.92)}
+}
+@keyframes avpSheetDrift{
+  0%,100%{transform:translate3d(0,0,0) rotateX(0deg) rotateZ(0deg)}
+  50%{transform:translate3d(0,-5px,0) rotateX(2deg) rotateZ(-.6deg)}
+}
+@keyframes avpBarPulse{
+  0%{filter:brightness(.92);scale:1 .88}
+  100%{filter:brightness(1.12);scale:1 1}
+}
+@keyframes avpChecklistFloat{
+  0%,100%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(0,-5px,0)}
+}
+@keyframes avpChecklistGlow{
+  0%,100%{text-shadow:0 0 0 rgba(39,91,64,0)}
+  50%{text-shadow:0 0 7px rgba(39,91,64,.18)}
+}
+@keyframes avpPersonFloat{
+  0%,100%{transform:translate3d(0,0,0) rotate(0deg)}
+  50%{transform:translate3d(0,-4px,0) rotate(.6deg)}
+}
+@keyframes avpLaptopHover{
+  0%,100%{transform:translate3d(0,0,0) rotateX(0deg)}
+  50%{transform:translate3d(0,-2px,0) rotateX(1.2deg)}
+}
+@keyframes avpToolStripFloat{
+  0%,100%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(0,-3px,0)}
+}
