@@ -575,6 +575,22 @@ document.addEventListener("DOMContentLoaded",function(){
       css.dataset.avpGlobalHeaderCss='1';
       document.head.appendChild(css);
     }
+    if(!document.querySelector('link[href*="global-search.css"]')){
+      var searchCss=document.createElement('link');
+      searchCss.rel='stylesheet';searchCss.href='global-search.css?v=20261030-header1';
+      document.head.appendChild(searchCss);
+    }
+    if(!document.querySelector('script[src*="global-search.js"]')){
+      var searchScript=document.createElement('script');
+      searchScript.src='global-search.js?v=20261030-header1';
+      searchScript.dataset.avpGlobalSearch='1';
+      document.head.appendChild(searchScript);
+    }
+    if(!document.querySelector('link[href*="auth.css"]')){
+      var authCss=document.createElement('link');
+      authCss.rel='stylesheet';authCss.href='auth.css?v=20261030-header1';
+      document.head.appendChild(authCss);
+    }
   }catch(e){}
 })();
 document.addEventListener("DOMContentLoaded",function(){
@@ -582,6 +598,9 @@ document.addEventListener("DOMContentLoaded",function(){
   if(!nav||nav.dataset.avpGlobalHeader==="1")return;
   var auth=nav.querySelector(".auth-nav-slot")||document.createElement("span");
   auth.className="auth-nav-slot";
+  if(!auth.firstElementChild){
+    auth.innerHTML='<a class="auth-nav-button avp-header-login-fallback" href="auth.html?tab=login" aria-label="Tài khoản">Tài khoản</a>';
+  }
   var search=nav.querySelector("#avpSearchTrigger");
   if(!search){
     search=document.createElement("button");
