@@ -1,99 +1,165 @@
 <!doctype html>
 <html lang="vi" class="avp-design-system">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kiến thức Excel | Anh Văn Phòng</title>
-<meta name="description" content="Thư viện kiến thức Excel dễ hiểu: nền tảng, dữ liệu, tham chiếu, định dạng, quản lý dữ liệu, tính toán, lỗi và bảo mật.">
+<meta name="description" content="Học kiến thức và nguyên lý Excel qua 47 chủ đề, ví dụ thực tế và câu hỏi kiểm tra.">
 <meta name="theme-color" content="#08734b">
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="simple-nav.css"><link rel="stylesheet" href="avp-core.css"><link rel="stylesheet" href="avp-ui-system.css?v=20261001-ui2">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="simple-nav.css">
+<link rel="stylesheet" href="avp-core.css">
+<link rel="stylesheet" href="avp-ui-system.css?v=20261001-ui2">
+<link rel="stylesheet" href="avp-design-system.css?v=2">
 <style>
-:root{--k-green:#08734b;--k-deep:#123d2a;--k-ink:#20352a;--k-muted:#718076;--k-line:#dfebe3;--k-bg:#f5f9f6}
-*{box-sizing:border-box}body{margin:0;background:var(--k-bg);color:var(--k-ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-.k-shell{width:min(1160px,calc(100% - 32px));margin:24px auto 70px}.k-crumb{display:inline-flex;margin:0 0 16px;color:#6c7d72;text-decoration:none;font-size:12px}
-.k-hero{padding:clamp(24px,5vw,44px);border:1px solid #d4e7da;border-radius:25px;background:linear-gradient(125deg,#e8f6ed,#fff 58%,#edf5ff);box-shadow:0 16px 40px #124a2b0c}
-.k-kicker{display:inline-flex;padding:7px 11px;border-radius:99px;background:#d9f0e2;color:#17633e;font-size:10px;font-weight:900;letter-spacing:.12em}
-.k-hero h1{margin:14px 0 10px;color:var(--k-deep);font-size:clamp(29px,4.5vw,46px);line-height:1.08;letter-spacing:-.04em}
-.k-hero p{max-width:790px;margin:0;color:#617268;font-size:14px;line-height:1.75}
-.k-stats{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.k-stats span{padding:8px 11px;border:1px solid #d9e8de;border-radius:11px;background:#ffffffb8;color:#456653;font-size:11px;font-weight:800}
-.k-progress{margin-top:18px;padding:15px 17px;border:1px solid #dce9df;border-radius:15px;background:#ffffffc9}.k-progress-head{display:flex;justify-content:space-between;gap:12px;font-size:11px;font-weight:800;color:#42634e}.k-progress-track{height:7px;margin-top:10px;border-radius:99px;background:#e8f0ea;overflow:hidden}.k-progress-track span{display:block;width:0;height:100%;background:#219765;border-radius:99px;transition:width .2s}
-.k-toolbar{margin-top:18px;padding:18px;border:1px solid var(--k-line);border-radius:19px;background:#fff;box-shadow:0 8px 24px #173f2908}
-.k-search{width:100%;height:46px;padding:0 14px;border:1px solid #dce8df;border-radius:12px;background:#fbfdfb;font:inherit;font-size:13px;outline:none}.k-search:focus{border-color:#78b993;box-shadow:0 0 0 4px #16804e12}
-.k-filters{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.k-filter{padding:8px 12px;border:1px solid #dfe9e2;border-radius:99px;background:#fff;color:#65756b;font-size:10px;font-weight:800;cursor:pointer}.k-filter.active{border-color:#08734b;background:#08734b;color:#fff}
-.k-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:22px 0 13px}.k-section-head h2{margin:0;color:#204a33;font-size:21px}.k-section-head p{margin:5px 0 0;color:#718076;font-size:11px;line-height:1.5}.k-count{color:#77857b;font-size:10px;font-weight:800;white-space:nowrap}
-.k-categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.k-category{min-width:0;padding:17px;border:1px solid var(--k-line);border-radius:17px;background:#fff;text-align:left;cursor:pointer;box-shadow:0 7px 20px #173f2908;transition:transform .18s,border-color .18s,box-shadow .18s}.k-category:hover{transform:translateY(-3px);border-color:#b9d9c5;box-shadow:0 12px 25px #173f2911}.k-cat-icon{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:#e8f5ed;color:#08734b;font-size:19px;font-weight:900}.k-category[data-tone="blue"] .k-cat-icon{background:#eaf1fb;color:#3976b8}.k-category[data-tone="violet"] .k-cat-icon{background:#f1ebfa;color:#805caf}.k-category[data-tone="amber"] .k-cat-icon{background:#fff4df;color:#a36c12}.k-category[data-tone="teal"] .k-cat-icon{background:#e5f5f2;color:#218477}.k-category[data-tone="indigo"] .k-cat-icon{background:#eceeff;color:#5965b7}.k-category[data-tone="rose"] .k-cat-icon{background:#fff0f0;color:#b34b56}.k-category[data-tone="slate"] .k-cat-icon{background:#edf1f3;color:#5d707d}
-.k-category h3{margin:12px 0 6px;color:#234b35;font-size:14px}.k-category p{min-height:38px;margin:0;color:#718076;font-size:10px;line-height:1.55}.k-cat-foot{display:flex;justify-content:space-between;gap:8px;margin-top:13px;padding-top:10px;border-top:1px solid #edf2ee;color:#718076;font-size:10px;font-weight:800}
-.k-topic-panel{margin-top:20px;padding:19px;border:1px solid var(--k-line);border-radius:19px;background:#fff;box-shadow:0 8px 24px #173f2908}.k-topic-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.k-topic{display:flex;align-items:center;gap:11px;min-width:0;padding:13px;border:1px solid #e2ebe5;border-radius:13px;background:#fff;color:inherit;text-align:left;cursor:pointer}.k-topic:hover{border-color:#a9cfb7;background:#f9fcfa}.k-topic-no{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:10px;background:#edf6f0;color:#23734a;font-size:11px;font-weight:900}.k-topic-copy{display:block;flex:1;min-width:0}.k-topic-copy strong{display:block;color:#244b35;font-size:12px;line-height:1.4}.k-topic-copy small{display:block;margin-top:4px;color:#839087;font-size:10px}.k-topic-state{color:#219765;font-size:15px}.k-empty{grid-column:1/-1;padding:30px;text-align:center;color:#78867d;font-size:12px}
-.k-modal{position:fixed;inset:0;z-index:100000;display:none;align-items:flex-start;justify-content:center;padding:22px;background:#10291dbd;backdrop-filter:blur(9px);overflow:auto}.k-modal.open{display:flex}.k-reader{position:relative;width:min(900px,100%);margin:auto;padding:clamp(18px,4vw,34px);border:1px solid #e0ebe3;border-radius:23px;background:#fbfdfb;box-shadow:0 25px 80px #0003}.k-close{position:absolute;right:15px;top:15px;width:38px;height:38px;border:0;border-radius:50%;background:#e8f0eb;color:#315b43;font-size:24px;cursor:pointer}.k-reader-kicker{color:#16805a;font-size:10px;font-weight:900;letter-spacing:.13em}.k-reader h2{max-width:760px;margin:10px 48px 9px 0;color:#173d2a;font-size:clamp(24px,4vw,35px);line-height:1.18;letter-spacing:-.03em}.k-reader-meta{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}.k-reader-meta span{padding:6px 9px;border-radius:99px;background:#edf5ef;color:#587261;font-size:10px;font-weight:800}
-.k-article-section{margin-top:13px;padding:17px;border:1px solid #e3ece5;border-radius:14px;background:#fff}.k-article-section h3{margin:0 0 8px;color:#23613e;font-size:14px}.k-article-section p{margin:0;color:#52665a;font-size:13px;line-height:1.75;white-space:pre-line}.k-example{padding:14px;border-radius:11px;background:#f1f7f3;color:#294f38;font-size:12px;line-height:1.7;white-space:pre-line}
-.k-quiz{margin-top:16px;padding:18px;border:1px solid #dce9df;border-radius:16px;background:#f4faf6}.k-quiz h3{margin:0 0 9px;color:#204a33;font-size:15px}.k-quiz p{margin:0 0 12px;color:#40594a;font-size:13px;line-height:1.6}.k-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}.k-option{padding:11px;border:1px solid #dce8df;border-radius:10px;background:#fff;color:#31513e;text-align:left;font-size:11px;font-weight:700;cursor:pointer}.k-option:disabled{cursor:default}.k-option.correct{border-color:#31a66c;background:#e9f8ef;color:#126b3e}.k-option.wrong{border-color:#df7777;background:#fff0f0;color:#a43a3a}.k-feedback{min-height:30px;margin-top:10px;color:#64746a;font-size:11px;line-height:1.6}.k-reader-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.k-btn{padding:10px 14px;border:1px solid #dbe7df;border-radius:10px;background:#fff;color:#31533e;font-size:11px;font-weight:800;cursor:pointer}.k-btn.primary{border-color:#08734b;background:#08734b;color:#fff}.k-btn:disabled{opacity:.5;cursor:not-allowed}
-.k-footer{margin-top:22px;text-align:center;color:#849187;font-size:10px}
-@media(max-width:900px){.k-categories{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.k-shell{width:calc(100% - 22px);margin:14px auto 48px}.k-categories,.k-topic-list{grid-template-columns:1fr}.k-toolbar,.k-topic-panel{padding:14px}.k-category{padding:14px}.k-category p{min-height:0}.k-options{grid-template-columns:1fr}.k-modal{padding:10px}.k-reader{padding:17px 13px;border-radius:18px}.k-article-section{padding:14px}}
-html[data-avp-display-mode="desktop"] .k-shell{width:1120px;max-width:none;margin:28px auto 70px}
-html[data-avp-display-mode="desktop"] .k-categories{grid-template-columns:repeat(4,minmax(0,1fr))}
-html[data-avp-display-mode="desktop"] .k-topic-list{grid-template-columns:repeat(2,minmax(0,1fr))}
-html[data-avp-display-mode="mobile"] .k-shell{width:calc(100% - 22px);margin:14px auto 48px}
-html[data-avp-display-mode="mobile"] .k-categories,html[data-avp-display-mode="mobile"] .k-topic-list{grid-template-columns:1fr}
+:root{--kl-green:#08734b;--kl-deep:#123d2a;--kl-ink:#1c3024;--kl-muted:#718076;--kl-line:#dfebe3;--kl-bg:#f5f9f6;--kl-shadow:0 12px 30px rgba(23,63,41,.07)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--kl-bg);color:var(--kl-ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+.kl-page{width:min(1240px,calc(100% - 48px));margin:30px auto 76px}
+.kl-breadcrumb{display:inline-flex;margin:0 0 18px;color:#718076;text-decoration:none;font-size:13px}
+.kl-hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(250px,.65fr);gap:32px;align-items:center;padding:42px;border:1px solid #d4e7da;border-radius:26px;background:linear-gradient(125deg,#e8f6ed,#fff 60%,#edf5ff);box-shadow:var(--kl-shadow)}
+.kl-eyebrow{display:inline-flex;padding:8px 12px;border-radius:99px;background:#d9f0e2;color:#17633e;font-size:11px;font-weight:900;letter-spacing:.12em}
+.kl-hero h1{margin:17px 0 12px;color:var(--kl-deep);font-size:clamp(34px,4vw,52px);line-height:1.08;letter-spacing:-.045em}
+.kl-hero p{max-width:720px;margin:0;color:#617268;font-size:16px;line-height:1.75}
+.kl-hero-aside{padding:24px;border:1px solid #dce9df;border-radius:20px;background:#ffffffc9}
+.kl-big-count{color:var(--kl-green);font-size:46px;font-weight:900;line-height:1}.kl-big-label{margin-top:8px;color:#536b5b;font-size:14px;font-weight:800}
+.kl-progress{margin-top:22px}.kl-progress-line{display:flex;justify-content:space-between;gap:12px;color:#42634e;font-size:12px;font-weight:850}.kl-progress-track{height:9px;margin-top:10px;border-radius:99px;background:#e8f0ea;overflow:hidden}.kl-progress-track span{display:block;width:0;height:100%;border-radius:99px;background:#219765}
+.kl-hero-tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}.kl-hero-tags span{padding:9px 12px;border:1px solid #d9e8de;border-radius:12px;background:#ffffffb8;color:#456653;font-size:12px;font-weight:800}
+.kl-toolbar{margin-top:22px;padding:22px;border:1px solid var(--kl-line);border-radius:21px;background:#fff;box-shadow:var(--kl-shadow)}
+.kl-searchline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px}
+.kl-search{width:100%;min-height:52px;padding:0 17px;border:1px solid #d5e3d9;border-radius:13px;background:#fbfdfb;color:var(--kl-ink);font:inherit;font-size:15px;outline:none}
+.kl-search:focus{border-color:#78b993;box-shadow:0 0 0 4px #16804e12}
+.kl-reset{min-height:52px;padding:0 20px;border:1px solid #d5e3d9;border-radius:13px;background:#f7faf8;color:#315640;font:inherit;font-size:13px;font-weight:850;cursor:pointer}
+.kl-filterrow{display:grid;grid-template-columns:105px minmax(0,1fr);gap:14px;align-items:start;margin-top:18px}
+.kl-filtername{padding-top:11px;color:#728177;font-size:11px;font-weight:900;letter-spacing:.1em}
+.kl-pills{display:flex;flex-wrap:wrap;gap:9px}
+.kl-pill{min-height:42px;padding:0 17px;border:1px solid #dce8df;border-radius:12px;background:#fff;color:#52675a;font:inherit;font-size:13px;font-weight:800;cursor:pointer}
+.kl-pill[aria-pressed=true]{border-color:var(--kl-green);background:var(--kl-green);color:#fff;box-shadow:0 5px 14px #08734b24}
+.kl-pill:focus-visible,.kl-reset:focus-visible,.kl-category:focus-visible,.kl-topic:focus-visible,.kl-button:focus-visible{outline:3px solid #08734b33;outline-offset:3px}
+.kl-section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin:34px 0 16px}
+.kl-section-head h2{margin:0;color:#1d3929;font-size:29px;letter-spacing:-.035em}
+.kl-section-head p{margin:7px 0 0;color:#728177;font-size:14px;line-height:1.6}
+.kl-count{flex:0 0 auto;color:#718076;font-size:13px;font-weight:850}
+.kl-categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kl-category{display:flex;flex-direction:column;min-width:0;min-height:205px;padding:20px;border:1px solid var(--kl-line);border-radius:18px;background:#fff;text-align:left;box-shadow:var(--kl-shadow);cursor:pointer}
+.kl-category:hover{border-color:#a9cfb7;transform:translateY(-2px)}
+.kl-category.active{border-color:var(--kl-green);background:#f2faf5;box-shadow:0 0 0 2px #08734b16,var(--kl-shadow)}
+.kl-category-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:13px;background:#e8f5ed;color:var(--kl-green);font-size:20px;font-weight:900}
+.kl-category[data-tone=blue] .kl-category-icon{background:#eaf1fb;color:#3976b8}.kl-category[data-tone=violet] .kl-category-icon{background:#f1ebfa;color:#805caf}.kl-category[data-tone=amber] .kl-category-icon{background:#fff4df;color:#a36c12}.kl-category[data-tone=teal] .kl-category-icon{background:#e5f5f2;color:#218477}.kl-category[data-tone=indigo] .kl-category-icon{background:#eceeff;color:#5965b7}.kl-category[data-tone=rose] .kl-category-icon{background:#fff0f0;color:#b34b56}.kl-category[data-tone=slate] .kl-category-icon{background:#edf1f3;color:#5d707d}
+.kl-category h3{margin:15px 0 7px;color:#234b35;font-size:16px;line-height:1.35}.kl-category p{flex:1;margin:0;color:#718076;font-size:12px;line-height:1.6}
+.kl-category-foot{display:flex;justify-content:space-between;gap:8px;margin-top:15px;padding-top:12px;border-top:1px solid #edf2ee;color:#718076;font-size:11px;font-weight:850}
+.kl-results{margin-top:24px;padding:24px;border:1px solid var(--kl-line);border-radius:21px;background:#fff;box-shadow:var(--kl-shadow)}
+.kl-results-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:18px}.kl-results-head h2{margin:0;color:#1d3929;font-size:26px;letter-spacing:-.03em}.kl-results-head p{margin:6px 0 0;color:#728177;font-size:13px;line-height:1.6}
+.kl-topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.kl-topic{display:flex;align-items:center;gap:13px;min-width:0;min-height:82px;padding:14px;border:1px solid #e2ebe5;border-radius:14px;background:#fff;color:inherit;text-align:left;cursor:pointer}
+.kl-topic:hover{border-color:#a9cfb7;background:#f9fcfa}
+.kl-topic-number{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:12px;background:#edf6f0;color:#23734a;font-size:12px;font-weight:900}
+.kl-topic-copy{flex:1;min-width:0}.kl-topic-copy strong{display:block;color:#244b35;font-size:14px;line-height:1.4}.kl-topic-copy small{display:block;margin-top:6px;color:#839087;font-size:11px}.kl-topic-check{color:#219765;font-size:18px;font-weight:900}
+.kl-empty{grid-column:1/-1;padding:42px 20px;text-align:center;color:#78867d;font-size:14px}
+.kl-footer{margin-top:30px;text-align:center;color:#849187;font-size:12px}
+.kl-modal{position:fixed;inset:0;z-index:100000;display:none;align-items:flex-start;justify-content:center;padding:28px;background:#10291dbd;backdrop-filter:blur(8px);overflow:auto}
+.kl-modal.open{display:flex}.kl-reader{position:relative;width:min(920px,100%);margin:auto;padding:34px;border:1px solid #e0ebe3;border-radius:24px;background:#fbfdfb;box-shadow:0 25px 80px #0003}
+.kl-close{position:absolute;right:18px;top:18px;width:42px;height:42px;border:0;border-radius:50%;background:#e8f0eb;color:#315b43;font-size:25px;cursor:pointer}
+.kl-reader-kicker{color:#16805a;font-size:11px;font-weight:900;letter-spacing:.13em}.kl-reader h2{max-width:760px;margin:12px 55px 10px 0;color:#173d2a;font-size:clamp(27px,3vw,38px);line-height:1.18;letter-spacing:-.03em}
+.kl-reader-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}.kl-reader-meta span{padding:7px 11px;border-radius:99px;background:#edf5ef;color:#587261;font-size:11px;font-weight:850}
+.kl-article-section{margin-top:14px;padding:20px;border:1px solid #e3ece5;border-radius:15px;background:#fff}.kl-article-section h3{margin:0 0 9px;color:#23613e;font-size:15px}.kl-article-section p{margin:0;color:#52665a;font-size:14px;line-height:1.8;white-space:pre-line}
+.kl-example{padding:15px;border-radius:12px;background:#f1f7f3;color:#294f38;font-size:13px;line-height:1.75;white-space:pre-line}
+.kl-quiz{margin-top:18px;padding:21px;border:1px solid #dce9df;border-radius:17px;background:#f4faf6}.kl-quiz h3{margin:0 0 10px;color:#204a33;font-size:17px}.kl-quiz p{margin:0 0 14px;color:#40594a;font-size:14px;line-height:1.65}
+.kl-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.kl-option{min-height:48px;padding:12px;border:1px solid #dce8df;border-radius:11px;background:#fff;color:#31513e;text-align:left;font:inherit;font-size:13px;font-weight:750;cursor:pointer}.kl-option:disabled{cursor:default}.kl-option.correct{border-color:#31a66c;background:#e9f8ef;color:#126b3e}.kl-option.wrong{border-color:#df7777;background:#fff0f0;color:#a43a3a}
+.kl-feedback{min-height:28px;margin-top:12px;color:#64746a;font-size:13px;line-height:1.6}
+.kl-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.kl-button{min-height:44px;padding:0 16px;border:1px solid #dbe7df;border-radius:11px;background:#fff;color:#31533e;font:inherit;font-size:13px;font-weight:850;cursor:pointer}.kl-button.primary{border-color:var(--kl-green);background:var(--kl-green);color:#fff}.kl-button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:1000px){.kl-categories{grid-template-columns:repeat(2,minmax(0,1fr))}.kl-hero{grid-template-columns:1fr}.kl-hero-aside{max-width:none}}
+@media(max-width:700px){.kl-page{width:calc(100% - 24px);margin:16px auto 48px}.kl-hero{padding:23px 19px;border-radius:20px;gap:20px}.kl-hero h1{font-size:34px}.kl-hero p{font-size:14px}.kl-hero-aside{padding:18px}.kl-big-count{font-size:38px}.kl-toolbar{padding:15px}.kl-searchline{grid-template-columns:1fr}.kl-search,.kl-reset{min-height:48px}.kl-filterrow{display:block;margin-top:17px}.kl-filtername{display:block;padding:0 0 9px}.kl-pills{flex-wrap:nowrap;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:thin}.kl-pill{flex:0 0 auto;min-height:42px;padding:0 14px}.kl-section-head{align-items:start;margin:26px 0 13px}.kl-section-head h2{font-size:23px}.kl-section-head p{font-size:12px}.kl-categories,.kl-topic-grid{grid-template-columns:1fr}.kl-category{min-height:0;padding:17px}.kl-category p{min-height:0}.kl-results{padding:16px}.kl-results-head{align-items:start}.kl-results-head h2{font-size:21px}.kl-topic{min-height:76px;padding:12px}.kl-modal{padding:9px}.kl-reader{padding:20px 15px;border-radius:18px}.kl-article-section{padding:15px}.kl-options{grid-template-columns:1fr}}
+html[data-avp-display-mode=desktop] .kl-page{width:min(1240px,calc(100% - 48px));margin:30px auto 76px}
+html[data-avp-display-mode=desktop] .kl-categories{grid-template-columns:repeat(4,minmax(0,1fr))}
+html[data-avp-display-mode=desktop] .kl-topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+html[data-avp-display-mode=mobile] .kl-page{width:calc(100% - 24px);margin:16px auto 48px}
+html[data-avp-display-mode=mobile] .kl-categories,html[data-avp-display-mode=mobile] .kl-topic-grid{grid-template-columns:1fr}
 </style>
-<link rel="stylesheet" href="avp-design-system.css?v=1" data-avp-design-system>
 </head>
 <body>
 <script src="avp-ui-system.js?v=20261002-ui1" data-avp-ui-system></script>
 <nav class="top-simple-nav" aria-label="Điều hướng chính"><div class="top-simple-links"><a href="index.html" data-avp-nav="home">Trang chủ</a><a href="skill-map.html" data-avp-nav="learn">Lộ trình học</a><a href="practice-video.html" data-avp-nav="practice">Thực hành</a><a href="tools-center.html" data-avp-nav="tools">Công cụ</a><a href="index.html">Thư viện Excel</a></div><button class="top-mobile-toggle" type="button" aria-label="Mở menu">☰</button></nav>
-<main class="k-shell">
-<a class="k-crumb" href="index.html">← Trang chủ / Thư viện Excel / Kiến thức Excel</a>
-<section class="k-hero"><span class="k-kicker">AVP · EXCEL KNOWLEDGE LIBRARY</span><h1>Hiểu Excel từ bản chất.<br>Không chỉ học thuộc thao tác.</h1><p>Thư viện giải thích Excel hoạt động như thế nào, vì sao dữ liệu có kết quả như vậy và những nguyên lý cần biết khi làm báo cáo. Mỗi bài có ví dụ dễ hiểu, tình huống công việc, lỗi thường gặp và câu hỏi tự kiểm tra.</p><div class="k-stats"><span id="kTopicCount">47 bài kiến thức</span><span>8 nhóm chủ đề</span><span>Cơ bản → Nâng cao</span><span>Ví dụ văn phòng thực tế</span></div><div class="k-progress"><div class="k-progress-head"><span>TIẾN ĐỘ HỌC CỦA BẠN</span><span id="kProgressText">0 / 47 bài hoàn thành</span></div><div class="k-progress-track"><span id="kProgressBar"></span></div></div></section>
-<section class="k-toolbar" aria-label="Bộ lọc kiến thức">
-<div class="k-search-row"><input id="kSearch" class="k-search" type="search" placeholder="Tìm kiến thức: ngày tháng, tham chiếu, #VALUE!, Table..." autocomplete="off"><button class="k-reset" id="kReset" type="button">Xóa bộ lọc</button></div>
-<div class="k-filter-group"><span class="k-filter-label">CẤP ĐỘ</span><div class="k-filters" id="kLevelFilters"><button class="k-filter active" data-level="Tất cả" aria-pressed="true">Tất cả</button><button class="k-filter" data-level="Cơ bản" aria-pressed="false">Cơ bản</button><button class="k-filter" data-level="Trung cấp" aria-pressed="false">Trung cấp</button><button class="k-filter" data-level="Nâng cao" aria-pressed="false">Nâng cao</button></div></div>
-<div class="k-filter-group"><span class="k-filter-label">TIẾN ĐỘ</span><div class="k-filters" id="kStatusFilters"><button class="k-filter active" data-status="all" aria-pressed="true">Tất cả</button><button class="k-filter" data-status="todo" aria-pressed="false">Chưa học</button><button class="k-filter" data-status="done" aria-pressed="false">Đã học</button></div></div></section>
-<div class="k-section-head"><div><h2>Lọc theo nhóm kiến thức</h2><p>Chọn một nhóm để lọc; chọn lại lần nữa để bỏ lọc. Các bộ lọc có thể kết hợp với tìm kiếm và tiến độ.</p></div><span class="k-count" id="kCategoryCount">8 nhóm</span></div><section class="k-categories" id="kCategories"></section>
-<section class="k-topic-panel" id="kTopicPanel"><div class="k-section-head" style="margin-top:0"><div><h2 id="kTopicTitle">Tất cả bài kiến thức</h2><p id="kTopicDescription">Kết quả cập nhật đồng thời theo từ khóa, cấp độ, tiến độ và nhóm chủ đề.</p></div><span class="k-count" id="kResultCount">47 bài</span></div><div class="k-topic-list" id="kTopics"></div></section>
-<p class="k-footer">Learn Excel with Anh Văn Phòng · Hiểu nguyên lý để sử dụng Excel chính xác hơn.</p>
+<main class="kl-page">
+<a class="kl-breadcrumb" href="index.html">← Trang chủ / Thư viện Excel / Kiến thức Excel</a>
+<section class="kl-hero">
+<div><span class="kl-eyebrow">AVP · EXCEL KNOWLEDGE LIBRARY</span><h1>Hiểu Excel từ bản chất.<br>Không chỉ học thuộc thao tác.</h1><p>Học cách Excel tổ chức dữ liệu, xử lý công thức và vận hành workbook. Mỗi chủ đề có nguyên lý, ví dụ văn phòng, tình huống thực tế, lỗi dễ nhầm và câu hỏi tự kiểm tra.</p><div class="kl-hero-tags"><span>8 nhóm kiến thức</span><span>Cơ bản đến nâng cao</span><span>Ví dụ thực tế</span></div></div>
+<aside class="kl-hero-aside"><div class="kl-big-count" id="klTotal">47</div><div class="kl-big-label">chủ đề kiến thức được tuyển chọn</div><div class="kl-progress"><div class="kl-progress-line"><span>TIẾN ĐỘ HỌC</span><span id="klProgressText">0 / 47 hoàn thành</span></div><div class="kl-progress-track"><span id="klProgressBar"></span></div></div></aside>
+</section>
+<section class="kl-toolbar" aria-label="Bộ lọc kiến thức">
+<div class="kl-searchline"><input id="klSearch" class="kl-search" type="search" placeholder="Tìm chủ đề, khái niệm, ví dụ hoặc lỗi Excel..." autocomplete="off"><button id="klReset" class="kl-reset" type="button">Đặt lại bộ lọc</button></div>
+<div class="kl-filterrow"><span class="kl-filtername">CẤP ĐỘ</span><div class="kl-pills" id="klLevels"><button class="kl-pill" data-level="Tất cả" aria-pressed="true">Tất cả</button><button class="kl-pill" data-level="Cơ bản" aria-pressed="false">Cơ bản</button><button class="kl-pill" data-level="Trung cấp" aria-pressed="false">Trung cấp</button><button class="kl-pill" data-level="Nâng cao" aria-pressed="false">Nâng cao</button></div></div>
+<div class="kl-filterrow"><span class="kl-filtername">TIẾN ĐỘ</span><div class="kl-pills" id="klStatuses"><button class="kl-pill" data-status="all" aria-pressed="true">Tất cả</button><button class="kl-pill" data-status="todo" aria-pressed="false">Chưa học</button><button class="kl-pill" data-status="done" aria-pressed="false">Đã học</button></div></div>
+</section>
+<div class="kl-section-head"><div><h2>Chọn nhóm kiến thức</h2><p>Có thể kết hợp nhóm, cấp độ, tiến độ và từ khóa.</p></div><span class="kl-count" id="klCategoryCount">8 nhóm</span></div>
+<section class="kl-categories" id="klCategories" aria-label="Nhóm kiến thức"></section>
+<section class="kl-results"><div class="kl-results-head"><div><h2 id="klResultTitle">Tất cả bài kiến thức</h2><p id="klResultDescription">Chọn một chủ đề để mở bài học chi tiết.</p></div><span class="kl-count" id="klResultCount">47 bài</span></div><div class="kl-topic-grid" id="klTopics"></div></section>
+<footer class="kl-footer">Learn Excel with Anh Văn Phòng · Hiểu nguyên lý để sử dụng Excel chính xác hơn.</footer>
 </main>
-<div class="k-modal" id="kModal" role="dialog" aria-modal="true" aria-labelledby="kArticleTitle"><article class="k-reader"><button class="k-close" id="kClose" aria-label="Đóng">×</button><div class="k-reader-kicker" id="kArticleCategory"></div><h2 id="kArticleTitle"></h2><div class="k-reader-meta" id="kArticleMeta"></div><section class="k-article-section"><h3>1. Khái niệm</h3><p id="kConcept"></p></section><section class="k-article-section"><h3>2. Nguyên lý hoạt động</h3><p id="kPrinciple"></p></section><section class="k-article-section"><h3>3. Ví dụ minh họa</h3><div class="k-example" id="kExample"></div></section><section class="k-article-section"><h3>4. Ứng dụng trong công việc</h3><p id="kScenario"></p></section><section class="k-article-section"><h3>5. Hiểu lầm thường gặp</h3><p id="kMisconception"></p></section><section class="k-quiz"><h3>6. Kiểm tra kiến thức</h3><p id="kQuestion"></p><div class="k-options" id="kOptions"></div><div class="k-feedback" id="kFeedback" aria-live="polite">Chọn một đáp án để kiểm tra.</div></section><div class="k-reader-actions"><button class="k-btn primary" id="kComplete">Đánh dấu đã học</button><button class="k-btn" id="kPrevious">← Bài trước</button><button class="k-btn" id="kNext">Bài tiếp theo →</button></div></article></div>
+<div class="kl-modal" id="klModal" role="dialog" aria-modal="true" aria-labelledby="klArticleTitle">
+<article class="kl-reader">
+<button class="kl-close" id="klClose" type="button" aria-label="Đóng bài học">×</button>
+<span class="kl-reader-kicker" id="klArticleCategory">KIẾN THỨC EXCEL</span><h2 id="klArticleTitle">Tên bài học</h2><div class="kl-reader-meta" id="klArticleMeta"></div>
+<section class="kl-article-section"><h3>Khái niệm</h3><p id="klConcept"></p></section>
+<section class="kl-article-section"><h3>Nguyên lý hoạt động</h3><p id="klPrinciple"></p></section>
+<section class="kl-article-section"><h3>Ví dụ minh họa</h3><div class="kl-example" id="klExample"></div></section>
+<section class="kl-article-section"><h3>Tình huống văn phòng</h3><p id="klScenario"></p></section>
+<section class="kl-article-section"><h3>Điểm dễ hiểu sai</h3><p id="klMisconception"></p></section>
+<section class="kl-quiz"><h3>Kiểm tra nhanh</h3><p id="klQuestion"></p><div class="kl-options" id="klOptions"></div><div class="kl-feedback" id="klFeedback" aria-live="polite"></div></section>
+<div class="kl-actions"><button class="kl-button primary" id="klComplete" type="button">Đánh dấu đã học</button><button class="kl-button" id="klPrevious" type="button">← Bài trước</button><button class="kl-button" id="klNext" type="button">Bài tiếp theo →</button></div>
+</article>
+</div>
 <script src="excel-knowledge-library-data.js"></script>
 <script>
 (function(){
 'use strict';
-const bank=window.AVP_KNOWLEDGE_BANK||[],categories=window.AVP_KNOWLEDGE_CATEGORIES||[],$=id=>document.getElementById(id),KEY='avp_excel_knowledge_progress_v1';
+const bank=Array.isArray(window.AVP_KNOWLEDGE_BANK)?window.AVP_KNOWLEDGE_BANK:[];
+const categories=Array.isArray(window.AVP_KNOWLEDGE_CATEGORIES)?window.AVP_KNOWLEDGE_CATEGORIES:[];
+const $=id=>document.getElementById(id),KEY='avp_excel_knowledge_progress_v2';
 const state={category:'all',level:'Tất cả',status:'all',query:'',completed:[],current:null,answered:false};
-try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');if(Array.isArray(saved.completed))state.completed=saved.completed;}catch(e){}
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');if(Array.isArray(saved.completed))state.completed=saved.completed.filter(id=>bank.some(x=>x.id===id));}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify({completed:state.completed}));}catch(e){}}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function updateProgress(){$('kProgressText').textContent=state.completed.length+' / '+bank.length+' bài hoàn thành';$('kProgressBar').style.width=(bank.length?state.completed.length/bank.length*100:0)+'%';}
-function filtered(){return bank.filter(x=>(state.category==='all'||x.categoryId===state.category)&&(!state.query||[x.title,x.category,x.summary,x.concept,x.principle,x.example,x.scenario,x.misconception].join(' ').toLowerCase().includes(state.query))&&(state.level==='Tất cả'||x.level===state.level)&&(state.status==='all'||(state.status==='done'?state.completed.includes(x.id):!state.completed.includes(x.id))));}
+function matches(x){const q=state.query;return(state.category==='all'||x.categoryId===state.category)&&(state.level==='Tất cả'||x.level===state.level)&&(state.status==='all'||(state.status==='done'?state.completed.includes(x.id):!state.completed.includes(x.id)))&&(!q||[x.title,x.category,x.summary,x.concept,x.principle,x.example,x.scenario,x.misconception].join(' ').toLocaleLowerCase('vi').includes(q));}
+function filtered(){return bank.filter(matches);}
+function updateProgress(){$('klProgressText').textContent=state.completed.length+' / '+bank.length+' hoàn thành';$('klProgressBar').style.width=(bank.length?state.completed.length/bank.length*100:0)+'%';}
 function renderCategories(){
- $('kCategories').innerHTML=categories.map(c=>{const list=bank.filter(x=>x.categoryId===c.id),visible=filtered().filter(x=>x.categoryId===c.id).length,done=list.filter(x=>state.completed.includes(x.id)).length;return '<button class="k-category '+(state.category===c.id?'is-active':'')+'" data-tone="'+c.tone+'" data-id="'+c.id+'" aria-pressed="'+(state.category===c.id)+'"><span class="k-cat-icon">'+c.icon+'</span><h3>'+esc(c.name)+'</h3><p>'+esc(c.description)+'</p><div class="k-cat-foot"><span>'+visible+'/'+list.length+' bài phù hợp</span><span>'+done+'/'+list.length+' đã học</span></div></button>';}).join('');
- $('kCategories').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>{state.category=state.category===b.dataset.id?'all':b.dataset.id;render();}));
+ $('klCategories').innerHTML=categories.map(c=>{const total=bank.filter(x=>x.categoryId===c.id).length,shown=filtered().filter(x=>x.categoryId===c.id).length,done=bank.filter(x=>x.categoryId===c.id&&state.completed.includes(x.id)).length;return '<button class="kl-category '+(state.category===c.id?'active':'')+'" data-id="'+esc(c.id)+'" data-tone="'+esc(c.tone)+'" aria-pressed="'+(state.category===c.id)+'"><span class="kl-category-icon">'+esc(c.icon)+'</span><h3>'+esc(c.name)+'</h3><p>'+esc(c.description)+'</p><span class="kl-category-foot"><span>'+shown+' / '+total+' phù hợp</span><span>'+done+' đã học</span></span></button>';}).join('');
+ $('klCategories').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>{state.category=state.category===b.dataset.id?'all':b.dataset.id;render();}));
 }
 function renderTopics(){
- const list=filtered();$('kTopicTitle').textContent=state.category==='all'?'Tất cả bài kiến thức':(categories.find(c=>c.id===state.category)||{}).name||'Bài kiến thức';$('kTopicDescription').textContent=state.query?'Kết quả tìm kiếm trong thư viện.':'Chọn một bài để đọc giải thích, ví dụ và kiểm tra kiến thức.';$('kResultCount').textContent=list.length+' bài';
- $('kTopics').innerHTML=list.length?list.map((x,i)=>'<button class="k-topic" data-id="'+x.id+'"><span class="k-topic-no">'+String(i+1).padStart(2,'0')+'</span><span class="k-topic-copy"><strong>'+esc(x.title)+'</strong><small>'+esc(x.category)+' · '+esc(x.level)+'</small></span><span class="k-topic-state">'+(state.completed.includes(x.id)?'✓':'›')+'</span></button>').join(''):'<div class="k-empty">Không tìm thấy chủ đề phù hợp. Hãy thử từ khóa khác.</div>';
- $('kTopics').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>openArticle(b.dataset.id)));
+ const list=filtered();$('klResultTitle').textContent=state.category==='all'?'Tất cả bài kiến thức':(categories.find(c=>c.id===state.category)||{}).name||'Bài kiến thức';$('klResultDescription').textContent=state.query?'Kết quả được lọc đồng thời theo các điều kiện đang chọn.':'Chọn một chủ đề để mở bài học chi tiết.';$('klResultCount').textContent=list.length+' / '+bank.length+' bài';
+ $('klTopics').innerHTML=list.length?list.map((x,i)=>'<button class="kl-topic" data-id="'+esc(x.id)+'"><span class="kl-topic-number">'+String(i+1).padStart(2,'0')+'</span><span class="kl-topic-copy"><strong>'+esc(x.title)+'</strong><small>'+esc(x.category)+' · '+esc(x.level)+'</small></span><span class="kl-topic-check">'+(state.completed.includes(x.id)?'✓':'›')+'</span></button>').join(''):'<div class="kl-empty">Không tìm thấy chủ đề phù hợp. Hãy đổi từ khóa hoặc đặt lại bộ lọc.</div>';
+ $('klTopics').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>openArticle(b.dataset.id)));
 }
 function render(){updateProgress();renderCategories();renderTopics();}
+function quizOptions(x){const list=[String(x.answer||'')].concat(Array.isArray(x.options)?x.options:[]).filter((v,i,a)=>v&&a.indexOf(v)===i);return list.slice(0,4);}
 function openArticle(id){
  const x=bank.find(t=>t.id===id);if(!x)return;state.current=id;state.answered=false;
- $('kArticleCategory').textContent=x.category.toUpperCase();$('kArticleTitle').textContent=x.title;$('kArticleMeta').innerHTML='<span>'+x.level+'</span><span>Kiến thức Excel</span><span>'+x.id+'</span>';
- $('kConcept').textContent=x.concept;$('kPrinciple').textContent=x.principle;$('kExample').textContent=x.example;$('kScenario').textContent=x.scenario;$('kMisconception').textContent=x.misconception;$('kQuestion').textContent=x.question;$('kFeedback').textContent='Chọn một đáp án để kiểm tra.';
- $('kOptions').innerHTML=x.options.map((o,i)=>'<button class="k-option" data-index="'+i+'">'+String.fromCharCode(65+i)+'. '+esc(o)+'</button>').join('');
- $('kOptions').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>checkAnswer(Number(b.dataset.index))));
- $('kComplete').textContent=state.completed.includes(id)?'Đã hoàn thành ✓':'Đánh dấu đã học';$('kPrevious').disabled=bank.findIndex(t=>t.id===id)===0;$('kNext').disabled=bank.findIndex(t=>t.id===id)===bank.length-1;
- $('kModal').classList.add('open');document.body.style.overflow='hidden';
+ $('klArticleCategory').textContent=x.category.toLocaleUpperCase('vi');$('klArticleTitle').textContent=x.title;$('klArticleMeta').innerHTML='<span>'+esc(x.level)+'</span><span>Kiến thức Excel</span><span>'+esc(x.id)+'</span>';
+ $('klConcept').textContent=x.concept;$('klPrinciple').textContent=x.principle;$('klExample').textContent=x.example;$('klScenario').textContent=x.scenario;$('klMisconception').textContent=x.misconception;$('klQuestion').textContent=x.question;$('klFeedback').textContent='Chọn một đáp án để kiểm tra.';
+ const opts=quizOptions(x);$('klOptions').innerHTML=opts.map((o,i)=>'<button class="kl-option" data-index="'+i+'" type="button">'+String.fromCharCode(65+i)+'. '+esc(o)+'</button>').join('');
+ $('klOptions').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>checkAnswer(Number(b.dataset.index))));
+ $('klComplete').textContent=state.completed.includes(id)?'Đã hoàn thành ✓':'Đánh dấu đã học';const i=bank.findIndex(t=>t.id===id);$('klPrevious').disabled=i===0;$('klNext').disabled=i===bank.length-1;
+ $('klModal').classList.add('open');document.body.style.overflow='hidden';$('klClose').focus();
 }
-function checkAnswer(index){if(state.answered)return;const x=bank.find(t=>t.id===state.current);if(!x)return;state.answered=true;const buttons=[...$('kOptions').querySelectorAll('button')];buttons.forEach((b,i)=>{b.disabled=true;if(x.options[i]===x.answer)b.classList.add('correct');else if(i===index)b.classList.add('wrong');});const correct=x.options[index]===x.answer;$('kFeedback').textContent=correct?'Chính xác. Bạn đã nắm được ý chính của bài.':'Chưa chính xác. Đáp án đúng đã được đánh dấu. Hãy đọc lại phần nguyên lý trước khi chuyển bài.';}
-function close(){ $('kModal').classList.remove('open');document.body.style.overflow='';}
-$('kSearch').addEventListener('input',e=>{state.query=e.target.value.trim().toLowerCase();render();});
-$('kLevelFilters').addEventListener('click',e=>{const b=e.target.closest('[data-level]');if(!b)return;state.level=b.dataset.level;$('kLevelFilters').querySelectorAll('button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active));});render();});
-$('kStatusFilters').addEventListener('click',e=>{const b=e.target.closest('[data-status]');if(!b)return;state.status=b.dataset.status;$('kStatusFilters').querySelectorAll('button').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active));});render();});
-$('kReset').addEventListener('click',()=>{state.category='all';state.level='Tất cả';state.status='all';state.query='';$('kSearch').value='';document.querySelectorAll('#kLevelFilters button,#kStatusFilters button').forEach(x=>{const active=x.dataset.level==='Tất cả'||x.dataset.status==='all';x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active));});render();});
-$('kComplete').addEventListener('click',()=>{if(!state.current)return;if(!state.completed.includes(state.current))state.completed.push(state.current);save();render();$('kComplete').textContent='Đã hoàn thành ✓';});
-$('kPrevious').addEventListener('click',()=>{const i=bank.findIndex(x=>x.id===state.current);if(i>0)openArticle(bank[i-1].id);});
-$('kNext').addEventListener('click',()=>{const i=bank.findIndex(x=>x.id===state.current);if(i<bank.length-1)openArticle(bank[i+1].id);});
-$('kClose').addEventListener('click',close);$('kModal').addEventListener('click',e=>{if(e.target===$('kModal'))close();});document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
-if(bank.length!==47)console.warn('Knowledge catalogue expected 47 records; found',bank.length);
-$('kTopicCount').textContent=bank.length+' bài kiến thức';$('kCategoryCount').textContent=categories.length+' nhóm';render();
+function checkAnswer(index){if(state.answered)return;const x=bank.find(t=>t.id===state.current);if(!x)return;state.answered=true;const opts=quizOptions(x),buttons=[...$('klOptions').querySelectorAll('button')];buttons.forEach((b,i)=>{b.disabled=true;if(opts[i]===String(x.answer))b.classList.add('correct');else if(i===index)b.classList.add('wrong');});$('klFeedback').textContent=opts[index]===String(x.answer)?'Chính xác. Bạn đã nắm được ý chính của bài.':'Chưa chính xác. Đáp án đúng đã được đánh dấu. Hãy đọc lại phần nguyên lý.';
+}
+function close(){ $('klModal').classList.remove('open');document.body.style.overflow='';}
+function setActive(container,selector,active){$(container).querySelectorAll(selector).forEach(b=>{const yes=b===active;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',String(yes));});}
+$('klSearch').addEventListener('input',e=>{state.query=e.target.value.trim().toLocaleLowerCase('vi');render();});
+$('klLevels').addEventListener('click',e=>{const b=e.target.closest('[data-level]');if(!b)return;state.level=b.dataset.level;setActive('klLevels','[data-level]',b);render();});
+$('klStatuses').addEventListener('click',e=>{const b=e.target.closest('[data-status]');if(!b)return;state.status=b.dataset.status;setActive('klStatuses','[data-status]',b);render();});
+$('klReset').addEventListener('click',()=>{state.category='all';state.level='Tất cả';state.status='all';state.query='';$('klSearch').value='';setActive('klLevels','[data-level]',$('klLevels').querySelector('[data-level="Tất cả"]'));setActive('klStatuses','[data-status]',$('klStatuses').querySelector('[data-status="all"]'));render();});
+$('klComplete').addEventListener('click',()=>{if(!state.current)return;if(!state.completed.includes(state.current))state.completed.push(state.current);save();render();$('klComplete').textContent='Đã hoàn thành ✓';});
+$('klPrevious').addEventListener('click',()=>{const i=bank.findIndex(x=>x.id===state.current);if(i>0)openArticle(bank[i-1].id);});
+$('klNext').addEventListener('click',()=>{const i=bank.findIndex(x=>x.id===state.current);if(i<bank.length-1)openArticle(bank[i+1].id);});
+$('klClose').addEventListener('click',close);$('klModal').addEventListener('click',e=>{if(e.target===$('klModal'))close();});document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+$('klTotal').textContent=bank.length;$('klCategoryCount').textContent=categories.length+' nhóm';render();
 })();
 </script>
-</body></html>
+<script defer src="simple-nav.js"></script>
+<script defer src="avp-display-mode.js?v=2"></script>
+<script defer src="global-search.js"></script>
+<footer class="site-footer"><p class="site-footer-brand">© 2026 - Learn Excel with Anh Văn Phòng</p><p class="site-footer-sub">Excel · Data · Reporting</p><div class="site-footer-legal"><a href="terms.html">Điều khoản</a><a href="privacy.html">Quyền riêng tư</a><a href="disclaimer.html">Tuyên bố pháp lý</a><a href="open-source.html">Mã nguồn mở</a></div></footer>
+</body>
+</html>
