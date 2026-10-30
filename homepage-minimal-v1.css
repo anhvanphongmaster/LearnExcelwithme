@@ -123,3 +123,31 @@ html.avp-home-canonical .avp-resource-results .avp-resource-copy>b{background:#9
 /* Real learning-ranking empty states; card geometry remains the same as the original layout. */
 html.avp-home-canonical .avp-learning-rank-empty{display:flex;align-items:center;justify-content:center;min-height:110px;padding:14px;border:1px dashed #d9e7de;border-radius:12px;background:#fff;color:#718276;font-size:11px;line-height:1.5;text-align:center}
 html.avp-home-canonical .avp-canonical-trending .avp-learning-rank-empty{min-height:48px;padding:8px;border:0;background:transparent}
+
+
+/* Enforce identical dimensions for the two handbook/reference cards. */
+html.avp-home-canonical #home-books .home-reference-grid-v114{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-auto-rows:1fr!important;
+  align-items:stretch!important;
+}
+html.avp-home-canonical #home-books .home-reference-grid-v114>.home-ref-item-v114{
+  display:grid!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:76px!important;
+  height:100%!important;
+  box-sizing:border-box!important;
+  align-self:stretch!important;
+}
+@media(max-width:760px){
+  html.avp-home-canonical #home-books .home-reference-grid-v114{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media(max-width:520px){
+  html.avp-home-canonical #home-books .home-reference-grid-v114>.home-ref-item-v114{
+    grid-template-columns:44px minmax(0,1fr)!important;
+  }
+}
