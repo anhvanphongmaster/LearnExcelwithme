@@ -347,3 +347,11 @@ html.avp-home-canonical .avp-canonical-illustration .avp-checklist{translate:cal
 html.avp-home-canonical .avp-canonical-illustration .avp-person{translate:calc(var(--avp-scene-x,0px)*.08) calc(var(--avp-scene-y,0px)*.08)}
 html.avp-home-canonical .avp-canonical-illustration .avp-laptop{translate:calc(var(--avp-scene-x,0px)*.04) calc(var(--avp-scene-y,0px)*.04)}
 html.avp-home-canonical .avp-canonical-illustration .avp-books-stack{translate:calc(var(--avp-scene-x,0px)*-.1) calc(var(--avp-scene-y,0px)*-.1)}
+
+/* AVP v2 — split hero with personal journey map card */
+html.avp-home-canonical .avp-canonical-inner.avp-hero-split{grid-template-columns:minmax(0,1fr) minmax(320px,.92fr)!important;gap:clamp(18px,2.6vw,38px)!important}
+html.avp-home-canonical .avp-hero-split .avp-canonical-copy h1{font-size:clamp(34px,3.7vw,52px)!important}
+html.avp-home-canonical .avp-hero-split .avp-canonical-copy>p{max-width:590px!important;font-size:13px!important;line-height:1.65!important}
+html.avp-home-canonical .avp-home-map-card{font-family:inherit!important}
+@media(max-width:760px){html.avp-home-canonical .avp-canonical-inner.avp-hero-split{grid-template-columns:minmax(0,1fr) minmax(270px,.9fr)!important;gap:14px!important}html.avp-home-canonical .avp-hero-split .avp-canonical-copy h1{font-size:clamp(25px,4vw,38px)!important}html.avp-home-canonical .avp-hero-split .avp-canonical-copy>p{font-size:11px!important}html.avp-home-canonical .avp-home-map-card{min-height:225px!important;padding:14px!important}html.avp-home-canonical .avp-home-map-card>strong{font-size:18px!important}html.avp-home-canonical .avp-home-map-copy{font-size:10px!important}html.avp-home-canonical .avp-home-map-art svg{height:88px!important}}
+@media(max-width:520px){html.avp-home-canonical .avp-canonical-inner.avp-hero-split{grid-template-columns:1fr!important}html.avp-home-canonical .avp-home-map-card{min-height:205px!important}}
