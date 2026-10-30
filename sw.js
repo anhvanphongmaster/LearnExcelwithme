@@ -52,6 +52,22 @@ async function cacheFirst(req){
   }catch(_){return Response.error();}
 }
 
+async function injectGlobalHeader(req,res){
+  if(!res||!res.ok)return res;
+  try{
+    const url=new URL(req.url);
+    const page=(url.pathname.split("/").pop()||"index.html").toLowerCase();
+    if(page==="admin.html"||page==="office-quest-admin.html"||page==="office-quest-world.html")return res;
+    const type=res.headers.get("content-type")||"";
+    if(!type.includes("text/html"))return res;
+    const html=await res.text();
+    if(/simple-nav\\.js(?:[?'"\\s]|$)/i.test(html))return new Response(html,{status:res.status,statusText:res.statusText,headers:res.headers});
+    const tag='<script defer src="./simple-nav.js?v=20261030-global-header1" data-avp-global-header-loader></script>';
+    const updated=html.includes("</body>")?html.replace("</body>",tag+"</body>"):html+tag;
+    return new Response(updated,{status:res.status,statusText:res.statusText,headers:res.headers});
+  }catch(_){return res;}
+}
+
 async function simpleNavWithDailyBadge(req){
   const base=await networkFirst(req);
   if(!base||!base.ok) return base;
@@ -73,7 +89,8 @@ self.addEventListener("fetch",event=>{
   }
   const isHTML=req.mode==="navigate"||url.pathname.endsWith(".html")||url.pathname.endsWith("/");
   const isCode=/\.(?:js|css|json|webmanifest)$/i.test(url.pathname);
-  if(isHTML||isCode){event.respondWith(networkFirst(req));return;}
+  if(isHTML){event.respondWith(networkFirst(req).then(res=>injectGlobalHeader(req,res)));return;}
+  if(isCode){event.respondWith(networkFirst(req));return;}
   event.respondWith(cacheFirst(req));
 });
 
