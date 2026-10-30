@@ -64,7 +64,7 @@ function filtered(){return bank.filter(matches);}
 function syncFilters(){document.querySelectorAll('#kLevelFilters [data-level]').forEach(b=>b.classList.toggle('active',b.dataset.level===state.level));document.querySelectorAll('#kStatusFilters [data-status]').forEach(b=>b.classList.toggle('active',b.dataset.status===state.status));}
 function renderCategories(){
  const visible=categories;
- $('kCategories').innerHTML=visible.map(c=>{const list=bank.filter(x=>x.categoryId===c.id),done=list.filter(x=>state.completed.includes(x.id)).length,shown=list.filter(x=>matches(x)).length;return '<button class="k-category" data-tone="'+c.tone+'" data-id="'+c.id+'"><span class="k-cat-icon">'+c.icon+'</span><h3>'+esc(c.name)+'</h3><p>'+esc(c.description)+'</p><div class="k-cat-foot"><span>'+list.length+' bài học</span><span>'+done+'/'+list.length+' hoàn thành</span></div></button>';}).join('');
+ $('kCategories').innerHTML=visible.map(c=>{const list=bank.filter(x=>x.categoryId===c.id),done=list.filter(x=>state.completed.includes(x.id)).length,shown=list.filter(x=>matches(x)).length;return '<button class="k-category" data-tone="'+c.tone+'" data-id="'+c.id+'"><span class="k-cat-icon">'+c.icon+'</span><h3>'+esc(c.name)+'</h3><p>'+esc(c.description)+'</p><div class="k-cat-foot"><span>'+shown+'/'+list.length+' bài phù hợp</span><span>'+done+'/'+list.length+' hoàn thành</span></div></button>';}).join('');
  $('kCategories').querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>{state.category=state.category===b.dataset.id?'all':b.dataset.id;render();$('kTopicPanel').scrollIntoView({behavior:'smooth',block:'start'});}));
 }
 function renderTopics(){
