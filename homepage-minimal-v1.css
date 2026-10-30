@@ -119,10 +119,3 @@ html.avp-home-canonical .avp-resource-results .avp-resource-copy>b{background:#9
  html.avp-home-canonical.avp-force-desktop-mobile .avp-resource-heading p{font-size:11px}
  html.avp-home-canonical.avp-force-desktop-mobile .avp-resource-card{min-height:145px}
 }
-
-/* Empty homepage card shells: retain the existing layout while removing retired links and content. */
-html.avp-home-canonical .avp-canonical-lesson-empty{display:block;min-height:190px;aspect-ratio:auto;cursor:default;}
-html.avp-home-canonical .avp-canonical-lesson-empty:hover{transform:none;box-shadow:0 5px 14px #163d2208;}
-html.avp-home-canonical .avp-canonical-trending{min-height:220px;}
-html.avp-home-canonical .avp-resource-card-empty{min-height:145px;cursor:default;}
-html.avp-home-canonical .avp-resource-card-empty:hover{transform:none;box-shadow:0 8px 22px #163d2208;}
