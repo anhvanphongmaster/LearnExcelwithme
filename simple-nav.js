@@ -595,7 +595,13 @@ document.addEventListener("DOMContentLoaded",function(){
 })();
 document.addEventListener("DOMContentLoaded",function(){
   var nav=document.querySelector(".top-simple-nav");
-  if(!nav||nav.dataset.avpGlobalHeader==="1")return;
+  if(!nav){
+    nav=document.createElement("nav");
+    nav.className="top-simple-nav";
+    nav.setAttribute("aria-label","Điều hướng chính");
+    document.body.insertBefore(nav,document.body.firstChild);
+  }
+  if(nav.dataset.avpGlobalHeader==="1")return;
   var auth=nav.querySelector(".auth-nav-slot")||document.createElement("span");
   auth.className="auth-nav-slot";
   if(!auth.firstElementChild){
