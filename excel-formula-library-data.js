@@ -50,6 +50,7 @@ const patterns=[
 {n:'UNIQUE',f:(r,e,c)=>`=UNIQUE(B${r}:B${e})`,d:'Trả về danh sách giá trị không trùng lặp.',task:'lấy danh sách Model không bị trùng',cat:'Nâng cao',opts:['UNIQUE','SORT','FILTER','REMOVE DUPLICATES']},
 {n:'SUBTOTAL',f:(r,e,c)=>`=SUBTOTAL(9,E${r}:E${e})`,d:'Tính toán trên dữ liệu đã lọc, có thể bỏ qua dòng ẩn.',task:'tính tổng chỉ trên các dòng đang hiển thị sau lọc',cat:'Nâng cao',opts:['SUBTOTAL','SUM','AGGREGATE','SUMIF']},
 {n:'SUMPRODUCT',f:(r,e,c)=>`=SUMPRODUCT((B${r}:B${e}="${c}")*(E${r}:E${e}))`,d:'Tính tổng có điều kiện bằng phép nhân mảng.',task:'tính tổng theo điều kiện bằng SUMPRODUCT',cat:'Nâng cao',opts:['SUMPRODUCT','SUMIFS','COUNTIFS','PRODUCT']},
+{n:'RANK.EQ',f:(r,e,c)=>`=RANK.EQ(E${r},$E${r}:$E${e},0)`,d:'Xếp hạng một giá trị trong danh sách theo thứ tự giảm dần.',task:'xếp hạng số lượng từ cao xuống thấp',cat:'Nâng cao',opts:['RANK.EQ','LARGE','MAXIFS','SORT']},
 {n:'TEXTJOIN',f:(r,e,c)=>`=TEXTJOIN(", ",TRUE,A${r}:A${Math.min(e,r+5)})`,d:'Nối nhiều giá trị thành một chuỗi và bỏ qua ô trống.',task:'ghép nhiều mã thành một chuỗi có dấu phân cách',cat:'Nâng cao',opts:['TEXTJOIN','CONCAT','TEXT','JOIN']},
 // HÀM LỒNG — 10 nhóm x 4 = 40
 {n:'IF + AND',f:(r,e,c)=>`=IF(AND(E${r}>=100,F${r}="PASS"),"Đạt","Kiểm tra")`,d:'Lồng AND trong IF để yêu cầu mọi điều kiện cùng đúng.',task:'chỉ trả về Đạt khi số lượng đủ và trạng thái PASS',cat:'Hàm lồng',opts:['IF + AND','IF + OR','IFERROR + AND','IFS']},
