@@ -265,7 +265,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
    ],
    3:[
     [["formula","SUM"],["formula","AVERAGE"]],[["formula","MIN"],["formula","MAX"],["formula","COUNT"]],
-    [["formula","COUNTA"],["formula","COUNTBLANK"]],[["formula","IF"]],[["formula","AND"],["formula","OR"]],
+    [["formula","COUNTA"],["formula","COUNTBLANK"],["format","DF03"]],[["formula","IF"]],[["formula","AND"],["formula","OR"]],
     [["formula","SUMIF"]],[["formula","COUNTIF"]],[["formula","SUMIFS"],["formula","COUNTIFS"]],
     [["formula","IFERROR"]],[["formula","LEFT"],["formula","RIGHT"],["formula","MID"],["formula","LEN"]],
     [["formula","TRIM"],["formula","SUBSTITUTE"],["formula","TODAY"],["formula","YEAR"],["format","DF10"],["format","DF11"],["format","DF12"],["format","DF13"]],
