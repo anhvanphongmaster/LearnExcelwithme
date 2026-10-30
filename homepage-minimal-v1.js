@@ -160,6 +160,107 @@ function setup(){
 modalStyle.textContent+=`/* Detailed step-by-step lesson procedure v2 */
 .avp-lesson-procedure-v2{margin-top:18px;padding:17px;border:1px solid #dce9df;border-radius:16px;background:linear-gradient(180deg,#fbfefc,#f4faf6)}.avp-lesson-procedure-v2 h4{margin:16px 0 8px;color:#147347;font-size:12px;letter-spacing:.07em}.avp-lesson-procedure-v2 h4:first-child{margin-top:0}.avp-lesson-procedure-v2 p,.avp-lesson-procedure-v2 li{font-size:13px;line-height:1.8;color:#405b4a}.avp-lesson-procedure-v2 ol{margin:0;padding-left:23px}.avp-lesson-procedure-v2 li{padding:3px 0 5px}.avp-procedure-mouse{padding:12px 14px;border-left:3px solid #24845a;border-radius:7px;background:#eaf5ee}.avp-procedure-goal{font-weight:600}`;
 modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:2px}.avp-lesson-main{min-width:0;padding:20px;border:1px solid #e2ebe5;border-radius:18px;background:#fff}.avp-lesson-kicker{font-size:10px;font-weight:900;letter-spacing:.12em;color:#16805a}.avp-lesson-main h3{margin:8px 0 12px;font-size:22px;line-height:1.25;color:#173b29}.avp-lesson-main p{font-size:13px;line-height:1.75;color:#53675b}.avp-lesson-main h4{margin:18px 0 8px;color:#234a34;font-size:14px}.avp-lesson-example{padding:13px 15px;border-radius:12px;background:#f2f8f4;color:#244c35;font-size:13px;line-height:1.7}.avp-lesson-ref-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px}.avp-lesson-ref{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #dce9df;border-radius:13px;background:#f8fbf9;color:#234a34;text-align:left;cursor:pointer}.avp-lesson-ref strong{display:block;font-size:12px}.avp-lesson-ref small{display:block;margin-top:4px;color:#78887e;font-size:10px}.avp-lesson-reader-back{margin-bottom:12px}.avp-lesson-drawer{display:none;position:fixed;z-index:100002;inset:0;background:rgba(13,32,22,.42);align-items:stretch;justify-content:flex-end}.avp-lesson-drawer.open{display:flex}.avp-lesson-drawer-panel{width:min(480px,44vw);height:100%;overflow:auto;padding:24px;background:#fff;box-shadow:-18px 0 55px rgba(0,0,0,.18);color:#173b29}.avp-lesson-drawer-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid #e5eee8}.avp-lesson-drawer-head small{font-size:10px;font-weight:900;letter-spacing:.1em;color:#16805a}.avp-lesson-drawer-close{width:36px;height:36px;border:0;border-radius:50%;background:#edf4ef;color:#315b43;font-size:22px;cursor:pointer}.avp-lesson-drawer-panel h3{font-size:21px;line-height:1.3}.avp-lesson-drawer-panel p,.avp-lesson-drawer-panel li{font-size:13px;line-height:1.75;color:#53675b}.avp-lesson-drawer-panel h4{margin:18px 0 7px;font-size:12px;letter-spacing:.08em;color:#16805a}.avp-lesson-drawer-example{padding:12px;border-radius:11px;background:#f2f8f4;font-size:13px;line-height:1.7;color:#244c35}.avp-lesson-drawer-loading{padding:28px 8px;color:#718177;font-size:13px}@media(max-width:700px){.avp-lesson-main{padding:15px}.avp-lesson-ref-list{grid-template-columns:1fr}.avp-lesson-drawer-panel{width:100%;padding:20px 17px}.avp-lesson-main h3{font-size:19px}}`;
+ function mountChapterOneCheckpoint(panel,lessonIndex){
+  // Checkpoint tự đánh giá cho Chương 1. Kết quả lưu trên thiết bị, chưa phải xác nhận năng lực độc lập.
+  var bank={
+   0:{questions:[
+    ["Khu vực nào hiển thị nội dung hoặc công thức của ô đang chọn?",["Name Box","Formula Bar","Status Bar"],1,"Formula Bar hiển thị và cho phép sửa nội dung hoặc công thức của ô."],
+    ["Name Box thường dùng để làm gì?",["Đi đến ô/vùng theo địa chỉ","Đổi tên Workbook","Tạo biểu đồ"],0,"Name Box cho phép nhập địa chỉ ô hoặc vùng để đi đến nhanh."],
+    ["Thanh trạng thái (Status Bar) thường hiển thị thông tin nào?",["Tên file","Trạng thái tính toán và thống kê vùng chọn","Danh sách Worksheet"],1,"Status Bar có thể hiển thị Sum, Average, Count và trạng thái tính toán."]
+   ],task:"Mở Excel, xác định Ribbon, Name Box, Formula Bar, vùng Worksheet và Status Bar; thử chọn một vùng có số để quan sát thống kê."},
+   1:{questions:[
+    ["Workbook là gì?",["Một ô dữ liệu","Tệp Excel chứa một hoặc nhiều Worksheet","Một công thức"],1,"Workbook là tệp Excel; bên trong có thể chứa nhiều Worksheet."],
+    ["Worksheet được nhận biết ở đâu?",["Các tab Sheet phía dưới cửa sổ","Formula Bar","Status Bar"],0,"Worksheet được chọn qua các tab Sheet."],
+    ["Muốn đổi tên Worksheet, thao tác phù hợp là gì?",["Nhấp đúp tab Sheet rồi nhập tên","Sửa Name Box","Nhấn Delete"],0,"Có thể nhấp đúp tab Sheet hoặc dùng menu Rename."]
+   ],task:"Tạo Workbook mới, đổi tên ít nhất hai Sheet, thêm một Sheet và lưu file."},
+   2:{questions:[
+    ["Địa chỉ B3 chỉ điều gì?",["Cột B, dòng 3","Dòng B, cột 3","Vùng B đến 3"],0,"Địa chỉ ô gồm chữ cột và số dòng."],
+    ["Vùng B2:D5 gồm bao nhiêu cột?",["2","3","4"],1,"B, C và D là ba cột."],
+    ["Địa chỉ tuyệt đối của ô A1 là gì?",["A1","$A$1","A$1"],1,"Dấu $ trước cột và dòng khóa cả hai thành phần."]
+   ],task:"Chọn các ô A1, C5 và vùng B2:D5; đọc địa chỉ trên Name Box và xác định số dòng/cột của vùng."},
+   3:{questions:[
+    ["Muốn chọn một ô, thao tác chuột cơ bản là gì?",["Nhấp chuột trái vào ô","Nhấp chuột phải vào thanh tiêu đề","Nhấp đúp tab Sheet"],0,"Nhấp chuột trái chọn ô."],
+    ["Muốn chọn cả cột C, nên bấm vào đâu?",["Ô C1","Tiêu đề chữ C","Formula Bar"],1,"Bấm tiêu đề cột để chọn toàn bộ cột."],
+    ["Khi kéo chọn vùng, điểm kết thúc cần được xác định thế nào?",["Theo ô cuối cùng cần thao tác","Theo mép cửa sổ","Theo thanh cuộn"],0,"Vùng chọn phải bao gồm đúng ô đầu và ô cuối dự định thao tác."]
+   ],task:"Dùng chuột chọn một ô, một vùng liên tục, toàn bộ một dòng và toàn bộ một cột."},
+   4:{questions:[
+    ["Muốn sửa nội dung ô mà không thay toàn bộ bằng dữ liệu mới, có thể dùng phím nào?",["F2","F12","Esc"],0,"F2 đưa ô vào chế độ chỉnh sửa."],
+    ["Phím Delete trên bàn phím thường làm gì với ô đang chọn?",["Xóa cả Worksheet","Xóa nội dung ô","Xóa Workbook"],1,"Delete xóa nội dung ô, không xóa cả dòng hoặc cột."],
+    ["Muốn xác nhận nội dung vừa nhập và chuyển xuống ô dưới, dùng phím nào?",["Enter","Ctrl","Alt"],0,"Enter xác nhận dữ liệu và thường di chuyển xuống ô dưới."]
+   ],task:"Nhập dữ liệu vào vài ô, sửa một ô bằng F2, xóa nội dung một ô bằng Delete và kiểm tra các ô khác không bị ảnh hưởng."},
+   6:{questions:[
+    ["Định dạng Percentage biến giá trị 0.25 thành cách hiển thị nào?",["0.25%","25%","2500%"],1,"0.25 khi định dạng Percentage hiển thị là 25%."],
+    ["Để hiển thị số tiền có dấu phân cách hàng nghìn, nhóm định dạng phù hợp là gì?",["Number hoặc Currency","Text","Date"],0,"Number/Currency phù hợp với dữ liệu số và tiền."],
+    ["Định dạng ngày tháng có luôn biến chuỗi Text thành ngày thật không?",["Có, luôn luôn","Không, cần kiểm tra kiểu dữ liệu","Chỉ khi tô màu"],1,"Đổi định dạng hiển thị không đảm bảo chuyển chuỗi thành ngày số sê-ri."]
+   ],task:"Định dạng một cột số, một cột ngày và một cột phần trăm; kiểm tra giá trị gốc và cách hiển thị."},
+   7:{questions:[
+    ["Lệnh nào giúp điều chỉnh độ rộng cột vừa nội dung?",["AutoFit Column Width","Merge & Center","Wrap Text"],0,"AutoFit điều chỉnh độ rộng theo nội dung."],
+    ["Wrap Text có tác dụng gì?",["Tự xuống dòng trong ô","Xóa nội dung thừa","Tạo công thức"],0,"Wrap Text hiển thị nội dung trên nhiều dòng trong cùng ô."],
+    ["Khi trình bày bảng, nên ưu tiên điều gì?",["Màu sắc càng nhiều càng tốt","Phân cấp tiêu đề và tính dễ đọc","Gộp tất cả ô"],1,"Bố cục rõ ràng và nhất quán giúp đọc dữ liệu dễ hơn."]
+   ],task:"Định dạng một bảng nhỏ: tiêu đề, căn lề, độ rộng cột, Wrap Text và đường viền vừa đủ."},
+   8:{questions:[
+    ["Ctrl+C và Ctrl+V thực hiện việc gì?",["Di chuyển dữ liệu","Sao chép rồi dán dữ liệu","Xóa dữ liệu"],1,"Copy tạo bản sao, Paste đặt bản sao ở vị trí đích."],
+    ["Fill Handle nằm ở đâu?",["Góc dưới bên phải vùng chọn","Trên Formula Bar","Ở tab Sheet"],0,"Fill Handle là chốt nhỏ ở góc dưới bên phải vùng chọn."],
+    ["Muốn tạo dãy 1, 2, 3... bằng Fill Handle, nên làm gì?",["Chỉ nhập số 1 rồi kéo","Nhập 1 và 2, chọn cả hai rồi kéo","Nhập chữ A"],1,"Hai giá trị đầu giúp Excel nhận diện quy luật chuỗi."]
+   ],task:"Sao chép một vùng nhỏ và dùng Fill Handle tạo dãy số hoặc ngày; kiểm tra vùng nguồn không bị thay đổi."},
+   9:{questions:[
+    ["Định dạng .xlsx phù hợp với loại Workbook nào?",["Workbook thông thường","Workbook có Macro cần giữ mã VBA","Tệp PDF"],0,".xlsx là định dạng Workbook thông thường, không lưu mã VBA."],
+    ["Nếu Workbook có Macro cần giữ mã VBA, nên lưu dạng nào?",[".xlsx",".xlsm",".csv"],1,".xlsm hỗ trợ lưu Macro VBA."],
+    ["Sau Save As, nên kiểm tra điều gì?",["Thư mục, tên và phần mở rộng","Màu nền Desktop","Độ sáng màn hình"],0,"Kiểm tra vị trí, tên file và định dạng giúp tránh lưu sai."]
+   ],task:"Lưu một bản sao Workbook với tên rõ ràng; xác nhận thư mục và phần mở rộng file."},
+   10:{questions:[
+    ["Print Area dùng để làm gì?",["Chọn vùng sẽ in","Đổi tên Sheet","Lọc dữ liệu"],0,"Print Area xác định vùng dữ liệu đưa vào bản in."],
+    ["Khi bảng có nhiều cột, hướng giấy nào thường phù hợp hơn?",["Portrait","Landscape","Không cần chọn"],1,"Landscape thường phù hợp bảng rộng."],
+    ["Bước nào nên làm trước khi xuất PDF?",["Kiểm tra Print Preview","Xóa dữ liệu nguồn","Đóng Workbook ngay"],0,"Print Preview giúp phát hiện cột bị cắt, chữ quá nhỏ và sai số trang."]
+   ],task:"Thiết lập vùng in, chọn khổ giấy và hướng giấy; kiểm tra Print Preview rồi xuất một bản PDF thử."}
+  };
+  var config=bank[lessonIndex];if(!config)return;
+  var key='avp_checkpoint_local_v1_C1L'+String(lessonIndex+1).padStart(2,'0'),saved={};
+  try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{};}catch(e){}
+  var wrap=document.createElement('section');wrap.className='avp-lesson-checkpoint';wrap.setAttribute('aria-labelledby','avp-checkpoint-title');
+  var head=document.createElement('div');head.className='avp-checkpoint-head';
+  var eyebrow=document.createElement('small');eyebrow.textContent='CHECKPOINT TỰ ĐÁNH GIÁ · CHƯƠNG 01 / BÀI '+String(lessonIndex+1).padStart(2,'0');
+  var title=document.createElement('h4');title.id='avp-checkpoint-title';title.textContent='Kiểm tra trước khi chuyển bài';
+  var intro=document.createElement('p');intro.textContent='Trả lời đủ 3 câu hỏi và tự thực hiện nhiệm vụ bên dưới. Cần đúng ít nhất 2 câu để đạt checkpoint kiến thức.';
+  head.append(eyebrow,title,intro);wrap.appendChild(head);
+  var form=document.createElement('div');form.className='avp-checkpoint-questions';
+  config.questions.forEach(function(q,i){
+   var field=document.createElement('fieldset');field.className='avp-checkpoint-question';
+   var legend=document.createElement('legend');legend.textContent=(i+1)+'. '+q[0];field.appendChild(legend);
+   q[1].forEach(function(opt,k){
+    var label=document.createElement('label');label.className='avp-checkpoint-option';
+    var input=document.createElement('input');input.type='radio';input.name='avp-checkpoint-q'+i;input.value=String(k);
+    if(saved.answers&&Number(saved.answers[i])===k)input.checked=true;
+    var span=document.createElement('span');span.textContent=opt;label.append(input,span);field.appendChild(label);
+   });form.appendChild(field);
+  });wrap.appendChild(form);
+  var task=document.createElement('div');task.className='avp-checkpoint-task';
+  var taskTitle=document.createElement('strong');taskTitle.textContent='NHIỆM VỤ THỰC HÀNH';
+  var taskText=document.createElement('p');taskText.textContent=config.task;task.append(taskTitle,taskText);wrap.appendChild(task);
+  var practice=document.createElement('label');practice.className='avp-checkpoint-practice';
+  var check=document.createElement('input');check.type='checkbox';check.checked=!!saved.practice;
+  var labelText=document.createElement('span');labelText.textContent='Tôi đã tự thực hiện nhiệm vụ trên Excel và kiểm tra kết quả.';
+  practice.append(check,labelText);wrap.appendChild(practice);
+  var actions=document.createElement('div');actions.className='avp-checkpoint-actions';
+  var submit=document.createElement('button');submit.type='button';submit.className='avp-checkpoint-submit';submit.textContent='Kiểm tra checkpoint';
+  var reset=document.createElement('button');reset.type='button';reset.className='avp-checkpoint-reset';reset.textContent='Làm lại';
+  actions.append(submit,reset);wrap.appendChild(actions);
+  var result=document.createElement('div');result.className='avp-checkpoint-result';result.setAttribute('role','status');result.setAttribute('aria-live','polite');wrap.appendChild(result);
+  if(saved.passed){result.className='avp-checkpoint-result is-pass';result.textContent='Đã PASS checkpoint tự đánh giá trên thiết bị này. Bạn có thể xem lại hoặc làm lại.';}
+  submit.addEventListener('click',function(){
+   var answers=[],score=0,missing=false;
+   config.questions.forEach(function(q,i){var chosen=form.querySelector('input[name="avp-checkpoint-q'+i+'"]:checked');if(!chosen){missing=true;answers.push(null);}else{var value=Number(chosen.value);answers.push(value);if(value===q[2])score++;}});
+   if(missing){result.className='avp-checkpoint-result is-error';result.textContent='Hãy trả lời đủ 3 câu trước khi kiểm tra.';return;}
+   if(!check.checked){result.className='avp-checkpoint-result is-error';result.textContent='Hãy hoàn thành nhiệm vụ thực hành rồi xác nhận.';return;}
+   saved={answers:answers,practice:true,score:score,passed:score>=2,completedAt:new Date().toISOString(),source:'local-self-check'};
+   try{localStorage.setItem(key,JSON.stringify(saved));}catch(e){}
+   if(saved.passed){result.className='avp-checkpoint-result is-pass';result.textContent='PASS · Đúng '+score+'/3 câu. Đã lưu trên thiết bị này; phần thực hành do bạn tự xác nhận.';}
+   else{result.className='avp-checkpoint-result is-error';result.textContent='Chưa đạt · Đúng '+score+'/3 câu. Xem lại bài và thử lại.';}
+  });
+  reset.addEventListener('click',function(){form.querySelectorAll('input[type="radio"]').forEach(function(input){input.checked=false;});check.checked=false;saved={};try{localStorage.removeItem(key);}catch(e){}result.className='avp-checkpoint-result';result.textContent='Đã xóa kết quả checkpoint trên thiết bị này.';});
+  var style=document.createElement('style');style.textContent='.avp-lesson-checkpoint{margin:22px 0;padding:20px;border:1px solid #dce9e0;border-radius:18px;background:#f8fbf8;color:#173b29}.avp-checkpoint-head small{font-size:10px;font-weight:800;letter-spacing:.1em;color:#32805a}.avp-checkpoint-head h4{margin:7px 0;font-size:18px}.avp-checkpoint-head p,.avp-checkpoint-task p{margin:0 0 14px;color:#52675a;font-size:13px;line-height:1.6}.avp-checkpoint-question{margin:12px 0;padding:13px;border:1px solid #e1e9e3;border-radius:12px;background:#fff}.avp-checkpoint-question legend{padding:0 4px;font-size:13px;font-weight:700;line-height:1.5}.avp-checkpoint-option{display:flex;align-items:center;gap:9px;margin:10px 0;font-size:13px;cursor:pointer}.avp-checkpoint-option input,.avp-checkpoint-practice input{accent-color:#16784d}.avp-checkpoint-task{padding:13px;border-radius:12px;background:#edf5ef;margin:12px 0}.avp-checkpoint-task strong{font-size:11px;letter-spacing:.06em}.avp-checkpoint-practice{display:flex;align-items:flex-start;gap:9px;margin:15px 0;font-size:12px;line-height:1.55}.avp-checkpoint-practice input{margin-top:3px}.avp-checkpoint-actions{display:flex;gap:9px;flex-wrap:wrap}.avp-checkpoint-actions button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}.avp-checkpoint-submit{background:#08794d;color:white}.avp-checkpoint-reset{background:#e7eee9;color:#345744}.avp-checkpoint-result{margin-top:12px;font-size:13px;line-height:1.55}.avp-checkpoint-result.is-pass{color:#08794d;font-weight:700}.avp-checkpoint-result.is-error{color:#a34232;font-weight:700}@media(max-width:600px){.avp-lesson-checkpoint{padding:15px}.avp-checkpoint-question{padding:11px}}';
+  wrap.appendChild(style);panel.querySelector('.avp-lesson-main').appendChild(wrap);
+ }
  function renderChapterOneLesson(lessonIndex){
   if(!lessonPanel||lessonIndex<0||lessonIndex>=chapterLessons[0].length)return;
   if(!window.AVP_LESSON_PROCEDURES_V2){
@@ -186,6 +287,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
   lessonPanel.querySelector('.avp-c1-practice').textContent=p.practice;
   lessonPanel.querySelector('.avp-c1-errors').textContent=p.errors;
   renderLessonLibraryRefs(lessonPanel,0,lessonIndex);
+  if(lessonIndex!==5)mountChapterOneCheckpoint(lessonPanel,lessonIndex);
  }
  function renderChapterFiveToTwelveLesson(chapterIndex,lessonIndex){
   if(!lessonPanel||chapterIndex<4||chapterIndex>11)return;
