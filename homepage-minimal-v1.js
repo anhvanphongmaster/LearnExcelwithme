@@ -855,3 +855,15 @@ ov.querySelector('.avp-hub-close').addEventListener('click',close);ov.addEventLi
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
+
+/* Progress hub modal layout guard: isolate it from homepage transformed/scaled wrappers. */
+(function(){
+ 'use strict';
+ var css=document.createElement('style');
+ css.textContent='.avp-hub{position:fixed!important;left:0!important;top:0!important;right:0!important;bottom:0!important;width:100vw!important;height:100vh!important;min-width:100vw!important;min-height:100vh!important;z-index:2147483000!important;display:grid!important;place-items:center!important;box-sizing:border-box!important;padding:12px!important;margin:0!important;overflow:auto!important;background:rgba(10,30,21,.72)!important}.avp-hub[hidden]{display:none!important}.avp-hub-box{position:relative!important;width:min(1100px,96vw)!important;max-width:1100px!important;min-width:0!important;max-height:94vh!important;height:auto!important;margin:auto!important;overflow:auto!important;box-sizing:border-box!important;transform:none!important;inset:auto!important}.avp-hub-head{position:sticky!important;top:0!important}.avp-hub-body{width:100%!important;box-sizing:border-box!important}.avp-hub-map,.avp-hub-grid,.avp-hub-kpis,.avp-hub-lower{max-width:100%!important;min-width:0!important}';
+ document.head.appendChild(css);
+ function moveRoot(){var hub=document.querySelector('.avp-hub');if(hub&&hub.parentElement!==document.documentElement)document.documentElement.appendChild(hub);}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',moveRoot,{once:true});else moveRoot();
+ var observer=new MutationObserver(function(){moveRoot();});
+ if(document.documentElement)observer.observe(document.documentElement,{childList:true,subtree:true});
+})();
