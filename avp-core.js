@@ -689,6 +689,24 @@
       hideMiniPreview();
       setEdgeMenu(false);
 
+      // Chat owns its own session restoration and guest state. Do not gate
+      // this action through AVPAccess.getUser(false): on desktop that helper
+      // can return null while Supabase has a valid/restoring session.
+      if(action==='chat'){
+        const panels=[
+          document.getElementById('avpChatPanel'),
+          document.getElementById('avpAdminFloatPanel'),
+          document.getElementById('avpGuestChatPanel')
+        ].filter(Boolean);
+        if(panels.some(p=>!p.hidden)){
+          panels.forEach(p=>p.hidden=true);
+          return;
+        }
+        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
+        await openAdminChatFromHub();
+        return;
+      }
+
       const next=location.pathname.split('/').pop()||'index.html';
       let user=null;
       try{
@@ -741,14 +759,6 @@
         }else{
           toast('Cộng đồng đang tải, thử lại sau một chút');
         }
-      }else if(action==='chat'){
-        const chatAlreadyOpen=chatPanels.some(p=>!p.hidden);
-        if(chatAlreadyOpen){
-          chatPanels.forEach(p=>p.hidden=true);
-          return;
-        }
-        window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
-        await openAdminChatFromHub();
       }else if(action==='ai'){
         const aiAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpAiMode')?.hidden;
         if(aiAlreadyOpen){
