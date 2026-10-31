@@ -12,9 +12,9 @@ const $=id=>document.getElementById(id);
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const SYNONYMS=[
-['cong no','doi soat','phai thu','phai tra','cong no phai thu','cong no phai tra','theo doi no','no khach hang','no nha cung cap','accounts receivable','accounts payable'],
+['cong no','phai thu','phai tra','cong no phai thu','cong no phai tra','theo doi no','no khach hang','no nha cung cap','accounts receivable','accounts payable'],
 ['xoa dong trong','dong rong','blank rows','remove blank rows','go to special','lam sach du lieu','clean data'],
-['power query gop file','combine files','folder combine','gop nhieu file','append queries','merge queries','power query'],
+['power query gop file','combine files','combine folder','folder combine','gop nhieu file','append queries','append multiple files','merge queries','power query'],
 ['doi soat','reconciliation','kiem tra chenh lech','so sanh du lieu','control total'],
 ['tim ham','cong thuc','excel function','formula','tra cuu ham'],
 ['phim tat','shortcut','keyboard shortcut','to hop phim'],
