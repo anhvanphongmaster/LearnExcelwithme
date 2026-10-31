@@ -64,11 +64,6 @@
     const root=document.createElement("div");
     root.id="avpAiChatRoot";
     root.innerHTML=`
-      <button id="avpAiChatBubble" class="avp-ai-bubble" type="button" aria-label="Anh Văn Phòng" title="Anh Văn Phòng">
-        ✨
-        <span id="avpNotifyBubbleBadge" class="avp-notify-badge" hidden></span>
-      </button>
-
       <section id="avpAiChatPanel" class="avp-ai-panel" hidden>
         <header class="avp-ai-head">
           <div>
@@ -159,12 +154,12 @@
     `;
     document.body.appendChild(root);
 
-    $("avpAiChatBubble").onclick=async()=>{
+    window.addEventListener("avp:open-ai-chat",async()=>{
       activeMode="ai";
       announceAiHubOpen();
       await toggle(true);
       await switchMode("ai");
-    };
+    });
     $("avpAiClose").onclick=()=>toggle(false);
     $("avpAiForm").onsubmit=send;
     $("avpAiTransfer").onclick=transferToAdmin;
@@ -2546,8 +2541,6 @@
 
     if(STANDALONE_COMMUNITY){
       document.body.classList.add("avp-community-standalone");
-      const bubble=$("avpAiChatBubble");
-      if(bubble) bubble.hidden=true;
       const panel=$("avpAiChatPanel");
       if(panel) panel.hidden=false;
       await switchMode("community");
