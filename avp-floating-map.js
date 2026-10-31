@@ -22,7 +22,7 @@ const style=document.createElement('style');style.textContent=`
 #avpMapMini b{font-size:10px;letter-spacing:.04em}#avpMapMini small{font-size:9px;color:#64806a}
 @media(max-width:650px){#avpMapClose{right:12px;top:12px;width:40px;height:40px}#avpMapMini{width:62px;height:98px}#avpMapMini .avp-mini-art{width:40px;height:52px}}
 `;document.head.append(style);
-const overlay=document.createElement('div');overlay.id='avpMapOverlay';overlay.setAttribute('aria-hidden','true');overlay.innerHTML='<button id="avpMapClose" type="button" aria-label="Đóng bản đồ">×</button><iframe title="Bản đồ hành trình" src="learning-map.html?embed=1"></iframe>';document.body.append(overlay);
+const overlay=document.createElement('div');overlay.id='avpMapOverlay';overlay.setAttribute('aria-hidden','true');overlay.innerHTML='<button id="avpMapClose" type="button" aria-label="Đóng bản đồ">×</button><iframe title="Bản đồ hành trình" src="learning-map.html?embed=1&v=2"></iframe>';document.body.append(overlay);
 const mini=document.createElement('button');mini.id='avpMapMini';mini.type='button';mini.setAttribute('aria-label','Mở lại bản đồ hành trình');mini.innerHTML='<span class="avp-mini-art"></span><b>BẢN ĐỒ</b><small>Hành trình</small>';document.body.append(mini);
 function open(){overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');mini.classList.remove('show');}
 function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');}
