@@ -1,6 +1,8 @@
 (function(){
-  try { localStorage.setItem("theme", "light"); } catch(e) {}
-  document.documentElement.classList.remove("dark-mode");
+  let savedTheme="light";
+  try { savedTheme=localStorage.getItem("theme")==="dark"?"dark":"light"; } catch(e) {}
+  document.documentElement.classList.toggle("dark-mode",savedTheme==="dark");
+  document.body?.classList.toggle("dark-mode",savedTheme==="dark");
 
   function loadCss(href,key){
     if(document.querySelector('link[data-'+key+']'))return;
@@ -26,9 +28,5 @@
     loadJs('site-upgrade-v1.js?v=20260914-site4','avp-site-upgrade-v1');
   }
 
-  function forceLight(){
-    document.body && document.body.classList.remove("dark-mode");
-    document.querySelectorAll("#themeToggle, .top-theme-button").forEach(function(b){b.style.display="none";b.hidden=true;});
-  }
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",forceLight);else forceLight();
+  // Respect the user's saved theme. Navigation V2 owns the theme controls.
 })();
