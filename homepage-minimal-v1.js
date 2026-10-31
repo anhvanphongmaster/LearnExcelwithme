@@ -6,13 +6,6 @@ if(path!==''&&path!=='index.html')return;
 if(window.__AVP_HOME_CANONICAL__)return;
 window.__AVP_HOME_CANONICAL__=true;
 document.documentElement.classList.add('avp-home-canonical');
-/* Restore the desktop layout class required by homepage-minimal-v1.css. */
-document.documentElement.classList.add('avp-force-desktop-mobile');
-/* Restore the previous desktop-canvas behavior on phones as requested. */
-var viewport=document.querySelector('meta[name="viewport"]');
-if(viewport){
- viewport.setAttribute('content','width=1200, initial-scale=0.32, minimum-scale=0.1, maximum-scale=2, user-scalable=yes');
-}
 function el(tag,cls,html){var n=document.createElement(tag);if(cls)n.className=cls;if(html!==undefined)n.innerHTML=html;return n;}
 function link(href,cls,html){var a=el('a',cls,html);a.href=href;return a;}
 function deleteLegacyDuplicateBlocks(){
