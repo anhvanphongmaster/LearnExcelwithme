@@ -65,6 +65,9 @@ function buildCatalog(){
   let url=d.url||'index.html';
   if(d.type==='Thư viện công thức & kiến thức')url='excel-dictionary.html?q='+encodeURIComponent(d.title||'');
   else if(d.type==='Kiến thức Excel')url='excel-knowledge-library.html?q='+encodeURIComponent(d.title||'');
+  else if(d.type==='Bài thực hành'){
+   try{const record=JSON.parse(d.content||'{}');url=record.key?'practice-grader.html?lesson='+encodeURIComponent(record.key):'practice-grader.html'}catch(_){url='practice-grader.html'}
+  }
   else if(d.type==='Hàm Excel')url='excel-formula-library.html?q='+encodeURIComponent(d.title||'');
   else if(d.type==='Phím tắt')url='excel-shortcut-library.html?q='+encodeURIComponent(d.title||'');
   else if(d.type==='Thư viện kiến thức')url='excel-knowledge-library.html?q='+encodeURIComponent(d.title||'');
