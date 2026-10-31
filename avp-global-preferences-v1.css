@@ -1,0 +1,43 @@
+/* AVP global preferences V1
+   Deliberately scoped to common surfaces; never repaint all section/container elements.
+*/
+:root{
+ --avp-bg:#f5f8f6;--avp-surface:#ffffff;--avp-surface-soft:#eef4f0;
+ --avp-text:#20372b;--avp-muted:#64766c;--avp-border:#dce6df;
+ --avp-input:#ffffff;--avp-accent:#16784b;--avp-accent-soft:#e5f3e9;
+}
+html[data-avp-theme="dark"]{
+ color-scheme:dark;
+ --avp-bg:#101713;--avp-surface:#19231d;--avp-surface-soft:#202d25;
+ --avp-text:#edf4ef;--avp-muted:#b5c3ba;--avp-border:#3b4d41;
+ --avp-input:#17221b;--avp-accent:#77d69b;--avp-accent-soft:#233d2c;
+}
+html[data-avp-theme="dark"] body{background-color:var(--avp-bg);color:var(--avp-text)}
+html[data-avp-theme="dark"] body :is(.card,.panel,.surface,.modal-content,.search-box,.table-container,.table-wrapper,.table-box,.form-card,.lesson-card,.tool-card,.module-card,.stat-card,.kpi-card,.info-card,.practice-card,.library-card){
+ background-color:var(--avp-surface);color:var(--avp-text);border-color:var(--avp-border);
+}
+html[data-avp-theme="dark"] body :is(.card,.panel,.surface,.modal-content,.search-box,.table-container,.table-wrapper,.table-box,.form-card,.lesson-card,.tool-card,.module-card,.stat-card,.kpi-card,.info-card,.practice-card,.library-card) :is(h1,h2,h3,h4,h5,h6,p,li,label,small,strong,span,td,th){color:inherit}
+html[data-avp-theme="dark"] body :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){
+ background-color:var(--avp-input);color:var(--avp-text);border-color:var(--avp-border)
+}
+html[data-avp-theme="dark"] body :is(input,textarea)::placeholder{color:var(--avp-muted);opacity:1}
+html[data-avp-theme="dark"] body :is(table,thead,tbody,tr,td,th){border-color:var(--avp-border)}
+html[data-avp-theme="dark"] body :is(tbody tr){background-color:var(--avp-surface)}
+html[data-avp-theme="dark"] body :is(tbody tr:nth-child(even)){background-color:var(--avp-surface-soft)}
+html[data-avp-theme="dark"] body :is(a:not([class*="btn"]):not(.avp-nav-v2-link)){color:#8bd9a8}
+html[data-avp-theme="dark"] body :is(.muted,.text-muted,.subtitle,.description,.helper-text,.hint,.meta){color:var(--avp-muted)}
+html[data-avp-theme="dark"] body :is(button,.btn,[role="tab"]){border-color:var(--avp-border)}
+html[data-avp-theme="dark"] body :is(pre,code){background-color:var(--avp-surface-soft);color:var(--avp-text);border-color:var(--avp-border)}
+/* Preserve the website's semantic status colors and illustrations; no global SVG/image filters. */
+
+/* Layout mode is a preference, not a viewport/zoom hack. */
+html.avp-layout-mobile body{min-width:0!important;width:100%!important;max-width:100%!important}
+html.avp-layout-mobile body :is(main,.main-shell,.main-content,.page-content,.page-container,.content-wrapper,.container,.dashboard-container){max-width:100%;box-sizing:border-box}
+html.avp-layout-desktop{overflow-x:auto}
+html.avp-layout-desktop body{min-width:1080px!important;width:auto!important;max-width:none!important}
+html.avp-layout-desktop body :is(main,.main-shell,.main-content,.page-content,.page-container,.content-wrapper,.dashboard-container){max-width:none}
+html.avp-layout-desktop body :is(.stats-grid,.home-modules-grid,.features-grid,.card-grid,.dashboard-grid,.tools-grid){grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+@media(max-width:700px){
+ html:not(.avp-layout-desktop) body{min-width:0;width:100%;max-width:100%}
+ html.avp-layout-mobile body :is(.stats-grid,.home-modules-grid,.features-grid,.card-grid,.dashboard-grid,.tools-grid){grid-template-columns:minmax(0,1fr)}
+}
