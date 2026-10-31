@@ -179,3 +179,7 @@ body:not(.dark-mode) .avp-spotlight.avp-force-light {
         transform: none;
     }
 }
+
+.avp-search-more{display:block;width:calc(100% - 8px);margin:8px 4px 4px;padding:12px 16px;border:1px solid rgba(102,239,165,.22);border-radius:12px;background:rgba(78,221,145,.09);color:#b9ebcf;font:700 13px Arial,sans-serif;cursor:pointer}
+.avp-search-more:hover{background:rgba(78,221,145,.16)}
+body.light-mode .avp-search-more{color:#17643e;background:#eef8f1;border-color:#d4e9da}
