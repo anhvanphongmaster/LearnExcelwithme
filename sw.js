@@ -1,4 +1,4 @@
-const CACHE="learnexcel-assets-v20261031-global-preferences-v5";
+const CACHE="learnexcel-assets-v20261031-stable-light-mode";
 const ASSETS=[
   "./style.css","./simple-nav.css","./avp-global-header-v1.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css",
   "./site-upgrade-v1.css","./home-ui-owner-v1.css","./upgrade.css",
