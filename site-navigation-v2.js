@@ -22,7 +22,7 @@ const trigger=document.createElement("button");trigger.className="avp-nav-v2-tri
 const shade=document.createElement("div");shade.className="avp-nav-v2-shade";shade.innerHTML='<aside class="avp-nav-v2-drawer" role="dialog" aria-modal="true" aria-label="Điều hướng website"><div class="avp-nav-v2-head"><a href="index.html" class="avp-nav-v2-brand"><img src="avp-logo.svg" alt=""><span><b>Anh Văn Phòng</b><small>LEARN EXCEL WITH ME</small></span></a><button class="avp-nav-v2-close" aria-label="Đóng menu" type="button">'+ico("close")+'</button></div><button class="avp-nav-v2-search" type="button">'+ico("search")+'<span>Tìm bài học, công cụ, công thức...</span><kbd>⌘ K</kbd></button><nav class="avp-nav-v2-items"></nav><div class="avp-nav-v2-foot"><a class="avp-nav-v2-account" href="auth.html?tab=login">'+ico("user")+'<span class="auth-nav-slot">Tài khoản / Đăng nhập</span></a><button class="avp-nav-v2-theme" type="button" aria-label="Đổi giao diện">◐ <span>Giao diện sáng / tối</span></button></div></aside>';
 document.body.append(trigger,shade);
 const drawer=shade.querySelector("aside"),nav=shade.querySelector("nav");
-groups.forEach(([label,items])=>{const section=document.createElement("section");section.className="avp-nav-v2-group";const h=document.createElement("div");h.className="avp-nav-v2-label";h.textContent=label;section.append(h);items.forEach(([href,name,iconName,type])=>{const el=document.createElement(type==="action"?"button":"a");el.className="avp-nav-v2-link";if(type==="action"){el.type="button";el.dataset.navAction="chat-admin";}else{el.href=href;if(page===href)el.setAttribute("aria-current","page");}el.innerHTML='<span class="avp-nav-v2-icon">'+ico(iconName)+'</span><span class="avp-nav-v2-text">'+name+'</span>'+(type==="action"?'<i class="avp-nav-v2-unread" hidden></i>':'');section.append(el)});nav.append(section)});
+groups.forEach(([label,items])=>{const section=document.createElement("section");section.className="avp-nav-v2-group";const h=document.createElement("div");h.className="avp-nav-v2-label";h.textContent=label;section.append(h);items.forEach(([href,name,iconName,type])=>{const el=document.createElement(type==="action"?"button":"a");el.className="avp-nav-v2-link";if(type==="action"){el.type="button";el.dataset.navAction="chat-admin";}else{el.href=href;if(page===href)el.setAttribute("aria-current","page");}el.innerHTML='<span class="avp-nav-v2-icon">'+ico(iconName)+'</span><span class="avp-nav-v2-text">'+name+'</span>'+(type==="action"?'<b class="avp-nav-v2-unread" hidden></b>':'');section.append(el)});nav.append(section)});
 if(legacyAuth&&legacyAuth!==shade.querySelector(".auth-nav-slot"))shade.querySelector(".auth-nav-slot").replaceWith(legacyAuth);
 if(legacyTheme){legacyTheme.classList.add("avp-nav-v2-theme-native");shade.querySelector(".avp-nav-v2-theme").replaceWith(legacyTheme)}
 function open(){shade.classList.add("is-open");trigger.setAttribute("aria-expanded","true");document.body.classList.add("avp-nav-v2-open");shade.querySelector(".avp-nav-v2-close").focus()}
@@ -33,5 +33,23 @@ shade.querySelector(".avp-nav-v2-search").addEventListener("click",()=>{close();
 shade.querySelector(".avp-nav-v2-theme")?.addEventListener("click",()=>{const t=document.getElementById("themeToggle");if(t)t.click();else{document.body.classList.toggle("dark-mode");localStorage.setItem("theme",document.body.classList.contains("dark-mode")?"dark":"light")}});
 async function openAdminChat(){close();if(window.AVPAdminChatOpen){window.AVPAdminChatOpen();return}let s=document.querySelector('script[src*="admin-chat.js"]');if(!s){s=document.createElement("script");s.src="admin-chat.js?v=20261031-nav2";s.async=true;document.head.append(s)}for(let i=0;i<120&&!window.AVPAdminChatOpen;i++)await new Promise(r=>setTimeout(r,100));if(window.AVPAdminChatOpen)window.AVPAdminChatOpen();else window.dispatchEvent(new CustomEvent("avp:admin-chat-request-open"))}
 shade.querySelector('[data-nav-action="chat-admin"]').addEventListener("click",openAdminChat);
-window.AVPVerticalNavigation={open,close};
+async function refreshUnread(){
+  const badge=shade.querySelector(".avp-nav-v2-unread");
+  const client=window.avpSupabase||window.supabaseClient;
+  if(!badge||!client?.rpc)return;
+  try{
+    const {data,error}=await client.rpc("avp_chat_my_unread_count");
+    if(error)return;
+    const count=Math.max(0,Number(data)||0);
+    badge.hidden=count===0;
+    badge.textContent=count>9?"9+":String(count);
+    badge.setAttribute("aria-label",count+" tin nhắn chưa đọc");
+  }catch(_){}
+}
+refreshUnread();
+setInterval(refreshUnread,45000);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")refreshUnread()});
+const sb=window.avpSupabase||window.supabaseClient;
+sb?.auth?.onAuthStateChange?.(()=>refreshUnread());
+window.AVPVerticalNavigation={open,close,refreshUnread};
 })();
