@@ -6,8 +6,6 @@ window.__AVP_GLOBAL_SEARCH_V3__ = true;
 const INDEX_FILES = ['search-index-10.json'];
 const DICTIONARY_URL='search-dictionary.js';
 const RESOURCE_URL='search-resources.json';
-const SUPABASE_URL='https://itnnbyhlpfredaqyhlpr.supabase.co';
-const SUPABASE_KEY='sb_publishable_MiK_gkzfQUwPn3_-TYZESg_FxuWYTV5';
 const $=id=>document.getElementById(id);
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
