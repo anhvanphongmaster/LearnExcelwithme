@@ -45,7 +45,8 @@ async function loadData(){
   try{const deep=await fetch('search-deep-index.json',{cache:'force-cache'});if(deep.ok){const j=await deep.json();if(Array.isArray(j.documents))docs.push(...j.documents)}}catch(_){}
   try{const race=await fetch('search-race-index.json',{cache:'force-cache'});if(race.ok){const j=await race.json();if(Array.isArray(j.documents))docs.push(...j.documents)}}catch(_){}
   try{const r=await fetch(RESOURCE_URL,{cache:'force-cache'});if(r.ok){const j=await r.json();resources=Array.isArray(j.resources)?j.resources:[]}}catch(_){}
-  try{const r=await fetch('search-content-records.json',{cache:'force-cache'});if(r.ok){const j=await r.json();contentRecords=Array.isArray(j.records)?j.records:[]}}catch(_){}
+  const contentParts=await Promise.all(Array.from({length:6},(_,i)=>'search-content-'+String(i+1).padStart(2,'0')+'.json').map(async file=>{try{const r=await fetch(file,{cache:'force-cache'});return r.ok?await r.json():{records:[]}}catch(_){return {records:[]}}}));
+  contentRecords=contentParts.flatMap(x=>Array.isArray(x.records)?x.records:[]);
   try{
    if(!window.AVP_EXCEL_DICTIONARY){
     await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=DICTIONARY_URL;s.onload=resolve;s.onerror=reject;document.head.appendChild(s)});
@@ -62,7 +63,9 @@ function buildCatalog(){
  const all=[];
  docs.forEach(d=>{
   let url=d.url||'index.html';
-  if(d.type==='Hàm Excel')url='excel-formula-library.html?q='+encodeURIComponent(d.title||'');
+  if(d.type==='Thư viện công thức & kiến thức')url='excel-dictionary.html?q='+encodeURIComponent(d.title||'');
+  else if(d.type==='Kiến thức Excel')url='excel-knowledge-library.html?q='+encodeURIComponent(d.title||'');
+  else if(d.type==='Hàm Excel')url='excel-formula-library.html?q='+encodeURIComponent(d.title||'');
   else if(d.type==='Phím tắt')url='excel-shortcut-library.html?q='+encodeURIComponent(d.title||'');
   else if(d.type==='Thư viện kiến thức')url='excel-knowledge-library.html?q='+encodeURIComponent(d.title||'');
   else if(d.type==='Thư viện dữ liệu')url='excel-data-format-library.html?q='+encodeURIComponent(d.title||'');
