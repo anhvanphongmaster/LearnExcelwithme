@@ -6,7 +6,10 @@ if(path!==''&&path!=='index.html')return;
 if(window.__AVP_HOME_CANONICAL__)return;
 window.__AVP_HOME_CANONICAL__=true;
 document.documentElement.classList.add('avp-home-canonical');
-/* Keep the device viewport native; mobile must use the responsive layout. */
+/* Preserve the site's established desktop-canvas layout on phones. */
+document.documentElement.classList.add('avp-force-desktop-mobile');
+var viewport=document.querySelector('meta[name="viewport"]');
+if(viewport)viewport.setAttribute('content','width=1200, initial-scale=0.32, minimum-scale=0.1, maximum-scale=2, user-scalable=yes');
 function el(tag,cls,html){var n=document.createElement(tag);if(cls)n.className=cls;if(html!==undefined)n.innerHTML=html;return n;}
 function link(href,cls,html){var a=el('a',cls,html);a.href=href;return a;}
 function deleteLegacyDuplicateBlocks(){
@@ -84,7 +87,7 @@ function setup(){
  var hero=document.getElementById('trangchu')||document.querySelector('.avp-hero');
  if(!hero)return;
  hero.className='avp-hero avp-canonical-hero';hero.innerHTML=
- '<div class="avp-canonical-inner"><div class="avp-canonical-copy">'+
+ '<div class="avp-canonical-inner avp-hero-split"><div class="avp-canonical-copy">'+
  '<div class="avp-canonical-eyebrow">●　EXCEL　·　DỮ LIỆU　·　BÁO CÁO　·　TỰ ĐỘNG HÓA　·　AI</div>'+
  '<h1>Học <span>Excel</span><br>để làm được việc.</h1>'+
  '<p>Từ cơ bản đến nâng cao, kèm ví dụ thực tế, bài tập và file thực hành.<br>Giúp bạn xử lý công việc nhanh hơn, chính xác hơn và chuyên nghiệp hơn.</p>'+
@@ -874,7 +877,7 @@ function init(){
  var hub=document.createElement('div');hub.className='avp-hub';hub.hidden=true;hub.dataset.avpProgressHub='1';
  hub.innerHTML=`<section class="avp-hub-box" role="dialog" aria-modal="true" aria-label="Tiến độ và thành tích">
  <header class="avp-hub-head"><div><small>LEARNEXCELWITHME · MY PROGRESS</small><h2>Tiến độ & thành tích</h2></div><button class="avp-hub-close" type="button" aria-label="Đóng">×</button></header>
- <nav class="avp-hub-tabs"><button type="button" data-tab="course" aria-selected="true">Tổng quan</button><button type="button" data-tab="library" aria-selected="false">Thư viện</button><button type="button" data-tab="practice" aria-selected="false">Bài tập tự chấm</button></nav>
+ <nav class="avp-hub-tabs"><button type="button" data-tab="course" aria-selected="true">Học theo chương</button><button type="button" data-tab="library" aria-selected="false">Thư viện</button><button type="button" data-tab="practice" aria-selected="false">Bài tập tự chấm</button></nav>
  <main class="avp-hub-body">
   <section class="avp-hub-panel" data-panel="course">
    <div class="avp-hub-grid"><article class="avp-hub-card"><h3>Tiến độ toàn khóa</h3><div class="avp-hub-num" data-course-count>0/135</div><div class="avp-hub-meter"><span data-course-meter style="width:0%"></span></div><div class="avp-hub-muted" data-course-percent>0% bài học đã PASS Checkpoint</div></article><article class="avp-hub-card"><h3>Vị trí hiện tại</h3><div class="avp-hub-num" style="font-size:23px" data-current-chapter>Điểm xuất phát</div><p class="avp-hub-muted" data-current-note>PASS Checkpoint để di chuyển trên hành trình.</p></article></div>
