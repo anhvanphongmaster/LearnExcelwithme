@@ -3,6 +3,7 @@
 if(window.__AVP_SITE_NAV_V2__)return;window.__AVP_SITE_NAV_V2__=true;
 if(window.self!==window.top)return;
 const page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
+if(["admin.html","office-quest-admin.html","office-quest-world.html"].includes(page))return;
 const legacyAuth=document.querySelector(".top-simple-nav .auth-nav-slot")||document.querySelector(".auth-nav-slot");
 const legacyTheme=document.getElementById("themeToggle");
 const oldNav=document.querySelectorAll(".top-simple-nav");
