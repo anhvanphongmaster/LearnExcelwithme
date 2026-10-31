@@ -25,10 +25,17 @@
   function openRealChat(){
     var tries=0;
     (function tick(){
-      if(window.__AVP_ADMIN_CHAT_LOADED__){window.dispatchEvent(new CustomEvent('avp:admin-chat-open'));return;}
-      var b=document.getElementById('avpChatBubble');
-      if(b){try{b.click()}catch(_){ }return;}
-      if(++tries<40)setTimeout(tick,80);
+      // Script evaluation is not the same as chat UI readiness. The core sets
+      // __AVP_ADMIN_CHAT_LOADED__ before Supabase/session restoration finishes.
+      // Wait until the real user/guest panel exists; otherwise the open event
+      // is lost and the first tap appears to do nothing.
+      var panel=document.getElementById('avpChatPanel')||document.getElementById('avpGuestChatPanel');
+      if(panel){
+        window.dispatchEvent(new CustomEvent('avp:admin-chat-open'));
+        return;
+      }
+      if(++tries<180){setTimeout(tick,100);return;}
+      console.warn('[AVP Chat] UI chưa sẵn sàng sau khi tải core.');
     })();
   }
   function loadCore(open){
