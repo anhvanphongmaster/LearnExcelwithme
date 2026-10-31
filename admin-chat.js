@@ -29,7 +29,7 @@
       // __AVP_ADMIN_CHAT_LOADED__ before Supabase/session restoration finishes.
       // Wait until the real user/guest panel exists; otherwise the open event
       // is lost and the first tap appears to do nothing.
-      var panel=document.getElementById('avpChatPanel')||document.getElementById('avpGuestChatPanel');
+      var panel=document.getElementById('avpChatPanel')||document.getElementById('avpAdminFloatPanel')||document.getElementById('avpGuestChatPanel');
       if(panel){
         removeLite();
         // Open the panel directly as a fallback; the core event listener may
@@ -48,7 +48,7 @@
     if(loading)return;
     loading=true;
     var s=document.createElement('script');
-    s.src='admin-chat-core-v1.js?v=20261004-chat-reopen-fix6';
+    s.src='admin-chat-core-v1.js?v=20261031-chat-open-fix-final2';
     s.defer=true;s.dataset.avpChatCore='1';
     s.onload=function(){
       loading=false;
@@ -64,6 +64,10 @@
     s.onerror=function(){loading=false;};
     document.head.appendChild(s);
   }
+  // Public entry point used by the robot menu.
+  window.AVPAdminChatOpen=function(){loadCore(true);};
+  window.addEventListener('avp:admin-chat-request-open',function(){loadCore(true);});
+
   function mountGuestLite(){
     if(document.getElementById('avpChatLazyRoot')||document.getElementById('avpAdminChatRoot'))return;
     var root=document.createElement('div');
