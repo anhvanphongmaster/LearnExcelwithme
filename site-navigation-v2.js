@@ -49,6 +49,7 @@ function setTheme(mode){
   b.classList.toggle("is-active",active);
   b.setAttribute("aria-pressed",String(active));
  });
+ if(typeof themeButton!=="undefined"){themeButton.innerHTML=next==="dark"?'<span aria-hidden="true">☀</span>':'<span aria-hidden="true">◐</span>';themeButton.setAttribute("aria-label",next==="dark"?"Chuyển sang giao diện sáng":"Chuyển sang giao diện tối");themeButton.setAttribute("title",next==="dark"?"Chuyển sang giao diện sáng":"Chuyển sang giao diện tối");}
  window.dispatchEvent(new CustomEvent("avp:theme-change",{detail:{theme:next}}));
 }
 let initialTheme="light";
