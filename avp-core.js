@@ -646,7 +646,7 @@
       let loader=document.querySelector('script[data-avp-admin-chat]');
       if(!loader){
         loader=document.createElement('script');
-        loader.src='admin-chat.js?v=20261031-chat-open-fix-final2';
+        loader.src='admin-chat.js?v=20261031-chat-boot-retry3';
         loader.defer=true;
         loader.dataset.avpAdminChat='1';
         document.head.appendChild(loader);
@@ -665,7 +665,7 @@
       return false;
     }
 
-    for(let i=0;i<200;i++){
+    for(let i=0;i<450;i++){
       const panel=document.getElementById('avpChatPanel')||
                   document.getElementById('avpAdminFloatPanel')||
                   document.getElementById('avpGuestChatPanel');
