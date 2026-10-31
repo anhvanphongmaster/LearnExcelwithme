@@ -532,7 +532,17 @@ document.addEventListener("DOMContentLoaded",function(){
 });
 
 
-/* AVP VERTICAL NAVIGATION V2 — replaces legacy horizontal header and robot launcher. */
+/* AVP GLOBAL VIEWPORT NORMALIZER — remove legacy fixed-width/zoom viewport on every page. */
+(function(){
+  try{
+    var viewport=document.querySelector('meta[name="viewport"]');
+    if(viewport && /width=1200/.test(viewport.content) && /initial-scale=0\.32/.test(viewport.content)){
+      viewport.setAttribute("content","width=device-width, initial-scale=1, viewport-fit=cover");
+    }
+  }catch(e){}
+})();
+
+/* AVP VERTICAL NAVIGATION V2 — replaces the legacy horizontal header and robot launcher. */
 (function(){
   if(window.self!==window.top)return;
   function loadAsset(tag,selector,src){
@@ -543,7 +553,7 @@ document.addEventListener("DOMContentLoaded",function(){
     el.dataset.avpSiteNavigationV2="1";
     (document.head||document.documentElement).appendChild(el);
   }
-  loadAsset("link",'link[data-avp-global-preferences-css]',"avp-global-preferences-v1.css?v=20261031-1");
-  loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261031-8");
-  loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261031-8");
+  loadAsset("link",'link[data-avp-global-preferences-css]',"avp-global-preferences-v1.css?v=20261031-2");
+  loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261031-9");
+  loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261031-9");
 })();
