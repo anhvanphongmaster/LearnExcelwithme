@@ -1,11 +1,1 @@
-/* Layout mode is a preference, not a viewport/zoom hack. */
-html.avp-layout-mobile body{min-width:0!important;width:min(100%,430px)!important;max-width:430px!important;margin-left:auto!important;margin-right:auto!important}
-html.avp-layout-mobile body :is(main,.main-shell,.main-content,.page-content,.page-container,.content-wrapper,.container,.dashboard-container){width:100%;max-width:100%;min-width:0;box-sizing:border-box}
-html.avp-layout-desktop{overflow-x:auto!important}
-html.avp-layout-desktop body{min-width:1080px!important;width:auto!important;max-width:none!important}
-html.avp-layout-desktop body :is(main,.main-shell,.main-content,.page-content,.page-container,.content-wrapper,.dashboard-container){max-width:none}
-html.avp-layout-desktop body :is(.stats-grid,.home-modules-grid,.features-grid,.card-grid,.dashboard-grid,.tools-grid){grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
-@media(max-width:700px){
- html:not(.avp-layout-desktop) body{min-width:0;width:100%;max-width:100%}
- html.avp-layout-mobile body :is(.stats-grid,.home-modules-grid,.features-grid,.card-grid,.dashboard-grid,.tools-grid){grid-template-columns:minmax(0,1fr)}
-}
+/* Responsive layout is controlled by each page's viewport and CSS breakpoints. No user-selectable device mode.\n
