@@ -41,18 +41,26 @@ function setTheme(mode){
 }
 function setLayout(mode){
  const next=mode==="mobile"?"mobile":"desktop";
- document.documentElement.dataset.avpDisplayMode=next;
- const viewport=document.querySelector('meta[name="viewport"]');
- if(viewport)viewport.setAttribute("content",next==="desktop"?"width=1200, initial-scale=0.32, minimum-scale=0.1, maximum-scale=2, user-scalable=yes":"width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes");
+ const root=document.documentElement;
+ root.dataset.avpDisplayMode=next;
+ root.classList.toggle("avp-layout-mobile",next==="mobile");
+ root.classList.toggle("avp-layout-desktop",next==="desktop");
  try{localStorage.setItem("avp-display-mode",next)}catch(_){}
- shade.querySelectorAll("[data-avp-layout]").forEach(b=>b.classList.toggle("is-active",b.dataset.avpLayout===next));
+ shade.querySelectorAll("[data-avp-layout]").forEach(b=>{
+   b.classList.toggle("is-active",b.dataset.avpLayout===next);
+   b.setAttribute("aria-pressed",String(b.dataset.avpLayout===next));
+ });
  window.dispatchEvent(new CustomEvent("avp:display-mode-change",{detail:{mode:next}}));
 }
 let initialTheme="light",initialLayout=(window.matchMedia&&window.matchMedia("(max-width: 700px)").matches)?"mobile":"desktop";
 try{initialTheme=localStorage.getItem("theme")==="dark"?"dark":"light";const savedLayout=localStorage.getItem("avp-display-mode");if(savedLayout==="mobile"||savedLayout==="desktop")initialLayout=savedLayout}catch(_){}
 setTheme(initialTheme);setLayout(initialLayout);
 shade.querySelectorAll("[data-avp-theme]").forEach(b=>b.addEventListener("click",()=>setTheme(b.dataset.avpTheme)));
-shade.querySelectorAll("[data-avp-layout]").forEach(b=>b.addEventListener("click",()=>setLayout(b.dataset.avpLayout)));
+shade.querySelectorAll("[data-avp-layout]").forEach(b=>b.addEventListener("click",()=>{
+ const requested=b.getAttribute("data-avp-layout");
+ if(requested!=="mobile"&&requested!=="desktop")return;
+ setLayout(requested);
+}));
 async function openAdminChat(){close();if(window.AVPAdminChatOpen){window.AVPAdminChatOpen();return}let s=document.querySelector('script[src*="admin-chat.js"]');if(!s){s=document.createElement("script");s.src="admin-chat.js?v=20261031-nav2";s.async=true;document.head.append(s)}for(let i=0;i<120&&!window.AVPAdminChatOpen;i++)await new Promise(r=>setTimeout(r,100));if(window.AVPAdminChatOpen)window.AVPAdminChatOpen();else window.dispatchEvent(new CustomEvent("avp:admin-chat-request-open"))}
 shade.querySelector('[data-nav-action="chat-admin"]').addEventListener("click",openAdminChat);
 async function openAiChat(){
