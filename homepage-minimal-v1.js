@@ -956,7 +956,7 @@ function init(){
  });
 }
  function openMap(){
-  if(window.AVPFloatingMap){window.AVPFloatingMap.open();return;}var s=document.createElement('script');s.src='avp-floating-map.js?v=1';s.onload=function(){window.AVPFloatingMap?.open();};document.head.appendChild(s);
+  if(window.AVPFloatingMap){window.AVPFloatingMap.open();return;}var s=document.createElement('script');s.src='avp-floating-map.js?v=20261101-map3';s.onload=function(){window.AVPFloatingMap?.open();};document.head.appendChild(s);
  }
  function showMapError(err){
   var route=map.querySelector('[data-map-route]');
