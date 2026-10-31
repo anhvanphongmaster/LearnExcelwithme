@@ -845,7 +845,12 @@
       $("avpChatInput")?.focus();
     }
   }
-  window.addEventListener("avp:admin-chat-open",()=>{if($("avpChatPanel"))togglePanel(true);else if($("avpGuestChatPanel"))$("avpGuestChatPanel").hidden=false;});
+  window.addEventListener("avp:admin-chat-open",async()=>{
+    if($("avpChatPanel")){await togglePanel(true);return;}
+    if($("avpGuestChatPanel")){$("avpGuestChatPanel").hidden=false;return;}
+    const adminPanel=$("avpAdminFloatPanel");
+    if(adminPanel){adminPanel.hidden=false;await loadFloatingAdminThreads();}
+  });
   async function ensureThread(){
     if(threadId)return threadId;
     threadId=await rpc("avp_chat_get_or_create_thread");
