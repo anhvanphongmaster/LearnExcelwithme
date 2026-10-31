@@ -895,7 +895,7 @@ function init(){
  var map=document.createElement('div');map.className='avp-map-modal';map.hidden=true;
  map.innerHTML='<section class="avp-map-box" role="dialog" aria-modal="true" aria-label="Bản đồ hành trình học tập"><header class="avp-map-head"><div><small>MY LEARNING JOURNEY</small><h2>Lộ trình học của bạn</h2></div><button class="avp-map-close" type="button" aria-label="Đóng bản đồ">×</button></header><div class="avp-map-content"><p class="avp-map-intro">Theo dõi từng chương, nội dung đã hoàn thành và bài học cần tiếp tục. Chọn một chương để xem danh sách bài học.</p><section class="avp-map-next-step" aria-live="polite"><div><small>BƯỚC TIẾP THEO CỦA BẠN</small><h3 data-map-next-title>Đang xác định bài học tiếp theo…</h3><p data-map-next-detail></p></div><button type="button" data-map-next-action>Mở bài học →</button></section><div class="avp-map-info"><article><small>CHECKPOINT ĐÃ PASS</small><b data-map-done>0</b></article><article><small>CHƯƠNG ĐANG HỌC</small><b data-map-current>Chưa bắt đầu</b></article><article><small>BÀI TIẾP THEO</small><b data-map-next>Chưa xác định</b></article></div><div class="avp-map-route-head"><h3>Các chặng học tập</h3><span data-map-route-caption>12 chương · theo thứ tự nội dung</span></div><div class="avp-map-route" data-map-route></div><p class="avp-map-note">Tiến độ trên bản đồ được tính từ checkpoint đã PASS trên thiết bị này. Mở hoặc đọc bài học không tự tăng tiến độ.</p></div></section>';
  document.body.appendChild(map);
- var chapterTotals=[12,12,12,12,10,12,11,10,12,11,11,10],courseTotal=chapterTotals.reduce(function(a,b){return a+b;},0);
+ var chapterTotals=chapterLessons.map(function(list){return list.length;}),courseTotal=chapterTotals.reduce(function(a,b){return a+b;},0);
  function readCheckpoints(){var out=[],i;for(i=0;i<localStorage.length;i++){var k=localStorage.key(i),m=k&&k.match(/^avp_checkpoint_local_v1_C(\d{1,2})L(\d{2})$/);if(m){try{var v=JSON.parse(localStorage.getItem(k)||'{}');if(v&&v.passed===true)out.push({key:k,chapter:Number(m[1]),lesson:Number(m[2])});}catch(e){}}}return out;}
  function readJson(key){try{return JSON.parse(localStorage.getItem(key)||'{}')||{};}catch(e){return {};}}
  function readArray(key){try{var v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[];}catch(e){return [];}}
@@ -947,7 +947,7 @@ function init(){
   var next=firstMissing>=0?lessons[firstMissing]:'Đã PASS tất cả checkpoint trong chương';
   var card=document.createElement('article');card.className='avp-map-chapter is-'+state;
   var pct=lessons.length?Math.round(passed.length/lessons.length*100):0;
-  var preview=lessons.slice(Math.max(0,firstMissing),Math.max(0,firstMissing)+2);
+  var preview=lessons.slice(Math.max(0,firstMissing+1),Math.max(0,firstMissing+3));
   card.innerHTML='<div class="avp-map-chapter-head"><span>CHƯƠNG '+String(i+1).padStart(2,'0')+'</span><em>'+stateText+'</em></div><h4></h4><div class="avp-map-progress"><span style="width:'+pct+'%"></span></div><div class="avp-map-chapter-meta"><b>'+passed.length+'/'+lessons.length+' checkpoint</b><span>'+pct+'%</span></div><small class="avp-map-step-label">'+(state==='complete'?'KẾT QUẢ':state==='current'?'BÀI CẦN HỌC TIẾP':'NỘI DUNG SẮP TỚI')+'</small><strong class="avp-map-next-lesson"></strong><div class="avp-map-upcoming"></div><button type="button" data-map-chapter="'+i+'">Xem các bài trong chương →</button>';
   card.querySelector('h4').textContent=chapter[0];
   card.querySelector('.avp-map-next-lesson').textContent=next;
