@@ -56,4 +56,5 @@ $("dfSearch").addEventListener("input",render);$("dfReset").addEventListener("cl
 })();
 </script>
 <script src="simple-nav.js"></script><script src="avp-display-mode.js?v=2"></script><script src="global-search.js"></script>
+<script>(function(){try{var q=new URLSearchParams(location.search).get('q'),el=document.getElementById('dfSearch');if(q&&el){el.value=q;el.dispatchEvent(new Event('input',{bubbles:true}));}}catch(e){}})();</script>
 </body></html>
