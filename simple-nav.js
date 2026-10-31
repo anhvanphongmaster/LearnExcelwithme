@@ -543,6 +543,7 @@ document.addEventListener("DOMContentLoaded",function(){
     el.dataset.avpSiteNavigationV2="1";
     (document.head||document.documentElement).appendChild(el);
   }
-  loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261031-7");
-  loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261031-7");
+  loadAsset("link",'link[data-avp-global-preferences-css]',"avp-global-preferences-v1.css?v=20261031-1");
+  loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261031-8");
+  loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261031-8");
 })();
