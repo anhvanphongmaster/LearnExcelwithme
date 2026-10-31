@@ -18,7 +18,7 @@
 
   // Avoid leaving the temporary bubble in the DOM after the full chat has mounted.
   function syncCoreState(){
-    if(window.__AVP_ADMIN_CHAT_LOADED__){loaded=true;removeLite();}
+    if(window.__AVP_ADMIN_CHAT_LOADED__){loaded=true;}
   }
 
   function removeLite(){document.getElementById('avpChatLazyRoot')?.remove();}
@@ -31,6 +31,10 @@
       // is lost and the first tap appears to do nothing.
       var panel=document.getElementById('avpChatPanel')||document.getElementById('avpGuestChatPanel');
       if(panel){
+        removeLite();
+        // Open the panel directly as a fallback; the core event listener may
+        // not yet be attached on unusually slow devices.
+        panel.hidden=false;
         window.dispatchEvent(new CustomEvent('avp:admin-chat-open'));
         return;
       }
@@ -50,7 +54,7 @@
       loading=false;
       loaded=!!window.__AVP_ADMIN_CHAT_LOADED__;
       if(loaded){
-        removeLite();
+        // Keep the temporary entry point until the real chat panel is mounted.
         if(openAfterLoad){openAfterLoad=false;openRealChat();}
       }else{
         // Keep the entry point available if the core script loaded but failed during initialization.
