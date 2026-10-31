@@ -73,6 +73,10 @@ function buildCatalog(){
   else if(d.type==='Thư viện kiến thức')url='excel-knowledge-library.html?q='+encodeURIComponent(d.title||'');
   else if(d.type==='Thư viện dữ liệu')url='excel-data-format-library.html?q='+encodeURIComponent(d.title||'');
   else if(d.type==='Thư viện Excel')url='excel-dictionary.html?q='+encodeURIComponent(d.title||'');
+  else if(d.type==='Bài thực hành'){
+   const key=String(d.content||'').match(/"key"\\s*:\\s*"([^"]+)"/);
+   if(key)url='practice-grader.html?lesson='+encodeURIComponent(key[1]);
+  }
   all.push({title:d.title,description:d.description||d.content?.slice(0,180)||'Trang nội dung',url,type:d.type||'Trang',icon:'📄',content:d.content||'',keywords:d.title+' '+d.url});
  });
  resources.forEach(r=>all.push({title:r.title,description:r.description,url:r.url,type:r.type||'Tài nguyên',icon:'📊',content:r.keywords||''}));
@@ -106,7 +110,19 @@ function scoreItem(item,query,expanded){
 }
 function makeRows(q){
  const variants=expand(q);
- return catalog.map(x=>({...x,_score:scoreItem(x,q,variants)})).filter(x=>x._score>0).sort((a,b)=>b._score-a._score);
+ return catalog.map(x=>{
+  let score=scoreItem(x,q,variants);
+  const type=String(x.type||'');
+  const intent=norm(q);
+  const asksQuiz=/cau hoi|arena|race|trac nghiem/.test(intent);
+  if(type==='Workbook'||type==='Tài nguyên bài học')score+=42;
+  else if(type==='Bài thực hành'||type==='Thực hành')score+=36;
+  else if(type==='Hàm Excel')score+=26;
+  else if(type==='Thư viện kiến thức'||type==='Thư viện công thức & kiến thức')score+=18;
+  else if(type==='Bài học theo chương'||type==='Quy trình bài học')score+=14;
+  else if(type.includes('Câu hỏi')&&!asksQuiz&&!x._title.includes(norm(q)))score-=24;
+  return {...x,_score:score};
+ }).filter(x=>x._score>0).sort((a,b)=>b._score-a._score);
 }
 async function fetchTools(q){
  try{
