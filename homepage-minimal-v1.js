@@ -667,6 +667,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
   renderChapterLessons(Number(button.getAttribute('data-chapter-index')));
  });
  function openChapterPicker(){renderChapterGrid();modal.hidden=false;document.body.classList.add('avp-chapter-picker-open');modal.querySelector('.avp-chapter-picker-close').focus();}
+ window.AVP_HOME_LEARNING_API={chapterList:chapterList,chapterLessons:chapterLessons,openChapterPicker:openChapterPicker,renderChapterLessons:renderChapterLessons};
  function closeChapterPicker(){modal.hidden=true;document.body.classList.remove('avp-chapter-picker-open');}
  pathCard.addEventListener('click',function(event){event.preventDefault();openChapterPicker();});
  modal.querySelector('.avp-chapter-picker-close').addEventListener('click',closeChapterPicker);
@@ -852,6 +853,8 @@ if(document.readyState==='loading'){
 (function(){
 'use strict';
 function init(){
+ var learningApi=window.AVP_HOME_LEARNING_API;
+ if(!learningApi){console.error('[AVP learning map] Learning chapter API is not connected.');return;}
  if(document.querySelector('[data-avp-progress-hub]'))return;
  var resource=document.querySelector('.avp-resource-results');
  var style=document.createElement('style');
@@ -888,7 +891,7 @@ function init(){
  var map=document.createElement('div');map.className='avp-map-modal';map.hidden=true;
  map.innerHTML='<section class="avp-map-box" role="dialog" aria-modal="true" aria-label="Bản đồ hành trình học tập"><header class="avp-map-head"><div><small>MY LEARNING JOURNEY</small><h2>Lộ trình học của bạn</h2></div><button class="avp-map-close" type="button" aria-label="Đóng bản đồ">×</button></header><div class="avp-map-content"><p class="avp-map-intro">Theo dõi từng chương, nội dung đã hoàn thành và bài học cần tiếp tục. Chọn một chương để xem danh sách bài học.</p><section class="avp-map-next-step" aria-live="polite"><div><small>BƯỚC TIẾP THEO CỦA BẠN</small><h3 data-map-next-title>Đang xác định bài học tiếp theo…</h3><p data-map-next-detail></p></div><button type="button" data-map-next-action>Mở bài học →</button></section><div class="avp-map-info"><article><small>CHECKPOINT ĐÃ PASS</small><b data-map-done>0</b></article><article><small>CHƯƠNG ĐANG HỌC</small><b data-map-current>Chưa bắt đầu</b></article><article><small>BÀI TIẾP THEO</small><b data-map-next>Chưa xác định</b></article></div><div class="avp-map-route-head"><h3>Các chặng học tập</h3><span data-map-route-caption>12 chương · theo thứ tự nội dung</span></div><div class="avp-map-route" data-map-route></div><p class="avp-map-note">Tiến độ trên bản đồ được tính từ checkpoint đã PASS trên thiết bị này. Mở hoặc đọc bài học không tự tăng tiến độ.</p></div></section>';
  document.body.appendChild(map);
- var chapterTotals=chapterLessons.map(function(list){return list.length;}),courseTotal=chapterTotals.reduce(function(a,b){return a+b;},0);
+ var chapterTotals=learningApi.chapterLessons.map(function(list){return list.length;}),courseTotal=chapterTotals.reduce(function(a,b){return a+b;},0);
  function readCheckpoints(){var out=[],i;for(i=0;i<localStorage.length;i++){var k=localStorage.key(i),m=k&&k.match(/^avp_checkpoint_local_v1_C(\d{1,2})L(\d{2})$/);if(m){try{var v=JSON.parse(localStorage.getItem(k)||'{}');if(v&&v.passed===true)out.push({key:k,chapter:Number(m[1]),lesson:Number(m[2])});}catch(e){}}}return out;}
  function readJson(key){try{return JSON.parse(localStorage.getItem(key)||'{}')||{};}catch(e){return {};}}
  function readArray(key){try{var v=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(v)?v:[];}catch(e){return [];}}
@@ -908,16 +911,16 @@ function init(){
  if(mapCard&&!mapCard.dataset.mapClickBound){mapCard.dataset.mapClickBound='1';mapCard.addEventListener('click',function(event){event.preventDefault();openMap();});}
  function mapRender(){
  var d=progressData(),route=map.querySelector('[data-map-route]'),currentIndex=-1,nextLessonIndex=0;
- for(var i=0;i<chapterLessons.length;i++){
+ for(var i=0;i<learningApi.chapterLessons.length;i++){
   var completedInChapter=d.cp.filter(function(x){return x.chapter===i+1;}).map(function(x){return x.lesson;});
-  var total=(chapterLessons[i]||[]).length;
+  var total=(learningApi.chapterLessons[i]||[]).length;
   var firstMissing=-1;
   for(var k=1;k<=total;k++){if(completedInChapter.indexOf(k)<0){firstMissing=k-1;break;}}
   if(firstMissing>=0){currentIndex=i;nextLessonIndex=firstMissing;break;}
  }
  var completed=d.cp.length;
- var currentLessons=currentIndex>=0?(chapterLessons[currentIndex]||[]):[];
- var currentTitle=currentIndex>=0?chapterList[currentIndex][0]:'Đã hoàn thành toàn bộ nội dung hiện có';
+ var currentLessons=currentIndex>=0?(learningApi.chapterLessons[currentIndex]||[]):[];
+ var currentTitle=currentIndex>=0?learningApi.chapterList[currentIndex][0]:'Đã hoàn thành toàn bộ nội dung hiện có';
  var nextTitle=currentIndex>=0?(currentLessons[nextLessonIndex]||''):'';
  map.querySelector('[data-map-done]').textContent=String(completed);
  map.querySelector('[data-map-current]').textContent=currentIndex>=0?('Chương '+String(currentIndex+1).padStart(2,'0')):'Hoàn thành';
@@ -927,11 +930,11 @@ function init(){
  var nextAction=map.querySelector('[data-map-next-action]');
  nextAction.disabled=currentIndex<0;
  nextAction.textContent=currentIndex>=0?'Mở chương này →':'Đã hoàn thành';
- nextAction.onclick=function(){if(currentIndex<0)return;closeMap();openChapterPicker();renderChapterLessons(currentIndex);};
+ nextAction.onclick=function(){if(currentIndex<0)return;closeMap();learningApi.openChapterPicker();learningApi.renderChapterLessons(currentIndex);};
  (mapCard&&mapCard.querySelector('[data-home-map-position]'))&&(mapCard.querySelector('[data-home-map-position]').textContent=currentIndex>=0?('Tiếp theo: '+nextTitle):'Đã hoàn thành lộ trình');
  route.innerHTML='';
- chapterList.forEach(function(chapter,i){
-  var lessons=chapterLessons[i]||[];
+ learningApi.chapterList.forEach(function(chapter,i){
+  var lessons=learningApi.chapterLessons[i]||[];
   var passed=d.cp.filter(function(x){return x.chapter===i+1;});
   var passedNos=passed.map(function(x){return x.lesson;});
   var firstMissing=-1;
@@ -948,7 +951,7 @@ function init(){
   var upcoming=card.querySelector('.avp-map-upcoming');
   preview.forEach(function(title,j){var row=document.createElement('span');row.textContent=(firstMissing+j+1)+'. '+title;upcoming.appendChild(row);});
   if(state==='complete')upcoming.innerHTML='<span>Đã hoàn thành '+lessons.length+' bài học của chương này.</span>';
-  card.querySelector('[data-map-chapter]').addEventListener('click',function(){closeMap();openChapterPicker();renderChapterLessons(i);});
+  card.querySelector('[data-map-chapter]').addEventListener('click',function(){closeMap();learningApi.openChapterPicker();learningApi.renderChapterLessons(i);});
   route.appendChild(card);
  });
 }
