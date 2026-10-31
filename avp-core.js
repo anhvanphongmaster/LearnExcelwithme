@@ -640,6 +640,24 @@
     return false;
   }
 
+  async function openAdminChatFromHub(){
+    // The menu's delegated click starts loading admin-chat.js in parallel.
+    // Do not look for #avpChatBubble immediately: the loader mounts it only
+    // after Supabase has restored the session and the chat core has initialized.
+    for(let i=0;i<160;i++){
+      const panel=document.getElementById('avpChatPanel')||
+                  document.getElementById('avpGuestChatPanel');
+      if(panel){
+        panel.hidden=false;
+        window.dispatchEvent(new CustomEvent('avp:admin-chat-open'));
+        return true;
+      }
+      await new Promise(resolve=>setTimeout(resolve,100));
+    }
+    toast('Chat Admin chưa khởi tạo được. Hãy tải lại trang và thử lại.');
+    return false;
+  }
+
   launcher.querySelectorAll('[data-edge-action]').forEach(btn=>{
     btn.addEventListener('click',async e=>{
       e.preventDefault();
@@ -708,7 +726,7 @@
           return;
         }
         window.dispatchEvent(new CustomEvent('avp:surface-open',{detail:{surface:'chat'}}));
-        clickHiddenTool('avpChatBubble','Chat Admin');
+        await openAdminChatFromHub();
       }else if(action==='ai'){
         const aiAlreadyOpen=aiPanel && !aiPanel.hidden && !document.getElementById('avpAiMode')?.hidden;
         if(aiAlreadyOpen){
