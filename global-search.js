@@ -22,7 +22,7 @@ const SYNONYMS=[
 ];
 const expand=q=>{
  const n=norm(q),out=new Set([n]);
- for(const group of SYNONYMS) if(group.some(x=>n.includes(norm(x))||norm(x).includes(n))) group.forEach(x=>out.add(norm(x)));
+ for(const group of SYNONYMS) if(n.length>=3&&group.some(x=>n.includes(norm(x))||norm(x).includes(n))) group.forEach(x=>out.add(norm(x)));
  return [...out].filter(Boolean);
 };
 function distance(a,b){
@@ -35,7 +35,7 @@ function distance(a,b){
  }
  return prev[b.length];
 }
-let docs=[],resources=[],dictionary=[],contentRecords=[],tools=[],loaded=false,loading=null;
+let docs=[],resources=[],dictionary=[],contentRecords=[],catalog=[],loaded=false,loading=null;
 async function loadData(){
  if(loaded)return;
  if(loading)return loading;
@@ -51,25 +51,34 @@ async function loadData(){
    }
    dictionary=Array.isArray(window.AVP_EXCEL_DICTIONARY)?window.AVP_EXCEL_DICTIONARY:[];
   }catch(_){}
+  buildCatalog();
   loaded=true;
  })();
  return loading;
 }
 function tokens(s){return norm(s).split(/\s+/).filter(Boolean)}
+function buildCatalog(){
+ const all=[];
+ docs.forEach(d=>all.push({title:d.title,description:d.description||d.content?.slice(0,180)||'Trang nội dung',url:d.url,type:'Trang',icon:'📄',content:d.content||'',keywords:d.title+' '+d.url}));
+ resources.forEach(r=>all.push({title:r.title,description:r.description,url:r.url,type:r.type||'Tài nguyên',icon:'📊',content:r.keywords||''}));
+ contentRecords.forEach(r=>all.push({title:r.title,description:r.description||'Nội dung học và dữ liệu thực hành',url:r.url,type:r.type||'Nội dung',icon:'📚',content:r.content||''}));
+ dictionary.forEach(d=>all.push({title:d.title,description:d.purpose||d.subtitle||'Thư viện kiến thức Excel',url:'excel-dictionary.html?q='+encodeURIComponent(d.title||''),type:d.type||'Thư viện Excel',icon:'🧮',content:[d.keywords,d.syntax,d.example,d.advanced,d.related,d.causes,d.checks,d.fixes,d.parts].flat(Infinity).join(' ')}));
+ catalog=all.map(x=>{const title=norm(x.title),body=norm([x.description,x.content,x.keywords,x.purpose,x.syntax,x.example,x.advanced,x.subtitle,x.type].join(' '));return {...x,_title:title,_body:body,_titleTokens:new Set(tokens(title)),_bodyTokens:new Set(tokens(body))}});
+}
 function scoreItem(item,query,expanded){
- const title=norm(item.title),body=norm([item.description,item.content,item.keywords,item.purpose,item.syntax,item.example,item.advanced,(item.keywords||[]).join?.(' '),item.subtitle,item.type].join(' '));
- const q=norm(query),qt=tokens(q),bt=new Set(tokens(body)),tt=new Set(tokens(title));
+ const title=item._title,body=item._body,q=norm(query),qt=tokens(q),tt=item._titleTokens,bt=item._bodyTokens;
  let score=0,matched=0;
  if(title===q)score+=150;
  if(title.includes(q))score+=85;
  if(body.includes(q))score+=45;
  for(const term of qt){
   let hit=false;
-  for(const t of tt)if(t===term){score+=24;hit=true;break}
-  if(!hit)for(const t of bt)if(t===term){score+=9;hit=true;break}
-  if(!hit&&term.length>=4){
-   let best=3;for(const t of bt){if(Math.abs(t.length-term.length)>2)continue;best=Math.min(best,distance(term,t));if(best===0)break}
-   if(best===1){score+=4;hit=true}else if(best===2){score+=1;hit=true}
+  if(tt.has(term)){score+=24;hit=true}
+  else if(bt.has(term)){score+=9;hit=true}
+  else if(term.length>=4){
+   let best=3;
+   for(const t of bt){if(t[0]!==term[0]||Math.abs(t.length-term.length)>1)continue;best=Math.min(best,distance(term,t));if(best===0)break}
+   if(best===1){score+=4;hit=true}
   }
   if(hit)matched++;
  }
@@ -78,12 +87,8 @@ function scoreItem(item,query,expanded){
  return score;
 }
 function makeRows(q){
- const variants=expand(q),all=[];
- docs.forEach(d=>all.push({title:d.title,description:d.description||d.content?.slice(0,180)||'Trang nội dung',url:d.url,type:'Trang',icon:'📄',content:d.content||'',keywords:d.title+' '+d.url}));
- resources.forEach(r=>all.push({title:r.title,description:r.description,url:r.url,type:r.type||'Tài nguyên',icon:'📊',content:r.keywords||''}));
- contentRecords.forEach(r=>all.push({title:r.title,description:r.description||'Nội dung học và dữ liệu thực hành',url:r.url,type:r.type||'Nội dung',icon:'📚',content:r.content||''}));
- dictionary.forEach(d=>all.push({title:d.title,description:d.purpose||d.subtitle||'Thư viện kiến thức Excel',url:'excel-dictionary.html?q='+encodeURIComponent(d.title||''),type:d.type||'Thư viện Excel',icon:'🧮',content:[d.keywords,d.syntax,d.example,d.advanced,d.related,d.causes,d.checks,d.fixes,d.parts].flat(Infinity).join(' ')}));
- return all.map(x=>({...x,_score:scoreItem(x,q,variants)})).filter(x=>x._score>0).sort((a,b)=>b._score-a._score);
+ const variants=expand(q);
+ return catalog.map(x=>({...x,_score:scoreItem(x,q,variants)})).filter(x=>x._score>0).sort((a,b)=>b._score-a._score);
 }
 async function fetchTools(q){
  try{
