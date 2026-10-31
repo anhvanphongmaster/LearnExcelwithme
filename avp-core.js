@@ -641,10 +641,31 @@
   }
 
   async function openAdminChatFromHub(){
-    // The menu's delegated click starts loading admin-chat.js in parallel.
-    // Do not look for #avpChatBubble immediately: the loader mounts it only
-    // after Supabase has restored the session and the chat core has initialized.
-    for(let i=0;i<160;i++){
+    // Ensure the loader exists even when the auth bootstrap did not inject it.
+    if(typeof window.AVPAdminChatOpen!=='function'){
+      let loader=document.querySelector('script[data-avp-admin-chat]');
+      if(!loader){
+        loader=document.createElement('script');
+        loader.src='admin-chat.js?v=20261031-chat-open-fix-final2';
+        loader.defer=true;
+        loader.dataset.avpAdminChat='1';
+        document.head.appendChild(loader);
+      }
+      for(let i=0;i<100 && typeof window.AVPAdminChatOpen!=='function';i++){
+        await new Promise(resolve=>setTimeout(resolve,80));
+      }
+    }
+
+    // Explicitly start the role-aware chat core; do not simulate a click on
+    // a bubble that may not have been mounted yet.
+    if(typeof window.AVPAdminChatOpen==='function'){
+      window.AVPAdminChatOpen();
+    }else{
+      toast('Không nạp được bộ Chat Admin. Kiểm tra kết nối mạng rồi thử lại.');
+      return false;
+    }
+
+    for(let i=0;i<200;i++){
       const panel=document.getElementById('avpChatPanel')||
                   document.getElementById('avpAdminFloatPanel')||
                   document.getElementById('avpGuestChatPanel');
@@ -655,7 +676,7 @@
       }
       await new Promise(resolve=>setTimeout(resolve,100));
     }
-    toast('Chat Admin chưa khởi tạo được. Hãy tải lại trang và thử lại.');
+    toast('Chat Admin chưa khởi tạo được. Hãy kiểm tra kết nối Supabase hoặc tải lại trang.');
     return false;
   }
 
