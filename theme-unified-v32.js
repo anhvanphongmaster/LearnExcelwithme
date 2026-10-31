@@ -1,9 +1,5 @@
 (function(){
-  // Site-wide dark theme is temporarily disabled until each page has audited color tokens.
-  try { localStorage.setItem("theme","light"); } catch(e) {}
-  document.documentElement.classList.remove("dark-mode");
-  document.body?.classList.remove("dark-mode");
-  document.documentElement.dataset.avpTheme="light";
+  // Theme state is owned exclusively by site-navigation-v2.js. This file only loads page upgrades.
 
   function loadCss(href,key){
     if(document.querySelector('link[data-'+key+']'))return;
