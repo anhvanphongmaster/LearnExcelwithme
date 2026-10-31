@@ -148,5 +148,5 @@ wrap.addEventListener('click',e=>{if(e.target===wrap)close()});
 input.addEventListener('input',()=>{clearTimeout(searchTimer);const q=input.value;searchTimer=setTimeout(()=>search(q),120)});
 input.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();setActive(active+1)}else if(e.key==='ArrowUp'){e.preventDefault();setActive(active-1)}else if(e.key==='Enter'){e.preventDefault();go()}else if(e.key==='Escape')close()});
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();wrap.classList.contains('open')?close():open()}else if(e.key==='Escape'&&wrap.classList.contains('open'))close()});
-loadData().catch(()=>{});
+
 })();
