@@ -14,39 +14,15 @@ body{padding-top:0!important}
 .avp-nav-v2-search{width:100%;height:44px;margin:15px 0 18px;padding:0 11px;display:flex;align-items:center;gap:9px;border:1px solid #dfe9e2;border-radius:12px;background:#f3f8f5;color:#63766b;text-align:left;cursor:pointer}.avp-nav-v2-search svg{width:17px}.avp-nav-v2-search span{flex:1;font-size:12px}.avp-nav-v2-search kbd{font-size:10px;color:#87958d}
 .avp-nav-v2-items{flex:1;overflow:auto}.avp-nav-v2-group{margin-bottom:17px}.avp-nav-v2-label{margin:0 8px 6px;color:#8b9991;font-size:9px;font-weight:850;letter-spacing:.14em}
 .avp-nav-v2-link{width:100%;min-height:42px;padding:0 10px;display:flex;align-items:center;gap:11px;border:0;border-radius:11px;background:transparent;color:#3a5546;text-decoration:none;text-align:left;font:650 13px Arial,sans-serif;cursor:pointer}.avp-nav-v2-link:hover,.avp-nav-v2-link[aria-current=page]{background:#eaf4ed;color:#08794f}.avp-nav-v2-icon{width:20px;height:20px;display:grid;place-items:center;color:#218257}.avp-nav-v2-icon svg{width:18px;height:18px}.avp-nav-v2-text{flex:1}.avp-nav-v2-unread{min-width:18px;height:18px;padding:0 5px;box-sizing:border-box;border-radius:99px;background:#dc3545;color:#fff;display:grid;place-items:center;font:700 10px Arial,sans-serif;box-shadow:0 0 0 3px #e3333318}.avp-nav-v2-unread[hidden]{display:none}
-.avp-nav-v2-foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--avp-nav-line);display:grid;gap:8px}.avp-nav-v2-account{min-height:42px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:11px;background:#f1f7f3;color:#315641;text-decoration:none;font-size:12px;font-weight:700}.avp-nav-v2-account svg{width:18px}.avp-nav-v2-account .auth-nav-slot{flex:1}.avp-nav-v2-theme{min-height:40px;border:1px solid var(--avp-nav-line);border-radius:11px;background:#fff;color:#486052;cursor:pointer}
-body.dark-mode .avp-nav-v2-drawer{background:rgba(18,28,22,.98);color:#e7f2eb}body.dark-mode .avp-nav-v2-head,body.dark-mode .avp-nav-v2-foot{border-color:#304237}body.dark-mode .avp-nav-v2-close,body.dark-mode .avp-nav-v2-theme{background:#1e2d24;border-color:#34483b;color:#d9e9df}body.dark-mode .avp-nav-v2-search,body.dark-mode .avp-nav-v2-account{background:#1c2b22;border-color:#34483b;color:#d4e8da}body.dark-mode .avp-nav-v2-link{color:#d1e4d7}body.dark-mode .avp-nav-v2-link:hover,body.dark-mode .avp-nav-v2-link[aria-current=page]{background:#244331;color:#8ce0ad}
-@media(max-width:600px){.avp-nav-v2-trigger{top:12px;left:12px;width:44px;height:44px}.avp-nav-v2-drawer{width:min(330px,88vw);padding:17px 14px}.avp-nav-v2-shade{backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}}
+.avp-nav-v2-foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--avp-nav-line);display:grid;gap:8px}.avp-nav-v2-account{min-height:42px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:11px;background:#f1f7f3;color:#315641;text-decoration:none;font-size:12px;font-weight:700}.avp-nav-v2-account svg{width:18px}.avp-nav-v2-account .auth-nav-slot{flex:1}@media(max-width:600px){.avp-nav-v2-trigger{top:12px;left:12px;width:44px;height:44px}.avp-nav-v2-drawer{width:min(330px,88vw);padding:17px 14px}.avp-nav-v2-shade{backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}}
 @media(prefers-reduced-motion:reduce){.avp-nav-v2-shade,.avp-nav-v2-drawer,.avp-nav-v2-trigger span{transition:none}}
 /* V2 hardening: isolate the menu list from legacy global nav selectors. */
 .avp-nav-v2-items{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;visibility:visible!important;opacity:1!important;min-height:120px!important;width:100%!important;overflow-y:auto!important;overflow-x:hidden!important;position:relative!important}
 .avp-nav-v2-group{display:block!important;flex:0 0 auto!important;visibility:visible!important;opacity:1!important;width:100%!important}
 .avp-nav-v2-label{display:block!important}
 .avp-nav-v2-link{display:flex!important;visibility:visible!important;opacity:1!important}
-.avp-nav-v2-settings{display:grid;gap:7px;padding:5px 2px 0}
-.avp-nav-v2-setting-label{font-size:9px;font-weight:850;letter-spacing:.12em;color:#89988f;margin-top:3px}
-.avp-nav-v2-segment{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:3px;border:1px solid #dce8df;border-radius:11px;background:#f2f7f3}
-.avp-nav-v2-segment button{min-height:34px;border:0;border-radius:8px;background:transparent;color:#50665a;font:700 11px system-ui,sans-serif;cursor:pointer}
-.avp-nav-v2-segment button.is-active{background:#16784b;color:white;box-shadow:0 2px 7px #0b583722}
-body.dark-mode .avp-nav-v2-settings .avp-nav-v2-setting-label{color:#a0b6a8}
-body.dark-mode .avp-nav-v2-segment{background:#1b2b21;border-color:#354b3d}
-body.dark-mode .avp-nav-v2-segment button{color:#c7d9cd}
-body.dark-mode .avp-nav-v2-segment button.is-active{background:#16784b;color:#fff}
-body.dark-mode .avp-nav-v2-shade{background:rgba(0,0,0,.32)}
-
 @media(max-width:700px){
  .avp-nav-v2-items{min-height:100px!important}
  .avp-nav-v2-link{min-height:40px!important}
 }
 
-/* Theme selector shares the same compact segmented-control system as layout. */
-.avp-nav-v2-settings [data-avp-theme].is-active{background:#16784b;color:#fff;box-shadow:0 2px 7px #0b583722}
-body.dark-mode .avp-nav-v2-settings [data-avp-theme]{color:#c7d9cd}
-body.dark-mode .avp-nav-v2-settings [data-avp-theme].is-active{background:#16784b;color:#fff}
-
-/* Always-visible theme switch, independent of the navigation drawer. */
-.avp-theme-float{position:fixed;z-index:13021;top:18px;right:18px;width:48px;height:48px;display:grid;place-items:center;border:1px solid #dce8df;border-radius:15px;background:rgba(255,255,255,.96);color:#176f47;box-shadow:0 8px 26px #153e2a1a;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font:700 23px/1 system-ui,sans-serif;cursor:pointer}
-.avp-theme-float:hover{transform:translateY(-1px);box-shadow:0 10px 30px #153e2a24}
-body.dark-mode .avp-theme-float{background:rgba(25,37,29,.97);border-color:#405648;color:#f2d58b}
-@media(max-width:600px){.avp-theme-float{top:12px;right:12px;width:44px;height:44px;border-radius:14px}}
-@media(prefers-reduced-motion:reduce){.avp-theme-float{transition:none}}
