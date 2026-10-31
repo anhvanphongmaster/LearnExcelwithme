@@ -77,22 +77,25 @@ function buildCatalog(){
 function scoreItem(item,query,expanded){
  const title=item._title,body=item._body,q=norm(query),qt=tokens(q),tt=item._titleTokens,bt=item._bodyTokens;
  let score=0,matched=0;
+ const phraseHit=title.includes(q)||body.includes(q);
+ let expandedHit=false;
  if(title===q)score+=150;
  if(title.includes(q))score+=85;
  if(body.includes(q))score+=45;
  for(const term of qt){
   let hit=false;
   if(tt.has(term)){score+=24;hit=true}
-  else if(bt.has(term)){score+=9;hit=true}
+  else if(term.length>=3&&bt.has(term)){score+=9;hit=true}
   else if(term.length>=4){
    let best=3;
-   for(const t of bt){if(Math.abs(t.length-term.length)>1)continue;best=Math.min(best,distance(term,t));if(best===0)break}
+   for(const t of bt){if(t[0]!==term[0]||Math.abs(t.length-term.length)>1)continue;best=Math.min(best,distance(term,t));if(best===0)break}
    if(best===1){score+=4;hit=true}
   }
   if(hit)matched++;
  }
+ for(const variant of expanded){if(variant===q)continue;if(title.includes(variant)||body.includes(variant)){expandedHit=true;score+=title.includes(variant)?18:7}}
+ if(qt.length>1&&!phraseHit&&!expandedHit&&(qt.some(t=>t.length<3)||matched<qt.length))return 0;
  if(qt.length>1&&matched===qt.length)score+=20;
- for(const variant of expanded){if(variant===q)continue;if(title.includes(variant))score+=18;else if(body.includes(variant))score+=7}
  return score;
 }
 function makeRows(q){
