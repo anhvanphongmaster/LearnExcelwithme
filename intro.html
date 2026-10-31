@@ -183,7 +183,7 @@ html.avp-intro-no-site-chrome body{padding-top:0!important;margin-top:0!importan
   impact:'https://assets.mixkit.co/active_storage/sfx/2908/2908-preview.mp3'
  };
  function prepareAudio(){
-  if(!audio){audio=new Audio(MUSIC_URL);audio.loop=true;audio.preload='auto';audio.volume=.27;audio.playsInline=true;audio.load();audio.addEventListener('error',()=>{soundBtn.textContent='Âm thanh lỗi · Chạm để thử lại';});}
+  if(!audio){audio=new Audio(MUSIC_URL);audio.loop=true;audio.preload='auto';audio.volume=.48;audio.playsInline=true;audio.load();audio.addEventListener('error',()=>{soundBtn.textContent='Âm thanh lỗi · Chạm để thử lại';});}
   return audio;
  }
  function playEffect(name,volume=.38){
@@ -195,7 +195,7 @@ html.avp-intro-no-site-chrome body{padding-top:0!important;margin-top:0!importan
  }
  async function playSound(){
   if(muted)return false;
-  try{const a=prepareAudio();const p=a.play();if(p&&p.then)await p;await new Promise(resolve=>setTimeout(resolve,500));if(a.error||a.paused||a.currentTime<0.08)throw new Error('Audio did not advance');soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';return true;}
+  try{const a=prepareAudio();const p=a.play();if(p&&p.then)await p;if(a.error||a.paused)throw new Error('Audio playback was blocked');soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';return true;}
   catch(err){soundBtn.dataset.state='off';soundBtn.textContent='Chạm để bật âm thanh';return false;}
  }
  function stopSound(){
@@ -235,8 +235,9 @@ html.avp-intro-no-site-chrome body{padding-top:0!important;margin-top:0!importan
   muted=false;
   try{
    const a=prepareAudio();a.currentTime=0;
-   const p=a.play();if(p&&p.then)await p;await new Promise(resolve=>setTimeout(resolve,500));
-   if(a.error||a.paused||a.currentTime<0.08)throw new Error('Audio did not advance');
+   const p=a.play();if(p&&p.then)await p;
+   await new Promise(resolve=>setTimeout(resolve,180));
+   if(a.error||a.paused)throw new Error('Audio playback was blocked');
    soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';
    playEffect('intro',.35);
    button.textContent='Đang phát nhạc · Nhấn để tắt';

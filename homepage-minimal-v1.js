@@ -102,7 +102,7 @@ function setup(){
  '<g transform="translate(258 55)"><circle r="16" fill="#f2a34a" stroke="#fff" stroke-width="4"/><path d="M-4 0h8M0-4v8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></g>'+
  '</svg></span>'+
  '<span class="avp-home-map-footer"><span data-home-map-position>Điểm xuất phát</span><b>Mở bản đồ ↗</b></span></button></div>'+
- '<div class="avp-canonical-visual-wrap"><div class="avp-canonical-illustration"><div class="avp-float-label">Power Query</div><div class="avp-sheet"><small>AVP · DATA</small><div class="avp-bars"><i></i><i></i><i></i><i></i><i></i></div></div><div class="avp-checklist">✓　Dữ liệu<br>✓　Phân tích<br>✓　Báo cáo<br>✓　Tự động hóa</div><div class="avp-person">👨🏻‍💻</div><div class="avp-laptop"><span>▦</span><b>X</b></div><div class="avp-books-stack">Excel　·　Power Query　·　Dashboard</div></div><a class="avp-intro-under-illustration" href="intro.html?v=11"><span aria-hidden="true">▶</span><b>Xem giới thiệu<small>1 phút hiểu về AVP</small></b><i aria-hidden="true">↗</i></a></div></div>';
+ '<div class="avp-canonical-visual-wrap"><div class="avp-canonical-illustration"><div class="avp-float-label">Power Query</div><div class="avp-sheet"><small>AVP · DATA</small><div class="avp-bars"><i></i><i></i><i></i><i></i><i></i></div></div><div class="avp-checklist">✓　Dữ liệu<br>✓　Phân tích<br>✓　Báo cáo<br>✓　Tự động hóa</div><div class="avp-person">👨🏻‍💻</div><div class="avp-laptop"><span>▦</span><b>X</b></div><div class="avp-books-stack">Excel　·　Power Query　·　Dashboard</div></div><a class="avp-intro-under-illustration" href="intro.html?v=12"><span aria-hidden="true">▶</span><b>Xem giới thiệu<small>1 phút hiểu về AVP</small></b><i aria-hidden="true">↗</i></a></div></div>';
  ['#home-ai-intro','#ky-nang-excel','.home-path','#avp-home-ecosystem','#avp-reference-featured','#avp-featured-lessons','.avp-reference-next-steps'].forEach(function(s){document.querySelectorAll(s).forEach(function(n){n.remove();});});
  var discover=el('section','avp-canonical-discover');
  discover.innerHTML='<div class="avp-canonical-section-head"><div><h2>Khám phá ngay</h2><p>Chọn khu vực bạn quan tâm để bắt đầu hành trình.</p></div><a href="tools-center.html">Khám phá tất cả　↗</a></div><div class="avp-canonical-discover-grid"></div>';
@@ -927,7 +927,7 @@ function init(){
  nextAction.disabled=currentIndex<0;
  nextAction.textContent=currentIndex>=0?'Mở chương này →':'Đã hoàn thành';
  nextAction.onclick=function(){if(currentIndex<0)return;closeMap();openChapterPicker();renderChapterLessons(currentIndex);};
- mapCard.querySelector('[data-home-map-position]').textContent=currentIndex>=0?('Tiếp theo: '+nextTitle):'Đã hoàn thành lộ trình';
+ (mapCard&&mapCard.querySelector('[data-home-map-position]'))&&(mapCard.querySelector('[data-home-map-position]').textContent=currentIndex>=0?('Tiếp theo: '+nextTitle):'Đã hoàn thành lộ trình');
  route.innerHTML='';
  chapterList.forEach(function(chapter,i){
   var lessons=chapterLessons[i]||[];
@@ -951,9 +951,30 @@ function init(){
   route.appendChild(card);
  });
 }
- function openMap(){map.hidden=false;document.body.style.overflow='hidden';loadProgressDataScripts(mapRender);mapRender();}
- function closeMap(){map.hidden=true;document.body.style.overflow='';}
- if(mapCard){mapCard.addEventListener('click',openMap);}
+ function openMap(){
+  map.hidden=false;
+  map.style.display='grid';
+  map.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  try{
+   mapRender();
+   loadProgressDataScripts(function(){try{mapRender();}catch(err){showMapError(err);}});
+  }catch(err){showMapError(err);}
+ }
+ function showMapError(err){
+  var route=map.querySelector('[data-map-route]');
+  if(route)route.innerHTML='<div class="avp-map-error">Không tải được tiến độ bản đồ. Bạn vẫn có thể mở danh sách chương từ trang chủ.</div>';
+  var title=map.querySelector('[data-map-next-title]');
+  if(title)title.textContent='Không thể đọc dữ liệu tiến độ lúc này';
+  var detail=map.querySelector('[data-map-next-detail]');
+  if(detail)detail.textContent='Hãy đóng bản đồ và thử mở lại. Lỗi đã được ghi nhận để kiểm tra.';
+  console.error('[AVP learning map]',err);
+ }
+ function closeMap(){map.hidden=true;map.style.display='none';map.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+ document.addEventListener('click',function(e){
+  var card=e.target&&e.target.closest?e.target.closest('[data-open-learning-map]'):null;
+  if(card){e.preventDefault();openMap();}
+ });
  map.querySelector('.avp-map-close').addEventListener('click',closeMap);map.addEventListener('click',function(e){if(e.target===map)closeMap();});
  document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!map.hidden)closeMap();else if(!hub.hidden)closeHub();}});
  window.addEventListener('storage',function(){if(!hub.hidden)renderAll();if(!map.hidden)mapRender();});
