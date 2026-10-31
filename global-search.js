@@ -3,7 +3,7 @@
 if (window.__AVP_GLOBAL_SEARCH_V3__) return;
 window.__AVP_GLOBAL_SEARCH_V3__ = true;
 
-const INDEX_FILES = Array.from({length:8},(_,i)=>'search-index-'+String(i+1).padStart(2,'0')+'.json');
+const INDEX_FILES = Array.from({length:10},(_,i)=>'search-index-'+String(i+1).padStart(2,'0')+'.json');
 const DICTIONARY_URL='search-dictionary.js';
 const RESOURCE_URL='search-resources.json';
 const SUPABASE_URL='https://itnnbyhlpfredaqyhlpr.supabase.co';
