@@ -9,7 +9,7 @@ const style=document.createElement('style');style.textContent=`
 ::view-transition-new(root){animation:avp-page-in .48s cubic-bezier(.16,1,.3,1) both}
 @keyframes avp-page-out{to{opacity:.72;filter:blur(2px)}}
 @keyframes avp-page-in{from{opacity:.72;filter:blur(2px)}to{opacity:1;filter:blur(0)}}
-#avpMapOverlay{position:fixed;inset:0;z-index:2147483000;background:#e9f0e6;opacity:0;visibility:hidden;transform:scale(.94);clip-path:inset(4% 4% 4% 4% round 28px);transition:opacity .42s cubic-bezier(.16,1,.3,1),transform .58s cubic-bezier(.16,1,.3,1),clip-path .58s cubic-bezier(.16,1,.3,1),visibility .58s}
+#avpMapOverlay{position:fixed;inset:0;z-index:2147483000;background:#e9f0e6;opacity:0;visibility:hidden;transform:scale(.94);clip-path:inset(4% 4% 4% 4% round 28px);view-transition-name:avp-map-mini;transition:opacity .42s cubic-bezier(.16,1,.3,1),transform .58s cubic-bezier(.16,1,.3,1),clip-path .58s cubic-bezier(.16,1,.3,1),visibility .58s}
 #avpMapOverlay.open{opacity:1;visibility:visible;transform:scale(1);clip-path:inset(0 round 0)}
 #avpMapOverlay iframe{width:100%;height:100%;border:0;display:block}
 #avpMapClose{position:absolute;right:20px;top:18px;z-index:3;width:44px;height:44px;border:1px solid #cad8c8;border-radius:50%;background:#fffffff0;color:#24422f;font-size:25px;cursor:pointer;box-shadow:0 8px 24px #173a2424}
