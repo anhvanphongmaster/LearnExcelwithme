@@ -577,12 +577,12 @@ document.addEventListener("DOMContentLoaded",function(){
     }
     if(!document.querySelector('link[href*="global-search.css"]')){
       var searchCss=document.createElement('link');
-      searchCss.rel='stylesheet';searchCss.href='global-search.css?v=20261030-header1';
+      searchCss.rel='stylesheet';searchCss.href='global-search.css?v=8';
       document.head.appendChild(searchCss);
     }
     if(!document.querySelector('script[src*="global-search.js"]')){
       var searchScript=document.createElement('script');
-      searchScript.src='global-search.js?v=20261030-header1';
+      searchScript.src='global-search.js?v=8';
       searchScript.dataset.avpGlobalSearch='1';
       document.head.appendChild(searchScript);
     }
