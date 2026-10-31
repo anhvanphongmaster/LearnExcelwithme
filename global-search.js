@@ -59,7 +59,15 @@ async function loadData(){
 function tokens(s){return norm(s).split(/\s+/).filter(Boolean)}
 function buildCatalog(){
  const all=[];
- docs.forEach(d=>all.push({title:d.title,description:d.description||d.content?.slice(0,180)||'Trang nội dung',url:d.url,type:'Trang',icon:'📄',content:d.content||'',keywords:d.title+' '+d.url}));
+ docs.forEach(d=>{
+  let url=d.url||'index.html';
+  if(d.type==='Hàm Excel')url='excel-formula-library.html?q='+encodeURIComponent(d.title||'');
+  else if(d.type==='Phím tắt')url='excel-shortcut-library.html?q='+encodeURIComponent(d.title||'');
+  else if(d.type==='Thư viện kiến thức')url='excel-knowledge-library.html?q='+encodeURIComponent(d.title||'');
+  else if(d.type==='Thư viện dữ liệu')url='excel-data-format-library.html?q='+encodeURIComponent(d.title||'');
+  else if(d.type==='Thư viện Excel')url='excel-dictionary.html?q='+encodeURIComponent(d.title||'');
+  all.push({title:d.title,description:d.description||d.content?.slice(0,180)||'Trang nội dung',url,type:d.type||'Trang',icon:'📄',content:d.content||'',keywords:d.title+' '+d.url});
+ });
  resources.forEach(r=>all.push({title:r.title,description:r.description,url:r.url,type:r.type||'Tài nguyên',icon:'📊',content:r.keywords||''}));
  contentRecords.forEach(r=>all.push({title:r.title,description:r.description||'Nội dung học và dữ liệu thực hành',url:r.url,type:r.type||'Nội dung',icon:'📚',content:r.content||''}));
  dictionary.forEach(d=>all.push({title:d.title,description:d.purpose||d.subtitle||'Thư viện kiến thức Excel',url:'excel-dictionary.html?q='+encodeURIComponent(d.title||''),type:d.type||'Thư viện Excel',icon:'🧮',content:[d.keywords,d.syntax,d.example,d.advanced,d.related,d.causes,d.checks,d.fixes,d.parts].flat(Infinity).join(' ')}));
@@ -102,7 +110,7 @@ async function fetchTools(q){
   for(const group of semantic)if(group.keys.some(k=>n.includes(norm(k))||norm(k).includes(n)))group.terms.forEach(x=>terms.add(x));
   const batches=await Promise.all([...terms].filter(Boolean).slice(0,7).map(term=>fetch(SUPABASE_URL+'/rest/v1/rpc/tool_catalog_v2',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_search:term})}).then(r=>r.ok?r.json():[]).catch(()=>[])));
   const rows=[...new Map(batches.flat().filter(Boolean).map(t=>[String(t.id||t.title),t])).values()];
-  return rows.map(t=>({title:t.title||'Tool',description:[t.application,t.description].filter(Boolean).join(' · '),url:'tools-library.html?search='+encodeURIComponent(t.title||''),type:'Kho Tool',icon:'🧰',content:[t.title,t.application,t.description].join(' '),_score:scoreItem({title:t.title,description:t.description,content:t.application},q,expand(q))+55}));
+  return rows.map(t=>{const item={title:t.title||'Tool',description:[t.application,t.description].filter(Boolean).join(' · '),url:'tools-library.html?search='+encodeURIComponent(t.title||''),type:'Kho Tool',icon:'🧰',content:[t.title,t.application,t.description].join(' ')};const title=norm(item.title),body=norm([item.description,item.content].join(' '));const prepared={...item,_title:title,_body:body,_titleTokens:new Set(tokens(title)),_bodyTokens:new Set(tokens(body))};return {...prepared,_score:scoreItem(prepared,q,expand(q))+55}});
  }catch(_){return []}
 }
 const wrap=document.createElement('div');wrap.className='avp-spotlight-backdrop';wrap.id='avpSpotlightBackdrop';
