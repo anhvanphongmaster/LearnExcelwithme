@@ -577,12 +577,12 @@ document.addEventListener("DOMContentLoaded",function(){
     }
     if(!document.querySelector('link[href*="global-search.css"]')){
       var searchCss=document.createElement('link');
-      searchCss.rel='stylesheet';searchCss.href='global-search.css?v=12';
+      searchCss.rel='stylesheet';searchCss.href='global-search.css?v=20261030-header1';
       document.head.appendChild(searchCss);
     }
     if(!document.querySelector('script[src*="global-search.js"]')){
       var searchScript=document.createElement('script');
-      searchScript.src='global-search.js?v=12';
+      searchScript.src='global-search.js?v=20261030-header1';
       searchScript.dataset.avpGlobalSearch='1';
       document.head.appendChild(searchScript);
     }
@@ -620,20 +620,6 @@ document.addEventListener("DOMContentLoaded",function(){
     search.className="avp-search-trigger";
     search.setAttribute("aria-label","Tìm kiếm toàn website");
     search.innerHTML='<span>Tìm hàm, bài học, công cụ...</span><kbd>Ctrl K</kbd>';
-  }
-  // Always bind after the shared header rebuilds its DOM. The original button
-  // may exist in HTML already, so the old "create-only" handler was skipped.
-  if(!search.dataset.avpSearchBound){
-    search.dataset.avpSearchBound="1";
-    search.addEventListener("click",function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      if(typeof window.openGlobalSearch==="function")window.openGlobalSearch();
-      else{
-        var fallback=document.getElementById("avpSpotlightBackdrop");
-        if(fallback){fallback.classList.add("open");var field=fallback.querySelector("input");if(field)field.focus();}
-      }
-    });
   }
   var theme=nav.querySelector("#themeToggle");
   var toggle=document.createElement("button");
