@@ -36,7 +36,7 @@ function loadAdminChatAssets() {
   }
   if (!document.querySelector('script[data-avp-admin-chat]')) {
     const script = document.createElement('script');
-    script.src = 'admin-chat.js?v=20260830-v45presence';
+    script.src = 'admin-chat.js?v=20261031-chat-open-fix-final2';
     script.defer = true;
     script.dataset.avpAdminChat = '1';
     document.head.appendChild(script);
