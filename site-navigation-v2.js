@@ -35,6 +35,8 @@ function setTheme(mode){
  document.documentElement.classList.toggle("dark-mode",dark);
  document.body.classList.toggle("dark-mode",dark);
  document.documentElement.dataset.avpTheme=dark?"dark":"light";
+ document.documentElement.classList.toggle("avp-theme-dark",dark);
+ document.documentElement.classList.toggle("avp-theme-light",!dark);
  document.documentElement.style.colorScheme=dark?"dark":"light";
  try{localStorage.setItem("theme",dark?"dark":"light")}catch(_){}
  shade.querySelectorAll("[data-avp-theme]").forEach(b=>b.classList.toggle("is-active",b.dataset.avpTheme===mode));
@@ -45,6 +47,8 @@ function setLayout(mode){
  root.dataset.avpDisplayMode=next;
  root.classList.toggle("avp-layout-mobile",next==="mobile");
  root.classList.toggle("avp-layout-desktop",next==="desktop");
+ root.style.removeProperty("width");
+ root.style.removeProperty("zoom");
  try{localStorage.setItem("avp-display-mode",next)}catch(_){}
  shade.querySelectorAll("[data-avp-layout]").forEach(b=>{
    b.classList.toggle("is-active",b.dataset.avpLayout===next);
