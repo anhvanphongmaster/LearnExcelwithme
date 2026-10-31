@@ -48,20 +48,23 @@
     if(loading)return;
     loading=true;
     var s=document.createElement('script');
-    s.src='admin-chat-core-v1.js?v=20261031-chat-open-fix-final2';
-    s.defer=true;s.dataset.avpChatCore='1';
+    s.src='admin-chat-core-v1.js?v=20261031-chat-boot-retry3';
+    s.async=true;s.dataset.avpChatCore='1';
     s.onload=function(){
       loading=false;
-      loaded=!!window.__AVP_ADMIN_CHAT_LOADED__;
-      if(loaded){
-        // Keep the temporary entry point until the real chat panel is mounted.
-        if(openAfterLoad){openAfterLoad=false;openRealChat();}
-      }else{
-        // Keep the entry point available if the core script loaded but failed during initialization.
-        openAfterLoad=false;
-      }
+      // Script download is not initialization. Keep the open request pending
+      // while the core waits for Supabase and mounts the role-specific panel.
+      if(openAfterLoad){openAfterLoad=false;openRealChat();}
+      if(window.__AVP_ADMIN_CHAT_BOOTING__){
+        var checks=0;
+        (function sync(){
+          loaded=!!window.__AVP_ADMIN_CHAT_LOADED__;
+          if(loaded)return;
+          if(window.__AVP_ADMIN_CHAT_BOOTING__&&checks++<320){setTimeout(sync,100);return;}
+        })();
+      }else loaded=!!window.__AVP_ADMIN_CHAT_LOADED__;
     };
-    s.onerror=function(){loading=false;};
+    s.onerror=function(){loading=false;openAfterLoad=false;console.error('[AVP Chat] Không tải được admin-chat-core-v1.js');};
     document.head.appendChild(s);
   }
   // Public entry point used by the robot menu.
