@@ -452,6 +452,25 @@ html.avp-home-canonical .avp-home-map-footer b{
   color:#08734b!important;
   font-weight:850!important;
 }
+
+/* Compact homepage journey card: preserve its full column width. */
+html.avp-home-canonical .avp-home-map-card{
+  min-height:190px!important;
+  padding:15px 20px 12px!important;
+}
+html.avp-home-canonical .avp-home-map-kicker{margin-bottom:4px!important}
+html.avp-home-canonical .avp-home-map-card>strong{margin-bottom:3px!important;font-size:20px!important}
+html.avp-home-canonical .avp-home-map-copy{font-size:12px!important;line-height:1.4!important}
+html.avp-home-canonical .avp-home-map-art{
+  height:58px!important;min-height:58px!important;margin:3px 0 2px!important;
+}
+html.avp-home-canonical .avp-home-map-art svg{max-height:58px!important}
+html.avp-home-canonical .avp-home-map-footer{padding-top:6px!important}
+@media(max-width:760px){
+ html.avp-home-canonical .avp-home-map-card{min-height:180px!important;padding:13px 15px 10px!important}
+ html.avp-home-canonical .avp-home-map-art{height:52px!important;min-height:52px!important}
+ html.avp-home-canonical .avp-home-map-art svg{max-height:52px!important}
+}
 @media(max-width:760px){
  html.avp-home-canonical .avp-canonical-inner.avp-hero-split{
   grid-template-columns:minmax(0,1fr) minmax(300px,.92fr)!important;
