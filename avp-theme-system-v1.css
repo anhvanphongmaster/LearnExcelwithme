@@ -1,0 +1,111 @@
+/* AVP THEME SYSTEM V1
+   Shared color tokens + semantic surface adapters.
+   No global element repainting; charts, illustrations, status badges and module accents are preserved.
+*/
+:root{
+ --avp-theme-page:#f4f7f5;
+ --avp-theme-surface:#ffffff;
+ --avp-theme-surface-2:#f7faf8;
+ --avp-theme-surface-3:#edf3ef;
+ --avp-theme-text:#20372b;
+ --avp-theme-muted:#62746a;
+ --avp-theme-border:#dce6df;
+ --avp-theme-control:#ffffff;
+ --avp-theme-placeholder:#78877f;
+ --avp-theme-link:#176f43;
+ --avp-theme-shadow:0 8px 24px rgba(23,63,41,.07);
+ --avp-theme-overlay:rgba(12,24,17,.56);
+ color-scheme:light;
+}
+html[data-avp-theme="dark"]{
+ color-scheme:dark;
+ --avp-theme-page:#101713;
+ --avp-theme-surface:#19231d;
+ --avp-theme-surface-2:#202d25;
+ --avp-theme-surface-3:#26362c;
+ --avp-theme-text:#edf4ef;
+ --avp-theme-muted:#b6c4bb;
+ --avp-theme-border:#3b4d41;
+ --avp-theme-control:#141e18;
+ --avp-theme-placeholder:#9eafa4;
+ --avp-theme-link:#8cdbab;
+ --avp-theme-shadow:0 12px 30px rgba(0,0,0,.22);
+ --avp-theme-overlay:rgba(0,0,0,.68);
+}
+html[data-avp-theme="dark"] body,
+body.dark-mode{
+ background:var(--avp-theme-page)!important;
+ color:var(--avp-theme-text)!important;
+ color-scheme:dark;
+}
+html[data-avp-theme="light"] body{background:var(--avp-theme-page);color:var(--avp-theme-text);color-scheme:light}
+
+/* Page canvas: only structural page roots, never every section/div. */
+html[data-avp-theme="dark"] body :is(main,.main-shell,.main-content,.page-content,.page-container,.content-wrapper,.workspace,.dashboard-container){
+ color:var(--avp-theme-text);
+}
+
+/* Reusable content surfaces. Explicit exclusions protect semantic/status and branded artwork. */
+html[data-avp-theme="dark"] body :is(
+ .card,[class$="-card"],[class*="-card "],
+ .panel,[class$="-panel"],[class*="-panel "],
+ [class$="-box"],[class*="-box "],
+ .modal-content,.modal-card,.dialog-card,.modal-dialog,
+ .hb-chapter,.kl-modal-card,.ai-prompt-card,.ai-work-card,
+ .home-path-card,.home-more-card,.home-extra-card-v2,
+ .home-reference-v114,.home-extra-panel-v104,
+ .tool-card,.practice-file-card,.skill-level-card,.roadmap-stage
+):not([class*="status"]):not([class*="state"]):not([class*="badge"]):not([class*="notice"]):not([class*="alert"]):not([class*="success"]):not([class*="danger"]):not([class*="warning"]):not([class*="hero"]):not([class*="chart"]):not([class*="art"]):not([class*="icon"]){
+ background-color:var(--avp-theme-surface)!important;
+ border-color:var(--avp-theme-border)!important;
+ color:var(--avp-theme-text)!important;
+ box-shadow:var(--avp-theme-shadow);
+}
+
+/* Copy hierarchy inside content surfaces. Keep explicit button, link and status colors. */
+html[data-avp-theme="dark"] body :is(
+ .card,[class$="-card"],[class*="-card "],
+ .panel,[class$="-panel"],[class*="-panel "],
+ [class$="-box"],[class*="-box "],
+ .modal-content,.modal-card,.dialog-card,.modal-dialog,
+ .hb-chapter,.kl-modal-card,.ai-prompt-card,.ai-work-card,
+ .home-path-card,.home-more-card,.home-extra-card-v2,
+ .home-reference-v114,.home-extra-panel-v104,
+ .tool-card,.practice-file-card,.skill-level-card,.roadmap-stage
+):not([class*="status"]):not([class*="state"]):not([class*="badge"]):not([class*="notice"]):not([class*="alert"]):not([class*="success"]):not([class*="danger"]):not([class*="warning"]):not([class*="hero"]):not([class*="chart"]):not([class*="art"]) :is(h1,h2,h3,h4,h5,h6,p,li,small,label,td,th,dt,dd,figcaption){
+ color:var(--avp-theme-text)!important;
+}
+html[data-avp-theme="dark"] body :is(.muted,.text-muted,.subtitle,.description,.helper-text,.hint,.meta,.eyebrow,.kicker){
+ color:var(--avp-theme-muted)!important;
+}
+
+/* Tables and form controls. */
+html[data-avp-theme="dark"] body :is(table,thead,tbody,tr,td,th){border-color:var(--avp-theme-border)}
+html[data-avp-theme="dark"] body :is(thead,th){background-color:var(--avp-theme-surface-2);color:var(--avp-theme-text)}
+html[data-avp-theme="dark"] body :is(tbody tr){background-color:var(--avp-theme-surface)}
+html[data-avp-theme="dark"] body :is(tbody tr:nth-child(even)){background-color:var(--avp-theme-surface-2)}
+html[data-avp-theme="dark"] body :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]),select,textarea){
+ background-color:var(--avp-theme-control)!important;color:var(--avp-theme-text)!important;border-color:var(--avp-theme-border)!important;
+}
+html[data-avp-theme="dark"] body :is(input,textarea)::placeholder{color:var(--avp-theme-placeholder)!important;opacity:1}
+html[data-avp-theme="dark"] body :is(dialog,pre,code){background-color:var(--avp-theme-surface-2);color:var(--avp-theme-text);border-color:var(--avp-theme-border)}
+html[data-avp-theme="dark"] body a:not([class*="btn"]):not([class*="button"]):not(.avp-nav-v2-link){color:var(--avp-theme-link)}
+
+/* Dialogs used by the learning chapter flow. Do not tint their backdrop or artwork. */
+html[data-avp-theme="dark"] body :is(.hb-lightbox,.kl-modal,.avp-codehub-modal,.avp-ui-modal){color:var(--avp-theme-text)}
+html[data-avp-theme="dark"] body :is(.hb-lightbox,.kl-modal,.avp-codehub-modal,.avp-ui-modal) :is(.hb-chapter,.kl-modal-card,.avp-codehub-dialog,.avp-ui-modal-card){
+ background:var(--avp-theme-surface)!important;color:var(--avp-theme-text)!important;border-color:var(--avp-theme-border)!important;
+}
+html[data-avp-theme="dark"] body :is(.hb-lightbox,.kl-modal,.avp-codehub-modal,.avp-ui-modal) :is(h1,h2,h3,h4,h5,h6,p,li,small,label){color:var(--avp-theme-text)}
+html[data-avp-theme="dark"] body :is(.hb-lightbox,.kl-modal,.avp-codehub-modal,.avp-ui-modal) :is(.muted,.description,.subtitle){color:var(--avp-theme-muted)}
+
+/* Keep primary actions, semantic colors, charts, illustrations and images in their own palettes. */
+html[data-avp-theme="dark"] body :is(button,.btn,[role="button"]):not([class*="secondary"]):not([class*="ghost"]){color:inherit}
+html[data-avp-theme="dark"] body :is(.primary,.btn-primary,.avp-ds-button--primary,.tool-btn,.arena-primary,.tl-download){color:#fff!important}
+html[data-avp-theme="dark"] body :is(.avp-nav-v2-trigger,.avp-nav-v2-drawer){color:var(--avp-theme-text)}
+html[data-avp-theme="dark"] body :is(.avp-nav-v2-drawer,.avp-nav-v2-search,.avp-nav-v2-account,.avp-nav-v2-close){background:var(--avp-theme-surface)!important;border-color:var(--avp-theme-border)!important;color:var(--avp-theme-text)!important}
+html[data-avp-theme="dark"] body :is(.avp-nav-v2-link){color:var(--avp-theme-muted)!important}
+html[data-avp-theme="dark"] body :is(.avp-nav-v2-link:hover,.avp-nav-v2-link[aria-current="page"]){background:var(--avp-theme-surface-2)!important;color:var(--avp-theme-link)!important}
+
+/* Motion is not required for theme changes. */
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

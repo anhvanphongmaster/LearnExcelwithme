@@ -550,10 +550,11 @@ document.addEventListener("DOMContentLoaded",function(){
     var el=document.createElement(tag);
     if(tag==="link"){el.rel="stylesheet";el.href=src;}
     else{el.src=src;el.defer=true;}
-    el.dataset.avpSiteNavigationV2="1";
+    var attr=selector.indexOf("[")>=0?selector.slice(selector.indexOf("[")+1,selector.indexOf("]")):"";if(attr)el.setAttribute(attr,"1");
     (document.head||document.documentElement).appendChild(el);
   }
-  loadAsset("link",'link[data-avp-global-preferences-css]',"avp-global-preferences-v1.css?v=20261031-5");
-  loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261031-10");
-  loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261031-10");
+  loadAsset("link",'link[data-avp-theme-system-css]',"avp-theme-system-v1.css?v=20261031-3");
+  loadAsset("link",'link[data-avp-global-preferences-css]',"avp-global-preferences-v1.css?v=20261031-6");
+  loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261031-12");
+  loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261031-12");
 })();

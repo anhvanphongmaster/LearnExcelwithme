@@ -34,10 +34,19 @@ body.dark-mode .avp-nav-v2-segment button{color:#c7d9cd}
 body.dark-mode .avp-nav-v2-segment button.is-active{background:#16784b;color:#fff}
 body.dark-mode .avp-nav-v2-shade{background:rgba(0,0,0,.32)}
 
-html[data-avp-display-mode="mobile"] body{min-width:0!important;width:100%!important}
-html[data-avp-display-mode="mobile"] .avp-nav-v2-drawer{width:min(330px,88vw)}
-html[data-avp-display-mode="desktop"] .avp-nav-v2-drawer{width:310px}
 @media(max-width:700px){
  .avp-nav-v2-items{min-height:100px!important}
  .avp-nav-v2-link{min-height:40px!important}
 }
+
+/* Theme selector shares the same compact segmented-control system as layout. */
+.avp-nav-v2-settings [data-avp-theme].is-active{background:#16784b;color:#fff;box-shadow:0 2px 7px #0b583722}
+body.dark-mode .avp-nav-v2-settings [data-avp-theme]{color:#c7d9cd}
+body.dark-mode .avp-nav-v2-settings [data-avp-theme].is-active{background:#16784b;color:#fff}
+
+/* Always-visible theme switch, independent of the navigation drawer. */
+.avp-theme-float{position:fixed;z-index:13021;top:18px;right:18px;width:48px;height:48px;display:grid;place-items:center;border:1px solid #dce8df;border-radius:15px;background:rgba(255,255,255,.96);color:#176f47;box-shadow:0 8px 26px #153e2a1a;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font:700 23px/1 system-ui,sans-serif;cursor:pointer}
+.avp-theme-float:hover{transform:translateY(-1px);box-shadow:0 10px 30px #153e2a24}
+body.dark-mode .avp-theme-float{background:rgba(25,37,29,.97);border-color:#405648;color:#f2d58b}
+@media(max-width:600px){.avp-theme-float{top:12px;right:12px;width:44px;height:44px;border-radius:14px}}
+@media(prefers-reduced-motion:reduce){.avp-theme-float{transition:none}}

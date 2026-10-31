@@ -19,8 +19,14 @@ const groups=[
 ["TRỢ GIÚP",[["#chat-ai","Chat AI","ai","ai-action"],["#chat-admin","Chat với Admin","chat","action"]]]
 ];
 const trigger=document.createElement("button");trigger.className="avp-nav-v2-trigger";trigger.type="button";trigger.setAttribute("aria-label","Mở menu điều hướng");trigger.setAttribute("aria-expanded","false");trigger.innerHTML='<span></span><span></span><span></span>';
-const shade=document.createElement("div");shade.className="avp-nav-v2-shade";shade.innerHTML='<aside class="avp-nav-v2-drawer" role="dialog" aria-modal="true" aria-label="Điều hướng website"><div class="avp-nav-v2-head"><a href="index.html" class="avp-nav-v2-brand"><img src="avp-logo.svg" alt=""><span><b>Anh Văn Phòng</b><small>LEARN EXCEL WITH ME</small></span></a><button class="avp-nav-v2-close" aria-label="Đóng menu" type="button">'+ico("close")+'</button></div><button class="avp-nav-v2-search" type="button">'+ico("search")+'<span>Tìm bài học, công cụ, công thức...</span><kbd>⌘ K</kbd></button><div class="avp-nav-v2-items" role="navigation" aria-label="Các khu vực website"></div><div class="avp-nav-v2-foot"><a class="avp-nav-v2-account" href="auth.html?tab=login">'+ico("user")+'<span class="auth-nav-slot">Tài khoản / Đăng nhập</span></a><div class="avp-nav-v2-settings"><div class="avp-nav-v2-setting-label">BỐ CỤC</div><div class="avp-nav-v2-segment" role="group" aria-label="Chế độ thiết bị"><button type="button" data-avp-layout="mobile">Mobile</button><button type="button" data-avp-layout="desktop">Desktop</button></div></div></div></aside>';
-document.body.append(trigger,shade);
+const shade=document.createElement("div");shade.className="avp-nav-v2-shade";shade.innerHTML='<aside class="avp-nav-v2-drawer" role="dialog" aria-modal="true" aria-label="Điều hướng website"><div class="avp-nav-v2-head"><a href="index.html" class="avp-nav-v2-brand"><img src="avp-logo.svg" alt=""><span><b>Anh Văn Phòng</b><small>LEARN EXCEL WITH ME</small></span></a><button class="avp-nav-v2-close" aria-label="Đóng menu" type="button">'+ico("close")+'</button></div><button class="avp-nav-v2-search" type="button">'+ico("search")+'<span>Tìm bài học, công cụ, công thức...</span><kbd>⌘ K</kbd></button><div class="avp-nav-v2-items" role="navigation" aria-label="Các khu vực website"></div><div class="avp-nav-v2-foot"><a class="avp-nav-v2-account" href="auth.html?tab=login">'+ico("user")+'<span class="auth-nav-slot">Tài khoản / Đăng nhập</span></a><div class="avp-nav-v2-settings"><div class="avp-nav-v2-setting-label">GIAO DIỆN</div><div class="avp-nav-v2-segment" role="group" aria-label="Chế độ sáng tối"><button type="button" data-avp-theme="light">Sáng</button><button type="button" data-avp-theme="dark">Tối</button></div></div></div></aside>';
+const themeButton=document.createElement("button");
+themeButton.className="avp-theme-float";
+themeButton.type="button";
+themeButton.setAttribute("aria-label","Chuyển giao diện sáng tối");
+themeButton.setAttribute("title","Chuyển giao diện sáng tối");
+themeButton.innerHTML='<span aria-hidden="true">◐</span>';
+document.body.append(trigger,shade,themeButton);
 const drawer=shade.querySelector("aside"),nav=shade.querySelector(".avp-nav-v2-items");
 groups.forEach(([label,items])=>{const section=document.createElement("section");section.className="avp-nav-v2-group";const h=document.createElement("div");h.className="avp-nav-v2-label";h.textContent=label;section.append(h);items.forEach(([href,name,iconName,type])=>{const el=document.createElement(type==="action"||type==="ai-action"?"button":"a");el.className="avp-nav-v2-link";if(type==="action"||type==="ai-action"){el.type="button";el.dataset.navAction=type==="ai-action"?"chat-ai":"chat-admin";}else{el.href=href;if(page===href)el.setAttribute("aria-current","page");}el.innerHTML='<span class="avp-nav-v2-icon">'+ico(iconName)+'</span><span class="avp-nav-v2-text">'+name+'</span>'+(type==="action"?'<b class="avp-nav-v2-unread" hidden></b>':'');section.append(el)});nav.append(section)});
 if(legacyAuth&&legacyAuth!==shade.querySelector(".auth-nav-slot"))shade.querySelector(".auth-nav-slot").replaceWith(legacyAuth);
@@ -30,29 +36,27 @@ function close(){shade.classList.remove("is-open");trigger.setAttribute("aria-ex
 trigger.addEventListener("click",()=>shade.classList.contains("is-open")?close():open());shade.querySelector(".avp-nav-v2-close").addEventListener("click",close);shade.addEventListener("click",e=>{if(e.target===shade)close()});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&shade.classList.contains("is-open"))close()});
 shade.querySelectorAll("a").forEach(a=>a.addEventListener("click",close));
 shade.querySelector(".avp-nav-v2-search").addEventListener("click",()=>{close();if(window.openGlobalSearch){window.openGlobalSearch();return}const s=document.createElement("script");s.src="global-search.js?v=20261031-nav2";s.onload=()=>window.openGlobalSearch?.();document.head.append(s)});
-function setLayout(mode){
- const next=mode==="mobile"?"mobile":"desktop";
+function setTheme(mode){
+ const next=mode==="dark"?"dark":"light";
  const root=document.documentElement;
- root.dataset.avpDisplayMode=next;
- root.classList.toggle("avp-layout-mobile",next==="mobile");
- root.classList.toggle("avp-layout-desktop",next==="desktop");
- root.style.removeProperty("width");
- root.style.removeProperty("zoom");
- try{localStorage.setItem("avp-display-mode",next)}catch(_){}
- shade.querySelectorAll("[data-avp-layout]").forEach(b=>{
-   b.classList.toggle("is-active",b.dataset.avpLayout===next);
-   b.setAttribute("aria-pressed",String(b.dataset.avpLayout===next));
+ root.dataset.avpTheme=next;
+ root.classList.toggle("avp-theme-dark",next==="dark");
+ root.classList.toggle("avp-theme-light",next==="light");
+ document.body?.classList.toggle("dark-mode",next==="dark");
+ try{localStorage.setItem("theme",next)}catch(_){}
+ shade.querySelectorAll("[data-avp-theme]").forEach(b=>{
+  const active=b.dataset.avpTheme===next;
+  b.classList.toggle("is-active",active);
+  b.setAttribute("aria-pressed",String(active));
  });
- window.dispatchEvent(new CustomEvent("avp:display-mode-change",{detail:{mode:next}}));
+ if(typeof themeButton!=="undefined"){themeButton.innerHTML=next==="dark"?'<span aria-hidden="true">☀</span>':'<span aria-hidden="true">◐</span>';themeButton.setAttribute("aria-label",next==="dark"?"Chuyển sang giao diện sáng":"Chuyển sang giao diện tối");themeButton.setAttribute("title",next==="dark"?"Chuyển sang giao diện sáng":"Chuyển sang giao diện tối");}
+ window.dispatchEvent(new CustomEvent("avp:theme-change",{detail:{theme:next}}));
 }
-let initialLayout=(window.matchMedia&&window.matchMedia("(max-width: 700px)").matches)?"mobile":"desktop";
-try{const savedLayout=localStorage.getItem("avp-display-mode");if(savedLayout==="mobile"||savedLayout==="desktop")initialLayout=savedLayout}catch(_){}
-setLayout(initialLayout);
-shade.querySelectorAll("[data-avp-layout]").forEach(b=>b.addEventListener("click",()=>{
- const requested=b.getAttribute("data-avp-layout");
- if(requested!=="mobile"&&requested!=="desktop")return;
- setLayout(requested);
-}));
+let initialTheme="light";
+try{initialTheme=localStorage.getItem("theme")==="dark"?"dark":"light"}catch(_){}
+setTheme(initialTheme);
+shade.querySelectorAll("[data-avp-theme]").forEach(b=>b.addEventListener("click",()=>setTheme(b.dataset.avpTheme)));
+themeButton.addEventListener("click",()=>setTheme(document.documentElement.dataset.avpTheme==="dark"?"light":"dark"));
 async function openAdminChat(){close();if(window.AVPAdminChatOpen){window.AVPAdminChatOpen();return}let s=document.querySelector('script[src*="admin-chat.js"]');if(!s){s=document.createElement("script");s.src="admin-chat.js?v=20261031-nav2";s.async=true;document.head.append(s)}for(let i=0;i<120&&!window.AVPAdminChatOpen;i++)await new Promise(r=>setTimeout(r,100));if(window.AVPAdminChatOpen)window.AVPAdminChatOpen();else window.dispatchEvent(new CustomEvent("avp:admin-chat-request-open"))}
 shade.querySelector('[data-nav-action="chat-admin"]').addEventListener("click",openAdminChat);
 async function openAiChat(){
