@@ -646,7 +646,7 @@
       let loader=document.querySelector('script[data-avp-admin-chat]');
       if(!loader){
         loader=document.createElement('script');
-        loader.src='admin-chat.js?v=20261031-chat-boot-retry3';
+        loader.src='admin-chat.js?v=20261031-chat-consistency1';
         loader.defer=true;
         loader.dataset.avpAdminChat='1';
         document.head.appendChild(loader);
