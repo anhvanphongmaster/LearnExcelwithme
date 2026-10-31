@@ -61,5 +61,5 @@
 (()=>{const input=document.getElementById('wbSearch'),items=[...document.querySelectorAll('.wb-item')],groups=[...document.querySelectorAll('[data-group]')],count=document.getElementById('wbCount');function apply(){const q=input.value.trim().toLocaleLowerCase('vi');let shown=0;items.forEach(a=>{const ok=!q||a.textContent.toLocaleLowerCase('vi').includes(q);a.hidden=!ok;if(ok)shown++});groups.forEach(g=>g.hidden=!g.querySelector('.wb-item:not([hidden])'));count.textContent='Đang hiển thị '+shown+' workbook';}input.addEventListener('input',apply);apply();})();
 </script>
 <script defer src="global-search.js?v=20261031-search-index5"></script>
-<script defer src="simple-nav.js?v=20261031-search-tapfix1"></script>
+<script defer src="simple-nav.js?v=20261031-search-index5"></script>
 </body></html>
