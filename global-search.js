@@ -35,7 +35,7 @@ function distance(a,b){
  }
  return prev[b.length];
 }
-let docs=[],resources=[],dictionary=[],tools=[],loaded=false,loading=null;
+let docs=[],resources=[],dictionary=[],contentRecords=[],tools=[],loaded=false,loading=null;
 async function loadData(){
  if(loaded)return;
  if(loading)return loading;
@@ -44,6 +44,7 @@ async function loadData(){
   docs=parts.flatMap(x=>Array.isArray(x.documents)?x.documents:[]);
   try{const deep=await fetch('search-deep-index.json',{cache:'force-cache'});if(deep.ok){const j=await deep.json();if(Array.isArray(j.documents))docs.push(...j.documents)}}catch(_){}
   try{const r=await fetch(RESOURCE_URL,{cache:'force-cache'});if(r.ok){const j=await r.json();resources=Array.isArray(j.resources)?j.resources:[]}}catch(_){}
+  try{const r=await fetch('search-content-data.json',{cache:'force-cache'});if(r.ok){const j=await r.json();contentRecords=Array.isArray(j.records)?j.records:[]}}catch(_){}
   try{
    if(!window.AVP_EXCEL_DICTIONARY){
     await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=DICTIONARY_URL;s.onload=resolve;s.onerror=reject;document.head.appendChild(s)});
@@ -80,7 +81,8 @@ function makeRows(q){
  const variants=expand(q),all=[];
  docs.forEach(d=>all.push({title:d.title,description:d.description||d.content?.slice(0,180)||'Trang nội dung',url:d.url,type:'Trang',icon:'📄',content:d.content||'',keywords:d.title+' '+d.url}));
  resources.forEach(r=>all.push({title:r.title,description:r.description,url:r.url,type:r.type||'Tài nguyên',icon:'📊',content:r.keywords||''}));
- dictionary.forEach(d=>all.push({title:d.title,description:d.purpose||d.subtitle||'Thư viện kiến thức Excel',url:'excel-library.html#'+encodeURIComponent(d.id||''),type:d.type||'Thư viện Excel',icon:'🧮',content:[d.keywords,d.syntax,d.example,d.advanced,d.related,d.causes,d.checks,d.fixes,d.parts].flat(Infinity).join(' ')}));
+ contentRecords.forEach(r=>all.push({title:r.title,description:r.description||'Nội dung học và dữ liệu thực hành',url:r.url,type:r.type||'Nội dung',icon:'📚',content:r.content||''}));
+ dictionary.forEach(d=>all.push({title:d.title,description:d.purpose||d.subtitle||'Thư viện kiến thức Excel',url:'excel-formula-library.html#'+encodeURIComponent(d.id||''),type:d.type||'Thư viện Excel',icon:'🧮',content:[d.keywords,d.syntax,d.example,d.advanced,d.related,d.causes,d.checks,d.fixes,d.parts].flat(Infinity).join(' ')}));
  return all.map(x=>({...x,_score:scoreItem(x,q,variants)})).filter(x=>x._score>0).sort((a,b)=>b._score-a._score);
 }
 async function fetchTools(q){
