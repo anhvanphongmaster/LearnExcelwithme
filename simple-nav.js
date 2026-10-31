@@ -615,11 +615,36 @@ document.addEventListener("DOMContentLoaded",function(){
     search.className="avp-search-trigger";
     search.setAttribute("aria-label","Tìm kiếm toàn website");
     search.innerHTML='<span>Tìm hàm, bài học, công cụ...</span><kbd>Ctrl K</kbd>';
-    search.addEventListener("click",function(){if(window.openGlobalSearch)window.openGlobalSearch();});
   }else{
     search.className="avp-search-trigger";
     search.setAttribute("aria-label","Tìm kiếm toàn website");
     search.innerHTML='<span>Tìm hàm, bài học, công cụ...</span><kbd>Ctrl K</kbd>';
+  }
+  /* Reliable search activation: handle taps even if the search bundle is still loading. */
+  if(!document.__avpSearchTapBound){
+    document.__avpSearchTapBound=true;
+    document.addEventListener("click",function(e){
+      var trigger=e.target&&e.target.closest?e.target.closest("#avpSearchTrigger"):null;
+      if(!trigger)return;
+      if(typeof window.openGlobalSearch==="function"){
+        window.openGlobalSearch();
+        return;
+      }
+      e.preventDefault();
+      var script=document.querySelector('script[src*="global-search.js"]');
+      if(!script){
+        script=document.createElement("script");
+        script.src="global-search.js?v=20261031-search-tapfix1";
+        script.async=true;
+        document.head.appendChild(script);
+      }
+      var openWhenReady=function(){
+        if(typeof window.openGlobalSearch==="function")window.openGlobalSearch();
+      };
+      script.addEventListener("load",openWhenReady,{once:true});
+      if(script.dataset.avpSearchLoaded==="1")openWhenReady();
+      script.addEventListener("load",function(){script.dataset.avpSearchLoaded="1"},{once:true});
+    },true);
   }
   var theme=nav.querySelector("#themeToggle");
   var toggle=document.createElement("button");
