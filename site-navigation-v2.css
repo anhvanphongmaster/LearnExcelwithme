@@ -18,3 +18,26 @@ body{padding-top:0!important}
 body.dark-mode .avp-nav-v2-drawer{background:rgba(18,28,22,.98);color:#e7f2eb}body.dark-mode .avp-nav-v2-head,body.dark-mode .avp-nav-v2-foot{border-color:#304237}body.dark-mode .avp-nav-v2-close,body.dark-mode .avp-nav-v2-theme{background:#1e2d24;border-color:#34483b;color:#d9e9df}body.dark-mode .avp-nav-v2-search,body.dark-mode .avp-nav-v2-account{background:#1c2b22;border-color:#34483b;color:#d4e8da}body.dark-mode .avp-nav-v2-link{color:#d1e4d7}body.dark-mode .avp-nav-v2-link:hover,body.dark-mode .avp-nav-v2-link[aria-current=page]{background:#244331;color:#8ce0ad}
 @media(max-width:600px){.avp-nav-v2-trigger{top:12px;left:12px;width:44px;height:44px}.avp-nav-v2-drawer{width:min(330px,88vw);padding:17px 14px}.avp-nav-v2-shade{backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}}
 @media(prefers-reduced-motion:reduce){.avp-nav-v2-shade,.avp-nav-v2-drawer,.avp-nav-v2-trigger span{transition:none}}
+/* V2 hardening: isolate the menu list from legacy global nav selectors. */
+.avp-nav-v2-items{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;visibility:visible!important;opacity:1!important;min-height:120px!important;width:100%!important;overflow-y:auto!important;overflow-x:hidden!important;position:relative!important}
+.avp-nav-v2-group{display:block!important;flex:0 0 auto!important;visibility:visible!important;opacity:1!important;width:100%!important}
+.avp-nav-v2-label{display:block!important}
+.avp-nav-v2-link{display:flex!important;visibility:visible!important;opacity:1!important}
+.avp-nav-v2-settings{display:grid;gap:7px;padding:5px 2px 0}
+.avp-nav-v2-setting-label{font-size:9px;font-weight:850;letter-spacing:.12em;color:#89988f;margin-top:3px}
+.avp-nav-v2-segment{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:3px;border:1px solid #dce8df;border-radius:11px;background:#f2f7f3}
+.avp-nav-v2-segment button{min-height:34px;border:0;border-radius:8px;background:transparent;color:#50665a;font:700 11px system-ui,sans-serif;cursor:pointer}
+.avp-nav-v2-segment button.is-active{background:#16784b;color:white;box-shadow:0 2px 7px #0b583722}
+body.dark-mode .avp-nav-v2-settings .avp-nav-v2-setting-label{color:#a0b6a8}
+body.dark-mode .avp-nav-v2-segment{background:#1b2b21;border-color:#354b3d}
+body.dark-mode .avp-nav-v2-segment button{color:#c7d9cd}
+body.dark-mode .avp-nav-v2-segment button.is-active{background:#16784b;color:#fff}
+body.dark-mode .avp-nav-v2-shade{background:rgba(0,0,0,.32)}
+html[data-avp-display-mode="desktop"] body{min-width:1100px}
+html[data-avp-display-mode="mobile"] body{min-width:0!important;width:100%!important}
+html[data-avp-display-mode="mobile"] .avp-nav-v2-drawer{width:min(330px,88vw)}
+html[data-avp-display-mode="desktop"] .avp-nav-v2-drawer{width:310px}
+@media(max-width:700px){
+ .avp-nav-v2-items{min-height:100px!important}
+ .avp-nav-v2-link{min-height:40px!important}
+}
