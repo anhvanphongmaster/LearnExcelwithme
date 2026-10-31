@@ -6,6 +6,8 @@ window.__AVP_GLOBAL_SEARCH_V3__ = true;
 const INDEX_FILES = ['search-index-10.json'];
 const DICTIONARY_URL='search-dictionary.js';
 const RESOURCE_URL='search-resources.json';
+const SUPABASE_URL='https://itnnbyhlpfredaqyhlpr.supabase.co';
+const SUPABASE_KEY='sb_publishable_MiK_gkzfQUwPn3_-TYZESg_FxuWYTV5';
 const $=id=>document.getElementById(id);
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[đĐ]/g,'d').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -120,6 +122,23 @@ function makeRows(q){
   return {...x,_score:score};
  }).filter(x=>x._score>0).sort((a,b)=>b._score-a._score);
 }
+
+async function fetchTools(q){
+ try{
+  const n=norm(q),terms=new Set([String(q||'').trim()]);
+  const semantic=[
+   {keys:['cong no','phai thu','phai tra','no khach hang','no nha cung cap','thanh toan','qua han'],terms:['công nợ','Quản Lý Công Nợ Tự Động','phải thu','phải trả','thanh toán','quá hạn']},
+   {keys:['doi soat','so sanh','chenh lech','compare file','compare 2 files'],terms:['đối soát','so sánh file','Compare 2 Files Pro','chênh lệch']},
+   {keys:['xoa dong trong','dong rong','blank rows','clean data','lam sach du lieu'],terms:['làm sạch dữ liệu','ô trống','dòng trống','Excel Data Cleaner Pro']},
+   {keys:['power query gop file','gop file','combine files'],terms:['Power Query','gộp file','kết hợp nhiều file']}
+  ];
+  for(const group of semantic)if(group.keys.some(k=>n.includes(norm(k))||norm(k).includes(n)))group.terms.forEach(x=>terms.add(x));
+  const batches=await Promise.all([...terms].filter(Boolean).slice(0,7).map(term=>fetch(SUPABASE_URL+'/rest/v1/rpc/tool_catalog_v2',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_search:term})}).then(r=>r.ok?r.json():[]).catch(()=>[])));
+  const rows=[...new Map(batches.flat().filter(Boolean).map(t=>[String(t.id||t.title),t])).values()];
+  return rows.map(t=>{const item={title:t.title||'Tool',description:[t.application,t.description].filter(Boolean).join(' · '),url:'tools-library.html?search='+encodeURIComponent(t.title||''),type:'Kho Tool',icon:'🧰',content:[t.title,t.application,t.description].join(' ')};const title=norm(item.title),body=norm([item.description,item.content].join(' '));const prepared={...item,_title:title,_body:body,_titleTokens:new Set(tokens(title)),_bodyTokens:new Set(tokens(body))};return {...prepared,_score:scoreItem(prepared,q,expand(q))+55}});
+ }catch(_){return []}
+}
+
 const wrap=document.createElement('div');wrap.className='avp-spotlight-backdrop';wrap.id='avpSpotlightBackdrop';
 wrap.innerHTML='<div class="avp-spotlight" role="dialog" aria-modal="true" aria-label="Tìm tài liệu học tập"><div class="avp-spotlight-head"><span class="icon">⌕</span><input id="avpSpotlightInput" class="avp-spotlight-input" type="search" autocomplete="off" placeholder="Tìm file, bài học, công thức, phím tắt Excel..."><span class="avp-esc">ESC</span></div><div class="avp-search-meta"><span id="avpSearchLabel">Tìm tài liệu học tập</span><span id="avpSearchCount"></span></div><div class="avp-search-results" id="avpSearchResults"></div><div class="avp-search-footer"><span><kbd>↑</kbd> <kbd>↓</kbd> di chuyển</span><span><kbd>Enter</kbd> mở</span><span><kbd>Esc</kbd> đóng</span></div></div>';
 (document.body||document.documentElement).appendChild(wrap);
@@ -144,10 +163,16 @@ function renderVisible(){
 }
 function setActive(i){const els=[...results.querySelectorAll('.avp-search-result')];if(!els.length)return;active=(i+els.length)%els.length;els.forEach((el,n)=>el.classList.toggle('active',n===active));els[active].scrollIntoView({block:'nearest'})}
 async function search(q){
-  const id=++requestId;
-  if(!q.trim()){draw([],q);return}
-  await loadData();if(id!==requestId)return;
-  draw(makeRows(q),q,false);
+ const id=++requestId;
+ if(!q.trim()){draw([],q);return}
+ await loadData();if(id!==requestId)return;
+ const local=makeRows(q);
+ draw(local,q,true);
+ const remote=await fetchTools(q);
+ if(id!==requestId)return;
+ const merged=[...remote,...local].sort((a,b)=>b._score-a._score);
+ const unique=merged.filter((x,i)=>merged.findIndex(y=>y.title===x.title&&y.url===x.url)===i);
+ draw(unique,q,false);
 }
 function open(){
  if(wrap.classList.contains('open'))return;
