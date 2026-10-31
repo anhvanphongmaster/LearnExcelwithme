@@ -93,7 +93,7 @@ function scoreItem(item,query,expanded){
   }
   if(hit)matched++;
  }
- for(const variant of expanded){if(variant===q)continue;if(title.includes(variant)||body.includes(variant)){expandedHit=true;score+=title.includes(variant)?18:7}}
+ for(const variant of expanded){if(variant===q)continue;if(title.includes(variant)||body.includes(variant)){expandedHit=true;score+=title.includes(variant)?60:30}}
  if(qt.length>1&&!phraseHit&&!expandedHit&&(qt.some(t=>t.length<3)||matched<qt.length))return 0;
  if(qt.length>1&&matched===qt.length)score+=20;
  return score;
