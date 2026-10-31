@@ -34,14 +34,19 @@ function setTheme(mode){
  const dark=mode==="dark";
  document.documentElement.classList.toggle("dark-mode",dark);
  document.body.classList.toggle("dark-mode",dark);
+ document.documentElement.dataset.avpTheme=dark?"dark":"light";
+ document.documentElement.style.colorScheme=dark?"dark":"light";
  try{localStorage.setItem("theme",dark?"dark":"light")}catch(_){}
  shade.querySelectorAll("[data-avp-theme]").forEach(b=>b.classList.toggle("is-active",b.dataset.avpTheme===mode));
 }
 function setLayout(mode){
  const next=mode==="mobile"?"mobile":"desktop";
  document.documentElement.dataset.avpDisplayMode=next;
+ const viewport=document.querySelector('meta[name="viewport"]');
+ if(viewport)viewport.setAttribute("content",next==="desktop"?"width=1200, initial-scale=0.32, minimum-scale=0.1, maximum-scale=2, user-scalable=yes":"width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes");
  try{localStorage.setItem("avp-display-mode",next)}catch(_){}
  shade.querySelectorAll("[data-avp-layout]").forEach(b=>b.classList.toggle("is-active",b.dataset.avpLayout===next));
+ window.dispatchEvent(new CustomEvent("avp:display-mode-change",{detail:{mode:next}}));
 }
 let initialTheme="light",initialLayout=(window.matchMedia&&window.matchMedia("(max-width: 700px)").matches)?"mobile":"desktop";
 try{initialTheme=localStorage.getItem("theme")==="dark"?"dark":"light";const savedLayout=localStorage.getItem("avp-display-mode");if(savedLayout==="mobile"||savedLayout==="desktop")initialLayout=savedLayout}catch(_){}
