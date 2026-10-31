@@ -42,6 +42,7 @@ async function loadData(){
  loading=(async()=>{
   const parts=await Promise.all(INDEX_FILES.map(async file=>{try{const r=await fetch(file,{cache:'force-cache'});if(!r.ok)throw Error(file);return await r.json()}catch(_){return {documents:[]}}}));
   docs=parts.flatMap(x=>Array.isArray(x.documents)?x.documents:[]);
+  try{const deep=await fetch('search-deep-index.json',{cache:'force-cache'});if(deep.ok){const j=await deep.json();if(Array.isArray(j.documents))docs.push(...j.documents)}}catch(_){}
   try{const r=await fetch(RESOURCE_URL,{cache:'force-cache'});if(r.ok){const j=await r.json();resources=Array.isArray(j.resources)?j.resources:[]}}catch(_){}
   try{
    if(!window.AVP_EXCEL_DICTIONARY){
