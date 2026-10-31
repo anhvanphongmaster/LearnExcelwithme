@@ -347,3 +347,121 @@ html.avp-home-canonical .avp-canonical-illustration .avp-checklist{translate:cal
 html.avp-home-canonical .avp-canonical-illustration .avp-person{translate:calc(var(--avp-scene-x,0px)*.08) calc(var(--avp-scene-y,0px)*.08)}
 html.avp-home-canonical .avp-canonical-illustration .avp-laptop{translate:calc(var(--avp-scene-x,0px)*.04) calc(var(--avp-scene-y,0px)*.04)}
 html.avp-home-canonical .avp-canonical-illustration .avp-books-stack{translate:calc(var(--avp-scene-x,0px)*-.1) calc(var(--avp-scene-y,0px)*-.1)}
+
+
+/* Personal learning map card — replaces only the original hero illustration. */
+html.avp-home-canonical .avp-canonical-inner.avp-hero-split{
+  grid-template-columns:minmax(0,1.08fr) minmax(340px,.92fr)!important;
+  gap:clamp(22px,3vw,44px)!important;
+  align-items:center!important;
+}
+html.avp-home-canonical .avp-hero-split .avp-canonical-copy h1{
+  font-size:clamp(38px,4.3vw,58px)!important;
+}
+html.avp-home-canonical .avp-hero-split .avp-canonical-copy>p{
+  max-width:590px!important;
+  font-size:15px!important;
+  line-height:1.65!important;
+}
+html.avp-home-canonical .avp-home-map-card{
+  appearance:none!important;
+  -webkit-appearance:none!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  position:relative!important;
+  isolation:isolate!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:265px!important;
+  padding:22px 24px 18px!important;
+  overflow:hidden!important;
+  border:1px solid #c9e3d3!important;
+  border-radius:22px!important;
+  background:linear-gradient(145deg,#f9fffb 0%,#eaf6ee 100%)!important;
+  box-shadow:0 18px 42px rgba(21,76,46,.12),inset 0 1px 0 rgba(255,255,255,.9)!important;
+  color:#174c32!important;
+  font:inherit!important;
+  text-align:left!important;
+  cursor:pointer!important;
+  transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease!important;
+}
+html.avp-home-canonical .avp-home-map-card:hover{
+  transform:translateY(-4px)!important;
+  border-color:#8dc6a2!important;
+  box-shadow:0 24px 52px rgba(21,76,46,.17)!important;
+}
+html.avp-home-canonical .avp-home-map-kicker{
+  display:block!important;
+  margin:0 0 8px!important;
+  color:#42845d!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  letter-spacing:.16em!important;
+  line-height:1.4!important;
+}
+html.avp-home-canonical .avp-home-map-card>strong{
+  display:block!important;
+  margin:0 0 6px!important;
+  color:#123e29!important;
+  font-size:23px!important;
+  font-weight:900!important;
+  line-height:1.2!important;
+}
+html.avp-home-canonical .avp-home-map-copy{
+  display:block!important;
+  max-width:440px!important;
+  margin:0!important;
+  color:#587463!important;
+  font-size:13px!important;
+  line-height:1.55!important;
+  font-weight:500!important;
+}
+html.avp-home-canonical .avp-home-map-art{
+  display:block!important;
+  width:100%!important;
+  height:105px!important;
+  min-height:105px!important;
+  margin:8px 0 4px!important;
+  overflow:hidden!important;
+}
+html.avp-home-canonical .avp-home-map-art svg{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-height:105px!important;
+  overflow:visible!important;
+}
+html.avp-home-canonical .avp-home-map-footer{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  width:100%!important;
+  margin-top:auto!important;
+  padding-top:9px!important;
+  border-top:1px solid #d7e9dd!important;
+  color:#34714c!important;
+  font-size:11px!important;
+  line-height:1.4!important;
+}
+html.avp-home-canonical .avp-home-map-footer b{
+  flex:0 0 auto!important;
+  color:#08734b!important;
+  font-weight:850!important;
+}
+@media(max-width:760px){
+ html.avp-home-canonical .avp-canonical-inner.avp-hero-split{
+  grid-template-columns:minmax(0,1fr) minmax(300px,.92fr)!important;
+  gap:18px!important;
+ }
+ html.avp-home-canonical .avp-hero-split .avp-canonical-copy h1{font-size:clamp(30px,4vw,48px)!important}
+ html.avp-home-canonical .avp-hero-split .avp-canonical-copy>p{font-size:12px!important}
+ html.avp-home-canonical .avp-home-map-card{min-height:245px!important;padding:16px!important}
+ html.avp-home-canonical .avp-home-map-card>strong{font-size:18px!important}
+ html.avp-home-canonical .avp-home-map-copy{font-size:10px!important}
+ html.avp-home-canonical .avp-home-map-art{height:88px!important;min-height:88px!important}
+ html.avp-home-canonical .avp-home-map-art svg{max-height:88px!important}
+}
