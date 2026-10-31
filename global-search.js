@@ -35,7 +35,7 @@ function distance(a,b){
  }
  return prev[b.length];
 }
-let docs=[],resources=[],dictionary=[],catalog=[],loaded=false,loading=null;
+let docs=[],resources=[],dictionary=[],contentRecords=[],catalog=[],loaded=false,loading=null;
 async function loadData(){
  if(loaded)return;
  if(loading)return loading;
@@ -45,7 +45,7 @@ async function loadData(){
   try{const deep=await fetch('search-deep-index.json',{cache:'force-cache'});if(deep.ok){const j=await deep.json();if(Array.isArray(j.documents))docs.push(...j.documents)}}catch(_){}
   try{const race=await fetch('search-race-index.json',{cache:'force-cache'});if(race.ok){const j=await race.json();if(Array.isArray(j.documents))docs.push(...j.documents)}}catch(_){}
   try{const r=await fetch(RESOURCE_URL,{cache:'force-cache'});if(r.ok){const j=await r.json();resources=Array.isArray(j.resources)?j.resources:[]}}catch(_){}
-  const contentParts=await Promise.all(Array.from({length:6},(_,i)=>'search-content-'+String(i+1).padStart(2,'0')+'.json').map(async file=>{try{const r=await fetch(file,{cache:'force-cache'});return r.ok?await r.json():{records:[]}}catch(_){return {records:[]}}}));
+  const contentParts=await Promise.all(Array.from({length:7},(_,i)=>'search-content-'+String(i+1).padStart(2,'0')+'.json').map(async file=>{try{const r=await fetch(file,{cache:'force-cache'});return r.ok?await r.json():{records:[]}}catch(_){return {records:[]}}}));
   contentRecords=contentParts.flatMap(x=>Array.isArray(x.records)?x.records:[]);
   try{
    if(!window.AVP_EXCEL_DICTIONARY){
@@ -76,6 +76,7 @@ function buildCatalog(){
   all.push({title:d.title,description:d.description||d.content?.slice(0,180)||'Trang nội dung',url,type:d.type||'Trang',icon:'📄',content:d.content||'',keywords:d.title+' '+d.url});
  });
  resources.forEach(r=>all.push({title:r.title,description:r.description,url:r.url,type:r.type||'Tài nguyên',icon:'📊',content:r.keywords||''}));
+ contentRecords.forEach(r=>all.push({title:r.title,description:r.description||'',url:r.url||'index.html',type:r.type||'Nội dung',icon:'📚',content:r.content||''}));
  dictionary.forEach(d=>all.push({title:d.title,description:d.purpose||d.subtitle||'Thư viện kiến thức Excel',url:'excel-dictionary.html?q='+encodeURIComponent(d.title||''),type:d.type||'Thư viện Excel',icon:'🧮',content:[d.keywords,d.syntax,d.example,d.advanced,d.related,d.causes,d.checks,d.fixes,d.parts].flat(Infinity).join(' ')}));
  catalog=all.map(x=>{const title=norm(x.title),body=norm([x.description,x.content,x.keywords,x.purpose,x.syntax,x.example,x.advanced,x.subtitle,x.type].join(' '));return {...x,_title:title,_body:body,_titleTokens:new Set(tokens(title)),_bodyTokens:new Set(tokens(body))}});
 }
