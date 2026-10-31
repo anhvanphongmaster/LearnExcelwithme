@@ -1,8 +1,8 @@
-const CACHE="learnexcel-assets-v20261031-chat-consistency1";
+const CACHE="learnexcel-assets-v20261031-navigation-v2";
 const ASSETS=[
   "./style.css","./simple-nav.css","./avp-global-header-v1.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css",
   "./site-upgrade-v1.css","./home-ui-owner-v1.css","./upgrade.css",
-  "./simple-nav.js","./avp-logo.svg","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./home-page-motion-core-v108.js","./global-search.js",
+  "./simple-nav.js","./site-navigation-v2.js","./site-navigation-v2.css","./avp-logo.svg","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./home-page-motion-core-v108.js","./global-search.js",
   "./site-upgrade-v1.js","./site-runtime-cache-v1.js","./site-auth-cache-v1.js","./analytics-tracker.js","./daily-header-badge-v1.js","./learning-chapter-analytics-v1.js"
 ];
 
