@@ -1,4 +1,4 @@
-/* AVP Chat Loader V2 — render the Chat Admin entry immediately on every normal page. */
+/* AVP Chat Loader V3 — Chat Admin is opened from vertical navigation; no floating bubble. */
 (function(){
   'use strict';
   if(window.__AVP_CHAT_LOADER_V1__)return;
@@ -67,18 +67,10 @@
     s.onerror=function(){loading=false;openAfterLoad=false;console.error('[AVP Chat] Không tải được admin-chat-core-v1.js');};
     document.head.appendChild(s);
   }
-  // Public entry point used by the robot menu.
+  // Public entry point used by the vertical navigation.
   window.AVPAdminChatOpen=function(){loadCore(true);};
   window.addEventListener('avp:admin-chat-request-open',function(){loadCore(true);});
 
-  function mountGuestLite(){
-    if(document.getElementById('avpChatLazyRoot')||document.getElementById('avpAdminChatRoot'))return;
-    var root=document.createElement('div');
-    root.id='avpChatLazyRoot';root.className='avp-guest-mode';
-    root.innerHTML='<button class="avp-chat-bubble" id="avpChatBubble" type="button" aria-label="Chat với Admin" title="Chat với Admin">💬</button>';
-    document.body.appendChild(root);
-    root.querySelector('#avpChatBubble')?.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();loadCore(true)});
-  }
   async function waitClient(){
     for(var i=0;i<80;i++){
       var c=window.avpSupabase||window.supabaseClient;
@@ -90,9 +82,6 @@
   }
   async function boot(){
     if(page==='admin.html'){loadCore(false);return;}
-
-    // The entry point must not depend on Supabase/auth/module loading.
-    mountGuestLite();
 
     var c=await waitClient();
     var user=null;
