@@ -492,8 +492,8 @@ html.avp-home-canonical .avp-home-map-footer{padding-top:7px!important}
 @media(max-width:760px){
  html.avp-home-canonical .avp-canonical-actions{width:100%!important;max-width:500px!important}
  html.avp-home-canonical .avp-home-map-card{
-   width:100%!important;
-   max-width:500px!important;
+   width:calc(100% - 14px)!important;
+   max-width:486px!important;
    min-height:190px!important;
    box-sizing:border-box!important;
    align-self:flex-start!important;
