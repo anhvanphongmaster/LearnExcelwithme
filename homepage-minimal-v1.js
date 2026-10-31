@@ -853,7 +853,7 @@ if(document.readyState==='loading'){
 'use strict';
 function init(){
  if(document.querySelector('[data-avp-progress-hub]'))return;
- var resource=document.querySelector('.avp-resource-results');if(!resource)return;
+ var resource=document.querySelector('.avp-resource-results');
  var style=document.createElement('style');
  style.textContent=String.raw`
  .avp-hub[hidden],.avp-map-modal[hidden]{display:none!important}
@@ -903,7 +903,7 @@ function init(){
  function openHub(){hub.hidden=false;document.body.style.overflow='hidden';loadProgressDataScripts(renderAll);renderAll();}
  function closeHub(){hub.hidden=true;document.body.style.overflow='';}
  hub.querySelector('.avp-hub-close').addEventListener('click',closeHub);hub.addEventListener('click',function(e){if(e.target===hub)closeHub();});hub.querySelectorAll('[data-tab]').forEach(function(b){b.addEventListener('click',function(){hub.querySelectorAll('[data-tab]').forEach(function(x){x.setAttribute('aria-selected',String(x===b));});hub.querySelectorAll('[data-panel]').forEach(function(x){x.hidden=x.dataset.panel!==b.dataset.tab;});renderAll();});});
- resource.setAttribute('role','button');resource.setAttribute('tabindex','0');resource.addEventListener('click',openHub);resource.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openHub();}});
+ if(resource){resource.setAttribute('role','button');resource.setAttribute('tabindex','0');resource.addEventListener('click',openHub);resource.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openHub();}});}
  var mapCard=document.querySelector('[data-open-learning-map]');
  function mapRender(){
  var d=progressData(),route=map.querySelector('[data-map-route]'),currentIndex=-1,nextLessonIndex=0;
