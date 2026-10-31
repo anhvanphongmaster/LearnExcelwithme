@@ -38,7 +38,7 @@
         window.dispatchEvent(new CustomEvent('avp:admin-chat-open'));
         return;
       }
-      if(++tries<180){setTimeout(tick,100);return;}
+      if(++tries<450){setTimeout(tick,100);return;}
       console.warn('[AVP Chat] UI chưa sẵn sàng sau khi tải core.');
     })();
   }
