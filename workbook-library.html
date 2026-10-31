@@ -13,7 +13,7 @@
 <style>
 :root{color-scheme:light}body{margin:0;background:#f5f8f6;color:#173d2b;font-family:Inter,system-ui,sans-serif}.wb-page{width:min(1120px,calc(100% - 32px));margin:30px auto 70px}.wb-hero{padding:30px;border-radius:22px;background:linear-gradient(120deg,#064b35,#08734b);color:white}.wb-hero small{font-size:10px;letter-spacing:.15em;font-weight:900;color:#bde7ce}.wb-hero h1{margin:8px 0;font-size:clamp(30px,5vw,48px);letter-spacing:-.04em}.wb-hero p{max-width:720px;color:#d7eee0;line-height:1.6;margin:0}.wb-search{margin:18px 0 22px;display:flex;gap:10px}.wb-search input{width:100%;padding:14px 16px;border:1px solid #d6e4db;border-radius:13px;background:white;font:inherit;outline-color:#17845a}.wb-count{font-size:12px;color:#718078;margin:0 0 14px}.wb-group{margin:24px 0}.wb-group h2{font-size:19px;margin:0 0 12px}.wb-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.wb-item{display:flex;flex-direction:column;gap:8px;min-height:130px;padding:16px;border:1px solid #dce8e0;border-radius:15px;background:white;text-decoration:none;color:inherit;box-shadow:0 5px 16px #183d2b08}.wb-item strong{font-size:14px}.wb-item span{font-size:11px;color:#718078;line-height:1.5}.wb-item b{margin-top:auto;color:#08734b;font-size:11px}.wb-empty{padding:20px;border-radius:14px;background:white;color:#718078}@media(max-width:700px){.wb-page{width:calc(100% - 24px);margin-top:16px}.wb-hero{padding:22px}.wb-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.wb-item{padding:13px;min-height:140px}}@media(max-width:390px){.wb-grid{grid-template-columns:1fr}}
 </style>
-<link rel="stylesheet" href="global-search.css?v=2"></head>
+<link rel="stylesheet" href="global-search.css?v=3"></head>
 <body>
 <script src="avp-ui-system.js?v=20261002-ui1"></script>
 <nav class="top-simple-nav" aria-label="Điều hướng chính"><div class="top-simple-links"><a href="index.html">Trang chủ</a><a href="skill-map.html">Học</a><a href="practice-video.html">Thực hành</a><a href="excel-race.html">Thử thách</a><a href="tools-center.html">Công cụ</a><span class="auth-nav-slot"></span></div></nav>
@@ -60,4 +60,4 @@
 <script>
 (()=>{const input=document.getElementById('wbSearch'),items=[...document.querySelectorAll('.wb-item')],groups=[...document.querySelectorAll('[data-group]')],count=document.getElementById('wbCount');function apply(){const q=input.value.trim().toLocaleLowerCase('vi');let shown=0;items.forEach(a=>{const ok=!q||a.textContent.toLocaleLowerCase('vi').includes(q);a.hidden=!ok;if(ok)shown++});groups.forEach(g=>g.hidden=!g.querySelector('.wb-item:not([hidden])'));count.textContent='Đang hiển thị '+shown+' workbook';}input.addEventListener('input',apply);apply();})();
 </script>
-<script defer src="global-search.js?v=4"></script></body></html>
+<script defer src="global-search.js?v=5"></script></body></html>
