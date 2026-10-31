@@ -559,3 +559,25 @@ html.avp-home-canonical .avp-intro-under-illustration i{margin-left:auto;font-st
 
 /* Map modal visibility guard: the hidden state must always win over display grid. */
 .avp-map-modal[hidden]{display:none!important}.avp-map-modal:not([hidden]){display:grid!important}.avp-map-error{padding:16px;border:1px solid #e5c8b8;border-radius:12px;background:#fff6f1;color:#934d2b;font-size:13px;line-height:1.5}
+
+/* Mobile hero recovery: prevent desktop split layout from collapsing into thin text columns. */
+@media(max-width:760px){
+html.avp-home-canonical .avp-canonical-inner.avp-hero-split{
+display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:22px!important;width:100%!important;max-width:100%!important;
+}
+html.avp-home-canonical .avp-hero-split .avp-canonical-copy,
+html.avp-home-canonical .avp-canonical-visual-wrap,
+html.avp-home-canonical .avp-hero-split .avp-canonical-visual,
+html.avp-home-canonical .avp-canonical-actions{
+width:100%!important;max-width:100%!important;min-width:0!important;grid-column:auto!important;
+}
+html.avp-home-canonical .avp-hero-split .avp-canonical-copy h1{
+font-size:clamp(34px,9vw,48px)!important;line-height:1.12!important;max-width:100%!important;overflow-wrap:normal!important;
+}
+html.avp-home-canonical .avp-hero-split .avp-canonical-copy>p{
+font-size:15px!important;line-height:1.65!important;max-width:100%!important;
+}
+html.avp-home-canonical .avp-hero-split .avp-canonical-copy>*{min-width:0!important}
+html.avp-home-canonical .avp-canonical-visual-wrap .avp-canonical-illustration{width:100%!important;max-width:100%!important}
+html.avp-home-canonical .avp-home-map-card{width:100%!important;max-width:100%!important}
+}
