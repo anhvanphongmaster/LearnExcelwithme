@@ -9,21 +9,3 @@ html.avp-layout-desktop body :is(.stats-grid,.home-modules-grid,.features-grid,.
  html:not(.avp-layout-desktop) body{min-width:0;width:100%;max-width:100%}
  html.avp-layout-mobile body :is(.stats-grid,.home-modules-grid,.features-grid,.card-grid,.dashboard-grid,.tools-grid){grid-template-columns:minmax(0,1fr)}
 }
-
-/* AVP THEME SYSTEM V2 — real surfaces and typography; preserve charts and status states. */
-:root{--avp-page-bg:#f4f7f5;--avp-card-bg:#fff;--avp-card-soft:#f7faf8;--avp-fg:#1e3327;--avp-fg-muted:#5f7066;--avp-line:#dce6df;--avp-control-bg:#fff;--avp-link:#176f43}
-html[data-avp-theme="dark"]{--avp-page-bg:#0d1510;--avp-card-bg:#18231c;--avp-card-soft:#202d25;--avp-fg:#edf4ef;--avp-fg-muted:#b5c3ba;--avp-line:#3a4b40;--avp-control-bg:#111b15;--avp-link:#8cdbab}
-html[data-avp-theme="light"] body{background-color:var(--avp-page-bg);color:var(--avp-fg)}
-html[data-avp-theme="dark"] body{background-color:var(--avp-page-bg)!important;color:var(--avp-fg)!important}
-html[data-avp-theme="dark"] body :is(.card,.panel,.surface,.modal-content,.search-box,.table-container,.table-wrapper,.table-box,.form-card,.lesson-card,.tool-card,.module-card,.stat-card,.kpi-card,.info-card,.practice-card,.library-card,.home-path-card,.home-more-card,.home-reference-grid-v114,.home-ref-item-v114,.home-aff-note){
- background:var(--avp-card-bg)!important;color:var(--avp-fg)!important;border-color:var(--avp-line)!important;box-shadow:0 8px 24px rgba(0,0,0,.16)
-}
-html[data-avp-theme="dark"] body :is(.card,.panel,.surface,.modal-content,.search-box,.table-container,.table-wrapper,.table-box,.form-card,.lesson-card,.tool-card,.module-card,.stat-card,.kpi-card,.info-card,.practice-card,.library-card,.home-path-card,.home-more-card,.home-reference-grid-v114,.home-ref-item-v114,.home-aff-note) :is(h1,h2,h3,h4,h5,h6,p,li,label,small,strong,span,td,th){color:var(--avp-fg)!important}
-html[data-avp-theme="dark"] body :is(.home-path-card a,.home-ref-item-v114){background:var(--avp-card-soft)!important;color:var(--avp-fg)!important;border-color:var(--avp-line)!important}
-html[data-avp-theme="dark"] body :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){background:var(--avp-control-bg)!important;color:var(--avp-fg)!important;border-color:var(--avp-line)!important}
-html[data-avp-theme="dark"] body :is(input,textarea)::placeholder{color:var(--avp-fg-muted)!important;opacity:1}
-html[data-avp-theme="dark"] body :is(.muted,.text-muted,.subtitle,.description,.helper-text,.hint,.meta){color:var(--avp-fg-muted)!important}
-html[data-avp-theme="dark"] body a:not([class*="btn"]):not(.avp-nav-v2-link){color:var(--avp-link)}
-html[data-avp-theme="dark"] body :is(table,thead,tbody,tr,td,th){border-color:var(--avp-line)}
-html[data-avp-theme="dark"] body :is(pre,code){background:var(--avp-card-soft);color:var(--avp-fg);border-color:var(--avp-line)}
-/* Keep branded hero artwork, charts, success/error badges and illustrations unchanged. */
