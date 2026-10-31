@@ -582,7 +582,7 @@ document.addEventListener("DOMContentLoaded",function(){
     }
     if(!document.querySelector('script[src*="global-search.js"]')){
       var searchScript=document.createElement('script');
-      searchScript.src='global-search.js?v=20261031-search-index1';
+      searchScript.src='global-search.js?v=20261031-search-index2';
       searchScript.dataset.avpGlobalSearch='1';
       document.head.appendChild(searchScript);
     }
@@ -634,7 +634,7 @@ document.addEventListener("DOMContentLoaded",function(){
       var script=document.querySelector('script[src*="global-search.js"]');
       if(!script){
         script=document.createElement("script");
-        script.src="global-search.js?v=20261031-search-index1";
+        script.src="global-search.js?v=20261031-search-index2";
         script.async=true;
         document.head.appendChild(script);
       }
