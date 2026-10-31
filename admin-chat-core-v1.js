@@ -18,8 +18,11 @@
     }
   },true);
 
-  if(window.__AVP_ADMIN_CHAT_LOADED__) return;
-  window.__AVP_ADMIN_CHAT_LOADED__=true;
+  // Separate "script started" from "chat UI initialized".
+  // The previous flag was set before Supabase/session restore, so a failed
+  // first boot permanently blocked every retry.
+  if(window.__AVP_ADMIN_CHAT_LOADED__||window.__AVP_ADMIN_CHAT_BOOTING__) return;
+  window.__AVP_ADMIN_CHAT_BOOTING__=true;
 
   const $=(id)=>document.getElementById(id);
   const esc=(s)=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
@@ -349,8 +352,8 @@
   async function waitClient(){
     // Bong bóng chat phải xuất hiện cả với khách chưa đăng nhập.
     // Vì vậy chỉ cần đợi Supabase client sẵn sàng; session có thể là null.
-    for(let i=0;i<120;i++){
-      if(window.avpSupabase){client=window.avpSupabase;break}
+    for(let i=0;i<300;i++){
+      if(window.avpSupabase?.auth){client=window.avpSupabase;break}
       await sleep(100);
     }
     if(!client) return false;
@@ -1396,11 +1399,25 @@
 
   async function start(){
     ensureAiChatAssets();
-
-    if(!(await waitClient())) return;
-
-    subscribeAuthChanges();
-    await renderChatForCurrentUser();
+    try{
+      if(!(await waitClient())){
+        window.__AVP_ADMIN_CHAT_BOOTING__=false;
+        console.error("[AVP Chat] Supabase client chưa sẵn sàng; cho phép thử khởi tạo lại.");
+        return;
+      }
+      subscribeAuthChanges();
+      await renderChatForCurrentUser();
+      if($("avpAdminChatRoot")){
+        window.__AVP_ADMIN_CHAT_LOADED__=true;
+        window.dispatchEvent(new CustomEvent("avp:chat-ready"));
+      }else{
+        console.warn("[AVP Chat] Chưa tạo được giao diện chat; cho phép thử lại.");
+      }
+    }catch(error){
+      console.error("[AVP Chat] Khởi tạo thất bại:",error);
+    }finally{
+      window.__AVP_ADMIN_CHAT_BOOTING__=false;
+    }
   }
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
 })();
