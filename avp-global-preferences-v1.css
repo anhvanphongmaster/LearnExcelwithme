@@ -31,8 +31,8 @@ html[data-avp-theme="dark"] body :is(pre,code){background-color:var(--avp-surfac
 /* Preserve the website's semantic status colors and illustrations; no global SVG/image filters. */
 
 /* Layout mode is a preference, not a viewport/zoom hack. */
-html.avp-layout-mobile body{min-width:0!important;width:100%!important;max-width:100%!important}
-html.avp-layout-mobile body :is(main,.main-shell,.main-content,.page-content,.page-container,.content-wrapper,.container,.dashboard-container){max-width:100%;box-sizing:border-box}
+html.avp-layout-mobile body{min-width:0!important;width:min(100%,430px)!important;max-width:430px!important;margin-left:auto!important;margin-right:auto!important}
+html.avp-layout-mobile body :is(main,.main-shell,.main-content,.page-content,.page-container,.content-wrapper,.container,.dashboard-container){width:100%;max-width:100%;min-width:0;box-sizing:border-box}
 html.avp-layout-desktop{overflow-x:auto!important}
 html.avp-layout-desktop body{min-width:1080px!important;width:auto!important;max-width:none!important}
 html.avp-layout-desktop body :is(main,.main-shell,.main-content,.page-content,.page-container,.content-wrapper,.dashboard-container){max-width:none}
