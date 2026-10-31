@@ -13,7 +13,7 @@ const svg={home:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1
 const ico=n=>'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+(svg[n]||svg.home)+'</svg>';
 const groups=[
 ["TỔNG QUAN",[["index.html","Trang chủ","home"],["learning-coach.html","Lộ trình học","learn"]]],
-["HỌC TẬP",[["excel-library.html","12 chương học","learn"],["excel-knowledge-library.html","Thư viện kiến thức","library"],["excel-formula-library.html","Thư viện công thức","library"],["excel-shortcut-library.html","Phím tắt Excel","library"],["excel-dictionary.html","Từ điển Excel","library"],["excel-handbook.html","Excel Handbook","library"]]],
+["HỌC TẬP",[["excel.html","Học Excel","learn"],["excel-handbook.html","Cẩm nang Excel A–Z · 12 chương","library"],["excel-knowledge-library.html","Thư viện kiến thức","library"],["excel-formula-library.html","Thư viện công thức","library"],["excel-shortcut-library.html","Phím tắt Excel","library"],["excel-dictionary.html","Từ điển Excel","library"],["excel-handbook.html","Excel Handbook","library"]]],
 ["THỰC HÀNH",[["practice-video.html","Khu thực hành","practice"],["practice-lab.html","Practice Lab","practice"],["practice-grader.html","Bài tập tự chấm","practice"],["excel-race.html","Excel Arena","practice"]]],
 ["KHÁM PHÁ",[["tools-center.html","Trung tâm công cụ","tools"],["tools-library.html","Kho Tool","tools"],["community.html","Cộng đồng","community"]]],
 ["TRỢ GIÚP",[["ai.html","Chat AI","ai"],["#chat-admin","Chat với Admin","chat","action"]]]
