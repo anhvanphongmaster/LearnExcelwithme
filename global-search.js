@@ -73,10 +73,6 @@ function buildCatalog(){
   else if(d.type==='Thư viện kiến thức')url='excel-knowledge-library.html?q='+encodeURIComponent(d.title||'');
   else if(d.type==='Thư viện dữ liệu')url='excel-data-format-library.html?q='+encodeURIComponent(d.title||'');
   else if(d.type==='Thư viện Excel')url='excel-dictionary.html?q='+encodeURIComponent(d.title||'');
-  else if(d.type==='Bài thực hành'){
-   const key=String(d.content||'').match(/"key"\\s*:\\s*"([^"]+)"/);
-   if(key)url='practice-grader.html?lesson='+encodeURIComponent(key[1]);
-  }
   all.push({title:d.title,description:d.description||d.content?.slice(0,180)||'Trang nội dung',url,type:d.type||'Trang',icon:'📄',content:d.content||'',keywords:d.title+' '+d.url});
  });
  resources.forEach(r=>all.push({title:r.title,description:r.description,url:r.url,type:r.type||'Tài nguyên',icon:'📊',content:r.keywords||''}));
