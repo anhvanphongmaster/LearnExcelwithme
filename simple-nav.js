@@ -620,6 +620,27 @@ document.addEventListener("DOMContentLoaded",function(){
     search.setAttribute("aria-label","Tìm kiếm toàn website");
     search.innerHTML='<span>Tìm hàm, bài học, công cụ...</span><kbd>Ctrl K</kbd>';
   }
+  /* Bind directly to the visible button as well as the delegated fallback. */
+  if(!search.__avpDirectSearchBound){
+    search.__avpDirectSearchBound=true;
+    search.addEventListener("click",function(e){
+      e.preventDefault();
+      if(typeof window.openGlobalSearch==="function"){
+        window.openGlobalSearch();
+        return;
+      }
+      var script=document.querySelector('script[src*="global-search.js"]');
+      if(!script){
+        script=document.createElement("script");
+        script.src="global-search.js?v=20261031-search-index4";
+        script.async=true;
+        document.head.appendChild(script);
+      }
+      script.addEventListener("load",function(){
+        if(typeof window.openGlobalSearch==="function")window.openGlobalSearch();
+      },{once:true});
+    });
+  }
   /* Reliable search activation: handle taps even if the search bundle is still loading. */
   if(!document.__avpSearchTapBound){
     document.__avpSearchTapBound=true;
