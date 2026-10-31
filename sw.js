@@ -62,7 +62,7 @@ async function injectGlobalHeader(req,res){
     if(!type.includes("text/html"))return res;
     let html=await res.text();
     // Normalize every legacy fixed-width viewport before the browser lays out the page.
-    html=html.replace(/<meta\\s+name=["']viewport["']\\s+content=["'][^"']*width=1200[^"']*["']\\s*\\/?\\s*>/i,
+    html=html.replace(/<meta\s+name=["']viewport["']\s+content=["'][^"']*width=1200[^"']*["']\s*\\/?\s*>/i,
       '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">');
     const headers=new Headers(res.headers);
     headers.delete("content-length");headers.delete("content-encoding");headers.delete("transfer-encoding");
