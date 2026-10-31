@@ -53,7 +53,20 @@
 
   const recent=()=>{try{const value=JSON.parse(localStorage.getItem('avpSearchRecent')||'[]');return Array.isArray(value)?value.filter(x=>typeof x==='string').slice(0,5):[]}catch{return[]}};
   const saveRecent=q=>{q=q.trim();if(!q)return;try{localStorage.setItem('avpSearchRecent',JSON.stringify([q,...recent().filter(x=>normalize(x)!==normalize(q))].slice(0,5)))}catch(e){/* Search navigation must work even when browser storage is blocked or full. */}};
-  function score(item,q){if(!q)return 1;const t=normalize(item.title),k=normalize(item.keys||''),d=normalize(item.desc||''),all=t+' '+k+' '+d;if(all.includes(q))return 1200+q.length;const parts=q.split(' ').filter(Boolean);let n=0,total=0;parts.forEach(p=>{let v=0;if(t===p)v=90;else if(t.startsWith(p))v=65;else if(t.includes(p))v=52;if(k.includes(p))v=Math.max(v,34);if(d.includes(p))v=Math.max(v,18);if(v){n++;total+=v}});if(n===parts.length)return total+n*18;if(n===parts.length-1&&parts.length>=2)return total-8;return n?total-(parts.length-n)*48:0;}
+  const SEARCH_SYNONYMS={
+    'cong no':['theo doi cong no','doi chieu cong no','phai thu','phai tra','thu no','tra no','receivable','payable','debt'],
+    'doi soat':['doi chieu','kiem tra chenh lech','reconcile','reconciliation','so khop du lieu'],
+    'xoa dong trong':['loai bo dong trong','blank rows','remove empty rows','lam sach du lieu'],
+    'gop file':['combine files','append','merge','hop nhat du lieu','tong hop nhieu file'],
+    'tong theo dieu kien':['sumifs','sumif','cong co dieu kien','tinh tong theo nhom'],
+    'dem theo dieu kien':['countifs','countif','dem co dieu kien'],
+    'loc du lieu':['filter','advanced filter','sap xep va loc'],
+    'lam sach du lieu':['clean data','trim','clean','chuan hoa du lieu','remove duplicates'],
+    'bao cao':['dashboard','report','tong hop','phan tich du lieu','kpi'],
+    'cham bai':['tu cham','kiem tra bai lam','practice grader','grading','bai tap thuc hanh']
+  };
+  function editDistanceOne(a,b){if(Math.abs(a.length-b.length)>1)return false;let i=0,j=0,d=0;while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++;continue}if(++d>1)return false;if(a.length>b.length)i++;else if(b.length>a.length)j++;else{i++;j++;}}return d+(i<a.length||j<b.length?1:0)<=1;}
+  function score(item,q){if(!q)return 1;const t=normalize(item.title),k=normalize(item.keys||''),d=normalize(item.desc||''),all=t+' '+k+' '+d;if(all.includes(q))return 1400+q.length;const terms=q.split(' ').filter(Boolean);let expanded=[...terms];Object.entries(SEARCH_SYNONYMS).forEach(([key,values])=>{if(q.includes(key)||key.includes(q))expanded.push(...values.flatMap(v=>normalize(v).split(' ')))});let n=0,total=0;terms.forEach(p=>{let v=0;if(t===p)v=100;else if(t.startsWith(p))v=72;else if(t.includes(p))v=58;if(k.includes(p))v=Math.max(v,38);if(d.includes(p))v=Math.max(v,20);if(!v&&p.length>=5){const near=(t+' '+k+' '+d).split(' ').some(w=>w.length>=5&&editDistanceOne(p,w));if(near)v=12;}if(v){n++;total+=v}});const synonymHits=expanded.filter(p=>p.length>2&&all.includes(p)).length;total+=Math.min(5,synonymHits)*9;if(n===terms.length)return total+n*22;if(n===terms.length-1&&terms.length>=2)return total-5;return n?total-(terms.length-n)*52:0;}
 
   const nav=document.querySelector('nav.top-simple-nav')||document.querySelector('nav');
   if(nav&&!document.getElementById('avpSearchTrigger')){const trigger=document.createElement('button');trigger.type='button';trigger.id='avpSearchTrigger';trigger.className='top-search-button avp-search-trigger';trigger.setAttribute('aria-label','Tìm kiếm toàn website');trigger.textContent='⌕ Tìm kiếm';const theme=nav.querySelector('#themeToggle');theme?theme.parentNode.insertBefore(trigger,theme):nav.appendChild(trigger)}
