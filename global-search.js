@@ -57,7 +57,7 @@ async function loadData(){
 }
 function tokens(s){return norm(s).split(/\s+/).filter(Boolean)}
 function buildCatalog(){
-  const allowedTypes=new Set(['Workbook','Tài nguyên bài học','Bài học theo chương','Quy trình bài học','Phím tắt','Hàm Excel','Công thức','Thư viện công thức & kiến thức']);
+  const allowedTypes=new Set(['Workbook','Tài nguyên bài học','Thực hành','Bài học theo chương','Quy trình bài học','Phím tắt','Hàm Excel','Công thức','Thư viện công thức & kiến thức']);
   const allowed=d=>allowedTypes.has(String(d?.type||''));
  const all=[];
   docs.filter(allowed).forEach(d=>{
