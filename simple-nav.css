@@ -1102,7 +1102,7 @@ body.dark-mode .website-features-intro{
 .avp-back-to-top{
   position:fixed !important;
   right:22px !important;
-  bottom:58px !important;
+  bottom:88px !important;
   z-index:1500 !important;
 
   width:48px !important;
@@ -1155,7 +1155,7 @@ body.dark-mode .avp-back-to-top{
 @media(max-width:700px){
   .avp-back-to-top{
     right:16px !important;
-    bottom:104px !important;
+    bottom:124px !important;
     width:46px !important;
     height:46px !important;
     min-width:46px !important;
