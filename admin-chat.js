@@ -8,7 +8,7 @@
   if(!document.querySelector('link[data-avp-admin-chat-css]')){
     var css=document.createElement('link');
     css.rel='stylesheet';
-    css.href='admin-chat.css?v=20260915-chatcss2';
+    css.href='admin-chat.css?v=20261031-chat-consistency1';
     css.dataset.avpAdminChatCss='1';
     document.head.appendChild(css);
   }
@@ -48,7 +48,7 @@
     if(loading)return;
     loading=true;
     var s=document.createElement('script');
-    s.src='admin-chat-core-v1.js?v=20261031-chat-boot-retry3';
+    s.src='admin-chat-core-v1.js?v=20261031-chat-consistency1';
     s.async=true;s.dataset.avpChatCore='1';
     s.onload=function(){
       loading=false;
