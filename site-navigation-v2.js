@@ -3,6 +3,8 @@
 if(window.__AVP_SITE_NAV_V2__)return;window.__AVP_SITE_NAV_V2__=true;
 if(window.self!==window.top)return;
 const page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
+const legacyAuth=document.querySelector(".top-simple-nav .auth-nav-slot")||document.querySelector(".auth-nav-slot");
+const legacyTheme=document.getElementById("themeToggle");
 const oldNav=document.querySelectorAll(".top-simple-nav");
 oldNav.forEach(el=>el.remove());
 document.querySelectorAll("#avpEdgeLauncher,.avp-edge-launcher,.avp-hub-fab,#avpEdgeMiniPreview,.avp-edge-mini-preview-v2,.avp-hub-backdrop,#avpChatLazyRoot").forEach(el=>el.remove());
@@ -20,14 +22,14 @@ const shade=document.createElement("div");shade.className="avp-nav-v2-shade";sha
 document.body.append(trigger,shade);
 const drawer=shade.querySelector("aside"),nav=shade.querySelector("nav");
 groups.forEach(([label,items])=>{const section=document.createElement("section");section.className="avp-nav-v2-group";const h=document.createElement("div");h.className="avp-nav-v2-label";h.textContent=label;section.append(h);items.forEach(([href,name,iconName,type])=>{const el=document.createElement(type==="action"?"button":"a");el.className="avp-nav-v2-link";if(type==="action"){el.type="button";el.dataset.navAction="chat-admin";}else{el.href=href;if(page===href)el.setAttribute("aria-current","page");}el.innerHTML='<span class="avp-nav-v2-icon">'+ico(iconName)+'</span><span class="avp-nav-v2-text">'+name+'</span>'+(type==="action"?'<i class="avp-nav-v2-unread" hidden></i>':'');section.append(el)});nav.append(section)});
-const oldAuth=document.querySelector(".auth-nav-slot");if(oldAuth&&oldAuth!==shade.querySelector(".auth-nav-slot"))shade.querySelector(".auth-nav-slot").replaceWith(oldAuth);
-const oldTheme=document.getElementById("themeToggle");if(oldTheme){oldTheme.classList.add("avp-nav-v2-theme-native");shade.querySelector(".avp-nav-v2-theme").replaceWith(oldTheme)}
+if(legacyAuth&&legacyAuth!==shade.querySelector(".auth-nav-slot"))shade.querySelector(".auth-nav-slot").replaceWith(legacyAuth);
+if(legacyTheme){legacyTheme.classList.add("avp-nav-v2-theme-native");shade.querySelector(".avp-nav-v2-theme").replaceWith(legacyTheme)}
 function open(){shade.classList.add("is-open");trigger.setAttribute("aria-expanded","true");document.body.classList.add("avp-nav-v2-open");shade.querySelector(".avp-nav-v2-close").focus()}
 function close(){shade.classList.remove("is-open");trigger.setAttribute("aria-expanded","false");document.body.classList.remove("avp-nav-v2-open");trigger.focus()}
 trigger.addEventListener("click",()=>shade.classList.contains("is-open")?close():open());shade.querySelector(".avp-nav-v2-close").addEventListener("click",close);shade.addEventListener("click",e=>{if(e.target===shade)close()});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&shade.classList.contains("is-open"))close()});
 shade.querySelectorAll("a").forEach(a=>a.addEventListener("click",close));
 shade.querySelector(".avp-nav-v2-search").addEventListener("click",()=>{close();if(window.openGlobalSearch){window.openGlobalSearch();return}const s=document.createElement("script");s.src="global-search.js?v=20261031-nav2";s.onload=()=>window.openGlobalSearch?.();document.head.append(s)});
-shade.querySelector(".avp-nav-v2-theme")?.addEventListener("click",()=>document.getElementById("themeToggle")?.click());
+shade.querySelector(".avp-nav-v2-theme")?.addEventListener("click",()=>{const t=document.getElementById("themeToggle");if(t)t.click();else{document.body.classList.toggle("dark-mode");localStorage.setItem("theme",document.body.classList.contains("dark-mode")?"dark":"light")}});
 async function openAdminChat(){close();if(window.AVPAdminChatOpen){window.AVPAdminChatOpen();return}let s=document.querySelector('script[src*="admin-chat.js"]');if(!s){s=document.createElement("script");s.src="admin-chat.js?v=20261031-nav2";s.async=true;document.head.append(s)}for(let i=0;i<120&&!window.AVPAdminChatOpen;i++)await new Promise(r=>setTimeout(r,100));if(window.AVPAdminChatOpen)window.AVPAdminChatOpen();else window.dispatchEvent(new CustomEvent("avp:admin-chat-request-open"))}
 shade.querySelector('[data-nav-action="chat-admin"]').addEventListener("click",openAdminChat);
 window.AVPVerticalNavigation={open,close};
