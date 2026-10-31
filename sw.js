@@ -1,4 +1,4 @@
-const CACHE="learnexcel-assets-v20261031-navigation-v2-final";
+const CACHE="learnexcel-assets-v20261031-navigation-v2-chat-cleanup";
 const ASSETS=[
   "./style.css","./simple-nav.css","./avp-global-header-v1.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css",
   "./site-upgrade-v1.css","./home-ui-owner-v1.css","./upgrade.css",
@@ -64,7 +64,7 @@ async function injectGlobalHeader(req,res){
     const headers=new Headers(res.headers);
     headers.delete("content-length");headers.delete("content-encoding");headers.delete("transfer-encoding");
     if(html.includes("simple-nav.js"))return new Response(html,{status:res.status,statusText:res.statusText,headers:headers});
-    const tag='<script defer src="./simple-nav.js?v=20261031-nav-v2-final" data-avp-global-header-loader></script>';
+    const tag='<script defer src="./simple-nav.js?v=20261031-nav-v2-chat-cleanup" data-avp-global-header-loader></script>';
     const updated=html.includes("</body>")?html.replace("</body>",tag+"</body>"):html+tag;
     return new Response(updated,{status:res.status,statusText:res.statusText,headers:headers});
   }catch(_){return res;}
