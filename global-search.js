@@ -3,7 +3,7 @@
 if (window.__AVP_GLOBAL_SEARCH_V3__) return;
 window.__AVP_GLOBAL_SEARCH_V3__ = true;
 
-const INDEX_FILES = Array.from({length:10},(_,i)=>'search-index-'+String(i+1).padStart(2,'0')+'.json');
+const INDEX_FILES = ['search-index-10.json'];
 const DICTIONARY_URL='search-dictionary.js';
 const RESOURCE_URL='search-resources.json';
 const SUPABASE_URL='https://itnnbyhlpfredaqyhlpr.supabase.co';
@@ -45,7 +45,7 @@ async function loadData(){
   try{const deep=await fetch('search-deep-index.json',{cache:'force-cache'});if(deep.ok){const j=await deep.json();if(Array.isArray(j.documents))docs.push(...j.documents)}}catch(_){}
   try{const race=await fetch('search-race-index.json',{cache:'force-cache'});if(race.ok){const j=await race.json();if(Array.isArray(j.documents))docs.push(...j.documents)}}catch(_){}
   try{const r=await fetch(RESOURCE_URL,{cache:'force-cache'});if(r.ok){const j=await r.json();resources=Array.isArray(j.resources)?j.resources:[]}}catch(_){}
-  const contentParts=await Promise.all(Array.from({length:7},(_,i)=>'search-content-'+String(i+1).padStart(2,'0')+'.json').map(async file=>{try{const r=await fetch(file,{cache:'force-cache'});return r.ok?await r.json():{records:[]}}catch(_){return {records:[]}}}));
+  const contentParts=await Promise.all(Array.from({length:3},(_,i)=>'search-content-'+String(i+1).padStart(2,'0')+'.json').map(async file=>{try{const r=await fetch(file,{cache:'force-cache'});return r.ok?await r.json():{records:[]}}catch(_){return {records:[]}}}));
   contentRecords=contentParts.flatMap(x=>Array.isArray(x.records)?x.records:[]);
   try{
    if(!window.AVP_EXCEL_DICTIONARY){
@@ -137,7 +137,7 @@ async function fetchTools(q){
  }catch(_){return []}
 }
 const wrap=document.createElement('div');wrap.className='avp-spotlight-backdrop';wrap.id='avpSpotlightBackdrop';
-wrap.innerHTML='<div class="avp-spotlight" role="dialog" aria-modal="true" aria-label="Tìm kiếm toàn website"><div class="avp-spotlight-head"><span class="icon">⌕</span><input id="avpSpotlightInput" class="avp-spotlight-input" type="search" autocomplete="off" placeholder="Tìm bài học, công thức, câu hỏi, workbook, file, công cụ..."><span class="avp-esc">ESC</span></div><div class="avp-search-meta"><span id="avpSearchLabel">Tìm trên toàn website</span><span id="avpSearchCount"></span></div><div class="avp-search-results" id="avpSearchResults"></div><div class="avp-search-footer"><span><kbd>↑</kbd> <kbd>↓</kbd> di chuyển</span><span><kbd>Enter</kbd> mở</span><span><kbd>Esc</kbd> đóng</span></div></div>';
+wrap.innerHTML='<div class="avp-spotlight" role="dialog" aria-modal="true" aria-label="Tìm tài liệu học tập"><div class="avp-spotlight-head"><span class="icon">⌕</span><input id="avpSpotlightInput" class="avp-spotlight-input" type="search" autocomplete="off" placeholder="Tìm file, bài học, công thức, phím tắt Excel..."><span class="avp-esc">ESC</span></div><div class="avp-search-meta"><span id="avpSearchLabel">Tìm tài liệu học tập</span><span id="avpSearchCount"></span></div><div class="avp-search-results" id="avpSearchResults"></div><div class="avp-search-footer"><span><kbd>↑</kbd> <kbd>↓</kbd> di chuyển</span><span><kbd>Enter</kbd> mở</span><span><kbd>Esc</kbd> đóng</span></div></div>';
 (document.body||document.documentElement).appendChild(wrap);
 const input=$('avpSpotlightInput'),results=$('avpSearchResults'),label=$('avpSearchLabel'),count=$('avpSearchCount');
 let current=[],active=0,returnFocus=null,previousOverflow='',searchTimer=0,requestId=0;
