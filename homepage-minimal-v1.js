@@ -927,7 +927,7 @@ function init(){
  nextAction.disabled=currentIndex<0;
  nextAction.textContent=currentIndex>=0?'Mở chương này →':'Đã hoàn thành';
  nextAction.onclick=function(){if(currentIndex<0)return;closeMap();openChapterPicker();renderChapterLessons(currentIndex);};
- mapCard.querySelector('[data-home-map-position]').textContent=currentIndex>=0?('Tiếp theo: '+nextTitle):'Đã hoàn thành lộ trình';
+ (mapCard&&mapCard.querySelector('[data-home-map-position]'))&&(mapCard.querySelector('[data-home-map-position]').textContent=currentIndex>=0?('Tiếp theo: '+nextTitle):'Đã hoàn thành lộ trình');
  route.innerHTML='';
  chapterList.forEach(function(chapter,i){
   var lessons=chapterLessons[i]||[];
@@ -951,9 +951,30 @@ function init(){
   route.appendChild(card);
  });
 }
- function openMap(){map.hidden=false;document.body.style.overflow='hidden';loadProgressDataScripts(mapRender);mapRender();}
- function closeMap(){map.hidden=true;document.body.style.overflow='';}
- if(mapCard){mapCard.addEventListener('click',openMap);}
+ function openMap(){
+  map.hidden=false;
+  map.style.display='grid';
+  map.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  try{
+   mapRender();
+   loadProgressDataScripts(function(){try{mapRender();}catch(err){showMapError(err);}});
+  }catch(err){showMapError(err);}
+ }
+ function showMapError(err){
+  var route=map.querySelector('[data-map-route]');
+  if(route)route.innerHTML='<div class="avp-map-error">Không tải được tiến độ bản đồ. Bạn vẫn có thể mở danh sách chương từ trang chủ.</div>';
+  var title=map.querySelector('[data-map-next-title]');
+  if(title)title.textContent='Không thể đọc dữ liệu tiến độ lúc này';
+  var detail=map.querySelector('[data-map-next-detail]');
+  if(detail)detail.textContent='Hãy đóng bản đồ và thử mở lại. Lỗi đã được ghi nhận để kiểm tra.';
+  console.error('[AVP learning map]',err);
+ }
+ function closeMap(){map.hidden=true;map.style.display='none';map.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+ document.addEventListener('click',function(e){
+  var card=e.target&&e.target.closest?e.target.closest('[data-open-learning-map]'):null;
+  if(card){e.preventDefault();openMap();}
+ });
  map.querySelector('.avp-map-close').addEventListener('click',closeMap);map.addEventListener('click',function(e){if(e.target===map)closeMap();});
  document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!map.hidden)closeMap();else if(!hub.hidden)closeHub();}});
  window.addEventListener('storage',function(){if(!hub.hidden)renderAll();if(!map.hidden)mapRender();});
