@@ -16,7 +16,7 @@ html[data-avp-theme="dark"] body{background-color:var(--avp-bg);color:var(--avp-
 html[data-avp-theme="dark"] body :is(.card,.panel,.surface,.modal-content,.search-box,.table-container,.table-wrapper,.table-box,.form-card,.lesson-card,.tool-card,.module-card,.stat-card,.kpi-card,.info-card,.practice-card,.library-card){
  background-color:var(--avp-surface);color:var(--avp-text);border-color:var(--avp-border);
 }
-html[data-avp-theme="dark"] body :is(.card,.panel,.surface,.modal-content,.search-box,.table-container,.table-wrapper,.table-box,.form-card,.lesson-card,.tool-card,.module-card,.stat-card,.kpi-card,.info-card,.practice-card,.library-card) :is(h1,h2,h3,h4,h5,h6,p,li,label,small,strong,span,td,th){color:inherit}
+html[data-avp-theme="dark"] body :is(.card,.panel,.surface,.modal-content,.search-box,.table-container,.table-wrapper,.table-box,.form-card,.lesson-card,.tool-card,.module-card,.stat-card,.kpi-card,.info-card,.practice-card,.library-card) :is(h1,h2,h3,h4,h5,h6,p,li,label,small,td,th){color:var(--avp-text)}
 html[data-avp-theme="dark"] body :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){
  background-color:var(--avp-input);color:var(--avp-text);border-color:var(--avp-border)
 }
@@ -24,7 +24,7 @@ html[data-avp-theme="dark"] body :is(input,textarea)::placeholder{color:var(--av
 html[data-avp-theme="dark"] body :is(table,thead,tbody,tr,td,th){border-color:var(--avp-border)}
 html[data-avp-theme="dark"] body :is(tbody tr){background-color:var(--avp-surface)}
 html[data-avp-theme="dark"] body :is(tbody tr:nth-child(even)){background-color:var(--avp-surface-soft)}
-html[data-avp-theme="dark"] body :is(a:not([class*="btn"]):not(.avp-nav-v2-link)){color:#8bd9a8}
+html[data-avp-theme="dark"] body a:not([class]):not(.avp-nav-v2-link){color:#8bd9a8}
 html[data-avp-theme="dark"] body :is(.muted,.text-muted,.subtitle,.description,.helper-text,.hint,.meta){color:var(--avp-muted)}
 html[data-avp-theme="dark"] body :is(button,.btn,[role="tab"]){border-color:var(--avp-border)}
 html[data-avp-theme="dark"] body :is(pre,code){background-color:var(--avp-surface-soft);color:var(--avp-text);border-color:var(--avp-border)}
@@ -33,7 +33,7 @@ html[data-avp-theme="dark"] body :is(pre,code){background-color:var(--avp-surfac
 /* Layout mode is a preference, not a viewport/zoom hack. */
 html.avp-layout-mobile body{min-width:0!important;width:100%!important;max-width:100%!important}
 html.avp-layout-mobile body :is(main,.main-shell,.main-content,.page-content,.page-container,.content-wrapper,.container,.dashboard-container){max-width:100%;box-sizing:border-box}
-html.avp-layout-desktop{overflow-x:auto}
+html.avp-layout-desktop{overflow-x:auto!important}
 html.avp-layout-desktop body{min-width:1080px!important;width:auto!important;max-width:none!important}
 html.avp-layout-desktop body :is(main,.main-shell,.main-content,.page-content,.page-container,.content-wrapper,.dashboard-container){max-width:none}
 html.avp-layout-desktop body :is(.stats-grid,.home-modules-grid,.features-grid,.card-grid,.dashboard-grid,.tools-grid){grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
