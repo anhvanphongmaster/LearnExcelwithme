@@ -849,6 +849,21 @@
     }
   }
   window.addEventListener("avp:admin-chat-open",async()=>{
+    // Re-check the session at click time. Some non-admin accounts restore
+    // their Supabase session after the initial chat boot; showing the guest
+    // panel permanently in that race made Chat Admin appear unclickable.
+    try{
+      const sessionResult=await client?.auth?.getSession?.();
+      const currentUser=sessionResult?.data?.session?.user||null;
+      if(currentUser && String(currentUser.id)!==String(user?.id||"")){
+        user=currentUser;
+        await resetChatRuntime();
+        await renderChatForCurrentUser();
+      }
+    }catch(error){
+      console.warn("[AVP Chat] Session refresh on open failed:",error);
+    }
+
     if($("avpChatPanel")){await togglePanel(true);return;}
     if($("avpGuestChatPanel")){$("avpGuestChatPanel").hidden=false;return;}
     const adminPanel=$("avpAdminFloatPanel");
