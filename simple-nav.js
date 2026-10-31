@@ -621,6 +621,20 @@ document.addEventListener("DOMContentLoaded",function(){
     search.setAttribute("aria-label","Tìm kiếm toàn website");
     search.innerHTML='<span>Tìm hàm, bài học, công cụ...</span><kbd>Ctrl K</kbd>';
   }
+  // Always bind after the shared header rebuilds its DOM. The original button
+  // may exist in HTML already, so the old "create-only" handler was skipped.
+  if(!search.dataset.avpSearchBound){
+    search.dataset.avpSearchBound="1";
+    search.addEventListener("click",function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if(typeof window.openGlobalSearch==="function")window.openGlobalSearch();
+      else{
+        var fallback=document.getElementById("avpSpotlightBackdrop");
+        if(fallback){fallback.classList.add("open");var field=fallback.querySelector("input");if(field)field.focus();}
+      }
+    });
+  }
   var theme=nav.querySelector("#themeToggle");
   var toggle=document.createElement("button");
   toggle.type="button";
