@@ -1296,6 +1296,20 @@ function bind(){
   $("pgAppealClose")?.addEventListener("click",closeAppeal);
   qa("[data-pg-appeal-close]").forEach(x=>x.onclick=closeAppeal);
   renderLessons();loadSubmissionStates();loadLeaderboard();
+  try{
+    const requested=new URLSearchParams(location.search).get("lesson");
+    const target=lessons().find(x=>x.key===requested);
+    if(target){
+      currentTopic=target.topic||"clean";currentDifficulty="all";
+      openTopicLessons();
+      requestAnimationFrame(()=>{
+        const button=[...document.querySelectorAll("[data-download]")].find(x=>x.dataset.download===requested);
+        const card=button?.closest(".pg-card");
+        card?.scrollIntoView({behavior:"smooth",block:"center"});
+        card?.classList.add("avp-search-target");
+      });
+    }
+  }catch(_){}
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",bind,{once:true});else bind();
 })();
