@@ -84,8 +84,15 @@ function makeRows(q){
 }
 async function fetchTools(q){
  try{
-  const variants=expand(q).slice(0,5);
-  const batches=await Promise.all(variants.map(term=>fetch(SUPABASE_URL+'/rest/v1/rpc/tool_catalog_v2',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_search:term})}).then(r=>r.ok?r.json():[]).catch(()=>[])));
+  const n=norm(q),terms=new Set([String(q||'').trim()]);
+  const semantic=[
+   {keys:['cong no','phai thu','phai tra','no khach hang','no nha cung cap'],terms:['công nợ','Quản Lý Công Nợ Tự Động','phải thu','phải trả','thanh toán','quá hạn']},
+   {keys:['doi soat','so sanh','chenh lech','compare file'],terms:['đối soát','so sánh file','Compare 2 Files Pro','chênh lệch']},
+   {keys:['xoa dong trong','dong rong','blank rows','clean data','lam sach du lieu'],terms:['làm sạch dữ liệu','ô trống','dòng trống','Excel Data Cleaner Pro']},
+   {keys:['power query gop file','gop file','combine files'],terms:['Power Query','gộp file','kết hợp nhiều file']}
+  ];
+  for(const group of semantic)if(group.keys.some(k=>n.includes(norm(k))||norm(k).includes(n)))group.terms.forEach(x=>terms.add(x));
+  const batches=await Promise.all([...terms].filter(Boolean).slice(0,7).map(term=>fetch(SUPABASE_URL+'/rest/v1/rpc/tool_catalog_v2',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_search:term})}).then(r=>r.ok?r.json():[]).catch(()=>[])));
   const rows=[...new Map(batches.flat().filter(Boolean).map(t=>[String(t.id||t.title),t])).values()];
   return rows.map(t=>({title:t.title||'Tool',description:[t.application,t.description].filter(Boolean).join(' · '),url:'tools-library.html',type:'Kho Tool',icon:'🧰',content:[t.title,t.application,t.description].join(' '),_score:scoreItem({title:t.title,description:t.description,content:t.application},q,expand(q))+55}));
  }catch(_){return []}
