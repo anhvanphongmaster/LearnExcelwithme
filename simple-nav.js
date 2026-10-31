@@ -550,7 +550,7 @@ document.addEventListener("DOMContentLoaded",function(){
     var el=document.createElement(tag);
     if(tag==="link"){el.rel="stylesheet";el.href=src;}
     else{el.src=src;el.defer=true;}
-    var attr=(selector.match(/\\[([^\\]]+)\\]/)||[])[1];if(attr)el.setAttribute(attr,"1");
+    var attr=selector.indexOf("[")>=0?selector.slice(selector.indexOf("[")+1,selector.indexOf("]")):"";if(attr)el.setAttribute(attr,"1");
     (document.head||document.documentElement).appendChild(el);
   }
   loadAsset("link",'link[data-avp-theme-system-css]',"avp-theme-system-v1.css?v=20261031-2");
