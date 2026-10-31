@@ -55,6 +55,6 @@ function close(){$("dfModal").setAttribute("aria-hidden","true");document.body.s
 $("dfSearch").addEventListener("input",render);$("dfReset").addEventListener("click",()=>{$("dfSearch").value="";category="all";level="Tất cả";$("dfLevels").querySelectorAll("[data-level]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.level==="Tất cả")));render()});$("dfLevels").querySelectorAll("[data-level]").forEach(b=>b.addEventListener("click",()=>{level=b.dataset.level;$("dfLevels").querySelectorAll("[data-level]").forEach(z=>z.setAttribute("aria-pressed",String(z===b)));render()}));$("dfClose").addEventListener("click",close);$("dfModal").addEventListener("click",e=>{if(e.target===$("dfModal"))close()});document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("dfModal").getAttribute("aria-hidden")==="false")close()});render();
 })();
 </script>
-<script src="simple-nav.js"></script><script src="avp-display-mode.js?v=2"></script><script src="global-search.js?v=20261031-search-index2"></script>
+<script src="simple-nav.js"></script><script src="avp-display-mode.js?v=2"></script><script src="global-search.js?v=20261031-search-index3"></script>
 <script>(function(){try{var q=new URLSearchParams(location.search).get('q'),el=document.getElementById('dfSearch');if(q&&el){el.value=q;el.dispatchEvent(new Event('input',{bubbles:true}));}}catch(e){}})();</script>
 </body></html>
