@@ -486,3 +486,21 @@ html.avp-home-canonical .avp-home-map-footer{padding-top:7px!important}
  html.avp-home-canonical .avp-home-map-art{height:88px!important;min-height:88px!important}
  html.avp-home-canonical .avp-home-map-art svg{max-height:88px!important}
 }
+
+
+/* Final mobile alignment: journey card matches the intro card width. */
+@media(max-width:760px){
+ html.avp-home-canonical .avp-canonical-actions{width:100%!important;max-width:500px!important}
+ html.avp-home-canonical .avp-home-map-card{
+   width:100%!important;
+   max-width:500px!important;
+   min-height:190px!important;
+   box-sizing:border-box!important;
+   align-self:flex-start!important;
+   padding:13px 15px 11px!important;
+ }
+ html.avp-home-canonical .avp-home-map-art{
+   height:58px!important;min-height:58px!important;margin:4px 0 3px!important
+ }
+ html.avp-home-canonical .avp-home-map-art svg{max-height:58px!important}
+}
