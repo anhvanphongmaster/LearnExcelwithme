@@ -41,3 +41,8 @@ html[data-avp-display-mode="desktop"] .avp-nav-v2-drawer{width:310px}
  .avp-nav-v2-items{min-height:100px!important}
  .avp-nav-v2-link{min-height:40px!important}
 }
+
+/* Theme selector shares the same compact segmented-control system as layout. */
+.avp-nav-v2-settings [data-avp-theme].is-active{background:#16784b;color:#fff;box-shadow:0 2px 7px #0b583722}
+body.dark-mode .avp-nav-v2-settings [data-avp-theme]{color:#c7d9cd}
+body.dark-mode .avp-nav-v2-settings [data-avp-theme].is-active{background:#16784b;color:#fff}
