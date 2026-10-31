@@ -30,7 +30,7 @@
         doc.querySelectorAll('h1,h2,h3,h4').forEach(h=>{const title=(h.textContent||'').trim().replace(/\\s+/g,' ');if(title.length>2)added.push({icon:'🔎',title,desc:(h.parentElement?.innerText||'').slice(0,220),url:h.id?path+'#'+h.id:path,type:pageTitle,keys:title+' '+(h.parentElement?.innerText||'').slice(0,3500)+' '+path})});
         doc.querySelectorAll('a[href]').forEach(a=>{const title=(a.textContent||a.getAttribute('aria-label')||'').trim().replace(/\\s+/g,' '),href=a.getAttribute('href');if(title.length<3||!href||/^(mailto:|tel:|javascript:|#)/i.test(href))return;try{const u=new URL(href,location.href);if(u.origin===location.origin)added.push({icon:'↗',title,desc:'Liên kết trong '+pageTitle,url:u.pathname.replace(/^\\//,'')+u.search+u.hash,type:'Liên kết',keys:title+' '+pageTitle})}catch{}});
       }catch(e){}}}
-      await Promise.all(Array.from({length:6},worker));
+      await Promise.all(Array.from({length:2},worker));
       // Load structured learning catalogs so search reaches individual learning objects, not only page text.
       const catalogScripts=['excel-formula-library-data.js','excel-shortcut-library-data.js','excel-knowledge-library-data.js','excel-data-format-library-data.js','excel-arena-questions.js','practice-lessons.js'];
       const loadScript=src=>new Promise(resolve=>{const el=document.createElement('script');el.src=src;el.async=true;el.onload=()=>resolve(true);el.onerror=()=>resolve(false);document.head.appendChild(el)});
@@ -47,7 +47,7 @@
       (arena.concepts||[]).forEach(x=>add('🎯',x.answer,x.meaning+' · '+x.scenario,'excel-race.html','Kiến thức thử thách',[x.answer,x.meaning,x.scenario,(x.aliases||[]).join(' ')].join(' ')));
       (window.AVP_PRACTICE_LESSONS||[]).filter(x=>x.isActive!==false).forEach(x=>add('📝',x.title,[x.topicLabel,x.description,x.fileName,x.difficulty].filter(Boolean).join(' · '),'practice-video.html','Bài thực hành',[x.title,x.topic,x.topicLabel,x.description,x.fileName,x.grader,x.gradingMode].join(' ')));
       const seen=new Set();added=added.filter(x=>{const k=x.title+'|'+x.url;if(seen.has(k))return false;seen.add(k);return true});
-      added.forEach(x=>ITEMS.push(x));try{sessionStorage.setItem('avpGlobalSearchIndexV3',JSON.stringify({time:Date.now(),items:added}))}catch{}
+      added.forEach(x=>ITEMS.push(x));try{sessionStorage.setItem('avpGlobalSearchIndexV4',JSON.stringify({time:Date.now(),items:added}))}catch{}
     })();return indexPromise;
   }
 
@@ -83,5 +83,5 @@
   function go(){if(!current[active])return;saveRecent(current[active].title);location.href=current[active].url}
   window.openGlobalSearch=open;window.closeGlobalSearch=close;
   wrap.addEventListener('click',e=>{if(e.target===wrap)close()});input.addEventListener('input',()=>{render(input.value);buildSiteIndex().then(()=>render(input.value))});input.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();setActive(active+1)}else if(e.key==='ArrowUp'){e.preventDefault();setActive(active-1)}else if(e.key==='Enter'){e.preventDefault();go()}else if(e.key==='Escape')close()});document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();wrap.classList.contains('open')?close():open()}else if(e.key==='Escape'&&wrap.classList.contains('open'))close();else if(e.key==='Tab'&&wrap.classList.contains('open')){const focusable=[...wrap.querySelectorAll('input:not([disabled]),a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(el=>el.getClientRects().length>0);if(!focusable.length){e.preventDefault();input.focus();return}const first=focusable[0],last=focusable[focusable.length-1];if(e.shiftKey&&(document.activeElement===first||!wrap.contains(document.activeElement))){e.preventDefault();last.focus()}else if(!e.shiftKey&&(document.activeElement===last||!wrap.contains(document.activeElement))){e.preventDefault();first.focus()}}});render('');
-  buildSiteIndex().then(()=>{if(wrap.classList.contains('open'))render(input.value)});
+  // Build the large site index only after the user starts typing; avoid blocking Safari on page load.
 })();
