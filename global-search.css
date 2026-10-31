@@ -179,8 +179,3 @@ body:not(.dark-mode) .avp-spotlight.avp-force-light {
         transform: none;
     }
 }
-
-/* Search trigger must remain clickable above navigation decoration. */
-#avpSearchTrigger { position: relative; z-index: 10002; pointer-events: auto; touch-action: manipulation; }
-.avp-search-floating { position: fixed; right: 16px; bottom: 18px; z-index: 10003; border-radius: 999px; box-shadow: 0 8px 28px rgba(0,0,0,.28); }
-@media (min-width: 761px) { .avp-search-floating { display: none; } }
