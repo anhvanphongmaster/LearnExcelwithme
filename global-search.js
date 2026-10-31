@@ -84,10 +84,10 @@ function makeRows(q){
 }
 async function fetchTools(q){
  try{
-  const res=await fetch(SUPABASE_URL+'/rest/v1/rpc/tool_catalog_v2',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_search:q})});
-  if(!res.ok)return [];
-  const rows=await res.json();
-  return Array.isArray(rows)?rows.map(t=>({title:t.title||'Tool',description:[t.application,t.description].filter(Boolean).join(' · '),url:'tools-library.html',type:'Kho Tool',icon:'🧰',content:[t.title,t.application,t.description].join(' '),_score:scoreItem({title:t.title,description:t.description,content:t.application},q,expand(q))+55})): [];
+  const variants=expand(q).slice(0,5);
+  const batches=await Promise.all(variants.map(term=>fetch(SUPABASE_URL+'/rest/v1/rpc/tool_catalog_v2',{method:'POST',headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_search:term})}).then(r=>r.ok?r.json():[]).catch(()=>[])));
+  const rows=[...new Map(batches.flat().filter(Boolean).map(t=>[String(t.id||t.title),t])).values()];
+  return rows.map(t=>({title:t.title||'Tool',description:[t.application,t.description].filter(Boolean).join(' · '),url:'tools-library.html',type:'Kho Tool',icon:'🧰',content:[t.title,t.application,t.description].join(' '),_score:scoreItem({title:t.title,description:t.description,content:t.application},q,expand(q))+55}));
  }catch(_){return []}
 }
 const wrap=document.createElement('div');wrap.className='avp-spotlight-backdrop';wrap.id='avpSpotlightBackdrop';
