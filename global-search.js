@@ -86,7 +86,7 @@ function scoreItem(item,query,expanded){
   else if(bt.has(term)){score+=9;hit=true}
   else if(term.length>=4){
    let best=3;
-   for(const t of bt){if(t[0]!==term[0]||Math.abs(t.length-term.length)>1)continue;best=Math.min(best,distance(term,t));if(best===0)break}
+   for(const t of bt){if(Math.abs(t.length-term.length)>1)continue;best=Math.min(best,distance(term,t));if(best===0)break}
    if(best===1){score+=4;hit=true}
   }
   if(hit)matched++;
@@ -121,13 +121,20 @@ const input=$('avpSpotlightInput'),results=$('avpSearchResults'),label=$('avpSea
 let current=[],active=0,returnFocus=null,previousOverflow='',searchTimer=0,requestId=0;
 function saveRecent(item){try{const old=JSON.parse(localStorage.getItem('avpSearchRecent')||'[]');localStorage.setItem('avpSearchRecent',JSON.stringify([item,...old.filter(x=>x!==item)].slice(0,6)))}catch(_){}}
 function resultUrl(x){if(/\.(xlsx|xlsm|xls|zip|pdf)$/i.test(x.url))return new URL(x.url,location.href).href;return new URL(x.url,location.href).href}
+let visibleLimit=25;
 function draw(items,q,loadingTools=false){
- current=items.slice(0,40);active=0;
+ current=items;active=0;visibleLimit=25;
  label.textContent=q?'Kết quả trên toàn website':'Tìm kiếm toàn website';
  count.textContent=(items.length?items.length+' kết quả':'')+(loadingTools?' · đang tìm trong Kho Tool':'');
  if(!items.length){results.innerHTML='<div class="avp-search-empty"><b>Chưa tìm thấy nội dung phù hợp</b>Thử từ khóa khác, bỏ dấu hoặc nhập một cụm gần nghĩa.</div>';return}
- results.innerHTML=items.slice(0,25).map((x,i)=>'<a class="avp-search-result '+(i===0?'active':'')+'" data-index="'+i+'" href="'+esc(resultUrl(x))+'"><span class="avp-search-result-icon">'+(x.icon||'🔎')+'</span><span><strong>'+esc(x.title)+'</strong><small>'+esc(x.description||'')+'</small></span><span class="avp-search-type">'+esc(x.type||'Nội dung')+'</span></a>').join('');
+ renderVisible();
+}
+function renderVisible(){
+ const shown=current.slice(0,visibleLimit);
+ results.innerHTML=shown.map((x,i)=>'<a class="avp-search-result '+(i===0?'active':'')+'" data-index="'+i+'" href="'+esc(resultUrl(x))+'"><span class="avp-search-result-icon">'+(x.icon||'🔎')+'</span><span><strong>'+esc(x.title)+'</strong><small>'+esc(x.description||'')+'</small></span><span class="avp-search-type">'+esc(x.type||'Nội dung')+'</span></a>').join('');
+ if(current.length>visibleLimit)results.insertAdjacentHTML('beforeend','<button class="avp-search-more" type="button">Hiển thị thêm '+Math.min(25,current.length-visibleLimit)+' / '+current.length+' kết quả</button>');
  results.querySelectorAll('.avp-search-result').forEach(el=>{el.addEventListener('mouseenter',()=>setActive(+el.dataset.index));el.addEventListener('click',()=>saveRecent(current[+el.dataset.index]?.title||''))});
+ results.querySelector('.avp-search-more')?.addEventListener('click',()=>{visibleLimit=Math.min(visibleLimit+25,current.length);renderVisible()});
 }
 function setActive(i){const els=[...results.querySelectorAll('.avp-search-result')];if(!els.length)return;active=(i+els.length)%els.length;els.forEach((el,n)=>el.classList.toggle('active',n===active));els[active].scrollIntoView({block:'nearest'})}
 async function search(q){
