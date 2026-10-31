@@ -532,7 +532,7 @@ document.addEventListener("DOMContentLoaded",function(){
 });
 
 
-/* AVP VERTICAL NAVIGATION V1 — shared drawer across public pages. */
+/* AVP VERTICAL NAVIGATION V2 — replaces legacy horizontal header and robot launcher. */
 (function(){
   if(window.self!==window.top)return;
   function loadAsset(tag,selector,src){
@@ -540,9 +540,9 @@ document.addEventListener("DOMContentLoaded",function(){
     var el=document.createElement(tag);
     if(tag==="link"){el.rel="stylesheet";el.href=src;}
     else{el.src=src;el.defer=true;}
-    el.dataset.avpSiteNavigation="1";
+    el.dataset.avpSiteNavigationV2="1";
     (document.head||document.documentElement).appendChild(el);
   }
-  loadAsset("link",'link[data-avp-site-navigation-css]',"site-navigation-v1.css?v=20261031-1");
-  loadAsset("script",'script[data-avp-site-navigation-js]',"site-navigation-v1.js?v=20261031-1");
+  loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261031-1");
+  loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261031-1");
 })();
