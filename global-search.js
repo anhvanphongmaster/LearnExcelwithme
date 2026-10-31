@@ -82,7 +82,8 @@ function buildCatalog(){
  resources.forEach(r=>all.push({title:r.title,description:r.description,url:r.url,type:r.type||'Tài nguyên',icon:'📊',content:r.keywords||''}));
  contentRecords.forEach(r=>all.push({title:r.title,description:r.description||'',url:r.url||'index.html',type:r.type||'Nội dung',icon:'📚',content:r.content||''}));
  dictionary.forEach(d=>all.push({title:d.title,description:d.purpose||d.subtitle||'Thư viện kiến thức Excel',url:'excel-dictionary.html?q='+encodeURIComponent(d.title||''),type:d.type||'Thư viện Excel',icon:'🧮',content:[d.keywords,d.syntax,d.example,d.advanced,d.related,d.causes,d.checks,d.fixes,d.parts].flat(Infinity).join(' ')}));
- catalog=all.map(x=>{const title=norm(x.title),body=norm([x.description,x.content,x.keywords,x.purpose,x.syntax,x.example,x.advanced,x.subtitle,x.type].join(' '));return {...x,_title:title,_body:body,_titleTokens:new Set(tokens(title)),_bodyTokens:new Set(tokens(body))}});
+ const unique=new Map();all.forEach(x=>{const key=norm(x.title)+'|'+String(x.url||'');const prev=unique.get(key);if(prev){prev.content=[prev.content,x.content].filter(Boolean).join(' ');prev.description=prev.description||x.description}else unique.set(key,{...x})});
+ catalog=[...unique.values()].map(x=>{const title=norm(x.title),body=norm([x.description,x.content,x.keywords,x.purpose,x.syntax,x.example,x.advanced,x.subtitle,x.type].join(' '));return {...x,_title:title,_body:body,_titleTokens:new Set(tokens(title)),_bodyTokens:new Set(tokens(body))}});
 }
 function scoreItem(item,query,expanded){
  const title=item._title,body=item._body,q=norm(query),qt=tokens(q),tt=item._titleTokens,bt=item._bodyTokens;
