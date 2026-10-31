@@ -1,8 +1,9 @@
 (function(){
-  let savedTheme="light";
-  try { savedTheme=localStorage.getItem("theme")==="dark"?"dark":"light"; } catch(e) {}
-  document.documentElement.classList.toggle("dark-mode",savedTheme==="dark");
-  document.body?.classList.toggle("dark-mode",savedTheme==="dark");
+  // Site-wide dark theme is temporarily disabled until each page has audited color tokens.
+  try { localStorage.setItem("theme","light"); } catch(e) {}
+  document.documentElement.classList.remove("dark-mode");
+  document.body?.classList.remove("dark-mode");
+  document.documentElement.dataset.avpTheme="light";
 
   function loadCss(href,key){
     if(document.querySelector('link[data-'+key+']'))return;
