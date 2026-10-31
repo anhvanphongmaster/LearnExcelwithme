@@ -504,3 +504,13 @@ html.avp-home-canonical .avp-home-map-footer{padding-top:7px!important}
  }
  html.avp-home-canonical .avp-home-map-art svg{max-height:58px!important}
 }
+html.avp-home-canonical .avp-resource-cases .avp-resource-icon{background:#fff0d9;color:#a96b18}
+html.avp-home-canonical .avp-resource-cases .avp-resource-copy>small{color:#a47732}
+html.avp-home-canonical .avp-resource-cases .avp-resource-copy>b{background:#a96b18}
+html.avp-home-canonical .avp-resource-collection{background:linear-gradient(125deg,#fff,#f4f0fa);border-color:#e6dff0}
+html.avp-home-canonical .avp-resource-collection .avp-resource-icon{background:#eee6f7;color:#7651a6}
+html.avp-home-canonical .avp-resource-collection .avp-resource-copy>small{color:#8066a2}
+html.avp-home-canonical .avp-resource-collection .avp-resource-copy>b{background:#7651a6}
+html.avp-home-canonical .avp-resource-coming{cursor:default;opacity:.88}
+html.avp-home-canonical .avp-resource-results{font:inherit;text-align:left;cursor:pointer}
+html.avp-home-canonical .avp-resource-results .avp-resource-copy>b{border:0}
