@@ -195,7 +195,7 @@ html.avp-intro-no-site-chrome body{padding-top:0!important;margin-top:0!importan
  }
  async function playSound(){
   if(muted)return false;
-  try{const a=prepareAudio();const p=a.play();if(p&&p.then)await p;await new Promise(resolve=>setTimeout(resolve,500));if(a.error||a.paused||a.currentTime<0.08)throw new Error('Audio did not advance');soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';return true;}
+  try{const a=prepareAudio();const p=a.play();if(p&&p.then)await p;if(a.error||a.paused)throw new Error('Audio playback was blocked');soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';return true;}
   catch(err){soundBtn.dataset.state='off';soundBtn.textContent='Chạm để bật âm thanh';return false;}
  }
  function stopSound(){
