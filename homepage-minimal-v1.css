@@ -556,3 +556,6 @@ html.avp-home-canonical .avp-intro-under-illustration i{margin-left:auto;font-st
 .avp-map-chapter button{padding:9px 11px;font-size:10px}
 .avp-map-note{margin:14px 0 0;padding:11px 13px;border-radius:11px;background:#f0f5f1;color:#627367;font-size:11px;line-height:1.5}
 @media(max-width:700px){.avp-map-next-step{align-items:flex-start;flex-direction:column;padding:15px}.avp-map-next-step h3{font-size:17px}.avp-map-route{grid-template-columns:1fr}.avp-map-info{grid-template-columns:1fr 1fr!important}.avp-map-info article:last-child{grid-column:1/-1}.avp-map-box{max-height:94dvh!important}}
+
+/* Map modal visibility guard: the hidden state must always win over display grid. */
+.avp-map-modal[hidden]{display:none!important}.avp-map-modal:not([hidden]){display:grid!important}.avp-map-error{padding:16px;border:1px solid #e5c8b8;border-radius:12px;background:#fff6f1;color:#934d2b;font-size:13px;line-height:1.5}
