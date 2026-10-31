@@ -646,6 +646,7 @@
     // after Supabase has restored the session and the chat core has initialized.
     for(let i=0;i<160;i++){
       const panel=document.getElementById('avpChatPanel')||
+                  document.getElementById('avpAdminFloatPanel')||
                   document.getElementById('avpGuestChatPanel');
       if(panel){
         panel.hidden=false;
