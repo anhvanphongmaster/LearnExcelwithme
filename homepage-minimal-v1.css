@@ -453,23 +453,25 @@ html.avp-home-canonical .avp-home-map-footer b{
   font-weight:850!important;
 }
 
-/* Compact homepage journey card: preserve its full column width. */
+/* Learning map: narrower card, taller vertical proportion; keep hero illustration untouched. */
 html.avp-home-canonical .avp-home-map-card{
-  min-height:190px!important;
-  padding:15px 20px 12px!important;
+  width:82%!important;
+  min-height:245px!important;
+  align-self:flex-start!important;
+  padding:17px 18px 14px!important;
 }
-html.avp-home-canonical .avp-home-map-kicker{margin-bottom:4px!important}
-html.avp-home-canonical .avp-home-map-card>strong{margin-bottom:3px!important;font-size:20px!important}
-html.avp-home-canonical .avp-home-map-copy{font-size:12px!important;line-height:1.4!important}
+html.avp-home-canonical .avp-home-map-kicker{margin-bottom:6px!important}
+html.avp-home-canonical .avp-home-map-card>strong{margin-bottom:5px!important;font-size:20px!important}
+html.avp-home-canonical .avp-home-map-copy{font-size:12px!important;line-height:1.45!important}
 html.avp-home-canonical .avp-home-map-art{
-  height:58px!important;min-height:58px!important;margin:3px 0 2px!important;
+  height:88px!important;min-height:88px!important;margin:6px 0 4px!important;
 }
-html.avp-home-canonical .avp-home-map-art svg{max-height:58px!important}
-html.avp-home-canonical .avp-home-map-footer{padding-top:6px!important}
+html.avp-home-canonical .avp-home-map-art svg{max-height:88px!important}
+html.avp-home-canonical .avp-home-map-footer{padding-top:7px!important}
 @media(max-width:760px){
- html.avp-home-canonical .avp-home-map-card{min-height:180px!important;padding:13px 15px 10px!important}
- html.avp-home-canonical .avp-home-map-art{height:52px!important;min-height:52px!important}
- html.avp-home-canonical .avp-home-map-art svg{max-height:52px!important}
+ html.avp-home-canonical .avp-home-map-card{width:82%!important;min-height:230px!important;padding:15px 16px 12px!important}
+ html.avp-home-canonical .avp-home-map-art{height:78px!important;min-height:78px!important}
+ html.avp-home-canonical .avp-home-map-art svg{max-height:78px!important}
 }
 @media(max-width:760px){
  html.avp-home-canonical .avp-canonical-inner.avp-hero-split{
