@@ -956,14 +956,7 @@ function init(){
  });
 }
  function openMap(){
-  map.hidden=false;
-  map.style.display='grid';
-  map.setAttribute('aria-hidden','false');
-  document.body.style.overflow='hidden';
-  try{
-   mapRender();
-   loadProgressDataScripts(function(){try{mapRender();}catch(err){showMapError(err);}});
-  }catch(err){showMapError(err);}
+  window.location.href='learning-map.html';
  }
  function showMapError(err){
   var route=map.querySelector('[data-map-route]');
