@@ -226,37 +226,7 @@
 })();
 
 
-/* Ensure learning hub FAB only on legacy pages that truly omit avp-core.
-   IMPORTANT: wait until the document is fully parsed. Running this check while
-   simple-nav.js is being parsed can miss a later <script src="avp-core.js"> and
-   load avp-core twice, creating two robots. */
-(function(){
-  function ensureAvpCore(){
-    try{
-      if(window.self!==window.top) return;
-      if(document.getElementById("avpEdgeLauncher") || window.__AVP_CORE_BOOTED__) return;
-      if(document.querySelector('script[src="avp-core.js"],script[src*="/avp-core.js"],script[src^="avp-core.js?"]')) return;
-
-      if(!document.querySelector('link[href="avp-core.css"],link[href*="/avp-core.css"],link[href^="avp-core.css?"]')){
-        var l=document.createElement("link");
-        l.rel="stylesheet";
-        l.href="avp-core.css";
-        document.head.appendChild(l);
-      }
-
-      var s=document.createElement("script");
-      s.src="avp-core.js";
-      s.dataset.avpCoreFallback="1";
-      document.body.appendChild(s);
-    }catch(e){}
-  }
-
-  if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",ensureAvpCore,{once:true});
-  }else{
-    ensureAvpCore();
-  }
-})();
+/* Legacy robot auto-loader removed. Site navigation is now handled by site-navigation-v1.js. */
 
 /* === AVP site motion (visual only — no data) === */
 (function () {
@@ -562,175 +532,17 @@ document.addEventListener("DOMContentLoaded",function(){
 });
 
 
-/* AVP GLOBAL HEADER V1 — one shared, fixed header across public pages. */
+/* AVP VERTICAL NAVIGATION V1 — shared drawer across public pages. */
 (function(){
-  try{
-    if(window.self!==window.top)return;
-    var viewport=document.querySelector('meta[name="viewport"]');
-    if(viewport)viewport.setAttribute('content','width=device-width, initial-scale=1, viewport-fit=cover');
-    if(!document.querySelector('link[data-avp-global-header-css]')){
-      var css=document.createElement('link');
-      css.rel='stylesheet';
-      css.href='avp-global-header-v1.css?v=20261030-1';
-      css.dataset.avpGlobalHeaderCss='1';
-      document.head.appendChild(css);
-    }
-    if(!document.querySelector('link[href*="global-search.css"]')){
-      var searchCss=document.createElement('link');
-      searchCss.rel='stylesheet';searchCss.href='global-search.css?v=20261031-search-index3';
-      document.head.appendChild(searchCss);
-    }
-    if(!document.querySelector('script[src*="global-search.js"]')){
-      var searchScript=document.createElement('script');
-      searchScript.src='global-search.js?v=20261031-search-index3';
-      searchScript.dataset.avpGlobalSearch='1';
-      document.head.appendChild(searchScript);
-    }
-    if(!document.querySelector('link[href*="auth.css"]')){
-      var authCss=document.createElement('link');
-      authCss.rel='stylesheet';authCss.href='auth.css?v=20261030-header1';
-      document.head.appendChild(authCss);
-    }
-  }catch(e){}
+  if(window.self!==window.top)return;
+  function loadAsset(tag,selector,src){
+    if(document.querySelector(selector))return;
+    var el=document.createElement(tag);
+    if(tag==="link"){el.rel="stylesheet";el.href=src;}
+    else{el.src=src;el.defer=true;}
+    el.dataset.avpSiteNavigation="1";
+    (document.head||document.documentElement).appendChild(el);
+  }
+  loadAsset("link",'link[data-avp-site-navigation-css]',"site-navigation-v1.css?v=20261031-1");
+  loadAsset("script",'script[data-avp-site-navigation-js]',"site-navigation-v1.js?v=20261031-1");
 })();
-document.addEventListener("DOMContentLoaded",function(){
-  var nav=document.querySelector(".top-simple-nav");
-  if(!nav){
-    nav=document.createElement("nav");
-    nav.className="top-simple-nav";
-    nav.setAttribute("aria-label","Điều hướng chính");
-    document.body.insertBefore(nav,document.body.firstChild);
-  }
-  if(nav.dataset.avpGlobalHeader==="1")return;
-  var auth=nav.querySelector(".auth-nav-slot")||document.createElement("span");
-  auth.className="auth-nav-slot";
-  if(!auth.firstElementChild){
-    auth.innerHTML='<a class="auth-nav-button avp-header-login-fallback" href="auth.html?tab=login" aria-label="Tài khoản">Tài khoản</a>';
-  }
-  var search=nav.querySelector("#avpSearchTrigger");
-  if(!search){
-    search=document.createElement("button");
-    search.type="button";
-    search.id="avpSearchTrigger";
-    search.className="avp-search-trigger";
-    search.setAttribute("aria-label","Tìm kiếm toàn website");
-    search.innerHTML='<span>Tìm hàm, bài học, công cụ...</span><kbd>Ctrl K</kbd>';
-  }else{
-    search.className="avp-search-trigger";
-    search.setAttribute("aria-label","Tìm kiếm toàn website");
-    search.innerHTML='<span>Tìm hàm, bài học, công cụ...</span><kbd>Ctrl K</kbd>';
-  }
-  /* Bind directly to the visible button as well as the delegated fallback. */
-  if(!search.__avpDirectSearchBound){
-    search.__avpDirectSearchBound=true;
-    search.addEventListener("click",function(e){
-      e.preventDefault();
-      if(typeof window.openGlobalSearch==="function"){
-        window.openGlobalSearch();
-        return;
-      }
-      var script=document.querySelector('script[src*="global-search.js"]');
-      if(!script){
-        script=document.createElement("script");
-        script.src="global-search.js?v=20261031-search-index4";
-        script.async=true;
-        document.head.appendChild(script);
-      }
-      script.addEventListener("load",function(){
-        if(typeof window.openGlobalSearch==="function")window.openGlobalSearch();
-      },{once:true});
-    });
-  }
-  /* Reliable search activation: handle taps even if the search bundle is still loading. */
-  if(!document.__avpSearchTapBound){
-    document.__avpSearchTapBound=true;
-    document.addEventListener("click",function(e){
-      var trigger=e.target&&e.target.closest?e.target.closest("#avpSearchTrigger"):null;
-      if(!trigger)return;
-      if(typeof window.openGlobalSearch==="function"){
-        window.openGlobalSearch();
-        return;
-      }
-      e.preventDefault();
-      var script=document.querySelector('script[src*="global-search.js"]');
-      if(!script){
-        script=document.createElement("script");
-        script.src="global-search.js?v=20261031-search-index3";
-        script.async=true;
-        document.head.appendChild(script);
-      }
-      var openWhenReady=function(){
-        if(typeof window.openGlobalSearch==="function")window.openGlobalSearch();
-      };
-      script.addEventListener("load",openWhenReady,{once:true});
-      if(script.dataset.avpSearchLoaded==="1")openWhenReady();
-      script.addEventListener("load",function(){script.dataset.avpSearchLoaded="1"},{once:true});
-    },true);
-  }
-  var theme=nav.querySelector("#themeToggle");
-  var toggle=document.createElement("button");
-  toggle.type="button";
-  toggle.className="avp-header-menu-toggle";
-  toggle.setAttribute("aria-label","Mở menu");
-  toggle.setAttribute("aria-expanded","false");
-  toggle.innerHTML='<span></span><span></span><span></span>';
-
-  nav.innerHTML="";
-  nav.dataset.avpGlobalHeader="1";
-  var brand=document.createElement("a");
-  brand.className="avp-header-brand";
-  brand.href="index.html";
-  brand.innerHTML='<img src="avp-logo.svg" alt=""><span><strong>Anh Văn Phòng</strong><small>Learn Excel With Me</small></span>';
-  var links=document.createElement("div");
-  links.className="avp-header-links";
-  var items=[
-    ["index.html","Trang chủ","home"],
-    ["learning-coach.html","Lộ trình học","learn"],
-    ["excel-library.html","Thư viện kiến thức","library"],
-    ["practice-video.html","Thực hành","practice"],
-    ["tools-center.html","Công cụ","tools"],
-    ["community.html","Blog","blog"]
-  ];
-  items.forEach(function(item){
-    var a=document.createElement("a");
-    a.href=item[0];a.textContent=item[1];a.dataset.avpNav=item[2];
-    links.appendChild(a);
-  });
-  var actions=document.createElement("div");
-  actions.className="avp-header-actions";
-  actions.appendChild(search);
-  if(theme){theme.classList.add("avp-header-theme");actions.appendChild(theme);}
-  actions.appendChild(auth);
-  actions.appendChild(toggle);
-  nav.append(brand,links,actions);
-
-  var page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
-  var groups={
-    home:["","index.html","gioithieu.html","intro.html","lienhe.html","contact.html","terms.html","privacy.html","disclaimer.html","open-source.html"],
-    learn:["learning-coach.html","professional-track.html","professional-access.html","learning-chapter.html","learning-chapter-2.html","learning-chapter-3.html","learning-chapter-4.html","quick-learn.html","excel.html","excel-nang-cao.html","certificate.html"],
-    library:["excel-library.html","excel-handbook.html","excel-dictionary.html","tai-lieu-tham-khao.html","phimtatexcel.html","congthucexcel.html","filtersort.html","pivottable.html","bieudopareto.html","baocaoexcel.html","power-query-course.html","power-pivot-dax.html","dashboard-dong.html","vba-macro.html","solver-whatif.html"],
-    practice:["practice-video.html","practice-youtube.html","practice-lab.html","practice-guides.html","practice-tiktok.html","practice-grader.html","baitapexcel.html","excel-race.html","focus-room.html"],
-    tools:["tools-center.html","tools-library.html","excel-mobile.html","formula-finder.html","qc-dashboard.html","playground.html","excel-doctor.html"],
-    blog:["community.html"]
-  };
-  links.querySelectorAll("a").forEach(function(a){
-    var active=(groups[a.dataset.avpNav]||[]).indexOf(page)>=0;
-    a.classList.toggle("is-current",active);
-    if(active)a.setAttribute("aria-current","page");
-  });
-  function closeMenu(){
-    nav.classList.remove("avp-menu-open");
-    toggle.setAttribute("aria-expanded","false");
-    toggle.setAttribute("aria-label","Mở menu");
-  }
-  toggle.addEventListener("click",function(e){
-    e.stopPropagation();
-    var open=!nav.classList.contains("avp-menu-open");
-    nav.classList.toggle("avp-menu-open",open);
-    toggle.setAttribute("aria-expanded",String(open));
-    toggle.setAttribute("aria-label",open?"Đóng menu":"Mở menu");
-  });
-  document.addEventListener("click",function(e){if(!nav.contains(e.target))closeMenu();});
-  links.querySelectorAll("a").forEach(function(a){a.addEventListener("click",closeMenu);});
-  document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMenu();});
-});
