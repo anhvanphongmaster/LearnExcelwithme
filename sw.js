@@ -64,7 +64,7 @@ async function injectGlobalHeader(req,res){
     const headers=new Headers(res.headers);
     headers.delete("content-length");headers.delete("content-encoding");headers.delete("transfer-encoding");
     if(html.includes("simple-nav.js"))return new Response(html,{status:res.status,statusText:res.statusText,headers:headers});
-    const tag='<script defer src="./simple-nav.js?v=20261030-avp-logo1" data-avp-global-header-loader></script>';
+    const tag='<script defer src="./simple-nav.js?v=20261031-nav-v2" data-avp-global-header-loader></script>';
     const updated=html.includes("</body>")?html.replace("</body>",tag+"</body>"):html+tag;
     return new Response(updated,{status:res.status,statusText:res.statusText,headers:headers});
   }catch(_){return res;}
