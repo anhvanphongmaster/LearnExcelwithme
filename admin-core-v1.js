@@ -336,6 +336,7 @@
 
   let adminUsersCache=[];
   let adminUsersOffset=0;
+  let adminUsersHasNext=false;
   const ADMIN_USERS_PAGE_SIZE=100;
   function fmtDate(v){
     if(!v) return "—";
@@ -347,7 +348,7 @@
     $("adminUsersShown").textContent=n(adminUsersCache.length);
     const prev=$("adminUsersPrev"),next=$("adminUsersNext"),page=$("adminUsersPageLabel");
     if(prev)prev.disabled=adminUsersOffset<=0;
-    if(next)next.disabled=adminUsersCache.length<ADMIN_USERS_PAGE_SIZE;
+    if(next)next.disabled=!adminUsersHasNext;
     if(page)page.textContent=`Trang ${Math.floor(adminUsersOffset/ADMIN_USERS_PAGE_SIZE)+1}`;
     $("adminUsersAdmins").textContent=n(adminUsersCache.filter(x=>x.is_admin).length);
     $("adminUsersHidden").textContent=n(adminUsersCache.filter(x=>x.exclude_from_leaderboard).length);
@@ -371,13 +372,15 @@
     if(resetPage)adminUsersOffset=0;
     const body=$("adminUsersBody"),q=$("adminUserSearch")?.value?.trim()||"";
     if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Đang tải danh sách tài khoản…</td></tr>';
-    const data=await rpcSoft("admin_um_list_users",{p_search:q,p_limit:ADMIN_USERS_PAGE_SIZE,p_offset:adminUsersOffset});
+    const data=await rpcSoft("admin_um_list_users",{p_search:q,p_limit:ADMIN_USERS_PAGE_SIZE+1,p_offset:adminUsersOffset});
     if(data?.__error){
       if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Không tải được danh sách tài khoản. Kiểm tra RPC Quản lý người dùng trong Supabase.</td></tr>';
       const notice=$("adminUsersNotice"); if(notice){notice.hidden=false;notice.textContent="Supabase chưa có RPC Quản lý người dùng hoặc schema chưa reload."}
       return;
     }
-    renderAdminUsers(data||[]);
+    const rows=Array.isArray(data)?data:[];
+    adminUsersHasNext=rows.length>ADMIN_USERS_PAGE_SIZE;
+    renderAdminUsers(rows.slice(0,ADMIN_USERS_PAGE_SIZE));
   }
   async function doUserAction(btn){
     const tr=btn.closest("tr[data-user-id]"); if(!tr)return;
