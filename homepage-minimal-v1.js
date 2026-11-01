@@ -16,7 +16,7 @@ function deleteLegacyDuplicateBlocks(){
    if(!targets.some(function(t){return txt===t;}))return;
    var box=node;
    for(var i=0;i<8&&box&&box!==document.body;i++){
-    if(box.matches('section,.home-first-v1,.home-first-inner-v1,.avp-canonical-start,.home-path-inner,.home-path,.home-extra-panel-v104,[data-home-block]'))break;
+    if(box.matches('section,.home-first-v1,.home-first-inner-v1,.avp-canonical-start,.avp-home-utility-inner,.home-extra-panel-v104,[data-home-block]'))break;
     box=box.parentElement;
    }
    if(box&&box!==document.body)box.remove();
@@ -103,7 +103,7 @@ function setup(){
  '</svg></span>'+
  '<span class="avp-home-map-footer"><span data-home-map-position>Điểm xuất phát</span><b>Mở bản đồ ↗</b></span></button></div>'+
  '<div class="avp-canonical-visual-wrap"><div class="avp-canonical-illustration"><div class="avp-float-label">Power Query</div><div class="avp-sheet"><small>AVP · DATA</small><div class="avp-bars"><i></i><i></i><i></i><i></i><i></i></div></div><div class="avp-checklist">✓　Dữ liệu<br>✓　Phân tích<br>✓　Báo cáo<br>✓　Tự động hóa</div><div class="avp-person">👨🏻‍💻</div><div class="avp-laptop"><span>▦</span><b>X</b></div><div class="avp-books-stack">Excel　·　Power Query　·　Dashboard</div></div><a class="avp-intro-under-illustration" href="intro.html?v=12"><span aria-hidden="true">▶</span><b>Xem giới thiệu<small>1 phút hiểu về AVP</small></b><i aria-hidden="true">↗</i></a></div></div>';
- ['#home-ai-intro','#ky-nang-excel','.home-path','#avp-home-ecosystem','#avp-reference-featured','#avp-featured-lessons','.avp-reference-next-steps'].forEach(function(s){document.querySelectorAll(s).forEach(function(n){n.remove();});});
+ ['#avp-home-ecosystem','#avp-reference-featured','#avp-featured-lessons','.avp-reference-next-steps'].forEach(function(s){document.querySelectorAll(s).forEach(function(n){n.remove();});});
  var discover=el('section','avp-canonical-discover');
  discover.innerHTML='<div class="avp-canonical-section-head"><div><h2>Khám phá ngay</h2><p>Chọn khu vực bạn quan tâm để bắt đầu hành trình.</p></div><a href="tools-center.html">Khám phá tất cả　↗</a></div><div class="avp-canonical-discover-grid"></div>';
  var cats=[
