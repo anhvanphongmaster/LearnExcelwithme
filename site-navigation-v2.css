@@ -33,3 +33,10 @@ body{padding-top:0!important}
 .avp-nav-v2-foot .avp-nav-v2-account:hover{background:var(--avp-nav-hover,#f1f6f2)!important}
 .avp-nav-v2-foot .avp-nav-v2-account svg{width:18px!important;height:18px!important;max-width:18px!important;max-height:18px!important;flex:0 0 18px!important}
 .avp-nav-v2-account-avatar{width:28px!important;height:28px!important;flex:0 0 28px!important;border-radius:50%!important;display:grid!important;place-items:center!important;background:#e8f3eb!important;color:#217346!important;font-size:12px!important;font-weight:800!important}
+
+/* Account navigation uses the saved profile avatar, not a decorative user icon. */
+.avp-nav-v2-foot .avp-nav-v2-account{justify-content:flex-start!important;gap:11px!important;background:transparent!important}
+.avp-nav-v2-account-avatar{width:30px!important;height:30px!important;flex:0 0 30px!important;overflow:hidden!important;border-radius:50%!important;display:grid!important;place-items:center!important;background:#e8f3eb!important;color:#217346!important;font-size:12px!important;font-weight:800!important}
+.avp-nav-v2-account-avatar img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important}
+.avp-nav-v2-account-label{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;flex:1 1 auto!important}
+.avp-nav-v2-foot .avp-nav-v2-account>svg{display:none!important}
