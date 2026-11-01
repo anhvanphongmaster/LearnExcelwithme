@@ -16,7 +16,7 @@ function deleteLegacyDuplicateBlocks(){
    if(!targets.some(function(t){return txt===t;}))return;
    var box=node;
    for(var i=0;i<8&&box&&box!==document.body;i++){
-    if(box.matches('section,.home-first-v1,.home-first-inner-v1,.avp-canonical-start,.avp-home-utility-inner,.home-extra-panel-v104,[data-home-block]'))break;
+    if(box.matches('section,.home-first-v1,.home-first-inner-v1,.avp-canonical-start,.home-extra-panel-v104,[data-home-block]'))break;
     box=box.parentElement;
    }
    if(box&&box!==document.body)box.remove();
@@ -694,7 +694,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
   ['tools-library.html','▣','TOOL & TEMPLATE','Kho Tool','Compare File · Clean Data Pro · Công nợ','Mở Kho Tool →','kho']
  ];
  toolsModal.querySelector('.avp-tools-picker-grid').innerHTML=toolApps.map(function(t){var tag=t[0]==='#open-code-hub'?'button':'a';var dest=t[0]==='#open-code-hub'?' type="button" data-open-code-hub':' href="'+t[0]+'"';return '<'+tag+' class="avp-tools-app '+t[6]+'"'+dest+'><span class="avp-tools-app-icon">'+t[1]+'</span><small>'+t[2]+'</small><strong>'+t[3]+'</strong><em>'+t[4]+'</em><b>'+t[5]+'</b></'+tag+'>';}).join('');
- toolsModal.querySelector('[data-open-code-hub]').addEventListener('click',function(){var launcher=document.getElementById('homeCodeHubOpen');closeToolsPicker();if(launcher){launcher.click();return;}var modal=document.getElementById('avpCodeHubModal');if(modal){modal.hidden=false;document.body.classList.add('avp-codehub-lock');return;}location.href='index.html#avpCodeHubModal';});
+ toolsModal.querySelector('[data-open-code-hub]').addEventListener('click',function(){closeToolsPicker();var modal=document.getElementById('avpCodeHubModal');if(modal){modal.hidden=false;document.body.classList.add('avp-codehub-lock');return;}location.href='index.html#avpCodeHubModal';});
  function openToolsPicker(){toolsModal.hidden=false;document.body.classList.add('avp-chapter-picker-open');toolsModal.querySelector('.avp-chapter-picker-close').focus();}
  function closeToolsPicker(){toolsModal.hidden=true;document.body.classList.remove('avp-chapter-picker-open');}
  if(toolsCard){toolsCard.href='#choose-avp-tools';toolsCard.setAttribute('role','button');toolsCard.setAttribute('aria-haspopup','dialog');toolsCard.setAttribute('aria-label','Mở thư mục Công cụ hỗ trợ');toolsCard.addEventListener('click',function(event){event.preventDefault();openToolsPicker();});}
