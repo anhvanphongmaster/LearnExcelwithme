@@ -1,33 +1,50 @@
-/* AVP global footer bar */
+/* AVP — unified legal footer bar */
 .avp-global-footer{
-  --avp-footer-bg:#102f25;--avp-footer-line:rgba(210,235,220,.14);
-  display:flex!important;flex-direction:column;gap:14px;
-  width:100%;margin:56px 0 0!important;padding:22px clamp(18px,4vw,56px) 18px!important;
-  box-sizing:border-box;border:0!important;border-top:1px solid var(--avp-footer-line)!important;
-  border-radius:0!important;background:linear-gradient(110deg,#102f25 0%,#174b37 58%,#123b2c 100%)!important;
-  color:#eef7f0!important;text-align:left!important;box-shadow:0 -10px 32px rgba(13,48,34,.08);
+  display:block!important;position:relative!important;inset:auto!important;
+  box-sizing:border-box!important;width:100%!important;max-width:none!important;
+  min-height:0!important;margin:56px 0 0!important;padding:0!important;
+  border:0!important;border-top:1px solid rgba(219,239,225,.16)!important;
+  border-radius:0!important;background:#123b2d!important;color:#edf6ef!important;
+  text-align:initial!important;box-shadow:none!important;overflow:visible!important;
 }
-.avp-footer-main{display:flex;align-items:center;justify-content:space-between;gap:24px;max-width:1440px;width:100%;margin:0 auto}
-.avp-footer-brandlock{display:flex;align-items:center;gap:12px;min-width:220px}
-.avp-footer-mark{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border:1px solid rgba(221,244,227,.25);border-radius:13px;background:rgba(231,248,236,.1);color:#d8f3df;font-size:15px;font-weight:950;letter-spacing:-1px}
-.avp-footer-brandcopy{display:flex;flex-direction:column;gap:4px;min-width:0}
-.avp-footer-brandcopy strong{font-size:13px;line-height:1.35;font-weight:850;letter-spacing:.01em;color:#f4fbf5}
-.avp-footer-brandcopy small{font-size:10px;line-height:1.45;color:#b8d4c1;letter-spacing:.045em}
-.avp-footer-nav{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:7px}
-.avp-footer-nav a{display:inline-flex;align-items:center;min-height:34px;padding:0 12px;border:1px solid rgba(225,244,231,.16);border-radius:999px;background:rgba(239,250,242,.055);color:#e5f2e9!important;font-size:11px;font-weight:750;text-decoration:none!important;white-space:nowrap;transition:background .18s ease,border-color .18s ease,transform .18s ease}
-.avp-footer-nav a:hover,.avp-footer-nav a:focus-visible{background:rgba(227,247,233,.16);border-color:rgba(224,246,231,.42);color:#fff!important;transform:translateY(-1px);outline:none}
-.avp-footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:1440px;width:100%;margin:0 auto;padding-top:12px;border-top:1px solid var(--avp-footer-line)}
-.avp-footer-bottom p{margin:0!important;color:#a9c8b5!important;font-size:10px!important;line-height:1.5}
-.avp-footer-legal{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:6px 17px;margin:0!important}
-.avp-footer-legal a{color:#c5dfce!important;opacity:.88;font-size:10px!important;font-weight:650;text-decoration:none!important}
-.avp-footer-legal a:hover{color:#fff!important;text-decoration:underline!important;opacity:1}
+.avp-footer-inner{
+  box-sizing:border-box!important;width:min(100% - 48px,1320px)!important;min-height:76px;
+  margin:0 auto!important;padding:16px 0!important;
+  display:flex!important;align-items:center!important;justify-content:space-between!important;
+  gap:22px!important;
+}
+.avp-footer-copy{
+  display:block!important;flex:0 1 auto!important;margin:0!important;padding:0!important;
+  color:#c3d9ca!important;font:500 11px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif!important;
+  letter-spacing:.01em!important;white-space:normal!important;
+}
+.avp-footer-legal{
+  display:flex!important;flex:0 1 auto!important;align-items:center!important;
+  justify-content:flex-end!important;flex-wrap:wrap!important;gap:7px!important;
+  margin:0!important;padding:0!important;border:0!important;background:transparent!important;
+}
+.avp-footer-legal a{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  min-height:34px!important;box-sizing:border-box!important;padding:0 12px!important;
+  border:1px solid rgba(221,241,227,.2)!important;border-radius:9px!important;
+  background:rgba(241,250,243,.07)!important;color:#e8f3eb!important;
+  font:650 11px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif!important;
+  text-decoration:none!important;white-space:nowrap!important;opacity:1!important;
+  transition:background .18s ease,border-color .18s ease,color .18s ease!important;
+}
+.avp-footer-legal a:hover,.avp-footer-legal a:focus-visible{
+  background:rgba(241,250,243,.16)!important;border-color:rgba(221,241,227,.48)!important;
+  color:#fff!important;text-decoration:none!important;outline:none!important;
+}
 @media(max-width:760px){
- .avp-global-footer{gap:13px;margin-top:38px!important;padding:18px 16px 14px!important}
- .avp-footer-main{align-items:flex-start;flex-direction:column;gap:13px}
- .avp-footer-brandlock{min-width:0}
- .avp-footer-nav{justify-content:flex-start;gap:6px}
- .avp-footer-nav a{min-height:32px;padding:0 10px;font-size:10px}
- .avp-footer-bottom{align-items:flex-start;flex-direction:column;gap:9px}
- .avp-footer-legal{justify-content:flex-start;gap:7px 15px}
+  .avp-global-footer{margin-top:38px!important}
+  .avp-footer-inner{
+    width:calc(100% - 32px)!important;min-height:0;padding:17px 0!important;
+    flex-direction:column!important;align-items:center!important;justify-content:center!important;
+    gap:12px!important;text-align:center!important;
+  }
+  .avp-footer-copy{font-size:10px!important;text-align:center!important}
+  .avp-footer-legal{justify-content:center!important;gap:6px!important}
+  .avp-footer-legal a{min-height:32px!important;padding:0 10px!important;font-size:10px!important}
 }
-@media(prefers-reduced-motion:reduce){.avp-footer-nav a{transition:none}}
+@media(prefers-reduced-motion:reduce){.avp-footer-legal a{transition:none!important}}
