@@ -102,7 +102,26 @@ function setup(){
  '<g transform="translate(258 55)"><circle r="16" fill="#f2a34a" stroke="#fff" stroke-width="4"/><path d="M-4 0h8M0-4v8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></g>'+
  '</svg></span>'+
  '<span class="avp-home-map-footer"><span data-home-map-position>Điểm xuất phát</span><b>Mở bản đồ ↗</b></span></button></div>'+
- '<div class="avp-canonical-visual-wrap"><div class="avp-canonical-illustration"><img class="avp-mascot-image" src="assets/avp-mascot-reference.webp" alt="Minh họa Anh Văn Phòng làm việc với Excel và dữ liệu" width="1024" height="576" fetchpriority="high" decoding="async"></div><a class="avp-intro-under-illustration" href="intro.html?v=12"><span aria-hidden="true">▶</span><b>Xem giới thiệu<small>1 phút hiểu về AVP</small></b><i aria-hidden="true">↗</i></a></div></div>';
+ '<div class="avp-canonical-visual-wrap"><div class="avp-canonical-illustration avp-art-scene" role="img" aria-label="Minh họa Anh Văn Phòng với laptop, bảng dữ liệu Excel và các công cụ phân tích">
+ <div class="avp-art-glow"></div><div class="avp-art-gridlines"></div>
+ <div class="avp-art-data-panel"><div class="avp-art-panel-top"><span>AVP DATA</span><b>LIVE</b></div><div class="avp-art-panel-title">BÁO CÁO HIỆU SUẤT</div><div class="avp-art-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="avp-art-panel-foot"><span>DOANH SỐ</span><strong>+24,8%</strong></div></div>
+ <div class="avp-art-sheet"><div class="avp-art-sheet-head"><b>▦</b><span>WORKBOOK</span><i>•••</i></div><div class="avp-art-sheet-cols"><span>A</span><span>B</span><span>C</span><span>D</span></div><div class="avp-art-sheet-rows"><i></i><i></i><i></i><i></i></div><div class="avp-art-sheet-bars"><b></b><b></b><b></b><b></b><b></b></div></div>
+ <div class="avp-art-character"><svg class="avp-character-svg" viewBox="0 0 360 390" aria-hidden="true">
+ <defs><linearGradient id="avpJacket" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#23845d"/><stop offset="1" stop-color="#104b37"/></linearGradient><linearGradient id="avpSkin" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#f4c6a0"/><stop offset="1" stop-color="#d99570"/></linearGradient></defs>
+ <path d="M80 390c4-85 22-133 73-151h55c49 16 69 69 74 151z" fill="url(#avpJacket)"/><path d="M144 228l36 43 38-43-9-25h-57z" fill="#f0b58e"/>
+ <path d="M125 105c0-62 35-91 81-87 48 4 70 40 62 98l-13 66c-8 34-34 56-73 55-39-2-63-31-66-67z" fill="url(#avpSkin)"/>
+ <path d="M120 121c-17-58 5-111 58-119 57-9 101 27 101 83-17-8-29-23-36-39-24 21-64 32-108 26 2 19-4 36-15 49z" fill="#25262b"/><path d="M127 77c-5-27 10-60 36-70-4 19-1 31 8 43-15 1-29 11-44 27zM201 12c29 0 57 18 70 49-23-9-39-22-49-40-7 13-20 24-37 31 10-13 15-26 16-40z" fill="#303138"/>
+ <path d="M139 111c13-12 29-14 43-5M204 106c14-9 29-7 41 5" fill="none" stroke="#343238" stroke-width="7" stroke-linecap="round"/>
+ <g fill="none" stroke="#27343a" stroke-width="7"><rect x="137" y="111" width="49" height="34" rx="12"/><rect x="199" y="111" width="49" height="34" rx="12"/><path d="M186 124h13M137 124l-10-4M248 124l10-4"/></g>
+ <path d="M178 159c8 7 18 7 26 0" fill="none" stroke="#9b554b" stroke-width="4" stroke-linecap="round"/><path d="M170 174c13 12 31 13 45 0" fill="none" stroke="#9c4d4a" stroke-width="4" stroke-linecap="round"/>
+ <path d="M122 92c-7 0-12 8-10 19 2 11 9 18 17 16M260 91c9 0 14 8 12 19-2 11-9 18-17 16" fill="none" stroke="#25262b" stroke-width="9"/>
+ <path d="M108 85c-2-40 20-72 57-80M270 84c2-42-24-75-59-80" fill="none" stroke="#20252a" stroke-width="11" stroke-linecap="round"/><path d="M98 100c-6-18-5-36 4-49M279 101c7-18 6-36-3-49" fill="none" stroke="#0c7b54" stroke-width="13" stroke-linecap="round"/>
+ <path d="M146 237l34 34 36-34 17 19-31 48h-44l-30-48z" fill="#f5f2e9"/><path d="M178 271l2 48-18 17-14-67zM181 271l-1 48 19 17 14-67z" fill="#dce8df"/>
+ <path d="M97 289c-24 17-32 39-33 70h58l16-62zM260 287c22 15 31 40 35 72h-58l-15-62z" fill="#175d43"/></svg><span class="avp-art-headphone-label">AVP</span></div>
+ <div class="avp-art-laptop"><div class="avp-art-laptop-screen"><span>AVP</span><b>Excel</b><i>▥</i></div><div class="avp-art-laptop-base"></div></div>
+ <div class="avp-art-excel"><b>X</b><span>EXCEL</span></div><div class="avp-art-powerquery"><b>↻</b><span>POWER QUERY</span></div>
+ <div class="avp-art-caption"><b>HỌC ĐỂ LÀM ĐƯỢC VIỆC</b><span>Excel · Data · Automation</span></div>
+</div><a class="avp-intro-under-illustration" href="intro.html?v=12"><span aria-hidden="true">▶</span><b>Xem giới thiệu<small>1 phút hiểu về AVP</small></b></a></div></div>';
  ['#home-ai-intro','#ky-nang-excel','.home-path','#avp-home-ecosystem','#avp-reference-featured','#avp-featured-lessons','.avp-reference-next-steps'].forEach(function(s){document.querySelectorAll(s).forEach(function(n){n.remove();});});
  var discover=el('section','avp-canonical-discover');
  discover.innerHTML='<div class="avp-canonical-section-head"><div><h2>Khám phá ngay</h2><p>Chọn khu vực bạn quan tâm để bắt đầu hành trình.</p></div><a href="tools-center.html">Khám phá tất cả　↗</a></div><div class="avp-canonical-discover-grid"></div>';
