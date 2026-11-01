@@ -154,28 +154,12 @@
       "keywords": "Báo cáo QC Workbook báo cáo chất lượng. workbook file thực hành mẫu excel"
     },
     {
-      "title": "Power Query – 10 file thực hành",
-      "description": "Bộ dữ liệu thực hành theo chuỗi bài.",
-      "url": "downloads/PowerQuery-Practice-10-Files.zip",
-      "page": "workbook-library.html",
-      "type": "Workbook",
-      "keywords": "Power Query – 10 file thực hành Bộ dữ liệu thực hành theo chuỗi bài. workbook file thực hành mẫu excel"
-    },
-    {
       "title": "Power Query Refresh",
       "description": "Thực hành làm mới dữ liệu.",
       "url": "downloads/pq-refresh-staging-thuc-hanh.xlsx",
       "page": "workbook-library.html",
       "type": "Workbook",
       "keywords": "Power Query Refresh Thực hành làm mới dữ liệu. workbook file thực hành mẫu excel"
-    },
-    {
-      "title": "Power Query Master Expected",
-      "description": "Kết quả chuẩn để đối chiếu.",
-      "url": "downloads/power-query/PowerQuery-Master-Expected.xlsx",
-      "page": "workbook-library.html",
-      "type": "Workbook",
-      "keywords": "Power Query Master Expected Kết quả chuẩn để đối chiếu. workbook file thực hành mẫu excel"
     },
     {
       "title": "Sales – dữ liệu thô",
@@ -192,30 +176,6 @@
       "page": "workbook-library.html",
       "type": "Workbook",
       "keywords": "Sales – dữ liệu sạch Dữ liệu sau bước làm sạch. workbook file thực hành mẫu excel"
-    },
-    {
-      "title": "Practice Lab – PivotTable",
-      "description": "Dataset cho project phân tích Pivot.",
-      "url": "downloads/practice-lab/PivotTable-Practice.xlsx",
-      "page": "workbook-library.html",
-      "type": "Workbook",
-      "keywords": "Practice Lab – PivotTable Dataset cho project phân tích Pivot. workbook file thực hành mẫu excel"
-    },
-    {
-      "title": "Practice Lab – Dashboard",
-      "description": "Dataset cho project Dashboard.",
-      "url": "downloads/practice-lab/Dashboard-Practice.xlsx",
-      "page": "workbook-library.html",
-      "type": "Workbook",
-      "keywords": "Practice Lab – Dashboard Dataset cho project Dashboard. workbook file thực hành mẫu excel"
-    },
-    {
-      "title": "Practice Lab – DAX",
-      "description": "Dataset cho Power Pivot và DAX.",
-      "url": "downloads/practice-lab/DAX-Practice.xlsx",
-      "page": "workbook-library.html",
-      "type": "Workbook",
-      "keywords": "Practice Lab – DAX Dataset cho Power Pivot và DAX. workbook file thực hành mẫu excel"
     }
   ]
 }
