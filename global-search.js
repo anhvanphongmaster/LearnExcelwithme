@@ -4,7 +4,7 @@ if (window.__AVP_GLOBAL_SEARCH_V3__) return;
 window.__AVP_GLOBAL_SEARCH_V3__ = true;
 
 const INDEX_FILES = ['search-index-10.json'];
-const DICTIONARY_URL='search-dictionary.js';
+const DICTIONARY_URL='excel-dictionary-data.js';
 const RESOURCE_URL='search-resources.json';
 const SUPABASE_URL='https://itnnbyhlpfredaqyhlpr.supabase.co';
 const SUPABASE_KEY='sb_publishable_MiK_gkzfQUwPn3_-TYZESg_FxuWYTV5';
