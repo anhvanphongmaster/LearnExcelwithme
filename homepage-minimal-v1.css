@@ -591,3 +591,8 @@ html.avp-home-canonical .avp-canonical-trending .avp-trending-open>span{display:
 html.avp-home-canonical .avp-canonical-trending .avp-trending-open>i{font-style:normal;color:#278158;opacity:0;transition:opacity .18s}
 html.avp-home-canonical .avp-canonical-trending .avp-trending-open:hover>i,html.avp-home-canonical .avp-canonical-trending .avp-trending-open:focus-visible>i{opacity:1}
 html.avp-home-canonical .avp-canonical-trending .avp-trending-open:focus-visible{outline:2px solid #278158;outline-offset:3px;border-radius:7px}
+
+/* In-progress lesson card: AVP deep-green palette with readable white text. */
+html.avp-home-canonical .avp-canonical-lesson.is-active-learning .avp-canonical-thumb{background:linear-gradient(135deg,#073d2c 0%,#08764c 58%,#123c30 100%)!important;color:#fff!important}
+html.avp-home-canonical .avp-canonical-lesson.is-active-learning .avp-canonical-thumb strong,html.avp-home-canonical .avp-canonical-lesson.is-active-learning .avp-canonical-thumb small{color:#fff!important;text-shadow:0 1px 3px #00190f55}
+html.avp-home-canonical .avp-canonical-lesson.is-active-learning .avp-canonical-thumb>b{background:#062d20!important;color:#fff!important}
