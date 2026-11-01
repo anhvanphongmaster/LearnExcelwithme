@@ -1,9 +1,8 @@
-const CACHE="learnexcel-assets-v20261101-map-audio-v1";
+const CACHE="learnexcel-assets-v20261101-home-clean-v2";
 const ASSETS=[
-  "./style.css","./simple-nav.css","./avp-global-header-v1.css","./avp-core.css","./avp-site-motion.css","./avp-hover-lift.css",
-  "./site-upgrade-v1.css","./home-ui-owner-v1.css","./upgrade.css",
-  "./simple-nav.js","./site-navigation-v2.js","./site-navigation-v2.css","./avp-global-preferences-v1.css","./avp-theme-system-v1.css","./theme-unified-v32.js","./avp-logo.svg","./avp-core.js","./avp-site-motion.js","./home-effects.js","./home-page-motion.js","./home-page-motion-core-v108.js","./global-search.js",
-  "./site-upgrade-v1.js","./site-runtime-cache-v1.js","./site-auth-cache-v1.js","./analytics-tracker.js","./daily-header-badge-v1.js","./learning-chapter-analytics-v1.js"
+  "./simple-nav.css","./avp-core.css","./avp-hover-lift.css",
+  "./home-ui-owner-v1.css","./simple-nav.js","./site-navigation-v2.js","./site-navigation-v2.css","./avp-global-preferences-v1.css","./avp-theme-system-v1.css","./theme-unified-v32.js","./avp-logo.svg","./avp-core.js","./home-effects.js","./global-search.js",
+  "./site-runtime-cache-v1.js","./site-auth-cache-v1.js","./analytics-tracker.js","./daily-header-badge-v1.js","./learning-chapter-analytics-v1.js"
 ];
 
 self.addEventListener("install",event=>{
