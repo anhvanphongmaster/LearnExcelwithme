@@ -183,7 +183,7 @@ load();renderTabs();renderFormula();renderQuestion();renderGrid();renderNested()
 $('difficultyTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-difficulty]');if(!b)return;state.activeDifficulty=b.dataset.difficulty;state.activeLevel='Tất cả';document.querySelectorAll('#difficultyTabs button').forEach(x=>x.classList.toggle('active',x===b));renderTabs();renderGrid();});
 })();
 </script>
-<script defer src="simple-nav.js?v=20261101-map6"></script>
+<script defer src="simple-nav.js?v=20261102-footerbar1"></script>
 <script defer src="avp-display-mode.js?v=2"></script>
 <script defer src="global-search.js?v=20261031-search-index5"></script>
 <footer class="site-footer"><p class="site-footer-brand">© 2026 - Learn Excel with Anh Van Phong</p><p class="site-footer-sub">Học Excel • Phân tích dữ liệu • Báo cáo</p><div class="site-footer-legal"><a href="terms.html">Điều khoản</a><a href="privacy.html">Quyền riêng tư</a><a href="disclaimer.html">Tuyên bố pháp lý</a><a href="open-source.html">Mã nguồn mở</a></div></footer>
