@@ -735,7 +735,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
  var lg=lessons.querySelector('.avp-canonical-lesson-grid');
  function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
  function openRankedLesson(item){
-  var match=String(item&&item.content_id||'').match(/^chapter-(\\d+)-lesson-(\\d+)$/);
+  var match=String(item&&item.content_id||'').match(/^chapter-(\d+)-lesson-(\d+)$/);
   var api=window.AVP_HOME_LEARNING_API;
   if(!match||!api)return;
   var chapterIndex=Number(match[1])-1,lessonIndex=Number(match[2])-1;
