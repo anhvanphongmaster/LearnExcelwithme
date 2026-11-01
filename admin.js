@@ -32,12 +32,6 @@
       'admin_analytics_top_pages',
       'admin_feature_usage_summary'
     ]),
-    learning: new Set([
-      'admin_learning_funnel',
-      'admin_top_completed_lessons',
-      'admin_quiz_difficulty',
-      'admin_new_user_trend'
-    ]),
     engagement: new Set([
       'admin_engagement_summary_v2',
       'admin_list_saved_feedback'
@@ -93,7 +87,6 @@
     const view = currentView();
     return (
       (DEFERRED_RPCS.analytics.has(name) && view !== 'analytics') ||
-      (DEFERRED_RPCS.learning.has(name) && view !== 'learning') ||
       (DEFERRED_RPCS.engagement.has(name) && view !== 'engagement') ||
       (DEFERRED_RPCS.retention.has(name) && view !== 'retention')
     );
