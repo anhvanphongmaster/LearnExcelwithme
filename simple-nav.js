@@ -554,6 +554,6 @@ document.addEventListener("DOMContentLoaded",function(){
     (document.head||document.documentElement).appendChild(el);
   }
   loadAsset("link",'link[data-avp-global-preferences-css]',"avp-global-preferences-v1.css?v=20261031-6");
-  loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261101-map4");
-  loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261101-map4");
+  loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261101-map5");
+  loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261101-map5");
 })();
