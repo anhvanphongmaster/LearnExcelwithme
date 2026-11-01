@@ -29,6 +29,9 @@
   const fmt=(v)=>{try{return new Date(v).toLocaleString("vi-VN",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}catch{return ""}};
   const sleep=(ms)=>new Promise(r=>setTimeout(r,ms));
   let client=null,user=null,threadId=null,pollTimer=null,realtimeChannel=null;
+  const chatAvatarMap=new Map();
+  async function loadChatAvatar(userId){if(!userId||chatAvatarMap.has(String(userId)))return chatAvatarMap.get(String(userId))||null;try{const rows=await rpc("community_avatar_map",{p_user_ids:[String(userId)]});const row=Array.isArray(rows)?rows[0]:null;if(row)chatAvatarMap.set(String(userId),row);return row||null;}catch(e){console.warn("Chat avatar",e);return null;}}
+  function chatAvatarHtml(row,name="Học viên",kind="student"){if(kind==="admin")return '<span class="avp-msg-avatar avp-msg-avatar-admin"><img src="avp-logo.svg" alt="Anh Văn Phòng"></span>';const path=String(row?.avatar_path||"");if(path.startsWith("emoji:"))return '<span class="avp-msg-avatar avp-msg-avatar-student">'+esc(path.slice(6))+'</span>';if(path&&client){const url=client.storage.from("community-avatars").getPublicUrl(path)?.data?.publicUrl;if(url)return '<span class="avp-msg-avatar avp-msg-avatar-student"><img src="'+esc(url)+'" alt="'+esc(name)+'"></span>';}const initial=String(name||row?.display_name||"H").trim().charAt(0).toUpperCase()||"H";return '<span class="avp-msg-avatar avp-msg-avatar-student fallback">'+esc(initial)+'</span>';}
   let authSubscribed=false;
 
   const ATTACH_PREFIX="[[AVP_ATTACHMENT_V1]]";
@@ -556,7 +559,7 @@
     await load();
   }
 
-  function msgHtml(m, adminView=false){
+  function msgHtml(m, adminView=false, opts={}){
     const type=m.sender_type||"system";
     const isAutoReply=isAutomaticChatMessage(m);
 
@@ -592,7 +595,8 @@
       ? `<span class="avp-admin-read-receipt" data-read-created="${esc(m.created_at||"")}"></span>`
       : "";
 
-    return `<div class="avp-msg-row ${cls}" data-message-id="${mid}"><div class="avp-msg">${content}<span class="avp-msg-meta">${esc(who)} • ${fmt(m.created_at)} ${readReceipt}</span>${react}</div></div>`;
+    const avatar=adminView&&type==="user" ? chatAvatarHtml(chatAvatarMap.get(String(opts.userId||"")),opts.displayName||"Học viên","student") : (!adminView&&type==="admin" ? chatAvatarHtml(null,"Anh Văn Phòng","admin") : "");
+    return `<div class="avp-msg-row ${cls}" data-message-id="${mid}">${avatar}<div class="avp-msg">${content}<span class="avp-msg-meta">${esc(who)} • ${fmt(m.created_at)} ${readReceipt}</span>${react}</div></div>`;
   }
 
 
@@ -647,8 +651,9 @@
     const nearBottom=avpNearBottom(box);
     const prevTop=box.scrollTop;
 
+    if(adminView&&opts.userId)await loadChatAvatar(opts.userId);
     box.innerHTML=arr.length
-      ? arr.map(m=>msgHtml(m,adminView)).join("")
+      ? arr.map(m=>msgHtml(m,adminView,opts)).join("")
       : `<div class="${adminView?"admin-chat-empty":"avp-chat-empty"}">${adminView?"Chưa có tin nhắn.":"Bạn chưa có tin nhắn. Có gì cần hỗ trợ cứ nhắn cho Admin nhé."}</div>`;
 
     box.dataset.avpMsgSignature=sig;
@@ -1067,7 +1072,7 @@
     if(tab){let pill=tab.querySelector(".admin-chat-unread-pill");if(!pill){pill=document.createElement("span");pill.className="admin-chat-unread-pill";tab.querySelector("b")?.appendChild(pill)}pill.hidden=n<=0;pill.textContent=n>99?"99+":String(n)}
   }
   async function loadAdminThreads(){
-    try{const rows=await rpc("avp_chat_admin_threads");adminThreads=Array.isArray(rows)?rows:[];setAdminBadge();renderAdminThreads($("adminChatSearch")?.value||"");if(activeThread&&!adminThreads.some(t=>t.thread_id===activeThread))activeThread=null}
+    try{const rows=await rpc("avp_chat_admin_threads");adminThreads=Array.isArray(rows)?rows:[];await Promise.all(adminThreads.map(t=>loadChatAvatar(t.user_id)));setAdminBadge();renderAdminThreads($("adminChatSearch")?.value||"");if(activeThread&&!adminThreads.some(t=>t.thread_id===activeThread))activeThread=null}
     catch(e){const r=$("adminChatThreads");if(r)r.innerHTML='<div class="admin-chat-empty">Chưa tải được Chat. Hãy chạy admin-chat-setup.sql.</div>';console.warn(e)}
   }
   async function openAdminThread(id){
@@ -1078,7 +1083,7 @@
     try{
       const rows=await rpc("avp_chat_admin_messages",{p_thread_id:id,p_limit:300});
       const box=$("adminChatMessages");const list=Array.isArray(rows)?rows:[];
-      if(box)await avpRenderMessages(box,list,true,{threadId:id});
+      if(box)await avpRenderMessages(box,list,true,{threadId:id,userId:t?.user_id,displayName:t?.display_name});
       await rpc("avp_chat_admin_mark_read",{p_thread_id:id});await loadAdminThreads();
     }catch(e){console.warn(e)}
   }
