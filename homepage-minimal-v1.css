@@ -581,3 +581,13 @@ html.avp-home-canonical .avp-hero-split .avp-canonical-copy>*{min-width:0!import
 html.avp-home-canonical .avp-canonical-visual-wrap .avp-canonical-illustration{width:100%!important;max-width:100%!important}
 html.avp-home-canonical .avp-home-map-card{width:100%!important;max-width:100%!important}
 }
+
+/* Homepage learning rankings: fourth card is active learning when completion data is sparse. */
+html.avp-home-canonical .avp-canonical-lesson.is-active-learning .avp-canonical-thumb{background:linear-gradient(135deg,#e7f5ee,#b9e2ca)!important}
+html.avp-home-canonical .avp-canonical-lesson.is-active-learning .avp-canonical-thumb>b{background:#137449!important}
+html.avp-home-canonical .avp-canonical-trending .avp-trending-item{display:block!important;padding:0!important}
+html.avp-home-canonical .avp-canonical-trending .avp-trending-open{display:flex;width:100%;align-items:center;gap:8px;border:0;background:transparent;padding:4px 0;text-align:left;color:inherit;font:inherit;cursor:pointer}
+html.avp-home-canonical .avp-canonical-trending .avp-trending-open>span{display:block;flex:1;min-width:0}
+html.avp-home-canonical .avp-canonical-trending .avp-trending-open>i{font-style:normal;color:#278158;opacity:0;transition:opacity .18s}
+html.avp-home-canonical .avp-canonical-trending .avp-trending-open:hover>i,html.avp-home-canonical .avp-canonical-trending .avp-trending-open:focus-visible>i{opacity:1}
+html.avp-home-canonical .avp-canonical-trending .avp-trending-open:focus-visible{outline:2px solid #278158;outline-offset:3px;border-radius:7px}
