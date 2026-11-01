@@ -701,12 +701,8 @@
       }
 
       // Learning RPCs — optional, không chặn cả dashboard nếu 1 hàm lỗi
-      const [learning,funnel,completed,difficulty,newUsers,engagement,featureUsage] = await Promise.all([
+      const [learning,engagement,featureUsage] = await Promise.all([
         rpcSoft("admin_learning_summary"),
-        rpcSoft("admin_learning_funnel"),
-        rpcSoft("admin_top_completed_lessons",{p_limit:10}),
-        rpcSoft("admin_quiz_difficulty",{p_days:currentDays,p_limit:10}),
-        rpcSoft("admin_new_user_trend",{p_days:Math.min(currentDays,90)}),
         rpcSoft("admin_engagement_summary_v2",{p_days:currentDays}),
         rpcSoft("admin_feature_usage_summary",{p_days:currentDays})
       ]);
@@ -718,7 +714,7 @@
       loadAdminMaintenance();
     try{
       const requestedView=new URLSearchParams(location.search).get("view");
-      const validViews=["overview","users","race","learning","practice","content","youtube","downloads" ,"engagement","analytics","community","reviews","grader","professional","tools","retention"];
+      const validViews=["overview","users","race","practice","content","youtube","downloads","engagement","analytics","community","reviews","grader","professional","tools","retention"];
       if(requestedView&&validViews.includes(requestedView)){
         setTimeout(()=>setAdminView(requestedView,{scroll:true}),80);
       }
@@ -731,11 +727,7 @@
       renderRanking("topTools",tools||[],"tool_name","uses");
       renderRanking("topPages",pages||[],"page_path","views",labelLesson);
       if(!learning?.__error) renderLearningSummary(learning||{});
-      if(!funnel?.__error) renderFunnel(funnel||[]);
-      if(!completed?.__error) renderRanking("topCompletedLessons",completed||[],"lesson","completed_users",labelLesson);
-      if(!difficulty?.__error) renderQuizDifficulty(difficulty||[]);
       if(!engagement?.__error) await renderEngagement(engagement||{});
-      if(!newUsers?.__error) renderNewUsers(newUsers||[]);
       if(!featureUsage?.__error) {
         renderFeatureUsage(featureUsage||{});
       } else {
@@ -753,7 +745,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","race","learning","practice","content","youtube","downloads" ,"tools","engagement","analytics","community","reviews","grader","professional","retention"];
+    const valid=["overview","users","race","practice","content","youtube","downloads","tools","engagement","analytics","community","reviews","grader","professional","retention"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
