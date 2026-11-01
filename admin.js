@@ -200,7 +200,8 @@
   function ensureAdminStyles() {
     const styles = [
       ['admin-ui-v2.css?v=20260913-adminui3', 'avpAdminUiV2'],
-      ['admin-ui-v2-final.css?v=20260913-adminfinal2', 'avpAdminUiFinal']
+      ['admin-ui-v2-final.css?v=20260913-adminfinal2', 'avpAdminUiFinal'],
+      ['admin-control-center.css?v=20261102-v1', 'avpAdminControlCenter']
     ];
 
     for (const [href, marker] of styles) {
