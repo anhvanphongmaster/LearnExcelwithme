@@ -25,9 +25,9 @@ const style=document.createElement('style');style.textContent=`
 const overlay=document.createElement('div');overlay.id='avpMapOverlay';overlay.setAttribute('aria-hidden','true');overlay.innerHTML='<button id="avpMapClose" type="button" aria-label="Đóng bản đồ">×</button><iframe title="Bản đồ hành trình" src="learning-map.html?embed=1&v=3"></iframe>';document.body.append(overlay);
 const mini=document.createElement('button');mini.id='avpMapMini';mini.type='button';mini.setAttribute('aria-label','Mở lại bản đồ hành trình');mini.innerHTML='<span class="avp-mini-art"></span><b>BẢN ĐỒ</b><small>Hành trình</small>';document.body.append(mini);
 function open(){overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');mini.classList.remove('show');}
-function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');}
-function enableMini(){try{localStorage.setItem(KEY,'1')}catch(_){}if(!isHome)mini.classList.add('show')}
-function go(url,id){try{localStorage.setItem(KEY,'1');if(id)localStorage.setItem(LAST,id)}catch(_){}overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');if(url)location.href=url}
+function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');if(!isHome&&sessionStorage.getItem(KEY)==='1')mini.classList.add('show');}
+function enableMini(){try{sessionStorage.setItem(KEY,'1')}catch(_){}if(!isHome)mini.classList.add('show')}
+function go(url,id){try{sessionStorage.setItem(KEY,'1');if(id)localStorage.setItem(LAST,id)}catch(_){}overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');if(url)location.href=url}
 document.getElementById('avpMapClose').addEventListener('click',close);
 mini.addEventListener('click',()=>{if(!dragged)open()});
 let startY=0,startTop=0,dragging=false,dragged=false;
@@ -38,6 +38,6 @@ mini.addEventListener('pointercancel',()=>dragging=false);
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.data?.type!=='AVP_MAP_NAVIGATE')return;go(e.data.url,e.data.id)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))close()});
 window.AVPFloatingMap={open,close,go,enableMini};
-try{if(localStorage.getItem(KEY)==='1'&&!isHome)mini.classList.add('show')}catch(_){}
+try{if(sessionStorage.getItem(KEY)==='1'&&!isHome)mini.classList.add('show')}catch(_){}
 document.addEventListener('click',e=>{const card=e.target.closest?.('[data-open-learning-map]');if(card){e.preventDefault();open()}});
 })();
