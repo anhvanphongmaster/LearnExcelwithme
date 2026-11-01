@@ -956,8 +956,13 @@ function init(){
  });
 }
  function openMap(){
-  map.hidden=false;map.style.display='grid';map.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
-  try{mapRender();}catch(err){showMapError(err);}
+  if(window.AVPFloatingMap){window.AVPFloatingMap.open();return;}
+  var s=document.querySelector('script[data-avp-floating-map-loader]');
+  if(s){s.addEventListener('load',function(){window.AVPFloatingMap?.open();},{once:true});return;}
+  s=document.createElement('script');s.dataset.avpFloatingMapLoader='1';s.src='avp-floating-map.js?v=20261101-map9';
+  s.onload=function(){window.AVPFloatingMap?.open();};
+  s.onerror=function(){map.hidden=false;map.style.display='grid';map.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';try{mapRender();}catch(err){showMapError(err);}};
+  document.head.appendChild(s);
  }
  function showMapError(err){
   var route=map.querySelector('[data-map-route]');
