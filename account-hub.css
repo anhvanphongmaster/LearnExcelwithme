@@ -60,3 +60,18 @@
 .account-identity-tools .avatar-preset{display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;padding:0!important;line-height:1!important;vertical-align:middle!important;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif!important;text-align:center!important;transform:none!important;position:relative!important;top:0!important}
 .account-identity-tools .avatar-preset.is-selected{transform:translateY(-1px)!important}
 .account-identity-tools .avatar-preset[data-avatar="initial"]{font-family:Inter,system-ui,sans-serif!important;font-weight:850!important;font-size:15px!important}
+
+/* 20 avatar choices: fixed 10-column desktop grid, two balanced rows. */
+.account-identity-tools .avatar-presets{display:grid!important;grid-template-columns:repeat(10,minmax(0,1fr))!important;grid-auto-rows:52px!important;align-items:center!important;justify-items:center!important;gap:9px!important;width:100%!important}
+.account-identity-tools .avatar-preset{width:48px!important;height:48px!important;min-width:48px!important;max-width:48px!important;min-height:48px!important;max-height:48px!important;box-sizing:border-box!important;padding:0!important;margin:0!important;display:grid!important;place-items:center!important;overflow:hidden!important;border-radius:13px!important;line-height:1!important}
+.account-identity-tools .avatar-preset>span,.account-identity-tools .avatar-preset>svg{width:100%!important;height:100%!important;display:grid!important;place-items:center!important}
+.account-identity-tools .avatar-upload-tile{background:#fff!important;color:#aab5ae!important;border:1px solid #dce5df!important}
+.account-identity-tools .avatar-upload-placeholder{width:30px!important;height:30px!important;display:block!important;color:#c5d0c9!important}
+.account-identity-tools .avatar-upload-placeholder svg{width:100%!important;height:100%!important;display:block!important}
+.account-identity-tools .avatar-upload-tile img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important}
+.account-identity-tools .avatar-preset:not(.avatar-upload-tile){font-size:25px!important}
+.account-identity-tools .avatar-preset[data-avatar="initial"]{font-size:19px!important}
+@media(max-width:800px){
+ .account-identity-tools .avatar-presets{grid-template-columns:repeat(5,minmax(0,1fr))!important;grid-auto-rows:48px!important;gap:8px!important}
+ .account-identity-tools .avatar-preset{width:44px!important;height:44px!important;min-width:44px!important;max-width:44px!important;min-height:44px!important;max-height:44px!important}
+}
