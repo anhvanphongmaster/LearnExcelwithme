@@ -578,6 +578,8 @@ async function logoutUser() {
 
 window.avpLogout = logoutUser;
 
+window.addEventListener("avp:auth-changed", () => { updateAuthNav().catch(e => console.warn("Auth nav refresh", e)); });
+
 async function updateAuthNav() {
   const user = await getUser();
   const profile = user ? await getProfile(user) : null;
