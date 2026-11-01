@@ -2,6 +2,7 @@
 (()=>{"use strict";
 if(window.__AVP_SITE_NAV_V3__||window.self!==window.top)return;window.__AVP_SITE_NAV_V3__=true;
 const page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
+document.documentElement.classList.add("avp-nav-v2-active");
 if(["admin.html","office-quest-admin.html","office-quest-world.html"].includes(page))return;
 const icon={home:"⌂",learn:"▤",video:"▶",library:"▦",workbook:"▣",tools:"⚒",lab:"⌘",arena:"◇",community:"♧",ai:"✦",map:"⌖",close:"×",search:"⌕",user:"○"};
 const groups=[
@@ -23,7 +24,7 @@ if(page!=="index.html"){const b=document.createElement("button");b.type="button"
 function open(){shade.classList.add("is-open");trigger.setAttribute("aria-expanded","true");document.body.classList.add("avp-nav-v2-open")}
 function close(){shade.classList.remove("is-open");trigger.setAttribute("aria-expanded","false");document.body.classList.remove("avp-nav-v2-open")}
 trigger.addEventListener("click",()=>shade.classList.contains("is-open")?close():open());shade.querySelector(".avp-nav-v2-close").addEventListener("click",close);shade.addEventListener("click",e=>{if(e.target===shade)close()});document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});shade.querySelectorAll("a").forEach(a=>a.addEventListener("click",close));
-const css=document.createElement("style");css.textContent='.avp-nav-v3-map{padding:8px 20px 12px}.avp-nav-v3-map-button{width:100%;display:flex;align-items:center;gap:12px;padding:13px 15px;border:1px solid #cbdcc9;border-radius:14px;background:#edf5e9;color:#234a32;font-weight:800;text-align:left;cursor:pointer}.avp-nav-v3-map-button span:last-child{margin-left:auto}.avp-nav-v3-map-button .avp-nav-v3-icon{font-size:20px}.avp-nav-v3-icon{display:inline-flex;align-items:center;justify-content:center;width:24px;flex:0 0 24px;font-size:17px}.avp-nav-v2-items{overflow:auto}.avp-nav-v2-link[aria-current=page]{background:#edf5e9;color:#176b40;font-weight:800}.avp-nav-v2-link{gap:12px}.avp-nav-v2-group{margin-bottom:8px}';document.head.append(css);
+const css=document.createElement("style");css.textContent='html.avp-nav-v2-active body nav.top-simple-nav,html.avp-nav-v2-active body .top-simple-nav{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important}html.avp-nav-v2-active body .top-mobile-toggle{display:none!important}'+'.avp-nav-v3-map{padding:8px 20px 12px}.avp-nav-v3-map-button{width:100%;display:flex;align-items:center;gap:12px;padding:13px 15px;border:1px solid #cbdcc9;border-radius:14px;background:#edf5e9;color:#234a32;font-weight:800;text-align:left;cursor:pointer}.avp-nav-v3-map-button span:last-child{margin-left:auto}.avp-nav-v3-map-button .avp-nav-v3-icon{font-size:20px}.avp-nav-v3-icon{display:inline-flex;align-items:center;justify-content:center;width:24px;flex:0 0 24px;font-size:17px}.avp-nav-v2-items{overflow:auto}.avp-nav-v2-link[aria-current=page]{background:#edf5e9;color:#176b40;font-weight:800}.avp-nav-v2-link{gap:12px}.avp-nav-v2-group{margin-bottom:8px}';document.head.append(css);
 const s=document.createElement("script");s.src="avp-floating-map.js?v=20261101-map3";s.defer=true;document.head.append(s);
 window.AVPVerticalNavigation={open,close};
 })();
