@@ -3,8 +3,9 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1200, initial-scale=0.32, minimum-scale=0.1, maximum-scale=2, user-scalable=yes">
-<title>Admin Analytics | Learn Excel with Anh Van Phong</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AVP Admin Control Center | Learn Excel With Me</title>
+<meta name="description" content="Trung tâm quản trị Learn Excel With Me">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="simple-nav.css">
 <link rel="stylesheet" href="auth.css">
@@ -21,6 +22,7 @@
 <link rel="stylesheet" href="admin-tools.css?v=20260908-v1-1">
 <link rel="stylesheet" href="admin-content-os.css?v=20261008-v3">
   <link rel="stylesheet" href="avp-ui-system.css?v=20261001-ui2" data-avp-ui-system>
+<link rel="stylesheet" href="admin-control-center.css?v=20261102-v1">
 </head>
 <body>
 <script src="avp-ui-system.js?v=20261002-ui1" data-avp-ui-system></script>
@@ -40,9 +42,9 @@
 <main class="admin-page">
   <section class="admin-hero page-header">
     <div>
-      <span class="admin-kicker">🔐 ADMIN ONLY</span>
-      <h1>Website Analytics</h1>
-      <p>Theo dõi tài khoản, lượt truy cập, đăng nhập, tương tác và người dùng quay lại — không lưu nội dung file Excel.</p>
+      <span class="admin-kicker">AVP · CONTROL CENTER</span>
+      <h1>Trung tâm quản trị</h1>
+      <p>Quản lý hoạt động học tập, học viên, nội dung và vận hành website Learn Excel With Me.</p>
     </div>
 
     <div class="admin-period">
@@ -106,57 +108,33 @@ where is_admin = true;</pre>
       </div>
 
       <div class="admin-view-tabs" role="tablist" aria-label="Khu vực Admin">
-        <button type="button" class="active" data-admin-view="overview" role="tab">
-          <b>📊 Tổng quan</b><small>KPI & trạng thái website</small>
-        </button>
-        <button type="button" data-admin-view="users" role="tab">
-          <b>👥 Người dùng</b><small>Tài khoản, BXH & tiến độ</small>
-        </button>
-        <button type="button" data-admin-view="retention" role="tab">
-          <b>↩️ Người dùng quay lại</b><small>Giữ chân sau đăng ký</small>
-        </button>
-        <button type="button" data-admin-view="race" role="tab">
-          <b>🏁 Excel Race</b><small>BXH, reset & xoá tên</small>
-        </button>
-<button type="button" data-admin-view="practice" role="tab">
-          <b>📱 TikTok Practice</b><small>Chủ đề, bài, video & file</small>
-        </button>
-        <button type="button" data-admin-view="content" role="tab"><b>🎬 Content OS</b><small>Ý tưởng, video, audit & PASS</small></button>
-        <button type="button" data-admin-view="youtube" role="tab">
-          <b>▶️ YouTube Projects</b><small>Project, video, file & tài liệu</small>
-        </button>
-        <button type="button" data-admin-view="downloads" role="tab">
-          <b>📦 Tải xuống</b><small>File & tài nguyên toàn web</small>
-        </button>
-        <button type="button" data-admin-view="tools" role="tab">
-          <b>🧰 Tool</b><small>Kho Tool & ý tưởng ưu tiên</small>
-        </button><button type="button" data-admin-view="engagement" role="tab">
-          <b>🖱️ Tương tác</b><small>Tải file, video & bộ sách</small>
-        </button>
-        <button type="button" data-admin-view="analytics" role="tab">
-          <b>📈 Analytics</b><small>Xu hướng & nội dung hot</small>
-        </button>
-        <button type="button" data-admin-view="community" role="tab">
-          <b>📣 Cộng đồng</b><small>Thông báo & chứng nhận</small>
-        </button>
-        <button type="button" data-admin-view="reviews" role="tab">
-          <b>⭐ Đánh giá</b><small>Sao & góp ý website</small>
-        </button>
-              <button type="button" data-admin-view="grader" role="tab" class="admin-grader-tab">
-          <span class="ag-tab-title"><b>🧪 Chấm điểm</b><i id="adminGraderPendingBadge" class="ag-pending-badge" hidden>0</i></span>
-          <small>Bài nộp, cấp độ & yêu cầu chấm lại</small>
-        </button>
-
-        <button type="button" data-admin-view="professional" role="tab" class="admin-professional-tab">
-          <span class="apt-tab-title"><b>🎯 Professional Track</b><i id="adminProfessionalPendingBadge" class="apt-pending-badge" hidden>0</i></span>
-          <small>Hồ sơ xét duyệt & quyền truy cập</small>
-        </button>
-      </div>
-
-      <div class="admin-quick-links">
+  <section class="admin-view-group"><h3>ĐIỀU HÀNH</h3><div class="admin-view-group-grid">
+    <button type="button" class="active" data-admin-view="overview" role="tab"><b>Tổng quan</b><small>Trạng thái & vận hành</small></button>
+    <button type="button" data-admin-view="analytics" role="tab"><b>Phân tích</b><small>Xu hướng & nội dung</small></button>
+    <button type="button" data-admin-view="retention" role="tab"><b>Giữ chân học viên</b><small>Quay lại sau đăng ký</small></button>
+    <button type="button" data-admin-view="engagement" role="tab"><b>Tương tác</b><small>Tải file, video, sách</small></button>
+    <button type="button" data-admin-view="reviews" role="tab"><b>Đánh giá</b><small>Phản hồi website</small></button>
+  </div></section>
+  <section class="admin-view-group"><h3>HỌC VIÊN & ĐÁNH GIÁ</h3><div class="admin-view-group-grid">
+    <button type="button" data-admin-view="users" role="tab"><b>Học viên</b><small>Tài khoản & tiến độ</small></button>
+    <button type="button" data-admin-view="race" role="tab"><b>Excel Arena</b><small>Bảng xếp hạng</small></button>
+    <button type="button" data-admin-view="grader" role="tab" class="admin-grader-tab"><span class="ag-tab-title"><b>Bài tập tự chấm</b><i id="adminGraderPendingBadge" class="ag-pending-badge" hidden>0</i></span><small>Bài nộp & yêu cầu chấm lại</small></button>
+    <button type="button" data-admin-view="professional" role="tab" class="admin-professional-tab"><span class="apt-tab-title"><b>Professional Track</b><i id="adminProfessionalPendingBadge" class="apt-pending-badge" hidden>0</i></span><small>Hồ sơ xét duyệt & quyền truy cập</small></button>
+  </div></section>
+  <section class="admin-view-group"><h3>NỘI DUNG & TÀI NGUYÊN</h3><div class="admin-view-group-grid">
+    <button type="button" data-admin-view="practice" role="tab"><b>Kho TikTok</b><small>Chủ đề, bài & video</small></button>
+    <button type="button" data-admin-view="content" role="tab"><b>Content Studio</b><small>Ý tưởng, kịch bản, audit</small></button>
+    <button type="button" data-admin-view="youtube" role="tab"><b>YouTube Projects</b><small>Series & tài liệu</small></button>
+    <button type="button" data-admin-view="downloads" role="tab"><b>Thư viện tải xuống</b><small>File & tài nguyên web</small></button>
+    <button type="button" data-admin-view="tools" role="tab"><b>Kho công cụ</b><small>Tool & đề xuất</small></button>
+  </div></section>
+  <section class="admin-view-group"><h3>CỘNG ĐỒNG & HỖ TRỢ</h3><div class="admin-view-group-grid">
+    <button type="button" data-admin-view="community" role="tab"><b>Cộng đồng</b><small>Thông báo & chứng nhận</small></button>
+  </div></section>
+</div>
+<div class="admin-quick-links">
         <a href="practice-tiktok.html">📱 Kho TikTok</a>
         <a href="practice-youtube.html">▶️ Kho YouTube</a>
-        <a href="profile.html">👤 Hồ sơ của tôi</a>
         <a href="office-quest-admin.html">🧑‍💼 Duyệt CV Office Quest</a>
         <a href="index.html">🌐 Xem website</a>
       </div>
