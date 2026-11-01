@@ -4,7 +4,7 @@ body{padding-top:0!important}
 .avp-nav-v2-trigger span{width:20px;height:2px;border-radius:2px;background:#176f47;transition:transform .2s}
 .avp-nav-v2-shade{position:fixed;z-index:13010;inset:0;background:rgba(13,25,19,.16);backdrop-filter:blur(9px) saturate(.82);-webkit-backdrop-filter:blur(9px) saturate(.82);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .24s,visibility .24s}
 .avp-nav-v2-shade.is-open{opacity:1;visibility:visible;pointer-events:auto}
-.avp-nav-v2-drawer{position:absolute;inset:0 auto 0 0;width:min(310px,86vw);box-sizing:border-box;padding:22px 17px 18px;background:rgba(250,253,251,.98);color:var(--avp-nav-ink);box-shadow:20px 0 60px #0002;transform:translateX(-102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;overflow:auto}
+.avp-nav-v2-drawer{position:absolute;inset:0 auto 0 0;width:min(360px,90vw);box-sizing:border-box;padding:22px 17px 18px;background:rgba(250,253,251,.98);color:var(--avp-nav-ink);box-shadow:20px 0 60px #0002;transform:translateX(-102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;overflow:auto}
 .avp-nav-v2-shade.is-open .avp-nav-v2-drawer{transform:translateX(0)}
 .avp-nav-v2-head{display:flex;align-items:center;justify-content:space-between;padding:3px 4px 18px;border-bottom:1px solid var(--avp-nav-line)}
 .avp-nav-v2-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
@@ -14,7 +14,7 @@ body{padding-top:0!important}
 .avp-nav-v2-search{width:100%;height:44px;margin:15px 0 18px;padding:0 11px;display:flex;align-items:center;gap:9px;border:1px solid #dfe9e2;border-radius:12px;background:#f3f8f5;color:#63766b;text-align:left;cursor:pointer}.avp-nav-v2-search svg{width:17px}.avp-nav-v2-search span{flex:1;font-size:12px}.avp-nav-v2-search kbd{font-size:10px;color:#87958d}
 .avp-nav-v2-items{flex:1;overflow:auto}.avp-nav-v2-group{margin-bottom:17px}.avp-nav-v2-label{margin:0 8px 6px;color:#8b9991;font-size:9px;font-weight:850;letter-spacing:.14em}
 .avp-nav-v2-link{width:100%;min-height:42px;padding:0 10px;display:flex;align-items:center;gap:11px;border:0;border-radius:11px;background:transparent;color:#3a5546;text-decoration:none;text-align:left;font:650 13px Arial,sans-serif;cursor:pointer}.avp-nav-v2-link:hover,.avp-nav-v2-link[aria-current=page]{background:#eaf4ed;color:#08794f}.avp-nav-v2-icon{width:20px;height:20px;display:grid;place-items:center;color:#218257}.avp-nav-v2-icon svg{width:18px;height:18px}.avp-nav-v2-text{flex:1}.avp-nav-v2-unread{min-width:18px;height:18px;padding:0 5px;box-sizing:border-box;border-radius:99px;background:#dc3545;color:#fff;display:grid;place-items:center;font:700 10px Arial,sans-serif;box-shadow:0 0 0 3px #e3333318}.avp-nav-v2-unread[hidden]{display:none}
-.avp-nav-v2-foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--avp-nav-line);display:grid;gap:8px}.avp-nav-v2-account{min-height:42px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:11px;background:#f1f7f3;color:#315641;text-decoration:none;font-size:12px;font-weight:700}.avp-nav-v2-account svg{width:18px}.avp-nav-v2-account .auth-nav-slot{flex:1}@media(max-width:600px){.avp-nav-v2-trigger{top:12px;left:12px;width:44px;height:44px}.avp-nav-v2-drawer{width:min(330px,88vw);padding:17px 14px}.avp-nav-v2-shade{backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}}
+.avp-nav-v2-foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--avp-nav-line);display:grid;gap:8px}.avp-nav-v2-account{min-height:42px;display:flex;align-items:center;gap:10px;padding:0 10px;border-radius:11px;background:#f1f7f3;color:#315641;text-decoration:none;font-size:12px;font-weight:700}.avp-nav-v2-account svg{width:18px}.avp-nav-v2-account .auth-nav-slot{flex:1}@media(max-width:600px){.avp-nav-v2-trigger{top:12px;left:12px;width:44px;height:44px}.avp-nav-v2-drawer{width:min(350px,92vw);padding:17px 16px}.avp-nav-v2-shade{backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}}
 @media(prefers-reduced-motion:reduce){.avp-nav-v2-shade,.avp-nav-v2-drawer,.avp-nav-v2-trigger span{transition:none}}
 /* V2 hardening: isolate the menu list from legacy global nav selectors. */
 .avp-nav-v2-items{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;visibility:visible!important;opacity:1!important;min-height:120px!important;width:100%!important;overflow-y:auto!important;overflow-x:hidden!important;position:relative!important}
@@ -40,3 +40,10 @@ body{padding-top:0!important}
 .avp-nav-v2-account-avatar img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important}
 .avp-nav-v2-account-label{min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;flex:1 1 auto!important}
 .avp-nav-v2-foot .avp-nav-v2-account>svg{display:none!important}
+
+/* The hamburger only opens the drawer; hide it while the drawer is open so it cannot cover the brand row. */
+body.avp-nav-v2-open .avp-nav-v2-trigger{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+.avp-nav-v2-brand{flex:1;min-width:0;gap:12px}
+.avp-nav-v2-brand img{width:46px;height:46px;flex:0 0 46px}
+.avp-nav-v2-brand span{min-width:0}
+.avp-nav-v2-brand b,.avp-nav-v2-brand small{white-space:nowrap}
