@@ -1293,6 +1293,10 @@
           p_bio:bio
         });
         if(error)throw error;
+        if(avatarPath){
+          const {error:syncAvatarError}=await client.from("profiles").upsert({id:user.id,avatar:avatarPath,updated_at:new Date().toISOString()},{onConflict:"id"});
+          if(syncAvatarError)console.warn("Community avatar nav sync",syncAvatarError);
+        }
         communityProfileAvatar=null;
         await showCommunityProfile(p.user_id);
       }catch(e){
