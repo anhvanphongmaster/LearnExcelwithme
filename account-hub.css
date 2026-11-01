@@ -54,3 +54,9 @@
  .account-identity-tools{grid-column:1/-1!important}
  .account-identity-tools .account-logout{align-self:flex-start!important}
 }
+
+/* Avatar picker alignment: consistent optical centering for emoji and initials. */
+.account-identity-tools .avatar-presets{display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:8px!important}
+.account-identity-tools .avatar-preset{display:inline-flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;padding:0!important;line-height:1!important;vertical-align:middle!important;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif!important;text-align:center!important;transform:none!important;position:relative!important;top:0!important}
+.account-identity-tools .avatar-preset.is-selected{transform:translateY(-1px)!important}
+.account-identity-tools .avatar-preset[data-avatar="initial"]{font-family:Inter,system-ui,sans-serif!important;font-weight:850!important;font-size:15px!important}
