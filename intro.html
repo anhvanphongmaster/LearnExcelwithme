@@ -101,6 +101,19 @@ html,body,.player{width:100%;height:100%;min-height:100%;overflow:hidden}
 .stage{width:min(100vw,177.7778vh);height:min(100vh,56.25vw)}
 @media(max-width:650px){.stage{width:100vw;height:100vh}}
 
+
+/* Additional depth for the 12-scene cut; original AVP green identity and motion remain intact. */
+.scene .visual{transform-style:preserve-3d}
+.scene.active .visual{animation:visualReveal .9s cubic-bezier(.2,.8,.2,1) both}
+.scene.active .copy{animation:copyReveal .75s cubic-bezier(.2,.8,.2,1) both}
+.chapter{transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
+.scene.active .chapter:nth-child(3n+1){animation:tileRise .65s .08s both}
+.scene.active .chapter:nth-child(3n+2){animation:tileRise .65s .16s both}
+.scene.active .chapter:nth-child(3n){animation:tileRise .65s .24s both}
+@keyframes visualReveal{from{opacity:.2;transform:translate3d(24px,8px,0) scale(.96)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
+@keyframes copyReveal{from{opacity:0;transform:translate3d(-18px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@keyframes tileRise{from{opacity:0;transform:translateY(14px) rotateX(8deg)}to{opacity:1;transform:translateY(0) rotateX(0)}}
+@media(prefers-reduced-motion:reduce){.scene.active .visual,.scene.active .copy,.scene.active .chapter{animation:none!important}}
 </style>
 <style id="avp-intro-hide-site-chrome">
 html.avp-intro-no-site-chrome body .top-simple-nav,
@@ -131,40 +144,57 @@ html.avp-intro-no-site-chrome body{padding-top:0!important;margin-top:0!importan
    <div class="brand"><span class="mark">AVP</span><span>ANH VĂN PHÒNG<small>LEARN EXCEL WITH ME</small></span></div>
    <div class="controls"><button class="control" id="sound" type="button" aria-label="Bật hoặc tắt âm thanh">♪ Âm thanh: bật</button><button class="control skip" id="skip" type="button">Bỏ qua ↗</button></div>
   </header>
+
   <section class="scene active" data-scene="0">
-   <div class="copy"><div class="kicker">AVP 4.0 · OFFICE LEARNING HUB</div><h1>Không chỉ học Excel.<br><span class="accent">Làm chủ công việc.</span></h1><p class="lead">Anh Văn Phòng là không gian học tập và làm việc số, kết nối Excel, dữ liệu, báo cáo, tự động hóa và AI trong một hệ thống.</p><div class="pillrow"><span class="pill">Học có lộ trình</span><span class="pill">Thực hành thực tế</span><span class="pill">Công cụ ứng dụng</span></div></div>
+   <div class="copy"><div class="kicker">AVP 4.0 · OFFICE LEARNING HUB</div><h1>Không chỉ học Excel.<br><span class="accent">Làm chủ công việc.</span></h1><p class="lead">Một không gian kết nối học tập, thực hành và những công cụ phục vụ công việc văn phòng — từ Excel, dữ liệu đến AI.</p><div class="pillrow"><span class="pill">LEARN</span><span class="pill">PRACTICE</span><span class="pill">APPLY</span></div></div>
    <div class="visual"><div class="focus-ring"></div><div class="endmark">AVP<br><small style="font-size:10px;letter-spacing:2px">4.0</small></div><div class="floatlabel one">LEARN · PRACTICE</div><div class="floatlabel two">DATA → INSIGHT → ACTION</div></div>
   </section>
   <section class="scene" data-scene="1">
-   <div class="copy"><div class="kicker">01 / Lộ trình học tập</div><h2>12 chương.<br><span class="accent">Một lộ trình rõ ràng.</span></h2><p class="lead">Đi từ nền tảng đến nâng cao qua các chương học độc lập. Mỗi chương có bài học, nội dung thực hành và tài nguyên đi kèm.</p><div class="pillrow"><span class="pill">Học theo tiến độ</span><span class="pill">Bài học theo chủ đề</span><span class="pill">Học nhanh hôm nay</span></div></div>
-   <div class="visual"><div class="window"><div class="windowbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address">Anh Văn Phòng · Lộ trình học</div></div><div class="mocknav"><div class="mockbrand"><i class="mini-mark">A</i> AVP 4.0</div><div class="mocklinks"><span>Chương học</span><span>Học nhanh</span><span>Tiến độ</span></div></div><div class="mockhero"><div><strong>Học theo<br>lộ trình của bạn.</strong><p>12 chương độc lập · Bài học · Thực hành.</p><span class="mockbutton">TIẾP TỤC HỌC →</span></div><div class="mockchart"><i></i><i></i><i></i><i></i><i></i></div></div><div class="mockcards"><div class="mockcard"><b></b><span></span><span></span></div><div class="mockcard"><b></b><span></span><span></span></div><div class="mockcard"><b></b><span></span><span></span></div><div class="mockcard"><b></b><span></span><span></span></div></div></div></div>
+   <div class="copy"><div class="kicker">01 / Hệ sinh thái AVP</div><h2>Một điểm đến.<br><span class="accent">Nhiều cách phát triển.</span></h2><p class="lead">Học theo lộ trình, tra cứu kiến thức, thực hành trên workbook, sử dụng tiện ích và khai thác AI trong các tình huống công việc.</p><div class="pillrow"><span class="pill">Excel</span><span class="pill">Data</span><span class="pill">Reporting</span><span class="pill">Automation</span><span class="pill">AI</span></div></div>
+   <div class="visual"><div class="case-window"><div class="case-head">AVP WORKSPACE <span>ONE CONNECTED HUB</span></div><div class="case-row"><span class="case-num">01</span><div><strong>Học và khám phá</strong><small>Lộ trình và thư viện kiến thức</small></div><span class="case-tag">LEARN</span></div><div class="case-row"><span class="case-num">02</span><div><strong>Luyện tập và kiểm tra</strong><small>Video · Workbook · Bài tự chấm</small></div><span class="case-tag">PRACTICE</span></div><div class="case-row"><span class="case-num">03</span><div><strong>Ứng dụng vào công việc</strong><small>Công cụ · AI · Cộng đồng</small></div><span class="case-tag">APPLY</span></div></div></div>
   </section>
   <section class="scene" data-scene="2">
-   <div class="copy"><div class="kicker">02 / Thư viện kiến thức</div><h2>Tra cứu nhanh.<br><span class="accent">Hiểu đến bản chất.</span></h2><p class="lead">Thư viện công thức, phím tắt và kiến thức Excel giúp bạn tìm đúng hàm, hiểu cú pháp, xem ví dụ và xử lý lỗi trong lúc làm việc.</p><div class="pillrow"><span class="pill">Công thức Excel</span><span class="pill">Phím tắt</span><span class="pill">Kiến thức dữ liệu</span></div></div>
-   <div class="visual"><div class="window"><div class="windowbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address">Thư viện công thức & kiến thức</div></div><div style="padding:22px"><div style="font-size:10px;color:#4d8c67;font-weight:900;letter-spacing:.15em">SEARCH · LEARN · APPLY</div><div style="margin-top:8px;font-size:clamp(21px,2.6vw,36px);font-weight:900;letter-spacing:-.05em">Tìm đúng lời giải.</div><div style="margin-top:16px;padding:12px;border:1px solid #dce9df;border-radius:8px;color:#779183;font-size:10px">⌕　Tìm hàm, cú pháp hoặc vấn đề Excel...</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px"><div style="padding:14px;border-radius:9px;background:#e6f6ec"><b style="color:#08764b">ƒx</b><p style="margin-top:8px;font-size:12px;font-weight:800">Hàm Excel</p><small style="font-size:9px;color:#62816d">Cú pháp · Ví dụ · Ứng dụng</small></div><div style="padding:14px;border-radius:9px;background:#edf1ff"><b style="color:#4264ac">⌨</b><p style="margin-top:8px;font-size:12px;font-weight:800">Phím tắt</p><small style="font-size:9px;color:#62816d">Tra cứu · Ghi nhớ · Thực hành</small></div></div></div></div></div>
+   <div class="copy"><div class="kicker">02 / Bản đồ hành trình</div><h2>Biết mình đang ở đâu.<br><span class="accent">Biết bước tiếp theo.</span></h2><p class="lead">Bản đồ giúp định hướng hành trình học tập và dẫn tới các khu vực nội dung tương ứng, thay vì phải tự tìm từng phần rời rạc.</p><div class="pillrow"><span class="pill">Định hướng</span><span class="pill">Khám phá</span><span class="pill">Đi tiếp</span></div></div>
+   <div class="visual"><div class="window"><div class="windowbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address">AVP · Learning map</div></div><div style="padding:20px;color:#173b29"><div style="font-size:9px;letter-spacing:.16em;color:#39865b;font-weight:900">YOUR LEARNING JOURNEY</div><div style="font-size:clamp(20px,2.5vw,34px);font-weight:900;margin:8px 0 17px">Chọn điểm bắt đầu.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="padding:13px;border-radius:10px;background:#e4f5e9"><b style="font-size:22px;color:#08764b">01</b><p style="font-size:11px;font-weight:900;margin-top:5px">Nền tảng</p><small style="font-size:9px;color:#587b64">Bắt đầu từ cơ bản</small></div><div style="padding:13px;border-radius:10px;background:#edf4ff"><b style="font-size:22px;color:#4264ac">02</b><p style="font-size:11px;font-weight:900;margin-top:5px">Phát triển</p><small style="font-size:9px;color:#587b64">Mở rộng kỹ năng</small></div><div style="padding:13px;border-radius:10px;background:#fff2df"><b style="font-size:22px;color:#a46a18">03</b><p style="font-size:11px;font-weight:900;margin-top:5px">Ứng dụng</p><small style="font-size:9px;color:#587b64">Giải quyết công việc</small></div><div style="padding:13px;border-radius:10px;background:#f0eafa"><b style="font-size:22px;color:#7250a5">→</b><p style="font-size:11px;font-weight:900;margin-top:5px">Tiếp tục</p><small style="font-size:9px;color:#587b64">Theo lộ trình</small></div></div></div></div></div>
   </section>
   <section class="scene" data-scene="3">
-   <div class="copy"><div class="kicker">03 / Thực hành và tự đánh giá</div><h2>Không chỉ xem.<br><span class="accent">Tự tay làm.</span></h2><p class="lead">Bài học video, workbook và bài tập chấm điểm tự động đưa kiến thức vào thao tác thật. Bạn làm, nhận kết quả và biết mình cần cải thiện ở đâu.</p><div class="pillrow"><span class="pill">Video hướng dẫn</span><span class="pill">Workbook thực hành</span><span class="pill">Chấm điểm tự động</span></div></div>
-   <div class="visual"><div class="case-window"><div class="case-head">PRACTICE HUB <span>LEARN / DO / CHECK</span></div><div class="case-row"><span class="case-num">01</span><div><strong>Học qua video</strong><small>TikTok · YouTube · Bài hướng dẫn</small></div><span class="case-tag">WATCH</span></div><div class="case-row"><span class="case-num">02</span><div><strong>Mở workbook thực hành</strong><small>Dữ liệu mẫu và yêu cầu cụ thể</small></div><span class="case-tag">BUILD</span></div><div class="case-row"><span class="case-num">03</span><div><strong>Nộp bài và nhận đánh giá</strong><small>Kiểm tra kết quả và tiến độ</small></div><span class="case-tag">CHECK</span></div><div style="margin-top:16px;padding:13px;border-radius:9px;background:#17442f;color:#b9f8d2;font-size:11px">Tiến bộ được ghi nhận qua từng lần thực hành.</div></div></div>
+   <div class="copy"><div class="kicker">03 / 12 chương học</div><h2>Chia nhỏ hành trình.<br><span class="accent">Tập trung từng kỹ năng.</span></h2><p class="lead">Mười hai chương được tổ chức thành các khu vực độc lập để người học dễ tìm chủ đề và quay lại đúng phần mình cần.</p><div class="pillrow"><span class="pill">Theo chương</span><span class="pill">Theo chủ đề</span><span class="pill">Theo nhu cầu</span></div></div>
+   <div class="visual"><div class="chapter-grid"><div class="chapter"><b>01</b><span>Chương học</span></div><div class="chapter"><b>02</b><span>Khu vực kiến thức</span></div><div class="chapter"><b>03</b><span>Thực hành</span></div><div class="chapter"><b>04</b><span>Chủ đề chuyên sâu</span></div><div class="chapter"><b>05</b><span>Chương học</span></div><div class="chapter"><b>06</b><span>Khu vực kiến thức</span></div><div class="chapter"><b>07</b><span>Thực hành</span></div><div class="chapter"><b>08</b><span>Chủ đề chuyên sâu</span></div><div class="chapter"><b>09</b><span>Chương học</span></div><div class="chapter"><b>10</b><span>Khu vực kiến thức</span></div><div class="chapter"><b>11</b><span>Thực hành</span></div><div class="chapter"><b>12</b><span>Chủ đề chuyên sâu</span></div></div></div>
   </section>
   <section class="scene" data-scene="4">
-   <div class="copy"><div class="kicker">04 / Kho công cụ</div><h2>Giảm thao tác.<br><span class="accent">Tăng hiệu quả.</span></h2><p class="lead">Sử dụng các tiện ích phục vụ công việc văn phòng: so sánh file, làm sạch dữ liệu và những công cụ hỗ trợ xử lý tác vụ thường ngày.</p><div class="pillrow"><span class="pill">Compare Files</span><span class="pill">Clean Data</span><span class="pill">Excel Tools</span></div></div>
-   <div class="visual"><div class="window"><div class="windowbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address">AVP Tools · Workspace</div></div><div style="padding:20px"><div style="font-size:10px;color:#4d8c67;font-weight:900;letter-spacing:.15em">TOOLS FOR DAILY WORK</div><div style="margin-top:8px;font-size:clamp(20px,2.5vw,34px);font-weight:900;letter-spacing:-.05em">Công việc gọn hơn.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px"><div style="padding:15px;border-radius:10px;background:#e7f5ec"><b style="font-size:21px;color:#08764b">⇄</b><p style="margin-top:8px;font-size:12px;font-weight:900">Compare Files</p><small style="font-size:9px;color:#62816d">Đối chiếu hai tệp</small></div><div style="padding:15px;border-radius:10px;background:#edf1ff"><b style="font-size:21px;color:#4264ac">✦</b><p style="margin-top:8px;font-size:12px;font-weight:900">Clean Data</p><small style="font-size:9px;color:#62816d">Làm sạch dữ liệu</small></div><div style="padding:15px;border-radius:10px;background:#fff3df"><b style="font-size:21px;color:#a46a18">⌘</b><p style="margin-top:8px;font-size:12px;font-weight:900">Code Hub</p><small style="font-size:9px;color:#8a714d">Kho mã và giải pháp</small></div><div style="padding:15px;border-radius:10px;background:#f0eafa"><b style="font-size:21px;color:#7250a5">▦</b><p style="margin-top:8px;font-size:12px;font-weight:900">Office Tools</p><small style="font-size:9px;color:#76658d">Tiện ích công việc</small></div></div></div></div></div>
+   <div class="copy"><div class="kicker">04 / Thư viện hàm Excel</div><h2>Tra cứu đúng hàm.<br><span class="accent">Dùng đúng tình huống.</span></h2><p class="lead">Tìm kiếm hàm Excel, xem cú pháp và ví dụ để hiểu cách sử dụng — không chỉ ghi nhớ tên hàm.</p><div class="pillrow"><span class="pill">Tìm kiếm</span><span class="pill">Cú pháp</span><span class="pill">Ví dụ</span></div></div>
+   <div class="visual"><div class="window"><div class="windowbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address">Excel Formula Library</div></div><div style="padding:20px;color:#173b29"><div style="font-size:9px;letter-spacing:.16em;color:#39865b;font-weight:900">FUNCTION LOOKUP</div><div style="margin-top:8px;font-size:clamp(20px,2.5vw,34px);font-weight:900">Tìm hàm bạn cần.</div><div style="margin-top:14px;padding:12px;border:1px solid #dce9df;border-radius:8px;color:#779183;font-size:10px">⌕　XLOOKUP, SUMIFS, FILTER...</div><div style="margin-top:12px;display:grid;gap:8px"><div style="padding:12px;border-radius:8px;background:#e6f6ec"><b style="color:#08764b">XLOOKUP</b><p style="font-size:9px;margin-top:5px">Tra cứu và trả về kết quả tương ứng</p></div><div style="padding:12px;border-radius:8px;background:#edf1ff"><b style="color:#4264ac">SUMIFS</b><p style="font-size:9px;margin-top:5px">Tính tổng theo nhiều điều kiện</p></div><div style="padding:12px;border-radius:8px;background:#fff3df"><b style="color:#a46a18">FILTER</b><p style="font-size:9px;margin-top:5px">Lọc dữ liệu theo điều kiện</p></div></div></div></div></div>
   </section>
   <section class="scene" data-scene="5">
-   <div class="copy"><div class="kicker">05 / AI và cộng đồng</div><h2>Không phải tự<br><span class="accent">giải quyết một mình.</span></h2><p class="lead">Kết nối AI hỗ trợ học tập, hỏi đáp cộng đồng, Code Hub và Office Quest — mở rộng trải nghiệm từ học kiến thức đến khám phá môi trường làm việc số.</p><div class="pillrow"><span class="pill">AI hỗ trợ</span><span class="pill">Cộng đồng học tập</span><span class="pill">Code Hub</span><span class="pill">Office Quest</span></div></div>
-   <div class="visual"><div class="case-window"><div class="case-head">AVP LEARNING NETWORK <span>ASK · SHARE · IMPROVE</span></div><div class="case-row"><span class="case-num">AI</span><div><strong>Trợ lý AI</strong><small>Giải thích, phân tích và hỗ trợ Excel</small></div><span class="case-tag">ASSIST</span></div><div class="case-row"><span class="case-num">Q</span><div><strong>Cộng đồng hỏi đáp</strong><small>Chia sẻ câu hỏi và kinh nghiệm</small></div><span class="case-tag">CONNECT</span></div><div class="case-row"><span class="case-num">⌘</span><div><strong>Code Hub</strong><small>Tìm và tái sử dụng giải pháp</small></div><span class="case-tag">CREATE</span></div><div style="margin-top:16px;padding:13px;border-radius:9px;background:#17442f;color:#b9f8d2;font-size:11px">Học cùng nhau. Làm tốt hơn mỗi ngày.</div></div></div>
+   <div class="copy"><div class="kicker">05 / Tra cứu theo công việc</div><h2>Bắt đầu từ vấn đề.<br><span class="accent">Tìm cách giải quyết.</span></h2><p class="lead">Không nhớ tên hàm cũng không sao. Tiếp cận kiến thức từ chính nhu cầu: tra cứu, tổng hợp, làm sạch hay phân tích dữ liệu.</p><div class="pillrow"><span class="pill">Theo nhu cầu</span><span class="pill">Theo tác vụ</span><span class="pill">Theo giải pháp</span></div></div>
+   <div class="visual"><div class="case-window"><div class="case-head">FIND BY WORK TASK <span>FROM TASK TO METHOD</span></div><div class="case-row"><span class="case-num">⌕</span><div><strong>Tìm dữ liệu theo mã</strong><small>Tra cứu và đối chiếu thông tin</small></div><span class="case-tag">LOOKUP</span></div><div class="case-row"><span class="case-num">Σ</span><div><strong>Tổng hợp theo điều kiện</strong><small>Nhóm dữ liệu và tính toán</small></div><span class="case-tag">SUM</span></div><div class="case-row"><span class="case-num">↧</span><div><strong>Lọc và sắp xếp danh sách</strong><small>Rút gọn dữ liệu cần xem</small></div><span class="case-tag">FILTER</span></div><div class="case-row"><span class="case-num">▤</span><div><strong>Chuẩn hóa bảng dữ liệu</strong><small>Chuẩn bị dữ liệu để phân tích</small></div><span class="case-tag">CLEAN</span></div></div></div>
   </section>
   <section class="scene" data-scene="6">
-   <div class="copy"><div class="kicker">06 / Theo dõi hành trình</div><h2>Tiến độ rõ ràng.<br><span class="accent">Mục tiêu cụ thể.</span></h2><p class="lead">Theo dõi riêng tiến độ học theo chương, mức độ hoàn thành trong thư viện công thức và kết quả bài tập tự chấm — để biết mình đã đi đến đâu.</p><div class="pillrow"><span class="pill">Chương học</span><span class="pill">Thư viện công thức</span><span class="pill">Bài tập tự chấm</span></div></div>
-   <div class="visual"><div class="window" style="background:#0b2b1f;color:#eafff1;border-color:#65e6a24d"><div class="windowbar" style="background:#123b29;border-color:#ffffff12"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address" style="background:#0a2a1d;color:#91bba0">Learning progress · AVP 4.0</div></div><div style="padding:20px"><div style="font-size:9px;letter-spacing:.17em;color:#79e9ac;font-weight:900">YOUR LEARNING OVERVIEW</div><div style="font-size:clamp(19px,2.6vw,34px);font-weight:900;letter-spacing:-.05em;margin-top:8px">Mỗi bước đều được ghi nhận.</div><div style="margin-top:18px"><div style="display:flex;justify-content:space-between;font-size:10px"><b>Học theo chương</b><span style="color:#8debb5">01</span></div><div style="height:7px;margin-top:7px;border-radius:8px;background:#254a37"><div style="width:72%;height:100%;border-radius:8px;background:#55d995"></div></div></div><div style="margin-top:14px"><div style="display:flex;justify-content:space-between;font-size:10px"><b>Thư viện công thức</b><span style="color:#8debb5">02</span></div><div style="height:7px;margin-top:7px;border-radius:8px;background:#254a37"><div style="width:48%;height:100%;border-radius:8px;background:#55d995"></div></div></div><div style="margin-top:14px"><div style="display:flex;justify-content:space-between;font-size:10px"><b>Bài tập tự chấm</b><span style="color:#8debb5">03</span></div><div style="height:7px;margin-top:7px;border-radius:8px;background:#254a37"><div style="width:86%;height:100%;border-radius:8px;background:#55d995"></div></div></div></div></div></div>
+   <div class="copy"><div class="kicker">06 / Trung tâm thực hành</div><h2>Xem cách làm.<br><span class="accent">Tự mình thực hiện.</span></h2><p class="lead">Tập trung các hình thức học qua video và dự án, cùng bài tập về nhà và lộ trình thực hành chuyên nghiệp trong một khu vực.</p><div class="pillrow"><span class="pill">TikTok</span><span class="pill">YouTube</span><span class="pill">Homework</span></div></div>
+   <div class="visual"><div class="case-window"><div class="case-head">PRACTICE CENTER <span>LEARN BY DOING</span></div><div class="case-row"><span class="case-num">▶</span><div><strong>Kho video TikTok</strong><small>Học nhanh qua tình huống ngắn</small></div><span class="case-tag">VIDEO</span></div><div class="case-row"><span class="case-num">YT</span><div><strong>Project theo YouTube</strong><small>Thực hành theo dự án</small></div><span class="case-tag">PROJECT</span></div><div class="case-row"><span class="case-num">✓</span><div><strong>Bài tập về nhà</strong><small>Ôn lại và củng cố kỹ năng</small></div><span class="case-tag">TASK</span></div><div class="case-row"><span class="case-num">↗</span><div><strong>Lộ trình chuyên nghiệp</strong><small>Đi sâu hơn vào ứng dụng</small></div><span class="case-tag">PATH</span></div></div></div>
   </section>
   <section class="scene" data-scene="7">
-   <div class="copy"><div class="kicker">Bắt đầu hành trình của bạn</div><h2>Học để làm được.<br><span class="accent">Làm để tiến xa.</span></h2><p class="lead">Khám phá AVP 4.0, chọn một kỹ năng cần thiết và bắt đầu biến kiến thức thành kết quả trong công việc mỗi ngày.</p><div class="pillrow"><span class="pill">Excel · Data · AI</span><span class="pill">Học · Thực hành · Ứng dụng</span></div><button class="play" id="explore" style="margin-top:24px">Khám phá website ↗</button></div>
+   <div class="copy"><div class="kicker">07 / Workbook và bài tập tự chấm</div><h2>Làm trên dữ liệu.<br><span class="accent">Nhận phản hồi rõ ràng.</span></h2><p class="lead">Workbook đi cùng nội dung thực hành. Với bài tập tự chấm, người học có thể kiểm tra kết quả và theo dõi phần cần cải thiện.</p><div class="pillrow"><span class="pill">Workbook</span><span class="pill">Thực hành</span><span class="pill">Tự đánh giá</span></div></div>
+   <div class="visual"><div class="window"><div class="windowbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address">Workbook · Practice task</div></div><div style="padding:18px;color:#173b29"><div style="font-size:9px;letter-spacing:.16em;color:#39865b;font-weight:900">PRACTICE WORKFLOW</div><div style="margin-top:8px;font-size:clamp(19px,2.3vw,31px);font-weight:900">Từ đề bài đến kết quả.</div><div style="margin-top:15px;display:grid;grid-template-columns:1fr 1fr;gap:8px"><div style="padding:13px;background:#e6f6ec;border-radius:9px"><b style="color:#08764b">01</b><p style="font-size:11px;font-weight:900;margin-top:6px">Mở workbook</p><small style="font-size:9px;color:#62816d">Dữ liệu và yêu cầu</small></div><div style="padding:13px;background:#edf1ff;border-radius:9px"><b style="color:#4264ac">02</b><p style="font-size:11px;font-weight:900;margin-top:6px">Thực hiện</p><small style="font-size:9px;color:#62816d">Tự thao tác trong Excel</small></div><div style="padding:13px;background:#fff3df;border-radius:9px"><b style="color:#a46a18">03</b><p style="font-size:11px;font-weight:900;margin-top:6px">Nộp hoặc kiểm tra</p><small style="font-size:9px;color:#62816d">Đối chiếu kết quả</small></div><div style="padding:13px;background:#f0eafa;border-radius:9px"><b style="color:#7250a5">04</b><p style="font-size:11px;font-weight:900;margin-top:6px">Cải thiện</p><small style="font-size:9px;color:#76658d">Xem phần cần sửa</small></div></div></div></div></div>
+  </section>
+  <section class="scene" data-scene="8">
+   <div class="copy"><div class="kicker">08 / Bộ công cụ văn phòng</div><h2>Giải quyết tác vụ.<br><span class="accent">Tiết kiệm thao tác.</span></h2><p class="lead">Các tiện ích tập trung cho công việc: tính NG Rate, xây dựng công thức, làm sạch văn bản, tính ngày và tạo phân tích Pareto.</p><div class="pillrow"><span class="pill">NG Rate</span><span class="pill">Formula Builder</span><span class="pill">Text Cleaner</span></div></div>
+   <div class="visual"><div class="window"><div class="windowbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="address">AVP · Tools Center</div></div><div style="padding:18px;color:#173b29"><div style="font-size:9px;letter-spacing:.16em;color:#39865b;font-weight:900">TOOLS FOR DAILY WORK</div><div style="margin-top:8px;font-size:clamp(20px,2.4vw,32px);font-weight:900">Chọn đúng tiện ích.</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px"><div style="padding:13px;background:#e6f6ec;border-radius:9px"><b style="color:#08764b">%</b><p style="font-size:10px;font-weight:900;margin-top:6px">NG Rate Calculator</p></div><div style="padding:13px;background:#edf1ff;border-radius:9px"><b style="color:#4264ac">ƒx</b><p style="font-size:10px;font-weight:900;margin-top:6px">Formula Builder</p></div><div style="padding:13px;background:#fff3df;border-radius:9px"><b style="color:#a46a18">Aa</b><p style="font-size:10px;font-weight:900;margin-top:6px">Text Cleaner</p></div><div style="padding:13px;background:#f0eafa;border-radius:9px"><b style="color:#7250a5">◷</b><p style="font-size:10px;font-weight:900;margin-top:6px">Date Calculator</p></div><div style="grid-column:1/-1;padding:12px;background:#e8f4f0;border-radius:9px"><b style="color:#08764b">▥ Pareto Generator</b></div></div></div></div></div>
+  </section>
+  <section class="scene" data-scene="9">
+   <div class="copy"><div class="kicker">09 / AI hỗ trợ công việc</div><h2>Đưa tình huống vào.<br><span class="accent">Mở hướng xử lý.</span></h2><p class="lead">AI hỗ trợ các tác vụ thực tế như viết email báo cáo, sửa công thức, phân tích doanh số, xây dựng kịch bản và chuẩn hóa quy trình.</p><div class="pillrow"><span class="pill">Hỏi đáp</span><span class="pill">Phân tích</span><span class="pill">Soạn thảo</span></div></div>
+   <div class="visual"><div class="case-window"><div class="case-head">AI WORK ASSISTANT <span>ASK · ANALYZE · CREATE</span></div><div class="case-row"><span class="case-num">01</span><div><strong>Viết email báo cáo</strong><small>Chuyển ý chính thành nội dung rõ ràng</small></div><span class="case-tag">WRITE</span></div><div class="case-row"><span class="case-num">02</span><div><strong>Sửa công thức Excel</strong><small>Phân tích lỗi và gợi ý cách sửa</small></div><span class="case-tag">FIX</span></div><div class="case-row"><span class="case-num">03</span><div><strong>Phân tích dữ liệu</strong><small>Tóm tắt và tìm điểm đáng chú ý</small></div><span class="case-tag">ANALYZE</span></div><div class="case-row"><span class="case-num">04</span><div><strong>Chuẩn hóa quy trình</strong><small>Biến nội dung thành các bước hành động</small></div><span class="case-tag">PLAN</span></div></div></div>
+  </section>
+  <section class="scene" data-scene="10">
+   <div class="copy"><div class="kicker">10 / Cộng đồng học tập</div><h2>Chia sẻ cách làm.<br><span class="accent">Cùng nhau tiến bộ.</span></h2><p class="lead">Đặt câu hỏi, chia sẻ kinh nghiệm và trao đổi các tình huống Excel, Power Query, phân tích dữ liệu trong cộng đồng.</p><div class="pillrow"><span class="pill">Hỏi đáp</span><span class="pill">Chia sẻ</span><span class="pill">Kinh nghiệm thực tế</span></div></div>
+   <div class="visual"><div class="case-window"><div class="case-head">AVP COMMUNITY <span>ASK · SHARE · LEARN</span></div><div class="case-row"><span class="case-num">Q</span><div><strong>Đặt câu hỏi</strong><small>Mô tả vấn đề đang gặp phải</small></div><span class="case-tag">ASK</span></div><div class="case-row"><span class="case-num">↗</span><div><strong>Chia sẻ giải pháp</strong><small>Đăng cách làm và kinh nghiệm</small></div><span class="case-tag">SHARE</span></div><div class="case-row"><span class="case-num">◎</span><div><strong>Trao đổi cùng cộng đồng</strong><small>Học từ tình huống của người khác</small></div><span class="case-tag">CONNECT</span></div></div></div>
+  </section>
+  <section class="scene" data-scene="11">
+   <div class="copy"><div class="kicker">Khám phá Anh Văn Phòng</div><h2>Học để làm được.<br><span class="accent">Làm để tiến xa.</span></h2><p class="lead">Chọn một kỹ năng bạn cần hôm nay. Bắt đầu từ lộ trình, tra cứu kiến thức hoặc mở khu thực hành của AVP 4.0.</p><div class="pillrow"><span class="pill">Excel · Data · AI</span><span class="pill">Học · Thực hành · Ứng dụng</span></div><button class="play" id="explore" style="margin-top:24px">Khám phá website ↗</button></div>
    <div class="visual"><div class="endmark">AVP<br><small style="font-size:10px;letter-spacing:2px">4.0</small></div><div class="floatlabel one">YOUR NEXT STEP</div><div class="floatlabel two">LEARN · BUILD · GROW</div></div>
   </section>
-  <div class="timeline"><span class="time" id="time">00:00 / 01:00</span><div class="track"><div class="fill" id="fill"></div></div><span class="scene-count" id="sceneCount">01 / 08</span></div>
-  <div class="start-screen" id="startScreen"><div class="start-card"><div class="endmark">AVP</div><div class="kicker" style="justify-content:center">Một phút khám phá AVP 4.0</div><h2>Chào mừng đến<br><span class="accent">AVP 4.0.</span></h2><p>Khám phá hệ sinh thái học tập, thư viện kiến thức, công cụ và AI của Anh Văn Phòng. Bạn có thể tắt tiếng hoặc bỏ qua bất cứ lúc nào.</p><button class="play" id="start">▶　Bắt đầu giới thiệu</button><div style="margin-top:14px"><button class="control" id="startSoundTest" type="button">♪ Kiểm tra âm thanh</button></div><div class="hint">Nhấn Esc để bỏ qua · Thời lượng khoảng 60 giây</div></div></div>
+  <div class="timeline"><span class="time" id="time">00:00 / 02:04</span><div class="track"><div class="fill" id="fill"></div></div><span class="scene-count" id="sceneCount">01 / 12</span></div>
+  <div class="start-screen" id="startScreen"><div class="start-card"><div class="endmark">AVP</div><div class="kicker" style="justify-content:center">Hai phút khám phá AVP 4.0</div><h2>Chào mừng đến<br><span class="accent">AVP 4.0.</span></h2><p>Khám phá hệ sinh thái học tập, thư viện kiến thức, công cụ và AI của Anh Văn Phòng. Bạn có thể tắt tiếng hoặc bỏ qua bất cứ lúc nào.</p><button class="play" id="start">▶　Bắt đầu giới thiệu</button><div style="margin-top:14px"><button class="control" id="startSoundTest" type="button">♪ Kiểm tra âm thanh</button></div><div class="hint">Nhấn Esc để bỏ qua · Thời lượng khoảng 2 phút 04 giây</div></div></div>
  </div>
 </main>
 <script>
@@ -173,8 +203,8 @@ html.avp-intro-no-site-chrome body{padding-top:0!important;margin-top:0!importan
  const scenes=Array.from(document.querySelectorAll('.scene'));
  const fill=document.getElementById('fill'),time=document.getElementById('time'),count=document.getElementById('sceneCount');
  const startScreen=document.getElementById('startScreen'),startBtn=document.getElementById('start'),skipBtn=document.getElementById('skip'),soundBtn=document.getElementById('sound'),startSoundTest=document.getElementById('startSoundTest'),exploreBtn=document.getElementById('explore');
- const durations=[6,8,8,8,8,8,7,7],total=durations.reduce((a,b)=>a+b,0);
- let running=false,muted=false,startedAt=0,raf=0,sceneIndex=-1,audio=null,sfxPlayers=[];
+ const durations=[8,8,12,10,12,10,12,12,10,12,8,10],total=durations.reduce((a,b)=>a+b,0);
+ let running=false,muted=false,raf=0,sceneIndex=-1,audio=null,sfxPlayers=[],fallbackStartedAt=0,hiddenAt=0;
  const MUSIC_URL='https://assets.mixkit.co/music/371/371.mp3';
  const SFX={
   intro:'https://assets.mixkit.co/active_storage/sfx/1492/1492-preview.mp3',
@@ -183,75 +213,89 @@ html.avp-intro-no-site-chrome body{padding-top:0!important;margin-top:0!importan
   impact:'https://assets.mixkit.co/active_storage/sfx/2908/2908-preview.mp3'
  };
  function prepareAudio(){
-  if(!audio){audio=new Audio(MUSIC_URL);audio.loop=true;audio.preload='auto';audio.volume=.48;audio.playsInline=true;audio.load();audio.addEventListener('error',()=>{soundBtn.textContent='Âm thanh lỗi · Chạm để thử lại';});}
+  if(!audio){audio=new Audio(MUSIC_URL);audio.loop=false;audio.preload='auto';audio.volume=.48;audio.playsInline=true;audio.addEventListener('error',()=>{soundBtn.textContent='Âm thanh lỗi · Chạm để thử lại';});}
   return audio;
  }
- function playEffect(name,volume=.38){
+ function playEffect(name,volume=.28){
   if(muted)return;
   const src=SFX[name];if(!src)return;
-  const fx=new Audio(src);fx.preload='auto';fx.playsInline=true;fx.volume=Math.min(.65,volume*1.35);sfxPlayers.push(fx);
+  if(sfxPlayers.length>=3){const old=sfxPlayers.shift();old.pause();old.src='';}
+  const fx=new Audio(src);fx.preload='none';fx.playsInline=true;fx.volume=Math.min(.55,volume*1.25);sfxPlayers.push(fx);
   fx.addEventListener('ended',()=>{sfxPlayers=sfxPlayers.filter(x=>x!==fx);});
   fx.play().catch(()=>{});
  }
  async function playSound(){
   if(muted)return false;
-  try{const a=prepareAudio();const p=a.play();if(p&&p.then)await p;if(a.error||a.paused)throw new Error('Audio playback was blocked');soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';return true;}
+  try{const a=prepareAudio();if(a.ended)a.currentTime=0;const p=a.play();if(p&&p.then)await p;if(a.error||a.paused)throw new Error('Audio playback blocked');soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';return true;}
   catch(err){soundBtn.dataset.state='off';soundBtn.textContent='Chạm để bật âm thanh';return false;}
  }
  function stopSound(){
   muted=true;if(audio){audio.pause();audio.currentTime=0;}
-  sfxPlayers.forEach(x=>{x.pause();x.currentTime=0;});sfxPlayers=[];
+  sfxPlayers.forEach(x=>{x.pause();x.src='';});sfxPlayers=[];
   soundBtn.dataset.state='off';soundBtn.textContent='♪ Bật âm thanh';
  }
  function showScene(i){
-  if(i===sceneIndex)return;sceneIndex=i;scenes.forEach((s,j)=>s.classList.toggle('active',j===i));
-  if(i===0)playEffect('intro',.48);else if(i===7)playEffect('impact',.42);else playEffect(i%2===0?'ping':'whoosh',i%2===0?.18:.25);
+  if(i===sceneIndex)return;
+  sceneIndex=i;scenes.forEach((s,j)=>s.classList.toggle('active',j===i));
+  if(i===0)playEffect('intro',.42);else if(i===11)playEffect('impact',.38);else playEffect(i%3===0?'ping':'whoosh',i%3===0?.16:.22);
   count.textContent=String(i+1).padStart(2,'0')+' / '+String(scenes.length).padStart(2,'0');
  }
- function tick(now){
+ function elapsedSeconds(){
+  if(audio&&!muted&&!audio.paused&&!audio.error)return Math.min(total,audio.currentTime);
+  return Math.min(total,(performance.now()-fallbackStartedAt)/1000);
+ }
+ function tick(){
   if(!running)return;
-  const elapsed=Math.min(total,(now-startedAt)/1000);
+  const elapsed=elapsedSeconds();
   fill.style.width=(elapsed/total*100)+'%';
-  time.textContent=String(Math.floor(elapsed/60)).padStart(2,'0')+':'+String(Math.floor(elapsed%60)).padStart(2,'0')+' / 01:00';
+  time.textContent=String(Math.floor(elapsed/60)).padStart(2,'0')+':'+String(Math.floor(elapsed%60)).padStart(2,'0')+' / 02:04';
   let sum=0,index=durations.length-1;
   for(let i=0;i<durations.length;i++){sum+=durations[i];if(elapsed<sum){index=i;break;}}
   showScene(index);
-  if(elapsed>=total){finish();return;}
+  if(elapsed>=total||((audio&&!muted)&&audio.ended)){finish();return;}
   raf=requestAnimationFrame(tick);
  }
  async function begin(){
   if(running)return;
-  running=true;startedAt=performance.now();startScreen.classList.add('hidden');
+  startScreen.classList.add('hidden');
   if(!muted)await playSound();
-  showScene(0);raf=requestAnimationFrame(tick);
+  fallbackStartedAt=performance.now();
+  if(audio&&!muted&&audio.currentTime>0)fallbackStartedAt-=audio.currentTime*1000;
+  running=true;showScene(0);raf=requestAnimationFrame(tick);
  }
- function finish(){running=false;cancelAnimationFrame(raf);if(audio)audio.pause();fill.style.width='100%';time.textContent='01:00 / 01:00';setTimeout(()=>{location.href='index.html';},450);}
- function skip(){running=false;cancelAnimationFrame(raf);if(audio)audio.pause();location.href='index.html';}
+ function finish(){
+  if(!running)return;running=false;cancelAnimationFrame(raf);
+  if(audio)audio.pause();
+  fill.style.width='100%';time.textContent='02:04 / 02:04';
+  setTimeout(()=>{location.href='index.html';},450);
+ }
+ function skip(){
+  running=false;cancelAnimationFrame(raf);if(audio)audio.pause();
+  sfxPlayers.forEach(x=>x.pause());location.href='index.html';
+ }
  startBtn.addEventListener('click',begin);
  skipBtn.addEventListener('click',skip);exploreBtn.addEventListener('click',skip);
  soundBtn.textContent='♪ Kiểm tra âm thanh';
  async function testSound(button){
-  button.textContent='Đang tải nhạc…';
-  muted=false;
-  try{
-   const a=prepareAudio();a.currentTime=0;
-   const p=a.play();if(p&&p.then)await p;
-   await new Promise(resolve=>setTimeout(resolve,180));
-   if(a.error||a.paused)throw new Error('Audio playback was blocked');
-   soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';
-   playEffect('intro',.35);
-   button.textContent='Đang phát nhạc · Nhấn để tắt';
-  }catch(err){button.textContent='Không phát được · Chạm lại';soundBtn.textContent='Chạm để bật âm thanh';}
+  button.textContent='Đang tải nhạc…';muted=false;
+  try{const a=prepareAudio();a.currentTime=0;const p=a.play();if(p&&p.then)await p;await new Promise(resolve=>setTimeout(resolve,180));if(a.error||a.paused)throw new Error('Audio playback blocked');soundBtn.dataset.state='on';soundBtn.textContent='♪ Tắt âm thanh';playEffect('intro',.3);button.textContent='Đang phát nhạc · Nhấn để tắt';}
+  catch(err){button.textContent='Không phát được · Chạm lại';soundBtn.textContent='Chạm để bật âm thanh';}
  }
- soundBtn.addEventListener('click',()=>{
-  if(!muted&&soundBtn.dataset.state==='on'){stopSound();soundBtn.textContent='♪ Bật âm thanh';if(startSoundTest)startSoundTest.textContent='♪ Kiểm tra âm thanh';return;}
-  testSound(soundBtn);
- });
+ soundBtn.addEventListener('click',()=>{if(!muted&&soundBtn.dataset.state==='on'){stopSound();if(startSoundTest)startSoundTest.textContent='♪ Kiểm tra âm thanh';return;}testSound(soundBtn);});
  if(startSoundTest)startSoundTest.addEventListener('click',()=>testSound(startSoundTest));
  document.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();skip();}if((e.key===' '||e.key==='Enter')&&!running&&!startScreen.classList.contains('hidden')){e.preventDefault();begin();}});
- document.addEventListener('visibilitychange',()=>{if(!audio)return;if(document.hidden)audio.pause();else if(running&&!muted)audio.play().catch(()=>{soundBtn.textContent='Chạm để bật âm thanh';});});
+ document.addEventListener('visibilitychange',()=>{
+  if(!audio||!running)return;
+  if(document.hidden){hiddenAt=performance.now();audio.pause();cancelAnimationFrame(raf);}
+  else{
+   if(muted)fallbackStartedAt+=performance.now()-hiddenAt;
+   else audio.play().catch(()=>{muted=true;soundBtn.textContent='Chạm để bật âm thanh';});
+   raf=requestAnimationFrame(tick);
+  }
+ });
  window.addEventListener('pagehide',()=>{if(audio)audio.pause();sfxPlayers.forEach(x=>x.pause());});
 })();
+</script>
 </script>
 <script src="avp-display-mode.js?v=1"></script></body>
 </html>
