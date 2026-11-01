@@ -335,6 +335,8 @@
   }
 
   let adminUsersCache=[];
+  let adminUsersOffset=0;
+  const ADMIN_USERS_PAGE_SIZE=100;
   function fmtDate(v){
     if(!v) return "—";
     try{return new Date(v).toLocaleString("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})}catch(e){return "—"}
@@ -343,6 +345,10 @@
     adminUsersCache=Array.isArray(rows)?rows:[];
     const body=$("adminUsersBody"); if(!body)return;
     $("adminUsersShown").textContent=n(adminUsersCache.length);
+    const prev=$("adminUsersPrev"),next=$("adminUsersNext"),page=$("adminUsersPageLabel");
+    if(prev)prev.disabled=adminUsersOffset<=0;
+    if(next)next.disabled=adminUsersCache.length<ADMIN_USERS_PAGE_SIZE;
+    if(page)page.textContent=`Trang ${Math.floor(adminUsersOffset/ADMIN_USERS_PAGE_SIZE)+1}`;
     $("adminUsersAdmins").textContent=n(adminUsersCache.filter(x=>x.is_admin).length);
     $("adminUsersHidden").textContent=n(adminUsersCache.filter(x=>x.exclude_from_leaderboard).length);
     const notice=$("adminUsersNotice"); if(notice) notice.hidden=true;
@@ -361,10 +367,11 @@
     }).join("");
   }
   function escapeHtml(v){return String(v??"").replace(/[&<>'"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[ch]))}
-  async function loadAdminUsers(){
+  async function loadAdminUsers(resetPage=false){
+    if(resetPage)adminUsersOffset=0;
     const body=$("adminUsersBody"),q=$("adminUserSearch")?.value?.trim()||"";
     if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Đang tải danh sách tài khoản…</td></tr>';
-    const data=await rpcSoft("admin_um_list_users",{p_search:q,p_limit:200,p_offset:0});
+    const data=await rpcSoft("admin_um_list_users",{p_search:q,p_limit:ADMIN_USERS_PAGE_SIZE,p_offset:adminUsersOffset});
     if(data?.__error){
       if(body)body.innerHTML='<tr><td colspan="6" class="admin-users-empty">Không tải được danh sách tài khoản. Kiểm tra RPC Quản lý người dùng trong Supabase.</td></tr>';
       const notice=$("adminUsersNotice"); if(notice){notice.hidden=false;notice.textContent="Supabase chưa có RPC Quản lý người dùng hoặc schema chưa reload."}
@@ -394,9 +401,11 @@
     finally{btn.disabled=false}
   }
   function bindUserManagement(){
-    $("adminUserSearchBtn")?.addEventListener("click",loadAdminUsers);
-    $("adminUserReloadBtn")?.addEventListener("click",loadAdminUsers);
-    $("adminUserSearch")?.addEventListener("keydown",e=>{if(e.key==="Enter")loadAdminUsers()});
+    $("adminUserSearchBtn")?.addEventListener("click",()=>loadAdminUsers(true));
+    $("adminUserReloadBtn")?.addEventListener("click",()=>loadAdminUsers());
+    $("adminUserSearch")?.addEventListener("keydown",e=>{if(e.key==="Enter")loadAdminUsers(true)});
+    $("adminUsersPrev")?.addEventListener("click",()=>{adminUsersOffset=Math.max(0,adminUsersOffset-ADMIN_USERS_PAGE_SIZE);loadAdminUsers()});
+    $("adminUsersNext")?.addEventListener("click",()=>{adminUsersOffset+=ADMIN_USERS_PAGE_SIZE;loadAdminUsers()});
     $("adminUsersBody")?.addEventListener("click",e=>{const b=e.target.closest("button[data-act]");if(b)doUserAction(b)});
   }
 
