@@ -982,5 +982,5 @@ function init(){
  document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!map.hidden)closeMap();else if(!hub.hidden)closeHub();}});
  window.addEventListener('storage',function(){if(!hub.hidden)renderAll();if(!map.hidden)mapRender();});
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+init();
 })();
