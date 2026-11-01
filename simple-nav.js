@@ -547,7 +547,7 @@ document.addEventListener("DOMContentLoaded",function(){
   try{
     var page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
     if(page==="index.html"||page==="")return;
-    if(sessionStorage.getItem("avp_map_mini_enabled_v1")!=="1")return;
+    if(sessionStorage.getItem("avp_map_mini_enabled_v1")!=="1" && new URLSearchParams(location.search).get("avpMap")!=="1")return;
     if(document.querySelector('script[data-avp-floating-map-session]'))return;
     var s=document.createElement("script");
     s.src="avp-floating-map.js?v=20261101-map10";
