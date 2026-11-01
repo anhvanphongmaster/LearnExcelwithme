@@ -27,7 +27,7 @@ const mini=document.createElement('button');mini.id='avpMapMini';mini.type='butt
 function open(){overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');mini.classList.remove('show');}
 function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');if(!isHome&&sessionStorage.getItem(KEY)==='1')mini.classList.add('show');}
 function enableMini(){try{sessionStorage.setItem(KEY,'1')}catch(_){}if(!isHome)mini.classList.add('show')}
-function go(url,id){try{sessionStorage.setItem(KEY,'1');if(id)localStorage.setItem(LAST,id)}catch(_){}overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');if(url)location.href=url}
+function go(url,id){try{sessionStorage.setItem(KEY,'1');if(id)localStorage.setItem(LAST,id)}catch(_){}overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');if(url){const target=new URL(url,location.href);target.searchParams.set('avpMap','1');location.href=target.href}}
 document.getElementById('avpMapClose').addEventListener('click',close);
 mini.addEventListener('click',()=>{if(!dragged)open()});
 let startY=0,startTop=0,dragging=false,dragged=false;
