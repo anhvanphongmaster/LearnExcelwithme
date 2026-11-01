@@ -598,3 +598,23 @@ html.avp-home-canonical .avp-canonical-trending .avp-trending-open:focus-visible
 html.avp-home-canonical .avp-canonical-lesson.is-active-learning .avp-canonical-thumb{background:linear-gradient(135deg,#073d2c 0%,#08764c 58%,#123c30 100%)!important;color:#fff!important}
 html.avp-home-canonical .avp-canonical-lesson.is-active-learning .avp-canonical-thumb strong,html.avp-home-canonical .avp-canonical-lesson.is-active-learning .avp-canonical-thumb small{color:#fff!important;text-shadow:0 1px 3px #00190f55}
 html.avp-home-canonical .avp-canonical-lesson.is-active-learning .avp-canonical-thumb>b{background:#062d20!important;color:#fff!important}
+
+/* AVP mascot reference: identical 16:9 artwork on desktop and mobile. */
+html.avp-home-canonical .avp-canonical-visual-wrap{width:100%!important;min-width:0!important}
+html.avp-home-canonical .avp-canonical-illustration{
+  width:100%!important;height:auto!important;min-height:0!important;
+  aspect-ratio:16/9!important;max-width:none!important;margin:0!important;
+  overflow:hidden!important;border-radius:0!important;background:transparent!important;
+  animation:none!important;perspective:none!important;
+}
+html.avp-home-canonical .avp-canonical-illustration::before{display:none!important}
+html.avp-home-canonical .avp-canonical-illustration .avp-mascot-image{
+  display:block!important;width:100%!important;height:100%!important;
+  aspect-ratio:16/9!important;object-fit:cover!important;object-position:center!important;
+  margin:0!important;border:0!important;border-radius:0!important;
+  filter:none!important;animation:none!important;translate:none!important;
+}
+@media(max-width:650px){
+  html.avp-home-canonical .avp-canonical-visual-wrap{width:100%!important;max-width:none!important;margin:0!important}
+  html.avp-home-canonical .avp-canonical-illustration{width:100%!important;max-width:none!important;height:auto!important;margin:0!important}
+}
