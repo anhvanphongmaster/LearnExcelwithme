@@ -8,7 +8,7 @@
     var page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
     var isHome=page===''||page==='index.html';
     if(isHome){
-      d.documentElement.classList.add('avp-site-upgrade','avp-site-home');
+      d.documentElement.classList.add('avp-site-home');
       d.querySelectorAll('link[href*="theme-polish-v33.css"]').forEach(function(link){link.remove();});
       return;
     }
