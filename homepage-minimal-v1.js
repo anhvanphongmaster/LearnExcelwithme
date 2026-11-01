@@ -734,25 +734,46 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
  lessons.innerHTML='<div class="avp-canonical-lesson-main"><div class="avp-canonical-section-head"><div><h2>Bài học nổi bật</h2><p>Những bài có nhiều học viên hoàn thành nhất.</p></div></div><div class="avp-canonical-lesson-grid" aria-live="polite"></div></div><aside class="avp-canonical-trending" aria-live="polite"><h3>Xu hướng hôm nay　↗</h3><ol><li><span><small>Đang tải dữ liệu học tập...</small></span></li></ol></aside>';
  var lg=lessons.querySelector('.avp-canonical-lesson-grid');
  function esc(value){return String(value==null?'':value).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
+ function openRankedLesson(item){
+  var match=String(item&&item.content_id||'').match(/^chapter-(\\d+)-lesson-(\\d+)$/);
+  var api=window.AVP_HOME_LEARNING_API;
+  if(!match||!api)return;
+  var chapterIndex=Number(match[1])-1,lessonIndex=Number(match[2])-1;
+  if(!api.chapterLessons[chapterIndex]||!api.chapterLessons[chapterIndex][lessonIndex])return;
+  api.openChapterPicker();
+  api.renderChapterLessons(chapterIndex);
+ }
  function renderLearningRankings(data){
-  var featured=Array.isArray(data&&data.featured)?data.featured:[];
+  var featured=Array.isArray(data&&data.featured)?data.featured.slice(0,4):[];
   var trending=Array.isArray(data&&data.trending)?data.trending:[];
+  /* Keep four visual slots. When fewer than four lessons have completions,
+     use the most active non-duplicate lesson and label it honestly as in-progress. */
+  if(featured.length<4){
+   var used=new Set(featured.map(function(x){return String(x.content_id||'');}));
+   var supplement=trending.find(function(x){return x.content_id&&!used.has(String(x.content_id));});
+   if(supplement)featured.push(Object.assign({},supplement,{_active:true,learners:Number(supplement.recent_learners)||0}));
+  }
   lg.innerHTML='';
   featured.forEach(function(item,i){
    var title=esc(item.title||'Bài học');
    var learners=Math.max(0,Number(item.learners)||0);
-   var card=el('article','avp-canonical-lesson',
-    '<div class="avp-canonical-thumb rank-'+(i+1)+'"><small>AVP · EXCEL</small><strong>'+title+'</strong><span class="avp-thumb-sheet"><i></i><i></i><i></i><i></i><i></i></span><b>TOP '+(i+1)+'</b></div><div class="avp-canonical-lesson-copy"><strong>'+title+'</strong><small>'+learners.toLocaleString('vi-VN')+' học viên đã hoàn thành</small></div>');
+   var active=!!item._active;
+   var card=el('article','avp-canonical-lesson'+(active?' is-active-learning':''),
+    '<div class="avp-canonical-thumb rank-'+(i+1)+'"><small>AVP · EXCEL</small><strong>'+title+'</strong><span class="avp-thumb-sheet"><i></i><i></i><i></i><i></i><i></i></span><b>'+(active?'ĐANG HỌC':'TOP '+(i+1))+'</b></div><div class="avp-canonical-lesson-copy"><strong>'+title+'</strong><small>'+(active?learners.toLocaleString('vi-VN')+' học viên đã bắt đầu':' '+learners.toLocaleString('vi-VN')+' học viên đã hoàn thành')+'</small></div>');
    lg.appendChild(card);
   });
-  if(!featured.length)lg.appendChild(el('div','avp-learning-rank-empty','Chưa có dữ liệu hoàn thành bài học.'));
+  if(!featured.length)lg.appendChild(el('div','avp-learning-rank-empty','Chưa có dữ liệu hoàn thành hoặc bắt đầu bài học.'));
   var list=lessons.querySelector('.avp-canonical-trending ol');
   list.innerHTML='';
   trending.forEach(function(item,i){
    var recent=Math.max(0,Number(item.recent_learners)||0);
    var growth=item.growth_pct==null?null:Number(item.growth_pct);
    var note=growth===null?'Mới nổi · '+recent.toLocaleString('vi-VN')+' người học':(growth>0?'Tăng '+growth.toLocaleString('vi-VN')+'%':growth<0?'Giảm '+Math.abs(growth).toLocaleString('vi-VN')+'%':'Ổn định')+' · '+recent.toLocaleString('vi-VN')+' người học';
-   list.appendChild(el('li','','<b>'+(i+1)+'</b><span><strong>'+esc(item.title||'Bài học')+'</strong><small>'+esc(note)+' trong 7 ngày</small></span>'));
+   var li=el('li','avp-trending-item');
+   var button=el('button','avp-trending-open','<b>'+(i+1)+'</b><span><strong>'+esc(item.title||'Bài học')+'</strong><small>'+esc(note)+' trong 7 ngày</small></span><i aria-hidden="true">↗</i>');
+   button.type='button';
+   button.addEventListener('click',function(){openRankedLesson(item);});
+   li.appendChild(button);list.appendChild(li);
   });
   if(!trending.length)list.appendChild(el('li','avp-learning-rank-empty','Chưa có hoạt động học tập trong 7 ngày gần đây.'));
  }
