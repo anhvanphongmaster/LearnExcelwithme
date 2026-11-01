@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f8f6"><meta name="description" content="Hồ sơ, thành tích cá nhân và bộ sưu tập học tập trên Anh Văn Phòng.">
+<title>Tài khoản của tôi | Anh Văn Phòng</title>
+<link rel="stylesheet" href="simple-nav.css"><link rel="stylesheet" href="auth.css"><link rel="stylesheet" href="avp-core.css"><link rel="stylesheet" href="avp-ui-system.css?v=20261001-ui2"><link rel="stylesheet" href="account-hub.css?v=20261101-v1">
+</head>
+<body class="account-hub-page">
+<nav class="top-simple-nav"><div class="top-simple-links"><a href="index.html">Trang chủ</a><a href="practice-video.html">Thực hành</a><a href="tools-center.html">Công cụ</a><span class="auth-nav-slot"></span></div><button class="top-mobile-toggle" type="button">☰</button></nav>
+<main class="account-shell">
+<header class="account-heading"><div><span class="account-eyebrow">KHÔNG GIAN CÁ NHÂN</span><h1>Tài khoản của tôi</h1><p>Hồ sơ, thành tích và những nội dung bạn đã lưu trên hành trình học tập.</p></div><a class="account-home-link" href="index.html">← Trang chủ</a></header>
+<section class="account-identity">
+<div class="account-avatar" id="accountAvatar">A</div><div class="account-identity-copy"><h2 id="accountName">Đang tải tài khoản…</h2><p id="accountEmail">Đang kiểm tra phiên đăng nhập</p><span class="account-status" id="accountStatus">Đang kết nối</span></div>
+</section>
+<nav class="account-tabs" aria-label="Các mục tài khoản">
+<button class="account-tab is-active" data-tab="profile" type="button">Hồ sơ</button><button class="account-tab" data-tab="achievements" type="button">Thành tích cá nhân</button><button class="account-tab" data-tab="collection" type="button">Bộ sưu tập</button>
+</nav>
+<section class="account-panel is-active" id="panel-profile">
+<div class="account-section-head"><div><h2>Thông tin cá nhân</h2><p>Thông tin hiển thị lấy từ tài khoản đăng nhập, không đọc hồ sơ cũ trên thiết bị.</p></div></div>
+<div class="account-form"><label>Tên hiển thị<input id="displayName" maxlength="60" placeholder="Nhập tên hiển thị"></label><label>Email tài khoản<input id="accountEmailInput" type="email" disabled></label></div>
+<div class="account-actions"><button id="saveAccount" type="button">Lưu thay đổi</button><span id="accountFeedback" role="status"></span></div>
+<div class="account-note">Tiến độ và thành tích chỉ hiển thị khi dữ liệu học tập hiện có trên thiết bị hoặc tài khoản được hệ thống cung cấp. Không tự tạo thành tích khi chưa có dữ liệu.</div>
+</section>
+<section class="account-panel" id="panel-achievements">
+<div class="account-section-head"><div><h2>Thành tích cá nhân</h2><p>Tổng hợp hoạt động học tập mà website đang lưu được.</p></div></div>
+<div class="account-stats" id="accountStats"><article><strong>—</strong><span>Ngày hoạt động</span></article><article><strong>—</strong><span>Bài đã hoàn thành</span></article><article><strong>—</strong><span>Huy hiệu</span></article><article><strong>—</strong><span>Điểm tích lũy</span></article></div>
+<div class="account-subsection"><h3>Hoạt động gần đây</h3><div class="account-list" id="accountActivity"><p class="account-empty">Chưa có hoạt động đủ dữ liệu để hiển thị.</p></div></div>
+</section>
+<section class="account-panel" id="panel-collection">
+<div class="account-section-head"><div><h2>Bộ sưu tập</h2><p>Các nội dung bạn đã đánh dấu hoặc lưu lại.</p></div></div>
+<div class="collection-grid" id="accountCollection"><div class="account-empty">Chưa tìm thấy nội dung đã lưu.</div></div>
+</section>
+</main>
+<script src="supabase-config.js"></script><script type="module" src="supabase-auth.js?v=20261003-reviewcooldown1"></script><script defer src="simple-nav.js?v=20261101-map6"></script><script defer src="account-hub.js?v=20261101-v1"></script>
+</body></html>
