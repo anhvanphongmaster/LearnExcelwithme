@@ -30,7 +30,8 @@
   const sleep=(ms)=>new Promise(r=>setTimeout(r,ms));
   let client=null,user=null,threadId=null,pollTimer=null,realtimeChannel=null;
   const chatAvatarMap=new Map();
-  async function loadChatAvatar(userId){if(!userId||chatAvatarMap.has(String(userId)))return chatAvatarMap.get(String(userId))||null;try{const rows=await rpc("community_avatar_map",{p_user_ids:[String(userId)]});const row=Array.isArray(rows)?rows[0]:null;if(row)chatAvatarMap.set(String(userId),row);return row||null;}catch(e){console.warn("Chat avatar",e);return null;}}
+  async function loadChatAvatars(userIds){const ids=[...new Set((userIds||[]).filter(Boolean).map(String))].filter(id=>!chatAvatarMap.has(id));if(!ids.length)return;try{const rows=await rpc("community_avatar_map",{p_user_ids:ids});(Array.isArray(rows)?rows:[]).forEach(row=>chatAvatarMap.set(String(row.id||row.user_id),row));}catch(e){console.warn("Chat avatars",e);}}
+  async function loadChatAvatar(userId){if(!userId)return null;await loadChatAvatars([userId]);return chatAvatarMap.get(String(userId))||null;}
   function chatAvatarHtml(row,name="Học viên",kind="student"){if(kind==="admin")return '<span class="avp-msg-avatar avp-msg-avatar-admin"><img src="avp-logo.svg" alt="Anh Văn Phòng"></span>';const path=String(row?.avatar_path||"");if(path.startsWith("emoji:"))return '<span class="avp-msg-avatar avp-msg-avatar-student">'+esc(path.slice(6))+'</span>';if(path&&client){const url=client.storage.from("community-avatars").getPublicUrl(path)?.data?.publicUrl;if(url)return '<span class="avp-msg-avatar avp-msg-avatar-student"><img src="'+esc(url)+'" alt="'+esc(name)+'"></span>';}const initial=String(name||row?.display_name||"H").trim().charAt(0).toUpperCase()||"H";return '<span class="avp-msg-avatar avp-msg-avatar-student fallback">'+esc(initial)+'</span>';}
   let authSubscribed=false;
 
@@ -1072,7 +1073,7 @@
     if(tab){let pill=tab.querySelector(".admin-chat-unread-pill");if(!pill){pill=document.createElement("span");pill.className="admin-chat-unread-pill";tab.querySelector("b")?.appendChild(pill)}pill.hidden=n<=0;pill.textContent=n>99?"99+":String(n)}
   }
   async function loadAdminThreads(){
-    try{const rows=await rpc("avp_chat_admin_threads");adminThreads=Array.isArray(rows)?rows:[];await Promise.all(adminThreads.map(t=>loadChatAvatar(t.user_id)));setAdminBadge();renderAdminThreads($("adminChatSearch")?.value||"");if(activeThread&&!adminThreads.some(t=>t.thread_id===activeThread))activeThread=null}
+    try{const rows=await rpc("avp_chat_admin_threads");adminThreads=Array.isArray(rows)?rows:[];await loadChatAvatars(adminThreads.map(t=>t.user_id));setAdminBadge();renderAdminThreads($("adminChatSearch")?.value||"");if(activeThread&&!adminThreads.some(t=>t.thread_id===activeThread))activeThread=null}
     catch(e){const r=$("adminChatThreads");if(r)r.innerHTML='<div class="admin-chat-empty">Chưa tải được Chat. Hãy chạy admin-chat-setup.sql.</div>';console.warn(e)}
   }
   async function openAdminThread(id){
@@ -1239,7 +1240,7 @@
     try{
       const rows=await rpc("avp_chat_admin_threads");
       floatThreads=Array.isArray(rows)?rows:[];
-      await Promise.all(floatThreads.map(t=>loadChatAvatar(t.user_id)));
+      await loadChatAvatars(floatThreads.map(t=>t.user_id));
       setFloatingAdminBadge();
       renderFloatingAdminThreads($("avpAdminFloatSearch")?.value||"");
       if(floatActiveThread&&!floatThreads.some(t=>t.thread_id===floatActiveThread))floatActiveThread=null;
