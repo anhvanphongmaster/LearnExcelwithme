@@ -26,3 +26,10 @@ body{padding-top:0!important}
  .avp-nav-v2-link{min-height:40px!important}
 }
 
+
+/* Account item: compact row matching the other navigation links. */
+.avp-nav-v2-foot{display:block!important;flex:0 0 auto!important;padding:12px 0 0!important;margin-top:12px!important;border-top:1px solid var(--avp-nav-line)!important}
+.avp-nav-v2-foot .avp-nav-v2-account{display:flex!important;align-items:center!important;gap:12px!important;width:100%!important;min-height:44px!important;padding:7px 12px!important;border:0!important;border-radius:11px!important;background:transparent!important;color:var(--avp-nav-text,#33443a)!important;text-decoration:none!important;font-size:14px!important;font-weight:650!important;cursor:pointer!important}
+.avp-nav-v2-foot .avp-nav-v2-account:hover{background:var(--avp-nav-hover,#f1f6f2)!important}
+.avp-nav-v2-foot .avp-nav-v2-account svg{width:18px!important;height:18px!important;max-width:18px!important;max-height:18px!important;flex:0 0 18px!important}
+.avp-nav-v2-account-avatar{width:28px!important;height:28px!important;flex:0 0 28px!important;border-radius:50%!important;display:grid!important;place-items:center!important;background:#e8f3eb!important;color:#217346!important;font-size:12px!important;font-weight:800!important}
