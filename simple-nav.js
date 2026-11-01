@@ -289,15 +289,11 @@
       const groups={
         home:new Set(["","index.html","gioithieu.html","lienhe.html","terms.html","privacy.html","disclaimer.html","open-source.html"]),
         learn:new Set([
-          "excel.html",
-          "phimtatexcel.html","congthucexcel.html","filtersort.html","pivottable.html",
-          "bieudopareto.html","baocaoexcel.html","excel-nang-cao.html",
-          "power-query-course.html","power-pivot-dax.html","dashboard-dong.html",
-          "vba-macro.html","solver-whatif.html","focus-room.html","certificate.html"
+          "excel-handbook.html","focus-room.html","certificate.html"
         ]),
         ai:new Set(["ai.html"]),
         practice:new Set([
-          "practice-video.html","practice-youtube.html","practice-lab.html",
+          "practice-video.html","practice-youtube.html",
           "baitapexcel.html","excel-race.html"
         ]),
         tools:new Set([
@@ -430,43 +426,23 @@
       Một URL có thể được mở từ Trang chủ, Search, Dashboard, QR hoặc link trực tiếp;
       history.back() vì thế dễ đưa người học tới một nơi không liên quan.
     */
-    const coreTopicPages = new Set([
-      "phimtatexcel.html","congthucexcel.html","pivottable.html",
-      "bieudopareto.html","filtersort.html","baocaoexcel.html"
-    ]);
+    const coreTopicPages = new Set([]);
     if(coreTopicPages.has(pageName)) return;
 
     const parentRoutes = {
-      "phimtatexcel.html": ["excel.html", "6 chuyên đề Excel"],
-      "congthucexcel.html": ["excel.html", "6 chuyên đề Excel"],
-      "pivottable.html": ["excel.html", "6 chuyên đề Excel"],
-      "bieudopareto.html": ["excel.html", "6 chuyên đề Excel"],
-      "filtersort.html": ["excel.html", "6 chuyên đề Excel"],
-      "baocaoexcel.html": ["excel.html", "6 chuyên đề Excel"],
-
-      "power-query-course.html": ["excel-nang-cao.html", "Kỹ năng nâng cao"],
-      "power-pivot-dax.html": ["excel-nang-cao.html", "Kỹ năng nâng cao"],
-      "dashboard-dong.html": ["excel-nang-cao.html", "Kỹ năng nâng cao"],
-      "vba-macro.html": ["excel-nang-cao.html", "Kỹ năng nâng cao"],
-      "solver-whatif.html": ["excel-nang-cao.html", "Kỹ năng nâng cao"],
-
+      "excel-handbook.html": ["index.html", "Trang chủ"],
       "certificate.html": ["learning-coach.html", "Bài học hôm nay"],
-      "master-learning.html": ["index.html", "Trang chủ"],
-      "practice-lab.html": ["index.html", "Trang chủ"],
       "formula-finder.html": ["tools-center.html", "Công cụ"],
       "tools-center.html": ["index.html", "Trang chủ"],
       "qc-dashboard.html": ["tools-center.html", "Công cụ"],
       "excel-mobile.html": ["tools-center.html", "Công cụ"],
       "playground.html": ["tools-center.html", "Công cụ"],
-      "excel.html": ["index.html", "Trang chủ"],
-      "excel-nang-cao.html": ["index.html", "Trang chủ"],
       "gioithieu.html": ["index.html", "Trang chủ"],
       "lienhe.html": ["index.html", "Trang chủ"],
       "auth.html": ["index.html", "Trang chủ"],
       "privacy.html": ["index.html", "Trang chủ"],
       "terms.html": ["index.html", "Trang chủ"],
-      "disclaimer.html": ["index.html", "Trang chủ"],
-      "open-source.html": ["index.html", "Trang chủ"]
+      "disclaimer.html": ["index.html", "Trang chủ"]
     };
 
     const route = parentRoutes[pageName] || ["index.html", "Trang chủ"];
