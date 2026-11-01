@@ -284,7 +284,7 @@
 
 
   function avatarPublicUrl(path){
-    if(!path)return "";
+    if(!path||String(path).startsWith("emoji:")||path==="initial")return "";
     if(/^https?:\/\//i.test(path))return path;
     try{
       return client.storage.from("community-avatars").getPublicUrl(path)?.data?.publicUrl||"";
@@ -293,9 +293,11 @@
 
   function communityAvatarHtml(userId,displayName,size="sm"){
     const row=communityAvatarMap.get(String(userId||""));
-    const url=avatarPublicUrl(row?.avatar_path);
+    const path=String(row?.avatar_path||"");
+    const url=avatarPublicUrl(path);
     const name=String(displayName||row?.display_name||"Học viên");
     const first=(name.trim()[0]||"A").toUpperCase();
+    if(path.startsWith("emoji:"))return `<span class="avp-community-avatar ${size} fallback" aria-label="${esc(name)}">${esc(path.slice(6))}</span>`;
     return url
       ? `<span class="avp-community-avatar ${size}"><img src="${esc(url)}" alt="${esc(name)}" loading="lazy"></span>`
       : `<span class="avp-community-avatar ${size} fallback">${esc(first)}</span>`;
@@ -1057,9 +1059,11 @@
 
         <section class="avp-profile-hero">
           <div class="avp-profile-avatar avp-profile-avatar-real">
-            ${avatarPublicUrl(social.avatar_path)
-              ? `<img src="${esc(avatarPublicUrl(social.avatar_path))}" alt="${esc(p.display_name||"Học viên")}">`
-              : level.icon}
+            ${social.avatar_path?.startsWith("emoji:")
+              ? esc(social.avatar_path.slice(6))
+              : avatarPublicUrl(social.avatar_path)
+                ? `<img src="${esc(avatarPublicUrl(social.avatar_path))}" alt="${esc(p.display_name||"Học viên")}">`
+                : level.icon}
           </div>
 
           <div class="avp-profile-main">
