@@ -542,6 +542,21 @@ document.addEventListener("DOMContentLoaded",function(){
   }catch(e){}
 })();
 
+/* Floating map mini-button is enabled only after a navigation initiated inside the journey map. */
+(function(){
+  try{
+    var page=(location.pathname.split("/").pop()||"index.html").toLowerCase();
+    if(page==="index.html"||page==="")return;
+    if(sessionStorage.getItem("avp_map_mini_enabled_v1")!=="1")return;
+    if(document.querySelector('script[data-avp-floating-map-session]'))return;
+    var s=document.createElement("script");
+    s.src="avp-floating-map.js?v=20261101-map10";
+    s.defer=true;
+    s.setAttribute("data-avp-floating-map-session","1");
+    (document.head||document.documentElement).appendChild(s);
+  }catch(e){}
+})();
+
 /* AVP VERTICAL NAVIGATION V2 — replaces the legacy horizontal header and robot launcher. */
 (function(){
   if(window.self!==window.top)return;
@@ -554,6 +569,6 @@ document.addEventListener("DOMContentLoaded",function(){
     (document.head||document.documentElement).appendChild(el);
   }
   loadAsset("link",'link[data-avp-global-preferences-css]',"avp-global-preferences-v1.css?v=20261031-6");
-  loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261101-map8");
-  loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261101-map8");
+  loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261101-map9");
+  loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261101-map9");
 })();
