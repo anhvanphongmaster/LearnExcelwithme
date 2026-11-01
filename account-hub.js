@@ -33,7 +33,7 @@ async function save(){if(!user||!window.avpSupabase){$("accountFeedback").textCo
  if(communityError)throw communityError;const community=Array.isArray(communityData)?communityData[0]:communityData;
  const {error:rpcError}=await sb.rpc("community_user_profile_update",{p_avatar_path:avatarPath,p_bio:community?.bio??communityBio??null});
  if(rpcError)throw rpcError;
- const {data:profile,error:profileError}=await sb.from("profiles").upsert({id:user.id,display_name:name,avatar:avatarPath,updated_at:new Date().toISOString()},{onConflict:"id"}).select().single();
+ const {data:profile,error:profileError}=await sb.from("profiles").upsert({id:user.id,display_name:name,avatar:avatarPath,updated_at:new Date().toISOString()},{onConflict:"id"});
  if(profileError)throw profileError;
  const {data,error}=await sb.auth.updateUser({data:{...user.user_metadata,display_name:name,avatar_choice:selectedAvatar}});
  if(error)throw error;user=data.user||user;savedAvatarPath=avatarPath;uploadedFile=null;communityBio=community?.bio||communityBio;setIdentity();$("accountFeedback").textContent="Đã lưu hồ sơ và đồng bộ avatar với Cộng đồng.";window.dispatchEvent(new CustomEvent("avp:auth-changed"));
