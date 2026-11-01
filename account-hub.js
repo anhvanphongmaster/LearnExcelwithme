@@ -24,7 +24,40 @@ function renderCollection(){
  const unique=[...new Map(items.map((x,i)=>[String(x.id||x.url||x.href||x.title||i),x])).values()];
  $("accountCollection").innerHTML=unique.length?unique.map(x=>{const title=clean(x.title||x.name||x.label||"Nội dung đã lưu");const desc=clean(x.description||x.category||x.type||"");const href=/^(https?:|\/|[a-z0-9-]+\.html)/i.test(x.url||x.href||"")?(x.url||x.href):"";return '<article class="collection-card"><span class="collection-icon">◇</span><div><b>'+title+'</b><small>'+desc+'</small>'+(href?'<a href="'+href.replace(/"/g,"%22")+'">Mở nội dung →</a>':"")+'</div></article>'}).join(""):'<div class="account-empty">Chưa tìm thấy nội dung đã lưu. Khi bạn lưu công thức, bài học hoặc tài liệu, chúng sẽ xuất hiện tại đây nếu tính năng đó ghi vào bộ sưu tập tài khoản.</div>';
 }
-async function loadUser(){for(let i=0;i<50&&!window.avpSupabase;i++)await new Promise(r=>setTimeout(r,100));const sb=window.avpSupabase;if(!sb){$("accountStatus").textContent="Chưa kết nối dịch vụ tài khoản";$("accountName").textContent="Tài khoản chưa sẵn sàng";return}try{const {data,error}=await sb.auth.getUser();if(error)throw error;user=data?.user||null;if(!user){setIdentity();$("accountFeedback").textContent="Bạn cần đăng nhập để lưu thông tin cá nhân.";return;}const {data:cpData,error:cpError}=await sb.rpc("community_user_profile_get",{p_user_id:user.id});if(cpError)throw cpError;const cp=Array.isArray(cpData)?cpData[0]:cpData;communityBio=cp?.bio||"";savedAvatarPath=cp?.avatar_path||"initial";if(savedAvatarPath.startsWith("emoji:")){selectedAvatar=savedAvatarPath.slice(6);uploadedAvatar="";}else if(savedAvatarPath!=="initial"&&savedAvatarPath){selectedAvatar="uploaded";const {data:urlData}=sb.storage.from("community-avatars").getPublicUrl(savedAvatarPath);uploadedAvatar=urlData?.publicUrl||"";}else{selectedAvatar="initial";uploadedAvatar="";}setIdentity();}catch(e){$("accountStatus").textContent="Không thể tải tài khoản";$("accountEmail").textContent="Kiểm tra kết nối rồi tải lại trang";console.warn("Account profile",e);}}
+async function loadUser(){
+ const wait=(ms)=>new Promise(resolve=>setTimeout(resolve,ms));
+ for(let i=0;i<80&&!window.avpSupabase;i++)await wait(100);
+ const sb=window.avpSupabase;
+ if(!sb){$("accountStatus").textContent="Chưa kết nối dịch vụ tài khoản";$("accountName").textContent="Tài khoản chưa sẵn sàng";$("accountFeedback").textContent="Không tải được Supabase. Hãy tải lại trang sau ít phút.";return;}
+ try{
+  const sessionResult=await Promise.race([sb.auth.getSession(),wait(10000).then(()=>({error:new Error("AUTH_TIMEOUT")}))]);
+  if(sessionResult.error)throw sessionResult.error;
+  user=sessionResult.data?.session?.user||null;
+  if(!user){setIdentity();$("accountFeedback").textContent="Phiên đăng nhập chưa tồn tại. Hãy đăng nhập lại.";return;}
+  setIdentity();
+  $("accountStatus").textContent="Đang đồng bộ hồ sơ…";
+  const profileResult=await Promise.race([
+   sb.rpc("community_user_profile_get",{p_user_id:user.id}),
+   wait(10000).then(()=>({error:new Error("PROFILE_TIMEOUT")}))
+  ]);
+  if(profileResult.error)throw profileResult.error;
+  const cp=Array.isArray(profileResult.data)?profileResult.data[0]:profileResult.data;
+  communityBio=cp?.bio||"";
+  savedAvatarPath=cp?.avatar_path||"initial";
+  if(savedAvatarPath.startsWith("emoji:")){selectedAvatar=savedAvatarPath.slice(6);uploadedAvatar="";}
+  else if(savedAvatarPath!=="initial"&&savedAvatarPath){
+   selectedAvatar="uploaded";
+   const {data:urlData}=sb.storage.from("community-avatars").getPublicUrl(savedAvatarPath);
+   uploadedAvatar=urlData?.publicUrl||"";
+  }else{selectedAvatar="initial";uploadedAvatar="";}
+  setIdentity();
+  $("accountStatus").textContent="Đã kết nối";
+ }catch(e){
+  $("accountStatus").textContent="Chưa đồng bộ được hồ sơ";
+  $("accountFeedback").textContent="Tài khoản đã tải nhưng hồ sơ chưa đồng bộ: "+clean(e.message||"Lỗi kết nối");
+  console.warn("Account profile load",e);
+ }
+}
 async function save(){if(!user||!window.avpSupabase){$("accountFeedback").textContent="Hãy đăng nhập trước khi lưu.";return}const sb=window.avpSupabase;const name=clean($("displayName").value).slice(0,60);if(!name){$("accountFeedback").textContent="Tên hiển thị không được để trống.";return}const btn=$("saveAccount");btn.disabled=true;btn.textContent="Đang lưu…";try{
  let avatarPath=savedAvatarPath||"initial";
  if(uploadedFile){const path=user.id+"/account-"+Date.now()+".jpg";const {error}=await sb.storage.from("community-avatars").upload(path,uploadedFile,{contentType:"image/jpeg",cacheControl:"3600",upsert:false});if(error)throw error;avatarPath=path;}
