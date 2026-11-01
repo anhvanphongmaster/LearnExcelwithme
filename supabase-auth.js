@@ -587,6 +587,12 @@ async function updateAuthNav() {
     user?.user_metadata?.display_name ||
     user?.email?.split("@")[0] ||
     "Người dùng";
+  const avatarValue = String(profile?.avatar || "initial");
+  const avatarHtml = avatarValue.startsWith("emoji:")
+    ? avatarValue.slice(6)
+    : avatarValue !== "initial"
+      ? `<img src="${supabase.storage.from("community-avatars").getPublicUrl(avatarValue).data.publicUrl}" alt="">`
+      : firstLetter(name);
 
   document.querySelectorAll(".auth-nav-slot").forEach(slot => {
     if (!configured || !user) {
@@ -597,7 +603,7 @@ async function updateAuthNav() {
     slot.innerHTML = `
       <div class="auth-nav-user">
         <button type="button" class="auth-nav-button auth-user-toggle" aria-expanded="false">
-          <span class="auth-nav-avatar">${firstLetter(name)}</span>
+          <span class="auth-nav-avatar">${avatarHtml}</span>
           <span>Tài khoản</span>
         </button>
         <div class="auth-dropdown">
