@@ -18,7 +18,7 @@ const groups=[
 ["TRỢ GIÚP",[["#chat-ai","Chat AI","ai","ai-action"],["#chat-admin","Chat với Admin","chat","action"]]]
 ];
 const trigger=document.createElement("button");trigger.className="avp-nav-v2-trigger";trigger.type="button";trigger.setAttribute("aria-label","Mở menu điều hướng");trigger.setAttribute("aria-expanded","false");trigger.innerHTML='<span></span><span></span><span></span>';
-const shade=document.createElement("div");shade.className="avp-nav-v2-shade";shade.innerHTML='<aside class="avp-nav-v2-drawer" role="dialog" aria-modal="true" aria-label="Điều hướng website"><div class="avp-nav-v2-head"><a href="index.html" class="avp-nav-v2-brand"><img src="avp-logo.svg" alt=""><span><b>Anh Văn Phòng</b><small>LEARN EXCEL WITH ME</small></span></a><button class="avp-nav-v2-close" aria-label="Đóng menu" type="button">'+ico("close")+'</button></div><button class="avp-nav-v2-search" type="button">'+ico("search")+'<span>Tìm bài học, công cụ, công thức...</span><kbd>⌘ K</kbd></button><div class="avp-nav-v2-items" role="navigation" aria-label="Các khu vực website"></div><div class="avp-nav-v2-foot"><a class="avp-nav-v2-account" href="account.html"><span class="avp-nav-v2-account-avatar" aria-hidden="true">A</span><span>Tài khoản</span>'+ico("user")+'</a></div></aside>'
+const shade=document.createElement("div");shade.className="avp-nav-v2-shade";shade.innerHTML='<aside class="avp-nav-v2-drawer" role="dialog" aria-modal="true" aria-label="Điều hướng website"><div class="avp-nav-v2-head"><a href="index.html" class="avp-nav-v2-brand"><img src="avp-logo.svg" alt=""><span><b>Anh Văn Phòng</b><small>LEARN EXCEL WITH ME</small></span></a><button class="avp-nav-v2-close" aria-label="Đóng menu" type="button">'+ico("close")+'</button></div><button class="avp-nav-v2-search" type="button">'+ico("search")+'<span>Tìm bài học, công cụ, công thức...</span><kbd>⌘ K</kbd></button><div class="avp-nav-v2-items" role="navigation" aria-label="Các khu vực website"></div><div class="avp-nav-v2-foot"><a class="avp-nav-v2-account" href="account.html"><span class="avp-nav-v2-account-avatar" aria-hidden="true">A</span><span class="avp-nav-v2-account-label">Tài khoản</span></a></div></aside>'
 document.body.append(trigger,shade);
 const drawer=shade.querySelector("aside"),nav=shade.querySelector(".avp-nav-v2-items");
 groups.forEach(([label,items])=>{const section=document.createElement("section");section.className="avp-nav-v2-group";const h=document.createElement("div");h.className="avp-nav-v2-label";h.textContent=label;section.append(h);items.forEach(([href,name,iconName,type])=>{const el=document.createElement(type==="action"||type==="ai-action"?"button":"a");el.className="avp-nav-v2-link";if(type==="action"||type==="ai-action"){el.type="button";el.dataset.navAction=type==="ai-action"?"chat-ai":"chat-admin";}else{el.href=href;if(page===href)el.setAttribute("aria-current","page");}el.innerHTML='<span class="avp-nav-v2-icon">'+ico(iconName)+'</span><span class="avp-nav-v2-text">'+name+'</span>'+(type==="action"?'<b class="avp-nav-v2-unread" hidden></b>':'');section.append(el)});nav.append(section)});
@@ -44,6 +44,31 @@ async function openAiChat(){
   if(document.getElementById("avpAiChatPanel"))window.dispatchEvent(new CustomEvent("avp:open-ai-chat"));
 }
 shade.querySelector('[data-nav-action="chat-ai"]').addEventListener("click",openAiChat);
+async function refreshAccountAvatar(){
+ const slot=shade.querySelector(".avp-nav-v2-account-avatar");
+ const link=shade.querySelector(".avp-nav-v2-account");
+ if(!slot||!link)return;
+ let client=window.avpSupabase||window.supabaseClient;
+ for(let i=0;i<50&&!client;i++){await new Promise(r=>setTimeout(r,100));client=window.avpSupabase||window.supabaseClient;}
+ if(!client?.auth)return;
+ try{
+  const {data:{user},error}=await client.auth.getUser();
+  if(error||!user){slot.textContent="A";slot.style.backgroundImage="";slot.dataset.avatar="";link.querySelector(".avp-nav-v2-account-label").textContent="Tài khoản";return;}
+  const {data:profile}=await client.from("profiles").select("display_name,avatar").eq("id",user.id).maybeSingle();
+  const name=String(profile?.display_name||user.user_metadata?.display_name||user.email?.split("@")[0]||"Người học");
+  const avatar=String(profile?.avatar||"initial");
+  slot.replaceChildren();slot.style.backgroundImage="";slot.style.backgroundSize="cover";slot.style.backgroundPosition="center";
+  if(avatar.startsWith("emoji:")){slot.textContent=avatar.slice(6);}
+  else if(avatar!=="initial"&&!/^https?:\/\//i.test(avatar)){
+   const url=client.storage.from("community-avatars").getPublicUrl(avatar)?.data?.publicUrl;
+   if(url){const img=document.createElement("img");img.src=url;img.alt="";img.loading="lazy";slot.append(img);}else slot.textContent=Array.from(name)[0]?.toLocaleUpperCase("vi-VN")||"A";
+  }else if(/^https?:\/\//i.test(avatar)){
+   const img=document.createElement("img");img.src=avatar;img.alt="";img.loading="lazy";slot.append(img);
+  }else slot.textContent=Array.from(name)[0]?.toLocaleUpperCase("vi-VN")||"A";
+  slot.dataset.avatar=avatar;
+  link.querySelector(".avp-nav-v2-account-label").textContent=name;
+ }catch(e){console.warn("Account avatar navigation",e);}
+}
 async function refreshUnread(){
   const badge=shade.querySelector(".avp-nav-v2-unread");
   const client=window.avpSupabase||window.supabaseClient;
@@ -61,6 +86,6 @@ refreshUnread();
 setInterval(refreshUnread,45000);
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")refreshUnread()});
 const sb=window.avpSupabase||window.supabaseClient;
-sb?.auth?.onAuthStateChange?.(()=>refreshUnread());
+sb?.auth?.onAuthStateChange?.(()=>{refreshUnread();refreshAccountAvatar()});\nwindow.addEventListener("avp:auth-changed",refreshAccountAvatar);\nrefreshAccountAvatar();
 window.AVPVerticalNavigation={open,close,refreshUnread};
 })();
