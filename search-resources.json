@@ -154,12 +154,28 @@
       "keywords": "Báo cáo QC Workbook báo cáo chất lượng. workbook file thực hành mẫu excel"
     },
     {
+      "title": "Power Query – 10 file thực hành",
+      "description": "Bộ dữ liệu thực hành theo chuỗi bài.",
+      "url": "downloads/PowerQuery-Practice-10-Files.zip",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Power Query – 10 file thực hành Bộ dữ liệu thực hành theo chuỗi bài. workbook file thực hành mẫu excel"
+    },
+    {
       "title": "Power Query Refresh",
       "description": "Thực hành làm mới dữ liệu.",
       "url": "downloads/pq-refresh-staging-thuc-hanh.xlsx",
       "page": "workbook-library.html",
       "type": "Workbook",
       "keywords": "Power Query Refresh Thực hành làm mới dữ liệu. workbook file thực hành mẫu excel"
+    },
+    {
+      "title": "Power Query Master Expected",
+      "description": "Kết quả chuẩn để đối chiếu.",
+      "url": "downloads/power-query/PowerQuery-Master-Expected.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Power Query Master Expected Kết quả chuẩn để đối chiếu. workbook file thực hành mẫu excel"
     },
     {
       "title": "Sales – dữ liệu thô",
@@ -176,22 +192,6 @@
       "page": "workbook-library.html",
       "type": "Workbook",
       "keywords": "Sales – dữ liệu sạch Dữ liệu sau bước làm sạch. workbook file thực hành mẫu excel"
-    },
-    {
-      "title": "Power Query – 10 file thực hành",
-      "description": "Bộ dữ liệu thực hành theo chuỗi bài.",
-      "url": "downloads/PowerQuery-Practice-10-Files.zip",
-      "page": "workbook-library.html",
-      "type": "Workbook",
-      "keywords": "Power Query – 10 file thực hành Bộ dữ liệu thực hành theo chuỗi bài. workbook file thực hành mẫu excel"
-    },
-    {
-      "title": "Power Query Master Expected",
-      "description": "Kết quả chuẩn để đối chiếu.",
-      "url": "downloads/power-query/PowerQuery-Master-Expected.xlsx",
-      "page": "workbook-library.html",
-      "type": "Workbook",
-      "keywords": "Power Query Master Expected Kết quả chuẩn để đối chiếu. workbook file thực hành mẫu excel"
     },
     {
       "title": "Practice Lab – PivotTable",
@@ -216,6 +216,542 @@
       "page": "workbook-library.html",
       "type": "Workbook",
       "keywords": "Practice Lab – DAX Dataset cho Power Pivot và DAX. workbook file thực hành mẫu excel"
+    },
+    {
+      "title": "Dropdown",
+      "description": "Workbook thực hành theo chủ đề f02-data-entry-types",
+      "url": "downloads/video-practice/input_01_dropdown.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Dropdown Workbook thực hành theo chủ đề f02-data-entry-types downloads/video-practice/input_01_dropdown.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Gioi han so",
+      "description": "Workbook thực hành theo chủ đề f02-data-entry-types",
+      "url": "downloads/video-practice/input_03_number_range.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Gioi han so Workbook thực hành theo chủ đề f02-data-entry-types downloads/video-practice/input_03_number_range.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Nhap ngay",
+      "description": "Workbook thực hành theo chủ đề f02-data-entry-types",
+      "url": "downloads/video-practice/input_04_date_validation.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Nhap ngay Workbook thực hành theo chủ đề f02-data-entry-types downloads/video-practice/input_04_date_validation.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Flash Fill",
+      "description": "Workbook thực hành theo chủ đề f02-data-entry-types",
+      "url": "downloads/video-practice/input_11_flash_fill.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Flash Fill Workbook thực hành theo chủ đề f02-data-entry-types downloads/video-practice/input_11_flash_fill.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Center Across",
+      "description": "Workbook thực hành theo chủ đề f03-formatting-display",
+      "url": "downloads/video-practice/05_center_across.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Center Across Workbook thực hành theo chủ đề f03-formatting-display downloads/video-practice/05_center_across.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "So viet",
+      "description": "Workbook thực hành theo chủ đề f03-formatting-display",
+      "url": "downloads/video-practice/06_so_viet.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "So viet Workbook thực hành theo chủ đề f03-formatting-display downloads/video-practice/06_so_viet.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "An so 0",
+      "description": "Workbook thực hành theo chủ đề f03-formatting-display",
+      "url": "downloads/video-practice/07_an_so_0.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "An so 0 Workbook thực hành theo chủ đề f03-formatting-display downloads/video-practice/07_an_so_0.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Conditional Format",
+      "description": "Workbook thực hành theo chủ đề f03-formatting-display",
+      "url": "downloads/video-practice/28_conditional_format.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Conditional Format Workbook thực hành theo chủ đề f03-formatting-display downloads/video-practice/28_conditional_format.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "SUM / AVERAGE",
+      "description": "Workbook thực hành theo chủ đề f05-core-functions",
+      "url": "downloads/video-practice/fx_01_sum_average.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "SUM / AVERAGE Workbook thực hành theo chủ đề f05-core-functions downloads/video-practice/fx_01_sum_average.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "COUNT",
+      "description": "Workbook thực hành theo chủ đề f05-core-functions",
+      "url": "downloads/video-practice/fx_02_count.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "COUNT Workbook thực hành theo chủ đề f05-core-functions downloads/video-practice/fx_02_count.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Cau truc bang nguon",
+      "description": "Workbook thực hành theo chủ đề f06-data-table-structure",
+      "url": "downloads/cau-truc-bang-nguon-thuc-hanh.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Cau truc bang nguon Workbook thực hành theo chủ đề f06-data-table-structure downloads/cau-truc-bang-nguon-thuc-hanh.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Dan vao dong loc",
+      "description": "Workbook thực hành theo chủ đề d07-sort-filter",
+      "url": "downloads/video-practice/08_dan_dong_loc.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Dan vao dong loc Workbook thực hành theo chủ đề d07-sort-filter downloads/video-practice/08_dan_dong_loc.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "TEXTBEFORE",
+      "description": "Workbook thực hành theo chủ đề s10-text",
+      "url": "downloads/video-practice/20_TEXTBEFORE.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "TEXTBEFORE Workbook thực hành theo chủ đề s10-text downloads/video-practice/20_TEXTBEFORE.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Ham text",
+      "description": "Workbook thực hành theo chủ đề s10-text",
+      "url": "downloads/video-practice/fx_08_text_basic.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Ham text Workbook thực hành theo chủ đề s10-text downloads/video-practice/fx_08_text_basic.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "TEXTJOIN",
+      "description": "Workbook thực hành theo chủ đề s10-text",
+      "url": "downloads/video-practice/fx_10_textjoin.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "TEXTJOIN Workbook thực hành theo chủ đề s10-text downloads/video-practice/fx_10_textjoin.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Dropdown",
+      "description": "Workbook thực hành theo chủ đề d09-data-validation",
+      "url": "downloads/video-practice/input_01_dropdown.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Dropdown Workbook thực hành theo chủ đề d09-data-validation downloads/video-practice/input_01_dropdown.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Custom validation",
+      "description": "Workbook thực hành theo chủ đề d09-data-validation",
+      "url": "downloads/video-practice/input_07_custom_validation.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Custom validation Workbook thực hành theo chủ đề d09-data-validation downloads/video-practice/input_07_custom_validation.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Dropdown dong",
+      "description": "Workbook thực hành theo chủ đề d09-data-validation",
+      "url": "downloads/video-practice/input_13_dynamic_dropdown.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Dropdown dong Workbook thực hành theo chủ đề d09-data-validation downloads/video-practice/input_13_dynamic_dropdown.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Dropdown 3 tang",
+      "description": "Workbook thực hành theo chủ đề d09-data-validation",
+      "url": "downloads/video-practice/input_14_dropdown_3level.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Dropdown 3 tang Workbook thực hành theo chủ đề d09-data-validation downloads/video-practice/input_14_dropdown_3level.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "SUM = 0",
+      "description": "Workbook thực hành theo chủ đề s12-clean-control",
+      "url": "downloads/video-practice/09_so_nhin_nhu_so_SUM_0.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "SUM = 0 Workbook thực hành theo chủ đề s12-clean-control downloads/video-practice/09_so_nhin_nhu_so_SUM_0.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "CHAR 160",
+      "description": "Workbook thực hành theo chủ đề s12-clean-control",
+      "url": "downloads/video-practice/11_CHAR160.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "CHAR 160 Workbook thực hành theo chủ đề s12-clean-control downloads/video-practice/11_CHAR160.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Xoa trung",
+      "description": "Workbook thực hành theo chủ đề s12-clean-control",
+      "url": "downloads/video-practice/25_xoa_trung_nhieu_cot.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Xoa trung Workbook thực hành theo chủ đề s12-clean-control downloads/video-practice/25_xoa_trung_nhieu_cot.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Fill Down",
+      "description": "Workbook thực hành theo chủ đề s12-clean-control",
+      "url": "downloads/video-practice/21_Fill_Down.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Fill Down Workbook thực hành theo chủ đề s12-clean-control downloads/video-practice/21_Fill_Down.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "IF / IFS",
+      "description": "Workbook thực hành theo chủ đề s07-logic",
+      "url": "downloads/video-practice/27_if_ifs.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "IF / IFS Workbook thực hành theo chủ đề s07-logic downloads/video-practice/27_if_ifs.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "IF",
+      "description": "Workbook thực hành theo chủ đề s07-logic",
+      "url": "downloads/video-practice/fx_03_if_basic.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "IF Workbook thực hành theo chủ đề s07-logic downloads/video-practice/fx_03_if_basic.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "IFERROR",
+      "description": "Workbook thực hành theo chủ đề s07-logic",
+      "url": "downloads/video-practice/fx_07_iferror.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "IFERROR Workbook thực hành theo chủ đề s07-logic downloads/video-practice/fx_07_iferror.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "SUMIFS / COUNTIFS",
+      "description": "Workbook thực hành theo chủ đề s08-conditional-aggregation",
+      "url": "downloads/video-practice/26_sumifs_countifs.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "SUMIFS / COUNTIFS Workbook thực hành theo chủ đề s08-conditional-aggregation downloads/video-practice/26_sumifs_countifs.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "COUNTIF / SUMIF",
+      "description": "Workbook thực hành theo chủ đề s08-conditional-aggregation",
+      "url": "downloads/video-practice/fx_05_countif_sumif.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "COUNTIF / SUMIF Workbook thực hành theo chủ đề s08-conditional-aggregation downloads/video-practice/fx_05_countif_sumif.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "XLOOKUP",
+      "description": "Workbook thực hành theo chủ đề s09-lookup",
+      "url": "downloads/video-practice/14_XLOOKUP.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "XLOOKUP Workbook thực hành theo chủ đề s09-lookup downloads/video-practice/14_XLOOKUP.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "INDEX / MATCH",
+      "description": "Workbook thực hành theo chủ đề s09-lookup",
+      "url": "downloads/video-practice/fx_13_index_match.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "INDEX / MATCH Workbook thực hành theo chủ đề s09-lookup downloads/video-practice/fx_13_index_match.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "10 kieu ngay",
+      "description": "Workbook thực hành theo chủ đề s11-date-time",
+      "url": "downloads/video-practice/10_10_kieu_ngay.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "10 kieu ngay Workbook thực hành theo chủ đề s11-date-time downloads/video-practice/10_10_kieu_ngay.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Ngay dang chu",
+      "description": "Workbook thực hành theo chủ đề s11-date-time",
+      "url": "downloads/video-practice/24_ngay_dang_chu.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Ngay dang chu Workbook thực hành theo chủ đề s11-date-time downloads/video-practice/24_ngay_dang_chu.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Ham ngay",
+      "description": "Workbook thực hành theo chủ đề s11-date-time",
+      "url": "downloads/video-practice/fx_11_dates.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Ham ngay Workbook thực hành theo chủ đề s11-date-time downloads/video-practice/fx_11_dates.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "SUMPRODUCT",
+      "description": "Workbook thực hành theo chủ đề x19-advanced-formulas",
+      "url": "downloads/video-practice/fx_16_sumproduct.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "SUMPRODUCT Workbook thực hành theo chủ đề x19-advanced-formulas downloads/video-practice/fx_16_sumproduct.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "LET",
+      "description": "Workbook thực hành theo chủ đề x19-advanced-formulas",
+      "url": "downloads/video-practice/fx_17_let.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "LET Workbook thực hành theo chủ đề x19-advanced-formulas downloads/video-practice/fx_17_let.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Formula Audit",
+      "description": "Workbook thực hành theo chủ đề x19-advanced-formulas",
+      "url": "downloads/video-practice/fx_18_formula_audit.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Formula Audit Workbook thực hành theo chủ đề x19-advanced-formulas downloads/video-practice/fx_18_formula_audit.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "AGGREGATE",
+      "description": "Workbook thực hành theo chủ đề x19-advanced-formulas",
+      "url": "downloads/video-practice/23_AGGREGATE.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "AGGREGATE Workbook thực hành theo chủ đề x19-advanced-formulas downloads/video-practice/23_AGGREGATE.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Dynamic Array",
+      "description": "Workbook thực hành theo chủ đề x20-dynamic-array",
+      "url": "downloads/video-practice/fx_14_dynamic_array.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Dynamic Array Workbook thực hành theo chủ đề x20-dynamic-array downloads/video-practice/fx_14_dynamic_array.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Pivot co ban",
+      "description": "Workbook thực hành theo chủ đề a14-pivottable",
+      "url": "downloads/video-practice/29_pivot_co_ban.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Pivot co ban Workbook thực hành theo chủ đề a14-pivottable downloads/video-practice/29_pivot_co_ban.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Sales KPI",
+      "description": "Workbook thực hành theo chủ đề a15-kpi-analysis",
+      "url": "downloads/video-practice/fx_19_sales_kpi.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Sales KPI Workbook thực hành theo chủ đề a15-kpi-analysis downloads/video-practice/fx_19_sales_kpi.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Checklist ban giao",
+      "description": "Workbook thực hành theo chủ đề a18-report-audit-handover",
+      "url": "downloads/ban-giao-bao-cao-thuc-hanh.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Checklist ban giao Workbook thực hành theo chủ đề a18-report-audit-handover downloads/ban-giao-bao-cao-thuc-hanh.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Conditional Format",
+      "description": "Workbook thực hành theo chủ đề a16-charts-pareto",
+      "url": "downloads/video-practice/28_conditional_format.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Conditional Format Workbook thực hành theo chủ đề a16-charts-pareto downloads/video-practice/28_conditional_format.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Dashboard thang",
+      "description": "Workbook thực hành theo chủ đề a17-dashboard",
+      "url": "downloads/video-practice/22_dashboard_thang.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Dashboard thang Workbook thực hành theo chủ đề a17-dashboard downloads/video-practice/22_dashboard_thang.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Dashboard thang",
+      "description": "Workbook thực hành theo chủ đề v25-dashboard-interaction",
+      "url": "downloads/video-practice/22_dashboard_thang.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Dashboard thang Workbook thực hành theo chủ đề v25-dashboard-interaction downloads/video-practice/22_dashboard_thang.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Import Table",
+      "description": "Workbook thực hành theo chủ đề pq28-import-sources",
+      "url": "downloads/video-practice/pq_01_import_table.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Import Table Workbook thực hành theo chủ đề pq28-import-sources downloads/video-practice/pq_01_import_table.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Power Query Demo",
+      "description": "Workbook thực hành theo chủ đề pq28-import-sources",
+      "url": "downloads/video-practice/PowerQuery_DEMO.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Power Query Demo Workbook thực hành theo chủ đề pq28-import-sources downloads/video-practice/PowerQuery_DEMO.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Power Query Demo",
+      "description": "Workbook thực hành theo chủ đề x21-power-query-basics",
+      "url": "downloads/video-practice/PowerQuery_DEMO.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Power Query Demo Workbook thực hành theo chủ đề x21-power-query-basics downloads/video-practice/PowerQuery_DEMO.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Import Table",
+      "description": "Workbook thực hành theo chủ đề x21-power-query-basics",
+      "url": "downloads/video-practice/pq_01_import_table.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Import Table Workbook thực hành theo chủ đề x21-power-query-basics downloads/video-practice/pq_01_import_table.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Doi kieu du lieu",
+      "description": "Workbook thực hành theo chủ đề x21-power-query-basics",
+      "url": "downloads/video-practice/pq_02_change_types.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Doi kieu du lieu Workbook thực hành theo chủ đề x21-power-query-basics downloads/video-practice/pq_02_change_types.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Cot",
+      "description": "Workbook thực hành theo chủ đề pq30-transform-clean",
+      "url": "downloads/video-practice/pq_03_columns.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Cot Workbook thực hành theo chủ đề pq30-transform-clean downloads/video-practice/pq_03_columns.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Loc dong",
+      "description": "Workbook thực hành theo chủ đề pq30-transform-clean",
+      "url": "downloads/video-practice/pq_04_filter_rows.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Loc dong Workbook thực hành theo chủ đề pq30-transform-clean downloads/video-practice/pq_04_filter_rows.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Replace / Clean",
+      "description": "Workbook thực hành theo chủ đề pq30-transform-clean",
+      "url": "downloads/video-practice/pq_05_replace_clean.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Replace / Clean Workbook thực hành theo chủ đề pq30-transform-clean downloads/video-practice/pq_05_replace_clean.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Change Type",
+      "description": "Workbook thực hành theo chủ đề pq31-schema-types",
+      "url": "downloads/video-practice/pq_02_change_types.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Change Type Workbook thực hành theo chủ đề pq31-schema-types downloads/video-practice/pq_02_change_types.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Schema drift",
+      "description": "Workbook thực hành theo chủ đề pq31-schema-types",
+      "url": "downloads/video-practice/pq_15_schema_drift.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Schema drift Workbook thực hành theo chủ đề pq31-schema-types downloads/video-practice/pq_15_schema_drift.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Gop thu muc",
+      "description": "Workbook thực hành theo chủ đề x22-power-query-multi-source",
+      "url": "downloads/video-practice/16_PQ_gop_thu_muc.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Gop thu muc Workbook thực hành theo chủ đề x22-power-query-multi-source downloads/video-practice/16_PQ_gop_thu_muc.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Unpivot",
+      "description": "Workbook thực hành theo chủ đề x22-power-query-multi-source",
+      "url": "downloads/video-practice/15_Unpivot.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Unpivot Workbook thực hành theo chủ đề x22-power-query-multi-source downloads/video-practice/15_Unpivot.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Merge",
+      "description": "Workbook thực hành theo chủ đề x22-power-query-multi-source",
+      "url": "downloads/video-practice/pq_09_merge_exact.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Merge Workbook thực hành theo chủ đề x22-power-query-multi-source downloads/video-practice/pq_09_merge_exact.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "10 sheet",
+      "description": "Workbook thực hành theo chủ đề x22-power-query-multi-source",
+      "url": "downloads/video-practice/18_PQ_10_sheet.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "10 sheet Workbook thực hành theo chủ đề x22-power-query-multi-source downloads/video-practice/18_PQ_10_sheet.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Macro ChayBaoCao",
+      "description": "Workbook thực hành theo chủ đề x23-macro-vba",
+      "url": "downloads/vba-macro-thuc-hanh.xlsm",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Macro ChayBaoCao Workbook thực hành theo chủ đề x23-macro-vba downloads/vba-macro-thuc-hanh.xlsm workbook file thực hành excel"
+    },
+    {
+      "title": "Object Model GhiKPI",
+      "description": "Workbook thực hành theo chủ đề vb35-object-model",
+      "url": "downloads/vba-object-model-thuc-hanh.xlsm",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Object Model GhiKPI Workbook thực hành theo chủ đề vb35-object-model downloads/vba-object-model-thuc-hanh.xlsm workbook file thực hành excel"
+    },
+    {
+      "title": "If Loop LocDonNG",
+      "description": "Workbook thực hành theo chủ đề vb36-control-flow",
+      "url": "downloads/vba-control-flow-thuc-hanh.xlsm",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "If Loop LocDonNG Workbook thực hành theo chủ đề vb36-control-flow downloads/vba-control-flow-thuc-hanh.xlsm workbook file thực hành excel"
+    },
+    {
+      "title": "Performance XuLyNhanh",
+      "description": "Workbook thực hành theo chủ đề vb37-performance-security",
+      "url": "downloads/vba-performance-security-thuc-hanh.xlsm",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Performance XuLyNhanh Workbook thực hành theo chủ đề vb37-performance-security downloads/vba-performance-security-thuc-hanh.xlsm workbook file thực hành excel"
+    },
+    {
+      "title": "Workflow",
+      "description": "Workbook thực hành theo chủ đề x24-automation-workflow",
+      "url": "downloads/workflow-tu-dong-thuc-hanh.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Workflow Workbook thực hành theo chủ đề x24-automation-workflow downloads/workflow-tu-dong-thuc-hanh.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Chon dung cong cu",
+      "description": "Workbook thực hành theo chủ đề c39-tool-selection",
+      "url": "downloads/chon-cong-cu-thuc-hanh.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Chon dung cong cu Workbook thực hành theo chủ đề c39-tool-selection downloads/chon-cong-cu-thuc-hanh.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Sales KPI",
+      "description": "Workbook thực hành theo chủ đề c40-sales-case",
+      "url": "downloads/video-practice/fx_19_sales_kpi.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Sales KPI Workbook thực hành theo chủ đề c40-sales-case downloads/video-practice/fx_19_sales_kpi.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "SUMPRODUCT QC",
+      "description": "Workbook thực hành theo chủ đề c41-qc-case",
+      "url": "downloads/sumproduct-qc-thuc-hanh.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "SUMPRODUCT QC Workbook thực hành theo chủ đề c41-qc-case downloads/sumproduct-qc-thuc-hanh.xlsx workbook file thực hành excel"
+    },
+    {
+      "title": "Case A-Z",
+      "description": "Workbook thực hành theo chủ đề c42-end-to-end-case",
+      "url": "downloads/video-practice/fx_20_full_case.xlsx",
+      "page": "workbook-library.html",
+      "type": "Workbook",
+      "keywords": "Case A-Z Workbook thực hành theo chủ đề c42-end-to-end-case downloads/video-practice/fx_20_full_case.xlsx workbook file thực hành excel"
     }
   ]
 }
