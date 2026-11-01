@@ -742,6 +742,7 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
   if(!api.chapterLessons[chapterIndex]||!api.chapterLessons[chapterIndex][lessonIndex])return;
   api.openChapterPicker();
   api.renderChapterLessons(chapterIndex);
+  window.setTimeout(function(){var target=document.querySelector('.avp-chapter-lessons [data-lesson-index="'+lessonIndex+'"]');if(target)target.click();},0);
  }
  function renderLearningRankings(data){
   var featured=Array.isArray(data&&data.featured)?data.featured.slice(0,4):[];
