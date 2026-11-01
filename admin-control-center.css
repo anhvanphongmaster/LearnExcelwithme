@@ -79,3 +79,5 @@ body:has(.admin-page) .top-simple-nav{display:none!important}
  .admin-quick-links{gap:6px!important}
 }
 @media(prefers-reduced-motion:reduce){.admin-view-enter{animation:none!important}}
+
+.admin-users-pagination{display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 4px 2px;color:var(--avp-admin-muted);font-size:11px;font-weight:700}.admin-users-pagination button{min-height:34px;padding:0 12px;border:1px solid var(--avp-admin-line);border-radius:9px;background:#fff;color:var(--avp-admin-ink);font-size:11px;font-weight:700}.admin-users-pagination button:disabled{opacity:.38;cursor:not-allowed}
