@@ -114,6 +114,11 @@ html,body,.player{width:100%;height:100%;min-height:100%;overflow:hidden}
 @keyframes copyReveal{from{opacity:0;transform:translate3d(-18px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
 @keyframes tileRise{from{opacity:0;transform:translateY(14px) rotateX(8deg)}to{opacity:1;transform:translateY(0) rotateX(0)}}
 @media(prefers-reduced-motion:reduce){.scene.active .visual,.scene.active .copy,.scene.active .chapter{animation:none!important}}
+
+.chapter-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.chapter{min-height:88px;padding:10px 9px}
+.chapter span{font-size:clamp(8px,.78vw,11px);line-height:1.3;overflow-wrap:anywhere}
+@media(max-width:650px){.chapter{min-height:70px;padding:7px 5px}.chapter span{font-size:9px;line-height:1.22}}
 </style>
 <style id="avp-intro-hide-site-chrome">
 html.avp-intro-no-site-chrome body .top-simple-nav,
@@ -159,7 +164,7 @@ html.avp-intro-no-site-chrome body{padding-top:0!important;margin-top:0!importan
   </section>
   <section class="scene" data-scene="3">
    <div class="copy"><div class="kicker">03 / 12 chương học</div><h2>Chia nhỏ hành trình.<br><span class="accent">Tập trung từng kỹ năng.</span></h2><p class="lead">Mười hai chương được tổ chức thành các khu vực độc lập để người học dễ tìm chủ đề và quay lại đúng phần mình cần.</p><div class="pillrow"><span class="pill">Theo chương</span><span class="pill">Theo chủ đề</span><span class="pill">Theo nhu cầu</span></div></div>
-   <div class="visual"><div class="chapter-grid"><div class="chapter"><b>01</b><span>Chương học</span></div><div class="chapter"><b>02</b><span>Khu vực kiến thức</span></div><div class="chapter"><b>03</b><span>Thực hành</span></div><div class="chapter"><b>04</b><span>Chủ đề chuyên sâu</span></div><div class="chapter"><b>05</b><span>Chương học</span></div><div class="chapter"><b>06</b><span>Khu vực kiến thức</span></div><div class="chapter"><b>07</b><span>Thực hành</span></div><div class="chapter"><b>08</b><span>Chủ đề chuyên sâu</span></div><div class="chapter"><b>09</b><span>Chương học</span></div><div class="chapter"><b>10</b><span>Khu vực kiến thức</span></div><div class="chapter"><b>11</b><span>Thực hành</span></div><div class="chapter"><b>12</b><span>Chủ đề chuyên sâu</span></div></div></div>
+   <div class="visual"><div class="chapter-grid"><div class="chapter"><b>01</b><span>Nhập môn Excel</span></div><div class="chapter"><b>02</b><span>Thao tác và phím tắt</span></div><div class="chapter"><b>03</b><span>Nền tảng công thức</span></div><div class="chapter"><b>04</b><span>Hàm Excel từ cơ bản đến nâng cao</span></div><div class="chapter"><b>05</b><span>Công cụ xử lý dữ liệu trên Ribbon</span></div><div class="chapter"><b>06</b><span>Tổ chức và kiểm soát dữ liệu</span></div><div class="chapter"><b>07</b><span>PivotTable và PivotChart</span></div><div class="chapter"><b>08</b><span>Biểu đồ và Dashboard</span></div><div class="chapter"><b>09</b><span>Power Query</span></div><div class="chapter"><b>10</b><span>Phân tích dữ liệu</span></div><div class="chapter"><b>11</b><span>Tự động hóa Excel</span></div><div class="chapter"><b>12</b><span>Quy trình báo cáo doanh nghiệp</span></div></div></div>
   </section>
   <section class="scene" data-scene="4">
    <div class="copy"><div class="kicker">04 / Thư viện hàm Excel</div><h2>Tra cứu đúng hàm.<br><span class="accent">Dùng đúng tình huống.</span></h2><p class="lead">Tìm kiếm hàm Excel, xem cú pháp và ví dụ để hiểu cách sử dụng — không chỉ ghi nhớ tên hàm.</p><div class="pillrow"><span class="pill">Tìm kiếm</span><span class="pill">Cú pháp</span><span class="pill">Ví dụ</span></div></div>
