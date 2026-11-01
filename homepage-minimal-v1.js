@@ -956,7 +956,8 @@ function init(){
  });
 }
  function openMap(){
-  if(window.AVPFloatingMap){window.AVPFloatingMap.open();return;}var s=document.createElement('script');s.src='avp-floating-map.js?v=20261101-map3';s.onload=function(){window.AVPFloatingMap?.open();};document.head.appendChild(s);
+  map.hidden=false;map.style.display='grid';map.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+  try{mapRender();}catch(err){showMapError(err);}
  }
  function showMapError(err){
   var route=map.querySelector('[data-map-route]');
