@@ -36,3 +36,21 @@
  .avatar-editor-heading{align-items:flex-start}
  .avatar-preset{width:40px;height:40px}
 }
+
+/* Identity card right column hosts avatar choices instead of leaving unused space. */
+.account-identity{grid-template-columns:76px minmax(190px,.85fr) minmax(360px,1.5fr)!important;align-items:center!important}
+.account-identity-tools{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:center!important;gap:8px!important;min-width:0}
+.account-identity-tools .avatar-editor{margin:0!important;padding:12px 14px!important;background:#f8fbf8!important;border-radius:14px!important}
+.account-identity-tools .avatar-editor-heading{margin:0 0 9px!important;gap:8px!important}
+.account-identity-tools .avatar-editor-heading h3{font-size:13px!important}
+.account-identity-tools .avatar-editor-heading p{font-size:10px!important}
+.account-identity-tools .avatar-upload-button{min-height:31px!important;padding:0 10px!important;font-size:10px!important}
+.account-identity-tools .avatar-presets{gap:6px!important}
+.account-identity-tools .avatar-preset{width:32px!important;height:32px!important;border-radius:10px!important;font-size:17px!important}
+.account-identity-tools .avatar-upload-hint{font-size:10px!important;margin-top:7px!important}
+.account-identity-tools .account-logout{align-self:flex-end!important;min-height:34px!important;padding:7px 13px!important}
+@media(max-width:800px){
+ .account-identity{grid-template-columns:58px minmax(0,1fr)!important}
+ .account-identity-tools{grid-column:1/-1!important}
+ .account-identity-tools .account-logout{align-self:flex-start!important}
+}
