@@ -309,7 +309,7 @@
     try{
       const {data,error}=await client.rpc("community_avatar_map",{p_user_ids:uniq});
       if(error)throw error;
-      (Array.isArray(data)?data:[]).forEach(r=>communityAvatarMap.set(String(r.user_id),r));
+      (Array.isArray(data)?data:[]).forEach(r=>communityAvatarMap.set(String(r.user_id||r.id),r));
     }catch(e){
       console.warn("Avatar map",e);
     }
