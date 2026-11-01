@@ -548,3 +548,46 @@ document.addEventListener("DOMContentLoaded",function(){
   loadAsset("link",'link[data-avp-site-navigation-v2-css]',"site-navigation-v2.css?v=20261102-adminnav1");
   loadAsset("script",'script[data-avp-site-navigation-v2-js]',"site-navigation-v2.js?v=20261102-adminnav1");
 })();
+
+/* AVP GLOBAL FOOTER BAR — shared across all pages using simple-nav.js */
+(function(){
+  'use strict';
+  function mountAvpFooter(){
+    try{
+      var page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+      if(page==='intro.html')return;
+      var existing=document.querySelector('footer.site-footer, .site-footer');
+      var footer=existing||document.createElement('footer');
+      footer.classList.add('site-footer','avp-global-footer');
+      footer.setAttribute('aria-label','Thông tin và điều hướng cuối trang');
+      footer.innerHTML=
+        '<div class="avp-footer-main">'+
+          '<div class="avp-footer-brandlock">'+
+            '<span class="avp-footer-mark" aria-hidden="true">AVP</span>'+
+            '<span class="avp-footer-brandcopy"><strong>Learn Excel with Anh Van Phong</strong><small>Excel · Data · Reporting · Automation · AI</small></span>'+
+          '</div>'+
+          '<nav class="avp-footer-nav" aria-label="Điều hướng cuối trang">'+
+            '<a href="index.html">Trang chủ</a>'+
+            '<a href="learning-chapters.html">Lộ trình học</a>'+
+            '<a href="excel-formula-library.html">Thư viện Excel</a>'+
+            '<a href="tools-center.html">Công cụ</a>'+
+            '<a href="community.html">Cộng đồng</a>'+
+          '</nav>'+
+        '</div>'+
+        '<div class="avp-footer-bottom">'+
+          '<p>© '+new Date().getFullYear()+' Learn Excel with Anh Van Phong. Bảo lưu mọi quyền.</p>'+
+          '<nav class="avp-footer-legal" aria-label="Thông tin pháp lý">'+
+            '<a href="terms.html">Điều khoản</a>'+
+            '<a href="privacy.html">Quyền riêng tư</a>'+
+            '<a href="disclaimer.html">Tuyên bố pháp lý</a>'+
+            '<a href="open-source.html">Mã nguồn mở</a>'+
+          '</nav>'+
+        '</div>';
+      if(!existing)document.body.appendChild(footer);
+      var link=document.getElementById('avp-global-footer-style');
+      if(!link){link=document.createElement('link');link.id='avp-global-footer-style';link.rel='stylesheet';link.href='avp-global-footer.css?v=20261102-bar1';document.head.appendChild(link);}
+    }catch(e){console.error('AVP footer init:',e);}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mountAvpFooter,{once:true});
+  else mountAvpFooter();
+})();
