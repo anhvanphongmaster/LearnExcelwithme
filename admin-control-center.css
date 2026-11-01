@@ -1,0 +1,81 @@
+/* AVP Admin Control Center — canonical layer. Feature modules keep their existing IDs and behavior. */
+:root{
+ --avp-admin-bg:#f5f8f6;--avp-admin-card:#fff;--avp-admin-ink:#19372a;
+ --avp-admin-muted:#718078;--avp-admin-line:#e2ebe5;--avp-admin-green:#168052;
+ --avp-admin-soft:#eaf6ef;--avp-admin-shadow:0 12px 34px rgba(25,65,44,.055);
+}
+html{scroll-behavior:smooth}
+body:has(.admin-page){background:var(--avp-admin-bg)!important;color:var(--avp-admin-ink)}
+body:has(.admin-page) .top-simple-nav{display:none!important}
+.admin-page{min-height:100vh;background:transparent!important;padding:0 22px 48px}
+.admin-hero.page-header{width:min(1480px,100%);margin:0 auto;padding:88px 10px 22px!important;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;background:transparent!important;color:var(--avp-admin-ink)!important;border:0!important;box-shadow:none!important}
+.admin-kicker{display:inline-flex!important;align-items:center;gap:7px;margin:0 0 10px!important;color:var(--avp-admin-green)!important;font-size:10px!important;font-weight:850!important;letter-spacing:.13em!important}
+.admin-hero h1{margin:0 0 8px!important;color:var(--avp-admin-ink)!important;font-size:clamp(27px,3vw,38px)!important;line-height:1.12!important;letter-spacing:-.035em}
+.admin-hero p{max-width:690px;margin:0!important;color:var(--avp-admin-muted)!important;font-size:13px!important;line-height:1.65!important}
+.admin-period{display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap}
+.admin-period label{color:var(--avp-admin-muted)!important;font-size:11px!important}
+.admin-period select,.admin-period button{min-height:40px!important;padding:0 13px!important;border:1px solid var(--avp-admin-line)!important;border-radius:11px!important;background:#fff!important;color:var(--avp-admin-ink)!important;font-size:12px!important;font-weight:700!important}
+.admin-period button{background:var(--avp-admin-green)!important;border-color:var(--avp-admin-green)!important;color:#fff!important}
+.admin-gate,.admin-denied{width:min(520px,100%);margin:36px auto;padding:26px;border:1px solid var(--avp-admin-line);border-radius:18px;background:#fff;box-shadow:var(--avp-admin-shadow)}
+#adminDashboard{width:min(1480px,100%)!important;margin:0 auto!important}
+.admin-command-center{margin:0 0 22px!important;padding:18px!important;border:1px solid var(--avp-admin-line)!important;border-radius:20px!important;background:var(--avp-admin-card)!important;box-shadow:var(--avp-admin-shadow)!important}
+.admin-command-title{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 16px!important}
+.admin-command-kicker{color:var(--avp-admin-green)!important;font-size:10px!important;font-weight:850!important;letter-spacing:.12em!important}
+.admin-command-title h2{margin:5px 0 4px!important;color:var(--avp-admin-ink)!important;font-size:20px!important;letter-spacing:-.02em}
+.admin-command-title p{margin:0!important;color:var(--avp-admin-muted)!important;font-size:12px!important;line-height:1.5}
+.admin-status-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid #d8eee0;border-radius:999px;background:#f2faf5;color:#24744b;font-size:10px;font-weight:750;white-space:nowrap}
+.admin-status-pill i{width:7px;height:7px;border-radius:50%;background:#26a269;box-shadow:0 0 0 3px #26a26920}
+.admin-view-tabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+.admin-view-group{min-width:0;padding:13px;border:1px solid #edf2ee;border-radius:15px;background:#fbfdfb}
+.admin-view-group>h3{margin:0 0 10px!important;color:#819087!important;font-size:9px!important;font-weight:850!important;letter-spacing:.13em!important}
+.admin-view-group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.admin-view-tabs [data-admin-view]{position:relative;display:flex!important;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;min-width:0;min-height:58px!important;padding:10px 12px!important;border:1px solid var(--avp-admin-line)!important;border-radius:11px!important;background:#fff!important;color:var(--avp-admin-ink)!important;text-align:left!important;box-shadow:none!important;transition:background .16s,border-color .16s,transform .16s!important;cursor:pointer}
+.admin-view-tabs [data-admin-view]:hover{transform:translateY(-1px);border-color:#a8d4b8!important;background:#f8fcf9!important}
+.admin-view-tabs [data-admin-view] b{display:block;color:inherit!important;font-size:12px!important;font-weight:780!important;line-height:1.3}
+.admin-view-tabs [data-admin-view] small{display:block;color:var(--avp-admin-muted)!important;font-size:10px!important;font-weight:450!important;line-height:1.35}
+.admin-view-tabs [data-admin-view].active{border-color:#72bd91!important;background:var(--avp-admin-soft)!important;box-shadow:inset 3px 0 0 var(--avp-admin-green)!important}
+.admin-view-tabs [data-admin-view].active b{color:#12663e!important}
+.admin-view-tabs .ag-tab-title,.admin-view-tabs .apt-tab-title{display:flex;align-items:center;gap:7px}
+.admin-quick-links{display:flex!important;flex-wrap:wrap;gap:8px!important;margin:14px 0 0!important;padding-top:13px;border-top:1px solid #edf2ee}
+.admin-quick-links a{display:inline-flex;align-items:center;min-height:32px;padding:0 10px;border:1px solid var(--avp-admin-line);border-radius:9px;background:#fff;color:#426151!important;font-size:10px!important;font-weight:650;text-decoration:none!important}
+.admin-quick-links a:hover{border-color:#9bc9aa;background:#f4faf6}
+.admin-section-heading{margin:24px 2px 12px!important}
+.admin-section-heading>span{color:var(--avp-admin-green)!important;font-size:9px!important;font-weight:850!important;letter-spacing:.13em!important}
+.admin-section-heading h2{margin:5px 0 0!important;color:var(--avp-admin-ink)!important;font-size:22px!important;letter-spacing:-.025em}
+.admin-panel,.admin-system-health,.admin-maintenance-panel{margin:0 0 16px!important;padding:18px!important;border:1px solid var(--avp-admin-line)!important;border-radius:17px!important;background:#fff!important;box-shadow:var(--avp-admin-shadow)!important}
+.admin-panel-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px}
+.admin-panel-head h2{margin:4px 0!important;color:var(--avp-admin-ink)!important;font-size:18px!important}
+.admin-panel-head p{margin:0!important;color:var(--avp-admin-muted)!important;font-size:11px!important;line-height:1.55}
+.admin-view-hidden{display:none!important}
+.admin-view-enter{animation:avpAdminIn .2s ease both}
+@keyframes avpAdminIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.admin-kpi-grid,.admin-health-grid{gap:10px!important}
+.admin-page button,.admin-page input,.admin-page select,.admin-page textarea{font-family:inherit}
+.admin-page button{cursor:pointer}
+.admin-page table{border-collapse:separate;border-spacing:0}
+.admin-page .admin-users-empty{padding:18px;color:var(--avp-admin-muted)}
+.admin-toast{z-index:14000}
+.site-footer{margin-top:28px}
+@media(max-width:900px){
+ .admin-page{padding:0 14px 34px}
+ .admin-hero.page-header{padding:82px 4px 18px!important;align-items:flex-start;flex-direction:column}
+ .admin-period{width:100%;align-items:flex-end}
+ .admin-view-tabs{grid-template-columns:1fr!important}
+ .admin-view-group-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .admin-command-title{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:560px){
+ .admin-page{padding:0 10px 28px}
+ .admin-hero.page-header{padding-top:78px!important}
+ .admin-hero h1{font-size:27px!important}
+ .admin-command-center{padding:12px!important;border-radius:15px!important}
+ .admin-view-group{padding:10px}
+ .admin-view-group-grid{grid-template-columns:1fr 1fr;gap:6px}
+ .admin-view-tabs [data-admin-view]{min-height:62px!important;padding:9px!important}
+ .admin-view-tabs [data-admin-view] b{font-size:11px!important}
+ .admin-view-tabs [data-admin-view] small{font-size:9px!important}
+ .admin-panel,.admin-system-health,.admin-maintenance-panel{padding:13px!important}
+ .admin-panel-head{align-items:flex-start;flex-direction:column}
+ .admin-quick-links{gap:6px!important}
+}
+@media(prefers-reduced-motion:reduce){.admin-view-enter{animation:none!important}}
