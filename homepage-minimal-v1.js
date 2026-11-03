@@ -809,10 +809,59 @@ modalStyle.textContent+=`.avp-lesson-reader{display:grid;grid-template-columns:m
   resourceSection.innerHTML='<div class="avp-resource-heading"><div><small>TÀI NGUYÊN DÀNH CHO DÂN VĂN PHÒNG</small><h2>Tạo ra sản phẩm thực tế, không chỉ học công cụ</h2><p>Tài nguyên để luyện tập, chinh phục thử thách và lưu lại nội dung hữu ích.</p></div></div><div class="avp-resource-grid">'+
  '<a class="avp-resource-card avp-resource-workbook" href="workbook-library.html"><span class="avp-resource-icon">▤</span><span class="avp-resource-copy"><small>01 · FILE MẪU VÀ DỮ LIỆU</small><strong>Kho workbook</strong><em>Tìm và tải file thực hành theo chủ đề, kỹ năng và cấp độ.</em><b>Mở kho workbook ↗</b></span><span class="avp-resource-decoration">XLSX</span></a>'+
  '<a class="avp-resource-card avp-resource-cases" href="excel-race.html"><span class="avp-resource-icon">🏆</span><span class="avp-resource-copy"><small>02 · LUYỆN TƯ DUY VÀ PHẢN XẠ</small><strong>Thử thách Excel</strong><em>Ôn kiến thức theo chủ đề, trả lời câu hỏi và chinh phục Rank.</em><b>Vào thử thách ↗</b></span><span class="avp-resource-decoration">RANK</span></a>'+
- '<div class="avp-resource-card avp-resource-collection avp-resource-coming" aria-label="Bộ sưu tập cá nhân đang thiết kế"><span class="avp-resource-icon">♧</span><span class="avp-resource-copy"><small>03 · KHÔNG GIAN CÁ NHÂN</small><strong>Bộ sưu tập cá nhân</strong><em>Khung lưu bài học, công thức, phím tắt và tài liệu yêu thích. Chức năng sẽ được đề xuất triển khai riêng.</em><b>Đang thiết kế khung</b></span><span class="avp-resource-decoration">SAVE</span></div>'+
+ '<button type="button" class="avp-resource-card avp-resource-collection" data-open-personal-collection aria-haspopup="dialog" aria-label="Mở Bộ sưu tập cá nhân"><span class="avp-resource-icon">♧</span><span class="avp-resource-copy"><small>03 · KHÔNG GIAN CÁ NHÂN</small><strong>Bộ sưu tập cá nhân</strong><em>Lưu bài học, hàm Excel, phím tắt, kiến thức, bài tập và nội dung đã hoàn thành.</em><b>Mở bộ sưu tập ↗</b></span><span class="avp-resource-decoration">SAVE</span></button>'+
  '<button class="avp-resource-card avp-resource-results" type="button" data-open-progress-hub><span class="avp-resource-icon">✓</span><span class="avp-resource-copy"><small>04 · THEO DÕI TIẾN ĐỘ</small><strong>Tiến độ & thành tích</strong><em>Xem tiến độ học tập và kết quả được hệ thống ghi nhận.</em><b>Thông tin hiển thị</b></span><span class="avp-resource-decoration">DONE</span></button>'+
  '</div>'
   lessons.insertAdjacentElement('afterend',resourceSection);
+ }
+
+
+ /* Personal collection: native-feeling app library frame. Content wiring will be added after the visual shell is approved. */
+ var collectionCard=resourceSection.querySelector('[data-open-personal-collection]');
+ if(collectionCard&&!document.querySelector('.avp-personal-collection-backdrop')){
+  var collectionModal=document.createElement('div');
+  collectionModal.className='avp-chapter-picker-backdrop avp-personal-collection-backdrop';
+  collectionModal.hidden=true;
+  collectionModal.innerHTML='<section class="avp-chapter-picker avp-personal-collection" role="dialog" aria-modal="true" aria-labelledby="avpPersonalCollectionTitle"><button type="button" class="avp-chapter-picker-close" aria-label="Đóng">×</button><div class="avp-chapter-picker-head"><small>KHÔNG GIAN CÁ NHÂN · ANH VĂN PHÒNG</small><h2 id="avpPersonalCollectionTitle">Bộ sưu tập của tôi</h2><p>Lưu lại kiến thức và quản lý hành trình học tập.</p></div><div class="avp-personal-collection-grid"></div><div class="avp-personal-collection-view" hidden></div></section>';
+  var collectionStyle=document.createElement('style');
+  collectionStyle.textContent='.avp-personal-collection{width:min(760px,100%)}.avp-personal-collection-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.avp-personal-app{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px;min-width:0;min-height:132px;padding:15px 7px;border:1px solid transparent;border-radius:18px;background:transparent;color:#173b29;font:inherit;text-align:center;cursor:pointer}.avp-personal-app:hover,.avp-personal-app:focus-visible{background:#f0f8f3;border-color:#dcebe1;outline:none}.avp-personal-app-icon{display:grid;place-items:center;width:64px;height:64px;border-radius:21px;background:linear-gradient(145deg,#dff4e7,#a9dfbf);color:#08794f;font-size:27px;font-weight:900;box-shadow:0 5px 12px rgba(22,75,47,.12),inset 0 1px 0 rgba(255,255,255,.85)}.avp-personal-app:nth-child(6n+2) .avp-personal-app-icon{background:linear-gradient(145deg,#f0eaff,#d3c4fa);color:#6548a2}.avp-personal-app:nth-child(6n+3) .avp-personal-app-icon{background:linear-gradient(145deg,#e2f0ff,#b6d7f6);color:#245f96}.avp-personal-app:nth-child(6n+4) .avp-personal-app-icon{background:linear-gradient(145deg,#fff0d8,#f4d49e);color:#8b5b10}.avp-personal-app:nth-child(6n+5) .avp-personal-app-icon{background:linear-gradient(145deg,#ffe8e8,#f4bdbd);color:#a33b3b}.avp-personal-app:nth-child(6n) .avp-personal-app-icon{background:linear-gradient(145deg,#e5f0f2,#b9dadd);color:#23666b}.avp-personal-app strong{font-size:13px;line-height:1.35}.avp-personal-app small{font-size:10px;color:#718177;line-height:1.4}.avp-personal-collection-view{margin-top:4px}.avp-personal-collection-view[hidden]{display:none!important}.avp-personal-view-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.avp-personal-view-back{border:1px solid #d9e9df;border-radius:999px;background:#f5faf6;color:#176c49;padding:9px 13px;font-size:12px;font-weight:800;cursor:pointer}.avp-personal-view-empty{min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;border:1px dashed #cbded1;border-radius:17px;background:#f8fbf9;text-align:center}.avp-personal-view-empty strong{color:#244c35;font-size:14px}.avp-personal-view-empty p{max-width:430px;margin:8px 0 0;color:#718177;font-size:12px;line-height:1.65}@media(max-width:560px){.avp-personal-collection{padding:21px 12px;border-radius:24px;max-height:88dvh}.avp-personal-collection-grid{gap:3px}.avp-personal-app{min-height:112px;padding:10px 3px;gap:8px}.avp-personal-app-icon{width:50px;height:50px;border-radius:15px;font-size:22px}.avp-personal-app strong{font-size:11px;letter-spacing:-.02em}.avp-personal-app small{font-size:9px}}';
+  document.head.appendChild(collectionStyle);
+  document.body.appendChild(collectionModal);
+  var collectionGrid=collectionModal.querySelector('.avp-personal-collection-grid');
+  var collectionView=collectionModal.querySelector('.avp-personal-collection-view');
+  var collectionTitle=collectionModal.querySelector('#avpPersonalCollectionTitle');
+  var collectionIntro=collectionModal.querySelector('.avp-chapter-picker-head p');
+  var collectionCategories=[
+   ['12 chương','Theo dõi và lưu bài học','▤'],
+   ['Hàm Excel','Các hàm muốn xem lại','ƒx'],
+   ['Phím tắt','Thao tác cần ghi nhớ','⌨'],
+   ['Kiến thức khác','Nội dung từ thư viện','▦'],
+   ['Bài tập','Bài tập đã lưu và cần làm','▧'],
+   ['Đã hoàn thành','Những nội dung đã hoàn tất','✓']
+  ];
+  collectionCategories.forEach(function(item,index){
+   var button=document.createElement('button');button.type='button';button.className='avp-personal-app';button.setAttribute('data-collection-category',String(index));
+   button.innerHTML='<span class="avp-personal-app-icon" aria-hidden="true">'+item[2]+'</span><strong></strong><small></small>';
+   button.querySelector('strong').textContent=item[0];button.querySelector('small').textContent=item[1];collectionGrid.appendChild(button);
+  });
+  function showCollectionGrid(){
+   collectionGrid.hidden=false;collectionView.hidden=true;collectionTitle.textContent='Bộ sưu tập của tôi';collectionIntro.textContent='Lưu lại kiến thức và quản lý hành trình học tập.';
+  }
+  collectionGrid.addEventListener('click',function(event){
+   var button=event.target.closest('[data-collection-category]');if(!button)return;
+   var item=collectionCategories[Number(button.getAttribute('data-collection-category'))];if(!item)return;
+   collectionGrid.hidden=true;collectionView.hidden=false;collectionTitle.textContent=item[0];collectionIntro.textContent=item[1]+'.';
+   collectionView.innerHTML='<div class="avp-personal-view-toolbar"><button type="button" class="avp-personal-view-back">← Bộ sưu tập</button><span class="avp-chapter-lessons-count">Danh mục cá nhân</span></div><div class="avp-personal-view-empty"><strong>Không gian '+item[0]+'</strong><p>Khung danh mục đã được tạo. Phần kết nối dữ liệu lưu, trạng thái đã đọc và nội dung hoàn thành sẽ được triển khai sau khi hoàn tất thiết kế.</p></div>';
+   collectionView.querySelector('.avp-personal-view-back').addEventListener('click',showCollectionGrid);
+   collectionModal.querySelector('.avp-chapter-picker').scrollTop=0;
+  });
+  function openCollection(){showCollectionGrid();collectionModal.hidden=false;document.body.classList.add('avp-chapter-picker-open');collectionModal.querySelector('.avp-chapter-picker-close').focus();}
+  function closeCollection(){collectionModal.hidden=true;document.body.classList.remove('avp-chapter-picker-open');}
+  collectionCard.addEventListener('click',openCollection);
+  collectionModal.querySelector('.avp-chapter-picker-close').addEventListener('click',closeCollection);
+  collectionModal.addEventListener('click',function(event){if(event.target===collectionModal)closeCollection();});
+  document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!collectionModal.hidden)closeCollection();});
+  window.AVP_PERSONAL_COLLECTION_API={open:openCollection,close:closeCollection,categories:collectionCategories};
  }
 
  var books=document.getElementById('home-books');
