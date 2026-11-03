@@ -117,6 +117,7 @@ const bank=Array.isArray(window.AVP_KNOWLEDGE_BANK)?window.AVP_KNOWLEDGE_BANK:[]
 const categories=Array.isArray(window.AVP_KNOWLEDGE_CATEGORIES)?window.AVP_KNOWLEDGE_CATEGORIES:[];
 const $=id=>document.getElementById(id),KEY='avp_excel_knowledge_progress_v2';
 const state={category:'all',level:'Tất cả',status:'all',query:'',completed:[],current:null,answered:false};
+const SAVE_KEY='avp_knowledge_personal_v1';function savedIds(){try{const x=JSON.parse(localStorage.getItem(SAVE_KEY)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}}
 try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');if(Array.isArray(saved.completed))state.completed=saved.completed.filter(id=>bank.some(x=>x.id===id));}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify({completed:state.completed}));}catch(e){}}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -140,7 +141,7 @@ function openArticle(id){
  $('klConcept').textContent=x.concept;$('klPrinciple').textContent=x.principle;$('klExample').textContent=x.example;$('klScenario').textContent=x.scenario;$('klMisconception').textContent=x.misconception;$('klQuestion').textContent=x.question;$('klFeedback').textContent='Chọn một đáp án để kiểm tra.';
  const opts=quizOptions(x);$('klOptions').innerHTML=opts.map((o,i)=>'<button class="kl-option" data-index="'+i+'" type="button">'+String.fromCharCode(65+i)+'. '+esc(o)+'</button>').join('');
  $('klOptions').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>checkAnswer(Number(b.dataset.index))));
- $('klComplete').textContent=state.completed.includes(id)?'Đã hoàn thành ✓':'Đánh dấu đã học';const i=bank.findIndex(t=>t.id===id);$('klPrevious').disabled=i===0;$('klNext').disabled=i===bank.length-1;
+ $('klComplete').textContent=state.completed.includes(id)?'Đã hoàn thành ✓':'Đánh dấu đã học';const save=document.createElement('button');save.type='button';save.className='kl-save-personal';save.textContent=savedIds().includes(id)?'★ Đã lưu vào Bộ sưu tập':'☆ Lưu để học lại';save.addEventListener('click',()=>{const a=savedIds(),i=a.indexOf(id);if(i>=0)a.splice(i,1);else a.push(id);try{localStorage.setItem(SAVE_KEY,JSON.stringify(a))}catch(e){}save.textContent=a.includes(id)?'★ Đã lưu vào Bộ sưu tập':'☆ Lưu để học lại'});$('klArticleMeta').appendChild(save);const i=bank.findIndex(t=>t.id===id);$('klPrevious').disabled=i===0;$('klNext').disabled=i===bank.length-1;
  $('klModal').classList.add('open');document.body.style.overflow='hidden';$('klClose').focus();
 }
 function checkAnswer(index){if(state.answered)return;const x=bank.find(t=>t.id===state.current);if(!x)return;state.answered=true;const opts=quizOptions(x),buttons=[...$('klOptions').querySelectorAll('button')];buttons.forEach((b,i)=>{b.disabled=true;if(opts[i]===String(x.answer))b.classList.add('correct');else if(i===index)b.classList.add('wrong');});$('klFeedback').textContent=opts[index]===String(x.answer)?'Chính xác. Bạn đã nắm được ý chính của bài.':'Chưa chính xác. Đáp án đúng đã được đánh dấu. Hãy đọc lại phần nguyên lý.';
