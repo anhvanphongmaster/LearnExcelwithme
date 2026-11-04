@@ -26,6 +26,9 @@ create table if not exists public.admin_project_events_v1 (
  created_at timestamptz not null default now()
 );
 create index if not exists idx_admin_project_events_project_created on public.admin_project_events_v1(project_id,created_at desc);
+create index if not exists idx_admin_project_workspaces_created_by on public.admin_project_workspaces_v1(created_by);
+create index if not exists idx_admin_project_workspaces_updated_by on public.admin_project_workspaces_v1(updated_by);
+create index if not exists idx_admin_project_events_created_by on public.admin_project_events_v1(created_by);
 alter table public.admin_project_workspaces_v1 enable row level security;
 alter table public.admin_project_events_v1 enable row level security;
 create policy admin_project_workspaces_admin_select on public.admin_project_workspaces_v1 for select to authenticated using(exists(select 1 from public.profiles p where p.id=(select auth.uid()) and p.is_admin=true));
