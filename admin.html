@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="admin-content-os.css?v=20261008-v3">
   <link rel="stylesheet" href="avp-ui-system.css?v=20261001-ui2" data-avp-ui-system>
 <link rel="stylesheet" href="admin-control-center.css?v=20261102-v1">
+<link rel="stylesheet" href="admin-project-control.css?v=20261104-v1">
 </head>
 <body>
 <script src="avp-ui-system.js?v=20261002-ui1" data-avp-ui-system></script>
@@ -109,6 +110,7 @@ where is_admin = true;</pre>
 
       <div class="admin-view-tabs" role="tablist" aria-label="Khu vực Admin">
   <section class="admin-view-group"><h3>ĐIỀU HÀNH</h3><div class="admin-view-group-grid">
+    <button type="button" data-admin-view="projects" role="tab"><b>Project Control</b><small>Checkpoint & hồ sơ dự án</small></button>
     <button type="button" class="active" data-admin-view="overview" role="tab"><b>Tổng quan</b><small>Trạng thái & vận hành</small></button>
     <button type="button" data-admin-view="analytics" role="tab"><b>Phân tích</b><small>Xu hướng & nội dung</small></button>
     <button type="button" data-admin-view="retention" role="tab"><b>Giữ chân học viên</b><small>Quay lại sau đăng ký</small></button>
@@ -137,6 +139,27 @@ where is_admin = true;</pre>
         <a href="practice-youtube.html">▶️ Kho YouTube</a>
         <a href="office-quest-admin.html">🧑‍💼 Duyệt CV Office Quest</a>
         <a href="index.html">🌐 Xem website</a>
+      </div>
+    </section>
+
+    <div class="admin-section-heading admin-view-section" data-admin-section="projects"><span>PROJECT CONTROL</span><h2>Hồ sơ và tiến độ dự án</h2></div>
+    <section class="admin-panel admin-view-section" data-admin-section="projects" id="adminProjectControl">
+      <div class="pc-wrap">
+        <header class="pc-hero"><div><span class="pc-kicker">ADMIN ONLY · PROJECT WORKSPACE</span><h2 id="pcProjectTitle">KPI Sales & Traffic</h2><p id="pcProjectMeta">Đang tải hồ sơ…</p></div><span class="pc-status">Hồ sơ nội bộ</span></header>
+        <div class="pc-grid"><article class="pc-stat"><small>Nhật ký</small><strong id="pcStatEvents">—</strong></article><article class="pc-stat"><small>Yêu cầu</small><strong id="pcStatRequirements">—</strong></article><article class="pc-stat"><small>Nguồn dữ liệu</small><strong id="pcStatFiles">—</strong></article><article class="pc-stat"><small>Vấn đề</small><strong id="pcStatIssues">—</strong></article></div>
+        <article class="pc-next"><small>BƯỚC TIẾP THEO</small><strong id="pcNextAction">Đang tải…</strong><p id="pcNextDetail"></p><small>Giai đoạn: <b id="pcPhase"></b></small></article>
+        <div class="pc-columns"><article class="pc-card"><h3>Yêu cầu khách hàng</h3><div id="pcRequirements" class="pc-list"></div></article><article class="pc-card"><h3>Danh mục dữ liệu</h3><div id="pcInventory" class="pc-list"></div></article></div>
+        <div class="pc-columns"><article class="pc-card"><h3>Vấn đề cần xử lý</h3><div id="pcIssues" class="pc-list"></div></article><article class="pc-card"><h3>Lịch sử Checkpoint</h3><div id="pcEvents" class="pc-list"></div></article></div>
+        <article class="pc-card"><h3>Ghi Checkpoint mới</h3><div class="pc-form">
+          <label>Loại<select id="pcEventType"><option value="checkpoint">Checkpoint</option><option value="audit">Audit</option><option value="requirement">Yêu cầu</option><option value="issue">Vấn đề</option><option value="decision">Quyết định</option><option value="note">Ghi chú</option><option value="phase_change">Chuyển giai đoạn</option></select></label>
+          <label>Mã Checkpoint<input id="pcEventCode" placeholder="CP-02"></label>
+          <label class="wide">Tiêu đề<input id="pcEventTitle" maxlength="200" placeholder="Tên công việc vừa hoàn thành"></label>
+          <label class="wide">Kết quả và bằng chứng<textarea id="pcEventDetails" rows="3" placeholder="Đã kiểm tra gì? Kết quả nào đã xác minh? Còn điểm nào chưa rõ?"></textarea></label>
+          <label>Trạng thái<select id="pcEventStatus"><option value="verified">Đã xác minh</option><option value="recorded">Đã ghi nhận</option><option value="pending">Chờ xác minh</option><option value="blocked">Đang chặn</option><option value="resolved">Đã xử lý</option></select></label>
+          <label>Giai đoạn<input id="pcPhaseInput"></label>
+          <label class="wide">Bước tiếp theo<input id="pcNextInput"></label>
+          <label class="wide">Hướng dẫn lấy dữ liệu cho bước tiếp theo<textarea id="pcNextDetailInput" rows="2"></textarea></label>
+        </div><div class="pc-actions"><button type="button" id="pcSaveCheckpoint">Lưu Checkpoint</button><button type="button" class="secondary" id="pcReload">Đọc lại dữ liệu</button></div><p id="pcNotice" class="pc-notice" role="status"></p></article>
       </div>
     </section>
 
