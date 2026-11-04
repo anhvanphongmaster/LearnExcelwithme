@@ -237,7 +237,7 @@
 
   async function loadCore() {
     const script = document.createElement('script');
-    script.src = 'admin-core-v1.js?v=20261008-contentos1';
+    script.src = 'admin-core-v1.js?v=20261104-projectcontrol1';
     script.defer = true;
 
     script.onload = () => {
