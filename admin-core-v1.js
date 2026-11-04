@@ -726,7 +726,7 @@
       loadAdminMaintenance();
     try{
       const requestedView=new URLSearchParams(location.search).get("view");
-      const validViews=["overview","users","race","practice","content","youtube","downloads","engagement","analytics","community","reviews","grader","professional","tools","retention"];
+      const validViews=["overview","users","race","practice","content","youtube","downloads","engagement","analytics","community","reviews","grader","professional","tools","retention","projects"];
       if(requestedView&&validViews.includes(requestedView)){
         setTimeout(()=>setAdminView(requestedView,{scroll:true}),80);
       }
@@ -757,7 +757,7 @@
   }
   const ADMIN_VIEW_KEY="avp_admin_view_v1";
   function setAdminView(view,opts){
-    const valid=["overview","users","race","practice","content","youtube","downloads","tools","engagement","analytics","community","reviews","grader","professional","retention"];
+    const valid=["overview","users","race","practice","content","youtube","downloads","tools","engagement","analytics","community","reviews","grader","professional","retention","projects"];
     if(!valid.includes(view)) view="overview";
     document.querySelectorAll("[data-admin-section]").forEach(el=>{
       const show=el.getAttribute("data-admin-section")===view;
@@ -790,6 +790,7 @@
     if(view==="community"){
       window.dispatchEvent(new CustomEvent("avp:admin-community-open"));
     }
+    if(view==="projects") window.dispatchEvent(new CustomEvent("avp:admin-project-control-open"));
     if(opts&&opts.scroll){
       document.querySelector(".admin-command-center")?.scrollIntoView({behavior:"smooth",block:"start"});
     }
