@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="avp-ui-system.css?v=20261001-ui2" data-avp-ui-system>
 <link rel="stylesheet" href="admin-control-center.css?v=20261102-v1">
 <link rel="stylesheet" href="admin-project-control.css?v=20261104-v1">\n<link rel="stylesheet" href="admin-content-avp-folders.css?v=20261107-v2">
+<link rel="stylesheet" href="admin-content-avp-analysis.css?v=20261107-v1">
 </head>
 <body>
 <script src="avp-ui-system.js?v=20261002-ui1" data-avp-ui-system></script>
@@ -502,7 +503,15 @@ where is_admin = true;</pre>
         <button type="button" class="avp-category-item" data-avp-category="work"><span class="avp-category-icon avp-cat-purple">ƒx</span><small>DẠNG 03</small><strong>Real Work Cases</strong></button>
         <button type="button" class="avp-category-item" data-avp-category="projects"><span class="avp-category-icon avp-cat-amber">▤</span><small>DẠNG 04</small><strong>YouTube Projects</strong></button>
         <button type="button" class="avp-category-item" data-avp-category="series"><span class="avp-category-icon avp-cat-red">▶</span><small>DẠNG 05</small><strong>YouTube Topic Series</strong></button>
-      </div>
+
+      <section class="avp-analysis-view" id="avpAnalysisView" hidden>
+        <div class="avp-analysis-toolbar"><button type="button" id="avpAnalysisBack">← Tất cả dạng nội dung</button><span>EXCEL ANALYSIS · 21 VIDEO</span></div>
+        <div class="avp-analysis-title"><div><h3>Excel Analysis</h3><p>Danh sách 21 video đã đăng, sắp xếp theo thời gian từ cũ đến mới.</p></div><strong>21 video</strong></div>
+        <div class="avp-analysis-table-wrap">
+          <table class="avp-analysis-table"><thead><tr><th>#</th><th>Video</th><th>Ngày đăng</th><th>Views</th><th>Likes</th><th>Comments</th></tr></thead><tbody id="avpAnalysisRows"></tbody></table>
+        </div>
+        <p class="avp-analysis-note">Số liệu được ghi nhận từ ảnh quản lý video bạn gửi ngày 07/11/2026; đây là số liệu tại thời điểm chụp, không phải checkpoint sau 1 ngày.</p>
+      </section>      </div>
     </section>
 
 <div class="admin-section-heading admin-view-section" data-admin-section="youtube"><span>▶️ YOUTUBE PROJECTS</span><h2>Quản lý project video dài</h2></div>
@@ -952,6 +961,7 @@ where is_admin = true;</pre>
 <script defer src="admin-tiktok.js?v=20260906-catalog1"></script>
 <script defer src="admin-tools.js?v=20261001-tools1"></script>
 
-<script defer src="admin-project-control.js?v=20261104-simple1"></script>\n
+<script defer src="admin-project-control.js?v=20261104-simple1"></script>
+<script defer src="admin-content-avp-analysis.js?v=20261107-v1"></script>\n
 <script src="avp-display-mode.js?v=1"></script></body>
 </html>
