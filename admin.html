@@ -508,11 +508,22 @@ where is_admin = true;</pre>
 
       <section class="avp-analysis-view" id="avpAnalysisView" hidden>
         <div class="avp-analysis-toolbar"><button type="button" id="avpAnalysisBack">← Tất cả dạng nội dung</button><span>EXCEL ANALYSIS · 21 VIDEO</span></div>
-        <div class="avp-analysis-title"><div><h3>Excel Analysis</h3><p>Danh sách 21 video đã đăng, sắp xếp theo thời gian từ cũ đến mới.</p></div><strong>21 video</strong></div>
-        <div class="avp-analysis-table-wrap">
-          <table class="avp-analysis-table"><thead><tr><th>#</th><th>Video</th><th>Ngày đăng</th><th>Views</th><th>Likes</th><th>Comments</th></tr></thead><tbody id="avpAnalysisRows"></tbody></table>
-        </div>
-        <p class="avp-analysis-note">Số liệu được ghi nhận từ ảnh quản lý video bạn gửi ngày 07/11/2026; đây là số liệu tại thời điểm chụp, không phải checkpoint sau 1 ngày.</p>
+        <div class="avp-analysis-title"><div><h3>Excel Analysis</h3><p>Quản lý video, checkpoint và hiệu quả của chuỗi Analysis.</p></div><strong>21 video</strong></div>
+        <nav class="avp-analysis-tabs" aria-label="Excel Analysis sections">
+          <button type="button" class="is-active" data-analysis-tab="videos">Videos</button><button type="button" data-analysis-tab="checkpoint">Checkpoint</button><button type="button" data-analysis-tab="performance">Performance</button><button type="button" data-analysis-tab="trends">Trends</button><button type="button" data-analysis-tab="nextcase">Next Case</button>
+        </nav>
+        <section class="avp-analysis-pane is-active" data-analysis-pane="videos"><div class="avp-analysis-table-wrap"><table class="avp-analysis-table"><thead><tr><th>#</th><th>Video</th><th>Ngày đăng</th><th>Views</th><th>Likes</th><th>Comments</th></tr></thead><tbody id="avpAnalysisRows"></tbody></table></div><p class="avp-analysis-note">Số liệu tại thời điểm chụp ảnh ngày 07/11/2026, không phải checkpoint sau 1 ngày.</p></section>
+        <section class="avp-analysis-pane" data-analysis-pane="checkpoint" hidden>
+          <div class="avp-pane-heading"><h4>Checkpoint sau 1 ngày</h4><p>Chọn video, đính kèm ảnh thống kê và nhập số liệu nhìn thấy trên nền tảng.</p></div>
+          <form id="avpCheckpointForm" class="avp-checkpoint-form">
+            <label>Video<select id="avpCheckpointVideo" required></select></label><label>Ngày giờ chụp<input id="avpCheckpointAt" type="datetime-local" required></label>
+            <label>Lượt xem<input id="avpCheckpointViews" type="number" min="0" required placeholder="Ví dụ: 12500"></label><label>Lượt thích<input id="avpCheckpointLikes" type="number" min="0" required placeholder="Ví dụ: 620"></label><label>Bình luận<input id="avpCheckpointComments" type="number" min="0" required placeholder="Ví dụ: 18"></label>
+            <label class="avp-file-field">Ảnh thống kê<input id="avpCheckpointImage" type="file" accept="image/*"><small>Ảnh đính kèm chỉ xem trong phiên này; xác nhận và nhập số liệu trước khi lưu.</small></label><div class="avp-checkpoint-preview" id="avpCheckpointPreview" hidden></div><button type="submit" class="avp-primary-action">Lưu checkpoint</button>
+          </form><div class="avp-saved-checkpoints"><h4>Checkpoint đã ghi nhận</h4><div id="avpCheckpointRows"></div></div>
+        </section>
+        <section class="avp-analysis-pane" data-analysis-pane="performance"><div class="avp-metric-grid" id="avpPerformanceMetrics"></div><div class="avp-analysis-table-wrap"><table class="avp-analysis-table"><thead><tr><th>Video</th><th>Views</th><th>Likes</th><th>Like rate</th><th>Comments</th><th>Comment rate</th></tr></thead><tbody id="avpPerformanceRows"></tbody></table></div><p class="avp-analysis-note">Tỷ lệ tính từ số liệu tổng hiện có, không phải cùng mốc thời gian. Trend Analysis đang được ghim và có thời gian tích lũy khác biệt.</p></section>
+        <section class="avp-analysis-pane" data-analysis-pane="trends"><div class="avp-trend-summary" id="avpTrendSummary"></div><div class="avp-analysis-table-wrap"><table class="avp-analysis-table"><thead><tr><th>Tín hiệu</th><th>Quan sát</th><th>Hàm ý</th></tr></thead><tbody id="avpTrendRows"></tbody></table></div><p class="avp-analysis-note">Phân tích nội bộ từ 21 video, chưa có dữ liệu tìm kiếm bên ngoài nền tảng.</p></section>
+        <section class="avp-analysis-pane" data-analysis-pane="nextcase"><div class="avp-pane-heading"><h4>Gợi ý case tiếp theo</h4><p>Đề xuất dựa trên lịch sử nội dung hiện có; chưa đại diện cho nhu cầu tìm kiếm thị trường.</p></div><div class="avp-nextcase-list" id="avpNextCaseList"></div></section>
       </section>
     </section>
 
