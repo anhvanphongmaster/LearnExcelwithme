@@ -20,10 +20,10 @@
   <link rel="stylesheet" href="global-search.css">
 <link rel="stylesheet" href="admin-tiktok.css?v=20260906-catalog1">
 <link rel="stylesheet" href="admin-tools.css?v=20260908-v1-1">
-<link rel="stylesheet" href="admin-content-os.css?v=20261008-v3">
+
   <link rel="stylesheet" href="avp-ui-system.css?v=20261001-ui2" data-avp-ui-system>
 <link rel="stylesheet" href="admin-control-center.css?v=20261102-v1">
-<link rel="stylesheet" href="admin-project-control.css?v=20261104-v1">\n<link rel="stylesheet" href="admin-content-avp-folders.css?v=20261107-v1">
+<link rel="stylesheet" href="admin-project-control.css?v=20261104-v1">\n<link rel="stylesheet" href="admin-content-avp-folders.css?v=20261107-v2">
 </head>
 <body>
 <script src="avp-ui-system.js?v=20261002-ui1" data-avp-ui-system></script>
@@ -125,8 +125,7 @@ where is_admin = true;</pre>
   </div></section>
   <section class="admin-view-group"><h3>NỘI DUNG & TÀI NGUYÊN</h3><div class="admin-view-group-grid">
     <button type="button" data-admin-view="practice" role="tab"><b>Kho TikTok</b><small>Chủ đề, bài & video</small></button>
-    <button type="button" data-admin-view="content" role="tab"><b>Content Studio</b><small>Ý tưởng, kịch bản, audit</small></button>
-    <button type="button" class="avpc-launch-card" id="avpcFolderOpen" aria-haspopup="dialog" aria-controls="avpcFolderModal"><b>Content AVP</b><small>5 dạng nội dung video</small></button>
+    <button type="button" data-admin-view="content" role="tab"><b>Content AVP</b><small>5 dạng nội dung video</small></button>
     <button type="button" data-admin-view="youtube" role="tab"><b>YouTube Projects</b><small>Series & tài liệu</small></button>
     <button type="button" data-admin-view="downloads" role="tab"><b>Thư viện tải xuống</b><small>File & tài nguyên web</small></button>
     <button type="button" data-admin-view="tools" role="tab"><b>Kho công cụ</b><small>Tool & đề xuất</small></button>
@@ -491,17 +490,20 @@ where is_admin = true;</pre>
       </form>
     </section>
 
-    <div class="admin-section-heading admin-view-section" data-admin-section="content"><span>🎬 AVP CONTENT OS</span><h2>Nhà máy sản xuất nội dung</h2></div>
-<section class="admin-panel admin-view-section avpc-panel" data-admin-section="content" id="avpContentPanel">
-<div class="avpc-head"><div><span>CONTENT OS V1</span><h2>Ý tưởng → Video → Audit → PASS</h2><p>Quản lý nội dung trước khi xuất bản. TikTok Practice hiện tại giữ nguyên.</p></div><div><button type="button" id="avpcReload">↻ Làm mới</button> <button type="button" id="avpcNew">＋ Video mới</button></div></div>
-<div class="avpc-kpis"><article><small>Ý tưởng</small><strong id="avpcIdea">0</strong></article><article><small>Đang làm</small><strong id="avpcWorking">0</strong></article><article><small>Chờ Audit</small><strong id="avpcAudit">0</strong></article><article><small>PASS</small><strong id="avpcPass">0</strong></article></div>
-<div class="avpc-toolbar"><input id="avpcSearch" type="search" placeholder="Tìm title, case, ngành…"><select id="avpcStatus"><option value="">Tất cả trạng thái</option><option value="idea">Ý tưởng</option><option value="selected">Đã chọn</option><option value="draft">Đang làm</option><option value="audit">Chờ Audit</option><option value="need_fix">Cần sửa</option><option value="pass">PASS</option></select></div>
-<div id="avpcList" class="avpc-list"></div>
-<form id="avpcEditor" class="avpc-editor" hidden><h3 id="avpcEditorTitle">Video mới</h3>
-<div class="avpc-grid"><label>Mã content<input id="avpcCode"></label><label>Trạng thái<select id="avpcEditStatus"><option value="idea">Ý tưởng</option><option value="selected">Đã chọn</option><option value="draft">Đang làm</option><option value="audit">Chờ Audit</option><option value="need_fix">Cần sửa</option><option value="pass">PASS</option></select></label>
-<div class="avpc-ai-box"><div><strong>AI Content Engine</strong><small>Chỉ cần nhập Case + bối cảnh + Excel skill. AI sẽ dựng phần còn lại để anh review.</small></div><button type="button" id="avpcAiGenerate">✨ AI tạo content</button></div><label class="wide">Tên video<input id="avpcTitle" required></label><label>Ngành / bối cảnh<input id="avpcIndustry" placeholder="Ví dụ: Sales, QC, HR"></label><label>Excel skill<input id="avpcSkills" placeholder="Ví dụ: XLOOKUP, SUMIFS"></label><label class="wide">Case<input id="avpcCaseTitle" placeholder="Vấn đề thực tế cần xử lý"></label><label class="wide">Mô tả case<textarea id="avpcCaseDescription" placeholder="Mô tả dữ liệu, tình huống và kết quả cần đạt"></textarea></label><label class="wide">Hook<textarea id="avpcHook"></textarea></label><label class="wide">Voice script<textarea id="avpcScript" rows="8"></textarea></label><label class="wide">Excel logic<textarea id="avpcExcelLogic"></textarea></label><label>Practice file<input id="avpcFileName"></label><label>TikTok URL<input id="avpcTikTok"></label></div>
-<div><button type="submit">Lưu content</button> <button type="button" id="avpcAudit">PASS</button> <button type="button" id="avpcDelete">Xóa</button> <button type="button" id="avpcClose">Đóng</button></div><div id="avpcNotice" hidden></div></form>
-</section>
+    <div class="admin-section-heading admin-view-section" data-admin-section="content"><span>CONTENT AVP</span><h2>Chọn dạng nội dung</h2></div>
+    <section class="admin-panel admin-view-section avp-category-folder-panel" data-admin-section="content" id="avpContentPanel">
+      <div class="avp-folder-heading">
+        <div><span>ANH VĂN PHÒNG · CONTENT LIBRARY</span><h2>Thư viện nội dung video</h2><p>Chọn một thư mục để quản lý từng dạng nội dung.</p></div>
+        <span class="avp-folder-count">05 DANH MỤC</span>
+      </div>
+      <div class="avp-category-grid" aria-label="Các dạng nội dung video">
+        <button type="button" class="avp-category-item" data-avp-category="analysis"><span class="avp-category-icon avp-cat-green">▥</span><small>DẠNG 01</small><strong>Excel Analysis</strong></button>
+        <button type="button" class="avp-category-item" data-avp-category="learning"><span class="avp-category-icon avp-cat-blue">▦</span><small>DẠNG 02</small><strong>Excel &amp; Power Query Learning</strong></button>
+        <button type="button" class="avp-category-item" data-avp-category="work"><span class="avp-category-icon avp-cat-purple">ƒx</span><small>DẠNG 03</small><strong>Real Work Cases</strong></button>
+        <button type="button" class="avp-category-item" data-avp-category="projects"><span class="avp-category-icon avp-cat-amber">▤</span><small>DẠNG 04</small><strong>YouTube Projects</strong></button>
+        <button type="button" class="avp-category-item" data-avp-category="series"><span class="avp-category-icon avp-cat-red">▶</span><small>DẠNG 05</small><strong>YouTube Topic Series</strong></button>
+      </div>
+    </section>
 
 <div class="admin-section-heading admin-view-section" data-admin-section="youtube"><span>▶️ YOUTUBE PROJECTS</span><h2>Quản lý project video dài</h2></div>
     <section class="admin-panel admin-view-section ayt-panel" data-admin-section="youtube" id="adminYoutubePanel">
@@ -914,22 +916,7 @@ where is_admin = true;</pre>
 
 
 
-    <section class="avpc-folder-overlay" id="avpcFolderModal" role="dialog" aria-modal="true" aria-labelledby="avpcFolderTitle" hidden>
-      <div class="avpc-folder-backdrop" data-avpc-folder-close></div>
-      <div class="avpc-folder-window">
-        <button class="avpc-folder-close" type="button" aria-label="Đóng" data-avpc-folder-close>×</button>
-        <div class="avpc-folder-kicker">ANH VĂN PHÒNG · CONTENT</div>
-        <h2 id="avpcFolderTitle">Chọn dạng video</h2>
-        <p class="avpc-folder-subtitle">Chọn một thư mục nội dung để quản lý.</p>
-        <div class="avpc-folder-grid">
-          <article class="avpc-folder-item"><span class="avpc-folder-icon avpc-folder-green">▥</span><small>DẠNG 01</small><strong>Excel Analysis</strong></article>
-          <article class="avpc-folder-item"><span class="avpc-folder-icon avpc-folder-blue">▦</span><small>DẠNG 02</small><strong>Excel & Power Query Learning</strong></article>
-          <article class="avpc-folder-item"><span class="avpc-folder-icon avpc-folder-purple">ƒx</span><small>DẠNG 03</small><strong>Real Work Cases</strong></article>
-          <article class="avpc-folder-item"><span class="avpc-folder-icon avpc-folder-amber">▤</span><small>DẠNG 04</small><strong>YouTube Projects</strong></article>
-          <article class="avpc-folder-item"><span class="avpc-folder-icon avpc-folder-red">▶</span><small>DẠNG 05</small><strong>YouTube Topic Series</strong></article>
-        </div>
-      </div>
-    </section>
+
 
   <div id="adminToast" class="admin-toast">
 
@@ -964,7 +951,7 @@ where is_admin = true;</pre>
 <script defer src="tiktok-catalog.js?v=20260906-catalog1"></script>
 <script defer src="admin-tiktok.js?v=20260906-catalog1"></script>
 <script defer src="admin-tools.js?v=20261001-tools1"></script>
-<script defer src="admin-content-os.js?v=20261008-v8"></script>
-<script defer src="admin-project-control.js?v=20261104-simple1"></script>\n<script defer src="admin-content-avp-folders.js?v=20261107-v1"></script>
+
+<script defer src="admin-project-control.js?v=20261104-simple1"></script>\n
 <script src="avp-display-mode.js?v=1"></script></body>
 </html>
