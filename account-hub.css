@@ -75,3 +75,6 @@
  .account-identity-tools .avatar-presets{grid-template-columns:repeat(5,minmax(0,1fr))!important;grid-auto-rows:48px!important;gap:8px!important}
  .account-identity-tools .avatar-preset{width:44px!important;height:44px!important;min-width:44px!important;max-width:44px!important;min-height:44px!important;max-height:44px!important}
 }
+
+/* Signed-out account action */
+.account-login{border:1px solid #dcebe1;background:#eaf5ed;color:#216b40;border-radius:11px;padding:10px 15px;font:inherit;font-size:13px;font-weight:800;cursor:pointer}.account-login:hover{background:#dff0e4}.account-logout:disabled{opacity:.65;cursor:wait}
