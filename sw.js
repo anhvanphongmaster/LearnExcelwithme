@@ -1,4 +1,4 @@
-const CACHE="learnexcel-assets-v20261101-home-clean-v2";
+const CACHE="learnexcel-assets-v20261109-account-action-fix";
 const ASSETS=[
   "./simple-nav.css","./avp-core.css","./avp-hover-lift.css",
   "./home-ui-owner-v1.css","./simple-nav.js","./site-navigation-v2.js","./site-navigation-v2.css","./avp-global-preferences-v1.css","./avp-theme-system-v1.css","./theme-unified-v32.js","./avp-logo.svg","./avp-core.js","./home-effects.js","./global-search.js",
