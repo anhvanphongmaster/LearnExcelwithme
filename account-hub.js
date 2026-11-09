@@ -28,7 +28,7 @@ async function loadUser(){
  const wait=(ms)=>new Promise(resolve=>setTimeout(resolve,ms));
  for(let i=0;i<80&&!window.avpSupabase;i++)await wait(100);
  const sb=window.avpSupabase;
- if(!sb){$("accountStatus").textContent="Chưa kết nối dịch vụ tài khoản";$("accountName").textContent="Tài khoản chưa sẵn sàng";$("accountFeedback").textContent="Không tải được Supabase. Hãy tải lại trang sau ít phút.";return;}
+ if(!sb){user=null;setIdentity();$("accountStatus").textContent="Khách";$("accountFeedback").textContent="Dịch vụ tài khoản chưa kết nối. Bạn vẫn có thể chuyển đến trang đăng nhập.";return;}
  try{
   const sessionResult=await Promise.race([sb.auth.getSession(),wait(10000).then(()=>({error:new Error("AUTH_TIMEOUT")}))]);
   if(sessionResult.error)throw sessionResult.error;
@@ -53,7 +53,8 @@ async function loadUser(){
   setIdentity();
   $("accountStatus").textContent="Đã kết nối";
  }catch(e){
-  $("accountStatus").textContent="Chưa đồng bộ được hồ sơ";
+  if(!user)setIdentity();
+  $("accountStatus").textContent=user?"Chưa đồng bộ được hồ sơ":"Khách";
   $("accountFeedback").textContent="Tài khoản đã tải nhưng hồ sơ chưa đồng bộ: "+clean(e.message||"Lỗi kết nối");
   console.warn("Account profile load",e);
  }
