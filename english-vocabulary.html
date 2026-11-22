@@ -14,7 +14,7 @@ textarea{width:100%;min-height:100px;border:1px solid var(--line);border-radius:
 @media(max-width:600px){main{padding:10px}.panel{padding:12px}.word{padding:12px}header{padding:22px 15px}}
 </style></head><body>
 <header><div class="wrap"><h1>📘 English Vocabulary Studio</h1><p>Kho từ vựng cá nhân — học, nghe, ôn và kiểm tra ngay trên điện thoại.</p><div class="stats"><div class="stat"><b id="total">0</b> từ</div><div class="stat"><b id="known">0</b> đã thuộc</div><div class="stat"><b id="review">0</b> cần ôn</div></div></div></header>
-<main><div id="audioDiag" class="panel" style="margin:12px 0;background:#fff7ed;border-color:#fed7aa"><b>Kiểm tra âm thanh:</b> <span id="audioStatus">Chưa kiểm tra</span> <button class="btn" id="audioTest" type="button">TEST ÂM THANH</button></div><div class="tabs"><button class="tab active" data-tab="list">📚 Kho từ</button><button class="tab" data-tab="study">🎯 Học 10 từ</button><button class="tab" data-tab="flash">🃏 Flashcard</button><button class="tab" data-tab="quiz">🧠 Quiz</button><button class="tab" data-tab="listen">🎧 Nghe & viết</button><button class="tab" data-tab="progress">📊 Tiến độ</button></div>
+<main><div class="tabs"><button class="tab active" data-tab="list">📚 Kho từ</button><button class="tab" data-tab="study">🎯 Học 10 từ</button><button class="tab" data-tab="flash">🃏 Flashcard</button><button class="tab" data-tab="quiz">🧠 Quiz</button><button class="tab" data-tab="listen">🎧 Nghe & viết</button><button class="tab" data-tab="progress">📊 Tiến độ</button></div>
 <section id="list" class="panel"><h2>Danh sách từ vựng</h2><div class="controls"><input id="search" placeholder="Tìm từ, nghĩa hoặc câu ví dụ…"><select id="category"><option value="">Tất cả chủ đề</option></select><select id="status"><option value="">Tất cả trạng thái</option><option value="new">Chưa học</option><option value="known">Đã thuộc</option><option value="review">Cần ôn</option></select></div><div id="wordlist"></div></section>
 <section id="study" class="panel hidden"><h2>Học hôm nay</h2><p>Học 10 từ theo thứ tự. Nghe từ, đọc câu và tự nói lại.</p><div id="studybox" class="flash"></div><div class="actions" style="justify-content:center"><button class="btn" id="studyPrev">← Trước</button><button class="btn primary" id="studyNext">Tiếp →</button><button class="btn green" id="studyKnown">Đã thuộc ✓</button><button class="btn red" id="studyReview">Cần ôn ↻</button></div></section>
 <section id="flash" class="panel hidden"><h2>Flashcard</h2><div id="flashbox" class="flash"></div><div class="actions" style="justify-content:center"><button class="btn" id="flip">Lật thẻ</button><button class="btn" id="fSpeak">🔊 Nghe</button><button class="btn" id="fNext">Thẻ tiếp →</button></div></section>
@@ -38,19 +38,9 @@ const cats=[...new Set(words.map(w=>w.category))];const $=s=>document.querySelec
 function save(){localStorage.setItem('evs-progress',JSON.stringify(state));stats()}
 function getStatus(w){return state[w.id]?.status||'new'}
 function stats(){$('#total').textContent=words.length;$('#known').textContent=words.filter(w=>getStatus(w)==='known').length;$('#review').textContent=words.filter(w=>getStatus(w)==='review').length}
-function audioMessage(msg){const el=document.getElementById('audioStatus');if(el)el.textContent=msg}
 function speak(text,rate=1){
-  audioMessage('Đang gọi bộ đọc tiếng Anh…');
-  if(!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window)){audioMessage('TRÌNH DUYỆT KHÔNG HỖ TRỢ SpeechSynthesis');return}
-  try{
-    speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=rate;
-    u.onstart=()=>audioMessage('Đã bắt đầu phát. Nếu không nghe: kiểm tra âm lượng / chế độ im lặng.');
-    u.onend=()=>audioMessage('Đọc xong.');
-    u.onerror=e=>audioMessage('LỖI ĐỌC: '+(e.error||'unknown'));
-    speechSynthesis.speak(u);
-    setTimeout(()=>{if(speechSynthesis.pending||speechSynthesis.speaking)audioMessage('Đang phát…');else audioMessage('Lệnh đọc đã gửi nhưng chưa phát. Thử nút TEST hoặc kiểm tra Safari.')},500);
-  }catch(e){audioMessage('LỖI: '+e.message)}
+  if(!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window)){alert('Trình duyệt không hỗ trợ đọc tiếng Anh.');return}
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=rate;speechSynthesis.speak(u)}catch(e){alert('Không thể phát âm thanh.')}
 }
 function highlighted(w){let s=w.example;let i=s.toLowerCase().indexOf(w.word.toLowerCase());if(i<0)return s;return s.slice(0,i)+'<strong>'+s.slice(i,i+w.word.length)+'</strong>'+s.slice(i+w.word.length)}
 function renderList(){let q=$('#search').value.toLowerCase(),cat=$('#category').value,st=$('#status').value;let list=words.filter(w=>(!q||[w.word,w.meaning,w.example].join(' ').toLowerCase().includes(q))&&(!cat||w.category===cat)&&(!st||getStatus(w)===st));$('#wordlist').innerHTML=list.map(w=>'<article class="word"><div class="wordtop"><div><div class="term">'+w.word+'</div><div class="meaning">'+w.meaning+'</div></div><span class="tag">'+w.category+'</span></div><div class="example">'+highlighted(w)+'</div><div class="actions"><button class="btn" data-word="'+w.id+'">🔊 Từ</button><button class="btn" data-sentence="'+w.id+'">🔊 Câu</button><button class="btn" data-slow="'+w.id+'">🐢 Chậm</button><button class="btn green" data-known="'+w.id+'">✓ Thuộc</button><button class="btn red" data-review="'+w.id+'">↻ Ôn</button></div></article>').join('')||'<p>Không tìm thấy từ phù hợp.</p>'}
@@ -66,7 +56,6 @@ function renderListen(){let w=words[listenIndex%words.length];listenShown=false;
 function checkTyped(){let w=words[listenIndex%words.length],v=$('#typed').value.trim().toLowerCase().replace(/[.,!?]/g,'').replace(/\s+/g,' '),a=w.example.toLowerCase().replace(/[.,!?]/g,'').replace(/\s+/g,' ');$('#feedback').innerHTML=(v===a?'✅ Chính xác!':'🟡 Chưa khớp hoàn toàn.')+'<br><b>Đáp án:</b> '+w.example}
 function tabs(){document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));$('#'+t.dataset.tab).classList.remove('hidden');if(t.dataset.tab==='study')renderStudy();if(t.dataset.tab==='flash')renderFlash();if(t.dataset.tab==='listen')renderListen();if(t.dataset.tab==='progress')renderProgress()})}
 function renderProgress(){let k=words.filter(w=>getStatus(w)==='known').length,r=words.filter(w=>getStatus(w)==='review').length;$('#progressText').textContent='Đã thuộc '+k+'/'+words.length+' từ ('+Math.round(k/words.length*100)+'%). Cần ôn: '+r+'. Chưa học: '+(words.length-k-r)+'.';$('#bar').style.width=(k/words.length*100)+'%'}
-$('#audioTest').onclick=()=>speak('Hello. This is an audio test.',1);
 cats.forEach(c=>$('#category').insertAdjacentHTML('beforeend','<option>'+c+'</option>'));tabs();stats();renderList();renderStudy();renderFlash();renderListen();
 $('#search').oninput=renderList;$('#category').onchange=renderList;$('#status').onchange=renderList;
 $('#studyPrev').onclick=()=>{studyIndex=Math.max(0,studyIndex-1);renderStudy()};$('#studyNext').onclick=()=>{studyIndex=(studyIndex+1)%studyList.length;renderStudy()};$('#studyKnown').onclick=()=>{mark(studyList[studyIndex].id,'known');studyIndex=(studyIndex+1)%studyList.length;renderStudy()};$('#studyReview').onclick=()=>{mark(studyList[studyIndex].id,'review');studyIndex=(studyIndex+1)%studyList.length;renderStudy()};
