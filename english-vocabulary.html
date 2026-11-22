@@ -38,7 +38,23 @@ const cats=[...new Set(words.map(w=>w.category))];const $=s=>document.querySelec
 function save(){localStorage.setItem('evs-progress',JSON.stringify(state));stats()}
 function getStatus(w){return state[w.id]?.status||'new'}
 function stats(){$('#total').textContent=words.length;$('#known').textContent=words.filter(w=>getStatus(w)==='known').length;$('#review').textContent=words.filter(w=>getStatus(w)==='review').length}
-function speak(text,rate=1){if(!('speechSynthesis'in window)){alert('Trình duyệt không hỗ trợ đọc giọng nói.');return}speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=rate;speechSynthesis.speak(u)}
+let audioPlayer=null;
+function speak(text,rate=1){
+  // Prefer direct MP3 playback, which is often more reliable on iOS embedded browsers.
+  try{
+    if(audioPlayer){audioPlayer.pause();audioPlayer.src='';}
+    audioPlayer=new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q='+encodeURIComponent(text));
+    audioPlayer.playbackRate=rate;
+    const p=audioPlayer.play();
+    if(p&&p.catch)p.catch(()=>{
+      if('speechSynthesis'in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=rate;speechSynthesis.speak(u);}
+      else alert('Không thể phát âm thanh. Hãy mở trang bằng Safari và kiểm tra kết nối mạng.');
+    });
+  }catch(err){
+    if('speechSynthesis'in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=rate;speechSynthesis.speak(u);}
+    else alert('Không thể phát âm thanh trên trình duyệt này.');
+  }
+}
 function highlighted(w){let s=w.example;let i=s.toLowerCase().indexOf(w.word.toLowerCase());if(i<0)return s;return s.slice(0,i)+'<strong>'+s.slice(i,i+w.word.length)+'</strong>'+s.slice(i+w.word.length)}
 function renderList(){let q=$('#search').value.toLowerCase(),cat=$('#category').value,st=$('#status').value;let list=words.filter(w=>(!q||[w.word,w.meaning,w.example].join(' ').toLowerCase().includes(q))&&(!cat||w.category===cat)&&(!st||getStatus(w)===st));$('#wordlist').innerHTML=list.map(w=>'<article class="word"><div class="wordtop"><div><div class="term">'+w.word+'</div><div class="meaning">'+w.meaning+'</div></div><span class="tag">'+w.category+'</span></div><div class="example">'+highlighted(w)+'</div><div class="actions"><button class="btn" data-word="'+w.id+'">🔊 Từ</button><button class="btn" data-sentence="'+w.id+'">🔊 Câu</button><button class="btn" data-slow="'+w.id+'">🐢 Chậm</button><button class="btn green" data-known="'+w.id+'">✓ Thuộc</button><button class="btn red" data-review="'+w.id+'">↻ Ôn</button></div></article>').join('')||'<p>Không tìm thấy từ phù hợp.</p>'}
 function mark(id,status){state[id]={status,at:Date.now()};save();renderList();renderStudy();renderFlash()}
